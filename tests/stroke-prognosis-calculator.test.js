@@ -1,5 +1,8 @@
 import { describe, it, expect } from 'vitest';
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
 import {
+  StrokePrognosisCalculator,
   calculateAstralScore,
   getAstralRisk,
   calculatePlanScore,
@@ -9,6 +12,24 @@ import {
 } from '../src/education.jsx';
 
 describe('Stroke Prognosis Bedside Calculator Helpers', () => {
+  it('gives the glucose input an accessible name including its displayed unit', () => {
+    const html = ReactDOMServer.renderToStaticMarkup(React.createElement(StrokePrognosisCalculator));
+    expect(html).toMatch(/<input[^>]*type="number"[^>]*aria-label="Acute Glucose level \(mmol\/L\)"/);
+  });
+
+  it('exposes prognosis toggle labels and their current switch state', () => {
+    const html = ReactDOMServer.renderToStaticMarkup(React.createElement(StrokePrognosisCalculator));
+    const switches = html.match(/<button\b[^>]*role="switch"[^>]*>/g) || [];
+    expect(switches.length).toBeGreaterThanOrEqual(3);
+    for (const control of switches) {
+      expect(control).toMatch(/aria-label="[^"]+"/);
+      expect(control).toMatch(/aria-checked="(?:true|false)"/);
+    }
+    for (const label of ['Visual Field Defect', 'Time to Admission &gt; 3 Hours', 'Impaired Level of Consciousness']) {
+      expect(switches.some(control => control.includes(`aria-label="${label}"`))).toBe(true);
+    }
+  });
+
   describe('ASTRAL Score & Risk Mapping', () => {
     it('calculates baseline ASTRAL score and maps risk correctly', () => {
       const inputs = {
@@ -156,7 +177,7 @@ describe('Stroke Prognosis Bedside Calculator Helpers', () => {
       };
       const score = calculateIchScore(inputs);
       expect(score).toBe(6);
-      expect(getIchRisk(score)).toBe('100%');
+      expect(getIchRisk(score)).toBe('Not estimated');
     });
   });
 });

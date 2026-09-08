@@ -227,13 +227,15 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       // and stopping the infusion is conditional on alteplase). See the git diff of
       // tests/snapshots/example-protocols/ for the approved wording. Counts below reflect
       // the approved removal of source-status boxes and relocation of calculators.
+      // 2026-09-06: calculators 455->456 from the Andexxa safety card and explicit PASCAL states.
+      // The frozen ICH/ischemic Protocols snapshots remain unchanged.
       // 2026-08-22: calculators 428->426 from the approved evidence-audit
       // corrections (Hemphill ICH-score table, ABCD2 duration options,
       // HAS-BLED published item definitions). ich/ischemic unchanged.
       const baselineCounts = {
         ich: 524,
         ischemic: 764,
-        calculators: 455
+        calculators: 456
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);
@@ -360,10 +362,10 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       const bundlePath = path.join(REPO_ROOT, 'content', 'bundle.json');
       const bundle = JSON.parse(fs.readFileSync(bundlePath, 'utf8'));
       expect(bundle.guidelines?.length).toBe(11);
-      expect(bundle.trials?.length).toBe(131);
+      expect(bundle.trials?.length).toBe(242);
       expect(bundle.education?.length).toBeGreaterThanOrEqual(32);
       expect(bundle.calculators?.length).toBe(34);
-      expect(bundle.references?.length).toBe(28); // 18 + 9 quick-reference sheets + 1 parenthesized-path PDF (seed regex fix)
+      expect(bundle.references?.length).toBe(32); // 28 repo-local documents + 4 external links (registry-driven seeding)
 
       const total = bundle.guidelines.length + bundle.trials.length + bundle.education.length + bundle.calculators.length + bundle.references.length;
       expect(total).toBeGreaterThanOrEqual(166);
@@ -378,10 +380,10 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       const json = JSON.parse(res.stdout);
       expect(json.errors.length).toBe(0);
       expect(json.counts.guidelines).toBe(11);
-      expect(json.counts.trials).toBe(131);
+      expect(json.counts.trials).toBe(242);
       expect(json.counts.education).toBeGreaterThanOrEqual(32);
       expect(json.counts.calculators).toBe(34);
-      expect(json.counts.references).toBe(28); // 18 + 9 quick-reference sheets + 1 parenthesized-path PDF (seed regex fix)
+      expect(json.counts.references).toBe(32); // 28 repo-local documents + 4 external links (registry-driven seeding)
     });
   });
 });

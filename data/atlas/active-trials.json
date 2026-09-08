@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "active-trials",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.23.0",
-    "checksum": "sha256:c0d959cdababdb664aadb6f4e17b441f",
+    "appVersion": "6.26.0",
+    "checksum": "sha256:d4bd9f5b7906149ca25f321745c5bf8d",
     "count": 9,
     "source": "Evidence atlas active-trials bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -135,7 +135,7 @@
         "distal"
       ],
       "link": "https://clinicaltrials.gov/study/NCT06289985",
-      "lastReviewed": "2026-08-22",
+      "lastReviewed": "2026-09-06",
       "verificationStatus": "verified-clinicaltrials-gov",
       "verificationNotes": "",
       "legacyMatcherKey": "STEP"
@@ -226,7 +226,7 @@
       "matcherExclusions": [],
       "relatedCompletedTrialIds": [],
       "link": "https://clinicaltrials.gov/study/NCT05611242",
-      "lastReviewed": "2026-08-22",
+      "lastReviewed": "2026-09-06",
       "verificationStatus": "verified-clinicaltrials-gov",
       "verificationNotes": "",
       "legacyMatcherKey": "PICASSO"
@@ -251,7 +251,8 @@
       ],
       "exclusionCriteria": [
         "Pre-stroke mRS 0-2 or 5-6",
-        "Life expectancy <6 months from non-stroke condition"
+        "Known terminal cancer or terminal illness at the time of stroke",
+        "Pre-stroke function cannot be assessed during hospitalization, or disability is temporary"
       ],
       "keyTakeaways": [
         "All major EVT trials excluded patients with pre-existing disability (mRS 3-4)",
@@ -317,7 +318,7 @@
         "tension"
       ],
       "link": "https://clinicaltrials.gov/study/NCT05911568",
-      "lastReviewed": "2026-08-22",
+      "lastReviewed": "2026-09-06",
       "verificationStatus": "verified-clinicaltrials-gov",
       "verificationNotes": "",
       "legacyMatcherKey": "TESTED"
@@ -334,8 +335,9 @@
       "rationale": "Could enable precision rehabilitation by matching therapy intensity to predicted recovery potential.",
       "inclusionCriteria": [
         "Age ≥18 y",
-        "AIS within 7 days of onset",
-        "Upper-extremity weakness (shoulder abduction or finger extension MRC ≤4)"
+        "Unilateral symptomatic AIS; signed consent within 24-96 hours of onset/LKW",
+        "Affected-arm SAFE score ≤8 measured within 48-96 hours",
+        "English or Spanish; willing and available for the in-person day-90 visit"
       ],
       "exclusionCriteria": [
         "Contraindications to TMS (implanted electronics, intracranial metal, seizures)",
@@ -343,11 +345,11 @@
       ],
       "keyTakeaways": [
         "Uses TMS + MRI biomarkers to predict upper extremity motor recovery trajectory",
-        "Observational — enrollment is straightforward with minimal patient burden",
+        "Observational; requires SAFE assessment, MRI/TMS screening and in-person follow-up",
         "Could establish precision rehab: matching therapy intensity to predicted recovery potential"
       ],
       "lookingFor": [
-        "Acute ischemic stroke within 7 days",
+        "Consent within 24-96 hours of acute ischemic stroke onset/LKW",
         "Upper extremity weakness",
         "Inpatient enrollment opportunity"
       ],
@@ -371,10 +373,13 @@
           "label": "Upper-extremity weakness"
         },
         {
-          "field": "premorbidMRS",
-          "operator": "<=",
-          "value": 2,
-          "label": "Pre-stroke mRS ≤2"
+          "field": "hoursFromLKW",
+          "operator": "between",
+          "value": [
+            24,
+            96
+          ],
+          "label": "Consent window 24-96 h from onset/LKW"
         }
       ],
       "matcherExclusions": [
@@ -395,7 +400,7 @@
       ],
       "relatedCompletedTrialIds": [],
       "link": "https://clinicaltrials.gov/study/NCT05338697",
-      "lastReviewed": "2026-08-22",
+      "lastReviewed": "2026-09-06",
       "verificationStatus": "verified-clinicaltrials-gov",
       "verificationNotes": "",
       "legacyMatcherKey": "VERIFY"
@@ -488,7 +493,7 @@
         "original"
       ],
       "link": "https://clinicaltrials.gov/study/NCT03735979",
-      "lastReviewed": "2026-08-22",
+      "lastReviewed": "2026-09-06",
       "verificationStatus": "verified-clinicaltrials-gov",
       "verificationNotes": "",
       "legacyMatcherKey": "MOST"
@@ -579,7 +584,7 @@
         "thales"
       ],
       "link": "https://clinicaltrials.gov/study/NCT05047172",
-      "lastReviewed": "2026-08-22",
+      "lastReviewed": "2026-09-06",
       "verificationStatus": "verified-clinicaltrials-gov",
       "verificationNotes": "",
       "legacyMatcherKey": "CAPTIVA"
@@ -655,7 +660,7 @@
       ],
       "relatedCompletedTrialIds": [],
       "link": "https://clinicaltrials.gov/study/NCT05484154",
-      "lastReviewed": "2026-08-22",
+      "lastReviewed": "2026-09-06",
       "verificationStatus": "verified-clinicaltrials-gov",
       "verificationNotes": "",
       "legacyMatcherKey": "RHAPSODY"
@@ -717,6 +722,12 @@
           "label": "On statin at ICH onset"
         },
         {
+          "field": "hoursFromLKW",
+          "operator": "<=",
+          "value": 168,
+          "label": "Randomization within 7 days of ICH onset"
+        },
+        {
           "field": "premorbidMRS",
           "operator": "<=",
           "value": 3,
@@ -737,7 +748,7 @@
         "enrich"
       ],
       "link": "https://clinicaltrials.gov/study/NCT03936361",
-      "lastReviewed": "2026-08-22",
+      "lastReviewed": "2026-09-06",
       "verificationStatus": "verified-clinicaltrials-gov",
       "verificationNotes": "",
       "legacyMatcherKey": "SATURN"
@@ -759,11 +770,13 @@
         "Randomization possible 14-180 days after ICH onset"
       ],
       "exclusionCriteria": [
-        "Mechanical heart valve"
+        "Separate mandatory anticoagulation or antiplatelet indication (e.g., DVT/PE or recent coronary stent)",
+        "Hemorrhagic transformation, hemorrhage into tumor, or unsecured AVM",
+        "Other renal, hepatic, hematologic, blood-pressure and protocol exclusions require confirmation"
       ],
       "keyTakeaways": [
         "ICH patients with AF face a dilemma: anticoagulation prevents ischemic stroke but may cause recurrent ICH",
-        "PRESTIGE-AF showed non-inferiority of DOAC vs no anticoag; ASPIRE directly compares apixaban to aspirin",
+        "PRESTIGE-AF reduced ischemic stroke but did NOT meet non-inferiority for recurrent ICH; ASPIRE compares apixaban with aspirin",
         "Enrollment window is 14-180 days post-ICH — flag for outpatient follow-up"
       ],
       "lookingFor": [
@@ -783,6 +796,15 @@
           "operator": "==",
           "value": "ich",
           "label": "ICH confirmed"
+        },
+        {
+          "field": "hoursFromLKW",
+          "operator": "between",
+          "value": [
+            336,
+            4320
+          ],
+          "label": "Randomization 14-180 days after ICH onset"
         },
         {
           "field": "pmh",
@@ -806,11 +828,13 @@
         }
       ],
       "relatedCompletedTrialIds": [
-        "averroes",
-        "artesia"
+        "prestige-af",
+        "sostart",
+        "apache-af",
+        "cocroach"
       ],
       "link": "https://clinicaltrials.gov/study/NCT03907046",
-      "lastReviewed": "2026-08-22",
+      "lastReviewed": "2026-09-06",
       "verificationStatus": "verified-clinicaltrials-gov",
       "verificationNotes": "",
       "legacyMatcherKey": "ASPIRE"

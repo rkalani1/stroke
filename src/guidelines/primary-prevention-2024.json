@@ -14,7 +14,51 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "For adults aged 40 to 79, periodic atherosclerotic CVD risk estimation (every 1-5 years) is recommended to guide treatment and lifestyle decisions aimed at stroke risk reduction.",
-      "page": 9
+      "page": 9,
+      "id": "primary-prevention-2024-1",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 9,
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "primary-prevention-2024-assessment-2",
+      "section": "Patient Assessment",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "B-NR",
+      "text": "For individuals with atrial fibrillation, calculate CHA₂DS₂-VASc to guide oral-anticoagulation decisions for stroke prevention.",
+      "page": 10,
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "primary-prevention-2024-assessment-3",
+      "section": "Patient Assessment",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-EO",
+      "text": "Periodically screen adults aged 18 years or older for modifiable behaviors and medical conditions that increase stroke risk.",
+      "page": 10,
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
+    },
+    {
+      "id": "primary-prevention-2024-assessment-4",
+      "section": "Patient Assessment",
+      "classOfRec": "I",
+      "classNote": null,
+      "levelOfEvidence": "C-EO",
+      "text": "Periodically screen adults aged 18 years or older for social determinants of health, such as food insecurity and transportation barriers, to identify additional contributors to stroke risk.",
+      "page": 10,
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diet Quality",
@@ -22,7 +66,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "A Mediterranean diet is recommended for adults without prior CVD who are at high or intermediate CVD risk to lower the incidence of stroke.",
-      "page": 12
+      "page": 12,
+      "id": "primary-prevention-2024-2",
+      "sourceSection": "table-02",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 12,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diet Quality",
@@ -30,7 +79,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In adults aged 60 and older with uncontrolled BP (SBP at or above 140 mmHg on antihypertensives, or at or above 160 mmHg without), using a salt substitute (75% sodium chloride / 25% potassium chloride) instead of standard table salt is reasonable to lower stroke risk.",
-      "page": 12
+      "page": 12,
+      "id": "primary-prevention-2024-3",
+      "sourceSection": "table-02",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 12,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diet Quality",
@@ -38,7 +92,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "The benefit of folic acid or B-complex vitamin supplementation (folic acid, B12, B6) for stroke risk reduction in adults is not well established.",
-      "page": 12
+      "page": 12,
+      "id": "primary-prevention-2024-4",
+      "sourceSection": "table-02",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 12,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diet Quality",
@@ -46,7 +105,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
       "text": "Long-chain fatty acid supplementation has not been shown to reduce stroke risk in adults without prior CVD.",
-      "page": 12
+      "page": 12,
+      "id": "primary-prevention-2024-5",
+      "sourceSection": "table-02",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 12,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diet Quality",
@@ -54,7 +118,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
       "text": "Supplementation with vitamin C, vitamin E, selenium, antioxidants, calcium (with or without vitamin D), or multivitamins has not been shown to reduce stroke risk in adults.",
-      "page": 12
+      "page": 12,
+      "id": "primary-prevention-2024-6",
+      "sourceSection": "table-02",
+      "sourceRecommendationNumber": 5,
+      "pdfPage": 12,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Physical Activity",
@@ -62,7 +131,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "Screening adults for physical activity levels is recommended as part of a comprehensive stroke risk assessment.",
-      "page": 14
+      "page": 14,
+      "id": "primary-prevention-2024-7",
+      "sourceSection": "table-03",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 14,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Physical Activity",
@@ -70,7 +144,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "Counseling adults to engage in at least 150 minutes per week of moderate-intensity exercise, 75 minutes per week of vigorous-intensity exercise, or an equivalent combination is recommended to lower stroke risk.",
-      "page": 14
+      "page": 14,
+      "id": "primary-prevention-2024-8",
+      "sourceSection": "table-03",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 14,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Physical Activity",
@@ -78,7 +157,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "Counseling adults to limit prolonged sedentary behavior (extended sitting, reclining, or lying while awake with minimal energy expenditure) is recommended to lower stroke risk.",
-      "page": 14
+      "page": 14,
+      "id": "primary-prevention-2024-9",
+      "sourceSection": "table-03",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 14,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Weight and Obesity",
@@ -86,7 +170,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Screening adults over age 18 for overweight and obesity is recommended to inform stroke risk assessment.",
-      "page": 16
+      "page": 16,
+      "id": "primary-prevention-2024-10",
+      "sourceSection": "table-04",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 16,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Weight and Obesity",
@@ -94,7 +183,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with class II obesity (BMI 35-39.9 kg/m2) or greater, bariatric surgery for weight loss may be considered to reduce stroke risk.",
-      "page": 16
+      "page": 16,
+      "id": "primary-prevention-2024-11",
+      "sourceSection": "table-04",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 16,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Sleep",
@@ -102,7 +196,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "The value of routine obstructive sleep apnea (OSA) screening in adults for the purpose of stroke prevention remains unclear.",
-      "page": 17
+      "page": 17,
+      "id": "primary-prevention-2024-12",
+      "sourceSection": "table-05",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 17,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Sleep",
@@ -110,7 +209,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with OSA, continuous positive airway pressure (CPAP) therapy might be reasonable to reduce stroke risk.",
-      "page": 17
+      "page": 17,
+      "id": "primary-prevention-2024-13",
+      "sourceSection": "table-05",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 17,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Blood Sugar",
@@ -118,7 +222,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "Screening for prediabetes and diabetes is recommended in asymptomatic adults aged 18 and older who have overweight, obesity, or atherosclerotic CVD, to inform stroke risk assessment.",
-      "page": 18
+      "page": 18,
+      "id": "primary-prevention-2024-14",
+      "sourceSection": "table-06",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 18,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Blood Sugar",
@@ -126,7 +235,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "In patients with diabetes who have high cardiovascular risk or established CVD and a hemoglobin A1c of 7% or greater, a GLP-1 receptor agonist is recommended to reduce stroke risk.",
-      "page": 18
+      "page": 18,
+      "id": "primary-prevention-2024-15",
+      "sourceSection": "table-06",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 18,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Blood Sugar",
@@ -134,7 +248,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
       "text": "In patients with type 1 diabetes or diabetes more broadly, intensive glycemic control targeting a hemoglobin A1c of 6.5% or below has not been shown to be beneficial for stroke prevention.",
-      "page": 19
+      "page": 19,
+      "id": "primary-prevention-2024-16",
+      "sourceSection": "table-06",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 19,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Blood Pressure",
@@ -142,7 +261,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "Screening adults aged 18 and older for hypertension is recommended to identify those at elevated stroke risk who may benefit from antihypertensive treatment.",
-      "page": 20
+      "page": 20,
+      "id": "primary-prevention-2024-17",
+      "sourceSection": "table-07",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 20,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Blood Pressure",
@@ -150,7 +274,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "For adults with stage 2 hypertension or stage 1 hypertension with elevated ASCVD risk, lifestyle modifications plus antihypertensive therapy targeting BP below 130/80 mmHg are recommended to prevent stroke.",
-      "page": 20
+      "page": 20,
+      "id": "primary-prevention-2024-18",
+      "sourceSection": "table-07",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 20,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Blood Pressure",
@@ -158,7 +287,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "In hypertensive adults, thiazide/thiazide-like diuretics, calcium channel blockers, ACE inhibitors, and angiotensin receptor blockers are recommended as first-line antihypertensive agents for stroke prevention.",
-      "page": 20
+      "page": 20,
+      "id": "primary-prevention-2024-19",
+      "sourceSection": "table-07",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 20,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Blood Pressure",
@@ -166,7 +300,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "For most hypertensive adults, combination therapy with two or more antihypertensive agents is recommended to achieve the BP control needed to prevent stroke.",
-      "page": 20
+      "page": 20,
+      "id": "primary-prevention-2024-20",
+      "sourceSection": "table-07",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 20,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Lipids",
@@ -174,7 +313,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "In adults who meet criteria for lipid-lowering therapy per the 2019 ACC/AHA primary prevention guideline (e.g., aged 20-75 with LDL-C above 190 mg/dL, 10-year ASCVD risk at or above 20%, or 10-year risk 7.5%-20% with risk enhancers), statin therapy is recommended to reduce the risk of first stroke.",
-      "page": 22
+      "page": 22,
+      "id": "primary-prevention-2024-21",
+      "sourceSection": "table-08",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 22,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Lipids",
@@ -182,7 +326,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "In adults without CVD who qualify for lipid-lowering therapy per the 2019 ACC/AHA guideline but cannot reach goals or tolerate statins, the benefit of PCSK9 inhibitors (alirocumab or evolocumab) over other active lipid-lowering therapy for reducing first stroke risk is uncertain.",
-      "page": 22
+      "page": 22,
+      "id": "primary-prevention-2024-22",
+      "sourceSection": "table-08",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 22,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Lipids",
@@ -190,7 +339,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In statin-intolerant adults with LDL-C above 100 mg/dL and elevated cardiovascular risk, the benefit of bempedoic acid for reducing first stroke risk is not well established.",
-      "page": 22
+      "page": 22,
+      "id": "primary-prevention-2024-23",
+      "sourceSection": "table-08",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 22,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Lipids",
@@ -198,7 +352,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "A",
       "text": "Long-chain omega-3 fatty acid supplementation is not recommended for reducing first stroke risk in adults with moderate or low baseline intake.",
-      "page": 22
+      "page": 22,
+      "id": "primary-prevention-2024-24",
+      "sourceSection": "table-08",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 22,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Tobacco Use",
@@ -206,7 +365,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Screening all patients for cigarette smoking, other tobacco product use, electronic nicotine delivery systems (e-cigarettes and vapes), and secondhand smoke exposure is recommended to inform stroke risk and guide cessation efforts.",
-      "page": 24
+      "page": 24,
+      "id": "primary-prevention-2024-25",
+      "sourceSection": "table-09",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 24,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Tobacco Use",
@@ -214,7 +378,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "For patients who do not use tobacco products, continued complete abstinence from cigarettes, other tobacco products, electronic nicotine delivery systems, and secondhand smoke exposure is recommended to avoid the associated increase in stroke risk.",
-      "page": 24
+      "page": 24,
+      "id": "primary-prevention-2024-26",
+      "sourceSection": "table-09",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 24,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Tobacco Use",
@@ -222,7 +391,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "For active cigarette smokers, combining smoking cessation pharmacotherapy with behavioral counseling is recommended over behavioral counseling alone to promote successful cessation.",
-      "page": 24
+      "page": 24,
+      "id": "primary-prevention-2024-27",
+      "sourceSection": "table-09",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 24,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Tobacco Use",
@@ -230,7 +404,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "For active smokers and users of other tobacco or nicotine products (including e-cigarettes), cessation assistance is recommended to reduce stroke risk.",
-      "page": 24
+      "page": 24,
+      "id": "primary-prevention-2024-28",
+      "sourceSection": "table-09",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 24,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Tobacco Use",
@@ -238,7 +417,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "For inpatient active smokers, offering smoking cessation pharmacotherapy and behavioral counseling as a default (opt-out) approach rather than only for those who express willingness to quit (opt-in) can be beneficial for short-term cessation and treatment engagement.",
-      "page": 24
+      "page": 24,
+      "id": "primary-prevention-2024-29",
+      "sourceSection": "table-09",
+      "sourceRecommendationNumber": 5,
+      "pdfPage": 24,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Tobacco Use",
@@ -246,7 +430,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "For active cigarette smokers, the long-term health benefits of using e-cigarettes as a substitute for nicotine replacement therapy to facilitate cessation are not well established.",
-      "page": 24
+      "page": 24,
+      "id": "primary-prevention-2024-30",
+      "sourceSection": "table-09",
+      "sourceRecommendationNumber": 6,
+      "pdfPage": 24,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Asymptomatic Carotid Artery Stenosis",
@@ -254,7 +443,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "B-NR",
       "text": "Routine population-based screening for carotid artery stenosis in asymptomatic individuals is not recommended for stroke prevention.",
-      "page": 26
+      "page": 26,
+      "id": "primary-prevention-2024-31",
+      "sourceSection": "table-10",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 26,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Asymptomatic Carotid Artery Stenosis",
@@ -262,7 +456,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "In patients with asymptomatic carotid stenosis greater than 70%, shared decision-making between the patient and the care team is recommended to choose between carotid revascularization and medical management for stroke risk reduction.",
-      "page": 26
+      "page": 26,
+      "id": "primary-prevention-2024-32",
+      "sourceSection": "table-10",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 26,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Asymptomatic Carotid Artery Stenosis",
@@ -270,7 +469,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In patients with asymptomatic atherosclerotic carotid stenosis, statin therapy can be beneficial to reduce stroke risk.",
-      "page": 26
+      "page": 26,
+      "id": "primary-prevention-2024-33",
+      "sourceSection": "table-10",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 26,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Asymptomatic Carotid Artery Stenosis",
@@ -278,7 +482,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In patients with asymptomatic atherosclerotic carotid stenosis greater than 70% and low perioperative risk, adding carotid revascularization to intensive medical therapy may be reasonable to reduce stroke risk.",
-      "page": 26
+      "page": 26,
+      "id": "primary-prevention-2024-34",
+      "sourceSection": "table-10",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 26,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Asymptomatic Carotid Artery Stenosis",
@@ -286,7 +495,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In patients with asymptomatic carotid stenosis greater than 50%, periodic carotid duplex ultrasound every 6 to 12 months might be reasonable to monitor disease progression and associated stroke risk.",
-      "page": 26
+      "page": 26,
+      "id": "primary-prevention-2024-35",
+      "sourceSection": "table-10",
+      "sourceRecommendationNumber": 5,
+      "pdfPage": 26,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Asymptomatic Carotid Artery Stenosis",
@@ -294,7 +508,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In patients with asymptomatic atherosclerotic carotid stenosis and high perioperative risk, the effectiveness of carotid revascularization for stroke prevention has not been established.",
-      "page": 26
+      "page": 26,
+      "id": "primary-prevention-2024-36",
+      "sourceSection": "table-10",
+      "sourceRecommendationNumber": 6,
+      "pdfPage": 26,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Asymptomatic Cerebral SVD, Including",
@@ -302,7 +521,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In adults with asymptomatic cerebral small vessel disease (CSVD), including silent infarcts, assessment and management of vascular risk factors (hypertension, dyslipidemia, tobacco use, diabetes) are recommended to reduce stroke risk.",
-      "page": 29
+      "page": 29,
+      "id": "primary-prevention-2024-37",
+      "sourceSection": "table-11",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 29,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Asymptomatic Cerebral SVD, Including",
@@ -310,7 +534,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In adults with silent cerebral infarcts who do not otherwise meet 2019 ACC/AHA guideline criteria for statin therapy, low-dose statin treatment might be considered to reduce ischemic stroke risk.",
-      "page": 29
+      "page": 29,
+      "id": "primary-prevention-2024-38",
+      "sourceSection": "table-11",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 29,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Asymptomatic Cerebral SVD, Including",
@@ -318,7 +547,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In adults with silent cerebral infarcts, the benefit of antiplatelet therapy for ischemic stroke prevention is uncertain.",
-      "page": 29
+      "page": 29,
+      "id": "primary-prevention-2024-39",
+      "sourceSection": "table-11",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 29,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Migraine",
@@ -326,7 +560,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In adults aged 18 to 64 with migraine (with or without aura), evaluation and modification of vascular risk factors are recommended given the elevated stroke risk in this population.",
-      "page": 30
+      "page": 30,
+      "id": "primary-prevention-2024-40",
+      "sourceSection": "table-12",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 30,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Migraine",
@@ -334,7 +573,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In adults with migraine with aura who desire contraception, progestin-only or nonhormonal options are recommended to avoid the elevated ischemic stroke risk associated with combined hormonal contraceptives.",
-      "page": 30
+      "page": 30,
+      "id": "primary-prevention-2024-41",
+      "sourceSection": "table-12",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 30,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Sickle Cell Disease",
@@ -342,7 +586,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In children aged 2 to 16 with sickle cell disease (Hb SS or Hb S-beta0-thalassemia), transcranial Doppler (TCD) screening at intervals determined by the highest mean flow velocity in the terminal ICA or proximal MCA is recommended.",
-      "page": 31
+      "page": 31,
+      "id": "primary-prevention-2024-42",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 31,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Sickle Cell Disease",
@@ -350,7 +599,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In children aged 2 to 16 with sickle cell disease and elevated TCD velocities, regularly scheduled transfusion therapy targeting hemoglobin S below 30% is recommended to reduce stroke risk.",
-      "page": 31
+      "page": 31,
+      "id": "primary-prevention-2024-43",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 31,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Sickle Cell Disease",
@@ -358,7 +612,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In children aged 2 to 16 and young adults with Hb SS or Hb S-beta0-thalassemia, brain MRI (without sedation) performed as early as feasible can be beneficial to evaluate for silent cerebral infarcts and guide the need for chronic red cell transfusions for stroke prevention.",
-      "page": 31
+      "page": 31,
+      "id": "primary-prevention-2024-44",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 31,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Sickle Cell Disease",
@@ -366,7 +625,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In children aged 2 to 16 with sickle cell disease whose TCD velocities normalize, continuing transfusion therapy can be beneficial to reduce ongoing stroke risk.",
-      "page": 31
+      "page": 31,
+      "id": "primary-prevention-2024-45",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 31,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Sickle Cell Disease",
@@ -374,7 +638,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In children aged 2 to 16 with sickle cell disease, normalized TCD velocities, and no intracranial stenosis, transitioning from transfusion therapy to hydroxyurea can be considered for stroke prevention.",
-      "page": 31
+      "page": 31,
+      "id": "primary-prevention-2024-46",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 5,
+      "pdfPage": 31,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Sickle Cell Disease",
@@ -382,7 +651,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In children aged 2 to 16 with sickle cell disease at high stroke risk (TCD mean velocities at or above 200 cm/s) without intracranial stenosis who cannot continue periodic red cell transfusion, hydroxyurea or bone marrow transplantation may be reasonable for stroke prevention.",
-      "page": 31
+      "page": 31,
+      "id": "primary-prevention-2024-47",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 6,
+      "pdfPage": 31,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Genetic Stroke Syndromes",
@@ -390,7 +664,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with CADASIL, smoking cessation counseling and treatment of hypertension and other vascular risk factors are recommended to reduce the incidence of stroke.",
-      "page": 34
+      "page": 34,
+      "id": "primary-prevention-2024-48",
+      "sourceSection": "table-14",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 34,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Genetic Stroke Syndromes",
@@ -398,7 +677,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In adults with hereditary hemorrhagic telangiectasia (HHT), screening for pulmonary arteriovenous malformations (PAVMs) is reasonable to identify those who need multidisciplinary evaluation for stroke risk management.",
-      "page": 34
+      "page": 34,
+      "id": "primary-prevention-2024-49",
+      "sourceSection": "table-14",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 34,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Genetic Stroke Syndromes",
@@ -406,7 +690,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with Fabry disease, the effectiveness of enzyme replacement therapy (ERT) for reducing stroke risk is not well established.",
-      "page": 34
+      "page": 34,
+      "id": "primary-prevention-2024-50",
+      "sourceSection": "table-14",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 34,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Inflammation in Atherosclerosis",
@@ -414,7 +703,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In adults with a recent MI, adding low-dose colchicine to intensive statin therapy might be reasonable to reduce the risk of ischemic stroke.",
-      "page": 36
+      "page": 36,
+      "id": "primary-prevention-2024-51",
+      "sourceSection": "table-15",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 36,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Inflammation in Atherosclerosis",
@@ -422,7 +716,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In patients without prior stroke and no clinical indication for anticoagulation who have a high-risk antiphospholipid antibody profile (triple-positive, double-positive, isolated lupus anticoagulant, or isolated persistently positive anticardiolipin antibodies at medium-to-high titers), prophylactic low-dose aspirin (75-100 mg daily) is recommended to reduce stroke risk.",
-      "page": 37
+      "page": 37,
+      "id": "primary-prevention-2024-52",
+      "sourceSection": "table-16",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 37,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Inflammation in Atherosclerosis",
@@ -430,7 +729,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In patients with systemic lupus erythematosus (SLE), no history of thrombosis or pregnancy complications, and a high-risk antiphospholipid profile (lupus anticoagulant, anticardiolipin, anti-beta2-glycoprotein 1 positivity in various combinations, or isolated lupus anticoagulant, or isolated persistently positive anticardiolipin at medium-to-high titers), prophylactic low-dose aspirin (75-100 mg daily) is recommended for stroke prevention.",
-      "page": 37
+      "page": 37,
+      "id": "primary-prevention-2024-53",
+      "sourceSection": "table-16",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 37,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Inflammation in Atherosclerosis",
@@ -438,7 +742,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In patients with antiphospholipid syndrome (APS) and prior unprovoked venous thrombosis, vitamin K antagonist therapy targeting an INR of 2-3 is reasonable over aspirin or direct oral anticoagulants for preventing recurrent thrombotic events including stroke.",
-      "page": 37
+      "page": 37,
+      "id": "primary-prevention-2024-54",
+      "sourceSection": "table-16",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 37,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Inflammation in Atherosclerosis",
@@ -446,7 +755,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In patients with rheumatoid arthritis, statin therapy may be reasonable to reduce major adverse cardiovascular events, including stroke.",
-      "page": 37
+      "page": 37,
+      "id": "primary-prevention-2024-55",
+      "sourceSection": "table-16",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 37,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Inflammation in Atherosclerosis",
@@ -454,7 +768,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In nonpregnant adults whose only APS manifestation is obstetric, prophylactic low-dose aspirin (75-100 mg daily) may be considered for stroke prevention after appropriate risk-benefit evaluation (considering aPL profile, traditional cardiovascular risk factors, and aspirin tolerance).",
-      "page": 37
+      "page": 37,
+      "id": "primary-prevention-2024-56",
+      "sourceSection": "table-16",
+      "sourceRecommendationNumber": 5,
+      "pdfPage": 37,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Inflammation in Atherosclerosis",
@@ -462,7 +781,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with SLE, no history of thrombosis or pregnancy complications, and a low-risk antiphospholipid profile (isolated anticardiolipin or anti-beta2-glycoprotein 1 at low-to-medium titers, especially if transiently positive), prophylactic low-dose aspirin (75-100 mg daily) may be considered for stroke prevention.",
-      "page": 37
+      "page": 37,
+      "id": "primary-prevention-2024-57",
+      "sourceSection": "table-16",
+      "sourceRecommendationNumber": 6,
+      "pdfPage": 37,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Infection",
@@ -470,7 +794,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In patients with periodontal disease, maintaining good oral hygiene and regular dental care can be beneficial for lowering stroke risk.",
-      "page": 39
+      "page": 39,
+      "id": "primary-prevention-2024-58",
+      "sourceSection": "table-17",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 39,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Infection",
@@ -478,7 +807,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
       "text": "In patients inpatient with COVID-19, full-dose anticoagulation (e.g., enoxaparin, apixaban) is not recommended for stroke prevention.",
-      "page": 39
+      "page": 39,
+      "id": "primary-prevention-2024-59",
+      "sourceSection": "table-17",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 39,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Substance Use and Substance Disorders",
@@ -486,7 +820,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Screening all adults for substance misuse and substance use disorders (including alcohol, cannabis, cocaine, opioids, and amphetamines) is recommended to inform stroke risk assessment.",
-      "page": 40
+      "page": 40,
+      "id": "primary-prevention-2024-60",
+      "sourceSection": "table-18",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 40,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Substance Use and Substance Disorders",
@@ -494,7 +833,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients who use recreational drugs, misuse alcohol or prescription medications, or have a substance use disorder, counseling to discontinue use and appropriate substance use disorder treatment (pharmacological, behavioral, or multimodal) are reasonable to reduce stroke risk.",
-      "page": 40
+      "page": 40,
+      "id": "primary-prevention-2024-61",
+      "sourceSection": "table-18",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 40,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Prevention of Pregnancy-Associated Stroke",
@@ -502,7 +846,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In pregnant or early postpartum patients (within 6 weeks of delivery) with severe hypertension (SBP at or above 160 mmHg or DBP at or above 110 mmHg on 2 readings 15 minutes apart), prompt BP lowering to below 160/110 mmHg is recommended to reduce the risk of fatal maternal ICH.",
-      "page": 42
+      "page": 42,
+      "id": "primary-prevention-2024-62",
+      "sourceSection": "table-19",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 42,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Prevention of Pregnancy-Associated Stroke",
@@ -510,7 +859,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with hypertensive disorders of pregnancy (HDP), including chronic hypertension in pregnancy, antihypertensive treatment targeting BP below 140/90 mmHg is reasonable to reduce pregnancy-associated stroke risk.",
-      "page": 42
+      "page": 42,
+      "id": "primary-prevention-2024-63",
+      "sourceSection": "table-19",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 42,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Pregnancy and Long-Term Stroke Risk",
@@ -518,7 +872,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "Screening adults for a history of adverse pregnancy outcomes (HDP, preterm birth, gestational diabetes, placental disorders), with subsequent evaluation and management of vascular risk factors, is recommended to reduce long-term stroke risk.",
-      "page": 44
+      "page": 44,
+      "id": "primary-prevention-2024-64",
+      "sourceSection": "table-20",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 44,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Pregnancy and Long-Term Stroke Risk",
@@ -526,7 +885,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with a history of HDP or other adverse pregnancy outcomes, early evaluation and management of chronic hypertension are recommended to reduce stroke risk.",
-      "page": 44
+      "page": 44,
+      "id": "primary-prevention-2024-65",
+      "sourceSection": "table-20",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 44,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Endometriosis",
@@ -534,7 +898,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Screening adults for a history of endometriosis is reasonable to inform stroke risk assessment.",
-      "page": 47
+      "page": 47,
+      "id": "primary-prevention-2024-66",
+      "sourceSection": "table-21",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 47,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Endometriosis",
@@ -542,7 +911,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In individuals with endometriosis, vascular risk factor evaluation and modification are reasonable to reduce stroke risk.",
-      "page": 47
+      "page": 47,
+      "id": "primary-prevention-2024-67",
+      "sourceSection": "table-21",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 47,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Hormonal Contraception",
@@ -550,7 +924,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "For individuals considering combined hormonal contraception (CHC), lower ethinyl estradiol doses are recommended to minimize the potential increase in stroke risk.",
-      "page": 48
+      "page": 48,
+      "id": "primary-prevention-2024-68",
+      "sourceSection": "table-22",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 48,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Hormonal Contraception",
@@ -558,7 +937,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "For individuals with specific stroke risk factors (age over 35, tobacco use, hypertension, or migraine with aura) who are considering contraception, shared decision-making is recommended to determine the best option balancing contraceptive-related and pregnancy-related stroke risks.",
-      "page": 48
+      "page": 48,
+      "id": "primary-prevention-2024-69",
+      "sourceSection": "table-22",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 48,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Hormonal Contraception",
@@ -566,7 +950,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "For individuals with specific stroke risk factors (age over 35, tobacco use, hypertension, or migraine with aura), progestin-only or nonhormonal contraception is reasonable to avoid the elevated stroke risk associated with estrogen-containing methods.",
-      "page": 48
+      "page": 48,
+      "id": "primary-prevention-2024-70",
+      "sourceSection": "table-22",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 48,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Menopause",
@@ -574,7 +963,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Screening for a history of premature ovarian failure (before age 40) or early menopause (before age 45) is recommended to inform stroke risk assessment.",
-      "page": 49
+      "page": 49,
+      "id": "primary-prevention-2024-71",
+      "sourceSection": "table-23",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 49,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Menopause",
@@ -582,7 +976,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with premature ovarian failure (menopause before age 40) or early menopause (before age 45), evaluation and modification of vascular risk factors are recommended given the elevated stroke risk in this population.",
-      "page": 49
+      "page": 49,
+      "id": "primary-prevention-2024-72",
+      "sourceSection": "table-23",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 49,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Menopause",
@@ -590,7 +989,12 @@
       "classNote": "Harm",
       "levelOfEvidence": "A",
       "text": "In women aged 60 or older, more than 10 years past natural menopause, or at elevated CVD/stroke risk, oral estrogen-containing menopausal hormone therapy carries an excess stroke risk that must be weighed against its clinical benefits.",
-      "page": 49
+      "page": 49,
+      "id": "primary-prevention-2024-73",
+      "sourceSection": "table-23",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 49,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Transgender Health",
@@ -598,7 +1002,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In transgender women and gender-diverse individuals receiving estrogen for gender affirmation, evaluation and modification of vascular risk factors can be beneficial to reduce stroke risk.",
-      "page": 51
+      "page": 51,
+      "id": "primary-prevention-2024-74",
+      "sourceSection": "table-24",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 51,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Testosterone Use",
@@ -606,7 +1015,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In men aged 45 to 80 with confirmed hypogonadism, initiation or continuation of testosterone replacement therapy is reasonable and has not been shown to increase stroke risk.",
-      "page": 52
+      "page": 52,
+      "id": "primary-prevention-2024-75",
+      "sourceSection": "table-25",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 52,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Cardiomyopathy",
@@ -614,7 +1028,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
       "text": "In patients with left ventricular systolic dysfunction (EF at or below 35%-40%) without atrial fibrillation or LV thrombus, anticoagulation is not indicated for stroke prevention and is associated with higher bleeding risk.",
-      "page": 53
+      "page": 53,
+      "id": "primary-prevention-2024-76",
+      "sourceSection": "table-26",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 53,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Antiplatelet Use for Primary Prevention",
@@ -622,7 +1041,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "In patients with diabetes or other common vascular risk factors and no prior stroke, the benefit of aspirin for primary stroke prevention is not well established.",
-      "page": 54
+      "page": 54,
+      "id": "primary-prevention-2024-77",
+      "sourceSection": "table-27",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 54,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Antiplatelet Use for Primary Prevention",
@@ -630,7 +1054,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In patients with stable coronary artery disease and low bleeding risk, adding ticagrelor to aspirin beyond 12 months (up to 3 years) may be beneficial to reduce ischemic stroke.",
-      "page": 54
+      "page": 54,
+      "id": "primary-prevention-2024-78",
+      "sourceSection": "table-27",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 54,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Antiplatelet Use for Primary Prevention",
@@ -638,7 +1067,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "A",
       "text": "In individuals aged 70 or older with at least one additional cardiovascular risk factor, aspirin has not been shown to be beneficial for primary stroke prevention.",
-      "page": 54
+      "page": 54,
+      "id": "primary-prevention-2024-79",
+      "sourceSection": "table-27",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 54,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Antiplatelet Use for Primary Prevention",
@@ -646,7 +1080,460 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "B-NR",
       "text": "In patients with chronic kidney disease, aspirin has not been shown to be effective for primary stroke prevention.",
-      "page": 54
+      "page": 54,
+      "id": "primary-prevention-2024-80",
+      "sourceSection": "table-27",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 54,
+      "sourceStatementType": "recommendation"
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "ACC/AHA",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "39585937",
+      "doi": "10.1161/str.0000000000000482",
+      "publisherUrl": "https://doi.org/10.1161/str.0000000000000482",
+      "status": "unresolved",
+      "note": "The indexed correction was confirmed, but its substantive text could not be retrieved from the publisher or an authoritative alternative. Its applicability to these entries remains unresolved; consult the correction.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    },
+    {
+      "type": "correction",
+      "pmid": "39869715",
+      "doi": "10.1161/str.0000000000000486",
+      "publisherUrl": "https://doi.org/10.1161/str.0000000000000486",
+      "status": "unresolved",
+      "note": "The indexed correction was confirmed, but its substantive text could not be retrieved from the publisher or an authoritative alternative. Its applicability to these entries remains unresolved; consult the correction.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ],
+  "coverage": {
+    "status": "complete",
+    "scope": "All formal recommendations and good-practice/consensus statements",
+    "checkedAt": "2026-09-06",
+    "sourceRecommendationCount": 83,
+    "sourceConsensusCount": 0,
+    "sourceSections": [
+      {
+        "id": "table-01",
+        "title": "Patient Assessment",
+        "sourceTable": "Recommendations for Patient Assessment",
+        "rowCount": 4,
+        "pageRange": [
+          9,
+          10
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "table-02",
+        "title": "Diet Quality",
+        "sourceTable": "Recommendations for Diet Quality",
+        "rowCount": 5,
+        "pageRange": [
+          12,
+          12
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "id": "table-03",
+        "title": "Physical Activity",
+        "sourceTable": "Recommendations for Physical Activity",
+        "rowCount": 3,
+        "pageRange": [
+          14,
+          14
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "table-04",
+        "title": "Weight and Obesity",
+        "sourceTable": "Recommendations for Weight and Obesity",
+        "rowCount": 2,
+        "pageRange": [
+          16,
+          16
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-05",
+        "title": "Sleep",
+        "sourceTable": "Recommendations for Sleep",
+        "rowCount": 2,
+        "pageRange": [
+          17,
+          17
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-06",
+        "title": "Blood Sugar",
+        "sourceTable": "Recommendations for Blood Sugar",
+        "rowCount": 3,
+        "pageRange": [
+          18,
+          19
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "table-07",
+        "title": "Blood Pressure",
+        "sourceTable": "Recommendations for Blood Pressure",
+        "rowCount": 4,
+        "pageRange": [
+          20,
+          20
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "table-08",
+        "title": "Lipids",
+        "sourceTable": "Recommendations for Lipids",
+        "rowCount": 4,
+        "pageRange": [
+          22,
+          22
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "table-09",
+        "title": "Tobacco Use",
+        "sourceTable": "Recommendations for Tobacco Use",
+        "rowCount": 6,
+        "pageRange": [
+          24,
+          24
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "table-10",
+        "title": "Asymptomatic Carotid Artery Stenosis",
+        "sourceTable": "Recommendations for Asymptomatic Carotid Artery Stenosis",
+        "rowCount": 6,
+        "pageRange": [
+          26,
+          26
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "table-11",
+        "title": "Asymptomatic Cerebral SVD, Including",
+        "sourceTable": "Recommendations for Asymptomatic Cerebral SVD, Including Silent Cerebral Infarcts",
+        "rowCount": 3,
+        "pageRange": [
+          29,
+          29
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "table-12",
+        "title": "Migraine",
+        "sourceTable": "Recommendations for Migraine",
+        "rowCount": 2,
+        "pageRange": [
+          30,
+          30
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-13",
+        "title": "Sickle Cell Disease",
+        "sourceTable": "Recommendations for Sickle Cell Disease",
+        "rowCount": 6,
+        "pageRange": [
+          31,
+          31
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "table-14",
+        "title": "Genetic Stroke Syndromes",
+        "sourceTable": "Recommendations for Genetic Stroke Syndromes",
+        "rowCount": 3,
+        "pageRange": [
+          34,
+          34
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "table-15",
+        "title": "Inflammation in Atherosclerosis",
+        "sourceTable": "Recommendation for Inflammation in Atherosclerosis",
+        "rowCount": 1,
+        "pageRange": [
+          36,
+          36
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "table-16",
+        "title": "Inflammation in Atherosclerosis",
+        "sourceTable": "Recommendation for Inflammation in Atherosclerosis",
+        "rowCount": 6,
+        "pageRange": [
+          37,
+          37
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "table-17",
+        "title": "Infection",
+        "sourceTable": "Recommendations for Infection",
+        "rowCount": 2,
+        "pageRange": [
+          39,
+          39
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-18",
+        "title": "Substance Use and Substance Disorders",
+        "sourceTable": "Recommendations for Substance Use and Substance Disorders",
+        "rowCount": 2,
+        "pageRange": [
+          40,
+          40
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-19",
+        "title": "Prevention of Pregnancy-Associated Stroke",
+        "sourceTable": "Recommendations for Prevention of Pregnancy-Associated Stroke",
+        "rowCount": 2,
+        "pageRange": [
+          42,
+          42
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-20",
+        "title": "Pregnancy and Long-Term Stroke Risk",
+        "sourceTable": "Recommendations for Pregnancy and Long-Term Stroke Risk",
+        "rowCount": 2,
+        "pageRange": [
+          44,
+          44
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-21",
+        "title": "Endometriosis",
+        "sourceTable": "Recommendations for Endometriosis",
+        "rowCount": 2,
+        "pageRange": [
+          47,
+          47
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-22",
+        "title": "Hormonal Contraception",
+        "sourceTable": "Recommendations for Hormonal Contraception",
+        "rowCount": 3,
+        "pageRange": [
+          48,
+          48
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "table-23",
+        "title": "Menopause",
+        "sourceTable": "Recommendations for Menopause",
+        "rowCount": 3,
+        "pageRange": [
+          49,
+          49
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "table-24",
+        "title": "Transgender Health",
+        "sourceTable": "Recommendation for Transgender Health",
+        "rowCount": 1,
+        "pageRange": [
+          51,
+          51
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "table-25",
+        "title": "Testosterone Use",
+        "sourceTable": "Recommendation for Testosterone Use",
+        "rowCount": 1,
+        "pageRange": [
+          52,
+          52
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "table-26",
+        "title": "Cardiomyopathy",
+        "sourceTable": "Recommendation for Cardiomyopathy",
+        "rowCount": 1,
+        "pageRange": [
+          53,
+          53
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "table-27",
+        "title": "Antiplatelet Use for Primary Prevention",
+        "sourceTable": "Recommendations for Antiplatelet Use for Primary Prevention",
+        "rowCount": 4,
+        "pageRange": [
+          54,
+          54
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "sourceDocument": {
+      "doi": "10.1161/STR.0000000000000475",
+      "edition": "Complete publisher PDF; physical PDF pagination.",
+      "pdfUrl": "https://saigaiin.sakura.ne.jp/sblo_files/saigaiin/image/E884B3E58D92E4B8ADE38080E382ACE382A4E38389E383A9E382A4E383B3.pdf",
+      "pageCount": 81,
+      "sha256": "00841f498d669d05d62872db99c217a636abbbe29e72eb018b1727a6de53244d"
+    },
+    "note": "All formal recommendation tables and numbered rows reconciled against the complete source document. This is a source-inventory review, not a new clinical validation of every existing summary or supporting narrative. Existing publication-correction statuses remain separate. No separately designated ungraded consensus or good-practice recommendation set is present."
+  }
 }
