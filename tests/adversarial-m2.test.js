@@ -146,7 +146,7 @@ describe('Milestone 2 Adversarial Verification & Stress Harness', () => {
       }
 
       // Inventory count, not a safety assertion — it moves whenever Protocols cards are added
-      // or removed. It is 139 after v6.23.0 moved the Guideline Library's two accordion
+      // or removed. It is 139 after v6.24.0 moved the Guideline Library's two accordion
       // levels onto <LazyDetails> (which mounts its body on first open — a closed <details>
       // otherwise builds and retains all of its children, and that route was constructing
       // 862 recommendations to show ~89 collapsed headers).
@@ -156,7 +156,8 @@ describe('Milestone 2 Adversarial Verification & Stress Harness', () => {
       // first '>' anywhere after it and swallows any <details> in between. Reformatting
       // nearby JSX therefore moves this number without changing how many accordions exist.
       // The safety assertion is openDetails === 0, immediately below.
-      expect(totalDetails).toBe(139);
+      // v6.25.0 adds the initially closed reviewed-publication-corrections disclosure.
+      expect(totalDetails).toBe(140);
       expect(openDetails).toBe(0);
 
       const indexHtml = fs.readFileSync(path.join(REPO, 'index.html'), 'utf8');

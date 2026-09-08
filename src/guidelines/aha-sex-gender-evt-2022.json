@@ -10,12 +10,238 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Disclaimer: Sex Versus Gender",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "There are many unknowns when it comes to the role of sex in the pathophysiology and management of acute ischemic stroke. This is particularly true for endovascular treatment (EVT). It has only recently been established as standard of care; therefore, data are even more scarce and conflicting compared with other areas of acute stroke.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When investigating sex-related differences in medical research, one needs to address the difference between sex and gender. Sex refers to biological factors and is considered static; gender refers to social roles, behaviors, and expressions, is neither binary nor static, and may change over time. Because EVT research has focused on sex differences and there are no robust data on gender-related differences, this statement refers mostly to sex differences, acknowledging that some may truly be gender related. This scientific statement is meant to outline knowledge gaps and unmet needs for future research on the role of sex and gender in endovascular treatment (EVT) for acute ischemic stroke; it provides suggestions for researchers and clinicians and does not assign a Class of Recommendation or Level of Evidence.",
+      "page": null
+    },
+    {
+      "section": "What Are Known Sex Differences in EVT? — Baseline Status (Table 1)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Women with stroke are on average 4–5 years older than men with stroke; are more often dependent in their daily activities immediately before the stroke, likely attributable in part to older age at onset; present more often with atypical stroke symptoms (eg, pain, fluctuating level of consciousness); present with more severe stroke symptoms; and are more likely to be in widowhood/live alone or to live in an assisted living arrangement than men.",
+      "page": null
+    },
+    {
+      "section": "What Are Known Sex Differences in EVT? — Stroke Type (Table 1)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Women present more often with cardioembolic stroke, probably as a result of a higher prevalence of atrial fibrillation, which increases with age, whereas men present more often with small vessel disease. Because of the differences in stroke cause, women have a higher prevalence of large territorial infarcts compared with men, who have small lacunar strokes more often.",
+      "page": null
+    },
+    {
+      "section": "What Are Known Sex Differences in EVT? — General Stroke Care and Intravenous Thrombolysis (Table 1)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Data from Western countries show that women have longer delays in the prehospital phase compared with men, attributable partly to longer onset–to–first medical contact times; in a large Swedish registry women also have shorter hospital lengths of stay. Stroke registry data from Middle Eastern and African countries mostly contain >70% male patients, suggesting a large sex gap in access to acute stroke care on a global level. Women with acute ischemic stroke symptoms are less likely to see a stroke specialist and to undergo standard diagnostic testing than men, and vascular imaging is performed less often in women.",
+      "page": null
+    },
+    {
+      "section": "What Are Known Sex Differences in EVT? — General Stroke Care and Intravenous Thrombolysis (Table 1)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Women are 13% less likely to receive intravenous thrombolysis than men in Western countries; underuse and delay in intravenous thrombolysis in women are more pronounced in hospitals without specialized stroke unit care. Some data suggest that women are less often treated in a stroke unit or intensive care unit than men.",
+      "page": null
+    },
+    {
+      "section": "What Are Known Sex Differences in EVT? — General Stroke Care and Intravenous Thrombolysis (Table 1)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Women have fractures, pulmonary embolism, and deep venous thrombosis more often during the course of acute ischemic stroke treatment, whereas men have pneumonia more often. Women are less likely to receive acute rehabilitation services, and a German study suggests they are less likely to have investigations for secondary stroke prevention measures and are more likely to have a palliative care consult.",
+      "page": null
+    },
+    {
+      "section": "What Are Known Sex Differences in EVT? — EVT (Table 1)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Available data suggest geographic heterogeneity in sex and gender differences in access to EVT: data from the United States show similar rates of EVT among men and women with acute ischemic stroke, whereas data from Denmark and Japan suggest lower EVT rates in women, with longer door–to–arterial puncture times in women in a Japanese registry. For nonindustrial countries, there is a paucity of data.",
+      "page": null
+    },
+    {
+      "section": "What Are Known Sex Differences in EVT? — EVT (Table 1)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Women have better collaterals, and infarct growth may be slower in women compared with men. Recanalization success in men and women with EVT is similar. EVT treatment effect on functional outcome (modified Rankin Scale score) does not differ between men and women, but women may have greater gain in disability-free life.",
+      "page": null
+    },
+    {
+      "section": "What Are Known Sex Differences in EVT? — Outcomes (Table 1)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Women have worse functional status and are less likely to achieve functional independence than men after acute ischemic stroke in general and after EVT in particular. Women have higher mortality after acute ischemic stroke than men, but mortality after EVT is similar in men and women. In general, women have poorer health-related quality of life, but the gain in disability-adjusted life-years after EVT is greater in women than in men. Women with acute ischemic stroke are less likely to be discharged home and more likely to be discharged to long-term care facilities, both in general and after EVT in particular.",
+      "page": null
+    },
+    {
+      "section": "What Are Known Sex Differences in EVT? — Outcomes, Social Domain (Table 1)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In general, women are at higher risk for poststroke depression and have reduced mobility compared with men. No conclusive evidence exists on sex- or gender-related outcome differences in the social domain after EVT.",
+      "page": null
+    },
+    {
+      "section": "Are Sex Differences in EVT Explained by Differences in Epidemiology and Functional Status?",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is likely that the apparent sex differences in prestroke functional status and poststroke outcomes in patients undergoing EVT are, in large part, explained by differences in baseline epidemiological variables, the key difference being patient age, which also has a major impact on post-EVT prognosis. That being said, sex hormones influence cerebrovascular physiology and coagulation profiles, so differences in baseline epidemiological variables may not be the only reason for sex-related differences in EVT.",
+      "page": null
+    },
+    {
+      "section": "Are Sex and Gender Differences in EVT Explained by Differences in Social and Cultural Roles?",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Being male or female can result in different access to health care, employment, financial autonomy, and willingness to participate in research, and ultimately in differentials in power, all of which may affect post-EVT outcomes. Female patients undergoing EVT are more likely to live alone and to have prestroke disability, which results in delays between symptom onset and activation of emergency response; data from general acute ischemic stroke populations suggest women may be less likely to be admitted to a stroke unit or intensive care unit; and women more often experience poststroke mood disorders. These data suggest that differences between men and women with respect to sociocultural roles and financial resources may explain a large part of the observed differences in EVT care and outcome, although the concept of intersectionality means the influence of sex cannot be completely isolated from other sociocultural, epidemiological, and ethnic variables.",
+      "page": null
+    },
+    {
+      "section": "Knowledge Gaps (Table 2) — Unknown No. 1: Does the Optimal EVT Technique Differ Between Men and Women?",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Women have smaller, potentially more fragile cerebral arteries and increased arterial tortuosity, and their collateral circulation seems to be better, resulting in slower infarct growth. Women may benefit from the use of less traumatic EVT devices that reduce the risk of vessel perforation, even if this requires several passes to achieve successful recanalization, and may benefit from femoral artery access as the first-line access route because the radial artery is sometimes too small to harbor the needed EVT equipment. Intracranial internal carotid artery and middle cerebral artery diameters are on average slightly smaller in women. There currently are no robust data to suggest that patient sex per se influences technical EVT success.",
+      "page": null
+    },
+    {
+      "section": "Knowledge Gaps (Table 2) — Unknown No. 2: How Does Sex Influence Post-EVT Outcomes?",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Differences in poststroke outcomes between men and women are influenced by differences in baseline epidemiological variables, but there seems to be an independent influence of sex as well. Evidence suggests that women experience less pain and discomfort than men after EVT, which is only moderately associated with the modified Rankin Scale (mRS) score because the mRS is heavily weighted on motor function and does not capture discomfort and anxiety; poststroke depression, conversely, is more commonly seen in women. A man with a poststroke mRS score of 3 may perceive his disability to be either worse or less severe than a woman with the same score. Sex and gender disparities in nonmotor symptoms that affect quality of life can be missed if only the mRS score is used; patient-reported outcomes can capture post-EVT outcomes more comprehensively.",
+      "page": null
+    },
+    {
+      "section": "Knowledge Gaps (Table 2) — Unknown No. 3: How Can the Influence of Sex and Gender Be Differentiated?",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Current EVT studies do not distinguish between sex and gender, so it is unclear which differences in EVT are biological and which are sociocultural; for example, it is not clear whether the higher rate of poststroke depression is sex related (eg, hormonal), gender related (eg, sociocultural), or both. Assessing gender effects in EVT requires accurate reporting of gender in EVT studies and clear differentiation from sex; even when gender is not explicitly captured, many studies contain gender-related variables such as social support networks, marital status, occupation, and education level that could serve as a starting point.",
+      "page": null
+    },
+    {
+      "section": "Knowledge Gaps (Table 2) — Unknown No. 4: How Does Sex Influence Access to EVT?",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Imbalances in power between men and women may lead to restricted access for women and girls to employment, health education, and health care, particularly on a global level; the willingness of the family to pay for EVT for female family members may be lower than for male family members, and as a result of poorer health education women may not recognize the symptoms of stroke, delaying activation of emergency medical services. There is a relative paucity and heterogeneity of data on access to EVT for both sexes, particularly outside industrialized countries.",
+      "page": null
+    },
+    {
+      "section": "A Road Map for Researchers (Table 3)",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Suggestions for researchers: report stroke type and baseline disability stratified by sex; consider eliminating upper age limits or prestroke functional status limits (eg, modified Rankin Scale score <2); supplement data on sex-related differences in EVT with prospective registry studies because they are not subject to sex-specific inclusion criteria to the same degree as randomized trials; use a primary outcome measure that reflects prestroke/poststroke differences rather than a dichotomized outcome (eg, ΔmRS score or mRS shift analysis rather than mRS 0–2); use a diverse set of outcomes including hard (eg, mortality) and soft (eg, quality-adjusted life-years) outcomes; capture sex, gender, or both in a systematic way and explicitly say why each was used; and power trials adequately for sex- and gender-based analysis, continuing enrollment of 1 sex if it is underrepresented after the targeted overall sample size has been achieved.",
+      "page": null
+    },
+    {
+      "section": "A Road Map for Researchers — Sex Versus Gender",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We encourage researchers to use the construct that is most relevant for their research question and to clearly state why sex, not gender, is reported and vice versa. Studies examining biological and hormonal factors related to stroke origin or infarct size should consider analysis by sex, whereas for researchers assessing the impact of stroke on quality of life and social factors (eg, social isolation, poststroke depression), gender may be the more relevant construct and should be systematically captured. Explicit statements on how sex and gender were determined should be noted in the Methods section. Gender can be assessed in the postacute phase, allowing post hoc analysis of gender-related differences.",
+      "page": null
+    },
+    {
+      "section": "A Road Map for Researchers — Stroke Pathogenesis",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that researchers report stroke cause separately for men and women. Categorical exclusion of pregnant patients should be avoided because pregnancy per se is not a contraindication for EVT, although this may not be feasible in randomized trials involving drugs with teratogenic effects.",
+      "page": null
+    },
+    {
+      "section": "A Road Map for Researchers — Baseline Status",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Simply applying an upper age limit of 80 years results in a disproportionately high exclusion of women from clinical studies, implying a high risk for selection bias. To avoid inadequate representation of women in EVT trials, we suggest refraining from using age and prestroke functional status as exclusion criteria; where this is not possible, prospective registry data in which no such criteria are applied could provide supplementary evidence.",
+      "page": null
+    },
+    {
+      "section": "A Road Map for Researchers — Neuroimaging and EVT Technique",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Studies assessing neuroimaging profiles in EVT candidates and EVT techniques should be sufficiently powered to detect sex-specific differences in neuroimaging profiles and treatment techniques. Imaging variables and treatment complications should be reported for both sex strata, particularly when there is reason to expect sex-specific differences.",
+      "page": null
+    },
+    {
+      "section": "A Road Map for Researchers — Outcomes and Treatment Effect",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest using poststroke/prestroke differences (eg, change in modified Rankin Scale score or accumulated disability) rather than dichotomized outcomes to more accurately reflect treatment effects. Use of additional outcome measures that include both hard (eg, mortality) and soft (eg, mRS score, self-reported health-related quality of life, ability to return home, home time) outcomes allows a more comprehensive evaluation because the mRS alone does not adequately capture cognition and mood disorders.",
+      "page": null
+    },
+    {
+      "section": "A Road Map for Researchers — Outcomes and Treatment Effect",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The poorer functional outcomes in women are explained largely by their higher age and poorer prestroke functional status rather than being solely a sex-related phenomenon. Researchers should clearly distinguish between sex-related differences that can be explained by differences in prognostic baseline variables (spurious sex-related differences) and those that cannot (true sex differences), particularly in nonrandomized studies with less stringent inclusion criteria.",
+      "page": null
+    },
+    {
+      "section": "A Road Map for Clinicians (Table 4) — Acute Phase",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Acute-phase suggestions for clinicians: delay the decision to proceed with palliative care in the first 24 h because it may become a self-fulfilling prophecy; center treatment decisions around treatment effect rather than overall prognosis; and determine what the patient considers a desirable outcome as soon as possible from communication with the patient and family members, centering treatment decisions around this goal.",
+      "page": null
+    },
+    {
+      "section": "A Road Map for Clinicians (Table 4) — Nonacute Phase",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nonacute-phase suggestions for clinicians: in patients with high stroke risk or past stroke who are living alone, create an action plan about how to activate emergency medical services and discuss the option of having a life-alert bracelet; and encourage patients with high stroke risk or past stroke to explicitly discuss what they consider an acceptable outcome in case of a stroke and to draft a living will that describes these expectations in detail.",
+      "page": null
+    },
+    {
+      "section": "A Road Map for Clinicians",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Some studies suggest EVT may be underused in women even in industrialized countries, although these results should be interpreted with caution because the true denominator of EVT-eligible patients for each sex is unknown; awareness of this discrepancy is a first important step for clinicians and should motivate them to thoroughly evaluate female patients with stroke with regard to EVT eligibility.",
+      "page": null
+    },
+    {
+      "section": "A Road Map for Clinicians",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "We suggest that primary care clinicians proactively ask about the living environments of their patients with known cardiovascular risk factors and discuss what to do in case of an emergency (eg, how to activate emergency medical services, the possibility of using a life-alert bracelet). Because women with stroke are older and more likely to live alone than men with stroke, these precautions will particularly benefit women with high stroke risk.",
+      "page": null
+    },
+    {
+      "section": "A Road Map for Clinicians",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Female patients with stroke have a shorter active treatment course and are more likely to receive a palliative care regimen, which together with their overall poorer post-EVT prognosis puts women at greater risk of withdrawal bias. To prevent withdrawal bias, it may be helpful for physicians to center their therapeutic goals around treatment effect rather than overall prognosis, and to initiate an open conversation about expected and desirable outcomes with patients and family members.",
+      "page": null
+    },
+    {
+      "section": "Conclusions",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients' sex may influence their stroke risk, acute EVT management, and post-EVT outcomes. Disregarding patient sex and gender and pursuing a one-size-fits-all strategy may lead to suboptimal or even harmful treatment practices; a better understanding of sex- and gender-related differences in EVT is important to develop strategies that can ultimately improve individualized outcome for both men and women.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

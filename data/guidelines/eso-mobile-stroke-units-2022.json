@@ -10,12 +10,30 @@
   "society": "ESO",
   "recommendations": [
     {
-      "section": "Scope",
-      "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "The safety and efficacy of mobile stroke units (MSUs) in prehospital stroke management has recently been investigated in different clinical studies. MSUs are ambulances equipped with a CT scanner, point-of-care lab, telemedicine and are staffed with a stroke specialised medical team.",
+      "section": "PICO 1-3: Evidence-based Recommendation (single combined recommendation covering all three PICOs)",
+      "classOfRec": "Conditional",
+      "classNote": "For — for acute ischaemic stroke outcomes; Low certainty for intracranial haemorrhage; Very low certainty for other patients (overall strength of recommendation: Weak for intervention",
+      "levelOfEvidence": "Moderate certainty",
+      "text": "We suggest the use of MSUs over conventional care for the prehospital management of patients with suspected stroke, for the following reasons: (1) in patients with AIS, prehospital management with a MSU improves functional outcomes, increases the rates of treatment with IVT, including the rates of thrombolysis within the golden hour and shortens onset to treatment time without any safety concerns (Quality of evidence: Moderate); (2) in patients with intracranial haemorrhage, prehospital management with a MSU increases the proportion of patients primarily transported to tertiary care stroke centres, without concerns on short-term mortality (Quality of evidence: Low); (3) in other patients (e.g. stroke mimics), no signal of safety concerns was identified (Quality of evidence: Very low). Overall strength of recommendation: Weak. Note: the module working group unanimously agreed to provide only ONE combined recommendation, because at the time of MSU involvement the final diagnosis is unclear; the three bullets are the reasons supporting that single recommendation, not three separate recommendations.",
+      "page": null
+    },
+    {
+      "section": "PICO 2 (confirmed acute ischaemic stroke): Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "When considering MSU care, to maintain the same benefits of clinical studies in routine practice and based on the current evidence, including specialist neurological expertise either by an in-person stroke expert or by remote consultation and a streamlined process of care are essential.",
+      "page": null
+    },
+    {
+      "section": "PICO 3 (confirmed acute intracerebral haemorrhage): Expert consensus statement",
+      "classOfRec": "Expert Consensus",
+      "classNote": "For",
+      "levelOfEvidence": "Ungraded",
+      "text": "In confirmed acute ICH patients, we suggest prehospital management with MSUs over conventional management because the timely transport of these patients to tertiary stroke centres is crucial for optimal therapeutic management.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "GRADE"
 }

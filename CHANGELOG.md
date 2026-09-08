@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v6.26.0 — 2026-09-06 — comprehensive source inventories and mobile Guidelines
+
+Expanded Guidelines to 4,113 searchable entries across 109 documents, with 24 full source inventories; restored missing AHA/ESO recommendations and consensus/uncertainty statements, incorporated source corrections, and completed ESC antibiotic dosing. Renamed the section, improved mobile reading and source references, and retained offline access through lossless bundle packing. Source access and unresolved corrections remain explicit. Protocols are unchanged. See [the review](docs/reviews/2026-09-06-guidelines-completeness.md).
+
 ## v6.23.0 — 2026-08-22 — measured site review: search fix, DOM/precache reductions, byte budget
 
 Follow-on from `docs/site-improvement-review-2026-08-22.md`. Everything below

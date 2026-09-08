@@ -50,9 +50,6 @@ import {
   bpTargetPostStroke,
   lipidsTargetPostStroke,
   icadMedicalRegimen,
-  icadMedicalRegimen,
-  bpTargetPostStroke,
-  lipidsTargetPostStroke,
   arcadiaAdvisory,
   afDetectionStrategy,
   evaluateBostonCAA20
@@ -263,17 +260,17 @@ describe('Late-window EVT — DAWN tier matrix', () => {
 
 describe('Large-core EVT — published trial matrix', () => {
   it('LASTE (ASPECTS 0-2, 5h): eligible', () => {
-    const r = evaluateLargeCoreEVT({ age: 65, nihss: 18, aspects: 1, timeFromLKWh: 5, premorbidMRS: 0 });
+    const r = evaluateLargeCoreEVT({ age: 65, nihss: 18, aspects: 1, timeFromLKWh: 5, premorbidMRS: 0, lvoLocation: 'M1' });
     expect(r.bestMatch).toBe('LASTE');
     expect(r.eligible).toBe(true);
   });
   it('SELECT-2 / ANGEL-ASPECT (ASPECTS 4, 12h): eligible', () => {
-    const r = evaluateLargeCoreEVT({ age: 60, nihss: 16, aspects: 4, timeFromLKWh: 12, premorbidMRS: 0 });
+    const r = evaluateLargeCoreEVT({ age: 60, nihss: 16, aspects: 4, timeFromLKWh: 12, premorbidMRS: 0, lvoLocation: 'M1' });
     expect(r.eligible).toBe(true);
     expect(r.matchingTrials).toContain('SELECT-2');
   });
   it('Core 110 mL: SELECT-2 ≥50 criterion fires; reasons.push() flag still says above range (CLINICAL: code marks eligible=true; reviewer must interpret the warning)', () => {
-    const r = evaluateLargeCoreEVT({ age: 60, nihss: 16, aspects: null, coreMl: 110, timeFromLKWh: 5, premorbidMRS: 0 });
+    const r = evaluateLargeCoreEVT({ age: 60, nihss: 16, aspects: null, coreMl: 110, timeFromLKWh: 5, premorbidMRS: 0, lvoLocation: 'M1' });
     // Current behavior: SELECT-2 criterion (core >=50, ≤24h) fires => eligible=true,
     // but the rationale string does NOT include the "above trial-supported range"
     // note because reasons.push() only adds when eligible=false. This is a UX/safety gap.
@@ -320,13 +317,14 @@ describe('CHANCE/POINT/INSPIRES/THALES branching', () => {
 });
 
 describe('Post-EVT BP — ENCHANTED2/MT compliance', () => {
-  it('successful recanalization → 140-180 target (NOT <120)', () => {
+  it('successful recanalization uses the ceiling without a mandatory 140 floor', () => {
     const r = recommendPostEVTBP({ recanalized: true, ivLyticGiven: true });
-    expect(r.target).toContain('140-180');
+    expect(r.target).toContain('180/105');
+    expect(r.lowerBound).toBeNull();
   });
-  it('hemorrhage post-EVT → ICH targets (<140)', () => {
+  it('hemorrhage post-EVT requires an individualized hemorrhage assessment', () => {
     const r = recommendPostEVTBP({ hasHemorrhage: true });
-    expect(r.target).toContain('<140');
+    expect(r.target).toContain('Individualize');
   });
 });
 
@@ -336,26 +334,27 @@ describe('SAH / ICH expansion / surgery scores', () => {
   });
   it('ENRICH eligible: lobar 50 mL, 12h, GCS 12, premorbid 0', () => {
     const r = evaluateENRICHEligibility({
-      icHLocation: 'lobar', volumeMl: 50, timeFromOnsetH: 12, gcs: 12, premorbidMRS: 0, age: 65
+      icHLocation: 'lobar', volumeMl: 50, timeFromOnsetH: 12, gcs: 12, premorbidMRS: 0, age: 65, nihss: 12
     });
     expect(r.eligible).toBe(true);
   });
   it('SWITCH eligible: deep 35 mL ICH, GCS 10, 24h', () => {
     const r = evaluateSWITCHEligibility({
-      icHLocation: 'basal ganglia', volumeMl: 35, gcs: 10, timeFromOnsetH: 24, age: 60, premorbidMRS: 0
+      icHLocation: 'basal ganglia', volumeMl: 35, gcs: 10, timeFromOnsetH: 24, age: 60, premorbidMRS: 0, nihss: 15, clotStable: true
     });
     expect(r.eligible).toBe(true);
   });
 });
 
 describe('PFO — PASCAL category & NNT', () => {
-  it('Probable: ROPE 8 + large shunt → Class 1, NNT 17', () => {
+  it('Probable classification does not invent a recommendation class or NNT', () => {
     const r = evaluatePASCAL({ ropeScore: 8, largeShunt: true });
     expect(r.category).toBe('Probable');
-    expect(r.nnt).toContain('17');
+    expect(r.nnt).toBeNull();
+    expect(r.class).not.toContain('Class 1 for Probable');
   });
   it('Unlikely: ROPE 5 + no morphology → no benefit', () => {
-    const r = evaluatePASCAL({ ropeScore: 5 });
+    const r = evaluatePASCAL({ ropeScore: 5, largeShunt: false, atrialSeptalAneurysm: false });
     expect(r.category).toBe('Unlikely');
   });
 });
@@ -380,22 +379,22 @@ describe('INTERACT3 ICH bundle compliance', () => {
 describe('Boston 2.0 CAA criteria', () => {
   it('Lobar ICH + cortical siderosis → Probable CAA', () => {
     const r = evaluateBostonCAA20({
-      age: 75, lobarICH: true, corticalSiderosis: true
+      age: 75, lobarICH: true, corticalSiderosis: true, deepHemorrhagicLesions: false, otherCause: false, qualifyingPresentation: true
     });
     expect(r.category).toBe('Probable CAA');
   });
   it('lobar ICH + CSO-PVS (1 hemorrhagic lesion + 1 white-matter feature) → Probable CAA', () => {
     const r = evaluateBostonCAA20({
-      age: 75, lobarICH: true, csoPVSSevere: true
+      age: 75, lobarICH: true, csoPVSSevere: true, deepHemorrhagicLesions: false, otherCause: false, qualifyingPresentation: true
     });
     expect(r.category).toBe('Probable CAA');
   });
   it('two strictly lobar hemorrhagic lesions qualify as Probable CAA even without lobar ICH', () => {
-    const r = evaluateBostonCAA20({ age: 68, lobarHemorrhagicLesionCount: 2 });
+    const r = evaluateBostonCAA20({ age: 68, lobarHemorrhagicLesionCount: 2, deepHemorrhagicLesions: false, otherCause: false, qualifyingPresentation: true });
     expect(r.category).toBe('Probable CAA');
   });
   it('applies from age 50 (v2.0 gate), not 55', () => {
-    const r = evaluateBostonCAA20({ age: 52, lobarICH: true, corticalSiderosis: true });
+    const r = evaluateBostonCAA20({ age: 52, lobarICH: true, corticalSiderosis: true, deepHemorrhagicLesions: false, otherCause: false, qualifyingPresentation: true });
     expect(r.category).toBe('Probable CAA');
   });
 });
@@ -467,9 +466,9 @@ describe('dmvoEVTAdvisory (DMVO post-2025 negative trials)', () => {
     expect(dmvoEVTAdvisory({ occlusionLocation: 'M1' }).isDmvo).toBe(false);
     expect(dmvoEVTAdvisory({ occlusionLocation: 'ICA' }).isDmvo).toBe(false);
   });
-  it('disabling deficit + NIHSS≥6 → consider-only-if-disabling', () => {
+  it('disabling deficits alone do not override the negative distal-vessel trials', () => {
     const r = dmvoEVTAdvisory({ occlusionLocation: 'M3', nihss: 8, deficitDisabling: true });
-    expect(r.proceed).toBe('consider-only-if-disabling');
+    expect(r.proceed).toBe('no-routine-EVT');
   });
 });
 
@@ -492,10 +491,10 @@ describe('bpTargetPostStroke / lipidsTargetPostStroke / icadMedicalRegimen', () 
   });
   it('orthostatic patients get relaxed target', () => {
     const r = bpTargetPostStroke({ orthostatic: true });
-    expect(r.target).toContain('140/80');
+    expect(r.target).toContain('Individualize');
   });
-  it('atherosclerotic stroke triggers very-high-risk LDL <55', () => {
-    const r = lipidsTargetPostStroke({ strokeSubtype: 'atherosclerotic' });
+  it('confirmed very-high-risk ASCVD has LDL goal <55', () => {
+    const r = lipidsTargetPostStroke({ strokeSubtype: 'atherosclerotic', veryHighRiskASCVD: true });
     expect(r.veryHighRisk).toBe(true);
     expect(r.target).toContain('55');
   });
@@ -503,9 +502,10 @@ describe('bpTargetPostStroke / lipidsTargetPostStroke / icadMedicalRegimen', () 
     expect(icadMedicalRegimen({ stenosisPercent: 30 }).applicable).toBe(false);
     expect(icadMedicalRegimen({ stenosisPercent: 80 }).applicable).toBe(true);
   });
-  it('recurrent ICAS event adds cilostazol per CSPS.com', () => {
+  it('recurrent ICAS event prompts review without automatic triple antiplatelets', () => {
     const r = icadMedicalRegimen({ stenosisPercent: 75, recurrentEvent: true });
-    expect(r.regimen.some(x => /cilostazol/i.test(x.drug))).toBe(true);
+    expect(r.regimen.some(x => /cilostazol/i.test(x.drug))).toBe(false);
+    expect(r.recurrentEventReview).toMatch(/do not automatically add a third antiplatelet/);
   });
 });
 

@@ -52,6 +52,20 @@ import {
 import { citations } from '../src/evidence/citations.js';
 
 describe('Comprehensive Final Challenger Curriculum Verification', () => {
+  it('keeps PH2 uncertainty separate from day-based timing bands', () => {
+    const html = ReactDOMServer.renderToStaticMarkup(<AfibAnticoagTimingCard />);
+    const annotation = html.match(/<g role="group" aria-label="PH2 hemorrhage requires individualized review; no established start day">([\s\S]*?)<\/g>/)?.[1];
+    expect(annotation).toBeDefined();
+    expect(annotation).toContain('PH2: INDIVIDUALIZED REVIEW');
+    expect(annotation).toContain('No established start day');
+    expect(annotation).not.toMatch(/<(?:line|path|polyline)\b|Day 1[234]/);
+    const box = annotation.match(/<rect x="([\d.]+)" y="([\d.]+)" width="([\d.]+)" height="([\d.]+)"/);
+    expect(Number(box[2]) + Number(box[4])).toBeLessThan(61);
+    expect(html).not.toContain('<rect x="608.5" y="61"');
+    expect(html).not.toContain('M 661.7 83 L 661.7 93');
+    expect(html).not.toContain('x="661.7" y="137"');
+  });
+
   const ALL_CURRICULUM_CARDS = [
     // Domain 1: Acute Revascularization & Extended Windows
     { id: 'large-core-thrombectomy', Component: LargeCoreThrombectomyCard, name: 'Large-Core Thrombectomy' },
@@ -242,7 +256,9 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
       expect(getIchRisk(3)).toBe('72%');
       expect(getIchRisk(4)).toBe('97%');
       expect(getIchRisk(5)).toBe('100%');
-      expect(getIchRisk(6)).toBe('100%');
+      expect(getIchRisk(6)).toBe('Not estimated');
+      expect(getIchRisk(undefined)).toBe('Not estimated');
+      expect(getIchRisk(-1)).toBe('Not estimated');
     });
   });
 
