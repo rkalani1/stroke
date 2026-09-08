@@ -10,12 +10,294 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Methods",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Stroke can have profound psychosocial health implications. These constructs are often overlooked and undertreated yet can be as devastating as the physical, functional, and cognitive consequences after stroke. This scientific statement aims to evaluate 5 important aspects of psychosocial health (depression, stress, anxiety, fatigue, and quality of life) after a stroke to provide a framework for related nursing care across the poststroke continuum.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Authors performed a narrative literature review of articles targeting psychological health in stroke between 2018 and 2023. Because this is a narrative review, we do not report the results of our search strategy or the quality rating of the studies reviewed, and there was no consensus panel.",
+      "page": null
+    },
+    {
+      "section": "Abstract - Results",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Findings reveal a gap in evidence-based nursing interventions for addressing poststroke psychosocial needs. Critical strategies for shaping therapeutic nursing care include enhanced screening with validated tools; educating stroke survivors, families, and staff on symptom recognition, prevention, and treatment; and ensuring appropriate pharmacological management and access to psychological and psychosocial interventions, including referrals to social services and other essential support systems. Care should be comprehensive and interdisciplinary.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Poststroke Nursing Care - Access to Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "It is important to collaborate with other health care professionals to help facilitate access to care across the stroke continuum. This is especially important in underrepresented and underresourced populations, individuals with lower socioeconomic status, and those in rural areas, who may have additional limited access to psychosocial services and stroke services because of barriers such as lack of transportation, financial constraints, and geographic distance.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Poststroke Nursing Care - Access to Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Access to care includes primary prevention to prevent stroke and the underlying factors that increase the risk for stroke and depression, anxiety, and other aspects of psychosocial health, through rehabilitation, tertiary prevention, and postacute care.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Poststroke Nursing Care - Screening, Assessment, and Monitoring",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Using standardized screening tools by trained staff is important for early identification and intervention. Screening should be conducted and repeated throughout the continuum of care because signs and symptoms may have changed. In general, earlier diagnosis in the stroke continuum is associated with better outcomes.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Poststroke Nursing Care - Screening, Assessment, and Monitoring",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nurses and others should remember that screening does not equal diagnosis and that a formal diagnosis by the appropriate health care professional(s) is important. Screening should not replace professional judgment, and nurses should be alert to subtle signs and symptoms that may indicate psychosocial needs, including changes in behavior, sleep patterns, appetite, overall mood, and symptom severity, as well as symptom triggers. The presence of stroke signs and symptoms such as abulia, aphasia, anosognosia, and apathy may confound assessments of psychosocial health.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Poststroke Nursing Care - Screening, Assessment, and Monitoring",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Vital signs and overall health status should be monitored regularly to identify potential contributing factors to psychosocial symptoms.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Poststroke Nursing Care - Communication",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Good nursing care includes creating an open and nonjudgmental environment where patients feel comfortable discussing their feelings and concerns, including offering emotional support and opportunities for the patient and family to express feelings and concerns. Studies show that accepting one's outcomes improves mood, functional capacity, and mobility after stroke. Cultural beliefs, language barriers, lack of awareness, and stigma about psychosocial health can contribute to barriers to diagnosis, acceptance, and treatment.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Poststroke Nursing Care - Energy Conservation Techniques",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Educate the patient and their caregivers about energy conservation techniques: prioritize tasks, plan rest periods, and avoid overexertion; break tasks into smaller segments, use assistive devices, and delegate tasks when possible. Promote good sleep hygiene, and if a sleep disorder is suspected or known, promote treatment adherence and refer to and collaborate with the health care team. Although energy conservation is important, regular physical activity can be protective and can decrease the risk of subsequent stroke.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Poststroke Nursing Care - Nutrition and Hydration",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Ensure that the patient receives adequate nutrition and hydration; lack of either can further exacerbate symptoms. Consider cultural food preferences and practices, and collaborate with a registered dietitian and pharmacist to meet dietary needs and avoid food-drug interactions. Patients should be encouraged to participate in family and social gatherings at mealtime, with adaptations as needed.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Poststroke Nursing Care - Medication Management",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients should be monitored for medication side effects, especially those that can mimic or induce psychosocial symptoms, as well as relevant laboratory results. Choice of medication largely depends on the balance between effectiveness and tolerability, clinical symptoms, previous response to medications, and patient preference. Potential drug-drug interactions should be considered, including herbal or alternative medications. Education should include the purpose, potential side effects, and proper use of the medication, and reasons for medication nonadherence should be explored.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Poststroke Nursing Care - Caregiver and Family Support",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nurses should be cognizant that caregivers of patients with stroke frequently experience depression, anxiety, stress, caregiver fatigue, and overall poor emotional health and quality of life. Caregivers should be screened for psychosocial stress and overall health, as well as their ability and willingness to continue the caregiving process. Risk factors for caregiver burden include older age, low socioeconomic status, poor social support, and poorer coping strategies; burden increases when the care recipient has a more severe stroke, mood and behavioral disturbance, or aphasia.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Poststroke Nursing Care - Caregiver and Family Support",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Education, enhancing social support (eg, peer networks and use of community resources), family counseling, problem-solving training, coping skills training, and respite care can help lessen caregiver burden. Referrals should include social services, case management, and other community resources.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Poststroke Nursing Care - Education",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Educate the patient, families, and significant others about the common effects of stroke, including psychosocial symptoms and contributory physical and emotional changes. Empower the patient to monitor their symptoms and make informed decisions. Assist patients and their families with identification of accurate sources of information (eg, the American Stroke Association) and how to discern disinformation such as that from social media platforms.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Poststroke Nursing Care - Collaboration With Mental Health Professionals and Social Services",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "If the patient is experiencing psychosocial symptoms and is in acute distress, listen to their concerns in a nonjudgmental manner and be emotionally congruent with the patient. Facilitate access to a qualified mental health professional (eg, social worker, psychologist, psychiatric nurse practitioner) who can help patients process anxiety, depression, or other reactions using empirically supported psychological interventions. Help ease community integration by linking patients to local social services such as poststroke support groups and community-based organizations.",
+      "page": null
+    },
+    {
+      "section": "Table 2. Poststroke Nursing Care - Collaboration With Mental Health Professionals and Social Services",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Work with the patient to develop effective coping strategies that they can use when they experience anxiety or depression; these might include positive self-talk, distraction techniques, forest therapy (outdoor activities), engaging in enjoyable activities, and somatic-based relaxation techniques. Although referrals to psychological professionals are important, access and reimbursement can be challenging and must be addressed.",
+      "page": null
+    },
+    {
+      "section": "Depression",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Poststroke depression is one of the most frequent psychiatric conditions experienced after stroke and is underdiagnosed, with an anytime prevalence of 24% by clinical interview and 29% by rating scale, and a 1-month prevalence of 30%. Poststroke depression is associated with poor cognitive and functional outcomes, higher mortality, poorer recovery including shorter time to stroke recurrence, and 54% higher medical expenses.",
+      "page": null
+    },
+    {
+      "section": "Depression",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A definitive diagnosis of poststroke depression should be based on structured clinical interviews and meeting DSM-5-TR clinical criteria, with symptoms present for at least 2 weeks. Emotional, cognitive, behavioral, and personality changes after stroke requiring differentiation from poststroke depression include apathy and pseudobulbar affect; unlike patients with poststroke depression, individuals with poststroke apathy do not exhibit low mood, low self-esteem, guilt, worthlessness, or thoughts of suicide.",
+      "page": null
+    },
+    {
+      "section": "Depression",
+      "classOfRec": "Statement",
+      "classNote": "Screening recommendation is cited from the AHA stroke guidelines; this scientific statement assigns no Class of Recommendation or Level of Evidence.",
+      "levelOfEvidence": "Ungraded",
+      "text": "The American Heart Association stroke guidelines recommend routine depression screening in patients after stroke. One recommended screening tool applicable to nursing practice is the Patient Health Questionnaire-2, an abbreviated version of the Patient Health Questionnaire-9, whose simplicity makes it advantageous for bedside use; like most poststroke depression screening tools, it assesses depressed mood and anhedonia over the past 2 weeks and does not account for prestroke depression. For patients with aphasia, no depression screen has shown satisfactory reliability and validity, although the Stroke Aphasic Depression Questionnaire and the Aphasia Depression Rating Scale have acceptable feasibility.",
+      "page": null
+    },
+    {
+      "section": "Depression",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Patients, families, and significant others must understand that poststroke depression is treatable and that the best outcome is achieved through early pharmacological treatment, psychological treatment/support (including cognitive behavioral therapy), and stroke-specific interventions such as virtual reality rehabilitation and physical and mind-body exercise. Earlier poststroke depression treatment is generally associated with better outcomes because of higher neural recovery during this stage.",
+      "page": null
+    },
+    {
+      "section": "Depression",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Throughout the poststroke continuum of care, nurses should regularly monitor for subtle and overt depressive symptoms, including severity of symptoms and potential medication side effects and interactions. Involvement of the interdisciplinary team, especially mental health professionals, is essential to ensure an appropriate diagnosis and treatment plan.",
+      "page": null
+    },
+    {
+      "section": "Stress",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Screening for stress symptoms and posttraumatic stress disorder should be initiated in the acute care setting and continued in rehabilitation and ambulatory settings. One screening tool for psychological stress after stroke is the Perceived Stress Scale. A systematic review reported a posttraumatic stress disorder frequency of 16.5% in patients with stroke.",
+      "page": null
+    },
+    {
+      "section": "Stress",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nursing professionals need to recognize that symptoms of psychological stress and posttraumatic stress disorder can increase stroke risk and adverse poststroke outcomes, including poststroke depression, anxiety, and reductions in medication adherence, physical functioning, and quality of life. Nursing interventions to improve illness coherence include stroke education and self-management strategies. Nurses should also note the patient's coping style, because high-anxious and defensive coping styles are associated with significantly higher levels of posttraumatic stress symptoms after ischemic stroke or TIA.",
+      "page": null
+    },
+    {
+      "section": "Stress",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A systematic literature review of nursing interventions for poststroke psychological stress and posttraumatic stress disorder (eg, social support, mindfulness, meditation, problem-solving, coping, and psychotherapy) found that 13 of the 24 included studies resulted in stress reduction and 7 reported improvements in symptoms of depression and anxiety; however, many studies were small with heterogeneous interventions and effects, and adequately powered randomized controlled trials are needed.",
+      "page": null
+    },
+    {
+      "section": "Anxiety",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The frequency of anxiety ranges from 20% to 25% in the first months after stroke, increasing to 32% as the year progresses, with a 5-year prevalence of 34%. Factors contributing to higher anxiety levels include younger age, female sex with lower income, inability to return to work or resume activities of daily living, social deprivation, cognitive impairment, history of anxiety or depression, and stroke severity.",
+      "page": null
+    },
+    {
+      "section": "Anxiety",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Standard screening for anxiety is recommended because it is often underdiagnosed; prompt detection may lead to early treatment, greater patient engagement, and improved clinical outcomes. Frequently used screening measures include the Patient Health Questionnaire-9, Generalized Anxiety Disorder 7-item, and Kessler K6 scales. Visual analog scales and communication aids should be considered for those with communication limitations. Those with advanced age, limited verbal ability, poor access to mental health specialists, and nonadherence to treatment plans are at high risk for a missed diagnosis.",
+      "page": null
+    },
+    {
+      "section": "Anxiety",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In addition to standard pharmacological and psychological therapies (behavioral, cognitive therapy, or both), complementary approaches to consider include self-help manuals, exercise training, relaxation techniques, and mindfulness practice, which have been shown to reduce anxiety and distress associated with poststroke recovery, measured up to 1 year after intervention. Inadequate treatment for anxiety within the first 3 months of stroke is associated with anxiety at 1 year, and early treatment has the potential to reduce the subsequent risk of depression.",
+      "page": null
+    },
+    {
+      "section": "Fatigue",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Poststroke fatigue can develop any time after stroke but most commonly presents within the first 6 months, with an anytime prevalence ranging from 25% to 85%, and has adverse effects on medication adherence, rehabilitation effectiveness, caregiver burden, independence, daily activities, quality of life, and mortality. The most used scale to assess poststroke fatigue is the Fatigue Severity Scale, followed by the Fatigue Assessment Scale.",
+      "page": null
+    },
+    {
+      "section": "Fatigue",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Currently, there are no evidence-based interventions to treat poststroke fatigue. According to observational studies, treatment targets include reducing comorbidities such as depression, anxiety, and vascular risk factors; improving quality of life, mobility, and activities of daily living; minimizing stroke severity; addressing appropriate medication use including avoidance of polypharmacy; addressing pain, apathy, limb heaviness, and neuroticism; and ensuring appropriate thyroid-stimulating hormone levels.",
+      "page": null
+    },
+    {
+      "section": "Fatigue",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In clinical practice, stroke survivors should routinely be assessed for poststroke fatigue in both the acute and chronic stages. It is also important to screen for confounders such as depression, sleep impairment, and medication side effects. Individuals and caregivers should receive information about poststroke fatigue early in the stroke recovery period to support early detection and potentially improve poststroke outcomes.",
+      "page": null
+    },
+    {
+      "section": "Fatigue",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Routine assessment of baseline prestroke fatigue levels for all individuals, particularly those at high risk, would be ideal because poststroke fatigue screening tools focus only on poststroke symptoms. Current clinical practice guidelines either exclude poststroke fatigue or provide recommendations supported by low levels of evidence such as expert consensus.",
+      "page": null
+    },
+    {
+      "section": "QOL Measurement After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Motor strength, speech, depression, anxiety, and the ability to return to work and social activities are the major psychological and physiological stressors affecting quality of life outcomes. Several stroke-related quality of life tools have been developed (eg, Stroke Specific Quality of Life Scale, Stroke Impact Scale, Stroke and Aphasia QOL-39), but no single tool has been identified as best practice.",
+      "page": null
+    },
+    {
+      "section": "QOL Measurement After Stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nurses and interdisciplinary teams need to identify interventions that may positively affect quality of life. Mind-body interventions, including yoga, tai chi, and meditation, have been identified in multiple randomized controlled trials as positive-impact interventions on quality of life outcomes. Chronic pain is another domain of poststroke symptoms that is often overlooked and affects the return to normal activities.",
+      "page": null
+    },
+    {
+      "section": "Structural Inequities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Attributes of structural racism are associated with an increase in vascular risk factors, increased disease markers such as cerebral white matter lesions, poorer psychosocial health such as prestroke depression and stress, and higher stroke mortality and risk. The added burden of these structural inequities magnifies stroke prevalence and poorer stroke outcomes in historically underresourced communities, including Black people and people with lower socioeconomic status.",
+      "page": null
+    },
+    {
+      "section": "Structural Inequities",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "At the individual level, nursing staff can engage in reducing stroke health disparities by improving mental health communication with patients and managing their implicit biases and stereotypes of patients. Structurally, health systems must consider that providing mental health care to patients who disproportionately experience structural inequities requires moving away from practice as usual (eg, providing evening hours for patient care and allowing weekend appointments). Interdisciplinary teams that include social workers, legal services, and case managers may be helpful throughout the continuum of stroke care.",
+      "page": null
+    },
+    {
+      "section": "Summary",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Between 16.5% and 85% of those with stroke will experience at least one of the psychosocial constructs covered in this document. Critical nursing interventions include screening across care settings; educating patient, family, and staff on recognizing the signs and symptoms of psychosocial sequelae after stroke; ensuring implementation of evidence-based symptom management strategies; and providing resources that may allow earlier and more structured evaluation, clinical diagnosis, and treatment, as well as good follow-up care.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

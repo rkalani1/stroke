@@ -10,12 +10,230 @@
   "society": "AHA/ASA",
   "recommendations": [
     {
-      "section": "Scope",
+      "section": "Introduction",
       "classOfRec": "Statement",
-      "classNote": "Scope summary quoted from the publication abstract; the full graded recommendations are in the linked source.",
-      "levelOfEvidence": "Guideline Summary",
-      "text": "Stroke remains a leading cause of morbidity and mortality in the United States, with rural-dwelling populations facing significant disparities in stroke prevalence, access to care, and outcomes. Rural-dwelling communities are particularly burdened by limited infrastructure and a higher prevalence of uncontrolled risk factors such as hypertension, diabetes, and obesity. Geographic isolation and long distances to medical facilities hinder timely access to acute stroke care.",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Rural-dwelling populations in the United States face significant disparities in stroke prevalence and access to care; risk factors in rural communities include higher rates of hypertension, diabetes, and obesity, compounded by limited health care infrastructure, long distances to medical facilities, and scarce access to primary care and stroke specialists.",
+      "page": null
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nearly half of all emergency departments in the United States use telemedicine, but smaller rural emergency departments, which stand to benefit the most, are the least likely to have access, largely because limited telemedicine infrastructure hinders prompt consultation with stroke specialists in regions with few neurologists.",
+      "page": null
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nurses are indispensable to stroke care in rural areas, serving as the initial health care professionals across the continuum of prevention, acute management, and poststroke rehabilitation; they lead community-based education and screening for stroke prevention and may serve as initial responders in acute stroke situations, undertaking patient assessments, stabilizing patients, and initiating emergency protocols, often relying on telemedicine for guidance.",
+      "page": null
+    },
+    {
+      "section": "Introduction",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Beyond the acute phase, rural-dwelling nurses play a pivotal role in poststroke rehabilitation; where specialized rehabilitation services are unavailable or geographically inaccessible, nurses work with the interprofessional team, patients, and families to develop and implement rehabilitation plans and frequently assume case management roles, educating and connecting patients and caregivers with postacute levels of care and available resources and providing regular check-ins.",
+      "page": null
+    },
+    {
+      "section": "Stroke Service Delivery and Management in Rural-Dwelling Communities - Acute Care Services and Nursing Involvement",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Telemedicine, when used, provides access to rapid evaluation and management by subspecialist health care professionals, supporting efforts by relaying critical patient data for acute treatment eligibility.",
+      "page": null
+    },
+    {
+      "section": "Stroke Service Delivery and Management in Rural-Dwelling Communities - Acute Care Services and Nursing Involvement",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Rural-dwelling nurses assist with initial neurological assessments and coordinate communication between the emergency department health care professional and neurologists; they are instrumental in administering thrombolytic therapy and monitoring for complications such as bleeding or allergic reactions, and are key in identifying and preventing early issues such as aspiration pneumonia with timely dysphagia screening and deep vein thrombosis with early mobilization.",
+      "page": null
+    },
+    {
+      "section": "Stroke Service Delivery and Management in Rural-Dwelling Communities - Posthyperacute and Discharge",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nurses in rural poststroke settings are key to chronic disease management by educating patients on lifestyle changes, medication adherence, and early recurrent stroke symptom recognition; challenges such as limited resources, time constraints, and the need for ongoing professional education may hinder their effectiveness.",
+      "page": null
+    },
+    {
+      "section": "Stroke Service Delivery and Management in Rural-Dwelling Communities - Posthyperacute and Discharge",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Standardized stroke care and clinical pathways are essential to ensuring evidence-based practices and continuity across the care continuum; discharge planning should begin early and remain dynamic, guided by patient and family needs assessments, and predischarge rehabilitation assessments are crucial to determine the most appropriate postacute stroke setting and services. Rural areas often face shortages of physical, occupational, and speech therapists, which can delay or limit rehabilitation assessments and referrals.",
+      "page": null
+    },
+    {
+      "section": "Stroke Service Delivery and Management in Rural-Dwelling Communities - Posthyperacute and Discharge",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "When available, collaborative care led by neurological and physiatry teams has been shown to improve functional recovery after stroke, but access to physiatrists in rural settings is often limited, with many patients relying on remote telehealth consultations; expanding the role of the specialized advanced practice health care professional could help bridge gaps in access and enhance patient outcomes across the postacute rehabilitation phase.",
+      "page": null
+    },
+    {
+      "section": "Stroke Service Delivery and Management in Rural-Dwelling Communities - Rural-Dwelling Practitioners' Role",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "International guidelines provide workforce infrastructure standards for stroke care, including staffing composition and staff-to-patient ratios, but applying such standards in the rural setting with lower resource availability and less demand is not straightforward; epidemiological modeling that considers population demographics, health status, and types of services required may be a valuable strategy for estimating rural stroke workforce needs.",
+      "page": null
+    },
+    {
+      "section": "Stroke Service Delivery and Management in Rural-Dwelling Communities - Rural-Dwelling Practitioners' Role",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The nursing shortage affects the ability of rural hospitals to staff patient care units and the key role of the stroke coordinator, driven by insufficient new nurses entering the workforce and difficulty retaining existing nurses because of occupational stress, burnout, and limited resources; to the extent that rural hospitals can foster collaborative and supportive work environments with attention to the psychological safety of staff, retention of nurses may be facilitated. Shortages of physicians qualified to perform mechanical thrombectomy may also affect patient access to thrombectomy and outcomes.",
+      "page": null
+    },
+    {
+      "section": "Efforts in Rural-Dwelling Communities to Implement Best Practices and Quality Measures - Education",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Stroke units staffed with educated specialty nurses have been shown to improve outcomes, and developing nursing expertise in stroke care is critical in rural settings where stroke diagnosis may be low volume but high risk; rural-dwelling nurses face unique barriers to accessing specialized stroke education including limited resources, geographic isolation, staffing shortages, time constraints, and restricted access to in-person courses, although online education offerings were reported as available and helpful.",
+      "page": null
+    },
+    {
+      "section": "Efforts in Rural-Dwelling Communities to Implement Best Practices and Quality Measures - Education",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Education can be used to standardize stroke identification and assessment, such as training in FAST and BEFAST; brief, targeted nursing education at shift change, posters in the emergency department, and slides emailed to all staff can improve stroke activation time, door-to-computed tomography time, and staff engagement and knowledge.",
+      "page": null
+    },
+    {
+      "section": "Efforts in Rural-Dwelling Communities to Implement Best Practices and Quality Measures - Education",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Innovative models such as mobile simulation programs using a hub-and-spoke model to deliver onsite simulation education directly to rural hospitals, supported by centralized hub-nurse educators so that nurses in remote locations can practice high-fidelity simulations, and gamification such as escape rooms simulating acute stroke scenarios, can enhance competency, engagement, and preparedness among rural-dwelling nurses at low cost; rural stroke programs can also leverage health system partnerships for tele-education, simulation laboratories, and mentorship models, along with professional organization resources, state stroke registries, and the Get With The Guidelines-Stroke platform.",
+      "page": null
+    },
+    {
+      "section": "Efforts in Rural-Dwelling Communities to Implement Best Practices and Quality Measures - Education",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Literature on stroke-focused training and educational interventions for rural-dwelling nurses is limited and most published work addresses only acute/hyperacute stroke; an important future direction is conducting needs assessments to identify knowledge gaps in the rural-dwelling nursing community and customizing education based on those data, and nurses in rural areas should be encouraged to share their initiatives through publication and presentation.",
+      "page": null
+    },
+    {
+      "section": "Efforts in Rural-Dwelling Communities to Implement Best Practices and Quality Measures - Models of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Nursing models of care are integral to managing stroke survivor and caregiver outcomes across the continuum; models such as the Association of Rehabilitation Nurses Competency Model and the World Health Organization Rehabilitation Competency Framework explicate the domains and skills needed at different proficiency levels to care for individuals with chronic conditions such as stroke and disability across multiple settings, with domains including intraprofession/interprofessional practice, leadership, evidence-based nursing interventions, research, and education.",
+      "page": null
+    },
+    {
+      "section": "Efforts in Rural-Dwelling Communities to Implement Best Practices and Quality Measures - Models of Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Effective transitional care models emphasize interprofessional teams and structured follow-up postdischarge through telephone, home visits, telehealth, education, and community resources, and promote positive stroke outcomes including blood pressure control, reduced hospital readmissions, and less caregiver strain; it is recommended that transitional care models include individualized education programs for stroke survivors and caregivers in which social determinants are addressed and culturally appropriate, tailored interventions are delivered.",
+      "page": null
+    },
+    {
+      "section": "Efforts in Rural-Dwelling Communities to Implement Best Practices and Quality Measures - Public Health Strategies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Studies evaluating telemedicine compared with traditional care have shown no significant difference in modified Rankin Scale scores but have demonstrated improved access to reperfusion intervention and decreased mortality with telestroke; telemedicine enables timely consultation with neurologists and other stroke specialists, facilitates remote monitoring, and bridges geographic and resource gaps, although limitations include digital disparities, cost, and government regulations.",
+      "page": null
+    },
+    {
+      "section": "Efforts in Rural-Dwelling Communities to Implement Best Practices and Quality Measures - Public Health Strategies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "The AHA Get With The Guidelines-Stroke program has been integral to developing outreach for rural stroke systems over its almost 25-year existence; the Target: Stroke campaign, implemented in February 2010, focuses on increasing the proportion of patients eligible for thrombolysis treatment and reducing time to treatment for intravenous thrombolysis and endovascular therapies, with participating hospitals receiving education and access to field experts.",
+      "page": null
+    },
+    {
+      "section": "Efforts in Rural-Dwelling Communities to Implement Best Practices and Quality Measures - Public Health Strategies",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Practical population-wide stroke prevention efforts could prevent more than 50% of strokes over the next 5 years, focusing on diet modifications, smoking cessation, physical activity, controlling diabetes, and limiting alcohol consumption; nurses play an essential role in increasing stroke awareness among the public, and stroke health literacy disparities delay necessary medical attention and can lead to detrimental outcomes.",
+      "page": null
+    },
+    {
+      "section": "Efforts in Rural-Dwelling Communities to Implement Best Practices and Quality Measures - Quality Measures",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Rural hospitals face unique challenges and disincentives for stroke data collection: many quality measures have minimum reporting caseloads that rural hospitals do not meet, there are no rural-specific quality measures, and resources to support dedicated data collection and analysis may be limited; the AHA has suggested a staffing model whereby data collection is shared with other high-priority programs such as sepsis or myocardial infarction, and in many cases less than a full-time equivalent may be sufficient.",
+      "page": null
+    },
+    {
+      "section": "Efforts in Rural-Dwelling Communities to Implement Best Practices and Quality Measures - Quality Measures",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In 2022 the AHA introduced a Rural Health Accelerator that provides no-cost access to Get With The Guidelines for up to 700 rural hospitals, allowing them to measure compliance with evidence-based guidelines and receive feedback from quality improvement consultants, with new recognition criteria focused on rural-specific metrics.",
+      "page": null
+    },
+    {
+      "section": "Artificial Intelligence to Enhance Nursing Knowledge and Practice",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Artificial intelligence for extracting data, developing clinical pathways, streamlining decision-making, and supporting clinical care will change nursing practice; an analysis of 1063 emergency department cases over 6 months found that a record input assistance system with voice artificial intelligence significantly reduced patient wait times and triage times compared with manual input. Nursing input is essential in developing frameworks for artificial intelligence health care technologies, and the artificial-intelligence-enhanced health care professional concept can support rural-dwelling nursing by providing real-time guidance, reducing diagnostic uncertainty, and compensating for limited access to specialty expertise.",
+      "page": null
+    },
+    {
+      "section": "Implications for Nursing Best Practices - Access to Care",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Telehealth effectively improves access to rural stroke care for timely diagnosis and treatment, but availability and reimbursement practices vary by region; nurses are key in coordinating and assisting with telehealth, and health care professionals promoting and advocating for practices to expand telehealth access and reimbursement could allow rural-dwelling patients with stroke to obtain timely treatment and improve outcomes.",
+      "page": null
+    },
+    {
+      "section": "Implications for Nursing Best Practices - Education and Training",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Rural-dwelling nurses must receive stroke education ensuring they provide evidence-based practices aligned with current stroke guidelines, and should have access to ongoing professional education keeping them updated on the latest stroke care protocols across the continuum; it is crucial to advocate for policies supporting continued online courses, innovative models such as mobile simulation units providing high-fidelity stroke simulation, financial aid, more extensive health care education, and university partnerships, and rural organizations should have mechanisms that allow stroke coordinators and stroke champions to achieve specialized stroke certification.",
+      "page": null
+    },
+    {
+      "section": "Implications for Nursing Best Practices - Care Coordination",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "A stroke nurse coordinator can provide stroke education for nurses and patients, establish standardized stroke care protocols, collect and track stroke outcomes, build relationships with health care professionals and agencies, assist in the design of home-based therapy plans, and assist with timely poststroke rehabilitation plans; public health policy advocacy is required for rural facilities to have designated stroke coordinators, staffed part-time or full-time depending on workload, or an established shared local/regional coordinator. In smaller or lower-volume rural facilities where a full-time coordinator is not feasible, a stroke champion role - typically a bedside nurse or clinical leader with targeted education who reinforces protocols, leads quality improvement, and serves as liaison to external stroke resources - may be established.",
+      "page": null
+    },
+    {
+      "section": "Implications for Nursing Best Practices - Addressing Nursing Workforce Challenges and Cultural Sensitivity",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Rural-dwelling nurses often face burnout from limited support and resources and heavy workloads, which affects the quality of stroke care; epidemiological modeling could help predict staffing needs and guide allocation of specialized advanced care nurses such as stroke coordinators, champions, or neurovascular nurse practitioners to high-demand rural areas, and targeted efforts to recruit and educate nurses with neurovascular stroke education are crucial. Nurses should also advocate for improved access to poststroke rehabilitation services and inform stakeholders and policymakers about resource gaps, and be attentive to cultural and communication differences that may affect care delivery.",
+      "page": null
+    },
+    {
+      "section": "Implications for Nursing Best Practices - Technology",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Innovative models such as mobile simulation units for high-fidelity training can improve education and evaluation in rural settings, and incorporating artificial intelligence with mobile technology and telemedicine can enhance stroke care delivery; facility leadership and practices should support these initiatives to improve data collection, documentation, and care coordination, and health care professionals should push for better data management systems to evaluate care and design rural-specific models to improve outcomes.",
       "page": null
     }
-  ]
+  ],
+  "documentType": "scientific-statement",
+  "gradingSystem": "ungraded"
 }

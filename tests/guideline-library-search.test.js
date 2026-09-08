@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { matchesSearchText as matchesTextQuery } from '../src/search-match.js';
+import { GUIDELINE_LIBRARY_INDEX, guidelineSearchFields } from '../src/guideline-library.js';
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
 const appSource = readFileSync(join(repoRoot, 'src/app.jsx'), 'utf8');
@@ -37,14 +39,6 @@ const fuzzyScore = (query, target) => {
   return score;
 };
 
-// Mirrors src/app.jsx matchesTextQuery — the match predicate added by the fix.
-const matchesTextQuery = (query, parts = []) => {
-  const tokens = String(query || '').toLowerCase().split(/\s+/).filter(Boolean);
-  if (!tokens.length) return true;
-  const haystack = parts.filter(Boolean).join(' ').toLowerCase();
-  return tokens.every((token) => haystack.includes(token));
-};
-
 const IRRELEVANT_RECS = [
   'Public educational programs on stroke recognition across all age groups and the importance of calling 9-1-1 are recommended.',
   'Intermittent pneumatic compression is recommended for venous thromboembolism prophylaxis in immobile patients.',
@@ -55,6 +49,15 @@ const IRRELEVANT_RECS = [
 const TNK_REC = 'In adult AIS patients presenting within 4.5 hours of symptom onset or last known well who are eligible for IVT, tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg is recommended to improve functional outcomes.';
 
 describe('Guideline Library search', () => {
+  it('finds newer evidence notes and source titles without losing the original recommendation', () => {
+    const guideline = GUIDELINE_LIBRARY_INDEX.find(g => g.id === 'eso-visual-2025');
+    const row = guideline.recommendations.find(rec => rec.id === 'eso-visual-2025-pico9-r1');
+    expect(row.text).not.toContain('TenCRAOS');
+    expect(matchesTextQuery('TenCRAOS', guidelineSearchFields(row, guideline))).toBe(true);
+    expect(matchesTextQuery('THEIA visual', guidelineSearchFields(row, guideline))).toBe(true);
+    expect(appSource).toContain('const recSearchFields = guidelineSearchFields;');
+    expect(appSource).toContain('scoreFor(guidelineSearchFields(rec, guideline))');
+  });
   describe('the bug: fuzzyScore is not a match predicate', () => {
     it('scores plainly irrelevant recommendations above zero', () => {
       for (const rec of IRRELEVANT_RECS) {
@@ -102,8 +105,9 @@ describe('Guideline Library search', () => {
   });
 
   describe('wiring in src/app.jsx', () => {
-    it('defines matchesTextQuery', () => {
-      expect(appSource).toContain('const matchesTextQuery = (query, parts = []) => {');
+    it('uses the shared predicate for header and guideline-library matches', () => {
+      expect(appSource).toMatch(/import \{[^}]*matchesSearchText[^}]*\} from '\.\/search-match\.js'/);
+      expect(appSource).toContain('const matchesTextQuery = matchesSearchText;');
     });
 
     it('filters the library with the match predicate, not the score', () => {
