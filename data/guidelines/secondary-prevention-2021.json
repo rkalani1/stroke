@@ -14,7 +14,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "An ECG is recommended for patients with suspected stroke or TIA to screen for atrial fibrillation, atrial flutter, and other cardiac conditions.",
-      "page": 10
+      "page": 10,
+      "id": "secondary-prevention-2021-1",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diagnostic Evaluation",
@@ -22,7 +27,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "A diagnostic evaluation is recommended for patients with ischemic stroke or TIA to determine etiology and guide secondary prevention strategy, with testing completed or initiated within 48 hours of symptom onset.",
-      "page": 10
+      "page": 10,
+      "id": "secondary-prevention-2021-2",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diagnostic Evaluation",
@@ -30,7 +40,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Noninvasive cervical carotid imaging (ultrasonography, CTA, or MRA) is recommended for patients with symptomatic anterior circulation infarction or TIA who are revascularization candidates, to screen for carotid stenosis.",
-      "page": 10
+      "page": 10,
+      "id": "secondary-prevention-2021-3",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diagnostic Evaluation",
@@ -38,7 +53,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Brain CT or MRI is recommended for patients with suspected stroke or TIA to confirm the diagnosis of symptomatic ischemic cerebrovascular disease.",
-      "page": 10
+      "page": 10,
+      "id": "secondary-prevention-2021-4",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diagnostic Evaluation",
@@ -46,7 +66,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Blood tests including CBC, PT, PTT, glucose, HbA1c, creatinine, and lipid profile are recommended for patients with confirmed ischemic cerebrovascular disease to identify risk factors and inform treatment goals.",
-      "page": 10
+      "page": 10,
+      "id": "secondary-prevention-2021-5",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 5,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diagnostic Evaluation",
@@ -54,7 +79,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "Echocardiography with or without contrast is reasonable for patients with cryptogenic stroke to evaluate for cardiac embolic sources or transcardiac pathways.",
-      "page": 10
+      "page": 10,
+      "id": "secondary-prevention-2021-6",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 6,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diagnostic Evaluation",
@@ -62,7 +92,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In patients with cryptogenic stroke without contraindication to anticoagulation, prolonged cardiac monitoring (mobile cardiac outpatient telemetry, implantable loop recorder, or similar) is reasonable to detect intermittent AF.",
-      "page": 10
+      "page": 10,
+      "id": "secondary-prevention-2021-7",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 7,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diagnostic Evaluation",
@@ -70,7 +105,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "If initial CT or MRI does not demonstrate symptomatic infarction in patients with suspected ischemic stroke, follow-up brain imaging is reasonable to confirm the diagnosis.",
-      "page": 10
+      "page": 10,
+      "id": "secondary-prevention-2021-8",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 8,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diagnostic Evaluation",
@@ -78,7 +118,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "If initial head imaging in suspected TIA patients does not show a symptomatic infarct, follow-up MRI is reasonable to predict early stroke risk and support the diagnosis.",
-      "page": 10
+      "page": 10,
+      "id": "secondary-prevention-2021-9",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 9,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diagnostic Evaluation",
@@ -86,7 +131,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with cryptogenic stroke, additional testing for hypercoagulable states, CNS infections (e.g., HIV, syphilis), vasculitis-associated infections, substance use (e.g., cocaine, amphetamines), systemic inflammation markers, and genetic conditions associated with stroke is reasonable as clinically indicated.",
-      "page": 10
+      "page": 10,
+      "id": "secondary-prevention-2021-10",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 10,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diagnostic Evaluation",
@@ -94,7 +144,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with ischemic stroke or TIA, noninvasive imaging of intracranial large arteries and extracranial vertebrobasilar arteries (MRA or CTA) can be effective for identifying atherosclerosis, dissection, moyamoya, or other relevant vasculopathies.",
-      "page": 10
+      "page": 10,
+      "id": "secondary-prevention-2021-11",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 11,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diagnostic Evaluation",
@@ -102,7 +157,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In patients with ischemic stroke who will be started on anticoagulant therapy, brain CT or MRI before initiation may be considered to assess for hemorrhagic transformation and infarct size.",
-      "page": 10
+      "page": 10,
+      "id": "secondary-prevention-2021-12",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 12,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diagnostic Evaluation",
@@ -110,7 +170,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with ESUS, TEE, cardiac CT, or cardiac MRI might be reasonable to identify cardioaortic embolic sources or transcardiac pathways.",
-      "page": 10
+      "page": 10,
+      "id": "secondary-prevention-2021-13",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 13,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Diagnostic Evaluation",
@@ -118,7 +183,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with ischemic stroke or TIA in whom PFO closure would be considered, TCD with embolus detection might be reasonable to screen for right-to-left shunt.",
-      "page": 10
+      "page": 10,
+      "id": "secondary-prevention-2021-14",
+      "sourceSection": "table-01",
+      "sourceRecommendationNumber": 14,
+      "pdfPage": 10,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Nutrition",
@@ -126,7 +196,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "It is reasonable to counsel stroke and TIA patients to follow a Mediterranean-type diet emphasizing monounsaturated fats, plant-based foods, fish, and supplementation with extra virgin olive oil or nuts, rather than a low-fat diet, to reduce recurrent stroke risk.",
-      "page": 14
+      "page": 14,
+      "id": "secondary-prevention-2021-15",
+      "sourceSection": "table-02",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 14,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Nutrition",
@@ -134,7 +209,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "For stroke or TIA patients with hypertension who are not already restricting sodium, it is reasonable to recommend reducing sodium intake by at least 1 g/d (2.5 g/d salt) to lower cardiovascular disease risk.",
-      "page": 14
+      "page": 14,
+      "id": "secondary-prevention-2021-16",
+      "sourceSection": "table-02",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 14,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Physical Activity",
@@ -142,7 +222,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "For stroke or TIA patients capable of physical activity, at least moderate-intensity aerobic exercise for 10 minutes four times per week, or vigorous-intensity aerobic exercise for 20 minutes twice per week, is recommended to lower recurrent stroke risk and the composite endpoint of stroke, MI, or vascular death.",
-      "page": 16
+      "page": 16,
+      "id": "secondary-prevention-2021-17",
+      "sourceSection": "table-03",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 16,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Physical Activity",
@@ -150,7 +235,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "For stroke or TIA patients willing to increase physical activity, participation in exercise classes incorporating behavioral counseling can be beneficial for reducing cardiometabolic risk factors and increasing leisure-time physical activity.",
-      "page": 16
+      "page": 16,
+      "id": "secondary-prevention-2021-18",
+      "sourceSection": "table-03",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 16,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Physical Activity",
@@ -158,7 +248,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "For post-stroke patients with exercise-limiting deficits, supervised exercise programs led by a physical therapist or cardiac rehabilitation professional, in addition to standard rehabilitation, can be beneficial for secondary prevention.",
-      "page": 16
+      "page": 16,
+      "id": "secondary-prevention-2021-19",
+      "sourceSection": "table-03",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 16,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Physical Activity",
@@ -166,7 +261,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "For stroke or TIA patients with prolonged daily sedentary time, it may be reasonable to recommend breaking up sitting with intervals of at least 3 minutes of standing or light activity every 30 minutes for cardiovascular health.",
-      "page": 16
+      "page": 16,
+      "id": "secondary-prevention-2021-20",
+      "sourceSection": "table-03",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 16,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Smoking Cessation",
@@ -174,7 +274,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "Counseling with or without pharmacotherapy (nicotine replacement, bupropion, or varenicline) is recommended for stroke or TIA patients who smoke to assist with smoking cessation.",
-      "page": 17
+      "page": 17,
+      "id": "secondary-prevention-2021-21",
+      "sourceSection": "table-04",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 17,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Smoking Cessation",
@@ -182,7 +287,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Stroke or TIA patients who continue smoking are recommended to stop (or at least reduce daily smoking) to lower recurrent stroke risk.",
-      "page": 17
+      "page": 17,
+      "id": "secondary-prevention-2021-22",
+      "sourceSection": "table-04",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 17,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Smoking Cessation",
@@ -190,7 +300,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Avoidance of environmental (secondhand) tobacco smoke is recommended for stroke or TIA patients to reduce recurrent stroke risk.",
-      "page": 17
+      "page": 17,
+      "id": "secondary-prevention-2021-23",
+      "sourceSection": "table-04",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 17,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Substance Use",
@@ -198,7 +313,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Ischemic stroke or TIA patients who drink more than 2 alcoholic drinks/day (men) or more than 1 drink/day (women) are recommended to be counseled to eliminate or reduce alcohol consumption to lower stroke risk.",
-      "page": 18
+      "page": 18,
+      "id": "secondary-prevention-2021-24",
+      "sourceSection": "table-05",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 18,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Substance Use",
@@ -206,7 +326,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "Stroke or TIA patients who use stimulants (e.g., amphetamines, cocaine, khat) or who have infective endocarditis related to IV drug use are recommended to be informed of the health risks and counseled to discontinue use.",
-      "page": 18
+      "page": 18,
+      "id": "secondary-prevention-2021-25",
+      "sourceSection": "table-05",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 18,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Substance Use",
@@ -214,7 +339,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "Referral to specialized addiction services is recommended for stroke or TIA patients with a substance use disorder involving drugs or alcohol.",
-      "page": 18
+      "page": 18,
+      "id": "secondary-prevention-2021-26",
+      "sourceSection": "table-05",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 18,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Hypertension",
@@ -222,7 +352,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "Treatment with a thiazide diuretic, ACE inhibitor, or ARB is recommended for hypertensive patients with stroke or TIA to lower blood pressure and reduce recurrent stroke risk.",
-      "page": 20
+      "page": 20,
+      "id": "secondary-prevention-2021-27",
+      "sourceSection": "table-06",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 20,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Hypertension",
@@ -230,7 +365,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "An office BP goal of less than 130/80 mmHg is recommended for most hypertensive stroke or TIA patients to reduce recurrent stroke and vascular events.",
-      "page": 20
+      "page": 20,
+      "id": "secondary-prevention-2021-28",
+      "sourceSection": "table-06",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 20,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Hypertension",
@@ -238,7 +378,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Individualized antihypertensive drug regimens accounting for comorbidities, drug class, and patient preference are recommended for hypertensive stroke or TIA patients to maximize treatment efficacy.",
-      "page": 20
+      "page": 20,
+      "id": "secondary-prevention-2021-29",
+      "sourceSection": "table-06",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 20,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Hypertension",
@@ -246,7 +391,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In stroke or TIA patients without a history of hypertension but with an average office BP of 130/80 mmHg or above, antihypertensive treatment can be beneficial to reduce the risk of recurrent stroke, ICH, and other vascular events.",
-      "page": 20
+      "page": 20,
+      "id": "secondary-prevention-2021-30",
+      "sourceSection": "table-06",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 20,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Treating and Monitoring Hyperlipidemia",
@@ -254,7 +404,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "Atorvastatin 80 mg daily is recommended for ischemic stroke patients without known coronary heart disease, no major cardiac embolic source, and LDL-C above 100 mg/dL to reduce stroke recurrence.",
-      "page": 21
+      "page": 21,
+      "id": "secondary-prevention-2021-31",
+      "sourceSection": "table-07",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 21,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Treating and Monitoring Hyperlipidemia",
@@ -262,7 +417,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "For ischemic stroke or TIA patients with atherosclerotic disease (intracranial, carotid, aortic, or coronary), lipid-lowering therapy with a statin (plus ezetimibe if needed) to achieve an LDL-C goal below 70 mg/dL is recommended to reduce major cardiovascular events.",
-      "page": 21
+      "page": 21,
+      "id": "secondary-prevention-2021-32",
+      "sourceSection": "table-07",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 21,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Treating and Monitoring Hyperlipidemia",
@@ -270,7 +430,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In very high-risk ischemic stroke patients (stroke plus another major ASCVD event or multiple high-risk conditions) on maximally tolerated statin and ezetimibe with LDL-C remaining above 70 mg/dL, PCSK9 inhibitor therapy is reasonable to prevent further ASCVD events.",
-      "page": 21
+      "page": 21,
+      "id": "secondary-prevention-2021-33",
+      "sourceSection": "table-07",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 21,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Treating and Monitoring Hyperlipidemia",
@@ -278,7 +443,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "In stroke or TIA patients with hyperlipidemia, adherence to lifestyle modifications and LDL-C-lowering medication is recommended to be assessed by measuring fasting lipids and safety markers 4 to 12 weeks after statin initiation or dose change, then every 3 to 12 months thereafter.",
-      "page": 21
+      "page": 21,
+      "id": "secondary-prevention-2021-34",
+      "sourceSection": "table-07",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 21,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Hypertriglyceridemia",
@@ -286,7 +456,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In ischemic stroke or TIA patients on moderate- or high-intensity statin therapy with fasting triglycerides 135-499 mg/dL, LDL-C 41-100 mg/dL, HbA1c below 10%, and no history of pancreatitis, AF, or severe heart failure, icosapent ethyl 2 g twice daily is reasonable to reduce recurrent stroke risk.",
-      "page": 23
+      "page": 23,
+      "id": "secondary-prevention-2021-35",
+      "sourceSection": "table-08",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 23,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Hypertriglyceridemia",
@@ -294,7 +469,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In patients with severe hypertriglyceridemia (fasting triglycerides 500 mg/dL or above), it is reasonable to identify and treat underlying causes and, if levels remain elevated, to implement a very low-fat diet, avoid refined carbohydrates and alcohol, consume omega-3 fatty acids, and use fibrate therapy if necessary to prevent pancreatitis and reduce ASCVD risk.",
-      "page": 23
+      "page": 23,
+      "id": "secondary-prevention-2021-36",
+      "sourceSection": "table-08",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 23,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Glucose",
@@ -302,7 +482,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "In ischemic stroke or TIA patients with diabetes, glycemic control goals are recommended to be individualized based on adverse event risk, patient characteristics, and preferences. For most patients (especially those under 65 without life-limiting comorbidities), an HbA1c target of 7% or below is recommended to reduce microvascular complications.",
-      "page": 24
+      "page": 24,
+      "id": "secondary-prevention-2021-37",
+      "sourceSection": "table-09",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 24,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Glucose",
@@ -310,7 +495,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In ischemic stroke or TIA patients with diabetes, glucose-lowering agents with proven cardiovascular benefit are recommended to reduce future major adverse cardiovascular events (stroke, MI, cardiovascular death).",
-      "page": 24
+      "page": 24,
+      "id": "secondary-prevention-2021-38",
+      "sourceSection": "table-09",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 24,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Glucose",
@@ -318,7 +508,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "Multidimensional diabetes care (lifestyle counseling, medical nutritional therapy, diabetes self-management education, support, and medication) is recommended for ischemic stroke or TIA patients with diabetes to achieve glycemic goals and improve stroke risk factors.",
-      "page": 24
+      "page": 24,
+      "id": "secondary-prevention-2021-39",
+      "sourceSection": "table-09",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 24,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Glucose",
@@ -326,7 +521,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In ischemic stroke or TIA patients with prediabetes, lifestyle optimization (healthy diet, regular physical activity, smoking cessation) can be beneficial to prevent progression to diabetes.",
-      "page": 24
+      "page": 24,
+      "id": "secondary-prevention-2021-40",
+      "sourceSection": "table-09",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 24,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Glucose",
@@ -334,7 +534,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "It is reasonable to screen TIA or ischemic stroke patients for prediabetes/diabetes using HbA1c, which has the convenience of not requiring fasting and can be measured from a single blood sample.",
-      "page": 24
+      "page": 24,
+      "id": "secondary-prevention-2021-41",
+      "sourceSection": "table-09",
+      "sourceRecommendationNumber": 5,
+      "pdfPage": 24,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Glucose",
@@ -342,7 +547,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "The benefit of intensive glucose control (HbA1c 7% or below) beyond the acute phase for preventing recurrent stroke in ischemic stroke or TIA patients with diabetes is uncertain.",
-      "page": 24
+      "page": 24,
+      "id": "secondary-prevention-2021-42",
+      "sourceSection": "table-09",
+      "sourceRecommendationNumber": 6,
+      "pdfPage": 24,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Glucose",
@@ -350,7 +560,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In ischemic stroke or TIA patients with prediabetes, particularly those with BMI 35 kg/m2 or above, those under 60, or women with prior gestational diabetes, metformin may be beneficial for blood sugar control and preventing progression to diabetes.",
-      "page": 24
+      "page": 24,
+      "id": "secondary-prevention-2021-43",
+      "sourceSection": "table-09",
+      "sourceRecommendationNumber": 7,
+      "pdfPage": 24,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Glucose",
@@ -358,7 +573,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In patients within 6 months of TIA or ischemic stroke with insulin resistance, HbA1c below 7.0%, and without heart failure or bladder cancer, pioglitazone may be considered to prevent recurrent stroke.",
-      "page": 24
+      "page": 24,
+      "id": "secondary-prevention-2021-44",
+      "sourceSection": "table-09",
+      "sourceRecommendationNumber": 8,
+      "pdfPage": 24,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Obesity",
@@ -366,7 +586,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "Weight loss is recommended for overweight or obese patients with ischemic stroke or TIA to improve ASCVD risk factors.",
-      "page": 27
+      "page": 27,
+      "id": "secondary-prevention-2021-45",
+      "sourceSection": "table-10",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 27,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Obesity",
@@ -374,7 +599,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "Referral to an intensive, multicomponent, behavioral lifestyle-modification program is recommended for obese ischemic stroke or TIA patients to achieve sustained weight loss.",
-      "page": 27
+      "page": 27,
+      "id": "secondary-prevention-2021-46",
+      "sourceSection": "table-10",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 27,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Obesity",
@@ -382,7 +612,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "BMI calculation is recommended at the time of ischemic stroke or ASCVD event and annually thereafter to screen for and classify obesity.",
-      "page": 27
+      "page": 27,
+      "id": "secondary-prevention-2021-47",
+      "sourceSection": "table-10",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 27,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Obstructive Sleep Apnea",
@@ -390,7 +625,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In ischemic stroke or TIA patients with OSA, positive airway pressure therapy (e.g., CPAP) can be beneficial for improving sleep apnea, blood pressure, daytime sleepiness, and other apnea-related outcomes.",
-      "page": 28
+      "page": 28,
+      "id": "secondary-prevention-2021-48",
+      "sourceSection": "table-11",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 28,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Obstructive Sleep Apnea",
@@ -398,7 +638,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "Evaluation for OSA may be considered in ischemic stroke or TIA patients to diagnose sleep apnea.",
-      "page": 28
+      "page": 28,
+      "id": "secondary-prevention-2021-49",
+      "sourceSection": "table-11",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 28,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Intracranial Large Artery Atherosclerosis",
@@ -406,7 +651,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "Aspirin 325 mg/d is recommended over warfarin for patients with stroke or TIA caused by 50-99% stenosis of a major intracranial artery, to reduce recurrent ischemic stroke and vascular death.",
-      "page": 29
+      "page": 29,
+      "id": "secondary-prevention-2021-50",
+      "sourceSection": "table-12",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 29,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Intracranial Large Artery Atherosclerosis",
@@ -414,7 +664,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In patients with recent stroke or TIA (within 30 days) attributable to severe intracranial stenosis (70-99%), adding clopidogrel 75 mg/d to aspirin for up to 90 days is reasonable to further reduce recurrent stroke risk.",
-      "page": 29
+      "page": 29,
+      "id": "secondary-prevention-2021-51",
+      "sourceSection": "table-12",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 29,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Intracranial Large Artery Atherosclerosis",
@@ -422,7 +677,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In patients with recent (within 24 hours) minor stroke or high-risk TIA with concomitant ipsilateral greater than 30% intracranial stenosis, adding ticagrelor 90 mg twice daily to aspirin for up to 30 days might be considered to further reduce recurrent stroke risk.",
-      "page": 29
+      "page": 29,
+      "id": "secondary-prevention-2021-52",
+      "sourceSection": "table-12",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 29,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Intracranial Large Artery Atherosclerosis",
@@ -430,7 +690,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with stroke or TIA attributable to 50-99% intracranial stenosis, adding cilostazol 200 mg/day to aspirin or clopidogrel might be considered to reduce recurrent stroke risk.",
-      "page": 29
+      "page": 29,
+      "id": "secondary-prevention-2021-53",
+      "sourceSection": "table-12",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 29,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Intracranial Large Artery Atherosclerosis",
@@ -438,7 +703,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "In patients with stroke or TIA attributable to 50-99% intracranial stenosis, the effectiveness of clopidogrel alone, aspirin plus dipyridamole, ticagrelor alone, or cilostazol alone for secondary stroke prevention is not well established.",
-      "page": 30
+      "page": 30,
+      "id": "secondary-prevention-2021-54",
+      "sourceSection": "table-12",
+      "sourceRecommendationNumber": 5,
+      "pdfPage": 30,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Intracranial Large Artery Atherosclerosis",
@@ -446,7 +716,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "For patients with stroke or TIA attributable to 50-99% intracranial stenosis, maintaining SBP below 140 mmHg, high-intensity statin therapy, and at least moderate physical activity are recommended to prevent recurrent stroke and vascular events.",
-      "page": 30
+      "page": 30,
+      "id": "secondary-prevention-2021-55",
+      "sourceSection": "table-12",
+      "sourceRecommendationNumber": 6,
+      "pdfPage": 30,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Intracranial Large Artery Atherosclerosis",
@@ -454,7 +729,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with severe intracranial stenosis (70-99%) who have actively progressing symptoms or recurrent events despite aspirin, clopidogrel, SBP control below 140 mmHg, and high-intensity statin therapy, the usefulness of intracranial angioplasty alone or stenting is unknown.",
-      "page": 30
+      "page": 30,
+      "id": "secondary-prevention-2021-56",
+      "sourceSection": "table-12",
+      "sourceRecommendationNumber": 7,
+      "pdfPage": 30,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Intracranial Large Artery Atherosclerosis",
@@ -462,7 +742,12 @@
       "classNote": "Harm",
       "levelOfEvidence": "A",
       "text": "Intracranial angioplasty and stenting is not recommended as initial treatment for stroke or TIA attributable to severe intracranial stenosis (70-99%), even in patients who were on antithrombotic therapy at the time of the event.",
-      "page": 30
+      "page": 30,
+      "id": "secondary-prevention-2021-57",
+      "sourceSection": "table-12",
+      "sourceRecommendationNumber": 8,
+      "pdfPage": 30,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Intracranial Large Artery Atherosclerosis",
@@ -470,7 +755,12 @@
       "classNote": "Harm",
       "levelOfEvidence": "B-NR",
       "text": "In patients with stroke or TIA attributable to moderate intracranial stenosis (50-69%), angioplasty or stenting is associated with excess morbidity and mortality compared with medical management alone.",
-      "page": 30
+      "page": 30,
+      "id": "secondary-prevention-2021-58",
+      "sourceSection": "table-12",
+      "sourceRecommendationNumber": 9,
+      "pdfPage": 30,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Intracranial Large Artery Atherosclerosis",
@@ -478,7 +768,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
       "text": "Extracranial-intracranial bypass surgery is not recommended for patients with stroke or TIA attributable to 50-99% stenosis or occlusion of a major intracranial artery.",
-      "page": 30
+      "page": 30,
+      "id": "secondary-prevention-2021-59",
+      "sourceSection": "table-12",
+      "sourceRecommendationNumber": 10,
+      "pdfPage": 30,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Carotid Stenosis",
@@ -486,7 +781,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "CEA is recommended for patients with TIA or nondisabling ischemic stroke within the past 6 months and ipsilateral severe (70-99%) carotid stenosis to reduce future stroke risk, provided the estimated perioperative morbidity and mortality is below 6%.",
-      "page": 32
+      "page": 32,
+      "id": "secondary-prevention-2021-60",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 32,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Carotid Stenosis",
@@ -494,7 +794,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "CAS or CEA for symptomatic extracranial carotid stenosis is recommended to be performed by operators with established periprocedural stroke and mortality rates below 6%.",
-      "page": 32
+      "page": 32,
+      "id": "secondary-prevention-2021-61",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 32,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Carotid Stenosis",
@@ -502,7 +807,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "Intensive medical therapy (antiplatelet agents, lipid-lowering therapy, and antihypertensive treatment) is recommended for patients with carotid stenosis and stroke or TIA to reduce stroke risk.",
-      "page": 32
+      "page": 32,
+      "id": "secondary-prevention-2021-62",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 32,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Carotid Stenosis",
@@ -510,7 +820,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "CEA is recommended for patients with recent TIA or ischemic stroke and ipsilateral moderate (50-69%) carotid stenosis confirmed by catheter-based or noninvasive imaging, depending on patient-specific factors (age, sex, comorbidities), provided perioperative morbidity and mortality is below 6%.",
-      "page": 32
+      "page": 32,
+      "id": "secondary-prevention-2021-63",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 32,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Carotid Stenosis",
@@ -518,7 +833,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In stroke or TIA patients aged 70 or older for whom carotid revascularization is being considered, it is reasonable to select CEA over CAS to reduce periprocedural stroke rates.",
-      "page": 32
+      "page": 32,
+      "id": "secondary-prevention-2021-64",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 5,
+      "pdfPage": 32,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Carotid Stenosis",
@@ -526,7 +846,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "When revascularization is planned within 1 week of the index stroke, it is reasonable to choose CEA over CAS to reduce periprocedural stroke rates.",
-      "page": 32
+      "page": 32,
+      "id": "secondary-prevention-2021-65",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 6,
+      "pdfPage": 32,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Carotid Stenosis",
@@ -534,7 +859,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "When carotid revascularization is indicated for TIA or nondisabling stroke, it is reasonable to perform the procedure within 2 weeks of the index event rather than delaying surgery, to increase the likelihood of a stroke-free outcome.",
-      "page": 32
+      "page": 32,
+      "id": "secondary-prevention-2021-66",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 7,
+      "pdfPage": 33,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Carotid Stenosis",
@@ -542,7 +872,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with symptomatic severe carotid stenosis (70% or above) and anatomic or medical conditions that increase surgical risk (such as radiation-induced stenosis or post-CEA restenosis), CAS is reasonable to reduce periprocedural complication rates.",
-      "page": 33
+      "page": 33,
+      "id": "secondary-prevention-2021-67",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 8,
+      "pdfPage": 33,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Carotid Stenosis",
@@ -550,7 +885,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "In symptomatic patients at average or low endovascular risk with ICA stenosis of 70% or above by noninvasive imaging (or above 50% by catheter-based imaging) and anticipated periprocedural stroke/death rate below 6%, CAS may be considered as an alternative to CEA, particularly in those with significant cardiovascular comorbidities.",
-      "page": 33
+      "page": 33,
+      "id": "secondary-prevention-2021-68",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 9,
+      "pdfPage": 33,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Carotid Stenosis",
@@ -558,7 +898,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "The usefulness of transcarotid artery revascularization (TCAR) for prevention of recurrent stroke and TIA in patients with recent stroke or TIA (within 6 months) is uncertain.",
-      "page": 33
+      "page": 33,
+      "id": "secondary-prevention-2021-69",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 10,
+      "pdfPage": 33,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Carotid Stenosis",
@@ -566,7 +911,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "A",
       "text": "Carotid revascularization (CEA or CAS) is not recommended for patients with recent TIA or ischemic stroke when the degree of ipsilateral carotid stenosis is below 50%.",
-      "page": 33
+      "page": 33,
+      "id": "secondary-prevention-2021-70",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 11,
+      "pdfPage": 33,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Carotid Stenosis",
@@ -574,7 +924,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "A",
       "text": "Extracranial-intracranial bypass surgery is not recommended for patients with recent (within 120 days) TIA or ischemic stroke ipsilateral to atherosclerotic stenosis or occlusion of the middle cerebral or carotid artery.",
-      "page": 33
+      "page": 33,
+      "id": "secondary-prevention-2021-71",
+      "sourceSection": "table-13",
+      "sourceRecommendationNumber": 12,
+      "pdfPage": 33,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Vertebral Artery Stenosis",
@@ -582,7 +937,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "Intensive medical therapy (antiplatelet agents, lipid lowering, BP control) is recommended for patients with recently symptomatic extracranial vertebral artery stenosis to reduce stroke risk.",
-      "page": 34
+      "page": 34,
+      "id": "secondary-prevention-2021-72",
+      "sourceSection": "table-14",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 34,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Vertebral Artery Stenosis",
@@ -590,7 +950,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In patients with ischemic stroke or TIA and extracranial vertebral artery stenosis who remain symptomatic despite optimal medical therapy, the usefulness of vertebral artery stenting is not well established.",
-      "page": 34
+      "page": 34,
+      "id": "secondary-prevention-2021-73",
+      "sourceSection": "table-14",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 34,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Extracranial Vertebral Artery Stenosis",
@@ -598,7 +963,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "In patients with ischemic stroke or TIA and extracranial vertebral artery stenosis who remain symptomatic despite optimal medical therapy, the usefulness of open surgical procedures (vertebral endarterectomy or transposition) is not well established.",
-      "page": 34
+      "page": 34,
+      "id": "secondary-prevention-2021-74",
+      "sourceSection": "table-14",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 34,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Aortic Arch Atherosclerosis",
@@ -606,7 +976,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "Intensive lipid management targeting LDL-C below 70 mg/dL is recommended for stroke or TIA patients with aortic arch atheroma to prevent recurrent stroke.",
-      "page": 35
+      "page": 35,
+      "id": "secondary-prevention-2021-75",
+      "sourceSection": "table-15",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 35,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Aortic Arch Atherosclerosis",
@@ -614,7 +989,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "Antiplatelet therapy is recommended for stroke or TIA patients with aortic arch atheroma to prevent recurrent stroke.",
-      "page": 35
+      "page": 35,
+      "id": "secondary-prevention-2021-76",
+      "sourceSection": "table-15",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 35,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Moyamoya Disease",
@@ -622,7 +1002,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "Surgical revascularization with direct or indirect extracranial-intracranial bypass can be beneficial for moyamoya patients with a history of ischemic stroke or TIA to prevent recurrent ischemic events.",
-      "page": 36
+      "page": 36,
+      "id": "secondary-prevention-2021-77",
+      "sourceSection": "table-16",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 36,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Moyamoya Disease",
@@ -630,7 +1015,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In moyamoya patients with a history of ischemic stroke or TIA, antiplatelet therapy (typically aspirin monotherapy) may be reasonable for preventing recurrent ischemic events.",
-      "page": 36
+      "page": 36,
+      "id": "secondary-prevention-2021-78",
+      "sourceSection": "table-16",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 36,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Small Vessel Stroke",
@@ -638,7 +1028,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "The usefulness of cilostazol for secondary stroke prevention in patients with ischemic stroke related to small vessel disease is uncertain.",
-      "page": 37
+      "page": 37,
+      "id": "secondary-prevention-2021-79",
+      "sourceSection": "table-17",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 37,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "AF",
@@ -646,7 +1041,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "Oral anticoagulation (apixaban, dabigatran, edoxaban, rivaroxaban, or warfarin) is recommended for patients with nonvalvular AF and stroke or TIA to reduce recurrent stroke risk.",
-      "page": 38
+      "page": 38,
+      "id": "secondary-prevention-2021-80",
+      "sourceSection": "table-18",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 38,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "AF",
@@ -654,7 +1054,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "Oral anticoagulation is recommended for AF patients with stroke or TIA to reduce recurrent stroke risk regardless of the AF pattern (paroxysmal, persistent, or permanent).",
-      "page": 38
+      "page": 38,
+      "id": "secondary-prevention-2021-81",
+      "sourceSection": "table-18",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 38,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "AF",
@@ -662,7 +1067,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In stroke or TIA patients with AF who do not have moderate-to-severe mitral stenosis or a mechanical heart valve, a DOAC (apixaban, dabigatran, edoxaban, or rivaroxaban) is recommended over warfarin to reduce recurrent stroke risk.",
-      "page": 38
+      "page": 38,
+      "id": "secondary-prevention-2021-82",
+      "sourceSection": "table-18",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 38,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "AF",
@@ -670,7 +1080,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Anticoagulant therapy following the same approach used for AF is recommended for patients with atrial flutter and stroke or TIA to reduce recurrent stroke risk.",
-      "page": 38
+      "page": 38,
+      "id": "secondary-prevention-2021-83",
+      "sourceSection": "table-18",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 38,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "AF",
@@ -678,7 +1093,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "For AF patients with stroke or TIA (without moderate-to-severe mitral stenosis or mechanical valve) who cannot maintain therapeutic INR on warfarin, a DOAC (dabigatran, rivaroxaban, apixaban, or edoxaban) is recommended to reduce recurrent stroke risk.",
-      "page": 38
+      "page": 38,
+      "id": "secondary-prevention-2021-84",
+      "sourceSection": "table-18",
+      "sourceRecommendationNumber": 5,
+      "pdfPage": 38,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "AF",
@@ -686,7 +1106,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In stroke patients at high risk of hemorrhagic conversion with AF, it is reasonable to delay initiation of oral anticoagulation beyond 14 days to reduce ICH risk.",
-      "page": 38
+      "page": 38,
+      "id": "secondary-prevention-2021-85",
+      "sourceSection": "table-18",
+      "sourceRecommendationNumber": 6,
+      "pdfPage": 38,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "AF",
@@ -694,7 +1119,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "In TIA patients with nonvalvular AF, it is reasonable to initiate anticoagulation immediately after the index event to reduce recurrent stroke risk.",
-      "page": 38
+      "page": 38,
+      "id": "secondary-prevention-2021-86",
+      "sourceSection": "table-18",
+      "sourceRecommendationNumber": 7,
+      "pdfPage": 38,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "AF",
@@ -702,7 +1132,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In stroke or TIA patients with nonvalvular AF who have contraindications to lifelong anticoagulation but can tolerate at least 45 days, percutaneous left atrial appendage closure (e.g., Watchman device) may be reasonable to reduce recurrent stroke and bleeding risk.",
-      "page": 38
+      "page": 38,
+      "id": "secondary-prevention-2021-87",
+      "sourceSection": "table-18",
+      "sourceRecommendationNumber": 8,
+      "pdfPage": 38,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "AF",
@@ -710,7 +1145,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In stroke patients at low risk for hemorrhagic conversion with AF, initiating anticoagulation 2 to 14 days after the event may be reasonable to reduce recurrent stroke risk.",
-      "page": 38
+      "page": 38,
+      "id": "secondary-prevention-2021-88",
+      "sourceSection": "table-18",
+      "sourceRecommendationNumber": 9,
+      "pdfPage": 38,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "AF",
@@ -718,7 +1158,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In AF patients with stroke or TIA who have end-stage renal disease or are on dialysis, warfarin or dose-adjusted apixaban may be reasonable for anticoagulation to reduce recurrent stroke risk.",
-      "page": 38
+      "page": 38,
+      "id": "secondary-prevention-2021-89",
+      "sourceSection": "table-18",
+      "sourceRecommendationNumber": 10,
+      "pdfPage": 38,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Valvular Disease",
@@ -726,7 +1171,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "Warfarin is recommended for patients with ischemic stroke or TIA and valvular AF (moderate-to-severe mitral stenosis or any mechanical heart valve) to reduce recurrent stroke or TIA risk.",
-      "page": 41
+      "page": 41,
+      "id": "secondary-prevention-2021-90",
+      "sourceSection": "table-19",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 41,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Valvular Disease",
@@ -734,7 +1184,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with a mechanical mitral valve and prior ischemic stroke or TIA, aspirin 75-100 mg/d is recommended in addition to warfarin (INR target 3.0, range 2.5-3.5) to reduce thrombosis and recurrent stroke risk.",
-      "page": 41
+      "page": 41,
+      "id": "secondary-prevention-2021-91",
+      "sourceSection": "table-19",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 41,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Valvular Disease",
@@ -742,7 +1197,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "Antiplatelet therapy is recommended for patients with ischemic stroke or TIA and native aortic or nonrheumatic mitral valve disease (e.g., mitral annular calcification, mitral valve prolapse) without AF or other anticoagulation indication, to reduce recurrent stroke risk.",
-      "page": 41
+      "page": 41,
+      "id": "secondary-prevention-2021-92",
+      "sourceSection": "table-19",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 41,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Valvular Disease",
@@ -750,7 +1210,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "Long-term aspirin therapy is recommended over long-term anticoagulation for patients with a bioprosthetic aortic or mitral valve and prior ischemic stroke or TIA who have no other anticoagulation indication beyond 3 to 6 months after valve placement.",
-      "page": 41
+      "page": 41,
+      "id": "secondary-prevention-2021-93",
+      "sourceSection": "table-19",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 41,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Valvular Disease",
@@ -758,7 +1223,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In ischemic stroke or TIA patients with infective endocarditis who have recurrent emboli and persistent vegetations despite appropriate antibiotics, early surgery (during initial inpatient stay before completing a full antibiotic course) is reasonable to reduce recurrent embolism, provided there is no intracranial hemorrhage or extensive neurological damage.",
-      "page": 41
+      "page": 41,
+      "id": "secondary-prevention-2021-94",
+      "sourceSection": "table-19",
+      "sourceRecommendationNumber": 5,
+      "pdfPage": 41,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Valvular Disease",
@@ -766,7 +1236,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "In ischemic stroke or TIA patients with a mechanical aortic valve, higher-intensity warfarin (INR target 3.0, range 2.5-3.5) or adding aspirin 75-100 mg/d can be beneficial to reduce thromboembolic events.",
-      "page": 41
+      "page": 41,
+      "id": "secondary-prevention-2021-95",
+      "sourceSection": "table-19",
+      "sourceRecommendationNumber": 6,
+      "pdfPage": 41,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Valvular Disease",
@@ -774,7 +1249,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In ischemic stroke or TIA patients with native left-sided valve endocarditis and mobile vegetations greater than 10 mm, early surgery (before completing a full antibiotic course) may be considered to reduce recurrent embolism if there is no intracranial hemorrhage or extensive neurological damage.",
-      "page": 41
+      "page": 41,
+      "id": "secondary-prevention-2021-96",
+      "sourceSection": "table-19",
+      "sourceRecommendationNumber": 7,
+      "pdfPage": 41,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Valvular Disease",
@@ -782,7 +1262,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In ischemic stroke or TIA patients with infective endocarditis and an indication for surgery, early valve surgery (before completing a full antibiotic course) may be considered if there is no intracranial hemorrhage or extensive neurological damage.",
-      "page": 41
+      "page": 41,
+      "id": "secondary-prevention-2021-97",
+      "sourceSection": "table-19",
+      "sourceRecommendationNumber": 8,
+      "pdfPage": 41,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Valvular Disease",
@@ -790,7 +1275,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In patients with infective endocarditis and major ischemic stroke or intracranial hemorrhage, delaying valve surgery for at least 4 weeks may be considered if the patient is hemodynamically stable.",
-      "page": 41
+      "page": 41,
+      "id": "secondary-prevention-2021-98",
+      "sourceSection": "table-19",
+      "sourceRecommendationNumber": 9,
+      "pdfPage": 41,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Valvular Disease",
@@ -798,7 +1288,12 @@
       "classNote": "Harm",
       "levelOfEvidence": "B-R",
       "text": "Dabigatran is harmful and not recommended in patients with ischemic stroke or TIA and mechanical heart valves.",
-      "page": 41
+      "page": 41,
+      "id": "secondary-prevention-2021-99",
+      "sourceSection": "table-19",
+      "sourceRecommendationNumber": 10,
+      "pdfPage": 41,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "LV Thrombus",
@@ -806,7 +1301,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Therapeutic warfarin anticoagulation for at least 3 months is recommended for patients with stroke or TIA and LV thrombus to reduce recurrent stroke risk.",
-      "page": 44
+      "page": 44,
+      "id": "secondary-prevention-2021-100",
+      "sourceSection": "table-20",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 44,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "LV Thrombus",
@@ -814,7 +1314,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "In stroke or TIA patients with acute MI, advanced cardiac imaging (contrast echocardiography or cardiac MRI) is reasonable to assess for LV thrombus.",
-      "page": 44
+      "page": 44,
+      "id": "secondary-prevention-2021-101",
+      "sourceSection": "table-20",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 44,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "LV Thrombus",
@@ -822,7 +1327,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with stroke or TIA and new LV thrombus (less than 3 months old), the safety of DOAC anticoagulation to reduce recurrent stroke risk is uncertain.",
-      "page": 44
+      "page": 44,
+      "id": "secondary-prevention-2021-102",
+      "sourceSection": "table-20",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 44,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "LV Thrombus",
@@ -830,7 +1340,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "In stroke or TIA patients with acute anterior MI and reduced EF (below 50%) but no LV thrombus on imaging, empirical anticoagulation for at least 3 months might be considered to reduce recurrent cardioembolic stroke risk.",
-      "page": 44
+      "page": 44,
+      "id": "secondary-prevention-2021-103",
+      "sourceSection": "table-20",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 44,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Cardiomyopathy",
@@ -838,7 +1353,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "Warfarin anticoagulation for at least 3 months is recommended for ischemic stroke or TIA patients with left atrial or left atrial appendage thrombus in the setting of cardiomyopathy (ischemic, nonischemic, or restrictive) and LV dysfunction.",
-      "page": 46
+      "page": 46,
+      "id": "secondary-prevention-2021-104",
+      "sourceSection": "table-21",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 46,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Cardiomyopathy",
@@ -846,7 +1366,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In ischemic stroke or TIA patients with a mechanical assist device, warfarin plus aspirin can be beneficial to reduce recurrent stroke or TIA risk.",
-      "page": 46
+      "page": 46,
+      "id": "secondary-prevention-2021-105",
+      "sourceSection": "table-21",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 46,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Cardiomyopathy",
@@ -854,7 +1379,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "In ischemic stroke or TIA patients with LV noncompaction, warfarin can be beneficial to reduce recurrent stroke or TIA risk.",
-      "page": 46
+      "page": 46,
+      "id": "secondary-prevention-2021-106",
+      "sourceSection": "table-21",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 46,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Cardiomyopathy",
@@ -862,7 +1392,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In ischemic stroke or TIA patients in sinus rhythm with cardiomyopathy (ischemic or nonischemic) and reduced EF but no left atrial or LV thrombus, the comparative effectiveness of anticoagulation versus antiplatelet therapy is uncertain and the choice is recommended to be individualized.",
-      "page": 46
+      "page": 46,
+      "id": "secondary-prevention-2021-107",
+      "sourceSection": "table-21",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 46,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Cardiomyopathy",
@@ -870,7 +1405,12 @@
       "classNote": "Harm",
       "levelOfEvidence": "B-R",
       "text": "In stroke or TIA patients with LVADs, dabigatran instead of warfarin causes harm and is not recommended for primary or secondary prevention of ischemic stroke.",
-      "page": 46
+      "page": 46,
+      "id": "secondary-prevention-2021-108",
+      "sourceSection": "table-21",
+      "sourceRecommendationNumber": 5,
+      "pdfPage": 46,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "PFO",
@@ -878,7 +1418,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "In patients with nonlacunar ischemic stroke of undetermined cause and a PFO, recommendations for closure versus medical management are recommended to be made jointly by the patient, a cardiologist, and a neurologist, considering the probability that the PFO is causally related.",
-      "page": 48
+      "page": 48,
+      "id": "secondary-prevention-2021-109",
+      "sourceSection": "table-22",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 48,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "PFO",
@@ -886,7 +1431,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In patients aged 18-60 with nonlacunar ischemic stroke of undetermined cause (after thorough evaluation) and a PFO with high-risk anatomic features, transcatheter PFO closure with long-term antiplatelet therapy is reasonable over antiplatelet therapy alone for preventing recurrent stroke.",
-      "page": 48
+      "page": 48,
+      "id": "secondary-prevention-2021-110",
+      "sourceSection": "table-22",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 48,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "PFO",
@@ -894,7 +1444,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients aged 18-60 with nonlacunar ischemic stroke of undetermined cause (after thorough evaluation) and a PFO without high-risk anatomic features, the benefit of transcatheter PFO closure with long-term antiplatelet therapy over antiplatelet therapy alone is not well established.",
-      "page": 48
+      "page": 48,
+      "id": "secondary-prevention-2021-111",
+      "sourceSection": "table-22",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 48,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "PFO",
@@ -902,7 +1457,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients aged 18-60 with nonlacunar ischemic stroke of undetermined cause (after thorough evaluation) and a PFO, the comparative benefit of transcatheter PFO closure versus warfarin is unknown.",
-      "page": 48
+      "page": 48,
+      "id": "secondary-prevention-2021-112",
+      "sourceSection": "table-22",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 48,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Congenital Heart Disease",
@@ -910,7 +1470,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "Warfarin anticoagulation is recommended for patients with ischemic stroke or TIA and Fontan palliation to reduce recurrent stroke risk.",
-      "page": 50
+      "page": 50,
+      "id": "secondary-prevention-2021-113",
+      "sourceSection": "table-23",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 50,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Congenital Heart Disease",
@@ -918,7 +1483,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "In patients with cyanotic congenital heart disease or other complex lesions and ischemic stroke or TIA of presumed cardioembolic origin, warfarin therapy is reasonable to reduce recurrent stroke or TIA risk.",
-      "page": 50
+      "page": 50,
+      "id": "secondary-prevention-2021-114",
+      "sourceSection": "table-23",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 50,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Cardiac Tumors",
@@ -926,7 +1496,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "Resection of a left-sided cardiac tumor can be beneficial for patients with stroke or TIA found to have such a tumor, to reduce recurrent stroke risk.",
-      "page": 52
+      "page": 52,
+      "id": "secondary-prevention-2021-115",
+      "sourceSection": "table-24",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 52,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Dissection",
@@ -934,7 +1509,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "Antithrombotic therapy for at least 3 months is recommended for patients with ischemic stroke or TIA following extracranial carotid or vertebral arterial dissection to prevent recurrent stroke.",
-      "page": 52
+      "page": 52,
+      "id": "secondary-prevention-2021-116",
+      "sourceSection": "table-25",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 52,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Dissection",
@@ -942,7 +1522,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In ischemic stroke or TIA patients within 3 months of an extracranial carotid or vertebral arterial dissection, either aspirin or warfarin is reasonable for preventing recurrent stroke.",
-      "page": 52
+      "page": 52,
+      "id": "secondary-prevention-2021-117",
+      "sourceSection": "table-25",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 52,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Dissection",
@@ -950,7 +1535,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In stroke or TIA patients with extracranial carotid or vertebral artery dissection who have recurrent events despite antithrombotic therapy, endovascular therapy may be considered to prevent recurrent stroke.",
-      "page": 52
+      "page": 52,
+      "id": "secondary-prevention-2021-118",
+      "sourceSection": "table-25",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 52,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Hematologic Traits",
@@ -958,7 +1548,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with ischemic stroke or TIA of unknown source (despite thorough evaluation) and no other thrombotic history who are found to have prothrombin 20210A mutation, activated protein C resistance, elevated factor VIII, or deficiency of protein C, protein S, or antithrombin III, antiplatelet therapy is reasonable to reduce recurrent stroke risk.",
-      "page": 53
+      "page": 53,
+      "id": "secondary-prevention-2021-119",
+      "sourceSection": "table-26",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 53,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Antiphospholipid Syndrome",
@@ -966,7 +1561,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Antiplatelet therapy alone is recommended for patients with ischemic stroke or TIA who have an isolated antiphospholipid antibody but do not meet full criteria for antiphospholipid syndrome, to reduce recurrent stroke risk.",
-      "page": 54
+      "page": 54,
+      "id": "secondary-prevention-2021-120",
+      "sourceSection": "table-27",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 54,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Antiphospholipid Syndrome",
@@ -974,7 +1574,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In ischemic stroke or TIA patients with confirmed antiphospholipid syndrome on warfarin, an INR target of 2-3 (rather than above 3) is reasonable to balance bleeding risk against thrombosis risk.",
-      "page": 54
+      "page": 54,
+      "id": "secondary-prevention-2021-121",
+      "sourceSection": "table-27",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 54,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Antiphospholipid Syndrome",
@@ -982,7 +1587,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In ischemic stroke or TIA patients who meet criteria for antiphospholipid syndrome, anticoagulation with warfarin is reasonable to reduce recurrent stroke or TIA risk.",
-      "page": 54
+      "page": 54,
+      "id": "secondary-prevention-2021-122",
+      "sourceSection": "table-27",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 54,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Antiphospholipid Syndrome",
@@ -990,7 +1600,12 @@
       "classNote": "Harm",
       "levelOfEvidence": "B-R",
       "text": "Rivaroxaban is not recommended for ischemic stroke or TIA patients with antiphospholipid syndrome, thrombosis history, and triple-positive antiphospholipid antibodies (lupus anticoagulant, anticardiolipin, and anti-beta-2 glycoprotein-I), as it is associated with excess thrombotic events compared with warfarin.",
-      "page": 54
+      "page": 54,
+      "id": "secondary-prevention-2021-123",
+      "sourceSection": "table-27",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 54,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Hyperhomocysteinemia",
@@ -998,7 +1613,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
       "text": "Supplementation with folate, vitamin B6, and vitamin B12 is not effective for preventing recurrent stroke in ischemic stroke or TIA patients with hyperhomocysteinemia.",
-      "page": 55
+      "page": 55,
+      "id": "secondary-prevention-2021-124",
+      "sourceSection": "table-28",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 55,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Malignancy",
@@ -1006,7 +1626,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In ischemic stroke or TIA patients with AF and active cancer, DOACs are reasonable to consider over warfarin for stroke prevention.",
-      "page": 56
+      "page": 56,
+      "id": "secondary-prevention-2021-125",
+      "sourceSection": "table-29",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 56,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Sickle Cell Disease",
@@ -1014,7 +1639,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Chronic blood transfusions to reduce hemoglobin S to below 30% of total hemoglobin are recommended for sickle cell disease patients with prior ischemic stroke or TIA to prevent recurrent ischemic stroke.",
-      "page": 57
+      "page": 57,
+      "id": "secondary-prevention-2021-126",
+      "sourceSection": "table-30",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 57,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Sickle Cell Disease",
@@ -1022,7 +1652,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In sickle cell disease patients with prior ischemic stroke or TIA for whom transfusion therapy is unavailable or impractical, hydroxyurea is reasonable for preventing recurrent ischemic stroke.",
-      "page": 57
+      "page": 57,
+      "id": "secondary-prevention-2021-127",
+      "sourceSection": "table-30",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 57,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Autoimmune Vasculitis",
@@ -1030,7 +1665,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Immediate initiation of high-dose oral glucocorticoids is recommended for ischemic stroke or TIA patients with symptoms attributed to giant cell arteritis to reduce recurrent stroke risk.",
-      "page": 58
+      "page": 58,
+      "id": "secondary-prevention-2021-128",
+      "sourceSection": "table-31",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 58,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Autoimmune Vasculitis",
@@ -1038,7 +1678,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In ischemic stroke or TIA patients with confirmed giant cell arteritis, adjunctive therapy with methotrexate or tocilizumab (added to steroids) is reasonable to lower recurrent stroke risk.",
-      "page": 58
+      "page": 58,
+      "id": "secondary-prevention-2021-129",
+      "sourceSection": "table-31",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 58,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Autoimmune Vasculitis",
@@ -1046,7 +1691,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In ischemic stroke or TIA patients with primary CNS angiitis, induction therapy with glucocorticoids and/or immunosuppressants followed by long-term steroid-sparing immunosuppressive maintenance is reasonable to reduce stroke recurrence.",
-      "page": 58
+      "page": 58,
+      "id": "secondary-prevention-2021-130",
+      "sourceSection": "table-31",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 58,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Autoimmune Vasculitis",
@@ -1054,7 +1704,12 @@
       "classNote": "Harm",
       "levelOfEvidence": "B-R",
       "text": "Infliximab is not recommended for ischemic stroke or TIA patients with confirmed giant cell arteritis, as it is associated with recurrent ocular symptoms and markers of ongoing disease activity.",
-      "page": 58
+      "page": 58,
+      "id": "secondary-prevention-2021-131",
+      "sourceSection": "table-31",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 58,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Infectious Vasculitis",
@@ -1062,7 +1717,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Treating the underlying infection is recommended for ischemic stroke or TIA patients with infectious vasculitis (e.g., VZV cerebral vasculitis, neurosyphilis, bacterial meningitis) to reduce stroke risk.",
-      "page": 59
+      "page": 59,
+      "id": "secondary-prevention-2021-132",
+      "sourceSection": "table-32",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 59,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Infectious Vasculitis",
@@ -1070,7 +1730,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In ischemic stroke or TIA patients with HIV vasculopathy, daily aspirin combined with viral suppression through antiretroviral therapy is reasonable to reduce recurrent stroke risk.",
-      "page": 59
+      "page": 59,
+      "id": "secondary-prevention-2021-133",
+      "sourceSection": "table-32",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 59,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Other Genetic Disorders",
@@ -1078,7 +1743,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In ischemic stroke or TIA patients with cystathionine beta-synthase deficiency, pyridoxine (in responsive patients), a low-methionine and cysteine-enhanced diet, and supplementation with pyridoxine, vitamin B12, and folate are recommended to normalize plasma homocysteine levels and reduce recurrent stroke risk.",
-      "page": 60
+      "page": 60,
+      "id": "secondary-prevention-2021-134",
+      "sourceSection": "table-33",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 60,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Other Genetic Disorders",
@@ -1086,7 +1756,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In ischemic stroke or TIA patients with Anderson-Fabry disease, the value of enzyme replacement therapy (agalsidase alfa or agalsidase beta) in preventing recurrent stroke is uncertain.",
-      "page": 60
+      "page": 60,
+      "id": "secondary-prevention-2021-135",
+      "sourceSection": "table-33",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 60,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Carotid Web",
@@ -1094,7 +1769,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Antiplatelet therapy is recommended for patients with a carotid web in the distribution of ischemic stroke or TIA, without other attributable causes, to prevent recurrent ischemic events.",
-      "page": 61
+      "page": 61,
+      "id": "secondary-prevention-2021-136",
+      "sourceSection": "table-34",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 61,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Carotid Web",
@@ -1102,7 +1782,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with a carotid web in the distribution of recurrent ischemic stroke refractory to medical management and no other identifiable stroke cause after comprehensive workup, carotid stenting or CEA may be considered to prevent recurrence.",
-      "page": 61
+      "page": 61,
+      "id": "secondary-prevention-2021-137",
+      "sourceSection": "table-34",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 61,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Fibromuscular Dysplasia",
@@ -1110,7 +1795,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "Antiplatelet therapy, BP control, and lifestyle modification are recommended for FMD patients with ischemic stroke or TIA and no other attributable cause, to prevent future ischemic events.",
-      "page": 62
+      "page": 62,
+      "id": "secondary-prevention-2021-138",
+      "sourceSection": "table-35",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 62,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Fibromuscular Dysplasia",
@@ -1118,7 +1808,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "In patients with ischemic stroke or TIA attributable to dissection with FMD and no intraluminal thrombus, antiplatelet therapy is reasonable for preventing future ischemic events.",
-      "page": 62
+      "page": 62,
+      "id": "secondary-prevention-2021-139",
+      "sourceSection": "table-35",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 62,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Fibromuscular Dysplasia",
@@ -1126,7 +1821,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with cervical carotid FMD and recurrent ischemic stroke despite optimal medical management with no other attributable cause, carotid angioplasty with or without stenting may be reasonable.",
-      "page": 62
+      "page": 62,
+      "id": "secondary-prevention-2021-140",
+      "sourceSection": "table-35",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 62,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Dolichoectasia",
@@ -1134,7 +1834,12 @@
       "classNote": null,
       "levelOfEvidence": "C-LD",
       "text": "In patients with vertebrobasilar dolichoectasia and ischemic stroke or TIA without other attributable causes, antiplatelet or anticoagulant therapy is reasonable for preventing recurrent ischemic events.",
-      "page": 62
+      "page": 62,
+      "id": "secondary-prevention-2021-141",
+      "sourceSection": "table-36",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 62,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "ESUS",
@@ -1142,7 +1847,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
       "text": "DOACs are not recommended for secondary stroke prevention in patients with ESUS.",
-      "page": 63
+      "page": 63,
+      "id": "secondary-prevention-2021-142",
+      "sourceSection": "table-37",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 63,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "ESUS",
@@ -1150,7 +1860,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "B-NR",
       "text": "Ticagrelor is not recommended for secondary stroke prevention in patients with ESUS.",
-      "page": 63
+      "page": 63,
+      "id": "secondary-prevention-2021-143",
+      "sourceSection": "table-37",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 63,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Antithrombotic Medications",
@@ -1158,7 +1873,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "Antiplatelet therapy is recommended over oral anticoagulation for patients with noncardioembolic ischemic stroke or TIA to reduce recurrent ischemic stroke and other cardiovascular events while minimizing bleeding risk.",
-      "page": 64
+      "page": 64,
+      "id": "secondary-prevention-2021-144",
+      "sourceSection": "table-38",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 64,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Antithrombotic Medications",
@@ -1166,7 +1886,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "For noncardioembolic ischemic stroke or TIA, aspirin 50-325 mg daily, clopidogrel 75 mg daily, or aspirin 25 mg plus extended-release dipyridamole 200 mg twice daily is recommended for secondary prevention.",
-      "page": 64
+      "page": 64,
+      "id": "secondary-prevention-2021-145",
+      "sourceSection": "table-38",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 64,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Antithrombotic Medications",
@@ -1174,7 +1899,12 @@
       "classNote": null,
       "levelOfEvidence": "A",
       "text": "For recent minor noncardioembolic ischemic stroke (NIHSS 3 or below) or high-risk TIA (ABCD2 4 or above), dual antiplatelet therapy (aspirin plus clopidogrel) is recommended to be initiated early (ideally within 12-24 hours, at least within 7 days of onset) and continued for 21 to 90 days, followed by single antiplatelet therapy, to reduce recurrent ischemic stroke.",
-      "page": 64
+      "page": 64,
+      "id": "secondary-prevention-2021-146",
+      "sourceSection": "table-38",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 64,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Antithrombotic Medications",
@@ -1182,7 +1912,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "For recent (within 24 hours) minor to moderate stroke (NIHSS 5 or below), high-risk TIA (ABCD2 6 or above), or symptomatic 30% or greater stenosis of a relevant artery, dual antiplatelet therapy with ticagrelor plus aspirin for 30 days may be considered to reduce 30-day recurrent stroke but may increase serious bleeding risk including ICH.",
-      "page": 64
+      "page": 64,
+      "id": "secondary-prevention-2021-147",
+      "sourceSection": "table-38",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 64,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Antithrombotic Medications",
@@ -1190,7 +1925,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "For patients already on aspirin at the time of noncardioembolic ischemic stroke or TIA, the effectiveness of increasing the aspirin dose or switching to another antiplatelet agent is not well established.",
-      "page": 64
+      "page": 64,
+      "id": "secondary-prevention-2021-148",
+      "sourceSection": "table-38",
+      "sourceRecommendationNumber": 5,
+      "pdfPage": 64,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Antithrombotic Medications",
@@ -1198,7 +1938,12 @@
       "classNote": "Harm",
       "levelOfEvidence": "A",
       "text": "Continuous dual antiplatelet therapy (aspirin plus clopidogrel) beyond 90 days or use of triple antiplatelet therapy is associated with excess hemorrhage risk in noncardioembolic ischemic stroke or TIA patients.",
-      "page": 64
+      "page": 64,
+      "id": "secondary-prevention-2021-149",
+      "sourceSection": "table-38",
+      "sourceRecommendationNumber": 6,
+      "pdfPage": 64,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "organizations-Based Interventions",
@@ -1206,7 +1951,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "Voluntary facility-based or outpatient quality monitoring and improvement programs are recommended for ischemic stroke or TIA patients to improve adherence to evidence-based secondary prevention guidelines.",
-      "page": 67
+      "page": 67,
+      "id": "secondary-prevention-2021-150",
+      "sourceSection": "table-39",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 67,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "organizations-Based Interventions",
@@ -1214,7 +1964,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "A multidisciplinary outpatient team-based approach (with active medication adjustment by advanced practice providers, nurses, or pharmacists) can be effective for controlling BP, lipids, and other vascular risk factors in ischemic stroke or TIA patients.",
-      "page": 67
+      "page": 67,
+      "id": "secondary-prevention-2021-151",
+      "sourceSection": "table-39",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 67,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "organizations-Based Interventions",
@@ -1222,7 +1977,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "For patients presenting to primary care as first contact after TIA or minor stroke, using a clinical decision support tool that improves diagnostic accuracy, stratifies risk, supports appropriate triage, and prompts medication initiation and lifestyle counseling is reasonable to reduce 90-day recurrent stroke risk.",
-      "page": 67
+      "page": 67,
+      "id": "secondary-prevention-2021-152",
+      "sourceSection": "table-39",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 67,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Behavior Change Interventions",
@@ -1230,7 +1990,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "Behavior change interventions targeting stroke literacy, lifestyle factors, and medication adherence are recommended for ischemic stroke or TIA patients to reduce cardiovascular events.",
-      "page": 69
+      "page": 69,
+      "id": "secondary-prevention-2021-153",
+      "sourceSection": "table-40",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 69,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Behavior Change Interventions",
@@ -1238,7 +2003,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "Teaching self-management skills or using behavior change theory (e.g., motivational interviewing) can be beneficial for improving medication adherence in ischemic stroke or TIA patients.",
-      "page": 69
+      "page": 69,
+      "id": "secondary-prevention-2021-154",
+      "sourceSection": "table-40",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 69,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Behavior Change Interventions",
@@ -1246,7 +2016,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "Combined exercise-based and behavior change interventions are likely preferable to behavior interventions alone, exercise alone, or usual care for reducing physiological stroke risk factors such as SBP in stroke or TIA patients.",
-      "page": 69
+      "page": 69,
+      "id": "secondary-prevention-2021-155",
+      "sourceSection": "table-40",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 69,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Behavior Change Interventions",
@@ -1254,7 +2029,12 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "Participation in targeted secondary prevention programs (e.g., cardiac rehabilitation or exercise and lifestyle counseling) can be beneficial for TIA or nondisabling stroke patients to reduce risk factors and recurrent ischemic events.",
-      "page": 69
+      "page": 69,
+      "id": "secondary-prevention-2021-156",
+      "sourceSection": "table-40",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 69,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Behavior Change Interventions",
@@ -1262,7 +2042,12 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "For patients with disabling stroke discharged from acute services, engaging in adapted secondary prevention programs (e.g., adapted cardiac rehabilitation or structured aerobic exercise with healthy lifestyle counseling) can be beneficial to reduce vascular risk factors and mortality.",
-      "page": 69
+      "page": 69,
+      "id": "secondary-prevention-2021-157",
+      "sourceSection": "table-40",
+      "sourceRecommendationNumber": 5,
+      "pdfPage": 69,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Behavior Change Interventions",
@@ -1270,7 +2055,12 @@
       "classNote": "No Benefit",
       "levelOfEvidence": "B-R",
       "text": "While providing health information about stroke prevention is essential, information or advice alone without a behavioral intervention is not effective for changing modifiable lifestyle-related risk factors or reducing future ischemic events in stroke or TIA patients.",
-      "page": 69
+      "page": 69,
+      "id": "secondary-prevention-2021-158",
+      "sourceSection": "table-40",
+      "sourceRecommendationNumber": 6,
+      "pdfPage": 69,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Health Equity",
@@ -1278,7 +2068,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "Evaluating and addressing social determinants of health (e.g., literacy, language proficiency, medication affordability, food insecurity, housing, and transportation barriers) is recommended when managing stroke risk factors in stroke or TIA patients to reduce healthcare disparities.",
-      "page": 71
+      "page": 71,
+      "id": "secondary-prevention-2021-159",
+      "sourceSection": "table-41",
+      "sourceRecommendationNumber": 1,
+      "pdfPage": 71,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Health Equity",
@@ -1286,7 +2081,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "Monitoring the achievement of nationally accepted, evidence-based performance measures is recommended for stroke or TIA patients to identify and address care inequities.",
-      "page": 71
+      "page": 71,
+      "id": "secondary-prevention-2021-160",
+      "sourceSection": "table-41",
+      "sourceRecommendationNumber": 2,
+      "pdfPage": 71,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Health Equity",
@@ -1294,7 +2094,12 @@
       "classNote": null,
       "levelOfEvidence": "C-EO",
       "text": "Systematic adoption of the AHRQ Universal Precautions Toolkit for Health Literacy is recommended to integrate health literacy into secondary stroke prevention for stroke or TIA patients.",
-      "page": 71
+      "page": 71,
+      "id": "secondary-prevention-2021-161",
+      "sourceSection": "table-41",
+      "sourceRecommendationNumber": 3,
+      "pdfPage": 71,
+      "sourceStatementType": "recommendation"
     },
     {
       "section": "Health Equity",
@@ -1302,7 +2107,697 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "The optimal intervention model for improving stroke risk factor control and reducing disparities in urban, predominantly minority, or low-socioeconomic-status stroke or TIA populations is currently unknown.",
-      "page": 71
+      "page": 71,
+      "id": "secondary-prevention-2021-162",
+      "sourceSection": "table-41",
+      "sourceRecommendationNumber": 4,
+      "pdfPage": 71,
+      "sourceStatementType": "recommendation"
     }
-  ]
+  ],
+  "documentType": "guideline",
+  "gradingSystem": "ACC/AHA",
+  "publicationUpdates": [
+    {
+      "type": "correction",
+      "pmid": "34181456",
+      "doi": "10.1161/str.0000000000000383",
+      "publisherUrl": "https://doi.org/10.1161/str.0000000000000383",
+      "status": "not-applicable",
+      "note": "Corrects the PFO take-home summary, diagnostic algorithm and a trial acronym. Extracted PFO criteria and diagnostic recommendation grades already reflect the corrected recommendations; the algorithm and acronym are not reproduced.",
+      "checkedAt": "2026-09-06",
+      "affectedRecommendationIds": []
+    }
+  ],
+  "coverage": {
+    "status": "complete",
+    "scope": "All formal recommendations and good-practice/consensus statements",
+    "checkedAt": "2026-09-06",
+    "sourceRecommendationCount": 162,
+    "sourceConsensusCount": 0,
+    "sourceSections": [
+      {
+        "id": "table-01",
+        "title": "Diagnostic Evaluation",
+        "sourceTable": "Recommendations for Diagnostic Evaluation",
+        "rowCount": 14,
+        "pageRange": [
+          10,
+          10
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      {
+        "id": "table-02",
+        "title": "Nutrition",
+        "sourceTable": "Recommendations for Nutrition",
+        "rowCount": 2,
+        "pageRange": [
+          14,
+          14
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-03",
+        "title": "Physical Activity",
+        "sourceTable": "Recommendations for Physical Activity",
+        "rowCount": 4,
+        "pageRange": [
+          16,
+          16
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "table-04",
+        "title": "Smoking Cessation",
+        "sourceTable": "Recommendations for Smoking Cessation",
+        "rowCount": 3,
+        "pageRange": [
+          17,
+          17
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "table-05",
+        "title": "Substance Use",
+        "sourceTable": "Recommendations for Substance Use",
+        "rowCount": 3,
+        "pageRange": [
+          18,
+          18
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "table-06",
+        "title": "Hypertension",
+        "sourceTable": "Recommendations for Hypertension",
+        "rowCount": 4,
+        "pageRange": [
+          20,
+          20
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "table-07",
+        "title": "Treating and Monitoring Hyperlipidemia",
+        "sourceTable": "Recommendations for Treating and Monitoring Hyperlipidemia",
+        "rowCount": 4,
+        "pageRange": [
+          21,
+          21
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "table-08",
+        "title": "Hypertriglyceridemia",
+        "sourceTable": "Recommendations for Hypertriglyceridemia",
+        "rowCount": 2,
+        "pageRange": [
+          23,
+          23
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-09",
+        "title": "Glucose",
+        "sourceTable": "Recommendations for Glucose",
+        "rowCount": 8,
+        "pageRange": [
+          24,
+          24
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "id": "table-10",
+        "title": "Obesity",
+        "sourceTable": "Recommendations for Obesity",
+        "rowCount": 3,
+        "pageRange": [
+          27,
+          27
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "table-11",
+        "title": "Obstructive Sleep Apnea",
+        "sourceTable": "Recommendations for Obstructive Sleep Apnea",
+        "rowCount": 2,
+        "pageRange": [
+          28,
+          28
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-12",
+        "title": "Intracranial Large Artery Atherosclerosis",
+        "sourceTable": "Recommendations for Intracranial Large Artery Atherosclerosis",
+        "rowCount": 10,
+        "pageRange": [
+          29,
+          30
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      {
+        "id": "table-13",
+        "title": "Extracranial Carotid Stenosis",
+        "sourceTable": "Recommendations for Extracranial Carotid Stenosis",
+        "rowCount": 12,
+        "pageRange": [
+          32,
+          33
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      },
+      {
+        "id": "table-14",
+        "title": "Extracranial Vertebral Artery Stenosis",
+        "sourceTable": "Recommendations for Extracranial Vertebral Artery Stenosis",
+        "rowCount": 3,
+        "pageRange": [
+          34,
+          34
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "table-15",
+        "title": "Aortic Arch Atherosclerosis",
+        "sourceTable": "Recommendations for Aortic Arch Atherosclerosis",
+        "rowCount": 2,
+        "pageRange": [
+          35,
+          35
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-16",
+        "title": "Moyamoya Disease",
+        "sourceTable": "Recommendations for Moyamoya Disease",
+        "rowCount": 2,
+        "pageRange": [
+          36,
+          36
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-17",
+        "title": "Small Vessel Stroke",
+        "sourceTable": "Recommendation for Small Vessel Stroke",
+        "rowCount": 1,
+        "pageRange": [
+          37,
+          37
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "table-18",
+        "title": "AF",
+        "sourceTable": "Recommendations for AF",
+        "rowCount": 10,
+        "pageRange": [
+          38,
+          38
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      {
+        "id": "table-19",
+        "title": "Valvular Disease",
+        "sourceTable": "Recommendations for Valvular Disease",
+        "rowCount": 10,
+        "pageRange": [
+          41,
+          41
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      {
+        "id": "table-20",
+        "title": "LV Thrombus",
+        "sourceTable": "Recommendations for LV Thrombus",
+        "rowCount": 4,
+        "pageRange": [
+          44,
+          44
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "table-21",
+        "title": "Cardiomyopathy",
+        "sourceTable": "Recommendations for Cardiomyopathy",
+        "rowCount": 5,
+        "pageRange": [
+          46,
+          46
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "id": "table-22",
+        "title": "PFO",
+        "sourceTable": "Recommendations for PFO",
+        "rowCount": 4,
+        "pageRange": [
+          48,
+          48
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "table-23",
+        "title": "Congenital Heart Disease",
+        "sourceTable": "Recommendations for Congenital Heart Disease",
+        "rowCount": 2,
+        "pageRange": [
+          50,
+          50
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-24",
+        "title": "Cardiac Tumors",
+        "sourceTable": "Recommendation for Cardiac Tumors",
+        "rowCount": 1,
+        "pageRange": [
+          52,
+          52
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "table-25",
+        "title": "Dissection",
+        "sourceTable": "Recommendations for Dissection",
+        "rowCount": 3,
+        "pageRange": [
+          52,
+          52
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "table-26",
+        "title": "Hematologic Traits",
+        "sourceTable": "Recommendation for Hematologic Traits",
+        "rowCount": 1,
+        "pageRange": [
+          53,
+          53
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "table-27",
+        "title": "Antiphospholipid Syndrome",
+        "sourceTable": "Recommendations for Antiphospholipid Syndrome",
+        "rowCount": 4,
+        "pageRange": [
+          54,
+          54
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "table-28",
+        "title": "Hyperhomocysteinemia",
+        "sourceTable": "Recommendation for Hyperhomocysteinemia",
+        "rowCount": 1,
+        "pageRange": [
+          55,
+          55
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "table-29",
+        "title": "Malignancy",
+        "sourceTable": "Recommendation for Malignancy",
+        "rowCount": 1,
+        "pageRange": [
+          56,
+          56
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "table-30",
+        "title": "Sickle Cell Disease",
+        "sourceTable": "Recommendations for Sickle Cell Disease",
+        "rowCount": 2,
+        "pageRange": [
+          57,
+          57
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-31",
+        "title": "Autoimmune Vasculitis",
+        "sourceTable": "Recommendations for Autoimmune Vasculitis",
+        "rowCount": 4,
+        "pageRange": [
+          58,
+          58
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "table-32",
+        "title": "Infectious Vasculitis",
+        "sourceTable": "Recommendations for Infectious Vasculitis",
+        "rowCount": 2,
+        "pageRange": [
+          59,
+          59
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-33",
+        "title": "Other Genetic Disorders",
+        "sourceTable": "Recommendations for Other Genetic Disorders",
+        "rowCount": 2,
+        "pageRange": [
+          60,
+          60
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-34",
+        "title": "Carotid Web",
+        "sourceTable": "Recommendations for Carotid Web",
+        "rowCount": 2,
+        "pageRange": [
+          61,
+          61
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-35",
+        "title": "Fibromuscular Dysplasia",
+        "sourceTable": "Recommendations for Fibromuscular Dysplasia",
+        "rowCount": 3,
+        "pageRange": [
+          62,
+          62
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "table-36",
+        "title": "Dolichoectasia",
+        "sourceTable": "Recommendation for Dolichoectasia",
+        "rowCount": 1,
+        "pageRange": [
+          62,
+          62
+        ],
+        "recommendationNumbers": [
+          1
+        ]
+      },
+      {
+        "id": "table-37",
+        "title": "ESUS",
+        "sourceTable": "Recommendations for ESUS",
+        "rowCount": 2,
+        "pageRange": [
+          63,
+          63
+        ],
+        "recommendationNumbers": [
+          1,
+          2
+        ]
+      },
+      {
+        "id": "table-38",
+        "title": "Antithrombotic Medications",
+        "sourceTable": "Recommendations for Antithrombotic Medications",
+        "rowCount": 6,
+        "pageRange": [
+          64,
+          64
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "table-39",
+        "title": "organizations-Based Interventions",
+        "sourceTable": "Recommendations for Health Systems–Based Interventions",
+        "rowCount": 3,
+        "pageRange": [
+          67,
+          67
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "id": "table-40",
+        "title": "Behavior Change Interventions",
+        "sourceTable": "Recommendations for Behavior Change Interventions",
+        "rowCount": 6,
+        "pageRange": [
+          69,
+          69
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "id": "table-41",
+        "title": "Health Equity",
+        "sourceTable": "Recommendations for Health Equity",
+        "rowCount": 4,
+        "pageRange": [
+          71,
+          71
+        ],
+        "recommendationNumbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "sourceDocument": {
+      "doi": "10.1161/STR.0000000000000375",
+      "edition": "Complete publisher PDF; physical PDF pagination.",
+      "pdfUrl": "https://www.ohsu.edu/sites/default/files/2022-04/AHA%20%20Stroke%20Prevention%20Guidlines%202021.pdf",
+      "pageCount": 104,
+      "sha256": "3347d9c0ee0e804ecaf0c0f689d0beb09b47773eb64fd63126445e48a0c16d87"
+    },
+    "note": "All formal recommendation tables and numbered rows reconciled against the complete source document. This is a source-inventory review, not a new clinical validation of every existing summary or supporting narrative. Existing publication-correction statuses remain separate. No separately designated ungraded consensus or good-practice recommendation set is present."
+  }
 }

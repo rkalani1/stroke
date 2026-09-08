@@ -49,5 +49,39 @@
     "certainty": "high",
     "lastReviewed": "2026-05-29",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "interact-pooled",
+    "name": "INTERACT1-4 pooled",
+    "fullName": "Effects of Blood Pressure Lowering in Relation to Time in Acute Intracerebral Haemorrhage: A Pooled Analysis of the Four INTERACT Trials",
+    "category": "ich-bp-management",
+    "population": "n=11312, Mean 63 years (SD 12.7); 4066 (35.9%) female, 7246 (64.1%) male, NIHSS Not used; baseline severity handled through the ICH score in the heterogeneity analyses, Median 2.9 h from symptom onset to randomisation (IQR 1.8-4.1); INTERACT1-3 enrolled within 6 h of onset, INTERACT4 within 2 h",
+    "finding": "Favoured intensive BP lowering: significantly decreased odds of poor physical function (mRS 3-6)",
+    "teachingPoint": "Supports starting BP lowering as early as possible after ICH — ideally within about 3 hours of onset — while making explicit that the benefit is not mediated by reduced haematoma growth.",
+    "PMID": "40541207",
+    "year": 2025,
+    "citationIds": [
+      "cit-interact-pooled-2025"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "ich-bp-deep-vs-lobar-meta",
+    "name": "Deep vs lobar ICH BP meta-analysis",
+    "fullName": "Functional Outcomes After Intensive Blood Pressure Reduction in Deep and Lobar Intracerebral Hemorrhage",
+    "category": "ich-bp-management",
+    "population": "n=9022, Mean 63 years; 37% female (both analysis steps), NIHSS Not used; ATACH-2 individual patient data were adjusted for Glasgow Coma Scale score and presence of intraventricular haemorrhage, Acute ICH windows as defined by the three parent trials; the analysis did not stratify by time from onset",
+    "finding": "DID NOT demonstrate a significant benefit of intensive BP reduction in either location. Step 1: deep OR 0.89, lobar OR 0.92. Step 2 (with INTERACT3 added): deep OR 0.82, lobar OR 0.97. All four confidence intervals cross 1.00.",
+    "teachingPoint": "Teaches that the deep-versus-lobar question in acute BP management is unresolved: current evidence neither establishes a location-specific benefit nor rules one out, so location should not by itself change the acute BP target.",
+    "PMID": "41962119",
+    "year": 2026,
+    "citationIds": [
+      "cit-ich-bp-location-meta-2026"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-08-28",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

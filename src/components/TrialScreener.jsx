@@ -47,9 +47,6 @@ import {
 
 const cx = (...p) => p.filter(Boolean).join(' ');
 
-export const COMPLIANCE_BANNER =
-  'Synthetic public demo — not for clinical decision-making. Do not enter real patient identifiers or PHI. Registry matches are first-pass screens only and must be confirmed against the full ClinicalTrials.gov record and approved local study materials before clinical action.';
-
 const CLASSIFICATIONS = [
   { id: 'ischemic', label: 'Ischemic', sub: 'stroke', onsetVal: 2 },
   { id: 'tia', label: 'TIA', sub: 'transient', onsetVal: 12 },
@@ -168,7 +165,7 @@ const STATUS_MAP = {
     rail: 'bg-slate-200 dark:bg-slate-700'
   },
   closed: {
-    text: 'Closed',
+    text: 'Not enrolling',
     dot: 'bg-slate-300 dark:bg-slate-600',
     cls: 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-paper-2 dark:text-ink-2 dark:border-line',
     rail: 'bg-slate-200 dark:bg-slate-700'
@@ -429,8 +426,8 @@ function ResultCard({ item, onOpenDetails, compact = false }) {
         {/* Facts the engine could not settle from classification + onset alone.
             Rendered as a quiet checklist, not a warning: it is what to check at
             the bedside, not a form to fill in. Registry/protocol source notes
-            live in the details sheet and the tab-level compliance banner —
-            repeating them on every card was noise. */}
+            live in the details sheet — repeating them on every card was
+            noise. */}
         {pendingFields && pendingFields.length > 0 && (
           <p className="mt-3 border-t border-paper-2 pt-3 text-2xs leading-relaxed text-mute">
             <span className="font-semibold uppercase tracking-[0.06em] text-ink-2">Still to confirm · </span>
@@ -833,7 +830,8 @@ const DB_FILTERS = [
   { id: 'all', label: 'All', match: () => true },
   { id: 'enrolling', label: 'Enrolling', match: (t) => t.status === 'enrolling' },
   { id: 'soon', label: 'Soon', match: (t) => t.status === 'soon' },
-  { id: 'unverified', label: 'Unverified', match: (t) => t.status === 'placeholder' }
+  { id: 'unverified', label: 'Unverified', match: (t) => t.status === 'placeholder' },
+  { id: 'closed', label: 'Not enrolling', match: (t) => t.status === 'closed' }
 ];
 
 export function StudyDatabase() {
