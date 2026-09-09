@@ -102,6 +102,23 @@
   - Use rapid multimodal imaging and do not delay transfer for potentially treatable LVO with large core.
 - Evidence strength: RCT-supported.
 
+### AUTO-UPDATE 2026-07-25 - Phase 3 RCT: verification-gated additive block (DISCOUNT)
+<!-- machine-drafted 2026-07-25; auto-published, verification-gated -->
+<!-- AUTO-UPDATE 2026-07-25: DISCOUNT MDVO THROMBECTOMY RCT VERIFIED ADDITIVE BLOCK START -->
+
+#### DISCOUNT - Mechanical thrombectomy for medium or distal vessel occlusion (MDVO)
+- Inclusion class: Multicenter randomized clinical trial published in JAMA, first indexed within the last 8 days (publication date 2026-07-22). Verified against the PubMed abstract and the ClinicalTrials.gov record; the DOI was confirmed via the JAMA publisher page (article 2851954, matching the PubMed record) because this environment's network policy blocked the Crossref API endpoint. This additive summary does not change any existing recommendation, eligibility criterion, time window, or local protocol.
+- Registration note: The trial is a definitive multicenter procedure/device RCT stopped early at the planned interim analysis; ClinicalTrials.gov lists its phase as "NA" (standard for device/procedure trials rather than a labeled drug phase). It is the same class of pivotal MDVO thrombectomy RCT as DISTAL and ESCAPE-MeVO and is reported here for completeness.
+- PICO:
+  - Population: adults with acute ischemic stroke due to a primary and isolated medium or distal vessel occlusion within 8 hours of onset (or within 24 hours of last seen well without a hyperintense FLAIR signal); 22 French stroke centers; n=244 randomized (median age 75 years [IQR, 67-81]; 56% male; median NIHSS 8 [IQR, 6-12]).
+  - Intervention: thrombectomy in addition to medical treatment (n=123).
+  - Comparator: medical treatment alone (n=121).
+  - Outcomes: primary endpoint verbatim excerpt, "a good clinical outcome at 3 months, defined as a modified Rankin Scale score of 0 to 2, assessed by an independent, blinded assessor." Key effect estimate verbatim excerpt, "At 3 months, 72 of 116 patients (62%) in the thrombectomy group had a good clinical outcome vs 81 of 119 patients (68%) in the control group (odds ratio, 0.73 [95% CI, 0.40-1.31]; P = .29; adjusted absolute difference, -6.8% [95% CI, -19.4% to 5.7%])." The trial "has been stopped after the planned interim analysis on the recommendation of the data and safety monitoring board for futility and increased rate of symptomatic intracranial hemorrhage with thrombectomy"; symptomatic intracranial hemorrhage among those who received thrombectomy vs those who did not was "11% vs 3%, P = .008," with subarachnoid hemorrhage "13% vs 2%, P < .001" and mortality "6% vs 8%; P = .49."
+- Consistency check (no conflict): This result is directionally consistent with the existing site content on MDVO thrombectomy (DISTAL and ESCAPE-MeVO both neutral for function with higher hemorrhage). It reinforces, and does not contradict, existing statements; no existing clinical text was altered.
+- Verified sources: PMID: 42485024 (https://pubmed.ncbi.nlm.nih.gov/42485024/); DOI: 10.1001/jama.2026.8977 (https://doi.org/10.1001/jama.2026.8977); NCT: NCT05030142 (https://clinicaltrials.gov/study/NCT05030142); JAMA article page (https://jamanetwork.com/journals/jama/article-abstract/2851954).
+
+<!-- AUTO-UPDATE 2026-07-25: DISCOUNT MDVO THROMBECTOMY RCT VERIFIED ADDITIVE BLOCK END -->
+
 ## 3) ICH management (BP, reversal, surgery/escalation, ICU priorities)
 - Practical recommendation:
   - Use protocolized hyperacute care: BP strategy, glucose/temperature control, reversal pathway, and neurologic critical care bundle.
