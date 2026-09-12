@@ -1,5 +1,51 @@
 # CHANGELOG
 
+## v6.27.0 — 2026-09-12 — visual polish: drawn checkboxes, full-height sheet, attached search hint, on-brand offline page
+
+Presentation-only release. No clinical wording, calculator logic, or data
+changed; the `#/protocols/*` snapshot lock is untouched. Verified against the
+production build with headless Chromium: zero console errors, failed requests,
+or horizontal overflow across the Encounter, Protocols, Trials, Guidelines,
+Calculators, and Education routes in light and dark at phone, tablet, and
+desktop widths.
+
+- **Checkboxes and radios are drawn controls, not 44px browser-blue squares.**
+  The 44px touch floor in `index.html` applied `min-width`/`min-height` to the
+  native input itself, so the 20px size set for it never won and every
+  checkbox in the app (the Calculators auto-sync toggle, NIHSS items, imaging
+  flags, ...) painted as a 44px native control. The input keeps its 44px hit
+  area; a 20px control is now drawn inside it with a brand-teal fill, a
+  card-coloured check glyph (legible on the lighter fills used in dark), an
+  indeterminate dash, hover, focus ring, and disabled states. Footprint is
+  unchanged (20px + 12px margin before, 44px + 0 margin now), and the existing
+  `text-*` utilities still choose the checked fill.
+- **The app sheet always reaches the fold.** Short routes (Trials before a
+  classification is picked) ended the sheet halfway down the viewport with the
+  desk showing beneath it. `.app-shell` now has `min-height: 100dvh`, with the
+  sidebar grid packing its rows at the top so the extra height lands below the
+  content rather than between header and body.
+- **Header search hint stays attached to the field at tablet widths.** The
+  search wrapper was full-width while the input was `sm:w-72 md:w-96`, so the
+  ⌘K badge floated at the far right of the header on 640-1023px screens. The
+  wrapper now takes the input's width; the results list spans the field and
+  carries a hairline and shadow.
+- **The shortcut hint matches the key that works.** The handler accepts
+  `metaKey || ctrlKey`; the badge now reads ⌘K on Apple platforms and Ctrl K
+  elsewhere.
+- **Encounter readiness chips wrap instead of clipping.** At desktop widths
+  the last chip ("Disposition") was cut off behind a scroll edge; from `sm`
+  up the row wraps so every tracked field is visible. Phones keep the compact
+  horizontal scroller.
+- **`offline.html` restyled to the v7 system.** It still used the pre-v7 blue
+  (`#3B82F6` / `#2563eb`), Manrope/Newsreader, and a hard-coded dark palette.
+  It now reads the same tokens and self-hosted fonts as the app (both are
+  precached), honors the stored Dark / System preference the way `index.html`
+  does, and its copy no longer lists a resource link the header no longer
+  carries. The loading spinner likewise uses the accent token instead of a
+  hard-coded hex.
+- Version bumped to 6.27.0 so the service-worker cache key and `?v=` asset
+  queries roll and returning visitors receive the new shell.
+
 ## v6.26.0 — 2026-09-06 — comprehensive source inventories and mobile Guidelines
 
 Expanded Guidelines to 4,113 searchable entries across 109 documents, with 24 full source inventories; restored missing AHA/ESO recommendations and consensus/uncertainty statements, incorporated source corrections, and completed ESC antibiotic dosing. Renamed the section, improved mobile reading and source references, and retained offline access through lossless bundle packing. Source access and unresolved corrections remain explicit. Protocols are unchanged. See [the review](docs/reviews/2026-09-06-guidelines-completeness.md).

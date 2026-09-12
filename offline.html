@@ -3,115 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#3B82F6">
+    <meta name="theme-color" content="#0A6571">
+    <meta name="color-scheme" content="light dark">
     <title>Offline · Stroke</title>
     <link rel="icon" href="icon-192.png" type="image/png">
     <link rel="apple-touch-icon" href="icon-192.png">
+    <!-- tailwind.css carries the design tokens (:root / [data-theme="dark"])
+         and the self-hosted @font-face rules, all of which the service worker
+         precaches, so this page renders in the app's own type and palette
+         while offline. -->
     <link rel="stylesheet" href="tailwind.css">
     <style>
+        /* Same theme resolution as index.html's pre-paint bootstrap: an
+           explicit Dark / System choice is honored; an unset preference
+           renders light on the public deployment and follows the OS
+           elsewhere. */
+        html { background: var(--app-bg); }
         body {
-            font-family: "Manrope", "Segoe UI", system-ui, sans-serif;
-            background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
-            color: #0f172a;
             margin: 0;
             min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: env(safe-area-inset-top, 1rem) env(safe-area-inset-right, 1rem) env(safe-area-inset-bottom, 1rem) env(safe-area-inset-left, 1rem);
+            padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right))
+                     max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+            box-sizing: border-box;
+            font-family: "Public Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            font-size: 15px;
+            line-height: 1.55;
+            color: var(--ink);
+            background-color: var(--app-bg);
+            background-image:
+                radial-gradient(72rem 52rem at 84% -14%, color-mix(in oklab, var(--accent) 10%, transparent), transparent 62%),
+                radial-gradient(58rem 44rem at -12% 106%, color-mix(in oklab, rgb(var(--warn-500)) 7%, transparent), transparent 58%);
+            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
         }
         .card {
-            max-width: 480px;
+            position: relative;
+            overflow: hidden;
             width: 100%;
-            background: #fff;
-            border: 1px solid rgba(15, 23, 42, 0.08);
-            border-radius: 18px;
-            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-            padding: 1.75rem;
+            max-width: 30rem;
+            box-sizing: border-box;
+            padding: 1.75rem 1.75rem 1.5rem;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
         }
-        h1 {
-            font-family: "Newsreader", "Times New Roman", serif;
-            font-size: 1.65rem;
-            margin: 0.5rem 0 1rem;
-            letter-spacing: -0.01em;
+        /* the same accent hairline that marks the top edge of the app sheet */
+        .card::before {
+            content: "";
+            position: absolute;
+            left: 0; right: 0; top: 0;
+            height: 3px;
+            background: linear-gradient(90deg,
+                var(--accent) 0%,
+                color-mix(in oklab, var(--accent) 45%, transparent) 48%,
+                transparent 88%);
         }
-        p, ul {
-            color: #475569;
-            line-height: 1.55;
-        }
-        ul { padding-left: 1.25rem; }
-        li { margin: 0.25rem 0; }
-        .row {
+        .brand {
             display: flex;
             align-items: center;
-            gap: 0.85rem;
-            margin-bottom: 0.5rem;
+            gap: .75rem;
+            margin-bottom: 1.25rem;
         }
-        .row img {
-            width: 56px;
-            height: 56px;
+        .brand img {
+            width: 44px;
+            height: 44px;
             border-radius: 12px;
+            box-shadow: 0 8px 18px -10px color-mix(in oklab, var(--accent) 70%, transparent);
+        }
+        .brand strong {
+            font-family: "Bricolage Grotesque", Georgia, ui-serif, serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -.03em;
+            line-height: 1;
+            color: var(--ink);
         }
         .badge {
-            display: inline-block;
-            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: .6875rem;
             font-weight: 600;
-            color: #b45309;
-            background: #fef3c7;
-            border: 1px solid #fde68a;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--caution);
+            background: var(--caution-soft);
+            border: 1px solid color-mix(in oklab, var(--caution) 35%, transparent);
             border-radius: 999px;
-            padding: 2px 10px;
-            margin-bottom: 0.5rem;
+            padding: .3rem .7rem .3rem .55rem;
         }
-        a.btn {
-            display: inline-block;
-            margin-top: 1rem;
-            padding: 0.6rem 1.1rem;
-            background: #2563eb;
+        .badge::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--caution);
+        }
+        h1 {
+            font-family: "Bricolage Grotesque", Georgia, ui-serif, serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -.02em;
+            line-height: 1.15;
+            margin: .75rem 0 .5rem;
+            color: var(--ink);
+        }
+        p { margin: 0 0 1rem; color: var(--ink-2); }
+        h2 {
+            font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: .6875rem;
+            font-weight: 600;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--accent-ink);
+            margin: 1.25rem 0 .4rem;
+        }
+        ul {
+            margin: 0;
+            padding-left: 1.15rem;
+            color: var(--ink-2);
+        }
+        li { margin: .25rem 0; }
+        li::marker { color: var(--accent); }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            min-height: 44px;
+            margin-top: 1.5rem;
+            padding: .6rem 1.15rem;
+            font-weight: 600;
+            font-size: .9375rem;
             color: #fff;
             text-decoration: none;
             border-radius: 10px;
-            font-weight: 600;
-            font-size: 0.95rem;
+            background-image: linear-gradient(180deg, rgb(var(--cobalt-600)) 0%, rgb(var(--cobalt-700)) 100%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16),
+                        0 10px 22px -12px color-mix(in oklab, var(--accent) 60%, transparent);
+            transition: box-shadow 180ms ease, transform 180ms ease;
         }
-        a.btn:hover { background: #1d4ed8; }
+        .btn:hover {
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2),
+                        0 14px 28px -12px color-mix(in oklab, var(--accent) 70%, transparent);
+            transform: translateY(-1px);
+        }
+        .btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+        .btn svg { width: 16px; height: 16px; }
         .muted {
-            color: #64748b;
-            font-size: 0.85rem;
-            margin-top: 1.25rem;
+            margin: 1.25rem 0 0;
+            padding-top: 1rem;
+            border-top: 1px solid var(--line);
+            font-size: .8125rem;
+            line-height: 1.5;
+            color: var(--mute);
         }
-        @media (prefers-color-scheme: dark) {
-            body { background: #0b1220; color: #e2e8f0; }
-            .card { background: rgba(15, 23, 42, 0.92); border-color: rgba(148, 163, 184, 0.12); }
-            p, ul { color: #94a3b8; }
-            .muted { color: #64748b; }
+        @media (prefers-reduced-motion: reduce) {
+            .btn { transition: none; }
+            .btn:hover { transform: none; }
+        }
+        @media (max-width: 420px) {
+            .card { padding: 1.5rem 1.25rem 1.25rem; }
+            h1 { font-size: 1.5rem; }
         }
     </style>
+    <script>
+        (function () {
+            var pref = null;
+            try { pref = localStorage.getItem('stroke.v7.theme'); } catch (e) { /* ignore */ }
+            var isPublicPages = /(^|\.)github\.io$/i.test(window.location.hostname || '');
+            var prefersDark = !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            var dark = pref === 'dark' || ((pref === 'auto' || (!pref && !isPublicPages)) && prefersDark);
+            document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark', dark);
+        })();
+    </script>
 </head>
 <body>
-    <main class="card" role="main">
-        <div class="row">
-            <img src="icon-192.png" alt="Stroke app icon">
-            <div>
-                <span class="badge">Offline</span>
-                <h1>You're offline</h1>
-            </div>
+    <main class="card">
+        <div class="brand">
+            <img src="icon-192.png" alt="" width="44" height="44">
+            <strong>Stroke</strong>
         </div>
-        <p>The browser couldn't reach the network, but the Stroke app is mostly cached on this device. Open the app and your most recent view will load.</p>
-        <p><strong>Available offline:</strong></p>
+        <span class="badge">Offline</span>
+        <h1>You're offline</h1>
+        <p>The browser couldn't reach the network, but the Stroke app is cached on this device. Open it and your most recent view will load.</p>
+        <h2>Available offline</h2>
         <ul>
             <li>All calculators (NIHSS, ASPECTS, ICH, ABCD<sup>2</sup>, HAS-BLED, RCVS<sup>2</sup>, PHASES, ROPE, CrCl, TNK/alteplase dose, DAWN, DEFUSE-3, CHA<sub>2</sub>DS<sub>2</sub>-VA, …)</li>
             <li>Note templates (telestroke, transfer, signout, progress, discharge)</li>
-            <li>Protocols and references that loaded on the last online session</li>
-            <li>Public-demo calculators, protocols, and references that loaded on the last online session</li>
+            <li>Example protocols, guidelines, and references that loaded on the last online session</li>
         </ul>
-        <p><strong>Needs internet:</strong></p>
+        <h2>Needs internet</h2>
         <ul>
             <li>Fresh trial-matching against live data</li>
-            <li>Quick links to ChatGPT, OpenEvidence, UpToDate</li>
+            <li>External resource links (OpenEvidence, UpToDate, Asta)</li>
             <li>Pulsara routing</li>
         </ul>
-        <a class="btn" href="./">Open the app</a>
+        <a class="btn" href="./">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            Open the app
+        </a>
         <p class="muted">Educational synthetic demo only. Not medical advice, not an official system, and not endorsed by any named institution. Do not enter PHI or real patient data.</p>
     </main>
 </body>

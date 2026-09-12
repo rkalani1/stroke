@@ -90,8 +90,8 @@
           media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
     <title>Stroke CDS Educational Demo</title>
 
-    <link rel="preload" as="script" href="app.js?v=6.26.0">
-    <link rel="stylesheet" href="tailwind.css?v=6.26.0">
+    <link rel="preload" as="script" href="app.js?v=6.27.0">
+    <link rel="stylesheet" href="tailwind.css?v=6.27.0">
     <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/publicsans-normal-400.woff2">
     <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/bricolage-700.woff2">
     <style>
@@ -514,10 +514,114 @@
             min-height: 44px;
             min-width: 44px;
         }
-        input[type="checkbox"], input[type="radio"] {
-            width: 20px;
-            height: 20px;
-            margin: 12px;
+
+        /* Checkboxes and radios.
+           The 44px floor above used to apply to the native control itself, so
+           every checkbox painted as a 44px browser-blue square (the 20px size
+           set for it lost to min-width/min-height). Keep the 44px hit area on
+           the input and draw a 20px control inside it. The footprint is
+           unchanged: 20px box + 12px margin before, 44px box + 0 margin now.
+           `color` is set at zero specificity so the existing text-* utilities
+           (text-crit-600, text-cobalt-600, ...) still pick the checked fill;
+           the glyph is painted in the card colour so it stays legible on the
+           lighter -300 fills used in dark. `.sr-only` inputs (custom toggles)
+           are left alone. */
+        input[type="checkbox"]:not(.sr-only),
+        input[type="radio"]:not(.sr-only) {
+            -webkit-appearance: none;
+            appearance: none;
+            position: relative;
+            width: 44px;
+            height: 44px;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            flex: 0 0 auto;
+            vertical-align: middle;
+            cursor: pointer;
+            outline: none;
+        }
+        :where(input[type="checkbox"], input[type="radio"]) {
+            color: var(--accent-2);
+        }
+        input[type="checkbox"]:not(.sr-only)::before,
+        input[type="radio"]:not(.sr-only)::before {
+            content: "";
+            position: absolute;
+            inset: 12px;
+            box-sizing: border-box;
+            border-radius: 6px;
+            border: 1.5px solid var(--edge-strong);
+            background-color: var(--card);
+            box-shadow: var(--inner-hi), 0 1px 1.5px rgba(20, 23, 29, .06);
+            transition: background-color var(--dur) var(--ease),
+                        border-color var(--dur) var(--ease),
+                        box-shadow var(--dur) var(--ease);
+        }
+        input[type="radio"]:not(.sr-only)::before {
+            border-radius: 50%;
+        }
+        @media (hover: hover) {
+            input[type="checkbox"]:not(.sr-only):hover::before,
+            input[type="radio"]:not(.sr-only):hover::before {
+                border-color: color-mix(in oklab, currentColor 55%, var(--edge-strong));
+            }
+        }
+        input[type="checkbox"]:not(.sr-only):checked::before,
+        input[type="checkbox"]:not(.sr-only):indeterminate::before {
+            background-color: currentColor;
+            border-color: transparent;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22),
+                        0 6px 14px -8px currentColor;
+        }
+        input[type="radio"]:not(.sr-only):checked::before {
+            border: 6px solid currentColor;
+            box-shadow: 0 6px 14px -8px currentColor;
+        }
+        /* the glyph: a check (or a dash for indeterminate), painted in the
+           card colour so it reads on any fill the utilities choose */
+        input[type="checkbox"]:not(.sr-only)::after {
+            content: "";
+            position: absolute;
+            inset: 12px;
+            opacity: 0;
+            transform: scale(.6);
+            background-color: var(--card);
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 7' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 7' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+            transition: opacity var(--dur) var(--ease),
+                        transform var(--dur) var(--ease);
+        }
+        input[type="checkbox"]:not(.sr-only):indeterminate::after {
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10h9' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10h9' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+        }
+        input[type="checkbox"]:not(.sr-only):checked::after,
+        input[type="checkbox"]:not(.sr-only):indeterminate::after {
+            opacity: 1;
+            transform: none;
+        }
+        /* focus lands on the drawn control, not the invisible 44px hit box */
+        input[type="checkbox"]:not(.sr-only):focus-visible,
+        input[type="radio"]:not(.sr-only):focus-visible {
+            outline: none;
+            box-shadow: none;
+        }
+        input[type="checkbox"]:not(.sr-only):focus-visible::before,
+        input[type="radio"]:not(.sr-only):focus-visible::before {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--accent);
+        }
+        input[type="checkbox"]:not(.sr-only):disabled,
+        input[type="radio"]:not(.sr-only):disabled {
+            cursor: not-allowed;
+            opacity: .5;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            input[type="checkbox"]:not(.sr-only)::after {
+                transform: none;
+            }
         }
 
         /* Success animation */
@@ -565,8 +669,8 @@
 
         /* Loading spinner */
         .spinner {
-            border: 3px solid #f3f4f6;
-            border-top: 3px solid #0C7C8C;
+            border: 3px solid var(--paper-2);
+            border-top: 3px solid var(--accent);
             border-radius: 50%;
             width: 20px;
             height: 20px;
@@ -857,6 +961,18 @@
             border-color: var(--shell-border);
             background-image: var(--sheen);
             background-repeat: no-repeat;
+            /* Short routes (Trials before a classification is picked, an
+               empty search) used to end the sheet halfway down the viewport
+               with the desk showing beneath it. The sheet now always reaches
+               the fold; the sidebar grid packs its rows at the top so the
+               extra height lands below the content, never between rows. */
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+        @media (min-width: 1024px) {
+            .app-shell {
+                align-content: start;
+            }
         }
 
         /* A single accent hairline across the top edge of the sheet. It is
@@ -1278,7 +1394,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = '6.26.0'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
+            const APP_VERSION = '6.27.0'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
             const STORAGE_PREFIX = 'strokeApp:';
             const APP_DATA_KEY = 'stroke.appData.v2';
             const IS_PUBLIC_PAGES = /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -1505,6 +1621,6 @@
             return false;
         };
     </script>
-    <script src="app.js?v=6.26.0" defer></script>
+    <script src="app.js?v=6.27.0" defer></script>
 </body>
 </html>
