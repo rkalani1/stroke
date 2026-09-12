@@ -278,7 +278,13 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.26.0';
+const APP_VERSION = '6.27.0';
+// The header search hint mirrors the key the shortcut actually listens for
+// (metaKey || ctrlKey): ⌘ on Apple hardware, Ctrl everywhere else.
+const SEARCH_SHORTCUT_LABEL = (typeof navigator !== 'undefined'
+  && /Mac|iPhone|iPad|iPod/i.test(navigator.userAgentData?.platform || navigator.platform || ''))
+  ? '⌘K'
+  : 'Ctrl K';
 
 // P0 evidence-locked calculators exposed for browser-console QA testing and future UI wiring.
 // These are pure functions with PMID/DOI citations in their source; running e.g.
@@ -16899,7 +16905,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </div>
                   </div>
                   <div className="flex w-full flex-col items-center justify-center gap-2 lg:w-auto lg:items-end lg:justify-end">
-                    <div className="relative w-full lg:w-auto" ref={searchContainerRef}>
+                    <div className="relative w-full sm:w-72 md:w-96 lg:w-[26rem]" ref={searchContainerRef}>
                       <input
                         type="text"
                         placeholder="Search trials, tools, references..."
@@ -16948,7 +16954,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         aria-expanded={searchOpen && searchResults.length > 0}
                         aria-controls="search-listbox"
                         aria-activedescendant={(searchOpen && searchResults.length > 0 && searchActiveIndex >= 0) ? `search-opt-${searchActiveIndex}` : undefined}
-                        className="pl-8 pr-16 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 w-full sm:w-72 md:w-96 lg:w-[26rem] dark:border-strong"
+                        className="pl-8 pr-16 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 w-full dark:border-strong"
                         aria-label="Search trials, management tools, and references"
                       />
                       <i aria-hidden="true" data-lucide="search" className="w-4 h-4 absolute left-2 top-3 text-slate-500 dark:text-mute"></i>
@@ -16968,7 +16974,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           aria-hidden="true"
                           className="hidden sm:inline-flex items-center absolute right-2 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[11px] font-mono text-slate-600 bg-slate-100 border border-slate-300 rounded dark:text-ink-2 dark:bg-paper-2 dark:border-strong"
                         >
-                          ⌘K
+                          {SEARCH_SHORTCUT_LABEL}
                         </kbd>
                       )}
 
@@ -16980,7 +16986,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
 
                       {searchOpen && searchContext === 'header' && searchResults.length > 0 && (
-                        <div id="search-listbox" role="listbox" aria-label="Search results" className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white  rounded-lg border max-h-96 overflow-y-auto z-50 dark:bg-card">
+                        <div id="search-listbox" role="listbox" aria-label="Search results" className="absolute top-12 left-0 right-0 sm:min-w-[24rem] bg-white rounded-lg border border-line shadow-lg max-h-96 overflow-y-auto z-50 dark:bg-card">
                           {searchResults.map((result, idx) => {
                             const isActive = idx === searchActiveIndex;
                             return (
@@ -17578,7 +17584,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         )}
                       </div>
 
-                      <div id="encounter-completion-fields" className={`mt-2 gap-1.5 overflow-x-auto pb-1 ${readinessFieldsExpanded ? 'flex' : 'hidden sm:flex'}`} aria-label="Encounter completion fields">
+                      <div id="encounter-completion-fields" className={`mt-2 gap-1.5 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible ${readinessFieldsExpanded ? 'flex' : 'hidden sm:flex'}`} aria-label="Encounter completion fields">
                         {encounterReadiness.trackedFields.map((field) => {
                           const isMissing = encounterReadiness.missing.some((item) => item.name === field.name);
                           const isRequired = encounterReadiness.required.some((item) => item.name === field.name);
