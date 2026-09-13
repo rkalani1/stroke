@@ -1,5 +1,68 @@
 # CHANGELOG
 
+## v6.27.1 — 2026-09-13 — accessibility and cascade fixes for the v6.27.0 drawn controls
+
+Follow-up to v6.27.0, from a multi-lens audit of that release (seven independent
+reviewers over the diff, each finding put to adversarial verifiers that tried to
+refute it). Presentation-only again: no clinical wording, calculator logic, or
+data changed, and the `#/protocols/*` snapshot lock passes unchanged.
+
+Two of these were accessibility regressions that v6.27.0 introduced by replacing
+the native control, and they are the reason this ships as a patch rather than
+waiting.
+
+- **Checked state is visible again in Windows High Contrast.** Under
+  `forced-colors: active` the UA forces every author background to Canvas, so
+  the drawn fill, the check glyph and the checked border all collapsed to the
+  same colour as the unchecked box: checked, indeterminate and unchecked
+  rendered pixel-identically. The native control this replaced did not have that
+  failure. The drawn parts now opt out with `forced-color-adjust` and paint in
+  system colours (Highlight fill, HighlightText glyph, CanvasText edge), with a
+  Highlight focus outline.
+- **The unchecked control has a boundary that meets WCAG 1.4.11.** Its resting
+  border used `--edge-strong`, a decorative hairline measuring 1.40:1 in light
+  and 1.75:1 in dark against the card — and since the box fill matches the card,
+  that border was the control's only boundary. A new `--control-edge` token
+  (slate-500 in light, slate-400 in dark) measures 4.76:1 and 6.39:1, against a
+  3:1 floor.
+- **The brand fill actually applies now.** The default was set through a
+  zero-specificity `:where()` rule, which loses to Tailwind preflight's
+  `input{color:inherit}` (0,0,1) and to the legacy `html.dark input` rule
+  (0,1,2). Every control without a `text-*` utility — most of them — therefore
+  took the label's ink in light and near-white slate in dark instead of teal.
+  The default is now `input:where([type="checkbox"], [type="radio"])`, which
+  ties preflight and wins on source order while still losing to the `text-*`
+  utilities, and the dark rule excludes these controls. Measured: teal in both
+  themes.
+- **The colour-coded contraindication checkboxes are colour-coded again.** The
+  absolute / relative / cautionary tiers chose their colour with `accent-*`,
+  which only paints a control rendered with `appearance: auto`; on the drawn
+  control they fell back to inherited ink. They now use the `text-*` utilities
+  the control reads. One checkbox in the neuro-exam tool had the same problem.
+  Range sliders keep `accent-color`, which still works on them.
+- **A checked box survives printing with background graphics off** (the Chrome
+  and Edge default). Fill and glyph are both backgrounds, and the checked border
+  was transparent, so nothing of the state reached paper. The pseudo-elements
+  now set `print-color-adjust: exact` and the checked border is `currentColor`.
+- **The sidebar rail resolves deliberately.** v6.27.0's full-height sheet packs
+  its grid rows at the top, so the rail — a border on a grid item — stopped at
+  the content bottom while the sheet continued to the fold. It is now drawn as a
+  gradient that fades over its last 5rem, at any content height.
+- **All three header-search dropdowns span the field.** The results list kept a
+  24rem floor and the two sibling panels kept a 24rem fixed width after the
+  wrapper was narrowed, so they overhung the input by up to 96px between 640 and
+  1023px. All three now match the field exactly at every width, and the two
+  panels gained the hairline and shadow the results list has.
+- **The offline page's lists have bullets.** Linking `tailwind.css` for tokens
+  and fonts also brought in its preflight `ul{list-style:none}`, so both lists
+  rendered as bare indented lines and the accent `::marker` rule painted
+  nothing.
+- Corrected two comments that documented the code inaccurately: the checkbox
+  footprint arithmetic (rows tighten 68px → 44px; the 44px floor previously won
+  over the 20px size, which was the v6.27.0 bug) and the offline page's theme
+  attribution (it mirrors `src/design/theme.js`, not `index.html`'s non-public
+  branch).
+
 ## v6.27.0 — 2026-09-12 — visual polish: drawn checkboxes, full-height sheet, attached search hint, on-brand offline page
 
 Presentation-only release. No clinical wording, calculator logic, or data
