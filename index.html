@@ -90,8 +90,8 @@
           media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
     <title>Stroke CDS Educational Demo</title>
 
-    <link rel="preload" as="script" href="app.js?v=6.27.0">
-    <link rel="stylesheet" href="tailwind.css?v=6.27.0">
+    <link rel="preload" as="script" href="app.js?v=6.27.1">
+    <link rel="stylesheet" href="tailwind.css?v=6.27.1">
     <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/publicsans-normal-400.woff2">
     <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/bricolage-700.woff2">
     <style>
@@ -127,7 +127,11 @@
         html.dark .border-slate-300 {
             border-color: rgba(148, 163, 184, 0.2) !important;
         }
-        html.dark input,
+        /* Checkbox/radio are excluded: they are drawn controls whose `color`
+           IS the checked fill (see the control block below), and this rule's
+           (0,1,2) specificity would otherwise repaint every one of them
+           #e2e8f0 in dark. Mirrors the same exclusion further down. */
+        html.dark input:not([type="checkbox"]):not([type="radio"]),
         html.dark select,
         html.dark textarea {
             background-color: rgba(15, 23, 42, 0.9);
@@ -519,10 +523,14 @@
            The 44px floor above used to apply to the native control itself, so
            every checkbox painted as a 44px browser-blue square (the 20px size
            set for it lost to min-width/min-height). Keep the 44px hit area on
-           the input and draw a 20px control inside it. The footprint is
-           unchanged: 20px box + 12px margin before, 44px box + 0 margin now.
-           `color` is set at zero specificity so the existing text-* utilities
-           (text-crit-600, text-cobalt-600, ...) still pick the checked fill;
+           the input and draw a 20px control inside it. Rows tighten by 24px:
+           the 44px floor won over the 20px width/height before, so the control
+           measured 44px + 12px margin on every side (a 68px row); it is now a
+           44px box with no margin.
+           `color` carries the checked fill, set at (0,0,1) so it beats
+           Tailwind preflight's `input{color:inherit}` on source order while
+           still losing to the (0,1,0) text-* utilities that colour-code
+           specific controls (text-crit-600, text-cobalt-600, ...);
            the glyph is painted in the card colour so it stays legible on the
            lighter -300 fills used in dark. `.sr-only` inputs (custom toggles)
            are left alone. */
@@ -542,7 +550,12 @@
             cursor: pointer;
             outline: none;
         }
-        :where(input[type="checkbox"], input[type="radio"]) {
+        /* (0,0,1) — ties Tailwind preflight's `input{color:inherit}` and wins
+           on source order (this <style> follows the tailwind.css <link>), while
+           staying under the (0,1,0) text-* utilities. A zero-specificity
+           :where() here was dead code: preflight kept every classless control
+           on inherited label ink. */
+        input:where([type="checkbox"], [type="radio"]) {
             color: var(--accent-2);
         }
         input[type="checkbox"]:not(.sr-only)::before,
@@ -552,9 +565,15 @@
             inset: 12px;
             box-sizing: border-box;
             border-radius: 6px;
-            border: 1.5px solid var(--edge-strong);
+            /* --edge-strong is a decorative hairline (1.40:1 on the card) and
+               fails WCAG 1.4.11 as the only boundary of an unchecked control.
+               --control-edge is the certified pair: slate-500 on white = 4.5:1,
+               slate-400 on the dark card ~7:1. */
+            border: 1.5px solid var(--control-edge);
             background-color: var(--card);
             box-shadow: var(--inner-hi), 0 1px 1.5px rgba(20, 23, 29, .06);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
             transition: background-color var(--dur) var(--ease),
                         border-color var(--dur) var(--ease),
                         box-shadow var(--dur) var(--ease);
@@ -565,13 +584,16 @@
         @media (hover: hover) {
             input[type="checkbox"]:not(.sr-only):hover::before,
             input[type="radio"]:not(.sr-only):hover::before {
-                border-color: color-mix(in oklab, currentColor 55%, var(--edge-strong));
+                border-color: color-mix(in oklab, currentColor 55%, var(--control-edge));
             }
         }
         input[type="checkbox"]:not(.sr-only):checked::before,
         input[type="checkbox"]:not(.sr-only):indeterminate::before {
             background-color: currentColor;
-            border-color: transparent;
+            /* currentColor, never transparent: when a browser drops author
+               backgrounds (Chrome/Edge print with "Background graphics" off)
+               the outline is all that is left of the checked state. */
+            border-color: currentColor;
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22),
                         0 6px 14px -8px currentColor;
         }
@@ -588,6 +610,8 @@
             opacity: 0;
             transform: scale(.6);
             background-color: var(--card);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
             -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 7' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
             mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5 10.5l3.2 3.2L15 7' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
             transition: opacity var(--dur) var(--ease),
@@ -621,6 +645,38 @@
         @media (prefers-reduced-motion: reduce) {
             input[type="checkbox"]:not(.sr-only)::after {
                 transform: none;
+            }
+        }
+        /* Windows High Contrast / forced-colors. Author backgrounds are forced
+           to Canvas, which made checked, indeterminate and unchecked render
+           pixel-identically — the native control this replaced did not. Opt the
+           drawn parts out and paint them in system colours instead. */
+        @media (forced-colors: active) {
+            input[type="checkbox"]:not(.sr-only)::before,
+            input[type="radio"]:not(.sr-only)::before {
+                forced-color-adjust: none;
+                background-color: Canvas;
+                border: 1.5px solid CanvasText;
+                box-shadow: none;
+            }
+            input[type="checkbox"]:not(.sr-only):checked::before,
+            input[type="checkbox"]:not(.sr-only):indeterminate::before,
+            input[type="radio"]:not(.sr-only):checked::before {
+                background-color: Highlight;
+                border: 1.5px solid CanvasText;
+            }
+            input[type="radio"]:not(.sr-only):checked::before {
+                border: 5px solid Highlight;
+                background-color: Canvas;
+            }
+            input[type="checkbox"]:not(.sr-only)::after {
+                forced-color-adjust: none;
+                background-color: HighlightText;
+            }
+            input[type="checkbox"]:not(.sr-only):focus-visible::before,
+            input[type="radio"]:not(.sr-only):focus-visible::before {
+                outline: 2px solid Highlight;
+                outline-offset: 2px;
             }
         }
 
@@ -860,6 +916,12 @@
         :root {
             --edge:         rgba(20, 23, 29, .075);
             --edge-strong:  rgba(20, 23, 29, .16);
+            /* Boundary of an interactive control that has no fill of its own
+               (the unchecked checkbox/radio). WCAG 1.4.11 wants >= 3:1 against
+               the surface; slate-500 on the white card is 4.5:1, and it is the
+               step lint:contrast already certifies. --edge-strong is decorative
+               only at 1.40:1. */
+            --control-edge: rgb(var(--slate-500));
             --inner-hi:     inset 0 1px 0 rgba(255, 255, 255, .8);
             --sheen:        linear-gradient(180deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 96px);
             --grain:        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)' opacity='.055'/%3E%3C/svg%3E");
@@ -893,6 +955,7 @@
         [data-theme="dark"] {
             --edge:         rgba(226, 232, 240, .10);
             --edge-strong:  rgba(226, 232, 240, .20);
+            --control-edge: rgb(var(--slate-400));  /* ~7:1 on the dark card */
             --inner-hi:     inset 0 1px 0 rgba(255, 255, 255, .06);
             --sheen:        linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, 0) 120px);
             --grain:        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)' opacity='.075'/%3E%3C/svg%3E");
@@ -1222,10 +1285,25 @@
                 box-shadow: inset 3px 0 0 0 var(--accent),
                             0 1px 2px rgba(20, 23, 29, .05) !important;
             }
-            /* the rail's own hairline, so the nav column reads as chrome
-               rather than as body content that lost its card */
+            /* The rail's own hairline, so the nav column reads as chrome
+               rather than as body content that lost its card.
+
+               Drawn as a background rather than the border-left it used to be:
+               the sheet is now min-height:100dvh with its rows packed at the
+               top, so on a short route (Trials before a classification is
+               picked) a border on this grid item stopped at the content bottom
+               while the sheet carried on to the fold, and the line read as
+               truncated. The gradient fades out over its last 5rem instead, so
+               the rail resolves deliberately at any content height. */
             .app-shell > #main {
-                border-left-color: var(--edge);
+                border-left-color: transparent;
+                background-image: linear-gradient(to bottom,
+                    var(--edge) 0%,
+                    var(--edge) calc(100% - 5rem),
+                    transparent 100%);
+                background-repeat: no-repeat;
+                background-size: 1px 100%;
+                background-position: 0 0;
             }
         }
         nav[aria-label="Mobile navigation"] {
@@ -1394,7 +1472,7 @@
         // CRITICAL: Version management and automatic data cleanup
         // This runs BEFORE React loads to prevent crashes from incompatible data
         (function() {
-            const APP_VERSION = '6.27.0'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
+            const APP_VERSION = '6.27.1'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
             const STORAGE_PREFIX = 'strokeApp:';
             const APP_DATA_KEY = 'stroke.appData.v2';
             const IS_PUBLIC_PAGES = /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -1621,6 +1699,6 @@
             return false;
         };
     </script>
-    <script src="app.js?v=6.27.0" defer></script>
+    <script src="app.js?v=6.27.1" defer></script>
 </body>
 </html>

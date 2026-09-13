@@ -390,7 +390,7 @@ function ComaGroup({ title, titleColor, items, checked, onToggle }) {
             type="checkbox"
             checked={checked[i]}
             onChange={() => onToggle(i)}
-            className="mt-0.5 accent-teal-600 w-3.5 h-3.5 shrink-0 cursor-pointer"
+            className="mt-0.5 text-teal-600 dark:text-teal-300 w-3.5 h-3.5 shrink-0 cursor-pointer"
             aria-label={item}
           />
           <span className={cx(

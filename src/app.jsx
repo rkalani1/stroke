@@ -278,7 +278,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.27.0';
+const APP_VERSION = '6.27.1';
 // The header search hint mirrors the key the shortcut actually listens for
 // (metaKey || ctrlKey): ⌘ on Apple hardware, Ctrl everywhere else.
 const SEARCH_SHORTCUT_LABEL = (typeof navigator !== 'undefined'
@@ -16986,7 +16986,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
 
                       {searchOpen && searchContext === 'header' && searchResults.length > 0 && (
-                        <div id="search-listbox" role="listbox" aria-label="Search results" className="absolute top-12 left-0 right-0 sm:min-w-[24rem] bg-white rounded-lg border border-line shadow-lg max-h-96 overflow-y-auto z-50 dark:bg-card">
+                        <div id="search-listbox" role="listbox" aria-label="Search results" className="absolute top-12 left-0 right-0 bg-white rounded-lg border border-line shadow-lg max-h-96 overflow-y-auto z-50 dark:bg-card">
                           {searchResults.map((result, idx) => {
                             const isActive = idx === searchActiveIndex;
                             return (
@@ -17015,7 +17015,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       )}
 
                       {searchOpen && searchContext === 'header' && searchQuery.trim().length >= 2 && searchResults.length === 0 && (
-                        <div className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white  rounded-lg border z-50 p-3 dark:bg-card">
+                        <div className="absolute top-12 left-0 right-0 bg-white rounded-lg border border-line shadow-lg z-50 p-3 dark:bg-card">
                           <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">No exact match found</p>
                           <p className="text-xs text-slate-500 mt-0.5 mb-2 dark:text-mute">Try one of these quick commands:</p>
                           <div className="space-y-1.5">
@@ -17046,7 +17046,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       )}
 
                       {searchOpen && searchContext === 'header' && searchQuery.trim().length < 2 && (
-                        <div className="absolute top-12 left-0 right-0 sm:right-auto sm:w-96 bg-white  rounded-lg border z-50 p-3 max-h-[70vh] overflow-y-auto dark:bg-card">
+                        <div className="absolute top-12 left-0 right-0 bg-white rounded-lg border border-line shadow-lg z-50 p-3 max-h-[70vh] overflow-y-auto dark:bg-card">
                           {(() => {
                             const categoryOrder = ['Navigation', 'Data Entry', 'Copy / Export', 'Resources'];
                             const grouped = {};
@@ -21687,7 +21687,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           const isChecked = checklist[item.id] || isAutoDetected;
                                           return (
                                             <label key={item.id} className={'flex items-start gap-2 p-2 rounded cursor-pointer transition ' + (isChecked ? 'bg-crit-200' : 'hover:bg-crit-50')}>
-                                              <input type="checkbox" checked={isChecked} onChange={(e) => updateChecklistItem(item.id, e.target.checked)} className="w-4 h-4 mt-0.5 accent-red-600" />
+                                              <input type="checkbox" checked={isChecked} onChange={(e) => updateChecklistItem(item.id, e.target.checked)} className="w-4 h-4 mt-0.5 text-crit-600 dark:text-crit-300" />
                                               <div className="flex-1">
                                                 <span className={'text-sm ' + (isChecked ? 'text-crit-900 font-semibold dark:text-crit-300' : 'text-slate-800 dark:text-ink')}>{item.label}</span>
                                                 {item.note && <span className="text-xs text-crit-600 ml-1 dark:text-crit-300">({item.note})</span>}
@@ -21709,7 +21709,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           const isChecked = checklist[item.id] || isAutoDetected;
                                           return (
                                             <label key={item.id} className={'flex items-start gap-2 p-2 rounded cursor-pointer transition ' + (isChecked ? 'bg-warn-200' : 'hover:bg-warn-100 dark:hover:bg-warn-900')}>
-                                              <input type="checkbox" checked={isChecked} onChange={(e) => updateChecklistItem(item.id, e.target.checked)} className="w-4 h-4 mt-0.5 accent-amber-600" />
+                                              <input type="checkbox" checked={isChecked} onChange={(e) => updateChecklistItem(item.id, e.target.checked)} className="w-4 h-4 mt-0.5 text-warn-600 dark:text-warn-300" />
                                               <div className="flex-1">
                                                 <span className={'text-sm ' + (isChecked ? 'text-warn-900 font-semibold dark:text-warn-300' : 'text-slate-800 dark:text-ink')}>{item.label}</span>
                                                 {item.note && <span className="text-xs text-warn-600 block dark:text-warn-300">({item.note})</span>}
@@ -21731,7 +21731,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           const isChecked = checklist[item.id] || isAutoDetected;
                                           return (
                                             <label key={item.id} className={'flex items-start gap-2 p-2 rounded cursor-pointer transition ' + (isChecked ? 'bg-cobalt-200 dark:bg-cobalt-800' : 'hover:bg-cobalt-100 dark:hover:bg-cobalt-800')}>
-                                              <input type="checkbox" checked={isChecked} onChange={(e) => updateChecklistItem(item.id, e.target.checked)} className="w-4 h-4 mt-0.5 accent-cobalt-600" />
+                                              <input type="checkbox" checked={isChecked} onChange={(e) => updateChecklistItem(item.id, e.target.checked)} className="w-4 h-4 mt-0.5 text-cobalt-600 dark:text-cobalt-300" />
                                               <div className="flex-1">
                                                 <span className={'text-sm ' + (isChecked ? 'text-cobalt-900 font-semibold dark:text-cobalt-300' : 'text-slate-800 dark:text-ink')}>{item.label}</span>
                                                 {item.note && <span className="text-xs text-cobalt-600 block dark:text-cobalt-300">({item.note})</span>}

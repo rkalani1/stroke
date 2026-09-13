@@ -14,10 +14,11 @@
          while offline. -->
     <link rel="stylesheet" href="tailwind.css">
     <style>
-        /* Same theme resolution as index.html's pre-paint bootstrap: an
-           explicit Dark / System choice is honored; an unset preference
-           renders light on the public deployment and follows the OS
-           elsewhere. */
+        /* Same theme resolution as src/design/theme.js (getThemePref /
+           effectiveTheme), which is also what index.html's public-Pages
+           pre-paint branch implements: an explicit Dark / System choice is
+           honored; an unset preference renders light on the public
+           deployment and follows the OS elsewhere. */
         html { background: var(--app-bg); }
         body {
             margin: 0;
@@ -128,6 +129,10 @@
         ul {
             margin: 0;
             padding-left: 1.15rem;
+            /* tailwind.css is linked for the tokens and fonts, and its preflight
+               sets ul{list-style:none}. Restore the markers the li::marker rule
+               below tints. */
+            list-style: disc outside;
             color: var(--ink-2);
         }
         li { margin: .25rem 0; }
