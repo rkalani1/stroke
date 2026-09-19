@@ -12,6 +12,11 @@
 - If guidelines disagree, prioritize: newer publication date, direct relevance to stroke phenotype, and consistency with multiple RCTs.
 - If RCTs conflict, prioritize larger multicenter pragmatic RCTs and endpoint quality (functional outcome over surrogate outcomes).
 
+### Operational update (2026-09-19, promotion batch)
+- Promoted six watchlist candidates into `src/evidence/` after methodological review (all verified against PubMed): ORIENTAL-MeVO ACAo registry (PMID 42017224, observational, topic evt-mevo); TENSION prior-antithrombotic secondary analysis (PMID 42261979); LASTE ASPECTS 0-2 ancillary analysis (PMID 41979451); ANGEL-ASPECT HMCAS subgroup (PMID 41914357); EVA-TRISP prior-antiplatelet registry analysis (PMID 41671526, observational); RECAP-ICH IPD meta-analysis of intensive BP lowering after ICH for secondary prevention (PMID 42586098) — see Section 2 (EVT eligibility) and Sections 3/6 (ICH/secondary prevention).
+- Dismissed from the queue: PMID 42127389 (NEJM ORIENTAL-MeVO RCT — already promoted as `oriental-mevo`); PMIDs 42636833 and 42669035 (oncology trials surfaced by the broad special-populations watch query; no stroke-pathway impact).
+- Deferred: PMID 42545711 (TESLA 1-year outcomes) — no abstract on PubMed and the PMC deposit is empty/embargoed, so primary-outcome numbers cannot yet be verified.
+
 ### Operational update (2026-02-21, iter-131)
 - No new primary guideline/RCT citations were added in this iteration.
 - Added automated latency-threshold suggestion reporting to support controlled profile-maintenance decisions from observed runtime history.
@@ -191,6 +196,12 @@
 | EVT large core | RCT-supported | Endovascular Therapy for Acute Stroke with Large Ischemic Region (RESCUE-Japan LIMIT) | 2022 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/35138767/ | PMID: 35138767; DOI: 10.1056/NEJMoa2118191 |
 | EVT large core | RCT-supported | Endovascular Therapy for Acute Ischemic Stroke with Large Infarct (ANGEL-ASPECT) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/36762852/ | PMID: 36762852; DOI: 10.1056/NEJMoa2213379 |
 | EVT large core | RCT-supported | Endovascular Thrombectomy for Acute Ischemic Stroke with Established Large Infarct (TENSION) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/37837989/ | PMID: 37837989; DOI: 10.1016/S0140-6736(23)02032-9 |
+| EVT MeVO (ACA occlusion) | Observational | Endovascular Thrombectomy Versus Standard Medical Management in Acute Anterior Cerebral Artery Occlusion Stroke (ORIENTAL-MeVO Registry) | 2026 | Stroke | https://pubmed.ncbi.nlm.nih.gov/42017224/ | PMID: 42017224; DOI: 10.1161/STROKEAHA.125.054127 |
+| EVT large core | RCT secondary analysis | Large Core Stroke Thrombectomy Is Safe and Effective Regardless of Prior Antithrombotic or Thrombolytic Treatment (TENSION secondary) | 2026 | J Am Heart Assoc | https://pubmed.ncbi.nlm.nih.gov/42261979/ | PMID: 42261979; DOI: 10.1161/JAHA.125.047192 |
+| EVT large core | RCT ancillary analysis | Endovascular Thrombectomy in Patients With Largest Baseline Infarcts (ASPECTS 0-2): An Ancillary Analysis of the LASTE Trial | 2026 | Stroke | https://pubmed.ncbi.nlm.nih.gov/41979451/ | PMID: 41979451; DOI: 10.1161/STROKEAHA.125.054161 |
+| EVT large core | RCT subgroup analysis | Effects of CT Hyperdense Middle Cerebral Artery Sign on the Efficacy of Endovascular Therapy in Large Infarcts (ANGEL-ASPECT subgroup) | 2026 | J Am Heart Assoc | https://pubmed.ncbi.nlm.nih.gov/41914357/ | PMID: 41914357; DOI: 10.1161/JAHA.125.042473 |
+| EVT periprocedural | Observational | Previous Antiplatelet Therapy and Outcomes of AIS With LVO Treated With Direct Endovascular Therapy (EVA-TRISP) | 2026 | Neurology | https://pubmed.ncbi.nlm.nih.gov/41671526/ | PMID: 41671526; DOI: 10.1212/WNL.0000000000214672 |
+| ICH secondary prevention | IPD meta-analysis | Intensive blood pressure lowering after spontaneous intracerebral haemorrhage for secondary stroke prevention (RECAP-ICH) | 2026 | Lancet Neurol | https://pubmed.ncbi.nlm.nih.gov/42586098/ | PMID: 42586098; DOI: 10.1016/S1474-4422(26)00244-9 |
 | ICH | Guideline-grade | 2022 Guideline for the Management of Patients with Spontaneous Intracerebral Hemorrhage | 2022 | Stroke | https://pubmed.ncbi.nlm.nih.gov/35579034/ | PMID: 35579034; DOI: 10.1161/STR.0000000000000407 |
 | ICH implementation | RCT-supported | Care bundle approach for acute intracerebral haemorrhage (INTERACT3) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/37245517/ | PMID: 37245517; DOI: 10.1016/S0140-6736(23)00806-1 |
 | ICH reversal | RCT-supported | Andexanet for Factor Xa Inhibitor-Associated Acute Intracerebral Hemorrhage (ANNEXA-I) | 2024 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/38749032/ | PMID: 38749032; DOI: 10.1056/NEJMoa2313040 |

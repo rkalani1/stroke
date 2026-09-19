@@ -35,7 +35,10 @@ export const DOAC_PROTOCOLS = {
   },
   '1-3-6-12': {
     label: '1-3-6-12 rule',
-    days: { minor: 1, moderate: 3, severe: 6, verySevere: 12 },
+    // Day 1 is the rule's TIA tier; this calculator scores infarcts by NIHSS,
+    // so the earliest emitted tier is day 3 (mild, NIHSS <8), then day 6
+    // (moderate, NIHSS 8-15) and day 12 (severe, NIHSS >=16).
+    days: { minor: 3, moderate: 6, severe: 12, verySevere: 12 },
     source: 'Heidbuchel 2017 EHRA practical guide'
   }
 };

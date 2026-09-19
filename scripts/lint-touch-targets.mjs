@@ -46,7 +46,15 @@ const page = await ctx.newPage();
 for (const route of ROUTES) {
   for (const vp of VIEWPORTS) {
     await page.setViewportSize({ width: vp.width, height: vp.height });
-    await page.goto(URL + route, { waitUntil: 'networkidle' });
+    try {
+      await page.goto(URL + route, { waitUntil: 'networkidle' });
+    } catch (err) {
+      if (String(err).includes('ERR_CONNECTION_REFUSED')) {
+        console.error(`✕ lint:touch-targets — cannot reach ${URL}. Start a server first (e.g. python3 -m http.server 8080) or pass --url / LINT_URL.`);
+        exit(1);
+      }
+      throw err;
+    }
     await page.waitForTimeout(400);
 
     const found = await page.evaluate((min) => {
@@ -58,6 +66,20 @@ for (const route of ROUTES) {
       const bad = [];
       document.querySelectorAll(SEL).forEach(el => {
         if (el.hasAttribute('data-skip-tap')) return;
+        // A <label for> directly associated with a full-size control is not an
+        // independent tap target (tapping it focuses the control) — exempt it
+        // when the control meets the minimum and sits adjacent to the label.
+        if (el.tagName === 'LABEL' && el.htmlFor) {
+          const ctl = document.getElementById(el.htmlFor);
+          if (ctl) {
+            const cr = ctl.getBoundingClientRect();
+            const lr = el.getBoundingClientRect();
+            const dx = Math.max(0, Math.max(cr.left - lr.right, lr.left - cr.right));
+            const dy = Math.max(0, Math.max(cr.top - lr.bottom, lr.top - cr.bottom));
+            const adjacent = dx <= min && dy <= min;
+            if (cr.width >= min * 0.5 && cr.height >= min && (adjacent || el.contains(ctl))) return;
+          }
+        }
         // Skip elements hidden via display:none or visibility:hidden
         const cs = window.getComputedStyle(el);
         if (cs.display === 'none' || cs.visibility === 'hidden') return;

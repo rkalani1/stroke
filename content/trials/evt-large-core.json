@@ -117,5 +117,56 @@
     "certainty": "moderate",
     "lastReviewed": "2026-08-22",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "tension-prior-antithrombotic",
+    "name": "TENSION antithrombotic analysis",
+    "fullName": "Large Core Stroke Thrombectomy Is Safe and Effective Regardless of Prior Antithrombotic or Thrombolytic Treatment: A Secondary Analysis of the Randomized TENSION Trial",
+    "category": "evt-large-core",
+    "population": "n=246, Median 74 (IQR 65-80), Parent TENSION criteria (extended lesion, extended time window); NCT03094715",
+    "finding": "EVT benefit in every stratum: with antiplatelets cOR 2.40 (1.22-4.99), without 2.29 (1.53-3.46); with anticoagulation cOR 2.45 (1.17-5.28), without 2.12 (1.44-3.15); with IVT cOR 1.46 (0.83-2.61), without 2.89 (1.87-4.51)",
+    "teachingPoint": "Preadmission antiplatelets or anticoagulants, or prior IV thrombolysis, should not exclude otherwise-eligible large-core patients from thrombectomy — EVT benefit and safety were unmodified by prior antithrombotic exposure.",
+    "PMID": "42261979",
+    "year": 2026,
+    "citationIds": [
+      "cit-tension-antithrombotic-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-09-19",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "laste-aspects-0-2",
+    "name": "LASTE ASPECTS 0-2",
+    "fullName": "Endovascular Thrombectomy in Patients With Largest Baseline Infarcts (ASPECTS 0-2): An Ancillary Analysis of the LASTE Trial",
+    "category": "evt-large-core",
+    "population": "n=181, Median 72; parent trial capped at <=80, Randomization within 6.5 h of last known well (parent LASTE criteria); NCT03811769",
+    "finding": "Favored EVT: generalized OR 1.81; mRS 0-3 in 31.4% vs 8.5% (RR 3.69, 95% CI 1.77-7.68)",
+    "teachingPoint": "In patients under 80 treated within 6.5 h, even ASPECTS 0-2 with a median 156 mL core benefited from EVT — infarct size in isolation should not disqualify thrombectomy, accepting a numerically higher sICH rate for large gains in survival and mRS 0-3.",
+    "PMID": "41979451",
+    "year": 2026,
+    "citationIds": [
+      "cit-laste-aspects-0-2-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-09-19",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "angel-aspect-hmcas",
+    "name": "ANGEL-ASPECT HMCAS analysis",
+    "fullName": "Effects of Computed Tomography Hyperdense Middle Cerebral Artery Sign on the Efficacy of Endovascular Therapy in Acute Ischemic Stroke With Large Infarcts: A Subgroup Analysis of the ANGEL-ASPECT Trial",
+    "category": "evt-large-core",
+    "population": "n=432, Parent ANGEL-ASPECT criteria; NCT04551664",
+    "finding": "No significant treatment-by-HMCAS interaction (p=0.19): EVT favored without HMCAS (generalized OR 2.78, 95% CI 1.80-4.27, p<0.001); not statistically significant with HMCAS (adjusted OR 1.69, 95% CI 0.93-3.08, p=0.09)",
+    "teachingPoint": "The hyperdense MCA sign marks worse prognosis and harder thrombectomy in large-core stroke but showed no significant interaction with EVT benefit — do not use HMCAS to withhold large-core thrombectomy.",
+    "PMID": "41914357",
+    "year": 2026,
+    "citationIds": [
+      "cit-angel-aspect-hmcas-2026"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-09-19",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

@@ -449,7 +449,7 @@ export const calculateNASCET = ({ stenosisDiameterMm, distalICADiameterMm }) => 
     percent: pct,
     tier: pct >= 70 ? 'severe' : pct >= 50 ? 'moderate' : 'mild',
     revasc: pct >= 70
-      ? 'CEA highly effective (NASCET NNT=5 at 2y). Timing: within 2 weeks for maximum benefit.'
+      ? 'CEA highly effective (NASCET NNT≈6 at 2y, ARR 17%). Timing: within 2 weeks for maximum benefit.'
       : pct >= 50
         ? 'CEA benefit modest (NNT ~20) and limited to men with recent symptoms. Individualized decision.'
         : 'Medical management (no surgical benefit demonstrated).',
@@ -542,11 +542,12 @@ export const interpretBarnesJewishDysphagia = ({ gcs15, canSitUpright, lowerFaci
 export const recommendVTEProphylaxis = ({ diagnosis, days, hematomaStable, immobile }) => {
   if (diagnosis === 'ich') {
     if (days < 1) return { modality: 'mechanical (IPC) only', agent: 'Sequential compression devices', rationale: 'Day 0-1 ICH: IPC reduces DVT (CLOTS-3 Lancet 2013).' };
-    if (days >= 1 && days <= 4 && hematomaStable) return { modality: 'chemical + mechanical', agent: 'Enoxaparin 40 mg SC daily (or UFH 5000 U BID) + IPC', rationale: 'Day 2-4 ICH with stable imaging: chemical VTE ppx is Class 2b, LOE B-R per AHA/ASA 2022 ICH.' };
     if (!hematomaStable) return { modality: 'mechanical only', agent: 'IPC', rationale: 'Unstable hematoma — defer chemical ppx; re-image and reassess.' };
+    return { modality: 'chemical + mechanical', agent: 'Enoxaparin 40 mg SC daily (or UFH 5000 U BID) + IPC', rationale: 'ICH from day 1-2 onward with stable imaging: chemical VTE ppx is Class 2b, LOE B-R per AHA/ASA 2022 ICH.' };
   }
   if (diagnosis === 'ischemic' && immobile) return { modality: 'chemical ± mechanical', agent: 'Enoxaparin 40 mg SC daily (or UFH 5000 U TID) + IPC when possible', rationale: 'Ischemic stroke with immobility: chemical VTE ppx from admission (Class 1, AHA/ASA 2019).' };
   if (diagnosis === 'sah') return { modality: 'mechanical until secured, then chemical 24h post-securing', agent: 'IPC, then enoxaparin 40 mg SC daily 24h after clip/coil if no bleeding', rationale: 'AHA/ASA aSAH 2023: mechanical ppx initially; chemical ppx 24h post-aneurysm securing.' };
+  if (immobile) return { modality: 'chemical ± mechanical', agent: 'Enoxaparin 40 mg SC daily (or UFH 5000 U BID) + IPC when possible', rationale: 'Non-ambulatory patient: VTE prophylaxis indicated; tailor agent to diagnosis and bleeding risk.' };
   return { modality: 'ambulate', agent: 'None required', rationale: 'Ambulatory patient; no VTE ppx needed.' };
 };
 
@@ -970,13 +971,13 @@ export const ichCareBundleCheck = ({ sbpAtArrival, sbpAt1h, glucose, glucoseUnit
     target: glucoseTarget,
     current: Number.isFinite(glu) && unit ? (unit === 'mg/dL' ? `${glu} mg/dL (${gluMmol.toFixed(1)} mmol/L)` : `${glu} mmol/L`) : Number.isFinite(glu) ? `${glu} (unit not specified — select mg/dL or mmol/L)` : 'not entered',
     met: glucoseDone,
-    action: glucoseDone ? null : (gluMmol < glucoseLow ? 'Treat hypoglycemia (D50W 25 g IV).' : `Insulin scale; target ${glucoseTarget}.`)
+    action: glucoseDone ? null : (!Number.isFinite(gluMmol) ? 'Select mg/dL or mmol/L to interpret the value.' : gluMmol < 3.9 ? 'Treat hypoglycemia (D50W 25 g IV).' : gluMmol < glucoseLow ? 'Below the bundle target band but not hypoglycemic — recheck; no dextrose bolus indicated.' : `Insulin scale; target ${glucoseTarget}.`)
   });
   // Temperature
-  const tempDone = Number.isFinite(tmp) && tmp < 37.5;
+  const tempDone = Number.isFinite(tmp) && tmp <= 37.5;
   items.push({
-    item: 'Tmax <37.5°C',
-    target: '<37.5°C',
+    item: 'Tmax ≤37.5°C',
+    target: '≤37.5°C',
     current: Number.isFinite(tmp) ? `${tmp}°C` : 'not entered',
     met: tempDone,
     action: tempDone ? null : 'Acetaminophen 1 g PO/PR/IV; cooling blanket if persistent fever. Investigate source.'
@@ -989,7 +990,7 @@ export const ichCareBundleCheck = ({ sbpAtArrival, sbpAt1h, glucose, glucoseUnit
       target: '<1.5',
       current: Number.isFinite(i) ? `INR ${i}` : (anticoagReversed === true ? 'reversed' : 'not entered'),
       met: inrDone,
-      action: inrDone ? null : 'Give 4F-PCC weight-based + Vitamin K 10 mg IV. Recheck INR at 30 min and 6h.'
+      action: inrDone ? null : 'Give 4F-PCC 2000 units IV (institutional fixed dose — see PCC calculator) + Vitamin K 10 mg IV. Recheck INR at 30 min and 6h.'
     });
   }
 

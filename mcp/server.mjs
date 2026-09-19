@@ -102,7 +102,7 @@ server.registerTool('calc_doac_start_timing',
   { title: 'DOAC start timing (post-stroke AF)', description: 'When to (re)start a DOAC after AIS in AF, per ELAN/OPTIMAS-era guidance.', inputSchema: {
       nihss: z.number().nonnegative(),
       onsetDate: z.string().describe('Stroke onset date (ISO, e.g. 2026-06-19)'),
-      protocol: z.enum(['elan-optimas', 'classic-1-3-6-12']).default('elan-optimas'),
+      protocol: z.enum(['elan-optimas', '1-3-6-12']).default('elan-optimas'),
       imagingSize: z.enum(['small', 'moderate', 'large']).nullable().optional(),
     } },
   async ({ nihss, onsetDate, protocol, imagingSize }) => ok({ tool: 'calc_doac_start_timing', result: calculateDOACStart(nihss, onsetDate, protocol, imagingSize ?? null) }));

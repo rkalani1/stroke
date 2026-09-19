@@ -67,5 +67,22 @@
     "certainty": "moderate",
     "lastReviewed": "2026-08-28",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "oriental-mevo-acao-registry",
+    "name": "ORIENTAL-MeVO ACAo Registry",
+    "fullName": "Endovascular Thrombectomy Versus Standard Medical Management in Acute Anterior Cerebral Artery Occlusion Stroke: The ORIENTAL-MeVO Registry Study",
+    "category": "evt-mevo",
+    "population": "n=343, NIHSS subgroup benefit concentrated at baseline NIHSS >=6, <=24 h from symptom onset",
+    "finding": "Favored EVT: adjusted OR 2.14 for the mRS shift; excellent outcome aRR 1.77 (95% CI 1.27-2.48); functional independence aRR 2.35 (95% CI 1.63-3.39)",
+    "teachingPoint": "In anterior cerebral artery occlusion, registry data associate EVT with better 90-day outcomes without excess sICH or mortality, strongest at NIHSS >=6 — hypothesis-supporting evidence for a MeVO subtype the randomized trials barely cover, not RCT-grade.",
+    "PMID": "42017224",
+    "year": 2026,
+    "citationIds": [
+      "cit-oriental-mevo-acao-registry-2026"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-09-19",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

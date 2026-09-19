@@ -1,10 +1,10 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:1995dc88018d372725942a084f770ebe",
+    "checksum": "sha256:7aef7692e7875c9efc124c9b733aa1ae",
     "counts": {
       "guidelines": 11,
-      "trials": 242,
+      "trials": 248,
       "education": 41,
       "calculators": 34,
       "references": 32
@@ -19,7 +19,7 @@
       "section": "dapt-minor-stroke",
       "COR": "I",
       "LOE": "A",
-      "statement": "In patients with minor non-cardioembolic ischemic stroke (NIHSS ≤3 or ≤5 with disabling deficit) or high-risk TIA (ABCD² ≥4 or DWI+), dual antiplatelet therapy (aspirin plus clopidogrel for 21 days, or aspirin plus ticagrelor for 30 days) started within 24 h is recommended to reduce recurrent ischemic stroke at 90 days.",
+      "statement": "In patients with minor non-cardioembolic ischemic stroke (NIHSS ≤3, or non-disabling NIHSS ≤5 in patients not treated with thrombolysis) or high-risk TIA (ABCD² ≥4 or DWI+), dual antiplatelet therapy with aspirin plus clopidogrel for 21 days, started within 24 h, is recommended to reduce recurrent ischemic stroke at 90 days.",
       "PMIDs": [
         "23803136",
         "29766750",
@@ -42,7 +42,8 @@
         "cit-chance2-2021"
       ],
       "caveats": [
-        "Duration is indication-specific. For THIS indication (minor stroke / high-risk TIA) the trial-supported courses are aspirin+clopidogrel 21 days or aspirin+ticagrelor 30 days; do not extend beyond 30 days.",
+        "Duration is indication-specific. For THIS indication (minor stroke / high-risk TIA) the Class I trial-supported course is aspirin+clopidogrel 21 days; do not extend DAPT beyond 30 days.",
+        "Aspirin plus ticagrelor for 30 days is a separate COR IIb / LOE B-R option (THALES) for NIHSS ≤5 or high-risk TIA with ABCD² ≥6 or ipsilateral ≥30% stenosis — it is not part of this Class I recommendation (secondary-prevention-2021-147).",
         "A separate indication permits longer DAPT: severe intracranial stenosis 70-99% within 30 days of the event allows aspirin+clopidogrel up to 90 days. Beyond 90 days, or triple antiplatelet therapy, carries excess hemorrhage risk. Source of truth for both bounds: src/guidelines/secondary-prevention-2021.json.",
         "INSPIRES extended the window to 72 h in eligible mild stroke / high-risk TIA.",
         "For CYP2C19 loss-of-function carriers, ticagrelor (CHANCE-2) is preferred over clopidogrel."
@@ -85,7 +86,7 @@
       ],
       "setting": "inpatient",
       "lastReviewed": "2026-04-25",
-      "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
+      "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000375",
       "provenance": "src/evidence/recommendations.js"
     },
     {
@@ -283,7 +284,7 @@
       ],
       "caveats": [
         "Pre-stroke mRS, life expectancy, and goals of care still inform shared decision-making.",
-        "Very low ASPECTS is not unaddressed: ASPECTS 0-2 within 6 h and ASPECTS 0-5 within 0-6 h both carry recommendations, each bounded by age 18-80 and pre-stroke mRS 0-1. Those age and mRS limits are part of the recommendation and are easy to drop when quoting the ASPECTS number alone. Source of truth: src/guidelines/ais-2026.json."
+        "Very low ASPECTS is not unaddressed: ASPECTS 0-2 within 6 h carries a IIa recommendation bounded by age <80 and pre-stroke mRS 0-1 (ais-2026-117); ASPECTS 3-10 within 6 h carries a Class I recommendation without an age bound (ais-2026-114); and the ASPECTS 0-5 within 0-6 h, age 18-80, mRS 0-1 Class I recommendation comes from the SVIN 2025 large-core guideline (svin-large-core-2025). Those bounds are part of each recommendation and are easy to drop when quoting the ASPECTS number alone."
       ],
       "setting": "inpatient",
       "lastReviewed": "2026-04-25",
@@ -323,9 +324,9 @@
       "guideline": "ESO 2023; AHA/ASA 2026",
       "year": 2023,
       "section": "tnk-vs-alteplase",
-      "COR": "IIa",
-      "LOE": "B-R",
-      "statement": "Tenecteplase 0.25 mg/kg (max 25 mg) is a reasonable alternative to alteplase 0.9 mg/kg for IV thrombolysis in eligible AIS within 4.5 h, particularly for patients with anticipated EVT.",
+      "COR": "I",
+      "LOE": "A",
+      "statement": "Tenecteplase 0.25 mg/kg (max 25 mg) is recommended as an alternative to alteplase 0.9 mg/kg (max 90 mg) for IV thrombolysis in eligible AIS within 4.5 h — either agent is first-line, and TNK is particularly practical when EVT is anticipated.",
       "PMIDs": [
         "35779553",
         "36774935",
@@ -350,7 +351,7 @@
       ],
       "setting": "inpatient",
       "lastReviewed": "2026-04-25",
-      "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
+      "sourceUrl": "https://doi.org/10.1177/23969873221150022",
       "provenance": "src/evidence/recommendations.js"
     }
   ],
@@ -360,7 +361,7 @@
       "name": "RESCUE BT2",
       "fullName": "Tirofiban for Stroke without Large or Medium-Sized Vessel Occlusion",
       "category": "acute-antithrombotic-adjuncts",
-      "population": "n=1177, adults, NIHSS NIHSS ≥5 with at least one moderately-to-severely weak limb, four entry routes: ≤24 h and ineligible for reperfusion; progression at 24-96 h; early deterioration after thrombolysis; or no improvement 4-24 h after thrombolysis",
+      "population": "n=1177, adults, NIHSS ≥5 with at least one moderately-to-severely weak limb, four entry routes: ≤24 h and ineligible for reperfusion; progression at 24-96 h; early deterioration after thrombolysis; or no improvement 4-24 h after thrombolysis",
       "finding": "Favors tirofiban: 29.1% vs 22.2%",
       "teachingPoint": "IV tirofiban improved 90-day excellent outcome in non-occlusive, often progressive stroke, with inconsistent secondary endpoints.",
       "PMID": "37256974",
@@ -411,7 +412,7 @@
       "name": "MOST",
       "fullName": "Multi-arm Optimization of Stroke Thrombolysis: Adjunctive Intravenous Argatroban or Eptifibatide for Ischemic Stroke",
       "category": "acute-antithrombotic-adjuncts",
-      "population": "n=514, adults ≥18 y, NIHSS NIHSS ≥6 before intravenous thrombolysis, IV thrombolysis within 3 h of onset; study drug started within 75 min of the start of thrombolysis",
+      "population": "n=514, adults ≥18 y, NIHSS ≥6 before intravenous thrombolysis, IV thrombolysis within 3 h of onset; study drug started within 75 min of the start of thrombolysis",
       "finding": "DID NOT meet superiority for either adjunct — mean (±SD) utility-weighted 90-day mRS 5.2±3.7 with argatroban, 6.3±3.2 with eptifibatide and 6.8±3.0 with placebo; both adjuncts were numerically WORSE than placebo",
       "teachingPoint": "Argues against adding intravenous argatroban or eptifibatide to IV thrombolysis in the first hours after treatment: no reduction in disability, and a numerical mortality excess the trial was stopped too early to characterise.",
       "PMID": "39231343",
@@ -458,6 +459,23 @@
       "provenance": "src/evidence/completedTrials.js"
     },
     {
+      "id": "eva-trisp-prior-apt",
+      "name": "EVA-TRISP prior-APT analysis",
+      "fullName": "Previous Antiplatelet Therapy and Outcomes of Acute Ischemic Stroke With Large Vessel Occlusion Treated With Direct Endovascular Therapy (EVA-TRISP registry)",
+      "category": "acute-ischemic-stroke",
+      "population": "n=1308, Mean 75.8 ± 11.4, NIHSS Mean NIHSS 13.1 ± 7.2, Consecutive patients 2015-2023; no interaction with time-to-groin earlier/later than 6 h (p=0.743)",
+      "finding": "Any previous APT associated with a shift toward LOWER mRS: OR 1.30; 90-day independence OR 1.62 (95% CI 1.22-2.16, p=0.001)",
+      "teachingPoint": "In direct EVT for anterior-circulation LVO, prior antiplatelet therapy was associated with better 90-day outcomes and no excess sICH — prior APT is a reason for reassurance, never a reason to withhold or delay thrombectomy.",
+      "PMID": "41671526",
+      "year": 2026,
+      "citationIds": [
+        "cit-eva-trisp-prior-apt-2026"
+      ],
+      "certainty": "low",
+      "lastReviewed": "2026-09-19",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
       "id": "escape-na1",
       "name": "ESCAPE-NA1",
       "fullName": "Efficacy and safety of nerinetide for the treatment of acute ischaemic stroke (ESCAPE-NA1): a multicentre, double-blind, randomised controlled trial",
@@ -479,7 +497,7 @@
       "name": "ESCAPE-NEXT",
       "fullName": "Efficacy and safety of nerinetide in acute ischaemic stroke in patients undergoing endovascular thrombectomy without previous thrombolysis (ESCAPE-NEXT): a multicentre, double-blind, randomised controlled trial",
       "category": "acute-neuroprotection",
-      "population": "n=850, ≥18 y (median not reported in the abstract), NIHSS NIHSS >5 (disabling stroke at randomisation), ≤12 h from onset",
+      "population": "n=850, ≥18 y (median not reported in the abstract), NIHSS >5 (disabling stroke at randomisation), ≤12 h from onset",
       "finding": "DID NOT meet: mRS 0-2 in 206/454 (45%) with nerinetide vs 181/396 (46%) with placebo — no benefit, with the point estimate very slightly favouring placebo",
       "teachingPoint": "Closes the nerinetide question for thrombectomy without thrombolysis: there is no functional benefit, and no basis for using it outside a trial.",
       "PMID": "39955119",
@@ -513,7 +531,7 @@
       "name": "TASTE (edaravone dexborneol)",
       "fullName": "Edaravone Dexborneol Versus Edaravone Alone for the Treatment of Acute Ischemic Stroke: A Phase III, Randomized, Double-Blind, Comparative Trial",
       "category": "acute-neuroprotection",
-      "population": "n=1165, 35-80 y, NIHSS NIHSS 4-24, ≤48 h from onset",
+      "population": "n=1165, 35-80 y, NIHSS 4-24, ≤48 h from onset",
       "finding": "MET: mRS ≤1 in 67.18% with edaravone dexborneol vs 58.97% with edaravone alone — the combination was superior to edaravone alone",
       "teachingPoint": "Explains why edaravone dexborneol is used routinely in China and why that practice has not transferred: the trial's control arm was edaravone, not placebo or usual care.",
       "PMID": "33588596",
@@ -530,7 +548,7 @@
       "name": "TASTE-2",
       "fullName": "Edaravone dexborneol versus placebo on functional outcomes in patients with acute ischaemic stroke undergoing endovascular thrombectomy (TASTE-2): randomised controlled trial",
       "category": "acute-neuroprotection",
-      "population": "n=1362, 18-80 y, NIHSS NIHSS 6-25, ≤24 h from symptom onset",
+      "population": "n=1362, 18-80 y, NIHSS 6-25, ≤24 h from symptom onset",
       "finding": "Nominally MET but only just: mRS 0-2 in 379/689 (55.0%) with edaravone dexborneol vs 333/671 (49.6%) with placebo; risk difference 5.4% (95% CI 0.1% to 10.7%). The lower bound of the risk-ratio confidence interval sits exactly at 1.00 and P=0.05, so this is a borderline rather than a robust result",
       "teachingPoint": "The best current signal that a cytoprotectant may add something to thrombectomy — borderline, single-country and not yet a basis for routine use.",
       "PMID": "41500725",
@@ -1023,7 +1041,7 @@
       "name": "Cochrane review: BP after reperfusion",
       "fullName": "Blood pressure management in reperfused ischemic stroke (Cochrane Database of Systematic Reviews)",
       "category": "bp-post-evt",
-      "population": "n=4381, adults enrolled in the included randomized trials, NIHSS NIHSS pooled as an outcome, not an inclusion criterion, blood-pressure management during and after reperfusion by systemic thrombolysis or endovascular thrombectomy",
+      "population": "n=4381, adults enrolled in the included randomized trials, NIHSS pooled as an outcome, not an inclusion criterion, blood-pressure management during and after reperfusion by systemic thrombolysis or endovascular thrombectomy",
       "finding": "Intensive management results in LITTLE TO NO clinically meaningful difference in clinical function (high-certainty evidence). IMPORTANT READING NOTE: the published abstract does not state the direction of the mRS dichotomy, so this risk ratio must NOT be paraphrased as favouring either arm.",
       "teachingPoint": "Supplies the GRADE-graded bottom line for post-reperfusion BP: intensive systolic lowering below 160 mm Hg buys no clinically meaningful functional benefit and probably increases all-cause mortality.",
       "PMID": "42445947",
@@ -1619,7 +1637,7 @@
       "name": "CHANCE",
       "fullName": "Clopidogrel with Aspirin in Acute Minor Stroke or TIA",
       "category": "dapt-minor-stroke",
-      "population": "n=5170, ≥40, NIHSS NIHSS ≤3 (or high-risk TIA), ≤24 h",
+      "population": "n=5170, ≥40, NIHSS ≤3 (or high-risk TIA), ≤24 h",
       "finding": "Favored DAPT: 8.2% vs 11.7%",
       "teachingPoint": "Founding evidence for short-course DAPT in minor stroke / high-risk TIA.",
       "PMID": "23803136",
@@ -1636,7 +1654,7 @@
       "name": "POINT",
       "fullName": "Clopidogrel and Aspirin in Acute Ischemic Stroke and High-Risk TIA",
       "category": "dapt-minor-stroke",
-      "population": "n=4881, ≥18, NIHSS NIHSS ≤3, ≤12 h",
+      "population": "n=4881, ≥18, NIHSS ≤3, ≤12 h",
       "finding": "Favored DAPT: 5.0% vs 6.5%",
       "teachingPoint": "Reinforces 21-day cap on DAPT for minor stroke.",
       "PMID": "29766750",
@@ -1653,7 +1671,7 @@
       "name": "THALES",
       "fullName": "Ticagrelor and Aspirin or Aspirin Alone in AIS or TIA",
       "category": "dapt-minor-stroke",
-      "population": "n=11016, ≥40, NIHSS NIHSS ≤5, ≤24 h",
+      "population": "n=11016, ≥40, NIHSS ≤5, ≤24 h",
       "finding": "Favored DAPT: 5.5% vs 6.6%",
       "teachingPoint": "Supports ticagrelor-based DAPT, especially when CYP2C19 LOF suspected.",
       "PMID": "32668111",
@@ -1687,7 +1705,7 @@
       "name": "CHANCE-2",
       "fullName": "Ticagrelor or Clopidogrel with Aspirin in High-Risk TIA or Minor Stroke",
       "category": "dapt-minor-stroke",
-      "population": "n=6412, ≥40, NIHSS NIHSS ≤3, ≤24 h",
+      "population": "n=6412, ≥40, NIHSS ≤3, ≤24 h",
       "finding": "Favored ticagrelor: 6.0% vs 7.6%",
       "teachingPoint": "Supports ticagrelor over clopidogrel in CYP2C19 LOF carriers.",
       "PMID": "34708996",
@@ -1857,7 +1875,7 @@
       "name": "SIESTA",
       "fullName": "Sedation vs Intubation for Endovascular Stroke Treatment (SIESTA)",
       "category": "evt-anesthesia",
-      "population": "n=150, mean 71.5 y; 60 women (40%), NIHSS NIHSS greater than 10 required for entry; median NIHSS 17, Not specified in the abstract",
+      "population": "n=150, mean 71.5 y; 60 women (40%), NIHSS greater than 10 required for entry; median NIHSS 17, Not specified in the abstract",
       "finding": "DID NOT meet superiority: general anesthesia NIHSS 16.8 at admission to 13.6 at 24 h (difference -3.2, 95% CI -5.6 to -0.8) vs conscious sedation 17.2 to 13.6 (difference -3.6, 95% CI -5.5 to -1.7)",
       "teachingPoint": "Does not support routinely avoiding general anesthesia for thrombectomy; teaches that the airway decision trades procedural stillness against hypothermia, delayed extubation and pneumonia.",
       "PMID": "27785516",
@@ -2227,6 +2245,57 @@
       "provenance": "src/evidence/completedTrials.js"
     },
     {
+      "id": "tension-prior-antithrombotic",
+      "name": "TENSION antithrombotic analysis",
+      "fullName": "Large Core Stroke Thrombectomy Is Safe and Effective Regardless of Prior Antithrombotic or Thrombolytic Treatment: A Secondary Analysis of the Randomized TENSION Trial",
+      "category": "evt-large-core",
+      "population": "n=246, Median 74 (IQR 65-80), Parent TENSION criteria (extended lesion, extended time window); NCT03094715",
+      "finding": "EVT benefit in every stratum: with antiplatelets cOR 2.40 (1.22-4.99), without 2.29 (1.53-3.46); with anticoagulation cOR 2.45 (1.17-5.28), without 2.12 (1.44-3.15); with IVT cOR 1.46 (0.83-2.61), without 2.89 (1.87-4.51)",
+      "teachingPoint": "Preadmission antiplatelets or anticoagulants, or prior IV thrombolysis, should not exclude otherwise-eligible large-core patients from thrombectomy — EVT benefit and safety were unmodified by prior antithrombotic exposure.",
+      "PMID": "42261979",
+      "year": 2026,
+      "citationIds": [
+        "cit-tension-antithrombotic-2026"
+      ],
+      "certainty": "moderate",
+      "lastReviewed": "2026-09-19",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
+      "id": "laste-aspects-0-2",
+      "name": "LASTE ASPECTS 0-2",
+      "fullName": "Endovascular Thrombectomy in Patients With Largest Baseline Infarcts (ASPECTS 0-2): An Ancillary Analysis of the LASTE Trial",
+      "category": "evt-large-core",
+      "population": "n=181, Median 72; parent trial capped at <=80, Randomization within 6.5 h of last known well (parent LASTE criteria); NCT03811769",
+      "finding": "Favored EVT: generalized OR 1.81; mRS 0-3 in 31.4% vs 8.5% (RR 3.69, 95% CI 1.77-7.68)",
+      "teachingPoint": "In patients under 80 treated within 6.5 h, even ASPECTS 0-2 with a median 156 mL core benefited from EVT — infarct size in isolation should not disqualify thrombectomy, accepting a numerically higher sICH rate for large gains in survival and mRS 0-3.",
+      "PMID": "41979451",
+      "year": 2026,
+      "citationIds": [
+        "cit-laste-aspects-0-2-2026"
+      ],
+      "certainty": "moderate",
+      "lastReviewed": "2026-09-19",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
+      "id": "angel-aspect-hmcas",
+      "name": "ANGEL-ASPECT HMCAS analysis",
+      "fullName": "Effects of Computed Tomography Hyperdense Middle Cerebral Artery Sign on the Efficacy of Endovascular Therapy in Acute Ischemic Stroke With Large Infarcts: A Subgroup Analysis of the ANGEL-ASPECT Trial",
+      "category": "evt-large-core",
+      "population": "n=432, Parent ANGEL-ASPECT criteria; NCT04551664",
+      "finding": "No significant treatment-by-HMCAS interaction (p=0.19): EVT favored without HMCAS (generalized OR 2.78, 95% CI 1.80-4.27, p<0.001); not statistically significant with HMCAS (adjusted OR 1.69, 95% CI 0.93-3.08, p=0.09)",
+      "teachingPoint": "The hyperdense MCA sign marks worse prognosis and harder thrombectomy in large-core stroke but showed no significant interaction with EVT benefit — do not use HMCAS to withhold large-core thrombectomy.",
+      "PMID": "41914357",
+      "year": 2026,
+      "citationIds": [
+        "cit-angel-aspect-hmcas-2026"
+      ],
+      "certainty": "low",
+      "lastReviewed": "2026-09-19",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
       "id": "dawn",
       "name": "DAWN",
       "fullName": "Thrombectomy 6 to 24 Hours after Stroke with Mismatch between Deficit and Infarct",
@@ -2265,7 +2334,7 @@
       "name": "MR CLEAN-LATE",
       "fullName": "Endovascular Treatment 6-24 h After Stroke Selected by Collateral Flow on CT Angiography",
       "category": "evt-late-window",
-      "population": "n=502, ≥18; 52% female, NIHSS NIHSS ≥2, 6-24 h from onset or last seen well",
+      "population": "n=502, ≥18; 52% female, NIHSS ≥2, 6-24 h from onset or last seen well",
       "finding": "Favors EVT: median mRS 3 (IQR 2-5) vs 4 (IQR 2-6)",
       "teachingPoint": "CTA collateral status alone can select late-window (6-24 h) EVT candidates who fall outside DAWN/DEFUSE-3 perfusion criteria.",
       "PMID": "37003289",
@@ -2344,6 +2413,23 @@
       ],
       "certainty": "moderate",
       "lastReviewed": "2026-08-28",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
+      "id": "oriental-mevo-acao-registry",
+      "name": "ORIENTAL-MeVO ACAo Registry",
+      "fullName": "Endovascular Thrombectomy Versus Standard Medical Management in Acute Anterior Cerebral Artery Occlusion Stroke: The ORIENTAL-MeVO Registry Study",
+      "category": "evt-mevo",
+      "population": "n=343, NIHSS subgroup benefit concentrated at baseline NIHSS >=6, <=24 h from symptom onset",
+      "finding": "Favored EVT: adjusted OR 2.14 for the mRS shift; excellent outcome aRR 1.77 (95% CI 1.27-2.48); functional independence aRR 2.35 (95% CI 1.63-3.39)",
+      "teachingPoint": "In anterior cerebral artery occlusion, registry data associate EVT with better 90-day outcomes without excess sICH or mortality, strongest at NIHSS >=6 — hypothesis-supporting evidence for a MeVO subtype the randomized trials barely cover, not RCT-grade.",
+      "PMID": "42017224",
+      "year": 2026,
+      "citationIds": [
+        "cit-oriental-mevo-acao-registry-2026"
+      ],
+      "certainty": "low",
+      "lastReviewed": "2026-09-19",
       "provenance": "src/evidence/completedTrials.js"
     },
     {
@@ -2453,7 +2539,7 @@
       "name": "EXTEND",
       "fullName": "Thrombolysis Guided by Perfusion Imaging up to 9 Hours after Onset",
       "category": "extended-window-ivt",
-      "population": "n=225, 18-80, NIHSS 4-26, 4.5-9 h or wake-up",
+      "population": "n=225, ≥18, NIHSS 4-26, 4.5-9 h or wake-up",
       "finding": "Favored alteplase: 35.4% vs 29.5%",
       "teachingPoint": "Supports perfusion-mismatch IVT in 4.5-9 h window when EVT not indicated.",
       "PMID": "31067369",
@@ -2504,7 +2590,7 @@
       "name": "TIMELESS",
       "fullName": "Tenecteplase for Stroke at 4.5 to 24 Hours with Perfusion-Imaging Selection",
       "category": "extended-window-ivt",
-      "population": "n=458, 18-85, NIHSS 5-25, 4.5-24 h",
+      "population": "n=458, ≥18, NIHSS ≥5, 4.5-24 h",
       "finding": "Favored TNK numerically; primary endpoint did not reach significance overall",
       "teachingPoint": "Cautionary: late-window TNK alone (with EVT permitted) did not meet its primary endpoint.",
       "PMID": "38329148",
@@ -3078,6 +3164,23 @@
       "provenance": "src/evidence/completedTrials.js"
     },
     {
+      "id": "recap-ich",
+      "name": "RECAP-ICH",
+      "fullName": "Intensive Blood Pressure Lowering After Spontaneous Intracerebral Haemorrhage for Secondary Stroke Prevention (RECAP-ICH): Systematic Review and Individual Participant Data Meta-analysis",
+      "category": "ich-secondary-prevention",
+      "population": "n=2944, Mean 59.6 (SD 10.6), Long-term secondary prevention after spontaneous ICH; median follow-up 42.0 months (IQR 24.0-66.0)",
+      "finding": "Reduced recurrent stroke: 96 (6.5%) of 1487 vs 152 (10.4%) of 1457",
+      "teachingPoint": "Pooled patient-level randomized data: sustained BP lowering after ICH cuts recurrent stroke by ~38% (adjusted HR 0.62) — mainly recurrent haemorrhage (HR 0.39) — without excess serious adverse events, with a 1% absolute benefit accruing by about 6 months; long-term BP control is the cornerstone of secondary prevention after ICH.",
+      "PMID": "42586098",
+      "year": 2026,
+      "citationIds": [
+        "cit-recap-ich-2026"
+      ],
+      "certainty": "high",
+      "lastReviewed": "2026-09-19",
+      "provenance": "src/evidence/completedTrials.js"
+    },
+    {
       "id": "peach",
       "name": "PEACH",
       "fullName": "Safety and Efficacy of Prophylactic Levetiracetam for Prevention of Epileptic Seizures in the Acute Phase of Intracerebral Haemorrhage (PEACH)",
@@ -3525,7 +3628,7 @@
       "name": "ARAMIS",
       "fullName": "Dual Antiplatelet Therapy vs Alteplase for Patients With Minor Nondisabling Acute Ischemic Stroke",
       "category": "minor-stroke-thrombolysis",
-      "population": "n=760, median 64 (IQR 57-71); 31.0% women, NIHSS NIHSS ≤5, with ≤1 point on key single items (median 2), ≤4.5 h",
+      "population": "n=760, median 64 (IQR 57-71); 31.0% women, NIHSS ≤5, with ≤1 point on key single items (median 2), ≤4.5 h",
       "finding": "Non-inferior: 93.8% (DAPT) vs 91.4% (alteplase)",
       "teachingPoint": "For genuinely non-disabling minor stroke within 4.5 h, DAPT is a reasonable alternative to IV thrombolysis.",
       "PMID": "37367978",
@@ -4257,7 +4360,7 @@
       "name": "TRACE-2",
       "fullName": "Trial of Tenecteplase in Chinese Patients with Acute Ischemic Stroke",
       "category": "tnk-vs-alteplase",
-      "population": "n=1430, ≥18, NIHSS NIHSS 5-25, ≤4.5 h",
+      "population": "n=1430, ≥18, NIHSS 5-25, ≤4.5 h",
       "finding": "Non-inferior: 62.0% (TNK) vs 58.0% (alteplase)",
       "teachingPoint": "Confirms non-inferiority of TNK in non-LVO eligible AIS within 4.5 h.",
       "PMID": "36774935",
@@ -4376,7 +4479,7 @@
       "name": "WAKE-UP",
       "fullName": "MRI-Guided Thrombolysis for Stroke with Unknown Time of Onset",
       "category": "wake-up-stroke",
-      "population": "n=503, 18-80, NIHSS NIHSS ≤25, unknown onset (last seen well >4.5 h)",
+      "population": "n=503, 18-80, NIHSS ≤25, unknown onset (last seen well >4.5 h)",
       "finding": "Favored alteplase: 53.3% vs 41.8%",
       "teachingPoint": "Foundational evidence for imaging-selected thrombolysis in wake-up / unknown onset stroke.",
       "PMID": "29766770",

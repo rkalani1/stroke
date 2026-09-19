@@ -15,5 +15,22 @@
     "certainty": "moderate",
     "lastReviewed": "2026-05-30",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "eva-trisp-prior-apt",
+    "name": "EVA-TRISP prior-APT analysis",
+    "fullName": "Previous Antiplatelet Therapy and Outcomes of Acute Ischemic Stroke With Large Vessel Occlusion Treated With Direct Endovascular Therapy (EVA-TRISP registry)",
+    "category": "acute-ischemic-stroke",
+    "population": "n=1308, Mean 75.8 ± 11.4, NIHSS Mean NIHSS 13.1 ± 7.2, Consecutive patients 2015-2023; no interaction with time-to-groin earlier/later than 6 h (p=0.743)",
+    "finding": "Any previous APT associated with a shift toward LOWER mRS: OR 1.30; 90-day independence OR 1.62 (95% CI 1.22-2.16, p=0.001)",
+    "teachingPoint": "In direct EVT for anterior-circulation LVO, prior antiplatelet therapy was associated with better 90-day outcomes and no excess sICH — prior APT is a reason for reassurance, never a reason to withhold or delay thrombectomy.",
+    "PMID": "41671526",
+    "year": 2026,
+    "citationIds": [
+      "cit-eva-trisp-prior-apt-2026"
+    ],
+    "certainty": "low",
+    "lastReviewed": "2026-09-19",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

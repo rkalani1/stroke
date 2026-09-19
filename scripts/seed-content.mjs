@@ -75,11 +75,16 @@ async function seedGuidelines(citById) {
     'AHA/ASA 2021 Secondary Prevention': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000375',
     'AHA/ASA 2023 aSAH': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000436',
     'AHA/ASA 2024 CVT': 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000456',
+    'ESO 2023': 'https://doi.org/10.1177/23969873221150022',
   };
+  // Match only the primary (first) source segment: trailing segments such as
+  // 'TIMING (2022)' or '; AHA/ASA 2026' must not satisfy another key's
+  // org+year test and mis-assign that guideline's URL.
   const urlFor = (src) => {
+    const primary = String(src).split(';')[0];
     for (const [key, url] of Object.entries(KNOWN_URLS)) {
       const [org, year] = [key.split(' ')[0], firstYear(key)];
-      if (src.includes(org.split('/')[0]) && year && src.includes(String(year))) return url;
+      if (primary.includes(org.split('/')[0]) && year && primary.includes(String(year))) return url;
     }
     return undefined;
   };
