@@ -4,14 +4,18 @@
  * Drop-in: scripts/lint-touch-targets.mjs
  *
  * Walks the live DOM via Playwright at three mobile viewports (320/375/768)
- * across three hash routes (#/encounter, #/management, #/trials) and asserts
- * that every interactive element has getBoundingClientRect() ≥ 44 × 44.
+ * across the app's surfaces (#/encounter, #/protocols, #/trials, and the
+ * research sub-tabs) and asserts that every interactive element has
+ * getBoundingClientRect() ≥ 44 × 44.
  *
  * Interactive = button, [role=button], a[href], input:not(hidden), select,
  *               textarea, [tabindex]:not([tabindex="-1"]), summary, label[for].
  *
  * Whitelist: elements with data-skip-tap (escape hatch for genuinely fine-
- * grained controls like canvas-overlay handles).
+ * grained controls like canvas-overlay handles). A label[for] whose bound
+ * control itself meets the minimum is skipped — WCAG 2.5.8's equivalent-
+ * target exception: the label duplicates a function already available on a
+ * large-enough target.
  *
  * Run with: node scripts/lint-touch-targets.mjs [--url URL] [--browsers chromium]
  * Default URL: http://localhost:8080
@@ -21,7 +25,10 @@ import { chromium } from 'playwright';
 import { exit } from 'node:process';
 
 const URL = process.env.LINT_URL || process.argv[2] || 'http://localhost:8080';
-const ROUTES = ['/#/encounter', '/#/management', '/#/trials'];
+const ROUTES = [
+  '/#/encounter', '/#/protocols', '/#/trials',
+  '/#/research/guidelines', '/#/research/education'
+];
 const VIEWPORTS = [
   { name: '320', width: 320, height: 568 },
   { name: '375', width: 375, height: 812 },
@@ -31,7 +38,8 @@ const MIN = 44;
 
 const offenders = [];
 
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.STROKE_CHROMIUM_PATH
+  ? { executablePath: process.env.STROKE_CHROMIUM_PATH } : {});
 const ctx = await browser.newContext();
 const page = await ctx.newPage();
 
@@ -77,6 +85,15 @@ for (const route of ROUTES) {
         if (cs.display === 'none' || cs.visibility === 'hidden') return;
         const r = el.getBoundingClientRect();
         if (r.width === 0 && r.height === 0) return; // off-screen
+        // WCAG 2.5.8 equivalent-target exception: a label whose bound
+        // control is itself >= MIN just duplicates that control's function.
+        if (el.tagName === 'LABEL') {
+          const control = document.getElementById(el.getAttribute('for'));
+          if (control) {
+            const cr = control.getBoundingClientRect();
+            if (cr.width >= min && cr.height >= min) return;
+          }
+        }
         if (r.width < min || r.height < min) {
           bad.push({
             tag: el.tagName.toLowerCase(),

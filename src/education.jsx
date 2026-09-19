@@ -922,7 +922,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
               onClick={() => setSelectedCategory(cat.key)}
               className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-colors min-h-[36px] ${
                 active
-                  ? 'bg-cobalt-600 text-white border-cobalt-600 dark:bg-cobalt-600 dark:border-cobalt-600'
+                  ? 'bg-cobalt-600 text-white border-cobalt-600'
                   : 'bg-slate-100 hover:bg-cobalt-100 text-slate-700 hover:text-cobalt-700 border-line hover:border-cobalt-300 dark:bg-paper-2 dark:hover:bg-cobalt-800 dark:text-ink-2 dark:hover:text-cobalt-300'
               }`}
             >
@@ -1115,7 +1115,7 @@ const PdfActionBar = ({ title, subtitle, pdfPath, pdfName, iconColorClass = "tex
       </div>
 
       {hasPdf && showPdf && (
-        <div className="border border-slate-250 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
+        <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
           <iframe
             src={resolvedPath}
             className="w-full h-full border-none"
@@ -4729,7 +4729,7 @@ export const EVDInfographic = () => {
       </div>
 
       {showPdf && (
-        <div className="border border-slate-250 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
+        <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
           <iframe
             src="documents/references/External Ventricular Drain.pdf"
             className="w-full h-full border-none"
@@ -4739,7 +4739,7 @@ export const EVDInfographic = () => {
       )}
 
       {/* Static Quick Reference Card */}
-      <div className="evd-infographic-card border border-slate-250 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
+      <div className="evd-infographic-card border border-slate-200 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
         {/* Header */}
         <div className="bg-slate-800 text-white text-center py-3.5 px-4">
           <h3 className="font-serif text-lg font-bold tracking-wide">External Ventricular Drain</h3>
@@ -4761,7 +4761,7 @@ export const EVDInfographic = () => {
                 className="max-h-[260px] object-contain rounded-md shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
               />
               <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
-                <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
+                <span className="text-[11px] text-white font-semibold bg-black/70 px-3 py-1.5 rounded-md flex items-center gap-1.5">
                   <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
                 </span>
               </div>
@@ -4783,7 +4783,7 @@ export const EVDInfographic = () => {
                 <li><strong>Weaning:</strong> Gradual escalation of drainage setting by 5 cmH₂O per day. After +20 cmH₂O, EVD should be clamped & head CT obtained to evaluate ventricular caliber. Neurologic examination, CSF output, and ICP waveform should be assessed daily.</li>
               </ul>
             </div>
-            <div className="flex justify-center items-center p-3 border-t border-slate-150 bg-white dark:bg-slate-800 h-[55px]">
+            <div className="flex justify-center items-center p-3 border-t border-slate-200 bg-white dark:bg-slate-800 h-[55px]">
               <svg viewBox="0 0 280 50" className="w-full max-h-[40px] object-contain select-none" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-label="SNACC - Society for Neuroscience in Anesthesiology and Critical Care Logo">
                 <path d="M 10,25 C 10,15 18,8 28,8 C 38,8 46,15 46,25 C 46,35 38,42 28,42 C 18,42 10,35 10,25 Z" fill="none" stroke="#5B3B9C" strokeWidth="1.5" />
                 <circle cx="28" cy="25" r="4" fill="#18849E" />
@@ -4933,7 +4933,7 @@ export const ICPInfographic = () => {
       </div>
 
       {showPdf && (
-        <div className="border border-slate-250 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
+        <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
           <iframe
             src="documents/references/Intracranial Hypertension &amp; Herniation.pdf"
             className="w-full h-full border-none"
@@ -4978,7 +4978,7 @@ export const ICPInfographic = () => {
                     className="max-h-[160px] object-contain rounded-md transition-transform duration-200 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
-                    <span className="text-[10px] text-white font-semibold bg-black/60 px-2 py-1 rounded-md flex items-center gap-1">
+                    <span className="text-[10px] text-white font-semibold bg-black/70 px-2 py-1 rounded-md flex items-center gap-1">
                       <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
                     </span>
                   </div>
@@ -4997,22 +4997,22 @@ export const ICPInfographic = () => {
                 </thead>
                 <tbody className="divide-y divide-orange-100 dark:divide-orange-950/50">
                   <tr>
-                    <td className="px-3 py-2 font-semibold text-orange-850 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Uncal (Lateral)</td>
+                    <td className="px-3 py-2 font-semibold text-orange-900 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Uncal (Lateral)</td>
                     <td className="px-3 py-2 border-r border-orange-100 dark:border-orange-950/30">Medial temporal lobe (uncus) pushed over tentorial edge</td>
                     <td className="px-3 py-2">Ipsilateral sluggish/dilated pupil (CN III compressed), contralateral hemiparesis. <br/><strong>Kernohan's Notch</strong> causes false-localizing ipsilateral hemiparesis.</td>
                   </tr>
                   <tr>
-                    <td className="px-3 py-2 font-semibold text-orange-855 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Central (Axial)</td>
+                    <td className="px-3 py-2 font-semibold text-orange-900 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Central (Axial)</td>
                     <td className="px-3 py-2 border-r border-orange-100 dark:border-orange-950/30">Downward diencephalic and midbrain displacement</td>
                     <td className="px-3 py-2">Progressive stupor, midpoint fixed pupils, decorticate to decerebrate posturing. <br/>Symmetrical signs often confused with metabolic encephalopathy.</td>
                   </tr>
                   <tr>
-                    <td className="px-3 py-2 font-semibold text-orange-855 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Subfalcine</td>
+                    <td className="px-3 py-2 font-semibold text-orange-900 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Subfalcine</td>
                     <td className="px-3 py-2 border-r border-orange-100 dark:border-orange-950/30">Cingulate gyrus displaced under the falx cerebri</td>
                     <td className="px-3 py-2">Often clinically silent, or presents with contralateral lower extremity weakness. <br/><strong>ACA compression</strong> causes frontal/leg territory infarction.</td>
                   </tr>
                   <tr>
-                    <td className="px-3 py-2 font-semibold text-orange-855 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Tonsillar</td>
+                    <td className="px-3 py-2 font-semibold text-orange-900 dark:text-orange-400 border-r border-orange-100 dark:border-orange-950/30">Tonsillar</td>
                     <td className="px-3 py-2 border-r border-orange-100 dark:border-orange-950/30">Cerebellar tonsils forced through the foramen magnum</td>
                     <td className="px-3 py-2">Cushing's triad, flaccid quadriplegia, respiratory arrest.</td>
                   </tr>
@@ -5035,7 +5035,7 @@ export const ICPInfographic = () => {
                 <strong className="text-ok-800 dark:text-ok-400 block text-xs">Fundamental Measures</strong>
                 <ul className="list-disc pl-5 space-y-0.5 text-[11px] text-slate-600 dark:text-ink-2">
                   <li>Elevate HOB 30°; strict neutral midline neck alignment to preserve venous outflow.</li>
-                  <li>Euvolemia (isotonic saline; avoid hypotonic <code className="text-rose-600 dark:text-rose-400 font-mono text-[10px]">D5W</code>).</li>
+                  <li>Euvolemia (isotonic saline; avoid hypotonic <code className="text-rose-600 dark:text-rose-300 font-mono text-[10px]">D5W</code>).</li>
                   <li>Temperature &lt; 38.0°C.</li>
                   <li>Normocapnia (target <code className="font-mono">pCO₂</code> 35–45 mmHg).</li>
                   <li>When ICP is monitored, CPP = MAP - ICP; many protocols target CPP around &gt;60 mmHg, individualized to disease context.</li>
@@ -5097,7 +5097,7 @@ export const ICPInfographic = () => {
             ICP Waveform Analysis
           </div>
           <div className="p-4 bg-slate-50/50 dark:bg-slate-950/15 flex flex-col items-center gap-4">
-            <div className="bg-slate-950 p-2 rounded-lg border border-slate-250 dark:border-slate-800 w-full">
+            <div className="bg-slate-950 p-2 rounded-lg border border-slate-200 dark:border-slate-800 w-full">
               <svg viewBox="0 0 420 150" className="w-full h-auto max-w-[450px] mx-auto block select-none" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-label="ICP Waveform Analysis: Normal Compliance (P1 > P2 > P3) versus Impaired Compliance (P2 > P1) Diagram">
                 <line x1="10" y1="25" x2="410" y2="25" stroke="#1e293b" strokeWidth="1" />
                 <line x1="10" y1="50" x2="410" y2="50" stroke="#1e293b" strokeWidth="1" />
@@ -5540,7 +5540,7 @@ function AstralCalculatorTab() {
               </div>
               <div className="flex justify-between items-center text-[10px]">
                 <span className="text-slate-500 dark:text-slate-400">Abnormal if &lt;3.7 or &gt;7.3 mmol/L</span>
-                <span className={`font-semibold ${astralGlucosePoints > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-slate-500 dark:text-slate-400'}`}>
+                <span className={`font-semibold ${astralGlucosePoints > 0 ? 'text-rose-600 dark:text-rose-300' : 'text-slate-500 dark:text-slate-400'}`}>
                   {astralGlucosePoints > 0 ? 'Abnormal (+1 pt)' : 'Normal (+0 pts)'}
                 </span>
               </div>
@@ -6284,7 +6284,7 @@ export function CervicalDissectionCard() {
                   className="transition-transform duration-200 group-hover:scale-[1.02]"
                 />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
-                  <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
+                  <span className="text-[11px] text-white font-semibold bg-black/70 px-3 py-1.5 rounded-md flex items-center gap-1.5">
                     <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
                   </span>
                 </div>
@@ -6540,7 +6540,7 @@ export function FibromuscularDysplasiaCard() {
                   className="transition-transform duration-200 group-hover:scale-[1.02]"
                 />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center rounded-md">
-                  <span className="text-[11px] text-white font-semibold bg-black/60 px-3 py-1.5 rounded-md flex items-center gap-1.5">
+                  <span className="text-[11px] text-white font-semibold bg-black/70 px-3 py-1.5 rounded-md flex items-center gap-1.5">
                     <i aria-hidden="true" data-lucide="zoom-in" className="w-3.5 h-3.5"></i> Click to Zoom
                   </span>
                 </div>

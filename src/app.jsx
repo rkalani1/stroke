@@ -278,7 +278,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.28.0';
+const APP_VERSION = '6.28.1';
 // The header search hint mirrors the key the shortcut actually listens for
 // (metaKey || ctrlKey): ⌘ on Apple hardware, Ctrl everywhere else.
 const SEARCH_SHORTCUT_LABEL = (typeof navigator !== 'undefined'
@@ -16459,6 +16459,19 @@ Clinician Name`;
             if (node && node.open) node.open = false;
           }, [activeTab, managementSubTab, researchSubTab]);
 
+          // The research sub-tab strip scrolls horizontally on phones. Landing
+          // directly on a later sub-tab (URL, palette, or a tap on a partly
+          // visible pill) can leave the active pill outside the scrollport;
+          // nudge it into view. 'nearest' keeps this a no-op when it is
+          // already visible and never scrolls the page vertically.
+          useEffect(() => {
+            if (activeTab !== 'research') return;
+            const el = document.getElementById(`research-tab-${researchSubTab}`);
+            if (el && typeof el.scrollIntoView === 'function') {
+              el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+            }
+          }, [activeTab, researchSubTab]);
+
           // U4 — the header is sticky at ≥768px; publish its rendered height to
           // --app-header-h so the (also-sticky) nav row can pin directly beneath
           // it instead of overlapping. ResizeObserver keeps it correct as the
@@ -19868,7 +19881,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="clinician-only bg-white border border-cobalt-200 rounded-md p-4 dark:bg-card dark:border-cobalt-700 ">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-md font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
-                              <label htmlFor="input-recommendations" data-skip-tap>Recommendations</label>
+                              <label htmlFor="input-recommendations">Recommendations</label>
                             </h3>
                             <button
                               type="button"
@@ -30196,7 +30209,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             }}
                             className={`!shrink-0 whitespace-nowrap px-3 py-1.5 rounded text-sm font-medium transition-all ${
                               active
-                                ? 'bg-cobalt-600 text-white shadow-sm dark:bg-cobalt-600'
+                                ? 'bg-cobalt-600 text-white shadow-sm'
                                 : 'text-mute hover:text-ink-2 hover:bg-slate-100 dark:hover:bg-strong'
                             }`}
                           >
@@ -32048,7 +32061,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             }}
                             className={`!shrink-0 whitespace-nowrap px-3 py-1.5 rounded text-sm font-medium transition-all ${
                               active
-                                ? 'bg-cobalt-600 text-white shadow-sm dark:bg-cobalt-600'
+                                ? 'bg-cobalt-600 text-white shadow-sm'
                                 : 'text-mute hover:text-ink-2 hover:bg-slate-100 dark:hover:bg-strong'
                             }`}
                           >
