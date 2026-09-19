@@ -277,6 +277,27 @@
   .ref-section[open] > .ref-section-summary::after {
     transform: rotate(180deg);
   }
+  /* Phones: index.html's legacy rule wraps every .flex row, which pushed the
+     icon disc onto its own line above a long title (and the status beneath
+     that). Lay the summary out as a two-column grid instead: disc left, title
+     beside it, and any trailing meta — the `ml-auto` status, hint or chip —
+     on its own line under the title. The chevron is absolutely positioned, so
+     it is unaffected. The selector outranks the gap/justify utilities. */
+  @media (max-width: 640px) {
+    details.ref-section > summary.ref-section-summary {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      column-gap: 0.75rem;
+      row-gap: 0.125rem;
+      align-items: center;
+    }
+    details.ref-section > summary.ref-section-summary > .ml-auto {
+      grid-column: 2;
+      margin-left: 0;
+      justify-self: start;
+      text-align: left;
+    }
+  }
   .ref-section-icon {
     @apply inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border;
   }

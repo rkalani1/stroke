@@ -1,5 +1,59 @@
 # CHANGELOG
 
+## v6.28.2 — 2026-09-19 — calculators and the guideline index join the reference visual system
+
+Presentation-only follow-up to v6.28.1, from a fresh rendered survey of the
+clinical/scientific surfaces in both themes at phone and desktop widths. The
+Protocols tab is untouched and its `#/protocols/*` snapshot lock passes
+unchanged. No clinical wording, calculator logic, citation or data record
+changed. The survey found zero console errors, zero un-instantiated icons and
+zero horizontal overflow; what it found was the one research sub-tab that had
+not yet joined the v6.28.0 visual system, and a phone layout fault in the rows
+that had.
+
+- **Calculators share the Reference Library header.** The twenty-two
+  calculator cards each carried a full-width wash — cobalt, crit, warn, slate,
+  pink, rose, orange, teal, ok — with a matching title colour, which read as a
+  rainbow list in light mode and as heavy saturated blocks in dark. They now
+  use the same neutral card as the Reference Library sections: title in ink, a
+  small tonal disc that carries the calculator's semantic colour on its icon
+  alone (crit for NIHSS, ICH score, ICH volume, FUNC and HAS-BLED; warn for
+  ABCD², PHASES, Hunt & Hess and the SPAN/DRAGON/SEDAN group; ok for mTICI;
+  neutral for GCS, mRS and the disabled andexanet tool; cobalt for the rest),
+  the score or input state as muted meta on the right, and the CSS chevron
+  that turns when the row opens. The two rows that hand-drew a chevron icon
+  lose it. Inside the rows nothing changes: the large tonal score, the tinted
+  notices and the source footnotes stay as they were.
+- **The Quick Dosing Reference, patient snapshot and auto-sync strips** above
+  the list drop their sand and cobalt washes for the same neutral card (the
+  dosing strip gets a warn disc with a pill icon), so the tab reads
+  top-to-bottom as one list.
+- **Guideline index rows are neutral.** The 109 source rows on the Guidelines
+  tab sat on a cobalt tint with cobalt titles — cyan on dark — and the section
+  rows inside an opened guideline did the same. Both now use the neutral card
+  with the title in ink, the entry count as muted meta and the CSS chevron.
+- **Phone rows keep the icon beside the title.** `index.html`'s legacy phone
+  rule wraps every `.flex.gap-3` row, so a long Reference Library or
+  calculator title pushed its icon disc onto a line of its own and the status
+  under that (rows up to 155px tall at 390px). Below 640px the section summary
+  is now a two-column grid — disc left, title beside it, and any trailing
+  status, hint or chip on its own line under the title. Measured at 390px in
+  both themes: no row has its disc on its own line, and the tallest calculator
+  row is 101px.
+- **The institution config loads again.** `loadConfig` awaited
+  `Promise.all([baseFetch, localFetch])`, but the `localFetch` declaration had
+  been lost in an earlier refactor, so every page load threw a
+  `ReferenceError` that the surrounding `catch` swallowed: `config.example.json`
+  was requested but never read (the orphaned response also kept the page from
+  ever reaching network-idle, which is why the touch-target linter timed out
+  on a clean checkout), and `institutionLinks` / `ttlHoursOverride` never
+  applied. The optional `config.local.json` override is declared again — only
+  requested under the localhost `?localConfig=1` opt-in, resolving to null
+  when absent — and a source check pins the declaration.
+- Version bumped to 6.28.2 so the service-worker cache key and `?v=` asset
+  queries roll for returning visitors; `package-lock.json`, which had stayed
+  at 6.28.0, now carries the release version too.
+
 ## v6.28.1 — 2026-09-19 — contrast and polish pass over the clinical/scientific surfaces
 
 Presentation-only follow-up to v6.28.0, from a fresh audit of the surfaces
