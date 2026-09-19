@@ -58,6 +58,6 @@ describe('Master E2E Suite Aggregator & Quality Invariants', () => {
       totalTests += countDeclaredTests(content);
     }
     expect(totalTests).toBeGreaterThanOrEqual(214);
-    expect(totalTests).toBe(236);
+    expect(totalTests).toBe(237);
   });
 });
