@@ -1,5 +1,60 @@
 # CHANGELOG
 
+## v6.28.1 — 2026-09-19 — contrast and polish pass over the clinical/scientific surfaces
+
+Presentation-only follow-up to v6.28.0, from a fresh audit of the surfaces
+that carry clinical and scientific material (Guidelines, Reference Library,
+Calculators, Educational Resources, Trials) in both themes at phone and
+desktop widths. The Protocols tab is untouched and its `#/protocols/*`
+snapshot lock passes unchanged. No clinical wording, calculator logic,
+citation or data record changed. The audit found zero console errors, zero
+un-instantiated icons and zero horizontal overflow on every surface; what it
+did find was contrast debt and one wayfinding nit, fixed here.
+
+- **The active research sub-tab is legible in dark mode.** The active pill
+  used `dark:bg-cobalt-500`, but dark redefines `--cobalt-500` as a
+  *brightened text/link step* (~4.7:1 on the page canvas) — as a fill under
+  white text it measured 3.2:1. The pill now keeps `bg-cobalt-600` in both
+  themes (dark never redefines it): 5.3:1 in light, 6.7:1 in dark. The
+  Educational Resources category chip ("All Modules") used the same pattern
+  and takes the same fix.
+- **Calculator source citations clear AA on tinted cards.** The seventeen
+  `Source:` footnotes under the research calculators are `text-slate-500` at
+  11px; on the rose/pink/teal/sand card washes they measured 4.0–4.4:1.
+  Now `text-slate-600` (≥ 5.5:1 on the deepest wash; dark already used the
+  muted-ink token and is unchanged).
+- **Six more undefined Tailwind ramp steps are gone.** The v6.28.0 hunt for
+  classes that name ramp steps the token system never defined (so Tailwind
+  emits nothing and the other theme's colour leaks through) missed six:
+  `text-orange-850`/`-855` in the herniation-syndromes table (now
+  `text-orange-900`), `dark:text-rose-450` on the D5W caution and the
+  ASTRAL glucose readout (now `dark:text-rose-300`, the file's standard dark
+  rose), `dark:text-slate-450` on the same readout (now
+  `dark:text-slate-400`), and `border-slate-150`/`-250` on six teaching-card
+  frames (now `border-slate-200`). A repo-wide sweep confirms no class now
+  references a step the ramps do not define.
+- **"Click to Zoom" chips read over light artwork.** The four infographic
+  zoom overlays sat white-on-`bg-black/60`; over a near-white figure that
+  blends to ~4.0:1. Now `bg-black/70` (~5.5:1 worst-case).
+- **Landing on a later research sub-tab shows its pill.** On phones the
+  sub-tab strip scrolls horizontally; arriving at
+  `#/research/education` by URL or palette left the active pill outside the
+  scrollport — a teal sliver at the edge. The active pill is now nudged into
+  view on mount and on tab change (`scrollIntoView` with `nearest`, so it is
+  a no-op when already visible and never scrolls the page vertically).
+- **Dev tooling.** `lint:touch-targets` and `crop-assets` accept the same
+  `STROKE_CHROMIUM_PATH` override every other browser script already had, so
+  the whole suite runs in sandboxes with a pre-provisioned Chromium. The
+  touch-target linter now audits the research sub-tabs and `#/protocols`
+  (its route list still named `#/management`, which no longer exists, so the
+  clinical/scientific surfaces were never checked), and skips a `label[for]`
+  whose bound control itself meets the 44px minimum — WCAG 2.5.8's
+  equivalent-target exception; flagging those was pure noise, and real
+  undersized controls still fail the lint. All fifteen route·viewport combos
+  pass.
+- Version bumped to 6.28.1 so the service-worker cache key and `?v=` asset
+  queries roll for returning visitors.
+
 ## v6.28.0 — 2026-09-19 — reference and teaching surfaces: one visual system for clinical material
 
 Presentation-only release across the surfaces that carry clinical and

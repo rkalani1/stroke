@@ -2,7 +2,8 @@ import { chromium } from 'playwright';
 import fs from 'fs';
 
 async function main() {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch(process.env.STROKE_CHROMIUM_PATH
+    ? { executablePath: process.env.STROKE_CHROMIUM_PATH } : {});
   const page = await browser.newPage();
   
   const evdBuffer = fs.readFileSync('assets/evd_quick_reference_source.png');
