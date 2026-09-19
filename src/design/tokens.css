@@ -151,6 +151,7 @@
   --cobalt-700: 8 80 90;
   --cobalt-800: 7 62 70;
   --cobalt-900: 6 47 53;
+  --cobalt-950: 4 32 36;
 
   /* Link — for <a href> only, never buttons (re-valued v7 → teal); name frozen */
   --link-50:    226 240 241;

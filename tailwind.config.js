@@ -64,7 +64,8 @@ module.exports = {
           600: 'rgb(var(--cobalt-600) / <alpha-value>)',
           700: 'rgb(var(--cobalt-700) / <alpha-value>)',
           800: 'rgb(var(--cobalt-800) / <alpha-value>)',
-          900: 'rgb(var(--cobalt-900) / <alpha-value>)'
+          900: 'rgb(var(--cobalt-900) / <alpha-value>)',
+          950: 'rgb(var(--cobalt-950) / <alpha-value>)',
         },
         link: {
           50:  'rgb(var(--link-50)  / <alpha-value>)',

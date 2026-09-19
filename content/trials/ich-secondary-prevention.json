@@ -32,5 +32,22 @@
     "certainty": "moderate",
     "lastReviewed": "2026-08-15",
     "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "recap-ich",
+    "name": "RECAP-ICH",
+    "fullName": "Intensive Blood Pressure Lowering After Spontaneous Intracerebral Haemorrhage for Secondary Stroke Prevention (RECAP-ICH): Systematic Review and Individual Participant Data Meta-analysis",
+    "category": "ich-secondary-prevention",
+    "population": "n=2944, Mean 59.6 (SD 10.6), Long-term secondary prevention after spontaneous ICH; median follow-up 42.0 months (IQR 24.0-66.0)",
+    "finding": "Reduced recurrent stroke: 96 (6.5%) of 1487 vs 152 (10.4%) of 1457",
+    "teachingPoint": "Pooled patient-level randomized data: sustained BP lowering after ICH cuts recurrent stroke by ~38% (adjusted HR 0.62) — mainly recurrent haemorrhage (HR 0.39) — without excess serious adverse events, with a 1% absolute benefit accruing by about 6 months; long-term BP control is the cornerstone of secondary prevention after ICH.",
+    "PMID": "42586098",
+    "year": 2026,
+    "citationIds": [
+      "cit-recap-ich-2026"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-09-19",
+    "provenance": "src/evidence/completedTrials.js"
   }
 ]

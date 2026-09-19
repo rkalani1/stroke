@@ -4,7 +4,7 @@
     "name": "WAKE-UP",
     "fullName": "MRI-Guided Thrombolysis for Stroke with Unknown Time of Onset",
     "category": "wake-up-stroke",
-    "population": "n=503, 18-80, NIHSS NIHSS ≤25, unknown onset (last seen well >4.5 h)",
+    "population": "n=503, 18-80, NIHSS ≤25, unknown onset (last seen well >4.5 h)",
     "finding": "Favored alteplase: 53.3% vs 41.8%",
     "teachingPoint": "Foundational evidence for imaging-selected thrombolysis in wake-up / unknown onset stroke.",
     "PMID": "29766770",

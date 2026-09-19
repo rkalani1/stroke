@@ -922,7 +922,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
               onClick={() => setSelectedCategory(cat.key)}
               className={`px-3 py-1.5 text-xs font-medium rounded-full border transition-colors min-h-[36px] ${
                 active
-                  ? 'bg-cobalt-600 text-white border-cobalt-600 dark:bg-cobalt-500 dark:border-cobalt-500'
+                  ? 'bg-cobalt-600 text-white border-cobalt-600 dark:bg-cobalt-600 dark:border-cobalt-600'
                   : 'bg-slate-100 hover:bg-cobalt-100 text-slate-700 hover:text-cobalt-700 border-line hover:border-cobalt-300 dark:bg-paper-2 dark:hover:bg-cobalt-800 dark:text-ink-2 dark:hover:text-cobalt-300'
               }`}
             >
@@ -5035,7 +5035,7 @@ export const ICPInfographic = () => {
                 <strong className="text-ok-800 dark:text-ok-400 block text-xs">Fundamental Measures</strong>
                 <ul className="list-disc pl-5 space-y-0.5 text-[11px] text-slate-600 dark:text-ink-2">
                   <li>Elevate HOB 30°; strict neutral midline neck alignment to preserve venous outflow.</li>
-                  <li>Euvolemia (isotonic saline; avoid hypotonic <code className="text-rose-600 dark:text-rose-450 font-mono text-[10px]">D5W</code>).</li>
+                  <li>Euvolemia (isotonic saline; avoid hypotonic <code className="text-rose-600 dark:text-rose-400 font-mono text-[10px]">D5W</code>).</li>
                   <li>Temperature &lt; 38.0°C.</li>
                   <li>Normocapnia (target <code className="font-mono">pCO₂</code> 35–45 mmHg).</li>
                   <li>When ICP is monitored, CPP = MAP - ICP; many protocols target CPP around &gt;60 mmHg, individualized to disease context.</li>
@@ -5540,7 +5540,7 @@ function AstralCalculatorTab() {
               </div>
               <div className="flex justify-between items-center text-[10px]">
                 <span className="text-slate-500 dark:text-slate-400">Abnormal if &lt;3.7 or &gt;7.3 mmol/L</span>
-                <span className={`font-semibold ${astralGlucosePoints > 0 ? 'text-rose-600 dark:text-rose-450' : 'text-slate-500 dark:text-slate-450'}`}>
+                <span className={`font-semibold ${astralGlucosePoints > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-slate-500 dark:text-slate-400'}`}>
                   {astralGlucosePoints > 0 ? 'Abnormal (+1 pt)' : 'Normal (+0 pts)'}
                 </span>
               </div>

@@ -19868,7 +19868,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="clinician-only bg-white border border-cobalt-200 rounded-md p-4 dark:bg-card dark:border-cobalt-700 ">
                           <div className="flex items-center justify-between mb-3">
                             <h3 className="text-md font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
-                              <label htmlFor="input-recommendations">Recommendations</label>
+                              <label htmlFor="input-recommendations" data-skip-tap>Recommendations</label>
                             </h3>
                             <button
                               type="button"
@@ -30196,7 +30196,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             }}
                             className={`!shrink-0 whitespace-nowrap px-3 py-1.5 rounded text-sm font-medium transition-all ${
                               active
-                                ? 'bg-cobalt-600 text-white shadow-sm dark:bg-cobalt-500'
+                                ? 'bg-cobalt-600 text-white shadow-sm dark:bg-cobalt-600'
                                 : 'text-mute hover:text-ink-2 hover:bg-slate-100 dark:hover:bg-strong'
                             }`}
                           >
@@ -30353,7 +30353,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {!isNIHSSComplete() && <p className="mb-2 rounded border border-warn-200 bg-warn-50 p-2 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300"><strong>Incomplete:</strong> complete every NIHSS item in the Encounter tab before using or copying the score.</p>}
                         <p className="text-xs text-slate-600 mb-2 dark:text-mute">Use the NIHSS panel in the Encounter tab for full item-by-item scoring.</p>
                         <p className="text-xs text-slate-600 dark:text-ink-2">The institutional acute-stroke algorithm requires NIHSS documentation but does not supply scoring definitions or interpretation.</p>
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Brott T et al. Stroke 1989;20:864-70 (PMID 2749846).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Brott T et al. Stroke 1989;20:864-70 (PMID 2749846).</p>
                       </div>
                     </details>
 
@@ -30421,7 +30421,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         if (gcs === null) return React.createElement('div', { className: 'mt-3 border rounded-lg p-2 text-xs bg-warn-50 border-warn-200 text-warn-800 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300' }, React.createElement('span', { className: 'font-semibold' }, 'Incomplete: '), 'All three GCS components (Eye, Verbal, Motor) are required for a valid score.');
                         return null;
                       })()}
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Teasdale G, Jennett B. Lancet 1974;2:81-4 (PMID 4136544).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Teasdale G, Jennett B. Lancet 1974;2:81-4 (PMID 4136544).</p>
                       </div>
                     </details>
 
@@ -30750,7 +30750,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </label>
                           </div>
                         </div>
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Rost NS et al. Stroke 2008;39:2304-9 (FUNC score, PMID 18556582).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Rost NS et al. Stroke 2008;39:2304-9 (FUNC score, PMID 18556582).</p>
                       </div>
                     </details>
 
@@ -30806,7 +30806,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <p className="text-sm text-cobalt-800 dark:text-cobalt-300">The institutional EVT flowchart supplies the selected category definition above; it does not add an outcome label.</p>
                         </div>
                       )}
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Bruno A et al. Stroke 2010;41:1048-50 (simplified mRS questionnaire, PMID 20224060).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Bruno A et al. Stroke 2010;41:1048-50 (simplified mRS questionnaire, PMID 20224060).</p>
                       </div>
                     </details>
 
@@ -30923,7 +30923,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         </div>
                       </div>
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Johnston SC et al. Lancet 2007;369:283-92 (ABCD², PMID 17258668).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Johnston SC et al. Lancet 2007;369:283-92 (ABCD², PMID 17258668).</p>
                       </div>
                     </details>
 
@@ -31060,7 +31060,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         </div>
                       </div>
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Lip GY et al. Chest 2010;137:263-72 (CHA₂DS₂-VASc, PMID 19762550).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Lip GY et al. Chest 2010;137:263-72 (CHA₂DS₂-VASc, PMID 19762550).</p>
                       </div>
                     </details>
 
@@ -31166,7 +31166,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           );
                         })()}
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Pisters R et al. Chest 2010;138:1093-1100 (HAS-BLED, PMID 20299623).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Pisters R et al. Chest 2010;138:1093-1100 (HAS-BLED, PMID 20299623).</p>
                       </div>
                     </details>
 
@@ -31280,7 +31280,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         );
                       })()}
-                    <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Sources: Kent DM et al. Neurology 2013;81:619-25 (RoPE, PMID 23864310); Kent DM et al. JAMA 2021;326:2277-86 (PASCAL, PMID 34905030).</p>
+                    <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Sources: Kent DM et al. Neurology 2013;81:619-25 (RoPE, PMID 23864310); Kent DM et al. JAMA 2021;326:2277-86 (PASCAL, PMID 34905030).</p>
                       </div>
                     </details>
 
@@ -31353,7 +31353,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           );
                         })()}
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Rocha EA et al. Neurology 2019;92:e639-e647 (RCVS², PMID 30635475).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Rocha EA et al. Neurology 2019;92:e639-e647 (RCVS², PMID 30635475).</p>
                       </div>
                     </details>
 
@@ -31408,7 +31408,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           </div>
                         </div>
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Sources: Hunt WE, Hess RM. J Neurosurg 1968;28:14-20 (PMID 5635959); WFNS Committee report, J Neurosurg 1988;68:985-6 (PMID 3131498).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Sources: Hunt WE, Hess RM. J Neurosurg 1968;28:14-20 (PMID 5635959); WFNS Committee report, J Neurosurg 1988;68:985-6 (PMID 3131498).</p>
                       </div>
                     </details>
 
@@ -31482,7 +31482,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           );
                         })()}
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Greving JP et al. Lancet Neurol 2014;13:59-66 (PHASES, PMID 24290159).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Greving JP et al. Lancet Neurol 2014;13:59-66 (PHASES, PMID 24290159).</p>
                       </div>
                     </details>
 
@@ -31530,7 +31530,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           );
                         })()}
                         <p className="text-xs text-slate-600 mt-2 dark:text-mute">ABC/2 method: A = largest diameter, B = perpendicular diameter on same slice, C = number of slices with ICH x slice thickness.</p>
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Kothari RU et al. Stroke 1996;27:1304-5 (ABC/2, PMID 8711791).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Kothari RU et al. Stroke 1996;27:1304-5 (ABC/2, PMID 8711791).</p>
                       </div>
                     </details>
 
@@ -31609,7 +31609,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           );
                         })()}
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Cockcroft DW, Gault MH. Nephron 1976;16:31-41 (PMID 1244564).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Cockcroft DW, Gault MH. Nephron 1976;16:31-41 (PMID 1244564).</p>
                       </div>
                     </details>
 
@@ -31652,7 +31652,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           );
                         })()}
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Sherman DG et al. Lancet 2007;369:1347-55 (PREVAIL, PMID 17448820).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Sherman DG et al. Lancet 2007;369:1347-55 (PREVAIL, PMID 17448820).</p>
                       </div>
                     </details>
 
@@ -31731,7 +31731,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         })()}
                         <button type="button" onClick={() => { setTelestrokeNote(prev => ({...prev, aspectsRegions: {}, aspectsAssessed: false})); if (typeof setAspectsScore === 'function') setAspectsScore(''); setAspectsRegionState(getDefaultAspectsRegionState()); }}
                           className="mt-2 text-xs text-slate-600 hover:text-slate-700 underline dark:text-mute dark:hover:text-ink">Reset all regions</button>
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Barber PA et al. Lancet 2000;355:1670-4 (ASPECTS, PMID 10905241).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Barber PA et al. Lancet 2000;355:1670-4 (ASPECTS, PMID 10905241).</p>
                       </div>
                     </details>
 
@@ -31824,7 +31824,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <p className="text-sm text-warn-700 dark:text-warn-300">Enter patient weight in the encounter section to calculate dose.</p>
                           );
                         })()}
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: NINDS rt-PA Stroke Study Group. NEJM 1995;333:1581-7 (PMID 7477192).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: NINDS rt-PA Stroke Study Group. NEJM 1995;333:1581-7 (PMID 7477192).</p>
                       </div>
                     </details>
 
@@ -31889,7 +31889,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <strong>Selected grade: mTICI {telestrokeNote.ticiScore}</strong>
                           </div>
                         )}
-                      <p className="text-[11px] text-slate-500 mt-2 dark:text-mute">Source: Zaidat OO et al. Stroke 2013;44:2650-63 (mTICI consensus, PMID 23920012).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Zaidat OO et al. Stroke 2013;44:2650-63 (mTICI consensus, PMID 23920012).</p>
                       </div>
                     </details>
 
@@ -32048,7 +32048,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             }}
                             className={`!shrink-0 whitespace-nowrap px-3 py-1.5 rounded text-sm font-medium transition-all ${
                               active
-                                ? 'bg-cobalt-600 text-white shadow-sm dark:bg-cobalt-500'
+                                ? 'bg-cobalt-600 text-white shadow-sm dark:bg-cobalt-600'
                                 : 'text-mute hover:text-ink-2 hover:bg-slate-100 dark:hover:bg-strong'
                             }`}
                           >

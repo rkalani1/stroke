@@ -3,7 +3,7 @@
     "endpoint": "recommendations",
     "schemaVersion": "1.0.0",
     "appVersion": "6.28.0",
-    "checksum": "sha256:9f01a35a2ea6393c0f95156c16c101d7",
+    "checksum": "sha256:0526a7d90b81073c6ca2ab743de0e32d",
     "count": 11,
     "source": "Evidence atlas recommendations bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -130,9 +130,9 @@
       "id": "rec-tnk-first-line",
       "topic": "tnk-vs-alteplase",
       "setting": "inpatient",
-      "text": "Tenecteplase 0.25 mg/kg (max 25 mg) is a reasonable alternative to alteplase 0.9 mg/kg for IV thrombolysis in eligible AIS within 4.5 h, particularly for patients with anticipated EVT.",
-      "classOfRecommendation": "IIa",
-      "levelOfEvidence": "B-R",
+      "text": "Tenecteplase 0.25 mg/kg (max 25 mg) is recommended as an alternative to alteplase 0.9 mg/kg (max 90 mg) for IV thrombolysis in eligible AIS within 4.5 h — either agent is first-line, and TNK is particularly practical when EVT is anticipated.",
+      "classOfRecommendation": "I",
+      "levelOfEvidence": "A",
       "guidelineSource": "ESO 2023; AHA/ASA 2026",
       "supportingClaimIds": [
         "cl-tnk-noninferior-alteplase"
@@ -158,7 +158,7 @@
       ],
       "caveats": [
         "Pre-stroke mRS, life expectancy, and goals of care still inform shared decision-making.",
-        "Very low ASPECTS is not unaddressed: ASPECTS 0-2 within 6 h and ASPECTS 0-5 within 0-6 h both carry recommendations, each bounded by age 18-80 and pre-stroke mRS 0-1. Those age and mRS limits are part of the recommendation and are easy to drop when quoting the ASPECTS number alone. Source of truth: src/guidelines/ais-2026.json."
+        "Very low ASPECTS is not unaddressed: ASPECTS 0-2 within 6 h carries a IIa recommendation bounded by age <80 and pre-stroke mRS 0-1 (ais-2026-117); ASPECTS 3-10 within 6 h carries a Class I recommendation without an age bound (ais-2026-114); and the ASPECTS 0-5 within 0-6 h, age 18-80, mRS 0-1 Class I recommendation comes from the SVIN 2025 large-core guideline (svin-large-core-2025). Those bounds are part of each recommendation and are easy to drop when quoting the ASPECTS number alone."
       ],
       "lastReviewed": "2026-04-25",
       "verificationStatus": "verified-guideline",
@@ -168,7 +168,7 @@
       "id": "rec-dapt-minor-stroke",
       "topic": "dapt-minor-stroke",
       "setting": "inpatient",
-      "text": "In patients with minor non-cardioembolic ischemic stroke (NIHSS ≤3 or ≤5 with disabling deficit) or high-risk TIA (ABCD² ≥4 or DWI+), dual antiplatelet therapy (aspirin plus clopidogrel for 21 days, or aspirin plus ticagrelor for 30 days) started within 24 h is recommended to reduce recurrent ischemic stroke at 90 days.",
+      "text": "In patients with minor non-cardioembolic ischemic stroke (NIHSS ≤3, or non-disabling NIHSS ≤5 in patients not treated with thrombolysis) or high-risk TIA (ABCD² ≥4 or DWI+), dual antiplatelet therapy with aspirin plus clopidogrel for 21 days, started within 24 h, is recommended to reduce recurrent ischemic stroke at 90 days.",
       "classOfRecommendation": "I",
       "levelOfEvidence": "A",
       "guidelineSource": "AHA/ASA 2021 Secondary Prevention; CHANCE / POINT / THALES / INSPIRES",
@@ -176,7 +176,8 @@
         "cl-dapt-minor-stroke"
       ],
       "caveats": [
-        "Duration is indication-specific. For THIS indication (minor stroke / high-risk TIA) the trial-supported courses are aspirin+clopidogrel 21 days or aspirin+ticagrelor 30 days; do not extend beyond 30 days.",
+        "Duration is indication-specific. For THIS indication (minor stroke / high-risk TIA) the Class I trial-supported course is aspirin+clopidogrel 21 days; do not extend DAPT beyond 30 days.",
+        "Aspirin plus ticagrelor for 30 days is a separate COR IIb / LOE B-R option (THALES) for NIHSS ≤5 or high-risk TIA with ABCD² ≥6 or ipsilateral ≥30% stenosis — it is not part of this Class I recommendation (secondary-prevention-2021-147).",
         "A separate indication permits longer DAPT: severe intracranial stenosis 70-99% within 30 days of the event allows aspirin+clopidogrel up to 90 days. Beyond 90 days, or triple antiplatelet therapy, carries excess hemorrhage risk. Source of truth for both bounds: src/guidelines/secondary-prevention-2021.json.",
         "INSPIRES extended the window to 72 h in eligible mild stroke / high-risk TIA.",
         "For CYP2C19 loss-of-function carriers, ticagrelor (CHANCE-2) is preferred over clopidogrel."

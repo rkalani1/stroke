@@ -245,7 +245,6 @@ export const AIS_COMMAND_CENTER_CARDS = [
     classOfRecommendation: 'IIb',
     levelOfEvidence: 'C-LD',
     lastReviewed: '2026-07-03',
-    recommendationId: 'rec-pediatric-ais',
     evidenceQuery: 'pediatric acute ischemic stroke thrombolysis thrombectomy 2026 guideline',
     anchor: 'isch-evt',
     summary:

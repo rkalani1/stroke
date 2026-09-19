@@ -196,7 +196,7 @@ export function InstallAppButton({ installPrompt, isInstalled, onInstall, classN
           'inline-flex min-h-[40px] items-center gap-2 rounded-pill border px-4 text-xs font-bold transition-colors',
           'focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 focus-visible:ring-offset-paper',
           hasNativePrompt
-            ? 'border-cobalt-600 bg-cobalt-600 text-white hover:bg-cobalt-700 dark:bg-cobalt-500 dark:hover:bg-cobalt-600'
+            ? 'border-cobalt-600 bg-cobalt-600 text-white hover:bg-cobalt-700 dark:bg-cobalt-600 dark:hover:bg-cobalt-700'
             : 'border-cobalt-600 bg-card text-cobalt-700 hover:bg-cobalt-50 dark:border-cobalt-400 dark:text-cobalt-300 dark:hover:bg-cobalt-900',
           className
         )}

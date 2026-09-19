@@ -4,7 +4,7 @@
     "name": "SIESTA",
     "fullName": "Sedation vs Intubation for Endovascular Stroke Treatment (SIESTA)",
     "category": "evt-anesthesia",
-    "population": "n=150, mean 71.5 y; 60 women (40%), NIHSS NIHSS greater than 10 required for entry; median NIHSS 17, Not specified in the abstract",
+    "population": "n=150, mean 71.5 y; 60 women (40%), NIHSS greater than 10 required for entry; median NIHSS 17, Not specified in the abstract",
     "finding": "DID NOT meet superiority: general anesthesia NIHSS 16.8 at admission to 13.6 at 24 h (difference -3.2, 95% CI -5.6 to -0.8) vs conscious sedation 17.2 to 13.6 (difference -3.6, 95% CI -5.5 to -1.7)",
     "teachingPoint": "Does not support routinely avoiding general anesthesia for thrombectomy; teaches that the airway decision trades procedural stillness against hypothermia, delayed extubation and pneumonia.",
     "PMID": "27785516",

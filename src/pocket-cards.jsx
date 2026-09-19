@@ -131,10 +131,10 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
             <option value="candidate-infeasible">EVT candidate; EVT within 24h not feasible</option>
           </select>
         </label>
-        <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={state.crao} onChange={(e) => set('crao', e.target.checked)} />CRAO (central retinal artery occlusion)</label>
-        <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={state.contraindicationsReviewed} onChange={(e) => set('contraindicationsReviewed', e.target.checked)} />Absolute and relative contraindications reviewed</label>
+        <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={state.crao} onChange={(e) => set('crao', e.target.checked)} />CRAO (central retinal artery occlusion)</label>
+        <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={state.contraindicationsReviewed} onChange={(e) => set('contraindicationsReviewed', e.target.checked)} />Absolute and relative contraindications reviewed</label>
         {(parseFloat(state.glucose) < 50 || parseFloat(state.glucose) > 400) && (
-          <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={state.glucoseCorrectedDeficitPersists} onChange={(e) => set('glucoseCorrectedDeficitPersists', e.target.checked)} />Glucose corrected and disabling deficit persists on reassessment</label>
+          <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={state.glucoseCorrectedDeficitPersists} onChange={(e) => set('glucoseCorrectedDeficitPersists', e.target.checked)} />Glucose corrected and disabling deficit persists on reassessment</label>
         )}
       </div>
       {(state.wakeUpOrUnknownOnset || (state.hoursFromLKW && parseFloat(state.hoursFromLKW) > 4.5)) && (
@@ -150,7 +150,7 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
             <label className="flex items-center gap-1"><input type="checkbox" checked={state.posteriorCirc} onChange={(e) => set('posteriorCirc', e.target.checked)} />Posterior circulation</label>
             <label className="flex items-center gap-1"><input type="checkbox" checked={state.contrastAllergy} onChange={(e) => set('contrastAllergy', e.target.checked)} />Contrast allergy</label>
             {parseFloat(state.hoursFromLKW) >= 9 && parseFloat(state.hoursFromLKW) <= 24 && (
-              <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={state.consentObtained} onChange={(e) => set('consentObtained', e.target.checked)} />Consent obtained for the 9-24-hour window</label>
+              <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={state.consentObtained} onChange={(e) => set('consentObtained', e.target.checked)} />Consent obtained for the 9-24-hour window</label>
             )}
           </div>
         </div>
@@ -277,7 +277,7 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
             </label>
             <label><span className="block text-slate-600 dark:text-ink-2">ASPECTS</span><input type="number" value={m2.aspectsScore} onChange={(e) => setM2({ ...m2, aspectsScore: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={m2.age} onChange={(e) => setM2({ ...m2, age: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label className="flex items-center gap-1 col-span-2"><input type="checkbox" checked={m2.ctpMismatch} onChange={(e) => setM2({ ...m2, ctpMismatch: e.target.checked })} />CTP hypoperfusion–hypodensity mismatch present (required beyond 6h)</label>
+            <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={m2.ctpMismatch} onChange={(e) => setM2({ ...m2, ctpMismatch: e.target.checked })} />CTP hypoperfusion–hypodensity mismatch present (required beyond 6h)</label>
           </div>
           {(rM2.eligible === true || rM2.eligible === 'consider' || rM2.eligible === false) && <div className={`p-2 rounded border-2 ${colorByEligible(rM2.eligible)}`}>
             <div className="flex items-center flex-wrap gap-2">
@@ -331,9 +331,9 @@ const BPProtocolCard = () => (
       Blood Pressure Management
     </h4>
     <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: blood pressure management targets">
-      <table className="w-full text-xs">
+      <table className="w-full min-w-[560px] text-xs">
         <thead className="bg-rose-50 dark:bg-rose-950">
-          <tr><th className="px-2 py-1 text-left">Scenario</th><th className="px-2 py-1 text-left">Target</th><th className="px-2 py-1 text-left">COR / LOE</th><th className="px-2 py-1 text-left">Institutional protocol</th></tr>
+          <tr><th className="px-2 py-1 text-left whitespace-nowrap">Scenario</th><th className="px-2 py-1 text-left whitespace-nowrap">Target</th><th className="px-2 py-1 text-left whitespace-nowrap">COR / LOE</th><th className="px-2 py-1 text-left whitespace-nowrap">Institutional protocol</th></tr>
         </thead>
         <tbody>
           {Object.entries(INSTITUTIONAL_BP_PROTOCOLS).map(([key, p]) => {
@@ -341,7 +341,7 @@ const BPProtocolCard = () => (
             return (
               <tr key={key} className={`border-b ${isHarm ? 'bg-rose-50 dark:bg-rose-950' : ''}`}>
                 <td className="px-2 py-1 font-semibold">{p.scenario}</td>
-                <td className="px-2 py-1">{p.target || p.status}</td>
+                <td className="px-2 py-1 whitespace-nowrap">{p.target || p.status}</td>
                 <td className="px-2 py-1 whitespace-nowrap"><CorChip cor={p.cor} /> <LoeChip loe={p.loe} /></td>
                 <td className="px-2 py-1 text-slate-700 dark:text-ink-2">{p.protocol || p.rationale}{p.alternatives ? <><br /><em>{p.alternatives}</em></> : null}</td>
               </tr>

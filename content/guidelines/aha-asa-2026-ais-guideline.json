@@ -65,7 +65,7 @@
     ],
     "caveats": [
       "Pre-stroke mRS, life expectancy, and goals of care still inform shared decision-making.",
-      "Very low ASPECTS is not unaddressed: ASPECTS 0-2 within 6 h and ASPECTS 0-5 within 0-6 h both carry recommendations, each bounded by age 18-80 and pre-stroke mRS 0-1. Those age and mRS limits are part of the recommendation and are easy to drop when quoting the ASPECTS number alone. Source of truth: src/guidelines/ais-2026.json."
+      "Very low ASPECTS is not unaddressed: ASPECTS 0-2 within 6 h carries a IIa recommendation bounded by age <80 and pre-stroke mRS 0-1 (ais-2026-117); ASPECTS 3-10 within 6 h carries a Class I recommendation without an age bound (ais-2026-114); and the ASPECTS 0-5 within 0-6 h, age 18-80, mRS 0-1 Class I recommendation comes from the SVIN 2025 large-core guideline (svin-large-core-2025). Those bounds are part of each recommendation and are easy to drop when quoting the ASPECTS number alone."
     ],
     "setting": "inpatient",
     "lastReviewed": "2026-04-25",

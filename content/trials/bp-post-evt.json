@@ -106,7 +106,7 @@
     "name": "Cochrane review: BP after reperfusion",
     "fullName": "Blood pressure management in reperfused ischemic stroke (Cochrane Database of Systematic Reviews)",
     "category": "bp-post-evt",
-    "population": "n=4381, adults enrolled in the included randomized trials, NIHSS NIHSS pooled as an outcome, not an inclusion criterion, blood-pressure management during and after reperfusion by systemic thrombolysis or endovascular thrombectomy",
+    "population": "n=4381, adults enrolled in the included randomized trials, NIHSS pooled as an outcome, not an inclusion criterion, blood-pressure management during and after reperfusion by systemic thrombolysis or endovascular thrombectomy",
     "finding": "Intensive management results in LITTLE TO NO clinically meaningful difference in clinical function (high-certainty evidence). IMPORTANT READING NOTE: the published abstract does not state the direction of the mRS dichotomy, so this risk ratio must NOT be paraphrased as favouring either arm.",
     "teachingPoint": "Supplies the GRADE-graded bottom line for post-reperfusion BP: intensive systolic lowering below 160 mm Hg buys no clinically meaningful functional benefit and probably increases all-cause mortality.",
     "PMID": "42445947",
