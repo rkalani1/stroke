@@ -243,6 +243,77 @@
   .v6-stamp-reference { @apply bg-reference-soft text-reference border-reference; }
 }
 
+@layer components {
+  /* ----------------------------------------------------------
+     Reference Library section rows. Every section — hand-written
+     (trials, HINTS, CTP, ...) and registry-driven (the document
+     folders) — shares one header: a neutral card, the title in ink,
+     a small tonal disc carrying the topic's semantic colour on the
+     icon alone, and a chevron that turns when the row opens. The
+     hand-written sections used to each pick their own border and
+     title hue (blue, cyan, rose, teal, orange, ...), which read as
+     noise rather than classification.
+     ---------------------------------------------------------- */
+  .ref-section-summary {
+    position: relative;
+  }
+  .ref-section-summary::after {
+    content: "";
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    margin-top: -9px;
+    background-color: currentColor;
+    opacity: .55;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    transition: transform .18s var(--ease), opacity .18s var(--ease);
+  }
+  .ref-section-summary:hover::after {
+    opacity: .9;
+  }
+  .ref-section[open] > .ref-section-summary::after {
+    transform: rotate(180deg);
+  }
+  .ref-section-icon {
+    @apply inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border;
+  }
+  .ref-tone-cobalt  { @apply border-cobalt-200 bg-cobalt-50 text-cobalt-700 dark:border-cobalt-700 dark:bg-cobalt-900 dark:text-cobalt-300; }
+  .ref-tone-crit    { @apply border-crit-200 bg-crit-50 text-crit-700 dark:border-crit-800 dark:bg-crit-950 dark:text-crit-300; }
+  .ref-tone-warn    { @apply border-warn-200 bg-warn-50 text-warn-700 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300; }
+  .ref-tone-ok      { @apply border-ok-200 bg-ok-50 text-ok-700 dark:border-ok-800 dark:bg-ok-950 dark:text-ok-300; }
+  .ref-tone-info    { @apply border-info-200 bg-info-50 text-info-700 dark:border-info-800 dark:bg-info-950 dark:text-info-300; }
+  .ref-tone-neutral { @apply border-line bg-paper-2 text-ink-2; }
+
+  /* A disclosure chevron that needs no icon pass: pure CSS, painted in
+     currentColor, so it renders correctly inside rows that mount after
+     the lucide replacement has already run (filtered trial lists, panels
+     that appear on a selection). Rotates on .is-open, or on any Tailwind
+     rotate utility applied alongside it (group-open:rotate-90). */
+  .disclosure-chevron {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    flex: none;
+    background-color: currentColor;
+    opacity: .6;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    transition: transform .18s var(--ease), opacity .18s var(--ease);
+  }
+  .disclosure-chevron.is-open {
+    transform: rotate(90deg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .disclosure-chevron { transition: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ref-section-summary::after { transition: none; }
+  }
+}
+
 @layer utilities {
   .overflow-wrap-anywhere {
     overflow-wrap: anywhere;

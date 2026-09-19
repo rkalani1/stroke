@@ -278,7 +278,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.27.1';
+const APP_VERSION = '6.28.0';
 // The header search hint mirrors the key the shortcut actually listens for
 // (metaKey || ctrlKey): ⌘ on Apple hardware, Ctrl everywhere else.
 const SEARCH_SHORTCUT_LABEL = (typeof navigator !== 'undefined'
@@ -14201,14 +14201,14 @@ Clinician Name`;
                       <a
                         href={doc.path}
                         download
-                        className="min-h-[44px] px-3 py-2 bg-slate-600 text-white rounded-lg text-xs font-medium hover:bg-slate-700 transition-colors flex items-center gap-1"
+                        className="min-h-[44px] px-3 py-2 border border-line bg-white text-ink rounded-lg text-xs font-medium hover:border-cobalt-300 hover:bg-cobalt-50 transition-colors flex items-center gap-1 dark:bg-card dark:hover:bg-cobalt-900"
                       >
                         <i aria-hidden="true" data-lucide="download" className="w-4 h-4"></i>
                         Download
                       </a>
                       <button
                         onClick={() => emailDocument(doc.emailTitle || doc.title, doc.path)}
-                        className="min-h-[44px] px-3 py-2 bg-orange-700 text-white dark:bg-orange-700 rounded-lg text-xs font-medium hover:bg-orange-700 transition-colors flex items-center gap-1"
+                        className="min-h-[44px] px-3 py-2 border border-line bg-white text-ink rounded-lg text-xs font-medium hover:border-cobalt-300 hover:bg-cobalt-50 transition-colors flex items-center gap-1 dark:bg-card dark:hover:bg-cobalt-900"
                         title="Email this document"
                       >
                         <i aria-hidden="true" data-lucide="mail" className="w-4 h-4"></i>
@@ -16408,8 +16408,31 @@ Clinician Name`;
               createIcons({ icons });
             });
 
+            // Icons for content that mounts after the first pass — a sub-tab
+            // switched by click, a filtered list, an expanded row — were never
+            // instantiated, because the re-init effect below only watches a
+            // fixed list of state keys. Watch the DOM instead. createIcons
+            // only touches <i data-lucide> nodes that are still un-replaced,
+            // so the pass is idempotent, and the rAF coalesces a burst of
+            // mutations (including the replacements it makes itself).
+            let iconFrame = 0;
+            const iconObserver = typeof MutationObserver === 'function'
+              ? new MutationObserver(() => {
+                  if (iconFrame) return;
+                  iconFrame = requestAnimationFrame(() => {
+                    iconFrame = 0;
+                    if (document.querySelector('i[data-lucide]')) createIcons({ icons });
+                  });
+                })
+              : null;
+            iconObserver?.observe(document.body, { childList: true, subtree: true });
+
             window.addEventListener('hashchange', resolveRoute);
-            return () => window.removeEventListener('hashchange', resolveRoute);
+            return () => {
+              window.removeEventListener('hashchange', resolveRoute);
+              iconObserver?.disconnect();
+              if (iconFrame) cancelAnimationFrame(iconFrame);
+            };
           }, []);
 
           // Keep hash in sync with the active view
@@ -20156,7 +20179,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   {/* ICH Reversal - Collapsible */}
                                   <details className="group">
                                     <summary className="cursor-pointer text-sm font-semibold text-crit-700 hover:text-crit-900 flex items-center gap-1 dark:text-crit-300">
-                                      <span className="group-open:rotate-90 transition-transform">▶</span>
+                                      <span className="disclosure-chevron group-open:rotate-90" aria-hidden="true"></span>
                                       ICH Reversal Protocol
                                     </summary>
                                     <div className="mt-2 bg-crit-50 border border-crit-200 rounded-lg p-2 text-xs space-y-1 dark:bg-crit-950 dark:border-crit-800">
@@ -30136,7 +30159,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {activeTab === 'research' && researchSubTab === 'calculators' && (
                   <ErrorBoundary>
                   <div id="tabpanel-research" role="tabpanel" aria-labelledby="tab-research" className="space-y-8">
-                    <div className="bg-white border border-line rounded-md p-2 flex flex-wrap gap-2 sticky top-0 z-30 dark:bg-card" role="tablist" aria-label="Guidelines & References sub-sections" onKeyDown={(e) => {
+                    <div className="bg-white border border-line rounded-md p-2 flex !flex-nowrap overflow-x-auto no-scrollbar gap-2 sticky top-0 z-30 dark:bg-card sm:!flex-wrap sm:overflow-visible" role="tablist" aria-label="Guidelines & References sub-sections" onKeyDown={(e) => {
                       const ci = RESEARCH_SUBTABS.indexOf(researchSubTab);
                       let ni;
                       if (e.key === 'ArrowRight') { e.preventDefault(); ni = (ci + 1) % RESEARCH_SUBTABS.length; }
@@ -30171,7 +30194,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               setResearchSubTab(tab.id);
                               window.location.hash = `#/research/${tab.id}`;
                             }}
-                            className={`px-3 py-1.5 rounded text-sm font-medium transition-all ${
+                            className={`!shrink-0 whitespace-nowrap px-3 py-1.5 rounded text-sm font-medium transition-all ${
                               active
                                 ? 'bg-cobalt-600 text-white shadow-sm dark:bg-cobalt-500'
                                 : 'text-mute hover:text-ink-2 hover:bg-slate-100 dark:hover:bg-strong'
@@ -31982,8 +32005,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {activeTab === 'research' && researchSubTab !== 'calculators' && (
                   <ErrorBoundary>
                   <div id="tabpanel-research" role="tabpanel" aria-labelledby="tab-research" className="space-y-8">
-                    {/* Research sub-tabs navigation */}
-                    <div className="bg-white border border-line rounded-md p-2 flex flex-wrap gap-2 sticky top-0 z-30 dark:bg-card" role="tablist" aria-label="Guidelines & References sub-sections" onKeyDown={(e) => {
+                    {/* Research sub-tabs navigation. The nowrap / no-shrink utilities are
+                        important-flagged because index.html's phone rules
+                        (`.flex.gap-2 { flex-wrap: wrap }` and `.flex.gap-2 > button
+                        { flex: 1 1 auto }`) outrank plain utilities below 640px; without
+                        them the row wrapped onto a ragged second line, and with only
+                        nowrap the buttons shrank until their labels overprinted. */}
+                    <div className="bg-white border border-line rounded-md p-2 flex !flex-nowrap overflow-x-auto no-scrollbar gap-2 sticky top-0 z-30 dark:bg-card sm:!flex-wrap sm:overflow-visible" role="tablist" aria-label="Guidelines & References sub-sections" onKeyDown={(e) => {
                       const subTabs = RESEARCH_SUBTABS;
                       const ci = subTabs.indexOf(researchSubTab);
                       let ni;
@@ -32018,7 +32046,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               setResearchSubTab(tab.id);
                               window.location.hash = `#/research/${tab.id}`;
                             }}
-                            className={`px-3 py-1.5 rounded text-sm font-medium transition-all ${
+                            className={`!shrink-0 whitespace-nowrap px-3 py-1.5 rounded text-sm font-medium transition-all ${
                               active
                                 ? 'bg-cobalt-600 text-white shadow-sm dark:bg-cobalt-500'
                                 : 'text-mute hover:text-ink-2 hover:bg-slate-100 dark:hover:bg-strong'
@@ -32348,9 +32376,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         with category filters) + Completed Trials (atlas filter UI with
                         topic/certainty/evidence-type and detailed cards). One section
                         because both surface the same conceptual content. */}
-                    <details id="ref-trials" className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-lg flex items-center gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                        <i aria-hidden="true" data-lucide="book-open" className="w-4 h-4 text-cobalt-600 dark:text-cobalt-300"></i>
+                    <details id="ref-trials" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="book-open" className="w-4 h-4"></i></span>
                         Major Stroke Trials
                       </summary>
                       <div className="p-4 space-y-4">
@@ -32445,11 +32473,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* Guideline-grade recommendations (formerly in Trials → Evidence
                         Atlas). Auditable claim-to-citation chain per recommendation. */}
-                    <details id="ref-evidence-recs" className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-lg flex items-center gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                        <i aria-hidden="true" data-lucide="badge-check" className="w-4 h-4 text-cobalt-600 dark:text-cobalt-300"></i>
+                    <details id="ref-evidence-recs" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="badge-check" className="w-4 h-4"></i></span>
                         Guideline Recommendations ({evidenceRecommendations.length})
-                        <span className="ml-auto text-[11px] font-normal text-slate-600 italic dark:text-mute">Why this recommendation? — claim chain to primary sources</span>
+                        <span className="ml-auto text-[11px] font-normal text-slate-600 dark:text-mute">Why this recommendation? · claim chain to primary sources</span>
                       </summary>
                       <div className="px-4 pb-4 space-y-2">
                         {evidenceRecommendations.map((r) => {
@@ -32515,9 +32543,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* External Ventricular Drain */}
-                    <details id="ref-evd" className="bg-white border border-blue-200 rounded-lg dark:bg-card dark:border-blue-900">
-                      <summary className="cursor-pointer p-4 font-semibold text-blue-800 hover:bg-blue-50 rounded-lg flex items-center gap-2 dark:text-blue-300 dark:hover:bg-slate-850">
-                        <i aria-hidden="true" data-lucide="activity" className="w-4 h-4 text-blue-600 dark:text-blue-400"></i>
+                    <details id="ref-evd" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-info" aria-hidden="true"><i data-lucide="activity" className="w-4 h-4"></i></span>
                         External Ventricular Drain Infographic
                       </summary>
                       <div className="px-4 pb-4">
@@ -32526,9 +32554,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Intracranial Hypertension & Herniation */}
-                    <details id="ref-icp" className="bg-white border border-crit-200 rounded-lg dark:bg-card dark:border-crit-900">
-                      <summary className="cursor-pointer p-4 font-semibold text-crit-800 hover:bg-crit-50 rounded-lg flex items-center gap-2 dark:text-crit-300 dark:hover:bg-slate-850">
-                        <i aria-hidden="true" data-lucide="alert-triangle" className="w-4 h-4 text-crit-600 dark:text-crit-400"></i>
+                    <details id="ref-icp" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-crit" aria-hidden="true"><i data-lucide="alert-triangle" className="w-4 h-4"></i></span>
                         Intracranial Hypertension &amp; Herniation Infographic
                       </summary>
                       <div className="px-4 pb-4">
@@ -32537,9 +32565,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* HINTS Exam Protocol */}
-                    <details id="ref-hints" className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-lg flex items-center gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                        <i aria-hidden="true" data-lucide="eye" className="w-4 h-4 text-cobalt-600 dark:text-cobalt-300"></i>
+                    <details id="ref-hints" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="eye" className="w-4 h-4"></i></span>
                         HINTS Exam — Acute Vestibular Syndrome
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -32572,9 +32600,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* CVT Monitoring Parameters */}
-                    <details id="ref-cvt" className="bg-white border border-teal-200 rounded-lg dark:bg-card dark:border-teal-800">
-                      <summary className="cursor-pointer p-4 font-semibold text-teal-800 hover:bg-teal-50 rounded-lg flex items-center gap-2 dark:text-teal-300">
-                                                CVT Monitoring Parameters
+                    <details id="ref-cvt" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="git-branch" className="w-4 h-4"></i></span>
+                        <span>CVT Monitoring Parameters</span>
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -32620,9 +32649,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Neuroprognostication Framework */}
-                    <details id="ref-prognosis" className="bg-white border border-rose-200 rounded-lg dark:bg-card dark:border-rose-800">
-                      <summary className="cursor-pointer p-4 font-semibold text-rose-800 hover:bg-rose-50 rounded-lg flex items-center gap-2 dark:text-rose-300">
-                                                Neuroprognostication &amp; Goals of Care
+                    <details id="ref-prognosis" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-warn" aria-hidden="true"><i data-lucide="heart-pulse" className="w-4 h-4"></i></span>
+                        <span>Neuroprognostication &amp; Goals of Care</span>
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
                         <div className="bg-crit-50 border border-crit-200 rounded-lg p-2 dark:bg-crit-950 dark:border-crit-800">
@@ -32666,9 +32696,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* Clinical Pearls for Trainees */}
                     {isTraineeMode && (
-                    <details id="ref-pearls" className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-lg flex items-center gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                                                Clinical Pearls for Trainees
+                    <details id="ref-pearls" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="stethoscope" className="w-4 h-4"></i></span>
+                        <span>Clinical Pearls for Trainees</span>
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -32721,9 +32752,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                     {/* Trainee Pitfalls — Common Mistakes */}
                     {isTraineeMode && (
-                    <details id="ref-pitfalls" className="bg-white border border-crit-200 rounded-lg dark:bg-card dark:border-crit-800">
-                      <summary className="cursor-pointer p-4 font-semibold text-crit-800 hover:bg-crit-50 rounded-lg flex items-center gap-2 dark:text-crit-300">
-                        <i aria-hidden="true" data-lucide="triangle-alert" className="w-4 h-4 text-crit-600 dark:text-crit-300"></i>
+                    <details id="ref-pitfalls" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-crit" aria-hidden="true"><i data-lucide="triangle-alert" className="w-4 h-4"></i></span>
                         Common Trainee Pitfalls
                       </summary>
                       <div className="px-4 pb-4 space-y-2">
@@ -32793,9 +32824,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     )}
 
                     {/* Imaging Follow-Up Protocols */}
-                    <details id="ref-imaging" className="bg-white border border-cyan-200 rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-cyan-800 hover:bg-cyan-50 rounded-lg flex items-center gap-2 dark:text-cyan-300">
-                        <i aria-hidden="true" data-lucide="scan" className="w-4 h-4 text-cyan-600 dark:text-cyan-300"></i>
+                    <details id="ref-imaging" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-info" aria-hidden="true"><i data-lucide="scan" className="w-4 h-4"></i></span>
                         Imaging Follow-Up Protocols by Diagnosis
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -32878,9 +32909,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Code Stroke Activation Criteria */}
-                    <details id="ref-code-stroke" className="bg-white border border-crit-200 rounded-lg dark:bg-card dark:border-crit-800">
-                      <summary className="cursor-pointer p-4 font-semibold text-crit-800 hover:bg-crit-50 rounded-lg flex items-center gap-2 dark:text-crit-300">
-                        <i aria-hidden="true" data-lucide="siren" className="w-4 h-4 text-crit-600 dark:text-crit-300"></i>
+                    <details id="ref-code-stroke" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-crit" aria-hidden="true"><i data-lucide="siren" className="w-4 h-4"></i></span>
                         Code Stroke Activation Criteria
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -32942,9 +32973,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Stroke Mimic DDx Tool */}
-                    <details id="ref-mimics" className="bg-white border border-orange-200 rounded-lg dark:bg-card dark:border-orange-800">
-                      <summary className="cursor-pointer p-4 font-semibold text-orange-800 hover:bg-orange-50 rounded-lg flex items-center gap-2 dark:text-orange-300">
-                        <i aria-hidden="true" data-lucide="shield-alert" className="w-4 h-4 text-orange-600 dark:text-orange-300"></i>
+                    <details id="ref-mimics" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-warn" aria-hidden="true"><i data-lucide="shield-alert" className="w-4 h-4"></i></span>
                         Stroke Mimic Differential Diagnosis
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -32983,9 +33014,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Spinal Cord Stroke */}
-                    <details id="ref-spinalcord" className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-lg flex items-center gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-900">
-                                                Spinal Cord Stroke
+                    <details id="ref-spinalcord" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="layers" className="w-4 h-4"></i></span>
+                        <span>Spinal Cord Stroke</span>
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
                         <p className="text-xs text-slate-600 dark:text-ink-2">Rare (~1% of all strokes) but devastating. Most commonly anterior spinal artery territory. Often missed initially. Key etiologies: aortic surgery/dissection, atherosclerosis, systemic hypotension, fibrocartilaginous embolism.</p>
@@ -33018,9 +33050,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* CTP Interpretation Guide */}
-                    <details id="ref-ctp" className="bg-white border border-cyan-200 rounded-lg dark:bg-card">
-                      <summary className="cursor-pointer p-4 font-semibold text-cyan-800 hover:bg-cyan-50 rounded-lg flex items-center gap-2 dark:text-cyan-300">
-                        <i aria-hidden="true" data-lucide="scan" className="w-4 h-4 text-cyan-600 dark:text-cyan-300"></i>
+                    <details id="ref-ctp" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-info" aria-hidden="true"><i data-lucide="scan" className="w-4 h-4"></i></span>
                         CT Perfusion (CTP) Interpretation Guide
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -33080,9 +33112,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Stroke Chameleons — True Strokes Mimicking Non-Stroke Diagnoses */}
-                    <details id="ref-chameleons" className="bg-white border border-crit-200 rounded-lg dark:bg-card dark:border-crit-800">
-                      <summary className="cursor-pointer p-4 font-semibold text-crit-800 hover:bg-crit-50 rounded-lg flex items-center gap-2 dark:text-crit-300">
-                        <i aria-hidden="true" data-lucide="eye-off" className="w-4 h-4 text-crit-600 dark:text-crit-300"></i>
+                    <details id="ref-chameleons" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-crit" aria-hidden="true"><i data-lucide="eye-off" className="w-4 h-4"></i></span>
                         Stroke Chameleons — Missed Stroke Presentations
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
@@ -33116,9 +33148,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Admission Order Checklists */}
-                    <details id="ref-orders" className="bg-white border border-ok-200 rounded-lg dark:bg-card dark:border-ok-800">
-                      <summary className="cursor-pointer p-4 font-semibold text-ok-800 hover:bg-ok-50 rounded-lg flex items-center gap-2 dark:text-ok-300">
-                                                Admission Order Checklists
+                    <details id="ref-orders" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-ok" aria-hidden="true"><i data-lucide="clipboard-list" className="w-4 h-4"></i></span>
+                        <span>Admission Order Checklists</span>
                       </summary>
                       <div className="px-4 pb-4 space-y-4">
 
@@ -33319,10 +33352,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       const sectionDocs = section.items.flatMap((item) => (item.docs ? item.docs : [item]));
                       if (!evidenceSectionMatches(section.matchTitle || section.title, [section.title, ...sectionDocs.map((doc) => doc.title)])) return null;
                       return (
-                        <details key={section.id} id={section.anchorId || undefined} className="bg-white border border-line rounded-lg dark:bg-card">
-                          <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between text-lg dark:text-ink dark:hover:bg-paper-2">
+                        <details key={section.id} id={section.anchorId || undefined} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                          <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                            <span className="ref-section-icon ref-tone-neutral" aria-hidden="true"><i data-lucide="library" className="w-4 h-4"></i></span>
                             <span>{section.title}</span>
-                            <i aria-hidden="true" data-lucide="chevron-down" className="w-5 h-5"></i>
                           </summary>
                           <div className="space-y-3 p-4 pt-0">
                             {section.note && (
