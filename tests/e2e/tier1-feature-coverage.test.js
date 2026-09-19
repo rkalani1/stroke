@@ -889,9 +889,22 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(gitignore).toContain('leak-guard-denylist.local.json');
     });
 
-    it('F19-T1.5: package.json version matches latest release v6.28.1', () => {
+    it('F19-T1.5: package.json version matches latest release v6.28.2', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.version).toBe('6.28.1');
+      expect(pkg.version).toBe('6.28.2');
+    });
+
+    it('F19-T1.6: Runtime config loader declares the local-override fetch it awaits', () => {
+      // loadConfig awaits Promise.all([baseFetch, localFetch]). An earlier refactor
+      // dropped the localFetch declaration, so every load threw a ReferenceError
+      // that the surrounding catch swallowed: config.example.json was requested
+      // but never applied, and the unread response kept pages from reaching
+      // network-idle. The override file is gitignored and opt-in on localhost.
+      const appJsx = fs.readFileSync(path.join(ROOT, 'src/app.jsx'), 'utf8');
+      expect(appJsx).toContain('const localFetch = useLocalOverride');
+      expect(appJsx).toContain("fetch('config.local.json', { cache: 'no-store' })");
+      const gitignore = fs.readFileSync(path.join(ROOT, '.gitignore'), 'utf8');
+      expect(gitignore).toContain('config.local.json');
     });
   });
 });

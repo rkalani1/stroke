@@ -278,7 +278,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.28.1';
+const APP_VERSION = '6.28.2';
 // The header search hint mirrors the key the shortcut actually listens for
 // (metaKey || ctrlKey): ⌘ on Apple hardware, Ctrl everywhere else.
 const SEARCH_SHORTCUT_LABEL = (typeof navigator !== 'undefined'
@@ -12808,8 +12808,8 @@ Clinician Name`;
             const patient = useGlobalPatient();
             if (!patient) return null;
             return (
-              <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 text-xs text-cobalt-900 flex flex-wrap items-center gap-3 dark:bg-cobalt-900 dark:border-cobalt-700 dark:text-cobalt-300">
-                <span className="font-semibold">Patient snapshot</span>
+              <div className="bg-white border border-line rounded-lg p-3 text-xs text-ink-2 flex flex-wrap items-center gap-3 dark:bg-card">
+                <span className="font-semibold text-ink">Patient snapshot</span>
                 <span>Age: {patient.age || '--'}</span>
                 <span>Sex: {patient.sex || '--'}</span>
                 <span>Cr: {patient.creatinine || '--'}</span>
@@ -16275,6 +16275,12 @@ Clinician Name`;
             const loadConfig = async () => {
               try {
                 const baseFetch = fetch('config.example.json', { cache: 'no-store' });
+                // The local override is only requested under the localhost opt-in above,
+                // and a missing or unreadable file resolves to null so it can never sink
+                // the base config (the merge below already treats null as "no override").
+                const localFetch = useLocalOverride
+                  ? fetch('config.local.json', { cache: 'no-store' }).catch(() => null)
+                  : Promise.resolve(null);
                 const [baseResponse, localResponse] = await Promise.all([baseFetch, localFetch]);
 
                 if (!baseResponse.ok) {
@@ -30229,11 +30235,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       return <NeurocheckTimer tpaGivenIso={administeredAt.toISOString()} />;
                     })()}
                     {/* Quick Dosing Reference */}
-                    <details className="bg-caution-soft border border-line border-l-[3px] border-l-caution rounded-md p-3">
-                      <summary className="font-bold text-orange-900 text-sm cursor-pointer flex items-center gap-2 dark:text-orange-300">
-                                                Quick Dosing Reference
+                    <details className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-warn" aria-hidden="true"><i data-lucide="pill" className="w-4 h-4"></i></span>
+                        Quick Dosing Reference
                       </summary>
-                      <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+                      <div className="px-3 pb-3 grid grid-cols-1 md:grid-cols-2 gap-2">
                         {[
                           { label: 'TNK (Tenecteplase)', dose: `0.25 mg/kg IV bolus (max 25 mg)${hasValidProtocolDosingWeight ? ` → ${Math.min(25, Math.round(protocolDosingWeightKg * 0.25 * 2) / 2)} mg` : ''}`, color: 'emerald' },
                           { label: 'Alteplase (tPA)', dose: `0.9 mg/kg IV (max 90 mg): 10% bolus, 90% over 60 min${hasValidProtocolDosingWeight ? ` → ${Math.min(90, Math.round(protocolDosingWeightKg * 0.9 * 10) / 10)} mg` : ''}`, color: 'blue' },
@@ -30274,8 +30281,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
                     <CalculatorSync />
                     <CalculatorPatientSnapshot />
-                    <div className="bg-white border border-cobalt-200 rounded-lg p-3 flex flex-wrap items-center gap-3 text-xs dark:bg-card dark:border-cobalt-700">
-                      <label className="flex items-center gap-2 font-semibold text-cobalt-800 dark:text-cobalt-300">
+                    <div className="bg-white border border-line rounded-lg p-3 flex flex-wrap items-center gap-3 text-xs dark:bg-card">
+                      <label className="flex items-center gap-2 font-semibold text-ink">
                         <input
                           type="checkbox"
                           checked={autoSyncCalculators}
@@ -30345,10 +30352,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
                     )}
                     {/* NIHSS Summary Card */}
-                    <details id="calc-nihss" style={{ order: getCalculatorOrder('nihss', 5) }} className="bg-crit-50 border border-crit-200 rounded-lg dark:bg-crit-950 dark:border-crit-800">
-                      <summary className="cursor-pointer p-3 font-semibold text-crit-800 hover:bg-crit-100 rounded-lg flex items-center justify-between dark:text-crit-300 dark:hover:bg-crit-900">
+                    <details id="calc-nihss" style={{ order: getCalculatorOrder('nihss', 5) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-crit" aria-hidden="true"><i data-lucide="brain" className="w-4 h-4"></i></span>
                         <span>NIHSS Score</span>
-                        <span className="text-sm font-normal text-crit-600 dark:text-crit-300">Score: {isNIHSSComplete() ? nihssScore : 'Incomplete'}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {isNIHSSComplete() ? nihssScore : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-between items-center mb-3">
@@ -30371,10 +30379,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Glasgow Coma Scale */}
-                    <details id="calc-gcs" style={{ order: getCalculatorOrder('gcs', 10) }} className="bg-slate-50 border border-line rounded-lg dark:bg-paper-2">
-                      <summary className="cursor-pointer p-3 font-semibold text-slate-800 hover:bg-slate-100 rounded-lg flex items-center justify-between dark:text-ink dark:hover:bg-paper-2">
+                    <details id="calc-gcs" style={{ order: getCalculatorOrder('gcs', 10) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-neutral" aria-hidden="true"><i data-lucide="eye" className="w-4 h-4"></i></span>
                         <span>Glasgow Coma Scale (GCS)</span>
-                        <span className="text-sm font-normal text-slate-600 dark:text-ink-2">Score: {calculateGCS(gcsItems) === null ? 'Incomplete' : calculateGCS(gcsItems)}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {calculateGCS(gcsItems) === null ? 'Incomplete' : calculateGCS(gcsItems)}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
@@ -30439,10 +30448,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* ICH Score */}
-                    <details id="calc-ich-score" style={{ order: getCalculatorOrder('ich-score', 20) }} className="bg-crit-50 border border-crit-200 rounded-lg dark:bg-crit-950 dark:border-crit-800">
-                      <summary className="cursor-pointer p-3 font-semibold text-crit-800 hover:bg-crit-100 rounded-lg flex items-center justify-between dark:text-crit-300 dark:hover:bg-crit-900">
+                    <details id="calc-ich-score" style={{ order: getCalculatorOrder('ich-score', 20) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-crit" aria-hidden="true"><i data-lucide="alert-triangle" className="w-4 h-4"></i></span>
                         <span>ICH Score</span>
-                        <span className="text-sm font-normal text-crit-600 dark:text-crit-300">Score: {calculateICHScore(ichScoreItems) === null ? 'Incomplete' : calculateICHScore(ichScoreItems)}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {calculateICHScore(ichScoreItems) === null ? 'Incomplete' : calculateICHScore(ichScoreItems)}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
@@ -30713,10 +30723,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* FUNC Score */}
-                    <details id="calc-func" style={{ order: getCalculatorOrder('func', 22) }} className="bg-rose-50 border border-rose-200 rounded-lg dark:bg-rose-950 dark:border-rose-800">
-                      <summary className="cursor-pointer p-3 font-semibold text-rose-800 hover:bg-rose-100 rounded-lg flex items-center justify-between dark:text-rose-300">
+                    <details id="calc-func" style={{ order: getCalculatorOrder('func', 22) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-crit" aria-hidden="true"><i data-lucide="heart-pulse" className="w-4 h-4"></i></span>
                         <span>FUNC Score</span>
-                        <span className="text-sm font-normal text-rose-700 dark:text-rose-300">Inputs retained</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Inputs retained</span>
                       </summary>
                       <div className="p-4 space-y-3">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
@@ -30768,10 +30779,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Modified Rankin Scale (mRS) */}
-                    <details id="calc-mrs" style={{ order: getCalculatorOrder('mrs', 30) }} className="bg-slate-50 border border-line rounded-lg dark:bg-paper-2">
-                      <summary className="cursor-pointer p-3 font-semibold text-slate-800 hover:bg-slate-100 rounded-lg flex items-center justify-between dark:text-ink dark:hover:bg-paper-2">
+                    <details id="calc-mrs" style={{ order: getCalculatorOrder('mrs', 30) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-neutral" aria-hidden="true"><i data-lucide="user" className="w-4 h-4"></i></span>
                         <span>Modified Rankin Scale (mRS)</span>
-                        <span className="text-sm font-normal text-slate-600 dark:text-ink-2">Score: {mrsScore || 'Not Selected'}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {mrsScore || 'Not Selected'}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
@@ -30824,10 +30836,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* ABCD2 */}
-                    <details id="calc-abcd2" style={{ order: getCalculatorOrder('abcd2', 40) }} className="bg-orange-50 border border-orange-200 rounded-lg dark:bg-orange-950 dark:border-orange-800">
-                      <summary className="cursor-pointer p-3 font-semibold text-orange-800 hover:bg-orange-100 rounded-lg flex items-center justify-between dark:text-orange-300">
+                    <details id="calc-abcd2" style={{ order: getCalculatorOrder('abcd2', 40) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-warn" aria-hidden="true"><i data-lucide="clock" className="w-4 h-4"></i></span>
                         <span>ABCD² Score</span>
-                        <span className="text-sm font-normal text-orange-700 dark:text-orange-300">Score: {abcd2Complete ? calculateABCD2Score(abcd2Items) : 'Incomplete'}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {abcd2Complete ? calculateABCD2Score(abcd2Items) : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
@@ -30941,10 +30954,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* CHADS2-VASC */}
-                    <details id="calc-chads2vasc" style={{ order: getCalculatorOrder('chads2vasc', 50) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
+                    <details id="calc-chads2vasc" style={{ order: getCalculatorOrder('chads2vasc', 50) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="heart" className="w-4 h-4"></i></span>
                         <span>CHA₂DS₂-VASc Score</span>
-                        <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Score: {chads2VascComplete ? calculateCHADS2VascScore(chads2vascItems) : 'Incomplete'}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {chads2VascComplete ? calculateCHADS2VascScore(chads2vascItems) : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
@@ -31078,10 +31092,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* HAS-BLED Score */}
-                    <details id="calc-hasbled" style={{ order: getCalculatorOrder('hasbled', 60) }} className="bg-pink-50 border border-pink-200 rounded-lg dark:bg-pink-950 dark:border-pink-800">
-                      <summary className="cursor-pointer p-3 font-semibold text-pink-800 hover:bg-pink-100 rounded-lg flex items-center justify-between dark:text-pink-300">
+                    <details id="calc-hasbled" style={{ order: getCalculatorOrder('hasbled', 60) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-crit" aria-hidden="true"><i data-lucide="droplet" className="w-4 h-4"></i></span>
                         <span>HAS-BLED Score</span>
-                        <span className="text-sm font-normal text-pink-700 dark:text-pink-300">Inputs retained</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Inputs retained</span>
                       </summary>
                       <div className="p-4">
 
@@ -31184,8 +31199,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* ROPE Score */}
-                    <details id="calc-rope" style={{ order: getCalculatorOrder('rope', 70) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
+                    <details id="calc-rope" style={{ order: getCalculatorOrder('rope', 70) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="git-branch" className="w-4 h-4"></i></span>
                         <span>ROPE Score and PASCAL Classification</span>
                       </summary>
                       <div className="p-4">
@@ -31299,10 +31315,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
 
                     {/* RCVS2 Score */}
-                    <details id="calc-rcvs2" style={{ order: getCalculatorOrder('rcvs2', 90) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
+                    <details id="calc-rcvs2" style={{ order: getCalculatorOrder('rcvs2', 90) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="zap" className="w-4 h-4"></i></span>
                         <span>RCVS² Score</span>
-                        <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Inputs retained</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Inputs retained</span>
                       </summary>
                       <div className="p-4">
 
@@ -31371,10 +31388,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Hunt and Hess Scale / WFNS Scale */}
-                    <details id="calc-hunt-hess" style={{ order: getCalculatorOrder('hunt-hess', 80) }} className="bg-warn-50 border border-warn-200 rounded-lg dark:bg-warn-950 dark:border-warn-800">
-                      <summary className="cursor-pointer p-3 font-semibold text-warn-800 hover:bg-warn-100 rounded-lg flex items-center justify-between dark:text-warn-300 dark:hover:bg-warn-900">
+                    <details id="calc-hunt-hess" style={{ order: getCalculatorOrder('hunt-hess', 80) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-warn" aria-hidden="true"><i data-lucide="layers" className="w-4 h-4"></i></span>
                         <span>Hunt and Hess / WFNS Scale (SAH Grading)</span>
-                        <span className="text-sm font-normal text-warn-700 dark:text-warn-300">H&H: {huntHessGrade || 'Not Selected'} | WFNS: {wfnsGrade || 'Not Selected'}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">H&H: {huntHessGrade || 'Not Selected'} | WFNS: {wfnsGrade || 'Not Selected'}</span>
                       </summary>
                       <div className="p-4">
                         <p className="mb-3 text-xs text-slate-700 dark:text-ink-2">The institutional acute-stroke algorithm requires Hunt-Hess documentation but does not supply Hunt-Hess grade definitions or a WFNS scale.</p>
@@ -31426,10 +31444,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* PHASES Score */}
-                    <details id="calc-phases" style={{ order: getCalculatorOrder('phases', 75) }} className="bg-teal-50 border border-teal-200 rounded-lg dark:bg-teal-950 dark:border-teal-800">
-                      <summary className="cursor-pointer p-3 font-semibold text-teal-800 hover:bg-teal-100 rounded-lg flex items-center justify-between dark:text-teal-300">
+                    <details id="calc-phases" style={{ order: getCalculatorOrder('phases', 75) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-warn" aria-hidden="true"><i data-lucide="alert-circle" className="w-4 h-4"></i></span>
                         <span>PHASES Score</span>
-                        <span className="text-sm font-normal text-teal-700 dark:text-teal-300">Inputs retained</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Inputs retained</span>
                       </summary>
                       <div className="p-4">
                         <div className="space-y-3">
@@ -31500,8 +31519,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* ICH Volume Calculator (ABC/2) */}
-                    <details id="calc-ich-volume" style={{ order: getCalculatorOrder('ich-volume', 21) }} className="bg-crit-50 border border-crit-200 rounded-lg dark:bg-crit-950 dark:border-crit-800">
-                      <summary className="cursor-pointer p-3 font-semibold text-crit-800 hover:bg-crit-100 rounded-lg flex items-center justify-between dark:text-crit-300 dark:hover:bg-crit-900">
+                    <details id="calc-ich-volume" style={{ order: getCalculatorOrder('ich-volume', 21) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-crit" aria-hidden="true"><i data-lucide="droplets" className="w-4 h-4"></i></span>
                         <span>ICH Volume Calculator (ABC/2 Method)</span>
                       </summary>
                       <div className="p-4">
@@ -31548,8 +31568,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Current US safety information; dosing remains disabled. */}
-                    <details id="calc-andexanet" style={{ order: getCalculatorOrder('andexanet', 36) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
+                    <details id="calc-andexanet" style={{ order: getCalculatorOrder('andexanet', 36) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-neutral" aria-hidden="true"><i data-lucide="flask-conical" className="w-4 h-4"></i></span>
                         <span>Andexanet Alfa (US sales ended; dosing disabled)</span>
                       </summary>
                       <div className="p-4">
@@ -31562,11 +31583,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Cockcroft-Gault CrCl Calculator */}
-                    <details id="calc-crcl" style={{ order: getCalculatorOrder('crcl', 35) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
+                    <details id="calc-crcl" style={{ order: getCalculatorOrder('crcl', 35) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="activity" className="w-4 h-4"></i></span>
                         <span>Creatinine Clearance (Cockcroft-Gault)</span>
                         {(telestrokeNote.age && telestrokeNote.weight && telestrokeNote.creatinine && !(telestrokeNote.crclCalc || {}).age) && (
-                          <span className="text-xs bg-cobalt-200 text-cobalt-800 px-2 py-0.5 rounded-full font-normal dark:bg-cobalt-800 dark:text-cobalt-300">Auto-filled from patient data</span>
+                          <span className="ml-auto text-xs bg-cobalt-200 text-cobalt-800 px-2 py-0.5 rounded-full font-normal dark:bg-cobalt-800 dark:text-cobalt-300">Auto-filled from patient data</span>
                         )}
                       </summary>
                       <div className="p-4">
@@ -31627,11 +31649,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Weight-Based Enoxaparin Dosing */}
-                    <details id="calc-enoxaparin" style={{ order: getCalculatorOrder('enoxaparin', 37) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
+                    <details id="calc-enoxaparin" style={{ order: getCalculatorOrder('enoxaparin', 37) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="pill" className="w-4 h-4"></i></span>
                         <span>Enoxaparin Weight-Based Dosing</span>
                         {(telestrokeNote.weight && !(telestrokeNote.enoxCalc || {}).weightKg) && (
-                          <span className="text-xs bg-cobalt-200 text-cobalt-800 px-2 py-0.5 rounded-full font-normal dark:bg-cobalt-800 dark:text-cobalt-300">Auto-filled from patient data</span>
+                          <span className="ml-auto text-xs bg-cobalt-200 text-cobalt-800 px-2 py-0.5 rounded-full font-normal dark:bg-cobalt-800 dark:text-cobalt-300">Auto-filled from patient data</span>
                         )}
                       </summary>
                       <div className="p-4">
@@ -31670,10 +31693,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* ASPECTS Interactive Scorer */}
-                    <details id="calc-aspects" style={{ order: getCalculatorOrder('aspects', 15) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
+                    <details id="calc-aspects" style={{ order: getCalculatorOrder('aspects', 15) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="scan" className="w-4 h-4"></i></span>
                         <span>ASPECTS Score (Interactive)</span>
-                        <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Score: {telestrokeNote.aspectsAssessed === true ? `${10 - Object.values(telestrokeNote.aspectsRegions || {}).filter(Boolean).length}/10` : 'Incomplete'}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {telestrokeNote.aspectsAssessed === true ? `${10 - Object.values(telestrokeNote.aspectsRegions || {}).filter(Boolean).length}/10` : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
                         <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Click regions with <strong>early ischemic changes</strong> on CT. ASPECTS = 10 minus number of affected regions.</p>
@@ -31749,10 +31773,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* PC-ASPECTS Calculator */}
-                    <details id="calc-pc-aspects" style={{ order: getCalculatorOrder('pc-aspects', 16) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
+                    <details id="calc-pc-aspects" style={{ order: getCalculatorOrder('pc-aspects', 16) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="scan" className="w-4 h-4"></i></span>
                         <span>PC-ASPECTS (Posterior Circulation)</span>
-                        <span className="text-sm font-normal text-cobalt-600 dark:text-cobalt-300">Score: {telestrokeNote.pcAspectsAssessed === true ? (() => { const r = telestrokeNote.pcAspectsRegions || {}; return `${10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0))}/10`; })() : 'Incomplete'}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {telestrokeNote.pcAspectsAssessed === true ? (() => { const r = telestrokeNote.pcAspectsRegions || {}; return `${10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0))}/10`; })() : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
                         <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Click regions with early ischemic changes. PC-ASPECTS starts at 10; pons and midbrain deduct 2 points each, and each other listed region deducts 1 point.</p>
@@ -31801,10 +31826,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* Alteplase (tPA) Dosing Calculator */}
-                    <details id="calc-alteplase" style={{ order: getCalculatorOrder('alteplase', 24) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
+                    <details id="calc-alteplase" style={{ order: getCalculatorOrder('alteplase', 24) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="flask-conical" className="w-4 h-4"></i></span>
                         <span>Alteplase (tPA) Dosing Calculator</span>
-                        <span className="text-xs font-normal text-cobalt-600 dark:text-cobalt-300">0.9 mg/kg, max 90 mg</span>
+                        <span className="ml-auto text-xs font-normal text-slate-600 dark:text-mute">0.9 mg/kg, max 90 mg</span>
                       </summary>
                       <div className="p-4">
                         {(() => {
@@ -31842,10 +31868,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* SPAN-100 / DRAGON / SEDAN */}
-                    <details id="calc-risk-scores" style={{ order: getCalculatorOrder('risk-scores', 25) }} className="bg-warn-50 border border-warn-200 rounded-lg dark:bg-warn-950 dark:border-warn-800">
-                      <summary className="cursor-pointer p-3 font-semibold text-warn-800 hover:bg-warn-100 rounded-lg flex items-center justify-between dark:text-warn-300 dark:hover:bg-warn-900">
+                    <details id="calc-risk-scores" style={{ order: getCalculatorOrder('risk-scores', 25) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-warn" aria-hidden="true"><i data-lucide="shield-alert" className="w-4 h-4"></i></span>
                         <span>SPAN-100, DRAGON, and SEDAN</span>
-                        <span className="text-sm font-normal text-warn-700 dark:text-warn-300">Inputs retained</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Inputs retained</span>
                       </summary>
                       <div className="p-4 space-y-4">
                         {/* SPAN-100 */}
@@ -31863,10 +31890,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* TICI Reperfusion Score */}
-                    <details id="calc-tici" style={{ order: getCalculatorOrder('tici', 18) }} className="bg-ok-50 border border-ok-200 rounded-lg dark:bg-ok-950 dark:border-ok-800">
-                      <summary className="cursor-pointer p-3 font-semibold text-ok-800 hover:bg-ok-100 rounded-lg flex items-center justify-between dark:text-ok-300 dark:hover:bg-ok-900">
+                    <details id="calc-tici" style={{ order: getCalculatorOrder('tici', 18) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-ok" aria-hidden="true"><i data-lucide="badge-check" className="w-4 h-4"></i></span>
                         <span>mTICI Reperfusion Score (Post-EVT)</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-4 h-4"></i>
                       </summary>
                       <div className="p-4 space-y-2">
                         <div className="space-y-2">
@@ -31907,10 +31934,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     </details>
 
                     {/* DRAGON Score */}
-                    <details id="calc-dragon" style={{ order: getCalculatorOrder('dragon', 26) }} className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
-                      <summary className="cursor-pointer p-3 font-semibold text-cobalt-800 hover:bg-cobalt-100 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
+                    <details id="calc-dragon" style={{ order: getCalculatorOrder('dragon', 26) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="chart-no-axes-column-increasing" className="w-4 h-4"></i></span>
                         <span>DRAGON Score</span>
-                        <i aria-hidden="true" data-lucide="chevron-down" className="w-4 h-4"></i>
                       </summary>
                       <div className="p-4">
                         <p className="text-xs text-slate-600 dark:text-ink-2">Input labels: Dense artery sign or early infarct on NCCT; pre-stroke mRS; age; glucose; onset to treatment; NIHSS.</p>
@@ -32155,8 +32182,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <LazyDetails
                                 key={guideline.id}
                                 forceOpen={shouldExpand}
-                                className="border border-cobalt-200 rounded-lg bg-cobalt-50/40 dark:bg-cobalt-900/40 dark:border-cobalt-700"
-                                summaryClassName="cursor-pointer p-3 font-semibold text-cobalt-900 hover:bg-cobalt-100 rounded-lg flex items-center justify-between gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-800"
+                                className="ref-section bg-white border border-line rounded-lg dark:bg-card"
+                                summaryClassName="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between gap-2 dark:text-ink dark:hover:bg-paper-2"
                                 summary={(
                                   <>
                                     <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -32168,7 +32195,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         <span className="px-1.5 py-0.5 rounded-full border border-warn-300 bg-warn-50 text-warn-800 text-[11px] font-semibold dark:border-warn-700 dark:bg-warn-950 dark:text-warn-300">{guideline.sourceOnly ? 'Source link only' : 'Selected extracts'}</span>
                                       )}
                                     </span>
-                                    <span className="flex flex-col items-end gap-1 text-xs text-cobalt-600 shrink-0 dark:text-cobalt-300">
+                                    <span className="flex flex-col items-end gap-1 text-xs text-slate-600 shrink-0 dark:text-mute">
                                       <span>{guideline.sourceOnly ? 'Source only' : guideline.recommendations.length + ' entries'}</span>
                                       {(guideline.publicationUpdates || []).some((update) => ['unresolved', 'partially-applied'].includes(update.status)) && (
                                         <span className="text-warn-800 dark:text-warn-300">Correction notice</span>
@@ -32184,12 +32211,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <LazyDetails
                                       key={section}
                                       forceOpen={shouldExpand || guidelineLibrarySection === section}
-                                      className="bg-white border border-cobalt-100 rounded-lg dark:bg-card"
-                                      summaryClassName="cursor-pointer px-3 py-2 text-sm font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-900"
+                                      className="bg-white border border-line rounded-lg dark:bg-card"
+                                      summaryClassName="cursor-pointer px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center justify-between dark:text-ink dark:hover:bg-paper-2"
                                       summary={(
                                         <>
                                           <span>{section}</span>
-                                          <span className="text-xs text-cobalt-500">{recs.length}</span>
+                                          <span className="text-xs text-slate-600 dark:text-mute">{recs.length}</span>
                                         </>
                                       )}
                                     >
