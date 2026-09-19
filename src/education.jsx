@@ -894,7 +894,12 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
   return (
     <div className="space-y-6 max-w-6xl mx-auto v7-reveal">
       <header className="bg-card border border-line rounded-lg p-6 space-y-2">
+        <p className="font-mono text-xs uppercase text-mute tracking-wider">Teaching library · {EDUCATION_MODULES.length} modules</p>
         <h1 className="font-serif text-2xl text-ink font-bold">Educational Resources</h1>
+        <p className="text-sm text-ink-2 max-w-2xl">
+          Bedside teaching cards, interactive simulators, pocket cards and printable infographics. Each module cites
+          its own primary sources; verify against the current guideline and local protocol before applying.
+        </p>
       </header>
 
       {moduleNotFound && (
@@ -1093,14 +1098,14 @@ const PdfActionBar = ({ title, subtitle, pdfPath, pdfName, iconColorClass = "tex
             <a
               href={resolvedPath}
               download={pdfName}
-              className="px-3.5 py-1.5 bg-slate-600 text-white rounded-lg text-xs font-semibold hover:bg-slate-700 transition-colors flex items-center gap-1.5"
+              className="px-3.5 py-1.5 border border-line bg-white text-ink rounded-lg text-xs font-semibold hover:border-cobalt-300 hover:bg-cobalt-50 transition-colors flex items-center gap-1.5 dark:bg-card dark:hover:bg-cobalt-900"
             >
               <i aria-hidden="true" data-lucide="download" className="w-3.5 h-3.5"></i>
               Download
             </a>
             <button
               onClick={emailDoc}
-              className="px-3.5 py-1.5 bg-orange-700 text-white rounded-lg text-xs font-semibold hover:bg-orange-800 transition-colors flex items-center gap-1.5"
+              className="px-3.5 py-1.5 border border-line bg-white text-ink rounded-lg text-xs font-semibold hover:border-cobalt-300 hover:bg-cobalt-50 transition-colors flex items-center gap-1.5 dark:bg-card dark:hover:bg-cobalt-900"
             >
               <i aria-hidden="true" data-lucide="mail" className="w-3.5 h-3.5"></i>
               Email
@@ -1204,7 +1209,7 @@ const EvdMaintenanceView = () => {
           className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${
             viewMode === 'pocket-card'
               ? 'bg-cobalt-600 text-white shadow-sm'
-              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:hover:bg-slate-700'
+              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-ink-2 dark:hover:bg-slate-700'
           }`}
         >
           Quick Reference Card
@@ -1215,7 +1220,7 @@ const EvdMaintenanceView = () => {
           className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${
             viewMode === 'interactive'
               ? 'bg-cobalt-600 text-white shadow-sm'
-              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:hover:bg-slate-700'
+              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-ink-2 dark:hover:bg-slate-700'
           }`}
         >
           Interactive EVD Simulator
@@ -1250,7 +1255,7 @@ const IcpManagementView = () => {
           className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${
             viewMode === 'pocket-card'
               ? 'bg-cobalt-600 text-white shadow-sm'
-              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:hover:bg-slate-700'
+              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-ink-2 dark:hover:bg-slate-700'
           }`}
         >
           Quick Reference Card
@@ -1260,7 +1265,7 @@ const IcpManagementView = () => {
           className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all min-h-[38px] ${
             viewMode === 'interactive'
               ? 'bg-cobalt-600 text-white shadow-sm'
-              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-350 dark:hover:bg-slate-700'
+              : 'text-slate-600 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:text-ink-2 dark:hover:bg-slate-700'
           }`}
         >
           Interactive ICP Simulator
@@ -4708,14 +4713,14 @@ export const EVDInfographic = () => {
           <a
             href="documents/references/External Ventricular Drain.pdf"
             download="External Ventricular Drain.pdf"
-            className="px-3.5 py-1.5 bg-slate-600 text-white rounded-lg text-xs font-semibold hover:bg-slate-700 transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-1.5 border border-line bg-white text-ink rounded-lg text-xs font-semibold hover:border-cobalt-300 hover:bg-cobalt-50 transition-colors flex items-center gap-1.5 dark:bg-card dark:hover:bg-cobalt-900"
           >
             <i aria-hidden="true" data-lucide="download" className="w-3.5 h-3.5"></i>
             Download
           </a>
           <button
             onClick={emailDoc}
-            className="px-3.5 py-1.5 bg-orange-700 text-white rounded-lg text-xs font-semibold hover:bg-orange-800 transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-1.5 border border-line bg-white text-ink rounded-lg text-xs font-semibold hover:border-cobalt-300 hover:bg-cobalt-50 transition-colors flex items-center gap-1.5 dark:bg-card dark:hover:bg-cobalt-900"
           >
             <i aria-hidden="true" data-lucide="mail" className="w-3.5 h-3.5"></i>
             Email
@@ -4768,7 +4773,7 @@ export const EVDInfographic = () => {
             <div className="bg-ok-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
               Basics
             </div>
-            <div className="p-4 flex-grow text-xs text-slate-600 dark:text-slate-350 space-y-2">
+            <div className="p-4 flex-grow text-xs text-slate-600 dark:text-ink-2 space-y-2">
               <ul className="list-disc pl-5 space-y-1.5">
                 <li><strong>Leveling:</strong> Always align the zero level of the EVD scale/transducer to the external auditory meatus (EAM) / tragus.</li>
                 <li><strong>Mobilization Clamping Rules:</strong> Always CLAMP the EVD before: turning the patient, adjusting HOB, or mobilizing the patient out of bed to prevent severe overdrainage or underdrainage.</li>
@@ -4803,7 +4808,7 @@ export const EVDInfographic = () => {
           <div className="bg-blue-600 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
             Components
           </div>
-          <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-slate-50/50 dark:bg-slate-950/10 border-b border-slate-200 dark:border-slate-800">
+          <div className="p-4 text-xs text-slate-600 dark:text-ink-2 bg-slate-50/50 dark:bg-slate-950/10 border-b border-slate-200 dark:border-slate-800">
             <ol className="list-decimal pl-5 space-y-1.5">
               <li><strong>Drainage setting:</strong> CSF drainage is passive and occurs only when patient ICP exceeds the EVD chamber height setting. Setting the EVD higher (e.g., +15 vs. +5 cmH₂O) increases the pressure threshold required for CSF to flow, thereby reducing drainage volume for any given ICP.</li>
               <li><strong>Drainage stopcock:</strong> 12 o'clock = clamp/closed, 3 o'clock = open to drain.</li>
@@ -4818,7 +4823,7 @@ export const EVDInfographic = () => {
           <div className="bg-blue-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
             Indications
           </div>
-          <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-slate-50/50 dark:bg-slate-950/10 border-b border-slate-200 dark:border-slate-800">
+          <div className="p-4 text-xs text-slate-600 dark:text-ink-2 bg-slate-50/50 dark:bg-slate-950/10 border-b border-slate-200 dark:border-slate-800">
             <ul className="list-disc pl-5 space-y-1.5">
               <li><strong>CSF Diversion</strong> for acute obstructive hydrocephalus (e.g., IVH, posterior fossa stroke).</li>
               <li><strong>ICP Monitoring</strong> in severe brain injury (GCS &le; 8).</li>
@@ -4834,14 +4839,14 @@ export const EVDInfographic = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 bg-cobalt-50/20 dark:bg-cobalt-950/5 border-b border-slate-200 dark:border-slate-800">
             <div className="p-4 border-r border-slate-200 dark:border-slate-800">
               <h5 className="font-bold text-xs text-cobalt-800 dark:text-cobalt-300 mb-1.5">Clinical Signs:</h5>
-              <ul className="list-disc pl-4 space-y-1.5 text-xs text-slate-600 dark:text-slate-350">
+              <ul className="list-disc pl-4 space-y-1.5 text-xs text-slate-600 dark:text-ink-2">
                 <li>Decline in Level of Consciousness (LOC) or progressive somnolence.</li>
                 <li><strong>Parinaud's Syndrome:</strong> Upward gaze palsy (setting sun sign), retraction nystagmus on convergence, and pupillary light-near dissociation.</li>
               </ul>
             </div>
             <div className="p-4">
               <h5 className="font-bold text-xs text-cobalt-800 dark:text-cobalt-300 mb-1.5">Radiographic Signs (NCCT Head):</h5>
-              <ul className="list-disc pl-4 space-y-1.5 text-xs text-slate-600 dark:text-slate-350">
+              <ul className="list-disc pl-4 space-y-1.5 text-xs text-slate-600 dark:text-ink-2">
                 <li>Progressive enlargement of the cerebral ventricles.</li>
                 <li>Temporal horn dilation (sensitive early sign of obstruction).</li>
                 <li>High-risk factors: Intraventricular Hemorrhage (IVH) in 3rd or 4th ventricles, compression of 4th ventricle, or high volume blood.</li>
@@ -4855,7 +4860,7 @@ export const EVDInfographic = () => {
           <div className="bg-rose-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
             Complications
           </div>
-          <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-rose-50/15 dark:bg-rose-950/5">
+          <div className="p-4 text-xs text-slate-600 dark:text-ink-2 bg-rose-50/15 dark:bg-rose-950/5">
             <ul className="list-disc pl-5 space-y-1.5">
               <li><strong>Overdrainage (&gt;20 mL/hr):</strong> Risk of subdural hematomas (bridging vein tearing), ventricular collapse (slit ventricles), or upward cerebellar herniation.</li>
               <li><strong>Underdrainage:</strong> Risk of worsening hydrocephalus, brain compression, or elevated ICP. Troubleshoot for system kinks, blood clots, air locks, or malpositioned stopcocks.</li>
@@ -4912,14 +4917,14 @@ export const ICPInfographic = () => {
           <a
             href="documents/references/Intracranial Hypertension &amp; Herniation.pdf"
             download="Intracranial Hypertension &amp; Herniation.pdf"
-            className="px-3.5 py-1.5 bg-slate-600 text-white rounded-lg text-xs font-semibold hover:bg-slate-700 transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-1.5 border border-line bg-white text-ink rounded-lg text-xs font-semibold hover:border-cobalt-300 hover:bg-cobalt-50 transition-colors flex items-center gap-1.5 dark:bg-card dark:hover:bg-cobalt-900"
           >
             <i aria-hidden="true" data-lucide="download" className="w-3.5 h-3.5"></i>
             Download
           </a>
           <button
             onClick={emailDoc}
-            className="px-3.5 py-1.5 bg-orange-700 text-white rounded-lg text-xs font-semibold hover:bg-orange-800 transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-1.5 border border-line bg-white text-ink rounded-lg text-xs font-semibold hover:border-cobalt-300 hover:bg-cobalt-50 transition-colors flex items-center gap-1.5 dark:bg-card dark:hover:bg-cobalt-900"
           >
             <i aria-hidden="true" data-lucide="mail" className="w-3.5 h-3.5"></i>
             Email
@@ -4949,7 +4954,7 @@ export const ICPInfographic = () => {
           <div className="bg-rose-700 text-white text-center py-1.5 text-xs font-bold uppercase tracking-wider">
             Clinical Signs of Herniation
           </div>
-          <div className="p-4 text-xs text-slate-600 dark:text-slate-350 bg-orange-50/10 dark:bg-orange-950/5 border-b border-slate-200 dark:border-slate-800">
+          <div className="p-4 text-xs text-slate-600 dark:text-ink-2 bg-orange-50/10 dark:bg-orange-950/5 border-b border-slate-200 dark:border-slate-800">
             <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
               <div className="flex-1 w-full">
                 <ul className="list-disc pl-5 space-y-1.5">
@@ -4982,7 +4987,7 @@ export const ICPInfographic = () => {
             </div>
             
             <div className="mt-4 overflow-x-auto">
-              <table className="min-w-full divide-y divide-orange-200 dark:divide-orange-900 text-[11px] text-slate-600 dark:text-slate-350 leading-relaxed">
+              <table className="min-w-full divide-y divide-orange-200 dark:divide-orange-900 text-[11px] text-slate-600 dark:text-ink-2 leading-relaxed">
                 <thead>
                   <tr className="bg-orange-50/50 dark:bg-orange-950/20 text-orange-900 dark:text-orange-300 font-bold">
                     <th scope="col" className="px-3 py-1.5 text-left font-bold border-b border-orange-200 dark:border-orange-900 w-[20%]">Syndrome</th>
@@ -5028,7 +5033,7 @@ export const ICPInfographic = () => {
               <h5 className="font-bold text-xs text-ok-800 dark:text-ok-300 border-b border-ok-100 dark:border-ok-900/40 pb-1 uppercase tracking-wider">General approach</h5>
               <div className="space-y-1">
                 <strong className="text-ok-800 dark:text-ok-400 block text-xs">Fundamental Measures</strong>
-                <ul className="list-disc pl-5 space-y-0.5 text-[11px] text-slate-600 dark:text-slate-350">
+                <ul className="list-disc pl-5 space-y-0.5 text-[11px] text-slate-600 dark:text-ink-2">
                   <li>Elevate HOB 30°; strict neutral midline neck alignment to preserve venous outflow.</li>
                   <li>Euvolemia (isotonic saline; avoid hypotonic <code className="text-rose-600 dark:text-rose-450 font-mono text-[10px]">D5W</code>).</li>
                   <li>Temperature &lt; 38.0°C.</li>
@@ -5038,7 +5043,7 @@ export const ICPInfographic = () => {
               </div>
               <div className="space-y-1">
                 <strong className="text-ok-800 dark:text-ok-400 block text-xs">Medical Interventions</strong>
-                <ul className="list-disc pl-5 space-y-1 text-[11px] text-slate-600 dark:text-slate-350">
+                <ul className="list-disc pl-5 space-y-1 text-[11px] text-slate-600 dark:text-ink-2">
                   <li><strong>Analgesia/sedation (fentanyl/propofol):</strong> Target RASS &minus;4 to &minus;5 to prevent coughing, agitation, or ventilator dyssynchrony.</li>
                   <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter. <span className="font-semibold text-crit-600 dark:text-crit-400">Hold if Serum Osmolarity &gt; 320 mOsm/kg OR Osmolar Gap &ge; 20 mOsm/kg.</span></li>
                   <li><strong>Hypertonic Saline (HTS):</strong> 3% (150–250 mL bolus) or 23.4% (30 mL rescue bolus; central line access only). <span className="font-semibold text-crit-600 dark:text-crit-400">Hold if Serum Sodium &gt; 155–160 mEq/L or Chloride &gt; 115–120 mEq/L.</span></li>
@@ -5053,13 +5058,13 @@ export const ICPInfographic = () => {
               <h5 className="font-bold text-xs text-ok-800 dark:text-ok-300 border-b border-ok-100 dark:border-ok-900/40 pb-1 uppercase tracking-wider">Surgical Management</h5>
               <div className="space-y-1">
                 <strong className="text-ok-800 dark:text-ok-400 block text-xs">CSF Diversion:</strong>
-                <ul className="list-disc pl-5 space-y-0.5 text-[11px] text-slate-600 dark:text-slate-350">
+                <ul className="list-disc pl-5 space-y-0.5 text-[11px] text-slate-600 dark:text-ink-2">
                   <li>EVD placement for acute hydrocephalus, intraventricular hemorrhage (IVH), or mass effect with ventriculomegaly.</li>
                 </ul>
               </div>
               <div className="space-y-2 border-t border-slate-100 dark:border-slate-800/40 pt-3">
                 <strong className="text-ok-800 dark:text-ok-400 block text-xs">Decompressive Surgery:</strong>
-                <ul className="list-disc pl-5 space-y-2 text-[11px] text-slate-600 dark:text-slate-350">
+                <ul className="list-disc pl-5 space-y-2 text-[11px] text-slate-600 dark:text-ink-2">
                   <li>
                     <strong>Malignant MCA (DHC):</strong> Clinical decline with infarct &ge; 50% MCA territory, surgery within 48h. <strong>Age 18&ndash;60:</strong> survival and function both improve (pooled DECIMAL/DESTINY/HAMLET; mRS &le;4 75% vs 24%). <strong>Age &ge; 61:</strong> DESTINY II &mdash; survival without severe disability 38% vs 18% (OR 2.91, 95% CI 1.06&ndash;7.49; P=0.04), mortality 33% vs 70%, but no survivor reached mRS 0&ndash;2 and most needed help with most bodily needs; decide on goals of care, not an age cutoff.
                   </li>
@@ -5074,7 +5079,7 @@ export const ICPInfographic = () => {
             </div>
           </div>
           <div className="p-4 bg-ok-50/15 dark:bg-ok-950/5 border-b border-slate-200 dark:border-slate-800">
-            <div className="border border-crit-200 dark:border-crit-900 bg-crit-50/50 dark:bg-crit-950/10 p-3 rounded-lg text-slate-700 dark:text-slate-350 text-[11px] leading-relaxed space-y-2">
+            <div className="border border-crit-200 dark:border-crit-900 bg-crit-50/50 dark:bg-crit-950/10 p-3 rounded-lg text-slate-700 dark:text-ink-2 text-[11px] leading-relaxed space-y-2">
               <div>
                 <strong className="text-crit-700 dark:text-crit-400 block font-bold mb-1">Management is not necessarily sequential</strong>
                 For active herniation or rapid clinical/radiographic deterioration, immediately initiate medical interventions & call Neurosurgery.
@@ -5126,7 +5131,7 @@ export const ICPInfographic = () => {
                 <text x="215" y="130" fill="#94a3b8" fontSize="8.5" fontFamily="sans-serif" fontStyle="italic">Tissue compliance exhausted; elevated baseline pressure</text>
               </svg>
             </div>
-            <div className="w-full text-xs text-slate-600 dark:text-slate-350 space-y-1.5">
+            <div className="w-full text-xs text-slate-600 dark:text-ink-2 space-y-1.5">
               <ul className="list-disc pl-5 space-y-1">
                 <li><strong>P1 (Percussion wave):</strong> Arterial pulsation.</li>
                 <li><strong>P2 (Tidal wave):</strong> State of intracranial compliance (elastic reserve).</li>

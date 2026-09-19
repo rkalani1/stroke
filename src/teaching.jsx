@@ -84,7 +84,7 @@ export const LandmarkTrialsCard = () => {
                     <span className="text-xs text-slate-500 ml-2 dark:text-mute">({t.year})</span>
                     <span className="text-[10px] text-slate-500 ml-2 dark:text-mute">{t.citation}</span>
                   </div>
-                  <span className="text-slate-500 text-xs dark:text-mute">{open ? '▼' : '▶'}</span>
+                  <span className={`disclosure-chevron text-slate-500 dark:text-mute ${open ? 'is-open' : ''}`} aria-hidden="true"></span>
                 </div>
                 <p className="text-xs text-slate-700 mt-0.5 dark:text-ink-2"><strong>Bottom line:</strong> {t.bottomLine}</p>
               </button>
@@ -138,7 +138,7 @@ const StrokeSyndromesCard = () => {
               >
                 <div className="flex items-center justify-between">
                   <strong className="text-cobalt-900 dark:text-cobalt-300">{s.name}</strong>
-                  <span className="text-slate-500 text-xs dark:text-mute">{open ? '▼' : '▶'}</span>
+                  <span className={`disclosure-chevron text-slate-500 dark:text-mute ${open ? 'is-open' : ''}`} aria-hidden="true"></span>
                 </div>
                 <p className="text-[11px] text-slate-500 mt-0.5 italic dark:text-mute">{s.territory}</p>
               </button>

@@ -1,5 +1,71 @@
 # CHANGELOG
 
+## v6.28.0 — 2026-09-19 — reference and teaching surfaces: one visual system for clinical material
+
+Presentation-only release across the surfaces that carry clinical and
+scientific material: Reference Library, Guidelines, Educational Resources,
+Trials and the Encounter anticoagulation panel. The Protocols tab is untouched
+and its `#/protocols/*` snapshot lock passes unchanged. No clinical wording,
+calculator logic, citation or data record changed. Verified against the
+production build in headless Chromium in both themes at phone and desktop
+widths: zero console errors.
+
+- **Reference Library sections share one header.** The sixteen hand-written
+  sections (Major Stroke Trials, Guideline Recommendations, the infographics,
+  HINTS, CVT, prognosis, pearls, pitfalls, imaging follow-up, code stroke,
+  mimics, spinal cord, CTP, chameleons, admission orders) each chose their own
+  border and title hue — blue, cyan, rose, teal, orange, cobalt, crit, ok — and
+  the registry-driven document folders below them used a different, larger
+  header again. The whole list now uses one neutral card with the title in ink
+  and a small tonal disc that carries the topic's semantic colour on the icon
+  alone (crit for the emergency topics, warn for prognosis and mimics, info for
+  imaging, ok for orders, cobalt for reference material, neutral for document
+  folders), plus a chevron that turns when the row opens. Five sections that
+  had no icon now have one. The raw Tailwind hues this removed included two
+  `dark:hover:bg-slate-850` classes that referenced a step the token ramp does
+  not define, so those rows had no dark hover state.
+- **Document rows have one primary action.** View stays the accent button;
+  Download and Email, which were solid slate and solid orange, are now quiet
+  outlined secondaries, so an expanded folder no longer reads as a wall of
+  three saturated buttons per row.
+- **Disclosure indicators are drawn, not typed.** The landmark-trial and
+  vascular-territory rows in the teaching cards, and the ICH reversal toggle in
+  the Encounter anticoagulation panel, used the text characters ▶ and ▼. They
+  now use a CSS chevron painted in the row's own colour that rotates on open,
+  and needs no icon pass, so it renders in rows that mount after the lucide
+  replacement has already run.
+- **Research sub-tabs stay on one line on phones.** Guidelines / Reference
+  Library / Calculators / Educational Resources wrapped onto a ragged second
+  row on a 390px screen, with the orphaned tab stretched to the full width. The
+  row now scrolls horizontally on phones, the same pattern the header resource
+  chips use, and wraps as before from 640px up.
+- **Educational Resources has a real header.** It was a card holding nothing
+  but the title. It now carries the module count as an eyebrow and a one-line
+  description of what the library holds, with the verify-locally caveat, in
+  the same eyebrow / title / description pattern the Trials header uses.
+- The claim-chain hint on the Guideline Recommendations header is set as a
+  plain muted note rather than italic small print.
+- **Icons render in content that mounts after first paint.** The icon pass
+  re-ran only when a fixed list of state keys changed, and that list did not
+  include the Guidelines & References sub-tab, so reaching the Reference
+  Library by clicking its tab (rather than by URL) left every icon in it
+  un-instantiated: 128 empty `<i>` elements, including the new section discs.
+  A MutationObserver now schedules the (idempotent) icon pass whenever new
+  nodes land in the document, coalesced to one frame.
+- **"Click to Zoom" has its icon.** The four infographic zoom overlays asked
+  for `zoom-in`, which the bundled lucide subset did not carry, so the label
+  rendered without a glyph. The icon is now in the subset.
+- **Teaching-card body text is legible in dark mode.** Eighteen passages in
+  the EVD, ICP and related cards used `dark:text-slate-350`, a step the token
+  ramp does not define and Tailwind therefore never emitted; in dark they kept
+  the light theme's slate-600 (about 2.2:1 on the card). They now use the
+  muted-ink token.
+- The teaching-card action bars (Preview PDF / Download / Email on the EVD and
+  ICP infographics and the shared PDF bar) take the same primary-plus-quiet-
+  secondaries treatment as the Reference Library document rows.
+- Version bumped to 6.28.0 so the service-worker cache key and `?v=` asset
+  queries roll for returning visitors.
+
 ## v6.27.1 — 2026-09-13 — accessibility and cascade fixes for the v6.27.0 drawn controls
 
 Follow-up to v6.27.0, from a multi-lens audit of that release (seven independent
