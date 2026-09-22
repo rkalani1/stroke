@@ -32187,9 +32187,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <>
                                     <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                                       <span>{guideline.shortTitle || guideline.title}</span>
-                                      {guideline.coverageComplete && (
-                                        <span className="px-1.5 py-0.5 rounded-full border border-cobalt-200 text-cobalt-800 text-[11px] font-medium dark:border-cobalt-700 dark:text-cobalt-200">Complete coverage</span>
-                                      )}
                                       {(guideline.summaryOnly || guideline.sourceOnly || guideline.partialExtraction) && (
                                         <span className="px-1.5 py-0.5 rounded-full border border-warn-300 bg-warn-50 text-warn-800 text-[11px] font-semibold dark:border-warn-700 dark:bg-warn-950 dark:text-warn-300">{guideline.sourceOnly ? 'Source link only' : 'Selected extracts'}</span>
                                       )}
