@@ -138,7 +138,7 @@
             color: #e2e8f0;
             border-color: rgba(148, 163, 184, 0.3);
         }
-        html.dark ::placeholder { color: #64748b; }
+        html.dark ::placeholder { color: var(--mute); }
 
         body {
             font-family: "Public Sans", "Segoe UI", sans-serif;
@@ -290,8 +290,8 @@
                 letter-spacing: -0.005em;
             }
             .app-shell > .app-nav .tab-pill.active {
-                background: var(--accent-soft) !important;
-                color: var(--accent-ink) !important;
+                background: linear-gradient(115deg, rgb(var(--cobalt-600)), rgb(var(--cobalt-700))) !important;
+                color: #FFFFFF !important;
                 box-shadow: inset 3px 0 0 0 var(--accent), 0 1px 0 rgba(15,23,42,.025) !important;
             }
             .app-shell > .app-nav .tab-pill span {
@@ -897,9 +897,9 @@
            component logic changes — the DOM (and every content snapshot)
            is byte-identical to v7.1.
 
-           Direction: this is a clinical instrument, so depth over
-           decoration. Warm paper and machined panels in light; a lit
-           graphite console in dark; one teal accent used decisively;
+           Direction: a clinical instrument with clear material hierarchy.
+           Cool pearl and white panels in light; deep mineral surfaces in
+           dark; one teal accent used decisively;
            motion measured in a single 180 ms ease and always multiplied
            by --motion-scale (zeroed under prefers-reduced-motion).
 
@@ -910,12 +910,11 @@
            ═══════════════════════════════════════════════════════════════ */
 
         /* — 1. Edge + elevation ramp ————————————————————————————
-           The v7 shell/panel borders were tinted navy (15 23 42) while the
-           paper is warm (#FBFAF6); re-tinting them to the ink neutral is
-           what stops the chrome reading slightly cold against the page. */
+           Shared mineral edges separate the working surfaces without
+           changing borders, spacing or the clinical status colors. */
         :root {
-            --edge:         rgba(20, 23, 29, .075);
-            --edge-strong:  rgba(20, 23, 29, .16);
+            --edge:         rgba(30, 67, 82, .10);
+            --edge-strong:  rgba(30, 67, 82, .22);
             /* Boundary of an interactive control that has no fill of its own
                (the unchecked checkbox/radio). WCAG 1.4.11 wants >= 3:1 against
                the surface; slate-500 on the white card is 4.5:1, and it is the
@@ -925,81 +924,96 @@
             --inner-hi:     inset 0 1px 0 rgba(255, 255, 255, .8);
             --sheen:        linear-gradient(180deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 96px);
             --grain:        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)' opacity='.055'/%3E%3C/svg%3E");
-            --lift-1:       0 1px 1.5px rgba(20, 23, 29, .04), 0 3px 8px -5px rgba(20, 23, 29, .09);
-            --lift-2:       0 1px 2px rgba(20, 23, 29, .05), 0 12px 26px -14px rgba(20, 23, 29, .22);
-            --lift-3:       0 2px 4px rgba(20, 23, 29, .05), 0 28px 56px -26px rgba(20, 23, 29, .30);
-            --glow-accent:  0 10px 22px -12px color-mix(in oklab, var(--accent) 60%, transparent);
+            --lift-1:       0 1px 2px rgba(20, 51, 65, .045), 0 5px 16px -8px rgba(20, 51, 65, .14);
+            --lift-2:       0 2px 4px rgba(20, 51, 65, .055), 0 14px 30px -16px rgba(20, 51, 65, .23);
+            --lift-3:       0 3px 8px rgba(20, 51, 65, .06), 0 28px 60px -26px rgba(20, 51, 65, .28);
+            --glow-accent:  0 4px 10px -5px color-mix(in oklab, var(--accent) 45%, transparent);
             --dur:          180ms;
 
-            /* re-tint the v7 shell/panel chrome from navy to warm ink */
-            --shell-border: rgba(20, 23, 29, .07);
-            --panel-border: rgba(20, 23, 29, .07);
+            /* Cool mineral edges and a shared, restrained elevation scale. */
+            --shell-border: rgba(30, 67, 82, .12);
+            --panel-border: rgba(30, 67, 82, .12);
             --shell-shadow: 0 1px 0 rgba(255, 255, 255, .7) inset,
                             0 1px 2px rgba(20, 23, 29, .04),
                             0 28px 56px -30px rgba(20, 23, 29, .28);
-            --card-shadow:  0 1px 1.5px rgba(20, 23, 29, .04), 0 3px 8px -5px rgba(20, 23, 29, .09);
-            --shadow-pop:   0 2px 6px rgba(20, 23, 29, .06), 0 30px 60px -26px rgba(20, 23, 29, .34);
+            --card-shadow:  var(--lift-1);
+            --shadow-pop:   var(--lift-3);
 
-            /* The workspace is a bright sheet; the canvas behind it is the
-               desk. v7.1 set both to the same near-white, so the sheet had
-               no edge to be seen against. Deepening only the canvas (never
-               a surface that carries text) buys that edge for free. */
-            --app-bg:        #EFEBE1;
-            --app-bg-accent: #E6E0D2;
-            --surface-3:     #E7E1D4;
-            --shell-bg:      rgba(255, 255, 255, .99);
-            --panel-bg:      rgba(255, 255, 255, .97);
+            /* Paint-only mineral palette: white working cards on a cool
+               pearl workspace. Typography, geometry and semantic ramps stay
+               unchanged. Full-color aliases also cover the older controls. */
+            --app-bg:        #E8F0F2;
+            --app-bg-accent: #DCEBED;
+            --surface:       #FFFFFF;
+            --surface-2:     #F5F9FA;
+            --surface-3:     #E7EFF2;
+            --shell-bg:      #F2F7F8;
+            --panel-bg:      #FFFFFF;
+            --paper:         #F5F9FA;
+            --paper-2:       #EAF1F3;
+            --card:          #FFFFFF;
+            --panel:         #FFFFFF;
+            --panel-2:       #F5F9FA;
+            --line:          #D5E1E5;
+            --ink:           #172F3B;
+            --ink-2:         #3D5563;
+            --ink-soft:      #3D5563;
+            --mute:          #526977;
+            --text-strong:   #172F3B;
+            --text-muted:    #526977;
         }
 
         html.dark,
         [data-theme="dark"] {
-            --edge:         rgba(226, 232, 240, .10);
-            --edge-strong:  rgba(226, 232, 240, .20);
+            --edge:         rgba(177, 209, 222, .12);
+            --edge-strong:  rgba(177, 209, 222, .24);
             --control-edge: rgb(var(--slate-400));  /* ~7:1 on the dark card */
-            --inner-hi:     inset 0 1px 0 rgba(255, 255, 255, .06);
+            --inner-hi:     inset 0 1px 0 rgba(211, 238, 248, .045);
             --sheen:        linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, 0) 120px);
             --grain:        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)' opacity='.075'/%3E%3C/svg%3E");
-            --lift-1:       0 1px 2px rgba(0, 0, 0, .40), 0 3px 10px -6px rgba(0, 0, 0, .55);
-            --lift-2:       0 1px 2px rgba(0, 0, 0, .50), 0 16px 34px -20px rgba(0, 0, 0, .80);
-            --lift-3:       0 2px 6px rgba(0, 0, 0, .55), 0 34px 64px -28px rgba(0, 0, 0, .88);
+            --lift-1:       0 1px 2px rgba(0, 8, 14, .28), 0 6px 18px -10px rgba(0, 8, 14, .50);
+            --lift-2:       0 2px 5px rgba(0, 8, 14, .35), 0 16px 34px -20px rgba(0, 8, 14, .70);
+            --lift-3:       0 3px 8px rgba(0, 8, 14, .40), 0 34px 64px -28px rgba(0, 8, 14, .85);
 
-            /* graphite, not navy — the old rgba(12,22,38) shell read blue
-               against the neutral #101317 canvas and muddied every panel */
-            --shell-bg:     rgba(23, 27, 33, .92);
-            --panel-bg:     rgba(23, 27, 33, .90);
-            --shell-border: rgba(226, 232, 240, .09);
-            --panel-border: rgba(226, 232, 240, .09);
+            /* Opaque surfaces keep small labels crisp in the dark theme. */
+            --shell-border: rgba(177, 209, 222, .11);
+            --panel-border: rgba(177, 209, 222, .14);
             --shell-shadow: 0 1px 0 rgba(255, 255, 255, .05) inset,
                             0 2px 6px rgba(0, 0, 0, .5),
                             0 34px 64px -30px rgba(0, 0, 0, .9);
-            --card-shadow:  0 1px 2px rgba(0, 0, 0, .40), 0 3px 10px -6px rgba(0, 0, 0, .55);
-            --shadow-pop:   0 2px 8px rgba(0, 0, 0, .55), 0 36px 70px -28px rgba(0, 0, 0, .9);
+            --card-shadow:  var(--lift-1);
+            --shadow-pop:   var(--lift-3);
 
-            /* v7.1 gave the shell and the cards the same value, which is
-               why dark read as one flat sheet. Sink the shell, lift the
-               card surface one step: both stay far inside AA for the ink
-               and muted text that sit on them. */
-            --shell-bg:      rgba(17, 20, 25, .94);
-            --panel-bg:      rgba(17, 20, 25, .92);
-            --surface:       #1B2027;
-            --card:          #1B2027;
-            --panel:         #1B2027;
-            --surface-2:     #15181E;
-            --panel-2:       #232932;
+            --app-bg:        #0A131A;
+            --app-bg-accent: #102B34;
+            --shell-bg:      #0E1A22;
+            --panel-bg:      #172731;
+            --surface:       #172731;
+            --surface-2:     #11212A;
+            --surface-3:     #0A131A;
+            --card:          #172731;
+            --panel:         #172731;
+            --panel-2:       #20343F;
+            --paper:         #0E1A22;
+            --paper-2:       #20343F;
+            --line:          #304550;
+            --ink:           #EDF4F7;
+            --ink-2:         #C3D4DE;
+            --ink-soft:      #C3D4DE;
+            --mute:          #A5BAC6;
+            --text-strong:   #EDF4F7;
+            --text-muted:    #A5BAC6;
         }
 
         /* — 2. Canvas atmosphere ————————————————————————————————
-           Warm paper base + two very low-alpha washes (teal from the top
-           right, gold from the bottom left) + a whisper of grain so the
-           gutters have tooth instead of reading as flat fill. Every layer
-           is fixed, so the atmosphere holds still while content scrolls.
-           Alphas are far below anything that could move text contrast. */
+           Quiet teal washes outside the opaque working surfaces. No grain
+           competes with small text. Existing background geometry is kept. */
         body {
             background-color: var(--app-bg);
             background-image:
                 radial-gradient(72rem 52rem at 84% -14%, color-mix(in oklab, var(--accent) 10%, transparent), transparent 62%),
-                radial-gradient(58rem 44rem at -12% 106%, color-mix(in oklab, rgb(var(--warn-500)) 7%, transparent), transparent 58%),
-                var(--grain),
+                radial-gradient(58rem 44rem at -12% 106%, color-mix(in oklab, var(--accent) 4%, transparent), transparent 58%),
+                none,
                 linear-gradient(180deg, var(--app-bg) 0%, var(--surface-3) 100%);
             background-size: auto, auto, 140px 140px, auto;
             background-repeat: no-repeat, no-repeat, repeat, no-repeat;
@@ -1011,7 +1025,7 @@
             background-image:
                 radial-gradient(72rem 52rem at 84% -14%, color-mix(in oklab, var(--accent) 13%, transparent), transparent 62%),
                 radial-gradient(58rem 44rem at -12% 106%, color-mix(in oklab, rgb(var(--cobalt-700)) 22%, transparent), transparent 58%),
-                var(--grain),
+                none,
                 linear-gradient(180deg, var(--app-bg) 0%, #08090B 100%);
             background-color: var(--app-bg);
             background-size: auto, auto, 140px 140px, auto;
@@ -1065,6 +1079,7 @@
         .app-header {
             border-bottom-color: transparent;
             box-shadow: 0 1px 0 var(--edge);
+            background-image: linear-gradient(110deg, var(--surface), color-mix(in oklab, var(--accent) 4%, var(--surface)));
         }
         .app-header::after {
             content: "";
@@ -1318,16 +1333,15 @@
                         box-shadow var(--dur) var(--ease),
                         background-color var(--dur) var(--ease);
         }
-        /* Dark controls were filled with a navy rgba(15,23,42,.9) left over
-           from the pre-v7 palette; against the graphite surfaces above they
-           read as a different material. Match them to the recessed step. */
+        /* Dark controls use the recessed surface step, preserving the
+           semantic border colors supplied by individual fields. */
         html.dark input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
         html.dark select,
         html.dark textarea,
         [data-theme="dark"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
         [data-theme="dark"] select,
         [data-theme="dark"] textarea {
-            background-color: rgba(21, 24, 30, .92);
+            background-color: var(--surface-2);
             /* deliberately NOT setting border-color: at this specificity it would
                outrank dark:border-warn-800 / dark:border-crit-800 and erase the
                per-field semantic edges (the LKW field's amber cue among them). */
