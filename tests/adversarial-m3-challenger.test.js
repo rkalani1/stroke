@@ -232,10 +232,10 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       // 2026-08-22: calculators 428->426 from the approved evidence-audit
       // corrections (Hemphill ICH-score table, ABCD2 duration options,
       // HAS-BLED published item definitions). ich/ischemic unchanged.
-      // 2026-09-22: ischemic 764->763 for the requested Protocol Cards subtitle removal.
+      // 2026-09-22: ischemic 764->762 for the two requested protocol subtitle removals.
       const baselineCounts = {
         ich: 524,
-        ischemic: 763,
+        ischemic: 762,
         calculators: 456
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {

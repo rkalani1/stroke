@@ -8,7 +8,6 @@ ICH
 Ischemic/TIA
 Acute ischemic stroke
 Acute Stroke Pathways
-Adult cards reproduce accepted institutional protocol material only. Pediatric content remains unchanged pending separate clinical authorization.
 Make the thrombolysis decision as soon as the minimum dataset is available
 0-4.5h IV Thrombolysis
 Institutional IVT pathway
