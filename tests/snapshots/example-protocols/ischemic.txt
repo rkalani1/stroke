@@ -564,7 +564,6 @@ Basilar Artery Occlusion
 • Within 24 hours, PC-ASPECTS ≥6, NIHSS 6-9: EVT effectiveness is not well established, COR IIb / LOE B-R
 • For an otherwise eligible patient within 4.5 hours, TNK may be started before or on the way to thrombectomy
 Protocol Cards — Institutional Adult Pathways
-Public-safe decision support limited to the accepted institutional source set.
 v2
 INST
 IVT Eligibility Decision Algorithm
