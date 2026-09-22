@@ -450,7 +450,6 @@ export const PocketCards = ({ defaults = {} }) => {
       <div className="px-3 py-2 bg-gradient-to-r from-cobalt-900 to-cobalt-800 text-white rounded-lg flex items-center justify-between">
         <div>
           <h3 className="font-bold text-sm">Protocol Cards — Institutional Adult Pathways</h3>
-          <p className="text-xs opacity-90">Public-safe decision support limited to the accepted institutional source set.</p>
         </div>
         <span className="text-[10px] bg-white/20 dark:bg-slate-900/20 rounded px-2 py-0.5">v2</span>
       </div>

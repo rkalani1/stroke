@@ -228,13 +228,14 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       // tests/snapshots/example-protocols/ for the approved wording. Counts below reflect
       // the approved removal of source-status boxes and relocation of calculators.
       // 2026-09-06: calculators 455->456 from the Andexxa safety card and explicit PASCAL states.
-      // The frozen ICH/ischemic Protocols snapshots remain unchanged.
+      // The Protocols snapshots change only with explicitly approved copy edits.
       // 2026-08-22: calculators 428->426 from the approved evidence-audit
       // corrections (Hemphill ICH-score table, ABCD2 duration options,
       // HAS-BLED published item definitions). ich/ischemic unchanged.
+      // 2026-09-22: ischemic 764->763 for the requested Protocol Cards subtitle removal.
       const baselineCounts = {
         ich: 524,
-        ischemic: 764,
+        ischemic: 763,
         calculators: 456
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
