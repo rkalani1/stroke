@@ -37,13 +37,15 @@ import {
   PatientCensus,
   ClinicWorkflow,
   WardsWorkflow,
-  PublicDemoConsentModal
+  PHIBanner,
+  SiteFooter
 } from './components.jsx';
 import {
   getPublicDemoPhiWarnings,
   isSyntheticDemoText,
   PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX
 } from './public-demo-guardrails.js';
+import { BUILD_PUBLIC_DEMO, BUILD_TARGET_MARKER } from './build-flags.js';
 import {
   createEncounterOutputGate,
   renderEncounterOutput as renderGatedEncounterOutput,
@@ -426,6 +428,11 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         const LEGACY_MIGRATION_KEY = 'legacyMigrated';
         const APP_DATA_SCHEMA_VERSION = 1;
         const getPublicDemoMode = () => {
+          // Build-time gate first: the deployed bundle is compiled as a public
+          // demo (src/build-flags.js), so demo mode never depends on which host
+          // serves it. The runtime checks below remain as defense in depth for
+          // explicitly private builds.
+          if (BUILD_PUBLIC_DEMO) return true;
           if (typeof window === 'undefined') return false;
           if (window.__STROKE_PUBLIC_DEMO_MODE__ === true) return true;
           const hostIsPublicPages = /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -16887,6 +16894,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   can pin to the viewport; html/body already clip horizontal
                   overflow at the page level. */}
               <div className="app-shell v7-content max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-hidden md:overflow-x-visible">
+
+              {PUBLIC_DEMO_MODE && <PHIBanner />}
 
               {/* Offline Indicator */}
               {!isOnline && (
@@ -33565,6 +33574,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
               </main>
 
+              <SiteFooter appVersion={APP_VERSION} publicDemo={PUBLIC_DEMO_MODE} buildMarker={BUILD_TARGET_MARKER} />
 
             </div>
 

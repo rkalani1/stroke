@@ -34,65 +34,55 @@ import {
 } from './patient-store.js';
 import {
   PUBLIC_DEMO_BANNER_COPY,
-  PUBLIC_DEMO_MODAL_BUTTON,
-  PUBLIC_DEMO_MODAL_COPY
+  PUBLIC_DEMO_MODAL_COPY,
+  SITE_FOOTER_DISCLAIMER_COPY
 } from './public-demo-guardrails.js';
 
 // =========================================================================
-// Public deployment banner: GitHub Pages is an educational/synthetic demo only.
+// Public deployment notice + global footer. Both are always part of the
+// rendered tree (the notice whenever the build/host is a public demo, the
+// footer on every view), so their copy ships in app.js — see
+// tests/disclaimer-bundle.test.js. Non-blocking by design: the earlier
+// blocking consent modal was retired by owner decision; these surfaces carry
+// the same educational-use / no-PHI message without gating the UI.
 // =========================================================================
 export const PHIBanner = () => {
   return (
-    <div role="alert" aria-live="polite" className="bg-warn-50 border-y border-warn-300 px-3 py-2 text-xs sm:text-sm text-warn-900 flex items-start gap-2 dark:bg-warn-950 dark:border-warn-800 dark:text-warn-300">
-      <span className="font-bold text-warn-700 flex-shrink-0 dark:text-warn-300" aria-hidden>!</span>
-      <div className="flex-1">
-        <strong>Public demo guardrail.</strong> {PUBLIC_DEMO_BANNER_COPY}
-      </div>
+    <div
+      role="note"
+      aria-label="Public demo notice"
+      data-testid="public-demo-notice"
+      className="no-print mb-4 flex items-start gap-2 rounded-md border border-warn-200 bg-warn-50 px-3 py-2 text-xs leading-relaxed text-warn-900 sm:text-sm dark:border-warn-800 dark:bg-warn-950 dark:text-warn-200"
+    >
+      <i aria-hidden="true" data-lucide="shield-alert" className="mt-0.5 h-4 w-4 flex-shrink-0 text-warn-700 dark:text-warn-300"></i>
+      <p className="min-w-0 flex-1">
+        <strong className="font-semibold">Public demo.</strong> {PUBLIC_DEMO_BANNER_COPY}
+      </p>
     </div>
   );
 };
 
-export const PublicDemoConsentModal = () => {
-  const [visible, setVisible] = useState(() => {
-    try {
-      return sessionStorage.getItem('strokePublicDemoAcknowledged') !== '1';
-    } catch (_) {
-      return true;
-    }
-  });
-
-  if (!visible) return null;
-
-  const handleAcknowledge = () => {
-    try { sessionStorage.setItem('strokePublicDemoAcknowledged', '1'); } catch (_) {}
-    setVisible(false);
-  };
-
-  return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/60 p-4 no-print" role="dialog" aria-modal="true" aria-labelledby="public-demo-modal-title">
-      <div className="w-full max-w-xl rounded-md border border-warn-300 bg-white shadow-xl dark:border-warn-800 dark:bg-card">
-        <div className="border-b border-warn-200 px-5 py-4 dark:border-warn-800">
-          <p className="font-mono uppercase text-eyebrow text-warn-700 dark:text-warn-300">Public GitHub Pages demo</p>
-          <h2 id="public-demo-modal-title" className="mt-1 font-serif text-section text-ink">
-            Synthetic education only
-          </h2>
-        </div>
-        <div className="px-5 py-4 text-sm leading-relaxed text-slate-700 dark:text-ink-2">
-          {PUBLIC_DEMO_MODAL_COPY}
-        </div>
-        <div className="flex justify-end border-t border-line px-5 py-4">
-          <button
-            type="button"
-            onClick={handleAcknowledge}
-            className="inline-flex min-h-[44px] items-center justify-center rounded-md bg-cobalt-600 px-4 py-2 text-sm font-semibold text-white hover:bg-cobalt-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2"
-          >
-            {PUBLIC_DEMO_MODAL_BUTTON}
-          </button>
-        </div>
+export const SiteFooter = ({ appVersion = '', publicDemo = true, buildMarker = '' }) => (
+  <footer
+    role="contentinfo"
+    data-testid="site-footer"
+    data-build={buildMarker || undefined}
+    className="no-print mt-10 border-t border-line pt-6 pb-2 text-xs leading-relaxed text-slate-600 dark:text-mute"
+  >
+    <div className="grid gap-4 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+      <div className="space-y-2">
+        <p className="font-semibold text-slate-800 dark:text-ink">Educational use only</p>
+        <p>{SITE_FOOTER_DISCLAIMER_COPY}</p>
+        {publicDemo && <p>{PUBLIC_DEMO_MODAL_COPY}</p>}
+      </div>
+      <div className="space-y-2 sm:text-right">
+        <p>Runs entirely in your browser: no backend, no accounts, no analytics or tracking.</p>
+        <p>Verify every recommendation against the primary source and your approved local protocol.</p>
+        {appVersion && <p className="font-mono text-2xs text-slate-500 dark:text-mute">Version {appVersion}</p>}
       </div>
     </div>
-  );
-};
+  </footer>
+);
 
 // =========================================================================
 // LKW countdown — live-ticking chips showing time to 4.5h and 24h windows
