@@ -50,7 +50,7 @@ const TRIALS = {
       'Emergent carotid stenting plus EVT vs EVT alone for tandem extracranial-carotid + intracranial-LVO occlusions.',
     eligibility: [
       'Age 18–79, AIS within 16 h of LKW, NIHSS ≥ 4, pre-stroke mRS ≤ 2',
-      'ASPECTS ≥ 7',
+      'ASPECTS ≥ 7; if EVT starts >6–16 h from onset, also CTP core < 50 mL (rCBF < 30%) or DWI core < 25 mL',
       'Tandem lesion on CTA: extracranial ICA stenosis 70–100% + intracranial ICA-T / M1 / proximal M2',
       'Ineligible for IV thrombolysis or failed IV thrombolysis'
     ],
@@ -68,7 +68,7 @@ const TRIALS = {
     summary:
       'Ticagrelor+ASA vs clopidogrel+ASA in symptomatic 70–99% intracranial atherosclerosis. Closed to new enrollment (active-not-recruiting); the low-dose rivaroxaban (2.5 mg BID) arm was terminated in January 2026 (DSMB: safety events plus futility).',
     eligibility: [
-      'Age ≥ 30, ischemic stroke or TIA attributed to ICAS (70–99% stenosis or MRA flow gap)',
+      'Age ≥ 30 (30–49 needs additional atherosclerotic risk criteria), ischemic stroke (infarct on imaging or symptoms ≥ 24 h) attributed to ICAS (70–99% stenosis or MRA flow gap)',
       'Within 30 days of qualifying event, mRS ≤ 4 at consent'
     ],
     exclusions: [

@@ -308,7 +308,7 @@ export const activeTrials = [
     ],
     matcherCriteria: [
       { field: 'age', operator: '>=', value: 30, label: 'Age ≥30' },
-      { field: 'diagnosisCategory', operator: 'in', value: ['ischemic', 'tia'], label: 'Ischemic stroke or TIA' },
+      { field: 'diagnosisCategory', operator: 'in', value: ['ischemic'], label: 'Ischemic stroke (symptomatic infarct)' },
       { field: 'ctaResults', operator: 'present', value: ['stenosis', 'intracranial', 'icas', 'atheroscler'], label: 'Intracranial stenosis 70-99%' },
       { field: 'premorbidMRS', operator: '<=', value: 4, label: 'mRS ≤4 at consent' }
     ],
@@ -348,12 +348,12 @@ export const activeTrials = [
     status: 'withdrawn',
     topic: 'acute-ischemic-stroke',
     briefDescription: 'WITHDRAWN (0 enrolled): planned phase-3 trial of 3K3A-APC (activated protein C variant) as adjunctive neuroprotection after IVT and/or EVT in moderate-severe AIS.',
-    rationale: 'Phase 2 (RHAPSODY) showed a signal of reduced ICH; the phase-3 study was withdrawn before enrolling — no phase-3 efficacy evidence exists.',
+    rationale: 'Phase 2 (RHAPSODY) found no difference in prespecified ICH rates; only an exploratory analysis suggested fewer hemorrhages. The phase-3 study was withdrawn before enrolling — no phase-3 efficacy evidence exists.',
     inclusionCriteria: [
       'Age ≥18 y',
       'NIHSS ≥5',
       'Received IVT and/or EVT',
-      'Within 15 h of LKW',
+      'Within 15 h of LKW (not in the registry record; needs confirmation)',
       'Pre-stroke mRS 0-2'
     ],
     exclusionCriteria: [
@@ -442,7 +442,7 @@ export const activeTrials = [
   makeActiveTrial({
     id: 'aspire',
     shortName: 'ASPIRE',
-    fullName: 'Apixaban vs Aspirin Post-ICH in AF',
+    fullName: 'Anticoagulation in Intracerebral Hemorrhage (ICH) Survivors for Stroke Prevention and Recovery',
     nctId: 'NCT03907046',
     phase: 'Phase 3',
     status: 'recruiting',

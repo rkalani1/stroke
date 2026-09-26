@@ -94,7 +94,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Rapid correction of coagulopathy is essential, within 90 minutes per the 2022 guidelines but with potential benefit achieved within 60 minutes as demonstrated by INTERACT3. For patients on warfarin or direct oral anticoagulants, reversal with 4-factor prothrombin complex concentrate or a specific reversal agent is indicated.",
+      "text": "Rapid correction of coagulopathy is essential: the 2022 guideline recommends reversal as soon as possible after diagnosis, and the 2024 AHA/ASA ICH performance measure targets a reversal agent within 90 minutes of ED arrival, with potential benefit achieved within 60 minutes as demonstrated by INTERACT3. For patients on warfarin or direct oral anticoagulants, reversal with 4-factor prothrombin complex concentrate or a specific reversal agent is indicated.",
       "page": null
     },
     {
@@ -110,7 +110,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "In line with the 2022 intracerebral hemorrhage guidelines, platelet transfusion might be considered for patients on antiplatelets undergoing minimally invasive surgical evacuation, although evidence in this setting is limited, and platelet transfusion carries potential harm and is not recommended in patients managed medically.",
+      "text": "In line with the 2022 intracerebral hemorrhage guidelines (whose platelet transfusion recommendations specifically address aspirin-associated ICH), platelet transfusion might be considered for patients on antiplatelets undergoing minimally invasive surgical evacuation, although evidence in this setting is limited, and platelet transfusion carries potential harm and is not recommended in patients managed medically.",
       "page": null
     },
     {
@@ -126,7 +126,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Overall, minimally invasive surgery warrants consideration for patients presenting with lobar intracerebral hemorrhage between 30 and 80 mL with good premorbid neurologic status, National Institutes of Health Stroke Scale score >5, and Glasgow Coma Scale score >5, undergoing surgery within the first 24 hours.",
+      "text": "Overall, minimally invasive surgery warrants consideration for patients presenting with lobar intracerebral hemorrhage between 30 and 80 mL with good premorbid neurologic status, National Institutes of Health Stroke Scale score >5, and Glasgow Coma Scale score 5-14 (ENRICH eligibility), undergoing surgery within the first 24 hours.",
       "page": null
     },
     {

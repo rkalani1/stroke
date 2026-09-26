@@ -70,7 +70,7 @@
       "classOfRec": "Expert Consensus",
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
-      "text": "Expert opinion (Delphi vote: 6/7 agree, 1/7 disagree): We suggest antiplatelet therapy in the first 48 h after ischemic stroke associated with AF. We consider it reasonable to start anticoagulant therapy at day 3 or 4 from the index stroke in patients with mild stroke and small infarcts (<1.5 cm) and at day 7 for moderate infarcts. For large infarcts, anticoagulation treatment might be best delayed for 14 days after the index stroke.",
+      "text": "Expert opinion (Delphi vote: 6/7 agree, 1/7 disagree): We suggest antiplatelet therapy in the first 48 h after ischemic stroke associated with AF. We consider it reasonable to start anticoagulant therapy at day 3 or 4 from the index stroke in patients with mild stroke and small infarcts (<1.5 cm) and at day 7 for moderate infarcts. For large infarcts, anticoagulation treatment might be best delayed for 14 days after the index stroke. [Current-evidence note, not part of the 2019 guideline: later RCTs support starting a DOAC earlier than this schedule. ELAN (NEJM 2023) compared DOAC start within 48 h after minor or moderate stroke, or day 6-7 after major stroke, with a later schedule similar to this one (day 3-4, 6-7 or 12-14). The 30-day composite outcome was 2.9% vs 4.1% (95% CI for risk difference -2.8 to +0.5 percentage points), with symptomatic ICH 0.2% in both groups. OPTIMAS (Lancet 2024) found DOAC start within 4 days non-inferior to start at 7-14 days (primary outcome 3.3% vs 3.3%; symptomatic ICH 0.6% vs 0.7%).]",
       "page": null
     },
     {
@@ -100,7 +100,7 @@
     {
       "section": "(Re-)starting treatment in patients with previous intracerebral haemorrhage",
       "classOfRec": "Conditional",
-      "classNote": "For",
+      "classNote": "No direction — source prints strength 'Weak' but makes no recommendation",
       "levelOfEvidence": "Low certainty",
       "text": "In patients with AF who have experienced an ICH, we cannot make recommendations regarding whether or not oral anticoagulation should be (re-)started or not.",
       "page": null

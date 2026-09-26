@@ -9,7 +9,7 @@
       "outcomes": "Favorable outcome (mRS 0-1) at 3mo: 39% vs 26%. sICH: 6.4% vs 0.6%.",
       "nnt": "NNT ~8 for mRS 0-1",
       "bottomLine": "IV alteplase within 3h improves neurologic recovery despite bleeding risk. Foundation of modern stroke treatment.",
-      "teachingPoint": "Time is brain — NNT drops from ~5 at 90 min to ~14 by 3h. \"Door-to-needle\" <45 min is AHA benchmark."
+      "teachingPoint": "Time is brain — benefit falls as treatment is delayed: in the alteplase IPD meta-analysis (Emberson, Lancet 2014), the absolute gain in disability-free survival was about 10% with treatment within 3h vs about 5% at 3-4.5h. \"Door-to-needle\" <45 min is AHA benchmark."
     },
     {
       "name": "ECASS III",
@@ -19,7 +19,7 @@
       "design": "RCT, n=821, alteplase vs placebo in 3-4.5h window",
       "outcomes": "mRS 0-1 at 90d: 52% vs 45%, OR 1.34. sICH: 2.4% vs 0.2%.",
       "bottomLine": "Extended the window to 4.5h with similar NNT/NNH profile.",
-      "teachingPoint": "ECASS III exclusions (age >80, NIHSS >25, DM + prior stroke, any AC) were NOT carried forward to AHA 2019 guidelines for the 0-3h window."
+      "teachingPoint": "ECASS III exclusions (age >80, NIHSS >25, prior stroke plus diabetes, any oral anticoagulant) applied only to its 3-4.5h trial population and were never 0-3h criteria. The 2018 guideline/2019 update used them to define the Class I group for 3-4.5h alteplase, with weaker recommendations for patients outside it; check current eligibility against the 2026 AHA/ASA AIS guideline, which replaced both."
     },
     {
       "name": "EXTEND-IA TNK",
@@ -27,7 +27,7 @@
       "citation": "NEJM 2018;378:1573-82 (PMID 29694815)",
       "question": "Is TNK non-inferior to alteplase before EVT for LVO?",
       "design": "RCT, n=202, TNK 0.25 mg/kg vs alteplase 0.9 mg/kg before EVT",
-      "outcomes": "Substantial reperfusion: 22% vs 10% (P=0.002). mRS 0-2 at 90d: 64% vs 51%.",
+      "outcomes": "Substantial reperfusion: 22% vs 10% (P=0.002 for noninferiority; P=0.03 for superiority). mRS 0-2 at 90d: 64% vs 51%.",
       "bottomLine": "TNK superior to alteplase for early reperfusion in LVO.",
       "teachingPoint": "TNK is non-inferior to alteplase for AIS and may be superior for LVO. Single bolus (vs 1-hr infusion) → logistic advantage for drip-and-ship."
     },
@@ -67,7 +67,7 @@
       "citation": "NEJM 2024;390:701-11 (PMID 38329148)",
       "question": "Does TNK 4.5-24h improve outcomes in LVO stroke with salvageable tissue proceeding to EVT?",
       "design": "RCT, n=458, TNK vs placebo pre-EVT in 4.5-24h",
-      "outcomes": "mRS shift at 90d: not significant (primary neutral). Excellent outcome (mRS 0-1): 46% vs 42%, no significant difference.",
+      "outcomes": "Primary ordinal mRS at 90d: adjusted common OR 1.13 (95% CI 0.82-1.57, P=0.45) — neutral; median mRS 3 in both groups. 77.3% underwent thrombectomy. Mortality 19.7% vs 18.2%; sICH 3.2% vs 2.3%.",
       "bottomLine": "Neutral for pre-EVT TNK beyond 4.5h; safe but no efficacy benefit demonstrated.",
       "teachingPoint": "Bridging IVT before EVT beyond 4.5h did NOT show benefit; EVT alone may be sufficient in late window."
     },
@@ -78,7 +78,7 @@
       "question": "Is TNK non-inferior to alteplase in Chinese AIS patients ineligible for EVT?",
       "design": "RCT, n=1430, TNK vs alteplase ≤4.5h, Chinese population",
       "outcomes": "mRS 0-1 at 90d: 62% vs 58%. sICH: 2% vs 2%.",
-      "bottomLine": "TNK non-inferior to alteplase in non-LVO AIS. Confirms AcT findings in different population.",
+      "bottomLine": "TNK non-inferior to alteplase in EVT-ineligible AIS (NIHSS 5-25). Confirms AcT findings in different population.",
       "teachingPoint": "TRACE-2 + AcT establish TNK as standard-of-care alternative to alteplase across populations."
     },
     {
@@ -87,7 +87,7 @@
       "citation": "Lancet Neurol 2023;22:117-26 (PMID 36549308)",
       "question": "Does TNK benefit wake-up stroke patients without advanced imaging selection?",
       "design": "RCT, n=578, TNK vs standard care for wake-up stroke (no CTP/MRI required)",
-      "outcomes": "Excellent outcome (mRS 0): no significant difference. Ordinal shift: no benefit.",
+      "outcomes": "Primary ordinal mRS at 90d: adjusted OR 1.18 (95% CI 0.88-1.58, p=0.27) — no benefit. Mortality 10% vs 8%; sICH 2% vs 1%.",
       "bottomLine": "Without advanced imaging selection, TNK did not improve outcomes in wake-up stroke.",
       "teachingPoint": "Imaging selection (DWI-FLAIR mismatch or CTP) is essential for benefit in extended-window lytics. \"Just treat based on clock + CT\" does not work in wake-up."
     },
@@ -208,10 +208,10 @@
       "year": 2018,
       "citation": "NEJM 2018;378:708-18 (PMID 29364767)",
       "question": "Does EVT 6-16h benefit CTP-selected patients?",
-      "design": "RCT, n=182, core ≤70 mL + mismatch ratio ≥1.8 + mismatch volume ≥15 mL",
+      "design": "RCT, n=182, core <70 mL + mismatch ratio ≥1.8 + mismatch volume ≥15 mL",
       "outcomes": "mRS 0-2 at 90d: 45% vs 17%.",
       "bottomLine": "Perfusion-mismatch selection works up to 16h.",
-      "teachingPoint": "DEFUSE-3 core/ratio/mismatch criteria are easier to memorize than DAWN tiers; both are Class 1A in AHA/ASA guidelines."
+      "teachingPoint": "DEFUSE-3 core/ratio/mismatch criteria are easier to memorize than DAWN tiers. The 2026 AHA/ASA AIS guideline does not require either trial's criteria: 6-24h EVT is Class 1 (LOE A) for ICA/M1 LVO with NIHSS ≥6, prestroke mRS 0-1 and ASPECTS ≥6, with adjunctive CTP/MRI rated Class 2a (LOE A); DAWN/DEFUSE investigators have contested this."
     },
     {
       "name": "SELECT2",
@@ -249,7 +249,7 @@
       "citation": "ATTENTION NEJM 2022;387:1361-72 (PMID 36239644); BAOCHE NEJM 2022;387:1373-84 (PMID 36239645)",
       "question": "Does EVT benefit basilar artery occlusion?",
       "design": "Two separate RCTs in Chinese populations",
-      "outcomes": "mRS 0-3 at 90d: substantially higher with EVT. Mortality reduced.",
+      "outcomes": "mRS 0-3 at 90d: ATTENTION 46% vs 23% (aRR 2.06); BAOCHE 46% vs 24% (aRR 1.81). Mortality lower in ATTENTION (37% vs 55%, aRR 0.66); not significantly lower in BAOCHE (31% vs 42%, aRR 0.75, 95% CI 0.54-1.04).",
       "bottomLine": "Basilar artery EVT improves outcomes in severely affected patients (NIHSS ≥10).",
       "teachingPoint": "BASICS (2021) was neutral; BAOCHE + ATTENTION positive. Reconcile: select patients with PC-ASPECTS ≥6, NIHSS ≥10, early presentation."
     },
@@ -331,7 +331,7 @@
       "design": "RCT, n=543. Isolated non-dominant/co-dominant M2, M3/M4, A1-A3, or P1-P3 occlusion within 24h; EVT + best medical therapy vs best medical therapy alone. Median NIHSS 6; 65% received IVT.",
       "outcomes": "mRS shift at 90d: common OR 0.90 (95% CI 0.67-1.22, P=0.50) — neutral. Mortality 15.5% vs 14.0%; sICH 5.9% vs 2.6%. 12-month follow-up (Lancet Neurol 2026;25:571-80, PMID 42105785) also neutral: adjusted common OR 0.81 (95% CI 0.59-1.12, p=0.20).",
       "bottomLine": "Routine EVT for mild-to-moderate MeVO stroke is not supported — at 90 days or at 12 months.",
-      "teachingPoint": "The presumed extension of EVT benefit down the vascular tree failed its first randomized test. Read with ESCAPE-MeVO, which adds a safety signal. MeVO EVT is now an individualized call (disabling deficit, IVT-ineligible or failed), not a default."
+      "teachingPoint": "DISTAL and ESCAPE-MeVO (2025) found no benefit of routine EVT for MeVO, and the 2026 AHA/ASA AIS guideline rates EVT for nondominant/codominant M2, distal MCA, ACA or PCA occlusion Class III (no benefit). ORIENTAL-MeVO (NEJM 2026; NIHSS ≥6, median 10), published after that guideline, showed more functional independence with EVT (58.6% vs 46.6%, aRR 1.24) but more sICH (4.7% vs 2.2%); the 2026 SVIN focused guideline now allows EVT to be considered (Class IIb) for codominant/nondominant M2 occlusion with disabling deficit and NIHSS ≥6. Selection by deficit severity remains the open question."
     },
     {
       "name": "ESCAPE-MeVO",
@@ -351,7 +351,7 @@
       "design": "Open-label blinded-endpoint RCT, n=256, 19 Chinese centres. Anterior LVO 4.5-24h from LKW achieving eTICI 2b-3 after EVT; IA TNK 0.125 mg/kg vs standard medical treatment.",
       "outcomes": "mRS 0-1 at 90d: 40.5% vs 26.4% (RR 1.44, 95% CI 1.06-1.95, P=.02). None of the 7 secondary efficacy end points was significant. sICH 5.6% vs 6.2%; 90-day mortality 21.4% vs 21.7%.",
       "bottomLine": "Positive primary without excess sICH or mortality — but unsupported by any secondary end point, so the authors themselves call for confirmatory trials.",
-      "teachingPoint": "\"Successful\" reperfusion (eTICI ≥2b) can still leave distal microvascular territory unperfused — the rationale for chasing it with an IA lytic. Contrast with CHOICE-2 (IA alteplase), also positive on the primary but with a mortality excess. Neither has entered guidelines."
+      "teachingPoint": "\"Successful\" reperfusion (eTICI ≥2b) can still leave distal microvascular territory unperfused — the rationale for chasing it with an IA lytic. Contrast with CHOICE-2 (IA alteplase), also positive on the primary but with a mortality excess. The 2026 AHA/ASA AIS guideline now rates adjunctive IA thrombolytics (urokinase, alteplase or tenecteplase) after mTICI ≥2b reperfusion as Class 2b (may be reasonable); agent, dose and patient selection remain unsettled."
     },
     {
       "name": "CHOICE-2",
@@ -391,19 +391,19 @@
       "citation": "Lancet Neurol 2021;20:265-74 (PMID 33647246)",
       "question": "Does SBP 100-129 improve outcomes post-EVT vs SBP 130-185?",
       "design": "RCT, n=324, France, intensive vs standard post-successful EVT",
-      "outcomes": "Primary (radiographic ICH at 24-36h): no significant difference. Symptomatic ICH higher with intensive.",
+      "outcomes": "Primary (radiographic intraparenchymal haemorrhage at 24-36h): 42% vs 43% (aOR 0.96, 95% CI 0.60-1.51). Hypotensive events 8% vs 3% (not significantly different); 1-week mortality 7% vs 4%.",
       "bottomLine": "No benefit to intensive BP lowering post-EVT; trend toward harm.",
-      "teachingPoint": "BP-TARGET + ENCHANTED2-MT + OPTIMAL-BP + BEST-II converge on the same answer: post-EVT SBP should be in the 140-180 range."
+      "teachingPoint": "ENCHANTED2/MT (<120) and OPTIMAL-BP (<140) showed worse outcomes with intensive lowering vs a 140-180 target; BP-TARGET (100-129) was neutral and BEST-II (<140/<160) did not meet futility criteria but gave a low predicted probability of benefit. Together they support avoiding intensive SBP lowering after successful EVT, with an upper limit of 180."
     },
     {
       "name": "BEST-II",
       "year": 2023,
       "citation": "JAMA 2023;330:821-31 (PMID 37668620)",
-      "question": "Are more aggressive SBP targets (<140, <130) better than <180 post-EVT?",
+      "question": "Are lower SBP targets (<140 or <160) futile compared with ≤180 mm Hg for 24 h after successful EVT?",
       "design": "Futility RCT, 3-arm",
       "outcomes": "Lower SBP targets did NOT meet the prespecified futility criteria (infarct-volume slope -0.29, futility p=0.99; uw-mRS slope -0.0019, futility p=0.93). However, predicted probability of success in a future larger trial was only 25% (<140) and 14% (<160), and uw-mRS was numerically worse with lower targets (0.51 and 0.47 vs 0.58).",
       "bottomLine": "Seals the case — no benefit to SBP targets below 140 post-EVT.",
-      "teachingPoint": "Consistent with prior trials. Standard post-EVT target SBP <180, avoid <140 for 72h."
+      "teachingPoint": "BEST-II is not a harm trial: targets were held for 24 h, lower targets did not meet prespecified futility or harm criteria, and the <140 arm had the smallest mean infarct volume. The harm signal behind the Class III: Harm advice against SBP <140 for the first 72 h after successful EVT comes from ENCHANTED2/MT (<120 for 72 h) and OPTIMAL-BP (<140 for 24 h)."
     }
   ],
   "ichReversal": [
@@ -452,7 +452,7 @@
       "year": 2024,
       "citation": "NEJM 2024;390:1277-89 (PMID 38598795)",
       "question": "Does minimally-invasive parafascicular surgery (BrainPath) improve lobar ICH outcomes?",
-      "design": "RCT, n=300, MIPS+medical vs medical for lobar ICH 30-80 mL",
+      "design": "RCT, n=300, MIPS+medical vs medical for lobar or anterior basal ganglia ICH 30-80 mL within 24h (basal ganglia enrolment stopped after 175 patients by an adaptation rule)",
       "outcomes": "Primary (utility-weighted mRS at 180d): significantly favored MIPS.",
       "bottomLine": "First positive ICH surgery trial — MIPS improves outcomes in selected lobar ICH patients.",
       "teachingPoint": "June 2026 ICH algorithm screen: lobar ICH 30-80 mL, NIHSS >5, GCS 5-14, age 18-80, and no underlying lesion. Deep (anterior basal ganglia) ICH was NOT excluded — it made up 30.7% of the 300 enrolled until an adaptation rule restricted enrolment to lobar only. Benefit was confined to lobar ICH (mean difference 0.127, 95% CrI 0.035 to 0.219), with none in anterior basal ganglia (-0.013, 95% CrI -0.147 to 0.116). Cerebellar ICH was not studied; verify operative timing and detailed trial criteria against the active protocol before applying."
@@ -607,7 +607,7 @@
       "design": "RCT, n=2860, LDL <70 vs 100±10 mg/dL",
       "outcomes": "Major CV events: 8.5% vs 10.9%, HR 0.78.",
       "bottomLine": "LDL <70 is the target for secondary stroke prevention.",
-      "teachingPoint": "LDL target <70 is now standard; if not achieved on high-intensity statin, add ezetimibe, then PCSK9i per 2021 AHA/ASA guideline."
+      "teachingPoint": "LDL <70 (TST) is the 2021 AHA/ASA secondary-prevention goal (statin, then ezetimibe; PCSK9i reasonable for very-high-risk patients still above 70). The 2026 ACC/AHA dyslipidemia guideline sets a lower goal (LDL-C <55 mg/dL) for very-high-risk ASCVD, which will include many stroke survivors — check the current guideline."
     },
     {
       "name": "ARCADIA",
@@ -625,7 +625,7 @@
       "citation": "NAVIGATE-ESUS NEJM 2018;378:2191-2201 (PMID 29766772); RE-SPECT ESUS NEJM 2019;380:1906-17 (PMID 31091372)",
       "question": "Does rivaroxaban or dabigatran reduce recurrence in ESUS?",
       "design": "Two large RCTs of DOAC vs ASA in ESUS",
-      "outcomes": "Both neutral for efficacy; higher bleeding with AC.",
+      "outcomes": "Both neutral for efficacy. NAVIGATE-ESUS: major bleeding 1.8% vs 0.7%/y (HR 2.72). RE-SPECT ESUS: major bleeding not significantly higher (HR 1.19, 95% CI 0.85-1.66) but more clinically relevant nonmajor bleeding.",
       "bottomLine": "Empiric AC in ESUS does not help. Find the etiology.",
       "teachingPoint": "ESUS is a heterogeneous population — some have atrial cardiopathy, some aortic plaque, some PFO, some occult AF. Empiric AC treats none optimally."
     },
@@ -637,7 +637,7 @@
       "design": "Three RCTs, closure vs medical management",
       "outcomes": "All favored closure, particularly in patients with large shunt or atrial septal aneurysm.",
       "bottomLine": "PFO closure recommended in select cryptogenic stroke patients age <60 with high-risk PFO features.",
-      "teachingPoint": "Use RoPE score to assess likelihood PFO is causal. RoPE ≥7 + high-risk features → closure (Class 1)."
+      "teachingPoint": "Use the PASCAL classification (RoPE score plus high-risk PFO features: large shunt or atrial septal aneurysm) to judge whether the PFO is causal. For ages 18-60 with PFO-associated stroke, ESO 2024 recommends closure plus antiplatelet therapy (and suggests against it when PASCAL rates the PFO link unlikely); the 2021 AHA/ASA guideline rates closure for a high-risk PFO as reasonable (Class 2a), not Class 1."
     },
     {
       "name": "CADISS / TREAT-CAD",
@@ -646,7 +646,7 @@
       "question": "Antiplatelet vs anticoagulation for cervical artery dissection?",
       "design": "Two RCTs, ASA vs VKA, 3-6 months",
       "outcomes": "CADISS: no significant difference in stroke/death but underpowered (event rates lower than expected). TREAT-CAD: aspirin did NOT meet non-inferiority vs VKA — more composite endpoint events with ASA (23% vs 15%), driven mainly by clinical ischaemic strokes (7 [8%] on aspirin vs 0 on VKA); subclinical MRI outcomes were similar between arms (15% vs 13%).",
-      "bottomLine": "Antiplatelet and anticoagulation are both reasonable for cervical artery dissection; TREAT-CAD did not confirm aspirin non-inferiority, so the choice is individualized (AHA/ASA CADISS Class IIa).",
+      "bottomLine": "Antiplatelet and anticoagulation are both reasonable for cervical artery dissection (2021 AHA/ASA secondary-prevention guideline, Class 2a); TREAT-CAD did not confirm aspirin non-inferiority, so the choice is individualized.",
       "teachingPoint": "Both antiplatelet and anticoagulation are accepted first-line; individualize by bleeding risk, occlusion/pseudoaneurysm, and free-floating thrombus. TREAT-CAD tempered the earlier assumption of aspirin equivalence."
     },
     {
@@ -769,7 +769,7 @@
       "design": "RCT, n=3020, clopi+ASA vs ASA alone, mean 3.4 years",
       "outcomes": "Recurrent stroke: HR 0.92, NS. Major hemorrhage: HR 1.97. Mortality: HR 1.52 (increased with DAPT).",
       "bottomLine": "DAPT does NOT reduce lacunar stroke recurrence; increases bleeding and mortality.",
-      "teachingPoint": "Critical: DAPT is for large-artery and cardioembolic mechanisms; small vessel (lacunar) disease → SINGLE antiplatelet long-term."
+      "teachingPoint": "Critical: long-term DAPT does not reduce lacunar stroke recurrence and increases bleeding and death — use single antiplatelet therapy long-term. Short-course DAPT is for minor stroke/high-risk TIA; cardioembolic stroke from AF needs oral anticoagulation, not antiplatelets."
     },
     {
       "name": "COMPASS",
@@ -779,7 +779,7 @@
       "design": "RCT, n=27,395, stable CAD or PAD",
       "outcomes": "MACE: HR 0.76 (24% RRR). Stroke: HR 0.58. Major bleeding: HR 1.70 (no ICH increase).",
       "bottomLine": "Low-dose rivaroxaban + ASA reduces stroke/CV events in polyvascular disease.",
-      "teachingPoint": "Consider in stable patients with CAD+PAD, CAD+cerebrovascular disease. Most benefit in polyvascular patients. AHA/ASA 2021 Class 2b option."
+      "teachingPoint": "Consider in stable patients with CAD+PAD, CAD+cerebrovascular disease. Most benefit in polyvascular patients. (Guideline class for stroke survivors needs confirmation.)"
     },
     {
       "name": "LAAOS III",
@@ -907,7 +907,7 @@
       "name": "AFFINITY",
       "year": 2020,
       "citation": "Lancet Neurol 2020;19:651-60 (PMID 32702334)",
-      "question": "Does fluoxetine improve functional recovery in Australasian populations?",
+      "question": "Does fluoxetine improve functional recovery in an ethnically diverse population (Australia, New Zealand, Vietnam)?",
       "design": "RCT, n=1280, fluoxetine vs placebo x 6 months",
       "outcomes": "Functional outcome (mRS shift): no significant difference (adjusted common OR 0.94, 95% CI 0.76-1.15, p=0.53). Excess falls (3% vs 1%), bone fractures (3% vs 1%), and epileptic seizures (2% vs <1%).",
       "bottomLine": "Confirms FOCUS — fluoxetine does NOT improve motor/functional outcomes.",
@@ -951,7 +951,7 @@
       "citation": "Lancet Neurol 2024;23:1205-13 (PMID 39577921)",
       "question": "Can IV glibenclamide prevent malignant cerebral edema after large hemispheric infarction?",
       "design": "Phase 3 double-blind placebo-controlled RCT, 143 centres in 21 countries. ASPECTS 1-5 or core 80-300 mL, drug started within 10h. Primary analysis in ages 18-70. Enrolled 535; STOPPED EARLY by sponsor for COVID-related slow enrolment, before unblinding.",
-      "outcomes": "Underpowered by early termination — see publication for the day-90 mRS shift.",
+      "outcomes": "Primary (ages 18-70, n=431): 90-day mRS shift common OR 1.17 (95% CI 0.80-1.71, p=0.42) — no significant benefit; underpowered after early termination. 90-day mortality 32% vs 29% (glibenclamide vs placebo; HR 1.20, p=0.30); hypoglycaemia 6% vs 2% (safety population).",
       "bottomLine": "Pharmacologic prevention of malignant edema remains unproven.",
       "teachingPoint": "Halted for operational, not scientific, reasons — so this is an underpowered trial, not a demonstrated absence of effect. An important distinction when reading \"negative\" trials. Decompressive hemicraniectomy remains the intervention with proven mortality benefit."
     }
@@ -973,7 +973,7 @@
       "citation": "BANT (Pickard) BMJ 1989;298:636-42 (PMID 2496789); Dorhout Mees Cochrane 2007;(3):CD000277 (PMID 17636626)",
       "question": "Does nimodipine improve outcomes in aSAH?",
       "design": "BANT (British Aneurysm Nimodipine Trial, 1989, n=554) + Cochrane meta-analyses",
-      "outcomes": "Poor outcome (mRS 3-6 at 3mo): RR 0.67 favoring nimodipine. No definite effect on angiographic vasospasm.",
+      "outcomes": "Poor outcome (death or dependency): oral nimodipine RR 0.67 (95% CI 0.55-0.81) in the Cochrane review; BANT: cerebral infarction 22% vs 33%, poor outcome 20% vs 33%. No definite effect on angiographic vasospasm.",
       "bottomLine": "Oral nimodipine 60 mg q4h × 21 days is Class 1 standard of care for all aSAH.",
       "teachingPoint": "Mechanism not solely vasospasm prevention — neuroprotective effect independent of large-vessel vasospasm. If hypotension occurs: split to 30 mg q2h rather than stopping."
     },

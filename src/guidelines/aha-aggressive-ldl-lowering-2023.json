@@ -22,7 +22,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Trials of nonstatin therapy show benefit at very low achieved LDL-C: IMPROVE-IT (ezetimibe added to high-dose simvastatin after acute coronary syndrome, mean LDL-C 54 mg/dL; hazard ratio 0.94), FOURIER (evolocumab added to maximally tolerated statin, median LDL-C 30 mg/dL; hazard ratio 0.85), and ODYSSEY (alirocumab after acute coronary syndrome, mean LDL-C 48 mg/dL; hazard ratio 0.85). A prespecified FOURIER analysis of 504 patients with achieved LDL-C below 10 mg/dL found a lower event rate than at any greater LDL-C level, without an increase in serious adverse events or adverse events leading to drug discontinuation.",
+      "text": "Trials of nonstatin therapy show benefit at very low achieved LDL-C: IMPROVE-IT (ezetimibe added to simvastatin 40 mg after acute coronary syndrome, median time-weighted LDL-C 54 mg/dL; hazard ratio 0.94), FOURIER (evolocumab added to maximally tolerated statin, median LDL-C 30 mg/dL; hazard ratio 0.85), and ODYSSEY (alirocumab after acute coronary syndrome, mean LDL-C 48 mg/dL; hazard ratio 0.85). A prespecified FOURIER analysis of 504 patients with achieved LDL-C below 10 mg/dL found a lower event rate than at any greater LDL-C level, without an increase in serious adverse events or adverse events leading to drug discontinuation.",
       "page": null
     },
     {
@@ -142,7 +142,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Two secondary prevention trials in patients with a history of stroke or TIA showed the benefits of lowering LDL-C. SPARCL randomized 4731 patients with noncardioembolic ischemic stroke or intracerebral hemorrhage to atorvastatin 80 mg or placebo, with a 5-year absolute risk reduction in recurrent stroke of 2.2%. The TST trial enrolled 2860 patients with atherosclerotic ischemic stroke or TIA and found benefit of the lower LDL-C target (below 70 mg/dL versus 90-110 mg/dL) for the prevention of cardiovascular events.",
+      "text": "Two secondary prevention trials in patients with a history of stroke or TIA showed the benefits of lowering LDL-C. SPARCL randomized 4731 patients with stroke or TIA within 1 to 6 months (LDL-C 100-190 mg/dL, no known coronary heart disease) to atorvastatin 80 mg or placebo, with a 5-year absolute risk reduction in recurrent stroke of 2.2%. The TST trial enrolled 2860 patients with atherosclerotic ischemic stroke or TIA and found benefit of the lower LDL-C target (below 70 mg/dL versus 90-110 mg/dL) for the prevention of cardiovascular events.",
       "page": null
     },
     {

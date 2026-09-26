@@ -2,7 +2,7 @@
   {
     "acronym": "STEP",
     "exactFullStudyName": "StrokeNet Thrombectomy Endovascular Platform",
-    "sourceHypothesisText": "STEP is a Randomized, Multifactorial, Adaptive, Registry-leveraged, Platform trial that seeks to optimize the care of patients with acute ischemic stroke (AIS) due to large or medium vessel occlusions (LVOs and MVOs). The currently open domain looks to expand indication for EVT.",
+    "sourceHypothesisText": "STEP is a Randomized, Multifactorial, Adaptive Platform trial that seeks to optimize the care of patients with acute ischemic stroke (AIS) due to large or medium vessel occlusions (LVOs and MVOs). The currently open domain looks to expand indication for EVT.",
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
@@ -168,7 +168,7 @@
     "noContactInfo": true,
     "exactInclusionCriteria": [
       "Age ≥ 18 years",
-      "Acute ischemic stroke presenting within 24 hours of onset",
+      "Acute ischemic stroke presenting to the study hospital within 24 hours of last known well",
       "Caused by occlusion of ICA, M1, or dominant M2",
       "mRS 3-4 for at least 3 months prior to stroke onset",
       "Presenting CT ASPECTS ≥ 3 or MRI ASPECTS ≥ 4",
@@ -234,11 +234,11 @@
           "matchedLabel": "ASPECTS is {value} (meets CT ≥ 3 threshold)"
         },
         {
-          "field": "onsetHours",
+          "field": "onsetDays",
           "operator": "<=",
-          "value": 24,
-          "error": "Presentation > 24 hours after last known well",
-          "matchedLabel": "Within the 24-hour presentation window"
+          "value": 30,
+          "error": "Beyond the app's 30-day inpatient screening window (registry requires presentation ≤ 24 h of last known well and in-hospital assessment; confirm enrollment timing with the study team)",
+          "matchedLabel": "Within the inpatient screening window; presentation ≤ 24 h of LKW is checked separately"
         },
         {
           "field": "presentedWithin24h",
@@ -292,7 +292,7 @@
     "exactInclusionCriteria": [
       "Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH",
       "Volume >=20 mL by ABC/2",
-      "Randomization <=16 hours since last known well (surgery anticipated <120 min from randomization)",
+      "Randomization ≤16 hours from last known well and within 2 hours of arrival at the randomizing center (surgery anticipated <120 min from randomization)",
       "NIHSS >=6",
       "Age 18-80 years",
       "CTA or MRA performed without an underlying vascular lesion",
@@ -521,7 +521,7 @@
     "exactExclusionCriteria": [
       "history of ICH",
       "Contraindication to additional single antiplatelet therapy for 6 months from randomization",
-      "≥50% stenosis, or high-risk plaque of the common carotid, subclavian, vertebral, or intracranial arteries that has not been treated with a revascularization procedure"
+      "≥50% stenosis, or high-risk plaque of the common carotid, internal carotid, subclavian, vertebral, or intracranial arteries that has not been treated with a revascularization procedure"
     ],
     "optimisticDefaults": {
       "afibHistory": true,
@@ -1092,7 +1092,7 @@
   {
     "acronym": "SCOUTS-3",
     "exactFullStudyName": "Stroke and CPAP Outcome Study 3",
-    "sourceHypothesisText": "Among stroke survivors with OSA undergoing inpatient rehabilitation, an intensive multimodal CPAP support intervention will improve CPAP adherence during rehabilitation and through 3 months post-randomization compared with standard support, potentially enhancing stroke recovery and reducing recurrent events.",
+    "sourceHypothesisText": "Among stroke survivors with OSA undergoing inpatient rehabilitation, an intensive multimodal CPAP support intervention will improve CPAP adherence during rehabilitation and through 3 months post-randomization compared with standard support, with stroke recovery (mRS-9Q at 3 months) as a secondary outcome.",
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
@@ -1118,7 +1118,7 @@
       "Acute ischemic stroke or ICH within past 30 days",
       "Head CT or brain MRI demonstrating acute ischemic infarction or intraparenchymal hemorrhage within 30 days",
       "On or moving to inpatient rehabilitation with anticipated length of stay at least 5 nights",
-      "Spanish or English speaking"
+      "Consent-giver (patient or legally authorized representative) able to consent in English or Spanish"
     ],
     "exactExclusionCriteria": [
       "incarcerated",
@@ -1620,6 +1620,12 @@
           "value": true,
           "error": "Excludes botulinum toxin to the paretic arm within 3 months, or expected by the 8-month visit",
           "pendingLabel": "Confirm no botulinum toxin to the paretic arm in prior 3 months or expected by the 8-month visit"
+        },
+        {
+          "field": "exPregnancy",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes pregnancy"
         }
       ]
     }

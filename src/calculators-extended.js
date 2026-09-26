@@ -453,7 +453,7 @@ export const calculateNASCET = ({ stenosisDiameterMm, distalICADiameterMm }) => 
     revasc: pct >= 70
       ? 'CEA highly effective (NASCET NNT≈6 at 2y, ARR 17%). Timing: within 2 weeks for maximum benefit.'
       : pct >= 50
-        ? 'CEA benefit modest (NNT ~20) and limited to men with recent symptoms. Individualized decision.'
+        ? 'CEA benefit moderate for 50-69% symptomatic stenosis (NASCET: 5-year ipsilateral stroke 15.7% vs 22.2%; NNT 15 over 5 years); benefit greatest in men, recent stroke as the qualifying event, and hemispheric symptoms. Individualized decision.'
         : 'Medical management (no surgical benefit demonstrated).',
     source: 'NASCET NEJM 1991/1998'
   };
@@ -522,7 +522,7 @@ export const recommendDriving = ({ strokeType, severity, cognitiveDeficit, visua
     guidance: blockers.length === 0
       ? `Patient may resume driving after minimum ${waitWeeks}-week observation if symptom-free. Recommend formal driving evaluation for any residual deficit or commercial drivers.`
       : `Driving NOT recommended until: ${blockers.join('; ')}. Refer to rehabilitation medicine / occupational therapy for formal driving evaluation.`,
-    commercialDriver: 'Commercial drivers (CDL) must meet FMCSA criteria: minimum 1-year seizure-free off AED, no residual deficit compromising driving safety.',
+    commercialDriver: 'Interstate commercial (CMV) drivers must be certified by a medical examiner on the FMCSA National Registry under 49 CFR 391.41: an established epilepsy diagnosis, or another condition likely to cause loss of consciousness or loss of ability to control a CMV, is disqualifying unless FMCSA grants an exemption (FMCSA epilepsy exemption guidance cites 8 seizure-free years, on or off medication), and residual deficits must not compromise safe driving. Intrastate rules vary by state; confirm current FMCSA rules.',
     source: 'Heuristic only (not a validated score); waiting periods vary by jurisdiction — follow local licensing regulations and formal driving evaluation'
   };
 };
@@ -547,7 +547,7 @@ export const recommendVTEProphylaxis = ({ diagnosis, days, hematomaStable, immob
     if (!hematomaStable) return { modality: 'mechanical only', agent: 'IPC', rationale: 'Unstable hematoma — defer chemical ppx; re-image and reassess.' };
     return { modality: 'chemical + mechanical', agent: 'Enoxaparin 40 mg SC daily (or UFH 5000 U BID) + IPC', rationale: 'ICH, nonambulatory, from 24-48h onward with stable imaging: starting low-dose UFH or LMWH may be reasonable (Class 2b, LOE C-LD, AHA/ASA 2022 ICH); continue IPC.' };
   }
-  if (diagnosis === 'ischemic' && immobile) return { modality: 'chemical ± mechanical', agent: 'Enoxaparin 40 mg SC daily (or UFH 5000 U TID) + IPC when possible', rationale: 'Ischemic stroke with immobility: chemical VTE ppx from admission (Class 1, AHA/ASA 2019).' };
+  if (diagnosis === 'ischemic' && immobile) return { modality: 'chemical ± mechanical', agent: 'Enoxaparin 40 mg SC daily (or UFH 5000 U TID) + IPC when possible', rationale: 'Ischemic stroke with impaired mobility: IPC in addition to routine care is recommended (Class 1, LOE B-R; CLOTS 3); prophylactic-dose SC heparin (UFH or LMWH) is reasonable to reduce VTE risk (Class 2a, LOE B-R), although a survival benefit is not well established (Class 2b, LOE A) per AHA/ASA 2026 AIS. Individualize timing after IVT/EVT based on bleeding risk.' };
   if (diagnosis === 'sah') return { modality: 'mechanical until secured, then chemical 24h post-securing', agent: 'IPC, then enoxaparin 40 mg SC daily 24h after clip/coil if no bleeding', rationale: 'AHA/ASA aSAH 2023: mechanical ppx initially; chemical ppx 24h post-aneurysm securing.' };
   if (immobile) return { modality: 'chemical ± mechanical', agent: 'Enoxaparin 40 mg SC daily (or UFH 5000 U BID) + IPC when possible', rationale: 'Non-ambulatory patient: VTE prophylaxis indicated; tailor agent to diagnosis and bleeding risk.' };
   return { modality: 'ambulate', agent: 'None required', rationale: 'Ambulatory patient; no VTE ppx needed.' };
@@ -828,15 +828,15 @@ export const dmvoEVTAdvisory = ({ occlusionLocation } = {}) => {
 // heparin/aspirin during EVT increases sICH (stopped for harm).
 // NOTE: RESCUE-BT2 (China, NEJM 2023;388:2025-36, PMID 37256974) showed tirofiban benefit in
   // ischemic stroke WITHOUT large- or medium-vessel occlusion (mostly small atherosclerotic infarcts) who
-// were INELIGIBLE for lytic/EVT — different population; do NOT extrapolate to lytic-eligible.
+// were IVT/EVT-ineligible, had progression 24-96 h after onset, or had early deterioration/no improvement after IVT — a different population from MOST; do NOT extrapolate to routine adjunctive use after IVT.
 export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyticIneligible }) => {
   if (ivLyticGiven === true) {
     return {
       recommend: 'No',
-      drugs: ['argatroban', 'eptifibatide', 'tirofiban (post-lytic)', 'heparin'],
+      drugs: ['argatroban', 'eptifibatide', 'heparin'], note: 'MOST tested argatroban and eptifibatide only; heparin is listed on the basis of MR CLEAN-MED (periprocedural UFH during EVT increased sICH). IV tirofiban was not tested in MOST; RESCUE BT2 included selected post-IVT patients (early deterioration or no improvement at 4-24 h), so tirofiban requires a separate specialist decision.',
       rationale: 'MOST trial (Adeoye NEJM 2024, PMID 39231343) found NO benefit and possible harm from argatroban or eptifibatide added to IV lytic. Do not give adjunctive anticoagulants/antiplatelets in the first 24h post-lytic.',
       source: 'Adeoye NEJM 2024;391:810-20 (MOST, PMID 39231343); MR CLEAN-MED Lancet 2022 (PMID 35240044)',
-      class: 'Class 3 (no benefit/possible harm)'
+      class: 'Class 3: No Benefit (2026 AHA/ASA, adjunctive argatroban or eptifibatide with IVT); MOST also showed higher 90-day mortality'
     };
   }
   if (evtPlanned === true) {
@@ -939,7 +939,7 @@ export const evaluateSWITCHEligibility = ({ icHLocation, volumeMl, gcs, timeFrom
 // =====================================================================
 // INTERACT3 (Ma Lancet 2023;402:27-40, PMID 37245517): Cluster-RCT n=7036.
 // Care bundle within first hour: SBP <140 ≤1h, glucose 6.1-7.8 (non-DM)/7.8-10 (DM),
-// Tmax <37.5°C, INR reversal <1.5 within 1h. cOR for mRS shift 0.86 (p=0.015); mortality HR 0.77.
+// Tmax <37.5°C, INR reversal <1.5 within 1h. cOR for poor mRS outcome 0.86 (95% CI 0.76-0.97, p=0.015); 6-month mortality OR 0.77 (95% CI 0.63-0.95).
 // Authors concluded hospitals should incorporate the bundle into practice; no cost-effectiveness result reported.
 export const ichCareBundleCheck = ({ sbpAtArrival, sbpAt1h, glucose, glucoseUnit, isDiabetic, temp, inr, isOnWarfarin, anticoagReversed }) => {
   const sbp1 = parseFloat(sbpAt1h);
@@ -1008,7 +1008,7 @@ export const ichCareBundleCheck = ({ sbpAtArrival, sbpAt1h, glucose, glucoseUnit
     items,
     rationale: fullyCompliant
       ? 'INTERACT3 bundle fully achieved within 1h — best evidence-based ICH outcome trajectory.'
-      : `INTERACT3 bundle incomplete (${completed}/${total} elements met). Bundle as a whole reduces mRS shift (cOR 0.86) and mortality (HR 0.77).`,
+      : `INTERACT3 bundle incomplete (${completed}/${total} elements met). Bundle as a whole lowered the odds of a worse 6-month mRS (common OR 0.86, 95% CI 0.76-0.97) and of death by 6 months (OR 0.77, 95% CI 0.63-0.95).`,
     source: 'Ma Lancet 2023;402:27-40 (INTERACT3, PMID 37245517)',
     class: 'No AHA/ASA class (2022 ICH guideline predates INTERACT3); ESO/EANS 2025 ICH guideline: weak recommendation, low-certainty evidence, for implementing a care bundle'
   };
@@ -1019,7 +1019,7 @@ export const ichCareBundleCheck = ({ sbpAtArrival, sbpAt1h, glucose, glucoseUnit
 // =====================================================================
 // Kent JAMA 2021;326:2277-86 (PMID 34905030).
 // Combines RoPE score with PFO morphology (large shunt or atrial septal aneurysm).
-// Categories: Unlikely / Possible / Probable. Closure benefit concentrated in Probable.
+// Categories: Unlikely / Possible / Probable. Closure benefit seen in Possible (HR 0.38) and Probable (HR 0.10), both with 2-year ARR 2.1%; none in Unlikely (HR 1.14).
 export const evaluatePASCAL = ({ ropeScore, largeShunt, atrialSeptalAneurysm } = {}) => {
   const rope = parseFloat(ropeScore);
   if (!Number.isInteger(rope) || rope < 0 || rope > 10) return null;
@@ -1058,9 +1058,9 @@ export const evaluatePASCAL = ({ ropeScore, largeShunt, atrialSeptalAneurysm } =
 // Intracranial atherosclerotic disease (ICAD) medical regimen
 // =====================================================================
 // SAMMPRIS (NEJM 2011/2014, PMID 21899409), VISSIT (JAMA 2015), CASSISS (JAMA 2022, PMID 35943472)
-// — stenting INFERIOR to aggressive medical for 70-99% intracranial stenosis.
+// — SAMMPRIS and VISSIT: stenting worse than medical therapy; CASSISS: no significant difference (symptomatic 70-99% intracranial stenosis).
 // Aggressive medical = DAPT × 90d, LDL <70, SBP <140 (consider <130), intensive lifestyle.
-// Cilostazol: TOSS-2 (Stroke 2011), CSPS.com (Lancet Neurol 2019, PMID 31122494) — adds benefit.
+// Cilostazol: CSPS.com (Lancet Neurol 2019, PMID 31122494) — cilostazol dual therapy reduced recurrent ischemic stroke vs monotherapy (HR 0.49); TOSS-2 (Stroke 2011, PMID 21799173) — cilostazol+ASA vs clopidogrel+ASA, no significant difference in ICAS progression.
 export const icadMedicalRegimen = ({ stenosisPercent, symptomatic, daysSinceEvent, lowHemorrhagicRisk, recurrentEvent, onCurrentDAPT } = {}) => {
   const s = parseFloat(stenosisPercent);
   const days = parseFloat(daysSinceEvent);
@@ -1116,7 +1116,7 @@ export const bpTargetPostStroke = ({ strokeSubtype, age, orthostatic, ckd, curre
 
   if (orthostatic === true) {
     cautions.push('Orthostatic hypotension — check standing BP and symptoms; individualize the target and regimen to avoid falls.');
-    target = 'Individualize because of orthostatic hypotension';
+    target = 'Individualize: <130/80 mmHg remains reasonable if orthostatic hypotension is asymptomatic (AHA/ACC 2025); adjust for orthostatic symptoms or falls';
   }
   if (Number.isFinite(a) && a >= 80) {
     cautions.push('Age ≥80 — individualize; SPRINT/ESPRIT enrolled fewer very-elderly. Consider <140/80 if frail.');
@@ -1125,7 +1125,7 @@ export const bpTargetPostStroke = ({ strokeSubtype, age, orthostatic, ckd, curre
     cautions.push('CKD — monitor creatinine, potassium, and volume status during treatment adjustment. Acute ICH trial targets do not define chronic BP goals.');
   }
 
-  const firstLine = ['ACEi or ARB (lisinopril, losartan)', 'Thiazide diuretic (chlorthalidone preferred over HCTZ)', 'Calcium channel blocker (amlodipine)'];
+  const firstLine = ['ACEi or ARB (lisinopril, losartan)', 'Thiazide-type diuretic (chlorthalidone or HCTZ; no difference in CV outcomes in the Diuretic Comparison Project)', 'Calcium channel blocker (amlodipine)'];
   const drugClassNote = 'AHA/ACC 2025: thiazide-type diuretic, ACE inhibitor, or ARB reduce recurrent stroke risk; tailor the regimen to comorbidities and tolerance.';
   const completeBP = Number.isFinite(sbp) && sbp > 0 && Number.isFinite(dbp) && dbp > 0;
 
@@ -1468,7 +1468,7 @@ export const calculateSeLECTScore = ({
 
   // Published anchors (Galovic 2018): score 0 = 0.7% (1 y) / 1.3% (5 y);
   // score 9 = 63% (95% CI 42-77) at 1 y and 83% (95% CI 62-93) at 5 y.
-  // Intermediate rows are read from the publication's risk figure.
+  // Intermediate rows (scores 1-8) and tier labels are unverified and need confirmation against Galovic 2018 (Lancet Neurol 17:143-152, score-specific risk figure) (needs confirmation).
   const riskTable = {
     0: { y1: '0.7%', y5: '1.3%', numY1: 0.7, numY5: 1.3, tier: 'Low' },
     1: { y1: '1.2%', y5: '2.4%', numY1: 1.2, numY5: 2.4, tier: 'Low' },
@@ -1491,7 +1491,7 @@ export const calculateSeLECTScore = ({
     fiveYearRisk: risk.y5,
     riskTier: risk.tier,
     recommendation: clampedScore >= 4
-      ? `High risk of late post-stroke epilepsy (${risk.y5} at 5 years). Monitor closely and counsel patient/family on seizure precautions. Routine prophylactic ASM is NOT recommended, but initiate ASM promptly if an unprovoked seizure occurs >7 days post-stroke.`
+      ? `${risk.tier} risk of late post-stroke epilepsy (${risk.y5} at 5 years). Monitor closely and counsel patient/family on seizure precautions. Routine prophylactic ASM is NOT recommended, but initiate ASM promptly if an unprovoked seizure occurs >7 days post-stroke.`
       : `Low-to-moderate risk of post-stroke epilepsy (${risk.y5} at 5 years). Standard post-stroke follow-up without prophylactic ASM.`,
     breakdown: {
       nihssPoints: nihssPts,
@@ -1545,7 +1545,7 @@ export const calculateEDEMAScore = ({
   return {
     score,
     highRiskForMalignantEdema: highRisk,
-    riskTier: highRisk ? 'High' : score >= 3 ? 'Intermediate' : 'Low',
+    riskTier: highRisk ? 'High (>=7)' : 'Below published high-risk threshold',
     recommendation: highRisk
       ? `EDEMA Score ${score} (>=7): high specificity (99%) and PPV (93%) for potentially lethal malignant edema. Trigger early neurosurgical consultation for decompressive hemicraniectomy evaluation (DESTINY/DECIMAL/HAMLET); Neuro-ICU monitoring with q1-2h neurochecks; prepare osmotherapy; avoid hypoventilation and hyperthermia.`
       : `EDEMA Score ${score} (<7): below the published high-risk threshold. Continue serial neurologic and imaging surveillance — the score is specific, not sensitive, so a low score does not exclude edema progression.`,

@@ -52,7 +52,7 @@ const CLASSIFICATIONS = [
   { id: 'tia', label: 'TIA', sub: 'transient', onsetVal: 12 },
   // onsetVal must equal an ONSET_PRESETS value in hours, otherwise OnsetPicker's
   // exact-match test lights no pill and the screener runs on a window the user
-  // never chose. ICH stays hyperacute by default (MINUTE screens to 15 h).
+  // never chose. ICH stays hyperacute by default (MINUTE screens to 16 h).
   { id: 'ich', label: 'Hemorrhage', sub: 'ICH', onsetVal: 2 }
 ];
 

@@ -91,7 +91,7 @@ export const STROKE_SYNDROMES = {
       name: 'Basilar artery occlusion',
       territory: 'Basilar artery',
       deficits: 'Variable: bilateral limb weakness, quadriplegia, locked-in syndrome, coma, cranial nerve palsies, vertigo, ataxia.',
-      pearls: 'Locked-in syndrome = ventral pontine infarct, preserved consciousness + vertical eye movements only. High mortality without recanalization; EVT indicated with PC-ASPECTS ≥6.'
+      pearls: 'Locked-in syndrome = ventral pontine infarct, preserved consciousness + vertical eye movements only. High mortality without recanalization; EVT within 24 h is recommended for basilar occlusion with NIHSS ≥10, pre-stroke mRS 0-1, and PC-ASPECTS ≥6 (2026 AHA/ASA Class 1, LOE A). For NIHSS 6-9 the benefit is not well established (Class 2b).'
     },
     {
       name: 'Top of basilar / PCA — bilateral',
@@ -103,7 +103,7 @@ export const STROKE_SYNDROMES = {
       name: 'Cerebellar stroke',
       territory: 'SCA / AICA / PICA',
       deficits: 'Ataxia, nystagmus, vertigo, nausea, dysmetria, dysarthria. May have ipsilateral Horner if PICA.',
-      pearls: 'Cerebellar edema peaks day 2-4 → can cause obstructive hydrocephalus or brainstem compression. Suboccipital decompression + EVD is life-saving (Class 1, LOE B-NR per 2019 AHA/ASA).'
+      pearls: 'Cerebellar edema peaks day 2-4 → can cause obstructive hydrocephalus or brainstem compression. Suboccipital decompressive craniectomy with dural expansion is recommended for deterioration from brainstem compression or infarct volume ≥35 mL (Class 1, LOE B-NR). Ventriculostomy is recommended for obstructive hydrocephalus (Class 1, LOE C-LD). Source: 2026 AHA/ASA AIS guideline.'
     },
     {
       name: 'Midbrain (Weber, Benedikt, Claude)',
@@ -217,7 +217,7 @@ export const TEACHING_PEARLS = [
   {
     category: 'Imaging',
     q: 'What is ASPECTS and why is it important?',
-    a: 'Alberta Stroke Program Early CT Score — 10-point score assessing early ischemic changes in 10 MCA territory regions (M1-M6, L, I, C, IC). Starts at 10, subtract 1 per affected region. ASPECTS ≥6 for standard EVT (NIHSS ≥6); 3-5 eligible for large-core trials. ASPECTS 0-2: SELECT2/ANGEL-ASPECT enrolled 3-5 — the 0-2 evidence comes from LASTE (ASPECTS 0-5 including 0-2, mortality benefit) and TESLA (2-5, trend only), pooled in the ATLAS meta-analysis (benefit consistent except core ≥150 mL beyond 6 h).'
+    a: 'Alberta Stroke Program Early CT Score — 10-point score assessing early ischemic changes in 10 MCA territory regions (M1-M6, L, I, C, IC). Starts at 10, subtract 1 per affected region. ASPECTS ≥6 is the classic threshold. Under the 2026 AHA/ASA guideline (ICA/M1 occlusion, NIHSS ≥6, prestroke mRS 0-1), EVT is Class 1 for ASPECTS 3-10 within 6 h and for ASPECTS 3-5 at 6-24 h (age <80, no significant mass effect), and Class 2a for ASPECTS 0-2 within 6 h (age <80, no significant mass effect). ASPECTS 0-2: SELECT2/ANGEL-ASPECT enrolled 3-5 — the 0-2 evidence comes from LASTE (ASPECTS ≤5 including 0-2, within 6.5 h; better 90-day mRS and lower mortality) and TESLA (2-5, trend only), pooled in the ATLAS meta-analysis (benefit consistent except core ≥150 mL beyond 6 h).'
   },
   {
     category: 'Imaging',
@@ -247,7 +247,7 @@ export const TEACHING_PEARLS = [
   {
     category: 'Guidelines',
     q: 'Post-EVT BP target?',
-    a: 'For DOCUMENTED successful recanalization (mTICI ≥2b): SBP 140-180 for ≥24h (up to 72h per local protocol). Intensive lowering (<140) is Class 3: Harm — harm was shown in ENCHANTED2-MT and OPTIMAL-BP; BP-TARGET and BEST-II showed no benefit of lower targets (neutral/futility, not harm).'
+    a: 'For DOCUMENTED successful recanalization (mTICI ≥2b): SBP 140-180 for ≥24h (up to 72h per local protocol). Intensive lowering (<140) is Class 3: Harm — harm was shown in ENCHANTED2-MT and OPTIMAL-BP; BP-TARGET (100-129 mmHg) was neutral; BEST-II did not meet its futility criteria but gave a low predicted probability that lower targets would succeed in a larger trial — neither showed harm.'
   },
   {
     category: 'Etiology',
