@@ -305,23 +305,15 @@ Post-thrombolytic hemorrhage algorithm
 Telestroke workflow
 Jump to Section
 EVT Eligibility
-AF/DOAC Timing
 BP Management
-NBO
 Swallow Screen
 Post-Lytic ICH
-HT Classification
 Angioedema
-Antiplatelets
-Statins
 Large Core
 Post-EVT
 MeVO
 Contrast Allergy
-ICAD
 Posterior Circ
-CAD
-Seizure Ppx
 Key Principles
 For IV thrombolysis, establish a disabling deficit, time from last known well, noncontrast CT findings, blood pressure, glucose, and the source-listed exclusions.
 For EVT, apply the institutional vessel, time, ASPECTS or PC-ASPECTS, NIHSS, baseline mRS, and low-ASPECTS qualifiers shown below.
