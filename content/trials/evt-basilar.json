@@ -34,6 +34,23 @@
     "provenance": "src/evidence/completedTrials.js"
   },
   {
+    "id": "attention-late",
+    "name": "ATTENTION LATE",
+    "fullName": "Tenecteplase Before Thrombectomy at 4.5 to 24 Hours for Basilar Artery Occlusion (ATTENTION LATE)",
+    "category": "evt-basilar",
+    "population": "n=330, ≥18, NIHSS ≥10, 4.5-24 h",
+    "finding": "Neutral: 30% (50/165, TNK+EVT) vs 30% (50/164, EVT alone)",
+    "teachingPoint": "In moderate-to-severe basilar-artery occlusion at 4.5-24 h presenting directly to EVT-capable centers, adding IV tenecteplase before thrombectomy did not improve 90-day functional outcomes over EVT alone.",
+    "PMID": "42776543",
+    "year": 2026,
+    "citationIds": [
+      "cit-attention-late-2026"
+    ],
+    "certainty": "high",
+    "lastReviewed": "2026-09-26",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
     "id": "basics",
     "name": "BASICS",
     "fullName": "Endovascular Therapy for Stroke Due to Basilar-Artery Occlusion",

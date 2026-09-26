@@ -131,6 +131,17 @@ export const citations = [
     verificationStatus: 'verified-pubmed'
   }),
   makeCitation({
+    id: 'cit-attention-late-2026',
+    authors: 'Li R et al.',
+    title: 'Tenecteplase Before Thrombectomy at 4.5 to 24 Hours for Basilar Artery Occlusion: The ATTENTION LATE Randomized Clinical Trial',
+    journal: 'JAMA',
+    year: 2026,
+    pmid: '42776543',
+    doi: '10.1001/jama.2026.15496',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/42776543/',
+    verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
     id: 'cit-baoche-2022',
     authors: 'Jovin TG et al.',
     title: 'Trial of Thrombectomy 6 to 24 Hours after Stroke Due to Basilar-Artery Occlusion (BAOCHE)',
