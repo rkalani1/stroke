@@ -7233,7 +7233,7 @@ export function CvstCard() {
               { label: 'RE-SPECT CVT', cite: 'Ferro JM et al. JAMA Neurol. 2019;76(12):1457-1465.', pmid: '31479105' },
               { label: 'ACTION-CVT', cite: 'Yaghi S et al. Stroke. 2022;53(3):728-738.', pmid: '35143325' },
               { label: 'TO-ACT', cite: 'Coutinho JM et al. JAMA Neurol. 2020;77(8):966-973.', pmid: '32421159' },
-              { label: 'AHA Statement 2024', cite: 'Saposnik G et al. Stroke. 2024;55(3):e77-e90.', pmid: '38284265' },
+              { label: 'AHA Scientific Statement 2024', cite: 'Saposnik G et al. Stroke. 2024;55(3):e77-e90.', pmid: '38284265' },
               { label: 'AHA/ASA Statement 2011', cite: 'Saposnik G et al. Stroke. 2011;42(4):1158-1192.', pmid: '21293023' },
             ]} />
           </div>
@@ -8740,7 +8740,7 @@ export function PfoClosureCard() {
                 </tbody>
               </table>
               <div style={{ fontSize: '7pt', lineHeight: '1.35', color: 'var(--ink-soft)', marginTop: '5px' }}>
-                All four favored closure in <strong>selected</strong> patients with high-risk anatomy or a large shunt; the earlier CLOSURE I and PC trials (the other 2 of the 6 closure-vs-medical-therapy RCTs) were neutral. CLOSE also randomized an anticoagulation arm but was underpowered for the closure-vs-anticoagulation comparison.
+                All four favored closure; CLOSE and DEFENSE-PFO <strong>selected</strong> high-risk anatomy and REDUCE was enriched for moderate/large shunts (81%), whereas RESPECT enrolled any PFO (benefit emerged on extended follow-up). The earlier CLOSURE I and PC trials (the other 2 of the 6 closure-vs-medical-therapy RCTs) were neutral. CLOSE also randomized an anticoagulation arm but was underpowered for the closure-vs-anticoagulation comparison.
               </div>
             </CardSection>
 
@@ -9289,7 +9289,7 @@ export function CancerAssociatedStrokeCard() {
 
       {/* D-Dimer threshold indicator */}
       <rect x="262" y="86" width="212" height="44" rx="4" fill="#fff5f5" stroke="var(--red)" strokeWidth="1" />
-      <text x="368" y="98" fill="var(--red-deep)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MARKER: D-DIMER &gt;3.0–5.0 &micro;g/mL FEU</text>
+      <text x="368" y="98" fill="var(--red-deep)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MARKER: D-DIMER &gt;2.5 &micro;g/mL FEU</text>
       <text x="368" y="112" fill="var(--red-deep)" fontSize="4.8pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="middle">Disproportionately elevated compared to typical stroke</text>
       <text x="368" y="122" fill="var(--ink-mute)" fontSize="4.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">Accompanied by low-grade consumptive coagulopathy</text>
 
@@ -9323,7 +9323,7 @@ export function CancerAssociatedStrokeCard() {
           <div className="card-content">
             <h1 style={{ textAlign: 'center', marginBottom: '2px' }}>Cancer-Associated Stroke &amp; Marantic Endocarditis (NBTE)</h1>
             <p style={{ fontSize: '7.8pt', color: 'var(--ink-soft)', marginBottom: '6px', textAlign: 'center', fontWeight: '600' }}>
-              2026 AHA Cancer Stroke Scientific Statement &bull; Mucin Adenocarcinomas &bull; 3-Territory Sign &bull; Markedly Elevated D-Dimer &bull; LMWH vs DOAC
+              2026 AHA Cancer Stroke Scientific Statement &bull; Mucin Adenocarcinomas &bull; 3-Territory Sign &bull; D-Dimer &gt;2.5 &micro;g/mL FEU &bull; LMWH vs DOAC
             </p>
 
             <div style={{ width: '100%', height: '168px', marginBottom: '6px' }}>
@@ -9372,7 +9372,7 @@ export function CancerAssociatedStrokeCard() {
                   </tr>
                   <tr>
                     <td><strong>Markedly Elevated D-Dimer</strong></td>
-                    <td>Serum D-Dimer <strong>&gt;3.0–5.0 &micro;g/mL FEU</strong> (frequently &gt;10.0–20.0 &micro;g/mL), markedly out of proportion to typical thromboembolic stroke volume.</td>
+                    <td>Serum D-Dimer <strong>&gt;2.5 &micro;g/mL FEU</strong> (2026 AHA criterion, absent acute VTE; frequently &gt;10.0–20.0 &micro;g/mL), markedly out of proportion to typical thromboembolic stroke volume.</td>
                     <td>&bull; Marked elevation supports a cancer-related hypercoagulable mechanism (mean D-dimer 15.4 &plusmn; 10.8 &micro;g/mL in cancer-related stroke; Schwarzbach 2015).<br />&bull; Correlates with circulating tumor-derived microparticles and ongoing intravascular fibrin turnover.</td>
                   </tr>
                   <tr>

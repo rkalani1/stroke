@@ -85,13 +85,14 @@ export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, hypoperfusedMl, timeFromLK
 
 // CHANCE / POINT / THALES / CHANCE-2 / INSPIRES combined DAPT recommender.
 // CHANCE (Wang NEJM 2013;369:11-19): clopidogrel+ASA x 21d for TIA/minor stroke (NIHSS <=3, ABCD2 >=4) within 24h.
-// POINT (Johnston NEJM 2018;379:215-25): clopidogrel 600 mg load then 75 mg days 2-90 + ASA (90-day DAPT) for NIHSS <=3 / ABCD2 >=4 within 12h.
-// THALES (Johnston NEJM 2020;383:207-17): ticagrelor+ASA x 30d for noncardioembolic stroke with NIHSS <=5 or high-risk TIA (ABCD2 >=6 or symptomatic intracranial/extracranial stenosis >=50%), age >=40, within 24h, no IVT/EVT.
-//   Atherosclerotic etiology was not required for enrollment; the stroke branch below additionally requires an atherosclerotic mechanism (cf. prespecified ipsilateral stenosis >=30% subgroup, Amarenco Stroke 2020;51:3504-13).
+// POINT (Johnston NEJM 2018;379:215-25): clopidogrel 600 mg load then 75 mg days 2-90 + ASA (90-day DAPT) for NIHSS <=3 / ABCD2 >=4 within 12h;
+//   time-course analysis (PMID 31238700) concentrated benefit in the first 21 days.
+// THALES (Johnston NEJM 2020;383:207-17): ticagrelor+ASA x 30d for noncardioembolic stroke NIHSS <=5 or high-risk TIA (ABCD2 >=6 or symptomatic ipsilateral stenosis), age >=40, within 24h, no IVT/EVT;
+//   no atherosclerosis requirement for stroke patients. (In this recommender, atherosclerotic NIHSS 4-5 is routed to the INSPIRES branch below.)
 // CHANCE-2 (Wang NEJM 2021;385:2520-30): in CYP2C19 LOF carriers, ticagrelor+ASA superior to clopidogrel+ASA for NIHSS <=3 / ABCD2 >=4.
 // INSPIRES (Gao NEJM 2023;389:2413-24, PMID 38157499): clopidogrel+ASA x 21d extended eligibility — NIHSS <=5 AND time-from-onset <=72h,
 //   INCLUDING patients with symptomatic intra-/extracranial atherosclerotic stenosis >=50% (LVD). 7.3% vs 9.2% recurrent stroke (HR 0.79).
-//   DAPT for high-risk TIA / minor stroke is Class 1 in the 2021 AHA/ASA secondary-prevention guideline;
+//   DAPT for high-risk TIA / minor stroke is Class 1 in the 2021 AHA/ASA secondary-prevention guideline (NIHSS <=3 / ABCD2 >=4 only);
 //   INSPIRES extended the eligibility window/population. The 2026 AHA/ASA AIS guideline (PMID 41582814) now also addresses early DAPT;
 //   in-app transcription ais-2026-149 (src/guidelines/ais-2026.json): clopidogrel+ASA x 21d at 24-72h (or NIHSS 4-5 <24h) with presumed atherosclerotic cause, COR 2a (needs confirmation).
 //
@@ -160,7 +161,7 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
         : 'Clopidogrel 300-600 mg load then 75 mg daily + ASA 75-100 mg daily',
       rationale: `INSPIRES-style screen: ${isTIA ? `high-risk TIA (ABCD² ${ab})` : `NIHSS ${n}`} within ${tH}h and presumed atherosclerotic cause. Verify qualifying stenosis/multiple infarcts, age 35–80, and no thrombolysis/thrombectomy. Aspirin was given for 21 days and clopidogrel through day 90; bleeding increased.`,
       source: 'Gao NEJM 2023;389:2413-24 (INSPIRES, PMID 38157499); CYP2C19 branch CHANCE-2 NEJM 2021',
-      class: useTicagrelor ? 'Not a guideline-specified regimen: extrapolates CHANCE-2 (CYP2C19 LOF carriers, NIHSS ≤3 or high-risk TIA, started within 24h) to an INSPIRES-type 24-72h population' : 'Class 2a (2026 AHA/ASA AIS guideline): clopidogrel+ASA for 21 days, then single antiplatelet therapy, is reasonable for noncardioembolic minor stroke (NIHSS ≤5) or high-risk TIA (ABCD² ≥4) of presumed atherosclerotic cause 24-72h after onset (or NIHSS 4-5 within 24h) in patients who did not receive IVT'
+      class: useTicagrelor ? 'Not a guideline-specified regimen: extrapolates CHANCE-2 (CYP2C19 LOF carriers, NIHSS ≤3 or high-risk TIA, started within 24h) to an INSPIRES-type 24-72h population' : 'Class 2a (2026 AHA/ASA AIS guideline): clopidogrel+ASA for 21 days, then single antiplatelet therapy, is reasonable for noncardioembolic minor stroke (NIHSS ≤5) or high-risk TIA (ABCD² ≥4) of presumed atherosclerotic cause 24-72h after onset (or NIHSS 4-5 within 24h) in patients who did not receive IVT. The 2021 Class 1 DAPT recommendation covers NIHSS ≤3 / ABCD² ≥4 only.'
     };
   }
 
@@ -410,7 +411,7 @@ export const interpretPHQ9 = (score) => {
   return { score: s, severity, action, source: 'Kroenke JGIM 2001;16:606-13' };
 };
 
-// mRS-9Q structured interpretation (Patel N et al. Neurosurgery 2012;71:971-5; PMID 22843133).
+// mRS-9Q structured interpretation (Patel N et al. Neurosurgery 2012;71:971-5, PMID 22843133). Bruno et al. Stroke 2010;41:1048-50 is the separate simplified mRS questionnaire (smRSq).
 // Order matches the published mRS scale:
 //   mRS 5 = bedridden / requires constant care
 //   mRS 4 = unable to walk without assistance (q4 cannot walk OR q5 walks only with aid)

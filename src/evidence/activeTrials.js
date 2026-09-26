@@ -108,13 +108,18 @@ export const activeTrials = [
       { field: 'nihss', operator: '>=', value: 4, label: 'NIHSS ≥4' },
       { field: 'premorbidMRS', operator: '<=', value: 2, label: 'Pre-stroke mRS 0-2' },
       { field: 'aspectsScore', operator: '>=', value: 7, label: 'ASPECTS ≥7' },
-      { field: 'ctaResults', operator: 'present', value: ['tandem'], label: 'Tandem lesion present' },
-      { field: 'tnkRecommended', operator: '==', value: false, label: 'Ineligible for or failed IV thrombolysis (hard gate)' }
+      { field: 'ctaResults', operator: 'present', value: ['tandem'], label: 'Tandem lesion present' }
+      // Registry inclusion #10 ("ineligible for IV t-PA therapy or have failed
+      // IV t-PA therapy") is intentionally not an executable gate: the
+      // tri-state tnkRecommended flag cannot express "ineligible OR failed",
+      // so a hard tnkRecommended === false gate wrongly screened out patients
+      // who received IVT and still had the occlusion. It stays as manual
+      // inclusion text above and is confirmed at full protocol review.
     ],
     matcherExclusions: [],
     relatedCompletedTrialIds: [],
     link: 'https://clinicaltrials.gov/study/NCT05611242',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-clinicaltrials-gov',
     category: 'ischemic',
     keyTakeaways: [

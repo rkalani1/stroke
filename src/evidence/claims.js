@@ -54,6 +54,15 @@ export const claims = [
     lastReviewed: lr
   }),
   makeClaim({
+    id: 'cl-ich-bp-intensive-target',
+    statement: 'In acute spontaneous ICH with elevated SBP, intensive SBP lowering did not significantly reduce the primary outcome in either major BP-only trial. INTERACT2 (target <140 vs <180 mmHg within 1 h, enrolled within 6 h): death or major disability (mRS 3-6) at 90 days 52.0% vs 55.6% (OR 0.87, 95% CI 0.75-1.01; p=0.06), with a favourable prespecified ordinal mRS shift (OR 0.87, 95% CI 0.77-1.00; p=0.04) and similar mortality and serious adverse events. ATACH-2 (IV nicardipine within 4.5 h, target 110-139 vs 140-179 mmHg; mean baseline SBP 200.6 mmHg; stopped for futility): death or disability (mRS 4-6) at 3 months 38.7% vs 37.7% (RR 1.04, 95% CI 0.85-1.27), with more renal adverse events within 7 days in the intensive arm (9.0% vs 4.0%; p=0.002). INTERACT3 showed that a care bundle combining early intensive SBP lowering (target <140 mmHg) with glucose, temperature, and warfarin-reversal protocols improved 6-month functional outcome (common OR for poor outcome 0.86, 95% CI 0.76-0.97; p=0.015).',
+    topic: 'ich-bp-management',
+    citationIds: ['cit-interact2-2013', 'cit-atach2-2016', 'cit-interact3-2023', 'cit-aha-ich-2022'],
+    certainty: 'moderate',
+    conflictNotes: 'Neither INTERACT2 nor ATACH-2 met its primary endpoint; the AHA/ASA 2022 ICH guideline rates targeting SBP 140 mmHg (maintaining 130-150 mmHg) in mild-to-moderate ICH presenting with SBP 150-220 mmHg as Class 2b and acute lowering to <130 mmHg as Class 3: Harm. INTERACT3 (published after the 2022 guideline) was a stepped-wedge cluster trial of a multicomponent bundle, so its benefit cannot be attributed to BP lowering alone.',
+    lastReviewed: '2026-09-26'
+  }),
+  makeClaim({
     id: 'cl-ich-andexanet-fxa',
     statement: 'Andexanet alfa achieves better hemostatic efficacy than usual care (predominantly 4F-PCC) in factor Xa inhibitor-associated ICH, with monitoring required for thrombotic events (ANNEXA-I).',
     topic: 'ich-anticoag-reversal',
@@ -81,11 +90,11 @@ export const claims = [
   }),
   makeClaim({
     id: 'cl-af-early-anticoag',
-    statement: 'Early DOAC initiation within ~4 days is non-inferior to delayed start across infarct sizes (OPTIMAS) and was superior to delayed start at 30 days in pooled individual-patient data (CATALYST IPDMA: OR 0.70, 95% CI 0.50-0.98, p=0.039) with no excess of symptomatic intracranial hemorrhage; earlier trials were consistent: TIMING showed early start non-inferior for the 90-day composite of recurrent ischemic stroke, symptomatic intracerebral hemorrhage, or all-cause death, and ELAN estimated a 30-day risk difference of -1.18 percentage points (95% CI -2.84 to 0.47) with early start for recurrent ischemic stroke, systemic embolism, major extracranial bleeding, symptomatic intracranial hemorrhage, or vascular death.',
+    statement: 'Early DOAC initiation within 4 days was non-inferior to delayed (7-14 day) initiation (OPTIMAS) and reduced the 30-day composite of recurrent ischemic stroke, symptomatic intracranial hemorrhage (sICH), or unclassified stroke vs ≥5 days in pooled individual-patient data (CATALYST IPDMA: OR 0.70, 95% CI 0.50-0.98, p=0.039) without excess sICH. TIMING (≤4 vs 5-10 days) was non-inferior for recurrent ischemic stroke, sICH, or death at 90 days; ELAN (estimation design, no formal non-inferiority test) estimated a 30-day risk difference of -1.18 percentage points (95% CI -2.84 to 0.47) with early start for the composite of recurrent ischemic stroke, systemic embolism, major extracranial bleeding, sICH, or vascular death.',
     topic: 'af-anticoag-timing',
     citationIds: ['cit-optimas-2024', 'cit-catalyst-2025', 'cit-elan-2023', 'cit-timing-2022'],
     certainty: 'high',
-    lastReviewed: lr
+    lastReviewed: '2026-09-26'
   }),
   makeClaim({
     id: 'cl-late-window-ivt-non-lvo',

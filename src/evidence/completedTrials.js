@@ -569,8 +569,8 @@ export const completedTrials = [
     evidenceType: 'rct',
     citationIds: ['cit-annexa-i-2024'],
     relatedActiveTrialIds: [],
-    practiceImpact: 'The 2022 AHA/ASA ICH guideline (published before ANNEXA-I) rated andexanet reasonable (COR 2a) for factor Xa inhibitor-associated ICH. ANNEXA-I showed better hemostatic efficacy but more thrombotic events (10.3% vs 5.6%), including ischemic stroke (6.5% vs 1.5%), with no appreciable difference in modified Rankin scale score or death at 30 days. Andexanet (Andexxa) is no longer available in the US: it was withdrawn from the US market in December 2025 after the FDA concluded its risks, including thromboembolic events, outweigh its benefits. The 2026 Neurocritical Care Society/SCCM focused update conditionally recommends 4F-PCC rather than andexanet for factor Xa inhibitor-associated ICH.',
-    lastReviewed: lr,
+    practiceImpact: 'The 2022 AHA/ASA ICH guideline (published before ANNEXA-I) rated andexanet reasonable (COR 2a, LOE B-NR) for factor Xa inhibitor-associated ICH. ANNEXA-I showed better hemostatic efficacy than usual care (85.5% of usual-care patients received PCC) but more thrombotic events (10.3% vs 5.6%), including ischemic stroke (6.5% vs 1.5%), with no appreciable difference in modified Rankin scale score or death at 30 days. Andexanet (Andexxa) is no longer available in the US: it was withdrawn from the US market in December 2025 after the FDA concluded its risks, including thromboembolic events, outweigh its benefits. The 2026 Neurocritical Care Society/SCCM focused update conditionally recommends 4F-PCC rather than andexanet for factor Xa inhibitor-associated ICH.',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({

@@ -1498,7 +1498,7 @@ const REFERENCE_LIBRARY_SECTIONS = [
         docs: [
           { id: 'afib-ac-timing-after-af-related-stroke', title: 'Timing of Anticoagulation after AF-Related Stroke', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/afib/AC timing after AF-related Stroke.pdf', emailTitle: 'AC timing after AF-related Stroke' },
           { id: 'afib-af-secondary-stroke-prevention-july-2024', title: 'Atrial Fibrillation & Secondary Stroke Prevention', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/afib/AF & secondary stroke prevention July 2024.pdf', emailTitle: 'AF & secondary stroke prevention July 2024', year: 2024 },
-          { id: 'afib-aha-af-guidelines-2023', title: '2023 AHA AFib Guidelines', subtitle: 'External Link - AHA Journals', type: 'external-link', href: 'https://www.ahajournals.org/doi/10.1161/CIR.0000000000001193', year: 2023 },
+          { id: 'afib-aha-af-guidelines-2023', title: '2023 ACC/AHA/ACCP/HRS AFib Guideline', subtitle: 'External Link - AHA Journals', type: 'external-link', href: 'https://www.ahajournals.org/doi/10.1161/CIR.0000000000001193', year: 2023 },
           { id: 'afib-esc-af-guidelines-2024', title: '2024 ESC AFib Guidelines', subtitle: 'External Link - European Heart Journal', type: 'external-link', href: 'https://academic.oup.com/eurheartj/article/45/36/3314/7738779', year: 2024 },
           { id: 'afib-afib-stroke-epi519', title: 'AFib Stroke EPI519', subtitle: 'PDF Document', type: 'pdf', reviewStatus: 'archive', path: 'documents/afib/AFib Stroke EPI519.pdf' }
         ]
@@ -4161,8 +4161,8 @@ Clinician Name`;
               id: 'dapt_minor_stroke',
               category: 'Antithrombotic',
               title: 'DAPT for minor stroke/TIA — match duration to trial analog',
-              recommendation: 'Dual antiplatelet therapy (aspirin + clopidogrel or ticagrelor) for minor ischemic stroke (NIHSS ≤5) or high-risk TIA (ABCD2 ≥4). Select DAPT duration by matching the patient to the closest trial analog.',
-              detail: 'Loading: ASA 325 mg + clopidogrel 300 mg, then ASA 81 mg + clopidogrel 75 mg. Choose duration by trial analog:\n• CHANCE (<24h onset, NIHSS ≤3): 21 days DAPT then clopidogrel mono\n• POINT (<12h, high-risk TIA/minor stroke): 21 days (90d arm had more major bleeding)\n• THALES (<24h, NIHSS ≤5): 30 days ticagrelor 90 mg BID + ASA (higher bleeding risk)\n• INSPIRES (<72h, atherosclerotic mechanism): 21d DAPT then clopidogrel mono through day 90\nAfter ~21-30 days, ischemic recurrence benefit decreases while major bleeding risk continues — favor shorter DAPT (21-30d) for most phenotypes. Do NOT thrombolyse minor NON-disabling stroke even with an intracranial occlusion: TEMPO-2 (Coutts, Lancet 2024, PMID 38768626) was stopped for futility with possible harm (90-day death 5% vs 1%, aHR 3.8) — DAPT is the evidence-based pathway. Post-IVT note: TAPIS (Lancet 2026, PMID 42114550) found oral ticagrelor+ASA started within 6h of stroke onset (before, during, or after IVT; NIHSS 4-10) improved mRS 0-1 (68.7% vs 62.0%), with no significant sICH difference (0.9% vs 0.7%; wide CIs) — emerging evidence, not yet in guidelines. For CYP2C19 LOF carriers: ticagrelor 180 mg load + ASA, then ticagrelor 90 mg BID + ASA x 21d, followed by ticagrelor monotherapy (CHANCE-2, Class IIb).',
+              recommendation: 'Dual antiplatelet therapy with aspirin + clopidogrel (with loading dose), started within 24 h and continued for 21 days, for minor noncardioembolic ischemic stroke (NIHSS ≤3) or high-risk TIA (ABCD2 ≥4) not treated with IVT (Class I, LOE A). Ticagrelor + aspirin for NIHSS ≤5 (THALES; Class IIb) and the INSPIRES (24-72 h, atherosclerotic) and CYP2C19-guided options carry weaker classes (IIa/IIb). Select DAPT duration by matching the patient to the closest trial analog.',
+              detail: 'Loading: ASA 325 mg + clopidogrel 300 mg, then ASA 81 mg + clopidogrel 75 mg. Choose duration by trial analog:\n• CHANCE (<24h onset, NIHSS ≤3): 21 days DAPT then clopidogrel mono\n• POINT (<12h, high-risk TIA/minor stroke; clopidogrel 600 mg load): 90-day DAPT vs aspirin alone reduced major ischemic events (5.0% vs 6.5%) but increased major hemorrhage (0.9% vs 0.4%); a secondary time-course analysis (Johnston, Circulation 2019) found the benefit concentrated in the first 21 days while bleeding risk continued, supporting a 21-day course\n• THALES (<24h, NIHSS ≤5): 30 days ticagrelor 90 mg BID + ASA (higher bleeding risk)\n• INSPIRES (<72h, atherosclerotic mechanism): 21d DAPT then clopidogrel mono through day 90\nAfter ~21-30 days, ischemic recurrence benefit decreases while major bleeding risk continues — favor shorter DAPT (21-30d) for most phenotypes. Do NOT thrombolyse minor NON-disabling stroke even with an intracranial occlusion: TEMPO-2 (Coutts, Lancet 2024, PMID 38768626) was stopped for futility with possible harm (90-day death 5% vs 1%, aHR 3.8) — DAPT is the evidence-based pathway. Post-IVT note: TAPIS (Lancet 2026, PMID 42114550) found oral ticagrelor+ASA started within 6h of stroke onset (before, during, or after IVT; NIHSS 4-10) improved mRS 0-1 (68.7% vs 62.0%), with no significant sICH difference (0.9% vs 0.7%; wide CIs) — emerging evidence, not yet in guidelines. For CYP2C19 LOF carriers: ticagrelor 180 mg load + ASA, then ticagrelor 90 mg BID + ASA x 21d, followed by ticagrelor monotherapy (CHANCE-2, Class IIb).',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
@@ -4918,9 +4918,9 @@ Clinician Name`;
               title: 'CVT: Acute anticoagulation',
               recommendation: 'Initiate therapeutic anticoagulation with LMWH or UFH, even in the presence of hemorrhagic infarction or small parenchymal hemorrhage.',
               detail: 'LMWH preferred over UFH in most cases. Enoxaparin 1 mg/kg q12h or weight-based UFH with aPTT target 60-80s. Hemorrhagic transformation is NOT a contraindication. For large parenchymal hemorrhages, individualize decision.',
-              classOfRec: 'I',
-              levelOfEvidence: 'B-NR',
-              guideline: 'AHA Cerebral Venous Thrombosis 2024',
+              classOfRec: 'Statement',
+              levelOfEvidence: 'Ungraded',
+              guideline: 'AHA Cerebral Venous Thrombosis Scientific Statement 2024 (ungraded)',
               reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000456',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456#page=6',
               medications: ['Enoxaparin 1 mg/kg SC q12h', 'UFH weight-based (aPTT 60-80s)'],
@@ -4935,9 +4935,9 @@ Clinician Name`;
               title: 'CVT: Long-term anticoagulation',
               recommendation: 'After parenteral lead-in, transition to a DOAC or warfarin (INR 2-3) is reasonable for 3-12 months (indefinitely with severe thrombophilia or recurrent VTE); DOACs are not suitable in pregnancy (use LMWH; warfarin is also contraindicated), breastfeeding, or antiphospholipid syndrome.',
               detail: 'Duration: 3-6 months for provoked CVT, 6-12 months for unprovoked, indefinite if recurrent VTE or severe thrombophilia. ACTION-CVT (retrospective multicenter cohort, Stroke 2022) found DOACs associated with similar recurrent venous thrombosis and death and less major hemorrhage than warfarin; findings need confirmation in prospective or randomized studies. Warfarin preferred for severe CVT or antiphospholipid syndrome.',
-              classOfRec: 'I',
-              levelOfEvidence: 'B-NR',
-              guideline: 'AHA Cerebral Venous Thrombosis 2024',
+              classOfRec: 'Statement',
+              levelOfEvidence: 'Ungraded',
+              guideline: 'AHA Cerebral Venous Thrombosis Scientific Statement 2024 (ungraded)',
               reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000456',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456#page=6',
               medications: ['Warfarin target INR 2-3', 'DOAC alternative: rivaroxaban 20 mg or apixaban 5 mg BID'],
@@ -4952,9 +4952,9 @@ Clinician Name`;
               title: 'CVT: Elevated ICP management',
               recommendation: 'Monitor for elevated ICP and neurologic deterioration in CVT. Consider decompressive craniectomy for malignant edema with impending herniation.',
               detail: 'Severe CVT with parenchymal lesions and mass effect should prompt emergent neurosurgical evaluation. Decompressive craniectomy is a lifesaving option in selected patients.',
-              classOfRec: 'IIa',
-              levelOfEvidence: 'C-LD',
-              guideline: 'AHA Cerebral Venous Thrombosis 2024',
+              classOfRec: 'Statement',
+              levelOfEvidence: 'Ungraded',
+              guideline: 'AHA Cerebral Venous Thrombosis Scientific Statement 2024 (ungraded)',
               reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000456',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456#page=8',
               conditions: (data) => {
@@ -4968,9 +4968,9 @@ Clinician Name`;
               title: 'CVT: Seizure management',
               recommendation: 'After a seizure in CVT with supratentorial lesions, antiseizure medication to prevent early recurrent seizures is suggested (ESO 2017; ISCVT); primary prophylaxis in patients who have not had a seizure is not established (no randomized evidence). Treat acute seizures with standard ASMs.',
               detail: 'Seizures occur in ~40% of CVT patients. Supratentorial hemorrhagic or ischemic lesions increase risk. Levetiracetam preferred. Duration: typically 3-6 months, taper if seizure-free and lesion resolved.',
-              classOfRec: 'IIa',
-              levelOfEvidence: 'C-LD',
-              guideline: 'AHA Cerebral Venous Thrombosis 2024',
+              classOfRec: 'Statement',
+              levelOfEvidence: 'Ungraded',
+              guideline: 'AHA Cerebral Venous Thrombosis Scientific Statement 2024 (ungraded)',
               reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000456',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456#page=2',
               medications: ['Levetiracetam 500-1000 mg PO/IV q12h'],
@@ -4985,9 +4985,9 @@ Clinician Name`;
               title: 'CVT: Thrombophilia workup',
               recommendation: 'Evaluate for underlying thrombophilia in unprovoked CVT, especially in young patients. Defer testing until after acute phase if possible.',
               detail: 'Test for: Factor V Leiden, prothrombin G20210A, antithrombin III, protein C/S, antiphospholipid antibodies. Hormonal risk factors (OCP, pregnancy) are most common provoked cause. TIMING: Do NOT test protein C, protein S, or antithrombin during acute admission — levels are reduced by acute thrombosis, heparin (AT), and warfarin (protein C/S). Defer to outpatient testing at 2-4 weeks, off anticoagulation for protein-based assays. Genetic tests (FVL, PT G20210A) and APL antibodies can be sent acutely.',
-              classOfRec: 'IIa',
-              levelOfEvidence: 'C-LD',
-              guideline: 'AHA Cerebral Venous Thrombosis 2024',
+              classOfRec: 'Statement',
+              levelOfEvidence: 'Ungraded',
+              guideline: 'AHA Cerebral Venous Thrombosis Scientific Statement 2024 (ungraded)',
               reference: 'Saposnik G et al. Stroke. 2024. DOI: 10.1161/STR.0000000000000456',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456#page=2',
               conditions: (data) => {
@@ -5074,7 +5074,7 @@ Clinician Name`;
               category: 'TIA',
               title: 'TIA: DAPT for high-risk TIA',
               recommendation: 'Start DAPT (aspirin + clopidogrel) within 24 hours for high-risk TIA, continue for 21 days, then single antiplatelet.',
-              detail: 'Loading: ASA 325 mg + clopidogrel 300 mg. Maintenance: ASA 81 mg + clopidogrel 75 mg x 21 days. Based on CHANCE/POINT/THALES trials. High-risk TIA = ABCD2 >=4 or DWI+ on MRI.',
+              detail: 'Loading: ASA 325 mg + clopidogrel 300 mg. Maintenance: ASA 81 mg + clopidogrel 75 mg x 21 days. Based on CHANCE and POINT (clopidogrel-aspirin); THALES tested ticagrelor-aspirin for 30 days and does not support this clopidogrel regimen. High-risk TIA = ABCD2 ≥4 in both the 2021 secondary-prevention and 2026 AIS guidelines; DWI positivity is not part of the guideline definition (a DWI-positive event is a minor ischemic stroke and qualifies for DAPT if NIHSS ≤3). The 2021 Class I wording is broader (start ideally within 12-24 h, at least within 7 days; continue 21-90 days); the within-24-h, 21-day course matches the 2026 AHA/ASA AIS Class I, LOE A recommendation for patients not treated with IVT (ais-2026-147) and ESO 2021.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
@@ -5262,7 +5262,7 @@ Clinician Name`;
               category: 'Carotid',
               title: 'Symptomatic carotid stenosis management',
               recommendation: 'For symptomatic carotid stenosis \u226550%, CEA within 2 weeks is recommended. Optimal medical management is the foundation for all patients.',
-              detail: 'CEA preferred if age >70 and suitable anatomy; CAS reasonable if high surgical risk. Symptomatic = stroke/TIA referable to the carotid territory within 6 months \u2014 confirm the stenosis is IPSILATERAL to the symptomatic territory; a stenosis contralateral to the event is managed as asymptomatic disease (see the CREST-2 card). CEA for symptomatic 70\u201399% stenosis is Class I; for 50\u201369% stenosis CEA is Class IIa (reasonable, depending on patient-specific factors) \u2014 not Class I. NASCET endarterectomy NNTs: symptomatic 70\u201399% \u2192 NNT \u2248 6 (ARR \u224817% over 2 yr); symptomatic 50\u201369% \u2192 NNT \u2248 15 (ARR \u22486.5% over 5 yr). Benefit is greatest within 2 weeks of the event and diminishes with delay. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
+              detail: 'CEA preferred if age >70 and suitable anatomy; CAS reasonable if high surgical risk. Symptomatic = stroke/TIA referable to the carotid territory within 6 months \u2014 confirm the stenosis is IPSILATERAL to the symptomatic territory; a stenosis contralateral to the event is managed as asymptomatic disease (see the CREST-2 card). CEA for symptomatic 70\u201399% stenosis is Class I; for 50\u201369% stenosis CEA is also recommended (Class I, LOE B-R) depending on patient-specific factors (age, sex, comorbidities) when perioperative stroke/death risk is <6%. When revascularization is indicated, performing it within 2 weeks of the index event is reasonable (Class IIa). NASCET endarterectomy NNTs: symptomatic 70\u201399% \u2192 NNT \u2248 6 (ARR \u224817% over 2 yr); symptomatic 50\u201369% \u2192 NNT \u2248 15 (ARR \u22486.5% over 5 yr). Benefit is greatest within 2 weeks of the event and diminishes with delay. Intensive medical management includes SBP <130, LDL <70, high-intensity statin, and antiplatelet therapy. CAS is an alternative for patients at high surgical risk.',
               classOfRec: 'I',
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021',
@@ -5314,7 +5314,7 @@ Clinician Name`;
               category: 'ESUS/Cryptogenic',
               title: 'Prolonged cardiac monitoring for cryptogenic stroke',
               recommendation: 'For cryptogenic/ESUS stroke, prolonged cardiac monitoring (\u226514 days, ideally implantable loop recorder) is recommended to detect occult AF.',
-              detail: 'ACC 2024 ECDP: \u226514 days monitoring, especially if patient is anticoagulation candidate. ILR as initial strategy reasonable in select high-risk patients. PER-DIEM trial: ILR detected AF in 15.3% vs 4.7% with 30-day monitor at 1 year. If clinical AF detected, transition to anticoagulation. NAVIGATE-ESUS, RE-SPECT ESUS, ATTICUS, ARCADIA: routine empiric anticoagulation NOT recommended for ESUS (Class III).\n\nSubclinical AF / device-detected AF: If monitoring reveals subclinical AF (AHREs, brief device-detected episodes), anticoagulation decision requires nuance. ARTESIA (NEJM 2023): apixaban reduced stroke vs aspirin (HR 0.63) but increased major bleeding (HR 1.80). NOAH-AFNET 6 (NEJM 2023): edoxaban vs placebo did NOT reduce composite endpoint and increased bleeding. Clinical implication: subclinical AF detection does NOT automatically warrant anticoagulation. Use shared decision-making considering CHA\u2082DS\u2082-VASc score, AF burden/duration, and bleeding risk. Clinical AF (duration \u22656 min per AHA/ACC) has a stronger anticoagulation evidence base than brief device-detected episodes.',
+              detail: 'ACC 2024 ECDP: \u226514 days monitoring, especially if patient is anticoagulation candidate. ILR as initial strategy reasonable in select high-risk patients. PER-DIEM trial: ILR detected AF in 15.3% vs 4.7% with 30-day monitor at 1 year. If clinical AF detected, transition to anticoagulation. NAVIGATE-ESUS, RE-SPECT ESUS, ATTICUS, ARCADIA: routine empiric anticoagulation NOT recommended for ESUS (Class III).\n\nSubclinical AF / device-detected AF: If monitoring reveals subclinical AF (AHREs, brief device-detected episodes), anticoagulation decision requires nuance. ARTESIA (NEJM 2023): apixaban reduced stroke vs aspirin (HR 0.63) but increased major bleeding (HR 1.80). NOAH-AFNET 6 (NEJM 2023): edoxaban vs placebo did NOT reduce composite endpoint and increased bleeding. Clinical implication: subclinical AF detection does NOT automatically warrant anticoagulation. Use shared decision-making considering CHA\u2082DS\u2082-VASc score, AF burden/duration, and bleeding risk. Clinically diagnosed AF has a stronger anticoagulation evidence base than device-detected subclinical AF/AHREs; the 6-minute threshold comes from AHRE trials (ASSERT; ARTESIA enrolled episodes of 6 min to 24 h), not from a definition of clinical AF. 2023 ACC/AHA/ACCP/HRS AF guideline: device-detected AHRE \u226524 h with CHA\u2082DS\u2082-VASc \u22652, anticoagulation is reasonable (2a); 5 min to 24 h with CHA\u2082DS\u2082-VASc \u22653, it may be reasonable (2b); <5 min, no anticoagulation (3: No Benefit).',
               classOfRec: 'IIa',
               levelOfEvidence: 'B-R',
               guideline: 'AHA/ASA Secondary Stroke Prevention 2021 (prolonged monitoring reasonable in cryptogenic stroke without contraindication to anticoagulation)',
@@ -5520,10 +5520,10 @@ Clinician Name`;
               category: 'Antithrombotic',
               title: 'CYP2C19-guided antiplatelet selection (CHANCE-2)',
               recommendation: 'For minor stroke/TIA patients on DAPT, consider CYP2C19 testing. Loss-of-function carriers benefit from ticagrelor + ASA instead of clopidogrel + ASA.',
-              detail: 'CHANCE-2 (NEJM 2021, n=6,412 CYP2C19 LOF carriers): Ticagrelor + ASA \u00d7 21 days then ticagrelor mono \u00d7 90 days reduced 1-year stroke by 20% (HR 0.80, P=0.007) vs. clopidogrel + ASA. Benefit entirely in first 90 days. THALES: Ticagrelor + ASA \u00d7 30 days reduced stroke/death (HR 0.83) regardless of genotype but with higher severe bleeding (HR 3.99). Standard DAPT (non-LOF carriers): clopidogrel 300 mg load + ASA 325 mg, then clopidogrel 75 mg + ASA 81 mg \u00d7 21 days, then clopidogrel mono.',
-              classOfRec: 'IIa',
+              detail: 'CHANCE-2 (NEJM 2021, n=6,412 CYP2C19 LOF carriers): Ticagrelor for 90 days plus ASA for the first 21 days (ticagrelor monotherapy days 22-90) reduced stroke at 90 days (6.0% vs 7.6%; HR 0.77, 95% CI 0.64-0.94) and at 1 year (7.91% vs 9.73%; HR 0.80, 95% CI 0.68-0.95, P=0.007) vs. clopidogrel + ASA. Benefit entirely in first 90 days. THALES: Ticagrelor + ASA \u00d7 30 days reduced stroke/death (HR 0.83) regardless of genotype but with higher severe bleeding (HR 3.99). Standard DAPT (non-LOF carriers): clopidogrel 300 mg load + ASA 325 mg, then clopidogrel 75 mg + ASA 81 mg \u00d7 21 days, then clopidogrel mono.',
+              classOfRec: 'IIb',
               levelOfEvidence: 'B-R',
-              guideline: 'CHANCE-2 (NEJM 2021); THALES (NEJM 2020)',
+              guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026 (CYP2C19-guided ticagrelor-aspirin for NIHSS ≤3 or ABCD2 ≥4, within 24 h, no IVT, CYP2C19 LOF carrier: COR IIb, LOE B-R); CHANCE-2 (NEJM 2021)',
               reference: 'CHANCE-2: NEJM 2021. 1-year follow-up: Neurology 2024. THALES: NEJM 2020.',
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
@@ -6876,7 +6876,7 @@ Clinician Name`;
             const windows = {
               minor: { start: 0, end: 2, label: 'Start within 48 hours' },
               moderate: { start: 2, end: 4, label: 'Start on day 2-4 (early, ≤4 days)' },
-              severe: { start: 6, end: 14, label: 'Start on day 6-14' }
+              severe: { start: 6, end: 7, label: 'Start on day 6-7 (ELAN early arm for major stroke; later if very severe or HT on repeat imaging)' }
             };
             const base = windows[severity];
             if (!base) return null;
@@ -9154,7 +9154,7 @@ Clinician Name`;
             const doac = telestrokeNote.doacTiming || {};
             if (doac.strokeSeverity || doac.doacAgent) {
               brief += `\nDOAC TIMING:\n`;
-              if (doac.strokeSeverity) brief += `- Severity: ${doac.strokeSeverity} → ${doac.strokeSeverity === 'minor' ? 'start within 48h' : doac.strokeSeverity === 'moderate' ? 'start Day 3-5' : 'start Day 6-14'}\n`;
+              if (doac.strokeSeverity) brief += `- Severity: ${doac.strokeSeverity} → ${doac.strokeSeverity === 'minor' ? 'start within 48h' : doac.strokeSeverity === 'moderate' ? 'start ~Day 3-4 (early ≤4 days per OPTIMAS/CATALYST)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}\n`;
               if (doac.doacAgent) brief += `- Agent: ${doac.doacAgent.replace(/-/g, ' ')}\n`;
               if (doac.doacInitiationDay) brief += `- Planned initiation: ${doac.doacInitiationDay}\n`;
               if (doac.hemorrhagicTransformation) brief += `- HT present: repeat imaging before DOAC initiation\n`;
@@ -9610,7 +9610,7 @@ Clinician Name`;
                   if (transferWus.ageEligible) note += `- Age: Eligible (18-80)\n`;
                   if (transferWus.nihssEligible) note += `- NIHSS: ≤25\n`;
                   if (twDwi.positiveForLesion && twFlair.noMarkedHyperintensity && transferWus.ageEligible && transferWus.nihssEligible) {
-                    note += `- *** MEETS WAKE-UP TRIAL CRITERIA — Consider IV thrombolysis ***\n`;
+                    note += `- *** DWI-FLAIR mismatch, age 18-80, NIHSS ≤25 documented — confirm IVT can start within 4.5 h of symptom recognition, DWI lesion <1/3 MCA territory, and pre-stroke mRS ≤1 (WAKE-UP) before IV thrombolysis ***\n`;
                   } else {
                     note += `- WAKE-UP criteria not met yet: ${formatMissingCriteria(transferWakeTrace.wakeMissing)}\n`;
                   }
@@ -9621,7 +9621,7 @@ Clinician Name`;
                   if (ext.nihss4to26) extMet.push('NIHSS 4-26');
                   if (ext.premorbidMRSLt2) extMet.push('pre-mRS <2');
                   if (ext.ischemicCoreLte70) extMet.push('core ≤70cc');
-                  if (ext.mismatchRatioGte1_2) extMet.push('mismatch ≥1.2');
+                  if (ext.mismatchRatioGte1_2) extMet.push('mismatch ratio ≥1.2 (confirm absolute mismatch >10 mL per EXTEND)');
                   if (ext.timeWindow4_5to9h) extMet.push('4.5-9h window');
                   if (extMet.length > 0) note += `- EXTEND criteria: ${extMet.join(', ')}\n`;
                   if (transferWakeTrace.wake.extendEligible) note += `- *** MEETS EXTEND CRITERIA — Consider IV thrombolysis ***\n`;
@@ -9697,7 +9697,7 @@ Clinician Name`;
                   note += `- DOAC plan: `;
                   const doacParts = [];
                   if (doac.doacAgent) doacParts.push(doac.doacAgent.replace(/-/g, ' '));
-                  if (doac.strokeSeverity) doacParts.push(`severity ${doac.strokeSeverity} → ${doac.strokeSeverity === 'minor' ? 'start within 48h' : doac.strokeSeverity === 'moderate' ? 'start Day 3-5' : 'start Day 6-14'}`);
+                  if (doac.strokeSeverity) doacParts.push(`severity ${doac.strokeSeverity} → ${doac.strokeSeverity === 'minor' ? 'start within 48h' : doac.strokeSeverity === 'moderate' ? 'start ~Day 3-4 (early ≤4 days per OPTIMAS/CATALYST)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}`);
                   if (doac.doacInitiationDay) doacParts.push(`planned Day ${doac.doacInitiationDay}`);
                   if (doac.hemorrhagicTransformation) doacParts.push('HT present — repeat imaging before initiation');
                   note += doacParts.join('; ') + '\n';
@@ -10218,7 +10218,7 @@ Clinician Name`;
                 if (snDoac.strokeSeverity || snDoac.doacAgent) {
                   const dParts = [];
                   if (snDoac.doacAgent) dParts.push(snDoac.doacAgent.replace(/-/g, ' '));
-                  if (snDoac.strokeSeverity) dParts.push(`severity ${snDoac.strokeSeverity} → ${snDoac.strokeSeverity === 'minor' ? 'start within 48h' : snDoac.strokeSeverity === 'moderate' ? 'start Day 3-5' : 'start Day 6-14'}`);
+                  if (snDoac.strokeSeverity) dParts.push(`severity ${snDoac.strokeSeverity} → ${snDoac.strokeSeverity === 'minor' ? 'start within 48h' : snDoac.strokeSeverity === 'moderate' ? 'start ~Day 3-4 (early ≤4 days per OPTIMAS/CATALYST)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}`);
                   if (snDoac.doacInitiationDay) dParts.push(`planned Day ${snDoac.doacInitiationDay}`);
                   if (snDoac.hemorrhagicTransformation) dParts.push('HT — repeat imaging before initiation');
                   note += `- DOAC plan: ${dParts.join('; ')}\n`;
@@ -10858,7 +10858,7 @@ Clinician Name`;
                 if (prDoac.strokeSeverity || prDoac.doacAgent) {
                   const prDoacParts = [];
                   if (prDoac.doacAgent) prDoacParts.push(prDoac.doacAgent.replace(/-/g, ' '));
-                  if (prDoac.strokeSeverity) prDoacParts.push(`severity ${prDoac.strokeSeverity} → ${prDoac.strokeSeverity === 'minor' ? 'start within 48h' : prDoac.strokeSeverity === 'moderate' ? 'Day 3-5' : 'Day 6-14'}`);
+                  if (prDoac.strokeSeverity) prDoacParts.push(`severity ${prDoac.strokeSeverity} → ${prDoac.strokeSeverity === 'minor' ? 'start within 48h' : prDoac.strokeSeverity === 'moderate' ? 'start ~Day 3-4 (early ≤4 days per OPTIMAS/CATALYST)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}`);
                   if (prDoac.hemorrhagicTransformation) prDoacParts.push('HT — repeat imaging first');
                   note += `   - DOAC plan: ${prDoacParts.join('; ')}\n`;
                 }
@@ -11175,7 +11175,7 @@ Clinician Name`;
                     if (dcExt.nihss4to26) dcExtMet.push('NIHSS 4-26');
                     if (dcExt.premorbidMRSLt2) dcExtMet.push('pre-mRS <2');
                     if (dcExt.ischemicCoreLte70) dcExtMet.push('core ≤70cc');
-                    if (dcExt.mismatchRatioGte1_2) dcExtMet.push('mismatch ≥1.2');
+                    if (dcExt.mismatchRatioGte1_2) dcExtMet.push('mismatch ratio ≥1.2 (confirm absolute mismatch >10 mL per EXTEND)');
                     if (dcExt.timeWindow4_5to9h) dcExtMet.push('4.5-9h');
                     if (dcExtMet.length > 0) note += `- EXTEND criteria: ${dcExtMet.join(', ')}\n`;
                     if (dischargeWakeTrace.wake.extendEligible) note += `- Met EXTEND criteria — IV thrombolysis eligible; ${hasRecordedTreatmentAdministration(telestrokeNote, 'tnk') ? 'thrombolysis administered (see ACUTE TREATMENT)' : 'no thrombolytic administration recorded'}\n`;
@@ -11961,7 +11961,7 @@ Clinician Name`;
                 if (wus.ageEligible) note += `- Age: Eligible (18-80)\n`;
                 if (wus.nihssEligible) note += `- NIHSS: ≤25\n`;
                 if (wake.wakeUpEligible) {
-                  note += `- *** MEETS WAKE-UP TRIAL CRITERIA — Consider IV thrombolysis ***\n`;
+                  note += `- *** DWI-FLAIR mismatch, age 18-80, NIHSS ≤25 documented — confirm IVT can start within 4.5 h of symptom recognition, DWI lesion <1/3 MCA territory, and pre-stroke mRS ≤1 (WAKE-UP) before IV thrombolysis ***\n`;
                 } else {
                   note += `- WAKE-UP criteria not met yet: ${formatMissingCriteria(wakeTrace.wakeMissing)}\n`;
                 }
@@ -11972,7 +11972,7 @@ Clinician Name`;
                 if (ext.nihss4to26) extMet.push('NIHSS 4-26');
                 if (ext.premorbidMRSLt2) extMet.push('pre-mRS <2');
                 if (ext.ischemicCoreLte70) extMet.push('core ≤70cc');
-                if (ext.mismatchRatioGte1_2) extMet.push('mismatch ≥1.2');
+                if (ext.mismatchRatioGte1_2) extMet.push('mismatch ratio ≥1.2 (confirm absolute mismatch >10 mL per EXTEND)');
                 if (ext.timeWindow4_5to9h) extMet.push('4.5-9h window');
                 if (extMet.length > 0) note += `- EXTEND criteria: ${extMet.join(', ')}\n`;
                 if (wake.perfusion.coreVolume !== null || wake.perfusion.mismatchRatio !== null) {
@@ -12272,7 +12272,7 @@ Clinician Name`;
               if (cnDoac.strokeSeverity || cnDoac.doacAgent) {
                 const cnDoacParts = [];
                 if (cnDoac.doacAgent) cnDoacParts.push(cnDoac.doacAgent.replace(/-/g, ' '));
-                if (cnDoac.strokeSeverity) cnDoacParts.push(`severity ${cnDoac.strokeSeverity} → ${cnDoac.strokeSeverity === 'minor' ? 'start within 48h' : cnDoac.strokeSeverity === 'moderate' ? 'Day 3-5' : 'Day 6-14'}`);
+                if (cnDoac.strokeSeverity) cnDoacParts.push(`severity ${cnDoac.strokeSeverity} → ${cnDoac.strokeSeverity === 'minor' ? 'start within 48h' : cnDoac.strokeSeverity === 'moderate' ? 'start ~Day 3-4 (early ≤4 days per OPTIMAS/CATALYST)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}`);
                 if (cnDoac.doacInitiationDay) cnDoacParts.push(`planned Day ${cnDoac.doacInitiationDay}`);
                 if (cnDoac.hemorrhagicTransformation) cnDoacParts.push('HT — repeat imaging before initiation');
                 note += `\nDOAC Timing: ${cnDoacParts.join('; ')}\n`;
@@ -12945,9 +12945,6 @@ Clinician Name`;
             if (n.evtRecommended && !n.ctaResults) {
               warnings.push({ id: 'evt-no-cta', severity: 'error', msg: 'EVT recommended but CTA results not documented — vessel occlusion confirmation required before thrombectomy. Obtain CTA before transfer.' });
             }
-            if (hasLVO && hasRecordedNoTreatment(n, 'evt') && n.diagnosisCategory === 'ischemic') {
-              warnings.push({ id: 'lvo-no-evt', severity: 'warn', msg: 'LVO detected but EVT not recommended — document reason (e.g., late window without perfusion imaging, patient/family declined, contraindication).' });
-            }
             if (n.codeStatus && (n.codeStatus === 'DNR/DNI' || n.codeStatus === 'Comfort care') && (n.tnkRecommended || n.evtRecommended)) {
               const csTx = [n.tnkRecommended && 'TNK', n.evtRecommended && 'EVT'].filter(Boolean).join(' + ');
               warnings.push({ id: 'code-status-conflict', severity: 'error', msg: `Code status "${n.codeStatus}" conflicts with ${csTx} recommendation — verify goals of care align with acute intervention plan. Update code status or clear ${csTx} recommendation.` });
@@ -13119,9 +13116,6 @@ Clinician Name`;
                   } else if (doacCrCl.value < 30) {
                     warnings.push({ id: 'dabigatran-crcl-caution', severity: 'warn', msg: `Dabigatran with CrCl ${doacCrCl.value} mL/min (15-29) — RE-LY excluded CrCl <30. US dosing for NVAF at CrCl 15-30 mL/min is dabigatran 75 mg BID; the 75 mg BID adjustment for dronedarone or systemic ketoconazole applies at CrCl 30-50 mL/min. Verify against current prescribing information. Consider switching to apixaban or warfarin.` });
                   }
-                }
-                if (n.lastDOACType === 'edoxaban' && doacCrCl.value > 95) {
-                  warnings.push({ id: 'edoxaban-high-crcl', severity: 'warn', msg: `Edoxaban with CrCl ${doacCrCl.value} mL/min (>95) — REDUCED EFFICACY vs warfarin per ENGAGE AF-TIMI 48 and FDA labeling. Consider switching to warfarin (INR 2-3), apixaban, or rivaroxaban for stroke prevention in AF.` });
                 }
               }
             }
@@ -13470,7 +13464,7 @@ Clinician Name`;
             if (n.diagnosisCategory === 'tia') {
               const abcd2 = calculateABCD2Score(abcd2Items);
               if (abcd2 >= 4 && (n.secondaryPrevention || {}).antiplateletRegimen !== 'dapt-21') {
-                warnings.push({ id: 'tia-abcd2-dapt', severity: 'warn', msg: `High-risk TIA (ABCD2 ${abcd2} ≥4) — initiate dual antiplatelet therapy (ASA 325 + clopidogrel 300 load, then ASA 81 + clopidogrel 75 x 21 days) per CHANCE/POINT protocol unless contraindicated.` });
+                warnings.push({ id: 'tia-abcd2-dapt', severity: 'warn', msg: `High-risk TIA (ABCD2 ${abcd2} ≥4) — initiate dual antiplatelet therapy unless contraindicated: aspirin plus clopidogrel with loading dose, started within 24 h and continued 21 days, then single antiplatelet (2026 AHA/ASA Class I, LOE A when IVT not given). CHANCE-based regimen: ASA 325 + clopidogrel 300 load, then ASA 81 + clopidogrel 75 x 21 days; POINT used a 600 mg clopidogrel load and 90 days of DAPT.` });
               }
             }
 
@@ -14440,7 +14434,6 @@ Clinician Name`;
             { value: 'uptodate', label: 'uptodate', hint: 'Open UpToDate in new tab', category: 'Resources' },
             { value: 'openevidence', label: 'openevidence', hint: 'Open OpenEvidence AI search', category: 'Resources' },
             { value: 'asta', label: 'asta', hint: 'Open Asta (Ai2) AI assistant', category: 'Resources' },
-            { value: 'stroke clinic', label: 'stroke clinic', hint: 'Stroke Clinic Pre-Visit Questionnaire', category: 'Resources' },
             { value: 'regional facilities', label: 'regional facilities', hint: 'Regional telestroke center map', category: 'Resources' }
           ];
 
@@ -24006,12 +23999,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="bg-warn-50 border border-warn-200 p-2 rounded text-center dark:bg-warn-950 dark:border-warn-800">
                                       <p className="font-bold text-warn-700 uppercase dark:text-warn-300">Moderate</p>
                                       <p className="text-slate-500 dark:text-mute">NIHSS 8-15</p>
-                                      <p className="text-sm font-bold text-warn-800 mt-1 dark:text-warn-300">DOAC day 3-5</p>
+                                      <p className="text-sm font-bold text-warn-800 mt-1 dark:text-warn-300">DOAC ~day 3-4 (early, ≤4 days)</p>
                                     </div>
                                     <div className="bg-crit-50 border border-crit-200 p-2 rounded text-center dark:bg-crit-950 dark:border-crit-800">
                                       <p className="font-bold text-crit-700 uppercase dark:text-crit-300">Severe / Large</p>
                                       <p className="text-slate-500 dark:text-mute">NIHSS &ge;16 or large infarct</p>
-                                      <p className="text-sm font-bold text-crit-800 mt-1 dark:text-crit-300">DOAC day 6-14</p>
+                                      <p className="text-sm font-bold text-crit-800 mt-1 dark:text-crit-300">DOAC ~day 6-7 (later if very severe or HT)</p>
                                     </div>
                                   </div>
                                   <div className="mt-2 bg-white border border-cobalt-200 rounded p-2 text-xs text-slate-700 dark:bg-card dark:border-cobalt-700 dark:text-ink-2">
@@ -24863,8 +24856,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           <p className="font-semibold mb-1">
                                             {(telestrokeNote.doacTiming || {}).hemorrhagicTransformation ? 'Delay DOAC — repeat imaging first' :
                                              (telestrokeNote.doacTiming || {}).strokeSeverity === 'minor' ? 'Start DOAC within 48 hours' :
-                                             (telestrokeNote.doacTiming || {}).strokeSeverity === 'moderate' ? 'Start DOAC Day 3-5' :
-                                             'Start DOAC Day 6-14'}
+                                             (telestrokeNote.doacTiming || {}).strokeSeverity === 'moderate' ? 'Start DOAC ~Day 3-4 (early, ≤4 days per OPTIMAS/CATALYST)' :
+                                             'Start DOAC ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}
                                           </p>
                                           <p className="text-xs text-slate-600 dark:text-ink-2">CATALYST meta-analysis (ELAN, OPTIMAS, TIMING, START). Early initiation is safe and non-inferior to delayed.</p>
                                           {(telestrokeNote.doacTiming || {}).hemorrhagicTransformation && (
@@ -27002,7 +26995,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 const doac = telestrokeNote.doacTiming || {};
                                 if (doac.strokeSeverity || doac.doacAgent) {
                                   note += `\nDOAC TIMING:\n`;
-                                  if (doac.strokeSeverity) note += `- Severity: ${doac.strokeSeverity}. Recommended: ${doac.strokeSeverity === 'minor' ? 'within 48h' : doac.strokeSeverity === 'moderate' ? 'Day 3-5' : 'Day 6-14'}.\n`;
+                                  if (doac.strokeSeverity) note += `- Severity: ${doac.strokeSeverity}. Recommended: ${doac.strokeSeverity === 'minor' ? 'within 48h' : doac.strokeSeverity === 'moderate' ? '~Day 3-4 (early ≤4 days per OPTIMAS/CATALYST)' : '~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}.\n`;
                                   if (doac.doacAgent) note += `- Agent: ${doac.doacAgent.replace(/-/g, ' ')}.\n`;
                                   if (doac.doacInitiationDay) note += `- Planned initiation: ${doac.doacInitiationDay}.\n`;
                                   if (doac.hemorrhagicTransformation) note += `- Note: HT present — repeat imaging before DOAC.\n`;

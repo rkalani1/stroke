@@ -29,7 +29,7 @@ export const citations = [
   makeCitation({
     id: 'cit-trace2-2023',
     authors: 'Wang Y et al.',
-    title: 'Tenecteplase versus alteplase in acute ischaemic cerebrovascular events (TRACE-2)',
+    title: 'Tenecteplase versus alteplase in acute ischaemic cerebrovascular events (TRACE-2): a phase 3, multicentre, open-label, randomised controlled, non-inferiority trial',
     journal: 'Lancet',
     year: 2023,
     pmid: '36774935',
@@ -189,6 +189,20 @@ export const citations = [
     doi: '10.1056/NEJMoa2308440',
     url: 'https://pubmed.ncbi.nlm.nih.gov/38598795/',
     verificationStatus: 'verified-pubmed'
+  }),
+  makeCitation({
+    id: 'cit-inch-2016',
+    authors: 'Steiner T et al.',
+    title: 'Fresh frozen plasma versus prothrombin complex concentrate in patients with intracranial haemorrhage related to vitamin K antagonists (INCH): a randomised trial',
+    journal: 'Lancet Neurol',
+    year: 2016,
+    volume: '15',
+    pages: '566-573',
+    pmid: '27302126',
+    doi: '10.1016/S1474-4422(16)00110-1',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/27302126/',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'PMID, DOI, title, journal, year, volume, and pages verified against PubMed 2026-09-26 (Lancet Neurol 2016;15(6):566-73). NCT00928915.'
   }),
 
   // 4) SAH / CVT
