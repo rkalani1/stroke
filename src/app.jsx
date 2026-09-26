@@ -33471,6 +33471,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               unused. The key is kept in this browser tab only — never written to disk
                               and never transmitted.
                             </p>
+                            {PUBLIC_DEMO_MODE && (
+                              <p className="font-sans text-sm font-semibold text-ink mt-2 text-pretty" data-testid="public-demo-api-disabled">
+                                Key entry is disabled in the public demo build. Do not paste credentials into a public site.
+                              </p>
+                            )}
                           </div>
                         </div>
                       </header>
@@ -33483,6 +33488,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </label>
                             <select
                               value={tempProvider}
+                              disabled={PUBLIC_DEMO_MODE}
+                              aria-label="API provider"
                               onChange={(e) => setTempProvider(e.target.value)}
                               className="w-full max-w-md px-3 py-2 bg-card border border-line rounded-md text-ink text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500"
                             >
@@ -33521,7 +33528,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center gap-3 pt-4 border-t border-line">
                             <button
                               type="button"
+                              disabled={PUBLIC_DEMO_MODE}
                               onClick={() => {
+                                if (PUBLIC_DEMO_MODE) return;
                                 const trimmedKey = tempKey.trim();
                                 const selectedProvider = API_PROVIDERS.find((p) => p.value === tempProvider);
                                 if (!selectedProvider) {
