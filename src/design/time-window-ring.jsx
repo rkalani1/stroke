@@ -68,7 +68,7 @@ export const TimeWindowRing = ({ timeFromLKW, onNavigate }) => {
   } else if (elapsedHours <= 24.0) {
     // Endovascular (EVT) window
     progress = Math.min(1.0, (elapsedHours - 4.5) / 19.5);
-    label = 'EVT window';
+    label = '4.5–24h window';
     ringColor = 'var(--teal)';
     bgWash = 'var(--teal-wash)';
     textColor = 'var(--tag-teal)';

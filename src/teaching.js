@@ -212,7 +212,7 @@ export const TEACHING_PEARLS = [
   {
     category: 'Imaging',
     q: 'What is the hyperdense MCA sign and what does it mean?',
-    a: 'Hyperdense vessel (Hounsfield 40-60) on non-contrast CT representing acute thrombus. Specificity ~90% for proximal MCA occlusion. Requires bone-windowing for detection.'
+    a: 'Hyperdense vessel (Hounsfield 40-60) on non-contrast CT representing acute thrombus. Specificity ~90% for proximal MCA occlusion. Detection depends on CT slice thickness; thin-section reconstruction improves detection.'
   },
   {
     category: 'Imaging',
@@ -277,7 +277,7 @@ export const TEACHING_PEARLS = [
   {
     category: 'Management',
     q: 'DVT prophylaxis timing after ICH?',
-    a: 'Day 0: IPC only (CLOTS-3; Class 1, LOE B-R). At 24-48h from onset with stable imaging: low-dose UFH or LMWH may be reasonable (Class 2b, LOE C-LD per AHA/ASA 2022 ICH). For immobile ischemic stroke: IPC is Class 1; prophylactic heparin benefit is not well established (Class 2b).'
+    a: 'Day 0: IPC only (CLOTS-3; Class 1, LOE B-R). At 24-48h from onset with stable imaging: low-dose UFH or LMWH may be reasonable (Class 2b, LOE C-LD per AHA/ASA 2022 ICH). For immobile ischemic stroke (2026 AHA/ASA): IPC is Class 1 (LOE B-R). Prophylactic-dose UFH/LMWH is reasonable to reduce VTE (Class 2a, LOE B-R), though a survival benefit is not well established (Class 2b, LOE A). Elastic compression stockings are harmful (Class 3: Harm).'
   },
   {
     category: 'Rehab',
@@ -292,12 +292,12 @@ export const TEACHING_PEARLS = [
   {
     category: 'Biomarkers',
     q: 'What is a potential CSF biomarker for NORSE (New-Onset Refractory Status Epilepticus)?',
-    a: 'Atypical lymphocytes in the CSF may serve as a potential biomarker for NORSE (New-Onset Refractory Status Epilepticus). Their presence supports an underlying immune-mediated or inflammatory pathophysiology, guiding earlier immunomodulatory therapies. (The Neurohospitalist Vol. 16, No. 3)'
+    a: 'In a single case report, atypical lymphocytes appeared in peripheral blood (CSF was normal) just before cryptogenic NORSE, possibly reflecting hypercytokinemia. This is hypothesis-generating, not an established biomarker. (Takatsu et al., Neurohospitalist 2026;16(3); PMID 41306648)'
   },
   {
     category: 'Special Populations',
     q: 'What are the key considerations for AHLE (Acute Hemorrhagic Leukoencephalitis) in pregnancy?',
-    a: 'AHLE (Acute Hemorrhagic Leukoencephalitis), a severe form of ADEM, can rarely present during pregnancy. It requires prompt recognition via MRI (hemorrhagic demyelinating lesions) and aggressive immunomodulation (high-dose steroids, PLEX), balancing fetal safety with life-saving maternal interventions. (The Neurohospitalist Vol. 16, No. 3)'
+    a: 'AHLE (Acute Hemorrhagic Leukoencephalitis), a severe form of ADEM, can rarely present during pregnancy. It requires prompt recognition via MRI (hemorrhagic demyelinating lesions) and early immunotherapy. In the cited single case, high-dose corticosteroid therapy produced full neurological recovery, and the patient later delivered a healthy full-term infant. (Tuli et al., Neurohospitalist 2026;16(3); PMID 41280370)'
   }
 ];
 
