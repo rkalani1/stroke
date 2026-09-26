@@ -40,7 +40,7 @@ export const citations = [
   makeCitation({
     id: 'cit-original-2024',
     authors: 'Meng X et al.',
-    title: 'Tenecteplase vs Alteplase in AIS (ORIGINAL)',
+    title: 'Tenecteplase vs Alteplase for Patients With Acute Ischemic Stroke: The ORIGINAL Randomized Clinical Trial',
     journal: 'JAMA',
     year: 2024,
     pmid: '39264623',
@@ -62,7 +62,7 @@ export const citations = [
   makeCitation({
     id: 'cit-eso-tnk-2023',
     type: 'guideline',
-    authors: 'European Stroke Organisation',
+    authors: 'Alamowitch S et al. (European Stroke Organisation)',
     title: 'European Stroke Organisation expedited recommendation on tenecteplase',
     journal: 'Eur Stroke J',
     year: 2023,
@@ -160,7 +160,7 @@ export const citations = [
   makeCitation({
     id: 'cit-interact3-2023',
     authors: 'Ma L et al.',
-    title: 'Care bundle approach for acute intracerebral haemorrhage (INTERACT3)',
+    title: 'The third Intensive Care Bundle with Blood Pressure Reduction in Acute Cerebral Haemorrhage Trial (INTERACT3): an international, stepped wedge cluster randomised controlled trial',
     journal: 'Lancet',
     year: 2023,
     pmid: '37245517',
@@ -209,7 +209,7 @@ export const citations = [
     type: 'guideline',
     authors: 'Saposnik G et al.',
     title: 'Diagnosis and Management of Cerebral Venous Thrombosis: A Scientific Statement from the AHA',
-    journal: 'Stroke / AHA',
+    journal: 'Stroke',
     year: 2024,
     pmid: '38284265',
     doi: '10.1161/STR.0000000000000456',
@@ -277,7 +277,7 @@ export const citations = [
   makeCitation({
     id: 'cit-timing-2022',
     authors: 'Oldgren J et al.',
-    title: 'Timing of Oral Anticoagulant Therapy in AIS with AF (TIMING)',
+    title: 'Early Versus Delayed Non-Vitamin K Antagonist Oral Anticoagulant Therapy After Acute Ischemic Stroke in Atrial Fibrillation (TIMING): A Registry-Based Randomized Controlled Noninferiority Study',
     journal: 'Circulation',
     year: 2022,
     pmid: '36065821',
@@ -291,7 +291,7 @@ export const citations = [
     id: 'cit-aha-maternal-2026',
     type: 'guideline',
     authors: 'Miller EC et al.',
-    title: 'Maternal Stroke: A Focused Update',
+    title: 'Prevention and Treatment of Maternal Stroke in Pregnancy and Postpartum: A Scientific Statement From the American Heart Association',
     journal: 'Stroke',
     year: 2026,
     pmid: '41603019',
@@ -553,7 +553,7 @@ export const citations = [
   makeCitation({
     id: 'cit-catalyst-2025',
     authors: 'Dehbi HM et al.',
-    title: 'Timing of Anticoagulation after Ischaemic Stroke and Atrial Fibrillation: Systematic Review and Individual-Patient-Data Meta-analysis (CATALYST)',
+    title: 'Collaboration on the optimal timing of anticoagulation after ischaemic stroke and atrial fibrillation: a systematic review and prospective individual participant data meta-analysis of randomised controlled trials (CATALYST)',
     journal: 'Lancet',
     year: 2025,
     volume: '406',
@@ -1099,7 +1099,7 @@ export const citations = [
     id: 'cit-select-2018',
     type: 'journal-article',
     authors: 'Galovic M et al.',
-    title: 'Prediction of late seizures after ischaemic stroke with the SeLECT score: a multicentre cohort study',
+    title: 'Prediction of late seizures after ischaemic stroke with a novel prognostic model (the SeLECT score): a multivariable prediction model development and validation study',
     journal: 'Lancet Neurol',
     year: 2018,
     volume: '17',
@@ -1299,7 +1299,7 @@ export const citations = [
   makeCitation({
     id: 'cit-destiny2-2014',
     authors: 'Jüttler E et al.',
-    title: 'Hemicraniectomy for Massive Middle-Cerebral-Artery Infarction in Elderly Patients (DESTINY II)',
+    title: 'Hemicraniectomy in older patients with extensive middle-cerebral-artery stroke (DESTINY II)',
     journal: 'N Engl J Med',
     year: 2014,
     volume: '370',
@@ -1378,7 +1378,7 @@ export const citations = [
   makeCitation({
     id: 'cit-modified-fisher-2006',
     authors: 'Frontera JA et al.',
-    title: 'Prediction of clinical trial-defined symptomatic vasospasm after subarachnoid hemorrhage: the modified Fisher scale',
+    title: 'Prediction of symptomatic vasospasm after subarachnoid hemorrhage: the modified Fisher scale',
     journal: 'Neurosurgery',
     year: 2006,
     volume: '59',
@@ -1406,7 +1406,7 @@ export const citations = [
   makeCitation({
     id: 'cit-start-2025',
     authors: 'Warach SJ et al.',
-    title: 'Optimal Timing of Anticoagulation After Acute Ischemic Stroke With Atrial Fibrillation (START)',
+    title: 'Optimal Delay Time to Initiate Anticoagulation After Ischemic Stroke in Atrial Fibrillation: A Pragmatic, Response-Adaptive Randomized Clinical Trial (START)',
     journal: 'JAMA Neurol',
     year: 2025,
     volume: '82',
@@ -1628,7 +1628,7 @@ export const citations = [
   }),
   makeCitation({
     id: 'cit-copen-adc-reversal-2015',
-    authors: 'Copen WA, Rezai Gharai S, Barak ER et al.',
+    authors: 'Copen WA, Morais LT, Wu O et al.',
     title: 'In Acute Stroke, Can CT Perfusion-Derived Cerebral Blood Volume Maps Substitute for Diffusion-Weighted Imaging in Identifying the Ischemic Core?',
     journal: 'PLoS One',
     year: 2015,
@@ -1667,7 +1667,7 @@ export const citations = [
     verificationStatus: 'verified-pubmed'
   }),
   makeCitation({
-    id: 'cit-mossa-basha-vwmri-2016',
+    id: 'cit-vranic-vwmri-2021',
     authors: 'Vranic JE, Hartman JB, Mossa-Basha M',
     title: 'High-Resolution Magnetic Resonance Vessel Wall Imaging for the Evaluation of Intracranial Vascular Pathology',
     journal: 'Neuroimaging Clin N Am',
@@ -1786,7 +1786,7 @@ export const citations = [
   makeCitation({
     id: 'cit-protect-af-2009',
     authors: 'Holmes DR et al.',
-    title: 'Percutaneous closure of the left atrial appendage versus warfarin therapy for stroke prevention in patients with atrial fibrillation: a randomised non-inferiority trial (PROTECT AF)',
+    title: 'Percutaneous closure of the left atrial appendage versus warfarin therapy for prevention of stroke in patients with atrial fibrillation: a randomised non-inferiority trial (PROTECT AF)',
     journal: 'Lancet',
     year: 2009,
     volume: '374',
@@ -1866,7 +1866,7 @@ export const citations = [
   makeCitation({
     id: 'cit-carasil-hara-2009',
     authors: 'Hara K et al.',
-    title: 'Association of HTRA1 mutations and familial CARASIL',
+    title: 'Association of HTRA1 mutations and familial ischemic cerebral small-vessel disease (CARASIL)',
     journal: 'N Engl J Med',
     year: 2009,
     volume: '360',
@@ -1905,7 +1905,7 @@ export const citations = [
   makeCitation({
     id: 'cit-col4a1-gould-2005',
     authors: 'Gould DB et al.',
-    title: 'Mutations in Col4a1 cause perinatal cerebral hemorrhages and porencephaly',
+    title: 'Mutations in Col4a1 cause perinatal cerebral hemorrhage and porencephaly',
     journal: 'Science',
     year: 2005,
     volume: '308',
@@ -1916,9 +1916,9 @@ export const citations = [
     verificationStatus: 'verified-pubmed'
   }),
   makeCitation({
-    id: 'cit-eso-genetic-svd-2024',
+    id: 'cit-eso-moyamoya-2023',
     type: 'guideline',
-    authors: 'Bersano A, Giammello F, Zini A et al.',
+    authors: 'Bersano A, Khan N, Fuentes B et al.',
     title: 'European Stroke Organisation (ESO) Guidelines on Moyamoya angiopathy Endorsed by Vascular European Reference Network (VASCERN)',
     journal: 'Eur Stroke J',
     year: 2023,
@@ -1957,7 +1957,7 @@ export const citations = [
   }),
   makeCitation({
     id: 'cit-jss-moyamoya-2012',
-    authors: 'Kuroda S et al.',
+    authors: 'Research Committee on the Pathology and Treatment of Spontaneous Occlusion of the Circle of Willis',
     title: 'Guidelines for Diagnosis and Treatment of Moyamoya Disease',
     journal: 'Neurol Med Chir (Tokyo)',
     year: 2012,
@@ -2037,7 +2037,7 @@ export const citations = [
   }),
   makeCitation({
     id: 'cit-stop-cad-2024',
-    authors: 'Yaghi S, Shu L, Bakradze E et al.',
+    authors: 'Yaghi S, Shu L, Mandel D et al.',
     title: 'Antithrombotic Treatment for Stroke Prevention in Cervical Artery Dissection: The STOP-CAD Study',
     journal: 'Stroke',
     year: 2024,
@@ -2051,7 +2051,7 @@ export const citations = [
   makeCitation({
     id: 'cit-kaufmann-ipd-2024',
     authors: 'Kaufmann JE et al.',
-    title: 'Antithrombotic Therapy in Cervical Artery Dissection: An Individual Patient Data Meta-analysis',
+    title: 'Antithrombotic Treatment for Cervical Artery Dissection: A Systematic Review and Individual Patient Data Meta-Analysis',
     journal: 'JAMA Neurol',
     year: 2024,
     volume: '81',
@@ -2090,7 +2090,7 @@ export const citations = [
   }),
   makeCitation({
     id: 'cit-teach-trial-2018',
-    authors: 'Navi BB, Marshall RS, Singer S et al.',
+    authors: 'Navi BB, Marshall RS, Bobrow D et al.',
     title: 'Enoxaparin vs Aspirin in Patients With Cancer and Ischemic Stroke: The TEACH Pilot Randomized Clinical Trial',
     journal: 'JAMA Neurol',
     year: 2018,
@@ -2129,7 +2129,7 @@ export const citations = [
   }),
   makeCitation({
     id: 'cit-pediatric-stroke-2026',
-    type: 'guideline',
+    type: 'journal-article',
     authors: 'Anderer S',
     title: 'Stroke Guideline Expands Adult Treatment, Provides Pediatric Recommendations',
     journal: 'JAMA',
@@ -2139,7 +2139,8 @@ export const citations = [
     pmid: '41686463',
     doi: '10.1001/jama.2025.26391',
     url: 'https://pubmed.ncbi.nlm.nih.gov/41686463/',
-    verificationStatus: 'verified-guideline'
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'One-page JAMA article (no abstract) summarizing the 2026 AHA/ASA AIS guideline; not the guideline itself. Cite the guideline (Prabhakaran et al., Stroke 2026; PMID 41582814) for pediatric recommendations.'
   }),
   makeCitation({
     id: 'cit-rivkin-pediatric-2019',
@@ -2171,7 +2172,7 @@ export const citations = [
   makeCitation({
     id: 'cit-stop2-trial-2005',
     authors: 'Adams RJ et al.',
-    title: 'Discontinuing prophylactic transfusions for stroke in sickle cell anemia (STOP 2)',
+    title: 'Discontinuing prophylactic transfusions used to prevent stroke in sickle cell disease (STOP 2)',
     journal: 'N Engl J Med',
     year: 2005,
     volume: '353',
@@ -2224,7 +2225,7 @@ export const citations = [
   makeCitation({
     id: 'cit-eso-dissection-2021',
     type: 'guideline',
-    authors: 'Debette S, Compter A, Labeyrie MA et al.',
+    authors: 'Debette S, Mazighi M, Bijlenga P et al.',
     title: 'European Stroke Organisation guideline for the management of extracranial and intracranial artery dissection',
     journal: 'Eur Stroke J',
     year: 2021,
@@ -3448,13 +3449,14 @@ export const citations = [
     authors: 'Itaya ED et al.',
     title: 'Direct oral anticoagulants or warfarin in left ventricular thrombus: an updated systematic review and meta-analysis of randomized trials',
     journal: 'J Thromb Thrombolysis',
-    year: 2025,
+    year: 2026,
     volume: '59',
     pages: '697-707',
     pmid: '41359218',
     doi: '10.1007/s11239-025-03214-y',
     url: 'https://pubmed.ncbi.nlm.nih.gov/41359218/',
-    verificationStatus: 'verified-pubmed'
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Print citation J Thromb Thrombolysis 2026;59(3):697-707; published online 2025-12-08 (repo convention: print-issue year).'
   }),
   makeCitation({
     id: 'cit-rivawar-2025',
@@ -3505,8 +3507,8 @@ export const citations = [
     title: 'Baseline Antithrombotic Therapy and Intracranial Hemorrhage Risk in Infective Endocarditis: A Multicenter Prospective Cohort Study',
     journal: 'Clin Infect Dis',
     year: 2026,
-    volume: '',
-    pages: '',
+    volume: '83',
+    pages: '203-213',
     pmid: '41643743',
     doi: '10.1093/cid/ciag067',
     url: 'https://pubmed.ncbi.nlm.nih.gov/41643743/',
@@ -3515,7 +3517,7 @@ export const citations = [
   makeCitation({
     id: 'cit-ie-lvo-mt-meta-2025',
     type: 'journal-article',
-    authors: 'Goncalves OR et al.',
+    authors: 'Gonçalves OR et al.',
     title: 'Efficacy and Safety of Mechanical Thrombectomy for Patients with Infective Endocarditis-Related Large Vessel Occlusion: a Systematic Review and Meta-Analysis',
     journal: 'Clin Neuroradiol',
     year: 2025,
@@ -3601,7 +3603,7 @@ export const citations = [
     type: 'journal-article',
     authors: 'Bourcier R et al.',
     title: 'Safety and efficacy of stent retrievers plus contact aspiration in patients with acute ischaemic anterior circulation stroke and positive susceptibility vessel sign in France (VECTOR): a randomised, single-blind trial',
-    journal: 'Lancet Neurology',
+    journal: 'Lancet Neurol',
     year: 2024,
     volume: '23',
     pages: '700-711',
@@ -3629,7 +3631,7 @@ export const citations = [
     type: 'journal-article',
     authors: 'Simonsen CZ et al.',
     title: 'Effect of General Anesthesia and Conscious Sedation During Endovascular Therapy on Infarct Growth and Clinical Outcomes in Acute Ischemic Stroke: A Randomized Clinical Trial (GOLIATH)',
-    journal: 'JAMA Neurology',
+    journal: 'JAMA Neurol',
     year: 2018,
     volume: '75',
     pages: '470-477',
@@ -3657,7 +3659,7 @@ export const citations = [
     type: 'journal-article',
     authors: 'Liang F et al.',
     title: 'General Anesthesia vs Conscious Sedation for Endovascular Treatment in Patients With Posterior Circulation Acute Ischemic Stroke: An Exploratory Randomized Clinical Trial (CANVAS II)',
-    journal: 'JAMA Neurology',
+    journal: 'JAMA Neurol',
     year: 2023,
     volume: '80',
     pages: '64-72',
@@ -3715,8 +3717,8 @@ export const citations = [
     title: 'Mechanical Thrombectomy in Ischemic Stroke With a Medium or Distal Arterial Occlusion: The DISCOUNT Randomized Clinical Trial',
     journal: 'JAMA',
     year: 2026,
-    volume: '',
-    pages: '',
+    volume: '336',
+    pages: '755-764',
     pmid: '42485024',
     doi: '10.1001/jama.2026.8977',
     url: 'https://pubmed.ncbi.nlm.nih.gov/42485024/',
@@ -3879,7 +3881,7 @@ export const citations = [
   makeCitation({
     id: 'cit-actisave-2026',
     type: 'journal-article',
-    authors: 'Kohrmann M et al.',
+    authors: 'Köhrmann M et al.',
     title: 'Glenzocimab Efficacy and Safety Added to Intravenous Thrombolysis With or Without Mechanical Thrombectomy in Patients With Acute Ischemic Stroke-ACTISAVE: A Prospective, Randomized, Double-Blind Study',
     journal: 'Stroke',
     year: 2026,
@@ -4148,7 +4150,7 @@ export const citations = [
     authors: 'Richardt A, Verho L, Korhonen A et al.',
     title: 'Stroke Recurrence and Pregnancy Outcomes in the Subsequent Pregnancies After Maternal Ischemic Stroke',
     journal: 'Stroke',
-    year: 2025,
+    year: 2026,
     volume: '57',
     pages: '301-311',
     pmid: '40970275',
@@ -4846,7 +4848,7 @@ export const citations = [
     id: "cit-education-pmid-30635475",
     type: "journal-article",
     authors: "Rocha EA, Topcuoglu MA, Silva GS et al.",
-    title: "RCVS(2) score and diagnostic approach for reversible cerebral vasoconstriction syndrome.",
+    title: "RCVS² score and diagnostic approach for reversible cerebral vasoconstriction syndrome.",
     journal: "Neurology",
     year: 2019,
     volume: "92",

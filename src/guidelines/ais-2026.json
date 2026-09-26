@@ -761,6 +761,16 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In patients with suspected AIS and LVO identified by prefacility assessment with a validated stroke severity scale (e.g., RACE >4) who are EVT-eligible, direct triage to the angiography suite for flat-panel head CT may be considered to reduce time to intervention and improve functional outcomes compared with conventional imaging workflow.",
+      "currentEvidenceCheckedAt": "2026-09-26",
+      "currentEvidenceSources": [
+        {
+          "title": "DIRECT ANGIO (Lancet Neurology, 2026)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41864232/",
+          "pmid": "41864232",
+          "doi": "10.1016/S1474-4422(26)00056-6"
+        }
+      ],
+      "currentEvidenceNote": "Newer evidence reviewed 2026-09-26: DIRECT ANGIO (Lancet Neurology, 2026), a French multicenter RCT published after this guideline, randomly assigned 115 patients aged 85 years or younger who were admitted directly to an endovascular-capable center within 5 hours of onset with a severe deficit suggestive of LVO (selected by neurologist examination on arrival, not a prehospital scale) to direct transfer to the angiography suite for cone-beam CT and angiography or to conventional imaging first. It was stopped early for safety. Symptomatic ICH was higher with direct transfer (5/34 vs 0/42; adjusted OR 11.0, 95% CI 1.28-1406), with no evidence of functional benefit (mRS 0-2 at 90 days 36% vs 42%; adjusted OR 0.73, 95% CI 0.32-1.69). The small sample limits precision. This IIb recommendation predates the trial, so read its stated functional-outcome benefit with caution.",
       "page": 27,
       "id": "ais-2026-56",
       "sourceSection": "table-12",
@@ -2585,7 +2595,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "In AIS patients who received IV tPA and develop malignant cerebral edema despite medical therapy, early decompressive craniectomy within 48 hours may still be considered without additional safety concerns.",
+      "text": "In AIS patients who received IVT and develop malignant cerebral edema despite medical therapy, early decompressive craniectomy within 48 hours may still be considered without additional safety concerns.",
       "page": 82,
       "id": "ais-2026-191",
       "sourceSection": "table-43",
@@ -3016,7 +3026,7 @@
       },
       {
         "id": "table-21",
-        "title": "Extended Time Windows for Intravenous",
+        "title": "Extended Time Windows for Intravenous Thrombolysis",
         "sourceTable": "Recommendations for Extended Time Windows for Intravenous",
         "rowCount": 3,
         "pageRange": [
@@ -3078,7 +3088,7 @@
       },
       {
         "id": "table-25",
-        "title": "Endovascular Thrombectomy for Adult",
+        "title": "Endovascular Thrombectomy for Adult Patients",
         "sourceTable": "Recommendations for Endovascular Thrombectomy for Adult",
         "rowCount": 8,
         "pageRange": [
@@ -3133,7 +3143,7 @@
       },
       {
         "id": "table-28",
-        "title": "Endovascular Thrombectomy in Pediatric",
+        "title": "Endovascular Thrombectomy in Pediatric Patients",
         "sourceTable": "Recommendations for Endovascular Thrombectomy in Pediatric",
         "rowCount": 3,
         "pageRange": [

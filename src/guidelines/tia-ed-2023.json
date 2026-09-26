@@ -309,7 +309,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "A meta-analysis of 33 studies and just over 16 000 patients found that the ABCD2 had high sensitivity but low specificity when stratifying high-risk (score 6-7) versus low-risk (score 0-3) patients; at 7 days after TIA, the high-risk group had a recurrent stroke risk of 7% versus 2.1% in the low-risk group.",
+      "text": "A meta-analysis of 33 studies and just over 16 000 patients found that the ABCD2 had high sensitivity (89%) but low specificity (34%) for 7-day stroke when dichotomizing patients as high risk (score 4-7) versus low risk (score 0-3); at 7 days after TIA, the high-risk group had a recurrent stroke risk of 7% versus 2.1% in the low-risk group.",
       "page": null
     },
     {
@@ -637,7 +637,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Primary care providers are essential in the long-term management of cardiovascular risk factors and should be notified when a patient presents to the emergency department with TIA. Given the subsequent risk for recurrent stroke after TIA, rapid follow-up with both a neurologist and a primary care physician is warranted; one study found a significant reduction in 90-day stroke risk when time from TIA to stroke specialist review changed from 3 days to 1 day (10.3% to 2.1%).",
+      "text": "Primary care providers are essential in the long-term management of cardiovascular risk factors and should be notified when a patient presents to the emergency department with TIA. Given the subsequent risk for recurrent stroke after TIA, rapid follow-up with both a neurologist and a primary care physician is warranted; one study (EXPRESS) found a significant reduction in 90-day stroke risk (10.3% to 2.1%) when median delay to specialist assessment fell from 3 days to less than 1 day and median delay to first treatment fell from 20 days to 1 day.",
       "page": null
     },
     {

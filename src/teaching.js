@@ -70,7 +70,7 @@ export const STROKE_SYNDROMES = {
     {
       name: 'Lateral medullary (Wallenberg)',
       territory: 'Vertebral artery or PICA',
-      deficits: 'IPSILATERAL: facial numbness (CN5), Horner (sympathetics), hoarseness/dysphagia (CN9/10), ataxia (ICP). CONTRALATERAL: body pain/temperature loss (spinothalamic).',
+      deficits: 'IPSILATERAL: facial numbness (CN5), Horner (sympathetics), hoarseness/dysphagia (CN9/10), ataxia (inferior cerebellar peduncle). CONTRALATERAL: body pain/temperature loss (spinothalamic).',
       pearls: 'The classic "crossed" syndrome. Often presents with severe nausea, vertigo, hiccups.',
       pimpingQ: 'Why does Wallenberg syndrome have crossed findings (ipsilateral face, contralateral body for pain/temp)?',
       answer: 'Trigeminal spinal nucleus (carries face pain/temp) is ipsilateral in the medulla. Spinothalamic tract (body pain/temp) has already decussated at the spinal cord level, so damage in the lateral medulla affects already-crossed fibers → contralateral body.'

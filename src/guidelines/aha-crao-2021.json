@@ -103,6 +103,22 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "Intravenous tPA may be considered in patients who have disabling visual deficits and who otherwise meet criteria for systemic tPA after a thorough benefit/risk discussion with the affected patient. Until a fully powered efficacy trial has been completed, there is equipoise in the utility of intravenous tPA for CRAO, and the decision to use this therapy rests on a thorough discussion between the treating specialist and the affected patient.",
+      "currentEvidenceNote": "Newer evidence reviewed 2026-09-26: randomized trials published after this 2021 statement have not shown benefit from IV thrombolysis for CRAO. THEIA (alteplase 0.9 mg/kg vs aspirin within 4.5 h, n=70; Lancet Neurol 2025) found no significant improvement in visual acuity and was likely underpowered. TenCRAOS (tenecteplase 0.25 mg/kg vs aspirin within 4.5 h, n=78; NEJM 2026) found no significant difference in vision recovery at 30 days (20% vs 24%) and more adverse events with tenecteplase, including one fatal intracranial hemorrhage. This 2021 statement is historical and should not be read as a current endorsement of routine CRAO thrombolysis.",
+      "currentEvidenceSources": [
+        {
+          "title": "THEIA (Lancet Neurology, 2025)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41109232/",
+          "pmid": "41109232",
+          "doi": "10.1016/S1474-4422(25)00308-4"
+        },
+        {
+          "title": "TenCRAOS (NEJM, 2026)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41604638/",
+          "pmid": "41604638",
+          "doi": "10.1056/NEJMoa2508515"
+        }
+      ],
+      "currentEvidenceCheckedAt": "2026-09-26",
       "page": null
     },
     {
@@ -110,7 +126,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "The risk of symptomatic intracranial hemorrhage appears to be low when tPA is administered to treat CRAO; there are no recorded cases of symptomatic intracranial hemorrhage when tPA is administered within 4.5 hours of symptom onset and without concomitant anticoagulation. Because of a 30% incidence of concurrent cerebral ischemic stroke and a reduced efficacy signal in the 4.5- to 6-hour time epoch, treatment beyond 4.5 hours requires further study.",
+      "text": "The risk of symptomatic intracranial hemorrhage appears to be low when tPA is administered to treat CRAO; there were no recorded cases of symptomatic intracranial hemorrhage, as of this 2021 statement, when tPA was administered within 4.5 hours of symptom onset and without concomitant anticoagulation (later evidence: the TenCRAOS RCT [N Engl J Med 2026] reported one fatal intracranial hemorrhage with IV tenecteplase given within 4.5 hours of CRAO onset, whereas the THEIA RCT [Lancet Neurol 2025] reported no treatment-related symptomatic intracranial hemorrhage with IV alteplase). Because of a 30% incidence of concurrent cerebral ischemic stroke and a reduced efficacy signal in the 4.5- to 6-hour time epoch, treatment beyond 4.5 hours requires further study.",
       "page": null
     },
     {

@@ -106,7 +106,7 @@ const SCENARIOS = {
     tone: 'crit',
     anim: 'hint-anim-skew-present',
     cover: 'alt',
-    text: 'Skew Deviation Present (Central): the covered eye vertical-drifts; on uncover it makes a vertical re-fixation movement to realign. Vertical ocular misalignment points to a brainstem / oculomotor-pathway stroke.'
+    text: 'Skew Deviation Present (Central): the covered eye vertical-drifts; on uncover it makes a vertical re-fixation movement to realign. Vertical ocular misalignment reflects a right–left imbalance of otolith (graviceptive) input to the oculomotor system; in AVS it is a specific but insensitive sign of a central, usually brainstem, lesion (occasionally reported with peripheral vestibular disease).'
   },
 
   /* 4 · Bedside Hearing Test (HINTS+) */
@@ -175,7 +175,7 @@ export const DEFAULT_FINDINGS = { hit: '', nystagmus: '', skew: '', hearing: '' 
 /* INFARCT mnemonic rows. */
 const INFARCT = [
   { letter: 'I N', label: 'Impulse Normal', detail: 'Head-impulse VOR is intact (no catch-up saccade).' },
-  { letter: 'F A', label: 'Fast-Alternating nystagmus', detail: 'Direction-changing (gaze-evoked) or vertical nystagmus.' },
+  { letter: 'F A', label: 'Fast-phase Alternating nystagmus', detail: 'Direction-changing (gaze-evoked) or vertical nystagmus.' },
   { letter: 'R C T', label: 'Refixation on Cover Test', detail: 'Vertical re-fixation = skew deviation present.' },
   { letter: '+', label: 'Unilateral hearing loss (AICA)', detail: 'New unilateral hearing loss adds the "+" → HINTS+.' }
 ];

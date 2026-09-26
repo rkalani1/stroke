@@ -11,7 +11,7 @@
       "Registry status checked 2026-09-06: RECRUITING (record updated 2025-12-04). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "hyperacute",
-    "enrollmentWindowText": "⚡ EVT Window (≤ 24 hours)",
+    "enrollmentWindowText": "EVT window (≤ 24 hours)",
     "externalMetadata": {
       "nct": "NCT06289985",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06289985",
@@ -277,7 +277,7 @@
       "Registry status checked 2026-09-06: RECRUITING (record updated 2026-06-29). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "hyperacute",
-    "enrollmentWindowText": "<=16 hours",
+    "enrollmentWindowText": "≤ 16 hours",
     "externalMetadata": {
       "nct": "NCT07260916",
       "registryUrl": "https://clinicaltrials.gov/study/NCT07260916",
@@ -596,7 +596,7 @@
   {
     "acronym": "ESUS",
     "exactFullStudyName": "Qualitative model-based ESUS reclassification using cardiac and cerebral vessel wall MRI",
-    "sourceHypothesisText": "Use of a cardiac vessel wall MRI along with cerebellar vessel wall imaging can help to reclassify ESUS ischemic stroke patients into either cardioembolic or large artery atherosclerosis etiology using a qualitative model.",
+    "sourceHypothesisText": "Use of a cardiac vessel wall MRI along with cerebral vessel wall imaging can help to reclassify ESUS ischemic stroke patients into either cardioembolic or large artery atherosclerosis etiology using a qualitative model.",
     "status": "placeholder",
     "sourceCompletenessStatus": "not_registry_verified",
     "sourceGaps": [
@@ -1114,7 +1114,7 @@
     "pathway": "EPIC Chat Stroke Rehab Team / Stroke Research Coordinator",
     "noContactInfo": true,
     "exactInclusionCriteria": [
-      "Age >= 18",
+      "Age ≥ 18 years",
       "Acute ischemic stroke or ICH within past 30 days",
       "Head CT or brain MRI demonstrating acute ischemic infarction or intraparenchymal hemorrhage within 30 days",
       "On or moving to inpatient rehabilitation with anticipated length of stay at least 5 nights",
@@ -1233,7 +1233,7 @@
       "registryLastUpdatePosted": "2026-08-20",
       "localActivationStatus": "not_assessed"
     },
-    "conciseBedsideSummary": "TMS and MRI predictors of upper extremity recovery. Requires consent within 24-96h of LNW.",
+    "conciseBedsideSummary": "TMS and MRI predictors of upper extremity recovery. Requires consent within 24-96 h of stroke onset or last known well.",
     "pathway": "Consult Rehab Research Coordinator / Inpatient Rehab Team",
     "noContactInfo": true,
     "exactInclusionCriteria": [
@@ -1241,7 +1241,7 @@
       "Unilaterally symptomatic acute ischemic stroke",
       "Motor deficits in the affected upper extremity with SAFE score ≤ 8 within 48-96 hours",
       "able to consent for themselves",
-      "able to consent within 24-96 hours of LNW",
+      "able to consent within 24-96 hours of stroke onset or last known well",
       "English or Spanish speaking"
     ],
     "exactExclusionCriteria": [
@@ -1531,7 +1531,7 @@
       "mRS prior to stroke of >2",
       "a new stroke has occurred since index stroke",
       "a separate stroke occurred within 30 days prior to index stroke",
-      "life expectancy < 9months",
+      "life expectancy < 9 months",
       "botulinum toxin to the paretic arm received in the prior 3 months or expected by the 8-month visit"
     ],
     "optimisticDefaults": {

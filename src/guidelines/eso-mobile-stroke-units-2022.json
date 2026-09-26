@@ -1,7 +1,7 @@
 {
   "id": "eso-mobile-stroke-units-2022",
   "title": "European Stroke Organisation (ESO) guidelines on mobile stroke units for prehospital stroke management",
-  "shortTitle": "European Stroke Organisation (ESO) guidelines on mobile stroke units",
+  "shortTitle": "ESO Mobile Stroke Units 2022",
   "doi": "10.1177/23969873221079413",
   "publisherUrl": "https://doi.org/10.1177/23969873221079413",
   "pdfUrl": null,
@@ -12,7 +12,7 @@
     {
       "section": "PICO 1-3: Evidence-based Recommendation (single combined recommendation covering all three PICOs)",
       "classOfRec": "Conditional",
-      "classNote": "For — for acute ischaemic stroke outcomes; Low certainty for intracranial haemorrhage; Very low certainty for other patients (overall strength of recommendation: Weak for intervention",
+      "classNote": "For — for acute ischaemic stroke outcomes; Low certainty for intracranial haemorrhage; Very low certainty for other patients (overall strength of recommendation: Weak for intervention)",
       "levelOfEvidence": "Moderate certainty",
       "text": "We suggest the use of MSUs over conventional care for the prehospital management of patients with suspected stroke, for the following reasons: (1) in patients with AIS, prehospital management with a MSU improves functional outcomes, increases the rates of treatment with IVT, including the rates of thrombolysis within the golden hour and shortens onset to treatment time without any safety concerns (Quality of evidence: Moderate); (2) in patients with intracranial haemorrhage, prehospital management with a MSU increases the proportion of patients primarily transported to tertiary care stroke centres, without concerns on short-term mortality (Quality of evidence: Low); (3) in other patients (e.g. stroke mimics), no signal of safety concerns was identified (Quality of evidence: Very low). Overall strength of recommendation: Weak. Note: the module working group unanimously agreed to provide only ONE combined recommendation, because at the time of MSU involvement the final diagnosis is unclear; the three bullets are the reasons supporting that single recommendation, not three separate recommendations.",
       "page": null

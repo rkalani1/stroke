@@ -719,7 +719,7 @@ export function EvdIcpSimulator() {
               <div className="p-3 space-y-2">
                 <p className="text-xs font-semibold text-slate-800 dark:text-ink">A serious deterioration in clinical neurologic status such as:</p>
                 <ul className="list-disc pl-4 text-2xs text-slate-600 dark:text-ink-2 space-y-1">
-                  <li>Spontaneous GCS motor score decrease of <strong className="text-crit-500 font-bold">&ge; 1 points</strong> (compared with previous examination)</li>
+                  <li>Spontaneous GCS motor score decrease of <strong className="text-crit-500 font-bold">&ge; 1 point</strong> (compared with previous examination)</li>
                   <li>New decrease in pupillary reactivity</li>
                   <li>New pupillary asymmetry or bilateral mydriasis</li>
                   <li>New focal motor deficit</li>
@@ -821,7 +821,7 @@ export function EvdIcpSimulator() {
               <li><strong>Verify Leveling:</strong> Transducer must align to the tragus (external auditory meatus) q1-2h and after ANY bed movement.</li>
               <li><strong>Tubing Oscillation:</strong> Ensure CSF column is oscillating with patient breathing/heartbeat. If static, check for obstruction.</li>
               <li><strong>Transducer Zeroing:</strong> Zero the transducer to atmosphere at target height.</li>
-              <li><strong>Drainage Safety:</strong> Clamp EVD during mobilization, coughing, or suctioning to prevent postural collapse.</li>
+              <li><strong>Drainage Safety:</strong> Clamp EVD during mobilization, coughing, or suctioning to prevent CSF over-drainage (ventricular collapse).</li>
             </ul>
           </div>
           <div className="bg-slate-50/50 dark:bg-card-border/20 border border-slate-100 dark:border-slate-800 rounded p-3 space-y-1.5">

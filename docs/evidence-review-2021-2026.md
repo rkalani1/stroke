@@ -1,7 +1,7 @@
 # Stroke Evidence Review (2021-02-18 to 2026-02-18)
 
 ## Scope and method
-- Window: February 18, 2021 through February 18, 2026.
+- Window: February 18, 2021 through February 18, 2026 (later promotion batches and verified additive blocks through September 2026 are appended below).
 - Priority sources: society guidelines/scientific statements, major RCTs, high-quality multicenter cohorts, and trial registries.
 - Evidence tag definitions used in this document:
   - Guideline-grade: official guideline/scientific statement recommendations.
@@ -171,18 +171,18 @@
 
 ### Operational mapping update (2026-02-18, iter-006)
 - Added SAH first-hour rapid actions card: consolidated airway/ICU, BP control, aneurysm securing, nimodipine, hydrocephalus screening, and DCI surveillance plan into a single red-highlighted card at the top of the SAH management section. Based on 2023 AHA/ASA SAH guideline (PMID: 37212182).
-- Added CVT treatment timeline strip: 4-phase display (acute → subacute → duration → escalation triggers) with ACTION-CVT DOAC transition data. Placed after acute management checklist in CVT tab. Based on 2024 AHA CVT statement + ACTION-CVT (PMID: 36315105).
-- Added AF anticoag timing quick reference card in secondary prevention: conditionally displayed when DOAC-for-AF or anticoag-other is selected. Shows CATALYST/ELAN/TIMING severity-based timing grid with caution flags. Based on ELAN (PMID: 37222476) and CATALYST meta-analysis (Fischer U, Lancet Neurol 2025).
+- Added CVT treatment timeline strip: 4-phase display (acute → subacute → duration → escalation triggers) with ACTION-CVT DOAC transition data. Placed after acute management checklist in CVT tab. Based on 2024 AHA CVT statement + ACTION-CVT (PMID: 35143325).
+- Added AF anticoag timing quick reference card in secondary prevention: conditionally displayed when DOAC-for-AF or anticoag-other is selected. Shows CATALYST/ELAN/TIMING severity-based timing grid with caution flags. Based on ELAN (PMID: 37222476) and CATALYST IPD meta-analysis (Dehbi HM, Fischer U, et al., Lancet 2025; PMID 40570866).
 
 ### Operational mapping update (2026-02-18, iter-007)
-- Added TNK-first decision card in ischemic management: 3-column layout (TNK first-line dosing, alteplase fallback conditions, key exclusions) placed before TNK/EVT recommendation checkboxes. Based on AcT (PMID: 35779579), TRACE-2 (PMID: 37043691), ORIGINAL (PMID: 38710025), ESO 2023 recommendation.
-- Added imaging hard-stop alert at top of wake-up stroke evaluation panel: requires DWI-FLAIR mismatch (WAKE-UP trial) or CT perfusion mismatch (EXTEND trial) before thrombolysis. TWIST (Lancet 2023) context: no benefit for unselected wake-up thrombolysis.
-- Enhanced pregnancy/peripartum emergency panel with 4-cell rapid actions grid: acute treatment (do not delay, TNK relative CI, EVT preferred for LVO), OB coordination, differential diagnosis (preeclampsia/eclampsia, RCVS, CVT, PRES, peripartum cardiomyopathy), medication safety. Based on AHA 2026 Maternal Stroke Update (PMID: 41603019).
+- Added TNK-first decision card in ischemic management: 3-column layout (TNK first-line dosing, alteplase fallback conditions, key exclusions) placed before TNK/EVT recommendation checkboxes. Based on AcT (PMID: 35779553), TRACE-2 (PMID: 36774935), ORIGINAL (PMID: 39264623), ESO 2023 recommendation.
+- Added imaging hard-stop alert at top of wake-up stroke evaluation panel: requires DWI-FLAIR mismatch (WAKE-UP trial) or CT perfusion mismatch (EXTEND trial) before thrombolysis. TWIST (Lancet Neurol 2023) context: no benefit for wake-up stroke selected with non-contrast CT alone.
+- Enhanced pregnancy/peripartum emergency panel with 4-cell rapid actions grid: acute treatment (do not delay, TNK relative CI, EVT preferred for LVO), OB coordination, differential diagnosis (preeclampsia/eclampsia, RCVS, CVT, PRES, peripartum cardiomyopathy), medication safety. Based on the AHA 2026 scientific statement on prevention and treatment of maternal stroke in pregnancy and postpartum (PMID: 41603019).
 
 ### Operational mapping update (2026-02-18, iter-008)
 - Added renal-safety auto-alert in Contrast Allergy + LVO Protocol section: dynamically computes CrCl from patient data and shows severe (CrCl <30) or moderate (CrCl 30-59) warnings with nephropathy precautions.
-- Added PFO Closure Eligibility decision card in secondary prevention dashboard: criteria for closure (age 18-60, cryptogenic, RoPE ≥7, PASCAL probable/definite), trial evidence (CLOSE NNT ~20, RESPECT HR 0.55, REDUCE 77% RRR), and medical therapy indications. Class I, LOE A.
-- Added Carotid Revascularization Decision Guide in secondary prevention dashboard: symptomatic 70-99% (CEA within 2 weeks), symptomatic 50-69% (CEA may be considered), asymptomatic ≥70% (medical management per CREST-2), plus timing guidance after stroke. NASCET + CREST-2 evidence.
+- Added PFO Closure Eligibility decision card in secondary prevention dashboard: criteria for closure (age 18-60, cryptogenic, RoPE ≥7, PASCAL probable/definite), trial evidence (CLOSE NNT ~20, RESPECT HR 0.55, REDUCE 77% RRR), and medical therapy indications. AHA/ASA 2021: closure for age 18-60 with nonlacunar stroke of undetermined cause and high-risk PFO features is reasonable (Class IIa, LOE B-R).
+- Added Carotid Revascularization Decision Guide in secondary prevention dashboard: symptomatic 70-99% (CEA within 2 weeks), symptomatic 50-69% (CEA recommended depending on patient-specific factors if perioperative risk <6%; AHA/ASA 2021 Class I, LOE B-R), asymptomatic ≥70% (CREST-2: stenting plus intensive medical management reduced 4-year events vs medical management alone, 2.8% vs 6.0%; endarterectomy did not reach significance, 3.7% vs 5.3%), plus timing guidance after stroke. NASCET + CREST-2 evidence.
 
 ## Key citations (metadata + evidence tag)
 | Domain | Evidence tag | Title | Year | Journal/Source | URL | PMID / DOI / NCT |
@@ -190,11 +190,11 @@
 | AIS thrombolysis | RCT-supported | Intravenous Tenecteplase Compared with Alteplase for Acute Ischaemic Stroke in Canada (AcT) | 2022 | Lancet | https://pubmed.ncbi.nlm.nih.gov/35779553/ | PMID: 35779553; DOI: 10.1016/S0140-6736(22)01054-6 |
 | AIS thrombolysis | RCT-supported | Trial of Tenecteplase in Chinese Patients with Acute Ischemic Stroke (TRACE-2) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/36774935/ | PMID: 36774935; DOI: 10.1016/S0140-6736(22)02600-9 |
 | AIS thrombolysis | RCT-supported | Tenecteplase vs Alteplase in AIS (ORIGINAL) | 2024 | JAMA | https://pubmed.ncbi.nlm.nih.gov/39264623/ | PMID: 39264623; DOI: 10.1001/jama.2024.14721 |
-| Wake-up/unknown onset | RCT-supported | Intravenous thrombolysis with tenecteplase in patients with wake-up stroke (TWIST) | 2023 | Lancet Neurol | https://pubmed.ncbi.nlm.nih.gov/36549308/ | PMID: 36549308; DOI: 10.1016/S1474-4422(22)00484-7 |
+| Wake-up/unknown onset | RCT-supported | Safety and efficacy of tenecteplase in patients with wake-up stroke assessed by non-contrast CT (TWIST) | 2023 | Lancet Neurol | https://pubmed.ncbi.nlm.nih.gov/36549308/ | PMID: 36549308; DOI: 10.1016/S1474-4422(22)00484-7 |
 | AIS thrombolysis | Guideline-grade | European Stroke Organisation expedited recommendation on tenecteplase | 2023 | Eur Stroke J | https://journals.sagepub.com/doi/full/10.1177/23969873231177508 | DOI: 10.1177/23969873231177508 |
 | EVT large core | RCT-supported | Trial of Endovascular Thrombectomy for Large Ischemic Strokes (SELECT2) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/36762865/ | PMID: 36762865; DOI: 10.1056/NEJMoa2214403 |
-| EVT large core | RCT-supported | Endovascular Therapy for Acute Stroke with Large Ischemic Region (RESCUE-Japan LIMIT) | 2022 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/35138767/ | PMID: 35138767; DOI: 10.1056/NEJMoa2118191 |
-| EVT large core | RCT-supported | Endovascular Therapy for Acute Ischemic Stroke with Large Infarct (ANGEL-ASPECT) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/36762852/ | PMID: 36762852; DOI: 10.1056/NEJMoa2213379 |
+| EVT large core | RCT-supported | Endovascular Therapy for Acute Stroke with a Large Ischemic Region (RESCUE-Japan LIMIT) | 2022 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/35138767/ | PMID: 35138767; DOI: 10.1056/NEJMoa2118191 |
+| EVT large core | RCT-supported | Trial of Endovascular Therapy for Acute Ischemic Stroke with Large Infarct (ANGEL-ASPECT) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/36762852/ | PMID: 36762852; DOI: 10.1056/NEJMoa2213379 |
 | EVT large core | RCT-supported | Endovascular Thrombectomy for Acute Ischemic Stroke with Established Large Infarct (TENSION) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/37837989/ | PMID: 37837989; DOI: 10.1016/S0140-6736(23)02032-9 |
 | EVT MeVO (ACA occlusion) | Observational | Endovascular Thrombectomy Versus Standard Medical Management in Acute Anterior Cerebral Artery Occlusion Stroke (ORIENTAL-MeVO Registry) | 2026 | Stroke | https://pubmed.ncbi.nlm.nih.gov/42017224/ | PMID: 42017224; DOI: 10.1161/STROKEAHA.125.054127 |
 | EVT large core | RCT secondary analysis | Large Core Stroke Thrombectomy Is Safe and Effective Regardless of Prior Antithrombotic or Thrombolytic Treatment (TENSION secondary) | 2026 | J Am Heart Assoc | https://pubmed.ncbi.nlm.nih.gov/42261979/ | PMID: 42261979; DOI: 10.1161/JAHA.125.047192 |
@@ -203,7 +203,7 @@
 | EVT periprocedural | Observational | Previous Antiplatelet Therapy and Outcomes of AIS With LVO Treated With Direct Endovascular Therapy (EVA-TRISP) | 2026 | Neurology | https://pubmed.ncbi.nlm.nih.gov/41671526/ | PMID: 41671526; DOI: 10.1212/WNL.0000000000214672 |
 | ICH secondary prevention | IPD meta-analysis | Intensive blood pressure lowering after spontaneous intracerebral haemorrhage for secondary stroke prevention (RECAP-ICH) | 2026 | Lancet Neurol | https://pubmed.ncbi.nlm.nih.gov/42586098/ | PMID: 42586098; DOI: 10.1016/S1474-4422(26)00244-9 |
 | ICH | Guideline-grade | 2022 Guideline for the Management of Patients with Spontaneous Intracerebral Hemorrhage | 2022 | Stroke | https://pubmed.ncbi.nlm.nih.gov/35579034/ | PMID: 35579034; DOI: 10.1161/STR.0000000000000407 |
-| ICH implementation | RCT-supported | Care bundle approach for acute intracerebral haemorrhage (INTERACT3) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/37245517/ | PMID: 37245517; DOI: 10.1016/S0140-6736(23)00806-1 |
+| ICH implementation | RCT-supported | The third Intensive Care Bundle with Blood Pressure Reduction in Acute Cerebral Haemorrhage Trial (INTERACT3) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/37245517/ | PMID: 37245517; DOI: 10.1016/S0140-6736(23)00806-1 |
 | ICH reversal | RCT-supported | Andexanet for Factor Xa Inhibitor-Associated Acute Intracerebral Hemorrhage (ANNEXA-I) | 2024 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/38749032/ | PMID: 38749032; DOI: 10.1056/NEJMoa2313040 |
 | ICH surgery | RCT-supported | Trial of Early Minimally Invasive Removal of Intracerebral Hemorrhage (ENRICH) | 2024 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/38598795/ | PMID: 38598795; DOI: 10.1056/NEJMoa2308440 |
 | SAH | Guideline-grade | 2023 Guideline for Management of Patients With Aneurysmal Subarachnoid Hemorrhage | 2023 | Stroke | https://pubmed.ncbi.nlm.nih.gov/37212182/ | PMID: 37212182; DOI: 10.1161/STR.0000000000000436 |
@@ -214,13 +214,13 @@
 | DAPT timing/phenotype | RCT-supported | Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke (INSPIRES) | 2024 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/38157499/ | PMID: 38157499; DOI: 10.1056/NEJMoa2309137 |
 | Cardioembolic timing | RCT-supported | Early versus Later Anticoagulation for Stroke with Atrial Fibrillation (ELAN) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/37222476/ | PMID: 37222476; DOI: 10.1056/NEJMoa2303048 |
 | Cardioembolic timing | RCT-supported | Timing of Oral Anticoagulant Therapy in AIS with AF (TIMING) | 2022 | Circulation | https://pubmed.ncbi.nlm.nih.gov/36065821/ | PMID: 36065821; DOI: 10.1161/CIRCULATIONAHA.122.060666 |
-| Special populations | Guideline-grade | Maternal Stroke: A Focused Update | 2026 | Stroke / PubMed | https://pubmed.ncbi.nlm.nih.gov/41603019/ | PMID: 41603019; DOI: 10.1161/STR.0000000000000514 |
+| Special populations | Guideline-grade | Prevention and Treatment of Maternal Stroke in Pregnancy and Postpartum: A Scientific Statement From the American Heart Association | 2026 | Stroke / PubMed | https://pubmed.ncbi.nlm.nih.gov/41603019/ | PMID: 41603019; DOI: 10.1161/STR.0000000000000514 |
 | Special populations | Guideline-grade | Classification and Management of Ischemic Stroke in Patients With Active Cancer: A Scientific Statement From the American Heart Association | 2026 | Stroke / PubMed | https://pubmed.ncbi.nlm.nih.gov/41623113/ | PMID: 41623113; DOI: 10.1161/STR.0000000000000517 |
-| Special populations | Observational/Consensus | Stroke Guideline Expands Adult Treatment, Provides Pediatric Recommendations | 2026 | JAMA / PubMed | https://pubmed.ncbi.nlm.nih.gov/41686463/ | PMID: 41686463; DOI: 10.1001/jama.2025.26391 |
+| Special populations | News summary (not primary evidence; see 2026 AIS guideline PMID 41582814) | Stroke Guideline Expands Adult Treatment, Provides Pediatric Recommendations | 2026 | JAMA / PubMed | https://pubmed.ncbi.nlm.nih.gov/41686463/ | PMID: 41686463; DOI: 10.1001/jama.2025.26391 |
 
 ### Metadata verification refresh (2026-02-18, iter-037)
 - Re-verified 2026 AIS guideline indexing metadata: PMID `41582814`, DOI `10.1161/STR.0000000000000513`.
-- Added 2026 extended-window non-LVO tenecteplase RCT metadata: JAMA DOI `10.1001/jama.2025.22824`.
+- Added 2026 extended-window non-LVO tenecteplase RCT metadata (OPTION): JAMA DOI `10.1001/jama.2026.0210`, PMID `41642827`.
 - Re-verified key large-core EVT metadata:
   - SELECT2: PMID `36762865`, DOI `10.1056/NEJMoa2214403`
   - ANGEL-ASPECT: PMID `36762852`, DOI `10.1056/NEJMoa2213379`
@@ -252,15 +252,15 @@
 ### Operational update (2026-02-20, iter-042)
 - Updated TIA disposition language in app pathways from universal admission to risk-stratified disposition (admission/observation vs rapid outpatient pathway when infrastructure is reliable), aligned with AHA TIA ED 2023 scientific statement framing.
 - Updated extended-window IVT narrative to include modern imaging-selected 4.5-24h context with TIMELESS (NEJM 2024) and OPTION (JAMA 2026) evidence.
-- Updated Xa inhibitor-associated ICH reversal framing to agent-specific selection (andexanet when available/appropriate vs 4F-PCC by local protocol), with ANNEXA-I efficacy/safety context.
+- Updated Xa inhibitor-associated ICH reversal framing to agent-specific selection (4F-PCC by local protocol; andexanet no longer available in the US — manufacture and sales ended December 22, 2025 after FDA safety action), with ANNEXA-I efficacy/safety context.
 - Updated poststroke spasticity recommendation text to align with AHA 2026 poststroke spasticity scientific statement.
 - Expanded hormonal risk counseling text to include transgender estrogen and testosterone therapy context from AHA/ASA 2024 primary prevention guidance.
 
 ### Metadata verification refresh (2026-02-20, iter-042)
 - ESCAPE-MeVO DOI corrected to `10.1056/NEJMoa2411668`.
 - OPTION late-window thrombolysis RCT metadata confirmed:
-  - PMID `40063269`
-  - DOI `10.1001/jama.2025.22824`
+  - PMID `41642827`
+  - DOI `10.1001/jama.2026.0210`
 - ANNEXA-I ICH reversal RCT retained/confirmed:
   - DOI `10.1056/NEJMoa2313040`
 - AHA TIA ED scientific statement reference retained:

@@ -14,7 +14,7 @@ export const guidelines = [
     year: 2026,
     topic: 'acute-ischemic-stroke',
     url: 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000513',
-    citationId: '',
+    citationId: 'cit-aha-ais-2026',
     verificationStatus: 'verified-guideline',
     lastReviewed: lr,
     verificationNotes: ''

@@ -85,13 +85,15 @@ export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, hypoperfusedMl, timeFromLK
 
 // CHANCE / POINT / THALES / CHANCE-2 / INSPIRES combined DAPT recommender.
 // CHANCE (Wang NEJM 2013;369:11-19): clopidogrel+ASA x 21d for TIA/minor stroke (NIHSS <=3, ABCD2 >=4) within 24h.
-// POINT (Johnston NEJM 2018;379:215-25): clopidogrel+ASA x 21d for NIHSS <=3 / ABCD2 >=4 within 12h.
-// THALES (Johnston NEJM 2020;383:207-17): ticagrelor+ASA x 30d for NIHSS <=5 + atherosclerotic etiology or ABCD2 >=6, within 24h.
+// POINT (Johnston NEJM 2018;379:215-25): clopidogrel 600 mg load then 75 mg days 2-90 + ASA (90-day DAPT) for NIHSS <=3 / ABCD2 >=4 within 12h.
+// THALES (Johnston NEJM 2020;383:207-17): ticagrelor+ASA x 30d for noncardioembolic stroke with NIHSS <=5 or high-risk TIA (ABCD2 >=6 or symptomatic intracranial/extracranial stenosis >=50%), age >=40, within 24h, no IVT/EVT.
+//   Atherosclerotic etiology was not required for enrollment; the stroke branch below additionally requires an atherosclerotic mechanism (cf. prespecified ipsilateral stenosis >=30% subgroup, Amarenco Stroke 2020;51:3504-13).
 // CHANCE-2 (Wang NEJM 2021;385:2520-30): in CYP2C19 LOF carriers, ticagrelor+ASA superior to clopidogrel+ASA for NIHSS <=3 / ABCD2 >=4.
 // INSPIRES (Gao NEJM 2023;389:2413-24, PMID 38157499): clopidogrel+ASA x 21d extended eligibility — NIHSS <=5 AND time-from-onset <=72h,
 //   INCLUDING patients with symptomatic intra-/extracranial atherosclerotic stenosis >=50% (LVD). 7.3% vs 9.2% recurrent stroke (HR 0.79).
 //   DAPT for high-risk TIA / minor stroke is Class 1 in the 2021 AHA/ASA secondary-prevention guideline;
-//   INSPIRES extended the eligibility window/population (no 2024 AHA/ASA antiplatelet update exists).
+//   INSPIRES extended the eligibility window/population. The 2026 AHA/ASA AIS guideline (PMID 41582814) now also addresses early DAPT;
+//   in-app transcription ais-2026-149 (src/guidelines/ais-2026.json): clopidogrel+ASA x 21d at 24-72h (or NIHSS 4-5 <24h) with presumed atherosclerotic cause, COR 2a (needs confirmation).
 //
 // Inputs:
 //   nihss            — admission NIHSS (number)
@@ -134,15 +136,14 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
     };
   }
 
-  // THALES: ticagrelor+ASA for moderate stroke w/ atherosclerotic etiology OR very-high-risk TIA, within 24h.
-  if (((isUpToModerate && isAtherosclerotic) || (isTIA && veryHighRisk)) && inLegacyWindow) {
+  // THALES: ticagrelor+ASA x 30d (Class 2b, 2021) for NIHSS 4-5 noncardioembolic stroke without a presumed atherosclerotic cause, within 24h.
+  // NIHSS 0-3 and high-risk TIA fall through to CHANCE/POINT (Class 1 clopidogrel+ASA); atherosclerotic NIHSS 4-5 falls through to the INSPIRES branch (clopidogrel+ASA).
+  if (isUpToModerate && n >= 4 && !isAtherosclerotic && inLegacyWindow) {
     return {
       regimen: 'ticagrelor+ASA',
       duration: '30 days',
       dosing: 'Ticagrelor 180 mg load, then 90 mg BID + ASA 325 mg load then 75-100 mg daily',
-      rationale: isAtherosclerotic
-        ? `Atherosclerotic minor-to-moderate stroke (NIHSS ≤5) within 24h: THALES showed 17% RRR in stroke/death at 30 d. ${lvdSymptomatic ? 'Symptomatic LVD ≥50% → INSPIRES (clopi+ASA) is an alternative option (Gao NEJM 2023).' : ''}`.trim()
-        : `Very-high-risk TIA (ABCD² ${ab} ≥6): escalate to ticagrelor+ASA × 30d.`,
+      rationale: `Minor-to-moderate noncardioembolic stroke (NIHSS ${n}) within 24h: THALES (NIHSS ≤5 or high-risk TIA; patients treated with thrombolysis or thrombectomy excluded) reported stroke or death at 30 d in 5.5% vs 6.6% (HR 0.83) with more severe bleeding (0.5% vs 0.1%).`,
       source: 'Johnston NEJM 2020;383:207-17 (THALES); INSPIRES NEJM 2023;389:2413-24 alternative for atherosclerotic LVD',
       class: 'Class 2b (AHA/ASA 2021 secondary prevention) for selected ticagrelor-aspirin patients; discuss bleeding risk and alternatives'
     };
@@ -159,7 +160,7 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
         : 'Clopidogrel 300-600 mg load then 75 mg daily + ASA 75-100 mg daily',
       rationale: `INSPIRES-style screen: ${isTIA ? `high-risk TIA (ABCD² ${ab})` : `NIHSS ${n}`} within ${tH}h and presumed atherosclerotic cause. Verify qualifying stenosis/multiple infarcts, age 35–80, and no thrombolysis/thrombectomy. Aspirin was given for 21 days and clopidogrel through day 90; bleeding increased.`,
       source: 'Gao NEJM 2023;389:2413-24 (INSPIRES, PMID 38157499); CYP2C19 branch CHANCE-2 NEJM 2021',
-      class: 'INSPIRES-supported (Gao NEJM 2023); DAPT for high-risk TIA/minor stroke is Class 1 in the 2021 AHA/ASA secondary-prevention guideline (no 2024 AHA/ASA antiplatelet update exists)'
+      class: useTicagrelor ? 'Not a guideline-specified regimen: extrapolates CHANCE-2 (CYP2C19 LOF carriers, NIHSS ≤3 or high-risk TIA, started within 24h) to an INSPIRES-type 24-72h population' : 'Class 2a (2026 AHA/ASA AIS guideline): clopidogrel+ASA for 21 days, then single antiplatelet therapy, is reasonable for noncardioembolic minor stroke (NIHSS ≤5) or high-risk TIA (ABCD² ≥4) of presumed atherosclerotic cause 24-72h after onset (or NIHSS 4-5 within 24h) in patients who did not receive IVT'
     };
   }
 
@@ -170,13 +171,13 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
       regimen: useTicagrelor ? 'ticagrelor+ASA (CHANCE-2)' : 'clopidogrel+ASA',
       duration: '21 days',
       dosing: useTicagrelor
-        ? 'Ticagrelor 180 mg load then 90 mg BID + ASA 75-100 mg daily'
+        ? 'Ticagrelor 180 mg load, then 90 mg BID through day 90 + ASA 75-100 mg daily for the first 21 days only (CHANCE-2: ASA 75-300 mg on day 1, then 75 mg daily on days 2-21)'
         : 'Clopidogrel 300-600 mg load then 75 mg daily + ASA 75-100 mg daily',
       rationale: useTicagrelor
         ? 'Known CYP2C19 LOF carrier — CHANCE-2 showed ticagrelor+ASA superior to clopidogrel+ASA.'
         : `${isTIA ? `High-risk TIA (ABCD² ${ab} ≥4)` : `Minor stroke (NIHSS ${n} ≤3)`} within ${tH}h: CHANCE/POINT showed reduced 90-d stroke risk. Truncate DAPT at 21 d to minimize bleeding.`,
       source: useTicagrelor ? 'Wang NEJM 2021;385:2520-30 (CHANCE-2)' : 'Wang NEJM 2013;369:11-19 (CHANCE); Johnston NEJM 2018;379:215-25 (POINT)',
-      class: 'Class 1 (AHA/ASA 2021 secondary prevention)'
+      class: useTicagrelor ? 'Class 2b, 2026 AHA/ASA AIS guideline (needs confirmation); CHANCE-2 postdates the 2021 secondary-prevention guideline' : 'Class 1 (AHA/ASA 2021 secondary prevention)'
     };
   }
 
@@ -205,9 +206,9 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
 // Recurrent-stroke risk scores used in clinic
 // =====================================================================
 
-// ESSEN stroke risk score (Diener, Lancet Neurol 2009)
-// Points: age 65-74 = 1, age ≥75 = 2, HTN = 1, DM = 1, prior MI = 1, other CV disease = 1,
-//         PAD = 1, current smoker = 1, prior TIA/stroke = 1. Max 9.
+// ESSEN stroke risk score (derived from CAPRIE; validation Weimar C et al. Stroke 2009;40:350-4, PMID 19023098)
+// Points: age 65-75 = 1, age >75 = 2, HTN = 1, DM = 1, prior MI = 1, other CV disease (except MI and AF) = 1,
+//         PAD = 1, current or past (<5 years) smoking = 1, prior TIA/ischemic stroke in addition to the qualifying event = 1. Max 9.
 // >=3 = high annual recurrent-stroke risk (≈4%/yr vs 2%/yr overall).
 export const calculateESSEN = ({ age, hypertension, diabetes, priorMI, otherCV, pad, smoker, priorTIA }) => {
   let score = 0;
@@ -228,7 +229,7 @@ export const calculateESSEN = ({ age, hypertension, diabetes, priorMI, otherCV, 
     score,
     risk: score >= 3 ? 'high' : score >= 2 ? 'moderate' : 'low',
     annualRecurrence: score >= 3 ? '~4%/yr' : score >= 2 ? '~2-3%/yr' : '~1-2%/yr',
-    source: 'Diener Lancet Neurol 2009'
+    source: 'Essen Stroke Risk Score (derived from CAPRIE cerebrovascular subgroup); validated in REACH: Weimar C et al. Stroke 2009;40:350-4 (PMID 19023098)'
   };
 };
 
@@ -702,8 +703,8 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
 // Late-window IV thrombolysis (TNK 4.5-24h LVO with mismatch, no EVT available)
 // =====================================================================
 // TRACE-III (Xiong NEJM 2024;391:203-12, PMID 38884324): Phase 3 RCT, n=516, China.
-//   Inclusion: AIS with anterior LVO (ICA/M1), 4.5-24h from LKW, perfusion mismatch
-//   (core <70 mL, mismatch ratio ≥1.8 AND mismatch volume ≥15 mL), NIHSS 6-25, age 18-80,
+//   Inclusion: AIS with ICA or MCA M1/M2 occlusion, 4.5-24h from LKW, perfusion mismatch
+//   (core <70 mL, mismatch ratio ≥1.8 AND mismatch volume ≥15 mL), NIHSS 6-25, age ≥18 (no upper limit), pre-stroke mRS ≤1,
 //   NO planned EVT (most spokes don't have it). TNK 0.25 mg/kg (max 25 mg) vs standard care.
 //   Result: mRS 0-1 at 90d 33.0% vs 24.2% (RR 1.37). sICH 3.0% vs 0.8%.
 // TIMELESS (NEJM 2024, PMID 38329148) was negative when most patients got EVT —
@@ -712,7 +713,7 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
 // Inputs:
 //   timeFromLKWh — hours from LKW
 //   evtAvailable — boolean: is mechanical thrombectomy available within reasonable transfer window?
-//   lvo          — boolean: anterior LVO (ICA terminus or M1)
+//   lvo          — boolean: anterior-circulation LVO (ICA, MCA M1, or M2 as in TRACE-III)
 //   nihss        — number
 //   age          — number
 //   coreMl       — number, core volume (CTP rCBF<30% or DWI)
@@ -720,7 +721,7 @@ export const evaluateLargeCoreEVT = ({ age, nihss, aspects, coreMl, timeFromLKWh
 //   mismatchVolumeMl — penumbra - core
 export const recommendLateWindowLytic = ({ timeFromLKWh, evtAvailable, lvo, nihss, age, coreMl, mismatchRatio, mismatchVolumeMl } = {}) => {
   const [t, n, a, c, r, v] = [timeFromLKWh, nihss, age, coreMl, mismatchRatio, mismatchVolumeMl].map(parseFloat);
-  const source = 'TRACE-III NEJM 2024 (doi: 10.1056/NEJMoa2310392); AHA/ASA 2026 AIS guideline (doi: 10.1161/STR.0000000000000513)';
+  const source = 'TRACE-III NEJM 2024;391:203-12 (doi: 10.1056/NEJMoa2402980); AHA/ASA 2026 AIS guideline (doi: 10.1161/STR.0000000000000513)';
   if (!Number.isFinite(t) || t < 0) return { eligible: false, status: 'incomplete', reason: 'Enter a valid non-negative interval from last known well.', source };
   if (t <= 4.5) return { eligible: false, reason: 'Within the standard IVT window: assess the complete acute thrombolysis criteria. This extended-window screen does not determine standard-window eligibility.', source };
   if (t > 24) return { eligible: false, reason: 'Outside the 4.5–24h TRACE-III window modeled here; this screen is not a comprehensive assessment of all thrombolysis evidence.', source };
@@ -730,7 +731,7 @@ export const recommendLateWindowLytic = ({ timeFromLKWh, evtAvailable, lvo, nihs
     return { eligible: false, status: 'incomplete', rationale: 'Confirm age, NIHSS, core volume, BOTH mismatch ratio and volume, anterior LVO, and lack of EVT access. Missing criteria are not presumed satisfied.', source };
   }
   const blockers = [];
-  if (a < 18 || a > 80) blockers.push('Age outside 18–80');
+  if (a < 18) blockers.push('Age under 18 (TRACE-III enrolled adults ≥18 with no upper age limit)');
   if (n < 6 || n > 25) blockers.push('NIHSS outside 6–25');
   if (c >= 70) blockers.push('Core must be <70 mL');
   if (r < 1.8 || v < 15) blockers.push('Both mismatch ratio ≥1.8 AND mismatch volume ≥15 mL are required');

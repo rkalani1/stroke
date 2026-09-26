@@ -7,7 +7,7 @@
   "pdfUrl": null,
   "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/38033089/",
   "pmid": "38033089",
-  "society": "AHA/ASA",
+  "society": "ACC/AHA/ACCP/HRS",
   "recommendations": [
     {
       "section": "2.5 Address Health Inequities and Barriers to AF Management",
@@ -2081,7 +2081,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "In patients with AF and class III obesity (BMI ≥ 40 kg/m 2), DOACs are reasonable to choose over warfarin for stroke risk reduction.",
+      "text": "In patients with AF and class III obesity (BMI ≥40 kg/m²), DOACs are reasonable to choose over warfarin for stroke risk reduction.",
       "page": null,
       "id": "aha-af-guideline-2023-159",
       "sourceSection": "table-50",

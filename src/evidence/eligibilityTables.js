@@ -101,7 +101,7 @@ const TRIALS = {
       'Validating CNS structure/function measures (TMS motor evoked potentials and MRI lesion load) to establish early prognostic data for upper-extremity recovery outcomes.',
     eligibility: [
       'Unilateral symptomatic ischemic stroke with SAFE ≤ 8 upper-extremity motor deficit within 48–96 h',
-      'Consented within 24–96 hours of LNW'
+      'Consented within 24–96 hours of stroke onset or last known well'
     ],
     exclusions: [
       'Pre-stroke upper-extremity condition limiting use',

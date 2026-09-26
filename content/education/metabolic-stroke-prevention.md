@@ -1,7 +1,7 @@
 ---
 id: metabolic-stroke-prevention
 title: "Metabolic & Vascular Risk Modulation"
-summary: "Comprehensive metabolic and vascular risk modulation in stroke prevention — GLP-1 receptor agonists (SELECT, FLOW, SUSTAIN-6), SGLT2 inhibitors, intensive blood pressure targets (SPRINT, TRIDENT, RESPECT), MASH/obesity management, and the secondary prevention ABCDE bundle."
+summary: "Comprehensive metabolic and vascular risk modulation in stroke prevention — GLP-1 receptor agonists (SELECT, FLOW, SUSTAIN-6), SGLT2 inhibitors, blood pressure lowering (SPRINT and RESPECT intensive targets; TRIDENT low-dose triple pill after ICH), MASH/obesity management, and the secondary prevention ABCDE bundle."
 tags: ["pocket-card", "printable"]
 contexts: ["telestroke", "inpatient", "clinic"]
 calculators: []
@@ -10,7 +10,7 @@ lastReviewed: 2026-08-14
 provenance: src/education.jsx
 ---
 
-Comprehensive metabolic and vascular risk modulation in stroke prevention — GLP-1 receptor agonists (SELECT, FLOW, SUSTAIN-6), SGLT2 inhibitors, intensive blood pressure targets (SPRINT, TRIDENT, RESPECT), MASH/obesity management, and the secondary prevention ABCDE bundle.
+Comprehensive metabolic and vascular risk modulation in stroke prevention — GLP-1 receptor agonists (SELECT, FLOW, SUSTAIN-6), SGLT2 inhibitors, blood pressure lowering (SPRINT and RESPECT intensive targets; TRIDENT low-dose triple pill after ICH), MASH/obesity management, and the secondary prevention ABCDE bundle.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
 > This file owns the module metadata (title, summary, tags, contexts, references).
