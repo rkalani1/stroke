@@ -23,7 +23,7 @@ export const recommendations = [
       'Avoid SBP peaks and large BP variability; titrate smoothly rather than with abrupt large drops.',
       'Do not pursue a numeric BP target in isolation from neurologic status and the full care bundle.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -42,7 +42,7 @@ export const recommendations = [
       'Use with the separate Class IIa process recommendation for smooth, sustained control and timely treatment.',
       'Do not pursue a numeric BP target in isolation from neurologic status, hematoma severity, and neurosurgical planning.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -59,7 +59,7 @@ export const recommendations = [
       'Acute SBP <130 mmHg is Class III-harm.',
       'This lower-bound harm guard is separate from the Class IIb SBP 140/range 130-150 target.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -94,7 +94,7 @@ export const recommendations = [
       'Vitamin K is required for sustained reversal; PCC alone is short-acting.',
       'FFP carries volume-overload risk and slower correction.'
     ],
-    lastReviewed: '2026-07-18',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -111,7 +111,7 @@ export const recommendations = [
       'Imaging-based selection is required; unselected late-window thrombolysis is not supported (TWIST).',
       'Time from LKW remains a key safety determinant; TIMELESS extended TNK to 24 h with mismatch selection but the overall primary endpoint did not reach significance.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -128,7 +128,7 @@ export const recommendations = [
       'Use TNK 0.25 mg/kg only: 0.40 mg/kg did not improve reperfusion over 0.25 mg/kg in EXTEND-IA TNK part 2, and NOR-TEST 2 part A (0.40 mg/kg vs alteplase) was stopped early for safety with worse functional outcome and higher mortality.',
       'Local protocols may continue to favor alteplase; both are acceptable.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -145,7 +145,7 @@ export const recommendations = [
       'Pre-stroke mRS, life expectancy, and goals of care still inform shared decision-making.',
       'Very low ASPECTS is not unaddressed: ASPECTS 0-2 within 6 h carries a IIa recommendation bounded by age <80 and pre-stroke mRS 0-1 (ais-2026-117); ASPECTS 3-10 within 6 h carries a Class I recommendation without an age bound (ais-2026-114); and the ASPECTS 0-5 within 0-6 h, age 18-80, mRS 0-1 Class I recommendation comes from the SVIN 2025 large-core guideline (svin-large-core-2025). Those bounds are part of each recommendation and are easy to drop when quoting the ASPECTS number alone.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -183,7 +183,7 @@ export const recommendations = [
       'Early initiation (≤4 d) is non-inferior across severities (OPTIMAS) and superior at 30 d in pooled IPD (CATALYST); individualize for the highest-risk presentations.',
       'Scope note: this COR IIa early-start statement reflects the 2026 AHA/ASA AIS guideline (early oral anticoagulation reasonable in carefully selected patients, e.g., milder severity). The 2021 secondary-prevention guideline carries a separate, weaker COR IIb statement for starting at 2-14 days, which predates TIMING, ELAN, OPTIMAS and CATALYST.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -199,7 +199,7 @@ export const recommendations = [
     caveats: [
       'The 2026 AHA/ASA guideline does not require DAWN/DEFUSE-3 mismatch criteria: EVT at 6-24 h is Class 1 (LOE A) for anterior-circulation proximal LVO with NIHSS ≥6, prestroke mRS 0-1 and ASPECTS ≥6, and the writing group declined to restrict Class 1 to mismatch-selected patients. Adjunctive CTP or MRI can be useful if immediately available (Class 2a, LOE A). ASPECTS 3-5 is covered by a separate large-core recommendation.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   })
 ];

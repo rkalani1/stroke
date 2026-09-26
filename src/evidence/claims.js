@@ -27,7 +27,7 @@ export const claims = [
     citationIds: ['cit-timeless-2024', 'cit-trace-iii-2024'],
     certainty: 'moderate',
     conflictNotes: 'TIMELESS was neutral (adjusted common OR 1.13, 95% CI 0.82-1.57; p=0.45) with 77.3% of patients undergoing thrombectomy. TRACE-III showed benefit (mRS 0-1 33.0% vs 24.2%; p=0.03) in an LVO-only late-window population without EVT access; sICH appeared higher (3.0% vs 0.8%).',
-    lastReviewed: lr
+    lastReviewed: '2026-09-26'
   }),
   makeClaim({
     id: 'cl-evt-large-core',
@@ -35,7 +35,7 @@ export const claims = [
     topic: 'evt-large-core',
     citationIds: ['cit-select2-2023', 'cit-rescue-japan-2022', 'cit-angel-aspect-2023', 'cit-tension-2023'],
     certainty: 'high',
-    lastReviewed: lr
+    lastReviewed: '2026-09-26'
   }),
   makeClaim({
     id: 'cl-evt-late-window',
@@ -43,7 +43,7 @@ export const claims = [
     topic: 'evt-late-window',
     citationIds: ['cit-dawn-2018', 'cit-defuse3-2018'],
     certainty: 'high',
-    lastReviewed: lr
+    lastReviewed: '2026-09-26'
   }),
   makeClaim({
     id: 'cl-ich-bp-bundle',
@@ -51,7 +51,7 @@ export const claims = [
     topic: 'ich-bp-management',
     citationIds: ['cit-interact3-2023'],
     certainty: 'high',
-    lastReviewed: lr
+    lastReviewed: '2026-09-26'
   }),
   makeClaim({
     id: 'cl-ich-bp-intensive-target',
@@ -86,7 +86,7 @@ export const claims = [
     topic: 'dapt-minor-stroke',
     citationIds: ['cit-chance-2013', 'cit-point-2018', 'cit-thales-2020', 'cit-inspires-2024', 'cit-chance2-2021'],
     certainty: 'high',
-    lastReviewed: lr
+    lastReviewed: '2026-09-26'
   }),
   makeClaim({
     id: 'cl-af-early-anticoag',
@@ -103,7 +103,7 @@ export const claims = [
     citationIds: ['cit-wake-up-2018', 'cit-extend-2019', 'cit-timeless-2024', 'cit-twist-2023', 'cit-trace-iii-2024'],
     certainty: 'moderate',
     conflictNotes: 'TWIST (NCCT-only wake-up TNK) was negative (adjusted OR 1.18, 95% CI 0.88-1.58; p=0.27); TIMELESS was negative in a 100% LVO population with 77% EVT (p=0.45). Benefit requires imaging-based mismatch selection and absence of EVT co-treatment.',
-    lastReviewed: lr
+    lastReviewed: '2026-09-26'
   }),
   makeClaim({
     id: 'cl-bp-post-evt-conventional',
@@ -112,7 +112,7 @@ export const claims = [
     citationIds: ['cit-enchanted2-mt-2022', 'cit-optimal-bp-2023', 'cit-bp-target-2021'],
     certainty: 'moderate',
     conflictNotes: 'BP-TARGET found no harm or benefit of intensive lowering; ENCHANTED2/MT and OPTIMAL-BP both favor conventional targets after EVT.',
-    lastReviewed: lr
+    lastReviewed: '2026-09-26'
   }),
   makeClaim({
     id: 'cl-ich-warfarin-reversal-pcc-vk',
@@ -121,7 +121,7 @@ export const claims = [
     citationIds: ['cit-aha-ich-2022', 'cit-inch-2016'],
     certainty: 'high',
     conflictNotes: 'Vitamin K is required for sustained reversal; PCC alone is short-acting. FFP remains an alternative when PCC is unavailable.',
-    lastReviewed: lr
+    lastReviewed: '2026-09-26'
   })
 ];
 

@@ -55,7 +55,7 @@ export const completedTrials = [
     citationIds: ['cit-act-2022'],
     relatedActiveTrialIds: ['most'],
     practiceImpact: 'Supports TNK 0.25 mg/kg (max 25 mg) as a reasonable alternative to alteplase 0.9 mg/kg for IVT-eligible AIS within 4.5 h (non-inferior on mRS 0-1); the 2026 AHA/ASA AIS guideline recommends either agent (COR 1).',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -101,7 +101,7 @@ export const completedTrials = [
     citationIds: ['cit-original-2024'],
     relatedActiveTrialIds: ['most'],
     practiceImpact: 'Adds further RCT support (non-inferiority, China) for TNK 0.25 mg/kg as a suitable alternative to alteplase within 4.5 h; sICH 1.2% in each group.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -149,7 +149,7 @@ export const completedTrials = [
     citationIds: ['cit-extend-2019'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Supports perfusion-mismatch IVT in 4.5-9 h window when EVT not indicated.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -172,7 +172,7 @@ export const completedTrials = [
     citationIds: ['cit-epithet-2008'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Conceptual basis for later mismatch-based late-window trials.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -195,7 +195,7 @@ export const completedTrials = [
     citationIds: ['cit-ecass4-2018'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Adds to the late-window mismatch evidence base; not independently practice-changing.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -218,7 +218,7 @@ export const completedTrials = [
     citationIds: ['cit-timeless-2024'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Cautionary: late-window TNK alone (with EVT permitted) did not meet its primary endpoint.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -241,7 +241,7 @@ export const completedTrials = [
     citationIds: ['cit-twist-2023'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Late-window thrombolysis without advanced imaging is not supported.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -264,7 +264,7 @@ export const completedTrials = [
     citationIds: ['cit-trace-iii-2024'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Strongest evidence to date for late-window TNK in EVT-ineligible LVO.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -335,7 +335,7 @@ export const completedTrials = [
     citationIds: ['cit-rescue-japan-2022'],
     relatedActiveTrialIds: ['tested'],
     practiceImpact: 'First major RCT to support large-core EVT.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -358,7 +358,7 @@ export const completedTrials = [
     citationIds: ['cit-tension-2023'],
     relatedActiveTrialIds: ['tested'],
     practiceImpact: 'European replication of large-core EVT benefit.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   // ------------------- EVT for basilar-artery occlusion -------------------
@@ -382,7 +382,7 @@ export const completedTrials = [
     citationIds: ['cit-attention-2022'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Established EVT benefit for basilar-artery occlusion within 12 h.',
-    lastReviewed: '2026-05-29',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -405,7 +405,7 @@ export const completedTrials = [
     citationIds: ['cit-baoche-2022'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Extends EVT benefit for basilar-artery occlusion to 6-24 h.',
-    lastReviewed: '2026-05-29',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -428,7 +428,7 @@ export const completedTrials = [
     citationIds: ['cit-dawn-2018'],
     relatedActiveTrialIds: ['step-evt'],
     practiceImpact: 'Foundational evidence for late-window EVT.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -451,7 +451,7 @@ export const completedTrials = [
     citationIds: ['cit-defuse3-2018'],
     relatedActiveTrialIds: ['step-evt'],
     practiceImpact: 'Established perfusion-mismatch criteria for late-window EVT.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -476,7 +476,7 @@ export const completedTrials = [
     citationIds: ['cit-choice-2022'],
     relatedActiveTrialIds: [],
     practiceImpact: 'IA alteplase after successful EVT may improve outcomes; not yet standard of care.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -501,7 +501,7 @@ export const completedTrials = [
     citationIds: ['cit-theia-2023'],
     relatedActiveTrialIds: [],
     practiceImpact: 'THEIA was neutral (adjusted OR 1.1, 95% CI 0.07-18.39, p=0.95; underpowered) — CRAO thrombolysis remains unproven; do not present it as evidence-supported outside trials.',
-    lastReviewed: '2026-08-22',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed',
     verificationNotes: 'Primary endpoint numbers re-verified against PubMed 2026-08-22 (Lancet Neurol 2025;24(11):909-919, PMID 41109232): 19/29 (66%) vs 13/27 (48%), adjusted OR 1.1, p=0.95 — neutral.'
   }),
@@ -547,7 +547,7 @@ export const completedTrials = [
     citationIds: ['cit-interact3-2023'],
     relatedActiveTrialIds: ['saturn'],
     practiceImpact: 'Establishes care-bundle approach for acute ICH.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -593,7 +593,7 @@ export const completedTrials = [
     citationIds: ['cit-enrich-2024'],
     relatedActiveTrialIds: ['saturn'],
     practiceImpact: 'Supports early minimally invasive evacuation for lobar ICH at capable centers.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -618,7 +618,7 @@ export const completedTrials = [
     citationIds: ['cit-chance-2013'],
     relatedActiveTrialIds: ['captiva'],
     practiceImpact: 'Founding evidence for short-course DAPT in minor stroke / high-risk TIA.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -641,7 +641,7 @@ export const completedTrials = [
     citationIds: ['cit-point-2018'],
     relatedActiveTrialIds: ['captiva'],
     practiceImpact: 'Reinforces 21-day cap on DAPT for minor stroke.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -664,7 +664,7 @@ export const completedTrials = [
     citationIds: ['cit-thales-2020'],
     relatedActiveTrialIds: ['captiva'],
     practiceImpact: 'Supports 30-day ticagrelor-aspirin as an alternative DAPT regimen (fewer 30-day stroke/death events, no difference in disability, more severe bleeding); THALES did not select patients by CYP2C19 genotype — evidence in loss-of-function carriers comes from CHANCE-2.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -687,7 +687,7 @@ export const completedTrials = [
     citationIds: ['cit-inspires-2024'],
     relatedActiveTrialIds: ['captiva'],
     practiceImpact: 'Allows DAPT initiation up to 72 h in eligible mild stroke.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -735,7 +735,7 @@ export const completedTrials = [
     citationIds: ['cit-elan-2023'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Supports early DOAC initiation per stroke severity.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -758,7 +758,7 @@ export const completedTrials = [
     citationIds: ['cit-timing-2022'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Supports earlier DOAC initiation.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -783,7 +783,7 @@ export const completedTrials = [
     citationIds: ['cit-averroes-2011'],
     relatedActiveTrialIds: ['aspire'],
     practiceImpact: 'Supports anticoagulation over aspirin for AF stroke prevention generally; the ICH-survivor question is answered by the dedicated trials below.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -925,7 +925,7 @@ export const completedTrials = [
     citationIds: ['cit-respect-esus-2019'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Dabigatran not superior to aspirin in ESUS — confirms NAVIGATE; no empiric DOAC.',
-    lastReviewed: '2026-05-29',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -994,7 +994,7 @@ export const completedTrials = [
     citationIds: ['cit-respect-pfo-2017'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Long-term PFO closure reduces recurrent stroke vs medical therapy in selected patients <60 y.',
-    lastReviewed: '2026-05-29',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -1086,7 +1086,7 @@ export const completedTrials = [
     citationIds: ['cit-atach2-2016'],
     relatedActiveTrialIds: [],
     practiceImpact: 'An intensive SBP target of 110-139 mm Hg (vs 140-179) did not reduce death or disability and caused more renal adverse events (9.0% vs 4.0%). For mild-to-moderate ICH presenting with SBP 150-220 mm Hg, the 2022 AHA/ASA ICH guideline targets SBP 140 mm Hg (maintaining 130-150) and considers acute lowering to <130 mm Hg potentially harmful.',
-    lastReviewed: '2026-05-29',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -1132,7 +1132,7 @@ export const completedTrials = [
     citationIds: ['cit-crest-2010'],
     relatedActiveTrialIds: [],
     practiceImpact: 'No significant difference between CAS and CEA on the composite; periprocedural stroke favored CEA and periprocedural MI favored CAS, and 4-year stroke or death (secondary endpoint) was higher with CAS (6.4% vs 4.7%; HR 1.50, p=0.03).',
-    lastReviewed: '2026-05-29',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -1185,7 +1185,7 @@ export const completedTrials = [
     citationIds: ['cit-trident-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'A simplified low-dose triple pill after ICH lowers recurrent stroke and CV events — supports intensive, simplified BP-lowering.',
-    lastReviewed: '2026-05-30',
+    lastReviewed: '2026-09-26',
     promotedDate: '2026-05-30',
     verificationStatus: 'verified-pubmed'
   }),
@@ -1281,7 +1281,7 @@ export const completedTrials = [
     citationIds: ['cit-distal-2025', 'cit-distal-2026'],
     relatedActiveTrialIds: ['step-evt'],
     practiceImpact: 'No long-term benefit of EVT in mild-to-moderate medium/distal vessel occlusion — routine thrombectomy not supported in this population.',
-    lastReviewed: '2026-05-30',
+    lastReviewed: '2026-09-26',
     promotedDate: '2026-05-30',
     verificationStatus: 'verified-pubmed'
   }),
@@ -1369,7 +1369,7 @@ export const completedTrials = [
     citationIds: ['cit-oriental-mevo-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Positive functional-outcome result with more symptomatic hemorrhage; interpret with the neutral MeVO trials. This study summary does not independently revise guideline recommendations.',
-    lastReviewed: '2026-08-22',
+    lastReviewed: '2026-09-26',
     promotedDate: '2026-08-22',
     verificationStatus: 'verified-pubmed'
   }),
@@ -1393,7 +1393,7 @@ export const completedTrials = [
     citationIds: ['cit-direct-angio-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'In a small trial stopped early for safety, direct transfer to the angiography suite was associated with more sICH and no evidence of functional benefit; estimates are imprecise and the authors call for further trials before firm conclusions.',
-    lastReviewed: '2026-05-30',
+    lastReviewed: '2026-09-26',
     promotedDate: '2026-05-30',
     verificationStatus: 'verified-pubmed'
   }),
@@ -1515,7 +1515,7 @@ export const completedTrials = [
     citationIds: ['cit-bridge-tnk-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Reinforces bridging IV thrombolysis before thrombectomy for eligible LVO within 4.5 h; do not routinely skip IVT in thrombolysis-eligible patients headed to EVT inside that window. Says nothing about later windows.',
-    lastReviewed: '2026-07-06',
+    lastReviewed: '2026-09-26',
     promotedDate: '2026-07-06',
     verificationStatus: 'verified-pubmed',
     verificationNotes: 'PubMed 40396577; NCT04733742. Primary numbers from published abstract, verified 2026-07-06.'
@@ -1615,7 +1615,7 @@ export const completedTrials = [
     citationIds: ['cit-chablis-t2-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Adds to the mixed late-window TNK evidence base; reinforces that reperfusion gains have not consistently translated to clinical benefit.',
-    lastReviewed: '2026-07-06',
+    lastReviewed: '2026-09-26',
     promotedDate: '2026-07-06',
     verificationStatus: 'verified-pubmed',
     verificationNotes: 'PubMed 39744861. Effect summary from trial report; verified 2026-07-06.'
@@ -1640,7 +1640,7 @@ export const completedTrials = [
     citationIds: ['cit-tempo-2-2024'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Argues against routine thrombolysis for minor non-disabling stroke solely because an occlusion is present; keep the disabling-deficit gate.',
-    lastReviewed: '2026-07-06',
+    lastReviewed: '2026-09-26',
     promotedDate: '2026-07-06',
     verificationStatus: 'verified-pubmed',
     verificationNotes: 'PubMed 38768626; DOI corrected to 10.1016/S0140-6736(24)00921-8. Verified 2026-07-06.'
@@ -1692,7 +1692,7 @@ export const completedTrials = [
     citationIds: ['cit-enrich-af-2023'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Objective: interim DSMB stopped edoxaban in lobar ICH for excess rebleeding; the main efficacy comparison is awaited.',
-    lastReviewed: '2026-07-18',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'unverified-source-limited',
     verificationNotes: 'Design/NCT (NCT03950076) and lobar-arm-stopped safety signal verified; full primary efficacy result not yet published (expected 2026).'
   }),
@@ -1787,7 +1787,7 @@ export const completedTrials = [
     citationIds: ['cit-switch-2024'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Objective: numerically fewer very-poor outcomes with craniectomy, but not statistically significant; no safety excess.',
-    lastReviewed: '2026-07-18',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -1812,7 +1812,7 @@ export const completedTrials = [
     citationIds: ['cit-optimal-bp-2023'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Intensive SBP <140 after successful EVT reduced functional independence; reinforces ENCHANTED2/MT.',
-    lastReviewed: '2026-07-18',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -1855,7 +1855,7 @@ export const completedTrials = [
     citationIds: ['cit-interact4-2024'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Do not lower BP prehospital in undifferentiated stroke — benefit in hemorrhage is offset by harm in ischemia. Supports imaging-first BP decisions.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -1940,7 +1940,7 @@ export const completedTrials = [
     citationIds: ['cit-clear3-2017'],
     relatedActiveTrialIds: [],
     practiceImpact: 'EVD alteplase for obstructive IVH reduces mortality but does not improve functional outcome and increases survival at mRS 5.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -2016,7 +2016,7 @@ export const completedTrials = [
     citationIds: ['cit-stich2-2013'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Early open surgery for superficial lobar ICH without IVH is not beneficial; motivates minimally invasive approaches instead.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -2058,7 +2058,7 @@ export const completedTrials = [
     citationIds: ['cit-sahara-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'A liberal (Hgb ≤10) transfusion threshold after aSAH did not improve 12-month outcome — restrictive transfusion remains reasonable.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -2178,7 +2178,7 @@ export const completedTrials = [
     citationIds: ['cit-isat-18yr-2015'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Coiling retains a survival and disability-free-survival advantage over clipping at 10+ years when both are feasible.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -2264,7 +2264,7 @@ export const completedTrials = [
     citationIds: ['cit-raise-2024'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Reteplase beat alteplase for mRS 0-1 within 4.5 h but with more ICH overall; not a default agent outside the trial setting.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -2305,7 +2305,7 @@ export const completedTrials = [
     citationIds: ['cit-aramis-2023'],
     relatedActiveTrialIds: [],
     practiceImpact: 'For genuinely non-disabling minor stroke within 4.5 h, DAPT is a reasonable alternative to IV thrombolysis.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -2346,7 +2346,7 @@ export const completedTrials = [
     citationIds: ['cit-taste-2024'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Adds perfusion-selected, multi-country support for TNK 0.25 mg/kg, and shows large-scale CTP-guided IVT selection is feasible.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -2390,7 +2390,7 @@ export const completedTrials = [
     citationIds: ['cit-best-msu-2021'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Mobile stroke units improved 90-day disability outcomes vs standard EMS, via faster and more complete thrombolysis delivery.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -2431,7 +2431,7 @@ export const completedTrials = [
     citationIds: ['cit-racecat-2022'],
     relatedActiveTrialIds: [],
     practiceImpact: 'In nonurban areas, direct transport to a thrombectomy centre did not improve 90-day outcome versus the nearest stroke centre.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -2781,7 +2781,7 @@ export const completedTrials = [
     citationIds: ['cit-noah-afnet6-2023'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Edoxaban for device-detected AHRE did not reduce cardiovascular events and increased death or major bleeding; stroke risk was ~1%/year untreated.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -2821,7 +2821,7 @@ export const completedTrials = [
     citationIds: ['cit-invictus-2022'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Use warfarin, not a DOAC, for AF with rheumatic mitral valve disease — rivaroxaban had worse cardiovascular outcomes and higher mortality.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -2944,7 +2944,7 @@ export const completedTrials = [
     citationIds: ['cit-rescue-bt2-2023'],
     relatedActiveTrialIds: [],
     practiceImpact: 'IV tirofiban improved 90-day excellent outcome in non-occlusive, often progressive stroke, with inconsistent secondary endpoints.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -2986,7 +2986,7 @@ export const completedTrials = [
     citationIds: ['cit-option-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'After AF ablation, LAA closure was non-inferior to anticoagulation for death/stroke/embolism with about half the non-procedural bleeding.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -3111,7 +3111,7 @@ export const completedTrials = [
     citationIds: ['cit-crest2-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'In asymptomatic >=70% stenosis on intensive medical therapy, adding stenting reduced 4-year events; adding endarterectomy did not reach significance.',
-    lastReviewed: '2026-08-22',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed',
     verificationNotes: 'Print citation N Engl J Med 2026;394(3):219-231 (PMID 41269206); published online 2025-11-21. Year follows the repo convention of citing the print issue.'
   }),
@@ -3149,7 +3149,7 @@ export const completedTrials = [
     citationIds: ['cit-ecst2-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'For carotid stenosis with a low-to-intermediate predicted stroke risk, adding revascularization to optimised medical therapy showed no 2-year benefit.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -3189,7 +3189,7 @@ export const completedTrials = [
     citationIds: ['cit-cassiss-2022'],
     relatedActiveTrialIds: ['captiva'],
     practiceImpact: 'Intracranial stenting added no benefit over medical therapy for symptomatic 70-99% stenosis, even with refined selection and experienced operators.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -3226,7 +3226,7 @@ export const completedTrials = [
     citationIds: ['cit-cmoss-2023'],
     relatedActiveTrialIds: [],
     practiceImpact: 'EC-IC bypass for symptomatic ICA/MCA occlusion with hemodynamic insufficiency showed no benefit over medical therapy at 2 years.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -3267,7 +3267,7 @@ export const completedTrials = [
     citationIds: ['cit-esprit-bp-2024'],
     relatedActiveTrialIds: [],
     practiceImpact: 'An SBP target <120 reduced major vascular events versus <140, with consistent benefit in patients with diabetes and prior stroke.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -3348,7 +3348,7 @@ export const completedTrials = [
     citationIds: ['cit-clear-synergy-colchicine-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Colchicine after MI did not reduce cardiovascular events despite lowering CRP — consistent with the neutral stroke trials.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -3387,7 +3387,7 @@ export const completedTrials = [
     citationIds: ['cit-charm-2024'],
     relatedActiveTrialIds: [],
     practiceImpact: 'IV glibenclamide did not improve 90-day function after large hemispheric infarction in patients aged 18-70 (common OR 1.17, 95% CI 0.80-1.71), though CHARM was halted early and underpowered; 90-day mortality did not differ significantly (32% vs 29%; HR 1.20, 95% CI 0.85-1.70) and hypoglycemia was more frequent with glibenclamide (6% vs 2%).',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -3426,7 +3426,7 @@ export const completedTrials = [
     citationIds: ['cit-intrepid-2024'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Device-based fever prevention reduced fever burden but did not improve 3-month function; halted for futility.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -3463,7 +3463,7 @@ export const completedTrials = [
     citationIds: ['cit-setpoint2-2022'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Early (<=5 day) tracheostomy did not improve 6-month outcome in ventilated severe stroke; a third of controls never underwent tracheostomy.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -3504,7 +3504,7 @@ export const completedTrials = [
     citationIds: ['cit-vns-rehab-2021'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Paired vagus nerve stimulation improved chronic post-stroke upper-limb impairment versus sham in a rigorous implanted-control design.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -3543,7 +3543,7 @@ export const completedTrials = [
     citationIds: ['cit-to-act-2020'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Endovascular therapy for severe CVT showed no benefit and was halted for futility — anticoagulation remains first-line.',
-    lastReviewed: '2026-08-15',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -3583,7 +3583,7 @@ export const completedTrials = [
     citationIds: ['cit-mr-clean-2015'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Established EVT within 6 h for proximal anterior-circulation LVO as effective and safe on top of IV thrombolysis.',
-    lastReviewed: '2026-08-22',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -3620,7 +3620,7 @@ export const completedTrials = [
     citationIds: ['cit-escape-2015'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Confirmed EVT benefit with imaging-selected small core and good collaterals up to 12 h, with reduced mortality.',
-    lastReviewed: '2026-08-22',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -3694,7 +3694,7 @@ export const completedTrials = [
     citationIds: ['cit-swift-prime-2015'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Confirmed stent-retriever EVT within 6 h on top of IV t-PA markedly increases functional independence.',
-    lastReviewed: '2026-08-22',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -3890,7 +3890,7 @@ export const completedTrials = [
     citationIds: ['cit-fastest-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'rFVIIa within 2 h of spontaneous ICH slowed haematoma growth but did not improve 180-day function and increased life-threatening thromboembolic events; use outside trials is not supported (testing in the highest-risk patients is ongoing).',
-    lastReviewed: '2026-08-22',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -3927,7 +3927,7 @@ export const completedTrials = [
     citationIds: ['cit-decimal-2007'],
     relatedActiveTrialIds: [],
     practiceImpact: 'One of the three European trials whose pooled analysis made early hemicraniectomy standard for malignant MCA infarction in younger patients.',
-    lastReviewed: '2026-08-22',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -3964,7 +3964,7 @@ export const completedTrials = [
     citationIds: ['cit-destiny-2007'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Demonstrated the survival benefit of hemicraniectomy in malignant MCA infarction; functional benefit established in the pooled analysis.',
-    lastReviewed: '2026-08-22',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -4083,7 +4083,7 @@ export const completedTrials = [
     citationIds: ['cit-annexa4-2019'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Established andexanet reverses anti-Xa activity with 82% good hemostasis, at a 10% 30-day thrombotic event rate.',
-    lastReviewed: '2026-08-22',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -4123,7 +4123,7 @@ export const completedTrials = [
     citationIds: ['cit-action-cvt-2022'],
     relatedActiveTrialIds: [],
     practiceImpact: 'In this retrospective cohort, DOACs were associated with similar rates of recurrent venous thrombosis and recanalization and less major bleeding than warfarin — supportive observational evidence for DOACs as an alternative to warfarin for oral anticoagulation, which the authors say needs confirmation in prospective or randomized studies.',
-    lastReviewed: '2026-08-22',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -4160,7 +4160,7 @@ export const completedTrials = [
     citationIds: ['cit-basics-2021'],
     relatedActiveTrialIds: [],
     practiceImpact: 'First basilar EVT RCT to begin enrolling (2011), though reported after the smaller, early-terminated BEST trial (Lancet Neurol 2019) — neutral, but set up the severity-selected trials that later proved benefit.',
-    lastReviewed: '2026-08-22',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -4197,7 +4197,7 @@ export const completedTrials = [
     citationIds: ['cit-axiomatic-ssp-2024'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Milvexian added to DAPT showed no efficacy signal but also no bleeding excess — groundwork for phase 3.',
-    lastReviewed: '2026-08-22',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -4251,7 +4251,7 @@ export const completedTrials = [
     citationIds: ['cit-pearl-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Strengthens, but does not settle, the case for adjunctive IA alteplase 0.225 mg/kg after successful anterior-circulation thrombectomy; the 2026 AHA/ASA AIS guideline rates adjunctive intra-arterial thrombolytics after mTICI ≥2b reperfusion only Class 2b (may be reasonable; LOE B-R) on an evidence review that predates PEARL and CHOICE-2, and the numerically higher mortality here (not significant) plus the significantly higher mortality in CHOICE-2 argue for caution — an optional adjunct, not a standard step.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -4305,7 +4305,7 @@ export const completedTrials = [
     citationIds: ['cit-angel-tnk-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Extends the adjunctive-lysis hypothesis to intra-arterial tenecteplase in the late window, but a positive primary with no supporting secondary endpoint is not a basis to adopt it; the 2026 AHA/ASA guideline gives adjunctive intra-arterial thrombolytics after successful EVT (mTICI ≥2b) only a Class 2b (LOE B-R) recommendation, and the 0.125 mg/kg IA tenecteplase regimen specifically still needs confirmatory trials.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -4355,7 +4355,7 @@ export const completedTrials = [
     citationIds: ['cit-iat-top-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Argues against extrapolating adjunctive intra-arterial alteplase from the anterior circulation to basilar occlusion — after successful basilar recanalization it was safe but produced no functional gain.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -4401,7 +4401,7 @@ export const completedTrials = [
     citationIds: ['cit-ia-tenecteplase-dose-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Shows that the safety of adjunctive intra-arterial tenecteplase is dose-dependent and that the 0.125 mg/kg tier tripped a prespecified hemorrhage boundary in escalation — dose, not just drug class, has to be specified before any adjunctive-lysis claim is made.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -4459,7 +4459,7 @@ export const completedTrials = [
     citationIds: ['cit-ia-thrombolysis-dose-nma-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Frames adjunctive intra-arterial lysis as a dose-specific question rather than a settled class effect, and explicitly does not support adopting any regimen into practice on current evidence.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -4513,7 +4513,7 @@ export const completedTrials = [
     citationIds: ['cit-attraction-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Reopens the adjunctive-antiplatelet question specifically for the post-reperfusion window, while the numerically higher symptomatic haemorrhage and the near-uniformly Han Chinese cohort mean it is not yet a general recommendation.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -4559,7 +4559,7 @@ export const completedTrials = [
     citationIds: ['cit-rescue-bt-2022'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Does not support giving intravenous tirofiban before endovascular thrombectomy: 90-day disability was unchanged and symptomatic hemorrhage was numerically higher.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -4805,7 +4805,7 @@ export const completedTrials = [
     citationIds: ['cit-prevail-2007'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Informs the choice between once-daily enoxaparin and twice-daily unfractionated heparin for VTE prophylaxis in non-ambulatory ischaemic stroke, with extracranial bleeding as the trade-off to weigh.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -5105,7 +5105,7 @@ export const completedTrials = [
     citationIds: ['cit-avert-dose-2016'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Supports framing early mobilisation orders around short, frequent out-of-bed sessions rather than total minutes, while flagging that the randomised dose question was not settled by this analysis.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -5159,7 +5159,7 @@ export const completedTrials = [
     citationIds: ['cit-dido-gwtg-2023'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Gives transfer decisions a concrete, measurable benchmark — a ≤120-minute door-in-door-out target that most US transfers currently miss — and names EMS prenotification and demographic disparity as the levers to audit.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -5209,7 +5209,7 @@ export const completedTrials = [
     citationIds: ['cit-target-stroke-3-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Identifies which workflow changes are associated with faster reperfusion at each node of a transfer network — team activation on prenotification at the hub, screening-tool and telestroke-camera use for transfer-in patients, also at the hub; and at transferring hospitals, telestroke-hub status, automated imaging software, vascular imaging in all patients and faster thrombolysis for shorter door-in-door-out time.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -5617,7 +5617,7 @@ export const completedTrials = [
     citationIds: ['cit-early-antihypertensive-meta-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Provides the one-line summary for the category: early BP lowering in acute ischaemic stroke produces a real BP reduction and no measurable change in mortality, dependency or recurrence.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -5775,7 +5775,7 @@ export const completedTrials = [
     citationIds: ['cit-identify-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Adds a third randomised null to the post-thrombectomy BP question - a <130 mm Hg target within the 6-hour window changed neither function, haemorrhage, oedema nor death.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -6019,7 +6019,7 @@ export const completedTrials = [
     citationIds: ['cit-iris-time-2024'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Reframes the bridging debate as a clock question rather than a yes/no question: the added value of a lytic before thrombectomy is large very early and shrinks steadily with time from onset to expected IVT (predicted absolute gain in mRS 0-2 about 9% at 1 h, 5% at 2 h and 1% at 3 h; no longer statistically significant after about 2 h 20 min, with the point estimate crossing the null at 3 h 14 min) — a gradient, not a threshold.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -6173,7 +6173,7 @@ export const completedTrials = [
     citationIds: ['cit-devt-2021'],
     relatedActiveTrialIds: [],
     practiceImpact: 'A worked example of two appraisal traps at once — early stopping for efficacy and a permissive non-inferiority margin — in a trial whose headline reads as a green light to skip the lytic.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -6265,7 +6265,7 @@ export const completedTrials = [
     citationIds: ['cit-swift-direct-2022'],
     relatedActiveTrialIds: [],
     practiceImpact: 'In an IVT-eligible patient already at a thrombectomy centre, omitting alteplase was not shown to be non-inferior and cost reperfusion — a concrete reason the bridging default survived.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -6411,7 +6411,7 @@ export const completedTrials = [
     citationIds: ['cit-re-align-2013'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Teaches why a direct thrombin inhibitor is not an option for a mechanical heart valve: dabigatran produced more strokes and more bleeding than warfarin and the trial was halted for harm.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -7043,7 +7043,7 @@ export const completedTrials = [
     citationIds: ['cit-ie-vs-af-imaging-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Teaches the imaging signature that should prompt blood cultures and echocardiography rather than an AF workup - numerous small infarcts spread across three vascular territories in a younger febrile patient - and sets the expectation that new ischemic lesions, symptomatic or silent, appear on follow-up DWI within a month in about half of IE patients who are re-imaged (53.2%), with symptomatic recurrent ischemic stroke in about 15% by 3 months.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -7097,7 +7097,7 @@ export const completedTrials = [
     citationIds: ['cit-aster-2017'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Teaches that either contact aspiration or a stent retriever is a defensible first-line choice for anterior-circulation thrombectomy; the technique argument should not be presented to trainees as settled in either direction.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -7197,7 +7197,7 @@ export const completedTrials = [
     citationIds: ['cit-aster2-2021'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Does not support routinely combining contact aspiration with a stent retriever on the first pass; the first-pass reperfusion advantage does not survive to the end of the procedure.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -7297,7 +7297,7 @@ export const completedTrials = [
     citationIds: ['cit-siesta-2016'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Does not support routinely avoiding general anesthesia for thrombectomy; teaches that the airway decision trades procedural stillness against hypothermia, delayed extubation and pneumonia.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -7351,7 +7351,7 @@ export const completedTrials = [
     citationIds: ['cit-goliath-2018'],
     relatedActiveTrialIds: [],
     practiceImpact: 'General anesthesia for thrombectomy did not produce worse tissue or clinical outcomes than conscious sedation, so an anesthesia plan should be chosen on airway, agitation and workflow grounds rather than on a presumed harm from intubation.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -7409,7 +7409,7 @@ export const completedTrials = [
     citationIds: ['cit-anstroke-2017'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Adds a neutral, physiologically controlled data point: with blood pressure managed to protocol, general anesthesia and conscious sedation produced the same 3-month outcomes.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -7517,7 +7517,7 @@ export const completedTrials = [
     citationIds: ['cit-ga-nonga-bayesian-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Across all ten randomized trials, general anesthesia improves reperfusion and shows a functional-outcome signal that does not reach the level of demonstrated benefit, while costing more intraprocedural hypotension and pneumonia — a reason to stop treating conscious sedation as the safer default, not a mandate to intubate everyone.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -7679,7 +7679,7 @@ export const completedTrials = [
     citationIds: ['cit-discount-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Adds a randomized trial halted for futility plus a haemorrhage signal to the medium- and distal-vessel occlusion evidence, and supplies the procedural-complication data — subarachnoid haemorrhage and embolus migration — from its as-treated comparison; DISTAL and ESCAPE-MeVO also had numerically more symptomatic haemorrhage with thrombectomy.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -7737,7 +7737,7 @@ export const completedTrials = [
     citationIds: ['cit-veritas-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Pooled across all four randomized basilar trials, endovascular therapy roughly 2.4-fold increased the odds of a favourable 90-day outcome and cut 90-day mortality from 45% to 36%, at the cost of a rise in symptomatic haemorrhage from under 1% to 5%; benefit is uncertain below NIHSS 10 and greater with more proximal occlusions.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -7861,7 +7861,7 @@ export const completedTrials = [
     citationIds: ['cit-ich-bp-location-meta-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Teaches that the deep-versus-lobar question in acute BP management is unresolved: current evidence neither establishes a location-specific benefit nor rules one out, so location should not by itself change the acute BP target.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -7973,7 +7973,7 @@ export const completedTrials = [
     citationIds: ['cit-peach-2022', 'cit-peach-eeg-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Teaches why prophylactic levetiracetam after ICH remains a research question rather than routine care: PEACH reduced EEG-detected seizures in 42 analysable patients and says nothing about function, so guidelines still advise against routine prophylaxis.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -8085,7 +8085,7 @@ export const completedTrials = [
     citationIds: ['cit-edinburgh-ct-caa-2018'],
     relatedActiveTrialIds: ['saturn'],
     practiceImpact: 'Gives a CT-only, and optionally CT-plus-APOE, way to grade the probability that a lobar haemorrhage is amyloid-related when MRI is unavailable — the input to how cautiously antithrombotics are restarted.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -8519,7 +8519,7 @@ export const completedTrials = [
     citationIds: ['cit-resist-2023'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Ambulance-initiated remote ischemic conditioning does not improve 90-day outcome and is not a prehospital intervention to adopt.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -8565,7 +8565,7 @@ export const completedTrials = [
     citationIds: ['cit-ricamis-2022'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Shows a 5.4-point absolute gain in excellent outcome with RIC in moderate stroke, but from an unblinded usual-care comparison the authors themselves say needs replication.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -8657,7 +8657,7 @@ export const completedTrials = [
     citationIds: ['cit-entrips-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Ultra-early remote ischemic postconditioning after successful thrombectomy was safe but showed no functional benefit, so the RIC-after-EVT question remains open rather than answered.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -8703,7 +8703,7 @@ export const completedTrials = [
     citationIds: ['cit-vesalius-cv-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Teaches that the PCSK9 evidence base now reaches patients with atherosclerosis or diabetes and no prior event — but explicitly not stroke survivors, for whom SPARCL and Treat Stroke to Target remain the anchors.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -8899,7 +8899,7 @@ export const completedTrials = [
     citationIds: ['cit-save-2016'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Teaches that CPAP should be offered for symptoms — sleepiness, snoring, quality of life — and not promised as a way to prevent recurrent vascular events; the largest randomized test found no event reduction.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -8961,7 +8961,7 @@ export const completedTrials = [
     citationIds: ['cit-poststroke-pap-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Keeps the post-stroke sleep-apnea question open rather than closing it: a pooled signal for fewer recurrent vascular events sits against a larger neutral trial, and neither supports promising a patient that PAP will improve functional independence.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -9015,7 +9015,7 @@ export const completedTrials = [
     citationIds: ['cit-anti-inflammatory-cv-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Reframes anti-inflammatory vascular prevention as class- and population-specific rather than general, and supplies the reason the neutral cerebrovascular colchicine trials should be taken at face value rather than explained away.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -9069,7 +9069,7 @@ export const completedTrials = [
     citationIds: ['cit-ssi-antiplatelet-nma-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Reinforces avoiding long-term aspirin plus clopidogrel after small subcortical infarction on bleeding grounds, and flags cilostazol as the best-ranked single agent in a largely East Asian evidence base that has not been replicated in Western populations.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -9123,7 +9123,7 @@ export const completedTrials = [
     citationIds: ['cit-cadiss-2015'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Establishes that recurrent stroke after cervical artery dissection is uncommon (about 2% at 3 months) and that neither antiplatelet nor anticoagulant therapy has been shown superior — so the choice can be made on bleeding risk, adherence and cost rather than on a presumed efficacy gap.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -9231,7 +9231,7 @@ export const completedTrials = [
     citationIds: ['cit-kaufmann-ipd-2024'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Confirms that no randomised evidence establishes either antiplatelet or anticoagulant superiority after cervical artery dissection; both remain defensible, and the decision should turn on individual bleeding risk and practical considerations rather than on a claimed efficacy difference.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -9405,7 +9405,7 @@ export const completedTrials = [
     citationIds: ['cit-danish-poc-stroke-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Supports progestogen-only contraceptives — pills, implants, injections and the levonorgestrel IUD — as reasonable alternatives when stroke risk is a deciding factor, while making clear that the absolute gain from switching is small.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -9467,7 +9467,7 @@ export const completedTrials = [
     citationIds: ['cit-finnish-subseq-pregnancy-2025'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Supplies the first numbers for counselling after a pregnancy-associated ischemic stroke: most subsequent pregnancies proceed, but they behave as high-risk pregnancies warranting planned antithrombotic continuation, blood-pressure surveillance and glucose screening.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -9575,7 +9575,7 @@ export const completedTrials = [
     citationIds: ['cit-sifap-2013'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Supports phenotype-driven rather than universal Fabry screening in young stroke — about 1 in 200 young stroke patients has definite Fabry disease — while showing that large-artery atherosclerosis and dissection, not rare diseases, dominate the causes of stroke between 18 and 55.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -9633,7 +9633,7 @@ export const completedTrials = [
     citationIds: ['cit-ukyss-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Sets realistic expectations for the young-stroke workup: half of young ischemic strokes remain cryptogenic, hypertension was the commonest risk factor (56.6%) and etiology (49.6%) in young hemorrhagic stroke, with 38.1% of young ischemic strokes also classed as hypertensive, and by the late forties the risk-factor profile is already conventional.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -9691,7 +9691,7 @@ export const completedTrials = [
     citationIds: ['cit-illicit-drugs-stroke-mr-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Supports routinely taking a substance-use history — and considering a toxicology screen — in young or cryptogenic stroke, since cocaine, amphetamine and cannabis exposure show concordant observational and genetic associations with stroke.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -9745,7 +9745,7 @@ export const completedTrials = [
     citationIds: ['cit-save-childs-2020', 'cit-tips-study-2009'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Frames pediatric thrombectomy honestly: feasible, with complication rates not detectably worse than in adult trials, but supported only by a 73-child uncontrolled series because the only pediatric thrombolysis trial launched (TIPS, a non-randomized dose-finding study) closed after enrolling one child — so it remains an off-label, case-by-case extrapolation from adult evidence.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -9799,7 +9799,7 @@ export const completedTrials = [
   ],
   "relatedActiveTrialIds": [],
   "practiceImpact": "No demonstrated reduction in the prespecified deterioration/recurrent-stroke composite in this selected population.",
-  "lastReviewed": "2026-09-06",
+  "lastReviewed": "2026-09-26",
   "verificationStatus": "verified-pubmed"
 }),
   t({
@@ -9855,7 +9855,7 @@ export const completedTrials = [
   ],
   "relatedActiveTrialIds": [],
   "practiceImpact": "Requires double-blind multinational confirmation before changing statin selection.",
-  "lastReviewed": "2026-09-06",
+  "lastReviewed": "2026-09-26",
   "verificationStatus": "verified-pubmed"
 }),
   t({
@@ -9902,7 +9902,7 @@ export const completedTrials = [
   ],
   "relatedActiveTrialIds": [],
   "practiceImpact": "Exploratory adjunctive-treatment evidence; larger confirmatory studies are needed.",
-  "lastReviewed": "2026-09-06",
+  "lastReviewed": "2026-09-26",
   "verificationStatus": "verified-pubmed"
 }),
   t({
@@ -9954,7 +9954,7 @@ export const completedTrials = [
   ],
   "relatedActiveTrialIds": [],
   "practiceImpact": "Long-term program benefit persisted after some trial support ended; does not by itself set an acute-stroke BP target.",
-  "lastReviewed": "2026-09-06",
+  "lastReviewed": "2026-09-26",
   "verificationStatus": "verified-pubmed"
 }),
 
@@ -10046,7 +10046,7 @@ export const completedTrials = [
     citationIds: ['cit-tension-antithrombotic-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Preadmission antiplatelets or anticoagulants, or prior IV thrombolysis, should not exclude otherwise-eligible large-core patients from thrombectomy — EVT benefit and safety were unmodified by prior antithrombotic exposure.',
-    lastReviewed: '2026-09-19',
+    lastReviewed: '2026-09-26',
     promotedDate: '2026-09-19',
     verificationStatus: 'verified-pubmed'
   }),
@@ -10093,7 +10093,7 @@ export const completedTrials = [
     citationIds: ['cit-laste-aspects-0-2-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'In patients under 80 treated within 6.5 h, even ASPECTS 0-2 with a median 156 mL core benefited from EVT — infarct size in isolation should not disqualify thrombectomy, accepting a numerically higher sICH rate for large gains in survival and mRS 0-3.',
-    lastReviewed: '2026-09-19',
+    lastReviewed: '2026-09-26',
     promotedDate: '2026-09-19',
     verificationStatus: 'verified-pubmed'
   }),
