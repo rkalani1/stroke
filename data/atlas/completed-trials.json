@@ -3,8 +3,8 @@
     "endpoint": "completed-trials",
     "schemaVersion": "1.0.0",
     "appVersion": "6.28.2",
-    "checksum": "sha256:12bdd6d9f1367ac3a1ff760247dbba65",
-    "count": 248,
+    "checksum": "sha256:cbc3691bfe44221a3bf256f40567bbcc",
+    "count": 249,
     "source": "Evidence atlas completed-trials bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
@@ -870,6 +870,59 @@
       "practiceImpact": "Extends EVT benefit for basilar-artery occlusion to 6-24 h.",
       "lastReviewed": "2026-05-29",
       "promotedDate": "2026-05-29",
+      "verificationStatus": "verified-pubmed",
+      "verificationNotes": ""
+    },
+    {
+      "id": "attention-late",
+      "shortName": "ATTENTION LATE",
+      "fullName": "Tenecteplase Before Thrombectomy at 4.5 to 24 Hours for Basilar Artery Occlusion (ATTENTION LATE)",
+      "topic": "evt-basilar",
+      "diseaseArea": [
+        "acute-ischemic-stroke",
+        "evt-basilar"
+      ],
+      "population": {
+        "n": 330,
+        "ageRange": "≥18",
+        "nihssRange": "≥10",
+        "timeWindow": "4.5-24 h",
+        "keyInclusion": [
+          "Moderate to severe basilar-artery occlusion (NIHSS ≥10)",
+          "Admitted directly to EVT-capable centers"
+        ],
+        "keyExclusion": [
+          "Prior IV thrombolysis before randomization"
+        ]
+      },
+      "intervention": "IV tenecteplase 0.25 mg/kg (max 25 mg) bolus + EVT",
+      "comparator": "EVT alone",
+      "primaryEndpoint": {
+        "definition": "Functional independence (mRS 0-2) at 90 d",
+        "timepoint": "90 d",
+        "result": "Neutral: 30% (50/165, TNK+EVT) vs 30% (50/164, EVT alone)",
+        "effectSize": "Adjusted rate ratio 0.92; risk difference -0.18%",
+        "confidenceInterval": "95% CI 0.67 to 1.25 (rate ratio); 95% CI -10.13% to 9.76% (risk difference)",
+        "pValue": "Not significant (CIs cross the null)"
+      },
+      "secondaryEndpoints": [],
+      "safetyFindings": {
+        "sich": "5% (8/165) vs 4% (6/164)",
+        "mortality": "40% (66/165) vs 43% (70/164) at 90 d",
+        "other": ""
+      },
+      "imagingCriteria": "CTA/MRA/DSA-confirmed basilar-artery occlusion; PC-ASPECTS ≥6 (CT) or ≥5 (MRI-DWI); 4.5-24 h from onset",
+      "applicabilityNotes": "Multicenter (40 sites) open-label, blinded-endpoint (PROBE) RCT in China; patients admitted directly to EVT-capable centers.",
+      "limitations": "Open-label treatment; conducted in China; applies to patients presenting directly to EVT-capable centers (does not address bridging in drip-and-ship transfers).",
+      "certainty": "high",
+      "evidenceType": "rct",
+      "citationIds": [
+        "cit-attention-late-2026"
+      ],
+      "relatedActiveTrialIds": [],
+      "practiceImpact": "In moderate-to-severe basilar-artery occlusion at 4.5-24 h presenting directly to EVT-capable centers, adding IV tenecteplase before thrombectomy did not improve 90-day functional outcomes over EVT alone.",
+      "lastReviewed": "2026-09-26",
+      "promotedDate": "2026-09-26",
       "verificationStatus": "verified-pubmed",
       "verificationNotes": ""
     },

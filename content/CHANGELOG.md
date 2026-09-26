@@ -7,6 +7,24 @@ re-verifications, and schema evolution. Dates are absolute (ISO).
 Format: newest first. Each entry: what changed, why, and the source it was
 verified against.
 
+## 2026-09-26 — ATTENTION LATE trial added (evt-basilar)
+
+New completed-trial record added to the Trials section (authored in
+`src/evidence/completedTrials.js`; projected to `content/trials/evt-basilar.json`
+by `content:seed`). Additive only; no existing clinical statement altered.
+
+- **`attention-late`** — ATTENTION LATE (JAMA, 2026): multicenter (40 sites,
+  China), open-label, blinded-endpoint phase 3 RCT (n=330) of IV tenecteplase
+  0.25 mg/kg before endovascular thrombectomy vs EVT alone in moderate-to-severe
+  basilar-artery occlusion (NIHSS ≥10) presenting 4.5–24 h after onset directly
+  to EVT-capable centers. Primary outcome (mRS 0–2 at 90 d) was neutral:
+  30% (50/165) vs 30% (50/164); adjusted rate ratio 0.92 (95% CI 0.67–1.25);
+  risk difference −0.18% (95% CI −10.13% to 9.76%). sICH 5% vs 4%; 90-day
+  mortality 40% vs 43%. Source: ATTENTION LATE (PMID 42776543;
+  DOI 10.1001/jama.2026.15496; NCT05701956, ClinicalTrials.gov phase PHASE3).
+  Verified against PubMed abstract and ClinicalTrials.gov record (Crossref/
+  doi.org resolution unavailable — blocked by environment egress policy).
+
 ## 2026-07-18 — 12 new neurovascular education modules
 
 New bedside teaching cards added to the Education section (authored in

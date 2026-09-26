@@ -3,8 +3,8 @@
     "endpoint": "citations",
     "schemaVersion": "1.0.0",
     "appVersion": "6.28.2",
-    "checksum": "sha256:060b9f325b1733468bf21c4049420366",
-    "count": 384,
+    "checksum": "sha256:8ca445d79dc8aea648ac447db0c94913",
+    "count": 385,
     "source": "Evidence atlas citations bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
@@ -157,6 +157,21 @@
       "pmid": "36239644",
       "doi": "10.1056/NEJMoa2206317",
       "url": "https://pubmed.ncbi.nlm.nih.gov/36239644/",
+      "verificationStatus": "verified-pubmed",
+      "verificationNotes": ""
+    },
+    {
+      "id": "cit-attention-late-2026",
+      "type": "journal-article",
+      "authors": "Li R et al.",
+      "title": "Tenecteplase Before Thrombectomy at 4.5 to 24 Hours for Basilar Artery Occlusion: The ATTENTION LATE Randomized Clinical Trial",
+      "journal": "JAMA",
+      "year": 2026,
+      "volume": "",
+      "pages": "",
+      "pmid": "42776543",
+      "doi": "10.1001/jama.2026.15496",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42776543/",
       "verificationStatus": "verified-pubmed",
       "verificationNotes": ""
     },

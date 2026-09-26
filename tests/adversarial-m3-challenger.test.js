@@ -363,7 +363,7 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       const bundlePath = path.join(REPO_ROOT, 'content', 'bundle.json');
       const bundle = JSON.parse(fs.readFileSync(bundlePath, 'utf8'));
       expect(bundle.guidelines?.length).toBe(11);
-      expect(bundle.trials?.length).toBe(248);
+      expect(bundle.trials?.length).toBe(249);
       expect(bundle.education?.length).toBeGreaterThanOrEqual(32);
       expect(bundle.calculators?.length).toBe(34);
       expect(bundle.references?.length).toBe(32); // 28 repo-local documents + 4 external links (registry-driven seeding)
@@ -381,7 +381,7 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       const json = JSON.parse(res.stdout);
       expect(json.errors.length).toBe(0);
       expect(json.counts.guidelines).toBe(11);
-      expect(json.counts.trials).toBe(248);
+      expect(json.counts.trials).toBe(249);
       expect(json.counts.education).toBeGreaterThanOrEqual(32);
       expect(json.counts.calculators).toBe(34);
       expect(json.counts.references).toBe(32); // 28 repo-local documents + 4 external links (registry-driven seeding)
