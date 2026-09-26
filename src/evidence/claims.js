@@ -68,8 +68,8 @@ export const claims = [
     topic: 'ich-anticoag-reversal',
     citationIds: ['cit-annexa-i-2024', 'cit-aha-ich-2022'],
     certainty: 'moderate',
-    conflictNotes: 'Hemostatic efficacy improved (67.0% vs 53.1%), but thrombotic events (10.3% vs 5.6%), including ischemic stroke (6.5% vs 1.5%), were more frequent with andexanet, with no appreciable difference in modified Rankin scale score or death within 30 days. The AHA/ASA 2022 Class IIa recommendation predates the December 2025 FDA safety action that ended US sales of andexanet.',
-    lastReviewed: lr
+    conflictNotes: 'Hemostatic efficacy improved (67.0% vs 53.1%), but thrombotic events (10.3% vs 5.6%), including ischemic stroke (6.5% vs 1.5%), were more frequent with andexanet than with usual care (85.5% received PCC), with no appreciable difference in modified Rankin scale score or death within 30 days. The AHA/ASA 2022 Class IIa recommendation (LOE B-NR) predates ANNEXA-I and the FDA safety action after which US commercial sales of andexanet ended on December 22, 2025; the 2026 NCS/SCCM focused update conditionally recommends 4F-PCC over andexanet.',
+    lastReviewed: '2026-09-26'
   }),
   makeClaim({
     id: 'cl-ich-mis-evacuation',

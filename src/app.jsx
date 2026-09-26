@@ -6876,7 +6876,7 @@ Clinician Name`;
             const dayMs = 24 * 60 * 60 * 1000;
             const windows = {
               minor: { start: 0, end: 2, label: 'Start within 48 hours' },
-              moderate: { start: 2, end: 4, label: 'Start on day 2-4 (early, ≤4 days)' },
+              moderate: { start: 0, end: 2, label: 'Start within 48 hours (ELAN early arm; CATALYST supports start by day 4)' },
               severe: { start: 6, end: 7, label: 'Start on day 6-7 (ELAN early arm for major stroke; later if very severe or HT on repeat imaging)' }
             };
             const base = windows[severity];
@@ -9155,7 +9155,7 @@ Clinician Name`;
             const doac = telestrokeNote.doacTiming || {};
             if (doac.strokeSeverity || doac.doacAgent) {
               brief += `\nDOAC TIMING:\n`;
-              if (doac.strokeSeverity) brief += `- Severity: ${doac.strokeSeverity} → ${doac.strokeSeverity === 'minor' ? 'start within 48h' : doac.strokeSeverity === 'moderate' ? 'start ~Day 3-4 (early ≤4 days per OPTIMAS/CATALYST)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}\n`;
+              if (doac.strokeSeverity) brief += `- Severity: ${doac.strokeSeverity} → ${doac.strokeSeverity === 'minor' ? 'start within 48h' : doac.strokeSeverity === 'moderate' ? 'start within 48h (ELAN early arm; CATALYST supports start by day 4)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}\n`;
               if (doac.doacAgent) brief += `- Agent: ${doac.doacAgent.replace(/-/g, ' ')}\n`;
               if (doac.doacInitiationDay) brief += `- Planned initiation: ${doac.doacInitiationDay}\n`;
               if (doac.hemorrhagicTransformation) brief += `- HT present: repeat imaging before DOAC initiation\n`;
@@ -9698,7 +9698,7 @@ Clinician Name`;
                   note += `- DOAC plan: `;
                   const doacParts = [];
                   if (doac.doacAgent) doacParts.push(doac.doacAgent.replace(/-/g, ' '));
-                  if (doac.strokeSeverity) doacParts.push(`severity ${doac.strokeSeverity} → ${doac.strokeSeverity === 'minor' ? 'start within 48h' : doac.strokeSeverity === 'moderate' ? 'start ~Day 3-4 (early ≤4 days per OPTIMAS/CATALYST)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}`);
+                  if (doac.strokeSeverity) doacParts.push(`severity ${doac.strokeSeverity} → ${doac.strokeSeverity === 'minor' ? 'start within 48h' : doac.strokeSeverity === 'moderate' ? 'start within 48h (ELAN early arm; CATALYST supports start by day 4)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}`);
                   if (doac.doacInitiationDay) doacParts.push(`planned Day ${doac.doacInitiationDay}`);
                   if (doac.hemorrhagicTransformation) doacParts.push('HT present — repeat imaging before initiation');
                   note += doacParts.join('; ') + '\n';
@@ -10219,7 +10219,7 @@ Clinician Name`;
                 if (snDoac.strokeSeverity || snDoac.doacAgent) {
                   const dParts = [];
                   if (snDoac.doacAgent) dParts.push(snDoac.doacAgent.replace(/-/g, ' '));
-                  if (snDoac.strokeSeverity) dParts.push(`severity ${snDoac.strokeSeverity} → ${snDoac.strokeSeverity === 'minor' ? 'start within 48h' : snDoac.strokeSeverity === 'moderate' ? 'start ~Day 3-4 (early ≤4 days per OPTIMAS/CATALYST)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}`);
+                  if (snDoac.strokeSeverity) dParts.push(`severity ${snDoac.strokeSeverity} → ${snDoac.strokeSeverity === 'minor' ? 'start within 48h' : snDoac.strokeSeverity === 'moderate' ? 'start within 48h (ELAN early arm; CATALYST supports start by day 4)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}`);
                   if (snDoac.doacInitiationDay) dParts.push(`planned Day ${snDoac.doacInitiationDay}`);
                   if (snDoac.hemorrhagicTransformation) dParts.push('HT — repeat imaging before initiation');
                   note += `- DOAC plan: ${dParts.join('; ')}\n`;
@@ -10859,7 +10859,7 @@ Clinician Name`;
                 if (prDoac.strokeSeverity || prDoac.doacAgent) {
                   const prDoacParts = [];
                   if (prDoac.doacAgent) prDoacParts.push(prDoac.doacAgent.replace(/-/g, ' '));
-                  if (prDoac.strokeSeverity) prDoacParts.push(`severity ${prDoac.strokeSeverity} → ${prDoac.strokeSeverity === 'minor' ? 'start within 48h' : prDoac.strokeSeverity === 'moderate' ? 'start ~Day 3-4 (early ≤4 days per OPTIMAS/CATALYST)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}`);
+                  if (prDoac.strokeSeverity) prDoacParts.push(`severity ${prDoac.strokeSeverity} → ${prDoac.strokeSeverity === 'minor' ? 'start within 48h' : prDoac.strokeSeverity === 'moderate' ? 'start within 48h (ELAN early arm; CATALYST supports start by day 4)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}`);
                   if (prDoac.hemorrhagicTransformation) prDoacParts.push('HT — repeat imaging first');
                   note += `   - DOAC plan: ${prDoacParts.join('; ')}\n`;
                 }
@@ -12273,7 +12273,7 @@ Clinician Name`;
               if (cnDoac.strokeSeverity || cnDoac.doacAgent) {
                 const cnDoacParts = [];
                 if (cnDoac.doacAgent) cnDoacParts.push(cnDoac.doacAgent.replace(/-/g, ' '));
-                if (cnDoac.strokeSeverity) cnDoacParts.push(`severity ${cnDoac.strokeSeverity} → ${cnDoac.strokeSeverity === 'minor' ? 'start within 48h' : cnDoac.strokeSeverity === 'moderate' ? 'start ~Day 3-4 (early ≤4 days per OPTIMAS/CATALYST)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}`);
+                if (cnDoac.strokeSeverity) cnDoacParts.push(`severity ${cnDoac.strokeSeverity} → ${cnDoac.strokeSeverity === 'minor' ? 'start within 48h' : cnDoac.strokeSeverity === 'moderate' ? 'start within 48h (ELAN early arm; CATALYST supports start by day 4)' : 'start ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}`);
                 if (cnDoac.doacInitiationDay) cnDoacParts.push(`planned Day ${cnDoac.doacInitiationDay}`);
                 if (cnDoac.hemorrhagicTransformation) cnDoacParts.push('HT — repeat imaging before initiation');
                 note += `\nDOAC Timing: ${cnDoacParts.join('; ')}\n`;
@@ -19823,9 +19823,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                         onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), daptDuration: v}})); }}
                                         className="w-full mt-1 px-2 py-1 border border-slate-300 rounded text-xs dark:border-strong">
                                         <option value="">-- DAPT duration --</option>
-                                        <option value="21 days">21 days (POINT/CHANCE)</option>
+                                        <option value="21 days">21 days (CHANCE; CHANCE-2; 2026 AHA/ASA COR 1 for ASA + clopidogrel)</option>
                                         <option value="30 days">30 days (THALES)</option>
-                                        <option value="90 days">90 days (CHANCE-2)</option>
+                                        <option value="90 days">90 days (POINT; more major hemorrhage than aspirin alone)</option>
                                       </select></>
                                     )}
                                     {(() => {
@@ -22161,7 +22161,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <h3 className="font-bold text-orange-900 flex items-center gap-2 dark:text-orange-300">
                                                                     Post-EVT Monitoring & Orders
                                 </h3>
-                                <p className="text-xs text-orange-700 dark:text-orange-300">Post-thrombectomy monitoring checklist. BP target: SBP &lt;180/105, avoid SBP &lt;140 (Class III: Harm; harm shown in ENCHANTED2/MT and OPTIMAL-BP; BEST-II did not meet its harm criteria). Neuro checks q15min x 2h, q30min x 6h, q1h thereafter.</p>
+                                <p className="text-xs text-orange-700 dark:text-orange-300">Post-thrombectomy monitoring checklist. BP target: &le;180/105 during and for 24h after EVT (2026 AHA/ASA COR 2a). After successful reperfusion (mTICI 2b-3), avoid intensive SBP lowering to &lt;140 in the first 72h (COR 3: Harm, LOE A; ENCHANTED2/MT, OPTIMAL-BP). Neuro checks q15min x 2h, q30min x 6h, q1h thereafter.</p>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                   {[
                                     { field: 'postEvtBpConfirmed', label: 'BP target confirmed (<180, avoid <140)' },
@@ -23878,9 +23878,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, secondaryPrevention: {...(prev.secondaryPrevention || {}), daptDuration: v}})); }}
                                       className="w-full px-2 py-1 border border-slate-300 rounded text-sm dark:border-strong">
                                       <option value="">-- DAPT duration --</option>
-                                      <option value="21 days">21 days (POINT/CHANCE)</option>
+                                      <option value="21 days">21 days (CHANCE; CHANCE-2; 2026 AHA/ASA COR 1 for ASA + clopidogrel)</option>
                                       <option value="30 days">30 days (THALES)</option>
-                                      <option value="90 days">90 days (CHANCE-2)</option>
+                                      <option value="90 days">90 days (POINT; more major hemorrhage than aspirin alone)</option>
                                     </select>
                                     <div className="bg-white border border-ok-200 rounded-lg p-2 dark:bg-card dark:border-ok-800">
                                       <p className="text-xs font-semibold text-ok-800 mb-1 dark:text-ok-300">DAPT Adherence Tracker</p>
@@ -24001,7 +24001,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <div className="bg-warn-50 border border-warn-200 p-2 rounded text-center dark:bg-warn-950 dark:border-warn-800">
                                       <p className="font-bold text-warn-700 uppercase dark:text-warn-300">Moderate</p>
                                       <p className="text-slate-500 dark:text-mute">NIHSS 8-15</p>
-                                      <p className="text-sm font-bold text-warn-800 mt-1 dark:text-warn-300">DOAC ~day 3-4 (early, ≤4 days)</p>
+                                      <p className="text-sm font-bold text-warn-800 mt-1 dark:text-warn-300">DOAC within 48h</p>
                                     </div>
                                     <div className="bg-crit-50 border border-crit-200 p-2 rounded text-center dark:bg-crit-950 dark:border-crit-800">
                                       <p className="font-bold text-crit-700 uppercase dark:text-crit-300">Severe / Large</p>
@@ -24152,7 +24152,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <option value="recurrent-ascvd">Recurrent ASCVD events</option>
                                     <option value="not-indicated">Not indicated</option>
                                   </select>
-                                  <p className="text-xs text-slate-500 mt-1 dark:text-mute">CONVINCE: primary endpoint not met (HR 0.84, 95% CI 0.68-1.05; p=0.12; stopped early, underpowered). CHANCE-3: 90 days of colchicine did not reduce recurrent stroke after minor stroke/TIA (HR 0.98, 95% CI 0.83-1.16). Avoid if eGFR &lt;30.</p>
+                                  <p className="text-xs text-slate-500 mt-1 dark:text-mute">CONVINCE (Lancet 2024): colchicine 0.5 mg daily did not significantly reduce recurrent vascular events in the primary ITT analysis (HR 0.84, 95% CI 0.68-1.05). CHANCE-3 (BMJ 2024): colchicine did not reduce 90-day stroke after minor-to-moderate stroke/TIA with hsCRP ≥2 mg/L (HR 0.98, 95% CI 0.83-1.16). Not an established stroke secondary-prevention therapy. Avoid if eGFR &lt;30.</p>
                                 </div>
                                 <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
                                   <h3 className="font-semibold text-warn-800 mb-2 text-sm dark:text-warn-300">CYP2C19 Pharmacogenomics</h3>
@@ -24858,7 +24858,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           <p className="font-semibold mb-1">
                                             {(telestrokeNote.doacTiming || {}).hemorrhagicTransformation ? 'Delay DOAC — repeat imaging first' :
                                              (telestrokeNote.doacTiming || {}).strokeSeverity === 'minor' ? 'Start DOAC within 48 hours' :
-                                             (telestrokeNote.doacTiming || {}).strokeSeverity === 'moderate' ? 'Start DOAC ~Day 3-4 (early, ≤4 days per OPTIMAS/CATALYST)' :
+                                             (telestrokeNote.doacTiming || {}).strokeSeverity === 'moderate' ? 'Start DOAC within 48 hours (ELAN early arm; CATALYST supports start by day 4)' :
                                              'Start DOAC ~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}
                                           </p>
                                           <p className="text-xs text-slate-600 dark:text-ink-2">CATALYST IPD meta-analysis (ELAN, OPTIMAS, TIMING, START; n=5,441): DOAC start ≤4 days reduced 30-day recurrent ischemic stroke/sICH/unclassified stroke vs ≥5 days (2.1% vs 3.0%; OR 0.70) without more sICH.</p>
@@ -25982,7 +25982,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                           </ul>
                                         </div>
                                       </div>
-                                      <p className="text-xs text-crit-600 mt-2 italic dark:text-crit-300">AHA 2026 Scientific Statement: Prevention and Treatment of Maternal Stroke in Pregnancy and Postpartum. PMID: 41603019.</p>
+                                      <p className="text-xs text-crit-600 mt-2 italic dark:text-crit-300">AHA 2026 Scientific Statement: Prevention and Treatment of Maternal Stroke in Pregnancy and Postpartum (Miller et al., Stroke 2026). PMID: 41603019.</p>
                                     </div>
 
                                     <div className="bg-pink-100 border border-pink-300 rounded-lg p-3 dark:bg-pink-900 dark:border-pink-800">
@@ -26997,7 +26997,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 const doac = telestrokeNote.doacTiming || {};
                                 if (doac.strokeSeverity || doac.doacAgent) {
                                   note += `\nDOAC TIMING:\n`;
-                                  if (doac.strokeSeverity) note += `- Severity: ${doac.strokeSeverity}. Recommended: ${doac.strokeSeverity === 'minor' ? 'within 48h' : doac.strokeSeverity === 'moderate' ? '~Day 3-4 (early ≤4 days per OPTIMAS/CATALYST)' : '~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}.\n`;
+                                  if (doac.strokeSeverity) note += `- Severity: ${doac.strokeSeverity}. Recommended: ${doac.strokeSeverity === 'minor' ? 'within 48h' : doac.strokeSeverity === 'moderate' ? 'within 48h (ELAN early arm; CATALYST supports start by day 4)' : '~Day 6-7 (ELAN early arm for major stroke); later if very severe or HT on repeat imaging'}.\n`;
                                   if (doac.doacAgent) note += `- Agent: ${doac.doacAgent.replace(/-/g, ' ')}.\n`;
                                   if (doac.doacInitiationDay) note += `- Planned initiation: ${doac.doacInitiationDay}.\n`;
                                   if (doac.hemorrhagicTransformation) note += `- Note: HT present — repeat imaging before DOAC.\n`;
@@ -31309,7 +31309,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {pascal && (
                               <p className="text-sm mt-1"><span className="font-semibold">PASCAL category: {pascal.category}.</span> {pascal.recommendation}</p>
                             )}
-                            <p className="text-xs text-slate-600 mt-1 dark:text-mute">Higher RoPE = more likely the PFO is pathogenic. PASCAL combines RoPE ≥7 with high-risk morphology (large shunt or atrial septal aneurysm); closure benefit concentrates in the Probable category.</p>
+                            <p className="text-xs text-slate-600 mt-1 dark:text-mute">Higher RoPE = more likely the PFO is pathogenic. PASCAL combines RoPE ≥7 with high-risk morphology (large shunt or atrial septal aneurysm); in the pooled trials, closure was associated with fewer recurrent strokes in the Possible (HR 0.38) and Probable (HR 0.10) categories, with the same 2-year absolute risk reduction (2.1%) in each, but not in the Unlikely category (HR 1.14).</p>
                           </div>
                         );
                       })()}
@@ -32697,7 +32697,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </summary>
                       <div className="px-4 pb-4 space-y-3">
                         <div className="bg-crit-50 border border-crit-200 rounded-lg p-2 dark:bg-crit-950 dark:border-crit-800">
-                          <p className="text-xs font-bold text-crit-800 dark:text-crit-300">AHA/ASA 2022: Postponing new DNR orders until at least the second full day of inpatient stay is reasonable (Class IIa). Early care limitations are a strong independent predictor of mortality — the "self-fulfilling prophecy."</p>
+                          <p className="text-xs font-bold text-crit-800 dark:text-crit-300">AHA/ASA 2022: Postponing new DNR orders until at least the second full day of inpatient stay is reasonable (Class IIa, LOE B-NR). Early care limitations are a strong independent predictor of mortality — the "self-fulfilling prophecy."</p>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           <div className="bg-rose-50 border border-rose-200 rounded-lg p-3 dark:bg-rose-950 dark:border-rose-800">
@@ -32804,7 +32804,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {
                             q: 'Patient got TNK and now has trace blood on urine dip. Should I reverse?',
                             a: 'No. Microscopic hematuria is not an indication to reverse thrombolysis. Only gross hematuria, active bleeding requiring transfusion, or symptomatic intracranial hemorrhage warrants reversal. Continue monitoring.',
-                            ref: 'Clinical consensus; AHA/ASA 2026 AIS Guideline'
+                            ref: 'AHA/ASA 2026 AIS Guideline (post-IVT bleeding management); clinical judgment'
                           },
                           {
                             q: 'Patient has ICH Score of 4. Family wants to know prognosis. Should we recommend comfort care?',
@@ -32824,7 +32824,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {
                             q: 'Patient had a seizure at stroke onset. Is TNK contraindicated?',
                             a: 'No. Seizure at onset is no longer an absolute contraindication if residual deficits are clearly attributable to stroke (not postictal). If doubt exists, CT/CTA can help. The key concern is misdiagnosing Todd paralysis as stroke — do a thorough exam.',
-                            ref: 'AHA/ASA AIS guideline (2019 statement; confirm wording in 2026 update)'
+                            ref: 'AHA/ASA 2026 AIS Guideline'
                           },
                           {
                             q: 'Should I start prophylactic anti-seizure medication in this ICH patient?',
@@ -32839,7 +32839,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           {
                             q: 'Patient had TNK 3 hours ago, now new hemianopia. HT or new ischemia?',
                             a: 'Get STAT CT head. HT typically presents with headache, nausea, BP elevation, and decreased consciousness. New focal deficit without consciousness change suggests re-occlusion or new territory ischemia. If CT shows no hemorrhage, consider repeat CTA to assess vessel patency — may need rescue EVT.',
-                            ref: 'Clinical reasoning; AHA/ASA 2026 AIS guideline'
+                            ref: 'Clinical reasoning; AHA/ASA 2026 AIS Guideline'
                           },
                           {
                             q: 'Should I use phenytoin for post-stroke seizures?',
@@ -33049,7 +33049,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <p className="text-xs font-semibold text-crit-800 dark:text-crit-300">If in doubt, treat as stroke. TNK is relatively safe; missing a true stroke is far worse than treating a mimic. False-negative rate of CT is high in the first 6-12 hours.</p>
                         </div>
                         <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-2 dark:bg-cobalt-900 dark:border-cobalt-700">
-                          <p className="text-xs text-cobalt-800 dark:text-cobalt-300"><strong>FABS Score (mimic predictor):</strong> 1 point each for absent Facial droop, no history of Atrial fibrillation, Age &lt;50 years, systolic Blood pressure &lt;150 mm Hg at presentation, history of Seizures, and isolated Sensory symptoms without weakness. Score ≥3 → consider mimic. (Goyal N et al., Stroke 2016)</p>
+                          <p className="text-xs text-cobalt-800 dark:text-cobalt-300"><strong>FABS Score (mimic predictor):</strong> 1 point each for absent Facial droop, no history of Atrial fibrillation, Age &lt;50 years, systolic Blood pressure &lt;150 mm Hg at presentation, history of Seizures, and isolated Sensory symptoms without weakness (0-6). Score ≥3 → consider mimic (sensitivity 90%, specificity 91%). (Goyal N et al., Stroke 2016)</p>
                         </div>
                       </div>
                     </details>

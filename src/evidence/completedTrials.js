@@ -1310,7 +1310,6 @@ export const completedTrials = [
       pValue: 'p=0.61'
     },
     secondaryEndpoints: [
-      { name: 'mRS 0-1 at 90 d (primary)', result: '41.6% vs 43.1% (adjusted rate ratio 0.95, 95% CI 0.79 to 1.15, p=0.61)' },
       { name: 'mRS 0-2 at 90 d', result: '60.3% vs 60.1% (aOR 0.98, 95% CI 0.67 to 1.43)' }
     ],
     safetyFindings: {
@@ -1326,7 +1325,7 @@ export const completedTrials = [
     citationIds: ['cit-escape-mevo-2025'],
     relatedActiveTrialIds: ['step-evt'],
     practiceImpact: 'Does not support routine endovascular thrombectomy for isolated medium vessel occlusion stroke outside of clinical trials.',
-    lastReviewed: '2026-05-30',
+    lastReviewed: '2026-09-26',
     promotedDate: '2026-05-30',
     verificationStatus: 'verified-pubmed'
   }),
@@ -2470,14 +2469,14 @@ export const completedTrials = [
       other: ''
     },
     imagingCriteria: 'CTA collateral flow — deliberately NOT perfusion mismatch',
-    applicabilityNotes: 'Extends late-window EVT beyond the DAWN/DEFUSE-3 perfusion paradigm: patients selected on CTA collaterals alone benefited, and these were patients who did NOT meet perfusion criteria. Practically, this means a centre without CT perfusion can still select late-window candidates. Weigh against a roughly four-fold increase in symptomatic hemorrhage.',
+    applicabilityNotes: 'Extends late-window EVT beyond the DAWN/DEFUSE-3 perfusion paradigm: patients selected on CTA collaterals alone benefited, and these were patients who were not eligible under the Dutch guideline\'s DAWN/DEFUSE-3-derived clinical and perfusion-imaging criteria. Practically, this means a centre without CT perfusion can still select late-window candidates. Weigh against a roughly four-fold increase in symptomatic hemorrhage.',
     limitations: 'Open-label with blinded endpoints; single-country (18 Dutch centres); guideline-eligible patients were excluded, so this is a distinct, more marginal population.',
     certainty: 'high',
     evidenceType: 'rct',
     citationIds: ['cit-mrclean-late-2023'],
     relatedActiveTrialIds: [],
-    practiceImpact: 'CTA collateral status alone can select late-window (6-24 h) EVT candidates who fall outside DAWN/DEFUSE-3 perfusion criteria.',
-    lastReviewed: '2026-08-15',
+    practiceImpact: 'CTA collateral status alone can select late-window (6-24 h) EVT candidates who are not eligible under DAWN/DEFUSE-3-derived clinical and perfusion-imaging criteria.',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -5715,14 +5714,14 @@ export const completedTrials = [
       other: 'Every arm carried a 40 mm Hg lower floor, so no arm tested unbounded blood-pressure lowering'
     },
     imagingCriteria: 'Successful recanalization after endovascular therapy; follow-up infarct volume measured at 36 (±12) h',
-    applicabilityNotes: 'BEST-II is the record most often described incorrectly, so its framing matters more than its numbers. It is a phase 2 FUTILITY trial that did NOT meet its prespecified futility criteria, and its most intensive arm (<140 mm Hg) had the SMALLEST mean infarct volume of the three. It is NOT a harm trial. The harm signal in this category comes from ENCHANTED2/MT (target <120 mm Hg) and OPTIMAL-BP (target <140 mm Hg), not from BEST-II. What BEST-II does contribute is a probability statement: only a 25% (<140) and 14% (<160) predicted chance that a future superiority trial of those targets would succeed. It is also one of the few trials to test a <160 mm Hg target (the 2026 Cochrane review identified one other trial with a <160 mm Hg intensive arm) - and its <160 arm was numerically the worst of the three on utility-weighted mRS, which is why \'140-160\' is not a trial-supported band. The trial-supported comparator range is 140-180 mm Hg.',
+    applicabilityNotes: 'BEST-II is the record most often described incorrectly, so its framing matters more than its numbers. It is a phase 2 FUTILITY trial that did NOT meet its prespecified futility criteria, and its most intensive arm (<140 mm Hg) had the SMALLEST mean infarct volume of the three. It is NOT a harm trial. The harm signal in this category comes from ENCHANTED2/MT (target <120 mm Hg) and OPTIMAL-BP (target <140 mm Hg), not from BEST-II. What BEST-II does contribute is a probability statement: only a 25% (<140) and 14% (<160) predicted chance that a future superiority trial of those targets would succeed. It is also one of the few trials to test a <160 mm Hg target (the 2026 Cochrane review identified one other trial with a <160 mm Hg intensive arm). Its <160 arm was also numerically the worst of the three on utility-weighted mRS (0.47, vs 0.51 for <140 and 0.58 for ≤180), so BEST-II itself gives no support for a \'140-160\' band. BEST-II\'s comparator was ≤180 mm Hg (floor 40); the 140-180 mm Hg comparator range comes from ENCHANTED2/MT and OPTIMAL-BP.',
     limitations: 'Phase 2 futility design in only 120 patients at 3 US centers - built to screen for futility, not to detect benefit or harm, so the confidence intervals for the primary slopes are one-sided by design. Open-label with blinded endpoints. \'Low probability of success in a future trial\' is a forecast about trial design, not a clinical finding; conflating it with demonstrated harm inverts the paper. All arms required successful recanalization, so nothing here applies to persistent occlusion.',
     certainty: 'moderate',
     evidenceType: 'rct',
     citationIds: ['cit-best-ii-2023'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Teaches the difference between \'low probability of future trial success\' and \'demonstrated harm\' - and does not by itself justify the ≤180 mm Hg ceiling: BEST-II never tested a 140-160 band (its middle arm was 40 to <160 mm Hg), the ≤180 mm Hg ceiling is a guideline recommendation, and the harm signal behind the 2026 AHA/ASA recommendation against intensive lowering below 140 mm Hg after successful reperfusion (COR 3: Harm) comes from ENCHANTED2/MT and OPTIMAL-BP.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -7915,8 +7914,8 @@ export const completedTrials = [
     evidenceType: 'meta-analysis',
     citationIds: ['cit-andexanet-vs-4fpcc-meta-2025'],
     relatedActiveTrialIds: [],
-    practiceImpact: 'Teaches that the only randomised comparison (ANNEXA-I) tested andexanet against usual care, mostly but not exclusively 4F-PCC, so no trial has compared andexanet with 4F-PCC alone, and that US practice reverted to 4F-PCC because andexanet was withdrawn from the US market in December 2025 — a regulatory and supply consequence, not a demonstration that 4F-PCC works better.',
-    lastReviewed: '2026-08-28',
+    practiceImpact: 'Teaches that the only randomised comparison (ANNEXA-I) tested andexanet against usual care (ANNEXA-I\'s usual-care arm received prothrombin complex concentrate in 85.5% of patients), so no randomised trial has compared andexanet with a protocolised 4F-PCC arm, and that US practice reverted to 4F-PCC because andexanet was withdrawn from the US market in December 2025 — a regulatory and supply consequence, not a demonstration that 4F-PCC works better.',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({

@@ -317,7 +317,7 @@ export const DAPTDurationCalculator = ({ defaults = {} }) => {
     cyp2c19LOF: defaults.cyp2c19LOF || false,
     ichRisk: defaults.ichRisk || 'normal',
     // Time from symptom onset (hours). Default 24 preserves the legacy
-    // CHANCE/POINT/THALES window. INSPIRES (2026 AHA/ASA AIS Class IIa, ais-2026-149) extends
+    // CHANCE/POINT/THALES window. INSPIRES (2026 AHA/ASA AIS Class IIa, LOE B-R; ais-2026-149) extends
     // eligibility to ≤72h for NIHSS 4-5; expose as input so clinicians can
     // reach that branch without editing the underlying function.
     timeFromOnsetH: defaults.timeFromOnsetH || ''

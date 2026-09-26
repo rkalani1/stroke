@@ -390,7 +390,27 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "Andexanet alfa is reasonable for patients with direct factor Xa inhibitor-associated spontaneous ICH to reverse the anticoagulant effect. [2026 current-evidence note, not part of the 2022 guideline: after a December 2025 FDA safety update, US commercial sales of andexanet alfa (Andexxa) ended on December 22, 2025, so this recommendation should not be read as a current US endorsement or as evidence of availability. In ANNEXA-I (2024), andexanet improved hemostatic efficacy versus usual care (67.0% vs 53.1%) but increased thrombotic events (10.3% vs 5.6%), including ischemic stroke (6.5% vs 1.5%), with no appreciable difference in mRS or 30-day death. In the US, 4-factor PCC or aPCC (off-label for this indication) is now the principal reversal option for factor Xa inhibitor-associated ICH.]",
+      "text": "Andexanet alfa is reasonable for patients with direct factor Xa inhibitor-associated spontaneous ICH to reverse the anticoagulant effect.",
+      "currentEvidenceNote": "US safety and availability update reviewed 2026-09-26 (not part of the 2022 guideline): FDA concluded that the serious risks of Andexxa outweigh its benefits; US commercial sales ended on 22 December 2025. In ANNEXA-I (2024), andexanet improved hemostatic efficacy versus usual care (67.0% vs 53.1%) but increased thrombotic events (10.3% vs 5.6%), including ischemic stroke (6.5% vs 1.5%), with no appreciable difference in mRS or 30-day death. The 2026 NCS/SCCM focused update conditionally recommends 4F-PCC over andexanet; in the US, 4F-PCC or aPCC (off-label for this indication) is now the principal reversal option for factor Xa inhibitor-associated ICH. This 2022 statement keeps its original grading and is not a current US endorsement or evidence of andexanet availability.",
+      "currentEvidenceCheckedAt": "2026-09-26",
+      "currentEvidenceSources": [
+        {
+          "title": "FDA update on the safety of Andexxa",
+          "url": "https://www.fda.gov/vaccines-blood-biologics/safety-availability-biologics/update-safety-andexxa"
+        },
+        {
+          "title": "Connolly et al., N Engl J Med 2024 (ANNEXA-I)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38749032/",
+          "pmid": "38749032",
+          "doi": "10.1056/NEJMoa2313040"
+        },
+        {
+          "title": "NCS/SCCM focused guideline update, Neurocrit Care 2026 (4F-PCC rather than andexanet alfa)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42786382/",
+          "pmid": "42786382",
+          "doi": "10.1007/s12028-026-02601-4"
+        }
+      ],
       "page": 19,
       "id": "ich-2022-30",
       "sourceSection": "table-06",

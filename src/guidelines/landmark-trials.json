@@ -402,7 +402,7 @@
       "question": "Are lower SBP targets (<140 or <160) futile compared with ≤180 mm Hg for 24 h after successful EVT?",
       "design": "Futility RCT, 3-arm",
       "outcomes": "Lower SBP targets did NOT meet the prespecified futility criteria (infarct-volume slope -0.29, futility p=0.99; uw-mRS slope -0.0019, futility p=0.93). However, predicted probability of success in a future larger trial was only 25% (<140) and 14% (<160), and uw-mRS was numerically worse with lower targets (0.51 and 0.47 vs 0.58).",
-      "bottomLine": "Seals the case — no benefit to SBP targets below 140 post-EVT.",
+      "bottomLine": "Phase 2 futility trial (n=120): lower targets (<140, <160) did not meet prespecified futility or harm criteria, but a larger trial was predicted to have only a 25% (<140) or 14% (<160) chance of success, so benefit is unlikely (consistent with, not proof of, no benefit).",
       "teachingPoint": "BEST-II is not a harm trial: targets were held for 24 h, lower targets did not meet prespecified futility or harm criteria, and the <140 arm had the smallest mean infarct volume. The harm signal behind the Class III: Harm advice against SBP <140 for the first 72 h after successful EVT comes from ENCHANTED2/MT (<120 for 72 h) and OPTIMAL-BP (<140 for 24 h)."
     }
   ],
@@ -463,9 +463,9 @@
       "citation": "ANNEXA-4 NEJM 2016;375:1131-41 (PMID 27573206); ANNEXA-I NEJM 2024;390:1745-55 (PMID 38749032)",
       "question": "Does andexanet alfa reduce hematoma expansion in factor Xa inhibitor-associated ICH?",
       "design": "Single-arm (ANNEXA-4) → RCT (ANNEXA-I): andexanet vs usual care",
-      "outcomes": "ANNEXA-I: hemostatic efficacy 67% vs 53%. Thrombotic events: 10.3% vs 5.6%.",
+      "outcomes": "ANNEXA-I: hemostatic efficacy 67% vs 53%. Thrombotic events: 10.3% vs 5.6%, including ischemic stroke 6.5% vs 1.5%.",
       "bottomLine": "Effective at reducing expansion but higher thrombotic risk; individualized decision.",
-      "teachingPoint": "Andexanet is no longer sold in the US (sales ended in December 2025 after the FDA concluded its risks, including thrombosis, outweigh its benefits); use 4F-PCC (or aPCC) per the local reversal pathway. The 2026 NCS/SCCM focused update conditionally recommends 4F-PCC over andexanet. The 2022 AHA/ASA ICH guideline Class 2a (LOE B-NR) recommendation for andexanet predates ANNEXA-I and the US withdrawal."
+      "teachingPoint": "Andexanet is no longer sold in the US (sales ended in December 2025 after the FDA concluded its risks, including thrombosis, outweigh its benefits); use 4F-PCC (or aPCC) per the local reversal pathway. The 2026 NCS/SCCM focused update conditionally recommends 4F-PCC over andexanet. The 2022 AHA/ASA ICH guideline Class 2a (LOE B-NR) recommendation for andexanet predates ANNEXA-I and the US withdrawal; that guideline grades 4F-PCC or aPCC for factor Xa inhibitor-associated ICH only Class 2b (LOE B-NR)."
     },
     {
       "name": "INTERACT4",

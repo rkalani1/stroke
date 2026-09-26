@@ -74,10 +74,10 @@ export const recommendations = [
     supportingClaimIds: ['cl-ich-andexanet-fxa'],
     caveats: [
       'ANNEXA-I demonstrated higher hemostatic efficacy with andexanet but more thrombotic complications vs usual care.',
-      'Andexanet alfa is no longer marketed in the US (withdrawn in 2025 after an FDA safety review; its US approval covered apixaban and rivaroxaban, never edoxaban). For apixaban, rivaroxaban, and edoxaban, reversal uses 4F-PCC (off-label for factor Xa inhibitors; aPCC is an alternative).',
+      'The former US andexanet alfa label covered apixaban and rivaroxaban only (ANNEXA-I also enrolled edoxaban-treated patients). Since US sales ended December 22, 2025, 4F-PCC (or aPCC) per the local pathway is the US reversal option for all factor Xa inhibitors, including edoxaban (PCC use for factor Xa inhibitor reversal is off-label).',
       'Reversal should not delay neurosurgical evaluation.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
