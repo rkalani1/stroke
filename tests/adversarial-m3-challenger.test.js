@@ -233,9 +233,11 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       // corrections (Hemphill ICH-score table, ABCD2 duration options,
       // HAS-BLED published item definitions). ich/ischemic unchanged.
       // 2026-09-22: ischemic 764->762 for the two requested protocol subtitle removals.
+      // 2026-09-26: ischemic 762->754 for the eight removed dead Jump-to-Section chip
+      // labels (navigation only; no clinical wording changed).
       const baselineCounts = {
         ich: 524,
-        ischemic: 762,
+        ischemic: 754,
         calculators: 456
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
