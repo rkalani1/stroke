@@ -54,8 +54,8 @@ export const guidelines = [
   }),
   makeGuideline({
     id: 'gl-aha-cvt-2024',
-    name: 'Cerebral Venous Thrombosis',
-    organization: 'AHA/ASA',
+    name: 'Diagnosis and Management of Cerebral Venous Thrombosis (Scientific Statement)',
+    organization: 'AHA',
     year: 2024,
     topic: 'cvt',
     url: 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000456',

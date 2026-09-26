@@ -30,7 +30,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "MISTIE III randomized 499 patients to stereotactic aspiration plus alteplase, showing a clear mortality benefit at 365 days but no significant improvement in functional outcomes. Subgroup analysis showed a correlation between improved functional outcomes and residual intracerebral hemorrhage volume <=15 mL, which was associated with site and surgeon experience.",
+      "text": "MISTIE III randomized 506 patients (499 in the modified intention-to-treat analysis) to image-guided catheter aspiration plus intraclot alteplase or standard medical care. It did not improve functional outcome (mRS 0-3 at 365 days, 45% vs 41%; P=0.33). All-cause mortality at 365 days was lower with MISTIE in a secondary, exploratory analysis (HR 0.67, 95% CI 0.45-0.98). In exploratory as-treated analyses, reaching an end-of-treatment residual hematoma volume <=15 mL was associated with better functional outcome, and achieving this target improved with site and surgeon experience.",
       "page": null
     },
     {
@@ -54,7 +54,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "A 2025 Cochrane meta-analysis found that minimally invasive surgery probably increases the chance of good functional outcome (risk ratio, 1.36 [CI, 1.18-1.58]) and reduces all-cause mortality (risk ratio, 0.71 [CI, 0.60-0.84]); however, the observed functional benefit is attenuated to nonsignificance when the analysis is restricted to studies with low risk of bias (risk ratio, 1.12 [CI, 0.96-1.32]).",
+      "text": "A 2025 Cochrane meta-analysis found that minimally invasive surgery may increase the chance of good functional outcome (risk ratio, 1.36 [CI, 1.18-1.58]; low-certainty evidence) and probably reduces all-cause mortality (risk ratio, 0.71 [CI, 0.60-0.84]; moderate-certainty evidence); however, the observed functional benefit is attenuated to nonsignificance when the analysis is restricted to studies with low risk of bias (risk ratio, 1.12 [CI, 0.96-1.32]).",
       "page": null
     },
     {

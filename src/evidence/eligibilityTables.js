@@ -27,12 +27,12 @@ const CTGOV = (nct) => `https://clinicaltrials.gov/study/${nct}`;
 export const PHASE_LABELS = {
   acute: 'Acute (Onset ≤ 24 Hours)',
   inpatient: 'Inpatient (Admission to Day 30)',
-  outpatient: 'Outpatient (Day 14 to Month 6)'
+  outpatient: 'Outpatient (Day 14 Onward)'
 };
 
 export const CATEGORY_LABELS = {
   ischemic: 'Ischemic Stroke',
-  ich: 'Intracranial Hemorrhage (ICH)'
+  ich: 'Intracerebral Hemorrhage (ICH)'
 };
 
 const UNVERIFIED_SUMMARY =
@@ -55,8 +55,9 @@ const TRIALS = {
       'Ineligible for IV thrombolysis or failed IV thrombolysis'
     ],
     exclusions: [
-      'No tandem lesion on imaging',
-      'Beyond the 16-hour window'
+      'Contraindication to antiplatelets, thrombolytics, or contrast; refractory BP > 185/110 mm Hg despite medication',
+      'INR > 1.7, PTT > 3× normal, or platelets < 100,000/µL',
+      'Intracranial hemorrhage, midline shift or mass effect on CT; acute bilateral strokes; carotid stenosis from dissection or vasculitis'
     ]
   },
   CAPTIVA: {
@@ -116,7 +117,7 @@ const TRIALS = {
     summary:
       'A prospective, observational study for persons with a pre-stroke modified Rankin Scale (mRS) 3–4 experiencing an LVO-AIS, comparing the effectiveness of EVT to medical management.',
     eligibility: [
-      'AIS presenting to hospital within 24 hours of onset',
+      'AIS presenting to the study hospital within 24 hours of last known well',
       'Occlusion of ICA, M1, or dominant M2',
       'Pre-stroke mRS 3–4 for at least 3 months',
       'NIHSS ≥ 6',
@@ -204,7 +205,7 @@ const TRIALS = {
       'Able to tolerate SAPT plus OAC; carotid anatomy meets protocol'
     ],
     exclusions: [
-      'History of spontaneous ICH',
+      'History of intracranial hemorrhage or other contraindication to oral anticoagulation',
       '≥ 50% stenosis of carotid, subclavian, vertebral, or intracranial arteries'
     ]
   },

@@ -28,12 +28,12 @@ export const activeTrials = [
       'Age ≥18 y',
       'AIS ≤24 h from LKW',
       'Pre-stroke mRS ≤2',
-      'Low-NIHSS domain: NIHSS 0-5 with ICA or M1 occlusion and disabling symptoms; OR',
+      'Low-NIHSS domain: NIHSS 0-5 (a focal deficit attributable to the occlusion is required if NIHSS is 0) with complete occlusion of the intracranial ICA or M1; OR',
       'MeVO domain: non-dominant/co-dominant M2 or M3 occlusion with NIHSS ≥8'
     ],
     exclusionCriteria: [
       'Presumed septic embolus / suspected bacterial endocarditis',
-      'Seizure at stroke onset',
+      'Seizure at stroke onset or between onset and enrollment',
       'Known contrast anaphylaxis precluding endovascular reperfusion',
       'Suspected chronic occlusion, intracranial dissection, or cerebral vasculitis',
       'Known or high suspicion of intracranial atherosclerotic disease (ICAD)',
@@ -88,7 +88,7 @@ export const activeTrials = [
     status: 'recruiting',
     topic: 'tandem-lesions',
     briefDescription: 'Emergent carotid stenting plus EVT vs EVT alone for tandem extracranial-carotid + intracranial-LVO occlusions.',
-    rationale: 'Tandem lesions were excluded from most pivotal EVT trials; the optimal management of the extracranial component is unresolved.',
+    rationale: 'Tandem lesions were under-represented in the pivotal EVT trials; the optimal management of the extracranial component is unresolved.',
     inclusionCriteria: [
       'Age 18-79 y',
       'AIS within 16 h of LKW',
@@ -118,7 +118,7 @@ export const activeTrials = [
     verificationStatus: 'verified-clinicaltrials-gov',
     category: 'ischemic',
     keyTakeaways: [
-      "Tandem lesions (extracranial carotid + intracranial LVO) are common but excluded from most EVT trials",
+      "Tandem lesions (extracranial carotid + intracranial LVO) are common but were under-represented in the pivotal EVT trials",
       "Tests emergent carotid stenting + EVT vs EVT alone for tandem occlusions",
       "Addresses a gap where no RCT has established optimal management of the extracranial component"
     ],
@@ -133,13 +133,13 @@ export const activeTrials = [
   makeActiveTrial({
     id: 'tested',
     shortName: 'TESTED',
-    fullName: 'Thrombectomy in Stroke Patients with Pre-existing Disability',
+    fullName: 'Treatment With Endovascular Intervention for STroke Patients With Existing Disability',
     nctId: 'NCT05911568',
     phase: 'Comparative Effectiveness',
     status: 'recruiting',
     topic: 'evt-late-window',
     briefDescription: 'EVT vs medical therapy in patients with pre-existing disability (mRS 3-4) and acute LVO ischemic stroke.',
-    rationale: 'Pivotal EVT RCTs largely excluded mRS 3-4 patients; routine denial of EVT in this population is not evidence-based.',
+    rationale: 'Pivotal EVT RCTs largely excluded patients with pre-stroke disability, so whether EVT is effective for pre-stroke mRS 3-4 is unknown; EVT and medical management without EVT are both widely practiced.',
     inclusionCriteria: [
       'Age ≥18 y',
       'Pre-stroke mRS 3-4 for ≥3 months',
@@ -159,7 +159,7 @@ export const activeTrials = [
       { field: 'nihss', operator: '>=', value: 6, label: 'NIHSS ≥6' },
       { field: 'hoursFromLKW', operator: '<=', value: 24, label: 'Within 24 h from LKW' },
       { field: 'aspectsScore', operator: '>=', value: 3, label: 'ASPECTS ≥3' },
-      { field: 'vesselOcclusion', operator: 'in', value: ['ICA', 'M1', 'M2'], label: 'LVO present' }
+      { field: 'vesselOcclusion', operator: 'in', value: ['ICA', 'M1', 'M2'], label: 'ICA, M1, or dominant M2 occlusion (confirm M2 dominance)' }
     ],
     matcherExclusions: [],
     relatedCompletedTrialIds: ['select2', 'angel-aspect', 'rescue-japan-limit', 'tension'],
@@ -169,7 +169,7 @@ export const activeTrials = [
     category: 'ischemic',
     keyTakeaways: [
       "All major EVT trials excluded patients with pre-existing disability (mRS 3-4)",
-      "These patients are routinely denied EVT despite no evidence of futility",
+      "Practice is split between EVT and medical management alone for these patients because they were largely excluded from the pivotal EVT trials",
       "If positive, would extend EVT eligibility to a large underserved population"
     ],
     lookingFor: [
@@ -183,7 +183,7 @@ export const activeTrials = [
   makeActiveTrial({
     id: 'verify',
     shortName: 'VERIFY',
-    fullName: 'TMS / MRI Biomarkers for Upper-Extremity Motor Recovery',
+    fullName: 'Validation of Early Prognostic Data for Recovery Outcome After Stroke for Future, Higher Yield Trials',
     nctId: 'NCT05338697',
     phase: 'Observational',
     status: 'recruiting',
@@ -197,7 +197,7 @@ export const activeTrials = [
       'English or Spanish; willing and available for the in-person day-90 visit'
     ],
     exclusionCriteria: [
-      'Contraindications to TMS (implanted electronics, intracranial metal, seizures)',
+      'Contraindications to TMS (implanted cardiac electronic device or other electronic implant at/above C7, ferromagnetic intracranial implant, skull defect from the current stroke, seizure after stroke onset, seizure within 12 months while on antiseizure medication, prior serious TMS reaction)',
       'Contraindications to MRI'
     ],
     matcherCriteria: [
@@ -206,7 +206,7 @@ export const activeTrials = [
       { field: 'hoursFromLKW', operator: 'between', value: [24, 96], label: 'Consent window 24-96 h from onset/LKW' }
     ],
     matcherExclusions: [
-      { id: 'seizures', field: 'seizures', operator: '==', value: true, label: 'History of seizures' },
+      { id: 'seizures', field: 'seizures', operator: '==', value: true, label: 'Seizure after stroke onset, or within 12 mo on antiseizure medication' },
       { id: 'implants', field: 'implants', operator: '==', value: true, label: 'Implanted devices (pacemaker, etc.)' },
     ],
     relatedCompletedTrialIds: [],
@@ -240,7 +240,7 @@ export const activeTrials = [
     nctId: 'NCT03735979',
     phase: 'Phase 3 (adaptive, multi-arm)',
     status: 'completed',
-    topic: 'tnk-vs-alteplase',
+    topic: 'acute-antithrombotic-adjuncts',
     briefDescription: 'Completed NINDS adaptive, multi-arm trial of argatroban or eptifibatide as adjuncts to IV thrombolysis; stopped early for futility — neither adjunct reduced disability, and adjunct-arm 90-day mortality was higher (argatroban 24%, eptifibatide 12%, placebo 8%; Adeoye NEJM 2024, PMID 39231343).',
     rationale: 'Tested whether adding an antithrombotic adjunct (argatroban or eptifibatide) to IV thrombolysis improves 90-day disability; the trial was stopped for futility with a mortality signal against the adjunct arms.',
     inclusionCriteria: [
@@ -258,9 +258,8 @@ export const activeTrials = [
     matcherCriteria: [
       { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
       { field: 'nihss', operator: '>=', value: 6, label: 'NIHSS ≥6' },
-      { field: 'hoursFromLKW', operator: '<', value: 4.5, label: 'Within 4.5 h from LKW' },
-      { field: 'vesselOcclusion', operator: 'in', value: ['ICA', 'M1'], label: 'LVO confirmed (ICA/M1)' },
-      { field: 'premorbidMRS', operator: '<=', value: 1, label: 'Pre-stroke mRS 0-1' }
+      { field: 'hoursFromLKW', operator: '<=', value: 3, label: 'IV thrombolysis within 3 h from LKW' },
+      { field: 'premorbidMRS', operator: '<=', value: 3, label: 'Pre-stroke mRS ≤3' }
     ],
     matcherExclusions: [
       { id: 'onAnticoag', field: 'onAnticoag', operator: '==', value: true, label: 'On anticoagulation' },
@@ -277,7 +276,7 @@ export const activeTrials = [
       "Do not give adjunctive argatroban or eptifibatide with thrombolysis"
     ],
     lookingFor: [
-      "Completed — no longer enrolling (stopped for futility with adjunct-arm mortality signal, 2024)"
+      "Completed — no longer enrolling (enrollment stopped for futility July 2023; results published 2024 with an adjunct-arm mortality signal)"
     ],
     legacyMatcherKey: 'MOST'
   }),
@@ -285,16 +284,16 @@ export const activeTrials = [
   makeActiveTrial({
     id: 'captiva',
     shortName: 'CAPTIVA',
-    fullName: 'Comparison of Antithrombotic Treatments in Intracranial Atherosclerosis',
+    fullName: 'Comparison of Anti-coagulation and Anti-Platelet Therapies for Intracranial Vascular Atherostenosis',
     nctId: 'NCT05047172',
     phase: 'Phase 3',
     status: 'active-not-recruiting',
     topic: 'icas-prevention',
     briefDescription: 'Trial of ticagrelor+ASA vs clopidogrel+ASA in symptomatic 70-99% intracranial atherosclerosis. The low-dose rivaroxaban (2.5 mg BID) arm was terminated in January 2026 (NIH DSMB: increased safety events plus futility vs clopidogrel+ASA; announced 2026-02-10); the ticagrelor and clopidogrel arms continue. Registry status: active, not recruiting.',
-    rationale: 'Recurrent stroke risk on standard DAPT for symptomatic ICAS is 12-20% at 1 year; alternative regimens are needed.',
+    rationale: 'In SAMMPRIS, medical-arm participants (clopidogrel plus aspirin with intensive risk-factor management) who qualified with a symptomatic infarct still had a 27% 1-year rate of ischemic stroke, ICH, or vascular death; alternative regimens are needed.',
     inclusionCriteria: [
       'Age ≥30 y',
-      'Ischemic stroke or TIA attributed to ICAS (70-99% stenosis or MRA flow gap)',
+      'Ischemic stroke (infarct on imaging, or symptoms ≥24 h) attributed to ICAS (70-99% stenosis or MRA flow gap); TIA without infarction does not qualify',
       'Within 30 days of qualifying event',
       'mRS ≤4 at time of consent'
     ],

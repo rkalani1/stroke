@@ -465,7 +465,7 @@
       "design": "Single-arm (ANNEXA-4) → RCT (ANNEXA-I): andexanet vs usual care",
       "outcomes": "ANNEXA-I: hemostatic efficacy 67% vs 53%. Thrombotic events: 10.3% vs 5.6%.",
       "bottomLine": "Effective at reducing expansion but higher thrombotic risk; individualized decision.",
-      "teachingPoint": "PCC remains first-line for factor Xa-associated ICH at many centers given cost/access of andexanet and thrombotic signal. 2022 AHA/ASA ICH guideline gives andexanet a Class 2a recommendation."
+      "teachingPoint": "Andexanet is no longer sold in the US (sales ended in December 2025 after the FDA concluded its risks, including thrombosis, outweigh its benefits); use 4F-PCC (or aPCC) per the local reversal pathway. The 2026 NCS/SCCM focused update conditionally recommends 4F-PCC over andexanet. The 2022 AHA/ASA ICH guideline Class 2a (LOE B-NR) recommendation for andexanet predates ANNEXA-I and the US withdrawal."
     },
     {
       "name": "INTERACT4",
@@ -566,7 +566,7 @@
       "question": "Does DAPT reduce stroke in minor stroke/TIA (US/international)?",
       "design": "RCT, n=4881, clopi+ASA planned x90d; halted early for lower ischemic events but higher major hemorrhage",
       "outcomes": "90-day major ischemic events: 5.0% vs 6.5%, HR 0.75. Major bleeding: 0.9% vs 0.4%.",
-      "bottomLine": "DAPT reduces ischemic events but increases bleeding. Optimal duration appears to be 21 days (Kim et al. 2019 meta-analysis).",
+      "bottomLine": "DAPT reduces ischemic events but increases bleeding. Optimal duration appears to be about 21 days (POINT time-course analysis, Johnston et al., Circulation 2019; pooled CHANCE-POINT patient-level analysis, Pan et al., JAMA Neurol 2019).",
       "teachingPoint": "Take-home: DAPT for 21 days after minor stroke (NIHSS ≤3) or high-risk TIA (ABCD² ≥4), then single antiplatelet."
     },
     {

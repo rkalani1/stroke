@@ -98,7 +98,7 @@ export const claims = [
   }),
   makeClaim({
     id: 'cl-bp-post-evt-conventional',
-    statement: 'Conventional BP control (target 140-180 mmHg systolic) after successful EVT is associated with better functional outcome than intensive lowering (<140 systolic) (ENCHANTED2/MT, OPTIMAL-BP, BP-TARGET).',
+    statement: 'After successful EVT, intensive SBP lowering worsened functional outcome vs conventional 140-180 mmHg targets (ENCHANTED2/MT: <120 mmHg; OPTIMAL-BP: <140 mmHg); BP-TARGET (100-129 vs 130-185 mmHg) found no difference in intraparenchymal hemorrhage.',
     topic: 'bp-post-evt',
     citationIds: ['cit-enchanted2-mt-2022', 'cit-optimal-bp-2023', 'cit-bp-target-2021'],
     certainty: 'moderate',

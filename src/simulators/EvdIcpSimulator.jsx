@@ -94,7 +94,7 @@ const SCENARIOS = {
     label: 'Over-drainage',
     tone: 'crit',
     state: { trueMeanICP: 12, brainCompliance: 3, evdHeight: 2, transducerOffset: 10, stopcockPosition: 0, isKinked: false, hasAirBubble: false, isClotted: false },
-    status: 'OVER-DRAINAGE ALERT: bed raised without re-leveling (transducer 10 cm below tragus) and drip height set to 2. Falsely high measured ICP is driving excess drainage. Severe posture headache.',
+    status: 'OVER-DRAINAGE ALERT: bed raised without re-leveling (transducer 10 cm below tragus) and drip height set to 2. The drip-chamber lip now sits below the ventricle, so CSF siphons out (the transducer also reads falsely high). Severe postural headache.',
     checklist: [
       'STEP 1 — Clamp the EVD immediately to halt drainage',
       'STEP 2 — Re-level transducer to the tragus (0 cm offset)',
@@ -107,7 +107,7 @@ const SCENARIOS = {
     label: 'Malignant MCA Swelling',
     tone: 'crit',
     state: { trueMeanICP: 26, brainCompliance: 1, evdHeight: 10, transducerOffset: 0, stopcockPosition: 2, isKinked: false, hasAirBubble: false, isClotted: false },
-    status: 'MALIGNANT MCA SWELLING: ICP 26 mmHg, severe pressure crisis (P2 >> P1). Spontaneous decrease in GCS motor score of 1 point and sluggish asymmetric right pupil. EVD is closed.',
+    status: 'MALIGNANT MCA SWELLING: ICP 26 mmHg, severe pressure crisis (P2 >> P1). Spontaneous decrease in GCS motor score of 1 point and sluggish asymmetric right pupil. EVD is closed. (Teaching note: ICP monitoring is not routine in malignant MCA infarction — herniation signs can precede an ICP rise, and hemicraniectomy decisions rest on clinical and imaging deterioration.)',
     checklist: [
       'Notify Stroke & Neurocritical Care Fellow / Attending STAT',
       'Open stopcock to drip to drain CSF immediately',
@@ -140,7 +140,7 @@ const TIERS = [
       'Drain 5–10 mL CSF, or continuous drainage at 10–15 cmH₂O',
       '3% hypertonic saline bolus 250–500 mL (Na⁺ target 145–155)',
       'OR 20% mannitol 0.5–1.0 g/kg',
-      'HTS generally preferred in stroke to avoid diuresis-induced hypotension'
+      'Ischemic stroke: HTS or mannitol are both acceptable (no preferred agent); ICH: HTS suggested over mannitol (conditional, very low-quality evidence)'
     ]
   },
   {
@@ -148,7 +148,7 @@ const TIERS = [
     name: 'TIER 2 · Refractory Measures',
     trigger: 'ICP refractory to Tier 1',
     items: [
-      '23.4% HTS 30 mL over 10 min — CENTRAL LINE ONLY',
+      '23.4% HTS 30 mL over 10–20 min — CENTRAL LINE ONLY',
       'Short-term hyperventilation, PaCO₂ 30–35 mmHg (bridge only)',
       'Escalate sedation (deepen, consider neuromuscular blockade)',
       'Continuous EEG to detect non-convulsive seizures'
@@ -160,8 +160,8 @@ const TIERS = [
     trigger: 'ICP refractory to Tier 2',
     items: [
       'STAT neurosurgery — decompressive hemicraniectomy (supratentorial) or suboccipital craniectomy (cerebellar)',
-      'Barbiturate coma (pentobarbital) to EEG burst-suppression',
-      'Mild therapeutic hypothermia 32–34 °C'
+      'Barbiturates: not recommended for ischemic brain swelling (2026 AHA/ASA); outside ischemic stroke (evidence mainly TBI), pentobarbital is titrated to ICP control with EEG monitoring, not escalated once burst suppression appears; avoid hypotension',
+      'Avoid therapeutic hypothermia: not recommended for ischemic brain swelling (2026 AHA/ASA); 33 °C after hemicraniectomy gave no benefit and more serious adverse events in DEPTH-SOS — treat fever to normothermia (Tier 0)'
     ]
   }
 ];
@@ -612,11 +612,11 @@ export function EvdIcpSimulator() {
           </button>
           <button type="button" onClick={() => setTransducerOffset((o) => clamp(o + 5, -15, 15))}
             className="px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-sm font-semibold bg-slate-200 text-slate-800 hover:bg-slate-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 dark:bg-overlay dark:text-ink dark:hover:bg-overlay">
-            Lower bed (+5 cm)
+            Raise bed (+5 cm)
           </button>
           <button type="button" onClick={() => setTransducerOffset((o) => clamp(o - 5, -15, 15))}
             className="px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-sm font-semibold bg-slate-200 text-slate-800 hover:bg-slate-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 dark:bg-overlay dark:text-ink dark:hover:bg-overlay">
-            Raise bed (−5 cm)
+            Lower bed (−5 cm)
           </button>
           <button type="button" onClick={() => setTransducerOffset(0)}
             className="px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-sm font-semibold bg-ok-600 text-white hover:bg-ok-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500">
@@ -748,7 +748,7 @@ export function EvdIcpSimulator() {
           </div>
           <div className="pt-3 border-t border-slate-100 dark:border-slate-800 text-3xs text-slate-500 dark:text-mute space-y-1">
             <p><strong>* Possible causes of neuroworsening include:</strong> expanding intracranial mass lesion, cerebral edema, elevated ICP, stroke, electrolyte or other metabolic disturbance, medical comorbidity, medication effect, impaired renal/hepatic function, systemic hypotension, seizure/post-ictal, hypoxemia/tissue hypoxia, CNS infection, sepsis/infection, substance withdrawal, dehydration, hyper/hypothermia.</p>
-            <p className="text-crit-400 font-semibold mt-1">** the hyperventilation PaCO₂ limit of 30 mmHg/4.0 kPa does not apply here</p>
+            <p className="text-crit-400 font-semibold mt-1">** the hyperventilation PaCO₂ limit of 30 mmHg/4.0 kPa does not apply here. Criteria and response adapted from the SIBICC severe-TBI consensus algorithm (Hawryluk et al., Intensive Care Med 2019) — expert consensus, not a stroke guideline.</p>
           </div>
         </div>
       </section>
@@ -771,7 +771,7 @@ export function EvdIcpSimulator() {
                 <td className="p-2 font-bold text-slate-800 dark:text-ink">3% HTS</td>
                 <td className="p-2">250–500 mL bolus over 15–30 min</td>
                 <td className="p-2">Peripheral line acceptable for acute boluses. Central line preferred for continuous infusions (30–100 mL/h).</td>
-                <td className="p-2">Target Na 145–155 mEq/L. Stop if Na &gt; 155 or Osm &gt; 360. Check Na/Osm q4-6h.</td>
+                <td className="p-2">Target Na 145–155 mEq/L. Hold further HTS if Na &gt; 155–160 or Cl &gt; 110–115 mEq/L (AKI risk; NCS 2020). Check Na/Cl/creatinine q4-6h.</td>
               </tr>
               <tr>
                 <td className="p-2 font-bold text-slate-800 dark:text-ink">23.4% HTS</td>
@@ -783,14 +783,14 @@ export function EvdIcpSimulator() {
                 <td className="p-2 font-bold text-slate-800 dark:text-ink">20% Mannitol</td>
                 <td className="p-2">0.5–1.0 g/kg bolus over 20–30 min</td>
                 <td className="p-2">Peripheral line acceptable. <strong>Must use inline filter</strong> (crystallization hazard).</td>
-                <td className="p-2">Hold if serum Osm &gt; 320 mOsm/kg or Osm Gap &gt; 20. Avoid if hypovolemic.</td>
+                <td className="p-2">Monitor the osmolar gap (preferred over serum-osmolality thresholds; a gap &gt; 20 mOsm/kg is a common but unvalidated hold point). Avoid if hypovolemic.</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div className="mt-3 bg-warn-500/5 border border-warn-500/20 rounded p-2.5">
           <p className="text-3xs text-warn-600 dark:text-warn-400 leading-normal">
-            <strong>⚠️ Stroke MAP Precaution:</strong> Mannitol acts as an osmotic diuretic which can trigger systemic hypotension. In acute stroke, penumbral perfusion is pressure-dependent. Hypotension drops MAP, reducing Cerebral Perfusion Pressure (CPP = MAP - ICP) and expanding the infarct. Hypertonic saline (HTS) is generally preferred to expand volume and preserve blood pressure while lowering ICP.
+            <strong>⚠️ Stroke MAP Precaution:</strong> Mannitol acts as an osmotic diuretic which can trigger systemic hypotension. In acute stroke, penumbral perfusion is pressure-dependent. Hypotension drops MAP, reducing Cerebral Perfusion Pressure (CPP = MAP - ICP) and expanding the infarct. In ischemic stroke, HTS and mannitol are both acceptable (NCS 2020); HTS may be favored when hypotension or hypovolemia is a concern, and it is suggested over mannitol in ICH.
           </p>
         </div>
       </section>
@@ -843,7 +843,7 @@ export function EvdIcpSimulator() {
         <div className="flex items-center justify-between">
           <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">ICP-Crisis Escalation Pathway</h4>
           <span className="text-xs font-semibold text-cobalt-700 dark:text-cobalt-300">
-            Active: Tier {activeTier} (true ICP {trueMeanICP} mmHg)
+            Illustrative tier for true ICP {trueMeanICP} mmHg: Tier {activeTier} (in practice, treatment generally starts at Tier 1 and escalates when the patient does not respond; tiers can be skipped, e.g., early decompression for hemispheric swelling)
           </span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

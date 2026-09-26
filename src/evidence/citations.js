@@ -871,7 +871,7 @@ export const citations = [
   makeCitation({
     id: 'cit-escape-mevo-2025',
     authors: 'Goyal M et al.',
-    title: 'Endovascular Treatment for Medium Vessel Occlusion Stroke (ESCAPE-MeVO)',
+    title: 'Endovascular Treatment of Stroke Due to Medium-Vessel Occlusion (ESCAPE-MeVO)',
     journal: 'N Engl J Med',
     year: 2025,
     volume: '392',
@@ -884,7 +884,7 @@ export const citations = [
   makeCitation({
     id: 'cit-distal-2025',
     authors: 'Psychogios M et al.',
-    title: 'Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke (DISTAL)',
+    title: 'Endovascular Treatment for Stroke Due to Occlusion of Medium or Distal Vessels (DISTAL)',
     journal: 'N Engl J Med',
     year: 2025,
     volume: '392',

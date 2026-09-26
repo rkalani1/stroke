@@ -188,7 +188,7 @@
 | Domain | Evidence tag | Title | Year | Journal/Source | URL | PMID / DOI / NCT |
 |---|---|---|---|---|---|---|
 | AIS thrombolysis | RCT-supported | Intravenous Tenecteplase Compared with Alteplase for Acute Ischaemic Stroke in Canada (AcT) | 2022 | Lancet | https://pubmed.ncbi.nlm.nih.gov/35779553/ | PMID: 35779553; DOI: 10.1016/S0140-6736(22)01054-6 |
-| AIS thrombolysis | RCT-supported | Trial of Tenecteplase in Chinese Patients with Acute Ischemic Stroke (TRACE-2) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/36774935/ | PMID: 36774935; DOI: 10.1016/S0140-6736(22)02600-9 |
+| AIS thrombolysis | RCT-supported | Tenecteplase versus alteplase in acute ischaemic cerebrovascular events (TRACE-2) | 2023 | Lancet | https://pubmed.ncbi.nlm.nih.gov/36774935/ | PMID: 36774935; DOI: 10.1016/S0140-6736(22)02600-9 |
 | AIS thrombolysis | RCT-supported | Tenecteplase vs Alteplase in AIS (ORIGINAL) | 2024 | JAMA | https://pubmed.ncbi.nlm.nih.gov/39264623/ | PMID: 39264623; DOI: 10.1001/jama.2024.14721 |
 | Wake-up/unknown onset | RCT-supported | Safety and efficacy of tenecteplase in patients with wake-up stroke assessed by non-contrast CT (TWIST) | 2023 | Lancet Neurol | https://pubmed.ncbi.nlm.nih.gov/36549308/ | PMID: 36549308; DOI: 10.1016/S1474-4422(22)00484-7 |
 | AIS thrombolysis | Guideline-grade | European Stroke Organisation expedited recommendation on tenecteplase | 2023 | Eur Stroke J | https://pubmed.ncbi.nlm.nih.gov/37021186/ | PMID: 37021186; DOI: 10.1177/23969873221150022 |
@@ -210,8 +210,8 @@
 | CVT | Guideline-grade | Diagnosis and Management of Cerebral Venous Thrombosis: A Scientific Statement from the AHA | 2024 | Stroke / AHA | https://pubmed.ncbi.nlm.nih.gov/38284265/ | PMID: 38284265; DOI: 10.1161/STR.0000000000000456 |
 | CVT | Observational/Consensus | Direct Oral Anticoagulants vs Warfarin for CVT (ACTION-CVT) | 2022 | Stroke | https://pubmed.ncbi.nlm.nih.gov/35143325/ | PMID: 35143325; DOI: 10.1161/STROKEAHA.121.037541 |
 | Secondary prevention | Guideline-grade | 2021 Guideline for the Prevention of Stroke in Patients With Stroke and TIA | 2021 | Stroke | https://pubmed.ncbi.nlm.nih.gov/34024117/ | PMID: 34024117; DOI: 10.1161/STR.0000000000000375 |
-| DAPT pharmacogenomics | RCT-supported | Ticagrelor or Clopidogrel with Aspirin in High-Risk TIA or Minor Stroke (CHANCE-2) | 2021 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/34708996/ | PMID: 34708996; DOI: 10.1056/NEJMoa2111749 |
-| DAPT timing/phenotype | RCT-supported | Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke (INSPIRES) | 2024 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/38157499/ | PMID: 38157499; DOI: 10.1056/NEJMoa2309137 |
+| DAPT pharmacogenomics | RCT-supported | Ticagrelor versus Clopidogrel in CYP2C19 Loss-of-Function Carriers with Stroke or TIA (CHANCE-2) | 2021 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/34708996/ | PMID: 34708996; DOI: 10.1056/NEJMoa2111749 |
+| DAPT timing/phenotype | RCT-supported | Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke (INSPIRES) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/38157499/ | PMID: 38157499; DOI: 10.1056/NEJMoa2309137 |
 | Cardioembolic timing | RCT-supported | Early versus Later Anticoagulation for Stroke with Atrial Fibrillation (ELAN) | 2023 | N Engl J Med | https://pubmed.ncbi.nlm.nih.gov/37222476/ | PMID: 37222476; DOI: 10.1056/NEJMoa2303048 |
 | Cardioembolic timing | RCT-supported | Timing of Oral Anticoagulant Therapy in AIS with AF (TIMING) | 2022 | Circulation | https://pubmed.ncbi.nlm.nih.gov/36065821/ | PMID: 36065821; DOI: 10.1161/CIRCULATIONAHA.122.060666 |
 | Special populations | Guideline-grade | Prevention and Treatment of Maternal Stroke in Pregnancy and Postpartum: A Scientific Statement From the American Heart Association | 2026 | Stroke / PubMed | https://pubmed.ncbi.nlm.nih.gov/41603019/ | PMID: 41603019; DOI: 10.1161/STR.0000000000000514 |

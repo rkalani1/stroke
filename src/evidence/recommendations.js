@@ -156,7 +156,7 @@ export const recommendations = [
     text: 'In patients with recent minor noncardioembolic ischemic stroke (NIHSS ≤3) or high-risk TIA (ABCD² ≥4), DAPT with aspirin plus clopidogrel should be initiated early (ideally within 12-24 h of symptom onset and at least within 7 days) and continued for 21-90 days, followed by single antiplatelet therapy, to reduce recurrent ischemic stroke.',
     classOfRecommendation: 'I',
     levelOfEvidence: 'A',
-    guidelineSource: 'AHA/ASA 2021 Secondary Prevention; CHANCE / POINT / THALES / INSPIRES',
+    guidelineSource: 'AHA/ASA 2021 Secondary Prevention (CHANCE, POINT); related trials: THALES (ticagrelor, separate IIb), INSPIRES (2023, post-guideline), CHANCE-2 (2021, post-guideline)',
     supportingClaimIds: ['cl-dapt-minor-stroke'],
     caveats: [
       'Duration is indication-specific. The 2021 AHA/ASA Class I recommendation allows aspirin+clopidogrel for 21 to 90 days, followed by single antiplatelet therapy. A 21-day course (as in CHANCE) is favored for most patients: in pooled CHANCE/POINT data the benefit was confined to the first 21 days, while POINT\'s 90-day course carried more major hemorrhage than aspirin alone (0.9% vs 0.4%). Continuous DAPT beyond 90 days carries excess hemorrhage risk.',
@@ -181,7 +181,7 @@ export const recommendations = [
     caveats: [
       'Reserve longer delay for very severe stroke or extensive hemorrhagic transformation; confirm absence of significant hemorrhagic transformation on follow-up imaging before starting in moderate-large stroke.',
       'Early initiation (≤4 d) is non-inferior across severities (OPTIMAS) and superior at 30 d in pooled IPD (CATALYST); individualize for the highest-risk presentations.',
-      'Scope note: this COR IIa statement covers the early-start question. The wider 2-14 day window carries a separate, weaker COR IIb statement — the two are not in conflict. Source of truth: src/guidelines/secondary-prevention-2021.json.'
+      'Scope note: this COR IIa early-start statement reflects the 2026 AHA/ASA AIS guideline (early oral anticoagulation reasonable in carefully selected patients, e.g., milder severity). The 2021 secondary-prevention guideline carries a separate, weaker COR IIb statement for starting at 2-14 days, which predates TIMING, ELAN, OPTIMAS and CATALYST.'
     ],
     lastReviewed: lr,
     verificationStatus: 'verified-guideline'
