@@ -29286,23 +29286,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex flex-wrap gap-1.5">
                             {[
                               ['isch-evt', 'EVT Eligibility'],
-                              ['isch-af', 'AF/DOAC Timing'],
                               ['isch-bp', 'BP Management'],
-                              ['isch-nbo', 'NBO'],
                               ['isch-swallow', 'Swallow Screen'],
                               ['isch-postlytic', 'Post-Lytic ICH'],
-                              ['isch-ht', 'HT Classification'],
                               ['isch-angioedema', 'Angioedema'],
-                              ['isch-antiplatelet', 'Antiplatelets'],
-                              ['isch-statin', 'Statins'],
                               ['isch-largecore', 'Large Core'],
                               ['isch-postevt', 'Post-EVT'],
                               ['isch-mevo', 'MeVO'],
                               ['isch-contrast', 'Contrast Allergy'],
-                              ['isch-icad', 'ICAD'],
                               ['isch-posterior', 'Posterior Circ'],
-                              ['isch-cad', 'CAD'],
-                              ['isch-seizure', 'Seizure Ppx'],
                             ].map(([id, label]) => (
                               <button key={id} type="button" onClick={() => document.getElementById(id)?.scrollIntoView({behavior: 'smooth', block: 'start'})}
                                 className="px-2.5 py-1.5 text-xs rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-cobalt-50 hover:border-cobalt-300 hover:text-cobalt-700 transition-colors dark:bg-card dark:border-strong dark:text-ink-2 dark:hover:bg-cobalt-900 dark:hover:text-cobalt-300">
