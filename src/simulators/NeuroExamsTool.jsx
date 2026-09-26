@@ -395,7 +395,7 @@ function ComaGroup({ title, titleColor, items, checked, onToggle }) {
           />
           <span className={cx(
             'text-xs leading-relaxed transition-colors',
-            checked[i] ? 'line-through text-slate-500' : 'text-slate-700 group-hover:text-slate-900 dark:text-ink-2'
+            checked[i] ? 'line-through text-slate-500 dark:text-mute' : 'text-slate-700 group-hover:text-slate-900 dark:text-ink-2'
           )}>
             {item}
           </span>

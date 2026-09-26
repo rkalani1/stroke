@@ -1,7 +1,26 @@
+/* ─────────────────────────────────────────────────────────────
+   Stylesheet entry, compiled by `npm run build:css` → tailwind.css.
+
+   Output cascade, top to bottom:
+     1. src/design/tokens.css — fonts + the ONLY token declarations
+     2. tailwind base / components / utilities (with the @layer blocks
+        below hoisted into them)
+     3. the unlayered rules at the end of this file
+     4. src/design/shell.css — global chrome that must beat
+        equal-specificity utilities on source order (formerly the
+        inline <style> of index.html, which loaded after tailwind.css)
+
+   shell.css is appended by scripts/postcss.config.cjs AFTER Tailwind has
+   run, so its selectors (`.border.border-line`, `.flex.gap-2`, …) never
+   become @apply candidates that Tailwind would splice into the
+   components below. postcss-import requires every @import to precede
+   other statements, hence the Tailwind layers are imports too.
+   ───────────────────────────────────────────────────────────── */
 @import "./design/tokens.css";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "./design/shell.css";
 
 /* ============================================================
    v7 responsive sweep — enforce 44pt touch-target floor at
@@ -48,8 +67,8 @@
    Wired through tailwind.config.js so utilities like text-ink,
    bg-paper, border-line, text-critical resolve to these values.
    The page background, prose color, and section heading family
-   continue to be set by index.html legacy rules until v6.0-02
-   primitives migrate them.
+   continue to be set by the legacy rules in src/design/shell.css
+   (formerly inline in index.html) until the primitives migrate them.
    ============================================================ */
 @layer base {
 
@@ -277,7 +296,7 @@
   .ref-section[open] > .ref-section-summary::after {
     transform: rotate(180deg);
   }
-  /* Phones: index.html's legacy rule wraps every .flex row, which pushed the
+  /* Phones: shell.css's legacy rule wraps every .flex row, which pushed the
      icon disc onto its own line above a long title (and the status beneath
      that). Lay the summary out as a two-column grid instead: disc left, title
      beside it, and any trailing meta — the `ml-auto` status, hint or chip —
@@ -755,8 +774,7 @@ body {
   background-attachment: fixed;
   background-repeat: no-repeat;
 }
-[data-theme="dark"] body,
-html.dark body {
+html[data-theme="dark"] body {
   background-image:
     radial-gradient(58rem 58rem at 88% -12%, rgb(var(--cobalt-500) / 0.11), transparent 60%),
     radial-gradient(46rem 46rem at -12% 112%, rgb(var(--cobalt-700) / 0.14), transparent 55%);

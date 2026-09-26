@@ -711,7 +711,7 @@ ${pending.length ? pending.map((x) => `  ☐ ${x}`).join('\n') : '  (all items c
           <li key={i}>
             <label className="flex items-start gap-2 cursor-pointer">
               <input type="checkbox" checked={!!checks[`d${day}-${i}`]} onChange={() => toggleCheck(`d${day}-${i}`)} className="mt-0.5" />
-              <span className={checks[`d${day}-${i}`] ? 'line-through text-slate-500' : 'text-slate-800 dark:text-ink'}>{item}</span>
+              <span className={checks[`d${day}-${i}`] ? 'line-through text-slate-500 dark:text-mute' : 'text-slate-800 dark:text-ink'}>{item}</span>
             </label>
           </li>
         ))}

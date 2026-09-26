@@ -2,9 +2,14 @@
  * v7.0 — Theme controller + one-shot v7 migration.
  * Drop-in: src/design/theme.js
  *
- * Owns the `data-theme` attribute on <html> and the `dark` class fallback.
- * Reads preference from localStorage['stroke.v7.theme'] (one of:
+ * Owns the `data-theme` attribute on <html> — the ONLY dark-mode hook the
+ * CSS reads (tokens.css `[data-theme="dark"]`, Tailwind's dark: variant,
+ * shell.css). Reads preference from localStorage['stroke.v7.theme'] (one of:
  * 'auto' | 'light' | 'dark'). Defaults to light on public Pages.
+ *
+ * resolveTheme() is the single statement of the rule. The pre-paint scripts
+ * in index.html and offline.html inline the same rule (they run before this
+ * bundle loads) so the first paint already matches on every host.
  *
  * Also performs a one-shot v7 migration keyed off the absence of
  * localStorage['stroke.v7.migrated']. The migration is intentionally tiny:
@@ -82,18 +87,32 @@ export function setThemePref(value) {
   applyTheme();
 }
 
-/* Resolve current effective theme — 'light' | 'dark'. */
-export function effectiveTheme() {
-  const pref = getThemePref();
-  if (pref === 'light' || pref === 'dark') return pref;
-  return typeof window !== 'undefined'
-    && window.matchMedia?.('(prefers-color-scheme: dark)').matches
-    ? 'dark' : 'light';
+/* The theme rule, as a pure function (mirrored by the index.html and
+   offline.html pre-paint scripts):
+     'light' | 'dark'  → that theme
+     'auto'            → the OS preference
+     unset / unknown   → light on public Pages, the OS preference elsewhere */
+export function resolveTheme(pref, prefersDark, isPublic) {
+  const mode = (pref === 'light' || pref === 'dark' || pref === 'auto')
+    ? pref
+    : (isPublic ? 'light' : 'auto');
+  if (mode === 'auto') return prefersDark ? 'dark' : 'light';
+  return mode;
 }
 
-/* Apply the effective theme to <html>. Sets BOTH data-theme="dark" and the
-   `dark` class so tailwind's darkMode:['class','[data-theme="dark"]'] config
-   resolves either way. */
+const prefersDarkScheme = () => (
+  typeof window !== 'undefined'
+  && !!window.matchMedia?.('(prefers-color-scheme: dark)').matches
+);
+
+/* Resolve current effective theme — 'light' | 'dark'. */
+export function effectiveTheme() {
+  return resolveTheme(getThemePref(), prefersDarkScheme(), isPublicPages());
+}
+
+/* Apply the effective theme to <html>: data-theme is the contract. The
+   `dark` class is an inert compatibility hook kept for one release (no CSS
+   selects on it — scripts/lint-tokens.mjs rejects html.dark / .dark). */
 export function applyTheme() {
   if (typeof document === 'undefined') return;
   const eff = effectiveTheme();

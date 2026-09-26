@@ -1,11 +1,19 @@
 /* ─────────────────────────────────────────────────────────────
-   stroke v7.0 — design tokens
-   Drop-in: src/design/tokens.css
-   Imported at root mount only (src/app.jsx).
-   Tailwind reads these via rgb(var(--token) / <alpha-value>) in tailwind.config.js.
+   stroke — design tokens: the single token source.
+   src/design/tokens.css, imported first by src/styles.css and compiled
+   into tailwind.css (also loaded by offline.html).
 
-   v6 aliases at the bottom keep bg-card, border-line, text-ink,
-   font-serif, font-sans resolving — no rename required.
+   Rules
+   • One declaration per token per theme block. :root is light; the
+     only dark hook is [data-theme="dark"] on <html> (no `html.dark`,
+     no `.dark`, no prefers-color-scheme blocks — theme resolution is
+     JS-only, see src/design/theme.js).
+   • Colours are RGB triplets (`--slate-500: 100 116 139`,
+     `--c-ink: 23 47 59`) so rgb(var(--x) / a) and Tailwind's
+     <alpha-value> both work. Semantic colours live in the --c-* layer;
+     legacy names (--ink, --card, --paper-2, …) are aliases of it,
+     declared once in :root.
+   • Themes change ramp steps, --c-* triplets and a few effects only.
    ───────────────────────────────────────────────────────────── */
 
 /* ─── SELF-HOSTED FONTS ─── */
@@ -122,14 +130,25 @@
   src: url('assets/fonts/publicsans-normal-700.woff2') format('woff2');
 }
 
+/* ═════════════════════════════════════════════════════════════
+   LIGHT (default)
+   ═════════════════════════════════════════════════════════════ */
 :root {
   color-scheme: light;
 
-  /* Neutral ramp (Slate) — re-valued v7: warm paper surfaces + near-black ink.
-     200–800 carry AAA-verified text/border contrast; left unchanged. */
+  /* ─── 1. Ramps — RGB triplets for rgb(var(--x-N) / <alpha-value>) ─── */
+
+  /* Neutral ramp (Slate). 50/100 are the cool pearl steps every shipped
+     surface already uses; they used to be a warm beige (251 250 246 /
+     244 242 235) that clashed with the cool 200–950 steps and left warm
+     islands on the cool pearl workspace. slate-50 sits one step lighter
+     than --c-sunken (#F5F9FA, not visibly different) so the common
+     `text-slate-500` label on `bg-slate-50` keeps AA (4.52:1; 4.49 at
+     #F5F9FA). slate-100 = --c-muted. 200–950 are Tailwind's slate and carry
+     the AAA-verified text/border pairs. */
   --slate-0:    255 255 255;
-  --slate-50:   251 250 246;
-  --slate-100:  244 242 235;
+  --slate-50:   245 250 251;
+  --slate-100:  234 241 243;
   --slate-200:  226 232 240;
   --slate-300:  203 213 225;
   --slate-400:  148 163 184; /* UI only — fails AA on white */
@@ -162,7 +181,7 @@
   --link-700:   8 80 90;
   --link-900:   6 47 53;
 
-  /* Semantic — meaning locked. Spec §3.2 locks 50/200/500/700/900;
+  /* Semantic ramps — meaning locked. Spec §3.2 locks 50/200/500/700/900;
      intermediate steps 100/300/400/600 mirror Tailwind defaults so the
      v7 codemod can do straight 1:1 swaps of amber-N → warn-N etc. */
   --crit-50:    251 231 229;
@@ -213,107 +232,173 @@
   --info-900:   30 58 138;
   --info-950:   15 27 61;
 
-  /* Semantic surface aliases */
-  --bg-canvas:        var(--slate-0);
-  --bg-card:          var(--slate-0);
-  --bg-overlay:       var(--slate-0);
-  --bg-subdued:       var(--slate-50);
-  --border-line:      var(--slate-200);
-  --border-strong:    var(--slate-300);
-  --text-ink:         var(--slate-900);
-  --text-muted:       var(--slate-600);
-  --text-faint:       var(--slate-500);
-  --focus-ring:       var(--cobalt-500);
+  /* ─── 2. Semantic colour layer — RGB triplets ───────────────────
+     The ONLY place surface / line / ink values are set. Tailwind reads
+     them as rgb(var(--c-x) / <alpha-value>), so opacity modifiers such as
+     bg-card/95, border-line/60 and bg-paper-2/60 generate real CSS.
+     Values are the v7.2 "cool pearl / mineral" palette that shipped from
+     index.html (the warm v7.0 values that used to sit here were dead). */
+  --c-canvas:         232 240 242;  /* #E8F0F2 desk behind the sheet */
+  --c-canvas-accent:  220 235 237;  /* #DCEBED desk wash */
+  --c-canvas-2:       231 239 242;  /* #E7EFF2 desk gradient end */
+  --c-shell:          242 247 248;  /* #F2F7F8 the sheet */
+  --c-surface:        255 255 255;  /* cards, panels, inputs */
+  --c-sunken:         245 249 250;  /* #F5F9FA recessed step (surface-2) */
+  --c-paper:          245 249 250;  /* #F5F9FA paper (≠ sunken in dark) */
+  --c-muted:          234 241 243;  /* #EAF1F3 chips, rails (paper-2) */
+  --c-panel-2:        245 249 250;  /* #F5F9FA subdued panel (= muted in dark) */
+  --c-overlay:        var(--slate-0);
+  --c-line:           213 225 229;  /* #D5E1E5 hairline */
+  --c-line-strong:    var(--slate-300);
+  --c-ink:            23 47 59;     /* #172F3B — 13.9:1 on white */
+  --c-ink-2:          61 85 99;     /* #3D5563 */
+  --c-mute:           82 105 119;   /* #526977 — 5.8:1 on white */
+  --c-faint:          var(--slate-500);
+  --c-accent:         var(--cobalt-500);
+  --c-accent-2:       var(--cobalt-600);
+  --c-accent-soft:    var(--cobalt-50);
+  --c-accent-ink:     var(--cobalt-800);
+  --c-focus:          var(--cobalt-500);
+  --c-critical:       var(--crit-700);
+  --c-critical-soft:  var(--crit-50);
+  --c-confirm:        var(--ok-700);
+  --c-confirm-soft:   var(--ok-50);
+  --c-caution:        var(--warn-700);
+  --c-caution-soft:   var(--warn-50);
+  --c-reference:      var(--info-700);
+  --c-reference-soft: var(--info-50);
 
-  /* Geometry */
-  --radius-sm:  4px;
-  --radius-md:  8px;   /* buttons, inputs */
-  --radius-lg:  12px;  /* cards, sheets */
-  --radius-xl:  16px;  /* modals */
-  --radius-pill: 999px;
+  /* Prototype washes + chip-label inks (ramp-derived, dark-aware below).
+     Label text is AA on its wash: -700 on -50 in light, -200 on -950/-900
+     in dark. Used by .v7-tag / .v7-stype / .v7-cert and time-window-ring. */
+  --teal-wash:  rgb(var(--cobalt-50));
+  --coral-wash: rgb(var(--crit-50));
+  --gold-wash:  rgb(var(--warn-50));
+  --ok-wash:    rgb(var(--ok-50));
+  --tag-teal:   rgb(var(--cobalt-700)); /* 7.79:1 on cobalt-50 */
+  --tag-coral:  rgb(var(--crit-700));   /* 6.41:1 on crit-50 */
+  --tag-gold:   rgb(var(--warn-700));   /* 5.59:1 on warn-50 */
+  --tag-ok:     rgb(var(--ok-700));     /* 7.50:1 on ok-50 */
 
-  /* Motion (gated to 0 under prefers-reduced-motion below) */
-  --motion-scale: 1;
-  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* ─── 3. Edges and material effects ─── */
+  --edge:          rgba(30, 67, 82, .10);
+  --edge-strong:   rgba(30, 67, 82, .22);
+  /* Boundary of an interactive control with no fill of its own (the
+     unchecked checkbox/radio). WCAG 1.4.11 wants >= 3:1 against the
+     surface: slate-500 on the white card is 4.5:1. --edge-strong is
+     decorative only (1.40:1). */
+  --control-edge:  rgb(var(--slate-500));
+  --shell-border:  rgba(30, 67, 82, .12);
+  --panel-border:  rgba(30, 67, 82, .12);
+  --inner-hi:      inset 0 1px 0 rgba(255, 255, 255, .8);
+  --sheen:         linear-gradient(180deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 96px);
+  --shell-shadow:  0 1px 0 rgba(255, 255, 255, .7) inset,
+                   0 1px 2px rgba(20, 23, 29, .04),
+                   0 28px 56px -30px rgba(20, 23, 29, .28);
 
-  /* ─────────────────────────────────────────────────────────────
-     Consolidated variables from index.html (light mode)
-     ───────────────────────────────────────────────────────────── */
-  --accent:        rgb(var(--cobalt-500));
-  --accent-2:      rgb(var(--cobalt-600));
-  --accent-soft:   rgb(var(--cobalt-50));
-  --accent-ink:    rgb(var(--cobalt-800));
+  /* ─── 4. Elevation — one three-step scale ───
+     elev-1 resting card, elev-2 hover/raised, elev-3 dialog/popover. */
+  --elev-1:        0 1px 2px rgba(20, 51, 65, .045), 0 5px 16px -8px rgba(20, 51, 65, .14);
+  --elev-2:        0 2px 4px rgba(20, 51, 65, .055), 0 14px 30px -16px rgba(20, 51, 65, .23);
+  --elev-3:        0 3px 8px rgba(20, 51, 65, .06), 0 28px 60px -26px rgba(20, 51, 65, .28);
 
-  --app-bg:        #FBFAF6;
-  --app-bg-accent: #F2EFE6;
-  --surface:       #FFFFFF;
-  --surface-2:     #FBFAF6;
-  --surface-3:     #F2EFE6;
-
-  --shell-bg:      rgba(255, 255, 255, 0.96);
-  --shell-border:  rgba(15, 23, 42, 0.06);
-  --shell-shadow:  0 1px 0 rgba(15, 23, 42, .04), 0 18px 40px -22px rgba(15, 23, 42, .22);
-  --panel-bg:      rgba(255, 255, 255, 0.94);
-  --panel-border:  rgba(15, 23, 42, 0.06);
-  --card-shadow:   0 1px 0 rgba(15, 23, 42, .04), 0 6px 16px -10px rgba(15, 23, 42, .18);
-
-  --text-strong:   #14171D;
-  --text-muted:    #5b6577;
-
-  --radius:        14px;
-  --radius-lg:     20px;
-  --shadow-pop:    0 24px 60px -20px rgba(15, 23, 42, .35), 0 4px 12px rgba(15, 23, 42, .06);
-
-  /* ─────────────────────────────────────────────────────────────
-     Consolidated variables from styles.css (light mode)
-     ───────────────────────────────────────────────────────────── */
-  --ink:           #14171D;
-  --ink-2:         #3A414C;
-  --mute:          #545E6B;
-  --line:          #E7E2D6;
-  --paper:         #FBFAF6;
-  --paper-2:       #F4F2EB;
-  --card:          #FFFFFF;
-
-  --critical:      rgb(var(--crit-700));
-  --critical-soft: rgb(var(--crit-50));
-  --confirm:       rgb(var(--ok-700));
-  --confirm-soft:  rgb(var(--ok-50));
-  --caution:       rgb(var(--warn-700));
-  --caution-soft:  rgb(var(--warn-50));
-  --reference:     rgb(var(--info-700));
-  --reference-soft:rgb(var(--info-50));
-
+  /* ─── 5. Geometry — one declaration per radius ───
+     Tailwind's rounded-sm/md/lg/xl utilities are pinned in
+     tailwind.config.js; these are for hand-written CSS. */
   --radius-sm:     6px;
-  --radius-md:     12px;
-  --radius-pill:   9999px;
-  --shadow-1:      0 1px 2px rgba(15, 23, 42, .06);
-  --shadow-2:      0 8px 20px rgba(15, 23, 42, .08);
-  --surface-elevated: #ffffff;
-  --neutral-bg:    #f8fafc;
-  --text-subtle:   #94a3b8;
-  --border:        rgba(15, 23, 42, .08);
+  --radius-md:     8px;    /* buttons, inputs */
+  --radius-lg:     12px;   /* cards, sheets */
+  --radius-xl:     16px;   /* modals */
+  --radius-card:   14px;   /* v7 signature cards, the nav panel below lg */
+  --radius-shell:  20px;   /* the app sheet (.app-shell), offline card */
+  --radius-pill:   999px;
+
+  /* ─── 6. Motion (zeroed under prefers-reduced-motion below) ─── */
+  --motion-scale:  1;
+  --dur:           180ms;
+  --ease:          cubic-bezier(.2,.7,.2,1);
+
+  /* ─── 7. Type ─── */
+  --mono-font:     "IBM Plex Mono", ui-monospace, monospace;
+
+  /* ─── 8. Legacy aliases — declared ONCE, here ───────────────────
+     Every older name resolves through the semantic layer above, so a
+     theme only ever swaps --c-* triplets. Custom properties resolve on
+     <html>, where [data-theme] lives, so the dark triplets flow through. */
+
+  /* full-colour */
+  --app-bg:          rgb(var(--c-canvas));
+  --app-bg-accent:   rgb(var(--c-canvas-accent));
+  --surface-3:       rgb(var(--c-canvas-2));
+  --shell-bg:        rgb(var(--c-shell));
+  --surface:         rgb(var(--c-surface));
+  --card:            rgb(var(--c-surface));
+  --panel:           rgb(var(--c-surface));
+  --surface-2:       rgb(var(--c-sunken));
+  --paper:           rgb(var(--c-paper));
+  --paper-2:         rgb(var(--c-muted));
+  --panel-2:         rgb(var(--c-panel-2));
+  --line:            rgb(var(--c-line));
+  --line-2:          rgb(var(--c-line-strong));
+  --ink:             rgb(var(--c-ink));
+  --text-strong:     rgb(var(--c-ink));
+  --ink-2:           rgb(var(--c-ink-2));
+  --ink-soft:        rgb(var(--c-ink-2));
+  --mute:            rgb(var(--c-mute));
+  --text-muted:      rgb(var(--c-mute));
+  --faint:           rgb(var(--c-faint));
+  --accent:          rgb(var(--c-accent));
+  --accent-2:        rgb(var(--c-accent-2));
+  --accent-soft:     rgb(var(--c-accent-soft));
+  --accent-ink:      rgb(var(--c-accent-ink));
+  --critical:        rgb(var(--c-critical));
+  --critical-soft:   rgb(var(--c-critical-soft));
+  --confirm:         rgb(var(--c-confirm));
+  --confirm-soft:    rgb(var(--c-confirm-soft));
+  --caution:         rgb(var(--c-caution));
+  --caution-soft:    rgb(var(--c-caution-soft));
+  --reference:       rgb(var(--c-reference));
+  --reference-soft:  rgb(var(--c-reference-soft));
+  --teal:            rgb(var(--cobalt-500));
+  --coral:           rgb(var(--crit-500)); /* large-text / accent — 4.36:1 on white; use --critical for small text */
+  --gold:            rgb(var(--warn-500)); /* decorative / icon only — 3.62:1 on white; use --caution for text */
+  --okc:             rgb(var(--ok-600));
+
+  /* triplet (for rgb(var(--x) / a)) */
+  --bg-canvas:       var(--c-canvas);
+  --bg-card:         var(--c-surface);
+  --bg-subdued:      var(--c-sunken);
+  --bg-overlay:      var(--c-overlay);
+  --border-line:     var(--c-line);
+  --border-strong:   var(--c-line-strong);
+  --text-ink:        var(--c-ink);
+  --text-faint:      var(--c-faint);
+  --focus-ring:      var(--c-focus);
+
+  /* elevation */
+  --lift-1:          var(--elev-1);
+  --lift-2:          var(--elev-2);
+  --lift-3:          var(--elev-3);
+  --card-shadow:     var(--elev-1);
+  --shadow:          var(--elev-1);
+  --shadow-lg:       var(--elev-3);
+  --shadow-pop:      var(--elev-3);
+  --glow-accent:     0 4px 10px -5px color-mix(in oklab, var(--accent) 45%, transparent);
 }
 
-/* Dark theme — strict inversion via data-theme. theme.js owns the attr. */
+/* ═════════════════════════════════════════════════════════════
+   DARK — the single dark hook: [data-theme="dark"] on <html>.
+   src/design/theme.js owns the attribute; index.html and
+   offline.html set it before first paint with the same rule.
+   Only theme-varying values appear here; every alias above
+   follows automatically.
+   ═════════════════════════════════════════════════════════════ */
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --bg-canvas:        var(--slate-950);
-  --bg-card:          var(--slate-900);
-  --bg-overlay:       var(--slate-800);
-  --bg-subdued:       var(--slate-900);
-  --border-line:      var(--slate-800);
-  --border-strong:    var(--slate-700);
-  --text-ink:         var(--slate-50);
-  --text-muted:       var(--slate-300);
-  --text-faint:       var(--slate-400);
-  --focus-ring:       var(--cobalt-300);
-
-  /* keep these accent overrides in sync with the html.dark block below */
-  /* Accent steps brightened for dark focus/text/labels (prototype dark values) */
+  /* Ramp steps brightened for dark focus / text / labels */
   --cobalt-300: 63 182 196;
-  --cobalt-500: 20 158 176;   /* brightened teal for dark-mode text/links — ~4.7:1 on slate-950 */
+  --cobalt-500: 20 158 176;   /* brightened teal for dark text/links — ~4.7:1 on slate-950 */
   --link-400:   63 182 196;
   --crit-300:   240 107 98;
   --crit-400:   244 120 112;
@@ -321,217 +406,68 @@
   --warn-400:   214 162 78;
   --ok-300:     95 180 137;
 
-  /* ─────────────────────────────────────────────────────────────
-     Consolidated variables from index.html (dark mode)
-     ───────────────────────────────────────────────────────────── */
-  --accent:        rgb(var(--cobalt-300));
-  --accent-2:      rgb(var(--cobalt-500));
-  --accent-soft:   rgb(var(--cobalt-900));
-  --accent-ink:    rgb(var(--cobalt-200));
+  /* Semantic colour layer — deep mineral surfaces */
+  --c-canvas:         10 19 26;     /* #0A131A */
+  --c-canvas-accent:  16 43 52;     /* #102B34 */
+  --c-canvas-2:       10 19 26;     /* #0A131A */
+  --c-shell:          14 26 34;     /* #0E1A22 */
+  --c-surface:        23 39 49;     /* #172731 */
+  --c-sunken:         17 33 42;     /* #11212A */
+  --c-paper:          14 26 34;     /* #0E1A22 */
+  --c-muted:          32 52 63;     /* #20343F */
+  --c-panel-2:        32 52 63;     /* #20343F */
+  --c-overlay:        var(--slate-800);
+  --c-line:           48 69 80;     /* #304550 */
+  --c-line-strong:    var(--slate-700);
+  --c-ink:            237 244 247;  /* #EDF4F7 */
+  --c-ink-2:          195 212 222;  /* #C3D4DE */
+  --c-mute:           165 186 198;  /* #A5BAC6 */
+  --c-faint:          var(--slate-400);
+  --c-accent:         var(--cobalt-300);
+  --c-accent-2:       var(--cobalt-500);
+  --c-accent-soft:    var(--cobalt-900);
+  --c-accent-ink:     var(--cobalt-200);
+  --c-focus:          var(--cobalt-300);
+  --c-critical:       var(--crit-300);
+  --c-critical-soft:  var(--crit-950);
+  --c-confirm:        var(--ok-300);
+  --c-confirm-soft:   var(--ok-950);
+  --c-caution:        var(--warn-300);
+  --c-caution-soft:   var(--warn-950);
+  --c-reference:      var(--info-300);
+  --c-reference-soft: var(--info-950);
 
-  --app-bg:        #101317;
-  --app-bg-accent: #171B21;
-  --surface:       #171B21;
-  --surface-2:     #14171D;
-  --surface-3:     #1E232B;
+  /* Washes flip to the deep 900/950 steps; chip labels to the light
+     -200 steps: cobalt-200/cobalt-900 = 9.00, crit-200/crit-950 = 9.21,
+     warn-200/warn-950 = 10.12, ok-200/ok-950 = 9.65 — all AA. */
+  --teal-wash:  rgb(var(--cobalt-900));
+  --coral-wash: rgb(var(--crit-950));
+  --gold-wash:  rgb(var(--warn-950));
+  --ok-wash:    rgb(var(--ok-950));
+  --tag-teal:   rgb(var(--cobalt-200));
+  --tag-coral:  rgb(var(--crit-200));
+  --tag-gold:   rgb(var(--warn-200));
+  --tag-ok:     rgb(var(--ok-200));
 
-  --shell-bg:      rgba(12, 22, 38, 0.94);
-  --shell-border:  rgba(148, 163, 184, 0.12);
-  --shell-shadow:  0 1px 0 rgba(255, 255, 255, .02), 0 24px 60px -28px rgba(0, 0, 0, .8);
-  --panel-bg:      rgba(12, 22, 38, 0.92);
-  --panel-border:  rgba(148, 163, 184, 0.12);
-  --card-shadow:   0 1px 0 rgba(255, 255, 255, .02), 0 10px 30px -16px rgba(0, 0, 0, .7);
+  /* Edges and material effects */
+  --edge:          rgba(177, 209, 222, .12);
+  --edge-strong:   rgba(177, 209, 222, .24);
+  --control-edge:  rgb(var(--slate-400));  /* ~7:1 on the dark card */
+  --shell-border:  rgba(177, 209, 222, .11);
+  --panel-border:  rgba(177, 209, 222, .14);
+  --inner-hi:      inset 0 1px 0 rgba(211, 238, 248, .045);
+  --sheen:         linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, 0) 120px);
+  --shell-shadow:  0 1px 0 rgba(255, 255, 255, .05) inset,
+                   0 2px 6px rgba(0, 0, 0, .5),
+                   0 34px 64px -30px rgba(0, 0, 0, .9);
 
-  --text-strong:   #ECEAE2;
-  --text-muted:    #A39E92;
-
-  --shadow-pop:    0 24px 60px -20px rgba(0, 0, 0, .8), 0 4px 12px rgba(0, 0, 0, .4);
-
-  /* ─────────────────────────────────────────────────────────────
-     Consolidated variables from styles.css (dark mode)
-     ───────────────────────────────────────────────────────────── */
-  --ink:           #ECEAE2;
-  --ink-2:         #C3C0B6;
-  --mute:          #A39F94;
-  --line:          #272D35;
-  --paper:         #101317;
-  --paper-2:       #1E232B;
-  --card:          #171B21;
-
-  --critical:      rgb(var(--crit-300));
-  --critical-soft: rgb(var(--crit-950));
-  --confirm:       rgb(var(--ok-300));
-  --confirm-soft:  rgb(var(--ok-950));
-  --caution:       rgb(var(--warn-300));
-  --caution-soft:  rgb(var(--warn-950));
-  --reference:     rgb(var(--info-300));
-  --reference-soft:rgb(var(--info-950));
-
-  --focus-ring:    0 0 0 3px rgba(63, 182, 196, .45);
-}
-
-/* Class-based dark fallback for projects already using darkMode:'class' */
-html.dark {
-  color-scheme: dark;
-  --bg-canvas:        var(--slate-950);
-  --bg-card:          var(--slate-900);
-  --bg-overlay:       var(--slate-800);
-  --bg-subdued:       var(--slate-900);
-  --border-line:      var(--slate-800);
-  --border-strong:    var(--slate-700);
-  --text-ink:         var(--slate-50);
-  --text-muted:       var(--slate-300);
-  --text-faint:       var(--slate-400);
-  --focus-ring:       var(--cobalt-300);
-
-  /* keep in sync with the [data-theme="dark"] block above */
-  /* Accent steps brightened for dark focus/text/labels (prototype dark values) */
-  --cobalt-300: 63 182 196;
-  --cobalt-500: 20 158 176;   /* brightened teal for dark-mode text/links — ~4.7:1 on slate-950 */
-  --link-400:   63 182 196;
-  --crit-300:   240 107 98;
-  --crit-400:   244 120 112;
-  --warn-300:   214 162 78;
-  --warn-400:   214 162 78;
-  --ok-300:     95 180 137;
-
-  /* ─────────────────────────────────────────────────────────────
-     Consolidated variables from index.html (dark mode)
-     ───────────────────────────────────────────────────────────── */
-  --accent:        rgb(var(--cobalt-300));
-  --accent-2:      rgb(var(--cobalt-500));
-  --accent-soft:   rgb(var(--cobalt-900));
-  --accent-ink:    rgb(var(--cobalt-200));
-
-  --app-bg:        #101317;
-  --app-bg-accent: #171B21;
-  --surface:       #171B21;
-  --surface-2:     #14171D;
-  --surface-3:     #1E232B;
-
-  --shell-bg:      rgba(12, 22, 38, 0.94);
-  --shell-border:  rgba(148, 163, 184, 0.12);
-  --shell-shadow:  0 1px 0 rgba(255, 255, 255, .02), 0 24px 60px -28px rgba(0, 0, 0, .8);
-  --panel-bg:      rgba(12, 22, 38, 0.92);
-  --panel-border:  rgba(148, 163, 184, 0.12);
-  --card-shadow:   0 1px 0 rgba(255, 255, 255, .02), 0 10px 30px -16px rgba(0, 0, 0, .7);
-
-  --text-strong:   #ECEAE2;
-  --text-muted:    #A39E92;
-
-  --shadow-pop:    0 24px 60px -20px rgba(0, 0, 0, .8), 0 4px 12px rgba(0, 0, 0, .4);
-
-  /* ─────────────────────────────────────────────────────────────
-     Consolidated variables from styles.css (dark mode)
-     ───────────────────────────────────────────────────────────── */
-  --ink:           #ECEAE2;
-  --ink-2:         #C3C0B6;
-  --mute:          #A39F94;
-  --line:          #272D35;
-  --paper:         #101317;
-  --paper-2:       #1E232B;
-  --card:          #171B21;
-
-  --critical:      rgb(var(--crit-300));
-  --critical-soft: rgb(var(--crit-950));
-  --confirm:       rgb(var(--ok-300));
-  --confirm-soft:  rgb(var(--ok-950));
-  --caution:       rgb(var(--warn-300));
-  --caution-soft:  rgb(var(--warn-950));
-  --reference:     rgb(var(--info-300));
-  --reference-soft:rgb(var(--info-950));
-
-  --focus-ring:    0 0 0 3px rgba(63, 182, 196, .45);
+  /* Elevation */
+  --elev-1:        0 1px 2px rgba(0, 8, 14, .28), 0 6px 18px -10px rgba(0, 8, 14, .50);
+  --elev-2:        0 2px 5px rgba(0, 8, 14, .35), 0 16px 34px -20px rgba(0, 8, 14, .70);
+  --elev-3:        0 3px 8px rgba(0, 8, 14, .40), 0 34px 64px -28px rgba(0, 8, 14, .85);
 }
 
 /* Reduced-motion: zero out --motion-scale; all timing reads from it */
 @media (prefers-reduced-motion: reduce) {
   :root { --motion-scale: 0; }
-}
-
-/* ─────────────────────────────────────────────────────────────
-   v6 → v7 aliases — keep existing utilities resolving.
-   bg-card, border-line, text-ink, etc. continue to work; their
-   values now point at v7 tokens. No breaking rename in v6 monolith.
-   ───────────────────────────────────────────────────────────── */
-:root {
-  --ink-rgb:          var(--text-ink);
-  --ink-2-rgb:        var(--text-muted);
-  --mute-rgb:         var(--text-faint);
-  --line-rgb:         var(--border-line);
-  --paper-rgb:        var(--bg-canvas);
-  --paper-2-rgb:      var(--bg-subdued);
-  --card-rgb:         var(--bg-card);
-}
-
-/* ─────────────────────────────────────────────────────────────
-   Prototype semantic aliases — bridge for component CSS (Task 4).
-   Named to avoid collision with ramp utilities (success → --okc,
-   never --ok). Values track the re-valued teal/coral/gold ramps.
-   ───────────────────────────────────────────────────────────── */
-:root {
-  --teal:       rgb(var(--cobalt-500));
-  --teal-d:     rgb(var(--cobalt-600));
-  --teal-wash:  rgb(var(--cobalt-50));
-  --coral:      rgb(var(--crit-500)); /* large-text / accent — 4.36:1 on white, borderline for body text; use --critical (crit-700) for small text */
-  --coral-wash: rgb(var(--crit-50));
-  --gold:       rgb(var(--warn-500)); /* decorative / large-text / icon only — 3.62:1 on white, NOT body-text safe; use --caution (warn-700) for text */
-  --gold-wash:  rgb(var(--warn-50));
-  --okc:        rgb(var(--ok-600));
-  --ok-wash:    rgb(var(--ok-50));
-  /* Tag/chip LABEL text — AA-safe on the soft washes above (the bright
-     --teal/coral/gold/okc accents are decorative-only and fail AA as small
-     chip text). Light: -700 step on -50 wash ≥4.5:1; dark steps flip below
-     to -200 on the deep -900/-950 washes. Used by .v7-tag/.v7-stype/.v7-cert. */
-  --tag-teal:   rgb(var(--cobalt-700)); /* 7.79:1 on cobalt-50 */
-  --tag-coral:  rgb(var(--crit-700));   /* 6.41:1 on crit-50 */
-  --tag-gold:   rgb(var(--warn-700));   /* 5.59:1 on warn-50 */
-  --tag-ok:     rgb(var(--ok-700));     /* 7.50:1 on ok-50 */
-  --panel:      rgb(var(--slate-0));
-  --panel-2:    rgb(var(--slate-100));
-  --ink-soft:   rgb(var(--slate-600));
-  --faint:      rgb(var(--slate-500));
-  --line-2:     rgb(var(--slate-300));
-  --display-font: "Bricolage Grotesque", Georgia, serif;
-  --sans-font:    "Public Sans", -apple-system, sans-serif;
-  --mono-font:    "IBM Plex Mono", ui-monospace, monospace;
-  --ease:         cubic-bezier(.2,.7,.2,1);
-  --radius-card:  14px;
-  --radius-s:     9px;
-  --maxw:         1180px;
-  /* Elevation — prototype values (Task 4). Light theme. */
-  --shadow:       0 1px 2px rgba(20,23,29,.04),0 10px 30px -16px rgba(20,23,29,.22);
-  --shadow-lg:    0 2px 6px rgba(20,23,29,.06),0 26px 50px -24px rgba(20,23,29,.34);
-}
-
-/* Dark elevation for the prototype shadow aliases — track both dark roots. */
-[data-theme="dark"],
-html.dark {
-  --shadow:    0 1px 2px rgba(0,0,0,.4),0 12px 30px -18px rgba(0,0,0,.7);
-  --shadow-lg: 0 2px 8px rgba(0,0,0,.5),0 28px 60px -26px rgba(0,0,0,.8);
-
-  /* ── Cycle1 dark-contrast fix ──────────────────────────────────────
-     The prototype surface/text/border aliases above were hardcoded to
-     fixed light slate steps (slate-0/100/300/500/600) that DON'T remap.
-     They back the CSS-class surfaces in styles.css (.v7-card, .v7-study,
-     .v7-nav-item, .v7-stype, etc.) and the --teal/coral/gold/ok washes —
-     so in dark every card stayed white and its text failed contrast.
-     Remap them onto the dark surface tokens (which DO invert). Light is
-     untouched: these overrides only apply under [data-theme="dark"]/.dark.
-     The 50-step washes flip to deep 950 steps so chip text stays legible. */
-  --panel:     rgb(var(--bg-card));     /* card/nav surface → slate-900 */
-  --panel-2:   rgb(var(--bg-overlay));  /* subdued chip surface → slate-800 */
-  --ink-soft:  rgb(var(--text-muted));  /* muted body → slate-300 */
-  --faint:     rgb(var(--text-faint));  /* faint label → slate-400 */
-  --line-2:    rgb(var(--border-strong)); /* strong hairline → slate-700 */
-  --teal-wash: rgb(var(--cobalt-900));
-  --coral-wash:rgb(var(--crit-950));
-  --gold-wash: rgb(var(--warn-950));
-  --ok-wash:   rgb(var(--ok-950));
-  /* Chip-label text flips to light -200 steps on the deep dark washes:
-     cobalt-200/cobalt-900=9.00, crit-200/crit-950=9.21, warn-200/warn-950=10.12, ok-200/ok-950=9.65 — all AA. */
-  --tag-teal:  rgb(var(--cobalt-200));
-  --tag-coral: rgb(var(--crit-200));
-  --tag-gold:  rgb(var(--warn-200));
-  --tag-ok:    rgb(var(--ok-200));
 }
