@@ -159,13 +159,13 @@ export const recommendations = [
     guidelineSource: 'AHA/ASA 2021 Secondary Prevention; CHANCE / POINT / THALES / INSPIRES',
     supportingClaimIds: ['cl-dapt-minor-stroke'],
     caveats: [
-      'Duration is indication-specific. For THIS indication (minor stroke / high-risk TIA) the Class I trial-supported course is aspirin+clopidogrel 21 days; do not extend DAPT beyond 30 days.',
+      'Duration is indication-specific. The 2021 AHA/ASA Class I recommendation allows aspirin+clopidogrel for 21 to 90 days, followed by single antiplatelet therapy. A 21-day course (as in CHANCE) is favored for most patients: in pooled CHANCE/POINT data the benefit was confined to the first 21 days, while POINT\'s 90-day course carried more major hemorrhage than aspirin alone (0.9% vs 0.4%). Continuous DAPT beyond 90 days carries excess hemorrhage risk.',
       'Aspirin plus ticagrelor for 30 days is a separate COR IIb / LOE B-R option (THALES) for NIHSS ≤5 or high-risk TIA with ABCD² ≥6 or ipsilateral ≥30% stenosis — it is not part of this Class I recommendation (secondary-prevention-2021-147).',
       'A separate indication permits longer DAPT: severe intracranial stenosis 70-99% within 30 days of the event allows aspirin+clopidogrel up to 90 days. Beyond 90 days, or triple antiplatelet therapy, carries excess hemorrhage risk (AHA/ASA 2021).',
       'INSPIRES extended the window to 72 h for mild stroke or high-risk TIA of presumed atherosclerotic cause, with more moderate-to-severe bleeding (0.9% vs 0.4%).',
       'For CYP2C19 loss-of-function carriers, ticagrelor (CHANCE-2) is preferred over clopidogrel.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 

@@ -61,7 +61,7 @@ export const completedTrials = [
   t({
     id: 'trace-2',
     shortName: 'TRACE-2',
-    fullName: 'Trial of Tenecteplase in Chinese Patients with Acute Ischemic Stroke',
+    fullName: 'Tenecteplase Reperfusion Therapy in Acute Ischemic Cerebrovascular Events-II',
     topic: 'tnk-vs-alteplase',
     diseaseArea: ['acute-ischemic-stroke', 'tnk-vs-alteplase'],
     population: { n: 1430, ageRange: '≥18', nihssRange: '5-25', timeWindow: '≤4.5 h', keyInclusion: ['IVT-eligible within 4.5 h', 'Pre-stroke mRS 0-1'], keyExclusion: ['Intended EVT (only EVT-ineligible or EVT-declining patients enrolled)'] },
@@ -78,7 +78,7 @@ export const completedTrials = [
     citationIds: ['cit-trace2-2023'],
     relatedActiveTrialIds: ['most'],
     practiceImpact: 'Confirms non-inferiority of TNK 0.25 mg/kg vs alteplase in IVT-eligible AIS within 4.5 h in patients ineligible for or declining EVT.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -697,8 +697,8 @@ export const completedTrials = [
     topic: 'dapt-minor-stroke',
     diseaseArea: ['secondary-prevention', 'dapt-minor-stroke'],
     population: { n: 6412, ageRange: '≥40', nihssRange: '≤3', timeWindow: '≤24 h', keyInclusion: ['CYP2C19 loss-of-function carrier', 'Mild AIS or high-risk TIA'], keyExclusion: [] },
-    intervention: 'Ticagrelor + ASA x 21 d',
-    comparator: 'Clopidogrel + ASA x 21 d',
+    intervention: 'Ticagrelor 180 mg load, then 90 mg BID to day 90 + aspirin for the first 21 d',
+    comparator: 'Clopidogrel 300 mg load, then 75 mg daily to day 90 + aspirin for the first 21 d',
     primaryEndpoint: { definition: 'New stroke at 90 d', timepoint: '90 d', result: 'Favored ticagrelor: 6.0% vs 7.6%', effectSize: 'HR 0.77', confidenceInterval: '95% CI 0.64 to 0.94', pValue: 'p=0.008' },
     secondaryEndpoints: [],
     safetyFindings: { sich: '', mortality: 'Similar', other: '' },
@@ -710,7 +710,7 @@ export const completedTrials = [
     citationIds: ['cit-chance2-2021'],
     relatedActiveTrialIds: ['captiva'],
     practiceImpact: 'Supports ticagrelor over clopidogrel in CYP2C19 LOF carriers.',
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
 
@@ -5232,10 +5232,10 @@ export const completedTrials = [
     primaryEndpoint: {
       definition: 'Pooled diagnostic test accuracy — sensitivity and specificity — of AI software for detecting large vessel occlusion on CT angiography, with pooled positive and negative likelihood ratios, area under the curve and diagnostic odds ratio',
       timepoint: 'Index CT angiogram',
-      result: 'Accuracy is good but asymmetric, and the negative result is the weak one: pooled sensitivity 0.87 and pooled specificity 0.95. The pooled positive likelihood ratio was 9.55 and statistically significant, while the pooled negative likelihood ratio of 0.14 was NOT statistically significant — meaning a negative AI read does not reliably rule out an occlusion',
+      result: 'Accuracy is good but asymmetric, and the negative result is the weak one: pooled sensitivity 0.87 and pooled specificity 0.95. The pooled positive likelihood ratio was 9.55 and statistically significant, while the pooled negative likelihood ratio was 0.14 (95% CI 0.03-0.25), a confidence interval that excludes 1. The authors describe the NLR as \'not significant\', but the p value they report with it (printed as <0.624, next to I² = 0%) appears to be the Cochran\'s Q heterogeneity test described in their methods, not a test of the NLR itself. The rule-out weakness is real, and the pooled sensitivity of 0.87 (95% CI 0.76-0.93) shows it better: roughly 1 in 8 occlusions was missed, so a negative AI read does not reliably rule out an occlusion',
       effectSize: 'Pooled sensitivity 0.87; specificity 0.95; PLR 9.55; NLR 0.14; AUC 0.87; diagnostic odds ratio 4.69',
       confidenceInterval: '95% CI 0.76-0.93 (sensitivity); 0.91-0.97 (specificity); 5.79-13.30 (PLR); 0.03-0.25 (NLR); 0.83-0.92 (AUC); 4.19-5.19 (DOR)',
-      pValue: 'p<0.001 for PLR, AUC and DOR; p=0.624 for NLR (not significant)'
+      pValue: 'p values as printed beside the I² values (p<0.001 for PLR, AUC and DOR; p<0.624 for NLR, I² 0%). The methods name Cochran\'s Q and I² for heterogeneity testing, and the NLR 95% CI (0.03-0.25) excludes 1, so these appear to be heterogeneity p values, not tests of the pooled estimates (needs confirmation); the DOR of 4.69 (4.19-5.19) does not fit the pooled sensitivity/specificity and may be a log DOR (needs confirmation)'
     },
     secondaryEndpoints: [
       {
@@ -5253,14 +5253,14 @@ export const completedTrials = [
       other: 'The principal clinical hazard is a false-negative read: the authors conclude that negative cases flagged by AI require careful re-evaluation by imaging review and assessment of the patient\'s clinical profile'
     },
     imagingCriteria: 'CT angiography of the head and neck at presentation, read both by the AI tool and by the human reference standard',
-    applicabilityNotes: 'The first record in this corpus to address AI triage software, which is now embedded in many transfer pathways yet had no evidence attached to it here. The number worth teaching is not the headline sensitivity but the asymmetry beneath it: a POSITIVE AI flag is genuinely informative (positive likelihood ratio 9.55), while a NEGATIVE AI read is less informative — pooled sensitivity was 0.87, so roughly 1 in 8 occlusions was missed; performance was only moderate for M2, and the single study that examined posterior-circulation and ICA type I occlusions (one product, CINA-LVO) found very poor detection. In transfer terms, that means these tools can reasonably accelerate a transfer that a human would have called anyway, but must never be used to stand down a transfer or to close out a clinically suspicious presentation. The basilar occlusion — the diagnosis where delay is least forgiving — is precisely the one where these tools performed worst.',
+    applicabilityNotes: 'The first record in this corpus to address AI triage software, which is now embedded in many transfer pathways yet had no evidence attached to it here. The number worth teaching is not the headline sensitivity but the asymmetry beneath it: a POSITIVE AI flag is genuinely informative (positive likelihood ratio 9.55), while a NEGATIVE AI read is less informative — pooled sensitivity was 0.87, so roughly 1 in 8 occlusions was missed; performance was only moderate for M2, and the single study that examined posterior-circulation and ICA type I occlusions (one product, CINA-LVO) found very poor detection. In transfer terms, that means these tools can reasonably accelerate a transfer that a human would have called anyway, but must never be used to stand down a transfer or to close out a clinically suspicious presentation. Posterior-circulation evidence is thin: only one included study (Mellander et al., retrospective, a single product, CINA-LVO) examined it, and sensitivity was 0.0 (95% CI 0.0-0.2), unchanged for basilar and P1 occlusions; posterior-circulation detection was outside that software\'s intended use, and no other product\'s posterior-circulation accuracy was assessed, so an absent AI flag must never be taken as excluding a basilar occlusion.',
     limitations: 'Pooled from 11 heterogeneous studies with extreme statistical heterogeneity (I² of 98-99% for PLR, AUC and DOR), so the pooled point estimates should be read as summaries of a scattered literature rather than as a single trustworthy value; multiple different commercial products pooled together despite vendor being an identified source of variation; diagnostic accuracy only — no included study links AI deployment to patient functional outcome; publication and spectrum bias likely, as accuracy studies are often run on enriched retrospective datasets rather than consecutive real-world scans; published in a lower-profile journal, and the underlying studies are predominantly retrospective.',
     certainty: 'low',
     evidenceType: 'meta-analysis',
     citationIds: ['cit-ai-lvo-dta-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Frames AI LVO-detection output as a rule-in aid that can speed a transfer, never a rule-out that can cancel one — especially for posterior-circulation and M2 occlusions.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -5661,14 +5661,14 @@ export const completedTrials = [
       other: 'Hypotensive events (the primary safety outcome): 12/158 (8%) intensive vs 5/160 (3%) standard; the difference was not significant'
     },
     imagingCriteria: 'Successful reperfusion after endovascular therapy; the primary outcome was adjudicated on brain CT at 24-36 h',
-    applicabilityNotes: 'BP-TARGET is the first randomised trial of post-EVT blood pressure and is easy to misread because its primary endpoint is radiographic haemorrhage rather than function. Two structural points matter for teaching. First, its \'standard care\' band was 130-185 mm Hg, which sits lower than the 140-180 band used as the comparator in OPTIMAL-BP and ENCHANTED2/MT - so the trials are not testing identical control strategies. Second, the trial-supported comparator range in this category is 140-180 mm Hg, NOT 140-160; no randomised trial has used 140 as a lower bound. Like every other trial in this category, BP-TARGET required successful reperfusion, so none of it transfers to patients left with mTICI 0-2a.',
+    applicabilityNotes: 'BP-TARGET is the first randomised trial of post-EVT blood pressure and is easy to misread because its primary endpoint is radiographic haemorrhage rather than function. Two structural points matter for teaching. First, its \'standard care\' band was 130-185 mm Hg, which sits lower than the 140-180 band used as the comparator in OPTIMAL-BP and ENCHANTED2/MT - so the trials are not testing identical control strategies. Second, the trial-supported comparator range in this category is 140-180 mm Hg, NOT 140-160; no randomised trial in this category has tested a 140-160 mm Hg band (BEST-II\'s middle arm was 40 to <160 mm Hg, with no 140 mm Hg floor). Like every other trial in this category, BP-TARGET required successful reperfusion, so none of it transfers to patients left with mTICI 0-2a.',
     limitations: 'Modest size (324 randomised) and an imaging primary endpoint, so it is not powered for function. Open-label. Four French academic centres only. Applicable, per the authors, to patients with successful reperfusion and systolic blood pressure above 130 mm Hg at the end of the procedure - a null result on an imaging endpoint is not evidence that BP targets do not matter for outcome.',
     certainty: 'moderate',
     evidenceType: 'rct',
     citationIds: ['cit-bp-target-2021'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Establishes that driving SBP to 100-129 mm Hg after successful thrombectomy does not reduce post-procedural intraparenchymal haemorrhage - it removed the main mechanistic rationale for intensive lowering before the later trials showed functional harm.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -5902,13 +5902,13 @@ export const completedTrials = [
     },
     imagingCriteria: 'Reperfusion by systemic thrombolysis or endovascular thrombectomy in the component trials',
     applicabilityNotes: 'This is the GRADE-assessed synthesis for the post-reperfusion BP category and it is the record that should anchor the teaching. Two things must travel with it. First, the pool MIXES seven thrombectomy trials with two thrombolysis trials, so it is not a pure post-EVT synthesis and its estimates should not be quoted as if they were. Second, the mortality result is the headline a clinician needs: intensive lowering probably increases all-cause mortality (RR 1.19, 95% CI 1.08 to 1.32, moderate certainty) while producing no clinically meaningful functional gain. The review\'s own recommendation for future work - subgroup analyses by age, baseline BP and stroke severity, plus imaging and physiological markers for individualized targets - is exactly the gap that the absence of any trial in mTICI 0-2a patients leaves open. No randomised trial has enrolled patients with unsuccessful reperfusion, so no blood-pressure target is established for them.',
-    limitations: 'Nine trials with substantial clinical heterogeneity: intensive targets ranged from <120 to <160 mm Hg and the conventional comparator was <160 mm Hg in one study rather than <180. Statistical heterogeneity was high for the functional outcome (I-squared 51%) and for quality of life (I-squared 75%). Two of the nine trials studied thrombolysis rather than thrombectomy. Certainty was lowest for symptomatic neurologic adverse events and other adverse events. Participants came primarily from upper-middle and high-income countries; the review explicitly calls for trials in low- and middle-income settings. The published abstract does not state the direction of the dichotomous mRS outcome, so its risk ratio cannot be read directionally.',
+    limitations: 'Nine trials with substantial clinical heterogeneity: intensive targets ranged from <120 to <160 mm Hg and the conventional comparator was <160 mm Hg in one study rather than <180. Statistical heterogeneity was high for the functional outcome (I-squared 51%) and for quality of life (I-squared 75%). Two of the nine trials studied thrombolysis rather than thrombectomy. Certainty was lowest for symptomatic neurologic adverse events and other adverse events. Participants came primarily from upper-middle and high-income countries; the review explicitly calls for trials in low- and middle-income settings. The dichotomous mRS outcome is functional independence (favourable outcome prespecified as mRS 0-2 in the review protocol; described as \'living independently\' in the plain-language summary), so RR 0.89 (95% CI 0.80 to 0.98) indicates fewer independent patients with intensive lowering, although the authors judged the difference not clinically meaningful.',
     certainty: 'high',
     evidenceType: 'meta-analysis',
     citationIds: ['cit-cochrane-bp-reperfused-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Supplies the GRADE-graded bottom line for post-reperfusion BP: intensive systolic lowering below 160 mm Hg buys no clinically meaningful functional benefit and probably increases all-cause mortality.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -6067,14 +6067,14 @@ export const completedTrials = [
       other: 'Successful reperfusion — both pre-thrombectomy and overall — was consistently lower when alteplase was omitted'
     },
     imagingCriteria: 'Anterior-circulation large-vessel occlusion on vascular imaging; no perfusion-mismatch selection required',
-    applicabilityNotes: 'The one clearly \'non-inferior\' verdict in this family, and the teaching value lies entirely in the margin. A lower bound of 0.8 on a common odds ratio permits a 20% relative loss of benefit — larger than most clinicians would knowingly accept in a patient who is already eligible for a lytic. Read the margin before you read the conclusion. Every subsequent Western and Asia-Pacific trial that used a tighter margin (SWIFT DIRECT -12%, DIRECT-SAFE -10%) failed to reproduce this result.',
+    applicabilityNotes: 'The one clearly \'non-inferior\' verdict in this family, and the teaching value lies entirely in the margin. A lower bound of 0.8 on a common odds ratio permits a 20% relative loss of benefit — larger than most clinicians would knowingly accept in a patient who is already eligible for a lytic. Read the margin before you read the conclusion. Later trials did not consistently reproduce this result, and their margins were not tighter: SWIFT DIRECT (absolute margin -12%) and DIRECT-SAFE (absolute margin -10%) did not show non-inferiority, even though by the IRIS collaboration\'s conversion (a common odds ratio of 0.82 is analogous to a 5% absolute difference in functional independence) those absolute margins were wider than DIRECT-MT\'s; MR CLEAN-NO IV (same 0.8 odds-ratio margin) and SKIP (odds-ratio margin 0.74) were inconclusive; only DEVT (absolute margin -10%, stopped early after 234 of 970 planned patients) met non-inferiority.',
     limitations: 'Single-country (China) trial in academic tertiary centres, limiting generalisability; open design; the wide 20%-relative non-inferiority margin is the dominant limitation and the authors themselves qualify the conclusion with it; reperfusion was measurably worse without the lytic even though the functional endpoint met its margin.',
     certainty: 'moderate',
     evidenceType: 'rct',
     citationIds: ['cit-direct-mt-2020'],
     relatedActiveTrialIds: [],
     practiceImpact: 'The canonical worked example of why a non-inferiority margin must be read before the conclusion — a \'non-inferior\' label that tolerates a 20% relative loss of benefit is a different claim from equivalence.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({
@@ -6351,14 +6351,14 @@ export const completedTrials = [
       other: 'All 391 enrolled patients completed the trial'
     },
     imagingCriteria: 'CT perfusion or MR perfusion-diffusion mismatch required: ischaemic core <70 mL, mismatch ratio ≥1.8, mismatch volume ≥15 mL',
-    applicabilityNotes: 'This is the trial that puts a time boundary on the bridging question, and it is the direct counterweight to BRIDGE-TNK. BRIDGE-TNK enrolled ONLY patients within 4.5 h and found bridging tenecteplase superior there; TNK-PLUS enrolled 4.5-24 h in a perfusion-selected proximal-MCA population and found nothing. The early-window result must not be extrapolated across that boundary. Also note the direction of the family as a whole: three of the four questions in this domain are now answered differently depending on the clock, not on the drug.',
+    applicabilityNotes: 'This is the trial that puts a time boundary on the bridging question, and it is the direct counterweight to BRIDGE-TNK. BRIDGE-TNK enrolled ONLY patients within 4.5 h and found bridging tenecteplase superior there; TNK-PLUS enrolled 4.5-24 h in a perfusion-selected proximal-MCA population and found nothing. The early-window result must not be extrapolated across that boundary.',
     limitations: 'Single-country (China) and open-label with blinded endpoint; n=391, so the confidence interval still admits a modest effect in either direction; the perfusion-mismatch entry criteria select a favourable-physiology subgroup and exclude much of the late-window population seen in practice; the numerically higher symptomatic haemorrhage rate rests on 10 versus 5 events and was not a prespecified tested comparison.',
     certainty: 'high',
     evidenceType: 'rct',
     citationIds: ['cit-tnk-plus-2026'],
     relatedActiveTrialIds: [],
     practiceImpact: 'Sets the boundary on the positive early-window bridging result: beyond 4.5 h, adding tenecteplase before thrombectomy did not improve 90-day independence in a perfusion-selected proximal MCA population.',
-    lastReviewed: '2026-08-28',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed'
   }),
   t({

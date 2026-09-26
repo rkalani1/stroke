@@ -168,7 +168,7 @@ const EDUCATION_MODULES = [
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-07-24',
     references: [
-      { label: 'SeLECT Score Study', citation: 'Galovic M, et al. Prediction of late seizures after ischaemic stroke with the SeLECT score. Lancet Neurol. 2018;17(2):143-152.', pmid: '29413315' }
+      { label: 'SeLECT Score Study', citation: 'Galovic M, et al. Prediction of late seizures after ischaemic stroke with a novel prognostic model (the SeLECT score): a multivariable prediction model development and validation study. Lancet Neurol. 2018;17(2):143-152.', pmid: '29413315' }
     ]
   },
   {
@@ -227,7 +227,7 @@ const EDUCATION_MODULES = [
     references: [
       { label: 'ELAN Trial', citation: 'Fischer U et al. N Engl J Med. 2023;388:2411-2421.', pmid: '37222476' },
       { label: 'OPTIMAS Trial', citation: 'Werring DJ et al. Optimal timing of anticoagulation after acute ischaemic stroke with atrial fibrillation (OPTIMAS). Lancet. 2024. DOI 10.1016/S0140-6736(24)02197-4.', pmid: '39491870' },
-      { label: 'CATALYST Meta-Analysis', citation: 'Dehbi HM et al. Lancet 2025.', pmid: '40570866' },
+      { label: 'CATALYST Meta-Analysis', citation: 'Dehbi HM, et al. Collaboration on the optimal timing of anticoagulation after ischaemic stroke and atrial fibrillation: a systematic review and prospective individual participant data meta-analysis of randomised controlled trials (CATALYST). Lancet. 2025;406(10498):43-51.', pmid: '40570866' },
       { label: 'AFib Guidelines', citation: 'Joglar JA et al. 2023 ACC/AHA/ACCP/HRS Guideline. Circulation. 2024;149:e1-e156.', pmid: '38033089' }
     ]
   },
@@ -239,7 +239,7 @@ const EDUCATION_MODULES = [
     categories: ['pocket-card', 'printable', 'icu', 'simulators'],
     lastReviewed: '2026-05-31',
     references: [
-      { label: 'AHA/ASA Guidelines', citation: 'Prabhakaran S, et al. 2026 Guidelines for the Early Management of Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' },
+      { label: 'AHA/ASA Guidelines', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026;57(8):e316-e436.', pmid: '41582814' },
       { label: 'Cerebral Edema Recommendations', citation: 'Wijdicks EF, et al. Recommendations for the Management of Cerebral and Cerebellar Infarction With Swelling. Stroke. 2014;45:1222–1238.', pmid: '24481970' },
       { label: 'NCS Guidelines', citation: 'Cook AM, et al. Guidelines for the Acute Treatment of Cerebral Edema in Neurocritical Care Patients. Neurocrit Care. 2020;32:647–666.', pmid: '32227294' }
     ]
@@ -264,7 +264,7 @@ const EDUCATION_MODULES = [
     lastReviewed: '2026-05-30',
     references: [
       { label: 'Kattah Study', citation: 'Kattah JC, et al. HINTS to diagnose stroke in the acute vestibular syndrome: three-step bedside oculomotor examination more sensitive than early MRI diffusion-weighted imaging. Stroke. 2009;40(11):3504-3510.', pmid: '19762709' },
-      { label: 'AHA/ASA Guideline', citation: 'Prabhakaran S et al. Stroke. 2026.', pmid: '41582814' }
+      { label: 'AHA/ASA Guideline', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026;57(8):e316-e436.', pmid: '41582814' }
     ]
   },
   {
@@ -335,7 +335,7 @@ const EDUCATION_MODULES = [
       { label: 'CADISS Trial', citation: 'CADISS Trial Investigators. Antiplatelet treatment compared with anticoagulation treatment for cervical artery dissection (CADISS): a randomised trial. Lancet Neurol. 2015;14(4):361-367.', pmid: '25684164' },
       { label: 'TREAT-CAD Trial', citation: 'Engelter ST, et al. Aspirin versus anticoagulation in cervical artery dissection (TREAT-CAD): an open-label, randomised, non-inferiority trial. Lancet Neurol. 2021;20(5):341-350.', pmid: '33765420' },
       { label: 'STOP-CAD Study', citation: 'Yaghi S, et al. Antithrombotic Treatment for Stroke Prevention in Cervical Artery Dissection: The STOP-CAD Study. Stroke. 2024;55(4):908-918.', pmid: '38335240' },
-      { label: 'Kaufmann IPD Meta-analysis', citation: 'Kaufmann JE, et al. Antithrombotic Therapy in Cervical Artery Dissection: An Individual Patient Data Meta-analysis. JAMA Neurol. 2024;81(6):630-637.', pmid: '38739383' }
+      { label: 'Kaufmann IPD Meta-analysis', citation: 'Kaufmann JE, et al. Antithrombotic Treatment for Cervical Artery Dissection: A Systematic Review and Individual Patient Data Meta-Analysis. JAMA Neurol. 2024;81(6):630-637.', pmid: '38739383' }
     ]
   },
   {
@@ -347,7 +347,7 @@ const EDUCATION_MODULES = [
     lastReviewed: '2026-06-09',
     references: [
       { label: 'Consensus Guideline', citation: 'Greer DM, et al. Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Guideline. Neurology. 2023;101(24):1112-1132.', pmid: '37821233' },
-      { label: 'AAN 2010 Guideline Update', citation: 'Wijdicks EF, et al. Evidence-based guideline update: determining brain death in adults: report of the Quality Standards Subcommittee of the American Academy of Neurology. Neurology. 2010;74(23):1911-1918.', pmid: '20530327' }
+      { label: 'AAN 2010 Guideline (prior; updated by 2023 BD/DNC consensus guideline)', citation: 'Wijdicks EF, et al. Evidence-based guideline update: determining brain death in adults: report of the Quality Standards Subcommittee of the American Academy of Neurology. Neurology. 2010;74(23):1911-1918.', pmid: '20530327' }
     ]
   },
   {
@@ -369,7 +369,7 @@ const EDUCATION_MODULES = [
   {
     id: 'antiepileptic-drugs',
     title: 'Antiepileptic Drugs & Post-Stroke Seizures',
-    purpose: 'Clinical classification of post-stroke seizures, guideline-directed management, comparison of first-line and second-line antiepileptic drugs (ASMs), and post-stroke epilepsy risk stratification with the SeLECT score.',
+    purpose: 'Clinical classification of post-stroke seizures, guideline-directed management, comparison of first-line and second-line antiseizure medications (ASMs), and post-stroke epilepsy risk stratification with the SeLECT score.',
     actions: 'antiepileptic drugs antiseizure medications asm aed keppra levetiracetam lamotrigine lamictal lacosamide vimpat valproic acid depakote phenytoin dilantin select score ischemia score post-stroke epilepsy seizure prophylaxis',
     categories: ['pocket-card', 'printable', 'icu'],
     lastReviewed: '2026-07-13',
@@ -392,13 +392,14 @@ const EDUCATION_MODULES = [
       { label: 'RE-SPECT CVT', citation: 'Ferro JM, et al. Safety and Efficacy of Dabigatran Etexilate vs Dose-Adjusted Warfarin in Cerebral Venous Thrombosis. JAMA Neurol. 2019;76(12):1457-1465.', pmid: '31479105' },
       { label: 'ACTION-CVT', citation: 'Yaghi S, et al. Direct Oral Anticoagulants Versus Warfarin in the Treatment of Cerebral Venous Thrombosis (ACTION-CVT). Stroke. 2022;53(3):728-738.', pmid: '35143325' },
       { label: 'TO-ACT', citation: 'Coutinho JM, et al. Effect of Endovascular Treatment With Medical Management vs Standard Care on Severe Cerebral Venous Thrombosis (TO-ACT). JAMA Neurol. 2020;77(8):966-973.', pmid: '32421159' },
-      { label: 'AHA/ASA Statement', citation: 'Saposnik G, et al. Diagnosis and management of cerebral venous thrombosis: a statement for healthcare professionals from the AHA/ASA. Stroke. 2011;42(4):1158-1192.', pmid: '21293023' }
+      { label: 'AHA Scientific Statement 2024', citation: 'Saposnik G, et al. Diagnosis and Management of Cerebral Venous Thrombosis: A Scientific Statement From the American Heart Association. Stroke. 2024;55(3):e77-e90.', pmid: '38284265' },
+      { label: 'AHA/ASA Statement 2011 (updated by 2024 AHA statement)', citation: 'Saposnik G, et al. Diagnosis and management of cerebral venous thrombosis: a statement for healthcare professionals from the AHA/ASA. Stroke. 2011;42(4):1158-1192.', pmid: '21293023' }
     ]
   },
   {
     id: 'large-core-thrombectomy',
     title: 'Large-Core Thrombectomy',
-    purpose: 'Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the symptomatic-hemorrhage trade-off.',
+    purpose: 'Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the hemorrhage trade-off (more any intracranial hemorrhage and numerically higher sICH in most individual trials, but no significant sICH difference in the 2026 ATLAS IPD meta-analysis).',
     actions: 'large core thrombectomy evt endovascular aspects 3-5 low aspects core volume salvageable penumbra select2 angel-aspect tension laste tesla rescue-japan limit symptomatic hemorrhage mrs shift 2026 aha asa guideline reperfusion',
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-07-18',
@@ -449,7 +450,7 @@ const EDUCATION_MODULES = [
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-07-18',
     references: [
-      { label: 'Arterial territories — brainstem/cerebellum', citation: 'Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' },
+      { label: 'Arterial territories — brainstem/cerebellum', citation: 'Tatu L, et al. Arterial territories of human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' },
       { label: 'Arterial territories — cerebral hemispheres', citation: 'Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' }
     ]
   },
@@ -462,7 +463,7 @@ const EDUCATION_MODULES = [
     lastReviewed: '2026-07-18',
     references: [
       { label: 'Arterial territories — cerebral hemispheres', citation: 'Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' },
-      { label: 'Arterial territories — brainstem/cerebellum', citation: 'Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' }
+      { label: 'Arterial territories — brainstem/cerebellum', citation: 'Tatu L, et al. Arterial territories of human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' }
     ]
   },
   {
@@ -553,7 +554,7 @@ const EDUCATION_MODULES = [
     lastReviewed: '2026-08-14',
     references: [
       { label: 'CADASIL Review', citation: 'Chabriat H, et al. CADASIL. Lancet Neurol. 2009;8(7):643-653.', pmid: '19539236' },
-      { label: 'CARASIL Landmark', citation: 'Hara K, et al. Association of HTRA1 mutations and familial CARASIL. N Engl J Med. 2009;360(17):1729-1739.', pmid: '19387015' },
+      { label: 'CARASIL Landmark', citation: 'Hara K, et al. Association of HTRA1 mutations and familial ischemic cerebral small-vessel disease. N Engl J Med. 2009;360(17):1729-1739.', pmid: '19387015' },
       { label: 'Fabry Disease Guidelines', citation: 'Ortiz A, et al. Fabry disease revisited: Management and treatment recommendations for adult patients. Mol Genet Metab. 2018;123(4):416-427.', pmid: '29530533' },
       { label: 'MELAS Management', citation: 'Koenig MK, et al. Recommendations for the Management of Strokelike Episodes in Patients With Mitochondrial Encephalomyopathy, Lactic Acidosis, and Strokelike Episodes. JAMA Neurol. 2016;73(5):591-594.', pmid: '26954033' },
       { label: 'COL4A1 Mutations', citation: 'Gould DB, et al. Mutations in Col4a1 cause perinatal cerebral hemorrhage and porencephaly. Science. 2005;308(5725):1167-1171.', pmid: '15905400' },
@@ -578,7 +579,7 @@ const EDUCATION_MODULES = [
   {
     id: 'cancer-associated-stroke',
     title: 'Cancer-Associated Stroke, Hypercoagulability & Marantic Endocarditis (NBTE)',
-    purpose: 'Pathophysiology of cancer-mediated hypercoagulability, 3-territory sign on DWI, markedly elevated D-dimer (>3–5x ULN), non-bacterial thrombotic endocarditis (NBTE), and LMWH vs DOAC management.',
+    purpose: 'Pathophysiology of cancer-mediated hypercoagulability, 3-territory sign on DWI, markedly elevated D-dimer (no single validated cutoff; e.g., >3 µg/mL in the Schwarzbach DWI-phenotype cohort), non-bacterial thrombotic endocarditis (NBTE), and LMWH vs DOAC management.',
     actions: 'cancer stroke active malignancy hypercoagulability marantic endocarditis nbte non-bacterial thrombotic 3-territory sign d-dimer mucin adenocarcinoma teach lmwh dalteparin enoxaparin doac tee vegetations',
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-08-14',
@@ -600,7 +601,7 @@ const EDUCATION_MODULES = [
     references: [
       { label: 'DISTAL Trial', citation: 'Psychogios M, et al. Endovascular Treatment for Stroke Due to Occlusion of Medium or Distal Vessels (DISTAL). N Engl J Med. 2025;392(14):1374-1384.', pmid: '39908430' },
       { label: 'DISTAL 12-Month', citation: 'Fischer U, et al. Endovascular treatment for medium or distal vessel occlusion stroke (DISTAL): 12-month outcomes. Lancet Neurol. 2026;25(6):571-580.', pmid: '42105785' },
-      { label: 'ESCAPE-MeVO Trial', citation: 'Goyal M, et al. Endovascular Treatment for Medium Vessel Occlusion Stroke (ESCAPE-MeVO). N Engl J Med. 2025;392(14):1385-1395.', pmid: '39908448' },
+      { label: 'ESCAPE-MeVO Trial', citation: 'Goyal M, et al. Endovascular Treatment of Stroke Due to Medium-Vessel Occlusion (ESCAPE-MeVO). N Engl J Med. 2025;392(14):1385-1395.', pmid: '39908448' },
       { label: 'CHOICE Trial', citation: 'Renú A, et al. Effect of Intra-arterial Alteplase vs Placebo Following Successful Thrombectomy on Functional Outcomes (CHOICE). JAMA. 2022;327(9):826-835.', pmid: '35143603' },
       { label: 'CHOICE-2 Trial', citation: 'Renú A, et al. Adjunctive Intra-Arterial Alteplase After Successful Thrombectomy for Acute Ischemic Stroke (CHOICE-2). JAMA. 2026.', pmid: '42096239' },
       { label: 'TEMPO-2 Trial', citation: 'Coutts SB, et al. Tenecteplase versus standard of care for minor ischaemic stroke with proven occlusion (TEMPO-2). Lancet. 2024;403(10444):2597-2605.', pmid: '38768626' },
@@ -610,18 +611,18 @@ const EDUCATION_MODULES = [
   {
     id: 'ich-blood-pressure',
     title: 'Acute ICH Blood Pressure & Expansion Mitigation',
-    purpose: 'Hyperacute SBP lowering (<140 mmHg within 1h, avoid <130), INTERACT-2/3 care bundle, ATACH-2 renal safety floor, FASTEST, TRIDENT, minimally invasive surgery (ENRICH), and SWITCH decompressive craniectomy.',
+    purpose: 'Hyperacute SBP lowering (target 140 mmHg, maintained 130–150, reached within 1h; avoid <130), INTERACT2 intensive lowering, INTERACT3 care bundle, ATACH-2 renal safety floor, FASTEST, TRIDENT, minimally invasive surgery (ENRICH), and SWITCH decompressive craniectomy.',
     actions: 'ich intracerebral hemorrhage blood pressure sbp 140 expansion interact-2 interact-3 atach-2 enrich trident fastest switch minimally invasive surgery hematoma nicardipine clevidipine care bundle',
     categories: ['pocket-card', 'printable', 'icu'],
     lastReviewed: '2026-08-14',
     references: [
       { label: 'INTERACT-2', citation: 'Anderson CS, et al. Rapid blood-pressure lowering in patients with acute intracerebral hemorrhage (INTERACT2). N Engl J Med. 2013;368(25):2355-2365.', pmid: '23713578' },
       { label: 'ATACH-2', citation: 'Qureshi AI, et al. Intensive Blood-Pressure Lowering in Patients with Acute Cerebral Hemorrhage (ATACH-2). N Engl J Med. 2016;375(11):1033-1043.', pmid: '27276234' },
-      { label: 'INTERACT3', citation: 'Ma L, et al. Intensive care bundle with blood pressure lowering in acute intracerebral haemorrhage (INTERACT3): a pragmatic, stepped-wedge cluster randomised trial. Lancet. 2023;402(10395):27-40.', pmid: '37245517' },
+      { label: 'INTERACT3', citation: 'Ma L, et al. The third Intensive Care Bundle with Blood Pressure Reduction in Acute Cerebral Haemorrhage Trial (INTERACT3): an international, stepped wedge cluster randomised controlled trial. Lancet. 2023;402(10395):27-40.', pmid: '37245517' },
       { label: 'ENRICH Trial', citation: 'Pradilla G, et al. Trial of Early Minimally Invasive Removal of Intracerebral Hemorrhage (ENRICH). N Engl J Med. 2024;390(14):1277-1289.', pmid: '38598795' },
-      { label: 'TRIDENT Trial', citation: 'Anderson CS, et al. Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage (TRIDENT). N Engl J Med. 2026;394:1571-1582.', pmid: '42019018' },
-      { label: 'FASTEST Trial', citation: 'Broderick JP, et al. Recombinant factor VIIa for acute intracerebral hemorrhage (FASTEST). Lancet. 2026;407(10530):773-783.', pmid: '41653933' },
-      { label: 'SWITCH Trial', citation: 'Beck J, et al. Decompressive craniectomy versus best medical treatment in severe deep intracerebral haemorrhage (SWITCH): an open-label randomised controlled trial. Lancet. 2024;403(10442):2395-2404.', pmid: '38761811' },
+      { label: 'TRIDENT Trial', citation: 'Anderson CS, et al. Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage (TRIDENT). N Engl J Med. 2026;394(16):1571-1582.', pmid: '42019018' },
+      { label: 'FASTEST Trial', citation: 'Broderick JP, et al. Recombinant factor VIIa versus placebo for spontaneous intracerebral haemorrhage within 2 h of symptom onset (FASTEST): a multicentre, double-blind, randomised, placebo-controlled, phase 3 trial. Lancet. 2026;407(10530):773-783.', pmid: '41653933' },
+      { label: 'SWITCH Trial', citation: 'Beck J, et al. Decompressive craniectomy plus best medical treatment versus best medical treatment alone for spontaneous severe deep supratentorial intracerebral haemorrhage (SWITCH): a randomised controlled clinical trial. Lancet. 2024;403(10442):2395-2404.', pmid: '38761811' },
       { label: '2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
       { label: 'INTERACT4 Trial', citation: 'Li G, et al. Intensive Ambulance-Delivered Blood-Pressure Reduction in Hyperacute Stroke (INTERACT4). N Engl J Med. 2024;390(20):1862-1872.', pmid: '38752650' },
       { label: 'TICH-2 Trial', citation: 'Sprigg N, et al. Tranexamic acid for hyperacute primary IntraCerebral Haemorrhage (TICH-2). Lancet. 2018;391(10135):2107-2115.', pmid: '29778325' }
@@ -639,7 +640,7 @@ const EDUCATION_MODULES = [
       { label: 'FLOW Trial', citation: 'Perkovic V, et al. Effects of Semaglutide on Chronic Kidney Disease in Patients with Type 2 Diabetes (FLOW). N Engl J Med. 2024;391(2):109-121.', pmid: '38785209' },
       { label: 'SUSTAIN-6 Trial', citation: 'Marso SP, et al. Semaglutide and Cardiovascular Outcomes in Patients with Type 2 Diabetes (SUSTAIN-6). N Engl J Med. 2016;375(19):1834-1844.', pmid: '27633186' },
       { label: 'SPRINT Trial', citation: 'Wright JT Jr, et al. A Randomized Trial of Intensive versus Standard Blood-Pressure Control (SPRINT). N Engl J Med. 2015;373(22):2103-2116.', pmid: '26551272' },
-      { label: 'TRIDENT Trial', citation: 'Anderson CS, et al. Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage (TRIDENT). N Engl J Med. 2026;394:1571-1582.', pmid: '42019018' },
+      { label: 'TRIDENT Trial', citation: 'Anderson CS, et al. Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage (TRIDENT). N Engl J Med. 2026;394(16):1571-1582.', pmid: '42019018' },
       { label: 'RESPECT Trial', citation: 'Kitagawa K, et al. Effect of Standard vs Intensive Blood Pressure Control on the Risk of Recurrent Stroke: A Randomized Clinical Trial and Meta-analysis (RESPECT). JAMA Neurol. 2019;76(11):1309-1318.', pmid: '31355878' },
       { label: 'SPRINT MIND', citation: 'Williamson JD, et al. Effect of Intensive vs Standard Blood Pressure Control on Probable Dementia: A Randomized Clinical Trial (SPRINT MIND). JAMA. 2019;321(6):553-561.', pmid: '30688979' }
     ]
@@ -698,7 +699,7 @@ const EDUCATION_MODULES = [
   {
     id: 'intracranial-atherosclerosis',
     title: 'Intracranial Atherosclerotic Disease',
-    purpose: 'Mechanism-first diagnosis and treatment of symptomatic intracranial atherosclerotic stenosis — artery-to-artery embolism, branch atheromatous perforator occlusion and hemodynamic borderzone failure; the SAMMPRIS aggressive medical bundle; and why stenting (SAMMPRIS, CASSISS), bypass (CMOSS, COSS, EC/IC 1985) and bailout angioplasty (ANGEL-REBOOT) all failed their primary endpoints.',
+    purpose: 'Mechanism-first diagnosis and treatment of symptomatic intracranial atherosclerotic stenosis — artery-to-artery embolism, branch atheromatous perforator occlusion and hemodynamic borderzone failure; the SAMMPRIS aggressive medical bundle; and why stenting (SAMMPRIS, CASSISS), bypass for symptomatic atherosclerotic ICA/MCA occlusive disease (CMOSS, COSS, EC/IC 1985) and bailout angioplasty (ANGEL-REBOOT) all failed their primary endpoints.',
     actions: 'intracranial atherosclerosis icad icas stenosis wasid sammpris cassiss cmoss coss ec-ic bypass angel-reboot wingspan stenting dapt aspirin clopidogrel warfarin branch atheromatous perforator borderzone hemodynamic vessel wall imaging intraplaque hemorrhage rescue stenting mca basilar',
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-08-15',
@@ -6841,7 +6842,7 @@ export function BrainDeathCard() {
             {/* Citations Footer */}
             <div className="ref-citation" style={{marginTop: 'auto', padding: '8px 10px', fontSize: '8.2pt', lineHeight: '1.3'}}>
               <strong>Consensus Guideline:</strong> Greer DM, et al. Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Guideline. <em>Neurology</em>. 2023;101(24):1112-1132. <a href="https://pubmed.ncbi.nlm.nih.gov/37821233/" target="_blank">PMID: 37821233</a>.<br/>
-              <strong>AAN 2010 Guideline Update:</strong> Wijdicks EF, et al. Evidence-based guideline update: determining brain death in adults. <em>Neurology</em>. 2010;74(23):1911-1918. <a href="https://pubmed.ncbi.nlm.nih.gov/20530327/" target="_blank">PMID: 20530327</a>. (Found insufficient evidence on newer ancillary tests; the Section 4 accept/reject criteria follow the 2023 consensus guideline.)
+              <strong>AAN 2010 Guideline (prior; updated by 2023 BD/DNC consensus guideline):</strong> Wijdicks EF, et al. Evidence-based guideline update: determining brain death in adults. <em>Neurology</em>. 2010;74(23):1911-1918. <a href="https://pubmed.ncbi.nlm.nih.gov/20530327/" target="_blank">PMID: 20530327</a>. (Found insufficient evidence on newer ancillary tests; the Section 4 accept/reject criteria follow the 2023 consensus guideline.)
             </div>
           </div>
         </div>
@@ -8714,8 +8715,8 @@ export function PfoClosureCard() {
               </div>
             </CardSection>
 
-            {/* §3 The four randomized trials (red table) */}
-            <CardSection color="red" title="3. The Four Randomized Trials">
+            {/* §3 The four positive randomized trials (red table) */}
+            <CardSection color="red" title="3. The Four Positive Randomized Trials">
               <table className="card-table" style={{ margin: '2px 0 0 0', fontSize: '6.8pt' }}>
                 <thead>
                   <tr style={{ background: 'var(--red)' }}>
@@ -8737,7 +8738,7 @@ export function PfoClosureCard() {
                 </tbody>
               </table>
               <div style={{ fontSize: '7pt', lineHeight: '1.35', color: 'var(--ink-soft)', marginTop: '5px' }}>
-                All four favored closure in <strong>selected</strong> patients with high-risk anatomy or a large shunt. CLOSE also randomized an anticoagulation arm but was underpowered for the closure-vs-anticoagulation comparison.
+                All four favored closure in <strong>selected</strong> patients with high-risk anatomy or a large shunt; the earlier CLOSURE I and PC trials (the other 2 of the 6 closure-vs-medical-therapy RCTs) were neutral. CLOSE also randomized an anticoagulation arm but was underpowered for the closure-vs-anticoagulation comparison.
               </div>
             </CardSection>
 
@@ -9320,7 +9321,7 @@ export function CancerAssociatedStrokeCard() {
           <div className="card-content">
             <h1 style={{ textAlign: 'center', marginBottom: '2px' }}>Cancer-Associated Stroke &amp; Marantic Endocarditis (NBTE)</h1>
             <p style={{ fontSize: '7.8pt', color: 'var(--ink-soft)', marginBottom: '6px', textAlign: 'center', fontWeight: '600' }}>
-              2026 AHA Cancer Stroke Scientific Statement &bull; Mucin Adenocarcinomas &bull; 3-Territory Sign &bull; D-Dimer &gt;3–5x ULN &bull; LMWH vs DOAC
+              2026 AHA Cancer Stroke Scientific Statement &bull; Mucin Adenocarcinomas &bull; 3-Territory Sign &bull; Markedly Elevated D-Dimer &bull; LMWH vs DOAC
             </p>
 
             <div style={{ width: '100%', height: '168px', marginBottom: '6px' }}>
@@ -9656,7 +9657,7 @@ export function DmvoMevoManagementCard() {
             </CardSection>
 
             <CardRefFooter style={{ fontSize: '6.7pt' }} refs={[
-              { label: 'DISTAL Trial', cite: 'Fischer U et al. N Engl J Med. 2025;392(14):1374-1384.', pmid: '39908430' },
+              { label: 'DISTAL Trial', cite: 'Psychogios M et al. N Engl J Med. 2025;392(14):1374-1384.', pmid: '39908430' },
               { label: 'DISTAL 12-Month', cite: 'Fischer U et al. Lancet Neurol. 2026;25(6):571-580.', pmid: '42105785' },
               { label: 'ESCAPE-MeVO Trial', cite: 'Goyal M et al. N Engl J Med. 2025;392(14):1385-1395.', pmid: '39908448' },
               { label: 'CHOICE Trial', cite: 'Renú A et al. JAMA. 2022;327(9):826-835.', pmid: '35143603' },

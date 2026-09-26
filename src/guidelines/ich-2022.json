@@ -9,7 +9,7 @@
   "pmid": "35579034",
   "recommendations": [
     {
-      "section": "Organization of Prefacility and Initial Systems",
+      "section": "Organization of Prehospital and Initial Systems of Care",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
@@ -22,7 +22,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Organization of Prefacility and Initial Systems",
+      "section": "Organization of Prehospital and Initial Systems of Care",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
@@ -35,7 +35,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Organization of Prefacility and Initial Systems",
+      "section": "Organization of Prehospital and Initial Systems of Care",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -48,7 +48,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Organization of Prefacility and Initial Systems",
+      "section": "Organization of Prehospital and Initial Systems of Care",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -61,7 +61,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Organization of Prefacility and Initial Systems",
+      "section": "Organization of Prehospital and Initial Systems of Care",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -74,7 +74,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Organization of Prefacility and Initial Systems",
+      "section": "Organization of Prehospital and Initial Systems of Care",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
@@ -87,7 +87,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Organization of Prefacility and Initial Systems",
+      "section": "Organization of Prehospital and Initial Systems of Care",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -113,7 +113,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "section": "Neuroimaging for ICH Diagnosis and Acute Course",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -126,7 +126,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "section": "Neuroimaging for ICH Diagnosis and Acute Course",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -139,7 +139,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "section": "Neuroimaging for ICH Diagnosis and Acute Course",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -152,7 +152,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "section": "Neuroimaging for ICH Diagnosis and Acute Course",
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -165,7 +165,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "section": "Neuroimaging for ICH Diagnosis and Acute Course",
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -672,7 +672,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Prevention and Management of Acute Medical",
+      "section": "Prevention and Management of Acute Medical Complications",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
@@ -685,7 +685,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Prevention and Management of Acute Medical",
+      "section": "Prevention and Management of Acute Medical Complications",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -698,7 +698,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Prevention and Management of Acute Medical",
+      "section": "Prevention and Management of Acute Medical Complications",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -711,7 +711,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Prevention and Management of Acute Medical",
+      "section": "Prevention and Management of Acute Medical Complications",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1544,7 +1544,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "section": "Lifestyle Modifications/Patient and Caregiver Education",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1557,7 +1557,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "section": "Lifestyle Modifications/Patient and Caregiver Education",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1570,7 +1570,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "section": "Lifestyle Modifications/Patient and Caregiver Education",
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1583,7 +1583,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "section": "Lifestyle Modifications/Patient and Caregiver Education",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1596,7 +1596,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "section": "Lifestyle Modifications/Patient and Caregiver Education",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1609,7 +1609,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Primary ICH Prevention in Individuals With High-",
+      "section": "Primary ICH Prevention in Individuals With High-Risk Imaging Findings",
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1633,7 +1633,7 @@
     "sourceSections": [
       {
         "id": "table-01",
-        "title": "Organization of Prefacility and Initial Systems",
+        "title": "Organization of Prehospital and Initial Systems of Care",
         "sourceTable": "Recommendations for Organization of Prehospital and Initial Systems of Care",
         "rowCount": 7,
         "pageRange": [
@@ -1665,7 +1665,7 @@
       },
       {
         "id": "table-03",
-        "title": "Neuroimaging for ICH Diagnosis and Acute",
+        "title": "Neuroimaging for ICH Diagnosis and Acute Course",
         "sourceTable": "Recommendations for Neuroimaging for ICH Diagnosis and Acute Course",
         "rowCount": 5,
         "pageRange": [
@@ -1792,7 +1792,7 @@
       },
       {
         "id": "table-10",
-        "title": "Prevention and Management of Acute Medical",
+        "title": "Prevention and Management of Acute Medical Complications",
         "sourceTable": "Recommendations for Prevention and Management of Acute Medical Complications",
         "rowCount": 4,
         "pageRange": [
@@ -2099,7 +2099,7 @@
       },
       {
         "id": "table-30",
-        "title": "Lifestyle Modifications/Patient and Caregiver",
+        "title": "Lifestyle Modifications/Patient and Caregiver Education",
         "sourceTable": "Recommendations for Lifestyle Modifications/Patient and Caregiver Education",
         "rowCount": 5,
         "pageRange": [
@@ -2116,7 +2116,7 @@
       },
       {
         "id": "table-31",
-        "title": "Primary ICH Prevention in Individuals With High-",
+        "title": "Primary ICH Prevention in Individuals With High-Risk Imaging Findings",
         "sourceTable": "Recommendations for Primary ICH Prevention in Individuals With High- Risk Imaging Findings",
         "rowCount": 1,
         "pageRange": [

@@ -29,7 +29,7 @@ export const citations = [
   makeCitation({
     id: 'cit-trace2-2023',
     authors: 'Wang Y et al.',
-    title: 'Trial of Tenecteplase in Chinese Patients with Acute Ischemic Stroke (TRACE-2)',
+    title: 'Tenecteplase versus alteplase in acute ischaemic cerebrovascular events (TRACE-2)',
     journal: 'Lancet',
     year: 2023,
     pmid: '36774935',
@@ -51,7 +51,7 @@ export const citations = [
   makeCitation({
     id: 'cit-twist-2023',
     authors: 'Roaldsen MB et al.',
-    title: 'Intravenous thrombolysis with tenecteplase in patients with wake-up stroke (TWIST)',
+    title: 'Safety and efficacy of tenecteplase in patients with wake-up stroke assessed by non-contrast CT (TWIST)',
     journal: 'Lancet Neurol',
     year: 2023,
     pmid: '36549308',
@@ -244,7 +244,7 @@ export const citations = [
   makeCitation({
     id: 'cit-chance2-2021',
     authors: 'Wang Y et al.',
-    title: 'Ticagrelor or Clopidogrel with Aspirin in High-Risk TIA or Minor Stroke (CHANCE-2)',
+    title: 'Ticagrelor versus Clopidogrel in CYP2C19 Loss-of-Function Carriers with Stroke or TIA (CHANCE-2)',
     journal: 'N Engl J Med',
     year: 2021,
     pmid: '34708996',

@@ -18129,7 +18129,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {wakeUpDecision.wakeUpEligible && (
                                 <div role="alert" className="bg-ok-100 border border-ok-300 rounded-lg p-2 text-ok-800 font-semibold text-sm flex items-center gap-2 dark:bg-ok-900 dark:border-ok-800 dark:text-ok-300">
                                   <i aria-hidden="true" data-lucide="check-circle" className="w-4 h-4"></i>
-                                  <span>Meets WAKE-UP criteria - Consider IV thrombolysis</span>
+                                  <span>Checked WAKE-UP criteria met - before IV thrombolysis also confirm treatment can start within 4.5 h of symptom recognition and DWI lesion ≤1/3 of MCA territory (WAKE-UP enrolled only pre-stroke mRS 0-1 and excluded planned thrombectomy)</span>
                                 </div>
                               )}
                               {telestrokeNote.tnkAutoBlocked && (
@@ -18236,7 +18236,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {wakeUpDecision.extendEligible && (
                                 <div className="bg-ok-100 border border-ok-300 rounded-lg p-2 text-ok-800 font-semibold text-sm flex items-center gap-2 dark:bg-ok-900 dark:border-ok-800 dark:text-ok-300">
                                   <i aria-hidden="true" data-lucide="check-circle" className="w-4 h-4"></i>
-                                  <span>Meets EXTEND criteria - Consider IV thrombolysis</span>
+                                  <span>Meets core EXTEND criteria - also confirm mismatch volume &gt;10 mL, not an EVT candidate, and (wake-up) within 9 h of sleep midpoint; then consider IV thrombolysis</span>
                                 </div>
                               )}
                             </div>
@@ -18491,7 +18491,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </label>
                                   ))}
                                   {wakeUpDecision.wakeUpEligible && (
-                                    <div className="bg-ok-100 border border-ok-300 rounded p-1.5 text-ok-800 font-semibold text-xs dark:bg-ok-900 dark:border-ok-800 dark:text-ok-300">Meets WAKE-UP criteria - Consider IV thrombolysis</div>
+                                    <div className="bg-ok-100 border border-ok-300 rounded p-1.5 text-ok-800 font-semibold text-xs dark:bg-ok-900 dark:border-ok-800 dark:text-ok-300">Checked WAKE-UP criteria met - before IV thrombolysis also confirm treatment can start within 4.5 h of symptom recognition and DWI lesion ≤1/3 of MCA territory (WAKE-UP enrolled only pre-stroke mRS 0-1 and excluded planned thrombectomy)</div>
                                   )}
                                 </div>
                               )}
@@ -18519,7 +18519,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     Auto CTP check: core {wakeUpDecision.perfusion.coreVolume ?? '--'} mL; ratio {wakeUpDecision.perfusion.mismatchRatio !== null ? wakeUpDecision.perfusion.mismatchRatio.toFixed(1) : '--'}; mismatch vol {wakeUpDecision.perfusion.mismatchVolume !== null ? `${Math.round(wakeUpDecision.perfusion.mismatchVolume)} mL` : '--'}.
                                   </div>
                                   {wakeUpDecision.extendEligible && (
-                                    <div className="bg-ok-100 border border-ok-300 rounded p-1.5 text-ok-800 font-semibold text-xs dark:bg-ok-900 dark:border-ok-800 dark:text-ok-300">Meets EXTEND criteria - Consider IV thrombolysis</div>
+                                    <div className="bg-ok-100 border border-ok-300 rounded p-1.5 text-ok-800 font-semibold text-xs dark:bg-ok-900 dark:border-ok-800 dark:text-ok-300">Meets core EXTEND criteria - also confirm mismatch volume &gt;10 mL, not an EVT candidate, and (wake-up) within 9 h of sleep midpoint; then consider IV thrombolysis</div>
                                   )}
                                 </div>
                               )}
@@ -19242,7 +19242,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 if (core >= 70) reasons.push(`core ${core}≥70`);
                                 if (!isNaN(mismatchRatio) && mismatchRatio < 1.8) reasons.push(`ratio ${mismatchRatio.toFixed(1)}<1.8`);
                                 if (!isNaN(mismatchVol) && mismatchVol < 15) reasons.push(`mismatch vol ${mismatchVol.toFixed(0)}<15`);
-                                if (!isNaN(penumbra) && penumbra > 180) reasons.push(`penumbra ${penumbra}>180 (malignant profile)`);
                                 badges.push({ label: 'DEFUSE-3', eligible: defuseEligible,
                                   detail: defuseEligible
                                     ? `Core ${core}mL, ratio ${isFinite(mismatchRatio) ? mismatchRatio.toFixed(1) : '?'}, mismatch ${mismatchVol.toFixed(0)}mL — imaging criteria met (note: DEFUSE-3 enrolled 6-16h only; DAWN extends to 24h)`
@@ -19447,7 +19446,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     <ul className="text-slate-700 space-y-0.5 dark:text-ink-2">
                                       <li>&bull; TNK not available at site</li>
                                       <li>&bull; Local protocol mandates alteplase</li>
-                                      <li>&bull; Weight-based dosing concern (&gt;100 kg)</li>
                                       <li>&bull; Prior hypersensitivity to TNK</li>
                                       <li className="italic text-slate-500 dark:text-mute">Dose: 0.9 mg/kg (max 90 mg), 10% bolus + 60-min infusion</li>
                                     </ul>
@@ -31210,7 +31208,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="calc-rope" style={{ order: getCalculatorOrder('rope', 70) }} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
                       <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
                         <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="git-branch" className="w-4 h-4"></i></span>
-                        <span>ROPE Score and PASCAL Classification</span>
+                        <span>RoPE Score and PASCAL Classification</span>
                       </summary>
                       <div className="p-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2">
@@ -31313,7 +31311,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {pascal && (
                               <p className="text-sm mt-1"><span className="font-semibold">PASCAL category: {pascal.category}.</span> {pascal.recommendation}</p>
                             )}
-                            <p className="text-xs text-slate-600 mt-1 dark:text-mute">Higher RoPE = more likely the PFO is pathogenic. PASCAL combines RoPE \u22657 with high-risk morphology (large shunt or atrial septal aneurysm); closure benefit concentrates in the Probable category.</p>
+                            <p className="text-xs text-slate-600 mt-1 dark:text-mute">Higher RoPE = more likely the PFO is pathogenic. PASCAL combines RoPE ≥7 with high-risk morphology (large shunt or atrial septal aneurysm); closure benefit concentrates in the Probable category.</p>
                           </div>
                         );
                       })()}
@@ -31382,7 +31380,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           const score = calculateRCVS2Score(rcvs2Items);
                           return (
                             <div className="p-3 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
-                              <p className="text-lg font-bold">RCVS\u00b2 Score: {score}</p>
+                              <p className="text-lg font-bold">RCVS² Score: {score}</p>
                               <p className="text-xs text-slate-700 dark:text-ink-2">{score >= 5
                                 ? 'Score \u22655: RCVS highly likely (sensitivity 90%, specificity 99% in the derivation cohort).'
                                 : score >= 3
@@ -31518,7 +31516,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="p-3 mt-2 rounded-lg border border-line bg-white dark:bg-card" aria-live="polite" aria-atomic="true">
                               <p className="text-lg font-bold">PHASES Score: {score}</p>
                               <p className="text-sm">5-year rupture risk: <span className="font-semibold">{risk.risk}</span> ({risk.level})</p>
-                              <p className="text-xs text-slate-600 mt-1 dark:text-mute">Population-level estimate from pooled prospective cohorts \u2014 individualize with aneurysm morphology, growth, family history, and life expectancy.</p>
+                              <p className="text-xs text-slate-600 mt-1 dark:text-mute">Population-level estimate from pooled prospective cohorts — individualize with aneurysm morphology, growth, family history, and life expectancy.</p>
                             </div>
                           );
                         })()}
@@ -31692,7 +31690,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <p className="text-sm font-semibold">{result.prophylaxisNote}</p>
                               <p className="text-sm mt-1">{result.note}</p>
                               <p className="text-xs text-slate-600 mt-1 dark:text-mute">{result.dailyTreatmentNote}</p>
-                              <p className="text-xs text-slate-600 mt-1 dark:text-mute">Timing in stroke: post-lytic \u226524h with hemorrhage-free imaging; post-ICH 24-48h with stable imaging; anti-Xa monitoring for BMI &gt;40 or CrCl &lt;30.</p>
+                              <p className="text-xs text-slate-600 mt-1 dark:text-mute">Timing in stroke: post-lytic ≥24 h with hemorrhage-free imaging; post-ICH 24-48h with stable imaging; anti-Xa monitoring for BMI &gt;40 or CrCl &lt;30.</p>
                             </div>
                           );
                         })()}
@@ -32765,9 +32763,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <li><strong>TNK vs alteplase:</strong> TNK 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg) are both recommended for IVT-eligible AIS within 4.5 h (AHA/ASA 2026, COR 1, LOE A). ESO 2023 recommends TNK over alteplase for LVO and says TNK may be favoured otherwise. TNK is a single bolus with no infusion, so logistics are easier.</li>
                               <li><strong>Don't delay TNK for perfusion imaging:</strong> If within 4.5h and no contraindications, give TNK. Perfusion imaging is for extending the window, not for gatekeeping.</li>
                               <li><strong>DAPT timing:</strong> For minor noncardioembolic stroke (NIHSS ≤3) or high-risk TIA (ABCD2 ≥4) not treated with IVT, start aspirin + clopidogrel (with loading dose) within 24h and continue 21 days, then single antiplatelet therapy (AHA/ASA guideline). Clopidogrel load was 300 mg in CHANCE (DAPT 21 days) and 600 mg in POINT (DAPT 90 days).</li>
-                              <li><strong>Statin timing:</strong> Start high-intensity statin (atorvastatin 80 mg) in facility. Don't wait for fasting lipids.</li>
+                              <li><strong>Statin timing:</strong> Start high-intensity statin (atorvastatin 80 mg) in hospital. Don't wait for fasting lipids.</li>
                               <li><strong>AF detection:</strong> If stroke is cryptogenic after routine workup, extended cardiac monitoring (≥14 days) finds AF in ~12-16% of patients.</li>
-                              <li><strong>Anticoagulation after stroke + AF:</strong> ELAN trial: early DOAC (&lt;48h for minor, day 3-4 for moderate, day 6-7 for severe) is non-inferior and safe.</li>
+                              <li><strong>Anticoagulation after stroke + AF:</strong> ELAN trial: early DOAC (within 48 h after minor or moderate stroke, day 6-7 after major stroke; severity graded by infarct size on imaging) vs later start (day 3-4 minor, day 6-7 moderate, day 12-14 major) gave a 30-day composite of 2.9% vs 4.1% (risk difference -1.18 percentage points, 95% CI -2.84 to 0.47), with symptomatic ICH 0.2% in both groups; ELAN was designed to estimate the effect, not as a non-inferiority trial. CATALYST IPD meta-analysis (Lancet 2025): DOAC start within 4 days reduced the 30-day composite (OR 0.70) without excess sICH.</li>
                             </ul>
                           </div>
                           <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">

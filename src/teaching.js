@@ -28,7 +28,7 @@ export const STROKE_SYNDROMES = {
       name: 'Left MCA (dominant) — proximal M1',
       territory: 'Left middle cerebral artery proximal',
       deficits: 'Right hemiplegia (face+arm>leg), right hemisensory loss, right homonymous hemianopia, global aphasia, left gaze preference',
-      pearls: 'Global aphasia + right hemiparesis is classic for dominant M1. If also gaze preference to left, suggests large cortical strike (Brocas + Wernicke area affected).',
+      pearls: 'Global aphasia + right hemiparesis is classic for dominant M1. If also gaze preference to left, suggests large cortical strike (Broca\'s + Wernicke\'s areas affected).',
       pimpingQ: 'Why does the patient look toward the side of the lesion in a left M1 stroke?',
       answer: 'Frontal eye field (Brodmann area 8) in the left frontal lobe normally drives gaze to the right. With left frontal damage, the right FEF is unopposed and pulls gaze to the left (ipsilateral to lesion).'
     },
@@ -42,9 +42,9 @@ export const STROKE_SYNDROMES = {
     },
     {
       name: 'MCA — superior division',
-      territory: 'Rolandic + Brocas branches',
+      territory: 'Rolandic + Broca\'s branches',
       deficits: 'Contralateral face/arm > leg weakness, expressive aphasia (left-sided), no hemianopia typically',
-      pearls: 'Brocas aphasia: non-fluent, effortful speech, preserved comprehension, patient aware of deficit.'
+      pearls: 'Broca\'s aphasia: non-fluent, effortful speech, preserved comprehension, patient aware of deficit.'
     },
     {
       name: 'MCA — inferior division',
@@ -191,7 +191,7 @@ export const NEUROANATOMY = {
   vascularTerritories: [
     { artery: 'ACA', supply: 'Medial frontal + medial parietal (including paracentral lobule — legs), anterior corpus callosum' },
     { artery: 'MCA — M1', supply: 'Deep lenticulostriates (internal capsule, basal ganglia) + most of lateral cortex' },
-    { artery: 'MCA — M2 superior division', supply: 'Rolandic + Brocas (frontal + upper parietal)' },
+    { artery: 'MCA — M2 superior division', supply: 'Rolandic + Broca\'s (frontal + upper parietal)' },
     { artery: 'MCA — M2 inferior division', supply: 'Wernicke + temporoparietal' },
     { artery: 'PCA — P1', supply: 'Bilateral thalami via perforators (art of Percheron variant), brainstem perforators' },
     { artery: 'PCA — P2-P4', supply: 'Occipital cortex, medial temporal (hippocampus), splenium corpus callosum' },

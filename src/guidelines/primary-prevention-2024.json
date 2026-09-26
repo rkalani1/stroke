@@ -516,7 +516,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Asymptomatic Cerebral SVD, Including",
+      "section": "Asymptomatic Cerebral SVD, Including Silent Cerebral Infarcts",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -529,7 +529,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Asymptomatic Cerebral SVD, Including",
+      "section": "Asymptomatic Cerebral SVD, Including Silent Cerebral Infarcts",
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -542,7 +542,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Asymptomatic Cerebral SVD, Including",
+      "section": "Asymptomatic Cerebral SVD, Including Silent Cerebral Infarcts",
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1280,7 +1280,7 @@
       },
       {
         "id": "table-11",
-        "title": "Asymptomatic Cerebral SVD, Including",
+        "title": "Asymptomatic Cerebral SVD, Including Silent Cerebral Infarcts",
         "sourceTable": "Recommendations for Asymptomatic Cerebral SVD, Including Silent Cerebral Infarcts",
         "rowCount": 3,
         "pageRange": [

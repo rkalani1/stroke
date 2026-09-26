@@ -80,7 +80,7 @@ export const guidelines = [
     organization: 'European Stroke Organisation',
     year: 2023,
     topic: 'tnk-vs-alteplase',
-    url: 'https://journals.sagepub.com/doi/full/10.1177/23969873231177508',
+    url: 'https://doi.org/10.1177/23969873221150022',
     citationId: 'cit-eso-tnk-2023',
     verificationStatus: 'verified-guideline',
     lastReviewed: lr

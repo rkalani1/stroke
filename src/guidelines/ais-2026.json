@@ -327,7 +327,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Emergency Evaluation of Patients With",
+      "section": "Emergency Evaluation of Patients With Suspected Stroke",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -340,7 +340,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Emergency Evaluation of Patients With",
+      "section": "Emergency Evaluation of Patients With Suspected Stroke",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
@@ -353,7 +353,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Emergency Evaluation of Patients With",
+      "section": "Emergency Evaluation of Patients With Suspected Stroke",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -366,7 +366,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Emergency Evaluation of Patients With",
+      "section": "Emergency Evaluation of Patients With Suspected Stroke",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
@@ -379,7 +379,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Emergency Evaluation of Patients With",
+      "section": "Emergency Evaluation of Patients With Suspected Stroke",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
@@ -587,7 +587,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Stroke Registries, Quality Improvement, and",
+      "section": "Stroke Registries and Quality Improvement",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
@@ -600,7 +600,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Stroke Registries, Quality Improvement, and",
+      "section": "Stroke Registries and Quality Improvement",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -613,7 +613,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Stroke Registries, Quality Improvement, and",
+      "section": "Stroke Registries and Quality Improvement",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -2781,7 +2781,7 @@
       },
       {
         "id": "table-07",
-        "title": "Emergency Evaluation of Patients With",
+        "title": "Emergency Evaluation of Patients With Suspected Stroke",
         "sourceTable": "Recommendations for Emergency Evaluation of Patients With",
         "rowCount": 5,
         "pageRange": [
@@ -2837,7 +2837,7 @@
       },
       {
         "id": "table-10",
-        "title": "Stroke Registries, Quality Improvement, and",
+        "title": "Stroke Registries and Quality Improvement",
         "sourceTable": "Recommendations for Stroke Registries, Quality Improvement, and",
         "rowCount": 3,
         "pageRange": [

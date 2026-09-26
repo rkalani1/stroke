@@ -791,7 +791,7 @@
     },
     {
       "id": "aha-hypertension-guideline-2025-5-3-4-1",
-      "section": "5.3.4. the Prevention of HF in Adults With Hypertension",
+      "section": "5.3.4. Prevention of HF in Adults With Hypertension",
       "classOfRec": "I",
       "classNote": "",
       "levelOfEvidence": "B-R",
@@ -804,7 +804,7 @@
     },
     {
       "id": "aha-hypertension-guideline-2025-5-3-4-2",
-      "section": "5.3.4. the Prevention of HF in Adults With Hypertension",
+      "section": "5.3.4. Prevention of HF in Adults With Hypertension",
       "classOfRec": "I",
       "classNote": "",
       "levelOfEvidence": "B-NR",
@@ -1734,7 +1734,7 @@
       },
       {
         "id": "5.3.4",
-        "title": "the Prevention of HF in Adults With Hypertension",
+        "title": "Prevention of HF in Adults With Hypertension",
         "sourceTable": "Recommendations for the Prevention of HF in Adults With Hypertension",
         "rowCount": 2,
         "pageRange": [

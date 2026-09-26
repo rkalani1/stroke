@@ -410,7 +410,7 @@ export const interpretPHQ9 = (score) => {
   return { score: s, severity, action, source: 'Kroenke JGIM 2001;16:606-13' };
 };
 
-// mRS-9Q structured interpretation (Bruno Stroke 2010;41:1048-50).
+// mRS-9Q structured interpretation (Patel N et al. Neurosurgery 2012;71:971-5; PMID 22843133).
 // Order matches the published mRS scale:
 //   mRS 5 = bedridden / requires constant care
 //   mRS 4 = unable to walk without assistance (q4 cannot walk OR q5 walks only with aid)
