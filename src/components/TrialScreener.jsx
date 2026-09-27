@@ -48,12 +48,12 @@ import {
 const cx = (...p) => p.filter(Boolean).join(' ');
 
 const CLASSIFICATIONS = [
-  { id: 'ischemic', label: 'Ischemic', sub: 'stroke', onsetVal: 2 },
-  { id: 'tia', label: 'TIA', sub: 'transient', onsetVal: 12 },
+  { id: 'ischemic', label: 'Ischemic', sub: 'stroke', name: 'Ischemic stroke', onsetVal: 2 },
+  { id: 'tia', label: 'TIA', sub: 'transient ischemic attack', name: 'TIA (transient ischemic attack)', onsetVal: 12 },
   // onsetVal must equal an ONSET_PRESETS value in hours, otherwise OnsetPicker's
   // exact-match test lights no pill and the screener runs on a window the user
   // never chose. ICH stays hyperacute by default (MINUTE screens to 16 h).
-  { id: 'ich', label: 'Hemorrhage', sub: 'ICH', onsetVal: 2 }
+  { id: 'ich', label: 'Hemorrhage', sub: 'ICH', name: 'Hemorrhage (ICH)', onsetVal: 2 }
 ];
 
 const CLASSIFICATION_LABELS = {
@@ -475,9 +475,10 @@ function ClassificationPicker({ value, onChange }) {
             key={opt.id}
             type="button"
             aria-pressed={active}
+            aria-label={opt.name}
             onClick={() => onChange(opt)}
             className={cx(
-              'flex h-[84px] flex-col items-center justify-center gap-1.5 rounded-lg border px-2 text-center transition-colors',
+              'flex min-h-[84px] flex-col items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-center transition-colors',
               'focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 focus-visible:ring-offset-paper',
               active
                 ? 'border-cobalt-600 bg-cobalt-600 text-white shadow-card'
@@ -486,7 +487,7 @@ function ClassificationPicker({ value, onChange }) {
           >
             <Icon size={22} />
             <span className="text-xs font-bold leading-tight">{opt.label}</span>
-            <span className={cx('text-2xs leading-none', active ? 'text-cobalt-100' : 'text-mute')}>{opt.sub}</span>
+            <span className={cx('text-2xs leading-tight', active ? 'text-cobalt-100' : 'text-mute')}>{opt.sub}</span>
           </button>
         );
       })}
