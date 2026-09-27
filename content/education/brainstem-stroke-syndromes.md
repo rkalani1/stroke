@@ -5,7 +5,7 @@ summary: "The crossed-deficit localization rule and the classic brainstem stroke
 tags: ["pocket-card", "printable"]
 contexts: ["telestroke", "inpatient", "clinic"]
 calculators: []
-references: [{"label":"Arterial territories — brainstem/cerebellum","citation":"Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.","pmid":"8909417"},{"label":"Arterial territories — cerebral hemispheres","citation":"Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.","pmid":"9633714"}]
+references: [{"label":"Arterial territories — brainstem/cerebellum","citation":"Tatu L, et al. Arterial territories of human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.","pmid":"8909417"},{"label":"Arterial territories — cerebral hemispheres","citation":"Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.","pmid":"9633714"}]
 lastReviewed: 2026-07-18
 provenance: src/education.jsx
 ---

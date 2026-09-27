@@ -21,7 +21,7 @@
     "name": "RE-SPECT ESUS",
     "fullName": "Dabigatran for Prevention of Stroke after Embolic Stroke of Undetermined Source",
     "category": "esus",
-    "population": "n=5390, ≥60 (or ≥45 with risk factor)",
+    "population": "n=5390, ≥60 (or 18-59 with ≥1 additional vascular risk factor)",
     "finding": "No benefit: 4.1%/yr vs 4.8%/yr",
     "teachingPoint": "Dabigatran not superior to aspirin in ESUS — confirms NAVIGATE; no empiric DOAC.",
     "PMID": "31091372",
@@ -30,7 +30,7 @@
       "cit-respect-esus-2019"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-05-29",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

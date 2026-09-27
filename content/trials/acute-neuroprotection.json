@@ -123,7 +123,7 @@
     "name": "Y-6 phase 2",
     "fullName": "Efficacy and safety of sublingual cilostazol and dexborneol for the treatment of acute ischaemic stroke: a randomised phase 2 trial in China",
     "category": "acute-neuroprotection",
-    "population": "n=300, 35-80, NIHSS See population criteria, Within 24 h",
+    "population": "n=300, 35-80, NIHSS 7-25 at randomisation, Within 24 h",
     "finding": "No active arm significantly improved the primary endpoint; high/low-dose Y-6 44.6%/46.0% vs 35.7% placebo",
     "teachingPoint": "Exploratory adjunctive-treatment evidence; larger confirmatory studies are needed.",
     "PMID": "42621146",
@@ -132,7 +132,24 @@
       "cit-y6-phase2-2026"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-09-06",
+    "lastReviewed": "2026-09-26",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "opens-2",
+    "name": "OPENS-2",
+    "fullName": "Normobaric hyperoxia combined with endovascular treatment for acute ischaemic stroke in China (OPENS-2 trial): a multicentre, randomised, single-blind, sham-controlled trial",
+    "category": "acute-neuroprotection",
+    "population": "n=282, 18-80 y; median 65 (IQR 57-71); 75 (27%) female; 282 (100%) Chinese Han ethnicity, NIHSS 10-20, with NIHSS level-of-consciousness score 0-1 (registry NCT04681651), ≤6 h from onset (onset to randomisation)",
+    "finding": "MET superiority, favouring normobaric hyperoxia: median mRS 2 (IQR 1-4) vs 3 (IQR 1-4)",
+    "teachingPoint": "A single positive trial supports high-flow normobaric oxygen started before EVT, but only in the OPENS-2 phenotype, which is the framing of the 2026 AHA/ASA guideline (IIb, \"may be reasonable\"). It is not a basis for oxygen in non-hypoxic patients outside that phenotype. Multinational replication is still needed.",
+    "PMID": "39922675",
+    "year": 2025,
+    "citationIds": [
+      "cit-opens-2-2025"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

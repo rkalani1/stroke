@@ -232,7 +232,7 @@
   },
   {
     "id": "mrs-9q",
-    "name": "mRS-9Q (simplified mRS)",
+    "name": "mRS-9Q (9-question mRS survey)",
     "category": "severity",
     "fn": "interpretMRS9Q",
     "module": "calculators-extended"

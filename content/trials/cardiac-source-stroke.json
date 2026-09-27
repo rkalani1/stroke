@@ -13,7 +13,7 @@
       "cit-re-align-2013"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -94,7 +94,7 @@
     "finding": "NEUTRAL at both timepoints - no significant difference between DOACs and warfarin: OR 1.69 at 1 month and OR 1.39 at 3 months. The authors conclude DOACs showed comparable efficacy and safety and are a reasonable alternative to warfarin, while calling for further large-scale trials",
     "teachingPoint": "Teaches that across all 7 randomized trials and 554 patients, DOACs and warfarin are statistically indistinguishable for LV thrombus - but that the intervals on stroke and bleeding are far too wide to call this proven equivalence.",
     "PMID": "41359218",
-    "year": 2025,
+    "year": 2026,
     "citationIds": [
       "cit-lvt-doac-meta-2025"
     ],

@@ -248,7 +248,7 @@ describe('Protocols input-boundary contracts', () => {
       expect(gcsCard).toMatch(/\{calculateGCS\(gcsItems\)\s*!==\s*null\s*&&\s*\([\s\S]*Copy GCS score/);
       expect(ichCard).toMatch(/\{calculateICHScore\(ichScoreItems\)\s*!==\s*null\s*&&\s*\([\s\S]*Copy ICH score/);
       expect(abcd2Card).toMatch(/\{abcd2Complete\s*&&\s*\([\s\S]*Copy ABCD² score/);
-      expect(chadsCard).toMatch(/\{chads2VascComplete\s*&&\s*\([\s\S]*Copy CHADS₂-VASc score/);
+      expect(chadsCard).toMatch(/\{chads2VascComplete\s*&&\s*\([\s\S]*Copy CHA₂DS₂-VASc score/);
 
       expect(calculateGCS({})).toBeNull();
       expect(calculateGCS({ eye: '4', verbal: '5' })).toBeNull();

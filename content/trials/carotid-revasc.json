@@ -5,15 +5,15 @@
     "fullName": "Stenting versus Endarterectomy for Carotid-Artery Stenosis",
     "category": "carotid-revasc",
     "population": "n=2502",
-    "finding": "Equivalent: 7.2% vs 6.8%",
-    "teachingPoint": "CAS and CEA equivalent on the composite; stroke risk favors CEA, MI risk favors CAS.",
+    "finding": "No significant difference: 7.2% vs 6.8%",
+    "teachingPoint": "No significant difference between CAS and CEA on the composite; periprocedural stroke favored CEA and periprocedural MI favored CAS, and 4-year stroke or death (secondary endpoint) was higher with CAS (6.4% vs 4.7%; HR 1.50, p=0.03).",
     "PMID": "20505173",
     "year": 2010,
     "citationIds": [
       "cit-crest-2010"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-05-29",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -30,7 +30,7 @@
       "cit-crest2-2026"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-22",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -47,7 +47,7 @@
       "cit-ecst2-2025"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-15",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

@@ -13,7 +13,7 @@
       "cit-resist-2023"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -21,7 +21,7 @@
     "name": "RICAMIS",
     "fullName": "Effect of Remote Ischemic Conditioning vs Usual Care on Neurologic Function in Patients With Acute Moderate Ischemic Stroke: The RICAMIS Randomized Clinical Trial",
     "category": "remote-ischemic-conditioning",
-    "population": "n=1893, Mean 65 y (SD 10.3); 606 (34.1%) women, NIHSS Acute moderate ischaemic stroke (the trial's severity band; the abstract does not give the numeric NIHSS range or median), Randomised within 48 h of symptom onset",
+    "population": "n=1893, Mean 65 y (SD 10.3); 606 (34.1%) women, NIHSS Acute moderate ischaemic stroke (the trial's severity band; NIHSS 6-16 per the registered protocol (ClinicalTrials.gov NCT03740971); the abstract does not give the baseline median), Randomised within 48 h of symptom onset",
     "finding": "MET: mRS 0-1 in 582 (67.4%) with RIC vs 566 (62.0%) with usual care — an absolute difference of 5.4 percentage points",
     "teachingPoint": "Shows a 5.4-point absolute gain in excellent outcome with RIC in moderate stroke, but from an unblinded usual-care comparison the authors themselves say needs replication.",
     "PMID": "35972485",
@@ -30,7 +30,7 @@
       "cit-ricamis-2022"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -64,7 +64,7 @@
       "cit-entrips-2026"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

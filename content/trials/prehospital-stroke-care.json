@@ -13,7 +13,7 @@
       "cit-interact4-2024"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-15",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -29,8 +29,8 @@
     "citationIds": [
       "cit-best-msu-2021"
     ],
-    "certainty": "high",
-    "lastReviewed": "2026-08-15",
+    "certainty": "moderate",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -38,7 +38,7 @@
     "name": "RACECAT",
     "fullName": "Direct Transportation to a Thrombectomy-Capable Center vs Local Stroke Center in Suspected Large-Vessel Occlusion in Nonurban Areas",
     "category": "prehospital-stroke-care",
-    "population": "n=1401, median 75 (IQR 65-83); 56% men, NIHSS median NIHSS 17 (IQR 11-21), prehospital, nonurban Catalonia",
+    "population": "n=1401, median 75 (IQR 65-83); 56% men, NIHSS median NIHSS 17 (IQR 11-21), prehospital, nonurban Catalonia; estimated arrival at a thrombectomy-capable centre <7 h from last seen well",
     "finding": "Neutral: median mRS 3 in both arms",
     "teachingPoint": "In nonurban areas, direct transport to a thrombectomy centre did not improve 90-day outcome versus the nearest stroke centre.",
     "PMID": "35510397",
@@ -47,7 +47,7 @@
       "cit-racecat-2022"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-15",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

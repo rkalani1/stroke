@@ -13,7 +13,7 @@
       "cit-tempo-2-2024"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-07-06",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -30,7 +30,7 @@
       "cit-aramis-2023"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-15",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

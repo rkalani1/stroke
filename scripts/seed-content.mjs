@@ -35,7 +35,9 @@ const CONTENT = path.join(REPO, 'content');
 const check = process.argv.includes('--check');
 
 const drift = [];
+const emitted = new Set();
 async function emit(relPath, text) {
+  emitted.add(relPath);
   const abs = path.join(CONTENT, relPath);
   if (check) {
     let existing = null;
@@ -45,6 +47,21 @@ async function emit(relPath, text) {
   }
   await fs.mkdir(path.dirname(abs), { recursive: true });
   await fs.writeFile(abs, text, 'utf8');
+}
+
+// guidelines/ and trials/ are pure projections of src/evidence: a file the
+// current sources no longer produce (after a guidelineSource or topic change)
+// holds stale copies of records that moved elsewhere, so remove it (--check
+// reports it as drift instead).
+async function pruneProjected(dir) {
+  let names = [];
+  try { names = await fs.readdir(path.join(CONTENT, dir)); } catch { return; }
+  for (const name of names.sort()) {
+    const rel = `${dir}/${name}`;
+    if (!name.endsWith('.json') || emitted.has(rel)) continue;
+    if (check) drift.push(`${rel} (stale: no longer generated)`);
+    else await fs.unlink(path.join(CONTENT, rel));
+  }
 }
 
 const json = (obj) => JSON.stringify(obj, null, 2) + '\n';
@@ -126,7 +143,10 @@ async function seedGuidelines(citById) {
       sourceUrl: urlFor(rec.guidelineSource || ''),
       provenance: 'src/evidence/recommendations.js',
     };
-    const slug = kebab((rec.guidelineSource || 'guideline').split(';')[0]).slice(0, 40) || 'guideline';
+    // Parenthetical qualifiers ("(pre-ANNEXA-I)") annotate the primary source
+    // but must not split its records into a separate file.
+    const primarySource = (rec.guidelineSource || 'guideline').split(';')[0].replace(/\s*\([^)]*\)/g, '');
+    const slug = kebab(primarySource).slice(0, 40) || 'guideline';
     if (!groups.has(slug)) groups.set(slug, []);
     groups.get(slug).push(record);
   }
@@ -220,7 +240,7 @@ const CALCULATOR_CATALOG = [
   { id: 'nine-point', name: '9-Point ICH Expansion Score', category: 'prognosis', fn: 'calculateNinePoint' },
   { id: 'ogilvy-carter', name: 'Ogilvy-Carter (SAH surgical risk)', category: 'prognosis', fn: 'calculateOgilvyCarter' },
   { id: 'phq9', name: 'PHQ-9 (post-stroke depression)', category: 'screening', fn: 'interpretPHQ9' },
-  { id: 'mrs-9q', name: 'mRS-9Q (simplified mRS)', category: 'severity', fn: 'interpretMRS9Q' },
+  { id: 'mrs-9q', name: 'mRS-9Q (9-question mRS survey)', category: 'severity', fn: 'interpretMRS9Q' },
 ];
 
 async function seedCalculators() {
@@ -377,6 +397,8 @@ async function main() {
   const citById = await loadCitations();
   const g = await seedGuidelines(citById);
   const t = await seedTrials(citById);
+  await pruneProjected('guidelines');
+  await pruneProjected('trials');
   const c = await seedCalculators();
   const e = await seedEducation();
   const r = await seedReferences();

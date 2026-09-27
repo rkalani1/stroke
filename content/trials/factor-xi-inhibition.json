@@ -38,7 +38,7 @@
     "name": "AXIOMATIC-SSP",
     "fullName": "Safety and Efficacy of Factor XIa Inhibition with Milvexian for Secondary Stroke Prevention",
     "category": "factor-xi-inhibition",
-    "population": "n=2366, adults, NIHSS acute ischaemic stroke or high-risk TIA, 90-day treatment period",
+    "population": "n=2366, adults, NIHSS acute ischaemic stroke or high-risk TIA, randomized within 48 h of symptom onset of acute ischaemic stroke or high-risk TIA (age ≥40); 90-day treatment period",
     "finding": "NEUTRAL: placebo 16.8% vs milvexian arms 15.3-16.7%; no significant dose-response",
     "teachingPoint": "Milvexian added to DAPT showed no efficacy signal but also no bleeding excess — groundwork for phase 3.",
     "PMID": "38101902",
@@ -47,7 +47,7 @@
       "cit-axiomatic-ssp-2024"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-22",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

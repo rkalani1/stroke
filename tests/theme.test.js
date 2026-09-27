@@ -273,6 +273,42 @@ describe('runV7Migration', () => {
       globalThis.localStorage.setItem = originalSetItem;
     });
 
+  describe('resolveTheme (the single theme rule)', () => {
+    it('honours an explicit light or dark choice on every host and OS setting', () => {
+      for (const isPublic of [true, false]) {
+        for (const prefersDark of [true, false]) {
+          expect(themeController.resolveTheme('dark', prefersDark, isPublic)).toBe('dark');
+          expect(themeController.resolveTheme('light', prefersDark, isPublic)).toBe('light');
+        }
+      }
+    });
+
+    it('follows the OS for System (auto) on every host', () => {
+      for (const isPublic of [true, false]) {
+        expect(themeController.resolveTheme('auto', true, isPublic)).toBe('dark');
+        expect(themeController.resolveTheme('auto', false, isPublic)).toBe('light');
+      }
+    });
+
+    it('defaults an unset or unknown preference to light on public Pages and to the OS elsewhere', () => {
+      for (const pref of [null, undefined, '', 'chartreuse']) {
+        expect(themeController.resolveTheme(pref, true, true)).toBe('light');
+        expect(themeController.resolveTheme(pref, true, false)).toBe('dark');
+        expect(themeController.resolveTheme(pref, false, false)).toBe('light');
+      }
+    });
+
+    it('is what effectiveTheme applies', () => {
+      vi.stubGlobal('window', {
+        location: { hostname: 'rkalani1.github.io' },
+        matchMedia: vi.fn(() => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() }))
+      });
+      expect(themeController.effectiveTheme()).toBe('light');
+      globalThis.localStorage.setItem('stroke.v7.theme', 'auto');
+      expect(themeController.effectiveTheme()).toBe('dark');
+    });
+  });
+
   describe('applyTheme', () => {
     it('does nothing if document is undefined', () => {
       vi.stubGlobal('document', undefined);

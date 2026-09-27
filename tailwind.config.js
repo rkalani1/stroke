@@ -6,32 +6,38 @@
  * working. New v7 tokens (slate-0..950 ramps, cobalt-*, link-*, crit/warn/ok/info
  * 5-step ramps, link-*) are added under theme.extend.
  *
- * Tokens read from CSS variables in src/design/tokens.css so dark-theme
+ * Every colour reads an RGB-triplet CSS variable from src/design/tokens.css
+ * (ramps: --slate-500; semantic layer: --c-ink, --c-surface, …), so opacity
+ * modifiers (bg-card/95, border-line/60) generate CSS and dark-theme
  * switching is a single attribute flip on <html data-theme>.
  */
 module.exports = {
-  darkMode: ['class', '[data-theme="dark"]'],
+  // The single dark hook: [data-theme="dark"] on <html>. Spelled as an
+  // explicit variant so the output stays `:is([data-theme="dark"] *)`, which
+  // is what the old ['class', '[data-theme="dark"]'] form emitted. The
+  // 'selector' strategy would emit `:where(…)` instead and drop every one of
+  // the ~3.3k dark: utilities by one class of specificity.
+  darkMode: ['variant', '&:is([data-theme="dark"] *)'],
 
+  // Every file that renders class names (D3-03). The explicit list this
+  // replaces missed src/design/{hero-readout,time-window-ring,drug-chip,
+  // device-frame}.jsx. Non-JSX sources are limited to the two folders that
+  // hold components/hooks: a broad ./src/**/*.js would also scan the prose
+  // in src/evidence, src/guidelines and the clinical-content modules and
+  // generate utilities from ordinary words ("grow", "shrink", "block").
   content: [
     './index.html',
-    './src/app.jsx',
-    './src/components.jsx',
-    './src/components/*.jsx',
-    './src/primitives.jsx',
-    './src/pocket-cards.jsx',
-    './src/teaching.jsx',
-    './src/education.jsx',
-    './src/design/primitives.jsx',
-    './src/design/patient-strip.jsx',
-    './src/simulators/EvdIcpSimulator.jsx',
-    './src/simulators/HintsSimulator.jsx',
-    './src/simulators/NeuroExamsTool.jsx',
-    './src/simulators/PupillometrySimulator.jsx'
+    './src/**/*.jsx',
+    './src/components/*.js',
+    './src/design/*.js'
   ],
 
   safelist: [
-    { pattern: /^v6-/ },
-    { pattern: /^v7-/ },
+    /* The shared component language (src/styles.css, `ui-*`) ships whole,
+       whether or not a view has adopted a given recipe yet. The old ^v6- /
+       ^v7- patterns are gone: no class name is built dynamically, so the
+       content scan finds every v7-* class still in use. */
+    { pattern: /^ui-/ },
     /* Codemod replaces accent classes; keep cobalt-* available regardless */
     { pattern: /^(bg|text|border|ring)-(cobalt|crit|warn|ok|info|link)-(50|100|200|300|400|500|600|700|800|900|950)$/ }
   ],
@@ -81,39 +87,49 @@ module.exports = {
         ok:   rampVar('ok',   [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]),
         info: rampVar('info', [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]),
 
-        /* ─── v6 aliases (kept resolving) ─── */
-        ink:              'var(--ink)',
-        'ink-2':          'var(--ink-2)',
-        mute:             'var(--mute)',
-        line:             'var(--line)',
-        /* strong = heavier hairline; overlay = elevated surface (slate-800
-           in dark). Added for the Cycle1 dark-contrast remap so border-strong
-           / bg-overlay resolve to real utilities. */
-        strong:           'rgb(var(--border-strong) / <alpha-value>)',
-        overlay:          'rgb(var(--bg-overlay) / <alpha-value>)',
-        paper:            'var(--paper)',
-        'paper-2':        'var(--paper-2)',
-        card:             'var(--card)',
-        critical:         'var(--critical)',
-        'critical-soft':  'var(--critical-soft)',
-        confirm:          'var(--confirm)',
-        'confirm-soft':   'var(--confirm-soft)',
-        caution:          'var(--caution)',
-        'caution-soft':   'var(--caution-soft)',
-        reference:        'var(--reference)',
-        'reference-soft': 'var(--reference-soft)',
-        accent:           'var(--accent)',
-        'accent-2':       'var(--accent-2)',
-        'accent-soft':    'var(--accent-soft)',
-        'accent-ink':     'var(--accent-ink)',
-        surface:          'var(--surface)',
-        'surface-2':      'var(--surface-2)',
-        'surface-3':      'var(--surface-3)'
+        /* ─── v6 semantic aliases ───
+           Each reads a --c-* RGB triplet (src/design/tokens.css) so opacity
+           modifiers work: bg-card/95, border-line/60, bg-paper-2/60 used to
+           generate nothing because these were bare var(--x) colours. */
+        ink:              semanticVar('ink'),
+        'ink-2':          semanticVar('ink-2'),
+        mute:             semanticVar('mute'),
+        line:             semanticVar('line'),
+        /* form-field boundary, >= 3:1 on its surface (WCAG 1.4.11) */
+        'line-control':   semanticVar('line-control'),
+        faint:            semanticVar('faint'),
+        /* strong = heavier hairline; overlay = raised surface (slate-800 in
+           dark). */
+        strong:           semanticVar('line-strong'),
+        overlay:          semanticVar('overlay'),
+        paper:            semanticVar('paper'),
+        'paper-2':        semanticVar('muted'),
+        card:             semanticVar('surface'),
+        critical:         semanticVar('critical'),
+        'critical-soft':  semanticVar('critical-soft'),
+        confirm:          semanticVar('confirm'),
+        'confirm-soft':   semanticVar('confirm-soft'),
+        caution:          semanticVar('caution'),
+        'caution-soft':   semanticVar('caution-soft'),
+        reference:        semanticVar('reference'),
+        'reference-soft': semanticVar('reference-soft'),
+        accent:           semanticVar('accent'),
+        'accent-2':       semanticVar('accent-2'),
+        'accent-soft':    semanticVar('accent-soft'),
+        'accent-ink':     semanticVar('accent-ink'),
+        surface:          semanticVar('surface'),
+        'surface-2':      semanticVar('sunken'),
+        'surface-3':      semanticVar('canvas-2')
       },
 
+      /* Display face = Bricolage Grotesque, for h1/h2 page titles and the
+         wordmark. `serif` is kept as an alias of `display` (the class is used
+         across the app); both fall back to sans — the face is a grotesque, so
+         Georgia/Times were never a faithful fallback. */
       fontFamily: {
-        sans:  ['"Public Sans"', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        serif: ['"Bricolage Grotesque"', 'Georgia', 'ui-serif', 'serif'],
+        sans:    ['"Public Sans"', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['"Bricolage Grotesque"', '"Public Sans"', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+        serif:   ['"Bricolage Grotesque"', '"Public Sans"', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
         mono:  ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
       },
 
@@ -128,6 +144,7 @@ module.exports = {
         xl:        ['1.5rem',    { lineHeight: '1.3' }],
         '2xl':     ['1.875rem',  { lineHeight: '1.25' }],
         '3xl':     ['2.5rem',    { lineHeight: '1.15' }],
+        '4xl':     ['3rem',      { lineHeight: '1.1' }],
         'display': ['3.5rem',    { lineHeight: '1.1' }],
 
         /* v6 aliases kept */
@@ -140,11 +157,10 @@ module.exports = {
         caption:     ['0.6875rem',{ lineHeight: '1rem' }]
       },
 
-      spacing: {
-        /* v7 base-4 scale — no half-steps */
-        1: '4px', 2: '8px', 3: '12px', 4: '16px', 5: '20px',
-        6: '24px', 8: '32px', 10: '40px', 12: '48px', 16: '64px', 20: '80px'
-      },
+      /* No spacing override: Tailwind's default scale has the same values
+         (p-4 = 1rem = 16px at the default root size) in rem, so every step
+         — including the half steps (p-3.5, gap-1.5) — scales together when
+         the user raises the browser font size. */
 
       borderRadius: {
         sm: '4px', md: '8px', lg: '12px', xl: '16px', pill: '999px'
@@ -166,4 +182,9 @@ function rampVar(prefix, steps) {
   const out = {};
   for (const s of steps) out[s] = `rgb(var(--${prefix}-${s}) / <alpha-value>)`;
   return out;
+}
+
+/* Semantic colour from the --c-* triplet layer in src/design/tokens.css. */
+function semanticVar(name) {
+  return `rgb(var(--c-${name}) / <alpha-value>)`;
 }

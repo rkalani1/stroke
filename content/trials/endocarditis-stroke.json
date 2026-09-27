@@ -57,14 +57,14 @@
     "category": "endocarditis-stroke",
     "population": "n=323, not reported in the abstract; younger age was an independent predictor of IE-associated stroke, NIHSS not reported in the abstract, acute embolic infarction at presentation; outcomes to 3 months",
     "finding": "IE-associated strokes were SMALLER (21.6 plus or minus 19.3 mm vs 66.9 plus or minus 38.0 mm), more often numerous (more than 10 lesions in 44.7% vs 5.2%), and far more often involved both anterior and posterior circulations bilaterally (54.1% vs 2.6%). Independent predictors of IE-associated stroke were younger age (OR 0.87), smaller lesion size (OR 0.94) and 3-territory involvement (OR 81.21)",
-    "teachingPoint": "Teaches the imaging signature that should prompt blood cultures and echocardiography rather than an AF workup - numerous small infarcts spread across three vascular territories in a younger febrile patient - and sets the expectation that new ischemic lesions occur in more than half of these patients during follow-up.",
+    "teachingPoint": "Teaches the imaging signature that should prompt blood cultures and echocardiography rather than an AF workup - numerous small infarcts spread across three vascular territories in a younger febrile patient - and sets the expectation that new ischemic lesions, symptomatic or silent, appear on follow-up DWI within a month in about half of IE patients who are re-imaged (53.2%), with symptomatic recurrent ischemic stroke in about 15% by 3 months.",
     "PMID": "41168944",
     "year": 2025,
     "citationIds": [
       "cit-ie-vs-af-imaging-2025"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

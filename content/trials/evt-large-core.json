@@ -38,7 +38,7 @@
     "name": "RESCUE-Japan LIMIT",
     "fullName": "Endovascular Therapy for Acute Stroke with Large Ischemic Region",
     "category": "evt-large-core",
-    "population": "n=203, ≥18, NIHSS 6-30, ≤24 h",
+    "population": "n=203, ≥18, NIHSS ≥6, ≤6 h from LKW, or 6-24 h if no FLAIR change",
     "finding": "31.0% (EVT) vs 12.7% (control)",
     "teachingPoint": "First major RCT to support large-core EVT.",
     "PMID": "35138767",
@@ -47,7 +47,7 @@
       "cit-rescue-japan-2022"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -55,7 +55,7 @@
     "name": "TENSION",
     "fullName": "Endovascular Thrombectomy for AIS with Established Large Infarct",
     "category": "evt-large-core",
-    "population": "n=253, 18-85, NIHSS ≥6, ≤12 h",
+    "population": "n=253, ≥18, NIHSS <26, ≤12 h from onset or last seen well",
     "finding": "Favored EVT",
     "teachingPoint": "European replication of large-core EVT benefit.",
     "PMID": "37837989",
@@ -64,7 +64,7 @@
       "cit-tension-2023"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -132,7 +132,7 @@
       "cit-tension-antithrombotic-2026"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-19",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -149,7 +149,7 @@
       "cit-laste-aspects-0-2-2026"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-19",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

@@ -21,7 +21,7 @@
     "name": "TWIST",
     "fullName": "Tenecteplase in Wake-up Ischaemic Stroke Trial",
     "category": "wake-up-stroke",
-    "population": "n=578, ≥18, wake-up <4.5 h after waking",
+    "population": "n=578, ≥18, NIHSS ≥3 or aphasia, with limb weakness, wake-up <4.5 h after waking",
     "finding": "No significant benefit overall",
     "teachingPoint": "Late-window thrombolysis without advanced imaging is not supported.",
     "PMID": "36549308",
@@ -30,7 +30,7 @@
       "cit-twist-2023"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

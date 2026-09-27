@@ -2,18 +2,20 @@
   {
     "id": "attention",
     "name": "ATTENTION",
-    "fullName": "Endovascular Treatment of Acute Basilar-Artery Occlusion",
+    "fullName": "Endovascular Treatment of Acute Basilar-Artery Occlusion — 90-Day, 1-Year and 3-Year Outcomes",
     "category": "evt-basilar",
-    "population": "n=340, ≥18, NIHSS ≥10, ≤12 h",
-    "finding": "Favored EVT: 46% vs 23%",
-    "teachingPoint": "Established EVT benefit for basilar-artery occlusion within 12 h.",
+    "population": "n=340, ≥18, NIHSS ≥10, ≤12 h from estimated time of basilar-artery occlusion",
+    "finding": "Favored EVT: 104/226 (46%) vs 26/114 (23%)",
+    "teachingPoint": "Established EVT benefit for basilar-artery occlusion with NIHSS ≥10 within 12 h; the 1- and 3-year extensions show the functional benefit and lower mortality persist rather than fading after 90 days.",
     "PMID": "36239644",
     "year": 2022,
     "citationIds": [
-      "cit-attention-2022"
+      "cit-attention-2022",
+      "cit-attention-1y-2024",
+      "cit-attention-3y-2026"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-05-29",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -21,7 +23,7 @@
     "name": "BAOCHE",
     "fullName": "Thrombectomy 6 to 24 Hours after Stroke Due to Basilar-Artery Occlusion",
     "category": "evt-basilar",
-    "population": "n=217, ≥18, NIHSS ≥6, 6-24 h",
+    "population": "n=217, 18-80, NIHSS ≥6, 6-24 h",
     "finding": "Favored EVT: 46% vs 24%",
     "teachingPoint": "Extends EVT benefit for basilar-artery occlusion to 6-24 h.",
     "PMID": "36239645",
@@ -30,7 +32,7 @@
       "cit-baoche-2022"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-05-29",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -40,14 +42,14 @@
     "category": "evt-basilar",
     "population": "n=300, adults, NIHSS basilar-artery occlusion, ≤6 h from estimated onset",
     "finding": "NOT significant: 44.2% vs 37.7%",
-    "teachingPoint": "First basilar EVT RCT — neutral, but set up the severity-selected trials that later proved benefit.",
+    "teachingPoint": "First basilar EVT RCT to begin enrolling (2011), though reported after the smaller, early-terminated BEST trial (Lancet Neurol 2019) — neutral, but set up the severity-selected trials that later proved benefit.",
     "PMID": "34010530",
     "year": 2021,
     "citationIds": [
       "cit-basics-2021"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-22",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -64,7 +66,7 @@
       "cit-veritas-2025"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

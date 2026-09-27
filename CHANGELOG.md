@@ -1,5 +1,196 @@
 # CHANGELOG
 
+## v6.29.0 — 2026-09-27 — clinical accuracy audit, evidence currency, one design system, build-time demo gate
+
+The Protocols tab (`#/protocols/*`) is unchanged apart from the user-approved
+removal of eight dead "Jump to Section" chips; the ICH snapshot is identical and
+the ischemic snapshot differs only by those eight lines.
+
+### Clinical accuracy audit
+
+1,446 audit findings across the Encounter, Trials, Guidelines, References,
+Calculators and education content were each re-checked by an independent
+verifier against primary sources (PubMed/PMC, ClinicalTrials.gov, guideline
+text, FDA). 1,353 were resolved in the code (corrected, or the unverifiable
+detail removed or marked "needs confirmation" in the UI), 92 were refuted and
+left unchanged, and findings located in the Protocols tab were reported only.
+Highlights:
+
+- **Andexanet alfa (Andexxa):** US commercial sales ended 2025-12-22 (FDA safety
+  communication); factor Xa reversal recommendations, cards and notes now say so.
+- **Acute DAPT calculator:** the THALES branch no longer requires an
+  atherosclerotic cause (THALES enrolled noncardioembolic NIHSS ≤5) and no longer
+  pre-empts Class 1 clopidogrel + aspirin (NIHSS 0-3, ABCD² ≥4 TIA) or the 2026
+  Class 2a clopidogrel + aspirin path (atherosclerotic NIHSS 4-5). The 90-day
+  DAPT option is labelled POINT, not CHANCE-2.
+- **Early anticoagulation after AF-related stroke:** attributed to the 2026
+  AHA/ASA AIS guideline (COR IIa, LOE A), not the 2021 secondary-prevention
+  guideline, which predates TIMING, ELAN, OPTIMAS and CATALYST.
+- **CHOICE-2** adjunctive IA alteplase: 0.225 mg/kg, maximum 20 mg, over 15 min
+  (JAMA 2026, PMID 42096239).
+- **mRS-9Q:** "requires constant care" maps to mRS 5.
+- **CrCl (Cockcroft-Gault) card:** its state defaulted to sex "M", which hid
+  the encounter's sex, so a female patient's CrCl was computed with the male
+  factor (about 18% higher) unless the card's own select was changed. It now
+  falls back to the encounter's sex and returns no value when sex is unknown.
+- **Trial screener:** CAPTIVA requires ischemic stroke (TIA without infarction is
+  not eligible); the tandem-lesion trial no longer hard-gates on IVT
+  ineligibility; MOST no longer requires an ICA/M1 occlusion (matcher coverage
+  42/42 criteria).
+- New citation `cit-inch-2016` (INCH, PMID 27302126) and claim
+  `cl-ich-bp-intensive-target`.
+
+### Engineering and guardrails
+
+- **Disclaimers render:** the public-demo notice and a global site footer ("Not
+  medical advice, not an approved clinical tool, not local clinical policy, and
+  not endorsed by any named institution. … Use synthetic data only and never
+  enter PHI.") are now rendered on every view. They were previously defined but tree-shaken out of the bundle.
+  `tests/disclaimer-bundle.test.js` and the smoke run assert both are in the
+  shipped `app.js`.
+- **Build-time demo gate:** `__STROKE_BUILD_PUBLIC_DEMO__` (esbuild define) makes
+  the public build a demo build regardless of runtime flags;
+  `STROKE_BUILD_TARGET=private` builds require `STROKE_BUILD_OUTFILE` and refuse
+  to overwrite the published `app.js`. The footer carries the build marker.
+- The public build disables API-provider key entry in Settings.
+
+### Design and accessibility
+
+- One token source (`src/design/tokens.css`) and one dark-mode mechanism (a
+  pre-paint theme hook plus Tailwind's selector strategy); the former inline
+  `index.html` styles live in `src/design/shell.css`; the unused duplicate
+  modules `src/primitives.jsx` and `src/device-frame.jsx` are removed.
+- Segmented controls support arrow, Home and End keys (roving tabindex).
+- Tailwind config: content globs cover every source file, colour tokens support
+  alpha, and the pixel-based spacing override (which dropped half steps such as
+  `p-3.5`) is removed in favour of Tailwind's default rem scale.
+- Typography: calculator summary badges no longer repeat "Score:" after titles
+  such as "NIHSS Score" ("Score Score"); RoPE and RCVS² labels corrected; the
+  Trials TIA chip reads "transient ischemic attack" and each classification
+  chip has a spaced accessible name.
+- Sex selectors (phone, video, CrCl) share one pattern: an empty "Select"
+  option and "Male"/"Female" labels, with nothing preselected.
+
+### Protocols tab (user-approved exception)
+
+- Removed eight "Jump to Section" chips whose targets do not exist
+  (`isch-af`, `isch-nbo`, `isch-ht`, `isch-antiplatelet`, `isch-statin`,
+  `isch-icad`, `isch-cad`, `isch-seizure`). No clinical wording changed.
+  `tests/protocol-toc-anchors.test.js` asserts every remaining chip resolves.
+
+### Tooling
+
+- `seed-content` groups guideline projections by the primary source (ignoring
+  parenthetical qualifiers) and prunes projection files the sources no longer
+  produce; the bundle again has 11 unique guideline records.
+- `validate-inline-citations` ignores acronym fragments cut by its look-behind
+  window ("OICE-2" from "CHOICE-2").
+- Calculators snapshot re-baselined after line-by-line review; version 6.29.0
+  across `package.json`, `package-lock.json`, `index.html`, `service-worker.js`,
+  `src/app.jsx` and `llms.txt`; `data/**` and `llms-full.txt` regenerated.
+
+### Evidence currency (2026-09-26): verified promotion batch
+
+Twelve trials added to the Evidence Atlas, one record extended with long-term
+follow-up, and two guideline files already in `src/guidelines/` wired into the
+Atlas registry. Every number was checked against the PubMed record and the trial
+registry by an independent verifier; fields the sources did not support were
+left out rather than estimated. New and changed records carry
+`lastReviewed`/`promotedDate` 2026-09-26. Completed trials 248 → 260; citations
+385 → 402; Atlas guideline entries 7 → 9. The Protocols tab is untouched.
+
+- **TRACE-5** (`trace-5`, `cit-trace-5-2026`; topic `extended-window-ivt`, also
+  tagged `evt-basilar`). Xiong Y et al., Lancet 2026;407:763-772 (PMID
+  41655588; NCT06196320): IV tenecteplase 0.25 mg/kg within 24 h vs standard
+  medical treatment in 452 Chinese patients with basilar artery occlusion,
+  thrombectomy at clinician discretion (49% overall). mRS 0-1 or return to
+  baseline 38% vs 29% (adjusted RR 1.50, 95% CI 1.09-2.08, p=0.014); sICH 2% vs
+  3%; 90-day mortality 29% vs 31%.
+- **OPTION (tenecteplase, non-LVO 4.5-24 h)** (`option-tnk`,
+  `cit-option-tnk-2026`, `cit-option-tnk-protocol-2025`; distinct from the LAAO
+  `option-laao` record). JAMA 2026;335:1137-1147 (PMID 41642827; DOI
+  10.1001/jama.2026.0210; NCT05752916): 566 analysed, mRS 0-1 43.6% vs 34.2%
+  (RR 1.28, 95% CI 1.04-1.57; P=.02), sICH 2.8% vs 0%. Claims
+  `cl-tnk-late-window-non-lvo` and `cl-late-window-ivt-non-lvo` now cite it, and
+  `rec-late-window-ivt` gains a caveat that it post-dates the 2026 AHA/ASA
+  guideline.
+- **T-FLAVOR** (`t-flavor`, `cit-t-flavor-2026`; topic `tnk-vs-alteplase`). JAMA
+  Neurol 2026;83:769-777 (PMID 42223935; jRCTs051210055): tenecteplase 0.25
+  mg/kg vs Japan's 0.6 mg/kg alteplase before thrombectomy (n=218). Early
+  substantial reperfusion 10.3% vs 3.6%, meeting the prespecified 90%-CI
+  criterion but not significant at the conventional 95% level; no significant
+  difference in 90-day function, sICH (2.8% vs 1.8%) or mortality (6.5% vs
+  9.9%). Rated low certainty.
+- **ATTENTION LATE** (`attention-late`, `cit-attention-late-2026`; topic
+  `bridging-ivt-before-evt`). Li R et al., JAMA 2026, online 2026-09-23 (PMID
+  42776543; NCT05701956): IV tenecteplase before thrombectomy at 4.5-24 h in
+  basilar occlusion with NIHSS ≥10 did not improve 90-day mRS 0-2 (50/165 [30%]
+  vs 50/164 [30%]; adjusted rate ratio 0.92, 95% CI 0.67-1.25); sICH 5% vs 4%;
+  mortality 40% vs 43%. Replaces the protocol-only ATTENTION-LATE sentence in
+  the `ia_lytic_post_evt` card.
+- **ATTENTION long-term outcomes** folded into the existing `attention` record
+  (`cit-attention-1y-2024`, `cit-attention-3y-2026`; no new trial record).
+  1-year (PMID 39186280): mRS 0-3 44.6% vs 19.4% (adjusted rate ratio 2.23, 95%
+  CI 1.51-3.29). 3-year (PMID 41460644): mRS 0-3 38.4% vs 18.3% (adjusted RR
+  2.05, 95% CI 1.35-3.11, P=.001); cumulative mortality 55.7% vs 73.1%. The
+  record also gains registry-verified exclusion criteria and drops an
+  unsupported "stopped early" limitation.
+- **ASSET-IT** (`asset-it`, `cit-asset-it-2025`; topic
+  `acute-antithrombotic-adjuncts`). NEJM 2025;393:1191-1201 (PMID 40616232;
+  NCT06134622): 24-h IV tirofiban started within 60 min after IV thrombolysis in
+  thrombectomy-ineligible noncardioembolic stroke; mRS 0-1 65.9% vs 54.9% (RR
+  1.20, 95% CI 1.07-1.34), sICH 1.7% vs 0%. Single country; conflicts with MOST;
+  the guideline grade for IV tirofiban remains IIb.
+- **INSTANT** (`instant`, `cit-instant-2026`; topic
+  `acute-antithrombotic-adjuncts`). JAMA 2026;335:1949-1958 (PMID 42100960;
+  NCT05604638): IV tirofiban 4-24 h after tenecteplase in non-LVO/MeVO,
+  noncardioembolic non-responders; mRS 0-1 63.8% vs 52.2% (RR 1.22, 95% CI
+  1.02-1.46). Makes the existing `tirofiban_no_occlusion` card citation
+  traceable in the Atlas.
+- **OPENS-2** (`opens-2`, `cit-opens-2-2025`; topic `acute-neuroprotection`).
+  Lancet 2025;405:486-497 (PMID 39922675; NCT04681651): normobaric hyperoxia
+  (10 L/min for 4 h) with thrombectomy improved the 90-day mRS shift (adjusted
+  common OR 1.65, 95% CI 1.09-2.50). The 2026 AHA/ASA recommendation
+  ais-2026-62 (IIb) uses its eligibility phenotype.
+- **POST-TNK**, **POST-UK** and **ATTENTION-IA** (`post-tnk`, `post-uk`,
+  `attention-ia`; topic `ia-adjunct-after-evt`). All NEUTRAL. IA tenecteplase
+  after eTICI 2c-3 reperfusion, mRS 0-1 49.1% vs 44.1% (aRR 1.15, 95% CI
+  0.97-1.36; JAMA 2025, PMID 39804681). IA urokinase 100 000 IU, 45.1% vs 40.2%
+  (aRR 1.13, 95% CI 0.94-1.36; sICH 4.1% vs 4.1%; JAMA 2025, PMID 39804674). IA
+  tenecteplase after posterior-circulation recanalization, 34.6% vs 26.0% (aRR
+  1.36, 95% CI 0.92-2.02; sICH 8.3% vs 3.1%; BMJ 2025, PMID 39809509).
+- **OPTIMISTmain** (`optimistmain`, `cit-optimistmain-2025`; topic
+  `stroke-unit-care`). Lancet 2025;405:1909-1922 (PMID 40412428; NCT03734640):
+  low-intensity post-thrombolysis monitoring in stable NIHSS <10 patients gave
+  only weak evidence of non-inferiority (mRS 2-6 RR 1.03, 95% CI 0.92-1.15;
+  margin 1.15). Rated low certainty; the default monitoring schedule is
+  unchanged.
+- **HeadSOAR** (`headsoar`, `cit-headsoar-2026`; topic `stroke-unit-care`). BMJ
+  2026;394:e100363 (PMID 42624516; NCT06115707): neutral, head elevation 30-40°
+  vs flat 0-10° for 72 h after successful thrombectomy did not significantly
+  shift 90-day mRS (adjusted generalised OR 1.12, 95% CI 0.97-1.29; P=0.14).
+- **2026 AHA science advisory on minimally invasive ICH evacuation** registered
+  as `cit-aha-mis-ich-2026` and `gl-aha-mis-ich-2026` (Wolfe SQ et al., Stroke
+  2026; PMID 42634945; ungraded). Claim `cl-ich-mis-evacuation` now cites it and
+  the neutral MIND trial (PMID 40892424). The 2022 AHA/ASA MIS grades are
+  unchanged.
+- **2026 AHA/ASA adult stroke rehabilitation guideline** registered as
+  `cit-aha-rehab-2026` and `gl-aha-rehab-2026` (Richards LG et al., Stroke,
+  online 2026-08-27; PMID 42657476). It replaces the 2016 guideline (PMID
+  27145936). The guideline-library record is re-verified and stays source-only
+  (`coverage.status: source-unavailable`): the full text was not retrievable in
+  the review environment, so no COR/LOE was added or changed.
+- **Clinical text.** The `tnk_late_window` card corrects its OPTION bullet
+  ("RR", not "aRR"; the unsupported "~74% MeVO" and "no EVT option" wording is
+  replaced with the ESOC secondary-analysis figure and the trial's exclusion of
+  planned EVT) and adds TRACE-5 and ATTENTION LATE. The `ia_lytic_post_evt`
+  card reports the published ATTENTION LATE result and the neutral POST-TNK,
+  POST-UK and ATTENTION-IA trials. The `tirofiban_no_occlusion` card adds
+  ASSET-IT. The basilar-artery-occlusion education card's IVT bullet now
+  separates TRACE-5 (IV tenecteplase ≤24 h) from ATTENTION LATE (no benefit
+  from adding tenecteplase before thrombectomy at 4.5-24 h).
+- Tests that pin the completed-trial and citation counts now pin 260 and 402.
+
 ## v6.28.2 — 2026-09-19 — calculators and the guideline index join the reference visual system
 
 Presentation-only follow-up to v6.28.1, from a fresh rendered survey of the

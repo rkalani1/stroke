@@ -1,7 +1,7 @@
 {
   "id": "aha-care-ais-prehospital-2021",
   "title": "Care of the Patient With Acute Ischemic Stroke (Prehospital and Acute Phase of Care): Update to the 2009 Comprehensive Nursing Care Scientific Statement: A Scientific Statement From the American Heart Association",
-  "shortTitle": "Care of the Patient With Acute Ischemic Stroke (Prehospital and Acute Phase",
+  "shortTitle": "AHA Nursing Care of AIS: Prehospital/Acute 2021",
   "doi": "10.1161/STR.0000000000000356",
   "publisherUrl": "https://doi.org/10.1161/STR.0000000000000356",
   "pdfUrl": null,
@@ -206,7 +206,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Alteplase within the first 3 hours of symptom onset is the current standard of care and has been FDA approved since 1996; earlier administration correlates with a higher treatment effect. Alteplase has also become a standard of care for select patients within a 4.5-hour window of LKN. To ensure safe patient selection, all centers should have care protocols derived from current promulgated clinical practice guidelines, and systems should operate under the premise that eligible patients receive alteplase in the fastest achievable onset-to-treatment time.",
+      "text": "Alteplase within the first 3 hours of symptom onset was the standard of care at the time of this 2021 statement and has been FDA approved since 1996 (the 2026 AHA/ASA guideline now recommends either alteplase or tenecteplase 0.25 mg/kg, and tenecteplase was FDA-approved for AIS in March 2025); earlier administration correlates with a higher treatment effect. Alteplase has also become a standard of care for select patients within a 4.5-hour window of LKN. To ensure safe patient selection, all centers should have care protocols derived from current promulgated clinical practice guidelines, and systems should operate under the premise that eligible patients receive alteplase in the fastest achievable onset-to-treatment time.",
       "page": null
     },
     {
@@ -222,7 +222,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "It is anticipated that clinical trial literature and practice guidelines will evolve to include use of tenecteplase as a thrombolytic treatment for acute ischemic stroke; recent evidence suggests a dose of 0.25 mg/kg may be adequate, and one advantage is that the total dose is administered by intravenous push rather than an infusion.",
+      "text": "It is anticipated that clinical trial literature and practice guidelines will evolve to include use of tenecteplase as a thrombolytic treatment for acute ischemic stroke; recent evidence suggests a dose of 0.25 mg/kg may be adequate (2026 note: this has since occurred; tenecteplase received FDA approval for acute ischemic stroke in March 2025, and the 2026 AHA/ASA AIS guideline recommends tenecteplase 0.25 mg/kg [maximum 25 mg] or alteplase 0.9 mg/kg for eligible patients within 4.5 hours, COR 1, LOE A), and one advantage is that the total dose is administered by intravenous push rather than an infusion.",
       "page": null
     },
     {
@@ -262,7 +262,7 @@
       "classOfRec": "Statement",
       "classNote": "The Class I / Level A grade cited here is reproduced from the 2019 AHA/ASA acute ischemic stroke guideline; this scientific statement assigns no grade of its own.",
       "levelOfEvidence": "Ungraded",
-      "text": "For select patients with LVO presenting within 6 hours of LKN, 6 clinical trials demonstrated an unequivocal treatment effect using predominantly stent retrieval devices; these underlie the 2019 AHA/American Stroke Association guideline Level IA recommendation for the procedure in patients with a prestroke modified Rankin Scale score of 0 to 1, age >18 years, NIHSS score >=6, ASPECTS >=6, a causative occlusion of the internal carotid artery or proximal middle cerebral artery (M1), and who could have skin puncture within 6 hours of stroke onset. A HERMES secondary analysis of 5 of these trials demonstrated a time-sensitive treatment effect with a less favorable degree of disability for every hour of delay to reperfusion.",
+      "text": "For select patients with LVO presenting within 6 hours of LKN, 6 clinical trials demonstrated an unequivocal treatment effect using predominantly stent retrieval devices; these underlie the 2019 AHA/American Stroke Association guideline Level IA recommendation (since replaced by the 2026 AHA/ASA AIS guideline, which extends Class I EVT to ASPECTS 3-10 within 6 hours) for the procedure in patients with a prestroke modified Rankin Scale score of 0 to 1, age >18 years, NIHSS score >=6, ASPECTS >=6, a causative occlusion of the internal carotid artery or proximal middle cerebral artery (M1), and who could have skin puncture within 6 hours of stroke onset. A HERMES secondary analysis of 5 of these trials demonstrated a time-sensitive treatment effect with a less favorable degree of disability for every hour of delay to reperfusion.",
       "page": null
     },
     {

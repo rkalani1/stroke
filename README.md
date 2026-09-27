@@ -7,16 +7,16 @@ A client-side educational/demo toolkit for stroke management. Runs entirely in t
 ## Features
 - Acute encounter workflow (IVT, EVT, extended-window imaging selection).
 - Protocol cards (example institutional patterns based on published evidence).
-- Calculators: NIHSS, ASPECTS, ICH score, ABCD², HAS-BLED, RCVS², PHASES, ROPE, CrCl, TNK/alteplase dose, DAWN, DEFUSE-3, CHANCE/POINT/THALES DAPT duration, ESSEN, SPI-II, BAT/BRAIN/9-point ICH expansion, VASOGRADE, Ogilvy-Carter, PHQ-9, NASCET, CHA₂DS₂-VA, HEADS².
+- Calculators: NIHSS, ASPECTS, ICH score, ABCD², HAS-BLED, RCVS², PHASES, RoPE, CrCl, TNK/alteplase dose, DAWN, DEFUSE-3, CHANCE/POINT/THALES DAPT duration, ESSEN, SPI-II, BAT/BRAIN/9-point ICH expansion, VASOGRADE, Ogilvy-Carter, PHQ-9, NASCET, CHA₂DS₂-VA, HEADS².
 - Public build disables ward census, imports/exports, encounter persistence, and patient-context URL handoff. Private/approved deployments can re-enable operational modules after governance review.
 - Clinic and wards workflows.
 - Post-tPA neurocheck timer; LKW countdown to 4.5h and 24h windows.
 - Note generators for telestroke consult, transfer, signout, progress, discharge.
-- **Completed evidence** under `#/research/references` with 248 completed/landmark trials, search, topic / certainty / evidence-type filters, and citation drilldown to PMID / DOI.
+- **Completed evidence** under `#/research/references` with 260 completed/landmark trials, search, topic / certainty / evidence-type filters, and citation drilldown to PMID / DOI.
 - **Context Bridge** in active-trial matcher cards: related completed trials surface as background evidence (never as eligibility criteria).
 - **"Why this recommendation?" drawer** in Management sections, walking guideline → claim → primary citation chain.
-- **Pure-function matcher engine** (`src/evidence/matcher-engine.js`) with executable coverage of 44 modeled inclusion criteria + 14 exclusions. These partial models support candidate screening, not definitive eligibility.
-- **384 citation records**, including primary reports, education sources and pre-2021 landmarks.
+- **Pure-function matcher engine** (`src/evidence/matcher-engine.js`) with executable coverage of 42 modeled inclusion criteria + 14 exclusions. These partial models support candidate screening, not definitive eligibility.
+- **402 citation records**, including primary reports, education sources and pre-2021 landmarks.
 
 
 ## Install
@@ -34,6 +34,8 @@ Updates roll out via a non-intrusive **"A new version of Stroke is ready"** bann
 
 ## Privacy & safety
 - Public GitHub Pages use is synthetic/demo-only.
+- Demo mode is fixed at **build time**, not guessed from the hostname: `npm run build` (the bundle committed to `main` and deployed to Pages) always compiles `src/build-flags.js` with `__STROKE_BUILD_PUBLIC_DEMO__ = true`, so the shipped `app.js` runs as a synthetic demo on any host (no persistence, census, imports/exports, or patient-context URL handoff). A governed private deployment must opt out explicitly with `STROKE_BUILD_TARGET=private STROKE_BUILD_OUTFILE=<path outside the deployed tree> npm run build:js`; the build refuses to write a private bundle over the committed `app.js`. The hostname and `?publicDemo=1` checks remain only as defense in depth for private builds.
+- Every view renders a global footer with the educational-use / no-PHI disclaimer, and the public build adds a non-blocking demo notice. `tests/disclaimer-bundle.test.js` asserts this copy is present in the shipped `app.js` (unrendered components are tree-shaken) and that the committed bundle carries the public build marker.
 - Do not enter PHI, patient identifiers, MRN fragments, dates of birth, real ward census data, real encounter details, learner records, or confidential institutional information.
 - Real clinical use requires organization-approved hosting, storage, access control, governance, and incident-response paths outside this public deployment.
 

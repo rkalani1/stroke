@@ -233,10 +233,14 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       // corrections (Hemphill ICH-score table, ABCD2 duration options,
       // HAS-BLED published item definitions). ich/ischemic unchanged.
       // 2026-09-22: ischemic 764->762 for the two requested protocol subtitle removals.
+      // 2026-09-26: ischemic 762->754 for the eight removed dead Jump-to-Section chip
+      // labels (navigation only; no clinical wording changed).
+      // 2026-09-27: calculators 456->448: the eight calculator summary badges drop the
+      // redundant "Score:" prefix ("NIHSS Score  Score: 12" read as "Score Score").
       const baselineCounts = {
         ich: 524,
-        ischemic: 762,
-        calculators: 456
+        ischemic: 754,
+        calculators: 448
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);
@@ -363,7 +367,7 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       const bundlePath = path.join(REPO_ROOT, 'content', 'bundle.json');
       const bundle = JSON.parse(fs.readFileSync(bundlePath, 'utf8'));
       expect(bundle.guidelines?.length).toBe(11);
-      expect(bundle.trials?.length).toBe(248);
+      expect(bundle.trials?.length).toBe(260);
       expect(bundle.education?.length).toBeGreaterThanOrEqual(32);
       expect(bundle.calculators?.length).toBe(34);
       expect(bundle.references?.length).toBe(32); // 28 repo-local documents + 4 external links (registry-driven seeding)
@@ -381,7 +385,7 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       const json = JSON.parse(res.stdout);
       expect(json.errors.length).toBe(0);
       expect(json.counts.guidelines).toBe(11);
-      expect(json.counts.trials).toBe(248);
+      expect(json.counts.trials).toBe(260);
       expect(json.counts.education).toBeGreaterThanOrEqual(32);
       expect(json.counts.calculators).toBe(34);
       expect(json.counts.references).toBe(32); // 28 repo-local documents + 4 external links (registry-driven seeding)

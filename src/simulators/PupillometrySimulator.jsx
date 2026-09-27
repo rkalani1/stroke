@@ -120,7 +120,7 @@ export function interpretPupillometry({ npi, cv, change, diff } = {}) {
     return {
       status: 'EARLY CLINICAL ALARM',
       tone: 'warn',
-      summary: 'Borderline pupillary reactivity (NPi < 3.0, CV < 0.8 mm/s, or % constriction < 10%). Suggests possible early CN III compression. Per Giede-Jeppe 2021 these CV / %-change cut-points were proposed to flag ICP ≥ 20 mmHg — but see the Petrosino 2025 caveat below.',
+      summary: 'Borderline pupillary reactivity (NPi < 3.0, CV < 0.8 mm/s, or % constriction < 10%). In Giede-Jeppe 2021 (23 sedated ICH patients), values above these CV / %-change cut-points made ICP ≥ 20 mmHg unlikely (high NPV), but values below them had a PPV of only 7–8%, so they cannot reliably flag raised ICP. See also the Petrosino 2025 caveat below.',
       steps: [
         'Perform a thorough clinical neurological assessment.',
         'Review the NPi trend: a decreasing trend over the last 3 readings is an early alarm even if still > 3.0.',
@@ -170,8 +170,8 @@ const ESCALATION = [
     detail: 'May reflect asymmetric CN III/brainstem compression physiology. Correlate with the bedside exam and imaging rather than treating NPi asymmetry as diagnostic by itself.'
   },
   {
-    badge: 'CV / %', tone: 'warn', title: 'CV < 0.8 mm/s or % constriction < 10% — ICP ≥ 20 mmHg concern',
-    detail: 'Giede-Jeppe 2021 proposed these cut-points (NPV > 97%) to flag intracranial hypertension — but the larger Petrosino 2025 analysis found no reliable NPi–ICP association (see caveat).'
+    badge: 'CV / %', tone: 'warn', title: 'CV < 0.8 mm/s or % constriction < 10% — raised ICP not excluded',
+    detail: 'In Giede-Jeppe 2021 (23 sedated ICH patients), values above these cut-points had NPV ≥ 98.7% for ICP ≥ 20 mmHg, but values below them had a PPV of only 7–8%, so they cannot reliably flag intracranial hypertension. The larger Petrosino 2025 ORANGE analysis found no significant NPi–ICP association (see caveat).'
   }
 ];
 
@@ -190,13 +190,13 @@ const EVIDENCE = [
   },
   {
     study: 'Ischemic-stroke evidence gap',
-    cohort: 'No indexed cohort located.',
-    finding: 'Two small series previously cited here for a pre-herniation NPi decline and a "all NPi < 2.8 deteriorated" threshold could not be located on PubMed and have been withdrawn. NPi trending in malignant anterior-circulation infarction is a reasonable monitoring adjunct, but the specific cut-points are not validated in ischemic stroke.'
+    cohort: 'Small observational cohorts only: Osman 2019 (94 AIS + 40 ICH), Kossel 2023 (122 post-EVT), Park 2025 (59 malignant AIS), Du 2026 (71 large MCA strokes).',
+    finding: 'Indexed evidence is limited to small retrospective cohorts: in Park 2025 (PLoS One; 59 malignant anterior-circulation AIS), ipsilateral NPi in the 10 patients who herniated fell from 4.26 (27–21 h before) to 1.80 (3–0 h before CT-diagnosed herniation); Kossel 2023 (J Neurol; 122 post-EVT patients) found low PPV but high NPV of pupillometry for space-occupying edema. No study validates NPi < 2.8 specifically. NPi trending in malignant anterior-circulation infarction is a reasonable monitoring adjunct, but the specific cut-points are not validated in ischemic stroke.'
   },
   {
-    study: 'Anatomic shift correlates',
+    study: 'Kim et al. — Front Neurol 2022;13:1046548 (PMID 36561299)',
     cohort: 'ICH vs ischemic-stroke midline-shift markers.',
-    finding: 'ICH: midline shift of the septum pellucidum predicted NPi asymmetry (β = 0.11, p = 0.01). Ischemic: pineal-gland shift showed a trend toward association (β = 0.16, p = 0.07), so treat it as hypothesis-generating rather than definitive.'
+    finding: 'Pilot study (53 patients, 74 CTs): no significant association between pupil reactivity and shift after adjustment for confounders; exploratory signal in ICH for septum-pellucidum shift vs NPi asymmetry (β = 0.11, p = 0.01). Ischemic: pineal-gland shift showed a trend toward association (β = 0.16, p = 0.07), so treat it as hypothesis-generating rather than definitive.'
   }
 ];
 

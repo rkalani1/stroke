@@ -301,15 +301,21 @@ describe('CHANCE/POINT/INSPIRES/THALES branching', () => {
     const r = recommendAcuteDAPT({
       nihss: 4, strokeType: 'ischemic', atherosclerotic: true, lvdSymptomatic: true, timeFromOnsetH: 60
     });
-    // Note: code prefers THALES branch when atherosclerotic AND within 24h
-    // 60h is outside 24h, so falls to INSPIRES (≤72h window)
     expect(r.regimen).toContain('clopidogrel+ASA');
     expect(r.duration).toBe('21 days');
   });
 
-  it('NIHSS 4 within 12h with atherosclerosis → THALES (ticagrelor+ASA × 30 d)', () => {
+  it('NIHSS 4 within 12h with atherosclerosis → clopi+ASA × 21 d (2026 Class 2a covers NIHSS 4-5 <24h)', () => {
     const r = recommendAcuteDAPT({
       nihss: 4, strokeType: 'ischemic', atherosclerotic: true, timeFromOnsetH: 12
+    });
+    expect(r.regimen).toContain('clopidogrel+ASA');
+    expect(r.duration).toBe('21 days');
+  });
+
+  it('NIHSS 4 within 12h without atherosclerosis → THALES (ticagrelor+ASA × 30 d)', () => {
+    const r = recommendAcuteDAPT({
+      nihss: 4, strokeType: 'ischemic', atherosclerotic: false, timeFromOnsetH: 12
     });
     expect(r.regimen).toContain('ticagrelor+ASA');
     expect(r.duration).toBe('30 days');
@@ -440,8 +446,9 @@ describe('interpretMRS9Q (Bruno Stroke 2010 — fixed in v5.33.0)', () => {
   it('mRS 4 — cannot walk at all (q4=false)', () => {
     expect(interpretMRS9Q({ q4Walking: false }).mrs).toBe(4);
   });
-  it('mRS 4 via constant care', () => {
-    expect(interpretMRS9Q({ q9NeedsHelp: 'constant' }).mrs).toBe(4);
+  // mRS 5 = "requires constant nursing care and attention" (standard mRS definitions).
+  it('mRS 5 via constant care', () => {
+    expect(interpretMRS9Q({ q9NeedsHelp: 'constant' }).mrs).toBe(5);
   });
   it('mRS 5 — bedridden', () => {
     expect(interpretMRS9Q({ q9NeedsHelp: 'bedridden' }).mrs).toBe(5);

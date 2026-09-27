@@ -22,7 +22,7 @@
     "fullName": "Efficacy and safety of antiplatelet therapy for secondary prevention of small subcortical infarction: a systematic review and network meta-analysis",
     "category": "lacunar-svd-prevention",
     "population": "n=47507, not reported in the abstract — trial-level network meta-analysis, NIHSS not reported; enrolment was by small subcortical infarction subtype, Medline, Embase, Cochrane Library and Web of Science searched from inception to October 2024; PROSPERO CRD42024607819",
-    "finding": "Cilostazol ranked best for preventing MACE (SUCRA 90.0%), significantly better than aspirin, dipyridamole, vorapaxar, sarpogrelate and placebo; the comparison with ticlopidine touches unity and is NOT significant",
+    "finding": "Cilostazol ranked best for preventing MACE (SUCRA 90.0%), reported by the authors as significantly better than aspirin, ticlopidine, dipyridamole, vorapaxar, sarpogrelate and placebo, although the ticlopidine comparison is borderline (95% CI upper bound 1.00)",
     "teachingPoint": "Reinforces avoiding long-term aspirin plus clopidogrel after small subcortical infarction on bleeding grounds, and flags cilostazol as the best-ranked single agent in a largely East Asian evidence base that has not been replicated in Western populations.",
     "PMID": "40215388",
     "year": 2025,
@@ -30,7 +30,7 @@
       "cit-ssi-antiplatelet-nma-2025"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

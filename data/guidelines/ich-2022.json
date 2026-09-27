@@ -9,7 +9,7 @@
   "pmid": "35579034",
   "recommendations": [
     {
-      "section": "Organization of Prefacility and Initial Systems",
+      "section": "Organization of Prehospital and Initial Systems of Care",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
@@ -22,7 +22,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Organization of Prefacility and Initial Systems",
+      "section": "Organization of Prehospital and Initial Systems of Care",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
@@ -35,7 +35,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Organization of Prefacility and Initial Systems",
+      "section": "Organization of Prehospital and Initial Systems of Care",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -48,7 +48,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Organization of Prefacility and Initial Systems",
+      "section": "Organization of Prehospital and Initial Systems of Care",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -61,7 +61,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Organization of Prefacility and Initial Systems",
+      "section": "Organization of Prehospital and Initial Systems of Care",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -74,7 +74,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Organization of Prefacility and Initial Systems",
+      "section": "Organization of Prehospital and Initial Systems of Care",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
@@ -87,7 +87,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Organization of Prefacility and Initial Systems",
+      "section": "Organization of Prehospital and Initial Systems of Care",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -113,7 +113,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "section": "Neuroimaging for ICH Diagnosis and Acute Course",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -126,7 +126,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "section": "Neuroimaging for ICH Diagnosis and Acute Course",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -139,7 +139,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "section": "Neuroimaging for ICH Diagnosis and Acute Course",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -152,7 +152,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "section": "Neuroimaging for ICH Diagnosis and Acute Course",
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -165,7 +165,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Neuroimaging for ICH Diagnosis and Acute",
+      "section": "Neuroimaging for ICH Diagnosis and Acute Course",
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -391,6 +391,26 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "Andexanet alfa is reasonable for patients with direct factor Xa inhibitor-associated spontaneous ICH to reverse the anticoagulant effect.",
+      "currentEvidenceNote": "US safety and availability update reviewed 2026-09-26 (not part of the 2022 guideline): FDA concluded that the serious risks of Andexxa outweigh its benefits; US commercial sales ended on 22 December 2025. In ANNEXA-I (2024), andexanet improved hemostatic efficacy versus usual care (67.0% vs 53.1%) but increased thrombotic events (10.3% vs 5.6%), including ischemic stroke (6.5% vs 1.5%), with no appreciable difference in mRS or 30-day death. The 2026 NCS/SCCM focused update conditionally recommends 4F-PCC over andexanet; in the US, 4F-PCC or aPCC (off-label for this indication) is now the principal reversal option for factor Xa inhibitor-associated ICH. This 2022 statement keeps its original grading and is not a current US endorsement or evidence of andexanet availability.",
+      "currentEvidenceCheckedAt": "2026-09-26",
+      "currentEvidenceSources": [
+        {
+          "title": "FDA update on the safety of Andexxa",
+          "url": "https://www.fda.gov/vaccines-blood-biologics/safety-availability-biologics/update-safety-andexxa"
+        },
+        {
+          "title": "Connolly et al., N Engl J Med 2024 (ANNEXA-I)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38749032/",
+          "pmid": "38749032",
+          "doi": "10.1056/NEJMoa2313040"
+        },
+        {
+          "title": "NCS/SCCM focused guideline update, Neurocrit Care 2026 (4F-PCC rather than andexanet alfa)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42786382/",
+          "pmid": "42786382",
+          "doi": "10.1007/s12028-026-02601-4"
+        }
+      ],
       "page": 19,
       "id": "ich-2022-30",
       "sourceSection": "table-06",
@@ -672,7 +692,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Prevention and Management of Acute Medical",
+      "section": "Prevention and Management of Acute Medical Complications",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
@@ -685,7 +705,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Prevention and Management of Acute Medical",
+      "section": "Prevention and Management of Acute Medical Complications",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -698,7 +718,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Prevention and Management of Acute Medical",
+      "section": "Prevention and Management of Acute Medical Complications",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -711,7 +731,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Prevention and Management of Acute Medical",
+      "section": "Prevention and Management of Acute Medical Complications",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1157,7 +1177,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "Urgent posterior-fossa surgical evaluation is recommended for cerebellar ICH with neurologic deterioration, brainstem compression, or obstructive hydrocephalus.",
+      "text": "For patients with cerebellar ICH who are deteriorating neurologically, have brainstem compression and/or hydrocephalus from ventricular obstruction, or have cerebellar ICH volume >=15 mL, immediate surgical removal of the hemorrhage with or without EVD is recommended in preference to medical management alone to reduce mortality.",
       "localNote": "Local operational note (June 2026 institutional overlay — NOT AHA/ASA guideline content): the local June 2026 initial-evaluation algorithm does not use cerebellar hematoma volume alone as an operative trigger.",
       "page": 42,
       "id": "ich-2022-89",
@@ -1544,7 +1564,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "section": "Lifestyle Modifications/Patient and Caregiver Education",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1557,7 +1577,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "section": "Lifestyle Modifications/Patient and Caregiver Education",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1570,7 +1590,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "section": "Lifestyle Modifications/Patient and Caregiver Education",
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1583,7 +1603,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "section": "Lifestyle Modifications/Patient and Caregiver Education",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1596,7 +1616,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Lifestyle Modifications/Patient and Caregiver",
+      "section": "Lifestyle Modifications/Patient and Caregiver Education",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1609,7 +1629,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Primary ICH Prevention in Individuals With High-",
+      "section": "Primary ICH Prevention in Individuals With High-Risk Imaging Findings",
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
@@ -1633,7 +1653,7 @@
     "sourceSections": [
       {
         "id": "table-01",
-        "title": "Organization of Prefacility and Initial Systems",
+        "title": "Organization of Prehospital and Initial Systems of Care",
         "sourceTable": "Recommendations for Organization of Prehospital and Initial Systems of Care",
         "rowCount": 7,
         "pageRange": [
@@ -1665,7 +1685,7 @@
       },
       {
         "id": "table-03",
-        "title": "Neuroimaging for ICH Diagnosis and Acute",
+        "title": "Neuroimaging for ICH Diagnosis and Acute Course",
         "sourceTable": "Recommendations for Neuroimaging for ICH Diagnosis and Acute Course",
         "rowCount": 5,
         "pageRange": [
@@ -1792,7 +1812,7 @@
       },
       {
         "id": "table-10",
-        "title": "Prevention and Management of Acute Medical",
+        "title": "Prevention and Management of Acute Medical Complications",
         "sourceTable": "Recommendations for Prevention and Management of Acute Medical Complications",
         "rowCount": 4,
         "pageRange": [
@@ -2099,7 +2119,7 @@
       },
       {
         "id": "table-30",
-        "title": "Lifestyle Modifications/Patient and Caregiver",
+        "title": "Lifestyle Modifications/Patient and Caregiver Education",
         "sourceTable": "Recommendations for Lifestyle Modifications/Patient and Caregiver Education",
         "rowCount": 5,
         "pageRange": [
@@ -2116,7 +2136,7 @@
       },
       {
         "id": "table-31",
-        "title": "Primary ICH Prevention in Individuals With High-",
+        "title": "Primary ICH Prevention in Individuals With High-Risk Imaging Findings",
         "sourceTable": "Recommendations for Primary ICH Prevention in Individuals With High- Risk Imaging Findings",
         "rowCount": 1,
         "pageRange": [

@@ -14,11 +14,12 @@
          while offline. -->
     <link rel="stylesheet" href="tailwind.css">
     <style>
-        /* Same theme resolution as src/design/theme.js (getThemePref /
-           effectiveTheme), which is also what index.html's public-Pages
-           pre-paint branch implements: an explicit Dark / System choice is
-           honored; an unset preference renders light on the public
-           deployment and follows the OS elsewhere. */
+        /* The theme is picked by the pre-paint script below, with the same
+           rule as the app's theme controller (resolveTheme) and index.html's
+           pre-paint: an explicit Dark / Light / System choice is honored;
+           an unset preference renders light on the public deployment and
+           follows the OS elsewhere. [data-theme] on <html> is the only
+           dark-mode hook the CSS reads. */
         html { background: var(--app-bg); }
         body {
             margin: 0;
@@ -51,7 +52,7 @@
             padding: 1.75rem 1.75rem 1.5rem;
             background: var(--card);
             border: 1px solid var(--line);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-shell);
             box-shadow: var(--shadow-lg);
         }
         /* the same accent hairline that marks the top edge of the app sheet */
@@ -184,13 +185,21 @@
     </style>
     <script>
         (function () {
-            var pref = null;
-            try { pref = localStorage.getItem('stroke.v7.theme'); } catch (e) { /* ignore */ }
+            // Mirrors the app's theme controller (resolveTheme) and index.html.
+            var stored = null;
+            try { stored = localStorage.getItem('stroke.v7.theme'); } catch (e) { /* ignore */ }
+            var pref = (stored === 'light' || stored === 'dark' || stored === 'auto') ? stored : null;
             var isPublicPages = /(^|\.)github\.io$/i.test(window.location.hostname || '');
+            if (!pref && stored === null && !isPublicPages) {
+                // legacy v5 Dark choice, before app.js has migrated it
+                var legacy = null;
+                try { legacy = localStorage.getItem('strokeApp:darkMode') || localStorage.getItem('darkMode'); } catch (e) { /* ignore */ }
+                if (legacy === 'true') pref = 'dark';
+            }
             var prefersDark = !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            var dark = pref === 'dark' || ((pref === 'auto' || (!pref && !isPublicPages)) && prefersDark);
+            var mode = pref || (isPublicPages ? 'light' : 'auto');
+            var dark = mode === 'dark' || (mode === 'auto' && prefersDark);
             document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-            document.documentElement.classList.toggle('dark', dark);
         })();
     </script>
 </head>
@@ -205,7 +214,7 @@
         <p>The browser couldn't reach the network, but the Stroke app is cached on this device. Open it and your most recent view will load.</p>
         <h2>Available offline</h2>
         <ul>
-            <li>All calculators (NIHSS, ASPECTS, ICH, ABCD<sup>2</sup>, HAS-BLED, RCVS<sup>2</sup>, PHASES, ROPE, CrCl, TNK/alteplase dose, DAWN, DEFUSE-3, CHA<sub>2</sub>DS<sub>2</sub>-VA, …)</li>
+            <li>All calculators (NIHSS, ASPECTS, ICH, ABCD<sup>2</sup>, HAS-BLED, RCVS<sup>2</sup>, PHASES, RoPE, CrCl, TNK/alteplase dose, DAWN, DEFUSE-3, CHA<sub>2</sub>DS<sub>2</sub>-VA, …)</li>
             <li>Note templates (telestroke, transfer, signout, progress, discharge)</li>
             <li>Example protocols, guidelines, and references that loaded on the last online session</li>
         </ul>

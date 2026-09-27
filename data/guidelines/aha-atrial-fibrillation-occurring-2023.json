@@ -199,6 +199,34 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "In general, the risk of early re-embolization is low. Urgent anticoagulation with the goal of preventing early recurrent stroke or preventing neurological deterioration is not recommended. Because of the low risk of early recurrent stroke and the risk of worsening hemorrhagic transformation, it is reasonable to delay oral anticoagulation for 4 to 14 days among those with acute ischemic stroke in the setting of AF.",
+      "currentEvidenceCheckedAt": "2026-09-26",
+      "currentEvidenceSources": [
+        {
+          "title": "ELAN trial, N Engl J Med 2023",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37222476/",
+          "pmid": "37222476",
+          "doi": "10.1056/NEJMoa2303048"
+        },
+        {
+          "title": "OPTIMAS trial, Lancet 2024",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/39491870/",
+          "pmid": "39491870",
+          "doi": "10.1016/S0140-6736(24)02197-4"
+        },
+        {
+          "title": "CATALYST IPD meta-analysis, Lancet 2025",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40570866/",
+          "pmid": "40570866",
+          "doi": "10.1016/S0140-6736(25)00439-8"
+        },
+        {
+          "title": "2026 AHA/ASA acute ischemic stroke guideline",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41582814/",
+          "pmid": "41582814",
+          "doi": "10.1161/STR.0000000000000513"
+        }
+      ],
+      "currentEvidenceNote": "Newer evidence reviewed 2026-09-26: randomized trials published after this March 2023 statement (ELAN 2023, OPTIMAS 2024) and the CATALYST individual-participant meta-analysis (2025) found no increase in symptomatic intracranial hemorrhage with early DOAC initiation. In CATALYST, starting a DOAC within 4 days reduced the 30-day composite of recurrent ischemic stroke, symptomatic intracerebral hemorrhage, or unclassified stroke (2.1% vs 3.0%; OR 0.70, 95% CI 0.50-0.98). The 2026 AHA/ASA acute ischemic stroke guideline states that early oral anticoagulation is reasonable in carefully selected (e.g., milder severity) patients with AF (COR 2a, LOE A). The routine 4-to-14-day delay described in this 2023 statement is historical and should not be read as current practice.",
       "page": null
     },
     {

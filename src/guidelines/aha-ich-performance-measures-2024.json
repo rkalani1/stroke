@@ -1,7 +1,7 @@
 {
   "id": "aha-ich-performance-measures-2024",
   "title": "2024 AHA/ASA Performance and Quality Measures for Spontaneous Intracerebral Hemorrhage: A Report From the American Heart Association/American Stroke Association",
-  "shortTitle": "2024 AHA/ASA Performance and Quality Measures for Spontaneous Intracerebral",
+  "shortTitle": "AHA/ASA ICH Performance Measures 2024",
   "doi": "10.1161/STR.0000000000000464",
   "publisherUrl": "https://doi.org/10.1161/STR.0000000000000464",
   "pdfUrl": null,
@@ -55,6 +55,26 @@
       "classNote": null,
       "levelOfEvidence": "B-NR",
       "text": "In patients with direct factor Xa inhibitor-associated spontaneous ICH, andexanet alfa is reasonable to reverse the anticoagulant effect of factor Xa inhibitors.",
+      "currentEvidenceNote": "US safety and availability update reviewed 2026-09-26 (not part of the 2024 performance-measure document or the 2022 guideline it quotes): andexanet alfa (Andexxa) is no longer marketed in the US; FDA concluded that its serious risks, including thromboembolic events, outweigh its benefits, and US commercial sales ended on 22 December 2025. The 2026 NCS/SCCM focused update conditionally recommends 4F-PCC rather than andexanet alfa for factor Xa inhibitor-associated ICH. This statement keeps its original grading and is not a current US endorsement or evidence of andexanet availability.",
+      "currentEvidenceCheckedAt": "2026-09-26",
+      "currentEvidenceSources": [
+        {
+          "title": "FDA update on the safety of Andexxa",
+          "url": "https://www.fda.gov/vaccines-blood-biologics/safety-availability-biologics/update-safety-andexxa"
+        },
+        {
+          "title": "NCS/SCCM focused guideline update, Neurocrit Care 2026 (4F-PCC rather than andexanet alfa)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42786382/",
+          "pmid": "42786382",
+          "doi": "10.1007/s12028-026-02601-4"
+        },
+        {
+          "title": "Ng et al., J Clin Med 2026 (reversal after andexanet withdrawal)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41976898/",
+          "pmid": "41976898",
+          "doi": "10.3390/jcm15072597"
+        }
+      ],
       "page": null
     },
     {
@@ -250,6 +270,6 @@
       "page": null
     }
   ],
-  "documentType": "guideline",
+  "documentType": "scientific-statement",
   "gradingSystem": "ACC/AHA"
 }

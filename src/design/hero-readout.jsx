@@ -96,7 +96,7 @@ export const HeroReadout = ({
   const bucket = minutes < 270 ? '<4.5h' : minutes < 360 ? '<6h' : minutes < 1440 ? '<24h' : '≥24h';
   useEffect(() => {
     if (prevBucketRef.current !== null && prevBucketRef.current !== bucket) {
-      liveMsgRef.current = `Threshold crossed: ${bucket} elapsed since last known well`;
+      liveMsgRef.current = `Threshold crossed: ${({ '<6h': '4.5 h', '<24h': '6 h', '≥24h': '24 h' })[bucket] || bucket} elapsed since last known well`;
     }
     prevBucketRef.current = bucket;
   }, [bucket]);

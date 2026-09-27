@@ -183,7 +183,8 @@ describe('Empirical Stress Testing — calculateEDEMAScore (Ong Stroke 2017)', (
       noPreviousStroke: false
     });
     expect(resMin.score).toBe(0);
-    expect(resMin.riskTier).toBe('Low');
+    // Ong 2017 (PMID 28487333) validated only the >=7 high-risk cut point; lower scores are not a validated "low risk" tier.
+    expect(resMin.riskTier).toBe('Below published high-risk threshold');
     expect(resMin.highRiskForMalignantEdema).toBe(false);
 
     // Max score = 14 (cistern 3 + glucose 2 + no-reperfusion 1 + shift>9 7 + no-prior 1)
@@ -195,7 +196,7 @@ describe('Empirical Stress Testing — calculateEDEMAScore (Ong Stroke 2017)', (
       noPreviousStroke: true
     });
     expect(resMax.score).toBe(14);
-    expect(resMax.riskTier).toBe('High');
+    expect(resMax.riskTier).toBe('High (>=7)');
     expect(resMax.highRiskForMalignantEdema).toBe(true);
   });
 

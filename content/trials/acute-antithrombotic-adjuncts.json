@@ -13,7 +13,7 @@
       "cit-rescue-bt2-2023"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-15",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -21,7 +21,7 @@
     "name": "ATTRACTION",
     "fullName": "Adjunct Tirofiban Treatment after Successful Endovascular Thrombectomy Recanalisation in Acute Anterior Circulation Ischaemic Stroke",
     "category": "acute-antithrombotic-adjuncts",
-    "population": "n=1380, median 71 y (IQR 62-77); 591 (43%) female, 789 (57%) male, NIHSS not restricted by a protocol NIHSS band (anterior-circulation LVO), Randomization after successful reperfusion by thrombectomy",
+    "population": "n=1380, median 71 y (IQR 62-77); 591 (43%) female, 789 (57%) male, NIHSS NIHSS 6-30 (protocol inclusion; anterior-circulation LVO), Randomization within 24 h of onset (last known well), after successful reperfusion by thrombectomy",
     "finding": "MET superiority, favoring tirofiban: 49% (340/689) vs 43% (299/691)",
     "teachingPoint": "Reopens the adjunctive-antiplatelet question specifically for the post-reperfusion window, while the numerically higher symptomatic haemorrhage and the near-uniformly Han Chinese cohort mean it is not yet a general recommendation.",
     "PMID": "42341797",
@@ -30,7 +30,7 @@
       "cit-attraction-2026"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -47,7 +47,7 @@
       "cit-rescue-bt-2022"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -72,7 +72,7 @@
     "name": "STRATEGY",
     "fullName": "Tirofiban for Branch Atheromatous Disease-Related Stroke: The STRATEGY Randomized Clinical Trial",
     "category": "acute-antithrombotic-adjuncts",
-    "population": "n=970, Adults, NIHSS See population criteria, Within 48 h",
+    "population": "n=970, 18-80 (median 63), NIHSS ≤10 with LOC 1a ≤1 (median 3), Within 48 h",
     "finding": "No significant difference: 17.1% vs 19.6%",
     "teachingPoint": "No demonstrated reduction in the prespecified deterioration/recurrent-stroke composite in this selected population.",
     "PMID": "42671865",
@@ -81,7 +81,41 @@
       "cit-strategy-2026"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-06",
+    "lastReviewed": "2026-09-26",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "asset-it",
+    "name": "ASSET-IT",
+    "fullName": "Advancing Stroke Safety and Efficacy Through Early Tirofiban Administration After Intravenous Thrombolysis",
+    "category": "acute-antithrombotic-adjuncts",
+    "population": "n=832, adults ≥18 y (registry NCT06134622); baseline age distribution not reported in the abstract, NIHSS 4-25 before IV thrombolysis (registry NCT06134622), IV thrombolysis within 4.5 h of onset (last known well); study drug started within 60 min after thrombolysis",
+    "finding": "MET superiority, favoring tirofiban: 65.9% vs 54.9%",
+    "teachingPoint": "A large phase 3 double-blind trial in which an early 24-h tirofiban infusion after IV thrombolysis increased excellent 90-day outcome in thrombectomy-ineligible noncardioembolic stroke, with a small sICH excess. It is a single Chinese trial that conflicts with MOST, where a GP IIb/IIIa inhibitor (eptifibatide) given in a similar window did not reduce disability, so it does not by itself replace the standard 24-hour post-lysis antithrombotic hold outside a protocol; the 2026 AHA/ASA guideline rates IV tirofiban IIb (B-R).",
+    "PMID": "40616232",
+    "year": 2025,
+    "citationIds": [
+      "cit-asset-it-2025"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-09-26",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "instant",
+    "name": "INSTANT",
+    "fullName": "Intravenous Tirofiban After Tenecteplase in Acute Ischemic Stroke",
+    "category": "acute-antithrombotic-adjuncts",
+    "population": "n=359, Adults ≥18 y (registry); mean 66 y; 141 (39.3%) female, NIHSS NIHSS ≥4 before randomization (registry NCT05604638 and published protocol), Randomized, with study drug started, 4-24 h after IV tenecteplase",
+    "finding": "MET superiority, favoring tirofiban: 63.8% (113/177) vs 52.2% (95/182)",
+    "teachingPoint": "In a single Chinese trial, IV tirofiban started 4-24 h after tenecteplase in non-LVO/MeVO, noncardioembolic non-responders increased 90-day mRS 0-1 (63.8% vs 52.2%) with one sICH. The 2026 AHA/ASA guideline, which predates INSTANT, rates IV tirofiban in AIS IIb (efficacy not well established).",
+    "PMID": "42100960",
+    "year": 2026,
+    "citationIds": [
+      "cit-instant-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

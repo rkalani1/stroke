@@ -13,7 +13,7 @@
       "cit-chance-2013"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -30,7 +30,7 @@
       "cit-point-2018"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -40,14 +40,14 @@
     "category": "dapt-minor-stroke",
     "population": "n=11016, ≥40, NIHSS ≤5, ≤24 h",
     "finding": "Favored DAPT: 5.5% vs 6.6%",
-    "teachingPoint": "Supports ticagrelor-based DAPT, especially when CYP2C19 LOF suspected.",
+    "teachingPoint": "Supports 30-day ticagrelor-aspirin as an alternative DAPT regimen (fewer 30-day stroke/death events, no difference in disability, more severe bleeding); THALES did not select patients by CYP2C19 genotype — evidence in loss-of-function carriers comes from CHANCE-2.",
     "PMID": "32668111",
     "year": 2020,
     "citationIds": [
       "cit-thales-2020"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -55,8 +55,8 @@
     "name": "INSPIRES",
     "fullName": "Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke",
     "category": "dapt-minor-stroke",
-    "population": "n=6100, ≥35, NIHSS mild stroke or high-risk TIA, ≤72 h",
-    "finding": "Favored DAPT",
+    "population": "n=6100, 35-80, NIHSS ≤5 (TIA: ABCD² ≥4), ≤72 h",
+    "finding": "Favored DAPT: 7.3% vs 9.2%",
     "teachingPoint": "Allows DAPT initiation up to 72 h in eligible mild stroke.",
     "PMID": "38157499",
     "year": 2023,
@@ -64,13 +64,13 @@
       "cit-inspires-2024"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
     "id": "chance-2",
     "name": "CHANCE-2",
-    "fullName": "Ticagrelor or Clopidogrel with Aspirin in High-Risk TIA or Minor Stroke",
+    "fullName": "Ticagrelor versus Clopidogrel in CYP2C19 Loss-of-Function Carriers with Stroke or TIA",
     "category": "dapt-minor-stroke",
     "population": "n=6412, ≥40, NIHSS ≤3, ≤24 h",
     "finding": "Favored ticagrelor: 6.0% vs 7.6%",
@@ -81,7 +81,7 @@
       "cit-chance2-2021"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

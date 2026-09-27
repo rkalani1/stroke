@@ -1,7 +1,7 @@
 {
   "id": "aha-recommendations-regional-destination-2021",
   "title": "Recommendations for Regional Stroke Destination Plans in Rural, Suburban, and Urban Communities From the Prehospital Stroke System of Care Consensus Conference: A Consensus Statement From the American Academy of Neurology, American Heart Association/American Stroke Association, American Society of Neuroradiology, National Association of EMS Physicians, National Association of State EMS Officials, Society of NeuroInterventional Surgery, and Society of Vascular and Interventional Neurology: Endorsed by the Neurocritical Care Society",
-  "shortTitle": "Recommendations for Regional Stroke Destination Plans in Rural, Suburban",
+  "shortTitle": "Regional Stroke Destination Plans 2021",
   "doi": "10.1161/STROKEAHA.120.033228",
   "publisherUrl": "https://doi.org/10.1161/STROKEAHA.120.033228",
   "pdfUrl": null,
@@ -190,7 +190,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "2. In rural communities or those where large distances separate stroke centers, patients with suspected LVO should be routed directly to a CSC if the additional transport time beyond the nearest TSC does not exceed 30 minutes and the maximum total transport time from scene to CSC does not exceed 60 minutes. If no CSC is within 60 minutes, then EMS should go directly to a TSC if the additional transport time beyond the nearest PSC or ASRH does not exceed 30 minutes and the maximum total transport time from scene to TSC does not exceed 60 minutes. If no CSC or TSC exists within 60 minutes of total travel time, then EMS should go to the nearest ASRH or PSC. If patients are medically unstable or unsafe for prolonged transport, EMS should follow local protocols to determine appropriate destinations.",
+      "text": "2. In rural communities or those where large distances separate stroke centers, patients with suspected LVO should be routed directly to a CSC if the additional transport time beyond the nearest TSC does not exceed 30 minutes and the maximum total transport time from scene to CSC does not exceed 60 minutes. [2026 note: this consensus predates the RACECAT cluster RCT (2022), which found no significant difference in 90-day neurological outcomes between direct transport to a thrombectomy-capable center and transport to the local stroke center in nonurban areas; the 2026 AHA/ASA AIS guideline states that, where stroke systems are well coordinated and local facilities are proficient in thrombolysis and secondary transfer, bypassing a local stroke center to transport suspected LVO patients to a more distant thrombectomy-capable center does not improve 3-month outcomes (Class 3: No Benefit).] If no CSC is within 60 minutes, then EMS should go directly to a TSC if the additional transport time beyond the nearest PSC or ASRH does not exceed 30 minutes and the maximum total transport time from scene to TSC does not exceed 60 minutes. If no CSC or TSC exists within 60 minutes of total travel time, then EMS should go to the nearest ASRH or PSC. If patients are medically unstable or unsafe for prolonged transport, EMS should follow local protocols to determine appropriate destinations.",
       "page": null
     },
     {

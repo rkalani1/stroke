@@ -241,8 +241,7 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
         premorbidMRS: '1',
         ctaResults: 'tandem extracranial carotid + intracranial M1 occlusion',
         // Registry inclusion #10: must be ineligible for or have failed IV
-        // t-PA — the modeled gate uses an explicitly recorded negative;
-        // full registry eligibility still requires manual confirmation.
+        // t-PA — not modeled as an executable gate (manual confirmation).
         tnkRecommended: false,
         tnkDecisionRecorded: true
       },
@@ -253,19 +252,23 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
     expect(r.status).toBe('eligible');
   });
 
-  it('PICASSO: without a documented IVT-ineligibility decision the gate stays open (needs_info)', () => {
+  it('PICASSO: a tandem patient who received IV thrombolysis (failed IVT) is not screened out', () => {
+    // NCT05611242 inclusion #10 admits patients who are ineligible for OR
+    // have failed IV t-PA, so a recorded TNK decision must not gate PICASSO.
     const data = {
       telestrokeNote: {
         age: '60',
         nihss: '14',
         premorbidMRS: '1',
-        ctaResults: 'tandem extracranial carotid + intracranial M1 occlusion'
+        ctaResults: 'tandem extracranial carotid + intracranial M1 occlusion',
+        tnkRecommended: true
       },
-      hoursFromLKW: 8,
+      hoursFromLKW: 3,
       aspectsScore: 8
     };
     const r = evaluateActiveTrial(getActiveTrial('picasso'), data);
-    expect(r.status).toBe('needs_info');
+    expect(r.criteria.find(c => c.id === 'tnkRecommended')).toBeUndefined();
+    expect(r.status).toBe('eligible');
   });
 
   it('SATURN: lobar ICH on statin → eligible', () => {
@@ -293,11 +296,27 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
     expect(r.status).toBe('eligible');
   });
 
-  it('CAPTIVA: TIA with ICAS → eligible', () => {
+  // NCT05047172 inclusion is tissue-based: focal symptoms with objective
+  // evidence of infarction, or symptoms >=24 h. A TIA without infarction
+  // does not qualify; an ischemic stroke attributed to 70-99% ICAS does.
+  it('CAPTIVA: TIA without infarction with ICAS → not eligible', () => {
     const data = {
       telestrokeNote: {
         age: '60',
         diagnosisCategory: 'tia',
+        ctaResults: 'severe MCA stenosis suggestive of intracranial atherosclerosis',
+        premorbidMRS: '1'
+      }
+    };
+    const r = evaluateActiveTrial(getActiveTrial('captiva'), data);
+    expect(r.status).toBe('not_eligible');
+  });
+
+  it('CAPTIVA: ischemic stroke with ICAS → eligible', () => {
+    const data = {
+      telestrokeNote: {
+        age: '60',
+        diagnosisCategory: 'ischemic',
         ctaResults: 'severe MCA stenosis suggestive of intracranial atherosclerosis',
         premorbidMRS: '1'
       }

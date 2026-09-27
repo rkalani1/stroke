@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   PUBLIC_DEMO_BANNER_COPY,
   PUBLIC_DEMO_MODAL_COPY,
-  PUBLIC_DEMO_MODAL_BUTTON,
+  SITE_FOOTER_DISCLAIMER_COPY,
   PUBLIC_DEMO_AGENT_DISCLAIMER,
   PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX,
   PUBLIC_DEMO_PHI_PATTERNS,
@@ -16,7 +16,7 @@ describe('Public Demo Guardrails', () => {
     it('should export the required string constants', () => {
       expect(typeof PUBLIC_DEMO_BANNER_COPY).toBe('string');
       expect(typeof PUBLIC_DEMO_MODAL_COPY).toBe('string');
-      expect(typeof PUBLIC_DEMO_MODAL_BUTTON).toBe('string');
+      expect(typeof SITE_FOOTER_DISCLAIMER_COPY).toBe('string');
       expect(typeof PUBLIC_DEMO_AGENT_DISCLAIMER).toBe('string');
       expect(typeof PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX).toBe('string');
     });

@@ -260,19 +260,24 @@ describe('calculateAdjunctiveIAAlteplase', () => {
     expect(r.note).toMatch(/CHOICE-2 \(JAMA 2026\): Adjunctive IA alteplase 0.225 mg\/kg/);
   });
 
-  it('caps dose at 22.5 mg when calculated dose exceeds maximum', () => {
-    // 110 kg * 0.225 = 24.75 mg -> capped at 22.5 mg
+  // CHOICE-2 (Renu et al., JAMA 2026;335:1859-1869, PMID 42096239): IA alteplase
+  // 0.225 mg/kg, maximum 20 mg, infused over 15 min.
+  it('caps dose at 20 mg when calculated dose exceeds maximum', () => {
+    // 110 kg * 0.225 = 24.75 mg -> capped at 20 mg
     const r = calculateAdjunctiveIAAlteplase(110, '3');
     expect(r).not.toBeNull();
     expect(r.weightKg).toBe(110);
-    expect(r.dose).toBe(22.5);
+    expect(r.dose).toBe(20);
     expect(r.maxDoseReached).toBe(true);
   });
 
-  it('handles max dose threshold exactly at 100 kg (100 * 0.225 = 22.5)', () => {
-    const r = calculateAdjunctiveIAAlteplase(100, '2c');
-    expect(r.dose).toBe(22.5);
-    expect(r.maxDoseReached).toBe(true);
+  it('handles the max dose threshold (20 / 0.225 ≈ 88.9 kg)', () => {
+    const below = calculateAdjunctiveIAAlteplase(88, '2c');
+    expect(below.dose).toBe(19.8);
+    expect(below.maxDoseReached).toBe(false);
+    const above = calculateAdjunctiveIAAlteplase(100, '2c');
+    expect(above.dose).toBe(20);
+    expect(above.maxDoseReached).toBe(true);
   });
 
   it('correctly identifies eligible eTICI grades (case-insensitive)', () => {
@@ -637,27 +642,27 @@ describe('calculateAdjunctiveIAAlteplase', () => {
     expect(r2.maxDoseReached).toBe(false);
   });
 
-  it('caps dosage at max 22.5 mg and flags maxDoseReached', () => {
-    // 100 kg * 0.225 = 22.5 mg (exact max)
+  it('caps dosage at max 20 mg (CHOICE-2) and flags maxDoseReached', () => {
+    // 100 kg * 0.225 = 22.5 mg raw -> capped at 20 mg
     const r1 = calculateAdjunctiveIAAlteplase(100, '2b67');
-    expect(r1.dose).toBe(22.5);
+    expect(r1.dose).toBe(20);
     expect(r1.maxDoseReached).toBe(true);
 
-    // 120 kg * 0.225 = 27 mg raw -> capped at 22.5 mg
+    // 120 kg * 0.225 = 27 mg raw -> capped at 20 mg
     const r2 = calculateAdjunctiveIAAlteplase(120, '2c');
-    expect(r2.dose).toBe(22.5);
+    expect(r2.dose).toBe(20);
     expect(r2.maxDoseReached).toBe(true);
   });
 
-  it('caps maximum dose at 22.5 mg for heavy patients', () => {
-    // 100 kg * 0.225 = 22.5 mg
+  it('caps maximum dose at 20 mg (CHOICE-2) for heavy patients', () => {
+    // 100 kg * 0.225 = 22.5 mg raw -> capped at 20 mg
     const exactMax = calculateAdjunctiveIAAlteplase(100, '3');
-    expect(exactMax.dose).toBe(22.5);
+    expect(exactMax.dose).toBe(20);
     expect(exactMax.maxDoseReached).toBe(true);
 
-    // 120 kg * 0.225 = 27 mg -> capped at 22.5 mg
+    // 120 kg * 0.225 = 27 mg -> capped at 20 mg
     const capped = calculateAdjunctiveIAAlteplase(120, '2c');
-    expect(capped.dose).toBe(22.5);
+    expect(capped.dose).toBe(20);
     expect(capped.maxDoseReached).toBe(true);
   });
 

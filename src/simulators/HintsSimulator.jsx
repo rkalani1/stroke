@@ -88,7 +88,7 @@ const SCENARIOS = {
     label: 'Vertical (Central)',
     tone: 'crit',
     anim: 'hint-anim-nys-vert',
-    text: 'Pure Vertical Nystagmus (Central): spontaneous down-beating nystagmus — eyes drift slowly up, then fast-snap down. Vertical nystagmus is exclusively central (brainstem / cerebellar stroke).'
+    text: 'Pure Vertical Nystagmus (Central): spontaneous down-beating nystagmus — eyes drift slowly up, then fast-snap down. In the AVS, spontaneous vertical nystagmus is a central sign (brainstem or cerebellar lesion — often stroke, but also demyelination, drug toxicity or other causes); positional vertical-torsional nystagmus from BPPV is a separate episodic syndrome where HINTS does not apply.'
   },
 
   /* 3 · Test of Skew (TS) */
@@ -98,7 +98,7 @@ const SCENARIOS = {
     tone: 'ok',
     anim: 'hint-anim-skew-none',
     cover: 'alt',
-    text: 'No Skew Deviation (Peripheral): on alternating cover/uncover the eyes stay conjugate and horizontally aligned — no vertical re-fixation movement. Peripheral / benign.'
+    text: 'No Skew Deviation (Peripheral): on alternating cover/uncover the eyes stay conjugate and horizontally aligned — no vertical re-fixation movement. Consistent with a peripheral pattern only if the other findings agree — skew is absent in most central AVS cases, so its absence alone does not exclude stroke.'
   },
   'skew-present': {
     group: 'Test of Skew (TS)',
@@ -106,7 +106,7 @@ const SCENARIOS = {
     tone: 'crit',
     anim: 'hint-anim-skew-present',
     cover: 'alt',
-    text: 'Skew Deviation Present (Central): the covered eye vertical-drifts; on uncover it makes a vertical re-fixation movement to realign. Vertical ocular misalignment points to a brainstem / oculomotor-pathway stroke.'
+    text: 'Skew Deviation Present (Central): the covered eye vertical-drifts; on uncover it makes a vertical re-fixation movement to realign. Vertical ocular misalignment reflects a right–left imbalance of otolith (graviceptive) input to the oculomotor system; in AVS it is a specific but insensitive sign of a central, usually brainstem, lesion (occasionally reported with peripheral vestibular disease).'
   },
 
   /* 4 · Bedside Hearing Test (HINTS+) */
@@ -175,7 +175,7 @@ export const DEFAULT_FINDINGS = { hit: '', nystagmus: '', skew: '', hearing: '' 
 /* INFARCT mnemonic rows. */
 const INFARCT = [
   { letter: 'I N', label: 'Impulse Normal', detail: 'Head-impulse VOR is intact (no catch-up saccade).' },
-  { letter: 'F A', label: 'Fast-Alternating nystagmus', detail: 'Direction-changing (gaze-evoked) or vertical nystagmus.' },
+  { letter: 'F A', label: 'Fast-phase Alternating nystagmus', detail: 'Direction-changing (gaze-evoked) or vertical nystagmus.' },
   { letter: 'R C T', label: 'Refixation on Cover Test', detail: 'Vertical re-fixation = skew deviation present.' },
   { letter: '+', label: 'Unilateral hearing loss (AICA)', detail: 'New unilateral hearing loss adds the "+" → HINTS+.' }
 ];

@@ -41,7 +41,9 @@ The following are in-scope for security reports:
 - The web app served at ` /stroke/` as a synthetic
   public demo.
 - Public-demo safeguards that disable ward census, patient-context URL
-  prefill, and clinical-data persistence.
+  prefill, and clinical-data persistence. These are compiled in at build time
+  (`src/build-flags.js`, `scripts/build-browser.mjs`): the committed/deployed
+  `app.js` is always a public-demo build regardless of the serving host.
 - Service worker caching and update behavior.
 - Any matcher logic, calculator output, or trial-eligibility
   determination that incorrectly classifies a patient case.

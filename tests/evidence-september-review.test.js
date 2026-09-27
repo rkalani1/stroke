@@ -139,16 +139,19 @@ describe('documented treatment decisions in trial screening', () => {
     expect(resolveField(field, { telestrokeNote: { [field]: true } })).toBe(true);
   });
 
-  it('keeps the PICASSO negative-thrombolysis gate unknown on a default false form', () => {
+  it('does not gate PICASSO on the thrombolysis decision (registry admits IVT-ineligible OR failed IVT)', () => {
     const data = { hoursFromLKW: 8, aspectsScore: 8, telestrokeNote: {
       age: '60', nihss: '14', premorbidMRS: '1', ctaResults: 'tandem extracranial ICA and M1 occlusion',
       tnkRecommended: false, tnkDecisionRecorded: false
     } };
     const result = evaluateActiveTrial(getActiveTrial('picasso'), data);
-    expect(result.status).toBe('needs_info');
-    expect(result.criteria.find(c => c.id === 'tnkRecommended').status).toBe('unknown');
-    data.telestrokeNote.tnkDecisionRecorded = true;
+    expect(result.criteria.find(c => c.id === 'tnkRecommended')).toBeUndefined();
+    expect(result.status).toBe('eligible');
+    // A patient who received IVT and still has the occlusion ("failed IV t-PA")
+    // must not be screened out.
+    data.telestrokeNote.tnkRecommended = true;
     expect(evaluateActiveTrial(getActiveTrial('picasso'), data).status).toBe('eligible');
+    expect(getActiveTrial('picasso').inclusionCriteria.join(' ')).toMatch(/failed IV t-PA/);
   });
 
   it('requires both documented negatives to establish no reperfusion plan', () => {

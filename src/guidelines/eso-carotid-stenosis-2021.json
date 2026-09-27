@@ -1,7 +1,7 @@
 {
   "id": "eso-carotid-stenosis-2021",
   "title": "European Stroke Organisation guideline on endarterectomy and stenting for carotid artery stenosis",
-  "shortTitle": "European Stroke Organisation guideline on endarterectomy and stenting",
+  "shortTitle": "ESO Carotid Stenosis 2021",
   "doi": "10.1177/23969873211012121",
   "publisherUrl": "https://doi.org/10.1177/23969873211012121",
   "pdfUrl": null,
@@ -30,7 +30,7 @@
       "classOfRec": "Conditional",
       "classNote": "Against",
       "levelOfEvidence": "Very low certainty",
-      "text": "In patients with asymptomatic carotid stenosis, we recommend against carotid artery stenting as a routine alternative to best medical therapy alone. (Strength of recommendation: Weak against carotid stenting)",
+      "text": "In patients with asymptomatic carotid stenosis, we recommend against carotid artery stenting as a routine alternative to best medical therapy alone. (Strength of recommendation: Weak against carotid stenting) [Current-evidence note: CREST-2 (NEJM, published 2025) in ≥70% asymptomatic stenosis found stenting plus intensive medical management lowered 4-year periprocedural stroke/death or ipsilateral stroke vs intensive medical management alone (2.8% vs 6.0%); endarterectomy did not show a significant benefit (3.7% vs 5.3%).]",
       "page": null
     },
     {

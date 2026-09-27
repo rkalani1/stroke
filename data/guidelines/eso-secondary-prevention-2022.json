@@ -1,7 +1,7 @@
 {
   "id": "eso-secondary-prevention-2022",
   "title": "European Stroke Organisation (ESO) guideline on pharmacological interventions for long-term secondary prevention after ischaemic stroke or transient ischaemic attack",
-  "shortTitle": "European Stroke Organisation (ESO) guideline on pharmacological interventions",
+  "shortTitle": "ESO Long-Term Secondary Prevention 2022",
   "doi": "10.1177/23969873221100032",
   "publisherUrl": "https://doi.org/10.1177/23969873221100032",
   "pdfUrl": null,
@@ -86,7 +86,7 @@
       "classOfRec": "Expert Consensus",
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
-      "text": "Expert consensus statement: In people with ischaemic stroke or TIA who do not achieve the recommended LDL-C targets despite taking maximally tolerated dose of a HMGCoA reductase inhibitor for at least 6 weeks, we support the addition of ezetimibe as an option to reduce the risk of recurrent major cardiovascular events.",
+      "text": "Expert consensus statement: In people with ischaemic stroke or TIA who do not achieve the recommended LDL-C targets despite taking maximally tolerated dose of a HMGCoA reductase inhibitor for at least 6 weeks, we support the addition of ezetimibe as an option to reduce the risk of recurrent major cardiovascular events; the guideline abstract summarises this consensus as consideration of ezetimibe or PCSK9 inhibitors when lipid targets are not achieved.",
       "page": null,
       "sourceStatementType": "consensus",
       "sourceStatementId": "PICO 7 consensus 1",

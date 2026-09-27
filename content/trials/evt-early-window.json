@@ -4,7 +4,7 @@
     "name": "MR CLEAN",
     "fullName": "A Randomized Trial of Intraarterial Treatment for Acute Ischemic Stroke",
     "category": "evt-early-window",
-    "population": "n=500, mean 65 (range 23-96), NIHSS moderate-severe (proximal occlusion), ≤6 h",
+    "population": "n=500, mean 65 (range 23-96), NIHSS NIHSS ≥2, no upper severity limit (proximal occlusion), ≤6 h",
     "finding": "Favored EVT; mRS 0-2: 32.6% vs 19.1% (absolute difference 13.5 pp, 95% CI 5.9-21.2)",
     "teachingPoint": "Established EVT within 6 h for proximal anterior-circulation LVO as effective and safe on top of IV thrombolysis.",
     "PMID": "25517348",
@@ -13,7 +13,7 @@
       "cit-mr-clean-2015"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-22",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -30,7 +30,7 @@
       "cit-escape-2015"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-22",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -64,7 +64,7 @@
       "cit-swift-prime-2015"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-22",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

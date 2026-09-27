@@ -14,7 +14,7 @@ export const guidelines = [
     year: 2026,
     topic: 'acute-ischemic-stroke',
     url: 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000513',
-    citationId: '',
+    citationId: 'cit-aha-ais-2026',
     verificationStatus: 'verified-guideline',
     lastReviewed: lr,
     verificationNotes: ''
@@ -54,8 +54,8 @@ export const guidelines = [
   }),
   makeGuideline({
     id: 'gl-aha-cvt-2024',
-    name: 'Cerebral Venous Thrombosis',
-    organization: 'AHA/ASA',
+    name: 'Diagnosis and Management of Cerebral Venous Thrombosis (Scientific Statement)',
+    organization: 'AHA',
     year: 2024,
     topic: 'cvt',
     url: 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000456',
@@ -80,10 +80,34 @@ export const guidelines = [
     organization: 'European Stroke Organisation',
     year: 2023,
     topic: 'tnk-vs-alteplase',
-    url: 'https://journals.sagepub.com/doi/full/10.1177/23969873231177508',
+    url: 'https://doi.org/10.1177/23969873221150022',
     citationId: 'cit-eso-tnk-2023',
     verificationStatus: 'verified-guideline',
     lastReviewed: lr
+  }),
+  makeGuideline({
+    id: 'gl-aha-mis-ich-2026',
+    name: 'Minimally Invasive Surgical Evacuation of Supratentorial ICH (Science Advisory)',
+    organization: 'AHA/ASA',
+    year: 2026,
+    topic: 'ich-surgery',
+    url: 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000529',
+    citationId: 'cit-aha-mis-ich-2026',
+    verificationStatus: 'verified-guideline',
+    lastReviewed: '2026-09-26',
+    verificationNotes: 'Ungraded science advisory; no COR/LOE.'
+  }),
+  makeGuideline({
+    id: 'gl-aha-rehab-2026',
+    name: 'Adult Stroke Rehabilitation and Recovery',
+    organization: 'AHA/ASA',
+    year: 2026,
+    topic: 'rehabilitation',
+    url: 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000536',
+    citationId: 'cit-aha-rehab-2026',
+    verificationStatus: 'verified-guideline',
+    lastReviewed: '2026-09-26',
+    verificationNotes: 'Identity verified on PubMed (PMID 42657476). Replaces the 2016 guideline (PMID 27145936). Recommendation-level extraction pending full text.'
   })
 ];
 
