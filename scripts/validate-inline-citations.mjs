@@ -92,7 +92,11 @@ async function* walk(dir) {
 // PMID). Returns acronyms appearing in that window only.
 function extractBoundAcronyms(text, pmidIdx) {
   const span = 50;
-  const before = text.slice(Math.max(0, pmidIdx - span), pmidIdx);
+  const start = Math.max(0, pmidIdx - span);
+  let before = text.slice(start, pmidIdx);
+  // Drop a leading partial token when the window starts mid-word, so a cut
+  // acronym ("OICE-2" from "CHOICE-2") is not reported as a disjoint label.
+  if (start > 0 && /[A-Za-z0-9-]/.test(text[start - 1])) before = before.replace(/^[A-Za-z0-9-]+/, '');
   const trimmed = before
     .split(/\s+PMID\s*[:.]?\s*\d/i).pop()
     .split(/\.\s+(?=[A-Z])/).pop()
