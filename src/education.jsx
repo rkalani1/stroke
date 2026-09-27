@@ -864,7 +864,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
     const activeModule = EDUCATION_MODULES.find(m => m.id === subTab);
     if (activeModule) {
       return (
-        <div className="space-y-6 max-w-4xl mx-auto v7-reveal">
+        <div className="space-y-6 max-w-4xl mx-auto">
           <button
             onClick={() => onNavigate(null)}
             className="no-print inline-flex items-center gap-2 text-sm text-cobalt-700 hover:text-cobalt-900 font-semibold mb-2 min-h-[44px] dark:text-cobalt-300"
@@ -893,7 +893,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
   }
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto v7-reveal">
+    <div className="space-y-6 max-w-6xl mx-auto">
       <header className="bg-card border border-line rounded-lg p-6 space-y-2">
         <p className="font-mono text-xs uppercase text-mute tracking-wider">Teaching library · {EDUCATION_MODULES.length} modules</p>
         <h1 className="font-serif text-2xl text-ink font-bold">Educational Resources</h1>
@@ -1116,7 +1116,7 @@ const PdfActionBar = ({ title, subtitle, pdfPath, pdfName, iconColorClass = "tex
       </div>
 
       {hasPdf && showPdf && (
-        <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
+        <div className="border border-slate-200 dark:border-line rounded-xl overflow-hidden bg-white dark:bg-card shadow-md h-[800px] no-print">
           <iframe
             src={resolvedPath}
             className="w-full h-full border-none"
@@ -4730,7 +4730,7 @@ export const EVDInfographic = () => {
       </div>
 
       {showPdf && (
-        <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
+        <div className="border border-slate-200 dark:border-line rounded-xl overflow-hidden bg-white dark:bg-card shadow-md h-[800px] no-print">
           <iframe
             src="documents/references/External Ventricular Drain.pdf"
             className="w-full h-full border-none"
@@ -4740,7 +4740,7 @@ export const EVDInfographic = () => {
       )}
 
       {/* Static Quick Reference Card */}
-      <div className="evd-infographic-card border border-slate-200 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
+      <div className="evd-infographic-card border border-slate-200 dark:border-line rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-md">
         {/* Header */}
         <div className="bg-slate-800 text-white text-center py-3.5 px-4">
           <h3 className="font-serif text-lg font-bold tracking-wide">External Ventricular Drain</h3>
@@ -4784,7 +4784,7 @@ export const EVDInfographic = () => {
                 <li><strong>Weaning:</strong> Gradual escalation of drainage setting by 5 cmH₂O per day. After +20 cmH₂O, EVD should be clamped & head CT obtained to evaluate ventricular caliber. Neurologic examination, CSF output, and ICP waveform should be assessed daily.</li>
               </ul>
             </div>
-            <div className="flex justify-center items-center p-3 border-t border-slate-200 bg-white dark:bg-slate-800 h-[55px]">
+            <div className="flex justify-center items-center p-3 border-t border-slate-200 dark:border-line bg-white dark:bg-slate-800 h-[55px]">
               <svg viewBox="0 0 280 50" className="w-full max-h-[40px] object-contain select-none" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-label="SNACC - Society for Neuroscience in Anesthesiology and Critical Care Logo">
                 <path d="M 10,25 C 10,15 18,8 28,8 C 38,8 46,15 46,25 C 46,35 38,42 28,42 C 18,42 10,35 10,25 Z" fill="none" stroke="#5B3B9C" strokeWidth="1.5" />
                 <circle cx="28" cy="25" r="4" fill="#18849E" />
@@ -4934,7 +4934,7 @@ export const ICPInfographic = () => {
       </div>
 
       {showPdf && (
-        <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-md h-[800px] no-print">
+        <div className="border border-slate-200 dark:border-line rounded-xl overflow-hidden bg-white dark:bg-card shadow-md h-[800px] no-print">
           <iframe
             src="documents/references/Intracranial Hypertension &amp; Herniation.pdf"
             className="w-full h-full border-none"
@@ -5579,7 +5579,7 @@ function AstralCalculatorTab() {
               <div className="flex justify-between items-start">
                 <div>
                   <span className="text-[10px] uppercase tracking-wide font-bold text-cobalt-700 dark:text-cobalt-400">ASTRAL Score Result</span>
-                  <h4 className="text-2xl font-black text-cobalt-900 dark:text-white">{astralTotal} <span className="text-sm font-normal text-slate-500">points</span></h4>
+                  <h4 className="text-2xl font-black text-cobalt-900 dark:text-white">{astralTotal} <span className="text-sm font-normal text-slate-500 dark:text-mute">points</span></h4>
                 </div>
                 <div className="text-right">
                   <span className="text-[10px] uppercase tracking-wide font-bold text-cobalt-700 dark:text-cobalt-400">90d Poor Outcome (mRS &gt; 2)</span>
@@ -5743,7 +5743,7 @@ function PlanCalculatorTab() {
               <div className="grid grid-cols-3 gap-2">
                 <div>
                   <span className="text-[9px] uppercase tracking-wide font-bold text-teal-700 dark:text-teal-400 block">PLAN Score</span>
-                  <h4 className="text-2xl font-black text-teal-900 dark:text-white">{planTotal} <span className="text-sm font-normal text-slate-500">pts</span></h4>
+                  <h4 className="text-2xl font-black text-teal-900 dark:text-white">{planTotal} <span className="text-sm font-normal text-slate-500 dark:text-mute">pts</span></h4>
                 </div>
                 <div>
                   <span className="text-[9px] uppercase tracking-wide font-bold text-teal-700 dark:text-teal-400 block">30d Mortality</span>
@@ -5884,7 +5884,7 @@ function IchCalculatorTab() {
               <div className="flex justify-between items-start">
                 <div>
                   <span className="text-[10px] uppercase tracking-wide font-bold text-crit-700 dark:text-crit-400">ICH Score Result</span>
-                  <h4 className="text-2xl font-black text-crit-900 dark:text-white">{ichTotal} <span className="text-sm font-normal text-slate-500">points</span></h4>
+                  <h4 className="text-2xl font-black text-crit-900 dark:text-white">{ichTotal} <span className="text-sm font-normal text-slate-500 dark:text-mute">points</span></h4>
                 </div>
                 <div className="text-right">
                   <span className="text-[10px] uppercase tracking-wide font-bold text-crit-700 dark:text-crit-400">30d Mortality Risk</span>

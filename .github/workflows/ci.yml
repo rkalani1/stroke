@@ -187,6 +187,17 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Build output drift (tailwind.css)
+        # tailwind.css is a committed build output served as-is by GitHub
+        # Pages. A config, content-glob or stylesheet change that ships without
+        # the rebuilt CSS silently drops or keeps utilities; the minified
+        # output is deterministic, so any diff after the Build step is drift.
+        run: |
+          git diff --exit-code --stat -- tailwind.css || {
+            echo '::error file=tailwind.css::tailwind.css is stale: run `npm run build:css` and commit the result.'
+            exit 1
+          }
+
       - name: Asset budget
         # Hard gate on payload bytes. The Lighthouse workflow writes Performance
         # as advisory (CDN/device sensitive), which let the bundle grow 52%

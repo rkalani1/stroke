@@ -142,7 +142,6 @@ import {
 import {
   getThemePref as v7GetThemePref,
   setThemePref as v7SetThemePref,
-  effectiveTheme as v7EffectiveTheme,
   bootstrapTheme as v7BootstrapTheme,
 } from './design/theme.js';
 // Patient-store is consumed by components.jsx, no direct imports needed here.
@@ -641,7 +640,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
                       value: inputValue,
                       onChange: (e) => setInputValue(e.target.value),
                       rows: 3,
-                      className: 'w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 focus:outline-none',
+                      className: 'w-full px-3 py-2 border border-slate-300 dark:border-line rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 focus:outline-none',
                       placeholder: config.placeholder || '',
                       autoFocus: true
                     })
@@ -651,7 +650,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
                       value: inputValue,
                       onChange: (e) => setInputValue(e.target.value),
                       onKeyDown: handleInputKeyDown,
-                      className: 'w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 focus:outline-none',
+                      className: 'w-full px-3 py-2 border border-slate-300 dark:border-line rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 focus:outline-none',
                       placeholder: config.placeholder || '',
                       autoFocus: true
                     })
@@ -2445,24 +2444,20 @@ Clinician Name`;
           const [noteTemplate, setNoteTemplate] = useState(loadFromStorage('noteTemplate', 'consult'));
           const [calcDrawerOpen, setCalcDrawerOpen] = useState(false);
           const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
-          // Theme is owned entirely by the v7 controller.
-          // We mirror its preference ('auto'|'light'|'dark') and derived effective
-          // theme ('dark' boolean) into React state for rendering. theme.js owns the
-          // DOM (data-theme + `dark` class) and the stroke.v7.theme storage key; we
-          // NEVER write the class or storage here.
+          // Theme is owned entirely by the v7 controller (src/design/theme.js):
+          // it writes data-theme on <html> and the stroke.v7.theme storage key
+          // and follows OS changes in 'auto' mode. React only mirrors the
+          // preference ('auto'|'light'|'dark') so the Theme control can show
+          // which option is selected; it never writes the DOM or storage here.
           const [themePref, setThemePrefState] = useState(() => {
             try { return v7GetThemePref(); } catch { return 'light'; }
           });
-          const [isDark, setIsDark] = useState(() => {
-            try { return v7EffectiveTheme() === 'dark'; } catch { return false; }
-          });
           // Apply a theme choice: delegate to theme.js (updates DOM + storage),
-          // then mirror the resolved pref + effective theme into local state.
+          // then mirror the resolved preference into local state.
           const applyThemeChoice = (pref) => {
             try {
               v7SetThemePref(pref);
               setThemePrefState(v7GetThemePref());
-              setIsDark(v7EffectiveTheme() === 'dark');
             } catch { /* ignore storage errors */ }
           };
           const [updateAvailable, setUpdateAvailable] = useState(false);
@@ -2475,21 +2470,6 @@ Clinician Name`;
           // Install App control in the Trials header.
           const [installPrompt, setInstallPrompt] = useState(null);
           const [isInstalled, setIsInstalled] = useState(false);
-          // Keep the derived `isDark` in sync when the OS color-scheme changes while
-          // the preference is 'auto'. theme.js's bindThemeListener (bound once in
-          // bootstrap) re-applies the DOM; this only mirrors the result into React.
-          // theme.js owns all DOM/storage writes — we do not touch them here.
-          useEffect(() => {
-            if (typeof window === 'undefined' || !window.matchMedia) return undefined;
-            const mq = window.matchMedia('(prefers-color-scheme: dark)');
-            const sync = () => {
-              try {
-                if (v7GetThemePref() === 'auto') setIsDark(v7EffectiveTheme() === 'dark');
-              } catch { /* ignore */ }
-            };
-            mq.addEventListener?.('change', sync);
-            return () => mq.removeEventListener?.('change', sync);
-          }, []);
           // U11 — Encounter section navigator (TOC) + scrollspy.
           // The Encounter form has four stable phase markers (phase-triage,
           // phase-decision, phase-management, phase-documentation) present in both
@@ -6524,10 +6504,10 @@ Clinician Name`;
                     </div>
                   </div>
                 </summary>
-                <div className="px-4 pb-4 pt-1 border-t border-slate-100 text-sm text-slate-700 space-y-3 dark:text-ink-2">
+                <div className="px-4 pb-4 pt-1 border-t border-slate-100 dark:border-line text-sm text-slate-700 space-y-3 dark:text-ink-2">
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {trial.shortName && (
-                      <span className="inline-flex items-center rounded bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-2xs font-mono font-bold text-ink-2">
+                      <span className="inline-flex items-center rounded bg-slate-100 dark:bg-paper-2 px-2 py-0.5 text-2xs font-mono font-bold text-ink-2">
                         Acronym: {trial.shortName}
                       </span>
                     )}
@@ -6996,18 +6976,33 @@ Clinician Name`;
           //   calculateCrCl, calculateTNKDose, calculatePCCDose, calculateAlteplaseDose
 
           // =================================================================
-          // RADIO GROUP ARROW KEY NAVIGATION (WCAG 2.1 AA)
+          // RADIO GROUP ARROW KEY NAVIGATION (WCAG 2.1 AA, APG radio group)
+          // Arrow keys move to the next/previous radio and select it (wrapping);
+          // Home/End select the first/last. Any other key is left alone (no
+          // preventDefault), so Tab, Space and Enter keep their native meaning.
+          // The set is the nearest role="radiogroup" or, for the calculator
+          // sets that have none (the GCS role="group" columns, ICH-score GCS,
+          // mRS, ABCD2 duration, Hunt-Hess, WFNS), the radios that share this
+          // radio's parent. Disabled radios are skipped.
           const handleRadioKeyDown = (e) => {
-            if (!['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(e.key)) return;
-            e.preventDefault();
-            const group = e.currentTarget.closest('[role="group"], [role="radiogroup"]');
-            if (!group) return;
-            const radios = [...group.querySelectorAll('[role="radio"]')];
-            const idx = radios.indexOf(e.currentTarget);
+            if (!['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft', 'Home', 'End'].includes(e.key)) return;
+            const current = e.currentTarget;
+            const radiogroup = current.closest('[role="radiogroup"]');
+            const container = radiogroup || current.parentElement;
+            if (!container) return;
+            const candidates = radiogroup
+              ? [...radiogroup.querySelectorAll('[role="radio"]')].filter((r) => r.closest('[role="radiogroup"]') === radiogroup)
+              : [...container.children].filter((r) => r.getAttribute('role') === 'radio');
+            const radios = candidates.filter((r) => r === current || (!r.disabled && r.getAttribute('aria-disabled') !== 'true'));
+            const idx = radios.indexOf(current);
             if (idx < 0) return;
-            const next = (e.key === 'ArrowDown' || e.key === 'ArrowRight')
-              ? (idx + 1) % radios.length
-              : (idx - 1 + radios.length) % radios.length;
+            e.preventDefault();
+            let next;
+            if (e.key === 'Home') next = 0;
+            else if (e.key === 'End') next = radios.length - 1;
+            else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = (idx + 1) % radios.length;
+            else next = (idx - 1 + radios.length) % radios.length;
+            if (next === idx) return;
             radios[next].focus();
             radios[next].click();
           };
@@ -16843,7 +16838,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const hasNihssInputs = nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '');
           const nihssDisplay = nihssFromNote || (hasNihssInputs ? String(nihssScore) : '--');
           return (
-            <div className="relative v7-skin">
+            <div className="relative">
               {/* v7: skip-link → semantic <main id="main">; cobalt accent, no link-* override */}
               <a href="#main" data-skip-tap className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-cobalt-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">Skip to main content</a>
               {protocolModal && (
@@ -16883,12 +16878,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   </div>
                 </div>
               )}
-              {/* overflow-x-hidden is kept on phone to tame wide content, but it
-                  establishes a scroll container that breaks position:sticky for
-                  descendants. Drop it at ≥768px (md) so the sticky header (U4)
-                  can pin to the viewport; html/body already clip horizontal
-                  overflow at the page level. */}
-              <div className="app-shell v7-content max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-hidden md:overflow-x-visible">
+              {/* Phone: clip (not hide) horizontal overflow to tame wide
+                  content. overflow-x:hidden computes overflow-y:auto and made
+                  this sheet a scroll container, so every sticky descendant (the
+                  header, the Encounter readiness bar, the Research sub-tabs)
+                  scrolled away below 768px; clip suppresses the overflow without
+                  creating a scrollport. ≥768px (md) needs neither; html/body
+                  also clip horizontal overflow at the page level. */}
+              <div className="app-shell max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-clip md:overflow-x-visible">
 
               {PUBLIC_DEMO_MODE && <PHIBanner />}
 
@@ -17601,7 +17598,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </ul>
                     </nav>
 
-                    <section className="encounter-readiness-bar sticky top-[var(--app-header-h,0px)] z-20 rounded-md border border-line bg-card/95 p-3 shadow-sm backdrop-blur sm:static" aria-labelledby="encounter-readiness-title">
+                    <section className="encounter-readiness-bar sticky top-[var(--app-header-h,0px)] z-20 rounded-md border border-line bg-card p-3 shadow-sm backdrop-blur sm:static" aria-labelledby="encounter-readiness-title">
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
@@ -17764,7 +17761,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     {/* ===== PATIENT SUMMARY STRIP ===== */}
                     {/* v6 inline strip — kept during transition; Phase 5 removes it. */}
                     {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) ? (
-                      <div className="sticky top-14 z-20 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border border-line rounded-md  px-4 py-2.5">
+                      <div className="sticky top-14 z-20 bg-white/95 dark:bg-card/95 backdrop-blur-sm border border-line rounded-md  px-4 py-2.5">
                         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
                           {telestrokeNote.age && (
                             <span className="font-medium text-slate-700 dark:text-ink-2">
@@ -18291,7 +18288,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               )}
                               {!telestrokeNote.consultStartTime && (
                                 <button type="button" onClick={() => setTelestrokeNote(prev => ({...prev, consultStartTime: new Date().toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'})}))}
-                                  className="v6-btn-secondary v6-btn-sm">
+                                  className="ui-btn ui-btn--secondary ui-btn--sm">
                                   Start Timer
                                 </button>
                               )}
@@ -18654,7 +18651,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
 
                           {/* Optional Secondary Labs / Renal Function Row */}
-                          <div className="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800">
+                          <div className="mt-3 pt-2 border-t border-slate-100 dark:border-line">
                             <details className="group">
                               <summary className="text-xs font-medium text-slate-500 hover:text-slate-700 cursor-pointer flex items-center gap-1.5 dark:text-mute dark:hover:text-ink-2 select-none">
                                 <span className="font-semibold text-slate-600 dark:text-ink-2">Renal Function & Height (Optional)</span>
@@ -22626,7 +22623,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                                         {/* Key takeaways */}
                                         {config.keyTakeaways && config.keyTakeaways.length > 0 && (
-                                          <div className="bg-white/70 dark:bg-slate-900/70 border border-line rounded px-2.5 py-1.5 space-y-0.5">
+                                          <div className="bg-white/70 dark:bg-card/70 border border-line rounded px-2.5 py-1.5 space-y-0.5">
                                             {config.keyTakeaways.map((t) => (
                                               <p key={t} className="text-xs text-slate-700 flex gap-1.5 dark:text-ink-2">
                                                 <span className="text-cobalt-500 mt-px shrink-0">&#8227;</span>
@@ -32533,7 +32530,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </span>
                                 <span className="text-slate-800 flex-1 dark:text-ink">{r.text}</span>
                               </summary>
-                              <div className="px-3 pb-3 pt-1 border-t border-slate-100 text-sm space-y-2">
+                              <div className="px-3 pb-3 pt-1 border-t border-slate-100 dark:border-line text-sm space-y-2">
                                 <div className="flex flex-wrap gap-1.5">
                                   {atlasPill(topicLabel(r.topic) || r.topic, 'slate')}
                                   {atlasPill(`Setting: ${r.setting}`, 'slate')}
@@ -33600,7 +33597,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   </div>
 
                   {/* Inline GCS Quick Score */}
-                  <div className="px-4 py-3 border-b border-slate-100 bg-slate-50 dark:bg-paper-2">
+                  <div className="px-4 py-3 border-b border-slate-100 dark:border-line bg-slate-50 dark:bg-paper-2">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-semibold text-slate-800 dark:text-ink">Quick GCS</span>
                       <div className="flex items-center gap-2">

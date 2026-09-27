@@ -1,29 +1,88 @@
+/* ─────────────────────────────────────────────────────────────
+   Stylesheet entry, compiled by `npm run build:css` → tailwind.css.
+
+   Output cascade, top to bottom:
+     1. src/design/tokens.css — fonts + the ONLY token declarations
+     2. tailwind base / components / utilities (with the @layer blocks
+        below hoisted into them)
+     3. the unlayered rules at the end of this file
+     4. src/design/shell.css — global chrome that must beat
+        equal-specificity utilities on source order (formerly the
+        inline <style> of index.html, which loaded after tailwind.css)
+
+   shell.css is appended by scripts/postcss.config.cjs AFTER Tailwind has
+   run, so its selectors (`.border.border-line`, `.flex.gap-2`, …) never
+   become @apply candidates that Tailwind would splice into the
+   components below. postcss-import requires every @import to precede
+   other statements, hence the Tailwind layers are imports too.
+   ───────────────────────────────────────────────────────────── */
 @import "./design/tokens.css";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "./design/shell.css";
 
 /* ============================================================
-   v7 responsive sweep — enforce 44pt touch-target floor at
-   mobile viewports for any interactive element that hasn't
-   already been sized by a primitive. WCAG 2.5.5 (Enhanced).
-   Use data-skip-tap on a genuinely fine-grained control if
-   you need to opt out (e.g. canvas-overlay handles).
-   The v7 primitives (V7Button md/lg, V7NumberStepper, V7Input,
-   V7Select, V7Textarea) already meet this floor — this rule
-   catches the v6 inline JSX that the codemod didn't touch.
+   Target-size floors.
+
+   In-scope surfaces (the list is documented in src/design/shell.css:
+   Encounter, Trials, Research, Settings, header, nav, footer, dialogs)
+   get ONE touch floor — 44px (WCAG 2.5.5 Enhanced) wherever a finger is
+   the likely pointer: any coarse pointer (phones AND touch tablets,
+   which are wider than 768px and so were missed by a width-only rule —
+   the tab pills and header chips collapsed to 29–32px there), plus
+   every viewport ≤768px (iPad portrait, and what
+   scripts/lint-touch-targets.mjs exercises at 320/375/768). A mouse or
+   trackpad at desktop width gets no 44px floor: controls take the size
+   their recipe gives them (ui-btn is 44px anyway; ui-btn--sm drops to
+   36px only at ≥md with a fine pointer), never less than the WCAG 2.5.8
+   (AA) 24px minimum below.
+
+   Weights: min-height at (0,1,1) outranks per-control height utilities
+   such as sm:min-h-0 on the nav pills; min-width stays at the weight of
+   a bare type selector (the opt-out test sits in :where()) — enough to
+   beat the base layer's `button { min-width: 0 }` on source order while
+   explicit min-w-* utilities keep winning, as under the old every-width
+   `button, select` floor (src/design/shell.css). The 24px minimum has
+   zero specificity: any min-h-* utility, and the 44px floor, win.
+
+   Surfaces that have not adopted the shared component language yet keep
+   the two old approximations untouched: this width-only (≤768px) floor,
+   and the every-width `button, select` floor in src/design/shell.css,
+   each narrowed with :not(:where(<in-scope list> *)) (no added weight).
+   Opt out with data-skip-tap on a genuinely fine-grained control.
    ============================================================ */
 @layer utilities {
-  /* Phone + tablet (≤768px = iPad portrait) get the 44px floor. The linter
-     exercises 320/375/768, so the upper bound is inclusive of 768. */
+  :where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"])
+    :where(button, [role="button"], summary, select):where(:not([data-skip-tap])) {
+    min-height: 24px;
+  }
+
+  @media (max-width: 768px), (pointer: coarse) {
+    :where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) button:not([data-skip-tap]),
+    :where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) [role="button"]:not([data-skip-tap]),
+    :where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) a[href]:not([data-skip-tap]),
+    :where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) summary:not([data-skip-tap]),
+    :where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) select:not([data-skip-tap]),
+    :where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) textarea:not([data-skip-tap]),
+    :where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([data-skip-tap]) {
+      min-height: 44px;
+    }
+    :where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) button:where(:not([data-skip-tap])),
+    :where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) select:where(:not([data-skip-tap])) {
+      min-width: 44px;
+    }
+  }
+
+  /* legacy width-only floor, outside the in-scope surfaces */
   @media (max-width: 768px) {
-    button:not([data-skip-tap]),
-    [role="button"]:not([data-skip-tap]),
-    a[href]:not([data-skip-tap]),
-    summary:not([data-skip-tap]),
-    select:not([data-skip-tap]),
-    textarea:not([data-skip-tap]),
-    input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([data-skip-tap]) {
+    button:not([data-skip-tap]):not(:where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) *),
+    [role="button"]:not([data-skip-tap]):not(:where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) *),
+    a[href]:not([data-skip-tap]):not(:where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) *),
+    summary:not([data-skip-tap]):not(:where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) *),
+    select:not([data-skip-tap]):not(:where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) *),
+    textarea:not([data-skip-tap]):not(:where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) *),
+    input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([data-skip-tap]):not(:where(#tabpanel-encounter, #tabpanel-trials, #tabpanel-research, #tabpanel-settings, .app-header, .app-nav, nav[aria-label="Mobile navigation"], footer, [role="dialog"]) *) {
       min-height: 44px;
     }
   }
@@ -48,8 +107,8 @@
    Wired through tailwind.config.js so utilities like text-ink,
    bg-paper, border-line, text-critical resolve to these values.
    The page background, prose color, and section heading family
-   continue to be set by index.html legacy rules until v6.0-02
-   primitives migrate them.
+   continue to be set by the legacy rules in src/design/shell.css
+   (formerly inline in index.html) until the primitives migrate them.
    ============================================================ */
 @layer base {
 
@@ -95,17 +154,6 @@
     font-variant-numeric: tabular-nums;
     font-feature-settings: 'tnum' 1, 'cv02' 1, 'cv03' 1;
   }
-
-  /* v6.0-06: data emphasis. <strong> inside elements with .data-context or
-     near .font-mono renders as monospace tabular instead of bold body sans —
-     so clinical numerics in prose ("BP 168/94", "INR 1.0") line up by digit
-     and read with the rest of the data layer.  */
-  .data-context strong,
-  strong.data {
-    font-family: '"JetBrains Mono"', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }
 }
 
 @layer components {
@@ -134,22 +182,6 @@
     display: none;
   }
 
-  /* Touch input gets full-size targets at every width. The `sm:` breakpoint
-     switches to a fine-pointer layout at 640px, but a tablet is ~820px AND a
-     finger — so the primary tab pills (min-h-[44px] sm:min-h-0) collapse to
-     29px and the header resource chips to 32px for someone tapping them.
-     Scoped to pointer: coarse, so mouse and trackpad layouts are untouched. */
-  @media (pointer: coarse) {
-    /* Selectors are doubled deliberately. The tab pills carry Tailwind's
-       `sm:min-h-0`, which is also a single-class selector and is emitted in the
-       utilities layer — i.e. after this one — so an equal-specificity rule here
-       would lose the cascade. Doubling the class wins without !important. */
-    .tab-pill.tab-pill,
-    .resource-chip.resource-chip {
-      min-height: 44px;
-    }
-  }
-
   @media (max-width: 767px) {
     .clinical-resource-row {
       width: 100%;
@@ -173,74 +205,193 @@
   }
 
   /* ----------------------------------------------------------
-     v6.0-02 component classes — mirror src/primitives.jsx so
-     inline JSX in app.jsx can migrate piecemeal via className
-     without importing React components.
+     Shared component language — `ui-*` (D1 plan §4.5).
+     Padding is written as plain declarations, not @apply p-*: @apply
+     copies EVERY rule that mentions the utility, so the print-only
+     `.evd-infographic-card .p-3` style overrides further down would be
+     spliced onto these components.
+     The only recipes in-scope views use; src/design/primitives.jsx
+     emits exactly these classes, and inline JSX can opt in with the
+     same names. Tokens only (card / line / ink / mute / accent), so
+     dark mode comes from the token layer. Motion is the one --dur /
+     --ease pair and only ever moves colour or elevation.
+     Safelisted (tailwind.config.js ^ui-): the whole language ships
+     whether or not a view has adopted a recipe yet.
      ---------------------------------------------------------- */
 
-  .v6-btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-[4px] font-sans font-medium;
-    @apply transition-colors duration-100 h-11 px-4 text-[14px] min-w-[44px];
-    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper;
+  /* Button — 44px, 8px radius, flat fills. */
+  .ui-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-transparent font-sans text-sm font-semibold leading-tight no-underline select-none;
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease);
   }
-  .v6-btn-primary   { @apply bg-ink text-white border border-ink hover:bg-ink-2; }
-  .v6-btn-secondary { @apply bg-transparent text-ink border border-line hover:bg-paper-2; }
-  /* Cycle4 M4-1: --critical/--confirm are lightened in dark for text/border use,
-     so a solid fill under white text fails WCAG 1.4.3 (3.0:1 / 2.5:1). Pin the
-     dark fill to the un-lightened ramp step (crit-700 / ok-700) → white ≥7.6:1. */
-  .v6-btn-critical  { @apply bg-critical text-white border border-critical hover:opacity-90 dark:bg-crit-700; }
-  .v6-btn-confirm   { @apply bg-confirm text-white border border-confirm hover:opacity-90 dark:bg-ok-700; }
-  .v6-btn-ghost     { @apply bg-transparent text-ink-2 border border-transparent hover:bg-paper-2; }
-  .v6-btn-sm        { @apply h-9 px-3 text-[13px]; }
-  .v6-btn-lg        { @apply h-12 px-5 text-[15px]; }
-
-  .v6-card {
-    @apply bg-card border border-line rounded-md;
-  }
-  .v6-card-header {
-    @apply px-5 pt-5 pb-4 border-b border-line;
-  }
-  .v6-card-body {
-    @apply p-5;
+  .ui-btn:disabled,
+  .ui-btn[aria-disabled="true"] { @apply cursor-not-allowed opacity-50; }
+  .ui-btn--primary { @apply bg-cobalt-600 text-white hover:bg-cobalt-700 active:bg-cobalt-800; }
+  .ui-btn--secondary { @apply border-strong bg-card text-ink hover:bg-paper-2; }
+  .ui-btn--ghost { @apply bg-transparent text-ink-2 hover:bg-paper-2 hover:text-ink; }
+  .ui-btn--danger { @apply bg-crit-700 text-white hover:bg-crit-800 active:bg-crit-900; }
+  .ui-btn--lg { @apply text-base; min-height: 3rem; padding: 0 1.25rem; }
+  .ui-btn--icon { width: 2.75rem; height: 2.75rem; padding: 0; }
+  .ui-btn--sm { padding: 0 0.75rem; }
+  /* 36px only where it is safe: a mouse/trackpad at ≥md. */
+  @media (min-width: 768px) and (pointer: fine) {
+    .ui-btn--sm { min-height: 2.25rem; }
   }
 
-  .v6-input,
-  .v6-select,
-  .v6-textarea {
-    @apply w-full bg-transparent border border-line rounded-[4px] px-3 h-11 text-[15px] text-ink;
-    @apply placeholder:text-mute focus:outline-none focus:border-ink focus:ring-1 focus:ring-ink;
-    @apply disabled:opacity-60 disabled:cursor-not-allowed;
+  /* Card — neutral surface, elevation from the class (never from a
+     border colour). --flush hands the padding to __header / __body. */
+  .ui-card { @apply rounded-lg border border-line bg-card text-ink shadow-card; padding: 1rem; }
+  .ui-card__header { @apply flex items-start justify-between gap-4 border-b border-line; padding: 0.75rem 1rem; }
+  .ui-card__body { padding: 1rem; }
+  .ui-card__body--comfortable { padding: 1.25rem; }
+  @media (min-width: 640px) {
+    .ui-card { padding: 1.25rem; }
+    .ui-card__header { padding-inline: 1.25rem; }
+    .ui-card__body { padding: 1.25rem; }
+    .ui-card__body--comfortable { padding: 1.5rem; }
   }
-  .v6-textarea {
-    @apply h-auto py-2 leading-snug;
+  .ui-card.ui-card--flush { padding: 0; }
+  .ui-card__title {
+    @apply text-md font-semibold text-ink;
+    font-family: var(--font-sans);
+    letter-spacing: -0.01em;
   }
 
-  .v6-eyebrow {
-    @apply font-mono uppercase text-eyebrow text-mute;
+  /* Callout — status only: soft status fill, 1px hairline, 3px left rule
+     in the status colour. Card status skins share the recipe. */
+  .ui-callout { @apply rounded-lg border border-line text-sm text-ink; padding: 0.75rem; }
+  .ui-callout,
+  .ui-card--crit,
+  .ui-card--warn,
+  .ui-card--ok,
+  .ui-card--info { border-left-width: 3px; }
+  .ui-callout--crit, .ui-card--crit { @apply border-l-crit-700 bg-crit-50 dark:border-l-crit-500 dark:bg-crit-950; }
+  .ui-callout--warn, .ui-card--warn { @apply border-l-warn-700 bg-warn-50 dark:border-l-warn-500 dark:bg-warn-950; }
+  .ui-callout--ok,   .ui-card--ok   { @apply border-l-ok-700 bg-ok-50 dark:border-l-ok-500 dark:bg-ok-950; }
+  .ui-callout--info, .ui-card--info { @apply border-l-info-700 bg-info-50 dark:border-l-info-500 dark:bg-info-950; }
+  .ui-callout__title { @apply mb-1 flex items-center gap-2 font-semibold; }
+  .ui-callout--crit .ui-callout__title { @apply text-crit-800 dark:text-crit-200; }
+  .ui-callout--warn .ui-callout__title { @apply text-warn-800 dark:text-warn-200; }
+  .ui-callout--ok   .ui-callout__title { @apply text-ok-800 dark:text-ok-200; }
+  .ui-callout--info .ui-callout__title { @apply text-info-900 dark:text-info-200; }
+
+  /* Input / Select / Textarea — 44px, 8px radius, a boundary that meets
+     WCAG 1.4.11 (line-control, ≥3:1). Focus (accent border + halo + the
+     global outline) comes from src/design/shell.css for every field. */
+  .ui-input {
+    @apply block w-full rounded-md border border-line-control bg-card text-sm text-ink placeholder:text-faint;
+    min-height: 2.75rem;
+    padding: 0 0.75rem;
+  }
+  .ui-input:disabled { @apply cursor-not-allowed opacity-60; }
+  textarea.ui-input { @apply leading-snug; min-height: 5rem; padding-block: 0.5rem; }
+  select.ui-input {
+    @apply appearance-none;
+    padding-right: 2.25rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23526977' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem 1rem;
+  }
+  [data-theme="dark"] select.ui-input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A5BAC6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  }
+  .ui-input--mono {
+    @apply font-mono;
+    font-variant-numeric: tabular-nums slashed-zero;
+  }
+  .ui-input--invalid { @apply border-crit-600 dark:border-crit-400; }
+
+  /* Tabs — navigation / sub-view switch (the Trials view-switch idiom):
+     a neutral rail; the selected item lifts onto the card surface. */
+  .ui-tabs { @apply inline-flex max-w-full items-stretch gap-1 overflow-x-auto rounded-lg border border-line bg-paper-2; padding: 0.25rem; }
+  .ui-tabs--fill { @apply flex w-full; }
+  .ui-tabs__item {
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-semibold text-mute;
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  }
+  .ui-tabs--fill > .ui-tabs__item { flex: 1 1 0%; }
+  .ui-tabs__item:hover { @apply text-ink; }
+  .ui-tabs__item[aria-selected="true"] { @apply bg-card text-ink shadow-card; }
+  .ui-tabs__item:disabled { @apply cursor-not-allowed opacity-50; }
+
+  /* Segmented control — data entry (LKW type, theme): the same rail; the
+     checked radio takes the solid accent. */
+  .ui-seg { @apply inline-flex items-stretch gap-1 rounded-lg border border-line bg-paper-2; padding: 0.25rem; }
+  .ui-seg--fill { @apply flex w-full; }
+  .ui-seg__item {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-semibold text-mute;
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .ui-seg--fill > .ui-seg__item { flex: 1 1 0%; }
+  .ui-seg__item:hover { @apply text-ink; }
+  .ui-seg__item[aria-checked="true"] { @apply bg-cobalt-600 text-white shadow-card; }
+  .ui-seg__item:disabled { @apply cursor-not-allowed opacity-50; }
+
+  /* Chip — filter (a button with aria-pressed) or static status label. */
+  .ui-chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-card text-xs font-medium text-ink-2;
+    min-height: 2rem;
+    padding: 0 0.75rem;
+    transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  button.ui-chip:hover { @apply border-strong text-ink; }
+  .ui-chip[aria-pressed="true"],
+  .ui-chip.is-selected { @apply border-cobalt-300 bg-accent-soft text-accent-ink dark:border-cobalt-700; }
+  .ui-chip--crit { @apply border-crit-200 bg-crit-50 text-crit-800 dark:border-crit-800 dark:bg-crit-950 dark:text-crit-200; }
+  .ui-chip--warn { @apply border-warn-200 bg-warn-50 text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-200; }
+  .ui-chip--ok   { @apply border-ok-200 bg-ok-50 text-ok-800 dark:border-ok-800 dark:bg-ok-950 dark:text-ok-200; }
+  .ui-chip--info { @apply border-info-200 bg-info-50 text-info-900 dark:border-info-800 dark:bg-info-950 dark:text-info-200; }
+  /* status label (PhaseChip): compact mono caps, not a tap target */
+  .ui-chip--label { @apply rounded-md font-mono text-2xs font-semibold uppercase tracking-[0.06em]; min-height: 1.5rem; padding: 0 0.5rem; }
+  @media (pointer: coarse) {
+    button.ui-chip { min-height: 2.75rem; }
   }
 
-  .v6-data {
-    @apply font-mono tabular-nums text-ink;
+  /* Dialog / sheet / palette — one backdrop, one surface. Phones get a
+     bottom sheet with --sheet. z-index 60 = the modal step. */
+  .ui-dialog__backdrop { @apply fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/50; padding: 1rem; }
+  .ui-dialog {
+    @apply relative flex max-h-[85vh] w-full max-w-lg flex-col overflow-hidden rounded-xl border border-line bg-card text-ink shadow-pop;
+  }
+  .ui-dialog__header { @apply border-b border-line; padding: 1rem 1.25rem; }
+  .ui-dialog__title {
+    @apply text-md font-semibold text-ink;
+    font-family: var(--font-sans);
+    letter-spacing: -0.01em;
+  }
+  .ui-dialog__body { @apply min-h-0 flex-1 overflow-y-auto; padding: 1rem 1.25rem; }
+  .ui-dialog__footer { @apply flex flex-wrap items-center justify-end gap-2 border-t border-line; padding: 1rem 1.25rem; }
+  @media (max-width: 639px) {
+    .ui-dialog__backdrop--sheet { @apply items-end; padding: 0; }
+    .ui-sheet { @apply max-w-none rounded-b-none rounded-t-xl border-b-0; }
   }
 
-  .v6-callout {
-    @apply rounded-md border border-line px-4 py-3;
-    border-left-width: 3px;
+  /* Eyebrow — mono caps in the accent ink (the section label idiom). */
+  .ui-eyebrow {
+    @apply font-mono text-2xs font-medium uppercase text-accent-ink;
+    letter-spacing: 0.1em;
   }
-  .v6-callout-critical  { @apply bg-critical-soft text-critical border-critical; }
-  .v6-callout-confirm   { @apply bg-confirm-soft text-confirm border-confirm; }
-  .v6-callout-caution   { @apply bg-caution-soft text-caution border-caution; }
-  .v6-callout-reference { @apply bg-reference-soft text-reference border-reference; }
 
-  .v6-stamp {
-    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded-[4px];
-    @apply font-mono text-caption uppercase tracking-wide;
-    border-left-width: 3px;
+  /* Page header — eyebrow + display title + description + actions. */
+  .ui-page-header { @apply flex flex-wrap items-end justify-between gap-x-6 gap-y-3; }
+  .ui-page-header__text { @apply min-w-0 flex-1 space-y-1; }
+  .ui-page-header__title {
+    @apply text-xl font-semibold text-ink;
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
   }
-  .v6-stamp-critical  { @apply bg-critical-soft text-critical border-critical; }
-  .v6-stamp-confirm   { @apply bg-confirm-soft text-confirm border-confirm; }
-  .v6-stamp-caution   { @apply bg-caution-soft text-caution border-caution; }
-  .v6-stamp-reference { @apply bg-reference-soft text-reference border-reference; }
+  @media (max-width: 639px) {
+    .ui-page-header__title { font-size: 1.375rem; line-height: 1.75rem; }
+  }
+  .ui-page-header__desc { @apply max-w-prose text-base text-ink-2; }
+  .ui-page-header__actions { @apply flex shrink-0 flex-wrap items-center gap-2; }
 }
 
 @layer components {
@@ -277,7 +428,7 @@
   .ref-section[open] > .ref-section-summary::after {
     transform: rotate(180deg);
   }
-  /* Phones: index.html's legacy rule wraps every .flex row, which pushed the
+  /* Phones: shell.css's legacy rule wraps every .flex row, which pushed the
      icon disc onto its own line above a long title (and the status beneath
      that). Lay the summary out as a two-column grid instead: disc left, title
      beside it, and any trailing meta — the `ml-auto` status, hint or chip —
@@ -436,9 +587,6 @@
     box-shadow: none !important;
   }
 
-  .v7-skin { background-image: none !important; }
-  .v7-skin::before { display: none !important; }
-
   /* ICP Infographic card single-page print optimization */
   .icp-infographic-card {
     page-break-inside: avoid !important;
@@ -562,65 +710,16 @@
 }
 
 /* =====================================================================
-   v7 signature — "clinical precision instrument" SIGNATURE VISUALS
-   Faithful port of docs/design/prototype.html (Task 4). ADDITIVE only:
-   every rule is v7-prefixed (tailwind safelist /^v7-/) so nothing here
-   touches existing markup until a class is applied. Token names are
-   bridged via src/design/tokens.css (prototype --ok→--okc, --mono→
-   --mono-font, --display→--display-font, --sans→--sans-font,
-   --radius→--radius-card). All motion is gated behind
-   prefers-reduced-motion:no-preference; the repo also zeroes
-   --motion-scale + animation durations under reduce, so the static
-   fallbacks below are what render with reduced motion.
+   v7 study card — the one v7 signature class still rendered (the
+   Education grid, the guideline list, and the Protocols AIS cards).
+   A neutral panel with a 3px topic stripe down the left edge; t-prevent
+   paints the stripe teal. Everything else the v7 prototype port shipped
+   here (graph-paper skin and corner glow, freshness pulse, fade-up
+   reveal, chips/tags/stypes/certs, verify pill, guardrail strip, frosted
+   masthead and mono nav items) had no remaining markup and is gone.
    ===================================================================== */
 @layer components {
-  /* ---- body atmospherics (opt-in via .v7-skin on a root wrapper) ----
-     42px graph-paper grid + fixed teal corner glow. The wrapper is
-     positioned so real content (z-index:1) sits above the fixed glow. */
-  .v7-skin {
-    position: relative;
-    background-image:
-      linear-gradient(color-mix(in srgb, var(--line) 42%, transparent) 1px, transparent 1px),
-      linear-gradient(90deg, color-mix(in srgb, var(--line) 42%, transparent) 1px, transparent 1px);
-    background-size: 42px 42px;
-    background-position: -1px -1px;
-  }
-  .v7-skin::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: -1;
-    background: radial-gradient(120% 80% at 100% 0%, color-mix(in srgb, var(--teal) 8%, transparent), transparent 60%);
-  }
-  /* position:relative (no z-index) keeps normal-flow content above z-index:-1 pseudo
-     without creating a new stacking context that would cap modal/toast z-indexes */
-  .v7-content { position: relative; }
-
-  /* ---- freshness pulse ---- */
-  .v7-pulse {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--okc);
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--okc) 60%, transparent);
-  }
-  .v7-fresh .v7-pulse { width: 6px; height: 6px; }
-  @media (prefers-reduced-motion: no-preference) {
-    .v7-pulse { animation: v7pulse 2.4s var(--ease) infinite; }
-    @keyframes v7pulse {
-      0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--okc) 55%, transparent); }
-      70%  { box-shadow: 0 0 0 9px transparent; }
-      100% { box-shadow: 0 0 0 0 transparent; }
-    }
-  }
-
-  /* ---- reveal (fade-up) ---- */
-  @media (prefers-reduced-motion: no-preference) {
-    .v7-reveal { opacity: 0; transform: translateY(12px); animation: v7rise .6s var(--ease) forwards; }
-    @keyframes v7rise { to { opacity: 1; transform: none; } }
-  }
-
-  /* ---- cards: entry/study left-stripe + hover lift ---- */
-  .v7-card, .v7-study {
+  .v7-card {
     background: var(--panel);
     border: 1px solid var(--line);
     border-radius: var(--radius-card);
@@ -629,176 +728,41 @@
     position: relative;
     overflow: hidden;
   }
-  .v7-card::before, .v7-study::before {
+  .v7-card::before {
     content: "";
     position: absolute; left: 0; top: 0; bottom: 0;
     width: 3px; background: var(--teal);
   }
-  /* entry default stripe is hover-revealed; study stripe is always on */
+  /* the stripe is hover-revealed unless a topic class is set */
   .v7-card::before { opacity: 0; }
-  .v7-card.t-acute::before, .v7-card.topic-acute::before,
-  .v7-study.t-acute::before, .v7-study.topic-acute::before { background: var(--coral); }
-  .v7-card.t-prevent::before, .v7-card.topic-prevent::before,
-  .v7-study.t-prevent::before, .v7-study.topic-prevent::before { background: var(--teal); }
-  .v7-card.t-ich::before, .v7-card.topic-ich::before,
-  .v7-study.t-ich::before, .v7-study.topic-ich::before { background: var(--gold); }
-  .v7-card.t-workflow::before, .v7-study.t-workflow::before { background: var(--ink-2); }
+  .v7-card.t-prevent::before { background: var(--teal); }
   @media (prefers-reduced-motion: no-preference) {
-    .v7-card, .v7-study {
+    .v7-card {
       transition: transform .18s var(--ease), box-shadow .18s var(--ease), border-color .18s var(--ease);
     }
     .v7-card::before { transition: opacity .18s; }
-    .v7-card:hover, .v7-study:hover {
+    .v7-card:hover {
       transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--line-2);
     }
     .v7-card:hover::before { opacity: 1; }
   }
-
-  /* ---- chips / tags / badges ---- */
-  .v7-chip {
-    font-family: var(--mono-font); font-size: .66rem; font-weight: 600;
-    letter-spacing: .03em; text-transform: uppercase;
-    border: 1px solid var(--line-2); background: var(--panel); color: var(--ink-soft);
-    border-radius: 999px; padding: .32rem .7rem; cursor: pointer;
-    display: inline-flex; gap: .35rem; align-items: center;
-  }
-  .v7-chip:hover { border-color: var(--teal); color: var(--ink); }
-  .v7-chip .v7-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); }
-
-  .v7-tag {
-    font-family: var(--mono-font); font-size: .62rem; font-weight: 600;
-    letter-spacing: .04em; text-transform: uppercase;
-    border-radius: 999px; padding: .18rem .55rem;
-    border: 1px solid var(--line-2); color: var(--ink-soft);
-  }
-  .v7-tag.topic { color: var(--tag-teal); border-color: color-mix(in srgb, var(--teal) 40%, var(--line-2)); background: var(--teal-wash); }
-  .v7-tag.acute { color: var(--tag-coral); border-color: color-mix(in srgb, var(--coral) 35%, var(--line-2)); background: var(--coral-wash); }
-  .v7-tag.new   { color: var(--tag-ok); border-color: color-mix(in srgb, var(--okc) 35%, var(--line-2)); background: var(--ok-wash); }
-
-  .v7-stype {
-    font-family: var(--mono-font); font-size: .63rem; font-weight: 700;
-    letter-spacing: .06em; text-transform: uppercase;
-    border: 1px solid var(--line-2); border-radius: 5px; padding: .18rem .45rem; color: var(--ink-soft);
-  }
-  .v7-stype.rct  { color: var(--tag-teal); border-color: color-mix(in srgb, var(--teal) 40%, var(--line-2)); background: var(--teal-wash); }
-  .v7-stype.meta { color: var(--tag-gold); border-color: color-mix(in srgb, var(--gold) 42%, var(--line-2)); background: var(--gold-wash); }
-  .v7-stype.obs  { color: var(--ink-2); background: var(--panel-2); }
-
-  .v7-cert {
-    font-family: var(--mono-font); font-size: .59rem; font-weight: 600;
-    border-radius: 999px; padding: .22rem .6rem;
-    border: 1px solid var(--line-2); color: var(--ink-soft);
-  }
-  .v7-cert.high     { color: var(--tag-ok); background: var(--ok-wash); border-color: color-mix(in srgb, var(--okc) 30%, var(--line-2)); }
-  .v7-cert.moderate { color: var(--tag-gold); background: var(--gold-wash); border-color: color-mix(in srgb, var(--gold) 30%, var(--line-2)); }
-
-  .v7-verify {
-    font-family: var(--mono-font); font-size: .64rem; font-weight: 600;
-    letter-spacing: .03em; text-transform: uppercase;
-    display: inline-flex; align-items: center; justify-content: center; gap: .3rem;
-    min-height: 44px;
-    color: var(--tag-teal); border: 1px solid var(--line-2); border-radius: 999px;
-    padding: .3rem .6rem; white-space: nowrap;
-  }
-  .v7-verify:hover { background: var(--teal-wash); }
-
-  /* ---- guardrail strip ---- */
-  .v7-guardrail {
-    display: flex; align-items: center; gap: .8rem; flex-wrap: wrap;
-    font-family: var(--mono-font); font-size: .7rem; color: var(--ink-soft);
-    background: var(--panel); border: 1px solid var(--line);
-    border-radius: 11px; padding: .6rem .9rem; box-shadow: var(--shadow);
-  }
-  .v7-guardrail b { color: var(--ink); }
-  .v7-guardrail .v7-sep { color: var(--line-2); }
-
-  /* ---- masthead / nav (frosted sticky bar + mono nav items) ---- */
-  .v7-app {
-    position: sticky; top: 0; z-index: 30;
-    backdrop-filter: saturate(160%) blur(10px);
-    -webkit-backdrop-filter: saturate(160%) blur(10px);
-    background: color-mix(in srgb, var(--paper) 84%, transparent);
-    border-bottom: 1px solid var(--line);
-  }
-  .v7-nav-item {
-    font-family: var(--mono-font); font-size: .72rem; font-weight: 600;
-    letter-spacing: .005em; color: var(--ink-soft);
-    padding: .5rem .68rem; border-radius: 8px; cursor: pointer;
-    white-space: nowrap; border: 0; background: transparent;
-  }
-  .v7-nav-item:hover { background: var(--panel-2); color: var(--ink); }
-  .v7-nav-item.active { color: var(--ink); background: var(--panel-2); box-shadow: inset 0 0 0 1px var(--line); }
-  .v7-nav-item.active::before { content: "▸ "; color: var(--teal); }
 }
 
 /* ============================================================
-   v7.1 visual refinement — CSS-only, additive, token-based.
-   Authored in the CSS lane (styles.css → tailwind.css) so it
-   ships WITHOUT re-bundling app.jsx (which a concurrent session
-   is editing). Restraint over spectacle: this is a clinical
-   instrument, so depth + a single calm load reveal, not chrome.
-   All motion is gated to prefers-reduced-motion.
+   Calculator launch tiles (`#main button.group`, Research >
+   Calculators): on real hover the edge takes the accent and the tile
+   rises one elevation step. Colour and elevation only — no travel.
+   The canvas behind the sheet is a flat token colour
+   (src/design/shell.css); the v7.1 radial washes that sat here are gone.
    ============================================================ */
-
-/* — Canvas atmosphere —
-   Two very-low-alpha radial washes (teal top-right, warm gold
-   bottom-left) composite over the existing warm-paper bg-color so
-   the surface has depth instead of a flat fill. Fixed attachment
-   keeps it stable while content scrolls. Alphas are low enough to
-   leave AA text contrast untouched. Dark theme uses cooler, deeper
-   teal stops. background-color is owned by the bg-slate-50 utility;
-   we only add background-image, so there is no conflict. */
-body {
-  background-image:
-    radial-gradient(58rem 58rem at 88% -12%, rgb(var(--cobalt-500) / 0.05), transparent 60%),
-    radial-gradient(46rem 46rem at -12% 112%, rgb(var(--warn-500) / 0.035), transparent 55%);
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-}
-[data-theme="dark"] body,
-html.dark body {
-  background-image:
-    radial-gradient(58rem 58rem at 88% -12%, rgb(var(--cobalt-500) / 0.11), transparent 60%),
-    radial-gradient(46rem 46rem at -12% 112%, rgb(var(--cobalt-700) / 0.14), transparent 55%);
-}
-
-/* — Card elevation —
-   The home fast-route tiles render as button.group with the card
-   surface; `group` is a real DOM class (Tailwind), a stable hook.
-   Give them a smooth transition and, on real hover (not touch), a
-   subtle lift + stronger shadow + teal edge. The lift distance is
-   multiplied by --motion-scale, so reduced-motion users get the
-   color/shadow change with zero transform. */
 #main button.group {
   transition:
-    box-shadow .18s var(--ease, ease),
-    transform .18s var(--ease, ease),
-    border-color .18s var(--ease, ease);
+    box-shadow var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
 }
 @media (hover: hover) {
   #main button.group:hover {
-    box-shadow: var(--shadow-lg);
-    transform: translateY(calc(-2px * var(--motion-scale)));
+    box-shadow: var(--elev-2);
     border-color: var(--teal);
   }
-}
-
-/* — One orchestrated load reveal on the Home landing —
-   Subtle fade-up, staggered across the landing sections. Scoped to
-   #tabpanel-home so it fires on the entry surface, not on every tab
-   switch. Entirely inside a no-preference media query, so
-   prefers-reduced-motion users never see it. */
-@keyframes v71-rise {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: none; }
-}
-@media (prefers-reduced-motion: no-preference) {
-  #tabpanel-home > section,
-  #tabpanel-home > * {
-    animation: v71-rise .42s var(--ease, ease) both;
-  }
-  #tabpanel-home > *:nth-child(2) { animation-delay: .06s; }
-  #tabpanel-home > *:nth-child(3) { animation-delay: .12s; }
-  #tabpanel-home > *:nth-child(4) { animation-delay: .18s; }
-  #tabpanel-home > *:nth-child(5) { animation-delay: .24s; }
 }
