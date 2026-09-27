@@ -5,14 +5,14 @@ Click to copy
 Alteplase (tPA)
 0.9 mg/kg IV (max 90 mg): 10% bolus, 90% over 60 min
 Click to copy
-PCC / Kcentra
-2000 units IV immediately (fixed dose, not weight-based). If INR >1.5 after infusion, page hematology and consider an additional 500 units.
+PCC / Kcentra (institutional example)
+2000 units IV immediately (institutional fixed-dose example; guideline dosing is weight-based, e.g., 25-50 units/kg by INR for VKA reversal; do not combine the two schemes). If INR >1.5 after infusion, page hematology and consider an additional 500 units.
 Click to copy
 Idarucizumab
 Two 2.5 g IV doses, given no more than 15 minutes apart; infuse each dose over 5-10 minutes. For dabigatran reversal.
 Click to copy
 FFP (if no PCC)
-15 mL/kg IV (give 4 units emergency-release plasma immediately; if INR remains >1.5 after infusion, page Hematology and consider 4 additional units).
+15 mL/kg IV (give 4 units emergency-release plasma immediately and request 4 additional units; if INR remains >1.5 after infusion, give 4 more units and consult Hematology; each unit is 250-300 mL).
 Click to copy
 Patient snapshot
 Age:
@@ -164,7 +164,7 @@ Range: 0-6
 0 - No symptoms
 1 - No significant disability
 2 - Slight disability; independent
-3 - Moderate disability; walks unaided
+3 - Moderate disability; requires some help but walks unaided
 4 - Moderately severe disability; needs assistance
 5 - Severe disability; bedridden
 6 - Dead
@@ -246,7 +246,7 @@ Score 8:
 10.8%
 Score 9:
 12.2%
-Source: Lip GY et al. Chest 2010;137:263-72 (CHA₂DS₂-VASc, PMID 19762550).
+Source: Lip GY et al. Chest 2010;137:263-72 (CHA₂DS₂-VASc derivation, PMID 19762550). Annual rates shown appear to correspond to ischemic-stroke rates in patients not taking anticoagulants in the Swedish Atrial Fibrillation cohort (Friberg L et al. Eur Heart J 2012;33:1500-10, PMID 22246443; needs confirmation); absolute risk at a given score varies widely across cohorts.
 HAS-BLED Score
 Inputs retained
 H
@@ -271,7 +271,7 @@ HAS-BLED Score:
 0
 Score 0-2: lower bleeding risk. Reassess when clinical factors change.
 Source: Pisters R et al. Chest 2010;138:1093-1100 (HAS-BLED, PMID 20299623).
-ROPE Score and PASCAL Classification
+RoPE Score and PASCAL Classification
 No history of hypertension
 No history of diabetes
 No history of stroke or TIA
@@ -290,12 +290,12 @@ Enter age to compute the RoPE score (age is the largest contributor).
 Sources: Kent DM et al. Neurology 2013;81:619-25 (RoPE, PMID 23864310); Kent DM et al. JAMA 2021;326:2277-86 (PASCAL, PMID 34905030).
 RCVS² Score
 Inputs retained
-Recurrent thunderclap headaches
+Thunderclap headache (recurrent or single)
 Intracranial carotid artery involvement
 Vasoconstrictive trigger exposure
 Female sex
 Subarachnoid hemorrhage on imaging
-RCVS\u00b2 Score:
+RCVS² Score:
 0
 Score ≤2: RCVS unlikely (85% sensitivity, 100% specificity for exclusion) — evaluate for alternative arteriopathies (e.g., primary angiitis of the CNS).
 Source: Rocha EA et al. Neurology 2019;92:e639-e647 (RCVS², PMID 30635475).
@@ -362,7 +362,7 @@ Weight (kg)
 CrCl (mL/min)
 Enter weight (and CrCl when available) to calculate enoxaparin dosing.
 Source: Sherman DG et al. Lancet 2007;369:1347-55 (PREVAIL, PMID 17448820).
-ASPECTS Score (Interactive)
+ASPECTS (Interactive)
 Score:
 Incomplete
 Click regions with
@@ -397,7 +397,7 @@ Source: Barber PA et al. Lancet 2000;355:1670-4 (ASPECTS, PMID 10905241).
 PC-ASPECTS (Posterior Circulation)
 Score:
 Incomplete
-Click regions with early ischemic changes. PC-ASPECTS starts at 10; pons and midbrain deduct 2 points each, and each other listed region deducts 1 point.
+Click regions with early ischemic changes. PC-ASPECTS starts at 10; pons and midbrain deduct 2 points each, and each other listed region deducts 1 point. Source: Puetz V et al. Stroke 2008;39:2485-90 (pc-ASPECTS, PMID 18617663).
 Pons
 2
 pt
@@ -412,10 +412,10 @@ pt
 Cerebellum R
 1
 pt
-Occipital L
+PCA territory L
 1
 pt
-Occipital R
+PCA territory R
 1
 pt
 Thalamus L
@@ -432,7 +432,7 @@ Alteplase (tPA) Dosing Calculator
 0.9 mg/kg, max 90 mg
 Enter patient weight in the encounter section to calculate dose.
 Source: NINDS rt-PA Stroke Study Group. NEJM 1995;333:1581-7 (PMID 7477192).
-SPAN-100, DRAGON, and SEDAN
+SPAN-100 and SEDAN
 Inputs retained
 SPAN-100 Index
 Input labels: Age; NIHSS.
@@ -451,6 +451,6 @@ mTICI
 2c
 mTICI
 3
-Source: Zaidat OO et al. Stroke 2013;44:2650-63 (mTICI consensus, PMID 23920012).
+Source: Zaidat OO et al. Stroke 2013;44:2650-63 (mTICI consensus defining grades 0, 1, 2a, 2b and 3, PMID 23920012); mTICI 2c (near-complete reperfusion): Goyal M et al. J Neurointerv Surg 2014;6:83-6 (PMID 23390038).
 DRAGON Score
 Input labels: Dense artery sign or early infarct on NCCT; pre-stroke mRS; age; glucose; onset to treatment; NIHSS.
