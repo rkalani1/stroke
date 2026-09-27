@@ -2339,7 +2339,7 @@ Clinician Name`;
             // Inline calculator state
             ichVolumeCalc: { lengthCm: '', widthCm: '', slicesCm: '' },
             andexanetCalc: { doacType: '', lastDoseHours: '', doacDoseMg: '' },
-            crclCalc: { age: '', weight: '', sex: 'M', cr: '' },
+            crclCalc: { age: '', weight: '', sex: '', cr: '' },
             enoxCalc: { weightKg: '', crCl: '' }
           });
 
@@ -18557,9 +18557,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, sex: v})); }}
                                 className={'w-full px-2 py-1.5 border rounded-lg text-sm focus:ring-2 focus:ring-cobalt-500 ' + (!telestrokeNote.sex ? 'border-warn-400 bg-warn-50 dark:bg-warn-950' : 'border-slate-300 dark:border-strong')}
                               >
-                                <option value="">--</option>
-                                <option value="M">M</option>
-                                <option value="F">F</option>
+                                <option value="">Select</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
                               </select>
                             </div>
                             <div>
@@ -20001,8 +20001,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, sex: v})); }}
                                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cobalt-500 dark:border-strong"
                               >
-                                <option value="M">M</option>
-                                <option value="F">F</option>
+                                <option value="">Select</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
                               </select>
                             </div>
                             <div>
