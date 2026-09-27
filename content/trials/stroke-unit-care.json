@@ -174,7 +174,7 @@
     "name": "OPTIMISTmain",
     "fullName": "Low-intensity versus standard monitoring after intravenous thrombolysis for acute ischaemic stroke (Optimal Post rtPA-IV Monitoring in Ischaemic Stroke Trial)",
     "category": "stroke-unit-care",
-    "population": "n=4922, Adults ≥18 y (registry NCT03734640); age distribution not reported in the PubMed abstract, NIHSS NIHSS <10 (mild to moderate impairment) and clinically stable, Eligibility (clinically stable, NIHSS <10) established within 2 h of initiation of IV thrombolysis; the tested protocols cover the first 24 h after thrombolysis",
+    "population": "n=4922, Adults ≥18 y (registry NCT03734640); age distribution not reported in the PubMed abstract, NIHSS <10 (mild to moderate impairment) and clinically stable, Eligibility (clinically stable, NIHSS <10) established within 2 h of initiation of IV thrombolysis; the tested protocols cover the first 24 h after thrombolysis",
     "finding": "BORDERLINE — non-inferiority NOT established with conventional confidence: mRS 2-6 in 809/2552 (31.7%) with low-intensity vs 606/1963 (30.9%) with standard monitoring. The upper 95% CI bound (1.15) reaches the 1.15 margin and p=0.057; the authors conclude only \"weak evidence\" that low-intensity monitoring is non-inferior",
     "teachingPoint": "Cluster-randomised data suggest that, in clinically stable NIHSS <10 patients, less frequent observation after thrombolysis gave similar 90-day mRS 2-6 rates with few sICH events. Non-inferiority was not established with conventional confidence (the authors call the evidence weak), so the trial supports local protocol review, not a change to the default post-thrombolysis monitoring schedule.",
     "PMID": "40412428",

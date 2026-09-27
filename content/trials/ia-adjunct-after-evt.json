@@ -157,7 +157,7 @@
     "name": "ATTENTION-IA",
     "fullName": "Intra-arterial Tenecteplase After Successful Endovascular Recanalisation in Patients With Acute Posterior Circulation Arterial Occlusion",
     "category": "ia-adjunct-after-evt",
-    "population": "n=208, ≥18 y; mean 66.0 y (SD 11.1); 24.5% (51) women, NIHSS NIHSS ≥6 (moderate to severe stroke); median NIHSS before EVT 20.0 (IQR 12.5-35.0), Within 24 h of onset (last known free of major deficits); median onset to randomization 7.0 h (IQR 4.6-9.4); randomized after successful EVT",
+    "population": "n=208, ≥18 y; mean 66.0 y (SD 11.1); 24.5% (51) women, NIHSS ≥6 (moderate to severe stroke); median NIHSS before EVT 20.0 (IQR 12.5-35.0), Within 24 h of onset (last known free of major deficits); median onset to randomization 7.0 h (IQR 4.6-9.4); randomized after successful EVT",
     "finding": "DID NOT meet superiority: 34.6% (36/104) vs 26.0% (27/104); adjusted absolute difference 8.3 percentage points (95% CI -3.8 to 20.4)",
     "teachingPoint": "Neutral: IA tenecteplase after successful posterior-circulation recanalization did not significantly increase 90-day mRS 0-1, secondary functional outcomes showed no signal, and symptomatic ICH was numerically higher. No demonstrated benefit; not a basis for routine IA thrombolysis after vertebrobasilar thrombectomy.",
     "PMID": "39809509",
