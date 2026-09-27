@@ -30350,7 +30350,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
                         <span className="ref-section-icon ref-tone-crit" aria-hidden="true"><i data-lucide="brain" className="w-4 h-4"></i></span>
                         <span>NIHSS Score</span>
-                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {isNIHSSComplete() ? nihssScore : 'Incomplete'}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">{isNIHSSComplete() ? nihssScore : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-between items-center mb-3">
@@ -30377,7 +30377,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
                         <span className="ref-section-icon ref-tone-neutral" aria-hidden="true"><i data-lucide="eye" className="w-4 h-4"></i></span>
                         <span>Glasgow Coma Scale (GCS)</span>
-                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {calculateGCS(gcsItems) === null ? 'Incomplete' : calculateGCS(gcsItems)}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">{calculateGCS(gcsItems) === null ? 'Incomplete' : calculateGCS(gcsItems)}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
@@ -30446,7 +30446,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
                         <span className="ref-section-icon ref-tone-crit" aria-hidden="true"><i data-lucide="alert-triangle" className="w-4 h-4"></i></span>
                         <span>ICH Score</span>
-                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {calculateICHScore(ichScoreItems) === null ? 'Incomplete' : calculateICHScore(ichScoreItems)}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">{calculateICHScore(ichScoreItems) === null ? 'Incomplete' : calculateICHScore(ichScoreItems)}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
@@ -30777,7 +30777,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
                         <span className="ref-section-icon ref-tone-neutral" aria-hidden="true"><i data-lucide="user" className="w-4 h-4"></i></span>
                         <span>Modified Rankin Scale (mRS)</span>
-                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {mrsScore || 'Not Selected'}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">{mrsScore || 'Not Selected'}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
@@ -30834,7 +30834,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
                         <span className="ref-section-icon ref-tone-warn" aria-hidden="true"><i data-lucide="clock" className="w-4 h-4"></i></span>
                         <span>ABCD² Score</span>
-                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {abcd2Complete ? calculateABCD2Score(abcd2Items) : 'Incomplete'}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">{abcd2Complete ? calculateABCD2Score(abcd2Items) : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
@@ -30952,7 +30952,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
                         <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="heart" className="w-4 h-4"></i></span>
                         <span>CHA₂DS₂-VASc Score</span>
-                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {chads2VascComplete ? calculateCHADS2VascScore(chads2vascItems) : 'Incomplete'}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">{chads2VascComplete ? calculateCHADS2VascScore(chads2vascItems) : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
                         <div className="flex justify-end items-center gap-2 mb-3">
@@ -31691,7 +31691,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
                         <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="scan" className="w-4 h-4"></i></span>
                         <span>ASPECTS (Interactive)</span>
-                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {telestrokeNote.aspectsAssessed === true ? `${10 - Object.values(telestrokeNote.aspectsRegions || {}).filter(Boolean).length}/10` : 'Incomplete'}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">{telestrokeNote.aspectsAssessed === true ? `${10 - Object.values(telestrokeNote.aspectsRegions || {}).filter(Boolean).length}/10` : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
                         <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Click regions with <strong>early ischemic changes</strong> on CT. ASPECTS = 10 minus number of affected regions.</p>
@@ -31771,7 +31771,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
                         <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="scan" className="w-4 h-4"></i></span>
                         <span>PC-ASPECTS (Posterior Circulation)</span>
-                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">Score: {telestrokeNote.pcAspectsAssessed === true ? (() => { const r = telestrokeNote.pcAspectsRegions || {}; return `${10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0))}/10`; })() : 'Incomplete'}</span>
+                        <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">{telestrokeNote.pcAspectsAssessed === true ? (() => { const r = telestrokeNote.pcAspectsRegions || {}; return `${10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0))}/10`; })() : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
                         <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Click regions with early ischemic changes. PC-ASPECTS starts at 10; pons and midbrain deduct 2 points each, and each other listed region deducts 1 point. Source: Puetz V et al. Stroke 2008;39:2485-90 (pc-ASPECTS, PMID 18617663).</p>

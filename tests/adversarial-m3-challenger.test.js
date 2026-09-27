@@ -235,10 +235,12 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       // 2026-09-22: ischemic 764->762 for the two requested protocol subtitle removals.
       // 2026-09-26: ischemic 762->754 for the eight removed dead Jump-to-Section chip
       // labels (navigation only; no clinical wording changed).
+      // 2026-09-27: calculators 456->448: the eight calculator summary badges drop the
+      // redundant "Score:" prefix ("NIHSS Score  Score: 12" read as "Score Score").
       const baselineCounts = {
         ich: 524,
         ischemic: 754,
-        calculators: 456
+        calculators: 448
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);

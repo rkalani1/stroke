@@ -33,7 +33,6 @@ Dosing
 CrCl
 SAH
 NIHSS Score
-Score:
 Incomplete
 Score:
 Incomplete
@@ -43,7 +42,6 @@ Use the NIHSS panel in the Encounter tab for full item-by-item scoring.
 The institutional acute-stroke algorithm requires NIHSS documentation but does not supply scoring definitions or interpretation.
 Source: Brott T et al. Stroke 1989;20:864-70 (PMID 2749846).
 Glasgow Coma Scale (GCS)
-Score:
 Incomplete
 Score:
 Incomplete
@@ -85,7 +83,6 @@ Incomplete:
 All three GCS components (Eye, Verbal, Motor) are required for a valid score.
 Source: Teasdale G, Jennett B. Lancet 1974;2:81-4 (PMID 4136544).
 ICH Score
-Score:
 Incomplete
 Score:
 Incomplete
@@ -156,7 +153,6 @@ Pre-ICH Cognitive Status
 Pre-ICH cognitive impairment
 Source: Rost NS et al. Stroke 2008;39:2304-9 (FUNC score, PMID 18556582).
 Modified Rankin Scale (mRS)
-Score:
 Not Selected
 Score:
 Not Selected
@@ -170,7 +166,6 @@ Range: 0-6
 6 - Dead
 Source: Bruno A et al. Stroke 2010;41:1048-50 (simplified mRS questionnaire, PMID 20224060).
 ABCD² Score
-Score:
 Incomplete
 Score:
 Incomplete
@@ -211,7 +206,6 @@ select a duration and confirm every ABCD² criterion before using or copying the
 90-day: 17.8%
 Source: Johnston SC et al. Lancet 2007;369:283-92 (ABCD², PMID 17258668).
 CHA₂DS₂-VASc Score
-Score:
 Incomplete
 Score:
 Incomplete
@@ -363,7 +357,6 @@ CrCl (mL/min)
 Enter weight (and CrCl when available) to calculate enoxaparin dosing.
 Source: Sherman DG et al. Lancet 2007;369:1347-55 (PREVAIL, PMID 17448820).
 ASPECTS (Interactive)
-Score:
 Incomplete
 Click regions with
 early ischemic changes
@@ -395,7 +388,6 @@ confirm that every ASPECTS region was reviewed before using the score.
 Reset all regions
 Source: Barber PA et al. Lancet 2000;355:1670-4 (ASPECTS, PMID 10905241).
 PC-ASPECTS (Posterior Circulation)
-Score:
 Incomplete
 Click regions with early ischemic changes. PC-ASPECTS starts at 10; pons and midbrain deduct 2 points each, and each other listed region deducts 1 point. Source: Puetz V et al. Stroke 2008;39:2485-90 (pc-ASPECTS, PMID 18617663).
 Pons
