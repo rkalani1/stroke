@@ -583,7 +583,7 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       const json = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/bundle.json'), 'utf8'));
       const { guidelines, trials, education, calculators, references } = json._meta.counts;
       expect(guidelines).toBe(11);
-      expect(trials).toBeGreaterThanOrEqual(248);
+      expect(trials).toBe(260);
       expect(education).toBeGreaterThanOrEqual(32);
       expect(calculators).toBe(34);
       expect(references).toBe(32); // 28 repo-local documents + 4 external links (registry-driven seeding)
@@ -653,9 +653,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(result.stdout).toContain('Evidence Atlas validation passed');
     });
 
-    it('F14-T1.2: Evidence Atlas contains exactly 9 active trials and at least 260 completed trials', () => {
+    it('F14-T1.2: Evidence Atlas contains exactly 9 active trials and 260 completed trials', () => {
       expect(activeTrials.length).toBe(9);
-      expect(completedTrials.length).toBeGreaterThanOrEqual(260);
+      expect(completedTrials.length).toBe(260);
     });
 
     it('F14-T1.3: Matcher engine coverage achieves 100% (42/42 criteria and 14/14 exclusions)', () => {
@@ -664,8 +664,8 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(result.stdout).toContain('14/14 exclusions (100%)');
     });
 
-    it('F14-T1.4: Evidence index exports at least 402 citations and 11 guideline recommendations', () => {
-      expect(citations.length).toBeGreaterThanOrEqual(402);
+    it('F14-T1.4: Evidence index exports 402 citations and 11 guideline recommendations', () => {
+      expect(citations.length).toBe(402);
       expect(recommendations.length).toBe(11);
     });
 
