@@ -197,8 +197,10 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
 
     it('verifies 100% field and operator coverage across all 9 active trials with 0 gaps', () => {
       const report = coverageReport(activeTrials);
-      expect(report.total).toBe(44);
-      expect(report.covered).toBe(44);
+      // 42 since the 2026-09 corrections removed two non-registry gates: the tandem
+      // trial's "ineligible for IVT" hard gate and MOST's ICA/M1 occlusion gate.
+      expect(report.total).toBe(42);
+      expect(report.covered).toBe(42);
       expect(report.percent).toBe(100);
       expect(report.exclusionsTotal).toBe(14);
       expect(report.exclusionsCovered).toBe(14);
@@ -729,7 +731,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         cwd: REPO_ROOT,
         encoding: 'utf8'
       });
-      expect(res).toContain('44/44 criteria (100%)');
+      expect(res).toContain('42/42 criteria (100%)');
       expect(res).toContain('14/14 exclusions (100%)');
       expect(res).toContain('Evidence Atlas validation passed');
     });

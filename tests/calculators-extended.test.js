@@ -67,14 +67,23 @@ describe('recommendAcuteDAPT', () => {
     expect(r.regimen).toBe('clopidogrel+ASA');
     expect(r.duration).toBe('21 days');
   });
-  it('recommends THALES for atherosclerotic NIHSS 4', () => {
-    const r = recommendAcuteDAPT({ nihss: 4, strokeType: 'ischemic', atherosclerotic: true, timeFromOnsetH: 12 });
+  // THALES (PMID 32668111) enrolled noncardioembolic NIHSS ≤5 stroke with no
+  // atherosclerosis requirement; ticagrelor+ASA x 30 d is a 2021 Class 2b option.
+  it('recommends THALES for nonatherosclerotic NIHSS 4 within 24h', () => {
+    const r = recommendAcuteDAPT({ nihss: 4, strokeType: 'ischemic', atherosclerotic: false, timeFromOnsetH: 12 });
     expect(r.regimen).toBe('ticagrelor+ASA');
     expect(r.duration).toBe('30 days');
   });
-  it('recommends very-high-risk TIA → THALES when ABCD2 ≥6', () => {
+  it('atherosclerotic NIHSS 4 within 24h → clopidogrel+ASA x 21 d (2026 Class 2a), not THALES', () => {
+    const r = recommendAcuteDAPT({ nihss: 4, strokeType: 'ischemic', atherosclerotic: true, timeFromOnsetH: 12 });
+    expect(r.regimen).toBe('clopidogrel+ASA');
+    expect(r.duration).toBe('21 days');
+    expect(r.class).toMatch(/Class 2a/);
+  });
+  it('ABCD2 ≥6 TIA within 24h → Class 1 clopidogrel+ASA (THALES does not preempt)', () => {
     const r = recommendAcuteDAPT({ nihss: 0, abcd2: 6, strokeType: 'tia', timeFromOnsetH: 12 });
-    expect(r.regimen).toBe('ticagrelor+ASA');
+    expect(r.regimen).toBe('clopidogrel+ASA');
+    expect(r.class).toMatch(/Class 1/);
   });
   it('CHANCE-2 (ticagrelor+ASA) for CYP2C19 LOF minor stroke', () => {
     const r = recommendAcuteDAPT({ nihss: 2, strokeType: 'ischemic', cyp2c19LOF: true, timeFromOnsetH: 12 });

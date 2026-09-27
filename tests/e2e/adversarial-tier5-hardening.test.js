@@ -326,7 +326,7 @@ describe('Tier 5: Adversarial Coverage Hardening & Clinical Invariants', () => {
     const catalystRec = recommendations.find(r => r.id === 'rec-af-early-anticoag');
     const catalystCit = citations.find(c => c.pmid === '40570866');
 
-    it('Invariant 3.1: CATALYST meta-analysis is registered with Lancet 2025 citation, PMID 40570866, and N=5467 evidence', () => {
+    it('Invariant 3.1: CATALYST meta-analysis is registered with Lancet 2025 citation, PMID 40570866, and supports the 2026 COR IIa / LOE A early-anticoagulation recommendation', () => {
       expect(catalystCit).toBeDefined();
       expect(catalystCit.pmid).toBe('40570866');
       expect(catalystCit.year).toBe(2025);
@@ -334,9 +334,12 @@ describe('Tier 5: Adversarial Coverage Hardening & Clinical Invariants', () => {
       expect(catalystCit.verificationStatus).toBe('verified-pubmed');
 
       expect(catalystRec).toBeDefined();
+      // 2026 AHA/ASA AIS guideline (PMID 41582814), in-app transcription ais-2026-154: COR IIa, LOE A.
+      // The 2021 secondary-prevention guideline predates TIMING/ELAN/OPTIMAS/CATALYST.
+      expect(catalystRec.guidelineSource).toContain('AHA/ASA 2026');
       expect(catalystRec.classOfRecommendation).toBe('IIa');
-      expect(catalystRec.levelOfEvidence).toBe('B-R');
-      expect(catalystRec.text).toContain('CATALYST IPDMA');
+      expect(catalystRec.levelOfEvidence).toBe('A');
+      expect(catalystRec.text).toContain('CATALYST IPD meta-analysis');
       expect(catalystRec.text).toContain('OR 0.70');
       expect(catalystRec.text).toContain('no sICH excess');
     });

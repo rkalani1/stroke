@@ -658,9 +658,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(completedTrials.length).toBeGreaterThanOrEqual(260);
     });
 
-    it('F14-T1.3: Matcher engine coverage achieves 100% (44/44 criteria and 14/14 exclusions)', () => {
+    it('F14-T1.3: Matcher engine coverage achieves 100% (42/42 criteria and 14/14 exclusions)', () => {
       const result = spawnSync('node', [path.join(ROOT, 'scripts/evidence-validate.mjs')], { cwd: ROOT, encoding: 'utf8' });
-      expect(result.stdout).toContain('44/44 criteria (100%)');
+      expect(result.stdout).toContain('42/42 criteria (100%)');
       expect(result.stdout).toContain('14/14 exclusions (100%)');
     });
 

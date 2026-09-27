@@ -15,7 +15,10 @@ describe('clinical corrections (regression lock)', () => {
   it('THALES is 30 days, not attributed to the 90-day DAPT option', () => {
     const app = read('src/app.jsx');
     expect(app).not.toContain('90 days (CHANCE-2/THALES)');
-    expect(app).toContain('90 days (CHANCE-2)');
+    // CHANCE-2 gave ticagrelor + aspirin for 21 days (aspirin stopped at day 21);
+    // the 90-day DAPT arm is POINT (clopidogrel + aspirin, PMID 29766750).
+    expect(app).not.toContain('90 days (CHANCE-2)');
+    expect(app).toContain('90 days (POINT');
     expect(app).toContain('30 days (THALES)');
   });
 
@@ -48,7 +51,8 @@ describe('clinical corrections (regression lock)', () => {
   it('mannitol osmolar-gap hold threshold is >20, not >55', () => {
     const evd = read('src/simulators/EvdIcpSimulator.jsx');
     expect(evd).not.toContain('Osm Gap &gt; 55');
-    expect(evd).toContain('Osm Gap &gt; 20');
+    expect(evd).not.toMatch(/gap &gt; 55/i);
+    expect(evd).toContain('gap &gt; 20 mOsm/kg');
   });
 
   it('AF-timing pearl aligns with the canonical ELAN/OPTIMAS/CATALYST model', () => {

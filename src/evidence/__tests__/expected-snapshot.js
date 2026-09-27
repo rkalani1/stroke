@@ -368,7 +368,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "eligible",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "rhapsody": {
