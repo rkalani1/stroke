@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## v6.29.2 — 2026-09-27 — remove the on-page demo notice and disclaimer footer
+
+Owner decision. The Protocols tab is unchanged.
+
+- Removed the "Public demo." notice at the top of every view and the global
+  footer (the "Educational use only" disclaimer, the public-site and no-PHI
+  notes, "Runs entirely in your browser…", "Verify every recommendation…" and
+  the version line). `PHIBanner`, `SiteFooter` and their three copy constants
+  are deleted.
+- The build-time public-demo gate is unchanged. The build marker moves from
+  the footer to the `.app-shell` root (`data-build`), where the smoke run now
+  checks it. The functional guardrails (no census, imports/exports,
+  persistence or patient-context URL handoff in the public build), the
+  synthetic-note prefix and the agent disclaimer in the generated assets stay.
+- `tests/disclaimer-bundle.test.js` becomes `tests/public-build-gate.test.js`:
+  it keeps the build-gate checks and asserts the removed copy stays out of
+  `app.js`.
+
 ## v6.29.1 — 2026-09-27 — post-merge review fixes
 
 Two defects from the v6.29.0 release, reported by the post-merge review on
