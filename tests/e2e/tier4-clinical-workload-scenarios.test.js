@@ -320,7 +320,7 @@ describe('Tier 4: Real-World Clinical Workload Application Scenarios', () => {
     it('S5.3: Verifies WCAG AA color contrast passes across the locked and semantic token pairs in light and dark mode', () => {
       const res = spawnSync('node', [path.join(ROOT, 'scripts/lint-contrast.mjs')], { cwd: ROOT, encoding: 'utf8' });
       expect(res.status).toBe(0);
-      expect(res.stdout).toMatch(/\d+ pairs verified/);
+      expect(res.stdout).toContain('72 pairs verified');
     });
 
     it('S5.4: Verifies modern landmark trial citations (THEIA, LASTE, TESLA, ANNEXA-I, CATALYST) are present', () => {

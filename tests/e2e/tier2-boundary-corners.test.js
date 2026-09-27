@@ -500,7 +500,7 @@ describe('Tier 2: Boundary & Corner Cases (Features 1-19)', () => {
     it('F10-T2.1: Exact contrast ratio calculation enforces WCAG AA (>=4.5:1) and AAA (>=7.0:1) thresholds', () => {
       const result = spawnSync('node', [path.join(ROOT, 'scripts/lint-contrast.mjs')], { cwd: ROOT, encoding: 'utf8' });
       expect(result.status).toBe(0);
-      expect(result.stdout).toMatch(/\d+ pairs verified/);
+      expect(result.stdout).toContain('72 pairs verified');
     });
 
     it('F10-T2.2: Critical alert banners exceed 4.5:1 in both light (crit-800 on crit-50) and dark (crit-200 on crit-950)', () => {
