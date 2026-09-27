@@ -84,6 +84,30 @@ export const guidelines = [
     citationId: 'cit-eso-tnk-2023',
     verificationStatus: 'verified-guideline',
     lastReviewed: lr
+  }),
+  makeGuideline({
+    id: 'gl-aha-mis-ich-2026',
+    name: 'Minimally Invasive Surgical Evacuation of Supratentorial ICH (Science Advisory)',
+    organization: 'AHA/ASA',
+    year: 2026,
+    topic: 'ich-surgery',
+    url: 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000529',
+    citationId: 'cit-aha-mis-ich-2026',
+    verificationStatus: 'verified-guideline',
+    lastReviewed: '2026-09-26',
+    verificationNotes: 'Ungraded science advisory; no COR/LOE.'
+  }),
+  makeGuideline({
+    id: 'gl-aha-rehab-2026',
+    name: 'Adult Stroke Rehabilitation and Recovery',
+    organization: 'AHA/ASA',
+    year: 2026,
+    topic: 'rehabilitation',
+    url: 'https://www.ahajournals.org/doi/10.1161/STR.0000000000000536',
+    citationId: 'cit-aha-rehab-2026',
+    verificationStatus: 'verified-guideline',
+    lastReviewed: '2026-09-26',
+    verificationNotes: 'Identity verified on PubMed (PMID 42657476). Replaces the 2016 guideline (PMID 27145936). Recommendation-level extraction pending full text.'
   })
 ];
 

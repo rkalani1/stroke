@@ -22,9 +22,9 @@ export const claims = [
   }),
   makeClaim({
     id: 'cl-tnk-late-window-non-lvo',
-    statement: 'TNK 0.25 mg/kg in the 4.5-24 h window with perfusion-imaging selection improves outcomes vs standard care in perfusion-selected patients not receiving EVT (TRACE-III: 100% LVO, <2% EVT, positive); benefit was NOT seen when EVT was also delivered (TIMELESS: 77% EVT, p=0.45).',
+    statement: 'TNK 0.25 mg/kg in the 4.5-24 h window with perfusion-imaging selection improves outcomes vs standard care in perfusion-selected patients not receiving EVT (TRACE-III: 100% LVO, <2% EVT, positive); benefit was NOT seen when EVT was also delivered (TIMELESS: 77% EVT, p=0.45). In non-LVO stroke with a CTP target mismatch and no planned EVT, OPTION (JAMA 2026) showed mRS 0-1 43.6% vs 34.2% (RR 1.28, 95% CI 1.04-1.57) with sICH 2.8% vs 0%.',
     topic: 'extended-window-ivt',
-    citationIds: ['cit-timeless-2024', 'cit-trace-iii-2024'],
+    citationIds: ['cit-timeless-2024', 'cit-trace-iii-2024', 'cit-option-tnk-2026'],
     certainty: 'moderate',
     conflictNotes: 'TIMELESS was neutral (adjusted common OR 1.13, 95% CI 0.82-1.57; p=0.45) with 77.3% of patients undergoing thrombectomy. TRACE-III showed benefit (mRS 0-1 33.0% vs 24.2%; p=0.03) in an LVO-only late-window population without EVT access; sICH appeared higher (3.0% vs 0.8%).',
     lastReviewed: '2026-09-26'
@@ -75,10 +75,10 @@ export const claims = [
     id: 'cl-ich-mis-evacuation',
     statement: 'Early minimally invasive evacuation of moderate-volume lobar ICH improves functional outcome at 6 months (ENRICH).',
     topic: 'ich-surgery',
-    citationIds: ['cit-enrich-2024'],
+    citationIds: ['cit-enrich-2024', 'cit-mind-2025', 'cit-aha-mis-ich-2026'],
     certainty: 'moderate',
-    conflictNotes: 'ENRICH adaptive design enriched for lobar location after early stop for futility in deep ICH; generalization to deep ICH not supported.',
-    lastReviewed: lr
+    conflictNotes: 'ENRICH adaptive design enriched for lobar location after early stop for futility in deep ICH; generalization to deep ICH not supported. MIND (JAMA Neurol 2025; Artemis device; supratentorial ICH 20-80 mL; surgery within 72 h; 69.5% deep bleeds; stopped early at n=236) found no significant 180-day benefit (ordinal mRS OR 1.03, 96% CI 0.62-1.72; P=.45). The 2026 AHA science advisory (ungraded; PMID 42634945) reviews this randomized evidence and frames consideration of MIS around lobar hemorrhage.',
+    lastReviewed: '2026-09-26'
   }),
   makeClaim({
     id: 'cl-dapt-minor-stroke',
@@ -100,7 +100,7 @@ export const claims = [
     id: 'cl-late-window-ivt-non-lvo',
     statement: 'Mismatch-selected IVT improved functional outcome vs placebo or standard care in patients not undergoing EVT: alteplase with DWI-FLAIR mismatch in unknown-onset stroke (WAKE-UP) and alteplase with perfusion mismatch at 4.5-9 h from onset or on waking within 9 h of the sleep midpoint (EXTEND); in ICA/MCA occlusion without EVT access, tenecteplase at 4.5-24 h improved mRS 0-1 (TRACE-III). TIMELESS (77% thrombectomy) and TWIST (non-contrast CT-selected wake-up) were neutral.',
     topic: 'extended-window-ivt',
-    citationIds: ['cit-wake-up-2018', 'cit-extend-2019', 'cit-timeless-2024', 'cit-twist-2023', 'cit-trace-iii-2024'],
+    citationIds: ['cit-wake-up-2018', 'cit-extend-2019', 'cit-timeless-2024', 'cit-twist-2023', 'cit-trace-iii-2024', 'cit-option-tnk-2026'],
     certainty: 'moderate',
     conflictNotes: 'TWIST (NCCT-only wake-up TNK) was negative (adjusted OR 1.18, 95% CI 0.88-1.58; p=0.27); TIMELESS was negative in a 100% LVO population with 77% EVT (p=0.45). Benefit requires imaging-based mismatch selection and absence of EVT co-treatment.',
     lastReviewed: '2026-09-26'

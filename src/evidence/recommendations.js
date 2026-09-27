@@ -109,7 +109,9 @@ export const recommendations = [
     supportingClaimIds: ['cl-late-window-ivt-non-lvo', 'cl-tnk-late-window-non-lvo'],
     caveats: [
       'Imaging-based selection is required; unselected late-window thrombolysis is not supported (TWIST).',
-      'Time from LKW remains a key safety determinant; TIMELESS extended TNK to 24 h with mismatch selection but the overall primary endpoint did not reach significance.'
+      'Time from LKW remains a key safety determinant; TIMELESS extended TNK to 24 h with mismatch selection but the overall primary endpoint did not reach significance.',
+      'OPTION (JAMA 2026) supports perfusion-selected tenecteplase to 24 h in non-LVO stroke without planned EVT, with sICH 2.8% vs 0%; a single-country trial that post-dates the 2026 AHA/ASA guideline, so it is not a guideline-graded indication.',
+      'Beyond 4.5 h, adding IV tenecteplase before planned EVT has not improved outcomes (TNK-PLUS for anterior LVO; ATTENTION LATE for basilar occlusion).'
     ],
     lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'

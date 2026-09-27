@@ -7425,7 +7425,7 @@ export function BasilarArteryOcclusionCard() {
               <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
                 <li>Use <strong>pc-ASPECTS</strong> and perfusion / collateral assessment; <strong>extensive established pontine infarction predicts futile recanalization</strong>.</li>
                 <li><strong>Time-to-treatment still matters</strong>; posterior circulation tolerates somewhat longer windows than anterior.</li>
-                <li><strong>Combine with IVT</strong> when eligible.</li>
+                <li><strong>Combine with IVT</strong> when eligible (≤4.5 h). TRACE-5: IV TNK ≤24 h (pc-ASPECTS ≥6, EVT at discretion) improved mRS 0–1/return to baseline vs standard care; adding TNK before EVT at 4.5–24 h at an EVT-capable centre did not help (ATTENTION LATE).</li>
               </ul>
             </CardSection>
 
@@ -7434,6 +7434,8 @@ export function BasilarArteryOcclusionCard() {
               { label: 'BAOCHE', cite: 'Jovin TG et al. N Engl J Med. 2022;387(15):1373-1384.', pmid: '36239645' },
               { label: 'BASICS', cite: 'Langezaal LCM et al. N Engl J Med. 2021;384(20):1910-1920.', pmid: '34010530' },
               { label: 'BEST', cite: 'Liu X et al. Lancet Neurol. 2020;19(2):115-122.', pmid: '31831388' },
+              { label: 'TRACE-5', cite: 'Xiong Y et al. Lancet. 2026;407(10530):763-772.', pmid: '41655588' },
+              { label: 'ATTENTION LATE', cite: 'Li R et al. JAMA. 2026.', pmid: '42776543' },
             ]} />
           </div>
         </div>

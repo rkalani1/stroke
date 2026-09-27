@@ -365,25 +365,96 @@ export const completedTrials = [
   t({
     id: 'attention',
     shortName: 'ATTENTION',
-    fullName: 'Endovascular Treatment of Acute Basilar-Artery Occlusion',
+    fullName: 'Endovascular Treatment of Acute Basilar-Artery Occlusion — 90-Day, 1-Year and 3-Year Outcomes',
     topic: 'evt-basilar',
-    diseaseArea: ['acute-ischemic-stroke', 'evt-basilar'],
-    population: { n: 340, ageRange: '≥18', nihssRange: '≥10', timeWindow: '≤12 h', keyInclusion: ['Basilar-artery occlusion', 'NIHSS ≥10'], keyExclusion: [] },
-    intervention: 'EVT + medical care',
-    comparator: 'Medical care',
-    primaryEndpoint: { definition: 'Good functional status (mRS 0-3) at 90 d', timepoint: '90 d', result: 'Favored EVT: 46% vs 23%', effectSize: 'Adjusted RR 2.06', confidenceInterval: '95% CI 1.46 to 2.91', pValue: 'p<0.001' },
-    secondaryEndpoints: [],
-    safetyFindings: { sich: '5.3% vs 0%', mortality: '37% vs 55% at 90 d', other: '' },
-    imagingCriteria: 'CTA/MRA-confirmed basilar-artery occlusion, ≤12 h',
-    applicabilityNotes: 'Chinese population; ≤12 h window.',
-    limitations: 'Open-label with blinded outcome assessment; conducted in China; 2:1 randomization.',
+    diseaseArea: [
+      'acute-ischemic-stroke',
+      'evt-basilar'
+    ],
+    population: {
+      n: 340,
+      ageRange: '≥18',
+      nihssRange: '≥10',
+      timeWindow: '≤12 h from estimated time of basilar-artery occlusion',
+      keyInclusion: [
+        'Basilar-artery occlusion confirmed by CTA/MRA/DSA',
+        'NIHSS ≥10 at the time of neuroimaging',
+        'Randomised 2:1 at 36 centres in China; 342 randomised (per the 1-year report), 340 in the intention-to-treat population (226 EVT, 114 control)'
+      ],
+      keyExclusion: [
+        'pc-ASPECTS <6 if age <80 y (<8 if age ≥80 y)',
+        'Pre-stroke mRS ≥3 if age <80 y (≥1 if age ≥80 y)',
+        'Complete bilateral thalamic or bilateral brainstem infarction',
+        'Bilateral mydriasis',
+        'Cerebellar infarction with mass effect compressing the fourth ventricle',
+        'Occlusion of both anterior and posterior circulation'
+      ]
+    },
+    intervention: 'Endovascular thrombectomy + best medical care (n=226)',
+    comparator: 'Best medical care alone (n=114)',
+    primaryEndpoint: {
+      definition: 'Good functional status (mRS 0-3) at 90 d',
+      timepoint: '90 d',
+      result: 'Favored EVT: 104/226 (46%) vs 26/114 (23%)',
+      effectSize: 'Adjusted rate ratio 2.06',
+      confidenceInterval: '95% CI 1.46 to 2.91',
+      pValue: 'p<0.001'
+    },
+    secondaryEndpoints: [
+      {
+        name: '1-year mRS 0-3 (JAMA Neurol 2024 extension; 330 of 342 randomised [96.5%] with 1-year data)',
+        result: '99/222 (44.6%) vs 21/108 (19.4%); adjusted rate ratio 2.23 (95% CI 1.51-3.29)'
+      },
+      {
+        name: '1-year excellent outcome (mRS 0-1)',
+        result: '62/222 (27.9%) vs 9/108 (8.3%); rose from 90 d in the EVT arm (45/226 [19.9%]) but not in the control arm (9/114 [7.9%])'
+      },
+      {
+        name: '1-year mortality',
+        result: '101/222 (45.5%) vs 69/108 (63.9%), up from 83/226 (36.7%) vs 63/114 (55.3%) at 90 d; no effect estimate given in the abstract'
+      },
+      {
+        name: '3-year mRS 0-3 (JAMA Neurol 2026 extension primary outcome; 307 of 340 [90.3%] with 3-year data)',
+        result: '78/203 (38.4%) vs 19/104 (18.3%); adjusted risk ratio 2.05 (95% CI 1.35-3.11), P=.001'
+      },
+      {
+        name: '3-year mRS distribution (ordinal shift)',
+        result: 'Favored EVT: adjusted common odds ratio 2.60 (95% CI 1.53-4.43)'
+      },
+      {
+        name: '3-year cumulative mortality',
+        result: '113/203 (55.7%) vs 76/104 (73.1%); adjusted risk ratio 0.76 (95% CI 0.65-0.89)'
+      },
+      {
+        name: '3-year prespecified age subgroup',
+        result: 'Benefit observed in patients <70 y; a treatment effect was not demonstrated in patients ≥70 y (subgroup estimates not given in the abstract)'
+      },
+      {
+        name: '3-year mRS 0-2 and quality of life',
+        result: 'Prespecified secondary outcomes; values not reported in the abstract (full text not retrievable) — not recorded here'
+      }
+    ],
+    safetyFindings: {
+      sich: 'Symptomatic intracranial haemorrhage 12/226 (5%) vs 0/114 (0%)',
+      mortality: '90 d: 37% vs 55% (adjusted RR 0.66, 95% CI 0.52-0.82); 1 y: 101/222 (45.5%) vs 69/108 (63.9%); cumulative 3 y: 113/203 (55.7%) vs 76/104 (73.1%) (adjusted RR 0.76, 95% CI 0.65-0.89)',
+      other: 'Procedural complications in 14% of the EVT group, including one death from arterial perforation'
+    },
+    imagingCriteria: 'CTA/MRA/DSA-confirmed basilar-artery occlusion ≤12 h; pc-ASPECTS ≥6 (≥8 if age ≥80 y) on CT, CTA source images or MRI-DWI; no complete bilateral thalamic or brainstem infarction',
+    applicabilityNotes: 'Chinese population (36 centres); NIHSS ≥10 within 12 h with pc-ASPECTS ≥6 (≥8 if ≥80 y); about one third received IV thrombolysis. The 1-year (JAMA Neurol 2024) and 3-year (JAMA Neurol 2026) reports are follow-up extensions of this same randomised cohort, not independent trials — never count them as additional evidence alongside ATTENTION. Their contribution is durability: mRS 0-3 remained about twice as frequent with EVT at 1 year (44.6% vs 19.4%) and 3 years (38.4% vs 18.3%); mortality rose in both arms over time but stayed lower with EVT; and the mRS 0-1 gap widened between 90 days and 1 year. At 3 years a treatment effect was not demonstrated in the prespecified subgroup aged ≥70 years — an exploratory subgroup finding without published estimates in the abstract, which is not evidence of no benefit in older patients. Patients with NIHSS <10 were not enrolled, so ATTENTION does not inform milder BAO.',
+    limitations: 'Open-label treatment with blinded outcome assessment (PROBE); conducted entirely in China, so transportability to other populations is uncertain; NIHSS ≥10 required, so milder BAO is not addressed. The long-term reports are complete-case analyses of patients with available follow-up (1 year: 330 of the 342 randomised, 96.5%; 3 years: 307 of the 340-patient intention-to-treat population, 90.3%), and the age-subgroup finding is exploratory. Outcomes beyond 90 days are not among those listed in the NCT04751708 registry record; the 3-year extension was registered separately (ChiCTR2400082236). The 3-year report\'s Key Points give n=303 while its Results give n=307.',
     certainty: 'high',
     evidenceType: 'rct',
-    citationIds: ['cit-attention-2022'],
+    citationIds: [
+      'cit-attention-2022',
+      'cit-attention-1y-2024',
+      'cit-attention-3y-2026'
+    ],
     relatedActiveTrialIds: [],
-    practiceImpact: 'Established EVT benefit for basilar-artery occlusion within 12 h.',
+    practiceImpact: 'Established EVT benefit for basilar-artery occlusion with NIHSS ≥10 within 12 h; the 1- and 3-year extensions show the functional benefit and lower mortality persist rather than fading after 90 days.',
     lastReviewed: '2026-09-26',
-    verificationStatus: 'verified-pubmed'
+    promotedDate: '2026-09-26',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: '2026-09-26 re-verification (independently re-checked): 90-day figures against the NEJM abstract (PMID 36239644); eligibility thresholds and registered outcomes (all ≤90 days) from ClinicalTrials.gov NCT04751708; 1-year figures from the JAMA Neurol 2024 abstract (PMID 39186280); 3-year figures from the JAMA Neurol 2026 abstract (PMID 41460644; extension registered ChiCTR2400082236). PMC returned abstract and Key Points only, so 3-year mRS 0-2, quality-of-life and age-subgroup estimates are not recorded. The earlier limitation "stopped early" is not supported by the NEJM abstract, the protocol abstract (PMID 35102797), the registry (status Completed, enrollment 340) or the 1-year report (342 randomised) and is dropped; confirm against the NEJM Methods (sample-size section) at the next full-text review. The BAOCHE abstract (PMID 36239645), by contrast, states enrollment was halted at a prespecified interim analysis.'
   }),
   t({
     id: 'baoche',
@@ -10232,6 +10303,687 @@ export const completedTrials = [
     lastReviewed: '2026-09-19',
     promotedDate: '2026-09-19',
     verificationStatus: 'verified-pubmed'
+  }),
+  // ------------------- Evidence currency 2026-09-26 (verified promotion batch) -------------------
+  t({
+    id: 'trace-5',
+    shortName: 'TRACE-5',
+    fullName: 'Tenecteplase versus standard medical treatment for basilar artery occlusion within 24 h (TRACE-5): a multicentre, prospective, randomised, open-label, blinded-endpoint, superiority, phase 3 trial',
+    topic: 'extended-window-ivt',
+    diseaseArea: ['acute-ischemic-stroke', 'extended-window-ivt', 'evt-basilar'],
+    population: {
+      n: 452,
+      ageRange: 'adults ≥18; mean 66.4 y (SD 11.2); 321 (71%) male, 131 (29%) female',
+      nihssRange: 'any — no NIHSS threshold in the registered eligibility (randomisation balanced on NIHSS <10 vs ≥10)',
+      timeWindow: 'within 24 h of stroke onset or last known well',
+      keyInclusion: [
+        'Adults 18 years or older with acute ischaemic stroke due to complete or near-complete ("potentially retrievable") basilar artery occlusion on CT angiography or MR angiography',
+        'Eligible for intravenous thrombolytics within 24 h of stroke onset or the time last known well; with stuttering prodromal symptoms, the time of sudden deterioration was taken as the estimated occlusion time',
+        'Pre-stroke mRS score of 3 or less',
+        '66 stroke centres in China; enrolment 24 January 2024 to 20 June 2025; NCT06196320'
+      ],
+      keyExclusion: [
+        'Intracerebral haemorrhage or another diagnosis (e.g. tumour) on baseline imaging',
+        'Posterior-circulation ASPECTS (pc-ASPECTS) <6 on non-contrast CT, CTA source images or MRI DWI',
+        'Significant cerebellar mass effect or acute hydrocephalus; established frank hypodensity on non-contrast CT; bilateral extensive brainstem ischaemia',
+        'Other standard contraindications to intravenous thrombolysis',
+        'Concurrent anterior- and posterior-circulation large vessel occlusion'
+      ]
+    },
+    intervention: 'Single intravenous bolus of tenecteplase 0.25 mg/kg (maximum 25 mg) within 24 h of onset, with or without endovascular thrombectomy at the treating team\'s discretion (n=221)',
+    comparator: 'Standard medical treatment — could include intravenous alteplase 0.9 mg/kg (maximum 90 mg) within 4.5 h of onset, anticoagulation or antiplatelets — with or without endovascular thrombectomy (n=231); alteplase was used in 80 (35%) of the standard-treatment group',
+    primaryEndpoint: {
+      definition: 'mRS 0-1, or return to the baseline mRS if the pre-stroke mRS was 2-3, at 90 days — a SUPERIORITY design',
+      timepoint: '90 d',
+      result: 'POSITIVE: 83/221 (38%) with tenecteplase vs 66/231 (29%) with standard medical treatment',
+      effectSize: 'Adjusted relative rate 1.50',
+      confidenceInterval: '95% CI 1.09 to 2.08',
+      pValue: 'p=0.014'
+    },
+    secondaryEndpoints: [
+      { name: 'Severe disability or death (mRS 5-6) at 90 days', result: '82 (37%) with tenecteplase vs 89 (39%) with standard medical treatment; adjusted relative rate 0.87 (95% CI 0.65-1.18) — similar between groups' },
+      { name: 'Endovascular thrombectomy after randomisation', result: '222 of 452 patients (49%) subsequently underwent thrombectomy; the abstract does not give the split by arm' }
+    ],
+    safetyFindings: {
+      sich: 'Symptomatic intracranial haemorrhage within 36 h in 4 (2%) with tenecteplase vs 7 (3%) with standard medical treatment; adjusted relative rate 0.58 (95% CI 0.17-1.99) — few events, so the estimate is imprecise',
+      mortality: 'All-cause 90-day mortality 65 (29%) vs 71 (31%); adjusted relative rate 0.87 (95% CI 0.62-1.22) — similar between groups',
+      other: 'mRS 5-6 at 90 days 82 (37%) vs 89 (39%); absolute 90-day mortality near 30% in both arms'
+    },
+    imagingCriteria: 'CT or MR angiography confirming complete or near-complete basilar artery occlusion; pc-ASPECTS ≥6 on non-contrast CT, CTA source images or DWI (pc-ASPECTS <6, bilateral extensive brainstem ischaemia, frank hypodensity, cerebellar mass effect and hydrocephalus excluded). No perfusion-mismatch requirement in the registered eligibility.',
+    applicabilityNotes: 'A phase 3 randomised trial designed specifically to test intravenous thrombolysis in basilar artery occlusion up to 24 h. The earlier randomised late-window posterior-circulation thrombolysis trial, EXPECTS (alteplase 4.5-24 h), enrolled mainly mild stroke without planned thrombectomy and, per the TRACE-5 protocol, only 16 BAO patients. The comparator is a heterogeneous standard-medical-treatment arm: 35% of controls received alteplase (permitted only within 4.5 h), so the trial blends a tenecteplase-versus-alteplase comparison in early presenters with a tenecteplase-versus-no-thrombolysis comparison in later presenters. Randomisation was stratified by the investigator\'s intention to perform thrombectomy and (for controls) to give alteplase, but the abstract does not report results by these strata. About half of all patients (49%) went on to thrombectomy, so the result applies to a tenecteplase-first strategy with thrombectomy at clinician discretion — not to tenecteplase as a substitute for thrombectomy, and not to tenecteplase as a proven bridge before thrombectomy beyond 4.5 h. On that last question, ATTENTION LATE (JAMA 2026, PMID 42776543) found no improvement in 90-day functional independence when tenecteplase was added before thrombectomy at 4.5-24 h in BAO patients with NIHSS ≥10 admitted directly to thrombectomy-capable centres (30% vs 30%). Both guidelines in this library predate TRACE-5. The ESO/ESMINT 2024 basilar guideline found insufficient data for an evidence-based recommendation on IVT within 24 h and relied on expert consensus instead. The AHA/ASA 2026 AIS guideline (PubMed 2026-01-26) has no BAO-specific thrombolysis recommendation beyond 4.5 h; its 4.5-24 h IVT recommendation for LVO (Class IIb, B-R) is limited to patients with salvageable penumbra who cannot receive EVT.',
+    limitations: 'Open-label with blinded endpoint assessment; conducted only in Chinese patients at 66 centres, so generalisability to other populations is untested; a heterogeneous comparator (alteplase in 35%, antithrombotics otherwise) and discretionary thrombectomy in about half the patients make the independent effect of tenecteplase hard to isolate; the primary endpoint is excellent outcome (mRS 0-1 or return to baseline), while mRS 5-6 and mortality were not significantly different; the symptomatic-haemorrhage comparison rests on 11 events in total; patients with pc-ASPECTS <6, bilateral extensive brainstem ischaemia or frank hypodensity were excluded, so the trial does not inform treatment of established large posterior-circulation infarcts; the tenecteplase manufacturer (China Shijiazhuang Pharmaceutical Company Recomgen Pharmaceutical) was among the funders. Replication is pending: the TRACE-5 protocol describes a parallel trial with shared protocol and data elements, POST-ETERNAL (NCT05105633, still recruiting per ClinicalTrials.gov), with a planned pooled analysis.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-trace-5-2026'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'In Chinese patients with basilar artery occlusion and pc-ASPECTS ≥6 treated within 24 h, intravenous tenecteplase (with thrombectomy at clinician discretion) improved the 90-day rate of mRS 0-1 or return to baseline versus standard medical treatment (38% vs 29%), without a demonstrated difference in symptomatic haemorrhage or death. It provides dedicated randomised support for thrombolysis in BAO up to 24 h. It does not establish benefit of tenecteplase as a bridge before thrombectomy beyond 4.5 h (ATTENTION LATE was neutral), awaits replication outside China, and postdates the AHA/ASA 2026 and ESO/ESMINT 2024 guidance, so it remains emerging evidence that guidelines do not yet endorse.',
+    lastReviewed: '2026-09-26',
+    promotedDate: '2026-09-26',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Primary, safety and mRS 5-6 numbers transcribed verbatim from the PubMed abstract of PMID 41655588 (Lancet 2026;407(10530):763-772; DOI 10.1016/S0140-6736(25)02633-9), checked 2026-09-26. Eligibility and imaging criteria from ClinicalTrials.gov NCT06196320 (status COMPLETED, enrollment 452, sponsor Beijing Tiantan Hospital) and the published protocol (Stroke Vasc Neurol 2026;11(3):365-372, PMID 41151803, PMC13347805). The full text is not in PMC and the publisher page was not reachable, so baseline NIHSS, the onset-to-randomisation distribution, per-arm thrombectomy counts, the prespecified secondary efficacy outcomes (mRS 0-2, mRS 0-3, ordinal mRS, early neurological improvement, reperfusion on the initial angiogram) and subgroup results (including thrombectomy vs no thrombectomy and 0-6 h vs 6-24 h) are deliberately not transcribed. Figures quoted in secondary web summaries were not checked against the primary report and are not used. Independently re-verified 2026-09-26 against PubMed (PMID 41655588 abstract; PMID 41151803 protocol full text in PMC13347805, including the randomisation strata, the 16-BAO-patient EXPECTS figure, the POST-ETERNAL pooled-analysis plan and the manufacturer grant; PMID 41582814 for the AHA/ASA 2026 guideline publication date) and ClinicalTrials.gov (NCT06196320; NCT05105633). The per-arm denominators 221 and 231 are the randomised groups; the abstract states that primary and safety outcomes were assessed in all randomly assigned participants.'
+  }),
+  t({
+    id: 'option-tnk',
+    shortName: 'OPTION (TNK)',
+    fullName: 'Tenecteplase for Acute Non-Large Vessel Occlusion 4.5 to 24 Hours After Ischemic Stroke: The OPTION Randomized Clinical Trial',
+    topic: 'extended-window-ivt',
+    diseaseArea: ['acute-ischemic-stroke', 'extended-window-ivt', 'evt-mevo'],
+    population: {
+      n: 570,
+      ageRange: '≥18 (median 68, IQR 59-75); 196 (34.6%) female',
+      nihssRange: '6-25, or 4-5 with a disabling deficit',
+      timeWindow: '4.5-24 h from last seen well (wake-up and unwitnessed onset eligible)',
+      keyInclusion: [
+        'Acute ischaemic stroke WITHOUT large vessel occlusion on CTA/MRA (ICA, MCA-M1, vertebral and basilar occlusions excluded); M2 or more distal MCA, ACA, PCA, AICA, PICA and SCA occlusions and large-to-medium vessel stenosis eligible',
+        'CT perfusion target mismatch: ischaemic core (rCBF <30%) <50 mL, mismatch ratio (Tmax >6 s / core) ≥1.2, mismatch volume ≥10 mL',
+        'Pre-stroke mRS 0-1',
+        '48 centres in China; recruited 2 June 2023 to 4 August 2025, final follow-up 28 October 2025; 570 randomised, 566 in the primary analysis',
+        'NCT05752916'
+      ],
+      keyExclusion: [
+        'Planned or anticipated endovascular therapy',
+        'Thrombolytic within 72 h or intention to give standard IV thrombolysis',
+        'Acute intracranial haemorrhage or acute LVO on CTA/MRA',
+        'Rapidly improving symptoms likely to reach NIHSS <4',
+        'Standard thrombolysis contraindications (e.g. DOAC within 48 h, INR >1.7, platelets <100,000/μL, BP >185/110 mmHg)'
+      ]
+    },
+    intervention: 'Intravenous tenecteplase 0.25 mg/kg (maximum 25 mg) single bolus (n=282 analysed)',
+    comparator: 'Standard medical treatment — antiplatelet therapy (aspirin or clopidogrel alone) at investigator discretion (n=284 analysed)',
+    primaryEndpoint: {
+      definition: 'Excellent functional outcome, mRS 0-1 at 90 days',
+      timepoint: '90 d',
+      result: 'Favoured tenecteplase: 123/282 (43.6%) vs 97/284 (34.2%) with standard medical treatment',
+      effectSize: 'Risk ratio 1.28 (primary analysis as reported in the abstract; not labelled as adjusted)',
+      confidenceInterval: '95% CI 1.04 to 1.57',
+      pValue: 'P=.02'
+    },
+    secondaryEndpoints: [
+      { name: 'Symptomatic ICH within 36 h (Heidelberg)', result: '2.8% (tenecteplase) vs 0% (standard care); risk difference 2.85% (95% CI 1.16% to 5.54%); P=.004' },
+      { name: 'Mortality at 90 d', result: '5.0% vs 3.2%; RR 1.57 (95% CI 0.69 to 3.57); P=.28' }
+    ],
+    safetyFindings: {
+      sich: 'Symptomatic intracranial haemorrhage within 36 h 2.8% vs 0% (risk difference 2.85%, 95% CI 1.16%-5.54%; P=.004)',
+      mortality: '90-day mortality 5.0% vs 3.2% (RR 1.57, 95% CI 0.69-3.57; P=.28) — not statistically different, but numerically higher with tenecteplase',
+      other: 'All symptomatic haemorrhages occurred in the tenecteplase arm'
+    },
+    imagingCriteria: 'NCCT + CTA + CT perfusion required: LVO excluded on CTA/MRA; target mismatch with ischaemic core (rCBF <30%) <50 mL, mismatch ratio ≥1.2 and mismatch volume ≥10 mL',
+    applicabilityNotes: 'The first RCT dedicated to NON-large-vessel-occlusion stroke in the 4.5-24 h window, and the first to show a functional benefit of late-window tenecteplase in that population. TRACE-III (LVO only) and TIMELESS (LVO, mostly with EVT) did not address it; CHABLIS-T II (tenecteplase, large/medium vessel occlusion, 4.5-24 h) improved reperfusion but did not change 90-day clinical outcomes; HOPE (alteplase, LVO and non-LVO) was positive overall. It applies to perfusion-selected patients with a disabling deficit (NIHSS 6-25, or 4-5 disabling) in whom thrombectomy is not planned; it does not apply to patients without a CTP target mismatch, to minor non-disabling deficits, or to patients proceeding to EVT. The comparator was antiplatelet therapy, not alteplase. A secondary analysis presented as an ESOC 2026 late-breaking abstract (Eur Stroke J, DOI 10.1093/esj/aakag023.1876; conference abstract, not a peer-reviewed paper) classified 386 of 566 patients (68.2%) as medium vessel occlusion by ESCAPE-MeVO/DISTAL criteria, with a consistent direction of effect in MeVO (42.6% vs 33.0%; aRR 1.29, 95% CI 1.00-1.66) and non-MeVO patients (46.0% vs 36.6%; aRR 1.45, 95% CI 1.05-2.00; P for interaction 0.75). Read with the MeVO thrombectomy trials: ESCAPE-MeVO and DISTAL were neutral while ORIENTAL-MeVO (NIHSS ≥6) was positive, so OPTION tests a thrombolytic alternative rather than establishing that no endovascular option exists.',
+    limitations: 'Single country (China, 48 centres) and open-label with blinded endpoint assessment; a single trial with a modest absolute difference (9.4 percentage points) and a lower 95% CI bound for the risk ratio of 1.04; symptomatic ICH was higher with tenecteplase (2.8% vs 0%) and 90-day mortality was numerically higher (5.0% vs 3.2%, not significant); selection required CT perfusion with permissive mismatch thresholds (ratio ≥1.2, mismatch volume ≥10 mL), which not every centre can obtain and which is less validated for small distal lesions; control arm received antiplatelet therapy; tenecteplase manufacturer (CSPC) co-funded the investigator-initiated trial per the protocol paper; secondary efficacy outcomes (mRS 0-2, ordinal mRS, reperfusion) were not verifiable from the retrievable primary text and are not recorded here; the MeVO/non-MeVO breakdown comes from a conference abstract only.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-option-tnk-2026', 'cit-option-tnk-protocol-2025'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Adds a single positive RCT for perfusion-selected IV tenecteplase at 4.5-24 h in non-LVO stroke when EVT is not planned: excellent outcome 43.6% vs 34.2%, at the cost of symptomatic ICH 2.8% vs 0%. Emerging, selective and consult-dependent — it post-dates the 2026 AHA/ASA guideline, is not yet replicated outside China, and should not be generalised to patients without a CTP target mismatch or to those proceeding to thrombectomy.',
+    lastReviewed: '2026-09-26',
+    promotedDate: '2026-09-26',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'PubMed 41642827 (JAMA 2026;335(13):1137-1147; DOI 10.1001/jama.2026.0210; PMC12878635 — PMC body not retrievable, numbers from the published abstract/Key Points); eligibility, CTP thresholds, control-arm regimen and sICH definition from the protocol paper (PubMed 41169527, PMC12569589) and ClinicalTrials.gov NCT05752916 (completed, enrollment 570). MeVO breakdown from ESOC 2026 abstract LB148 (PMC13144800; abstract text reads "556" but 386+180=566, and the subgroup numerators 83+40=123 and 63+34=97 reconcile with the main result). Independently re-verified 2026-09-26. Id is option-tnk to avoid collision with option-laao.'
+  }),
+  t({
+    id: 't-flavor',
+    shortName: 'T-FLAVOR',
+    fullName: 'Standard-Dose Tenecteplase vs Low-Dose Alteplase for Acute Ischemic Stroke From Large-Vessel Occlusion (Tenecteplase versus Alteplase for Large-Vessel-Occlusion Recanalization, T-FLAVOR)',
+    topic: 'tnk-vs-alteplase',
+    diseaseArea: ['acute-ischemic-stroke', 'tnk-vs-alteplase', 'bridging-ivt-before-evt'],
+    population: {
+      n: 218,
+      ageRange: 'mean 77.1 years (SD 12.0); aged 20 years or older, no upper age limit; 92/218 (42.2%) female',
+      nihssRange: 'no NIHSS restriction; baseline median 18 (IQR 11-23)',
+      timeWindow: 'IV thrombolysis within 4.5 h of onset, followed by mechanical thrombectomy (protocol: thrombectomy within 6 h)',
+      keyInclusion: ['Acute ischaemic stroke eligible for IV thrombolysis within 4.5 h (Japanese guideline criteria) and scheduled for mechanical thrombectomy', 'Occlusion of the ICA, M1 or M2 segment of the MCA, or basilar artery on CTA or MRA before thrombolysis', 'Pre-stroke mRS 0-3 (protocol)', '18 hospitals in Japan; enrolment 19 August 2022 to 13 March 2025', '221 randomised; 218 received study drug and formed the full analysis set', 'jRCTs051210055 (Japan Registry of Clinical Trials)'],
+      keyExclusion: ['Detailed exclusion criteria are in the eMethods supplement, not the main text', 'Screening exclusions before randomisation included direct oral anticoagulant use and a substantially large infarct (CONSORT diagram)', '3 patients excluded after randomisation for ineligibility (beyond 4.5 h, coexisting SAH, abdominal aneurysm); none received a thrombolytic']
+    },
+    intervention: 'Intravenous tenecteplase 0.25 mg/kg (maximum 25 mg) single bolus before mechanical thrombectomy (n=107)',
+    comparator: 'Intravenous alteplase 0.6 mg/kg (maximum 60 mg; 0.06 mg/kg bolus then the remainder over 60 min), the low dose approved in Japan, before mechanical thrombectomy (n=111)',
+    primaryEndpoint: {
+      definition: 'Substantial reperfusion on the initial angiogram (mTICI 2b, 2c or 3, or no retrievable thrombus), adjudicated by a masked independent committee. SUPERIORITY design with a prespecified 2-sided alpha of 0.10: success required the lower bound of the 90% CI to exceed 0',
+      timepoint: 'Initial angiogram before thrombectomy (median thrombolysis-to-angiogram 24 min)',
+      result: 'Met its prespecified 90%-CI success criterion: 11/107 (10.3%) with tenecteplase vs 4/111 (3.6%) with low-dose alteplase. The authors state that the conventional 95% CI (-0.19% to 13.2%) crosses zero, so the result is NOT significant at the usual 0.05 threshold.',
+      effectSize: 'Absolute difference 6.5 percentage points (Mantel-Haenszel, stratified by occlusion site)',
+      confidenceInterval: '90% CI 0.89 to 12.1 (prespecified); 95% CI -0.19 to 13.2',
+      pValue: 'P=.06 (prespecified alpha 0.10)'
+    },
+    secondaryEndpoints: [
+      { name: '90-day mRS shift (ordinal)', result: 'Common OR 1.47 (95% CI 0.92-2.35; P=.11), not significant; median mRS 2 (IQR 0-4) vs 3 (IQR 1-4)' },
+      { name: 'Independent outcome at 90 days (Table 2: mRS 0-2 or no change)', result: '60/107 (56.1%) vs 54/111 (48.6%); difference 7.4 (95% CI -5.80 to 20.7); P=.27' },
+      { name: 'Excellent outcome at 90 days (Table 2: mRS 0-1 or no change)', result: '46/107 (43.0%) vs 45/111 (40.5%); difference 2.5 (95% CI -10.6 to 15.5); P=.71' },
+      { name: 'Early neurological improvement at 72 h (NIHSS reduction >=8 or NIHSS 0-1)', result: '72/107 (67.3%) vs 62/111 (55.9%); difference 11.4 (95% CI -1.39 to 24.3); P=.08' },
+      { name: 'Primary endpoint, per-protocol set (106 vs 107)', result: '10.4% vs 2.8%; difference 7.4 percentage points (90% CI 1.87-13.0; P=.03)' },
+      { name: 'Clot migration on initial angiogram (tertiary)', result: '22/107 (20.6%) vs 16/111 (14.4%); difference 6.1 (95% CI -3.9 to 16.2); P=.23' },
+      { name: 'Reperfusion on CTA/MRA at 24-36 h (tertiary)', result: '78/107 (72.9%) vs 77/111 (69.4%); difference 3.5 (95% CI -8.5 to 15.5); P=.57' },
+      { name: 'ASPECTS at 24-36 h (tertiary)', result: 'Mean 6.0 vs 6.2; difference -0.24 (95% CI -0.99 to 0.51); P=.53' },
+      { name: 'Primary endpoint by occlusion site (descriptive, Figure 2B)', result: 'ICA 9.4% vs 6.5%; M1 5.0% vs 0%; M2 17.2% vs 7.1%; basilar 16.9% vs 0%. Very small strata (basilar n=15); no interaction test by occlusion site is reported, so this is hypothesis-generating only. The prespecified subgroup analyses (age, sex, NIHSS, AF, prior stroke/TIA, prestroke antithrombotics, thrombolysis-to-angiogram time, ASPECTS) showed no significant heterogeneity for the primary outcome.' }
+    ],
+    safetyFindings: {
+      sich: 'sICH within 24-36 h 3/107 (2.8%) vs 2/111 (1.8%); risk difference 1.0 percentage point (95% CI -2.99 to 4.99; P=.62)',
+      mortality: '90-day death 7/107 (6.5%) vs 11/111 (9.9%); risk difference -3.4 (95% CI -10.6 to 3.90; P=.36)',
+      other: 'Any ICH within 24-36 h 43/107 (40.2%) vs 47/111 (42.3%); difference -2.2 (95% CI -15.22 to 10.91); P=.75. Serious adverse events and procedure-related complications were similar between groups (eTables 5-6). Only 5 sICH events in total, so the trial could not exclude a clinically important difference in sICH.'
+    },
+    imagingCriteria: 'CTA or MRA confirmation of ICA, M1, M2 or basilar occlusion before thrombolysis; baseline median ASPECTS 10 (IQR 8-10); primary endpoint read on the first diagnostic angiogram by a masked external committee',
+    applicabilityNotes: 'Per the authors, the first RCT to compare tenecteplase 0.25 mg/kg with the 0.6 mg/kg alteplase regimen that is standard in Japan and used elsewhere in East Asia. Its question is regional: before thrombectomy, how does TNK compare with the local low-dose alteplase standard? It is NOT a tenecteplase dose-ranging trial, because only 0.25 mg/kg was tested. It also does not address the comparison with 0.9 mg/kg alteplase, which AcT, TRACE-2 and ORIGINAL cover. The population was elderly (mean 77 y), severe (median NIHSS 18), low body weight (mean 58.8 kg) and largely cardioembolic (61.9%), with a very short thrombolysis-to-angiogram time (median 24 min). Pre-thrombectomy reperfusion was low in both arms (10.3% vs 3.6%). That is well below the 22% reported with TNK in EXTEND-IA TNK (median 55 min to angiography) but close to the 6.1% seen with TNK in BRIDGE-TNK, which fits the short interval before angiography in contemporary workflows. Read alongside SKIP, whose bridging arm used the same 0.6 mg/kg alteplase regimen.',
+    limitations: 'Phase 2 with n=218, a sample size set by drug-supply feasibility rather than power for clinical outcomes. The prespecified alpha was 0.10, and the authors acknowledge that the 95% CI for the primary endpoint (-0.19 to 13.2) crosses zero. The primary endpoint is a surrogate (angiographic), and the clinical secondary outcomes were underpowered and not significant. Safety comparisons are imprecise (5 sICH events in total; 95% CI for the difference -2.99 to 4.99 percentage points). Treatment was open-label, with masked endpoint adjudication, and thrombectomy technique was not standardised. The trial ran in one country (18 Japanese hospitals) and had 3 post-randomisation exclusions (no drug given). The paper\'s study-level meta-analysis is exploratory and pools trials that used 0.9 mg/kg alteplase as the comparator.',
+    certainty: 'low',
+    evidenceType: 'rct',
+    citationIds: ['cit-t-flavor-2026'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Phase 2 evidence for settings where 0.6 mg/kg alteplase is the local standard. Tenecteplase 0.25 mg/kg before thrombectomy gave more early reperfusion (10.3% vs 3.6%), but only under the prespecified alpha-0.10, 90%-CI criterion. No difference was detected in 90-day function, sICH or mortality, and the trial was not powered to show one. It does not demonstrate clinical superiority or establish safety equivalence. Its role is to support regional adoption or regulatory evaluation of TNK alongside the larger 0.9 mg/kg-comparator trials. It does not change practice where alteplase 0.9 mg/kg or TNK 0.25 mg/kg is already standard.',
+    lastReviewed: '2026-09-26',
+    promotedDate: '2026-09-26',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'PubMed 42223935 (PMC13227334); DOI 10.1001/jamaneurol.2026.1590; JAMA Neurol 2026;83(8):769-777. Registered as jRCTs051210055 (Japan Registry of Clinical Trials). No ClinicalTrials.gov record was found: a registry search for tenecteplase with a Japan location returned none, and the paper cites only the jRCT id. Protocol published in Eur Stroke J 2022;7(1):71-75 (PMID 35300254; erratum PMID 37021203). Primary, secondary and safety numbers were copied from the PMC full text (abstract, Results, Table 1 and Table 2) and independently re-verified 2026-09-26. Table 2 labels the mRS 0-2 and 0-1 outcomes "or no change" (presumably relative to prestroke mRS, which could be up to 3; the exact definition is in the inaccessible supplement). PubMed publication-type indexing includes "Equivalence Trial", but the paper describes a superiority design (alpha 0.10). The eMethods supplement holding the full eligibility criteria was not accessible; pre-stroke mRS 0-3 and thrombectomy within 6 h come from the protocol abstract. Despite the candidate description, this is not a tenecteplase dose-comparison trial.'
+  }),
+  t({
+    id: 'attention-late',
+    shortName: 'ATTENTION LATE',
+    fullName: 'Tenecteplase Before Thrombectomy at 4.5 to 24 Hours for Basilar Artery Occlusion: The ATTENTION LATE Randomized Clinical Trial',
+    topic: 'bridging-ivt-before-evt',
+    diseaseArea: ['acute-ischemic-stroke', 'bridging-ivt-before-evt', 'evt-basilar', 'evt-late-window'],
+    population: {
+      n: 330,
+      ageRange: '≥18 years (registry); mean 66 (SD 11) years; 241 males (73%), 89 females (27%)',
+      nihssRange: '≥10 (moderate to severe basilar artery occlusion)',
+      timeWindow: '4.5 to 24 h from stroke onset',
+      keyInclusion: [
+        'Acute basilar artery occlusion, or vertebral artery occlusion that prevents antegrade flow into the basilar artery, confirmed on CTA, MRA or DSA (registry)',
+        'NIHSS ≥10',
+        'Presenting 4.5 to 24 h from stroke onset, admitted directly to EVT-capable centres',
+        'Eligible for both EVT and IV thrombolysis by standard criteria except for the time window (registry)',
+        '40 stroke centres in China; enrolment 16 March 2023 to 4 February 2025, final follow-up 4 May 2025',
+        'NCT05701956'
+      ],
+      keyExclusion: [
+        'IV thrombolysis before randomisation (registry)',
+        'Pre-stroke mRS ≥2 (registry)',
+        'PC-ASPECTS <6 on CT/CTA source images or <5 on MRI-DWI (registry)',
+        'Extensive bilateral thalamic or brainstem infarction, or large cerebellar infarction compressing the fourth ventricle (registry)',
+        'Intracranial haemorrhage on CT or MRI; fewer than 10 microbleeds allowed (registry)',
+        'Concurrent anterior- and posterior-circulation large-vessel occlusion (registry)'
+      ]
+    },
+    intervention: 'Intravenous tenecteplase 0.25 mg/kg bolus (maximum 25 mg) followed by EVT (n=166)',
+    comparator: 'EVT alone (n=164)',
+    primaryEndpoint: {
+      definition: 'Functional independence, mRS 0-2 at 90 days. The published protocol hypothesised that tenecteplase before EVT would result in better clinical outcomes than EVT alone (a superiority question)',
+      timepoint: '90 d',
+      result: 'DID NOT show benefit (neutral result): 50/165 (30%) with tenecteplase before EVT vs 50/164 (30%) with EVT alone reached mRS 0-2. The authors conclude that adding IV tenecteplase before EVT did not improve functional outcomes compared with EVT alone.',
+      effectSize: 'Adjusted rate ratio 0.92; risk difference -0.18%',
+      confidenceInterval: '95% CI 0.67 to 1.25 for the adjusted rate ratio; risk difference 95% CI -10.13% to 9.76%',
+      pValue: 'Not reported in the abstract; the 95% CI for the adjusted rate ratio includes 1'
+    },
+    secondaryEndpoints: [
+      {
+        name: '90-day mortality',
+        result: '66 (40%) with tenecteplase before EVT vs 70 (43%) with EVT alone; the authors describe mortality as similar between groups'
+      },
+      {
+        name: 'Other registry-listed secondary outcomes (mRS 0-3, ordinal mRS shift, reperfusion before and after EVT, 72-h recanalisation)',
+        result: 'Not reported in the abstract and not verified here, because the PMC full-text body could not be retrieved at review'
+      }
+    ],
+    safetyFindings: {
+      sich: 'Symptomatic intracranial haemorrhage in 8 (5%) with tenecteplase before EVT vs 6 (4%) with EVT alone. Numerically higher on 8 versus 6 events; the abstract reports no statistical comparison and does not state the sICH definition (registry: haemorrhage with NIHSS worsening ≥4 or death, within 72 h)',
+      mortality: '90-day mortality 66 (40%) vs 70 (43%), described by the authors as similar',
+      other: '332 randomised; 2 withdrew consent, leaving 330 (166 tenecteplase before EVT, 164 EVT alone); 329 completed 90-day follow-up (primary-outcome denominators 165 and 164)'
+    },
+    imagingCriteria: 'Registry criteria: basilar or vertebral artery occlusion (vertebral only if it blocks antegrade basilar flow) confirmed on CTA, MRA or DSA; PC-ASPECTS ≥6 on CT/CTA source images or ≥5 on MRI-DWI; no extensive bilateral thalamic or brainstem infarction; no space-occupying cerebellar infarction; no intracranial haemorrhage. The registry does not list a perfusion-mismatch requirement.',
+    applicabilityNotes: 'The posterior-circulation counterpart of TNK-PLUS. Both trials asked whether adding IV tenecteplase before thrombectomy helps a patient beyond 4.5 h, and neither found a benefit: TNK-PLUS in perfusion-selected proximal MCA occlusion, ATTENTION LATE in basilar occlusion with NIHSS ≥10. The trial enrolled only patients admitted DIRECTLY to EVT-capable centres, so it does not address drip-and-ship patients facing a long transfer. It does not address patients within 4.5 h, where bridging stays the default for the IVT-eligible patient (DIRECT-SAFE included basilar occlusion). It is also a different question from TRACE-5 (Lancet 2026, PMID 41655588), which compared tenecteplase with standard medical treatment within 24 h in basilar occlusion, with or without later thrombectomy (49% had EVT). The two designs should not be merged at the bedside.',
+    limitations: 'Open-label with blinded endpoint assessment. Conducted in China only (40 centres). With n=330, the risk-difference 95% CI (-10.13% to 9.76%) cannot exclude a benefit or harm of about 10 percentage points. Restricted to direct admissions to EVT-capable centres with NIHSS ≥10. The sICH comparison rests on 8 versus 6 events. This is an abstract-level review: the PMC full-text body was not retrievable, so P values, the baseline NIHSS and PC-ASPECTS distribution, onset-to-treatment times, reperfusion rates, secondary outcomes and subgroups were not verified. Eligibility and imaging detail come from the ClinicalTrials.gov registry, not the published methods.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-attention-late-2026'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'In basilar artery occlusion with NIHSS ≥10 presenting 4.5 to 24 h after onset directly to an EVT-capable centre, adding IV tenecteplase before thrombectomy did not improve 90-day functional independence versus thrombectomy alone (30% vs 30%). No benefit was demonstrated. The trial does not change the within-4.5 h bridging default and does not establish harm.',
+    lastReviewed: '2026-09-26',
+    promotedDate: '2026-09-26',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified 2026-09-26 against PubMed PMID 42776543 (JAMA, published online 2026-09-23; DOI 10.1001/jama.2026.15496; PMC13602079) and ClinicalTrials.gov NCT05701956 (completed; enrolment 330; start 2023-03-16; primary completion 2025-02-04; completion 2025-05-04; no posted results). All numbers are copied from the PubMed abstract and Key Points. The PMC record returned the abstract but no body text, so secondary outcomes, P values and subgroups are omitted rather than asserted. Eligibility and imaging detail come from the registry record. Protocol: Li R et al., Stroke Vasc Neurol 2026, PMID 41946560, DOI 10.1136/svn-2025-004275. The published acronym is "ATTENTION LATE" (the repo previously wrote "ATTENTION-LATE").'
+  }),
+  t({
+    id: 'asset-it',
+    shortName: 'ASSET-IT',
+    fullName: 'Advancing Stroke Safety and Efficacy Through Early Tirofiban Administration After Intravenous Thrombolysis',
+    topic: 'acute-antithrombotic-adjuncts',
+    diseaseArea: ['acute-ischemic-stroke', 'acute-antithrombotic-adjuncts'],
+    population: {
+      n: 832,
+      ageRange: 'adults ≥18 y (registry NCT06134622); baseline age distribution not reported in the abstract',
+      nihssRange: '4-25 before IV thrombolysis (registry NCT06134622)',
+      timeWindow: 'IV thrombolysis within 4.5 h of onset (last known well); study drug started within 60 min after thrombolysis',
+      keyInclusion: [
+        'Acute ischaemic noncardioembolic stroke treated with IV alteplase or tenecteplase within 4.5 h of onset',
+        'Not eligible for thrombectomy',
+        'NIHSS 4-25 before thrombolysis (registry)',
+        '38 centres in China; phase 3, multicentre, double-blind, placebo-controlled (NCT06134622)'
+      ],
+      keyExclusion: [
+        'Planned mechanical thrombectomy or other endovascular treatment, e.g. intra-arterial thrombolysis (registry)',
+        'History of atrial fibrillation or AF on emergency ECG (registry)',
+        'ASPECTS or PC-ASPECTS <6 on NCCT, CTA source images or DWI; severe leukoaraiosis (registry)',
+        'Pre-stroke mRS >1 (registry)'
+      ]
+    },
+    intervention: '24-hour IV tirofiban infusion started within 60 min after IV thrombolysis (n=414); the thrombolytic was alteplase in 75% and tenecteplase in 25% of patients',
+    comparator: 'Placebo infusion (n=418)',
+    primaryEndpoint: {
+      definition: 'Excellent functional outcome (mRS 0-1) at 90 days',
+      timepoint: '90 d',
+      result: 'MET superiority, favoring tirofiban: 65.9% vs 54.9%',
+      effectSize: 'RR 1.20',
+      confidenceInterval: '95% CI 1.07 to 1.34',
+      pValue: 'p=0.001'
+    },
+    secondaryEndpoints: [
+      { name: 'Symptomatic intracranial haemorrhage within 36 h (safety outcome)', result: '1.7% (tirofiban) vs 0% (placebo); no between-group test reported in the abstract' },
+      { name: 'Death at 90 days (safety outcome)', result: '4.1% vs 3.8%' }
+    ],
+    safetyFindings: {
+      sich: '1.7% vs 0% within 36 h — low, but higher with tirofiban',
+      mortality: '90-day mortality 4.1% vs 3.8%',
+      other: 'Authors: "The incidence of intracranial hemorrhage was low but higher with tirofiban than placebo."'
+    },
+    imagingCriteria: 'Thrombectomy-ineligible; registry excluded ASPECTS or PC-ASPECTS <6 and severe leukoaraiosis — no vessel-occlusion requirement or exclusion stated in the abstract',
+    applicabilityNotes: 'Tests an early (≤60 min after lysis) 24-hour GP IIb/IIIa infusion in thrombectomy-ineligible, noncardioembolic patients with NIHSS 4-25 — the group in whom usual practice withholds antithrombotics for 24 h after thrombolysis. Read it against MOST, which tested the same concept in a similar window without benefit: adjunctive eptifibatide (also a GP IIb/IIIa inhibitor) or argatroban started within 75 min of the start of IVT did not reduce 90-day disability (57 US sites, IVT within 3 h, 44% also had thrombectomy). The two trials differ in country, eligibility criteria, thrombectomy exposure and the exclusion of AF, and neither explains the other away, so the post-lysis GP IIb/IIIa question is unresolved rather than settled. The other tirofiban trials here answer different questions: RESCUE BT2 gave tirofiban instead of lysis in stroke without large/medium-vessel occlusion; INSTANT started it 4-24 h after an inadequate tenecteplase response; RESCUE BT gave it before thrombectomy (neutral); ATTRACTION gave it after successful thrombectomy. Three-quarters of ASSET-IT patients received alteplase, so the tenecteplase-specific effect is less certain. The 2026 AHA/ASA AIS guideline rates antiplatelet therapy in the first 24 h after IVT IIb (B-NR; risk "uncertain", ais-2026-137) and IV tirofiban IIb (B-R; efficacy "not well established", ais-2026-138).',
+    limitations: 'Single-country (China) trial; AF/cardioembolic stroke, thrombectomy candidates, ASPECTS <6 and pre-stroke mRS >1 excluded; tirofiban is not licensed for stroke in most regions; the sICH excess is small in absolute terms (1.7% vs 0%) and the trial was not powered to characterise it; the discordant MOST result (no disability reduction with eptifibatide in a similar post-lysis window) has not been reconciled; tirofiban dose regimen, baseline age/NIHSS distribution and subgroup results are not captured here (abstract + registry only).',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-asset-it-2025'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'A large phase 3 double-blind trial in which an early 24-h tirofiban infusion after IV thrombolysis increased excellent 90-day outcome in thrombectomy-ineligible noncardioembolic stroke, with a small sICH excess. It is a single Chinese trial that conflicts with MOST, where a GP IIb/IIIa inhibitor (eptifibatide) given in a similar window did not reduce disability, so it does not by itself replace the standard 24-hour post-lysis antithrombotic hold outside a protocol; the 2026 AHA/ASA guideline rates IV tirofiban IIb (B-R).',
+    lastReviewed: '2026-09-26',
+    promotedDate: '2026-09-26',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified 2026-09-26 against the PubMed abstract (PMID 40616232; N Engl J Med 2025;393(12):1191-1201; DOI 10.1056/NEJMoa2503678; epub 2025-07-04) and ClinicalTrials.gov NCT06134622 (eligibility; status completed, enrollment 832). No PMC full text. Tirofiban dose and baseline age/NIHSS are not in the abstract and were not recorded; secondary news reports (not primary) give median age 69 y, median NIHSS 6 and 0.4 µg/kg/min x 30 min then 0.1 µg/kg/min x 23.5 h — confirm against the NEJM full text before entering. The protocol paper (Int J Stroke 2025, PMID 39501470) listed sICH at 24 h; the publication reports sICH within 36 h.'
+  }),
+  t({
+    id: 'instant',
+    shortName: 'INSTANT',
+    fullName: 'Intravenous Tirofiban After Tenecteplase in Acute Ischemic Stroke',
+    topic: 'acute-antithrombotic-adjuncts',
+    diseaseArea: ['acute-ischemic-stroke', 'acute-antithrombotic-adjuncts'],
+    population: {
+      n: 359,
+      ageRange: 'Adults ≥18 y (registry); mean 66 y; 141 (39.3%) female',
+      nihssRange: 'NIHSS ≥4 before randomization (registry NCT05604638 and published protocol)',
+      timeWindow: 'Randomized, with study drug started, 4-24 h after IV tenecteplase',
+      keyInclusion: [
+        'Acute ischaemic stroke treated with IV tenecteplase',
+        'Insufficient clinical response on serial NIHSS within 4-24 h after tenecteplase: no significant change from baseline, neurological deterioration, or neurological fluctuation',
+        'No large or medium vessel occlusion and no cardioembolic aetiology',
+        '37 hospitals in China; recruitment Apr 24 2024 - Jul 16 2025; final follow-up Oct 11 2025'
+      ],
+      keyExclusion: [
+        'Occlusion of ICA, MCA M1-M3, ACA A1-A3, PCA P1-P3, vertebral or basilar artery on CTA/MRA/DSA (registry)',
+        'Confirmed or suspected cardioembolic mechanism, including chronic or paroxysmal atrial fibrillation (registry)',
+        'Intracranial haemorrhage on CT/MRI after thrombolysis and before randomization (registry)',
+        'Platelets <100×10^9/L or GFR <30 mL/min (registry)'
+      ]
+    },
+    intervention: 'IV tirofiban 0.3 µg/kg/min over 30 min, then 0.075 µg/kg/min for up to 47.5 h (n=177); oral aspirin and/or clopidogrel started 44 h after thrombolysis',
+    comparator: 'Matching placebo infusion (n=182); oral aspirin and/or clopidogrel started 24 h after thrombolysis',
+    primaryEndpoint: {
+      definition: 'Excellent outcome (mRS 0-1) at 90 days',
+      timepoint: '90 d',
+      result: 'MET superiority, favoring tirofiban: 63.8% (113/177) vs 52.2% (95/182)',
+      effectSize: 'RR 1.22',
+      confidenceInterval: '95% CI 1.02 to 1.46',
+      pValue: 'p=0.03'
+    },
+    secondaryEndpoints: [
+      { name: 'Symptomatic ICH within 48 h (safety outcome)', result: '1 patient (reported as 0.9%) with tirofiban vs 0 with placebo' },
+      { name: 'Death at 90 days (safety outcome)', result: '0.6% vs 1.6%' },
+      { name: 'Prespecified secondary efficacy outcomes (ordinal mRS, mRS 0-2, mRS 0-3, early neurological improvement at 48 h, EQ-5D-5L)', result: 'Not reported in the published abstract; the full text was not available to verify them' }
+    ],
+    safetyFindings: {
+      sich: '1 patient (reported as 0.9%) with tirofiban vs 0 with placebo within 48 h',
+      mortality: '90-day mortality 0.6% vs 1.6%',
+      other: 'Double-blind, placebo-controlled; 358/359 (99.7%) completed the trial'
+    },
+    imagingCriteria: 'CTA/MRA/DSA excluding large and medium vessel occlusion (registry lists ICA, M1-M3, A1-A3, P1-P3, vertebral and basilar); CT/MRI excluding haemorrhage after thrombolysis',
+    applicabilityNotes: 'A narrow rescue population: non-LVO/MeVO, noncardioembolic patients with NIHSS ≥4 who did not improve, worsened or fluctuated 4-24 h after tenecteplase. Patients with large or medium vessel occlusion, a cardioembolic source (including AF) or alteplase-only thrombolysis were not enrolled, so the result does not transfer to them. Within this category, RESCUE BT2 (tirofiban vs aspirin; NIHSS ≥5 with limb weakness) also enrolled thrombolysis non-responders as one of four entry routes; ASSET-IT started a 24-h tirofiban infusion within 60 min of thrombolysis; MOST (argatroban or eptifibatide within 75 min of thrombolysis) showed no benefit. INSTANT tests delayed rescue tirofiban in tenecteplase non-responders and does not address routine concurrent adjuncts. The app\'s tirofiban_no_occlusion card already cites INSTANT; this record makes that citation traceable in the Atlas.',
+    limitations: 'Single trial in one country (37 Chinese hospitals) with a modest sample (n=359); the lower 95% CI bound (1.02) is close to no effect. Control-arm mRS 0-1 (52.2%) was far higher than the 23% assumed in the published protocol\'s sample-size calculation (planned n=310; registry planned 348), so the population had a better prognosis than anticipated. The placebo arm started oral antiplatelets 20 h earlier (24 h vs 44 h after thrombolysis), so the comparison is tirofiban bridging versus earlier oral antiplatelet therapy, not tirofiban versus no antiplatelet. Safety event counts are very small (1 sICH), so bleeding risk is imprecisely estimated, and the reported 0.9% does not equal 1/177 (0.6%). Secondary efficacy outcomes could not be verified from the abstract. Per the published protocol, Lunan Pharmaceutical Group (the tirofiban manufacturer) supplied tirofiban and placebo and was one of the funders.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-instant-2026'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'In a single Chinese trial, IV tirofiban started 4-24 h after tenecteplase in non-LVO/MeVO, noncardioembolic non-responders increased 90-day mRS 0-1 (63.8% vs 52.2%) with one sICH. The 2026 AHA/ASA guideline, which predates INSTANT, rates IV tirofiban in AIS IIb (efficacy not well established).',
+    lastReviewed: '2026-09-26',
+    promotedDate: '2026-09-26',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified 2026-09-26 against the PubMed abstract (PMID 42100960; JAMA 2026;335(22):1949-1958; DOI 10.1001/jama.2026.5245); PMC13156798 returned the abstract and Key Points only, with no body text. Eligibility was checked against ClinicalTrials.gov NCT05604638 (the registry still reads RECRUITING with a planned enrolment of 348) and the published protocol (J Am Heart Assoc 2025;14(13):e038536, PMID 40576038; also registered as ChiCTR2300074368; planned n=310). The ESOC 2026 late-breaking abstract (DOI 10.1093/esj/aakag023.1872) reported placebo 52.5% and mortality 1.7%; this record uses the JAMA figures (95/182 = 52.2%; 1.6%). The reported sICH of 0.9% for 1 of 177 tirofiban patients does not match 1/177 (0.6%), and the denominator is unverified. PubMed\'s first author entry is empty (unparsed); Liu X is the first named individual author. Confirm the byline on the publisher page.'
+  }),
+  t({
+    id: 'opens-2',
+    shortName: 'OPENS-2',
+    fullName: 'Normobaric hyperoxia combined with endovascular treatment for acute ischaemic stroke in China (OPENS-2 trial): a multicentre, randomised, single-blind, sham-controlled trial',
+    topic: 'acute-neuroprotection',
+    diseaseArea: ['acute-ischemic-stroke', 'acute-neuroprotection'],
+    population: {
+      n: 282,
+      ageRange: '18-80 y; median 65 (IQR 57-71); 75 (27%) female; 282 (100%) Chinese Han ethnicity',
+      nihssRange: '10-20, with NIHSS level-of-consciousness score 0-1 (registry NCT04681651)',
+      timeWindow: '≤6 h from onset (onset to randomisation)',
+      keyInclusion: [
+        'Acute ischaemic stroke from anterior-circulation large-vessel occlusion (ICA or MCA M1 on CT, MR or DSA angiography), candidate for endovascular treatment',
+        'NIHSS 10-20 (registry)',
+        'ASPECTS ≥6 and <1/3 MCA territory involved (registry)',
+        'Pre-stroke mRS 0-1 (registry)',
+        '26 comprehensive stroke centres in China; 473 screened, 282 randomised 1:1 by minimisation (age, sex, occlusion site, IV thrombolysis), 22 Apr 2021 - 5 Feb 2023; NCT04681651'
+      ],
+      keyExclusion: [
+        'Active chronic obstructive pulmonary disease or acute respiratory distress syndrome (registry)',
+        'Needing >3 L/min oxygen to keep SaO2 at 95% (registry)',
+        'Seizure at onset; SBP >185 or DBP >110 mmHg; rapid improvement to NIHSS <10 or recanalisation before randomisation (registry)'
+      ]
+    },
+    intervention: 'Normobaric hyperoxia plus EVT: 100% oxygen at 10 L/min via non-rebreather mask for 4 h, or FiO2 1.0 if intubated (n=140)',
+    comparator: 'Sham normobaric hyperoxia plus EVT: 100% oxygen at 1 L/min, or FiO2 0.3 if intubated (n=142)',
+    primaryEndpoint: {
+      definition: 'Ordinal modified Rankin Scale score at 90 days, intention-to-treat population (all randomised patients)',
+      timepoint: '90 days',
+      result: 'MET superiority, favouring normobaric hyperoxia: median mRS 2 (IQR 1-4) vs 3 (IQR 1-4)',
+      effectSize: 'Adjusted common OR 1.65',
+      confidenceInterval: '95% CI 1.09 to 2.50',
+      pValue: 'p=0.018'
+    },
+    secondaryEndpoints: [
+      { name: 'Death at 90 days', result: '14/140 (10%) vs 17/142 (12%); adjusted risk difference -0.02 (95% CI -0.09 to 0.06)' },
+      { name: 'Serious adverse events', result: '28 (20%) vs 33 (23%); adjusted risk difference -0.03 (95% CI -0.12 to 0.07)' }
+    ],
+    safetyFindings: {
+      sich: 'Not reported in the abstract. sICH (ECASS II, 24 h) is a registered safety outcome (NCT04681651), but no trial-level figure could be verified: the full text is not in PMC',
+      mortality: '90-day death 10% vs 12%; adjusted risk difference -0.02 (95% CI -0.09 to 0.06), no significant difference',
+      other: 'Serious adverse events 20% vs 23% (adjusted risk difference -0.03, 95% CI -0.12 to 0.07); authors conclude benefit came "without raising safety concerns"'
+    },
+    imagingCriteria: 'CT, MR or DSA angiography showing ICA or MCA M1 occlusion; ASPECTS ≥6; infarct <1/3 of MCA territory on CT or MRI (registry)',
+    applicabilityNotes: 'The 2026 AHA/ASA recommendation that normobaric hyperoxia before EVT "may be reasonable" (ais-2026-62; IIb, B-R) uses the OPENS-2 eligibility phenotype: ≤6 h, NIHSS 10-20, ASPECTS ≥6, anterior LVO (M1 or carotid terminus), planned EVT. Do not generalise beyond that phenotype. It does not support routine supplemental oxygen in non-hypoxic stroke without EVT, where SO2S found no benefit and ais-2026-64 advises against it. A later two-centre Chinese phase IIb trial in the 6-24 h window (Stroke 2026, PMID 42403344, NCT05128422; n=120, open-label with blinded assessors, EVT-alone control) improved early neurological improvement (35% vs 19%; adjusted OR 2.86, 95% CI 1.12-7.45) and 24-48 h infarct volume. Its 90-day mRS shift was not statistically significant (adjusted common OR 1.52, 95% CI 0.87-2.63), so the extended window remains unproven.',
+    limitations: 'Single-country trial in a 100% Han Chinese population; modest sample (n=282); registered as phase 2 on ClinicalTrials.gov; single-blind by design (the abstract states participants and outcome assessors were masked); sICH and oxygen-specific adverse events are not in the abstract; the only positive confirmatory-size result so far and not yet replicated in a multinational trial.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-opens-2-2025'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'A single positive trial supports high-flow normobaric oxygen started before EVT, but only in the OPENS-2 phenotype, which is the framing of the 2026 AHA/ASA guideline (IIb, "may be reasonable"). It is not a basis for oxygen in non-hypoxic patients outside that phenotype. Multinational replication is still needed.',
+    lastReviewed: '2026-09-26',
+    promotedDate: '2026-09-26',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified 2026-09-26 against the PubMed abstract (PMID 39922675; Lancet 2025;405(10477):486-497; DOI 10.1016/S0140-6736(24)02809-5) and ClinicalTrials.gov NCT04681651 (eligibility and outcomes; the registry phase field reads PHASE2). The NIHSS, ASPECTS, pre-stroke mRS and exclusion criteria come from the registry, not the abstract. The protocol (PMID 39250887, Cerebrovasc Dis 2023;53(3):346-353) frames NBO as an adjunct given before recanalisation. No PMC full text, so sICH is unverified.'
+  }),
+  t({
+    id: 'post-tnk',
+    shortName: 'POST-TNK',
+    fullName: 'Intra-Arterial Tenecteplase Following Endovascular Reperfusion for Large Vessel Occlusion Acute Ischemic Stroke',
+    topic: 'ia-adjunct-after-evt',
+    diseaseArea: ['acute-ischemic-stroke', 'ia-adjunct-after-evt'],
+    population: {
+      n: 540,
+      ageRange: 'Median 69 y; 40.9% female',
+      nihssRange: 'Baseline median NIHSS 15 (IQR 11-20) IA tenecteplase vs 15 (10-20) control (ATLAS-ER Table 1); protocol NIHSS limits not verified from the primary full text',
+      timeWindow: '≤24 h from last known well',
+      keyInclusion: [
+        'Anterior-circulation large-vessel occlusion (intracranial ICA, MCA M1 or M2) treated with EVT',
+        'Near-complete to complete reperfusion (eTICI 2c-3) after EVT',
+        '34 hospitals in China; recruitment Oct 26 2022 - Mar 1 2024 (ChiCTR2200064809)'
+      ],
+      keyExclusion: [
+        'Prior intravenous thrombolysis',
+        'Reperfusion below eTICI 2c after EVT'
+      ]
+    },
+    intervention: 'Intra-arterial tenecteplase 0.0625 mg/kg after eTICI 2c-3 reperfusion (n=269)',
+    comparator: 'No intra-arterial thrombolysis (n=271 randomized; 270 analysed for the primary outcome)',
+    primaryEndpoint: {
+      definition: 'Freedom from disability (mRS 0-1) at 90 days; superiority design',
+      timepoint: '90 d',
+      result: 'DID NOT meet superiority: 49.1% (132/269) vs 44.1% (119/270)',
+      effectSize: 'Adjusted RR 1.15',
+      confidenceInterval: '95% CI 0.97 to 1.36',
+      pValue: 'P=.11'
+    },
+    secondaryEndpoints: [
+      { name: 'Death at 90 days (primary safety outcome)', result: '16.0% vs 19.3%; adjusted HR 0.75 (95% CI 0.50-1.13), P=.16 — no significant difference' },
+      { name: 'Symptomatic ICH within 48 h (primary safety outcome)', result: '6.3% vs 4.4%; adjusted RR 1.43 (95% CI 0.68-2.99), P=.35 — numerically higher with IA tenecteplase, not significant' }
+    ],
+    safetyFindings: {
+      sich: '6.3% vs 4.4% within 48 h; adjusted RR 1.43 (95% CI 0.68-2.99), P=.35',
+      mortality: '16.0% vs 19.3% at 90 d; adjusted HR 0.75 (95% CI 0.50-1.13), P=.16',
+      other: 'Open-label with blinded outcome assessment; 539/540 (99.8%) completed the trial'
+    },
+    imagingCriteria: 'Angiographic selection: randomization after EVT achieved eTICI 2c-3. Baseline median ASPECTS 8 (IQR 7-9) in both arms (ATLAS-ER Table 1); protocol ASPECTS/perfusion thresholds not verified from the primary full text',
+    applicabilityNotes: 'Run by the same Chongqing network with the same design as POST-UK (IA urokinase, JAMA 2025), which was also neutral; the posterior-circulation ATTENTION-IA trial (IA tenecteplase 0.0625 mg/kg, BMJ 2025) was likewise neutral on mRS 0-1. Read alongside the positive anterior-circulation IA-adjunct trials (CHOICE, CHOICE-2 with its mortality signal, PEARL, ANGEL-TNK at 0.125 mg/kg) and the neutral posterior-circulation IAT-TOP. POST-TNK enrolled only anterior-circulation patients with eTICI 2c-3 reperfusion and no prior IVT, so it does not address eTICI 2b reperfusion, IVT-bridged patients, or the posterior circulation. The 2026 AHA/ASA guideline rates adjunctive IA thrombolytics (urokinase, alteplase, or tenecteplase) after mTICI ≥2b as Class IIb (LOE B-R; ais-2026-131).',
+    limitations: 'Open-label treatment (blinded outcome assessment only); single country (China); IVT-treated patients excluded; eTICI 2c-3 only; a single dichotomized primary endpoint. The 95% CI (0.97-1.36) neither demonstrates benefit nor excludes a modest one, and sICH was numerically higher with wide uncertainty.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-post-tnk-2025'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Neutral: adjunctive IA tenecteplase 0.0625 mg/kg after near-complete or complete reperfusion did not significantly increase 90-day mRS 0-1. It adds a neutral trial to a mixed IA-adjunct literature and is not a basis for routine use.',
+    lastReviewed: '2026-09-26',
+    promotedDate: '2026-09-26',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified 2026-09-26 against the PubMed abstract and PMC Key Points (PMID 39804681; JAMA 2025;333(7):579-588; DOI 10.1001/jama.2024.23466; PMC11836761). Registered only at ChiCTR (ChiCTR2200064809), no NCT. The PMC deposit has no body text. Anterior-circulation scope from the protocol abstract (Eur Stroke J 10(2):618-623, epub Sep 2024, PMID 39345180) and ATLAS-ER meta-analysis Table 1 (Ann Neurol 2025;98:1299-1314, PMID 40799167; PMC12682943), which also supplied the baseline NIHSS and ASPECTS medians. Protocol NIHSS/ASPECTS/perfusion eligibility thresholds and the maximum IA dose were not verified from a primary full text and are not recorded.'
+  }),
+  t({
+    id: 'post-uk',
+    shortName: 'POST-UK',
+    fullName: 'Intra-Arterial Urokinase After Endovascular Reperfusion for Acute Ischemic Stroke',
+    topic: 'ia-adjunct-after-evt',
+    diseaseArea: ['acute-ischemic-stroke', 'ia-adjunct-after-evt'],
+    population: {
+      n: 534,
+      ageRange: 'Median 69 y; 41.8% female',
+      nihssRange: 'Not specified in the abstract',
+      timeWindow: '≤24 h from last known well',
+      keyInclusion: [
+        'Proximal intracranial anterior-circulation large-vessel occlusion (ICA, M1 or M2 per protocol) treated with EVT',
+        'Near-complete or complete reperfusion after thrombectomy (eTICI 2c-3 per protocol)',
+        '35 hospitals in China; Nov 2022-Mar 2024 (ChiCTR2200065617); 535 enrolled, 534 randomized (267 per arm)'
+      ],
+      keyExclusion: [
+        'Received IV thrombolysis, or had a contraindication to IV thrombolysis other than time',
+        'More than 3 thrombectomy passes or procedure time >90 min (protocol)',
+        'Prestroke mRS ≥2 (protocol)',
+        'Vessel rupture, dissection or contrast extravasation during the procedure (protocol)'
+      ]
+    },
+    intervention: 'Single intra-arterial dose of urokinase 100 000 IU injected in the initial target territory after successful EVT (protocol: via distal access catheter or microcatheter proximal to the original occlusion over 10-15 min) (n=267)',
+    comparator: 'No intra-arterial thrombolysis; procedure ended after EVT (n=267)',
+    primaryEndpoint: {
+      definition: 'Survival without disability (mRS 0-1) at 90 days; superiority design',
+      timepoint: '90 d',
+      result: 'DID NOT meet superiority: 45.1% (120/266) vs 40.2% (107/266)',
+      effectSize: 'Adjusted RR 1.13',
+      confidenceInterval: '95% CI 0.94 to 1.36',
+      pValue: 'P=.19'
+    },
+    secondaryEndpoints: [
+      { name: 'Death at 90 days (primary safety)', result: '18.4% vs 17.3%; adjusted HR 1.06 (95% CI 0.71-1.59), P=.77 — no difference' },
+      { name: 'Symptomatic ICH within 48 h (primary safety)', result: '4.1% vs 4.1%; adjusted RR 1.05 (95% CI 0.45-2.44), P=.91 — no difference' }
+    ],
+    safetyFindings: {
+      sich: '4.1% vs 4.1% within 48 h; adjusted RR 1.05 (95% CI 0.45-2.44), P=.91',
+      mortality: '90-day mortality 18.4% vs 17.3%; adjusted HR 1.06 (95% CI 0.71-1.59), P=.77',
+      other: 'Open-label with blinded end-point assessment; 532 (99.6%) completed the trial'
+    },
+    imagingCriteria: 'Angiographic selection only — randomization after thrombectomy achieved eTICI 2c-3 (near-complete or complete) reperfusion; eTICI 2b patients were not eligible',
+    applicabilityNotes: 'The first dedicated RCT of intra-arterial urokinase after successful thrombectomy, run by the same Chinese network and design as POST-TNK (IA tenecteplase, also neutral). It enrolled only anterior-circulation patients with eTICI 2c-3 reperfusion who had not received (and were not otherwise ineligible for) IV thrombolysis, so it does not address eTICI 2b reperfusion, bridging-IVT patients or other urokinase doses. The 2026 AHA/ASA guideline rates adjunctive IA thrombolytics after mTICI ≥2b as IIb (B-R; ais-2026-131) and names urokinase among the options, but POST-UK itself showed no significant benefit of IA urokinase. Read with the positive IA alteplase and tenecteplase trials (CHOICE, CHOICE-2 with its mortality signal, PEARL, ANGEL-TNK) and the neutral ones (POST-TNK; posterior-circulation IAT-TOP and ATTENTION-IA).',
+    limitations: 'Open-label (blinded end point); single country; anterior circulation and eTICI 2c-3 only; IVT-treated and IVT-ineligible patients excluded, as were procedures with >3 passes or >90 min; one fixed 100 000 IU dose; sized to detect a 13-point absolute difference in mRS 0-1 (protocol), so a smaller true benefit, which the CI (aRR 0.94-1.36) still allows, cannot be excluded.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-post-uk-2025'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Neutral: a single 100 000 IU dose of IA urokinase after eTICI 2c-3 reperfusion did not significantly increase 90-day mRS 0-1, with no difference in sICH or mortality. No benefit of IA urokinase has been demonstrated, so this trial does not support routine use.',
+    lastReviewed: '2026-09-26',
+    promotedDate: '2026-09-26',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified 2026-09-26 against the PubMed abstract and PMC Key Points (PMID 39804674; JAMA 2025;333(7):589-598; DOI 10.1001/jama.2024.23480; PMC11836763). Registered only at ChiCTR (ChiCTR2200065617), with no NCT. n=534 is the number randomized (267 per arm; the Key Points say "included 534 patients"); 535 were enrolled. The eTICI 2c-3 threshold, anterior-circulation restriction, exclusions (IVT given or contraindicated, >3 passes, procedure >90 min, prestroke mRS ≥2) and the 13-point design assumption come from the published protocol (Stroke Vasc Interv Neurol 5(2):e001563, online 2024-10-30; PMID 41573192; DOI 10.1161/SVIN.124.001563). The PMC deposit of the JAMA paper carries the abstract and Key Points but no body text.'
+  }),
+  t({
+    id: 'attention-ia',
+    shortName: 'ATTENTION-IA',
+    fullName: 'Intra-arterial Tenecteplase After Successful Endovascular Recanalisation in Patients With Acute Posterior Circulation Arterial Occlusion',
+    topic: 'ia-adjunct-after-evt',
+    diseaseArea: ['acute-ischemic-stroke', 'ia-adjunct-after-evt', 'evt-basilar'],
+    population: {
+      n: 208,
+      ageRange: '≥18 y; mean 66.0 y (SD 11.1); 24.5% (51) women',
+      nihssRange: 'NIHSS ≥6 (moderate to severe stroke); median NIHSS before EVT 20.0 (IQR 12.5-35.0)',
+      timeWindow: 'Within 24 h of onset (last known free of major deficits); median onset to randomization 7.0 h (IQR 4.6-9.4); randomized after successful EVT',
+      keyInclusion: [
+        'Occlusion of the V4 vertebral segment, proximal/middle/distal basilar artery, or P1 posterior cerebral artery (basilar 69%, vertebral 26%, PCA 5%)',
+        'Successful recanalization after EVT (eTICI 2b50-3)',
+        'Posterior-circulation ASPECTS ≥6 on non-contrast CT, CTA source images or MRI-DWI',
+        'Prior IV thrombolysis allowed (26.9% vs 24.0% received it)',
+        '31 hospitals in China; Jan 24 - Aug 24 2023 (NCT05684172)'
+      ],
+      keyExclusion: [
+        'Pre-stroke mRS >1',
+        'Intracranial haemorrhage on neuroimaging',
+        'Contraindication to IV thrombolysis other than time (registry)',
+        'Complete clinical recovery in the angiography suite by the end of EVT (registry)',
+        'Uncontrolled SBP >185 or DBP >110 mmHg (registry)'
+      ]
+    },
+    intervention: 'Intra-arterial tenecteplase 0.0625 mg/kg (maximum 6.25 mg) over 15 s via distal access catheter or microcatheter, proximal to any residual thrombus or distal to the origin of the main pontine perforators, after successful EVT (n=104)',
+    comparator: 'Endovascular treatment only, no intra-arterial adjunct (n=104)',
+    primaryEndpoint: {
+      definition: 'Freedom from disability (mRS 0-1) at 90 days; intention-to-treat, adjusted for age, pre-stroke mRS, onset-to-randomization time, hypertension and baseline NIHSS',
+      timepoint: '90 d',
+      result: 'DID NOT meet superiority: 34.6% (36/104) vs 26.0% (27/104); adjusted absolute difference 8.3 percentage points (95% CI -3.8 to 20.4)',
+      effectSize: 'Adjusted RR 1.36',
+      confidenceInterval: '95% CI 0.92 to 2.02',
+      pValue: 'P=0.12'
+    },
+    secondaryEndpoints: [
+      { name: 'Functional independence (mRS 0-2) at 90 days', result: '38.5% (40) vs 40.4% (42); adjusted RR 0.93 (95% CI 0.67-1.28) — no signal' },
+      { name: 'Ordinal mRS shift at 90 days', result: 'Adjusted common OR 1.00 (95% CI 0.61-1.62) — no shift' },
+      { name: 'All-cause mortality at 90 days (primary safety)', result: '27.9% (29) vs 26.9% (28); adjusted RR 1.13 (95% CI 0.73-1.74)' },
+      { name: 'Symptomatic ICH within 36 h, modified Heidelberg (primary safety)', result: '8.3% (8) vs 3.1% (3); adjusted RR 3.09 (95% CI 0.78-12.20)' },
+      { name: 'Any radiological ICH within 36 h', result: '26.8% (26) vs 15.5% (15); adjusted RR 1.77 (95% CI 1.00-3.11)' },
+      { name: 'Index-artery patency at 24-72 h (CTA/MRA; imaging unavailable in 140 patients)', result: '90.0% (63) vs 91.4% (64); adjusted RR 0.98 (95% CI 0.88-1.10)' }
+    ],
+    safetyFindings: {
+      sich: '8.3% vs 3.1% within 36 h — numerically higher with IA tenecteplase; adjusted RR 3.09 (95% CI 0.78-12.20), not statistically significant. The sICH window was changed from 72 h to 36 h during the trial',
+      mortality: '27.9% vs 26.9% at 90 d; adjusted RR 1.13 (95% CI 0.73-1.74) — no difference',
+      other: 'Any radiological ICH within 36 h 26.8% vs 15.5% (adjusted RR 1.77, 95% CI 1.00-3.11); secondary outcomes were not adjusted for multiplicity'
+    },
+    imagingCriteria: 'Posterior-circulation occlusion (V4, basilar or P1) with eTICI 2b50-3 after EVT; pc-ASPECTS ≥6 on CT, CTA source images or MRI-DWI',
+    applicabilityNotes: 'The posterior-circulation counterpart of the anterior-circulation IA tenecteplase trials. It used the same 0.0625 mg/kg dose as POST-TNK (anterior circulation, neutral) and half the ANGEL-TNK dose (0.125 mg/kg, positive primary). With IAT-TOP (IA alteplase after successful basilar recanalization, also neutral), neither randomized posterior-circulation trial shows benefit from adjunctive IA thrombolysis, and ATTENTION-IA adds a numerical excess of sICH and any ICH. The population is intracranial-atherosclerosis-predominant (large-artery atherosclerosis 69.0% vs 58.7%), with intracranial stenting or angioplasty in 43.3% vs 34.6%, and tenecteplase was infused distal to the pontine perforators in 56%. The 2026 AHA/ASA IIb recommendation for adjunctive IA thrombolytics after mTICI ≥2b (ais-2026-131) is not circulation-specific, and the two posterior-circulation RCTs give it no randomized support after vertebrobasilar thrombectomy.',
+    limitations: 'Open-label with blinded endpoint assessment (PROBE); single country (China); powered for an 18-percentage-point absolute difference, so the 95% CI (RR 0.92-2.02) cannot exclude a smaller benefit; sICH estimate rests on 11 events and its window was changed from 72 h to 36 h; imbalances in hypertension (70.2% vs 84.6%, adjusted for) and stenting (43.3% vs 34.6%); no post-EVT perfusion imaging; the paper gives the adjusted absolute difference as 8.3 points in the Results and 7.6% in the Limitations section.',
+    certainty: 'low',
+    evidenceType: 'rct',
+    citationIds: ['cit-attention-ia-2025'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Neutral: IA tenecteplase after successful posterior-circulation recanalization did not significantly increase 90-day mRS 0-1, secondary functional outcomes showed no signal, and symptomatic ICH was numerically higher. No demonstrated benefit; not a basis for routine IA thrombolysis after vertebrobasilar thrombectomy.',
+    lastReviewed: '2026-09-26',
+    promotedDate: '2026-09-26',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified 2026-09-26 against the PubMed abstract (PMID 39809509; BMJ 2025;388:e080489; DOI 10.1136/bmj-2024-080489), the PMC full text (PMC11729139; baseline table, Table 2 outcomes) and ClinicalTrials.gov NCT05684172 (eligibility; phase 2/3; enrollment 208). e080489 is the BMJ article number, not a page range. The registry lists sICH within 72 h and mortality as secondary outcomes; the publication reports sICH within 36 h and 90-day mortality as primary safety outcomes, and states that the sICH window was changed from 72 h to 36 h. The abstract conclusion says "combined disability and mortality"; the primary outcome is mRS 0-1 as recorded here.'
+  }),
+  t({
+    id: 'optimistmain',
+    shortName: 'OPTIMISTmain',
+    fullName: 'Low-intensity versus standard monitoring after intravenous thrombolysis for acute ischaemic stroke (Optimal Post rtPA-IV Monitoring in Ischaemic Stroke Trial)',
+    topic: 'stroke-unit-care',
+    diseaseArea: ['acute-ischemic-stroke', 'stroke-unit-care'],
+    population: {
+      n: 4922,
+      ageRange: 'Adults ≥18 y (registry NCT03734640); age distribution not reported in the PubMed abstract',
+      nihssRange: 'NIHSS <10 (mild to moderate impairment) and clinically stable',
+      timeWindow: 'Eligibility (clinically stable, NIHSS <10) established within 2 h of initiation of IV thrombolysis; the tested protocols cover the first 24 h after thrombolysis',
+      keyInclusion: [
+        'Consecutive adults with acute ischaemic stroke treated with IV thrombolysis according to local guidelines (registry: IV alteplase according to standard criteria)',
+        'Clinically stable with NIHSS <10 within 2 h of thrombolysis initiation',
+        '4922 participants at 114 hospitals (clusters) in eight countries (Australia, Chile, China, Malaysia, Mexico, UK, USA, Vietnam); hospitals randomly allocated to three stepped-wedge implementation sequences across four periods between Apr 28 2021 and Sep 30 2024 (NCT03734640)'
+      ],
+      keyExclusion: [
+        'NIHSS ≥10 (major neurological impairment) or clinically unstable / critical-care needs',
+        'Definite clinical contraindication or indication to either low-intensity or standard neurological monitoring (registry)'
+      ]
+    },
+    intervention: 'Low-intensity monitoring: neurological and vital-sign assessments every 15 min for 2 h, then every 2 h for 8 h, then every 4 h until 24 h after thrombolysis (n=2789)',
+    comparator: 'Standard monitoring: every 15 min for 2 h, then every 30 min for 6 h, then every 1 h until 24 h after thrombolysis (n=2133)',
+    primaryEndpoint: {
+      definition: 'Unfavourable functional outcome (mRS 2-6) at 90 days, assessed by research staff masked to allocation; non-inferiority margin RR 1.15, intention-to-treat, generalised linear mixed model adjusted for cluster and time with imputation of missing outcomes',
+      timepoint: '90 days',
+      result: 'BORDERLINE — non-inferiority NOT established with conventional confidence: mRS 2-6 in 809/2552 (31.7%) with low-intensity vs 606/1963 (30.9%) with standard monitoring. The upper 95% CI bound (1.15) reaches the 1.15 margin and p=0.057; the authors conclude only "weak evidence" that low-intensity monitoring is non-inferior',
+      effectSize: 'RR 1.03 (unfavourable outcome, low-intensity vs standard)',
+      confidenceInterval: '95% CI 0.92 to 1.15',
+      pValue: 'p=0.057 (non-inferiority test, as reported); above the one-sided 0.025 alpha stated in the trial protocol'
+    },
+    secondaryEndpoints: [
+      { name: 'Symptomatic intracerebral haemorrhage', result: '5/2783 (0.2%) low-intensity vs 8/2122 (0.4%) standard; too few events for a precise comparison' },
+      { name: 'Serious adverse events', result: 'Similar: 309/2789 (11.1%) vs 240/2133 (11.3%)' }
+    ],
+    safetyFindings: {
+      sich: '5/2783 (0.2%) vs 8/2122 (0.4%)',
+      mortality: 'Not reported in the PubMed abstract (full text not in PMC); captured within the mRS 2-6 primary outcome',
+      other: 'Serious adverse events 309/2789 (11.1%) vs 240/2133 (11.3%)'
+    },
+    imagingCriteria: 'None beyond standard IV-thrombolysis eligibility under local guidelines',
+    applicabilityNotes: 'Applies only to clinically stable patients with NIHSS <10 after IV thrombolysis. It does not address patients treated with thrombectomy, NIHSS ≥10, patients needing critical care, or anyone with early deterioration. The pragmatic stepped-wedge design across eight countries mirrors routine stroke-unit practice, but the non-inferiority result is borderline, so the trial supports a hospital-level protocol review rather than a mandate. The app\'s default post-thrombolysis schedule (every 15 min for 2 h, every 30 min for 6 h, hourly for 16 h) is unchanged by this record; adopting a low-intensity pathway is an institutional decision.',
+    limitations: 'Stepped-wedge cluster randomisation (hospitals switched from control to intervention over time) rather than individual randomisation, so estimates depend on modelling of secular trends and cluster effects; nurses and clinicians were aware of the monitoring protocol (only the 90-day assessment was masked); unequal group sizes; the 95% CI upper bound reaches the margin (p=0.057). The 2023 protocol paper (PMID 37883934) and the registry named the ordinal 90-day mRS as the primary outcome and projected 7,200 patients at 120 sites; the published primary outcome is dichotomous mRS 2-6 with an RR margin of 1.15, and 4922 participants were enrolled. The registry lists IV alteplase; tenecteplase use is not described in the abstract. sICH was rare (13 events), limiting safety precision; mortality and protocol adherence are not reported in the abstract.',
+    certainty: 'low',
+    evidenceType: 'rct',
+    citationIds: ['cit-optimistmain-2025'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'Cluster-randomised data suggest that, in clinically stable NIHSS <10 patients, less frequent observation after thrombolysis gave similar 90-day mRS 2-6 rates with few sICH events. Non-inferiority was not established with conventional confidence (the authors call the evidence weak), so the trial supports local protocol review, not a change to the default post-thrombolysis monitoring schedule.',
+    lastReviewed: '2026-09-26',
+    promotedDate: '2026-09-26',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified 2026-09-26 against the PubMed abstract (PMID 40412428; Lancet 2025;405(10493):1909-1922; DOI 10.1016/S0140-6736(25)00549-5), the ClinicalTrials.gov record NCT03734640 (completed; enrollment 4922; registered primary outcome: 90-day mRS shift analysis) and the protocol paper (PMID 37883934; Cerebrovasc Dis 2023). Also registered as ACTRN12619001556134p (as printed in the abstract). The full text is not in PMC, so age, sex, mortality and protocol adherence were not recorded.'
+  }),
+  t({
+    id: 'headsoar',
+    shortName: 'HeadSOAR',
+    fullName: 'Head Positioning After Endovascular Therapy for Acute Stroke due to Large Vessel Occlusion (HeadSOAR)',
+    topic: 'stroke-unit-care',
+    diseaseArea: ['acute-ischemic-stroke', 'stroke-unit-care'],
+    population: {
+      n: 1368,
+      ageRange: 'Adults ≥18 y; median age 68 y; 565 (41.3%) women',
+      nihssRange: 'Median baseline NIHSS 15; registry requires NIHSS ≥8 before EVT',
+      timeWindow: 'Last known well to randomisation ≤24 h (registry); assigned head position maintained for 72 h after EVT',
+      keyInclusion: [
+        'Anterior-circulation LVO (ICA, M1 or M2, with or without a cervical tandem lesion) on DSA (registry)',
+        'Successful reperfusion (eTICI ≥2b) after thrombectomy',
+        'ASPECTS ≤7 before EVT (registry; the design preprint describes "medium to large core strokes") — confirm against the BMJ methods',
+        '67 comprehensive stroke centres in China; 16 Nov 2023 to 23 Jan 2025 (NCT06115707)'
+      ],
+      keyExclusion: [
+        'Pre-stroke mRS >1 (registry)',
+        'Acute occlusions in multiple vascular territories (registry)',
+        'Contraindication to a flat head position (registry)'
+      ]
+    },
+    intervention: 'Elevated head position 30-40° for 72 h after thrombectomy (n=685)',
+    comparator: 'Flat head position 0-10° for 72 h after thrombectomy (n=683)',
+    primaryEndpoint: {
+      definition: 'Functional status at 90 days by ordinal (shift) analysis of the modified Rankin Scale (0-6)',
+      timepoint: '90 d',
+      result: 'DID NOT meet — no significant shift: median mRS 3 (IQR 1-5) with head elevation vs 3 (IQR 1-5) flat',
+      effectSize: 'Adjusted generalised OR 1.12 for a lower level of disability (head elevation vs flat)',
+      confidenceInterval: '95% CI 0.97 to 1.29',
+      pValue: 'P=0.14'
+    },
+    secondaryEndpoints: [
+      { name: 'All-cause mortality at 90 days (primary safety outcome)', result: '125/682 (18.3%) vs 137/676 (20.3%); adjusted RR 0.86 (95% CI 0.69 to 1.07), P=0.18' }
+    ],
+    safetyFindings: {
+      sich: 'Not reported in the PubMed abstract (registry secondary outcome: sICH by Heidelberg criteria within 72 h)',
+      mortality: '18.3% vs 20.3% at 90 d — numerically lower with elevation, not statistically different',
+      other: 'Open-label, blinded end point; 1358 (99.3%) completed 90-day follow-up; pneumonia and brain oedema are registry secondary outcomes not reported in the abstract'
+    },
+    imagingCriteria: 'DSA-confirmed anterior-circulation LVO with eTICI ≥2b after thrombectomy; ASPECTS ≤7 before EVT per registry',
+    applicabilityNotes: 'The largest trial of head position after thrombectomy. In anterior-circulation LVO with eTICI ≥2b reperfusion, 72 h of head elevation (30-40°) versus flat positioning (0-10°) did not significantly shift the 90-day mRS; the confidence interval (0.97 to 1.29) is compatible with no effect or a modest benefit of elevation, and the authors state that the result "leaves open the possibility of a modest but clinically meaningful benefit of head elevation". The registry restricts enrolment to NIHSS ≥8 and ASPECTS ≤7 (medium-to-large core), so the result may not transfer to small-core or unsuccessfully reperfused patients. It complements HeadPoST (24 h flat vs ≥30° in unselected, mostly mild stroke; null) and the 2026 AHA/ASA statement that routine flat positioning for 24 h gives no benefit over 30° (ais-2026-66, III: No Benefit). Head position before reperfusion (ZODIAC) is a separate question; HeadSOAR gives no evidence that continuing flat positioning after successful EVT improves outcome. HoBIT (NCT07367633; 0° vs ≥30° after EVT, recruiting) is testing the question without a core restriction.',
+    limitations: 'Open-label (positioning cannot be masked) with blinded end-point assessment; single country (China); registry eligibility limited to NIHSS ≥8, ASPECTS ≤7 and eTICI ≥2b; adherence to the 72-h positions, sICH, pneumonia and malignant oedema are not reported in the abstract; the between-group difference was smaller than expected, so a modest benefit of elevation is not excluded.',
+    certainty: 'moderate',
+    evidenceType: 'rct',
+    citationIds: ['cit-headsoar-2026'],
+    relatedActiveTrialIds: [],
+    practiceImpact: 'After successful thrombectomy for anterior-circulation LVO (registry: NIHSS ≥8, ASPECTS ≤7), 72 h of head elevation at 30-40° did not significantly improve 90-day disability compared with flat 0-10° positioning; a modest benefit of elevation is not excluded. Neither position is established as outcome-improving after reperfusion, so head-of-bed angle remains a patient-specific judgement (for example aspiration risk, oedema, tolerance).',
+    lastReviewed: '2026-09-26',
+    promotedDate: '2026-09-26',
+    verificationStatus: 'verified-pubmed',
+    verificationNotes: 'Verified 2026-09-26 against the PubMed record (PMID 42624516; BMJ 2026;394:e100363; DOI 10.1136/bmj-2026-100363; published 2026-08-20; no PMC full text) and ClinicalTrials.gov NCT06115707 (eligibility: NIHSS ≥8, ASPECTS ≤7, eTICI 2b-3, onset to randomisation ≤24 h). The ASPECTS ≤7 criterion matches the design preprint (medRxiv doi 10.1101/2025.10.30.25339117, which describes "medium to large core strokes"; seen via search listing only, full text egress-blocked) but has not been checked against the BMJ methods.'
   }),
 ];
 
