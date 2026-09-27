@@ -26441,7 +26441,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="text-xs text-slate-700 space-y-1 dark:text-ink-2">
                                   <p><strong>Recommended intensity:</strong> Minimum 3 hours/day, 5 days/week of active task-specific therapy (once medically and neurologically stable — CSBP Rehabilitation 7th ed. 2025 update: Strong recommendation; Moderate quality of evidence).</p>
                                   <p><strong>Early mobilization:</strong> Begin within 24-48h post-stroke. Avoid very early high-dose mobilization within 24h (AVERT — increased odds of poor outcome at 3 months).</p>
-                                  <p><strong>Aphasia referral:</strong> Refer to SLP within 30 days. RELEASE (IPD network meta-analysis, Stroke 2022): greatest gains with >20-50 total hours of SLT, 2-4 or 9+ hours/week, 3-5+ days/week, functionally tailored with prescribed home practice.</p>
+                                  <p><strong>Aphasia referral:</strong> Refer to SLP within 30 days. RELEASE (IPD network meta-analysis, Stroke 2022): greatest gains with &gt;20-50 total hours of SLT, 2-4 or 9+ hours/week, 3-5+ days/week, functionally tailored with prescribed home practice.</p>
                                 </div>
                                 <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-2">
                                   <label className="flex items-center gap-1 text-xs">
