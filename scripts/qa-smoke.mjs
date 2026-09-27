@@ -356,24 +356,13 @@ async function auditPublicDemoSurface(page, context, target, issues, notes) {
 
   notes.publicDemoChecked = true;
 
-  // The blocking consent modal stays retired (owner decision), but the
-  // non-blocking public-demo notice and the global educational-use footer must
-  // be visible: a defined-but-unrendered disclaimer is tree-shaken out of
-  // app.js (tests/disclaimer-bundle.test.js guards the bundle side).
-  if ((await page.locator('[data-testid="public-demo-notice"]').count()) === 0) {
-    addIssue(issues, 'public-demo-notice-missing');
-  }
-  const footer = page.locator('footer[data-testid="site-footer"]');
-  if ((await footer.count()) === 0) {
-    addIssue(issues, 'site-footer-missing');
-  } else {
-    const footerText = await footer.innerText();
-    if (!/Educational use only/i.test(footerText) || !/never enter PHI/i.test(footerText)) {
-      addIssue(issues, 'site-footer-disclaimer-copy-missing');
-    }
-    if ((await footer.getAttribute('data-build')) !== 'stroke-public-demo-build') {
-      addIssue(issues, 'public-build-marker-missing', { found: await footer.getAttribute('data-build') });
-    }
+  // The on-page demo notice and disclaimer footer were removed by owner
+  // decision (v6.29.2). The build-time public-demo gate stays: the app shell
+  // must carry the public build marker (tests/public-build-gate.test.js guards
+  // the bundle side).
+  const shellBuild = await page.locator('.app-shell').first().getAttribute('data-build');
+  if (shellBuild !== 'stroke-public-demo-build') {
+    addIssue(issues, 'public-build-marker-missing', { found: shellBuild });
   }
   // We still assert no named-institution label leaks visibly.
   let bodyText = await page.locator('body').innerText();

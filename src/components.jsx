@@ -32,58 +32,6 @@ import {
   exportPatientsJSON,
   importPatientsJSON
 } from './patient-store.js';
-import {
-  PUBLIC_DEMO_BANNER_COPY,
-  PUBLIC_DEMO_MODAL_COPY,
-  SITE_FOOTER_DISCLAIMER_COPY
-} from './public-demo-guardrails.js';
-
-// =========================================================================
-// Public deployment notice + global footer. Both are always part of the
-// rendered tree (the notice whenever the build/host is a public demo, the
-// footer on every view), so their copy ships in app.js — see
-// tests/disclaimer-bundle.test.js. Non-blocking by design: the earlier
-// blocking consent modal was retired by owner decision; these surfaces carry
-// the same educational-use / no-PHI message without gating the UI.
-// =========================================================================
-export const PHIBanner = () => {
-  return (
-    <div
-      role="note"
-      aria-label="Public demo notice"
-      data-testid="public-demo-notice"
-      className="no-print mb-4 flex items-start gap-2 rounded-md border border-warn-200 bg-warn-50 px-3 py-2 text-xs leading-relaxed text-warn-900 sm:text-sm dark:border-warn-800 dark:bg-warn-950 dark:text-warn-200"
-    >
-      <i aria-hidden="true" data-lucide="shield-alert" className="mt-0.5 h-4 w-4 flex-shrink-0 text-warn-700 dark:text-warn-300"></i>
-      <p className="min-w-0 flex-1">
-        <strong className="font-semibold">Public demo.</strong> {PUBLIC_DEMO_BANNER_COPY}
-      </p>
-    </div>
-  );
-};
-
-export const SiteFooter = ({ appVersion = '', publicDemo = true, buildMarker = '' }) => (
-  <footer
-    role="contentinfo"
-    data-testid="site-footer"
-    data-build={buildMarker || undefined}
-    className="no-print mt-10 border-t border-line pt-6 pb-2 text-xs leading-relaxed text-slate-600 dark:text-mute"
-  >
-    <div className="grid gap-4 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-      <div className="space-y-2">
-        <p className="font-semibold text-slate-800 dark:text-ink">Educational use only</p>
-        <p>{SITE_FOOTER_DISCLAIMER_COPY}</p>
-        {publicDemo && <p>{PUBLIC_DEMO_MODAL_COPY}</p>}
-      </div>
-      <div className="space-y-2 sm:text-right">
-        <p>Runs entirely in your browser: no backend, no accounts, no analytics or tracking.</p>
-        <p>Verify every recommendation against the primary source and your approved local protocol.</p>
-        {appVersion && <p className="font-mono text-2xs text-slate-500 dark:text-mute">Version {appVersion}</p>}
-      </div>
-    </div>
-  </footer>
-);
-
 // =========================================================================
 // LKW countdown — live-ticking chips showing time to 4.5h and 24h windows
 // =========================================================================

@@ -36,9 +36,7 @@ import {
   NeurocheckTimer,
   PatientCensus,
   ClinicWorkflow,
-  WardsWorkflow,
-  PHIBanner,
-  SiteFooter
+  WardsWorkflow
 } from './components.jsx';
 import {
   getPublicDemoPhiWarnings,
@@ -16885,9 +16883,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   scrolled away below 768px; clip suppresses the overflow without
                   creating a scrollport. ≥768px (md) needs neither; html/body
                   also clip horizontal overflow at the page level. */}
-              <div className="app-shell max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-clip md:overflow-x-visible">
-
-              {PUBLIC_DEMO_MODE && <PHIBanner />}
+              <div className="app-shell max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-clip md:overflow-x-visible" data-build={BUILD_TARGET_MARKER}>
 
               {/* Offline Indicator */}
               {!isOnline && (
@@ -33568,8 +33564,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 )}
 
               </main>
-
-              <SiteFooter appVersion={APP_VERSION} publicDemo={PUBLIC_DEMO_MODE} buildMarker={BUILD_TARGET_MARKER} />
 
             </div>
 
