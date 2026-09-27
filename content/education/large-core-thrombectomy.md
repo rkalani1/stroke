@@ -1,7 +1,7 @@
 ---
 id: large-core-thrombectomy
 title: "Large-Core Thrombectomy"
-summary: "Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the symptomatic-hemorrhage trade-off."
+summary: "Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the hemorrhage trade-off (more any intracranial hemorrhage and numerically higher sICH in most individual trials, but no significant sICH difference in the 2026 ATLAS IPD meta-analysis)."
 tags: ["pocket-card", "printable"]
 contexts: ["telestroke", "inpatient", "clinic"]
 calculators: []
@@ -10,7 +10,7 @@ lastReviewed: 2026-07-18
 provenance: src/education.jsx
 ---
 
-Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the symptomatic-hemorrhage trade-off.
+Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the hemorrhage trade-off (more any intracranial hemorrhage and numerically higher sICH in most individual trials, but no significant sICH difference in the 2026 ATLAS IPD meta-analysis).
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
 > This file owns the module metadata (title, summary, tags, contexts, references).

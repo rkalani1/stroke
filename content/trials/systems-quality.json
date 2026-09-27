@@ -13,7 +13,7 @@
       "cit-dido-gwtg-2023"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -21,16 +21,16 @@
     "name": "Target Stroke Phase III",
     "fullName": "Association of Component Strategies of the Target Stroke Phase 3 Nationwide Quality Improvement Program With Accelerated Door-to-Puncture and Door-In-Door-Out Times for Ischemic Stroke Endovascular Thrombectomy in the United States",
     "category": "systems-quality",
-    "population": "n=0, adults; the total cohort size is NOT stated in the retrieved abstract, so no n is asserted here, NIHSS not reported in the retrieved abstract, 1 January 2017 to 31 March 2022",
+    "population": "n=0, median age 71-72 years across cohorts; the full text reports 37,373 direct-arriving EVT patients (450 centres), 28,665 transfer-in EVT patients (395 centres) and 12,703 transfer-out patients (1,107 centres) from 1,305 hospitals; the cohorts may overlap, so no single total n is asserted, NIHSS not reported in the retrieved abstract, 1 January 2017 to 31 March 2022",
     "finding": "Different strategies work at different points in the chain. In DIRECT-ARRIVING EVT patients, two strategies were independently associated with shorter door-to-puncture time: alerting the neurointerventional team on EMS prenotification (−21.9 minutes) and performing CT plus CTA in all patients presenting ≤24 h from last known well (−6.6 minutes). In TRANSFER-IN EVT patients, two different strategies helped: greater use of stroke screening tools (−3.5 minutes per 25% increase in use) and greater use of a camera during telestroke consultations (−5.8 minutes per 25% increase in camera use)",
-    "teachingPoint": "Identifies which workflow changes are associated with faster reperfusion at each node of a transfer network — team activation on prenotification at the hub, screening tools and telestroke cameras at the spoke.",
+    "teachingPoint": "Identifies which workflow changes are associated with faster reperfusion at each node of a transfer network — team activation on prenotification at the hub, screening-tool and telestroke-camera use for transfer-in patients, also at the hub; and at transferring hospitals, telestroke-hub status, automated imaging software, vascular imaging in all patients and faster thrombolysis for shorter door-in-door-out time.",
     "PMID": "41111412",
     "year": 2025,
     "citationIds": [
       "cit-target-stroke-3-2025"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -39,7 +39,7 @@
     "fullName": "Diagnostic Test Accuracy of Artificial Intelligence in Large Vessel Occlusion: A Systematic Review and Meta-Analysis",
     "category": "systems-quality",
     "population": "n=10937, not reported at the pooled level, NIHSS not reported at the pooled level, acute stroke CT angiography at presentation",
-    "finding": "Accuracy is good but asymmetric, and the negative result is the weak one: pooled sensitivity 0.87 and pooled specificity 0.95. The pooled positive likelihood ratio was 9.55 and statistically significant, while the pooled negative likelihood ratio of 0.14 was NOT statistically significant — meaning a negative AI read does not reliably rule out an occlusion",
+    "finding": "Accuracy is good but asymmetric, and the negative result is the weak one: pooled sensitivity 0.87 and pooled specificity 0.95. The pooled positive likelihood ratio was 9.55 and statistically significant, while the pooled negative likelihood ratio was 0.14 (95% CI 0.03-0.25), a confidence interval that excludes 1. The authors describe the NLR as 'not significant', but the p value they report with it (printed as <0.624, next to I² = 0%) appears to be the Cochran's Q heterogeneity test described in their methods, not a test of the NLR itself. The rule-out weakness is real, and the pooled sensitivity of 0.87 (95% CI 0.76-0.93) shows it better: roughly 1 in 8 occlusions was missed, so a negative AI read does not reliably rule out an occlusion",
     "teachingPoint": "Frames AI LVO-detection output as a rule-in aid that can speed a transfer, never a rule-out that can cancel one — especially for posterior-circulation and M2 occlusions.",
     "PMID": "42028301",
     "year": 2026,
@@ -47,7 +47,7 @@
       "cit-ai-lvo-dta-2026"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

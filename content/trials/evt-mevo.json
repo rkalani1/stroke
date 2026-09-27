@@ -14,7 +14,7 @@
       "cit-distal-2026"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-05-30",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -22,7 +22,7 @@
     "name": "ESCAPE-MeVO",
     "fullName": "Endovascular Treatment for Medium Vessel Occlusion Stroke",
     "category": "evt-mevo",
-    "population": "n=530, Mean 69.8, NIHSS Median 8, ≤12 h from last known well",
+    "population": "n=530, Median 75, NIHSS Median 8, ≤12 h from last known well",
     "finding": "No difference: 41.6% (106/255) vs 43.1% (118/274)",
     "teachingPoint": "Does not support routine endovascular thrombectomy for isolated medium vessel occlusion stroke outside of clinical trials.",
     "PMID": "39908448",
@@ -31,7 +31,7 @@
       "cit-escape-mevo-2025"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-05-30",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -39,7 +39,7 @@
     "name": "ORIENTAL-MeVO",
     "fullName": "Endovascular Treatment of Medium-Vessel-Occlusion Strokes",
     "category": "evt-mevo",
-    "population": "n=563, Median 71, NIHSS Median 10 (range 3-36); NIHSS >=6 required, <=24 h from onset",
+    "population": "n=563, Median 71, NIHSS Median 10 (range 3-36); NIHSS ≥6 required, ≤24 h from onset",
     "finding": "Benefit: 58.6% (280 patients) vs 46.6% (283 patients)",
     "teachingPoint": "Positive functional-outcome result with more symptomatic hemorrhage; interpret with the neutral MeVO trials. This study summary does not independently revise guideline recommendations.",
     "PMID": "42127389",
@@ -48,7 +48,7 @@
       "cit-oriental-mevo-2026"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-22",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -58,14 +58,14 @@
     "category": "evt-mevo",
     "population": "n=244, median 75 y (IQR 67-81); 56% male, NIHSS median NIHSS 8 (IQR 6-12), Within 8 h of symptom onset, or within 24 h of last seen well if no hyperintense signal was present on FLAIR imaging",
     "finding": "DID NOT meet its endpoint, with the point estimate favouring medical treatment alone: 72/116 (62%) with thrombectomy vs 81/119 (68%) with medical treatment alone. The trial was STOPPED at the planned interim analysis on the recommendation of the data and safety monitoring board for futility AND an increased rate of symptomatic intracranial hemorrhage with thrombectomy.",
-    "teachingPoint": "Adds a randomized trial halted for futility plus a haemorrhage signal to the medium- and distal-vessel occlusion evidence, and supplies the procedural-complication data — subarachnoid haemorrhage and embolus migration — that the neutral MeVO trials do not report.",
+    "teachingPoint": "Adds a randomized trial halted for futility plus a haemorrhage signal to the medium- and distal-vessel occlusion evidence, and supplies the procedural-complication data — subarachnoid haemorrhage and embolus migration — from its as-treated comparison; DISTAL and ESCAPE-MeVO also had numerically more symptomatic haemorrhage with thrombectomy.",
     "PMID": "42485024",
     "year": 2026,
     "citationIds": [
       "cit-discount-2026"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

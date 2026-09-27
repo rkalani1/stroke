@@ -7,7 +7,7 @@
   "pdfUrl": null,
   "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/38804130/",
   "pmid": "38804130",
-  "society": "AHA/ASA",
+  "society": "AHA",
   "recommendations": [
     {
       "section": "Definitions",
@@ -94,7 +94,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "If the BP reading is confirmed and evidence of new or worsening target-organ damage is present, then the treatment pathway for hypertensive emergency as outlined in the 2017 Hypertension Clinical Practice Guidelines should be promptly initiated.",
+      "text": "If the BP reading is confirmed and evidence of new or worsening target-organ damage is present, then the treatment pathway for hypertensive emergency as outlined in the 2017 Hypertension Clinical Practice Guidelines (since retired and replaced by the 2025 AHA/ACC high blood pressure guideline) should be promptly initiated.",
       "page": null
     },
     {
@@ -103,7 +103,29 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "Brain - stroke: initial BP target 130<SBP<180 mm Hg, MAP decline 15% in 1 h; treatment agents labetalol, nicardipine. Hypertensive encephalopathy (PRES): immediate MAP decline 20%-25%. Cerebral hemorrhage: immediate MAP decline 15%.",
-      "page": null
+      "page": null,
+      "currentEvidenceNote": "Stroke-specific context added 2026-09-26 (app note, not part of this statement): this is a generic hypertensive-emergency table row, not stroke-specific guidance, and its wording still needs confirmation against the source table. For acute ischemic stroke, follow the 2026 AHA/ASA AIS guideline. Without IVT or EVT, starting antihypertensives in the first 48-72 h is not effective when BP is <220/120 mm Hg. At >=220/120 mm Hg the benefit is uncertain; the 2025 AHA/ACC high blood pressure guideline says a 15% reduction over the first 24 h may be reasonable. Before IVT, lower BP to <185/110 mm Hg. After IVT, keep it <180/105 mm Hg for at least 24 h. During EVT and for 24 h after, keep it at or below 180/105 mm Hg. Intensive SBP lowering to <140 mm Hg for 72 h after successful EVT reperfusion is harmful. For ICH, follow the 2022 AHA/ASA ICH guideline: in mild-to-moderate ICH presenting with SBP 150-220 mm Hg, target SBP 140 mm Hg (130-150 range) and avoid acute lowering to <130 mm Hg.",
+      "currentEvidenceCheckedAt": "2026-09-26",
+      "currentEvidenceSources": [
+        {
+          "title": "2026 AHA/ASA Acute Ischemic Stroke Guideline (Stroke 2026)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41582814/",
+          "pmid": "41582814",
+          "doi": "10.1161/STR.0000000000000513"
+        },
+        {
+          "title": "2025 AHA/ACC High Blood Pressure Guideline (Hypertension 2025)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/40811516/",
+          "pmid": "40811516",
+          "doi": "10.1161/HYP.0000000000000249"
+        },
+        {
+          "title": "2022 AHA/ASA Spontaneous ICH Guideline (Stroke 2022)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35579034/",
+          "pmid": "35579034",
+          "doi": "10.1161/STR.0000000000000407"
+        }
+      ]
     },
     {
       "section": "Hypertensive Emergency (Table 1: Hypertensive Emergencies by Organ and Initial Treatment Approach)",
@@ -198,7 +220,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "The current state of evidence suggests that treating asymptomatic elevated inpatient BP should generally be the exception, not the rule. If the choice to begin antihypertensive medication is made, using the 2017 Hypertension Clinical Practice Guidelines to guide the initial regimen in the acute care setting is reasonable.",
+      "text": "The current state of evidence suggests that treating asymptomatic elevated inpatient BP should generally be the exception, not the rule. If the choice to begin antihypertensive medication is made, using the 2017 Hypertension Clinical Practice Guidelines (now replaced by the 2025 AHA/ACC high blood pressure guideline) to guide the initial regimen in the acute care setting is reasonable.",
       "page": null
     },
     {
@@ -230,7 +252,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Any new antihypertensive medication initiated during the admission should align with the 2017 Hypertension Clinical Practice Guidelines and should account for factors affecting treatment effectiveness and adherence such as health literacy, health insurance, affordability, social support, and self-management resources. Among US adults with hypertension, about 18% take at least 1 medication that can increase inpatient BP, and these medications should be discontinued when possible.",
+      "text": "Any new antihypertensive medication initiated during the admission should align with the 2017 Hypertension Clinical Practice Guidelines (now replaced by the 2025 AHA/ACC high blood pressure guideline) and should account for factors affecting treatment effectiveness and adherence such as health literacy, health insurance, affordability, social support, and self-management resources. Among US adults with hypertension, about 18% take at least 1 medication that can increase inpatient BP, and these medications should be discontinued when possible.",
       "page": null
     },
     {

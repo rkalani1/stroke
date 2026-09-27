@@ -83,8 +83,8 @@
     },
     {
       "section": "PICO 4: Use of a prehospital scale in suspected acute stroke",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For",
+      "classOfRec": "No recommendation",
+      "classNote": null,
       "levelOfEvidence": "Very low certainty",
       "text": "In patients with suspected stroke, we cannot make a recommendation on the use of a prehospital scale for improving identification of patients eligible for MT. We suggest enrolling patients in a dedicated randomized controlled trial, whenever possible. (Quality of evidence: Very low; the guideline assigned no strength of recommendation.)",
       "page": null
@@ -214,7 +214,7 @@
       "classOfRec": "Expert Consensus",
       "classNote": "For",
       "levelOfEvidence": "Very low certainty",
-      "text": "We recommend that anterior circulation stroke patients with extensive infarct core (e.g. ASPECTS < 6 on non-contrast CT scan or core volume > 70 ml or > 100 ml) be included in RCTs comparing mechanical thrombectomy plus best medical management versus best medical management alone. (Quality of evidence: Very low; the guideline assigned no strength of recommendation.)",
+      "text": "We recommend that anterior circulation stroke patients with extensive infarct core (e.g. ASPECTS < 6 on non-contrast CT scan or core volume > 70 ml or > 100 ml) be included in RCTs comparing mechanical thrombectomy plus best medical management versus best medical management alone. (Quality of evidence: Very low; the guideline assigned no strength of recommendation.) [Current-evidence note: outdated — 2023 RCTs in anterior-circulation LVO with large infarct core (e.g., SELECT2: ASPECTS 3-5 or core ≥50 ml within 24 h; TENSION: ASPECTS 3-5 within 12 h) showed better functional outcomes with thrombectomy than medical care alone.]",
       "page": null
     },
     {
@@ -326,7 +326,7 @@
       "classOfRec": "Expert Consensus",
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
-      "text": "11/11 experts think that the degree of reperfusion should be taken into account in the choice of a blood pressure target after MT, with a lower blood pressure target in case of complete reperfusion.",
+      "text": "11/11 experts think that the degree of reperfusion should be taken into account in the choice of a blood pressure target after MT, with a lower blood pressure target in case of complete reperfusion. [Current-evidence note: superseded — later RCTs (ENCHANTED2/MT, OPTIMAL-BP) found worse outcomes with intensive post-thrombectomy BP lowering, and the 2025 ESO BP update recommends against actively lowering systolic BP to <140 mmHg in the first 24 h after successful thrombectomy (strong recommendation, high certainty).]",
       "page": null
     },
     {

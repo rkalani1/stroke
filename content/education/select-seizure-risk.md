@@ -5,7 +5,7 @@ summary: "SeLECT score for predicting 1-year and 5-year risk of late post-stroke
 tags: ["pocket-card", "printable"]
 contexts: ["telestroke", "inpatient", "clinic"]
 calculators: []
-references: [{"label":"SeLECT Score Study","citation":"Galovic M, et al. Prediction of late seizures after ischaemic stroke with the SeLECT score. Lancet Neurol. 2018;17(2):143-152.","pmid":"29413315"}]
+references: [{"label":"SeLECT Score Study","citation":"Galovic M, et al. Prediction of late seizures after ischaemic stroke with a novel prognostic model (the SeLECT score): a multivariable prediction model development and validation study. Lancet Neurol. 2018;17(2):143-152.","pmid":"29413315"}]
 lastReviewed: 2026-07-24
 provenance: src/education.jsx
 ---

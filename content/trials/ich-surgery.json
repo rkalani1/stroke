@@ -5,7 +5,7 @@
     "fullName": "Early Minimally Invasive Removal of Intracerebral Hemorrhage",
     "category": "ich-surgery",
     "population": "n=300, 18-80, NIHSS n/a, ≤24 h from onset",
-    "finding": "Favored surgery (Bayesian posterior probability >0.95)",
+    "finding": "Favored surgery (posterior probability of superiority 0.981; prespecified threshold ≥0.975)",
     "teachingPoint": "Supports early minimally invasive evacuation for lobar ICH at capable centers.",
     "PMID": "38598795",
     "year": 2024,
@@ -13,7 +13,7 @@
       "cit-enrich-2024"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -64,7 +64,7 @@
       "cit-switch-2024"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-07-18",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -98,7 +98,7 @@
       "cit-stich2-2013"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-15",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

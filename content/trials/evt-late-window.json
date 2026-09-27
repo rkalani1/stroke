@@ -13,7 +13,7 @@
       "cit-dawn-2018"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -30,7 +30,7 @@
       "cit-defuse3-2018"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -40,14 +40,14 @@
     "category": "evt-late-window",
     "population": "n=502, ≥18; 52% female, NIHSS ≥2, 6-24 h from onset or last seen well",
     "finding": "Favors EVT: median mRS 3 (IQR 2-5) vs 4 (IQR 2-6)",
-    "teachingPoint": "CTA collateral status alone can select late-window (6-24 h) EVT candidates who fall outside DAWN/DEFUSE-3 perfusion criteria.",
+    "teachingPoint": "CTA collateral status alone can select late-window (6-24 h) EVT candidates who are not eligible under DAWN/DEFUSE-3-derived clinical and perfusion-imaging criteria.",
     "PMID": "37003289",
     "year": 2023,
     "citationIds": [
       "cit-mrclean-late-2023"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-15",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

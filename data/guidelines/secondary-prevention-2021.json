@@ -1946,7 +1946,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "organizations-Based Interventions",
+      "section": "Health Systems–Based Interventions",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
@@ -1959,7 +1959,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "organizations-Based Interventions",
+      "section": "Health Systems–Based Interventions",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
@@ -1972,7 +1972,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "organizations-Based Interventions",
+      "section": "Health Systems–Based Interventions",
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-R",
@@ -2743,7 +2743,7 @@
       },
       {
         "id": "table-39",
-        "title": "organizations-Based Interventions",
+        "title": "Health Systems–Based Interventions",
         "sourceTable": "Recommendations for Health Systems–Based Interventions",
         "rowCount": 3,
         "pageRange": [

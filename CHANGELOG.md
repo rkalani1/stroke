@@ -1,6 +1,85 @@
 # CHANGELOG
 
-## Unreleased
+## v6.29.0 — 2026-09-27 — clinical accuracy audit, evidence currency, one design system, build-time demo gate
+
+The Protocols tab (`#/protocols/*`) is unchanged apart from the user-approved
+removal of eight dead "Jump to Section" chips; the ICH snapshot is identical and
+the ischemic snapshot differs only by those eight lines.
+
+### Clinical accuracy audit
+
+1,446 audit findings across the Encounter, Trials, Guidelines, References,
+Calculators and education content were each re-checked by an independent
+verifier against primary sources (PubMed/PMC, ClinicalTrials.gov, guideline
+text, FDA). 1,353 were resolved in the code (corrected, or the unverifiable
+detail removed or marked "needs confirmation" in the UI), 92 were refuted and
+left unchanged, and findings located in the Protocols tab were reported only.
+Highlights:
+
+- **Andexanet alfa (Andexxa):** US commercial sales ended 2025-12-22 (FDA safety
+  communication); factor Xa reversal recommendations, cards and notes now say so.
+- **Acute DAPT calculator:** the THALES branch no longer requires an
+  atherosclerotic cause (THALES enrolled noncardioembolic NIHSS ≤5) and no longer
+  pre-empts Class 1 clopidogrel + aspirin (NIHSS 0-3, ABCD² ≥4 TIA) or the 2026
+  Class 2a clopidogrel + aspirin path (atherosclerotic NIHSS 4-5). The 90-day
+  DAPT option is labelled POINT, not CHANCE-2.
+- **Early anticoagulation after AF-related stroke:** attributed to the 2026
+  AHA/ASA AIS guideline (COR IIa, LOE A), not the 2021 secondary-prevention
+  guideline, which predates TIMING, ELAN, OPTIMAS and CATALYST.
+- **CHOICE-2** adjunctive IA alteplase: 0.225 mg/kg, maximum 20 mg, over 15 min
+  (JAMA 2026, PMID 42096239).
+- **mRS-9Q:** "requires constant care" maps to mRS 5.
+- **Trial screener:** CAPTIVA requires ischemic stroke (TIA without infarction is
+  not eligible); the tandem-lesion trial no longer hard-gates on IVT
+  ineligibility; MOST no longer requires an ICA/M1 occlusion (matcher coverage
+  42/42 criteria).
+- New citation `cit-inch-2016` (INCH, PMID 27302126) and claim
+  `cl-ich-bp-intensive-target`.
+
+### Engineering and guardrails
+
+- **Disclaimers render:** the public-demo notice and a global site footer ("Not
+  medical advice, not an approved clinical tool, not local clinical policy, and
+  not endorsed by any named institution. … Use synthetic data only and never
+  enter PHI.") are now rendered on every view. They were previously defined but tree-shaken out of the bundle.
+  `tests/disclaimer-bundle.test.js` and the smoke run assert both are in the
+  shipped `app.js`.
+- **Build-time demo gate:** `__STROKE_BUILD_PUBLIC_DEMO__` (esbuild define) makes
+  the public build a demo build regardless of runtime flags;
+  `STROKE_BUILD_TARGET=private` builds require `STROKE_BUILD_OUTFILE` and refuse
+  to overwrite the published `app.js`. The footer carries the build marker.
+- The public build disables API-provider key entry in Settings.
+
+### Design and accessibility
+
+- One token source (`src/design/tokens.css`) and one dark-mode mechanism (a
+  pre-paint theme hook plus Tailwind's selector strategy); the former inline
+  `index.html` styles live in `src/design/shell.css`; the unused duplicate
+  modules `src/primitives.jsx` and `src/device-frame.jsx` are removed.
+- Segmented controls support arrow, Home and End keys (roving tabindex).
+- Tailwind config: content globs cover every source file, colour tokens support
+  alpha, and the pixel-based spacing override (which dropped half steps such as
+  `p-3.5`) is removed in favour of Tailwind's default rem scale.
+- Typography fixes such as "ASPECTS (Interactive)" (was "Score Score"), RoPE and
+  RCVS² labels.
+
+### Protocols tab (user-approved exception)
+
+- Removed eight "Jump to Section" chips whose targets do not exist
+  (`isch-af`, `isch-nbo`, `isch-ht`, `isch-antiplatelet`, `isch-statin`,
+  `isch-icad`, `isch-cad`, `isch-seizure`). No clinical wording changed.
+  `tests/protocol-toc-anchors.test.js` asserts every remaining chip resolves.
+
+### Tooling
+
+- `seed-content` groups guideline projections by the primary source (ignoring
+  parenthetical qualifiers) and prunes projection files the sources no longer
+  produce; the bundle again has 11 unique guideline records.
+- `validate-inline-citations` ignores acronym fragments cut by its look-behind
+  window ("OICE-2" from "CHOICE-2").
+- Calculators snapshot re-baselined after line-by-line review; version 6.29.0
+  across `package.json`, `package-lock.json`, `index.html`, `service-worker.js`,
+  `src/app.jsx` and `llms.txt`; `data/**` and `llms-full.txt` regenerated.
 
 ### Evidence currency (2026-09-26): verified promotion batch
 
@@ -102,8 +181,7 @@ left out rather than estimated. New and changed records carry
   ASSET-IT. The basilar-artery-occlusion education card's IVT bullet now
   separates TRACE-5 (IV tenecteplase ≤24 h) from ATTENTION LATE (no benefit
   from adding tenecteplase before thrombectomy at 4.5-24 h).
-- Tests that pinned the completed-trial and citation counts now assert lower
-  bounds.
+- Tests that pin the completed-trial and citation counts now pin 260 and 402.
 
 ## v6.28.2 — 2026-09-19 — calculators and the guideline index join the reference visual system
 

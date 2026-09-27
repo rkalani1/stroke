@@ -30,7 +30,7 @@
       "cit-optimal-bp-2023"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-07-18",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -47,7 +47,7 @@
       "cit-bp-target-2021"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -57,14 +57,14 @@
     "category": "bp-post-evt",
     "population": "n=120, mean 69.6 years (SD 14.5); 69 of 120 (58%) female, NIHSS not reported in the primary report, targets initiated within 60 minutes of recanalization and maintained for 24 h",
     "finding": "DID NOT meet the prespecified futility criteria. Mean follow-up infarct volume was 32.4 mL for the <140 mm Hg group, 50.7 mL for the <160 mm Hg group and 46.4 mL for the ≤180 mm Hg group - the MOST intensive arm had the SMALLEST infarct volume. Mean utility-weighted mRS was 0.51 (<140), 0.47 (<160) and 0.58 (≤180). This is a low probability of benefit, NOT demonstrated harm.",
-    "teachingPoint": "Teaches the difference between 'low probability of future trial success' and 'demonstrated harm' - and supplies the reason the ≤180 mm Hg ceiling, rather than a 140-160 band, remains the referenced target after thrombectomy.",
+    "teachingPoint": "Teaches the difference between 'low probability of future trial success' and 'demonstrated harm' - and does not by itself justify the ≤180 mm Hg ceiling: BEST-II never tested a 140-160 band (its middle arm was 40 to <160 mm Hg), the ≤180 mm Hg ceiling is a guideline recommendation, and the harm signal behind the 2026 AHA/ASA recommendation against intensive lowering below 140 mm Hg after successful reperfusion (COR 3: Harm) comes from ENCHANTED2/MT and OPTIMAL-BP.",
     "PMID": "37668620",
     "year": 2023,
     "citationIds": [
       "cit-best-ii-2023"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -81,7 +81,7 @@
       "cit-identify-2025"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -107,7 +107,7 @@
     "fullName": "Blood pressure management in reperfused ischemic stroke (Cochrane Database of Systematic Reviews)",
     "category": "bp-post-evt",
     "population": "n=4381, adults enrolled in the included randomized trials, NIHSS pooled as an outcome, not an inclusion criterion, blood-pressure management during and after reperfusion by systemic thrombolysis or endovascular thrombectomy",
-    "finding": "Intensive management results in LITTLE TO NO clinically meaningful difference in clinical function (high-certainty evidence). IMPORTANT READING NOTE: the published abstract does not state the direction of the mRS dichotomy, so this risk ratio must NOT be paraphrased as favouring either arm.",
+    "finding": "Intensive management results in LITTLE TO NO clinically meaningful difference in clinical function (high-certainty evidence). The review protocol defines the dichotomous clinical-function outcome on the mRS (0 to 2 favourable, 3 to 6 poor), and the plain-language summary reports it as the chance of living independently at about 3 months; read that way, RR 0.89 (95% CI 0.80 to 0.98) means slightly fewer patients were functionally independent with intensive lowering, a difference the authors judged not clinically meaningful.",
     "teachingPoint": "Supplies the GRADE-graded bottom line for post-reperfusion BP: intensive systolic lowering below 160 mm Hg buys no clinically meaningful functional benefit and probably increases all-cause mortality.",
     "PMID": "42445947",
     "year": 2026,
@@ -115,7 +115,7 @@
       "cit-cochrane-bp-reperfused-2026"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

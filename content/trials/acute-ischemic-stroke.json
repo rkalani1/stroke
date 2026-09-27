@@ -6,14 +6,14 @@
     "category": "acute-ischemic-stroke",
     "population": "n=115, ≤85, ≤5 h of onset",
     "finding": "No benefit: 36% vs 42%",
-    "teachingPoint": "Bypassing pre-EVT imaging increased sICH without benefit and was halted early — cautions against direct-to-angio in suspected LVO.",
+    "teachingPoint": "In a small trial stopped early for safety, direct transfer to the angiography suite was associated with more sICH and no evidence of functional benefit; estimates are imprecise and the authors call for further trials before firm conclusions.",
     "PMID": "41864232",
     "year": 2026,
     "citationIds": [
       "cit-direct-angio-2026"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-05-30",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

@@ -5,15 +5,15 @@
     "fullName": "Intravenous Glibenclamide for Cerebral Oedema after Large Hemispheric Stroke",
     "category": "malignant-edema",
     "population": "n=535, 18-85 (primary analysis restricted to 18-70), NIHSS large hemispheric infarction, study drug started within 10 h of onset",
-    "finding": "Trial STOPPED EARLY for slow COVID-era enrolment before the planned sample was reached",
-    "teachingPoint": "IV glibenclamide for large hemispheric infarction remains unproven — CHARM was halted early and underpowered.",
+    "finding": "Neutral: no favourable mRS shift with glibenclamide (common OR 1.17, 95% CI 0.80-1.71; p=0.42); trial stopped early by the sponsor for slow COVID-era enrolment",
+    "teachingPoint": "IV glibenclamide did not improve 90-day function after large hemispheric infarction in patients aged 18-70 (common OR 1.17, 95% CI 0.80-1.71), though CHARM was halted early and underpowered; 90-day mortality did not differ significantly (32% vs 29%; HR 1.20, 95% CI 0.85-1.70) and hypoglycemia was more frequent with glibenclamide (6% vs 2%).",
     "PMID": "39577921",
     "year": 2024,
     "citationIds": [
       "cit-charm-2024"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-15",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -21,7 +21,7 @@
     "name": "DECIMAL",
     "fullName": "Early Decompressive Craniectomy in Malignant Middle Cerebral Artery Infarction",
     "category": "malignant-edema",
-    "population": "n=38, 18-55, NIHSS malignant MCA infarction, early (protocol ≤24 h of randomization eligibility)",
+    "population": "n=38, 18-55, NIHSS malignant MCA infarction, early: ≤30 h from onset to surgery (needs confirmation)",
     "finding": "mRS ≤3: 25% vs 5.6% at 6 mo (P=0.18); 50% vs 22.2% at 1 y (P=0.10) — underpowered; mortality reduced by 52.8 pp (P<0.0001)",
     "teachingPoint": "One of the three European trials whose pooled analysis made early hemicraniectomy standard for malignant MCA infarction in younger patients.",
     "PMID": "17690311",
@@ -30,7 +30,7 @@
       "cit-decimal-2007"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-22",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -47,7 +47,7 @@
       "cit-destiny-2007"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-22",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

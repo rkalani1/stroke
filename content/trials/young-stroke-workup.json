@@ -30,7 +30,7 @@
       "cit-sifap-2013"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -39,15 +39,15 @@
     "fullName": "Demographics, risk factor profiles and etiologies in young ischemic and hemorrhagic stroke — the United Kingdom Young Stroke Study (UKYSS)",
     "category": "young-stroke-workup",
     "population": "n=1765, Mean age 41.6 years (SD 7.1), NIHSS Not reported as NIHSS in the abstract, First-ever stroke; ambispective observational data collection",
-    "finding": "DESCRIPTIVE, and the headline is how conventional young stroke turns out to be. Among ischemic strokes, 50.8% (723) were classified cryptogenic and 38.1% (542) hypertensive. Only 13.4% (191) of the whole cohort received intravenous thrombolysis and 5% (71) mechanical thrombectomy. Among hemorrhagic strokes, hypertension was both the commonest risk factor (56.6%, 192) and the commonest etiology (49.6%, 168), and 15.3% (52) underwent neurosurgery.",
-    "teachingPoint": "Sets realistic expectations for the young-stroke workup: half of young ischemic strokes remain cryptogenic, hypertension is the single most common modifiable factor across both ischemic and hemorrhagic young stroke, and by the late forties the risk-factor profile is already conventional.",
+    "finding": "DESCRIPTIVE, and the headline is how conventional young stroke turns out to be. Among ischemic strokes, 50.8% (723) were classified cryptogenic and 38.1% (542) hypertensive. Only 191 patients received intravenous thrombolysis and 71 mechanical thrombectomy — 13.4% and 5% of the roughly 1,420 ischemic strokes (10.8% and 4.0% of the whole 1,765-patient cohort). Among hemorrhagic strokes, hypertension was both the commonest risk factor (56.6%, 192) and the commonest etiology (49.6%, 168), and 15.3% (52) underwent neurosurgery.",
+    "teachingPoint": "Sets realistic expectations for the young-stroke workup: half of young ischemic strokes remain cryptogenic, hypertension was the commonest risk factor (56.6%) and etiology (49.6%) in young hemorrhagic stroke, with 38.1% of young ischemic strokes also classed as hypertensive, and by the late forties the risk-factor profile is already conventional.",
     "PMID": "42640350",
     "year": 2026,
     "citationIds": [
       "cit-ukyss-2026"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -55,7 +55,7 @@
     "name": "Illicit Drug Use and Stroke (meta-analysis + Mendelian randomization)",
     "fullName": "Does illicit drug use increase stroke risk? A systematic review, meta-analyses, and Mendelian randomization analysis",
     "category": "young-stroke-workup",
-    "population": "n=32, Not restricted by age; the observational component draws on administrative, hospital-based and population-based datasets totalling more than 100 million participants across 32 studies, NIHSS Not applicable, Studies from inception of the searched databases; PROSPERO registration CRD420251053702",
+    "population": "n=0, Not restricted by age; the observational component draws on administrative, hospital-based and population-based datasets totalling more than 100 million participants across 32 studies, NIHSS Not applicable, Studies from inception of the searched databases; PROSPERO registration CRD420251053702",
     "finding": "POSITIVE for three of four drug classes: cannabis OR 1.37 (95% CI 1.14-1.65), cocaine OR 1.96 (95% CI 1.27-3.01) and amphetamines OR 2.22 (95% CI 1.40-3.53) were each significantly associated with increased stroke risk, while opioids showed NO significant association. The authors state explicitly that the cannabis finding showed heterogeneity and small-study effects, so it is the least secure of the three.",
     "teachingPoint": "Supports routinely taking a substance-use history — and considering a toxicology screen — in young or cryptogenic stroke, since cocaine, amphetamine and cannabis exposure show concordant observational and genetic associations with stroke.",
     "PMID": "41566428",
@@ -64,7 +64,7 @@
       "cit-illicit-drugs-stroke-mr-2026"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

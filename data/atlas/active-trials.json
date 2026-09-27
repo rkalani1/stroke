@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "active-trials",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.28.2",
-    "checksum": "sha256:d4bd9f5b7906149ca25f321745c5bf8d",
+    "appVersion": "6.29.0",
+    "checksum": "sha256:6d2b4663661bb3c86eba02acff9ee91c",
     "count": 9,
     "source": "Evidence atlas active-trials bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -24,12 +24,12 @@
         "Age ≥18 y",
         "AIS ≤24 h from LKW",
         "Pre-stroke mRS ≤2",
-        "Low-NIHSS domain: NIHSS 0-5 with ICA or M1 occlusion and disabling symptoms; OR",
+        "Low-NIHSS domain: NIHSS 0-5 (a focal deficit attributable to the occlusion is required if NIHSS is 0) with complete occlusion of the intracranial ICA or M1; OR",
         "MeVO domain: non-dominant/co-dominant M2 or M3 occlusion with NIHSS ≥8"
       ],
       "exclusionCriteria": [
         "Presumed septic embolus / suspected bacterial endocarditis",
-        "Seizure at stroke onset",
+        "Seizure at stroke onset or between onset and enrollment",
         "Known contrast anaphylaxis precluding endovascular reperfusion",
         "Suspected chronic occlusion, intracranial dissection, or cerebral vasculitis",
         "Known or high suspicion of intracranial atherosclerotic disease (ICAD)",
@@ -149,7 +149,7 @@
       "status": "recruiting",
       "topic": "tandem-lesions",
       "briefDescription": "Emergent carotid stenting plus EVT vs EVT alone for tandem extracranial-carotid + intracranial-LVO occlusions.",
-      "rationale": "Tandem lesions were excluded from most pivotal EVT trials; the optimal management of the extracranial component is unresolved.",
+      "rationale": "Tandem lesions were under-represented in the pivotal EVT trials; the optimal management of the extracranial component is unresolved.",
       "inclusionCriteria": [
         "Age 18-79 y",
         "AIS within 16 h of LKW",
@@ -164,7 +164,7 @@
         "Beyond 16 h window"
       ],
       "keyTakeaways": [
-        "Tandem lesions (extracranial carotid + intracranial LVO) are common but excluded from most EVT trials",
+        "Tandem lesions (extracranial carotid + intracranial LVO) are common but were under-represented in the pivotal EVT trials",
         "Tests emergent carotid stenting + EVT vs EVT alone for tandem occlusions",
         "Addresses a gap where no RCT has established optimal management of the extracranial component"
       ],
@@ -215,18 +215,12 @@
             "tandem"
           ],
           "label": "Tandem lesion present"
-        },
-        {
-          "field": "tnkRecommended",
-          "operator": "==",
-          "value": false,
-          "label": "Ineligible for or failed IV thrombolysis (hard gate)"
         }
       ],
       "matcherExclusions": [],
       "relatedCompletedTrialIds": [],
       "link": "https://clinicaltrials.gov/study/NCT05611242",
-      "lastReviewed": "2026-09-06",
+      "lastReviewed": "2026-09-26",
       "verificationStatus": "verified-clinicaltrials-gov",
       "verificationNotes": "",
       "legacyMatcherKey": "PICASSO"
@@ -234,13 +228,13 @@
     {
       "id": "tested",
       "shortName": "TESTED",
-      "fullName": "Thrombectomy in Stroke Patients with Pre-existing Disability",
+      "fullName": "Treatment With Endovascular Intervention for STroke Patients With Existing Disability",
       "nctId": "NCT05911568",
       "phase": "Comparative Effectiveness",
       "status": "recruiting",
       "topic": "evt-late-window",
       "briefDescription": "EVT vs medical therapy in patients with pre-existing disability (mRS 3-4) and acute LVO ischemic stroke.",
-      "rationale": "Pivotal EVT RCTs largely excluded mRS 3-4 patients; routine denial of EVT in this population is not evidence-based.",
+      "rationale": "Pivotal EVT RCTs largely excluded patients with pre-stroke disability, so whether EVT is effective for pre-stroke mRS 3-4 is unknown; EVT and medical management without EVT are both widely practiced.",
       "inclusionCriteria": [
         "Age ≥18 y",
         "Pre-stroke mRS 3-4 for ≥3 months",
@@ -256,7 +250,7 @@
       ],
       "keyTakeaways": [
         "All major EVT trials excluded patients with pre-existing disability (mRS 3-4)",
-        "These patients are routinely denied EVT despite no evidence of futility",
+        "Practice is split between EVT and medical management alone for these patients because they were largely excluded from the pivotal EVT trials",
         "If positive, would extend EVT eligibility to a large underserved population"
       ],
       "lookingFor": [
@@ -307,7 +301,7 @@
             "M1",
             "M2"
           ],
-          "label": "LVO present"
+          "label": "ICA, M1, or dominant M2 occlusion (confirm M2 dominance)"
         }
       ],
       "matcherExclusions": [],
@@ -326,7 +320,7 @@
     {
       "id": "verify",
       "shortName": "VERIFY",
-      "fullName": "TMS / MRI Biomarkers for Upper-Extremity Motor Recovery",
+      "fullName": "Validation of Early Prognostic Data for Recovery Outcome After Stroke for Future, Higher Yield Trials",
       "nctId": "NCT05338697",
       "phase": "Observational",
       "status": "recruiting",
@@ -340,7 +334,7 @@
         "English or Spanish; willing and available for the in-person day-90 visit"
       ],
       "exclusionCriteria": [
-        "Contraindications to TMS (implanted electronics, intracranial metal, seizures)",
+        "Contraindications to TMS (implanted cardiac electronic device or other electronic implant at/above C7, ferromagnetic intracranial implant, skull defect from the current stroke, seizure after stroke onset, seizure within 12 months while on antiseizure medication, prior serious TMS reaction)",
         "Contraindications to MRI"
       ],
       "keyTakeaways": [
@@ -388,7 +382,7 @@
           "field": "seizures",
           "operator": "==",
           "value": true,
-          "label": "History of seizures"
+          "label": "Seizure after stroke onset, or within 12 mo on antiseizure medication"
         },
         {
           "id": "implants",
@@ -412,7 +406,7 @@
       "nctId": "NCT03735979",
       "phase": "Phase 3 (adaptive, multi-arm)",
       "status": "completed",
-      "topic": "tnk-vs-alteplase",
+      "topic": "acute-antithrombotic-adjuncts",
       "briefDescription": "Completed NINDS adaptive, multi-arm trial of argatroban or eptifibatide as adjuncts to IV thrombolysis; stopped early for futility — neither adjunct reduced disability, and adjunct-arm 90-day mortality was higher (argatroban 24%, eptifibatide 12%, placebo 8%; Adeoye NEJM 2024, PMID 39231343).",
       "rationale": "Tested whether adding an antithrombotic adjunct (argatroban or eptifibatide) to IV thrombolysis improves 90-day disability; the trial was stopped for futility with a mortality signal against the adjunct arms.",
       "inclusionCriteria": [
@@ -433,7 +427,7 @@
         "Do not give adjunctive argatroban or eptifibatide with thrombolysis"
       ],
       "lookingFor": [
-        "Completed — no longer enrolling (stopped for futility with adjunct-arm mortality signal, 2024)"
+        "Completed — no longer enrolling (enrollment stopped for futility July 2023; results published 2024 with an adjunct-arm mortality signal)"
       ],
       "category": "ischemic",
       "matcherCriteria": [
@@ -451,24 +445,15 @@
         },
         {
           "field": "hoursFromLKW",
-          "operator": "<",
-          "value": 4.5,
-          "label": "Within 4.5 h from LKW"
-        },
-        {
-          "field": "vesselOcclusion",
-          "operator": "in",
-          "value": [
-            "ICA",
-            "M1"
-          ],
-          "label": "LVO confirmed (ICA/M1)"
+          "operator": "<=",
+          "value": 3,
+          "label": "IV thrombolysis within 3 h from LKW"
         },
         {
           "field": "premorbidMRS",
           "operator": "<=",
-          "value": 1,
-          "label": "Pre-stroke mRS 0-1"
+          "value": 3,
+          "label": "Pre-stroke mRS ≤3"
         }
       ],
       "matcherExclusions": [
@@ -501,16 +486,16 @@
     {
       "id": "captiva",
       "shortName": "CAPTIVA",
-      "fullName": "Comparison of Antithrombotic Treatments in Intracranial Atherosclerosis",
+      "fullName": "Comparison of Anti-coagulation and Anti-Platelet Therapies for Intracranial Vascular Atherostenosis",
       "nctId": "NCT05047172",
       "phase": "Phase 3",
       "status": "active-not-recruiting",
       "topic": "icas-prevention",
       "briefDescription": "Trial of ticagrelor+ASA vs clopidogrel+ASA in symptomatic 70-99% intracranial atherosclerosis. The low-dose rivaroxaban (2.5 mg BID) arm was terminated in January 2026 (NIH DSMB: increased safety events plus futility vs clopidogrel+ASA; announced 2026-02-10); the ticagrelor and clopidogrel arms continue. Registry status: active, not recruiting.",
-      "rationale": "Recurrent stroke risk on standard DAPT for symptomatic ICAS is 12-20% at 1 year; alternative regimens are needed.",
+      "rationale": "In SAMMPRIS, medical-arm participants (clopidogrel plus aspirin with intensive risk-factor management) who qualified with a symptomatic infarct still had a 27% 1-year rate of ischemic stroke, ICH, or vascular death; alternative regimens are needed.",
       "inclusionCriteria": [
         "Age ≥30 y",
-        "Ischemic stroke or TIA attributed to ICAS (70-99% stenosis or MRA flow gap)",
+        "Ischemic stroke (infarct on imaging, or symptoms ≥24 h) attributed to ICAS (70-99% stenosis or MRA flow gap); TIA without infarction does not qualify",
         "Within 30 days of qualifying event",
         "mRS ≤4 at time of consent"
       ],
@@ -539,10 +524,9 @@
           "field": "diagnosisCategory",
           "operator": "in",
           "value": [
-            "ischemic",
-            "tia"
+            "ischemic"
           ],
-          "label": "Ischemic stroke or TIA"
+          "label": "Ischemic stroke (symptomatic infarct)"
         },
         {
           "field": "ctaResults",
@@ -598,12 +582,12 @@
       "status": "withdrawn",
       "topic": "acute-ischemic-stroke",
       "briefDescription": "WITHDRAWN (0 enrolled): planned phase-3 trial of 3K3A-APC (activated protein C variant) as adjunctive neuroprotection after IVT and/or EVT in moderate-severe AIS.",
-      "rationale": "Phase 2 (RHAPSODY) showed a signal of reduced ICH; the phase-3 study was withdrawn before enrolling — no phase-3 efficacy evidence exists.",
+      "rationale": "Phase 2 (RHAPSODY) found no difference in prespecified ICH rates; only an exploratory analysis suggested fewer hemorrhages. The phase-3 study was withdrawn before enrolling — no phase-3 efficacy evidence exists.",
       "inclusionCriteria": [
         "Age ≥18 y",
         "NIHSS ≥5",
         "Received IVT and/or EVT",
-        "Within 15 h of LKW",
+        "Within 15 h of LKW (not in the registry record; needs confirmation)",
         "Pre-stroke mRS 0-2"
       ],
       "exclusionCriteria": [
@@ -756,7 +740,7 @@
     {
       "id": "aspire",
       "shortName": "ASPIRE",
-      "fullName": "Apixaban vs Aspirin Post-ICH in AF",
+      "fullName": "Anticoagulation in Intracerebral Hemorrhage (ICH) Survivors for Stroke Prevention and Recovery",
       "nctId": "NCT03907046",
       "phase": "Phase 3",
       "status": "recruiting",

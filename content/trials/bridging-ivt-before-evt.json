@@ -1,5 +1,22 @@
 [
   {
+    "id": "bridge-tnk",
+    "name": "BRIDGE-TNK",
+    "fullName": "Intravenous Tenecteplase before Thrombectomy in Stroke",
+    "category": "bridging-ivt-before-evt",
+    "population": "n=550, adults, ≤4.5 h",
+    "finding": "Favored TNK + thrombectomy: 52.9% vs 44.1%",
+    "teachingPoint": "Reinforces bridging IV thrombolysis before thrombectomy for eligible LVO within 4.5 h; do not routinely skip IVT in thrombolysis-eligible patients headed to EVT inside that window. Says nothing about later windows.",
+    "PMID": "40396577",
+    "year": 2025,
+    "citationIds": [
+      "cit-bridge-tnk-2025"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-09-26",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
     "id": "iris-ipd-meta-analysis",
     "name": "IRIS IPD meta-analysis",
     "fullName": "Value of intravenous thrombolysis in endovascular treatment for large-vessel anterior circulation stroke: individual participant data meta-analysis of six randomised trials (IRIS)",
@@ -23,14 +40,14 @@
     "category": "bridging-ivt-before-evt",
     "population": "n=2313, median 71 years (IQR 62-78); 44.3% female, NIHSS anterior-circulation large-vessel occlusion (2313 of 2334 pooled participants), median time from symptom onset to EXPECTED administration of IVT 2 h 28 min (IQR 1 h 46 min to 3 h 17 min)",
     "finding": "Statistically significant interaction: the benefit of adding IVT falls as the interval from onset to expected IVT lengthens. Adjusted common OR for a 1-step mRS shift toward improvement 1.49 at 1 hour, 1.25 at 2 hours, 1.04 at 3 hours.",
-    "teachingPoint": "Reframes the bridging debate as a clock question rather than a yes/no question: the added value of a lytic before thrombectomy is large very early and shrinks toward nothing by roughly two and a half hours from onset — a gradient, not a threshold.",
+    "teachingPoint": "Reframes the bridging debate as a clock question rather than a yes/no question: the added value of a lytic before thrombectomy is large very early and shrinks steadily with time from onset to expected IVT (predicted absolute gain in mRS 0-2 about 9% at 1 h, 5% at 2 h and 1% at 3 h; no longer statistically significant after about 2 h 20 min, with the point estimate crossing the null at 3 h 14 min) — a gradient, not a threshold.",
     "PMID": "38324409",
     "year": 2024,
     "citationIds": [
       "cit-iris-time-2024"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -47,7 +64,7 @@
       "cit-direct-mt-2020"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -81,7 +98,7 @@
       "cit-devt-2021"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -115,7 +132,7 @@
       "cit-swift-direct-2022"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -149,7 +166,24 @@
       "cit-tnk-plus-2026"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
+    "id": "attention-late",
+    "name": "ATTENTION LATE",
+    "fullName": "Tenecteplase Before Thrombectomy at 4.5 to 24 Hours for Basilar Artery Occlusion: The ATTENTION LATE Randomized Clinical Trial",
+    "category": "bridging-ivt-before-evt",
+    "population": "n=330, ≥18 years (registry); mean 66 (SD 11) years; 241 males (73%), 89 females (27%), NIHSS ≥10 (moderate to severe basilar artery occlusion), 4.5 to 24 h from stroke onset",
+    "finding": "DID NOT show benefit (neutral result): 50/165 (30%) with tenecteplase before EVT vs 50/164 (30%) with EVT alone reached mRS 0-2. The authors conclude that adding IV tenecteplase before EVT did not improve functional outcomes compared with EVT alone.",
+    "teachingPoint": "In basilar artery occlusion with NIHSS ≥10 presenting 4.5 to 24 h after onset directly to an EVT-capable centre, adding IV tenecteplase before thrombectomy did not improve 90-day functional independence versus thrombectomy alone (30% vs 30%). No benefit was demonstrated. The trial does not change the within-4.5 h bridging default and does not establish harm.",
+    "PMID": "42776543",
+    "year": 2026,
+    "citationIds": [
+      "cit-attention-late-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

@@ -4,16 +4,16 @@
     "name": "ANNEXA-I",
     "fullName": "Andexanet for Factor Xa Inhibitor-Associated Acute ICH",
     "category": "ich-anticoag-reversal",
-    "population": "n=530, ≥18, NIHSS n/a, ≤15 h from last FXa dose, ≤6 h from ICH onset",
+    "population": "n=530, ≥18, NIHSS n/a, ≤15 h from last FXa dose to randomization (or >15 h/unknown if anti-FXa >100 ng/mL); <6 h from symptom onset to baseline imaging; baseline scan ≤2 h before randomization",
     "finding": "Favored andexanet: 67.0% vs 53.1%",
-    "teachingPoint": "AHA/ASA 2022 lists andexanet as Class IIa for FXa-associated ICH; ANNEXA-I refines hemostatic-vs-thrombotic trade-off.",
+    "teachingPoint": "The 2022 AHA/ASA ICH guideline (published before ANNEXA-I) rated andexanet reasonable (COR 2a, LOE B-NR) for factor Xa inhibitor-associated ICH. ANNEXA-I showed better hemostatic efficacy than usual care (85.5% of usual-care patients received PCC) but more thrombotic events (10.3% vs 5.6%), including ischemic stroke (6.5% vs 1.5%), with no appreciable difference in modified Rankin scale score or death at 30 days. Andexanet (Andexxa) is no longer available in the US: it was withdrawn from the US market in December 2025 after the FDA concluded its risks, including thromboembolic events, outweigh its benefits. The 2026 Neurocritical Care Society/SCCM focused update conditionally recommends 4F-PCC rather than andexanet for factor Xa inhibitor-associated ICH.",
     "PMID": "38749032",
     "year": 2024,
     "citationIds": [
       "cit-annexa-i-2024"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -30,7 +30,7 @@
       "cit-annexa4-2019"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-22",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -40,14 +40,14 @@
     "category": "ich-anticoag-reversal",
     "population": "n=2977, Not reported in aggregate across the 16 included studies, NIHSS Not reported, Emergent reversal on presentation, as defined by each source study; literature searched to 16 May 2024",
     "finding": "Mixed, and internally inconsistent. Haemostatic efficacy favoured andexanet (RR 1.10). Overall mortality was lower with andexanet (RR 0.67), yet 30-day mortality specifically DID NOT differ (RR 0.82). Thromboembolic events were MORE frequent with andexanet (RR 1.47).",
-    "teachingPoint": "Teaches that no randomised trial has ever compared andexanet with 4F-PCC head to head, and that US practice reverted to 4F-PCC because andexanet was withdrawn from the US market in December 2025 — a regulatory and supply consequence, not a demonstration that 4F-PCC works better.",
+    "teachingPoint": "Teaches that the only randomised comparison (ANNEXA-I) tested andexanet against usual care (ANNEXA-I's usual-care arm received prothrombin complex concentrate in 85.5% of patients), so no randomised trial has compared andexanet with a protocolised 4F-PCC arm, and that US practice reverted to 4F-PCC because andexanet was withdrawn from the US market in December 2025 — a regulatory and supply consequence, not a demonstration that 4F-PCC works better.",
     "PMID": "39379749",
     "year": 2025,
     "citationIds": [
       "cit-andexanet-vs-4fpcc-meta-2025"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

@@ -14,27 +14,33 @@
       "classOfRec": "Statement",
       "classNote": "Recommendations not machine-readable",
       "levelOfEvidence": "Ungraded",
-      "text": "The 27 August 2026 AHA/ASA guideline is confirmed by AHA and PubMed (PMID 42657476; DOI 10.1161/STR.0000000000000536). Full recommendation tables could not be retrieved: the publisher blocked full-text/PDF access in this review. Official chapter resources provide selected key recommendations without a complete graded inventory. No complete extraction or clinical-currentness claim is made; the full 2026 primary article is required to finish this record.",
+      "text": "AHA/ASA published this guideline online in Stroke on 27 August 2026 (PMID 42657476; DOI 10.1161/STR.0000000000000536). Per its PubMed abstract it replaces the 2016 AHA/ASA adult stroke rehabilitation guideline (PMID 27145936), and its key updates include new and revised recommendations on the assessment and treatment of medical comorbidities, fracture risk, fall prevention, technology-enabled rehabilitation, caregiver support, participation, and safe return to work and driving. The full recommendation tables (COR/LOE) could not be retrieved: there is no PMC deposit and the publisher and AHA/ASA sites were unreachable from the review environment (re-checked 2026-09-26). No recommendation-level extraction or clinical-currentness claim is made; the primary article is required to complete this record.",
       "page": null
     }
   ],
   "extractionStatus": "source-not-machine-readable",
-  "extractionNote": "The 27 August 2026 AHA/ASA guideline is confirmed by AHA and PubMed (PMID 42657476; DOI 10.1161/STR.0000000000000536). Full recommendation tables could not be retrieved: the publisher blocked full-text/PDF access in this review. Official chapter resources provide selected key recommendations without a complete graded inventory. No complete extraction or clinical-currentness claim is made; the full 2026 primary article is required to finish this record.",
+  "extractionNote": "The 27 August 2026 AHA/ASA guideline is confirmed by PubMed (PMID 42657476; DOI 10.1161/STR.0000000000000536; re-verified 2026-09-26). Per the PubMed abstract it replaces the 2016 guideline (PMID 27145936; Stroke 2016;47(6):e98-e169) and draws on a literature search conducted between June and October 2025. Full recommendation tables could not be retrieved: there is no PMC deposit, and the publisher full text/PDF, the AHA guideline hub and the stroke.org chapter resources were unreachable from the 2026-09-26 review environment (egress-blocked), so open-access status was not determined. No complete extraction or clinical-currentness claim is made. The full 2026 primary article is required to finish this record.",
   "documentType": "guideline",
   "gradingSystem": "ungraded",
+  "supersedes": {
+    "pmid": "27145936",
+    "doi": "10.1161/STR.0000000000000098",
+    "citation": "Stroke. 2016;47(6):e98-e169",
+    "note": "PubMed abstract of PMID 42657476: 'The \"2026 Guidelines for Adult Stroke Rehabilitation and Recovery\" replaces the 2016 \"Guidelines for Adult Stroke Rehabilitation and Recovery.\"'"
+  },
   "coverage": {
     "status": "source-unavailable",
     "scope": "Full formal recommendations and good-practice statements await the primary article",
-    "checkedAt": "2026-09-06",
+    "checkedAt": "2026-09-26",
     "sourceRecommendationCount": null,
     "sourceConsensusCount": null,
     "sourceSections": []
   },
   "sourceAccess": {
-    "identityVerifiedAt": "2026-09-06",
+    "identityVerifiedAt": "2026-09-26",
     "officialGuidelineHub": "https://professional.heart.org/en/science-news/2026-guideline-for-adult-stroke-rehabilitation-and-recovery",
     "officialSelectedChapterResources": "https://www.stroke.org/en/professionals/stroke-resource-library/post-stroke-care/professional-rehab-resources",
-    "fullTextStatus": "Publisher retrieval blocked; no verified full recommendation inventory available",
-    "requiredNextStep": "Obtain the full 2026 primary guideline PDF and reconcile every graded and good-practice statement."
+    "fullTextStatus": "No PMC deposit (PMC ID converter returns no PMCID for PMID 42657476). Publisher full text/PDF not retrieved: on 2026-09-26 ahajournals.org and the AHA/ASA hub pages were unreachable from the review environment (egress-blocked), so open-access status was not determined. No indexed correction as of 2026-09-26. No verified full recommendation inventory is available.",
+    "requiredNextStep": "Obtain the full 2026 primary guideline and reconcile every graded and good-practice statement; then re-grade the src/app.jsx falls_risk_screening card that still cites 'AHA/ASA Rehab 2016' (Class I/LOE A)."
   }
 }

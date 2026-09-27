@@ -109,7 +109,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Stroke is a strong predictor of cognitive impairment in patients with atrial fibrillation, and the CHA2DS2-VASc score is directly associated with risk of dementia. Oral anticoagulation reduces the risk of dementia in patients with atrial fibrillation by approximately 50%. However, incident atrial fibrillation is associated with dementia even after censoring for stroke, with an approximately 1.4- to 2.2-fold increase in risk among individuals without a history of stroke.",
+      "text": "Stroke is a strong predictor of cognitive impairment in patients with atrial fibrillation, and the CHA2DS2-VASc score is directly associated with risk of dementia. In observational studies, oral anticoagulation has been associated with an approximately 50% lower risk of dementia in patients with atrial fibrillation; randomized evidence of a cognitive benefit is lacking (the placebo-controlled BRAIN-AF trial of rivaroxaban 15 mg daily in atrial fibrillation at low stroke risk was stopped for futility). However, incident atrial fibrillation is associated with dementia even after censoring for stroke, with an approximately 1.4- to 2.2-fold increase in risk among individuals without a history of stroke.",
       "page": null
     },
     {

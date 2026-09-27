@@ -2,7 +2,7 @@
   {
     "id": "interact3",
     "name": "INTERACT3",
-    "fullName": "Care Bundle Approach for Acute Intracerebral Haemorrhage",
+    "fullName": "Third Intensive Care Bundle with Blood Pressure Reduction in Acute Cerebral Haemorrhage Trial (INTERACT3)",
     "category": "ich-bp-management",
     "population": "n=7036, ≥18, NIHSS n/a, <6 h from onset",
     "finding": "Favored bundle",
@@ -13,7 +13,7 @@
       "cit-interact3-2023"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -40,14 +40,14 @@
     "category": "ich-bp-management",
     "population": "n=1000, ≥18, ≤4.5 h",
     "finding": "No benefit: 38.7% vs 37.7%",
-    "teachingPoint": "More intensive target (<140) gave no benefit and more renal AEs — avoid overshoot below ~140.",
+    "teachingPoint": "An intensive SBP target of 110-139 mm Hg (vs 140-179) did not reduce death or disability and caused more renal adverse events (9.0% vs 4.0%). For mild-to-moderate ICH presenting with SBP 150-220 mm Hg, the 2022 AHA/ASA ICH guideline targets SBP 140 mm Hg (maintaining 130-150) and considers acute lowering to <130 mm Hg potentially harmful.",
     "PMID": "27276234",
     "year": 2016,
     "citationIds": [
       "cit-atach2-2016"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-05-29",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -81,7 +81,7 @@
       "cit-ich-bp-location-meta-2026"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-26",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

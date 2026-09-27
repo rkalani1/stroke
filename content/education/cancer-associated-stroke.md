@@ -1,7 +1,7 @@
 ---
 id: cancer-associated-stroke
 title: "Cancer-Associated Stroke, Hypercoagulability & Marantic Endocarditis (NBTE)"
-summary: "Pathophysiology of cancer-mediated hypercoagulability, 3-territory sign on DWI, markedly elevated D-dimer (>3–5x ULN), non-bacterial thrombotic endocarditis (NBTE), and LMWH vs DOAC management."
+summary: "Pathophysiology of cancer-mediated hypercoagulability, 3-territory sign on DWI, markedly elevated D-dimer (no single validated cutoff; e.g., >3 µg/mL in the Schwarzbach DWI-phenotype cohort), non-bacterial thrombotic endocarditis (NBTE), and LMWH vs DOAC management."
 tags: ["pocket-card", "printable"]
 contexts: ["telestroke", "inpatient", "clinic"]
 calculators: []
@@ -10,7 +10,7 @@ lastReviewed: 2026-08-14
 provenance: src/education.jsx
 ---
 
-Pathophysiology of cancer-mediated hypercoagulability, 3-territory sign on DWI, markedly elevated D-dimer (>3–5x ULN), non-bacterial thrombotic endocarditis (NBTE), and LMWH vs DOAC management.
+Pathophysiology of cancer-mediated hypercoagulability, 3-territory sign on DWI, markedly elevated D-dimer (no single validated cutoff; e.g., >3 µg/mL in the Schwarzbach DWI-phenotype cohort), non-bacterial thrombotic endocarditis (NBTE), and LMWH vs DOAC management.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
 > This file owns the module metadata (title, summary, tags, contexts, references).
