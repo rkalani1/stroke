@@ -29,6 +29,10 @@ Highlights:
 - **CHOICE-2** adjunctive IA alteplase: 0.225 mg/kg, maximum 20 mg, over 15 min
   (JAMA 2026, PMID 42096239).
 - **mRS-9Q:** "requires constant care" maps to mRS 5.
+- **CrCl (Cockcroft-Gault) card:** its state defaulted to sex "M", which hid
+  the encounter's sex, so a female patient's CrCl was computed with the male
+  factor (about 18% higher) unless the card's own select was changed. It now
+  falls back to the encounter's sex and returns no value when sex is unknown.
 - **Trial screener:** CAPTIVA requires ischemic stroke (TIA without infarction is
   not eligible); the tandem-lesion trial no longer hard-gates on IVT
   ineligibility; MOST no longer requires an ICA/M1 occlusion (matcher coverage
@@ -60,8 +64,12 @@ Highlights:
 - Tailwind config: content globs cover every source file, colour tokens support
   alpha, and the pixel-based spacing override (which dropped half steps such as
   `p-3.5`) is removed in favour of Tailwind's default rem scale.
-- Typography fixes such as "ASPECTS (Interactive)" (was "Score Score"), RoPE and
-  RCVS² labels.
+- Typography: calculator summary badges no longer repeat "Score:" after titles
+  such as "NIHSS Score" ("Score Score"); RoPE and RCVS² labels corrected; the
+  Trials TIA chip reads "transient ischemic attack" and each classification
+  chip has a spaced accessible name.
+- Sex selectors (phone, video, CrCl) share one pattern: an empty "Select"
+  option and "Male"/"Female" labels, with nothing preselected.
 
 ### Protocols tab (user-approved exception)
 
