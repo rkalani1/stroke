@@ -217,7 +217,7 @@ export const NeurocheckTimer = ({ tpaGivenIso }) => {
   return (
     <div className="p-3 rounded border border-ok-300 bg-ok-50 text-sm dark:border-ok-800 dark:bg-ok-950" role="region" aria-label="Post-tPA neurocheck schedule">
       <div className="flex items-center justify-between mb-2">
-        <h4 className="font-semibold text-ok-900 dark:text-ok-300">Post-tPA Neurochecks (q15×2h → q30×6h → q1h×16h)</h4>
+        <h4 className="font-semibold text-ok-900 dark:text-ok-300">Post-thrombolysis Neurochecks (q15×2h → q30×6h → q1h×16h)</h4>
         <span className="text-xs text-ok-700 font-mono dark:text-ok-300">{elapsedChecks} / {totalChecks} scheduled times elapsed</span>
       </div>
       {nextCheck ? (
@@ -317,7 +317,7 @@ export const DAPTDurationCalculator = ({ defaults = {} }) => {
     cyp2c19LOF: defaults.cyp2c19LOF || false,
     ichRisk: defaults.ichRisk || 'normal',
     // Time from symptom onset (hours). Default 24 preserves the legacy
-    // CHANCE/POINT/THALES window. INSPIRES (Class 1 per AHA/ASA 2024) extends
+    // CHANCE/POINT/THALES window. INSPIRES (2026 AHA/ASA AIS Class IIa, LOE B-R; ais-2026-149) extends
     // eligibility to ≤72h for NIHSS 4-5; expose as input so clinicians can
     // reach that branch without editing the underlying function.
     timeFromOnsetH: defaults.timeFromOnsetH || ''
@@ -490,7 +490,7 @@ const ETIOLOGY_CHECKLISTS = {
     label: 'Large-artery atherosclerosis (TOAST 1)',
     items: [
       'High-intensity statin (atorvastatin 80 mg or rosuvastatin 20-40 mg); LDL target <70 mg/dL — add ezetimibe then PCSK9i if not at target',
-      'DAPT (clopidogrel+ASA) x 21 d then single antiplatelet — CHANCE/POINT',
+      'DAPT (clopidogrel + aspirin, with loading dose) ×21 d, then single antiplatelet, for minor stroke (NIHSS ≤3) or high-risk TIA (ABCD2 ≥4) started within 24 h without IVT (CHANCE/POINT; 2026 AHA/ASA Class 1). INSPIRES extends this to NIHSS ≤5 within 72 h with a presumed atherosclerotic cause (2026 AHA/ASA Class 2a).',
       'Carotid evaluation (duplex or CTA) for anterior-circulation stroke — CEA within 2 weeks for symptomatic ≥70% stenosis',
       'Intracranial atherosclerosis: aggressive medical management, SAMMPRIS protocol (SBP <140, LDL <70, high-dose DAPT 90d)',
       'Smoking cessation, diabetes control (HbA1c <7%), HTN target <130/80'
@@ -509,8 +509,8 @@ const ETIOLOGY_CHECKLISTS = {
   'lacunar': {
     label: 'Small-vessel disease (TOAST 3)',
     items: [
-      'SBP <130/80 — SPRINT-MIND supports intensive BP control',
-      'Moderate-intensity statin; LDL <100 (lower thresholds if concurrent coronary disease)',
+      'BP <130/80 mmHg for most patients (2021 AHA/ASA secondary prevention, Class 1). In SPS3 (recent lacunar stroke), an SBP target <130 mmHg gave a nonsignificant 19% reduction in stroke and a significant reduction in ICH. SPRINT/SPRINT-MIND excluded patients with prior stroke.',
+      'High-intensity statin (e.g., atorvastatin 80 mg; SPARCL, 2021 AHA/ASA Class 1 when LDL-C >100 mg/dL, with benefit similar across stroke subtypes including small-vessel disease). LDL-C goal <70 mg/dL with concurrent atherosclerotic disease (<55 mg/dL if very high risk per the 2026 ACC/AHA dyslipidemia guideline).',
       'ASA 81 mg daily (or clopidogrel) monotherapy long-term',
       'SPS3 trial: adding clopidogrel to ASA did NOT reduce recurrent lacunar stroke but increased bleeding',
       'Cognitive screen (MoCA) at 3-month visit — lacunar infarcts strongly associated with vascular cognitive impairment'
@@ -522,7 +522,7 @@ const ETIOLOGY_CHECKLISTS = {
       '30-day event monitor; consider implantable loop recorder for elevated HAVOC, atrial cardiopathy, or recurrent embolic pattern',
       'Transesophageal echo with bubble study for PFO / aortic atheroma / LAA thrombus',
       'Hypercoagulable panel: homocysteine, ANA, anticardiolipin IgG/IgM, β2-glycoprotein, lupus anticoagulant, protein C/S/AT-III, F-V Leiden (off AC)',
-      'PFO evaluation: RoPE score ≥7 + high-risk features → device closure (CLOSE, REDUCE, RESPECT 10-yr)',
+      'PFO evaluation: RoPE score ≥7 + high-risk features → device closure (CLOSE, REDUCE, RESPECT extended follow-up, median 5.9 yr)',
       'Vessel wall MRI / MRA for occult intracranial disease; consider ICAD or dissection',
       'ESUS trials (NAVIGATE-ESUS, RE-SPECT ESUS): empiric AC did NOT reduce recurrence — do NOT anticoagulate empirically',
       'Consider occult malignancy (Trousseau) in older patients with multi-territorial strokes'
@@ -533,7 +533,7 @@ const ETIOLOGY_CHECKLISTS = {
     items: [
       'Cervical artery dissection: antiplatelet or anticoagulation both reasonable ×3-6 months (CADISS 2015 no significant difference; TREAT-CAD 2021 did not confirm ASA non-inferiority) — individualize',
       'Vasculitis: CSF analysis, ESR/CRP, ANCA, vessel wall MRI, temporal artery biopsy if GCA suspected',
-      'CADASIL/CARASIL: family history, MRI pattern (anterior temporal pole, external capsule), NOTCH3 gene testing',
+      'CADASIL (NOTCH3) / CARASIL (HTRA1): family history, MRI pattern (anterior temporal pole, external capsule), targeted genetic testing',
       'Fabry disease: α-galactosidase A activity (young male with cortical/white matter strokes)',
       'MELAS: lactate/pyruvate ratio, muscle biopsy, mtDNA analysis',
       'RCVS: gradient-echo/vessel wall MRI, CTA with beaded vessels, triggers (cannabis, SSRIs, vasoactive agents)'
@@ -635,7 +635,7 @@ const STROKE_DAY_CHECKLISTS = {
   ],
   2: [
     'DAPT decision (CHANCE/POINT/THALES): correct regimen & duration documented',
-    'Antihypertensive titration — oral agents started if SBP >140 sustained x 24h',
+    'Antihypertensive plan: if the patient was not treated with IVT/EVT, BP is <220/120, and there is no comorbid indication, starting or restarting antihypertensives in the first 48–72 h does not improve death or dependency (2026 AHA/ASA, Class 3: No Benefit; CATIS-2). After that window, start or resume once neurologically stable, aiming for long-term BP <130/80.',
     'Early mobilization per PT/OT (AVERT trial caveats — avoid very-early very-intense mobilization)',
     'Speech therapy evaluation for aphasia / dysarthria',
     'Case management / social work engaged for discharge planning',

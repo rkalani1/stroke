@@ -220,7 +220,7 @@ const CALCULATOR_CATALOG = [
   { id: 'nine-point', name: '9-Point ICH Expansion Score', category: 'prognosis', fn: 'calculateNinePoint' },
   { id: 'ogilvy-carter', name: 'Ogilvy-Carter (SAH surgical risk)', category: 'prognosis', fn: 'calculateOgilvyCarter' },
   { id: 'phq9', name: 'PHQ-9 (post-stroke depression)', category: 'screening', fn: 'interpretPHQ9' },
-  { id: 'mrs-9q', name: 'mRS-9Q (simplified mRS)', category: 'severity', fn: 'interpretMRS9Q' },
+  { id: 'mrs-9q', name: 'mRS-9Q (9-question mRS survey)', category: 'severity', fn: 'interpretMRS9Q' },
 ];
 
 async function seedCalculators() {

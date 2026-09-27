@@ -28,7 +28,7 @@ export const STROKE_SYNDROMES = {
       name: 'Left MCA (dominant) — proximal M1',
       territory: 'Left middle cerebral artery proximal',
       deficits: 'Right hemiplegia (face+arm>leg), right hemisensory loss, right homonymous hemianopia, global aphasia, left gaze preference',
-      pearls: 'Global aphasia + right hemiparesis is classic for dominant M1. If also gaze preference to left, suggests large cortical strike (Brocas + Wernicke area affected).',
+      pearls: 'Global aphasia + right hemiparesis is classic for dominant M1. If also gaze preference to left, suggests large cortical strike (Broca\'s + Wernicke\'s areas affected).',
       pimpingQ: 'Why does the patient look toward the side of the lesion in a left M1 stroke?',
       answer: 'Frontal eye field (Brodmann area 8) in the left frontal lobe normally drives gaze to the right. With left frontal damage, the right FEF is unopposed and pulls gaze to the left (ipsilateral to lesion).'
     },
@@ -42,9 +42,9 @@ export const STROKE_SYNDROMES = {
     },
     {
       name: 'MCA — superior division',
-      territory: 'Rolandic + Brocas branches',
+      territory: 'Rolandic + Broca\'s branches',
       deficits: 'Contralateral face/arm > leg weakness, expressive aphasia (left-sided), no hemianopia typically',
-      pearls: 'Brocas aphasia: non-fluent, effortful speech, preserved comprehension, patient aware of deficit.'
+      pearls: 'Broca\'s aphasia: non-fluent, effortful speech, preserved comprehension, patient aware of deficit.'
     },
     {
       name: 'MCA — inferior division',
@@ -70,7 +70,7 @@ export const STROKE_SYNDROMES = {
     {
       name: 'Lateral medullary (Wallenberg)',
       territory: 'Vertebral artery or PICA',
-      deficits: 'IPSILATERAL: facial numbness (CN5), Horner (sympathetics), hoarseness/dysphagia (CN9/10), ataxia (ICP). CONTRALATERAL: body pain/temperature loss (spinothalamic).',
+      deficits: 'IPSILATERAL: facial numbness (CN5), Horner (sympathetics), hoarseness/dysphagia (CN9/10), ataxia (inferior cerebellar peduncle). CONTRALATERAL: body pain/temperature loss (spinothalamic).',
       pearls: 'The classic "crossed" syndrome. Often presents with severe nausea, vertigo, hiccups.',
       pimpingQ: 'Why does Wallenberg syndrome have crossed findings (ipsilateral face, contralateral body for pain/temp)?',
       answer: 'Trigeminal spinal nucleus (carries face pain/temp) is ipsilateral in the medulla. Spinothalamic tract (body pain/temp) has already decussated at the spinal cord level, so damage in the lateral medulla affects already-crossed fibers → contralateral body.'
@@ -91,7 +91,7 @@ export const STROKE_SYNDROMES = {
       name: 'Basilar artery occlusion',
       territory: 'Basilar artery',
       deficits: 'Variable: bilateral limb weakness, quadriplegia, locked-in syndrome, coma, cranial nerve palsies, vertigo, ataxia.',
-      pearls: 'Locked-in syndrome = ventral pontine infarct, preserved consciousness + vertical eye movements only. High mortality without recanalization; EVT indicated with PC-ASPECTS ≥6.'
+      pearls: 'Locked-in syndrome = ventral pontine infarct, preserved consciousness + vertical eye movements only. High mortality without recanalization; EVT within 24 h is recommended for basilar occlusion with NIHSS ≥10, pre-stroke mRS 0-1, and PC-ASPECTS ≥6 (2026 AHA/ASA Class 1, LOE A). For NIHSS 6-9 the benefit is not well established (Class 2b).'
     },
     {
       name: 'Top of basilar / PCA — bilateral',
@@ -103,7 +103,7 @@ export const STROKE_SYNDROMES = {
       name: 'Cerebellar stroke',
       territory: 'SCA / AICA / PICA',
       deficits: 'Ataxia, nystagmus, vertigo, nausea, dysmetria, dysarthria. May have ipsilateral Horner if PICA.',
-      pearls: 'Cerebellar edema peaks day 2-4 → can cause obstructive hydrocephalus or brainstem compression. Suboccipital decompression + EVD is life-saving (Class 1, LOE B-NR per 2019 AHA/ASA).'
+      pearls: 'Cerebellar edema peaks day 2-4 → can cause obstructive hydrocephalus or brainstem compression. Suboccipital decompressive craniectomy with dural expansion is recommended for deterioration from brainstem compression or infarct volume ≥35 mL (Class 1, LOE B-NR). Ventriculostomy is recommended for obstructive hydrocephalus (Class 1, LOE C-LD). Source: 2026 AHA/ASA AIS guideline.'
     },
     {
       name: 'Midbrain (Weber, Benedikt, Claude)',
@@ -191,7 +191,7 @@ export const NEUROANATOMY = {
   vascularTerritories: [
     { artery: 'ACA', supply: 'Medial frontal + medial parietal (including paracentral lobule — legs), anterior corpus callosum' },
     { artery: 'MCA — M1', supply: 'Deep lenticulostriates (internal capsule, basal ganglia) + most of lateral cortex' },
-    { artery: 'MCA — M2 superior division', supply: 'Rolandic + Brocas (frontal + upper parietal)' },
+    { artery: 'MCA — M2 superior division', supply: 'Rolandic + Broca\'s (frontal + upper parietal)' },
     { artery: 'MCA — M2 inferior division', supply: 'Wernicke + temporoparietal' },
     { artery: 'PCA — P1', supply: 'Bilateral thalami via perforators (art of Percheron variant), brainstem perforators' },
     { artery: 'PCA — P2-P4', supply: 'Occipital cortex, medial temporal (hippocampus), splenium corpus callosum' },
@@ -212,12 +212,12 @@ export const TEACHING_PEARLS = [
   {
     category: 'Imaging',
     q: 'What is the hyperdense MCA sign and what does it mean?',
-    a: 'Hyperdense vessel (Hounsfield 40-60) on non-contrast CT representing acute thrombus. Specificity ~90% for proximal MCA occlusion. Requires bone-windowing for detection.'
+    a: 'Hyperdense vessel (Hounsfield 40-60) on non-contrast CT representing acute thrombus. Specificity ~90% for proximal MCA occlusion. Detection depends on CT slice thickness; thin-section reconstruction improves detection.'
   },
   {
     category: 'Imaging',
     q: 'What is ASPECTS and why is it important?',
-    a: 'Alberta Stroke Program Early CT Score — 10-point score assessing early ischemic changes in 10 MCA territory regions (M1-M6, L, I, C, IC). Starts at 10, subtract 1 per affected region. ASPECTS ≥6 for standard EVT (NIHSS ≥6); 3-5 eligible for large-core trials. ASPECTS 0-2: SELECT2/ANGEL-ASPECT enrolled 3-5 — the 0-2 evidence comes from LASTE (ASPECTS 0-5 including 0-2, mortality benefit) and TESLA (2-5, trend only), pooled in the ATLAS meta-analysis (benefit consistent except core ≥150 mL beyond 6 h).'
+    a: 'Alberta Stroke Program Early CT Score — 10-point score assessing early ischemic changes in 10 MCA territory regions (M1-M6, L, I, C, IC). Starts at 10, subtract 1 per affected region. ASPECTS ≥6 is the classic threshold. Under the 2026 AHA/ASA guideline (ICA/M1 occlusion, NIHSS ≥6, prestroke mRS 0-1), EVT is Class 1 for ASPECTS 3-10 within 6 h and for ASPECTS 3-5 at 6-24 h (age <80, no significant mass effect), and Class 2a for ASPECTS 0-2 within 6 h (age <80, no significant mass effect). ASPECTS 0-2: SELECT2/ANGEL-ASPECT enrolled 3-5 — the 0-2 evidence comes from LASTE (ASPECTS ≤5 including 0-2, within 6.5 h; better 90-day mRS and lower mortality) and TESLA (2-5, trend only), pooled in the ATLAS meta-analysis (benefit consistent except core ≥150 mL beyond 6 h).'
   },
   {
     category: 'Imaging',
@@ -247,7 +247,7 @@ export const TEACHING_PEARLS = [
   {
     category: 'Guidelines',
     q: 'Post-EVT BP target?',
-    a: 'For DOCUMENTED successful recanalization (mTICI ≥2b): SBP 140-180 for ≥24h (up to 72h per local protocol). Intensive lowering (<140) is Class 3: Harm — harm was shown in ENCHANTED2-MT and OPTIMAL-BP; BP-TARGET and BEST-II showed no benefit of lower targets (neutral/futility, not harm).'
+    a: 'For DOCUMENTED successful recanalization (mTICI ≥2b): SBP 140-180 for ≥24h (up to 72h per local protocol). Intensive lowering (<140) is Class 3: Harm — harm was shown in ENCHANTED2-MT and OPTIMAL-BP; BP-TARGET (100-129 mmHg) was neutral; BEST-II did not meet its futility criteria but gave a low predicted probability that lower targets would succeed in a larger trial — neither showed harm.'
   },
   {
     category: 'Etiology',
@@ -277,7 +277,7 @@ export const TEACHING_PEARLS = [
   {
     category: 'Management',
     q: 'DVT prophylaxis timing after ICH?',
-    a: 'Day 0: IPC only (CLOTS-3; Class 1, LOE B-R). At 24-48h from onset with stable imaging: low-dose UFH or LMWH may be reasonable (Class 2b, LOE C-LD per AHA/ASA 2022 ICH). For immobile ischemic stroke: IPC is Class 1; prophylactic heparin benefit is not well established (Class 2b).'
+    a: 'Day 0: IPC only (CLOTS-3; Class 1, LOE B-R). At 24-48h from onset with stable imaging: low-dose UFH or LMWH may be reasonable (Class 2b, LOE C-LD per AHA/ASA 2022 ICH). For immobile ischemic stroke (2026 AHA/ASA): IPC is Class 1 (LOE B-R). Prophylactic-dose UFH/LMWH is reasonable to reduce VTE (Class 2a, LOE B-R), though a survival benefit is not well established (Class 2b, LOE A). Elastic compression stockings are harmful (Class 3: Harm).'
   },
   {
     category: 'Rehab',
@@ -292,12 +292,12 @@ export const TEACHING_PEARLS = [
   {
     category: 'Biomarkers',
     q: 'What is a potential CSF biomarker for NORSE (New-Onset Refractory Status Epilepticus)?',
-    a: 'Atypical lymphocytes in the CSF may serve as a potential biomarker for NORSE (New-Onset Refractory Status Epilepticus). Their presence supports an underlying immune-mediated or inflammatory pathophysiology, guiding earlier immunomodulatory therapies. (The Neurohospitalist Vol. 16, No. 3)'
+    a: 'In a single case report, atypical lymphocytes appeared in peripheral blood (CSF was normal) just before cryptogenic NORSE, possibly reflecting hypercytokinemia. This is hypothesis-generating, not an established biomarker. (Takatsu et al., Neurohospitalist 2026;16(3); PMID 41306648)'
   },
   {
     category: 'Special Populations',
     q: 'What are the key considerations for AHLE (Acute Hemorrhagic Leukoencephalitis) in pregnancy?',
-    a: 'AHLE (Acute Hemorrhagic Leukoencephalitis), a severe form of ADEM, can rarely present during pregnancy. It requires prompt recognition via MRI (hemorrhagic demyelinating lesions) and aggressive immunomodulation (high-dose steroids, PLEX), balancing fetal safety with life-saving maternal interventions. (The Neurohospitalist Vol. 16, No. 3)'
+    a: 'AHLE (Acute Hemorrhagic Leukoencephalitis), a severe form of ADEM, can rarely present during pregnancy. It requires prompt recognition via MRI (hemorrhagic demyelinating lesions) and early immunotherapy. In the cited single case, high-dose corticosteroid therapy produced full neurological recovery, and the patient later delivered a healthy full-term infant. (Tuli et al., Neurohospitalist 2026;16(3); PMID 41280370)'
   }
 ];
 

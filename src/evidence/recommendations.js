@@ -12,7 +12,7 @@ export const recommendations = [
     id: 'rec-ich-bp-smooth-control',
     topic: 'ich-bp-management',
     setting: 'inpatient',
-    text: 'In acute spontaneous ICH, continuous smooth, sustained BP control with timely treatment can be beneficial when BP lowering is indicated.',
+    text: 'In spontaneous ICH requiring acute BP lowering, careful titration to achieve continuous, smooth, and sustained BP control, avoiding SBP peaks and large variability, can be beneficial to improve functional outcomes.',
     classOfRecommendation: 'IIa',
     levelOfEvidence: 'B-NR',
     guidelineSource: 'AHA/ASA 2022 ICH Guideline; INTERACT3 (2023)',
@@ -20,10 +20,10 @@ export const recommendations = [
     caveats: [
       'Smooth, sustained BP control and timely treatment are Class IIa process recommendations.',
       'Do not present INTERACT3 as BP-only class evidence; it tested a bundle including BP, glucose, temperature, and anticoagulation reversal.',
-      'Avoid abrupt large drops in BP (>60 mmHg) which may worsen outcomes.',
+      'Avoid SBP peaks and large BP variability; titrate smoothly rather than with abrupt large drops.',
       'Do not pursue a numeric BP target in isolation from neurologic status and the full care bundle.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -35,14 +35,14 @@ export const recommendations = [
     classOfRecommendation: 'IIb',
     levelOfEvidence: 'B-R',
     guidelineSource: 'AHA/ASA 2022 ICH Guideline',
-    supportingClaimIds: [],
+    supportingClaimIds: ['cl-ich-bp-intensive-target'],
     caveats: [
       'The SBP 140/range 130-150 target is Class IIb.',
       'In patients with SBP >220 mmHg, the safety of aggressive lowering to 140 is less certain; use clinical judgment and continuous monitoring.',
       'Use with the separate Class IIa process recommendation for smooth, sustained control and timely treatment.',
       'Do not pursue a numeric BP target in isolation from neurologic status, hematoma severity, and neurosurgical planning.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -50,16 +50,16 @@ export const recommendations = [
     id: 'rec-ich-bp-avoid-low',
     topic: 'ich-bp-management',
     setting: 'inpatient',
-    text: 'Avoid acute SBP <130 mmHg in mild-to-moderate spontaneous ICH because it is potentially harmful.',
+    text: 'In mild-to-moderate spontaneous ICH presenting with SBP >150 mmHg, acute lowering of SBP to <130 mmHg is potentially harmful.',
     classOfRecommendation: 'III-harm',
     levelOfEvidence: 'B-R',
     guidelineSource: 'AHA/ASA 2022 ICH Guideline; ATACH-2',
-    supportingClaimIds: [],
+    supportingClaimIds: ['cl-ich-bp-intensive-target'],
     caveats: [
       'Acute SBP <130 mmHg is Class III-harm.',
       'This lower-bound harm guard is separate from the Class IIb SBP 140/range 130-150 target.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -67,17 +67,17 @@ export const recommendations = [
     id: 'rec-ich-anticoag-reversal-fxa',
     topic: 'ich-anticoag-reversal',
     setting: 'inpatient',
-    text: 'In factor Xa inhibitor-associated ICH within 15 hours of last dose, andexanet alfa is reasonable to achieve hemostatic efficacy when available; 4F-PCC is an alternative when andexanet is unavailable or contraindicated. Monitor for thrombotic complications.',
+    text: 'In factor Xa inhibitor-associated ICH, reverse the anticoagulant effect rapidly using the locally approved 4F-PCC pathway. The AHA/ASA 2022 guideline rated andexanet alfa as reasonable (Class 2a) and 4F-PCC or aPCC as may be considered (Class 2b), but andexanet is no longer marketed in the US after the December 2025 FDA safety action on thromboembolic events, and the 2026 Neurocritical Care Society/Society of Critical Care Medicine focused update conditionally recommends 4F-PCC rather than andexanet. Monitor for thrombotic complications.',
     classOfRecommendation: 'IIa',
-    levelOfEvidence: 'B-R',
-    guidelineSource: 'AHA/ASA 2022 ICH Guideline; ANNEXA-I (2024)',
+    levelOfEvidence: 'B-NR',
+    guidelineSource: 'AHA/ASA 2022 ICH Guideline (pre-ANNEXA-I); ANNEXA-I (2024); FDA Andexxa safety communication and US withdrawal (Dec 2025)',
     supportingClaimIds: ['cl-ich-andexanet-fxa'],
     caveats: [
       'ANNEXA-I demonstrated higher hemostatic efficacy with andexanet but more thrombotic complications vs usual care.',
-      'Andexanet alfa is not indicated for edoxaban; for edoxaban, 4F-PCC remains primary.',
+      'The former US andexanet alfa label covered apixaban and rivaroxaban only (ANNEXA-I also enrolled edoxaban-treated patients). Since US sales ended December 22, 2025, 4F-PCC (or aPCC) per the local pathway is the US reversal option for all factor Xa inhibitors, including edoxaban (PCC use for factor Xa inhibitor reversal is off-label).',
       'Reversal should not delay neurosurgical evaluation.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -85,7 +85,7 @@ export const recommendations = [
     id: 'rec-ich-anticoag-reversal-warfarin',
     topic: 'ich-anticoag-reversal',
     setting: 'inpatient',
-    text: 'In warfarin-associated ICH, give vitamin K 10 mg IV plus 4F-PCC dosed by INR/weight to rapidly reverse anticoagulation; FFP is an inferior alternative.',
+    text: 'In warfarin-associated ICH with INR ≥2.0, give 4F-PCC dosed by INR/weight (recommended in preference to FFP) to rapidly correct the INR. Give IV vitamin K 10 mg directly after factor replacement to prevent INR rebound. FFP is a slower, inferior alternative.',
     classOfRecommendation: 'I',
     levelOfEvidence: 'B-R',
     guidelineSource: 'AHA/ASA 2022 ICH Guideline',
@@ -94,7 +94,7 @@ export const recommendations = [
       'Vitamin K is required for sustained reversal; PCC alone is short-acting.',
       'FFP carries volume-overload risk and slower correction.'
     ],
-    lastReviewed: '2026-07-18',
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -102,16 +102,18 @@ export const recommendations = [
     id: 'rec-late-window-ivt',
     topic: 'extended-window-ivt',
     setting: 'inpatient',
-    text: 'In patients presenting 4.5-9 h from LKW or with wake-up stroke, IV thrombolysis (alteplase or tenecteplase 0.25 mg/kg) selected by perfusion or DWI-FLAIR mismatch is reasonable when EVT is not indicated or available.',
+    text: 'IV thrombolysis can be beneficial (1) in unknown-onset stroke (e.g., wake-up) when treatment can start within 4.5 h of symptom recognition and MRI shows DWI-FLAIR mismatch (DWI lesion smaller than one-third of the MCA territory without marked FLAIR change), and (2) in patients ineligible for EVT who have salvageable penumbra on automated perfusion imaging 4.5-9 h from LKW or within 9 h of the midpoint of sleep for wake-up stroke. The pivotal trials (WAKE-UP, EXTEND) used alteplase; ESO 2023 expert consensus considers tenecteplase 0.25 mg/kg a reasonable alternative for wake-up/unknown-onset stroke selected with advanced imaging.',
     classOfRecommendation: 'IIa',
     levelOfEvidence: 'B-R',
     guidelineSource: 'AHA/ASA 2026 AIS Guideline; ESO 2023',
     supportingClaimIds: ['cl-late-window-ivt-non-lvo', 'cl-tnk-late-window-non-lvo'],
     caveats: [
       'Imaging-based selection is required; unselected late-window thrombolysis is not supported (TWIST).',
-      'Time from LKW remains a key safety determinant; TIMELESS extended TNK to 24 h with mismatch selection but the overall primary endpoint did not reach significance.'
+      'Time from LKW remains a key safety determinant; TIMELESS extended TNK to 24 h with mismatch selection but the overall primary endpoint did not reach significance.',
+      'OPTION (JAMA 2026) supports perfusion-selected tenecteplase to 24 h in non-LVO stroke without planned EVT, with sICH 2.8% vs 0%; a single-country trial that post-dates the 2026 AHA/ASA guideline, so it is not a guideline-graded indication.',
+      'Beyond 4.5 h, adding IV tenecteplase before planned EVT has not improved outcomes (TNK-PLUS for anterior LVO; ATTENTION LATE for basilar occlusion).'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -122,13 +124,13 @@ export const recommendations = [
     text: 'Tenecteplase 0.25 mg/kg (max 25 mg) is recommended as an alternative to alteplase 0.9 mg/kg (max 90 mg) for IV thrombolysis in eligible AIS within 4.5 h — either agent is first-line, and TNK is particularly practical when EVT is anticipated.',
     classOfRecommendation: 'I',
     levelOfEvidence: 'A',
-    guidelineSource: 'ESO 2023; AHA/ASA 2026',
+    guidelineSource: 'AHA/ASA 2026 AIS Guideline; ESO 2023 (GRADE: strong recommendation, moderate-quality evidence)',
     supportingClaimIds: ['cl-tnk-noninferior-alteplase'],
     caveats: [
-      'Use TNK 0.25 mg/kg only; the 0.4 mg/kg dose was not non-inferior in EXTEND-IA TNK part 2.',
+      'Use TNK 0.25 mg/kg only: 0.40 mg/kg did not improve reperfusion over 0.25 mg/kg in EXTEND-IA TNK part 2, and NOR-TEST 2 part A (0.40 mg/kg vs alteplase) was stopped early for safety with worse functional outcome and higher mortality.',
       'Local protocols may continue to favor alteplase; both are acceptable.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -136,7 +138,7 @@ export const recommendations = [
     id: 'rec-evt-large-core',
     topic: 'evt-large-core',
     setting: 'inpatient',
-    text: 'In patients with anterior-circulation LVO and ASPECTS 3-5 (or core 50-100 mL) within 24 h of LKW, EVT is recommended to improve functional outcome.',
+    text: 'In patients with anterior-circulation proximal LVO (ICA or M1), NIHSS ≥6, prestroke mRS 0-1, and ASPECTS 3-5, EVT is recommended to improve functional outcomes within 6 h of onset and, in selected patients aged <80 without significant mass effect, at 6-24 h.',
     classOfRecommendation: 'I',
     levelOfEvidence: 'A',
     guidelineSource: 'AHA/ASA 2026 AIS Guideline',
@@ -145,7 +147,7 @@ export const recommendations = [
       'Pre-stroke mRS, life expectancy, and goals of care still inform shared decision-making.',
       'Very low ASPECTS is not unaddressed: ASPECTS 0-2 within 6 h carries a IIa recommendation bounded by age <80 and pre-stroke mRS 0-1 (ais-2026-117); ASPECTS 3-10 within 6 h carries a Class I recommendation without an age bound (ais-2026-114); and the ASPECTS 0-5 within 0-6 h, age 18-80, mRS 0-1 Class I recommendation comes from the SVIN 2025 large-core guideline (svin-large-core-2025). Those bounds are part of each recommendation and are easy to drop when quoting the ASPECTS number alone.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -153,19 +155,19 @@ export const recommendations = [
     id: 'rec-dapt-minor-stroke',
     topic: 'dapt-minor-stroke',
     setting: 'inpatient',
-    text: 'In patients with minor non-cardioembolic ischemic stroke (NIHSS ≤3, or non-disabling NIHSS ≤5 in patients not treated with thrombolysis) or high-risk TIA (ABCD² ≥4 or DWI+), dual antiplatelet therapy with aspirin plus clopidogrel for 21 days, started within 24 h, is recommended to reduce recurrent ischemic stroke at 90 days.',
+    text: 'In patients with recent minor noncardioembolic ischemic stroke (NIHSS ≤3) or high-risk TIA (ABCD² ≥4), DAPT with aspirin plus clopidogrel should be initiated early (ideally within 12-24 h of symptom onset and at least within 7 days) and continued for 21-90 days, followed by single antiplatelet therapy, to reduce recurrent ischemic stroke.',
     classOfRecommendation: 'I',
     levelOfEvidence: 'A',
-    guidelineSource: 'AHA/ASA 2021 Secondary Prevention; CHANCE / POINT / THALES / INSPIRES',
+    guidelineSource: 'AHA/ASA 2021 Secondary Prevention (CHANCE, POINT); related trials: THALES (ticagrelor, separate IIb), INSPIRES (2023, post-guideline), CHANCE-2 (2021, post-guideline)',
     supportingClaimIds: ['cl-dapt-minor-stroke'],
     caveats: [
-      'Duration is indication-specific. For THIS indication (minor stroke / high-risk TIA) the Class I trial-supported course is aspirin+clopidogrel 21 days; do not extend DAPT beyond 30 days.',
+      'Duration is indication-specific. The 2021 AHA/ASA Class I recommendation allows aspirin+clopidogrel for 21 to 90 days, followed by single antiplatelet therapy; the 2026 AHA/ASA AIS Class I recommendation (no IVT, started within 24 h) specifies 21 days (ais-2026-147). A 21-day course (as in CHANCE) is favored for most patients: in pooled CHANCE/POINT data the benefit was confined to the first 21 days, while POINT\'s 90-day course carried more major hemorrhage than aspirin alone (0.9% vs 0.4%). Continuous DAPT beyond 90 days carries excess hemorrhage risk (Class III: Harm; secondary-prevention-2021-149).',
       'Aspirin plus ticagrelor for 30 days is a separate COR IIb / LOE B-R option (THALES) for NIHSS ≤5 or high-risk TIA with ABCD² ≥6 or ipsilateral ≥30% stenosis — it is not part of this Class I recommendation (secondary-prevention-2021-147).',
-      'A separate indication permits longer DAPT: severe intracranial stenosis 70-99% within 30 days of the event allows aspirin+clopidogrel up to 90 days. Beyond 90 days, or triple antiplatelet therapy, carries excess hemorrhage risk. Source of truth for both bounds: src/guidelines/secondary-prevention-2021.json.',
-      'INSPIRES extended the window to 72 h in eligible mild stroke / high-risk TIA.',
-      'For CYP2C19 loss-of-function carriers, ticagrelor (CHANCE-2) is preferred over clopidogrel.'
+      'A separate indication permits longer DAPT: severe intracranial stenosis 70-99% within 30 days of the event allows aspirin+clopidogrel up to 90 days. Beyond 90 days, or triple antiplatelet therapy, carries excess hemorrhage risk (AHA/ASA 2021).',
+      'INSPIRES (NEJM 2023) extended the window to 72 h only for mild stroke (NIHSS ≤5) or high-risk TIA of presumed atherosclerotic cause, not treated with thrombolysis or thrombectomy (clopidogrel through day 90, aspirin for the first 21 days); moderate-to-severe bleeding increased (0.9% vs 0.4%). The 2026 AHA/ASA AIS guideline rates 21-day DAPT in this atherosclerotic group as reasonable (Class IIa; ais-2026-149).',
+      'For known CYP2C19 loss-of-function carriers (NIHSS ≤3 or ABCD² ≥4, within 24 h, no IVT), ticagrelor plus aspirin for 21 days, then ticagrelor alone to day 90, may be reasonable over clopidogrel-based DAPT (2026 AHA/ASA AIS, Class IIb, per ais-2026-150; not addressed in the 2021 guideline). CHANCE-2 (98% Han Chinese population): 90-day stroke 6.0% vs 7.6% (HR 0.77), with more total bleeding (5.3% vs 2.5%).'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -173,17 +175,17 @@ export const recommendations = [
     id: 'rec-af-early-anticoag',
     topic: 'af-anticoag-timing',
     setting: 'inpatient',
-    text: 'In patients with AIS and atrial fibrillation, early DOAC initiation within ~4 days is reasonable across stroke severities (OPTIMAS: non-inferior across infarct sizes) and was superior to delayed start at 30 days in pooled individual-patient data (CATALYST IPDMA: OR 0.70, 95% CI 0.50-0.98, no sICH excess), excepting very severe stroke or extensive hemorrhagic transformation.',
+    text: 'In carefully selected (e.g., milder severity) patients with AIS and atrial fibrillation, early oral anticoagulation is low risk and is reasonable compared with delayed anticoagulation (AHA/ASA 2026, COR IIa); the guideline notes that efficacy for preventing early recurrent stroke is not established. Supporting data: OPTIMAS (DOAC start ≤4 days non-inferior to 7-14 days for the 90-day composite) and the CATALYST IPD meta-analysis (≤4 vs ≥5 days: 30-day composite OR 0.70, 95% CI 0.50-0.98, no sICH excess).',
     classOfRecommendation: 'IIa',
-    levelOfEvidence: 'B-R',
-    guidelineSource: 'AHA/ASA 2021 Secondary Prevention; OPTIMAS (2024); CATALYST IPDMA (2025); ELAN (2023); TIMING (2022)',
+    levelOfEvidence: 'A',
+    guidelineSource: 'AHA/ASA 2026 AIS Guideline; OPTIMAS (2024); CATALYST IPDMA (2025); ELAN (2023); TIMING (2022)',
     supportingClaimIds: ['cl-af-early-anticoag'],
     caveats: [
       'Reserve longer delay for very severe stroke or extensive hemorrhagic transformation; confirm absence of significant hemorrhagic transformation on follow-up imaging before starting in moderate-large stroke.',
       'Early initiation (≤4 d) is non-inferior across severities (OPTIMAS) and superior at 30 d in pooled IPD (CATALYST); individualize for the highest-risk presentations.',
-      'Scope note: this COR IIa statement covers the early-start question. The wider 2-14 day window carries a separate, weaker COR IIb statement — the two are not in conflict. Source of truth: src/guidelines/secondary-prevention-2021.json.'
+      'Scope note: this COR IIa early-start statement reflects the 2026 AHA/ASA AIS guideline (early oral anticoagulation reasonable in carefully selected patients, e.g., milder severity). The 2021 secondary-prevention guideline carries a separate, weaker COR IIb statement for starting at 2-14 days, which predates TIMING, ELAN, OPTIMAS and CATALYST.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   }),
 
@@ -191,15 +193,15 @@ export const recommendations = [
     id: 'rec-evt-late-window',
     topic: 'evt-late-window',
     setting: 'inpatient',
-    text: 'In patients with anterior-circulation LVO presenting 6-24 h from LKW, EVT is recommended for those meeting DAWN or DEFUSE-3 imaging-selection criteria.',
+    text: 'In patients with AIS from anterior-circulation proximal LVO (ICA or M1) presenting 6-24 h from symptom onset with NIHSS ≥6, prestroke mRS 0-1, and ASPECTS ≥6, EVT is recommended to improve functional outcomes and reduce mortality. Perfusion imaging is not a prerequisite; adjunctive CTP or MRI (DWI-FLAIR mismatch or DWI-PWI) can be useful in EVT evaluation if immediately available (separate COR 2a, LOE A recommendation).',
     classOfRecommendation: 'I',
     levelOfEvidence: 'A',
     guidelineSource: 'AHA/ASA 2026 AIS Guideline; DAWN; DEFUSE-3',
     supportingClaimIds: ['cl-evt-late-window'],
     caveats: [
-      'Outside trial-selection criteria, EVT is reasonable on a case-by-case basis with shared decision-making.'
+      'The 2026 AHA/ASA guideline does not require DAWN/DEFUSE-3 mismatch criteria: EVT at 6-24 h is Class 1 (LOE A) for anterior-circulation proximal LVO with NIHSS ≥6, prestroke mRS 0-1 and ASPECTS ≥6, and the writing group declined to restrict Class 1 to mismatch-selected patients. Adjunctive CTP or MRI can be useful if immediately available (Class 2a, LOE A). ASPECTS 3-5 is covered by a separate large-core recommendation.'
     ],
-    lastReviewed: lr,
+    lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'
   })
 ];

@@ -6,7 +6,7 @@
 // 'elan-optimas' (default): supported by ELAN (Fischer NEJM 2023;388:2411-21, PMID 37222476) and
 //   OPTIMAS (Werring Lancet 2024, PMID 39491870) and the CATALYST IPD meta-analysis
 //   (Dehbi et al., Lancet 2025, PMID 40570866, doi: 10.1016/S0140-6736(25)00439-8; n=5441 pooling
-//   ELAN, OPTIMAS, TIMING, START). Early start ≤4 d for minor/moderate; days 6-7 for major.
+//   ELAN, OPTIMAS, TIMING, START). Implemented schedule is a hybrid, not a single trial protocol: NIHSS <8 → day 1, 8-15 → day 3, ≥16 → day 6-7. ELAN early arm: within 48 h for minor/moderate and day 6-7 for major stroke, severity graded by infarct size on imaging; OPTIMAS early arm: ≤4 days from onset regardless of severity. The NIHSS cut-points (<8, 8-15, ≥16) come from the 1-3-6-12 rule, not from ELAN/OPTIMAS. CATALYST pooled early (≤4 d) vs later (≥5 d) starts.
 //   Symptomatic ICH 0.4% in both arms.
 // 'expert-consensus': earlier institutional NIHSS-stratified scheme — predates CATALYST and is
 //   sometimes informally called "CATALYST" in older notes; kept under a distinct ID for
@@ -205,9 +205,9 @@ export const calculateHASBLEDScore = (items) => {
   return score;
 };
 
-// RCVS² (Rocha Stroke 2019;50:1233-9). Range -2 to +10.
+// RCVS² (Rocha Neurology 2019;92:e639-e647 (PMID 30635475)). Range -2 to +10.
 // Score ≥5: high specificity (~99%) for RCVS vs primary CNS angiitis / other vasculopathies.
-// Score ≤2: high sensitivity for ruling RCVS out. Negative scores are valid output and
+// Score ≤2: 100% specificity and 85% sensitivity for excluding RCVS (derivation cohort). Negative scores are valid output and
 // preserved here (legacy clamp to 0 suppressed signal).
 export const calculateRCVS2Score = (items) => {
   if (!items || typeof items !== 'object') return 0;
@@ -335,7 +335,7 @@ export const calculateEnoxaparinDose = (weightKg, crCl) => {
 // keys stable for API consumers while returning a non-actionable result. The local
 // factor-Xa pathway is screen-gated and uses a fixed PCC dose; it is not weight-based.
 export const calculateAndexanetDose = (doacType, lastDoseHours, doacDoseMg, thrombosisRisk = 'moderate') => {
-  const unavailableNotice = 'Andexanet alfa is not available through the institution; no andexanet dose is provided.';
+  const unavailableNotice = 'Andexanet alfa (Andexxa) is not available in the US: US sales ended December 22, 2025 after the FDA concluded that its risks, including thromboembolic events, outweigh its benefits. No andexanet dose is provided.';
   const institutionalPathway = 'For rivaroxaban, apixaban, or edoxaban-associated ICH, obtain a Direct Xa Inhibitor screen. If the screen is elevated and there is no PCC contraindication, the institutional pathway uses 4F-PCC 2000 units IV.';
 
   return {
@@ -386,7 +386,7 @@ export const calculateCrCl = (age, weight, sex, creatinine, heightCm) => {
     bmi: bmi ? Math.round(bmi * 10) / 10 : null,
     renalCategory: crcl < 15 ? 'severe-dialysis' : crcl < 30 ? 'severe' : crcl < 50 ? 'moderate' : crcl < 90 ? 'mild' : 'normal',
     label: crcl < 15 ? 'Severe (consider dialysis)' : crcl < 30 ? 'Severe (<30)' : crcl < 50 ? 'Moderate (30-49)' : crcl < 90 ? 'Mild (50-89)' : 'Normal (≥90)',
-    obesityWarning: isObese ? `BMI >30 — CrCl may be overestimated. Adjusted body weight CrCl: ${adjBwCrCl} mL/min. Use AdjBW CrCl for DOAC dosing decisions.` : null
+    obesityWarning: isObese ? `BMI >30 — CrCl may be overestimated. Adjusted body weight CrCl: ${adjBwCrCl} mL/min. DOAC renal dosing (e.g., rivaroxaban FDA labeling) uses Cockcroft-Gault CrCl with actual body weight; do not use AdjBW CrCl alone to reduce DOAC doses (confirm with pharmacy).` : null
   };
 };
 
@@ -450,7 +450,7 @@ export const calculatePCCDose = (weightKg, inrVal, indication = 'warfarin', gate
       ahaDose: gateComplete ? fixedDose : null,
       iuPerKg: null,
       weight,
-      inrTierNote: 'If the Direct Xa Inhibitor screen is elevated and there is no PCC contraindication, give 4F-PCC 2000 units IV. Andexanet alfa is not available through the institution.',
+      inrTierNote: 'If the Direct Xa Inhibitor screen is elevated and there is no PCC contraindication, give 4F-PCC 2000 units IV. Andexanet alfa is no longer available in the US (withdrawn from the US market in 2025 for safety concerns).',
       indication,
       fixedDose: gateComplete,
       recommendation: gateComplete ? 'give-fixed-dose' : 'pending-required-gates',
@@ -494,11 +494,11 @@ export const calculatePCCDose = (weightKg, inrVal, indication = 'warfarin', gate
       recommendation = 'no-institutional-pcc-recommendation';
     } else if (inr < 1.6) {
       ahaDose = fixedDose;
-      inrTierNote = 'INR 1.3-1.5 — consider 4F-PCC case-by-case (COR 2b/C). If selected, give 2000 units IV immediately.';
+      inrTierNote = 'INR 1.3-1.5 — consider 4F-PCC case-by-case (2022 AHA/ASA ICH guideline COR 2b, LOE C-LD: may be reasonable). If selected, give 2000 units IV immediately.';
       recommendation = 'consider-case-by-case';
     } else if (inr < 2) {
       ahaDose = fixedDose;
-      inrTierNote = 'INR 1.6-1.9 — 4F-PCC recommended (COR 2b/C); give 2000 units IV immediately.';
+      inrTierNote = 'INR 1.6-1.9 — 4F-PCC may be reasonable (2022 AHA/ASA ICH guideline COR 2b, LOE C-LD); institutional pathway: give 2000 units IV immediately.';
       recommendation = 'recommended';
     } else {
       ahaDose = fixedDose;
@@ -530,8 +530,8 @@ export const calculateAlteplaseDose = (weightKg) => {
   return { totalDose, bolus, infusion, weightKg: weight, capped: weight * 0.9 > 90 };
 };
 
-// CHOICE-2 Trial (Ren et al., JAMA 2026): Adjunctive IA alteplase for eTICI 2b50-3
-// 0.225 mg/kg (max 22.5 mg) infused over 15-30 minutes post-thrombectomy.
+// CHOICE-2 Trial (Renú et al., JAMA 2026;335:1859-69, PMID 42096239): Adjunctive IA alteplase for eTICI 2b50-3
+// 0.225 mg/kg (max 20 mg) infused over 15 minutes post-thrombectomy (CHOICE 2022 used max 22.5 mg over 15-30 min).
 export const calculateAdjunctiveIAAlteplase = (weightKg, eTICI) => {
   const weight = parseFloat(weightKg);
   if (isNaN(weight) || weight <= 0 || weight > 350) return null;
@@ -540,16 +540,16 @@ export const calculateAdjunctiveIAAlteplase = (weightKg, eTICI) => {
   const isEligibleTICI = ['2b50', '2b67', '2c', '3'].includes(String(eTICI).toLowerCase());
   
   const rawDose = weight * 0.225;
-  const finalDose = Math.min(+(rawDose).toFixed(2), 22.5);
+  const finalDose = Math.min(+(rawDose).toFixed(2), 20);
   
   return {
     weightKg: weight,
     eTICI: eTICI,
     isEligible: isEligibleTICI,
     dose: finalDose,
-    maxDoseReached: rawDose >= 22.5,
+    maxDoseReached: rawDose >= 20,
     note: isEligibleTICI
-      ? `CHOICE-2 (JAMA 2026): Adjunctive IA alteplase 0.225 mg/kg (max 22.5 mg) over 15-30 min.`
+      ? `CHOICE-2 (JAMA 2026): Adjunctive IA alteplase 0.225 mg/kg (max 20 mg) infused over 15 min after successful thrombectomy (eTICI 2b50-3); investigational. 90-day mortality was higher with IA alteplase (12.1% vs 6.4%).`
       : `CHOICE-2 criteria generally require successful reperfusion (eTICI 2b50-3) before adjunctive IA alteplase.`
   };
 };

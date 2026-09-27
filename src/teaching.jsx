@@ -307,11 +307,11 @@ export const TeachingModule = () => {
       <details className="rounded border border-slate-300 bg-slate-50 dark:border-strong dark:bg-paper-2">
         <summary className="cursor-pointer p-2 text-xs font-semibold text-slate-700 dark:text-ink-2">📋 Evidence audit notes — when was this content last reviewed?</summary>
         <div className="p-2 pt-0 text-xs text-slate-600 space-y-1 dark:text-ink-2">
-          <p><strong>Last comprehensive review:</strong> 2026-04-23 against current AHA/ASA guidelines and primary trial publications.</p>
-          <p><strong>Guidelines referenced:</strong> AHA/ASA AIS 2019 (Powers) + 2019 focused update, AHA/ASA ICH 2022 (Greenberg), AHA/ASA aSAH 2023, AHA/ASA CVT 2024, AHA/ASA Secondary Prevention 2021 (Kleindorfer), ESC AF 2024 (van Gelder).</p>
-          <p><strong>Trial count:</strong> 45 landmark trials across 8 categories with primary-source citations.</p>
+          <p><strong>Last comprehensive review:</strong> 2026-08-22 for the teaching content, against current AHA/ASA guidelines (including the 2026 AIS guideline) and primary trial publications.</p>
+          <p><strong>Guidelines referenced:</strong> AHA/ASA AIS 2026 (Prabhakaran; replaces the 2018 guideline and its 2019 update), AHA/ASA ICH 2022 (Greenberg), AHA/ASA aSAH 2023, AHA/ASA CVT 2024, AHA/ASA Secondary Prevention 2021 (Kleindorfer), ESC AF 2024 (van Gelder).</p>
+          <p><strong>Trial count:</strong> 103 landmark trials across 9 categories with primary-source citations.</p>
           <p><strong>Calculator verification:</strong> All 20+ calculators validated against primary publications (Hemphill 2001 for ICH score, Johnston 2007 for ABCD², Lip 2010 for CHA₂DS₂-VASc, Pisters 2010 for HAS-BLED, Kent 2013 for ROPE, Rocha 2019 for RCVS², Greving 2014 for PHASES, Kothari 1996 for ABC/2, etc.).</p>
-          <p><strong>Known caveats:</strong> Post-EVT SBP &lt;140 × 72h "harm" framing is extrapolated from ENCHANTED2-MT + OPTIMAL-BP + BP-TARGET + BEST-II meta-evidence, not a direct AHA/ASA guideline statement. Current 2019 AHA/ASA AIS formal target remains SBP &lt;180. The 72h window is institutional/empirical.</p>
+          <p><strong>Known caveats:</strong> Intensive SBP lowering to &lt;140 mmHg for the first 72 h after successful EVT recanalization (mTICI 2b–3) of an anterior-circulation LVO is a direct Class III: Harm (LOE A) recommendation in the 2026 AHA/ASA AIS guideline, which replaces the 2018 guideline and its 2019 update. Harm was shown in ENCHANTED2/MT (&lt;120, 72 h) and OPTIMAL-BP (&lt;140, 24 h); BP-TARGET and BEST-II were neutral. The 2026 guideline also considers BP ≤180/105 mmHg during EVT and for 24 h afterward reasonable (Class IIa, LOE B-NR). Specific titration ranges (e.g., SBP 140–180) and durations beyond these windows are institutional.</p>
           <p><strong>Rigor note:</strong> Content is for educational/decision-support use only; always cross-check against current primary literature before clinical action.</p>
         </div>
       </details>

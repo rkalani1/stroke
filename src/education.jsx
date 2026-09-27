@@ -168,7 +168,7 @@ const EDUCATION_MODULES = [
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-07-24',
     references: [
-      { label: 'SeLECT Score Study', citation: 'Galovic M, et al. Prediction of late seizures after ischaemic stroke with the SeLECT score. Lancet Neurol. 2018;17(2):143-152.', pmid: '29413315' }
+      { label: 'SeLECT Score Study', citation: 'Galovic M, et al. Prediction of late seizures after ischaemic stroke with a novel prognostic model (the SeLECT score): a multivariable prediction model development and validation study. Lancet Neurol. 2018;17(2):143-152.', pmid: '29413315' }
     ]
   },
   {
@@ -227,7 +227,7 @@ const EDUCATION_MODULES = [
     references: [
       { label: 'ELAN Trial', citation: 'Fischer U et al. N Engl J Med. 2023;388:2411-2421.', pmid: '37222476' },
       { label: 'OPTIMAS Trial', citation: 'Werring DJ et al. Optimal timing of anticoagulation after acute ischaemic stroke with atrial fibrillation (OPTIMAS). Lancet. 2024. DOI 10.1016/S0140-6736(24)02197-4.', pmid: '39491870' },
-      { label: 'CATALYST Meta-Analysis', citation: 'Dehbi HM et al. Lancet 2025.', pmid: '40570866' },
+      { label: 'CATALYST Meta-Analysis', citation: 'Dehbi HM, et al. Collaboration on the optimal timing of anticoagulation after ischaemic stroke and atrial fibrillation: a systematic review and prospective individual participant data meta-analysis of randomised controlled trials (CATALYST). Lancet. 2025;406(10498):43-51.', pmid: '40570866' },
       { label: 'AFib Guidelines', citation: 'Joglar JA et al. 2023 ACC/AHA/ACCP/HRS Guideline. Circulation. 2024;149:e1-e156.', pmid: '38033089' }
     ]
   },
@@ -239,7 +239,7 @@ const EDUCATION_MODULES = [
     categories: ['pocket-card', 'printable', 'icu', 'simulators'],
     lastReviewed: '2026-05-31',
     references: [
-      { label: 'AHA/ASA Guidelines', citation: 'Prabhakaran S, et al. 2026 Guidelines for the Early Management of Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' },
+      { label: 'AHA/ASA Guidelines', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026;57(8):e316-e436.', pmid: '41582814' },
       { label: 'Cerebral Edema Recommendations', citation: 'Wijdicks EF, et al. Recommendations for the Management of Cerebral and Cerebellar Infarction With Swelling. Stroke. 2014;45:1222–1238.', pmid: '24481970' },
       { label: 'NCS Guidelines', citation: 'Cook AM, et al. Guidelines for the Acute Treatment of Cerebral Edema in Neurocritical Care Patients. Neurocrit Care. 2020;32:647–666.', pmid: '32227294' }
     ]
@@ -264,7 +264,7 @@ const EDUCATION_MODULES = [
     lastReviewed: '2026-05-30',
     references: [
       { label: 'Kattah Study', citation: 'Kattah JC, et al. HINTS to diagnose stroke in the acute vestibular syndrome: three-step bedside oculomotor examination more sensitive than early MRI diffusion-weighted imaging. Stroke. 2009;40(11):3504-3510.', pmid: '19762709' },
-      { label: 'AHA/ASA Guideline', citation: 'Prabhakaran S et al. Stroke. 2026.', pmid: '41582814' }
+      { label: 'AHA/ASA Guideline', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026;57(8):e316-e436.', pmid: '41582814' }
     ]
   },
   {
@@ -335,7 +335,7 @@ const EDUCATION_MODULES = [
       { label: 'CADISS Trial', citation: 'CADISS Trial Investigators. Antiplatelet treatment compared with anticoagulation treatment for cervical artery dissection (CADISS): a randomised trial. Lancet Neurol. 2015;14(4):361-367.', pmid: '25684164' },
       { label: 'TREAT-CAD Trial', citation: 'Engelter ST, et al. Aspirin versus anticoagulation in cervical artery dissection (TREAT-CAD): an open-label, randomised, non-inferiority trial. Lancet Neurol. 2021;20(5):341-350.', pmid: '33765420' },
       { label: 'STOP-CAD Study', citation: 'Yaghi S, et al. Antithrombotic Treatment for Stroke Prevention in Cervical Artery Dissection: The STOP-CAD Study. Stroke. 2024;55(4):908-918.', pmid: '38335240' },
-      { label: 'Kaufmann IPD Meta-analysis', citation: 'Kaufmann JE, et al. Antithrombotic Therapy in Cervical Artery Dissection: An Individual Patient Data Meta-analysis. JAMA Neurol. 2024;81(6):630-637.', pmid: '38739383' }
+      { label: 'Kaufmann IPD Meta-analysis', citation: 'Kaufmann JE, et al. Antithrombotic Treatment for Cervical Artery Dissection: A Systematic Review and Individual Patient Data Meta-Analysis. JAMA Neurol. 2024;81(6):630-637.', pmid: '38739383' }
     ]
   },
   {
@@ -347,7 +347,7 @@ const EDUCATION_MODULES = [
     lastReviewed: '2026-06-09',
     references: [
       { label: 'Consensus Guideline', citation: 'Greer DM, et al. Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Guideline. Neurology. 2023;101(24):1112-1132.', pmid: '37821233' },
-      { label: 'AAN 2010 Guideline Update', citation: 'Wijdicks EF, et al. Evidence-based guideline update: determining brain death in adults: report of the Quality Standards Subcommittee of the American Academy of Neurology. Neurology. 2010;74(23):1911-1918.', pmid: '20530327' }
+      { label: 'AAN 2010 Guideline (prior; updated by 2023 BD/DNC consensus guideline)', citation: 'Wijdicks EF, et al. Evidence-based guideline update: determining brain death in adults: report of the Quality Standards Subcommittee of the American Academy of Neurology. Neurology. 2010;74(23):1911-1918.', pmid: '20530327' }
     ]
   },
   {
@@ -369,7 +369,7 @@ const EDUCATION_MODULES = [
   {
     id: 'antiepileptic-drugs',
     title: 'Antiepileptic Drugs & Post-Stroke Seizures',
-    purpose: 'Clinical classification of post-stroke seizures, guideline-directed management, comparison of first-line and second-line antiepileptic drugs (ASMs), and post-stroke epilepsy risk stratification with the SeLECT score.',
+    purpose: 'Clinical classification of post-stroke seizures, guideline-directed management, comparison of first-line and second-line antiseizure medications (ASMs), and post-stroke epilepsy risk stratification with the SeLECT score.',
     actions: 'antiepileptic drugs antiseizure medications asm aed keppra levetiracetam lamotrigine lamictal lacosamide vimpat valproic acid depakote phenytoin dilantin select score ischemia score post-stroke epilepsy seizure prophylaxis',
     categories: ['pocket-card', 'printable', 'icu'],
     lastReviewed: '2026-07-13',
@@ -377,7 +377,7 @@ const EDUCATION_MODULES = [
       { label: 'AHA/ASA 2026 Stroke Guideline', citation: 'Prabhakaran S, et al. 2026 Guideline for the Early Management of Patients With Acute Ischemic Stroke. Stroke. 2026.', pmid: '41582814' },
       { label: 'AHA/ASA 2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
       { label: 'AHA/ASA 2023 aSAH Guideline', citation: 'Hoh BL, et al. 2023 Guideline for the Management of Patients With Aneurysmal Subarachnoid Hemorrhage. Stroke. 2023;54(7):e314-e370.', pmid: '37212182' },
-      { label: 'SeLECT Score Study', citation: 'Galovic M, et al. SeLECT: a prediction model for late seizures after ischemic stroke. Lancet Neurol. 2018;17(2):143-152.', pmid: '29413315' }
+      { label: 'SeLECT Score Study', citation: 'Galovic M, et al. Prediction of late seizures after ischaemic stroke with a novel prognostic model (the SeLECT score): a multivariable prediction model development and validation study. Lancet Neurol. 2018;17(2):143-152.', pmid: '29413315' }
     ]
   },
   {
@@ -392,13 +392,14 @@ const EDUCATION_MODULES = [
       { label: 'RE-SPECT CVT', citation: 'Ferro JM, et al. Safety and Efficacy of Dabigatran Etexilate vs Dose-Adjusted Warfarin in Cerebral Venous Thrombosis. JAMA Neurol. 2019;76(12):1457-1465.', pmid: '31479105' },
       { label: 'ACTION-CVT', citation: 'Yaghi S, et al. Direct Oral Anticoagulants Versus Warfarin in the Treatment of Cerebral Venous Thrombosis (ACTION-CVT). Stroke. 2022;53(3):728-738.', pmid: '35143325' },
       { label: 'TO-ACT', citation: 'Coutinho JM, et al. Effect of Endovascular Treatment With Medical Management vs Standard Care on Severe Cerebral Venous Thrombosis (TO-ACT). JAMA Neurol. 2020;77(8):966-973.', pmid: '32421159' },
-      { label: 'AHA/ASA Statement', citation: 'Saposnik G, et al. Diagnosis and management of cerebral venous thrombosis: a statement for healthcare professionals from the AHA/ASA. Stroke. 2011;42(4):1158-1192.', pmid: '21293023' }
+      { label: 'AHA Scientific Statement 2024', citation: 'Saposnik G, et al. Diagnosis and Management of Cerebral Venous Thrombosis: A Scientific Statement From the American Heart Association. Stroke. 2024;55(3):e77-e90.', pmid: '38284265' },
+      { label: 'AHA/ASA Statement 2011 (updated by 2024 AHA statement)', citation: 'Saposnik G, et al. Diagnosis and management of cerebral venous thrombosis: a statement for healthcare professionals from the AHA/ASA. Stroke. 2011;42(4):1158-1192.', pmid: '21293023' }
     ]
   },
   {
     id: 'large-core-thrombectomy',
     title: 'Large-Core Thrombectomy',
-    purpose: 'Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the symptomatic-hemorrhage trade-off.',
+    purpose: 'Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the hemorrhage trade-off (more any intracranial hemorrhage and numerically higher sICH in most individual trials, but no significant sICH difference in the 2026 ATLAS IPD meta-analysis).',
     actions: 'large core thrombectomy evt endovascular aspects 3-5 low aspects core volume salvageable penumbra select2 angel-aspect tension laste tesla rescue-japan limit symptomatic hemorrhage mrs shift 2026 aha asa guideline reperfusion',
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-07-18',
@@ -449,7 +450,7 @@ const EDUCATION_MODULES = [
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-07-18',
     references: [
-      { label: 'Arterial territories — brainstem/cerebellum', citation: 'Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' },
+      { label: 'Arterial territories — brainstem/cerebellum', citation: 'Tatu L, et al. Arterial territories of human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' },
       { label: 'Arterial territories — cerebral hemispheres', citation: 'Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' }
     ]
   },
@@ -462,7 +463,7 @@ const EDUCATION_MODULES = [
     lastReviewed: '2026-07-18',
     references: [
       { label: 'Arterial territories — cerebral hemispheres', citation: 'Tatu L, et al. Arterial territories of the human brain: cerebral hemispheres. Neurology. 1998;50(6):1699-1708.', pmid: '9633714' },
-      { label: 'Arterial territories — brainstem/cerebellum', citation: 'Tatu L, et al. Arterial territories of the human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' }
+      { label: 'Arterial territories — brainstem/cerebellum', citation: 'Tatu L, et al. Arterial territories of human brain: brainstem and cerebellum. Neurology. 1996;47(5):1125-1135.', pmid: '8909417' }
     ]
   },
   {
@@ -529,7 +530,7 @@ const EDUCATION_MODULES = [
   {
     id: 'pfo-closure',
     title: 'PFO Closure for Cryptogenic Stroke',
-    purpose: 'Who benefits from patent foramen ovale closure after a nonlacunar stroke of undetermined cause — the four randomized trials (CLOSE, RESPECT long-term, REDUCE, DEFENSE-PFO), candidate selection with the RoPE score and PASCAL classification, the closure-vs-antiplatelet-vs-anticoagulation decision per the 2021 AHA/ASA and 2024 ESO guidelines, and the device-associated atrial fibrillation trade-off.',
+    purpose: 'Who benefits from patent foramen ovale closure after a nonlacunar stroke of undetermined cause — the four randomized trials that showed benefit (CLOSE, RESPECT long-term, REDUCE, DEFENSE-PFO; the earlier CLOSURE I and PC trials were neutral), candidate selection with the RoPE score and PASCAL classification, the closure-vs-antiplatelet-vs-anticoagulation decision per the 2021 AHA/ASA and 2024 ESO guidelines, and the device-associated atrial fibrillation trade-off.',
     actions: 'pfo patent foramen ovale closure cryptogenic stroke esus paradoxical embolism close respect reduce defense-pfo rope score pascal classification atrial septal aneurysm large shunt right-to-left shunt antiplatelet anticoagulation device atrial fibrillation transcatheter occluder amplatzer gore cardioform age 18-60 nonlacunar undetermined cause aha asa 2021 eso 2024 tee bubble study',
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-08-22',
@@ -553,10 +554,10 @@ const EDUCATION_MODULES = [
     lastReviewed: '2026-08-14',
     references: [
       { label: 'CADASIL Review', citation: 'Chabriat H, et al. CADASIL. Lancet Neurol. 2009;8(7):643-653.', pmid: '19539236' },
-      { label: 'CARASIL Landmark', citation: 'Hara K, et al. Association of HTRA1 mutations and familial CARASIL. N Engl J Med. 2009;360(17):1729-1739.', pmid: '19387015' },
+      { label: 'CARASIL Landmark', citation: 'Hara K, et al. Association of HTRA1 mutations and familial ischemic cerebral small-vessel disease. N Engl J Med. 2009;360(17):1729-1739.', pmid: '19387015' },
       { label: 'Fabry Disease Guidelines', citation: 'Ortiz A, et al. Fabry disease revisited: Management and treatment recommendations for adult patients. Mol Genet Metab. 2018;123(4):416-427.', pmid: '29530533' },
       { label: 'MELAS Management', citation: 'Koenig MK, et al. Recommendations for the Management of Strokelike Episodes in Patients With Mitochondrial Encephalomyopathy, Lactic Acidosis, and Strokelike Episodes. JAMA Neurol. 2016;73(5):591-594.', pmid: '26954033' },
-      { label: 'COL4A1 Mutations', citation: 'Gould DB, et al. Mutations in Col4a1 cause perinatal cerebral hemorrhages and porencephaly. Science. 2005;308(5725):1167-1171.', pmid: '15905400' },
+      { label: 'COL4A1 Mutations', citation: 'Gould DB, et al. Mutations in Col4a1 cause perinatal cerebral hemorrhage and porencephaly. Science. 2005;308(5725):1167-1171.', pmid: '15905400' },
       { label: 'EAN Monogenic cSVD Consensus', citation: 'Mancuso M, et al. Monogenic cerebral small-vessel diseases: diagnosis and therapy. Consensus recommendations of the European Academy of Neurology. Eur J Neurol. 2020;27(6):909-927.', pmid: '32196841' }
     ]
   },
@@ -570,7 +571,7 @@ const EDUCATION_MODULES = [
     references: [
       { label: 'JAM Trial Landmark', citation: 'Miyamoto S, et al. Effects of extracranial-intracranial bypass for patients with hemorrhagic moyamoya disease: results of the Japan Adult Moyamoya Trial. Stroke. 2014;45(5):1415-1421.', pmid: '24668203' },
       { label: 'Suzuki Staging Classic', citation: 'Suzuki J, et al. Cerebrovascular \'moyamoya\' disease: Disease showing abnormal net-like vessels in base of brain. Arch Neurol. 1969;20(3):288-299.', pmid: '5775283' },
-      { label: 'JSS Moyamoya Guidelines', citation: 'Kuroda S, et al. Guidelines for Diagnosis and Treatment of Moyamoya Disease. Neurol Med Chir (Tokyo). 2012;52(5):245-266.', pmid: '22870528' },
+      { label: 'JSS Moyamoya Guidelines', citation: 'Research Committee on the Pathology and Treatment of Spontaneous Occlusion of the Circle of Willis. Guidelines for diagnosis and treatment of moyamoya disease (spontaneous occlusion of the circle of Willis). Neurol Med Chir (Tokyo). 2012;52(5):245-266.', pmid: '22870528' },
       { label: 'Scott & Smith Review', citation: 'Scott RM, et al. Moyamoya disease and moyamoya syndrome. N Engl J Med. 2009;360(12):1226-1237.', pmid: '19297575' },
       { label: 'ESO Moyamoya Guidelines', citation: 'Bersano A, et al. European Stroke Organisation (ESO) Guidelines on Moyamoya angiopathy Endorsed by Vascular European Reference Network (VASCERN). Eur Stroke J. 2023;8(1):55-84.', pmid: '37021176' }
     ]
@@ -578,7 +579,7 @@ const EDUCATION_MODULES = [
   {
     id: 'cancer-associated-stroke',
     title: 'Cancer-Associated Stroke, Hypercoagulability & Marantic Endocarditis (NBTE)',
-    purpose: 'Pathophysiology of cancer-mediated hypercoagulability, 3-territory sign on DWI, markedly elevated D-dimer (>3–5x ULN), non-bacterial thrombotic endocarditis (NBTE), and LMWH vs DOAC management.',
+    purpose: 'Pathophysiology of cancer-mediated hypercoagulability, 3-territory sign on DWI, markedly elevated D-dimer (no single validated cutoff; e.g., >3 µg/mL in the Schwarzbach DWI-phenotype cohort), non-bacterial thrombotic endocarditis (NBTE), and LMWH vs DOAC management.',
     actions: 'cancer stroke active malignancy hypercoagulability marantic endocarditis nbte non-bacterial thrombotic 3-territory sign d-dimer mucin adenocarcinoma teach lmwh dalteparin enoxaparin doac tee vegetations',
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-08-14',
@@ -598,9 +599,9 @@ const EDUCATION_MODULES = [
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-08-14',
     references: [
-      { label: 'DISTAL Trial', citation: 'Fischer U, et al. Endovascular Treatment for Medium or Distal Vessel Occlusion Stroke (DISTAL). N Engl J Med. 2025;392(14):1374-1384.', pmid: '39908430' },
+      { label: 'DISTAL Trial', citation: 'Psychogios M, et al. Endovascular Treatment for Stroke Due to Occlusion of Medium or Distal Vessels (DISTAL). N Engl J Med. 2025;392(14):1374-1384.', pmid: '39908430' },
       { label: 'DISTAL 12-Month', citation: 'Fischer U, et al. Endovascular treatment for medium or distal vessel occlusion stroke (DISTAL): 12-month outcomes. Lancet Neurol. 2026;25(6):571-580.', pmid: '42105785' },
-      { label: 'ESCAPE-MeVO Trial', citation: 'Goyal M, et al. Endovascular Treatment for Medium Vessel Occlusion Stroke (ESCAPE-MeVO). N Engl J Med. 2025;392(14):1385-1395.', pmid: '39908448' },
+      { label: 'ESCAPE-MeVO Trial', citation: 'Goyal M, et al. Endovascular Treatment of Stroke Due to Medium-Vessel Occlusion (ESCAPE-MeVO). N Engl J Med. 2025;392(14):1385-1395.', pmid: '39908448' },
       { label: 'CHOICE Trial', citation: 'Renú A, et al. Effect of Intra-arterial Alteplase vs Placebo Following Successful Thrombectomy on Functional Outcomes (CHOICE). JAMA. 2022;327(9):826-835.', pmid: '35143603' },
       { label: 'CHOICE-2 Trial', citation: 'Renú A, et al. Adjunctive Intra-Arterial Alteplase After Successful Thrombectomy for Acute Ischemic Stroke (CHOICE-2). JAMA. 2026.', pmid: '42096239' },
       { label: 'TEMPO-2 Trial', citation: 'Coutts SB, et al. Tenecteplase versus standard of care for minor ischaemic stroke with proven occlusion (TEMPO-2). Lancet. 2024;403(10444):2597-2605.', pmid: '38768626' },
@@ -610,18 +611,18 @@ const EDUCATION_MODULES = [
   {
     id: 'ich-blood-pressure',
     title: 'Acute ICH Blood Pressure & Expansion Mitigation',
-    purpose: 'Hyperacute SBP lowering (<140 mmHg within 1h, avoid <130), INTERACT-2/3 care bundle, ATACH-2 renal safety floor, FASTEST, TRIDENT, minimally invasive surgery (ENRICH), and SWITCH decompressive craniectomy.',
+    purpose: 'Hyperacute SBP lowering (target 140 mmHg, maintained 130–150, reached within 1h; avoid <130), INTERACT2 intensive lowering, INTERACT3 care bundle, ATACH-2 renal safety floor, FASTEST, TRIDENT, minimally invasive surgery (ENRICH), and SWITCH decompressive craniectomy.',
     actions: 'ich intracerebral hemorrhage blood pressure sbp 140 expansion interact-2 interact-3 atach-2 enrich trident fastest switch minimally invasive surgery hematoma nicardipine clevidipine care bundle',
     categories: ['pocket-card', 'printable', 'icu'],
     lastReviewed: '2026-08-14',
     references: [
       { label: 'INTERACT-2', citation: 'Anderson CS, et al. Rapid blood-pressure lowering in patients with acute intracerebral hemorrhage (INTERACT2). N Engl J Med. 2013;368(25):2355-2365.', pmid: '23713578' },
       { label: 'ATACH-2', citation: 'Qureshi AI, et al. Intensive Blood-Pressure Lowering in Patients with Acute Cerebral Hemorrhage (ATACH-2). N Engl J Med. 2016;375(11):1033-1043.', pmid: '27276234' },
-      { label: 'INTERACT3', citation: 'Ma L, et al. Intensive care bundle with blood pressure lowering in acute intracerebral haemorrhage (INTERACT3): a pragmatic, stepped-wedge cluster randomised trial. Lancet. 2023;402(10395):27-40.', pmid: '37245517' },
+      { label: 'INTERACT3', citation: 'Ma L, et al. The third Intensive Care Bundle with Blood Pressure Reduction in Acute Cerebral Haemorrhage Trial (INTERACT3): an international, stepped wedge cluster randomised controlled trial. Lancet. 2023;402(10395):27-40.', pmid: '37245517' },
       { label: 'ENRICH Trial', citation: 'Pradilla G, et al. Trial of Early Minimally Invasive Removal of Intracerebral Hemorrhage (ENRICH). N Engl J Med. 2024;390(14):1277-1289.', pmid: '38598795' },
-      { label: 'TRIDENT Trial', citation: 'Anderson CS, et al. Triple-Pill Strategy for Blood Pressure Lowering after Intracerebral Hemorrhage (TRIDENT). N Engl J Med. 2026;394:1571-1582.', pmid: '42019018' },
-      { label: 'FASTEST Trial', citation: 'Broderick JP, et al. Recombinant factor VIIa for acute intracerebral hemorrhage (FASTEST). Lancet. 2026;407(10530):773-783.', pmid: '41653933' },
-      { label: 'SWITCH Trial', citation: 'Beck J, et al. Decompressive craniectomy versus best medical treatment in severe deep intracerebral haemorrhage (SWITCH): an open-label randomised controlled trial. Lancet. 2024;403(10442):2395-2404.', pmid: '38761811' },
+      { label: 'TRIDENT Trial', citation: 'Anderson CS, et al. Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage (TRIDENT). N Engl J Med. 2026;394(16):1571-1582.', pmid: '42019018' },
+      { label: 'FASTEST Trial', citation: 'Broderick JP, et al. Recombinant factor VIIa versus placebo for spontaneous intracerebral haemorrhage within 2 h of symptom onset (FASTEST): a multicentre, double-blind, randomised, placebo-controlled, phase 3 trial. Lancet. 2026;407(10530):773-783.', pmid: '41653933' },
+      { label: 'SWITCH Trial', citation: 'Beck J, et al. Decompressive craniectomy plus best medical treatment versus best medical treatment alone for spontaneous severe deep supratentorial intracerebral haemorrhage (SWITCH): a randomised controlled clinical trial. Lancet. 2024;403(10442):2395-2404.', pmid: '38761811' },
       { label: '2022 ICH Guideline', citation: 'Greenberg SM, et al. 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage. Stroke. 2022;53(7):e282-e361.', pmid: '35579034' },
       { label: 'INTERACT4 Trial', citation: 'Li G, et al. Intensive Ambulance-Delivered Blood-Pressure Reduction in Hyperacute Stroke (INTERACT4). N Engl J Med. 2024;390(20):1862-1872.', pmid: '38752650' },
       { label: 'TICH-2 Trial', citation: 'Sprigg N, et al. Tranexamic acid for hyperacute primary IntraCerebral Haemorrhage (TICH-2). Lancet. 2018;391(10135):2107-2115.', pmid: '29778325' }
@@ -630,7 +631,7 @@ const EDUCATION_MODULES = [
   {
     id: 'metabolic-stroke-prevention',
     title: 'Metabolic & Vascular Risk Modulation',
-    purpose: 'Comprehensive metabolic and vascular risk modulation in stroke prevention — GLP-1 receptor agonists (SELECT, FLOW, SUSTAIN-6), SGLT2 inhibitors, intensive blood pressure targets (SPRINT, TRIDENT, RESPECT), MASH/obesity management, and the secondary prevention ABCDE bundle.',
+    purpose: 'Comprehensive metabolic and vascular risk modulation in stroke prevention — GLP-1 receptor agonists (SELECT, FLOW, SUSTAIN-6), SGLT2 inhibitors, blood pressure lowering (SPRINT and RESPECT intensive targets; TRIDENT low-dose triple pill after ICH), MASH/obesity management, and the secondary prevention ABCDE bundle.',
     actions: 'metabolic glp-1 glp-1 receptor agonists semaglutide tirzepatide sglt2 inhibitors select flow sustain-6 sprint trident respect abcde bundle secondary prevention ldl obesity diabetes mash blood pressure targets',
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-08-14',
@@ -639,7 +640,7 @@ const EDUCATION_MODULES = [
       { label: 'FLOW Trial', citation: 'Perkovic V, et al. Effects of Semaglutide on Chronic Kidney Disease in Patients with Type 2 Diabetes (FLOW). N Engl J Med. 2024;391(2):109-121.', pmid: '38785209' },
       { label: 'SUSTAIN-6 Trial', citation: 'Marso SP, et al. Semaglutide and Cardiovascular Outcomes in Patients with Type 2 Diabetes (SUSTAIN-6). N Engl J Med. 2016;375(19):1834-1844.', pmid: '27633186' },
       { label: 'SPRINT Trial', citation: 'Wright JT Jr, et al. A Randomized Trial of Intensive versus Standard Blood-Pressure Control (SPRINT). N Engl J Med. 2015;373(22):2103-2116.', pmid: '26551272' },
-      { label: 'TRIDENT Trial', citation: 'Anderson CS, et al. Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage (TRIDENT). N Engl J Med. 2026;394:1571-1582.', pmid: '42019018' },
+      { label: 'TRIDENT Trial', citation: 'Anderson CS, et al. Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage (TRIDENT). N Engl J Med. 2026;394(16):1571-1582.', pmid: '42019018' },
       { label: 'RESPECT Trial', citation: 'Kitagawa K, et al. Effect of Standard vs Intensive Blood Pressure Control on the Risk of Recurrent Stroke: A Randomized Clinical Trial and Meta-analysis (RESPECT). JAMA Neurol. 2019;76(11):1309-1318.', pmid: '31355878' },
       { label: 'SPRINT MIND', citation: 'Williamson JD, et al. Effect of Intensive vs Standard Blood Pressure Control on Probable Dementia: A Randomized Clinical Trial (SPRINT MIND). JAMA. 2019;321(6):553-561.', pmid: '30688979' }
     ]
@@ -698,7 +699,7 @@ const EDUCATION_MODULES = [
   {
     id: 'intracranial-atherosclerosis',
     title: 'Intracranial Atherosclerotic Disease',
-    purpose: 'Mechanism-first diagnosis and treatment of symptomatic intracranial atherosclerotic stenosis — artery-to-artery embolism, branch atheromatous perforator occlusion and hemodynamic borderzone failure; the SAMMPRIS aggressive medical bundle; and why stenting (SAMMPRIS, CASSISS), bypass (CMOSS, COSS, EC/IC 1985) and bailout angioplasty (ANGEL-REBOOT) all failed their primary endpoints.',
+    purpose: 'Mechanism-first diagnosis and treatment of symptomatic intracranial atherosclerotic stenosis — artery-to-artery embolism, branch atheromatous perforator occlusion and hemodynamic borderzone failure; the SAMMPRIS aggressive medical bundle; and why stenting (SAMMPRIS, CASSISS), bypass for symptomatic atherosclerotic ICA/MCA occlusive disease (CMOSS, COSS, EC/IC 1985) and bailout angioplasty (ANGEL-REBOOT) all failed their primary endpoints.',
     actions: 'intracranial atherosclerosis icad icas stenosis wasid sammpris cassiss cmoss coss ec-ic bypass angel-reboot wingspan stenting dapt aspirin clopidogrel warfarin branch atheromatous perforator borderzone hemodynamic vessel wall imaging intraplaque hemorrhage rescue stenting mca basilar',
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-08-15',
@@ -732,7 +733,7 @@ const EDUCATION_MODULES = [
   {
     id: 'prehospital-triage-systems',
     title: 'Prehospital Triage & Stroke Systems of Care',
-    purpose: 'Deciding where the ambulance goes and how patients move between hospitals — mothership vs drip-and-ship and how to compute a local crossover, the neutral RACECAT result with its intracerebral hemorrhage harm signal, TRIAGE-STROKE, mobile stroke units (BEST-MSU, B_PROUD), why INTERACT4 forbids undifferentiated prehospital blood-pressure lowering, prehospital LVO scales (RACE, LAMS, C-STAT, FAST-ED), and door-in-door-out as the governing interfacility transfer metric.',
+    purpose: 'Deciding where the ambulance goes and how patients move between hospitals — mothership vs drip-and-ship and how to compute a local crossover, the neutral RACECAT result with its intracerebral hemorrhage harm signal, TRIAGE-STROKE, mobile stroke units (BEST-MSU, B_PROUD), why INTERACT4 does not support undifferentiated prehospital blood-pressure lowering, prehospital LVO scales (RACE, LAMS, C-STAT, FAST-ED), and door-in-door-out as the governing interfacility transfer metric.',
     actions: 'prehospital triage stroke systems of care ems routing mothership drip-and-ship bypass racecat triage-stroke best-msu mobile stroke unit b_proud interact4 ambulance blood pressure lvo scale race lams c-stat cpsss fast-ed door-in-door-out dido interfacility transfer prenotification telestroke stroke center certification thrombectomy capable comprehensive primary acute stroke ready',
     categories: ['pocket-card', 'printable'],
     lastReviewed: '2026-08-15',
@@ -1646,7 +1647,7 @@ export function DeviceDetectedSubclinicalAfCard() {
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>Steps 3&ndash;4: Band the Burden, Score the Patient</strong>
-                  <br />&bull; <strong>3. Band it:</strong> &lt;6 min (do not treat) &bull; 6 min to 24 h (individualize) &bull; &gt;24 h (manage as clinical-AF territory; note no dedicated RCT).
+                  <br />&bull; <strong>3. Band it:</strong> &lt;6 min (do not treat) &bull; 6 min to 24 h (individualize) &bull; &gt;24 h (OAC reasonable if CHA&#8322;DS&#8322;-VASc &ge;2 with shared decision-making &mdash; 2023 ACC/AHA/ACCP/HRS, COR 2a, B-NR; no dedicated RCT, and in 259 NOAH-AFNET 6 patients with AHRE &ge;24 h stroke was ~1%/patient-yr on placebo with no duration&ndash;treatment interaction, PMID: 37956458).
                   <br />&bull; <strong>4. Score it:</strong> CHA&#8322;DS&#8322;-VASc, the bleeding phenotype above, and the clinical context (incidental vs post-stroke). Check for an ECG that already documents AF &mdash; that ends the debate and mandates standard anticoagulation.
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
@@ -1842,8 +1843,8 @@ export function IchSurgicalDecisionMakingCard() {
             <CardSection color="amber" title="4. Posterior Fossa &amp; Decompressive Craniectomy &mdash; Where Non-Randomized Evidence Still Rules">
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '7.0pt', lineHeight: '1.34', color: 'var(--ink-soft)' }}>
                 <div style={{ border: '1.5px solid var(--amber)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
-                  <strong style={{ color: 'var(--amber-deep)', fontSize: '7.6pt' }}>Cerebellar ICH &mdash; the one Class 1 surgical recommendation</strong>
-                  <br />&bull; <strong>Trigger to operate</strong> (2022 AHA/ASA ICH guideline; PMID: 35579034): neurological deterioration, brainstem compression, or hydrocephalus from fourth-ventricular obstruction &rarr; <strong>immediate suboccipital decompression</strong>. This has never been randomised and never will be; the recommendation rests on non-randomised data and mechanism.
+                  <strong style={{ color: 'var(--amber-deep)', fontSize: '7.6pt' }}>Cerebellar ICH &mdash; a Class 1 surgical recommendation (to reduce mortality)</strong>
+                  <br />&bull; <strong>Trigger to operate</strong> (2022 AHA/ASA ICH guideline; PMID: 35579034): neurological deterioration, brainstem compression and/or hydrocephalus from ventricular obstruction, or cerebellar ICH volume &ge;15 mL &rarr; <strong>immediate surgical removal of the hemorrhage (&plusmn; EVD)</strong>, to reduce mortality. This has never been randomised and never will be; the recommendation rests on non-randomised data and mechanism.
                   <br />&bull; <strong>Why an EVD alone is a trap:</strong> draining supratentorial CSF across an obstructed fourth ventricle widens the pressure gradient and can drive <strong>upward transtentorial herniation</strong>. If you place one, place it with the OR already booked &mdash; not instead of it.
                   <br />&bull; <strong>The honest data</strong> (Kuramatsu, JAMA 2019; PMID: 31593272): individual-participant meta-analysis of 4 observational cohorts, 578 cerebellar ICH, propensity-matched 152 vs 152. Evacuation was <strong style={{ color: 'var(--red-deep)' }}>not</strong> associated with better mRS 0&ndash;3 at 3 months (30.9% vs 35.5%; adjusted OR 0.94, 95% CI 0.81&ndash;1.09, p=0.43) but was associated with survival (78.3% vs 61.2%; adjusted OR 1.25, 1.07&ndash;1.45, p=0.005; 12-month survival 71.7% vs 57.2%). <strong>Volume cuts both ways:</strong> at <strong>&le;12 cm&sup3;</strong> surgery was associated with a <em>lower</em> chance of favourable outcome (30.6% vs 62.3%, p=0.003); at <strong>&ge;15 cm&sup3;</strong> with greater survival (74.5% vs 45.1%, p&lt;0.001). Small cerebellar clots in an awake patient do not go to the OR.
                 </div>
@@ -1871,9 +1872,9 @@ export function IchSurgicalDecisionMakingCard() {
                 <tbody>
                   <tr>
                     <td><strong>Cerebellar</strong></td>
-                    <td>Any fall in GCS, brainstem compression, or 4th-ventricle obstruction (&ge;15 mL is an observational cutoff, not a guideline trigger)</td>
+                    <td>Any fall in GCS, brainstem compression, hydrocephalus from 4th-ventricle obstruction, or volume &ge;15 mL (each a 2022 AHA/ASA COR 1 indication for immediate surgical removal &plusmn; EVD, to reduce mortality)</td>
                     <td>Suboccipital craniectomy with evacuation, &plusmn; EVD placed <em>at the same sitting</em></td>
-                    <td>Guideline COR 1 for deterioration / compression / hydrocephalus (PMID: 35579034); volume cutoffs observational only (PMID: 31593272)</td>
+                    <td>Guideline COR 1 (to reduce mortality) for deterioration / brainstem compression / hydrocephalus from ventricular obstruction / volume &ge;15 mL (PMID: 35579034); the supporting volume data are observational (PMID: 31593272)</td>
                     <td>&le;12 mL and awake &rarr; observe; surgery was associated with <em>worse</em> function at that size. Reverse anticoagulation immediately &mdash; do not wait on the INR before calling the OR.</td>
                   </tr>
                   <tr>
@@ -1967,7 +1968,7 @@ export function EvtPeriproceduralCareCard() {
         <rect x="0" y="38" width="222" height="34" rx="3" fill="#fff5f5" stroke="#ef4444" strokeWidth="1" />
         <text x="8" y="50" fill="#b91c1c" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800">HARM ZONE: SBP &lt;140 mmHg &times; 24 h</text>
         <text x="8" y="60" fill="var(--ink)" fontSize="4.3pt" fontFamily="IBM Plex Sans">OPTIMAL-BP stopped early &bull; mRS 0&ndash;2: 39.4% vs 54.4%</text>
-        <text x="8" y="69" fill="var(--red-deep)" fontSize="4.2pt" fontFamily="IBM Plex Sans" fontWeight="700">adj OR 0.56 (0.33&ndash;0.96) &bull; sICH identical (9.0% vs 8.1%)</text>
+        <text x="8" y="69" fill="var(--red-deep)" fontSize="4.2pt" fontFamily="IBM Plex Sans" fontWeight="700">adj OR 0.56 (0.33&ndash;0.96) &bull; sICH similar (9.0% vs 8.1%)</text>
 
         <rect x="0" y="76" width="222" height="38" rx="3" fill="#f0fdf4" stroke="#16a34a" strokeWidth="1.5" />
         <text x="8" y="88" fill="#166534" fontSize="5.4pt" fontFamily="Outfit" fontWeight="800">DEFAULT ORDER: 140&ndash;180 mmHg, ceiling &le;180/105</text>
@@ -2236,7 +2237,7 @@ export function IntracranialAtherosclerosisCard() {
         <rect x="0" y="62" width="222" height="28" rx="3" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1" />
         <text x="7" y="72" fill="var(--amber-deep)" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800">3. Hemodynamic Borderzone Failure</text>
         <text x="7" y="81" fill="var(--ink)" fontSize="4.3pt" fontFamily="IBM Plex Sans">Internal borderzone &quot;rosary beads&quot;; deficits with upright posture or BP dips</text>
-        <text x="7" y="88" fill="var(--amber-deep)" fontSize="4.2pt" fontFamily="IBM Plex Sans" fontWeight="700">&rarr; Still lower BP &mdash; but taper deliberately, not abruptly (PMID 17515467)</text>
+        <text x="7" y="88" fill="var(--amber-deep)" fontSize="4.2pt" fontFamily="IBM Plex Sans" fontWeight="700">&rarr; Still lower BP (higher BP = more stroke, PMID 17515467); taper deliberately</text>
 
         <rect x="0" y="93" width="222" height="25" rx="3" fill="#f8fafc" stroke="var(--rule)" strokeWidth="1" />
         <text x="7" y="103" fill="var(--ink)" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800">4. Mixed &mdash; the most common pattern</text>
@@ -2251,7 +2252,7 @@ export function IntracranialAtherosclerosisCard() {
       <g transform="translate(257, 36)">
         <rect x="0" y="0" width="222" height="27" rx="3" fill="#f8fafc" stroke="var(--rule)" strokeWidth="1" />
         <text x="6" y="10" fill="var(--ink)" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800">WASID (NEJM 2005; PMID 15800226) &bull; n=569</text>
-        <text x="6" y="18" fill="var(--ink-soft)" fontSize="4.3pt" fontFamily="IBM Plex Sans">Warfarin vs aspirin 1300 mg: endpoint 21.8% vs 22.1% (HR 1.04)</text>
+        <text x="6" y="18" fill="var(--ink-soft)" fontSize="4.3pt" fontFamily="IBM Plex Sans">Aspirin 1300 mg vs warfarin: endpoint 22.1% vs 21.8% (HR 1.04)</text>
         <text x="6" y="25" fill="var(--red-deep)" fontSize="4.2pt" fontFamily="IBM Plex Sans" fontWeight="700">NO benefit; warfarin doubled death &amp; major hemorrhage &rarr; stopped early</text>
 
         <rect x="0" y="30" width="222" height="29" rx="3" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1" />
@@ -2352,7 +2353,7 @@ export function IntracranialAtherosclerosisCard() {
                   <tr>
                     <td><strong>WASID</strong><br />NEJM 2005;352:1305<br />PMID: 15800226</td>
                     <td>569 pts with TIA/stroke from 50&ndash;99% intracranial stenosis. Warfarin (INR 2.0&ndash;3.0) vs aspirin 1300 mg/d.</td>
-                    <td><strong style={{ color: 'var(--red-deep)' }}>Neutral for efficacy, harmful for safety.</strong> Primary endpoint 21.8% warfarin vs 22.1% aspirin (HR 1.04; 95% CI 0.73&ndash;1.48; p=0.83). Warfarin: death 9.7% vs 4.3% (p=0.02), major hemorrhage 8.3% vs 3.2% (p=0.01). Enrollment stopped for safety. <strong>Aspirin, not warfarin.</strong></td>
+                    <td><strong style={{ color: 'var(--red-deep)' }}>Neutral for efficacy, harmful for safety.</strong> Primary endpoint 21.8% warfarin vs 22.1% aspirin (HR for aspirin vs warfarin 1.04; 95% CI 0.73&ndash;1.48; p=0.83). Warfarin: death 9.7% vs 4.3% (p=0.02), major hemorrhage 8.3% vs 3.2% (p=0.01). Enrollment stopped for safety. <strong>Aspirin, not warfarin.</strong></td>
                   </tr>
                   <tr>
                     <td><strong>WASID High-Risk Phenotype</strong><br />Circulation 2006;113:555<br />PMID: 16432056</td>
@@ -2437,7 +2438,7 @@ export function IntracranialAtherosclerosisCard() {
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--red-deep)', fontSize: '7.4pt' }}>The Narrow Residual Role for Intervention</strong>
                   <br />&bull; <strong>Not first-line, ever.</strong> Discussion is confined to documented failure of the full bundle &mdash; recurrent territory events on DAPT with SBP and LDL at target &mdash; or hemodynamic symptoms with objectively proven flow failure.
-                  <br />&bull; <strong>One randomized trial <em>is</em> positive &mdash; BASIS</strong> (JAMA 2024;332:1059; PMID: 39235816): submaximal balloon angioplasty + aggressive medical management vs medical alone, 501 pts; primary endpoint 4.4% vs 13.5%; HR 0.32 (95% CI 0.16&ndash;0.63); p&lt;0.001 &mdash; but open-label, all-Chinese sites, 17.4% procedural complications, 14.5% dissection, and a medical-arm event rate well above SAMMPRIS. <strong>No stenting trial has ever been positive.</strong>
+                  <br />&bull; <strong>One randomized trial <em>is</em> positive &mdash; BASIS</strong> (JAMA 2024;332:1059; PMID: 39235816): submaximal balloon angioplasty + aggressive medical management vs medical alone, 501 pts; primary endpoint 4.4% vs 13.5%; HR 0.32 (95% CI 0.16&ndash;0.63); p&lt;0.001 &mdash; but open-label, all-Chinese sites, 17.4% procedural complications, 14.5% dissection, and a primary composite that also counted revascularization of the qualifying artery (1.2% vs 8.3%). <strong>No stenting trial has ever been positive.</strong>
                   <br />&bull; <strong>Document the conversation:</strong> quote SAMMPRIS 30-day 14.7% and CASSISS HR 1.10 to the patient before any consent.
                 </div>
               </div>
@@ -2904,7 +2905,7 @@ export function PrehospitalTriageSystemsCard() {
                   <strong style={{ color: 'var(--red-deep)', fontSize: '7.6pt' }}>INTERACT4: Do Not Lower BP Before You Know the Diagnosis</strong>
                   <br />&bull; <strong>Design (NEJM 2024; PMID 38752650):</strong> 2404 patients in China with suspected stroke causing a motor deficit and SBP &ge;150 mmHg, randomised <em>in the ambulance</em> within 2 h of onset (median 61 min) to target SBP 130&ndash;140 vs usual care. Mean SBP on hospital arrival 159 vs 170 mmHg.
                   <br />&bull; <strong>Overall: NEUTRAL</strong> &mdash; common OR 1.00 (95% CI 0.87&ndash;1.15), serious adverse events similar.
-                  <br />&bull; <strong>Opposite signs by subtype:</strong> hemorrhagic stroke <strong>benefited</strong> (cOR 0.75; 95% CI 0.60&ndash;0.92) while cerebral ischemia was <strong>harmed</strong> (cOR 1.30; 95% CI 1.06&ndash;1.60). 46.5% of the 2240 imaged patients had hemorrhagic stroke. <span style={{ color: 'var(--red-deep)' }}>No undifferentiated prehospital BP protocol is safe &mdash; withhold ambulance BP lowering until imaging separates the two.</span>
+                  <br />&bull; <strong>Opposite signs by subtype:</strong> hemorrhagic stroke <strong>benefited</strong> (cOR 0.75; 95% CI 0.60&ndash;0.92) while cerebral ischemia was <strong>harmed</strong> (cOR 1.30; 95% CI 1.06&ndash;1.60). 46.5% of the 2240 imaged patients had hemorrhagic stroke. <span style={{ color: 'var(--red-deep)' }}>The ambulance cannot tell the two apart, so undifferentiated BP lowering risks harming patients whose stroke proves ischemic &mdash; withhold ambulance BP lowering until imaging separates the two.</span>
                 </div>
 
                 <div style={{ border: '1.5px solid var(--teal)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
@@ -3502,7 +3503,7 @@ export function PostStrokeRecoveryCard() {
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>The 90-Day Structure</strong>
-                  <br />&bull; <strong>Guideline anchor (AHA/ASA, Stroke 2016; PMID: 27145936):</strong> organised, coordinated interdisciplinary rehabilitation with adequate resources, dose and duration is an essential component of stroke care, not a discretionary add-on.
+                  <br />&bull; <strong>Guideline anchor (AHA/ASA, Stroke 2016; PMID: 27145936):</strong> organised, coordinated interdisciplinary rehabilitation with adequate resources, dose and duration is an essential component of stroke care, not a discretionary add-on. The 2016 guideline has since been replaced by the 2026 AHA/ASA Guideline for Adult Stroke Rehabilitation and Recovery (Stroke 2026; PMID: 42657476); check current recommendations there.
                   <br />&bull; <strong>Visit 1 (7&ndash;14 d):</strong> confirm antithrombotic, statin and antihypertensive actually filled; reconcile discharge changes; mood check.
                   <br />&bull; <strong>Visit 2 (1 mo):</strong> BP and LDL to target; spasticity, shoulder pain, falls and continence; therapy attendance.
                   <br />&bull; <strong>Visit 3 (3 mo):</strong> cognition and mood screens; fatigue; driving and work; re-set the recovery expectation with the family; confirm aetiologic workup closed (including prolonged rhythm monitoring for embolic stroke of undetermined source).
@@ -4018,7 +4019,7 @@ export function ToastClassificationCard() {
           <h3>2. Small-Vessel Occlusion (SVO / Lacune)</h3>
           <ul className="toast-card-list">
             <li><strong>Clinical:</strong> Classic lacunar syndrome (pure motor, pure sensory, sensorimotor, ataxic hemiparesis, clumsy hand) <strong>WITHOUT</strong> cortical signs.</li>
-            <li><strong>Imaging:</strong> Normal scan or deep subcortical/brainstem lesion <strong>≤ 2.0 cm</strong>.</li>
+            <li><strong>Imaging:</strong> Normal scan or subcortical/brainstem lesion <strong>&lt; 1.5 cm</strong> in diameter.</li>
             <li><strong>Vascular/Cardiac:</strong> Relevant artery must lack &gt;50% stenosis, and patient must lack high-risk cardioembolic sources.</li>
           </ul>
         </div>
@@ -4045,7 +4046,7 @@ export function ToastClassificationCard() {
               <strong style={{color: 'var(--red-deep)', display: 'block', fontSize: '7.5pt', marginBottom: '2px'}}>HIGH-RISK SOURCES:</strong>
               • Mechanical prosthetic valve<br/>
               • Mitral stenosis w/ AFib<br/>
-              • Atrial fibrillation / flutter<br/>
+              • Atrial fibrillation<br/>
               • Left atrial / LAA thrombus<br/>
               • Sick sinus syndrome<br/>
               • Recent MI (&lt; 4 weeks)<br/>
@@ -4169,7 +4170,7 @@ export function DaptRegimensCard() {
             NIHSS ≤3 or ABCD² ≥4. <strong>Within 12 hours</strong> of onset.
           </td>
           <td style={{padding: '4px 6px', borderBottom: '1px solid var(--rule-soft)'}}>
-            <strong>Clopidogrel 600 mg</strong> +<br/>Aspirin 162–325 mg
+            <strong>Clopidogrel 600 mg</strong> +<br/>Aspirin 50–325 mg (162 mg/day × 5 days recommended)
           </td>
           <td style={{padding: '4px 6px', borderBottom: '1px solid var(--rule-soft)'}}>
             <strong>Clopidogrel 75mg qD</strong> +<br/>Aspirin 50&ndash;325mg qD for <strong>90 days</strong> (as randomized)
@@ -4335,7 +4336,7 @@ export function MalignantInfarctionCard() {
         <div>
           <strong>Radiographic Markers:</strong>
           <br/>• Infarction of <strong>≥ 50%</strong> of the MCA territory (CT/MRI)
-          <br/>• DWI core volume <strong>&gt; 82 mL</strong> within 6 hours
+          <br/>• DWI core volume <strong>&gt; 82 mL</strong> within 6 hours predicts a malignant course (prognostic cohort threshold: specificity 0.98, sensitivity 0.52)
           <br/>• DWI core volume <strong>&gt; 145 mL</strong> within 14 hours
           <br/>• Midline shift or mass effect on repeat imaging
           <br/>• <strong>Surgical Spec</strong>: Bone flap diameter <strong>≥ 12–15 cm</strong> with duraplasty.
@@ -4394,7 +4395,7 @@ export function MalignantInfarctionCard() {
         <div className="stacked-bar-container" style={{opacity: '0.7'}}>
           <div className="bar-segment bar-mrs-03" style={{width: '3%'}}>3%</div>
           <div className="bar-segment bar-mrs-4" style={{width: '15%'}}>15%</div>
-          <div className="bar-segment bar-mrs-5" style={{width: '12%'}}>12%</div>
+          <div className="bar-segment bar-mrs-5" style={{width: '12%'}}>13%</div>
           <div className="bar-segment bar-mrs-6" style={{width: '70%'}}>70%</div>
         </div>
       </div>
@@ -4651,7 +4652,7 @@ export function AfibAnticoagTimingCard() {
     
     <div className="ref-citation" style={{marginTop: '0', padding: '6px 10px', fontSize: '7.5pt', lineHeight: '1.45'}}>
       <strong>ELAN Trial:</strong> Fischer U et al. <em>N Engl J Med</em>. 2023;388:2411-2421. <a href="https://pubmed.ncbi.nlm.nih.gov/37222476/" target="_blank">PMID: 37222476</a><br/>
-      <strong>CATALYST Meta-Analysis:</strong> Dehbi HM et al. <a href="https://pubmed.ncbi.nlm.nih.gov/40570866/" target="_blank"><em>Lancet</em> 2025; PMID: 40570866</a>. Pooled data (n=5,441) from <a href="https://pubmed.ncbi.nlm.nih.gov/37222476/" target="_blank">ELAN (PMID: 37222476)</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/39491870/" target="_blank">OPTIMAS (<em>Lancet</em> 2024; PMID: 39491870)</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/36065821/" target="_blank">TIMING (<em>Circulation</em> 2022; PMID: 36065821)</a>, and <a href="https://pubmed.ncbi.nlm.nih.gov/40163159/" target="_blank">START (<em>JAMA Neurol</em> 2025; PMID: 40163159)</a>. Early DOAC (median Day 2) vs delayed (median Day 7-8) showed no excess sICH (0.4% vs 0.4%) and fewer recurrent ischemic events in pooled data.<br/>
+      <strong>CATALYST Meta-Analysis:</strong> Dehbi HM et al. <a href="https://pubmed.ncbi.nlm.nih.gov/40570866/" target="_blank"><em>Lancet</em> 2025; PMID: 40570866</a>. Pooled data (n=5,441) from <a href="https://pubmed.ncbi.nlm.nih.gov/37222476/" target="_blank">ELAN (PMID: 37222476)</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/39491870/" target="_blank">OPTIMAS (<em>Lancet</em> 2024; PMID: 39491870)</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/36065821/" target="_blank">TIMING (<em>Circulation</em> 2022; PMID: 36065821)</a>, and <a href="https://pubmed.ncbi.nlm.nih.gov/40163159/" target="_blank">START (<em>JAMA Neurol</em> 2025; PMID: 40163159)</a>. Early DOAC (≤4 days) vs later (≥5 days) initiation showed no excess sICH (0.4% vs 0.4%) and fewer recurrent ischemic events in pooled data.<br/>
       <strong>US dosing label:</strong> <a href="https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=e77d3400-56ad-11e3-949a-0800200c9a66" target="_blank" rel="noopener noreferrer">Savaysa §2.1 (NVAF)</a>; check each current label for interactions and renal dosing.<br/>
       <strong>AFib Guidelines:</strong> Joglar JA et al. 2023 ACC/AHA/ACCP/HRS Guideline. <em>Circulation</em>. 2024;149:e1-e156. <a href="https://pubmed.ncbi.nlm.nih.gov/38033089/" target="_blank">PMID: 38033089</a>
     </div>
@@ -5045,7 +5046,7 @@ export const ICPInfographic = () => {
                 <strong className="text-ok-800 dark:text-ok-400 block text-xs">Medical Interventions</strong>
                 <ul className="list-disc pl-5 space-y-1 text-[11px] text-slate-600 dark:text-ink-2">
                   <li><strong>Analgesia/sedation (fentanyl/propofol):</strong> Target RASS &minus;4 to &minus;5 to prevent coughing, agitation, or ventilator dyssynchrony.</li>
-                  <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter. <span className="font-semibold text-crit-600 dark:text-crit-400">Hold if Serum Osmolarity &gt; 320 mOsm/kg OR Osmolar Gap &ge; 20 mOsm/kg.</span></li>
+                  <li><strong>Mannitol 20% solution:</strong> 1 g/kg IV bolus over 20–30 min. Must use in-line 0.22-micron filter. <span className="font-semibold text-crit-600 dark:text-crit-400">Hold if Serum Osmolality &gt; 320 mOsm/kg OR Osmolar Gap &ge; 20 mOsm/kg.</span></li>
                   <li><strong>Hypertonic Saline (HTS):</strong> 3% (150–250 mL bolus) or 23.4% (30 mL rescue bolus; central line access only). <span className="font-semibold text-crit-600 dark:text-crit-400">Hold if Serum Sodium &gt; 155–160 mEq/L or Chloride &gt; 115–120 mEq/L.</span></li>
                   <li><strong>Ventilation:</strong> Maintain normocapnia (<code className="font-mono">PaCO2</code> 35–45 mmHg). For impending herniation only, use brief controlled hyperventilation targeting about 30–35 mmHg while definitive therapy is initiated; avoid prophylactic or prolonged hypocapnia.</li>
                   <li><strong>Refractory ICP Elevation:</strong> High-dose barbiturate therapy (pentobarbital) titrated to burst suppression on EEG.</li>
@@ -5749,7 +5750,7 @@ function PlanCalculatorTab() {
                   <h4 className="text-2xl font-black text-teal-900 dark:text-white">{planRisk.mortality}</h4>
                 </div>
                 <div className="text-right">
-                  <span className="text-[9px] uppercase tracking-wide font-bold text-teal-700 dark:text-teal-400 block">Death/Dependency</span>
+                  <span className="text-[9px] uppercase tracking-wide font-bold text-teal-700 dark:text-teal-400 block">Death/Severe Dependency (mRS 5–6)</span>
                   <h4 className="text-2xl font-black text-teal-900 dark:text-white">{planRisk.depMortality}</h4>
                 </div>
               </div>
@@ -5763,7 +5764,7 @@ function PlanCalculatorTab() {
               </div>
               <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
                 • <strong>Risk Classification</strong>: {planTotal < 6 ? 'Low risk (<1%)' : planTotal < 10 ? 'Mildly elevated (~2-4%)' : planTotal < 13 ? 'Moderate risk (~5-15%)' : planTotal < 16 ? 'High risk (~15-35%)' : 'Very high risk (≥50%)'}.
-                <br/>• <strong>Clinical Context</strong>: PLAN score predicts 30-day mortality and functional dependency at discharge. Do not use as a stand-alone criterion to withhold reperfusion therapies.
+                <br/>• <strong>Clinical Context</strong>: PLAN score predicts 30-day mortality and death or severe dependency (mRS 5–6) at discharge. Do not use as a stand-alone criterion to withhold reperfusion therapies.
               </p>
             </div>
 
@@ -6332,16 +6333,16 @@ export function CervicalDissectionCard() {
                 <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '7.6pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
                   <div>
                     <strong style={{color: 'var(--red-deep)', fontSize: '8pt'}}>Extracranial Dissection</strong>
-                    <br/>• <strong>Antithrombotics</strong>: Continue for at least 3–6 months (Class 2a, LOE B-NR).
+                    <br/>• <strong>Antithrombotics</strong>: Continue antiplatelet or anticoagulant therapy for at least 3 months (2026 AHA/ASA AIS guideline, Class 2a); the 2024 AHA scientific statement suggests at least 3–6 months, individualized.
                     <br/>• <strong>Choice</strong>: Individualized choice of Single Antiplatelet vs. VKA/DOAC; short-term DAPT (21–90d) is a reasonable alternative (ESO consensus).
-                    <br/>• <strong>STOP-CAD</strong>: In occlusions, consider anticoagulation Day 1–30, then switch to antiplatelet.
+                    <br/>• <strong>STOP-CAD</strong>: In occlusive dissection, observational data associate anticoagulation with lower ischemic stroke risk (aHR 0.40); if anticoagulation is chosen, switching to antiplatelet therapy before 180 days seems reasonable to limit major bleeding (not tested in an RCT).
                     <br/>• <strong>IV Thrombolysis</strong>: Reasonable within 4.5 hours in otherwise-eligible patients (Class 2a, LOE C-LD).
                   </div>
                   <div style={{borderLeft: '1.5px dashed var(--red)', paddingLeft: '10px'}}>
                     <strong style={{color: 'var(--red-deep)', fontSize: '8pt'}}>Intracranial &amp; Pseudoaneurysms</strong>
                     <br/>• <strong>SAH</strong>: Lack external elastic lamina &amp; thin adventitia; rupture risk.
-                    <br/>• <strong>Anticoagulation</strong>: Avoided if SAH present. Prefer single antiplatelet.
-                    <br/>• <strong>IVT Caution</strong>: IVT is safe in extracranial CeAD (Class I) but safety/efficacy in cases with intracranial extension is not well established (AHA 2024).
+                    <br/>• <strong>Anticoagulation</strong>: Avoid anticoagulation when SAH is present; intracranial dissection with SAH warrants early endovascular or surgical intervention (ESO 2021). For ischemic presentations without SAH, single antiplatelet therapy is commonly preferred.
+                    <br/>• <strong>IVT Caution</strong>: IVT is reasonable in otherwise-eligible extracranial CeAD, but the risks and benefits of IVT in cases with intracranial extension are not well established (AHA 2024 scientific statement, ungraded).
                     <br/>• <strong>Stenting</strong>: Reserve for recurrent ischemia despite optimal medical therapy or severe flow-limiting stenosis.
                   </div>
                   <div style={{gridColumn: '1 / -1', borderTop: '1px dashed var(--red)', paddingTop: '6.5px', marginTop: '4px', fontSize: '7.4pt'}}>
@@ -6377,7 +6378,7 @@ export function CervicalDissectionCard() {
                     <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>N = 194 (PP = 173). Extracranial. RCT.</td>
                     <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>Aspirin 300mg daily vs. VKA for 3 months.</td>
                     <td style={{padding: '1.5px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
-                      • <strong>Primary Composite (Stroke, major hemorrhage, death, or new MRI lesion at 14d)</strong>: 23% vs. 15% (Non-inferiority NOT met). Ischemic stroke: 8.0% vs. 0%.
+                      • <strong>Primary Composite (stroke, major hemorrhage, or death to 90d; new ischemic/hemorrhagic MRI lesion at 14d)</strong>: 23% vs. 15% (Non-inferiority NOT met). Ischemic stroke: 8.0% vs. 0%.
                     </td>
                   </tr>
                   <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
@@ -6395,8 +6396,8 @@ export function CervicalDissectionCard() {
                     <td style={{padding: '1.5px 0', verticalAlign: 'top'}}>Antiplatelet vs. Anticoagulation.</td>
                     <td style={{padding: '1.5px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
                       • <strong>Temporal Risk</strong>: 87% of recurrent strokes occurred in the first 30 days.
-                      <br/>• <strong>Occlusion Benefit</strong>: Patients with complete arterial occlusion at baseline had the highest stroke risk and benefited most from early anticoagulation.
-                      <br/>• <strong>Transition Strategy</strong>: Initiate anticoagulation for days 1–30 (highest stroke risk window) and then transition to antiplatelet monotherapy at day 30 to mitigate long-term bleeding risks (which rise significantly by day 180).
+                      <br/>• <strong>Occlusion Benefit</strong>: In an interaction analysis, occlusive dissection was associated with lower ischemic stroke risk on anticoagulation (adjusted HR 0.40, 95% CI 0.18–0.88); overall, anticoagulation was associated with a nonsignificantly lower stroke risk by day 30 (adjusted HR 0.71, 95% CI 0.45–1.12).
+                      <br/>• <strong>Transition Strategy</strong>: Authors' interpretation: if anticoagulation is chosen, switching to antiplatelet therapy before 180 days seems reasonable, because anticoagulation was associated with more major hemorrhage by day 180 (adjusted HR 5.56, 95% CI 1.53–20.13) but not by day 30 (adjusted HR 1.39, 95% CI 0.35–5.45). A fixed day-30 switch was not tested.
                     </td>
                   </tr>
                 </tbody>
@@ -6529,7 +6530,7 @@ export function FibromuscularDysplasiaCard() {
             >
               <div 
                 className="relative group cursor-zoom-in overflow-hidden rounded-md flex justify-center items-center w-full h-full"
-                onClick={() => setLightboxImage({ src: 'assets/fmd_stroke_mechanisms.png', alt: 'Fibromuscular Dysplasia Stroke Mechanisms', title: 'Stroke Mechanisms &amp; Systemic Beds in FMD' })}
+                onClick={() => setLightboxImage({ src: 'assets/fmd_stroke_mechanisms.png', alt: 'Fibromuscular Dysplasia Stroke Mechanisms', title: 'Stroke Mechanisms & Systemic Beds in FMD' })}
               >
                 <img 
                   src="assets/fmd_stroke_mechanisms.png" 
@@ -6559,14 +6560,14 @@ export function FibromuscularDysplasiaCard() {
                 </div>
                 <div style={{borderLeft: '1.5px dashed var(--purple)', paddingLeft: '10px'}}>
                   <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Clinical Presentation</strong>
-                  <br/>• <strong>Pulsatile Tinnitus</strong>: "Whooshing" or beating sound in sync with heartbeat (extremely common in cranial FMD).
+                  <br/>• <strong>Pulsatile Tinnitus</strong>: "Whooshing" or beating sound in sync with heartbeat (reported in about 22–27% of patients with FMD).
                   <br/>• Neck pain, headache, carotid bruits, or lightheadedness.
                   <br/>• Neurological deficits due to <strong>cervical dissection (CeAD)</strong>, distal embolization, or hemodynamic insufficiency.
                 </div>
                 <div style={{borderLeft: '1.5px dashed var(--purple)', paddingLeft: '10px'}}>
                   <strong style={{color: 'var(--purple-deep)', fontSize: '8pt'}}>Systemic Screening</strong>
                   <br/>• <strong>Brain-to-Pelvis Screen</strong>: Mandatory <strong>one-time</strong> cross-sectional vascular imaging (CTA or MRA) of all arterial beds from head to pelvis.
-                  <br/>• <strong>Aneurysms</strong>: High risk (~13-22% prevalence). One-time screen for intracranial aneurysms.
+                  <br/>• <strong>Aneurysms</strong>: Aneurysm at any site in ~17–22% of US Registry patients; intracranial aneurysm ~7% overall (13% of women in the US Registry), hence the one-time brain-to-pelvis screen.
                 </div>
               </div>
             </div>
@@ -6590,14 +6591,14 @@ export function FibromuscularDysplasiaCard() {
                 <div style={{display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '12px', fontSize: '7.6pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
                   <div>
                     <strong style={{color: 'var(--red-deep)', fontSize: '8pt'}}>Pharmacotherapy &amp; Counseling</strong>
-                    <br/>• <strong>Antiplatelet Therapy</strong>: Aspirin <strong>81–325 mg daily</strong> is recommended (Class I, 2019 Consensus) for both asymptomatic and symptomatic patients to prevent thromboembolic stroke.
+                    <br/>• <strong>Antiplatelet Therapy</strong>: Single antiplatelet therapy (typically low-dose aspirin 75–100 mg daily) is reasonable, absent contraindication, for symptomatic and asymptomatic cerebrovascular FMD to potentially prevent thromboembolic complications (2019 International Consensus, expert-consensus based; no trial evidence).
                     <br/>• <strong>BP Control</strong>: Aggressive BP control (ACEi or ARBs first-line for renal protection) with close creatinine monitoring.
                     <br/>• <strong>Trauma Warning</strong>: Patients must strictly <strong>avoid neck manipulation</strong> (e.g., chiropractic therapy, contact sports, rollercoasters).
                   </div>
                   <div style={{borderLeft: '1.5px dashed var(--red)', paddingLeft: '10px'}}>
                     <strong style={{color: 'var(--red-deep)', fontSize: '8pt'}}>Procedural Interventions</strong>
                     <br/>• <strong>Revascularization</strong>: Reserved for patients with recurrent TIA/stroke despite antiplatelets, or severe flow-limiting stenosis.
-                    <br/>• <strong>Angioplasty (PTA)</strong>: Percutaneous angioplasty <strong>WITHOUT stenting</strong> is the primary intervention. Stents are generally held unless required for dissection salvage or aneurysm treatment.
+                    <br/>• <strong>Angioplasty (PTA)</strong>: Percutaneous angioplasty <strong>WITHOUT stenting</strong> is the primary intervention for renal FMD, with stents reserved for bailout (e.g., flow-limiting dissection) or aneurysm treatment. For cervical FMD, evidence is limited: after FMD-related cervical dissection, stenting may be considered for recurrent ischemic events despite antithrombotic therapy, while dissecting aneurysms or residual post-dissection stenosis rarely require endovascular treatment.
                   </div>
                 </div>
               </div>
@@ -6622,7 +6623,7 @@ export function FibromuscularDysplasiaCard() {
                     <td style={{padding: '2px 0', verticalAlign: 'top'}}>• Carotid: 74.3%<br/>• Renal: 69.7%<br/>• Vertebral: 36.5%<br/>• Multivessel: 57.2%</td>
                     <td style={{padding: '2px 0', verticalAlign: 'top', color: 'var(--ink-soft)'}}>
                       • <strong>Demographics</strong>: 91% female, mean age at diagnosis 51.9 years (SD 13.4; range 5–83).
-                      <br/>• <strong>Events at Diagnosis</strong>: Stroke (7.6%), TIA (18.8%), Cervical Dissection (19.7%), Aneurysm (17.0%).
+                      <br/>• <strong>Events at Diagnosis</strong>: TIA or stroke (19.2%), arterial dissection at any site (19.7%), aneurysm at any site (17%).
                       <br/>• <strong>Delay</strong>: Average of <strong>4.8 years</strong> from first symptom to diagnosis.
                     </td>
                   </tr>
@@ -6642,7 +6643,8 @@ export function FibromuscularDysplasiaCard() {
             <CardRefFooter style={{ fontSize: '6.7pt' }} refs={[
               { label: 'FMD Scientific Statement', cite: 'Olin JW et al. Circulation. 2014;129(9):1048-1078.', pmid: '24548843' },
               { label: 'First International Consensus', cite: 'Gornik HL et al. Vasc Med. 2019;24(2):164-189.', pmid: '30648921' },
-              { label: 'CADISS Trial', cite: 'CADISS Trial Investigators. Lancet Neurol. 2015;14(4):361-367.', pmid: '25684164' },
+              { label: 'US Registry for FMD', cite: 'Olin JW et al. Circulation. 2012;125(25):3182-3190.', pmid: '22615343' },
+              { label: 'FEIRI Registry', cite: 'Pappaccogli M et al. Cardiovasc Res. 2021;117(3):950-959.', pmid: '32282921' },
               { label: 'TREAT-CAD Trial', cite: 'Engelter ST et al. Lancet Neurol. 2021;20(5):341-350.', pmid: '33765420' },
               { label: 'STOP-CAD Study', cite: 'Yaghi S et al. Stroke. 2024;55(4):908-918.', pmid: '38335240' },
               { label: 'Kaufmann IPD Meta-analysis', cite: 'Kaufmann JE et al. JAMA Neurol. 2024;81(6):630-637.', pmid: '38739383' },
@@ -6841,7 +6843,7 @@ export function BrainDeathCard() {
             {/* Citations Footer */}
             <div className="ref-citation" style={{marginTop: 'auto', padding: '8px 10px', fontSize: '8.2pt', lineHeight: '1.3'}}>
               <strong>Consensus Guideline:</strong> Greer DM, et al. Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Guideline. <em>Neurology</em>. 2023;101(24):1112-1132. <a href="https://pubmed.ncbi.nlm.nih.gov/37821233/" target="_blank">PMID: 37821233</a>.<br/>
-              <strong>AAN 2010 Guideline Update:</strong> Wijdicks EF, et al. Evidence-based guideline update: determining brain death in adults. <em>Neurology</em>. 2010;74(23):1911-1918. <a href="https://pubmed.ncbi.nlm.nih.gov/20530327/" target="_blank">PMID: 20530327</a>. (Found insufficient evidence on newer ancillary tests; the Section 4 accept/reject criteria follow the 2023 consensus guideline.)
+              <strong>AAN 2010 Guideline (prior; updated by 2023 BD/DNC consensus guideline):</strong> Wijdicks EF, et al. Evidence-based guideline update: determining brain death in adults. <em>Neurology</em>. 2010;74(23):1911-1918. <a href="https://pubmed.ncbi.nlm.nih.gov/20530327/" target="_blank">PMID: 20530327</a>. (Found insufficient evidence on newer ancillary tests; the Section 4 accept/reject criteria follow the 2023 consensus guideline.)
             </div>
           </div>
         </div>
@@ -6928,13 +6930,13 @@ export function AntiepilepticDrugsCard() {
                 <div className="toast-card primary" style={{padding: '8px 10px'}}>
                   <h3 style={{fontSize: '9pt', fontWeight: '800', color: 'var(--purple-deep)', marginBottom: '3px'}}>1. Seizure Classification &amp; Prophylaxis</h3>
                   <ul className="toast-card-list" style={{fontSize: '7.6pt', lineHeight: '1.35'}}>
-                    <li><strong>Early Seizure (Acute Symptomatic):</strong> Occurs <strong>&le; 7 days</strong> of stroke. Caused by local tissue injury, excitotoxicity. Low long-term epilepsy risk. Routine prophylaxis is <strong>NOT recommended</strong>.</li>
+                    <li><strong>Early Seizure (Acute Symptomatic):</strong> Occurs <strong>&le; 7 days</strong> of stroke. Caused by local tissue injury, excitotoxicity. Lower recurrence risk than a late seizure (~33% vs ~72% at 10 years), but still a strong predictor of later epilepsy (3 SeLECT points, the highest-weighted item). Routine prophylaxis is <strong>NOT recommended</strong>.</li>
                     <li><strong>Late Seizure (Unprovoked):</strong> Occurs <strong>&gt; 7 days</strong> of stroke. Caused by structural scar tissue/remodeling. High recurrence risk (&gt;70%). A single late seizure defines <strong>Post-Stroke Epilepsy (PSE)</strong>; initiates long-term ASM.</li>
                     <li><strong>AHA/ASA Prophylaxis Guidelines:</strong>
                       <br/>• <strong>AIS &amp; ICH:</strong> Routine ASM prophylaxis is <strong>not recommended</strong> (Class III).
-                      <br/>• <strong>aSAH:</strong> Routine prophylaxis is <strong>not beneficial</strong> (Class III); however, a short course (3-7 days) <em>may</em> be considered in high-risk features (MCA aneurysm, high-grade SAH, hydrocephalus, or cortical infarction) (Class IIb).
+                      <br/>• <strong>aSAH:</strong> Routine prophylaxis is <strong>not beneficial</strong> (Class III); however, prophylactic ASM <em>may</em> be reasonable with high-seizure-risk features (ruptured MCA aneurysm, high-grade SAH, ICH, hydrocephalus, or cortical infarction) (Class IIb, 2023 AHA/ASA); the 2026 NCS guideline conditionally allows ASM or no ASM and, if used, a short (&le;3 days) or long (&gt;3 days) course.
                     </li>
-                    <li><strong>Early Seizures &amp; Cortical Presentations (2026 nuance):</strong> An early acute-symptomatic seizure warrants treating the seizure (a short ASM course) but does <strong>not</strong> by itself mandate long-term therapy — reassess at follow-up and taper if no recurrence. A single <strong>late</strong> (unprovoked, &gt;7d) seizure defines post-stroke epilepsy and warrants ongoing ASM. Late-seizure risk is higher with <strong>cortical involvement, hemorrhagic transformation, and larger/severe strokes</strong>; <strong>lobar/cortical ICH</strong> is more epileptogenic than deep ICH. Favor surveillance and a low threshold to treat over routine prophylaxis.</li>
+                    <li><strong>Early Seizures &amp; Cortical Presentations:</strong> An early acute-symptomatic seizure warrants treating the seizure (a short ASM course) but does <strong>not</strong> by itself mandate long-term therapy — reassess at follow-up and taper if no recurrence. A single <strong>late</strong> (unprovoked, &gt;7d) seizure defines post-stroke epilepsy and warrants ongoing ASM. Late-seizure risk is higher with <strong>cortical involvement, hemorrhagic transformation, and larger/severe strokes</strong>; <strong>lobar/cortical ICH</strong> is more epileptogenic than deep ICH. Favor surveillance and a low threshold to treat over routine prophylaxis.</li>
                   </ul>
                 </div>
 
@@ -6950,7 +6952,7 @@ export function AntiepilepticDrugsCard() {
               {/* Column 2: Risk Stratification Scores */}
               <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
                 <div className="toast-card neutral" style={{padding: '8px 10px'}}>
-                  <h3 style={{fontSize: '9pt', fontWeight: '800', color: 'var(--slate)', marginBottom: '3px'}}>4. SeLECT Prognostic Score</h3>
+                  <h3 style={{fontSize: '9pt', fontWeight: '800', color: 'var(--slate)', marginBottom: '3px'}}>3. SeLECT Prognostic Score</h3>
                   <table style={{width: '100%', fontSize: '7.2pt', borderCollapse: 'collapse', marginBottom: '4px', lineHeight: '1.2'}}>
                     <thead>
                       <tr style={{borderBottom: '1px solid var(--rule-soft)'}}>
@@ -6982,7 +6984,7 @@ export function AntiepilepticDrugsCard() {
                     </tbody>
                   </table>
                   <div style={{fontSize: '7.2pt', borderTop: '1px dashed rgba(74,90,109,0.3)', paddingTop: '4px', lineHeight: '1.2'}}>
-                    <strong>Interpretation:</strong> Score 0 (1.3% risk at 5yr), Score 3 (9% risk at 5yr), Score 6 (34% risk at 5yr), Score 9 (83% risk at 5yr).
+                    <strong>Interpretation:</strong> Score 0 (1.3% risk at 5yr), intermediate scores carry progressively higher risk, Score 9 (83% risk at 5yr).
                   </div>
                 </div>
               </div>
@@ -6990,7 +6992,7 @@ export function AntiepilepticDrugsCard() {
 
             {/* Antiseizure Medications (ASMs) Selection Table */}
             <div className="toast-card alert-red" style={{padding: '8px 10px', display: 'flex', flexDirection: 'column', flexGrow: 1}}>
-              <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--red-deep)', marginBottom: '4px', textAlign: 'center'}}>5. Clinical ASM Comparison Matrix</h3>
+              <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--red-deep)', marginBottom: '4px', textAlign: 'center'}}>4. Clinical ASM Comparison Matrix</h3>
               <table style={{width: '100%', fontSize: '7.4pt', borderCollapse: 'collapse', textAlign: 'left', lineHeight: '1.3'}}>
                 <thead>
                   <tr style={{borderBottom: '1.5px solid var(--rule)', color: 'var(--ink)'}}>
@@ -7231,7 +7233,8 @@ export function CvstCard() {
               { label: 'RE-SPECT CVT', cite: 'Ferro JM et al. JAMA Neurol. 2019;76(12):1457-1465.', pmid: '31479105' },
               { label: 'ACTION-CVT', cite: 'Yaghi S et al. Stroke. 2022;53(3):728-738.', pmid: '35143325' },
               { label: 'TO-ACT', cite: 'Coutinho JM et al. JAMA Neurol. 2020;77(8):966-973.', pmid: '32421159' },
-              { label: 'AHA/ASA Statement', cite: 'Saposnik G et al. Stroke. 2011;42(4):1158-1192.', pmid: '21293023' },
+              { label: 'AHA Scientific Statement 2024', cite: 'Saposnik G et al. Stroke. 2024;55(3):e77-e90.', pmid: '38284265' },
+              { label: 'AHA/ASA Statement 2011', cite: 'Saposnik G et al. Stroke. 2011;42(4):1158-1192.', pmid: '21293023' },
             ]} />
           </div>
         </div>
@@ -7323,7 +7326,7 @@ export function LargeCoreThrombectomyCard() {
             {/* §3 Bottom line & caveats (red) */}
             <CardSection color="red" title="3. Bottom Line & Caveats" style={{ marginBottom: '6px' }}>
               <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
-                <li>EVT is now recommended for <strong>selected large-core patients</strong> (low ASPECTS or large core with salvageable tissue) — reflected in the 2026 AHA/ASA AIS guideline. Benefit is usually a <strong>shift toward less disability</strong>, not independence.</li>
+                <li>EVT is now recommended for <strong>selected large-core patients</strong> (low ASPECTS or large core with salvageable tissue) — reflected in the 2026 AHA/ASA AIS guideline. Benefit is mainly a <strong>shift toward less disability</strong>; independence (mRS 0–2) also increases but is reached by a minority (e.g., 20% vs 7% in SELECT2).</li>
                 <li>ATLAS also showed a <strong>mortality benefit with EVT</strong> (aRR 0.82; 95% CI 0.70–0.97; p=0.022) and <strong>no significant sICH excess</strong> vs medical management (1.1% vs 1.0%).</li>
                 <li>ATLAS (Sarraj, Lancet 2026;407:2015-26; PMID: 42107392) — an IPD meta-analysis of six trials (RESCUE-Japan LIMIT, ANGEL-ASPECT, SELECT2, TENSION, TESLA, LASTE) — found benefit <strong>consistent across ASPECTS/core strata</strong> EXCEPT estimated core <strong>≥150 mL presenting beyond 6 h</strong>, where evidence is limited (wide CIs; point estimates still favored EVT) — <strong>individualize</strong> there.</li>
               </ul>
@@ -7422,7 +7425,7 @@ export function BasilarArteryOcclusionCard() {
               <ul style={{ margin: '0', paddingLeft: '14px', fontSize: '7.7pt', lineHeight: '1.4', color: 'var(--ink-soft)' }}>
                 <li>Use <strong>pc-ASPECTS</strong> and perfusion / collateral assessment; <strong>extensive established pontine infarction predicts futile recanalization</strong>.</li>
                 <li><strong>Time-to-treatment still matters</strong>; posterior circulation tolerates somewhat longer windows than anterior.</li>
-                <li><strong>Combine with IVT</strong> when eligible.</li>
+                <li><strong>Combine with IVT</strong> when eligible (≤4.5 h). TRACE-5: IV TNK ≤24 h (pc-ASPECTS ≥6, EVT at discretion) improved mRS 0–1/return to baseline vs standard care; adding TNK before EVT at 4.5–24 h at an EVT-capable centre did not help (ATTENTION LATE).</li>
               </ul>
             </CardSection>
 
@@ -7431,6 +7434,8 @@ export function BasilarArteryOcclusionCard() {
               { label: 'BAOCHE', cite: 'Jovin TG et al. N Engl J Med. 2022;387(15):1373-1384.', pmid: '36239645' },
               { label: 'BASICS', cite: 'Langezaal LCM et al. N Engl J Med. 2021;384(20):1910-1920.', pmid: '34010530' },
               { label: 'BEST', cite: 'Liu X et al. Lancet Neurol. 2020;19(2):115-122.', pmid: '31831388' },
+              { label: 'TRACE-5', cite: 'Xiong Y et al. Lancet. 2026;407(10530):763-772.', pmid: '41655588' },
+              { label: 'ATTENTION LATE', cite: 'Li R et al. JAMA. 2026.', pmid: '42776543' },
             ]} />
           </div>
         </div>
@@ -8124,6 +8129,7 @@ export function RcvsCard() {
               { label: 'RCVS² score', cite: 'Rocha EA et al. Neurology. 2019;92(7):e639-e647.', pmid: '30635475' },
               { label: 'Ducros cohort', cite: 'Ducros A et al. Brain. 2007;130(Pt 12):3091-3101.', pmid: '18025032' },
               { label: 'Singhal series', cite: 'Singhal AB et al. Arch Neurol. 2011;68(8):1005-1012.', pmid: '21482916' },
+              { label: 'Glucocorticoid-associated worsening', cite: 'Singhal AB, Topcuoglu MA. Neurology. 2017;88(3):228-236.', pmid: '27940651' },
             ]} />
           </div>
         </div>
@@ -8211,7 +8217,7 @@ export function VesselWallMriCard() {
                   <ellipse cx="69" cy="62" rx="26" ry="26" fill="none" stroke="var(--amber)" strokeWidth="1.5" />
                   {/* Narrow lumen from spasm */}
                   <ellipse cx="69" cy="62" rx="18" ry="18" fill="var(--ink)" />
-                  <text x="69" y="112" fill="var(--amber-deep)" fontSize="5.0pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">No Wall Thickening</text>
+                  <text x="69" y="112" fill="var(--amber-deep)" fontSize="5.0pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">Minimal Uniform Thickening</text>
                   <text x="69" y="122" fill="var(--ink-soft)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">Non-Enhancing / Faint</text>
                   <text x="69" y="130" fill="var(--amber-deep)" fontSize="4.6pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="middle">Reversible &le;12 Weeks</text>
                 </g>
@@ -8292,7 +8298,7 @@ export function VesselWallMriCard() {
                     <td><strong>Eccentric, focal, asymmetric</strong> plaque along one hemicircumference.</td>
                     <td><strong>Heterogeneous</strong>; concentrated at plaque shoulder or fibrous cap; persistent.</td>
                     <td><strong>Positive outward</strong> (early) or negative inward (advanced stenotic).</td>
-                    <td><strong>Intraplaque Hemorrhage (IPH):</strong> High T1 signal on pre-contrast T1-SPACE; predicts high recurrent stroke risk (SAMMPRIS).</td>
+                    <td><strong>Intraplaque Hemorrhage (IPH):</strong> High T1 signal on pre-contrast T1-SPACE; associated with higher recurrent stroke risk in observational vessel-wall MRI cohorts.</td>
                   </tr>
                   <tr>
                     <td><strong>PACNS (Vasculitis)</strong></td>
@@ -8313,7 +8319,7 @@ export function VesselWallMriCard() {
                     <td><strong>Eccentric, crescentic</strong> wall thickening (intramural hematoma).</td>
                     <td>Enhancement of <strong>intimal flap and adventitia</strong>; delayed outer wall enhancement.</td>
                     <td>Vessel enlargement, dissecting pseudoaneurysm, or string sign.</td>
-                    <td><strong>Double lumen &amp; Intimal Flap:</strong> High T1 signal crescent (methemoglobin); DAPT first-line; avoid anticoagulation if intracranial.</td>
+                    <td><strong>Double lumen &amp; Intimal Flap:</strong> High T1 signal crescent (methemoglobin); antithrombotic choice (antiplatelet or anticoagulation) individualized for 3–6 months; avoid anticoagulation with intradural (intracranial) extension.</td>
                   </tr>
                   <tr>
                     <td><strong>Moyamoya</strong></td>
@@ -8332,7 +8338,7 @@ export function VesselWallMriCard() {
                 <div>
                   <strong style={{ color: 'var(--red-deep)', fontSize: '7.6pt' }}>PACNS vs RCVS Differentiation</strong>
                   <br />&bull; <strong>PACNS:</strong> Intense concentric enhancement + abnormal CSF &rarr; Prompt brain/leptomeningeal biopsy; high-dose IV methylprednisolone + Cyclophosphamide/Rituximab.
-                  <br />&bull; <strong>RCVS:</strong> Non-enhancing on VW-MRI + RCVS&sup2; score &ge;5 &rarr; CCBs (Nimodipine/Verapamil); <strong>STEROIDS CAUSE STROKE EXPANSION</strong>.
+                  <br />&bull; <strong>RCVS:</strong> Non-enhancing on VW-MRI + RCVS&sup2; score &ge;5 &rarr; CCBs (Nimodipine/Verapamil); <strong>AVOID GLUCOCORTICOIDS</strong> (independently associated with clinical, imaging, and angiographic worsening).
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--red)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--red-deep)', fontSize: '7.6pt' }}>Dissection: Extracranial vs Intracranial</strong>
@@ -8425,7 +8431,7 @@ export function CryptogenicStrokeEsusCard() {
                 <rect x="248" y="32" width="220" height="34" rx="4" fill="var(--red-soft)" stroke="var(--red)" strokeWidth="1" />
                 <text x="256" y="44" fill="var(--red-deep)" fontSize="5.6pt" fontFamily="Outfit" fontWeight="800" textAnchor="start">NAVIGATE ESUS (NEJM 2018, n=7213)</text>
                 <text x="256" y="54" fill="var(--ink-soft)" fontSize="4.8pt" fontFamily="IBM Plex Sans" textAnchor="start">Rivaroxaban vs ASA: Recurrent stroke 5.1% vs 4.8% (HR 1.07, p=0.52)</text>
-                <text x="256" y="62" fill="var(--red-deep)" fontSize="4.8pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="start">Major Bleeding: HR 2.72 (p&lt;0.001) &bull; Stopped Early for Harm</text>
+                <text x="256" y="62" fill="var(--red-deep)" fontSize="4.8pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="start">Major Bleeding: HR 2.72 (p&lt;0.001) &bull; Stopped: Futility + Bleeding</text>
 
                 {/* RE-SPECT ESUS */}
                 <rect x="248" y="70" width="220" height="34" rx="4" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1" />
@@ -8485,7 +8491,7 @@ export function CryptogenicStrokeEsusCard() {
                 <div style={{ borderLeft: '1.5px dashed var(--purple)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--red-deep)', fontSize: '7.6pt' }}>Paradigm Shift in ESUS</strong>
                   <br />&bull; ESUS is a <strong>heterogeneous clinical construct</strong>, NOT a single disease entity.
-                  <br />&bull; Etiologies include: occult paroxysmal AF (30%), non-stenotic vulnerable plaque (30%), PFO (20%), subclinical cardiopathy, and occult malignancy.
+                  <br />&bull; Etiologies include: occult paroxysmal AF, non-stenotic vulnerable plaque (arch, cervical, or intracranial), paradoxical embolism via PFO, subclinical cardiopathy, and occult malignancy.
                 </div>
               </div>
             </CardSection>
@@ -8534,7 +8540,7 @@ export function CryptogenicStrokeEsusCard() {
                   <br />&bull; NNT = 4 at 36 months to detect occult paroxysmal AF.
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--amber)', paddingLeft: '8px' }}>
-                  <strong style={{ color: 'var(--amber-deep)', fontSize: '7.6pt' }}>STROKE-AF (JAMA 2021)</strong>
+                  <strong style={{ color: 'var(--amber-deep)', fontSize: '7.6pt' }}>STROKE-AF (JAMA 2021; 3-y results JAMA Neurol 2023)</strong>
                   <br />&bull; ICM in stroke attributed to large-artery atherosclerosis or small vessel disease (n=492).
                   <br />&bull; <strong>AF Detection:</strong> 12.1% vs 1.8% at 12m (HR 7.4); <strong>21.7% vs 2.4% at 36m (HR 10.0, p&lt;0.001)</strong>.
                   <br />&bull; Proves that occult AF is prevalent even in strokes with apparent LVD/SVD mechanisms.
@@ -8542,7 +8548,7 @@ export function CryptogenicStrokeEsusCard() {
                 <div style={{ borderLeft: '1.5px dashed var(--amber)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--amber-deep)', fontSize: '7.6pt' }}>Clinical Monitoring Strategy</strong>
                   <br />&bull; <strong>Step 1:</strong> Inpatient continuous telemetry &ge;24–48h.
-                  <br />&bull; <strong>Step 2:</strong> 14–30 day external adhesive cardiac patch monitor (EMBRACE trial: 16.1% AF yield at 30 days).
+                  <br />&bull; <strong>Step 2:</strong> 14–30 day external adhesive cardiac patch monitor (EMBRACE trial: 16.1% vs 3.2% with 24-h Holter; AF &ge;30 s within 90 days using a 30-day event-triggered recorder).
                   <br />&bull; <strong>Step 3:</strong> Subcutaneous ICM implantation for cryptogenic stroke, high HAVOC score, or enlarged left atrium.
                 </div>
               </div>
@@ -8713,8 +8719,8 @@ export function PfoClosureCard() {
               </div>
             </CardSection>
 
-            {/* §3 The four randomized trials (red table) */}
-            <CardSection color="red" title="3. The Four Randomized Trials">
+            {/* §3 The four positive randomized trials (red table) */}
+            <CardSection color="red" title="3. The Four Positive Randomized Trials">
               <table className="card-table" style={{ margin: '2px 0 0 0', fontSize: '6.8pt' }}>
                 <thead>
                   <tr style={{ background: 'var(--red)' }}>
@@ -8736,7 +8742,7 @@ export function PfoClosureCard() {
                 </tbody>
               </table>
               <div style={{ fontSize: '7pt', lineHeight: '1.35', color: 'var(--ink-soft)', marginTop: '5px' }}>
-                All four favored closure in <strong>selected</strong> patients with high-risk anatomy or a large shunt. CLOSE also randomized an anticoagulation arm but was underpowered for the closure-vs-anticoagulation comparison.
+                All four favored closure; CLOSE and DEFENSE-PFO <strong>selected</strong> high-risk anatomy and REDUCE was enriched for moderate/large shunts (81%), whereas RESPECT enrolled any PFO (benefit emerged on extended follow-up). The earlier CLOSURE I and PC trials (the other 2 of the 6 closure-vs-medical-therapy RCTs) were neutral. CLOSE also randomized an anticoagulation arm but was underpowered for the closure-vs-anticoagulation comparison.
               </div>
             </CardSection>
 
@@ -8883,7 +8889,7 @@ export function CadasilCarasilCard() {
                     <td><strong>Autosomal Dominant</strong><br />Onset: 20s–50s</td>
                     <td>1. <strong>Migraine with aura</strong> (onset ~30y)<br />2. <strong>Recurrent subcortical lacunar strokes</strong> without HTN (onset ~45y)<br />3. <strong>Subcortical dementia &amp; mood/apathy</strong></td>
                     <td>&bull; <strong>Anterior temporal lobe pole</strong> hyperintensity (O&apos;Sullivan sign, &gt;90% Sp)<br />&bull; <strong>External capsule</strong> &amp; corpus callosum WMH<br />&bull; Deep cerebral microbleeds on SWI</td>
-                    <td><strong>Genetic testing:</strong> NOTCH3 exons 2–24 (EGFR repeats). Skin biopsy: Granular osmiophilic material (GOM).<br /><span style={{ color: 'var(--red-deep)' }}><strong>CAUTION:</strong> triptans/ergots (vasoconstrictive). IV thrombolysis is <strong>not</strong> contraindicated in CADASIL &mdash; data are limited but do not show excess hemorrhage; decide case by case, weighing microbleed and leukoaraiosis burden.</span></td>
+                    <td><strong>Genetic testing:</strong> NOTCH3 exons 2–24 (EGFR repeats). Skin biopsy: Granular osmiophilic material (GOM).<br /><span style={{ color: 'var(--red-deep)' }}><strong>Migraine:</strong> triptans appear sufficiently safe for abortive therapy (2023 AHA statement; no RCT data), but US labeling contraindicates triptans after stroke/TIA; use caution with ergots. IV thrombolysis is <strong>not</strong> contraindicated in CADASIL &mdash; data are limited but do not show excess hemorrhage; decide case by case, weighing microbleed and leukoaraiosis burden.</span></td>
                   </tr>
                   <tr>
                     <td><strong>CARASIL</strong><br /><span style={{ color: 'var(--amber-deep)' }}>HTRA1 (10q26)</span></td>
@@ -9219,7 +9225,7 @@ export function MoyamoyaDiseaseCard() {
             <CardRefFooter style={{ fontSize: '6.7pt' }} refs={[
               { label: 'JAM Trial Landmark', cite: 'Miyamoto S et al. Stroke. 2014;45(5):1415-1421.', pmid: '24668203' },
               { label: 'Suzuki Staging Classic', cite: 'Suzuki J & Takaku A. Arch Neurol. 1969;20(3):288-299.', pmid: '5775283' },
-              { label: 'JSS Moyamoya Guidelines', cite: 'Kuroda S et al. Neurol Med Chir (Tokyo). 2012;52(5):245-266.', pmid: '22870528' },
+              { label: 'JSS Moyamoya Guidelines', cite: 'Research Committee on the Pathology and Treatment of Spontaneous Occlusion of the Circle of Willis. Neurol Med Chir (Tokyo). 2012;52(5):245-266.', pmid: '22870528' },
               { label: 'Scott & Smith Review', cite: 'Scott RM & Smith ER. N Engl J Med. 2009;360(12):1226-1237.', pmid: '19297575' },
             ]} />
           </div>
@@ -9285,7 +9291,7 @@ export function CancerAssociatedStrokeCard() {
 
       {/* D-Dimer threshold indicator */}
       <rect x="262" y="86" width="212" height="44" rx="4" fill="#fff5f5" stroke="var(--red)" strokeWidth="1" />
-      <text x="368" y="98" fill="var(--red-deep)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MARKER: D-DIMER &gt;3.0–5.0 &micro;g/mL FEU</text>
+      <text x="368" y="98" fill="var(--red-deep)" fontSize="5.4pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">MARKER: D-DIMER &gt;2.5 &micro;g/mL FEU</text>
       <text x="368" y="112" fill="var(--red-deep)" fontSize="4.8pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="middle">Disproportionately elevated compared to typical stroke</text>
       <text x="368" y="122" fill="var(--ink-mute)" fontSize="4.4pt" fontFamily="IBM Plex Sans" textAnchor="middle">Accompanied by low-grade consumptive coagulopathy</text>
 
@@ -9319,7 +9325,7 @@ export function CancerAssociatedStrokeCard() {
           <div className="card-content">
             <h1 style={{ textAlign: 'center', marginBottom: '2px' }}>Cancer-Associated Stroke &amp; Marantic Endocarditis (NBTE)</h1>
             <p style={{ fontSize: '7.8pt', color: 'var(--ink-soft)', marginBottom: '6px', textAlign: 'center', fontWeight: '600' }}>
-              2026 AHA Cancer Stroke Scientific Statement &bull; Mucin Adenocarcinomas &bull; 3-Territory Sign &bull; D-Dimer &gt;3–5x ULN &bull; LMWH vs DOAC
+              2026 AHA Cancer Stroke Scientific Statement &bull; Mucin Adenocarcinomas &bull; 3-Territory Sign &bull; D-Dimer &gt;2.5 &micro;g/mL FEU &bull; LMWH vs DOAC
             </p>
 
             <div style={{ width: '100%', height: '168px', marginBottom: '6px' }}>
@@ -9368,7 +9374,7 @@ export function CancerAssociatedStrokeCard() {
                   </tr>
                   <tr>
                     <td><strong>Markedly Elevated D-Dimer</strong></td>
-                    <td>Serum D-Dimer <strong>&gt;3.0–5.0 &micro;g/mL FEU</strong> (frequently &gt;10.0–20.0 &micro;g/mL), markedly out of proportion to typical thromboembolic stroke volume.</td>
+                    <td>Serum D-Dimer <strong>&gt;2.5 &micro;g/mL FEU</strong> (2026 AHA criterion, absent acute VTE; frequently &gt;10.0–20.0 &micro;g/mL), markedly out of proportion to typical thromboembolic stroke volume.</td>
                     <td>&bull; Marked elevation supports a cancer-related hypercoagulable mechanism (mean D-dimer 15.4 &plusmn; 10.8 &micro;g/mL in cancer-related stroke; Schwarzbach 2015).<br />&bull; Correlates with circulating tumor-derived microparticles and ongoing intravascular fibrin turnover.</td>
                   </tr>
                   <tr>
@@ -9396,7 +9402,7 @@ export function CancerAssociatedStrokeCard() {
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--amber)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--red-deep)', fontSize: '7.5pt' }}>First-Line Pharmacotherapy</strong>
-                  <br />&bull; <strong>Therapeutic LMWH:</strong> Enoxaparin 1 mg/kg SC q12h or Dalteparin 200 IU/kg SC daily (TEACH Trial, PMID: 29309496).
+                  <br />&bull; <strong>Therapeutic LMWH:</strong> Enoxaparin 1 mg/kg SC q12h is commonly used; the TEACH pilot RCT (enoxaparin vs aspirin; PMID 29309496) assessed feasibility only, and supporting trial data for therapeutic anticoagulation in NBTE are lacking.
                   <br />&bull; Heparin directly inhibits thrombin and blocks P/L-selectin-mucin interactions.
                 </div>
               </div>
@@ -9407,18 +9413,18 @@ export function CancerAssociatedStrokeCard() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', fontSize: '7.0pt', lineHeight: '1.32', color: 'var(--ink-soft)' }}>
                 <div>
                   <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>LMWH vs DOAC Selection</strong>
-                  <br />&bull; <strong>LMWH is Preferred:</strong> For mucinous adenocarcinomas, NBTE, and patients with active gastrointestinal mucosal lesions or drug-drug interactions with antineoplastics.
+                  <br />&bull; <strong>Heparin Often First:</strong> For NBTE or overt DIC, therapeutic anticoagulation is typical but not trial-proven, often starting with UFH/LMWH; long term, DOACs may be preferred (2026 AHA statement), while LMWH is favored with active GI/GU mucosal lesions or antineoplastic drug-drug interactions.
                   <br />&bull; <strong>DOACs (Apixaban, Rivaroxaban):</strong> Reasonable alternatives for stable solid tumors with low bleeding risk.
-                  <br />&bull; Aspirin alone is insufficient to prevent recurrent arterial thrombosis.
+                  <br />&bull; For cryptogenic (possible cancer-related) stroke, equipoise exists between anticoagulant and antiplatelet therapy; neither has been shown superior (TEACH pilot RCT; ARCADIA cancer subgroup post hoc analysis).
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>Endovascular Thrombectomy (EVT)</strong>
-                  <br />&bull; <strong>Effective for LVO in Cancer:</strong> Successful recanalization rates (TICI 2b/3) and safety profile in cancer patients are comparable to non-cancer patients.
+                  <br />&bull; <strong>Effective for LVO in Cancer:</strong> Recanalization (TICI 2b/3) and sICH rates are similar to non-cancer patients, but mortality is higher and functional independence lower; decide individually, weighing goals of care and cancer prognosis.
                   <br />&bull; Clot histology often demonstrates high platelet-fibrin and leukocyte content (white clots).
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--red-deep)', fontSize: '7.4pt' }}>IV Thrombolysis Precautions</strong>
-                  <br />&bull; Exclude hemorrhagic brain metastases (melanoma, RCC, choriocarcinoma, thyroid).
+                  <br />&bull; Review imaging for brain metastases; if present, IVT is generally advised against (especially with hemorrhage-prone histologies such as melanoma, RCC, choriocarcinoma, thyroid). Cancer itself is not a contraindication.
                   <br />&bull; Platelet threshold: Must be &ge;100,000/&micro;L.
                   <br />&bull; Exclude systemic consumptive coagulopathy (INR &gt;1.7, aPTT &gt;40s, or low fibrinogen &lt;150).
                 </div>
@@ -9428,7 +9434,7 @@ export function CancerAssociatedStrokeCard() {
             <CardRefFooter style={{ fontSize: '6.7pt' }} refs={[
               { label: '2026 Cancer Stroke Statement', cite: 'Navi BB et al. Stroke. 2026.', pmid: '41623113' },
               { label: 'TEACH Trial (LMWH Pilot)', cite: 'Navi BB et al. JAMA Neurol. 2018;75(3):379-381.', pmid: '29309496' },
-              { label: 'NBTE Landmark Review', cite: 'Eiken PW et al. Mayo Clin Proc. 2001;76(12):1204-1212.', pmid: '11761501' },
+              { label: 'NBTE Surgical Pathology Series (n=30)', cite: 'Eiken PW et al. Mayo Clin Proc. 2001;76(12):1204-1212.', pmid: '11761501' },
               { label: 'Cancer Stroke Risk Study', cite: 'Navi BB et al. J Am Coll Cardiol. 2017;70(8):926-938.', pmid: '28818202' },
               { label: 'Cancer Stroke DWI Phenotype', cite: 'Schwarzbach CJ et al. Cerebrovasc Dis Extra. 2015;5(3):139-145.', pmid: '26648971' },
             ]} />
@@ -9525,7 +9531,7 @@ export function DmvoMevoManagementCard() {
         <rect x="0" y="64" width="221" height="34" rx="3" fill="#f0fdf4" stroke="#16a34a" strokeWidth="1" />
         <text x="8" y="76" fill="#166534" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800">3. Tailored Endovascular Tooling</text>
         <text x="8" y="86" fill="var(--ink-soft)" fontSize="4.4pt" fontFamily="IBM Plex Sans">Low-profile 0.013–0.017" microcatheter, 3mm mini-stentriever, 3MAX aspiration</text>
-        <text x="8" y="94" fill="var(--purple-deep)" fontSize="4.2pt" fontFamily="IBM Plex Sans" fontWeight="700">AHA 2026: Medical lysis first-line; EVT for highly selected disabling refractory cases</text>
+        <text x="8" y="94" fill="var(--purple-deep)" fontSize="4.2pt" fontFamily="IBM Plex Sans" fontWeight="700">AHA 2026: MeVO EVT Class III (No Benefit); dominant proximal M2 ≤6 h: Class IIa</text>
       </g>
     </svg>
   );
@@ -9570,7 +9576,7 @@ export function DmvoMevoManagementCard() {
             </CardSection>
 
             {/* §2 Landmark Randomized Trials (teal) */}
-            <CardSection color="teal" title="2. Landmark RCT Evidence (DISTAL, ESCAPE-MeVO, CHOICE-2)">
+            <CardSection color="teal" title="2. Landmark RCT Evidence (DISTAL, ESCAPE-MeVO, DISCOUNT, ORIENTAL-MeVO, CHOICE-2)">
               <table className="card-table" style={{ margin: '2px 0 0 0', fontSize: '6.5pt' }}>
                 <thead>
                   <tr style={{ background: 'var(--teal)' }}>
@@ -9591,7 +9597,7 @@ export function DmvoMevoManagementCard() {
                     <td><strong>ESCAPE-MeVO</strong><br />(NEJM 2025; PMID: 39908448)</td>
                     <td>MeVO within 12h of last-known-well with favorable baseline non-invasive brain imaging; n=530 enrolled across five countries.</td>
                     <td><strong>Neutral:</strong> 90-day mRS 0–1 in 106/255 (41.6%) with EVT vs 118/274 (43.1%) with usual care (adjusted rate ratio 0.95; 95% CI 0.79–1.15; P=0.61).</td>
-                    <td><span style={{ color: 'var(--red-deep)' }}><strong>sICH:</strong> 5.4% in EVT group vs 2.2% in control group. Unselected thrombectomy in minor/moderate MeVO stroke carries procedural risk without net benefit.</span></td>
+                    <td><span style={{ color: 'var(--red-deep)' }}><strong>sICH:</strong> 5.4% in EVT group vs 2.2% in control group. 90-day mortality 13.3% vs 8.4% (adjusted HR 1.82; 95% CI 1.06–3.12). Unselected thrombectomy in minor/moderate MeVO stroke carries procedural risk without net benefit.</span></td>
                   </tr>
                   <tr>
                     <td><strong>CHOICE &amp; CHOICE-2</strong><br />(JAMA 2022 / 2026; PMIDs: 35143603, 42096239)</td>
@@ -9619,7 +9625,7 @@ export function DmvoMevoManagementCard() {
                 <div style={{ border: '1.5px solid var(--purple)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
                   <strong style={{ color: 'var(--purple-deep)', fontSize: '7.6pt' }}>2026 AHA/ASA AIS Guideline Recommendation</strong>
                   <br />&bull; <strong>IV Thrombolysis (TNK 0.25 mg/kg):</strong> First-line standard of care for eligible patients with <strong>disabling</strong> deficits within the 4.5h window (Class I, LOE A). <strong>Caveat &mdash; TEMPO-2</strong> (Lancet 2024; PMID: 38768626): in minor <strong>NON-disabling</strong> stroke with intracranial occlusion, TNK showed no benefit and possible harm (death 5% vs 1%; aHR 3.8) &mdash; do not thrombolyse non-disabling deficits routinely.
-                  <br />&bull; <strong>Endovascular Thrombectomy:</strong> EVT in MeVO is <strong>not indicated for routine/mild unselected cases</strong> (Class IIb/III), but reasonable in <strong>highly selected patients</strong> with proximal dominant branches (&ge;1.5–2.0 mm), large perfusion mismatch, severe disabling deficits, and failing/ineligible for IV thrombolysis.
+                  <br />&bull; <strong>Endovascular Thrombectomy:</strong> EVT for <strong>nondominant/codominant M2, distal MCA, ACA, or PCA</strong> occlusion is <strong>not recommended</strong> (Class III: No Benefit, LOE A). EVT for a <strong>dominant proximal M2</strong> occlusion within 6h (prestroke mRS 0–1, NIHSS &ge;6, ASPECTS &ge;6) is reasonable, though benefits are uncertain (Class IIa, LOE B-NR). Later 2026 RCTs were mixed (ORIENTAL-MeVO positive in NIHSS &ge;6 within 24h; DISCOUNT stopped for futility with more sICH) and do not by themselves revise these recommendations.
                 </div>
 
                 <div style={{ border: '1.5px solid var(--teal)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
@@ -9655,7 +9661,7 @@ export function DmvoMevoManagementCard() {
             </CardSection>
 
             <CardRefFooter style={{ fontSize: '6.7pt' }} refs={[
-              { label: 'DISTAL Trial', cite: 'Fischer U et al. N Engl J Med. 2025;392(14):1374-1384.', pmid: '39908430' },
+              { label: 'DISTAL Trial', cite: 'Psychogios M et al. N Engl J Med. 2025;392(14):1374-1384.', pmid: '39908430' },
               { label: 'DISTAL 12-Month', cite: 'Fischer U et al. Lancet Neurol. 2026;25(6):571-580.', pmid: '42105785' },
               { label: 'ESCAPE-MeVO Trial', cite: 'Goyal M et al. N Engl J Med. 2025;392(14):1385-1395.', pmid: '39908448' },
               { label: 'CHOICE Trial', cite: 'Renú A et al. JAMA. 2022;327(9):826-835.', pmid: '35143603' },
@@ -9744,7 +9750,7 @@ export function IchBloodPressureCard() {
         <rect x="114" y="58" width="108" height="54" rx="3" fill="#fff5f5" stroke="var(--red)" strokeWidth="1" />
         <text x="6" y="70" fill="var(--red-deep)" fontSize="5.0pt" fontFamily="Outfit" fontWeight="800">4. Rapid Reversal</text>
         <text x="6" y="80" fill="var(--ink)" fontSize="4.3pt" fontFamily="IBM Plex Sans">4F-PCC + Vit K (VKA)</text>
-        <text x="6" y="90" fill="var(--ink)" fontSize="4.3pt" fontFamily="IBM Plex Sans">PCC (Xa) / idarucizumab (DTI)</text>
+        <text x="6" y="90" fill="var(--ink)" fontSize="4.3pt" fontFamily="IBM Plex Sans">INTERACT3: warfarin, INR &lt;1.5</text>
         <text x="6" y="100" fill="var(--red-deep)" fontSize="4.0pt" fontFamily="IBM Plex Sans" fontWeight="700">Door-to-needle &lt;60m</text>
       </g>
 
@@ -9792,7 +9798,7 @@ export function IchBloodPressureCard() {
                 <div style={{ border: '1.5px solid var(--purple)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
                   <strong style={{ color: 'var(--purple-deep)', fontSize: '7.6pt' }}>Target Blood Pressure Window</strong>
                   <br />&bull; <strong>Primary Target (Class IIb, LOE B-R):</strong> SBP <strong>140 mmHg</strong>, maintained in the <strong>130–150 mmHg</strong> range, reached smoothly within <strong>1 hour</strong>. Scope: mild-to-moderate ICH presenting with SBP 150&ndash;220 mmHg. <span style={{ color: 'var(--red-deep)' }}>Lowering to SBP &lt;130 mmHg is Class III: Harm.</span>
-                  <br />&bull; Maintain continuous SBP &lt;140 mmHg for at least the initial <strong>24 to 48 hours</strong>.
+                  <br />&bull; Maintain smooth, sustained SBP control in the <strong>130–150 mmHg</strong> range, avoiding peaks, large variability, and SBP &lt;130 mmHg.
                   <br />&bull; Continuous arterial line monitoring is strongly recommended for smooth titration.
                   <br />&bull; <strong style={{ color: 'var(--red-deep)' }}>Prehospital caveat:</strong> this target applies <strong>after CT confirms ICH</strong>. In undifferentiated suspected stroke, <strong>INTERACT4</strong> (NEJM 2024) found ambulance BP lowering <strong>helped hemorrhagic stroke (cOR 0.75)</strong> but <strong>harmed cerebral ischemia (cOR 1.30)</strong> &mdash; the prehospital answer is diagnosis-dependent, so do not lower BP before imaging.
                 </div>
@@ -9841,7 +9847,7 @@ export function IchBloodPressureCard() {
                     <td><strong>TRIDENT Trial</strong><br />(NEJM 2026; PMID: 42019018)</td>
                     <td>Fixed-dose triple combination pill (Telmisartan + Amlodipine + Indapamide) vs placebo for long-term BP lowering after ICH.</td>
                     <td>Sustained ~11 mmHg SBP difference (mean 127 vs 138 mmHg on follow-up); recurrent stroke 4.6% vs 7.4% (HR 0.61; 95% CI 0.41–0.92; p=0.02). Early discontinuation for adverse events 13.6% vs 6.0%, most often a &ge;20% creatinine rise.</td>
-                    <td><span style={{ color: '#166534' }}>Long-term secondary prevention requires aggressive combination therapy to maintain SBP &lt;130.</span></td>
+                    <td><span style={{ color: '#166534' }}>Adding a low-dose triple pill to standard care after ICH (baseline SBP 130–160 mmHg) lowered follow-up SBP (127 vs 138 mmHg) and recurrent stroke; the 2022 AHA/ASA long-term target is SBP &lt;130/DBP &lt;80 mmHg (Class 2a).</span></td>
                   </tr>
                   <tr>
                     <td><strong>FASTEST Trial</strong><br />(Lancet 2026; PMID: 41653933)</td>
@@ -9867,12 +9873,12 @@ export function IchBloodPressureCard() {
                   <strong style={{ color: 'var(--teal-deep)', fontSize: '7.6pt' }}>SWITCH Trial: Decompressive Surgery</strong>
                   <br />&bull; <strong>Design (Lancet 2024; PMID: 38761811):</strong> Hemicraniectomy (&ge;12 cm bone flap) + best medical care vs medical care alone in deep supratentorial ICH with deteriorating GCS.
                   <br />&bull; <strong>Result:</strong> Primary outcome was mRS 5&ndash;6 at 180 days: 44% (42/95) with decompressive craniectomy vs 58% (55/95) with best medical treatment &mdash; adjusted RR 0.77 (95% CI 0.59&ndash;1.01), adjusted risk difference &minus;13% (95% CI &minus;26 to 0), <strong>p=0.057, not statistically significant</strong>. Stopped early for lack of funding; the authors describe this as weak evidence, and survival was associated with severe disability in both arms.
-                  <br />&bull; Indicated as a life-saving rescue maneuver for progressive herniation.
+                  <br />&bull; May be considered to reduce mortality (2022 AHA/ASA COR 2b) in supratentorial ICH with coma, a large hematoma with significant midline shift, or ICP refractory to medical management; benefit for functional outcome is uncertain, and SWITCH provides only weak evidence.
                 </div>
 
                 <div style={{ border: '1.5px solid var(--purple)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
                   <strong style={{ color: 'var(--purple-deep)', fontSize: '7.6pt' }}>Cerebellar Hemorrhage Rules</strong>
-                  <br />&bull; <strong>Immediate Suboccipital Decompression (COR 1):</strong> For cerebellar ICH with <strong>neurological deterioration, brainstem compression, and/or obstructive hydrocephalus</strong>. Diameter &gt;3 cm is a risk marker prompting close monitoring and early neurosurgical involvement &mdash; not a stand-alone Class 1 operative indication (Kuramatsu, JAMA 2019; PMID 31593272).
+                  <br />&bull; <strong>Immediate Suboccipital Decompression (COR 1):</strong> For cerebellar ICH with <strong>neurological deterioration, brainstem compression, and/or obstructive hydrocephalus</strong>. Diameter &gt;3 cm is a traditional risk marker prompting close monitoring and early neurosurgical involvement, not itself the guideline criterion. The 2022 AHA/ASA COR 1 recommendation also lists cerebellar ICH <strong>volume &ge;15 mL</strong> as an indication for immediate evacuation (&plusmn; EVD) to reduce mortality. In Kuramatsu (JAMA 2019; PMID 31593272), evacuation was associated with better survival at &ge;15 mL but worse functional outcome at &le;12 mL, and not with better functional outcome overall.
                   <br />&bull; Place EVD for hydrocephalus, but craniectomy must accompany EVD to prevent upward herniation.
                 </div>
               </div>
@@ -9960,7 +9966,7 @@ export function MetabolicStrokePreventionCard() {
 
         <rect x="0" y="76" width="222" height="38" rx="3" fill="#f0fdf4" stroke="#16a34a" strokeWidth="1" />
         <text x="8" y="87" fill="#166534" fontSize="5.2pt" fontFamily="Outfit" fontWeight="800">Renal &amp; Hemodynamic</text>
-        <text x="8" y="97" fill="var(--ink)" fontSize="4.3pt" fontFamily="IBM Plex Sans">&bull; SGLT2i + GLP-1 RA slows CKD progression (FLOW Trial HR 0.76)</text>
+        <text x="8" y="97" fill="var(--ink)" fontSize="4.3pt" fontFamily="IBM Plex Sans">&bull; Semaglutide slows CKD progression in T2D (FLOW Trial HR 0.76)</text>
         <text x="8" y="106" fill="var(--teal-deep)" fontSize="4.2pt" fontFamily="IBM Plex Sans" fontWeight="700">&bull; Sustained SBP reduction of 3–5 mmHg &amp; natriuresis</text>
       </g>
 
@@ -10030,8 +10036,8 @@ export function MetabolicStrokePreventionCard() {
                 <div style={{ border: '1.5px solid var(--purple)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
                   <strong style={{ color: 'var(--purple-deep)', fontSize: '7.6pt' }}>SELECT Trial: Obesity Without Diabetes</strong>
                   <br />&bull; <strong>Design (NEJM 2023; PMID: 37952131):</strong> Semaglutide 2.4 mg SC weekly vs placebo in 17,604 non-diabetic patients with preexisting CVD and BMI &ge;27.
-                  <br />&bull; <strong>Primary Outcome:</strong> <strong>20% reduction in MACE</strong> (HR 0.80; 95% CI 0.72–0.90; p&lt;0.001) and significant reduction in non-fatal stroke.
-                  <br />&bull; <strong>Weight Loss:</strong> Mean 9.4% weight loss sustained at 4 years, with concurrent drops in hs-CRP (&minus;37%) and blood pressure.
+                  <br />&bull; <strong>Primary Outcome:</strong> <strong>20% reduction in MACE</strong> (HR 0.80; 95% CI 0.72–0.90; p&lt;0.001) &mdash; nonfatal stroke was one component of this composite, not a confirmatory endpoint, so no stroke-specific reduction was established.
+                  <br />&bull; <strong>Weight Loss:</strong> Mean 9.4% weight loss at 104 weeks (10.2% at week 208), with concurrent drops in hs-CRP (&minus;37%) and blood pressure.
                 </div>
 
                 <div style={{ border: '1.5px solid var(--teal)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
@@ -10063,7 +10069,7 @@ export function MetabolicStrokePreventionCard() {
                   <tr>
                     <td><strong>SGLT2 Inhibitors</strong><br />(Empagliflozin, Dapagliflozin)</td>
                     <td>Inhibits renal tubular glucose and sodium reabsorption &rarr; osmotic diuresis, SBP drop 3–5 mmHg, tubuloglomerular feedback normalization, reduction in arterial stiffness.</td>
-                    <td><strong>EMPA-REG, DAPA-CKD, DELIVER:</strong> &gt;30% reduction in heart failure hospitalization and &gt;25% reduction in chronic kidney disease progression.</td>
+                    <td><strong>EMPA-REG, DAPA-CKD, DELIVER:</strong> 35% relative reduction in heart failure hospitalization (EMPA-REG), kidney composite HR 0.56 (DAPA-CKD), and worsening heart failure HR 0.79 in HFmrEF/HFpEF (DELIVER).</td>
                     <td><span style={{ color: '#166534' }}>Mitigates atrial stretch and subclinical AF triggers; powerful synergistic cardiorenal protection when combined with GLP-1 RA.</span></td>
                   </tr>
                   <tr>

@@ -1,6 +1,6 @@
 {
   "id": "perioperative-stroke-2021",
-  "title": "AHA Scientific Statement 2021: Perioperative Neurological Evaluation and Stroke Risk Reduction",
+  "title": "Perioperative Neurological Evaluation and Management to Lower the Risk of Acute Stroke in Patients Undergoing Noncardiac, Nonneurological Surgery: A Scientific Statement From the American Heart Association/American Stroke Association",
   "shortTitle": "Perioperative Stroke 2021",
   "doi": "10.1161/CIR.0000000000000968",
   "publisherUrl": "https://www.ahajournals.org/doi/10.1161/CIR.0000000000000968",
@@ -85,7 +85,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "The 2014 ACC/AHA perioperative guideline strongly supports continuing beta-blockers in patients who are on beta-blockers long term; it may be reasonable to begin beta-blockade in patients at high risk according to preoperative testing or with 3 or more Revised Cardiac Risk Index factors, but beta-blockers should not be initiated on the day of surgery. In POISE, preoperative metoprolol doubled the risk of perioperative stroke (1.0% versus 0.5%) and increased mortality.",
+      "text": "The 2014 ACC/AHA perioperative guideline (since superseded by the 2024 AHA/ACC perioperative guideline) strongly supports continuing beta-blockers in patients who are on beta-blockers long term; it may be reasonable to begin beta-blockade in patients at high risk according to preoperative testing or with 3 or more Revised Cardiac Risk Index factors, but beta-blockers should not be initiated on the day of surgery. In POISE, preoperative metoprolol doubled the risk of perioperative stroke (1.0% versus 0.5%) and increased mortality.",
       "page": null
     },
     {
@@ -109,7 +109,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Patients with a mechanical heart valve receiving a vitamin K antagonist should be bridged with low-molecular-weight heparin or intravenous heparin. Patients at high risk for thromboembolism taking a vitamin K antagonist (eg, atrial fibrillation with high CHA2DS2-VASc score, recent venous thromboembolic disease) may be bridged with full-dose (therapeutic) low-molecular-weight heparin or intravenous heparin; bridging should otherwise be limited primarily to patients at high thromboembolic risk.",
+      "text": "Patients with a mechanical heart valve receiving a vitamin K antagonist should be bridged with low-molecular-weight heparin or intravenous heparin. Patients at high risk for thromboembolism taking a vitamin K antagonist (eg, atrial fibrillation with high CHA2DS2-VASc score, recent venous thromboembolic disease) may be bridged with full-dose (therapeutic) low-molecular-weight heparin or intravenous heparin (note: the 2023 ACC/AHA/ACCP/HRS AF guideline advises against LMWH bridging for AF patients interrupting warfarin, Class 3: Harm, except with a mechanical valve or recent stroke/TIA); bridging should otherwise be limited primarily to patients at high thromboembolic risk.",
       "page": null
     },
     {

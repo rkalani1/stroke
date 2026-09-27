@@ -27,12 +27,12 @@ const CTGOV = (nct) => `https://clinicaltrials.gov/study/${nct}`;
 export const PHASE_LABELS = {
   acute: 'Acute (Onset ≤ 24 Hours)',
   inpatient: 'Inpatient (Admission to Day 30)',
-  outpatient: 'Outpatient (Day 14 to Month 6)'
+  outpatient: 'Outpatient (Day 14 Onward)'
 };
 
 export const CATEGORY_LABELS = {
   ischemic: 'Ischemic Stroke',
-  ich: 'Intracranial Hemorrhage (ICH)'
+  ich: 'Intracerebral Hemorrhage (ICH)'
 };
 
 const UNVERIFIED_SUMMARY =
@@ -50,13 +50,14 @@ const TRIALS = {
       'Emergent carotid stenting plus EVT vs EVT alone for tandem extracranial-carotid + intracranial-LVO occlusions.',
     eligibility: [
       'Age 18–79, AIS within 16 h of LKW, NIHSS ≥ 4, pre-stroke mRS ≤ 2',
-      'ASPECTS ≥ 7',
+      'ASPECTS ≥ 7; if EVT starts >6–16 h from onset, also CTP core < 50 mL (rCBF < 30%) or DWI core < 25 mL',
       'Tandem lesion on CTA: extracranial ICA stenosis 70–100% + intracranial ICA-T / M1 / proximal M2',
       'Ineligible for IV thrombolysis or failed IV thrombolysis'
     ],
     exclusions: [
-      'No tandem lesion on imaging',
-      'Beyond the 16-hour window'
+      'Contraindication to antiplatelets, thrombolytics, or contrast; refractory BP > 185/110 mm Hg despite medication',
+      'INR > 1.7, PTT > 3× normal, or platelets < 100,000/µL',
+      'Intracranial hemorrhage, midline shift or mass effect on CT; acute bilateral strokes; carotid stenosis from dissection or vasculitis'
     ]
   },
   CAPTIVA: {
@@ -67,7 +68,7 @@ const TRIALS = {
     summary:
       'Ticagrelor+ASA vs clopidogrel+ASA in symptomatic 70–99% intracranial atherosclerosis. Closed to new enrollment (active-not-recruiting); the low-dose rivaroxaban (2.5 mg BID) arm was terminated in January 2026 (DSMB: safety events plus futility).',
     eligibility: [
-      'Age ≥ 30, ischemic stroke or TIA attributed to ICAS (70–99% stenosis or MRA flow gap)',
+      'Age ≥ 30 (30–49 needs additional atherosclerotic risk criteria), ischemic stroke (infarct on imaging or symptoms ≥ 24 h) attributed to ICAS (70–99% stenosis or MRA flow gap)',
       'Within 30 days of qualifying event, mRS ≤ 4 at consent'
     ],
     exclusions: [
@@ -101,7 +102,7 @@ const TRIALS = {
       'Validating CNS structure/function measures (TMS motor evoked potentials and MRI lesion load) to establish early prognostic data for upper-extremity recovery outcomes.',
     eligibility: [
       'Unilateral symptomatic ischemic stroke with SAFE ≤ 8 upper-extremity motor deficit within 48–96 h',
-      'Consented within 24–96 hours of LNW'
+      'Consented within 24–96 hours of stroke onset or last known well'
     ],
     exclusions: [
       'Pre-stroke upper-extremity condition limiting use',
@@ -116,7 +117,7 @@ const TRIALS = {
     summary:
       'A prospective, observational study for persons with a pre-stroke modified Rankin Scale (mRS) 3–4 experiencing an LVO-AIS, comparing the effectiveness of EVT to medical management.',
     eligibility: [
-      'AIS presenting to hospital within 24 hours of onset',
+      'AIS presenting to the study hospital within 24 hours of last known well',
       'Occlusion of ICA, M1, or dominant M2',
       'Pre-stroke mRS 3–4 for at least 3 months',
       'NIHSS ≥ 6',
@@ -204,7 +205,7 @@ const TRIALS = {
       'Able to tolerate SAPT plus OAC; carotid anatomy meets protocol'
     ],
     exclusions: [
-      'History of spontaneous ICH',
+      'History of intracranial hemorrhage or other contraindication to oral anticoagulation',
       '≥ 50% stenosis of carotid, subclavian, vertebral, or intracranial arteries'
     ]
   },

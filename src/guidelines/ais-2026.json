@@ -327,7 +327,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Emergency Evaluation of Patients With",
+      "section": "Emergency Evaluation of Patients With Suspected Stroke",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -340,7 +340,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Emergency Evaluation of Patients With",
+      "section": "Emergency Evaluation of Patients With Suspected Stroke",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
@@ -353,7 +353,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Emergency Evaluation of Patients With",
+      "section": "Emergency Evaluation of Patients With Suspected Stroke",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -366,7 +366,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Emergency Evaluation of Patients With",
+      "section": "Emergency Evaluation of Patients With Suspected Stroke",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
@@ -379,7 +379,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Emergency Evaluation of Patients With",
+      "section": "Emergency Evaluation of Patients With Suspected Stroke",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
@@ -587,7 +587,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Stroke Registries, Quality Improvement, and",
+      "section": "Stroke Registries and Quality Improvement",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
@@ -600,7 +600,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Stroke Registries, Quality Improvement, and",
+      "section": "Stroke Registries and Quality Improvement",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -613,7 +613,7 @@
       "sourceStatementType": "recommendation"
     },
     {
-      "section": "Stroke Registries, Quality Improvement, and",
+      "section": "Stroke Registries and Quality Improvement",
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-NR",
@@ -761,6 +761,16 @@
       "classNote": null,
       "levelOfEvidence": "B-R",
       "text": "In patients with suspected AIS and LVO identified by prefacility assessment with a validated stroke severity scale (e.g., RACE >4) who are EVT-eligible, direct triage to the angiography suite for flat-panel head CT may be considered to reduce time to intervention and improve functional outcomes compared with conventional imaging workflow.",
+      "currentEvidenceCheckedAt": "2026-09-26",
+      "currentEvidenceSources": [
+        {
+          "title": "DIRECT ANGIO (Lancet Neurology, 2026)",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/41864232/",
+          "pmid": "41864232",
+          "doi": "10.1016/S1474-4422(26)00056-6"
+        }
+      ],
+      "currentEvidenceNote": "Newer evidence reviewed 2026-09-26: DIRECT ANGIO (Lancet Neurology, 2026), a French multicenter RCT published after this guideline, randomly assigned 115 patients aged 85 years or younger who were admitted directly to an endovascular-capable center within 5 hours of onset with a severe deficit suggestive of LVO (selected by neurologist examination on arrival, not a prehospital scale) to direct transfer to the angiography suite for cone-beam CT and angiography or to conventional imaging first. It was stopped early for safety. Symptomatic ICH was higher with direct transfer (5/34 vs 0/42; adjusted OR 11.0, 95% CI 1.28-1406), with no evidence of functional benefit (mRS 0-2 at 90 days 36% vs 42%; adjusted OR 0.73, 95% CI 0.32-1.69). The small sample limits precision. This IIb recommendation predates the trial, so read its stated functional-outcome benefit with caution.",
       "page": 27,
       "id": "ais-2026-56",
       "sourceSection": "table-12",
@@ -1477,7 +1487,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "In adults with acute non-arteritic central retinal artery occlusion (CRAO) causing disabling visual loss who are otherwise eligible for IVT, the usefulness of IVT within 4.5 hours of last known well is uncertain.",
+      "text": "In adults with acute non-arteritic central retinal artery occlusion (CRAO) causing disabling visual loss who are otherwise eligible for IVT, the usefulness of IVT within 4.5 hours of last known well is uncertain. [Current-evidence note, not part of the 2026 guideline: two RCTs published after the guideline's evidence review found no significant benefit. THEIA (IV alteplase vs aspirin, Lancet Neurol 2025) was neutral and likely underpowered. TenCRAOS (IV tenecteplase vs aspirin, NEJM 2026) found no greater vision recovery at 30 days and raised serious safety concerns, including one fatal intracranial hemorrhage.]",
       "page": 47,
       "id": "ais-2026-111",
       "sourceSection": "table-23",
@@ -1607,7 +1617,7 @@
       "classOfRec": "III",
       "classNote": "No Benefit",
       "levelOfEvidence": "A",
-      "text": "In AIS patients with occlusion of the proximal nondominant or codominant M2 segment, distal MCA, anterior cerebral artery, or posterior cerebral artery, EVT is not recommended as it does not improve functional outcomes.",
+      "text": "In AIS patients with occlusion of the proximal nondominant or codominant M2 segment, distal MCA, anterior cerebral artery, or posterior cerebral artery, EVT is not recommended as it does not improve functional outcomes. [Current-evidence note, not part of the 2026 guideline: ORIENTAL-MeVO (NEJM 2026), published after this guideline, randomized patients with medium-vessel occlusion and NIHSS 6 or greater within 24 hours; EVT increased 90-day functional independence (58.6% vs 46.6%) but also symptomatic ICH (4.7% vs 2.2%). DISTAL, ESCAPE-MeVO and DISCOUNT found no functional benefit. This Class III grading predates ORIENTAL-MeVO.]",
       "page": 54,
       "id": "ais-2026-121",
       "sourceSection": "table-25",
@@ -1698,7 +1708,7 @@
       "classOfRec": "III",
       "classNote": "No Benefit",
       "levelOfEvidence": "A",
-      "text": "In AIS patients with occlusion of medium or distal vessels (nondominant or codominant M2, M3, ACA, or PCA), EVT with stent retrievers does not improve functional outcomes and is not recommended.",
+      "text": "In AIS patients with occlusion of medium or distal vessels (nondominant or codominant M2, M3, ACA, or PCA), EVT with stent retrievers does not improve functional outcomes and is not recommended. [Current-evidence note, not part of the 2026 guideline: ORIENTAL-MeVO (NEJM 2026), published after this guideline, found higher 90-day functional independence with EVT in medium-vessel occlusion with NIHSS 6 or greater (58.6% vs 46.6%), with more symptomatic ICH (4.7% vs 2.2%). This Class III grading predates that trial.]",
       "page": 58,
       "id": "ais-2026-128",
       "sourceSection": "table-27",
@@ -2585,7 +2595,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "In AIS patients who received IV tPA and develop malignant cerebral edema despite medical therapy, early decompressive craniectomy within 48 hours may still be considered without additional safety concerns.",
+      "text": "In AIS patients who received IVT and develop malignant cerebral edema despite medical therapy, early decompressive craniectomy within 48 hours may still be considered without additional safety concerns.",
       "page": 82,
       "id": "ais-2026-191",
       "sourceSection": "table-43",
@@ -2771,7 +2781,7 @@
       },
       {
         "id": "table-07",
-        "title": "Emergency Evaluation of Patients With",
+        "title": "Emergency Evaluation of Patients With Suspected Stroke",
         "sourceTable": "Recommendations for Emergency Evaluation of Patients With",
         "rowCount": 5,
         "pageRange": [
@@ -2827,7 +2837,7 @@
       },
       {
         "id": "table-10",
-        "title": "Stroke Registries, Quality Improvement, and",
+        "title": "Stroke Registries and Quality Improvement",
         "sourceTable": "Recommendations for Stroke Registries, Quality Improvement, and",
         "rowCount": 3,
         "pageRange": [
@@ -3016,7 +3026,7 @@
       },
       {
         "id": "table-21",
-        "title": "Extended Time Windows for Intravenous",
+        "title": "Extended Time Windows for Intravenous Thrombolysis",
         "sourceTable": "Recommendations for Extended Time Windows for Intravenous",
         "rowCount": 3,
         "pageRange": [
@@ -3078,7 +3088,7 @@
       },
       {
         "id": "table-25",
-        "title": "Endovascular Thrombectomy for Adult",
+        "title": "Endovascular Thrombectomy for Adult Patients",
         "sourceTable": "Recommendations for Endovascular Thrombectomy for Adult",
         "rowCount": 8,
         "pageRange": [
@@ -3133,7 +3143,7 @@
       },
       {
         "id": "table-28",
-        "title": "Endovascular Thrombectomy in Pediatric",
+        "title": "Endovascular Thrombectomy in Pediatric Patients",
         "sourceTable": "Recommendations for Endovascular Thrombectomy in Pediatric",
         "rowCount": 3,
         "pageRange": [
