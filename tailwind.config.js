@@ -33,8 +33,11 @@ module.exports = {
   ],
 
   safelist: [
-    { pattern: /^v6-/ },
-    { pattern: /^v7-/ },
+    /* The shared component language (src/styles.css, `ui-*`) ships whole,
+       whether or not a view has adopted a given recipe yet. The old ^v6- /
+       ^v7- patterns are gone: no class name is built dynamically, so the
+       content scan finds every v7-* class still in use. */
+    { pattern: /^ui-/ },
     /* Codemod replaces accent classes; keep cobalt-* available regardless */
     { pattern: /^(bg|text|border|ring)-(cobalt|crit|warn|ok|info|link)-(50|100|200|300|400|500|600|700|800|900|950)$/ }
   ],
@@ -92,6 +95,9 @@ module.exports = {
         'ink-2':          semanticVar('ink-2'),
         mute:             semanticVar('mute'),
         line:             semanticVar('line'),
+        /* form-field boundary, >= 3:1 on its surface (WCAG 1.4.11) */
+        'line-control':   semanticVar('line-control'),
+        faint:            semanticVar('faint'),
         /* strong = heavier hairline; overlay = raised surface (slate-800 in
            dark). */
         strong:           semanticVar('line-strong'),
@@ -116,9 +122,14 @@ module.exports = {
         'surface-3':      semanticVar('canvas-2')
       },
 
+      /* Display face = Bricolage Grotesque, for h1/h2 page titles and the
+         wordmark. `serif` is kept as an alias of `display` (the class is used
+         across the app); both fall back to sans — the face is a grotesque, so
+         Georgia/Times were never a faithful fallback. */
       fontFamily: {
-        sans:  ['"Public Sans"', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        serif: ['"Bricolage Grotesque"', 'Georgia', 'ui-serif', 'serif'],
+        sans:    ['"Public Sans"', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['"Bricolage Grotesque"', '"Public Sans"', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+        serif:   ['"Bricolage Grotesque"', '"Public Sans"', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
         mono:  ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
       },
 

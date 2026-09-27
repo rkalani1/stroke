@@ -239,8 +239,7 @@
      Values are the v7.2 "cool pearl / mineral" palette that shipped from
      index.html (the warm v7.0 values that used to sit here were dead). */
   --c-canvas:         232 240 242;  /* #E8F0F2 desk behind the sheet */
-  --c-canvas-accent:  220 235 237;  /* #DCEBED desk wash */
-  --c-canvas-2:       231 239 242;  /* #E7EFF2 desk gradient end */
+  --c-canvas-2:       231 239 242;  /* #E7EFF2 (Tailwind surface-3) */
   --c-shell:          242 247 248;  /* #F2F7F8 the sheet */
   --c-surface:        255 255 255;  /* cards, panels, inputs */
   --c-sunken:         245 249 250;  /* #F5F9FA recessed step (surface-2) */
@@ -250,6 +249,10 @@
   --c-overlay:        var(--slate-0);
   --c-line:           213 225 229;  /* #D5E1E5 hairline */
   --c-line-strong:    var(--slate-300);
+  /* Boundary of a form field (input / select / textarea / drawn check box):
+     the one hairline that must meet WCAG 1.4.11 (>= 3:1 on the surface it
+     sits on), unlike the decorative --c-line. #7A8D98: 3.45:1 on white. */
+  --c-line-control:   122 141 152;
   --c-ink:            23 47 59;     /* #172F3B — 13.9:1 on white */
   --c-ink-2:          61 85 99;     /* #3D5563 */
   --c-mute:           82 105 119;   /* #526977 — 5.8:1 on white */
@@ -291,7 +294,6 @@
   --shell-border:  rgba(30, 67, 82, .12);
   --panel-border:  rgba(30, 67, 82, .12);
   --inner-hi:      inset 0 1px 0 rgba(255, 255, 255, .8);
-  --sheen:         linear-gradient(180deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 96px);
   --shell-shadow:  0 1px 0 rgba(255, 255, 255, .7) inset,
                    0 1px 2px rgba(20, 23, 29, .04),
                    0 28px 56px -30px rgba(20, 23, 29, .28);
@@ -318,7 +320,11 @@
   --dur:           180ms;
   --ease:          cubic-bezier(.2,.7,.2,1);
 
-  /* ─── 7. Type ─── */
+  /* ─── 7. Type ───
+     Sans-only fallbacks: the display face is a grotesque, so a missing
+     webfont falls back to Public Sans / the system sans, never to Times. */
+  --font-sans:     "Public Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display:  "Bricolage Grotesque", "Public Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono-font:     "IBM Plex Mono", ui-monospace, monospace;
 
   /* ─── 8. Legacy aliases — declared ONCE, here ───────────────────
@@ -328,8 +334,6 @@
 
   /* full-colour */
   --app-bg:          rgb(var(--c-canvas));
-  --app-bg-accent:   rgb(var(--c-canvas-accent));
-  --surface-3:       rgb(var(--c-canvas-2));
   --shell-bg:        rgb(var(--c-shell));
   --surface:         rgb(var(--c-surface));
   --card:            rgb(var(--c-surface));
@@ -408,7 +412,6 @@
 
   /* Semantic colour layer — deep mineral surfaces */
   --c-canvas:         10 19 26;     /* #0A131A */
-  --c-canvas-accent:  16 43 52;     /* #102B34 */
   --c-canvas-2:       10 19 26;     /* #0A131A */
   --c-shell:          14 26 34;     /* #0E1A22 */
   --c-surface:        23 39 49;     /* #172731 */
@@ -419,6 +422,7 @@
   --c-overlay:        var(--slate-800);
   --c-line:           48 69 80;     /* #304550 */
   --c-line-strong:    var(--slate-700);
+  --c-line-control:   106 132 146;  /* #6A8492 — 3.9:1 on the dark surface */
   --c-ink:            237 244 247;  /* #EDF4F7 */
   --c-ink-2:          195 212 222;  /* #C3D4DE */
   --c-mute:           165 186 198;  /* #A5BAC6 */
@@ -456,7 +460,6 @@
   --shell-border:  rgba(177, 209, 222, .11);
   --panel-border:  rgba(177, 209, 222, .14);
   --inner-hi:      inset 0 1px 0 rgba(211, 238, 248, .045);
-  --sheen:         linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, 0) 120px);
   --shell-shadow:  0 1px 0 rgba(255, 255, 255, .05) inset,
                    0 2px 6px rgba(0, 0, 0, .5),
                    0 34px 64px -30px rgba(0, 0, 0, .9);

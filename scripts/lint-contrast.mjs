@@ -104,6 +104,7 @@ for (const theme of ['light', 'dark']) {
   }
   for (const bg of ['c-surface', 'c-sunken']) {
     SEMANTIC_PAIRS.push({ theme, kind: 'nontext', floor: 3.0, fg: 'control-edge', bg, note: `${theme}: checkbox/radio boundary on ${bg}` });
+    SEMANTIC_PAIRS.push({ theme, kind: 'nontext', floor: 3.0, fg: 'c-line-control', bg, note: `${theme}: form-field boundary (line-control) on ${bg}` });
   }
 }
 

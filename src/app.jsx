@@ -6974,18 +6974,33 @@ Clinician Name`;
           //   calculateCrCl, calculateTNKDose, calculatePCCDose, calculateAlteplaseDose
 
           // =================================================================
-          // RADIO GROUP ARROW KEY NAVIGATION (WCAG 2.1 AA)
+          // RADIO GROUP ARROW KEY NAVIGATION (WCAG 2.1 AA, APG radio group)
+          // Arrow keys move to the next/previous radio and select it (wrapping);
+          // Home/End select the first/last. Any other key is left alone (no
+          // preventDefault), so Tab, Space and Enter keep their native meaning.
+          // The set is the nearest role="radiogroup" or, for the calculator
+          // sets that have none (the GCS role="group" columns, ICH-score GCS,
+          // mRS, ABCD2 duration, Hunt-Hess, WFNS), the radios that share this
+          // radio's parent. Disabled radios are skipped.
           const handleRadioKeyDown = (e) => {
-            if (!['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft'].includes(e.key)) return;
-            e.preventDefault();
-            const group = e.currentTarget.closest('[role="group"], [role="radiogroup"]');
-            if (!group) return;
-            const radios = [...group.querySelectorAll('[role="radio"]')];
-            const idx = radios.indexOf(e.currentTarget);
+            if (!['ArrowDown', 'ArrowRight', 'ArrowUp', 'ArrowLeft', 'Home', 'End'].includes(e.key)) return;
+            const current = e.currentTarget;
+            const radiogroup = current.closest('[role="radiogroup"]');
+            const container = radiogroup || current.parentElement;
+            if (!container) return;
+            const candidates = radiogroup
+              ? [...radiogroup.querySelectorAll('[role="radio"]')].filter((r) => r.closest('[role="radiogroup"]') === radiogroup)
+              : [...container.children].filter((r) => r.getAttribute('role') === 'radio');
+            const radios = candidates.filter((r) => r === current || (!r.disabled && r.getAttribute('aria-disabled') !== 'true'));
+            const idx = radios.indexOf(current);
             if (idx < 0) return;
-            const next = (e.key === 'ArrowDown' || e.key === 'ArrowRight')
-              ? (idx + 1) % radios.length
-              : (idx - 1 + radios.length) % radios.length;
+            e.preventDefault();
+            let next;
+            if (e.key === 'Home') next = 0;
+            else if (e.key === 'End') next = radios.length - 1;
+            else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = (idx + 1) % radios.length;
+            else next = (idx - 1 + radios.length) % radios.length;
+            if (next === idx) return;
             radios[next].focus();
             radios[next].click();
           };
@@ -16828,7 +16843,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const hasNihssInputs = nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '');
           const nihssDisplay = nihssFromNote || (hasNihssInputs ? String(nihssScore) : '--');
           return (
-            <div className="relative v7-skin">
+            <div className="relative">
               {/* v7: skip-link → semantic <main id="main">; cobalt accent, no link-* override */}
               <a href="#main" data-skip-tap className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-cobalt-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2">Skip to main content</a>
               {protocolModal && (
@@ -16875,7 +16890,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   scrolled away below 768px; clip suppresses the overflow without
                   creating a scrollport. ≥768px (md) needs neither; html/body
                   also clip horizontal overflow at the page level. */}
-              <div className="app-shell v7-content max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-clip md:overflow-x-visible">
+              <div className="app-shell max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-clip md:overflow-x-visible">
 
               {PUBLIC_DEMO_MODE && <PHIBanner />}
 
@@ -18276,7 +18291,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               )}
                               {!telestrokeNote.consultStartTime && (
                                 <button type="button" onClick={() => setTelestrokeNote(prev => ({...prev, consultStartTime: new Date().toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'})}))}
-                                  className="v6-btn-secondary v6-btn-sm">
+                                  className="ui-btn ui-btn--secondary ui-btn--sm">
                                   Start Timer
                                 </button>
                               )}

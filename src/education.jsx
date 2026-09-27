@@ -863,7 +863,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
     const activeModule = EDUCATION_MODULES.find(m => m.id === subTab);
     if (activeModule) {
       return (
-        <div className="space-y-6 max-w-4xl mx-auto v7-reveal">
+        <div className="space-y-6 max-w-4xl mx-auto">
           <button
             onClick={() => onNavigate(null)}
             className="no-print inline-flex items-center gap-2 text-sm text-cobalt-700 hover:text-cobalt-900 font-semibold mb-2 min-h-[44px] dark:text-cobalt-300"
@@ -892,7 +892,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
   }
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto v7-reveal">
+    <div className="space-y-6 max-w-6xl mx-auto">
       <header className="bg-card border border-line rounded-lg p-6 space-y-2">
         <p className="font-mono text-xs uppercase text-mute tracking-wider">Teaching library · {EDUCATION_MODULES.length} modules</p>
         <h1 className="font-serif text-2xl text-ink font-bold">Educational Resources</h1>
