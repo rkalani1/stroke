@@ -1,12 +1,3 @@
-export const PUBLIC_DEMO_BANNER_COPY =
-  'Synthetic educational demo - not medical advice, not an approved clinical tool, and not local clinical policy. Do not enter PHI or real patient details.';
-
-export const PUBLIC_DEMO_MODAL_COPY =
-  'This public site is for synthetic education and reference only. It is not an approved clinical tool and does not store encounters on this public build. Do not enter PHI, MRNs, dates of birth, real encounter details, or operational handoff content.';
-
-export const SITE_FOOTER_DISCLAIMER_COPY =
-  'Not medical advice, not an approved clinical tool, not local clinical policy, and not endorsed by any named institution. Content summarizes published guidelines and trials for education; it can be incomplete or out of date. Use synthetic data only and never enter PHI.';
-
 export const PUBLIC_DEMO_AGENT_DISCLAIMER =
   'Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.';
 

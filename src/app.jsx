@@ -36,9 +36,7 @@ import {
   NeurocheckTimer,
   PatientCensus,
   ClinicWorkflow,
-  WardsWorkflow,
-  PHIBanner,
-  SiteFooter
+  WardsWorkflow
 } from './components.jsx';
 import {
   getPublicDemoPhiWarnings,
@@ -279,7 +277,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.29.1';
+const APP_VERSION = '6.29.2';
 // The header search hint mirrors the key the shortcut actually listens for
 // (metaKey || ctrlKey): ⌘ on Apple hardware, Ctrl everywhere else.
 const SEARCH_SHORTCUT_LABEL = (typeof navigator !== 'undefined'
@@ -16885,9 +16883,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   scrolled away below 768px; clip suppresses the overflow without
                   creating a scrollport. ≥768px (md) needs neither; html/body
                   also clip horizontal overflow at the page level. */}
-              <div className="app-shell max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-clip md:overflow-x-visible">
-
-              {PUBLIC_DEMO_MODE && <PHIBanner />}
+              <div className="app-shell max-w-7xl mx-auto p-4 sm:p-8 pb-20 sm:pb-8 overflow-x-clip md:overflow-x-visible" data-build={BUILD_TARGET_MARKER}>
 
               {/* Offline Indicator */}
               {!isOnline && (
@@ -33568,8 +33564,6 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 )}
 
               </main>
-
-              <SiteFooter appVersion={APP_VERSION} publicDemo={PUBLIC_DEMO_MODE} buildMarker={BUILD_TARGET_MARKER} />
 
             </div>
 

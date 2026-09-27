@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "recommendations",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.29.1",
+    "appVersion": "6.29.2",
     "checksum": "sha256:271a36576e236dc3739ea4d90e7c6d2b",
     "count": 11,
     "source": "Evidence atlas recommendations bundle",

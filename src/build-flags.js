@@ -15,7 +15,7 @@ export const BUILD_PUBLIC_DEMO = typeof __STROKE_BUILD_PUBLIC_DEMO__ === 'boolea
   ? __STROKE_BUILD_PUBLIC_DEMO__
   : true;
 
-// Stamped into the DOM (data-build on the site footer) and asserted by
-// tests/disclaimer-bundle.test.js: a committed app.js must contain only the
+// Stamped into the DOM (data-build on the .app-shell root) and asserted by
+// tests/public-build-gate.test.js: a committed app.js must contain only the
 // public marker, never the private one.
 export const BUILD_TARGET_MARKER = BUILD_PUBLIC_DEMO ? 'stroke-public-demo-build' : 'stroke-private-build';
