@@ -491,7 +491,7 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
     it('F10-T1.1: lint-contrast.mjs script executes and verifies the locked and semantic color token pairs', () => {
       const result = spawnSync('node', [path.join(ROOT, 'scripts/lint-contrast.mjs')], { cwd: ROOT, encoding: 'utf8' });
       expect(result.status).toBe(0);
-      expect(result.stdout).toContain('72 pairs verified');
+      expect(result.stdout).toMatch(/\b72 pairs verified\b/);
     });
 
     it('F10-T1.2: Body text contrast on white surface satisfies ≥7.0:1 (AAA) floor', () => {
