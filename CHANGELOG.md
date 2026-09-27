@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v6.29.1 — 2026-09-27 — post-merge review fixes
+
+Two defects from the v6.29.0 release, reported by the post-merge review on
+PR #216. The Protocols tab is unchanged.
+
+- **"NIHSS NIHSS" in trial populations:** five completed-trial records
+  (MR CLEAN, ATTRACTION, INSTANT, ATTENTION-IA and OPTIMISTmain) stored `population.nihssRange` with its own "NIHSS" prefix. The Atlas card
+  and the content seeder both add that prefix, so the card and the seeded
+  population strings read "NIHSS NIHSS ≥2". The values are now stored without
+  the prefix, and an Atlas test fails if any record reintroduces it.
+- **Contrast-lint tests:** v6.29.0 relaxed four assertions from an exact pair
+  count to any number, which would also accept "0 pairs verified". They again
+  pin the exact count, now 72 pairs.
+
 ## v6.29.0 — 2026-09-27 — clinical accuracy audit, evidence currency, one design system, build-time demo gate
 
 The Protocols tab (`#/protocols/*`) is unchanged apart from the user-approved

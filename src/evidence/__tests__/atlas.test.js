@@ -33,6 +33,15 @@ import {
 } from '../index.js';
 
 describe('Evidence Atlas — data layer', () => {
+  it('stores population.nihssRange without an "NIHSS" prefix (renderers and the content seeder add it)', () => {
+    // A prefixed value rendered as "NIHSS NIHSS ≥2" in the Atlas card (app.jsx)
+    // and in the seeded /content trial population strings.
+    const prefixed = completedTrials
+      .filter((t) => /^\s*NIHSS\b/i.test(t.population?.nihssRange || ''))
+      .map((t) => t.id);
+    expect(prefixed).toEqual([]);
+  });
+
   it('seeds the active trials', () => {
     // Floor, not an exact count: the registry is expected to grow. 9 is the
     // current roster, so this still fails if a seeded trial goes missing.

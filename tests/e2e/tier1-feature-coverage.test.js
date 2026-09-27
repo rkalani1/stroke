@@ -491,7 +491,7 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
     it('F10-T1.1: lint-contrast.mjs script executes and verifies the locked and semantic color token pairs', () => {
       const result = spawnSync('node', [path.join(ROOT, 'scripts/lint-contrast.mjs')], { cwd: ROOT, encoding: 'utf8' });
       expect(result.status).toBe(0);
-      expect(result.stdout).toMatch(/\d+ pairs verified/);
+      expect(result.stdout).toMatch(/\b72 pairs verified\b/);
     });
 
     it('F10-T1.2: Body text contrast on white surface satisfies ≥7.0:1 (AAA) floor', () => {
@@ -889,9 +889,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(gitignore).toContain('leak-guard-denylist.local.json');
     });
 
-    it('F19-T1.5: package.json version matches latest release v6.29.0', () => {
+    it('F19-T1.5: package.json version matches latest release v6.29.1', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.version).toBe('6.29.0');
+      expect(pkg.version).toBe('6.29.1');
     });
 
     it('F19-T1.6: Runtime config loader declares the local-override fetch it awaits', () => {

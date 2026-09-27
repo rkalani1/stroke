@@ -3629,7 +3629,7 @@ export const completedTrials = [
     population: {
       n: 500,
       ageRange: 'mean 65 (range 23-96)',
-      nihssRange: 'NIHSS ≥2, no upper severity limit (proximal occlusion)',
+      nihssRange: '≥2, no upper severity limit (proximal occlusion)',
       timeWindow: '≤6 h',
       keyInclusion: ['Proximal anterior-circulation occlusion confirmed on vessel imaging', '89% pre-treated with IV alteplase'],
       keyExclusion: []
@@ -4542,7 +4542,7 @@ export const completedTrials = [
     population: {
       n: 1380,
       ageRange: 'median 71 y (IQR 62-77); 591 (43%) female, 789 (57%) male',
-      nihssRange: 'NIHSS 6-30 (protocol inclusion; anterior-circulation LVO)',
+      nihssRange: '6-30 (protocol inclusion; anterior-circulation LVO)',
       timeWindow: 'Randomization within 24 h of onset (last known well), after successful reperfusion by thrombectomy',
       keyInclusion: ['Acute ischaemic stroke due to anterior-circulation large-vessel occlusion', 'Successful reperfusion after thrombectomy', '82 hospitals in China; randomized Apr 9 2024 - Sep 29 2025 (NCT06265051)', '1367 of 1380 (99%) participants were of Han Chinese ethnicity'],
       keyExclusion: ['Failure to achieve successful reperfusion after thrombectomy (1686 assessed, 1380 randomized)']
@@ -10604,7 +10604,7 @@ export const completedTrials = [
     population: {
       n: 359,
       ageRange: 'Adults ≥18 y (registry); mean 66 y; 141 (39.3%) female',
-      nihssRange: 'NIHSS ≥4 before randomization (registry NCT05604638 and published protocol)',
+      nihssRange: '≥4 before randomization (registry NCT05604638 and published protocol)',
       timeWindow: 'Randomized, with study drug started, 4-24 h after IV tenecteplase',
       keyInclusion: [
         'Acute ischaemic stroke treated with IV tenecteplase',
@@ -10825,7 +10825,7 @@ export const completedTrials = [
     population: {
       n: 208,
       ageRange: '≥18 y; mean 66.0 y (SD 11.1); 24.5% (51) women',
-      nihssRange: 'NIHSS ≥6 (moderate to severe stroke); median NIHSS before EVT 20.0 (IQR 12.5-35.0)',
+      nihssRange: '≥6 (moderate to severe stroke); median NIHSS before EVT 20.0 (IQR 12.5-35.0)',
       timeWindow: 'Within 24 h of onset (last known free of major deficits); median onset to randomization 7.0 h (IQR 4.6-9.4); randomized after successful EVT',
       keyInclusion: [
         'Occlusion of the V4 vertebral segment, proximal/middle/distal basilar artery, or P1 posterior cerebral artery (basilar 69%, vertebral 26%, PCA 5%)',
@@ -10887,7 +10887,7 @@ export const completedTrials = [
     population: {
       n: 4922,
       ageRange: 'Adults ≥18 y (registry NCT03734640); age distribution not reported in the PubMed abstract',
-      nihssRange: 'NIHSS <10 (mild to moderate impairment) and clinically stable',
+      nihssRange: '<10 (mild to moderate impairment) and clinically stable',
       timeWindow: 'Eligibility (clinically stable, NIHSS <10) established within 2 h of initiation of IV thrombolysis; the tested protocols cover the first 24 h after thrombolysis',
       keyInclusion: [
         'Consecutive adults with acute ischaemic stroke treated with IV thrombolysis according to local guidelines (registry: IV alteplase according to standard criteria)',

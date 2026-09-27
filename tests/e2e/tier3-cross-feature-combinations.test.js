@@ -153,7 +153,7 @@ describe('Tier 3: Cross-Feature Combinations (Pairwise Interactions)', () => {
   it('F9xF10: Collapsible UI components and text elements satisfy WCAG AA contrast across light and dark modes', () => {
     const res = spawnSync('node', [path.join(ROOT, 'scripts/lint-contrast.mjs')], { cwd: ROOT, encoding: 'utf8' });
     expect(res.status).toBe(0);
-    expect(res.stdout).toMatch(/\d+ pairs verified/);
+    expect(res.stdout).toMatch(/\b72 pairs verified\b/);
   });
 
   // 11. F8 x F11: Educational Modules & 2024-2026 Landmark Trial Citations
