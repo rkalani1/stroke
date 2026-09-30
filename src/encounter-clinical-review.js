@@ -2,8 +2,10 @@
 // Protocols. A partial source screen is never a complete treatment determination.
 // Sources: AHA/ASA AIS2026 doi:10.1161/STR.0000000000000513 §§4.6–4.7;
 // EXTEND doi:10.1056/NEJMoa1813046; WAKE-UP doi:10.1056/NEJMoa1804355.
+import { hasRecordedTreatmentAdministration, hasRecordedNoTreatment, recordedTreatmentDecision } from './encounter-decision-status.js';
+
 export function numericInput(value, { min = -Infinity, max = Infinity, integer = false } = {}) {
-  if (!['number', 'string'].includes(typeof value) || String(value).trim() === '') return null;
+  if (!['number', 'string'].includes(typeof value) || !/^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/.test(String(value).trim())) return null;
   const n = Number(value);
   return Number.isFinite(n) && n >= min && n <= max && (!integer || Number.isInteger(n)) ? n : null;
 }
@@ -91,7 +93,7 @@ export function evaluateVideoTreatment({ note = {}, clock, aspects, pcAspects, c
   const matched = reason => ({ eligible: true, confidence: 'medium', reason });
   const age = numericInput(note.age, { min: 0, max: 120 });
   const nihss = documentedExamScore(note);
-  const hours = clock && !clock.futureWarning && clock.label !== 'Discovery' ? numericInput(clock.total, { min: 0 }) : null;
+  const hours = note.lkwUnknown !== true && clock && !clock.futureWarning && clock.label !== 'Discovery' ? numericInput(clock.total, { min: 0 }) : null;
   const mrs = numericInput(note.premorbidMRS, { min: 0, max: 6, integer: true });
   const wake = evaluateWakeUpScreen(note, now);
   const exposure = assessAnticoagulantExposure(note, now);
@@ -186,4 +188,70 @@ export function reviewedTiaDisposition(assessment = {}) {
 
 export function gcsComponentsDocumented(items = {}) {
   return [['eye',4],['verbal',5],['motor',6]].every(([key,max]) => items[key] === 'NT' || numericInput(items[key],{min:1,max,integer:true}) !== null);
+}
+
+// The context-card renderer is a separate consumer from the main treatment
+// screen. Apply the same documented facts rather than inferring eligibility
+// again from a time, score or vessel in isolation. null preserves a card's
+// existing relevance predicate; true never means complete clinical eligibility.
+export function reviewedContextCardMatch(id, data = {}) {
+  const note = data.telestrokeNote || {};
+  const cat = note.diagnosisCategory;
+  const ischemic = cat === 'ischemic';
+  const adult = numericInput(note.age, { min: 18, max: 120 }) !== null;
+  const nihss = documentedExamScore(note, data.nihssScore, data.nihssComplete === true);
+  const clock = data.timeFromLKW;
+  const hours = note.lkwUnknown !== true && clock && !clock.futureWarning && clock.label !== 'Discovery'
+    ? numericInput(clock.total, { min: 0 }) : null;
+  const vessels = Array.isArray(note.vesselOcclusion) ? note.vesselOcclusion : [];
+  const anterior = vessels.some(v => ['ICA', 'M1'].includes(v));
+  const basilar = vessels.includes('Basilar');
+  const ivtGiven = hasRecordedTreatmentAdministration(note, 'tnk');
+  const evtGiven = hasRecordedTreatmentAdministration(note, 'evt');
+  const noReperfusion = hasRecordedNoTreatment(note, 'tnk') && hasRecordedNoTreatment(note, 'evt');
+  const score = numericInput(data.aspectsScore, { min: 0, max: 10, integer: true });
+  const pcScore = numericInput(data.pcAspectsScore, { min: 0, max: 10, integer: true });
+  const mrs = numericInput(note.premorbidMRS, { min: 0, max: 6, integer: true });
+  const coherent = ischemic && adult && note.ctHemorrhageStatus === 'absent' && note.tnkContraindicationChecklist?.currentICH !== true;
+  const evaluated = () => evaluateVideoTreatment({ note: { ...note, nihss: nihss ?? '' }, clock, aspects: score, pcAspects: pcScore, critical: data.criticalContraindications || [], now: data.now });
+  const bleedingConcern = ['currentICH','sahPresentation','activeInternalBleeding','recentGIGUBleeding','knownBleedingDiathesis','lowPlatelets'].some(key => note.tnkContraindicationChecklist?.[key] === true)
+    || note.hemorrhagicTransformation?.detected === true;
+  const beforeReperfusion = !ivtGiven && !evtGiven && !note.punctureTime;
+  const antiplateletContext = ['ischemic', 'tia'].includes(cat) && adult && note.noncardioembolicConfirmed === true
+    && note.ctHemorrhageStatus === 'absent' && note.antiplateletContraindicationsReviewed === true && !bleedingConcern
+    && hours !== null && hours <= 24 && noReperfusion
+    && assessAnticoagulantExposure(note, data.now).status === 'none' && !documentedIvtContext(note).medicationReconciliation;
+  switch (id) {
+    case 'tnk_standard': return beforeReperfusion && evaluated().tnk.eligible === true;
+    case 'bridging_ivt_evt': return beforeReperfusion && recordedTreatmentDecision(note, 'evt') === true && evaluated().tnk.eligible === true;
+    case 'tnk_extended_imaging': return ischemic && adult && beforeReperfusion && (note.lkwUnknown === true || (hours !== null && hours > 4.5 && hours <= 9));
+    case 'tnk_late_window': return ischemic && adult && beforeReperfusion && hours !== null && hours > 9 && hours <= 24;
+    case 'evt_standard': return !evtGiven && anterior && hours !== null && hours <= 6 && evaluated().evt.eligible === true;
+    case 'evt_late_window': return !evtGiven && anterior && hours !== null && hours > 6 && hours <= 24 && evaluated().evt.eligible === true;
+    case 'evt_large_core_early': return !evtGiven && coherent && anterior && nihss !== null && nihss >= 6 && score !== null && score <= 5 && hours !== null && hours <= 24;
+    case 'evt_basilar': return !evtGiven && coherent && basilar && hours !== null && hours <= 24 && nihss !== null && nihss >= 6 && mrs !== null && mrs <= 1 && pcScore !== null && pcScore >= 6;
+    case 'bp_pre_tnk': return ischemic && adult && beforeReperfusion && ((hours !== null && hours <= 4.5) || evaluateWakeUpScreen(note, data.now).wakeUpEligible || evaluateWakeUpScreen(note, data.now).extendEligible);
+    case 'bp_pre_evt': return ischemic && adult && !evtGiven && !note.punctureTime && recordedTreatmentDecision(note, 'evt') === true && hasRecordedNoTreatment(note, 'tnk');
+    case 'bp_post_tnk': return ivtGiven;
+    case 'bp_post_evt': case 'bp_post_evt_drip': case 'post_evt_dect': return evtGiven;
+    case 'ia_lytic_post_evt': return ischemic && adult && evtGiven && ['2b','2b50','2b67','2c','3'].includes(note.ticiScore);
+    case 'bp_ischemic_no_lysis': case 'permissive_hypertension': return ischemic && noReperfusion;
+    case 'dapt_minor_stroke': return antiplateletContext && ischemic && nihss !== null && nihss <= 3;
+    case 'dapt_ticagrelor_nihss5': return antiplateletContext && ischemic && nihss !== null && nihss >= 4 && nihss <= 5;
+    case 'tia_dapt': return antiplateletContext && cat === 'tia' && numericInput(data.abcd2Score, { min: 4, max: 7, integer: true }) !== null;
+    case 'cyp2c19_guided_dapt': return antiplateletContext && note.secondaryPrevention?.cyp2c19Tested === true && ['poor-metabolizer','intermediate'].includes(note.secondaryPrevention?.cyp2c19Result) && ((ischemic && nihss !== null && nihss <= 3) || (cat === 'tia' && numericInput(data.abcd2Score, { min: 4, max: 7, integer: true }) !== null));
+    case 'transfer_evt': return ischemic && (anterior || basilar);
+    case 'mevo_evt_not_recommended': return ischemic && !anterior && !basilar && (vessels.some(v => ['M3','M4','A2','A3','P2','P3'].includes(v)) || (vessels.includes('M2') && ['non-dominant','co-dominant'].includes(note.culpritM2Dominance)));
+    case 'tirofiban_no_occlusion': return coherent && note.noncardioembolicConfirmed === true && vessels.length > 0 && vessels.every(v => /^none$/i.test(String(v))) && noReperfusion;
+    case 'hemorrhagic_transformation': return ivtGiven || note.hemorrhagicTransformation?.detected === true;
+    case 'angioedema_post_tnk': return note.angioedema?.detected === true || (ivtGiven && /lisinopril|enalapril|ramipril|captopril|benazepril|fosinopril|perindopril|quinapril|trandolapril|ace.?i/i.test(note.medications || ''));
+    case 'seizure_acute_stroke': return ['acute-seizure','late-seizure'].includes(note.screeningTools?.seizureRisk);
+    case 'decompressive_craniectomy_cerebellar': return ischemic && /cerebellar|\bpica\b|\bsca\b/i.test(`${note.ctResults || ''} ${note.ctaResults || ''}`);
+    // A documented agent is preferable to a potentially negated medication word.
+    // Unknown exposure remains a reconciliation task, never a reversal dose.
+    case 'reversal_warfarin': return cat === 'ich' && note.lastDOACType === 'warfarin';
+    case 'reversal_dabigatran': return cat === 'ich' && note.lastDOACType === 'dabigatran';
+    case 'reversal_xa_inhibitor': return cat === 'ich' && ['apixaban','rivaroxaban','edoxaban'].includes(note.lastDOACType);
+    default: return null;
+  }
 }

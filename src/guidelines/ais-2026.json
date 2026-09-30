@@ -11,7 +11,9 @@
     "pmid": "42507797",
     "doi": "10.1161/STR.0000000000000530",
     "citation": "Stroke. 2026;57(8):e461-e467",
-    "note": "All 34 correction items checked for applicability to this library. Five recommendation changes applied; remaining items concern material not reproduced here. This does not represent a new clinical review of the full guideline."
+    "note": "Recovered correction items 12, 13, 22, 23 and 24 support the five linked recommendation repairs, including PES Class IIb. The complete seven-page notice was not recovered: portions of items 8, 11 and 25, references 19/34 and final page e467 remain incomplete. This is a partial correction review, not certification of the full current edition.",
+    "status": "partially-applied",
+    "checkedAt": "2026-09-30"
   },
   "recommendations": [
     {

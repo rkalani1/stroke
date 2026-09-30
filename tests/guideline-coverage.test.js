@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { readFileSync } from 'node:fs';
 import { guidelineCoverage } from '../src/guideline-coverage.js';
 import { GUIDELINE_LIBRARY_INDEX } from '../src/guideline-library.js';
 
@@ -17,6 +18,22 @@ describe('source coverage and source-page provenance', () => {
       expect(guideline.sourceOnly, guideline.id).toBe(false);
       expect(guideline.hasUnresolvedUpdates, guideline.id).toBe(guideline.publicationUpdates.some(update => ['unresolved', 'partially-applied'].includes(update.status)));
     }
+  });
+
+  it('preserves source limits and correction status in the public index consumed by agents', () => {
+    const published = JSON.parse(readFileSync(new URL('../data/guidelines/index.json', import.meta.url), 'utf8')).data;
+    expect(published).toHaveLength(GUIDELINE_LIBRARY_INDEX.length);
+    for (const source of GUIDELINE_LIBRARY_INDEX) {
+      const indexed = published.find(guideline => guideline.id === source.id);
+      expect(indexed.sourceReview, source.id).toEqual(source.sourceReview);
+      expect(indexed.publicationUpdates, source.id).toEqual(source.publicationUpdates);
+      expect(indexed.hasUnresolvedUpdates, source.id).toBe(source.hasUnresolvedUpdates);
+      for (const field of ['documentType', 'gradingSystem', 'extractionStatus', 'extractionNote', 'sourceAccess']) {
+        expect(indexed[field], `${source.id}: ${field}`).toEqual(source[field]);
+      }
+    }
+    expect(published.find(g => g.id === 'ais-2026')).toMatchObject({ coverageComplete: true, hasUnresolvedUpdates: true });
+    expect(published.find(g => g.id === 'aha-stroke-rehabilitation-2026')).toMatchObject({ sourceOnly: true, recommendationCount: 0 });
   });
 
   it('links to physical PDF pages when the dataset supplies them', () => {

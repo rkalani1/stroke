@@ -1845,7 +1845,7 @@ export function EvtPeriproceduralCareCard() {
             </div>
 
             {/* §1 Post-reperfusion blood pressure (red) */}
-            <CardSection color="red" title="1. Post-Reperfusion Blood Pressure &mdash; The Single Most Common Post-EVT Order-Set Error">
+            <CardSection color="red" title="1. Post-Reperfusion Blood Pressure &mdash; Match the Target to the Clinical Context">
               <div style={{ display: 'grid', gridTemplateColumns: '1.15fr 1.15fr 1fr', gap: '8px', fontSize: '7.0pt', lineHeight: '1.34', color: 'var(--ink-soft)' }}>
                 <div style={{ border: '1.5px solid var(--red)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
                   <strong style={{ color: 'var(--red-deep)', fontSize: '7.6pt' }}>ENCHANTED2/MT &mdash; Intensive Lowering Is Harmful</strong>
@@ -1980,7 +1980,7 @@ export function EvtPeriproceduralCareCard() {
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>Imaging, Staining vs Blood, and the Order Set</strong>
                   <br />&bull; <strong>Imaging:</strong> obtain urgent assessment and imaging for any new neurological deterioration or concerning headache/vomiting. After IV thrombolysis, follow the 24-hour imaging and antithrombotic precautions; emergent stenting and other antithrombotic indications require a specific procedural plan. Do not use a ≥4-point NIHSS change as the threshold to investigate.
-                  <br />&bull; <strong>Contrast staining vs haemorrhage:</strong> dual-energy CT separates the two. In a single-centre retrospective series of 39 post-EVT patients (PMID: 35960327), parenchymal hyperdensity appeared in 17/39 (44%) and was read as haemorrhage in 9 (53%), pure contrast staining in 8 (47%) and a mixture in 6 (35%); DECT sensitivity 90%, specificity 100%, accuracy 95%, with inter-reader &kappa; 1.00 vs 0.51 for standard mixed images. Small and retrospective &mdash; a tie-breaker, not a licence to withhold repeat imaging.
+                  <br />&bull; <strong>Contrast staining vs haemorrhage:</strong> dual-energy CT can help distinguish blood from iodinated contrast. In a single-centre retrospective series of 39 post-EVT patients (PMID: 35960327), TwinSpiral DECT at 48–72 hours had ICH sensitivity 90%, specificity 100% and accuracy 95%, using follow-up CT or MRI as the reference; inter-reader &kappa; was 1.00 vs 0.51 for standard mixed images. These small-study results are technique- and population-specific, not a guarantee or a reason to delay clinically indicated imaging.
                   <br />&bull; <strong>Ongoing care:</strong> document individualized BP targets, avoid hypoglycemia and excessive glucose lowering, treat hyperthermia, and screen swallowing before oral intake. The familiar q15-minute, q30-minute and hourly schedule is post-thrombolysis monitoring guidance, not a uniquely tested EVT regimen.
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
@@ -2228,7 +2228,7 @@ export function UnrupturedIntracranialAneurysmCard() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px', fontSize: '7.0pt', lineHeight: '1.34', color: 'var(--ink-soft)' }}>
                 <div style={{ border: '1.5px solid var(--red)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
                   <strong style={{ color: 'var(--red-deep)', fontSize: '7.6pt' }}>Symptomatic &rarr; Different Pathway Entirely</strong>
-                  <br />&bull; <strong>New third-nerve palsy with a dilated pupil</strong> is expansion or sentinel bleeding of a PCom (or superior cerebellar) aneurysm until angiography says otherwise &mdash; secure it, do not surveil it.
+                  <br />&bull; <strong>New third-nerve palsy with a dilated pupil:</strong> urgently evaluate for an aneurysm and possible SAH. If a symptomatic unruptured aneurysm is confirmed, consider repair through multidisciplinary assessment of life expectancy, procedural risk and patient preferences (ESO 2022 expert consensus).
                   <br />&bull; <strong>Thunderclap headache or suspected SAH:</strong> use an urgent diagnostic pathway. CT-positive SAH does not require LP to confirm it; selected patients presenting within six hours without a new neurological deficit may be evaluated with high-quality CT alone under the applicable guideline. Other situations may require additional testing.
                   <br />&bull; Risk models derived for unruptured aneurysms do not replace urgent evaluation of a new symptomatic presentation. Do not assign a reassuring individual forecast from PHASES alone in this setting.
                 </div>
@@ -2749,10 +2749,10 @@ export function SevereStrokeCriticalCareCard() {
             <CardSection color="slate" title="5. VTE Prophylaxis, Mobilization Dose &amp; The Systemic Complications That Drive Mortality">
               <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1.1fr 1fr', gap: '8px', fontSize: '7.0pt', lineHeight: '1.32', color: 'var(--ink-soft)' }}>
                 <div>
-                  <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>VTE: Sleeves Now, Heparin On A Schedule</strong>
+                  <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>VTE: Mechanical and Pharmacologic Prevention</strong>
                   <br />&bull; <strong>IPC for immobile patients without contraindications, with skin surveillance.</strong> CLOTS 3 (Lancet 2013;382:516&ndash;524; PMID: 23727163) randomized 2876 immobile stroke patients: proximal DVT within 30 days <strong>8.5% (122/1438) vs 12.1% (174/1438)</strong>, absolute risk reduction <strong>3.6% (95% CI 1.4&ndash;5.8)</strong>; adjusted OR 0.65 (0.51&ndash;0.84; p=0.001). Skin breaks were more common with IPC (3% vs 1%; p=0.002) &mdash; inspect legs daily.
                   <br />&bull; <strong>Graduated compression stockings alone are not a substitute</strong> and are not recommended for this indication.
-                  <br />&bull; <strong>Pharmacologic start times (institutional convention, not trial-derived):</strong> ischemic stroke &mdash; prophylactic LMWH/UFH once bleeding risk is assessed, and after thrombolysis defer until the 24-hour follow-up CT is clean; ICH &mdash; hold until the hematoma is documented stable on repeat imaging, typically day 1&ndash;2 (AHA/ASA ICH guideline, PMID: 35579034); post-craniotomy or hemicraniectomy &mdash; per the operating surgeon, usually 24&ndash;48 h post-op. <strong>IPC covers the entire interval.</strong>
+                  <br />&bull; <strong>Pharmacologic prophylaxis:</strong> individualize by immobility, bleeding risk, imaging and treatment history. After IV thrombolysis, preserve the 24-hour follow-up imaging precaution. For nonambulatory patients with spontaneous ICH, low-dose UFH/LMWH at 24&ndash;48 hours from onset may be reasonable after assessment of hematoma stability and bleeding risk (AHA/ASA 2022, Class 2b, C-LD; PMID: 35579034). After craniotomy or hemicraniectomy, use the operating team’s explicit plan; this card does not assign a universal postoperative start time. Continue IPC when appropriate and without contraindications.
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>Mobilization: Early Yes, High-Dose No</strong>
@@ -2947,12 +2947,12 @@ export function PostStrokeRecoveryCard() {
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>Fatigue, Spasticity &amp; Shoulder</strong>
                   <br />&bull; <strong>Fatigue (Int J Stroke 2016; PMID: 27703065):</strong> pooled prevalence <strong>50% (95% CI 43&ndash;57%)</strong> across 22 studies (n=3,491) using the Fatigue Severity Scale; the wide between-study spread was not explained by depression status or time since stroke. Screen it separately from mood; treat sleep apnoea, anaemia, sedating drugs and deconditioning before calling it idiopathic.
-                  <br />&bull; <strong>Spasticity:</strong> pooled analysis of 7 randomised trials (544 patients; Mov Disord 2011; PMID: 20960474) showed a saturating dose&ndash;response for onabotulinumtoxinA &mdash; roughly 22.5 U (flexor carpi radialis) and 18.4 U (flexor carpi ulnaris) for a mean 1-point Ashworth reduction. Pair injections with stretching and splinting; toxin without therapy wastes the window.
+                  <br />&bull; <strong>Spasticity:</strong> pooled data from 7 randomised trials (544 patients; Mov Disord 2011; PMID: 20960474) modeled a saturating relationship between onabotulinumtoxinA dose and muscle-tone improvement at week 6. These study estimates are not individualized injection doses or guarantees of functional recovery; dosing and rehabilitation goals require patient-specific assessment.
                   <br />&bull; <strong>Hemiplegic shoulder:</strong> prevent subluxation and contracture from day 1 &mdash; positioning, supported transfers, no pulling on the flaccid arm, no overhead pulleys.
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--ink)', fontSize: '7.4pt' }}>Example Follow-Up Topics — Individualize Timing</strong>
-                  <br />&bull; <strong>Guideline anchor (AHA/ASA, Stroke 2016; PMID: 27145936):</strong> organised, coordinated interdisciplinary rehabilitation with adequate resources, dose and duration is an essential component of stroke care, not a discretionary add-on. The 2016 guideline has since been replaced by the 2026 AHA/ASA Guideline for Adult Stroke Rehabilitation and Recovery (Stroke 2026; PMID: 42657476); check current recommendations there.
+                  <br />&bull; <strong>Current guideline:</strong> the 2026 AHA/ASA Guideline for Adult Stroke Rehabilitation and Recovery (PMID: 42657476) replaces the 2016 edition. The <a href="https://www.guidelinecentral.com/guideline/7080/" target="_blank" rel="noopener noreferrer" className="underline">AHA/ASA collaborative guide</a> provides graded summaries for rehabilitation setting, mobilization, mood, cognition and participation. It is a supporting guide; the complete published article and supportive text were unavailable to this review.
                   <br />&bull; <strong>Early follow-up:</strong> reconcile the medications actually indicated and prescribed, confirm access and tolerability, and assess mood and urgent concerns. The medication combination is mechanism- and patient-specific.
                   <br />&bull; <strong>Ongoing reassessment:</strong> review individualized BP/lipid goals, spasticity, shoulder pain, falls, continence and rehabilitation access according to clinical need.
                   <br />&bull; <strong>Recovery and workup:</strong> assess cognition, mood, fatigue, driving/work readiness and unresolved etiologic questions at an appropriate time. Do not defer urgent concerns to a scheduled three-month visit; rhythm monitoring depends on the indication.
@@ -4843,7 +4843,7 @@ export function StrokePrognosisCard() {
               {/* Modified Rankin Scale (mRS) Card */}
               <div className="toast-card neutral" style={{fontSize: '7.8pt', padding: '10px 12px'}}>
                 <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--slate)', marginBottom: '3px'}}>Modified Rankin Scale (mRS)</h3>
-                <p style={{color: 'var(--ink-soft)', fontSize: '7.5pt', marginBottom: '4px', fontStyle: 'italic'}}>The gold standard for assessing global functional recovery</p>
+                <p style={{color: 'var(--ink-soft)', fontSize: '7.5pt', marginBottom: '4px', fontStyle: 'italic'}}>A widely used scale of global disability</p>
                 <div className="clinical-scroll-region" role="region" aria-label="Clinical comparison table; scroll horizontally if needed" tabIndex={0}><table style={{width: '100%', borderCollapse: 'collapse', fontSize: '7.4pt'}}>
                   <thead>
                     <tr style={{borderBottom: '1px solid var(--rule-soft)', fontWeight: 'bold'}}>
@@ -5090,7 +5090,7 @@ export function CervicalDissectionCard() {
                     <br/>• <strong>Intervention:</strong> seek multidisciplinary assessment for exceptional recurrent ischemia despite medical treatment or other complications. Stenosis severity alone is not a routine intracranial-dissection stenting indication; SAH requires a distinct urgent pathway.
                   </div>
                   <div style={{gridColumn: '1 / -1', borderTop: '1px dashed var(--red)', paddingTop: '6.5px', marginTop: '4px', fontSize: '7.4pt'}}>
-                    • <strong>Recurrence &amp; Activity</strong>: Long-term CeAD recurrence is low (~1%/yr). Avoid high-risk neck activities (chiropractic neck manipulation, rollercoasters, extreme hyperextension/rotation) for secondary prevention.
+                    • <strong>Recurrence &amp; Activity</strong>: Recurrent CeAD occurs in about 1–2% per year, with greater risk in the first few months. AHA 2024 suggests avoiding activities that risk cervical injury for 1–6 months after diagnosis and until healing. Long-term precautions have not been proven to prevent recurrence; lifelong avoidance may be suggested for selected high-risk patients, such as those with a connective-tissue disorder or recurrent dissection. Individualize return to activity.
                   </div>
                 </div>
               </div>
@@ -6230,7 +6230,7 @@ const BrainstemSyndromesView = () => (
 
 export function BrainstemSyndromesCard() {
   const rows = [
-    { s: 'Wallenberg (lateral medullary)', v: 'PICA / vertebral', d: 'Ipsi facial pain-temp loss (V), Horner, ataxia, dysphagia/hoarseness (IX/X); contra body pain-temp loss (spinothalamic). Corticospinal tract spared → no hemiparesis.', lvl: 'medulla' },
+    { s: 'Wallenberg (lateral medullary)', v: 'PICA / vertebral', d: 'Ipsi facial pain-temp loss (V), Horner, ataxia, dysphagia/hoarseness (IX/X); contra body pain-temp loss (spinothalamic). The corticospinal tract is usually spared in the classic pattern; weakness can occur with extension or variant involvement and does not exclude lateral medullary stroke.', lvl: 'medulla' },
     { s: 'Dejerine (medial medullary)', v: 'Anterior spinal / vertebral', d: 'Contra arm/leg weakness (pyramid, face spared), contra proprioception loss (medial lemniscus), ipsi tongue weakness (XII).', lvl: 'medulla' },
     { s: 'Millard-Gubler (ventral pons)', v: 'Basilar perforators', d: 'Ipsi VI + VII palsy; contra hemiparesis.', lvl: 'pons' },
     { s: 'Foville (dorsal pons)', v: 'Basilar perforators', d: 'Ipsi horizontal gaze palsy + VII; contra hemiparesis.', lvl: 'pons' },
@@ -6793,7 +6793,7 @@ export function VesselWallMriCard() {
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
                   <strong style={{ color: 'var(--ink)', fontSize: '7.5pt' }}>Fellow / Differential Focus</strong>
-                  <br />&bull; Look for the "Plaque Shoulder Sign" in ICAD: Enhancement is asymmetric and localized to the fibrous cap adjacent to the lumen.
+                  <br />&bull; Assess plaque enhancement with the full vessel-wall pattern and clinical context; an isolated named sign should not establish ICAD.
                   <br />&bull; Multivessel enhancement can inform the differential diagnosis, but the number of vascular beds is not a validated PACNS diagnostic threshold.
                 </div>
                 <div style={{ borderLeft: '1.5px dashed var(--rule)', paddingLeft: '8px' }}>
@@ -7029,7 +7029,6 @@ export function PfoClosureCard() {
                 <text x="288" y="92" fill="var(--red-deep)" fontSize="7.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">HR 1.14</text>
                 <text x="288" y="104" fill="var(--ink-soft)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">(0.53–2.46)</text>
                 <text x="288" y="126" fill="var(--ink-soft)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">2-y ARR −0.7%</text>
-                <text x="288" y="138" fill="var(--red-deep)" fontSize="4.6pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="middle">no benefit</text>
                 {/* Possible */}
                 <rect x="330" y="40" width="76" height="104" rx="5" fill="var(--amber-soft)" stroke="var(--amber)" strokeWidth="1.2" />
                 <text x="368" y="54" fill="var(--amber-deep)" fontSize="5.8pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">POSSIBLE</text>
@@ -7042,7 +7041,6 @@ export function PfoClosureCard() {
                 <text x="448" y="92" fill="var(--teal-deep)" fontSize="7.2pt" fontFamily="Outfit" fontWeight="800" textAnchor="middle">HR 0.10</text>
                 <text x="448" y="104" fill="var(--ink-soft)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">(0.03–0.35)</text>
                 <text x="448" y="126" fill="var(--ink-soft)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">2-y ARR 2.1%</text>
-                <text x="448" y="138" fill="var(--teal-deep)" fontSize="4.6pt" fontFamily="IBM Plex Sans" fontWeight="700" textAnchor="middle">close</text>
                 <text x="368" y="156" fill="var(--ink-mute)" fontSize="4.6pt" fontFamily="IBM Plex Sans" textAnchor="middle">PASCAL pooled IPD, 6 RCTs, n=3740</text>
 
                 <line x1="500" y1="12" x2="500" y2="158" stroke="var(--rule-soft)" strokeWidth="1.5" strokeDasharray="3 3" />
@@ -8138,4 +8136,3 @@ export function SelectSeizureRiskCard() {
     </div>
   );
 }
-

@@ -437,8 +437,10 @@ export function HintsSimulator() {
         <section className="bg-white border border-line rounded-lg p-3 space-y-3 dark:bg-card">
           <div className="flex items-center justify-between">
             <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Interactive Eye Simulator</h4>
-            <span className="font-mono text-2xs text-slate-500 dark:text-mute">bedside teaching tool</span>
+            <span className="font-mono text-2xs text-slate-500 dark:text-mute">schematic demonstration</span>
           </div>
+
+          <p className="text-xs text-slate-600 dark:text-ink-2">Synthetic eye movements illustrate concepts; this animation has not been validated for examiner training or diagnostic accuracy.</p>
 
           {['skew-present', 'skew-none'].includes(activeKey) ? (
             <div role="status" className="rounded-md border border-line bg-slate-50 p-4 text-sm text-slate-700 dark:bg-paper-2 dark:text-ink-2">

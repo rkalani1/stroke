@@ -518,14 +518,16 @@
     {
       "name": "OPTIMAL-BP",
       "year": 2023,
-      "citation": "JAMA 2023;330:832-41 (PMID 37668619)",
+      "citation": "JAMA 2023;330:832-42 (PMID 37668619)",
       "question": "Does intensive SBP <140 improve outcomes post-EVT vs SBP <180?",
       "design": "RCT, n=306, Korea: SBP target <140 versus 140-180 mmHg for 24 hours after successful EVT.",
       "outcomes": "mRS 0-2 at 90 days: 39.4% versus 54.4%, worse with intensive lowering. The trial stopped early because of data-safety-monitoring concerns.",
-      "bottomLine": "Confirms ENCHANTED2-MT — intensive BP lowering post-EVT is NOT beneficial and likely harmful.",
-      "teachingPoint": "OPTIMAL-BP stopped early for harm at n=306. Post-EVT BP target: SBP <180, not <140.",
+      "bottomLine": "In this selected successfully reperfused population, intensive lowering reduced functional independence at 90 days.",
+      "teachingPoint": "Participants had mTICI ≥2b reperfusion and persistent SBP ≥140 mmHg. The 24-hour target <140 performed worse than 140–180. This does not establish a universal 140-mmHg floor: the conventional arm did not use vasopressors solely to raise spontaneous SBP below 140. Newer HOPE evidence evaluates a different selected strategy; individualize interpretation by population and reperfusion.",
       "reviewedSources": [
         "https://pubmed.ncbi.nlm.nih.gov/37668619/",
+        "https://jamanetwork.com/journals/jama/fullarticle/2808993",
+        "https://doi.org/10.1001/jamaneurol.2026.1706",
         "https://www.setrac.org/wp-content/uploads/2026/01/2026-guideline-for-the-early-management-of-patients-with-acute-ischemic-stroke-a-guideline-from.pdf"
       ]
     },
@@ -932,7 +934,10 @@
       "design": "RCT, n=429 (2-year interim), 30 centres in Europe/Canada. Stenosis ≥50% with 5-year predicted ipsilateral stroke risk <20% by Carotid Artery Risk (CAR) score. OMT alone vs OMT + revascularization. Hierarchical win-ratio endpoint.",
       "outcomes": "No benefit from added revascularization at 2 years on the hierarchical composite (periprocedural death/fatal stroke/fatal MI → non-fatal stroke → non-fatal MI → new silent infarct).",
       "bottomLine": "In risk-stratified low-to-intermediate-risk stenosis, optimised medical therapy alone held up at 2 years.",
-      "teachingPoint": "Selects by predicted RISK rather than by degree of stenosis — the CAR score, not the percentage, decides. Complements CREST-2 by covering symptomatic as well as asymptomatic disease. Interim only; final results pending."
+      "teachingPoint": "ECST-2 required both ≥50% stenosis and a CAR-predicted 5-year ipsilateral stroke risk <20%. It included asymptomatic and selected symptomatic disease. Its 2-year interim result does not establish CAR as a sole treatment rule; longer follow-up remains important.",
+      "reviewedSources": [
+        "https://pubmed.ncbi.nlm.nih.gov/40252662/"
+      ]
     },
     {
       "name": "ESPRIT (BP) / BPROAD",
