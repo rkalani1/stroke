@@ -6,9 +6,9 @@
    Old app caches are retired only on activation. Fetch policy is independent.
 */
 
-const APP_VERSION = '6.30.1';
+const APP_VERSION = '6.30.2';
 const CACHE_PREFIX = 'stroke-cache-v';
-const CACHE_NAME  = 'stroke-cache-v6-30-1-clinical-review-20260930';
+const CACHE_NAME  = 'stroke-cache-v6-30-2-clinical-review-20260930';
 
 // Retired teaching figures must not be served from a stale browser cache or
 // a bookmarked URL after this worker takes control. Paths are scope-relative
@@ -113,7 +113,11 @@ async function purgeWithdrawnCacheEntries() {
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
-    await cache.addAll(CORE_ASSETS);
+    // A recently visited deployment can still be fresh in the HTTP cache.
+    // Stage this deployment from the network, not those previous shell bytes.
+    await cache.addAll(CORE_ASSETS.map(asset =>
+      new Request(new URL(asset, self.registration.scope), { cache: 'reload' })
+    ));
     await Promise.allSettled(CDN_ASSETS.map(url => cache.add(url)));
     // Only a fully staged upgrade withdraws old clinical downloads.
     await purgeWithdrawnCacheEntries();
@@ -193,6 +197,81 @@ const isShellAsset = (url) =>
   url.pathname.endsWith('/manifest.json') ||
   /\.pdf$/i.test(url.pathname);
 
+const offlineUnavailable = () => new Response(
+  'This resource is not available offline. Reconnect and open the current library.',
+  { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } }
+);
+
+async function persistResponse(request, response) {
+  if (!response.ok) return;
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const url = new URL(request.url);
+    const root = new URL('./', self.registration.scope);
+    const index = new URL('./index.html', self.registration.scope);
+    const keys = new Set([request.url]);
+    // Root and index are two names for the same app document. Keep both fresh
+    // after an online navigation; unrelated HTML must not replace the shell.
+    if (url.origin === root.origin &&
+        (url.pathname === root.pathname || url.pathname === index.pathname) &&
+        (response.headers.get('content-type') || '').includes('text/html')) {
+      keys.add(root.href);
+      keys.add(index.href);
+    }
+    const writes = await Promise.allSettled([...keys].map(key => cache.put(key, response.clone())));
+    if (writes.some(write => write.status === 'rejected')) throw new Error('Offline cache write failed');
+  } catch (_) {
+    // Quota/private-mode failures must not discard a good network response.
+    console.warn?.('Stroke offline cache could not be updated.');
+  }
+}
+
+async function matchCurrentCache(request, url, navigation = false) {
+  try {
+    const cache = await caches.open(CACHE_NAME);
+    const exact = await cache.match(request);
+    if (exact) return exact;
+    if (navigation) {
+      for (const asset of ['./index.html', './', './offline.html']) {
+        const cached = await cache.match(new URL(asset, self.registration.scope).href);
+        if (cached) return cached;
+      }
+    } else if (url.search &&
+        ['app.js', 'tailwind.css', 'manifest.json'].some(asset =>
+          url.href.split('?')[0] === new URL(asset, self.registration.scope).href)) {
+      // Only these intentionally precached shell files have a canonical alias.
+      // Do not select an arbitrary query variant or erase PDF query identity.
+      const canonical = new URL(url);
+      canonical.search = '';
+      return await cache.match(canonical.href);
+    }
+  } catch (_) { /* No working current cache: return the bounded fallback. */ }
+  return undefined;
+}
+
+async function networkFirst(request, url) {
+  let response;
+  try {
+    response = await fetch(request, { cache: 'no-cache' });
+  } catch (_) {
+    return await matchCurrentCache(request, url,
+      request.mode === 'navigate' && isHtmlRequest(request, url)) || offlineUnavailable();
+  }
+  // Await persistence within respondWith's lifetime, without allowing storage
+  // failure to turn a successful network response into a stale fallback.
+  await persistResponse(request, response);
+  return response;
+}
+
+async function cacheFirst(request, url) {
+  const cached = await matchCurrentCache(request, url);
+  if (cached) return cached;
+  const response = await fetch(request, url.origin === self.location.origin
+    ? { cache: 'no-cache' } : undefined);
+  await persistResponse(request, response);
+  return response;
+}
+
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
@@ -207,57 +286,17 @@ self.addEventListener('fetch', (event) => {
       )));
       return;
     }
-    // Network-first for HTML + shell — always serve freshest deploy when online
     if (isHtmlRequest(event.request, url) || isShellAsset(url)) {
-      event.respondWith(
-        fetch(event.request, { cache: 'no-cache' }).then((response) => {
-          if (response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
-          }
-          return response;
-        }).catch(() =>
-          event.request.mode === 'navigate' && isHtmlRequest(event.request, url)
-            // Offline navigation/reload: serve the cached working app shell FIRST
-            // (it's in CORE_ASSETS, so always precached and fully functional offline).
-            // offline.html is only a last resort if the shell was never cached.
-            ? caches.match('./index.html').then(r => r || caches.match('./offline.html'))
-            : caches.match(event.request, { ignoreSearch: true }).then(c => c || new Response(
-              'This resource is not available offline. Reconnect and open the current library.',
-              { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } }
-            ))
-        )
-      );
+      event.respondWith(networkFirst(event.request, url));
       return;
     }
-    // Cache-first for icons and other static same-origin assets
-    event.respondWith(
-      caches.match(event.request).then((cached) => cached ||
-        fetch(event.request).then((response) => {
-          if (response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
-          }
-          return response;
-        })
-      )
-    );
+    event.respondWith(cacheFirst(event.request, url));
     return;
   }
 
-  // CDN assets — cache-first
+  // CDN assets — cache-first, scoped to this deployment's cache.
   if (url.hostname.includes('unpkg.com') || url.hostname.includes('cdnjs.cloudflare.com') ||
       url.hostname.includes('fonts.googleapis.com') || url.hostname.includes('fonts.gstatic.com')) {
-    event.respondWith(
-      caches.match(event.request).then((cached) => cached ||
-        fetch(event.request).then((response) => {
-          if (response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
-          }
-          return response;
-        })
-      )
-    );
+    event.respondWith(cacheFirst(event.request, url));
   }
 });
