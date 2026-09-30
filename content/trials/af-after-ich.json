@@ -22,7 +22,7 @@
     "fullName": "Prevention of Stroke in Intracerebral Haemorrhage Survivors with Atrial Fibrillation",
     "category": "af-after-ich",
     "population": "n=319, median 79, NIHSS n/a, Spontaneous ICH survivors with AF, mRS ≤4",
-    "finding": "Ischaemic stroke markedly reduced (0.83 vs 8.60 per 100 patient-years); recurrent ICH did NOT meet non-inferiority (5.00 vs 0.82 per 100 patient-years)",
+    "finding": "First events: ischemic stroke 1 versus 20; recurrent ICH 11 versus 1. All-event incidence rates are separate estimands: ischemic stroke 0.83 versus 8.60 and recurrent ICH 5.00 versus 0.82 per 100 patient-years.",
     "teachingPoint": "Objective: anticoagulation after ICH in AF trades a large ischaemic-stroke reduction against a substantial recurrent-ICH increase; individualize.",
     "PMID": "40023176",
     "year": 2025,
@@ -30,7 +30,7 @@
       "cit-prestige-af-2025"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-07-18",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -40,14 +40,14 @@
     "category": "af-after-ich",
     "population": "n=948, ≥45, NIHSS n/a, Intracranial-haemorrhage survivors with high-risk AF (CHA₂DS₂-VASc ≥2)",
     "finding": "Full efficacy not yet reported; the lobar-ICH subgroup was stopped by the DSMB for excess recurrent haemorrhagic stroke",
-    "teachingPoint": "Objective: interim DSMB stopped edoxaban in lobar ICH for excess rebleeding; the main efficacy comparison is awaited.",
+    "teachingPoint": "An interim safety concern is reported for lobar ICH/cortical SAH, but this record is not a completed, fully verified efficacy RCT. The original-source details and final efficacy result remain unresolved.",
     "PMID": "37839419",
     "year": 2023,
     "citationIds": [
       "cit-enrich-af-2023"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

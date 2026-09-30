@@ -133,6 +133,11 @@ async function seedGuidelines(citById) {
       section: rec.topic,
       COR: rec.classOfRecommendation,
       LOE: rec.levelOfEvidence,
+      ...(rec.gradingSystem && rec.gradingSystem !== 'AHA' ? {
+        gradingSystem: rec.gradingSystem,
+        nativeStrength: rec.nativeStrength,
+        nativeCertainty: rec.nativeCertainty,
+      } : {}),
       statement: rec.text,
       PMIDs: [...new Set(PMIDs)],
       DOIs: [...new Set(DOIs)],
@@ -140,7 +145,7 @@ async function seedGuidelines(citById) {
       caveats: rec.caveats || [],
       setting: rec.setting,
       lastReviewed: rec.lastReviewed,
-      sourceUrl: urlFor(rec.guidelineSource || ''),
+      sourceUrl: rec.sourceUrl || urlFor(rec.guidelineSource || ''),
       provenance: 'src/evidence/recommendations.js',
     };
     // Parenthetical qualifiers ("(pre-ANNEXA-I)") annotate the primary source

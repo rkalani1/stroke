@@ -38,7 +38,7 @@
     "name": "RESCUE BT",
     "fullName": "Effect of Intravenous Tirofiban vs Placebo Before Endovascular Thrombectomy on Functional Outcomes in Large Vessel Occlusion Stroke",
     "category": "acute-antithrombotic-adjuncts",
-    "population": "n=948, mean 67 y; 391 (41.2%) women, NIHSS not restricted by a protocol NIHSS band (proximal intracranial LVO), ≤24 h from time last known well",
+    "population": "n=948, Median age 67 years, NIHSS ≤30, ≤24 h from time last known well",
     "finding": "DID NOT meet superiority — neutral: median (IQR) 90-day mRS 3 (1-4) with tirofiban vs 3 (1-4) with placebo",
     "teachingPoint": "Does not support giving intravenous tirofiban before endovascular thrombectomy: 90-day disability was unchanged and symptomatic hemorrhage was numerically higher.",
     "PMID": "35943471",
@@ -47,7 +47,7 @@
       "cit-rescue-bt-2022"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -64,7 +64,7 @@
       "cit-most-2024"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

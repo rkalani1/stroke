@@ -4,16 +4,16 @@
     "name": "ARTESiA",
     "fullName": "Apixaban for Stroke Prevention in Subclinical Atrial Fibrillation",
     "category": "subclinical-af",
-    "population": "n=4012, ≥55, NIHSS n/a, subclinical AF detected on device",
+    "population": "n=4012, ≥55, NIHSS n/a, Subclinical episodes 6 minutes to 24 hours; progression to clinical AF or >24-hour episodes triggered open-label anticoagulation and censoring",
     "finding": "Favored apixaban: 0.78%/y vs 1.24%/y",
-    "teachingPoint": "Establishes apixaban benefit in subclinical AF; the ICH-survivor question is addressed by PRESTIGE-AF, SoSTART, APACHE-AF and the COCROACH meta-analysis, which enrolled that population.",
+    "teachingPoint": "Apixaban reduced stroke/systemic embolism and increased major bleeding in the studied population. Weigh absolute risks within the episode-duration and stroke-risk eligibility boundaries.",
     "PMID": "37952132",
     "year": 2024,
     "citationIds": [
       "cit-artesia-2023"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-04-25",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -23,14 +23,14 @@
     "category": "subclinical-af",
     "population": "n=2536, mean 78; 37.4% women, NIHSS device-detected atrial high-rate episodes ≥6 min, median duration 2.8 h, median follow-up 21 months (terminated early)",
     "finding": "Neutral: 3.2%/patient-year vs 4.0%/patient-year",
-    "teachingPoint": "Edoxaban for device-detected AHRE did not reduce cardiovascular events and increased death or major bleeding; stroke risk was ~1%/year untreated.",
+    "teachingPoint": "Does not support routine edoxaban for all device-detected AHRE on the basis of this trial. Compare population, endpoint and aspirin cointervention differences when discussing ARTESiA; do not imply each safety component independently increased.",
     "PMID": "37622677",
     "year": 2023,
     "citationIds": [
       "cit-noah-afnet6-2023"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

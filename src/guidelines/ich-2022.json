@@ -169,7 +169,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "Using NCCT markers of hemorrhage expansion (e.g., spot sign, blend sign, black hole sign) to identify at-risk patients may be reasonable.",
+      "text": "Using NCCT markers of hemorrhage expansion (e.g., blend sign, black hole sign) to identify at-risk patients may be reasonable.",
       "page": 13,
       "id": "ich-2022-13",
       "sourceSection": "table-03",
@@ -1321,7 +1321,7 @@
       "classOfRec": "IIb",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "Early rehabilitation beginning 24 to 48 hours after onset (including ADL training, stretching, and functional task training) may be considered for patients with moderately severe spontaneous ICH to improve functional outcome and reduce mortality.",
+      "text": "Early rehabilitation beginning 24 to 48 hours after onset (including ADL training, stretching, and functional task training) may be considered for patients with spontaneous ICH of moderate severity to improve functional outcome and reduce mortality.",
       "page": 47,
       "id": "ich-2022-100",
       "sourceSection": "table-24",
@@ -1438,7 +1438,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "When assessing recurrent ICH risk for prognostication or management decisions, it is reasonable to incorporate the following risk factors: lobar location of the initial ICH, older age, presence/number/lobar location of MRI microbleeds, cortical superficial siderosis on MRI, poorly controlled hypertension, Asian or Black race, and apolipoprotein E epsilon-2 or epsilon-4 alleles.",
+      "text": "When assessing recurrent ICH risk for prognostication or management decisions, it is reasonable to incorporate the following risk factors: lobar location of the initial ICH, older age, presence/number/lobar location of MRI microbleeds, disseminated cortical superficial siderosis on MRI, poorly controlled hypertension, Asian or Black race, and apolipoprotein E epsilon-2 or epsilon-4 alleles.",
       "page": 50,
       "id": "ich-2022-109",
       "sourceSection": "table-26",
@@ -2156,5 +2156,13 @@
       "sha256": "e9e60ea55197db85c041b6830543fa5f5c77bb0b27c86a2ef12fc0a4dfa58f68"
     },
     "note": "All formal recommendation tables and numbered rows reconciled against the complete source document. This is a source-inventory review, not a new clinical validation of every existing summary or supporting narrative. Existing publication-correction statuses remain separate. No separately designated ungraded consensus or good-practice recommendation set is present."
+  },
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Primary recommendation text retrieved and compared; exact edition, source locators and unresolved correction/current-context limits in unit ledger.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
   }
 }

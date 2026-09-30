@@ -129,14 +129,14 @@ describe('matcher engine — operators', () => {
       // STEP MVO domain (NCT06289985) requires non-dominant M2/M3 AND NIHSS ≥8;
       // M2/M3 alone (low or unknown NIHSS) must NOT match — that false positive
       // was the pre-fix bug.
-      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'], nihss: '8' }, nihssScore: 8 })).toBe('mevo');
+      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'], nihss: '8', culpritM2Dominance: 'non-dominant' }, nihssScore: 8 })).toBe('mevo');
       // Occlusion entered but NIHSS not yet documented → needs-info (null),
       // not a definite 'none' — a partially-filled form must not flip STEP
       // to not-eligible.
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'] } })).toBeNull();
       // Explicitly DOMINANT M2 on CTA is excluded from the STEP MVO domain.
-      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'], nihss: '9', ctaResults: 'dominant M2 occlusion' }, nihssScore: 9 })).toBe('none');
-      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'], nihss: '9', ctaResults: 'non-dominant M2 occlusion' }, nihssScore: 9 })).toBe('mevo');
+      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'], nihss: '9', ctaResults: 'dominant M2 occlusion', culpritM2Dominance: 'dominant' }, nihssScore: 9 })).toBe('none');
+      expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M2'], nihss: '9', ctaResults: 'non-dominant M2 occlusion', culpritM2Dominance: 'non-dominant' }, nihssScore: 9 })).toBe('mevo');
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M4'], nihss: '12' }, nihssScore: 12 })).toBe('none');
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M1'], nihss: '4' }, nihssScore: 4 })).toBe('low-nihss-lvo');
       expect(resolveField('domainMatch', { telestrokeNote: { vesselOcclusion: ['M1'], nihss: '8' }, nihssScore: 8 })).toBe('none');
@@ -149,13 +149,13 @@ describe('matcher engine — operators', () => {
 });
 
 describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
-  it('RHAPSODY: empty form → needs_info, all 5 unknown', () => {
+  it('RHAPSODY: empty form remains inactive', () => {
     const r = evaluateActiveTrial(getActiveTrial('rhapsody'), {});
-    expect(r.status).toBe('needs_info');
-    expect(r.counts.unknown).toBe(5);
+    expect(r.status).toBe('inactive');
+    expect(r.criteria).toEqual([]);
   });
 
-  it('RHAPSODY: full form (eligible) → status eligible', () => {
+  it('RHAPSODY: full form (eligible) → inactive', () => {
     const data = {
       telestrokeNote: {
         age: '65',
@@ -168,11 +168,11 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
       nihssScore: 12
     };
     const r = evaluateActiveTrial(getActiveTrial('rhapsody'), data);
-    expect(r.status).toBe('eligible');
-    expect(r.counts.met).toBe(5);
+    expect(r.status).toBe('inactive');
+    expect(r.criteria).toEqual([]);
   });
 
-  it('STEP-EVT: MeVO patient (M2 occlusion, NIHSS 8, age 50, mRS 1) → eligible', () => {
+  it('STEP-EVT: MeVO patient (M2 occlusion, NIHSS 8, age 50, mRS 1) → needs protocol review', () => {
     const data = {
       telestrokeNote: {
         age: '50',
@@ -184,10 +184,10 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
       nihssScore: 8
     };
     const r = evaluateActiveTrial(getActiveTrial('step-evt'), data);
-    expect(r.status).toBe('eligible');
+    expect(r.status).toBe('needs_info');
   });
 
-  it('STEP-EVT: low-NIHSS LVO patient (M1, NIHSS 4) → eligible', () => {
+  it('STEP-EVT: low-NIHSS LVO patient (M1, NIHSS 4) → needs protocol review', () => {
     const data = {
       telestrokeNote: {
         age: '70',
@@ -199,7 +199,7 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
       nihssScore: 4
     };
     const r = evaluateActiveTrial(getActiveTrial('step-evt'), data);
-    expect(r.status).toBe('eligible');
+    expect(r.status).toBe('needs_info');
   });
 
   it('STEP-EVT: high-NIHSS M1 with LVO doesn\'t fit either domain → not_eligible', () => {
@@ -217,7 +217,7 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
     expect(r.status).toBe('not_eligible');
   });
 
-  it('TESTED: pre-stroke mRS 3-4 LVO patient → eligible', () => {
+  it('TESTED: pre-stroke mRS 3-4 LVO patient → needs protocol review', () => {
     const data = {
       telestrokeNote: {
         age: '78',
@@ -230,10 +230,10 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
       nihssScore: 14
     };
     const r = evaluateActiveTrial(getActiveTrial('tested'), data);
-    expect(r.status).toBe('eligible');
+    expect(r.status).toBe('needs_info');
   });
 
-  it('PICASSO: tandem lesion patient, documented IVT-ineligible → eligible', () => {
+  it('PICASSO: tandem lesion patient, documented IVT-ineligible → needs protocol review', () => {
     const data = {
       telestrokeNote: {
         age: '60',
@@ -249,7 +249,7 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
       aspectsScore: 8
     };
     const r = evaluateActiveTrial(getActiveTrial('picasso'), data);
-    expect(r.status).toBe('eligible');
+    expect(r.status).toBe('needs_info');
   });
 
   it('PICASSO: a tandem patient who received IV thrombolysis (failed IVT) is not screened out', () => {
@@ -268,10 +268,10 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
     };
     const r = evaluateActiveTrial(getActiveTrial('picasso'), data);
     expect(r.criteria.find(c => c.id === 'tnkRecommended')).toBeUndefined();
-    expect(r.status).toBe('eligible');
+    expect(r.status).toBe('needs_info');
   });
 
-  it('SATURN: lobar ICH on statin → eligible', () => {
+  it('SATURN: lobar ICH on statin → needs protocol review', () => {
     const data = {
       telestrokeNote: { age: '72', premorbidMRS: '2' },
       ichLocation: 'lobar parietal',
@@ -279,10 +279,10 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
       hoursFromLKW: 24
     };
     const r = evaluateActiveTrial(getActiveTrial('saturn'), data);
-    expect(r.status).toBe('eligible');
+    expect(r.status).toBe('needs_info');
   });
 
-  it('ASPIRE: ICH + AF + mRS 3 → eligible', () => {
+  it('ASPIRE: ICH + AF + mRS 3 → needs protocol review', () => {
     const data = {
       telestrokeNote: {
         age: '70',
@@ -293,7 +293,7 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
       hoursFromLKW: 24 * 30
     };
     const r = evaluateActiveTrial(getActiveTrial('aspire'), data);
-    expect(r.status).toBe('eligible');
+    expect(r.status).toBe('needs_info');
   });
 
   // NCT05047172 inclusion is tissue-based: focal symptoms with objective
@@ -309,10 +309,10 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
       }
     };
     const r = evaluateActiveTrial(getActiveTrial('captiva'), data);
-    expect(r.status).toBe('not_eligible');
+    expect(r.status).toBe('inactive');
   });
 
-  it('CAPTIVA: ischemic stroke with ICAS → eligible', () => {
+  it('CAPTIVA: ischemic stroke with ICAS → needs protocol review', () => {
     const data = {
       telestrokeNote: {
         age: '60',
@@ -322,15 +322,15 @@ describe('matcher engine — evaluateActiveTrial per-trial scenarios', () => {
       }
     };
     const r = evaluateActiveTrial(getActiveTrial('captiva'), data);
-    expect(r.status).toBe('eligible');
+    expect(r.status).toBe('inactive');
   });
 });
 
 describe('matcher engine — exclusions', () => {
-  it('truthy operator: returns true on non-empty string, false on empty/undefined', () => {
+  it('truthy operator: unknown absence is not a negative medication history', () => {
     expect(evaluateCriterion({ field: 'lastDOACType', operator: 'truthy', value: true }, { telestrokeNote: { lastDOACType: 'apixaban' } })).toBe('met');
-    expect(evaluateCriterion({ field: 'lastDOACType', operator: 'truthy', value: true }, { telestrokeNote: { lastDOACType: '' } })).toBe('not_met');
-    expect(evaluateCriterion({ field: 'lastDOACType', operator: 'truthy', value: true }, {})).toBe('not_met');
+    expect(evaluateCriterion({ field: 'lastDOACType', operator: 'truthy', value: true }, { telestrokeNote: { lastDOACType: '' } })).toBe('unknown');
+    expect(evaluateCriterion({ field: 'lastDOACType', operator: 'truthy', value: true }, {})).toBe('unknown');
   });
 
   it('CAPTIVA: onAnticoag=true triggers exclusion → not_eligible', () => {
@@ -339,17 +339,17 @@ describe('matcher engine — exclusions', () => {
       onAnticoag: true
     };
     const r = evaluateActiveTrial(getActiveTrial('captiva'), data);
-    expect(r.status).toBe('not_eligible');
-    expect(r.exclusions.some((x) => x.id === 'onAnticoag')).toBe(true);
+    expect(r.status).toBe('inactive');
+    expect(r.exclusions).toEqual([]);
   });
 
-  it('STEP-EVT: undefined exclusion fields → no triggers (eligible patient stays eligible)', () => {
+  it('STEP-EVT: undefined exclusions remain unknown and prevent certification', () => {
     const data = {
       telestrokeNote: { age: '50', nihss: '8', premorbidMRS: '1', vesselOcclusion: ['M2'] },
       hoursFromLKW: 6, nihssScore: 8
     };
     const r = evaluateActiveTrial(getActiveTrial('step-evt'), data);
-    expect(r.status).toBe('eligible');
+    expect(r.status).toBe('needs_info');
     expect(r.exclusions).toEqual([]);
   });
 

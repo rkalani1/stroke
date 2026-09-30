@@ -1,6 +1,6 @@
 # Stroke CDS Educational Demo
 
-> Synthetic educational stroke decision-support demo (v6.29.2): example acute ischemic & hemorrhagic stroke pathways, 34 calculators, an evidence atlas (260 landmark trials, 9 active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.
+> Synthetic educational stroke decision-support demo (v6.30.0): example acute ischemic & hemorrhagic stroke pathways, 34 calculators, an evidence atlas (264 landmark trials, 9 active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.
 
 Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.
 
@@ -126,7 +126,7 @@ unless the underlying clinical data changed).
 - Cancer-Associated Stroke 2026 — 37 recommendations (doi:10.1161/STR.0000000000000517)
 - Heart-Brain Health 2024 — 33 recommendations (doi:10.1161/STR.0000000000000476)
 - CVT Statement 2024 — 38 recommendations (doi:10.1161/STR.0000000000000456)
-- 2023 ESC Endocarditis Guidelines — 192 recommendations (doi:10.1093/eurheartj/ehad193)
+- 2023 ESC Endocarditis Guidelines — 197 recommendations (doi:10.1093/eurheartj/ehad193)
 - ESO Atrial Fibrillation Secondary Prevention 2019 — 23 recommendations (doi:10.1177/2396987319841187)
 - ESO Anticoagulant Reversal in ICH 2019 — 11 recommendations (doi:10.1177/2396987319849763)
 - ESO Aphasia Rehabilitation 2025 — 12 recommendations (doi:10.1177/23969873241311025)
@@ -147,15 +147,15 @@ unless the underlying clinical data changed).
 - ESO Lacunar Ischaemic Stroke 2024 — 34 recommendations (doi:10.1177/23969873231219416)
 - ESO Mobile Stroke Units 2022 — 3 recommendations (doi:10.1177/23969873221079413)
 - ESO Motor Rehabilitation 2025 — 9 recommendations (doi:10.1177/23969873251338142)
-- ESO Moyamoya 2023 — 29 recommendations (doi:10.1177/23969873221144089)
+- ESO Moyamoya 2023 — 41 recommendations (doi:10.1177/23969873221144089)
 - ESO PACNS 2023 — 32 recommendations (doi:10.1177/23969873231190431)
-- ESO PFO After Stroke 2024 — 22 recommendations (doi:10.1177/23969873241247978)
+- ESO PFO After Stroke 2024 — 24 recommendations (doi:10.1177/23969873241247978)
 - ESO Post-Stroke Seizures and Epilepsy 2017 — 7 recommendations (doi:10.1177/2396987317705536)
 - ESO/EANS/ESMINT aSAH 2026 — 54 recommendations (doi:10.1093/esj/aakag043)
 - ESO Stroke-Associated Pneumonia 2026 — 36 recommendations (doi:10.1093/esj/aakag044)
 - ESO Long-Term Secondary Prevention 2022 — 13 recommendations (doi:10.1177/23969873221100032)
 - ESO Short-Term DAPT After Minor Stroke/High-Risk TIA 2021 — 8 recommendations (doi:10.1177/23969873211000877)
-- ESO Space-Occupying Infarction 2021 — 18 recommendations (doi:10.1177/23969873211014112)
+- ESO Space-Occupying Infarction 2021 — 26 recommendations (doi:10.1177/23969873211014112)
 - European Stroke Organisation guidelines on stroke in women — 10 recommendations (doi:10.1177/23969873221078696)
 - ESO Subclinical AF Screening 2022 — 12 recommendations (doi:10.1177/23969873221099478)
 - ESO Temperature Management 2015 — 3 recommendations (doi:10.1111/ijs.12579)
@@ -167,10 +167,11 @@ unless the underlying clinical data changed).
 - ICH 2022 — 124 recommendations (doi:10.1161/STR.0000000000000407)
 - Maternal Stroke 2026 — 57 recommendations (doi:10.1161/STR.0000000000000514)
 - NCS ICH Seizure Prophylaxis 2024 — 10 recommendations (doi:10.1007/s12028-024-02183-z)
-- NCS Neuroprognostication AIS 2026 — 23 recommendations (doi:10.1007/s12028-026-02486-3)
+- NCS Neuroprognostication AIS 2026 — 32 recommendations (doi:10.1007/s12028-026-02486-3)
 - NCS Neuroprognostication ICH 2023 — 13 recommendations (doi:10.1007/s12028-023-01854-7)
+- NCS/SCCM Antithrombotic Reversal Update 2026 — 8 recommendations (doi:10.1007/s12028-026-02601-4)
 - NCS aSAH Seizure Prophylaxis 2026 — 11 recommendations (doi:10.1007/s12028-026-02614-z)
-- NCS/SCCM Antithrombotic Reversal 2016 (partly superseded by 2026 NCS/SCCM focused update: 4F-PCC preferred over andexanet) — 69 recommendations (doi:10.1007/s12028-015-0222-x)
+- NCS/SCCM Antithrombotic Reversal 2016 (partly superseded by 2026 NCS/SCCM focused update: 4F-PCC preferred over andexanet) — 70 recommendations (doi:10.1007/s12028-015-0222-x)
 - Perioperative Stroke 2021 — 28 recommendations (doi:10.1161/CIR.0000000000000968)
 - Poststroke Cognition 2023 — 32 recommendations (doi:10.1161/STR.0000000000000430)
 - Poststroke Primary Care 2021 — 80 recommendations (doi:10.1161/STR.0000000000000382)
@@ -179,7 +180,7 @@ unless the underlying clinical data changed).
 - Primary Prevention 2024 — 83 recommendations (doi:10.1161/STR.0000000000000475)
 - aSAH 2023 — 84 recommendations (doi:10.1161/STR.0000000000000436)
 - Secondary Prevention 2021 — 162 recommendations (doi:10.1161/STR.0000000000000375)
-- SVIN DSA for Brain Death 2025 — 15 recommendations (doi:10.1161/SVIN.125.002091)
+- SVIN DSA for Brain Death 2025 — 27 recommendations (doi:10.1161/SVIN.125.002091)
 - SVIN SILC Neurointervention Training Criteria 2025 — 40 recommendations (doi:10.1161/SVIN.124.001478)
 - SVIN Large-Core EVT 2025 — 4 recommendations (doi:10.1161/SVIN.124.001581)
 - Endovascular Thrombectomy in Medium and Distal Vessel Occlusions — 9 recommendations (doi:10.1161/SVIN.125.002314)

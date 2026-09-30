@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 const load = (id) => JSON.parse(readFileSync(new URL(`../src/guidelines/${id}.json`, import.meta.url), 'utf8'));
-const counts = { 'eso-ivt-2021': [48,17,65], 'eso-tia-2021':[8,3,11], 'eso-bao-2024':[12,7,19], 'eso-ich-2025':[39,22,61], 'eso-secondary-prevention-2022':[8,5,13], 'eso-pfo-2024':[9,13,22] };
+const counts = { 'eso-ivt-2021': [48,17,65], 'eso-tia-2021':[8,3,11], 'eso-bao-2024':[12,7,19], 'eso-ich-2025':[39,22,61], 'eso-secondary-prevention-2022':[8,5,13], 'eso-pfo-2024':[10,14,24] };
 const docs = Object.fromEntries(Object.keys(counts).map(id => [id,load(id)]));
 const rows = (id,pico,kind) => docs[id].recommendations.filter(r => r.sourceStatementId.startsWith(`PICO ${pico} `) && (!kind || r.sourceStatementType===kind));
 describe('additional ESO full source reconciliation', () => {

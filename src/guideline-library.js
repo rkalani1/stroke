@@ -107,9 +107,11 @@ import ncsIchSeizureProphylaxis2024 from './guidelines/ncs-ich-seizure-prophylax
 import ncsNeuroprognosticationAis2026 from './guidelines/ncs-neuroprognostication-ais-2026.json';
 import ncsNeuroprognosticationIch2023 from './guidelines/ncs-neuroprognostication-ich-2023.json';
 import ncsSahSeizureProphylaxis2026 from './guidelines/ncs-sah-seizure-prophylaxis-2026.json';
+import ncsReversal2026 from './guidelines/ncs-reversal-2026.json';
 import ncsSccmAntithromboticReversal2016 from './guidelines/ncs-sccm-antithrombotic-reversal-2016.json';
 
 export const GUIDELINE_LIBRARY = [
+  ncsReversal2026,
   ais2026,
   ich2022,
   sah2023,
@@ -224,6 +226,7 @@ export const GUIDELINE_LIBRARY = [
 export const guidelineSearchFields = (rec, guideline) => [
   rec.text, rec.section, guideline.title, guideline.shortTitle || '',
   rec.sourceStatementId || '', rec.classNote || '', rec.currentEvidenceNote || '',
+  rec.nativeStrength || '', rec.sourceConflictNote || '', rec.sourceGradeNote || '',
   ...(rec.currentEvidenceSources || []).map(source => source.title)
 ];
 

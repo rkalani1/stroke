@@ -23,14 +23,14 @@
     "category": "inflammation-stroke-prevention",
     "population": "n=8343, ≥40, NIHSS minor-to-moderate ischemic stroke or TIA, randomized within 24 h of onset; treated 90 days",
     "finding": "Neutral: 6.3% vs 6.5%",
-    "teachingPoint": "Ninety days of colchicine after minor stroke/TIA with raised hs-CRP did not reduce recurrent stroke.",
+    "teachingPoint": "Does not support routine use of this tested regimen. Longer duration or alternative atherosclerotic selection remain unproven hypotheses, not the only possible settings for benefit.",
     "PMID": "38925803",
     "year": 2024,
     "citationIds": [
       "cit-chance3-2024"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-15",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -57,14 +57,14 @@
     "category": "inflammation-stroke-prevention",
     "population": "n=82208, not reported in the abstract — trial-level meta-analysis, NIHSS not applicable, Medline, Embase and Cochrane searched from inception to 8 October 2024; trials required at least 100 patient-years of follow-up per treatment arm",
     "finding": "The effect on MACE VARIED BY DRUG CLASS rather than being uniform — driven by colchicine (RR 0.76, moderate certainty) and canakinumab (RR 0.88, moderate certainty), with NO benefit observed for other agents",
-    "teachingPoint": "Reframes anti-inflammatory vascular prevention as class- and population-specific rather than general, and supplies the reason the neutral cerebrovascular colchicine trials should be taken at face value rather than explained away.",
+    "teachingPoint": "Class and population heterogeneity remain clinically relevant, but post hoc interaction P=.068 does not establish a causal population modifier. Use indication-specific trials rather than a pooled result to select stroke treatment.",
     "PMID": "42291081",
     "year": 2026,
     "citationIds": [
       "cit-anti-inflammatory-cv-2026"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

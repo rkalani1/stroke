@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default function GuidelineProvenance({ guideline }) {
+  const sourceReview = guideline.sourceReview;
   const pending = (guideline.publicationUpdates || []).filter((update) =>
     update.status === 'unresolved' || update.status === 'partially-applied');
   return (
@@ -24,6 +25,27 @@ export default function GuidelineProvenance({ guideline }) {
         </p>
       )}
       {guideline.extractionNote && <p>{guideline.extractionNote}</p>}
+      {sourceReview && (
+        <details className="rounded-md border border-line">
+          <summary className="cursor-pointer min-h-[44px] p-3 font-semibold">
+            Source review and limits
+            {sourceReview.reviewedAt && <span className="ml-2 font-normal">· <time dateTime={sourceReview.reviewedAt}>{sourceReview.reviewedAt}</time></span>}
+          </summary>
+          <dl className="space-y-3 px-3 pb-3 leading-relaxed">
+            {[
+              ['Scope', sourceReview.scope],
+              ['Source access', sourceReview.sourceAccess],
+              ['Currentness', sourceReview.currencyNote],
+              ['Edition', sourceReview.sourceEditionNote],
+            ].filter(([, value]) => value).map(([label, value]) => (
+              <div key={label}>
+                <dt className="font-semibold text-ink">{label}</dt>
+                <dd className="mt-1">{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </details>
+      )}
       {pending.map((update) => (
         <div key={update.pmid || update.doi} className="rounded-md border border-warn-300 bg-warn-50 p-2 text-warn-900 dark:border-warn-700 dark:bg-warn-950 dark:text-warn-200">
           <strong>{update.status === 'partially-applied' ? 'Correction partly incorporated. ' : 'Correction needs verification. '}</strong>

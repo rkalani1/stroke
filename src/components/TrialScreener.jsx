@@ -505,7 +505,7 @@ function OnsetPicker({ onsetVal, onsetUnit, onChange }) {
             key={preset.name}
             type="button"
             aria-pressed={active}
-            onClick={() => onChange({ onsetVal: preset.val, onsetUnit: preset.unit })}
+            onClick={() => onChange({ onsetVal: preset.val, onsetUnit: preset.unit, onsetRangeHours: preset.rangeHours })}
             className={cx(
               'flex h-[60px] flex-col justify-center gap-0.5 rounded-lg border px-3 text-left transition-colors',
               'focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 focus-visible:ring-offset-paper',
@@ -524,10 +524,11 @@ function OnsetPicker({ onsetVal, onsetUnit, onChange }) {
 }
 
 function ExclusionRefiner({ items, checked, onToggle, onClear, summaryRef }) {
-  // Counted off the authoritative map rather than `items`, so the badge and the
-  // Clear control still appear if a checked exclusion is ever filtered out of
-  // the visible rows.
-  const activeCount = Object.values(checked || {}).filter(Boolean).length;
+  // Keep positive counts separate from documented absent assessments. Both
+  // states must remain resettable even when a row is filtered out of view.
+  const assessmentValues = Object.values(checked || {});
+  const activeCount = assessmentValues.filter(value => value === true).length;
+  const assessedCount = assessmentValues.filter(value => typeof value === 'boolean').length;
   return (
     <details className="group overflow-hidden rounded-lg border border-line bg-card">
       <summary
@@ -549,14 +550,16 @@ function ExclusionRefiner({ items, checked, onToggle, onClear, summaryRef }) {
       </summary>
       <div className="space-y-1.5 border-t border-paper-2 px-4 py-3">
         {items.map((item) => {
-          const on = !!checked[item.id];
+          const value = checked[item.id];
+          const on = value === true;
+          const unknown = typeof value !== 'boolean';
           return (
             <button
               key={item.id}
               type="button"
               role="checkbox"
-              aria-checked={on}
-              onClick={() => onToggle(item.id, !on)}
+              aria-checked={unknown ? 'mixed' : on}
+              onClick={() => onToggle(item.id, unknown ? true : on ? false : null)}
               className={cx(
                 'flex !flex-nowrap min-h-[44px] w-full items-center justify-between gap-3 rounded-md border px-3 py-2 text-left text-sm transition-colors',
                 'focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500',
@@ -565,7 +568,7 @@ function ExclusionRefiner({ items, checked, onToggle, onClear, summaryRef }) {
                   : 'border-line bg-card text-ink-2 hover:bg-paper-2'
               )}
             >
-              <span className="min-w-0 flex-1 leading-snug">{item.label}</span>
+              <span className="min-w-0 flex-1 leading-snug">{item.label}<span className="ml-2 font-semibold">{unknown ? 'Unknown' : on ? 'Present' : 'Absent'}</span></span>
               <span
                 aria-hidden="true"
                 className={cx(
@@ -580,13 +583,13 @@ function ExclusionRefiner({ items, checked, onToggle, onClear, summaryRef }) {
             </button>
           );
         })}
-        {activeCount > 0 && (
+        {assessedCount > 0 && (
           <button
             type="button"
             onClick={onClear}
             className="inline-flex min-h-[44px] items-center text-xs font-semibold text-cobalt-700 hover:text-cobalt-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 dark:text-cobalt-300"
           >
-            Clear all exclusions
+            Reset exclusions to unknown
           </button>
         )}
       </div>
@@ -767,10 +770,10 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
   const excludedCount = results.excluded.length + results.closed.length + results.incomplete.length;
 
   const onsetLabel =
-    onsetHours < 48 ? `${onsetHours.toFixed(1)} h` : onsetDays < 60 ? `${onsetDays.toFixed(1)} d` : `${onsetMonths.toFixed(1)} mo`;
+    onsetHours === null ? 'Onset not recorded' : Array.isArray(state.onsetRangeHours) ? (ONSET_PRESETS.find(p => p.val === state.onsetVal && p.unit === state.onsetUnit)?.name || 'Selected onset range') : onsetHours < 48 ? `${onsetHours.toFixed(1)} h` : onsetDays < 60 ? `${onsetDays.toFixed(1)} d` : `${onsetMonths.toFixed(1)} mo`;
 
   return (
-    <div className="space-y-5 lg:grid lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:items-start lg:gap-8 lg:space-y-0">
+    <div className="trial-screening-workspace space-y-5 lg:grid lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:items-start lg:gap-8 lg:space-y-0">
       {/* ── Steps ── */}
       {/* Sticky only from lg. The offset tracks --app-header-h (published by
           app.jsx's ResizeObserver) instead of a hardcoded lg:top-24, which sat
@@ -778,13 +781,13 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
           max-height keeps the column shorter than the viewport so a focused
           exclusion row can always be scrolled into view. Both are lg:-scoped —
           below lg the column is static and must not be clipped. */}
-      <div className="space-y-5 lg:sticky lg:top-[calc(var(--app-header-h,6.5rem)_+_0.75rem)] lg:max-h-[calc(100vh_-_var(--app-header-h,6.5rem)_-_1.75rem)] lg:overflow-y-auto lg:overscroll-contain lg:pr-1">
+      <div className="trial-screening-filters space-y-5 lg:sticky lg:top-[calc(var(--app-header-h,6.5rem)_+_0.75rem)] lg:max-h-[calc(100vh_-_var(--app-header-h,6.5rem)_-_1.75rem)] lg:overflow-y-auto lg:overscroll-contain lg:pr-1">
         <section>
           <StepHeading n="01">What are you screening?</StepHeading>
           <ClassificationPicker
             value={cls}
             onChange={(opt) =>
-              set({ classification: opt.id, onsetVal: opt.onsetVal, onsetUnit: 'hours', exclusions: {} })
+              set({ classification: opt.id, onsetVal: null, onsetUnit: 'hours', onsetRangeHours: null, exclusions: {} })
             }
           />
         </section>

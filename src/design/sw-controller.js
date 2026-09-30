@@ -1,18 +1,8 @@
-/**
- * v7.0 — Page-side service-worker controller.
- * Drop-in: src/design/sw-controller.js
- *
- * Listens for {type:'sw-update-ready', version} broadcasts from the SW.
- * Exposes a single callback `onUpdateReady(cb)` so the app's Toast layer
- * can show a non-blocking "New version ready" toast. Tapping the toast
- * triggers postMessage({type:'CLAIM_AND_RELOAD'}) which causes the SW to
- * claim, then we soft-reload the page.
- *
- * Why opt-in: spec §2 amendment #2. Clinicians mid-consult must not be
- * auto-interrupted.
- */
-
-let listeners = new Set();
+/** Page-local consent and once-only reload for service-worker updates. */
+const listeners = new Set();
+let bound = false;
+let updateAccepted = false;
+let reloading = false;
 
 export function onUpdateReady(cb) {
   listeners.add(cb);
@@ -21,31 +11,47 @@ export function onUpdateReady(cb) {
 
 function notify(payload) {
   for (const cb of listeners) {
-    try { cb(payload); } catch (e) { /* swallow listener errors */ }
+    try { cb(payload); } catch (_) { /* One listener must not suppress another. */ }
   }
 }
 
-let bound = false;
+function reloadIfAccepted() {
+  if (!updateAccepted || reloading) return;
+  reloading = true;
+  window.location.reload();
+}
+
 export function bindSWController() {
   if (bound || typeof navigator === 'undefined' || !navigator.serviceWorker) return;
   bound = true;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    // Another window or an older worker must not interrupt this page.
+    if (updateAccepted) reloadIfAccepted();
+    else if (navigator.serviceWorker.controller) notify({});
+  });
   navigator.serviceWorker.addEventListener('message', (event) => {
     const data = event.data || {};
     if (data.type === 'sw-update-ready') {
-      notify({ version: data.version });
+      if (data.blocked) updateAccepted = false;
+      notify({ version: data.version, message: data.message, blocked: !!data.blocked });
     }
-    if (data.type === 'sw-claimed-reload') {
-      // Soft reload — keeps URL hash so the user stays on the same view
-      window.location.reload();
-    }
+    if (data.type === 'sw-claimed-reload') reloadIfAccepted();
   });
 }
 
-/* Called when the user taps "Reload" on the toast. */
-export async function acceptUpdate() {
-  if (!navigator.serviceWorker) return;
+/* Called only by the visible Reload action; a blocked request can be retried. */
+export async function acceptUpdate(worker) {
+  if (typeof navigator === 'undefined' || !navigator.serviceWorker) return;
+  bindSWController();
   const reg = await navigator.serviceWorker.getRegistration();
-  const target = reg?.waiting || reg?.active;
+  // Resolve the current waiting worker first; a saved reference may be stale.
+  const target = reg?.waiting || worker || reg?.active;
   if (!target) return;
-  target.postMessage({ type: 'CLAIM_AND_RELOAD' });
+  updateAccepted = true;
+  try {
+    target.postMessage({ type: 'CLAIM_AND_RELOAD' });
+  } catch (error) {
+    updateAccepted = false;
+    throw error;
+  }
 }

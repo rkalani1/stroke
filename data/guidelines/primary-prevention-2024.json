@@ -1066,7 +1066,7 @@
       "classOfRec": "III",
       "classNote": "No Benefit",
       "levelOfEvidence": "A",
-      "text": "In individuals aged 70 or older without cardiovascular disease, aspirin has not been shown to be beneficial for primary stroke prevention (population wording needs confirmation against the source).",
+      "text": "In individuals aged 70 years or older with at least one additional cardiovascular risk factor, aspirin is not beneficial to prevent a first stroke.",
       "page": 54,
       "id": "primary-prevention-2024-79",
       "sourceSection": "table-27",
@@ -1094,22 +1094,26 @@
     {
       "type": "correction",
       "pmid": "39585937",
-      "doi": "10.1161/str.0000000000000482",
-      "publisherUrl": "https://doi.org/10.1161/str.0000000000000482",
+      "doi": "10.1161/STR.0000000000000482",
+      "publisherUrl": "https://doi.org/10.1161/STR.0000000000000482",
       "status": "unresolved",
-      "note": "The indexed correction was confirmed, but its substantive text could not be retrieved from the publisher or an authoritative alternative. Its applicability to these entries remains unresolved; consult the correction.",
-      "checkedAt": "2026-09-06",
-      "affectedRecommendationIds": []
+      "note": "The correction was identified, but its complete primary body was not independently recovered. Earlier review notes are preserved separately; this review does not certify that the correction is inapplicable or that the entire current edition has been checked.",
+      "checkedAt": "2026-09-30",
+      "affectedRecommendationIds": [],
+      "previousReviewNote": "The indexed correction was confirmed, but its substantive text could not be retrieved from the publisher or an authoritative alternative. Its applicability to these entries remains unresolved; consult the correction.",
+      "independentReviewScope": "incomplete/unresolved"
     },
     {
       "type": "correction",
       "pmid": "39869715",
-      "doi": "10.1161/str.0000000000000486",
-      "publisherUrl": "https://doi.org/10.1161/str.0000000000000486",
+      "doi": "10.1161/STR.0000000000000486",
+      "publisherUrl": "https://doi.org/10.1161/STR.0000000000000486",
       "status": "unresolved",
-      "note": "The indexed correction was confirmed, but its substantive text could not be retrieved from the publisher or an authoritative alternative. Its applicability to these entries remains unresolved; consult the correction.",
-      "checkedAt": "2026-09-06",
-      "affectedRecommendationIds": []
+      "note": "The correction was identified, but its complete primary body was not independently recovered. Earlier review notes are preserved separately; this review does not certify that the correction is inapplicable or that the entire current edition has been checked.",
+      "checkedAt": "2026-09-30",
+      "affectedRecommendationIds": [],
+      "previousReviewNote": "The indexed correction was confirmed, but its substantive text could not be retrieved from the publisher or an authoritative alternative. Its applicability to these entries remains unresolved; consult the correction.",
+      "independentReviewScope": "incomplete/unresolved"
     }
   ],
   "coverage": {
@@ -1535,5 +1539,13 @@
       "sha256": "00841f498d669d05d62872db99c217a636abbbe29e72eb018b1727a6de53244d"
     },
     "note": "All formal recommendation tables and numbered rows reconciled against the complete source document. This is a source-inventory review, not a new clinical validation of every existing summary or supporting narrative. Existing publication-correction statuses remain separate. No separately designated ungraded consensus or good-practice recommendation set is present."
+  },
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Complete 81-page original advance primary PDF; later correction bodies incompletely accessible",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency. 2 publication-update records remain partly reviewed or unresolved; see the individual notices.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
   }
 }

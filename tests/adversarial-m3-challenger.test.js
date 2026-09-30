@@ -237,10 +237,12 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       // labels (navigation only; no clinical wording changed).
       // 2026-09-27: calculators 456->448: the eight calculator summary badges drop the
       // redundant "Score:" prefix ("NIHSS Score  Score: 12" read as "Score Score").
+      // 2026-09-30: calculators 448->456 for reviewed missing-input, scope,
+      // and withheld-output explanations. ICH/ischemic snapshots are unchanged.
       const baselineCounts = {
         ich: 524,
         ischemic: 754,
-        calculators: 448
+        calculators: 456
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);
@@ -367,10 +369,10 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       const bundlePath = path.join(REPO_ROOT, 'content', 'bundle.json');
       const bundle = JSON.parse(fs.readFileSync(bundlePath, 'utf8'));
       expect(bundle.guidelines?.length).toBe(11);
-      expect(bundle.trials?.length).toBe(260);
+      expect(bundle.trials?.length).toBe(264);
       expect(bundle.education?.length).toBeGreaterThanOrEqual(32);
       expect(bundle.calculators?.length).toBe(34);
-      expect(bundle.references?.length).toBe(32); // 28 repo-local documents + 4 external links (registry-driven seeding)
+      expect(bundle.references?.length).toBe(28); // 24 retained PDFs + 4 external links after four reviewed retirements
 
       const total = bundle.guidelines.length + bundle.trials.length + bundle.education.length + bundle.calculators.length + bundle.references.length;
       expect(total).toBeGreaterThanOrEqual(166);
@@ -385,10 +387,10 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       const json = JSON.parse(res.stdout);
       expect(json.errors.length).toBe(0);
       expect(json.counts.guidelines).toBe(11);
-      expect(json.counts.trials).toBe(260);
+      expect(json.counts.trials).toBe(264);
       expect(json.counts.education).toBeGreaterThanOrEqual(32);
       expect(json.counts.calculators).toBe(34);
-      expect(json.counts.references).toBe(32); // 28 repo-local documents + 4 external links (registry-driven seeding)
+      expect(json.counts.references).toBe(28); // 24 retained PDFs + 4 external links after four reviewed retirements
     });
   });
 });

@@ -1,9 +1,9 @@
 // Educational content for stroke/neurology trainees.
 // Pure data — consumed by React components in teaching.jsx.
 //
-// EVIDENCE AUDIT: Last comprehensive review against primary publications
-// completed 2026-08-22. All trial outcomes, NNTs, COR/LOE labels, and
-// guideline attributions verified against peer-reviewed source publications.
+// Field-level source review and focused repairs: 2026-09-30.
+// Source access and later-correction limits remain explicit in the review
+// packet; this is not a claim of whole-card clinical certification.
 // Key guidelines referenced: AHA/ASA AIS 2026 (Prabhakaran, PMID 41582814 —
 // replaces the 2019 guideline; note its July 2026 published correction,
 // PMID 42507797), AHA/ASA ICH 2022 (Greenberg), AHA/ASA aSAH 2023,
@@ -36,7 +36,7 @@ export const STROKE_SYNDROMES = {
       name: 'Right MCA (non-dominant) — proximal M1',
       territory: 'Right middle cerebral artery proximal',
       deficits: 'Left hemiplegia (face+arm>leg), left hemisensory loss, left homonymous hemianopia, left hemi-neglect, right gaze preference, anosognosia',
-      pearls: 'Non-dominant strokes → neglect (not aphasia). Patient may deny deficit (anosognosia). Classic: examiner shows patient their left hand and patient insists "that\'s not mine."',
+      pearls: 'Neglect is associated with the language-nondominant hemisphere, usually the right. Language dominance and laterality vary; assess language and attention rather than inferring them from the side alone.',
       pimpingQ: 'What is the pathophysiology of hemineglect in right MCA stroke?',
       answer: 'Right parietal cortex normally attends to both hemispaces; left parietal only to right. Right parietal damage → left hemineglect (patient ignores left side). Left damage can cause mild right neglect but rarely severe because right parietal compensates.'
     },
@@ -44,7 +44,7 @@ export const STROKE_SYNDROMES = {
       name: 'MCA — superior division',
       territory: 'Rolandic + Broca\'s branches',
       deficits: 'Contralateral face/arm > leg weakness, expressive aphasia (left-sided), no hemianopia typically',
-      pearls: 'Broca\'s aphasia: non-fluent, effortful speech, preserved comprehension, patient aware of deficit.'
+      pearls: 'Nonfluent, effortful speech can occur. Comprehension varies with task complexity; do not assume all comprehension is preserved from the subtype label.'
     },
     {
       name: 'MCA — inferior division',
@@ -62,7 +62,7 @@ export const STROKE_SYNDROMES = {
       name: 'PCA',
       territory: 'Posterior cerebral artery',
       deficits: 'Contralateral homonymous hemianopia (often with macular sparing), alexia without agraphia (left PCA + splenium), visual agnosia, prosopagnosia (bilateral occipitotemporal).',
-      pearls: 'Isolated hemianopia in a patient able to read is pathognomonic for PCA — check for macular sparing (typically preserved if PCA only; absent in MCA infarct).'
+      pearls: 'Homonymous hemianopia suggests a retrochiasmal lesion. Preserved reading or macular sparing does not uniquely identify PCA ischemia or exclude other lesion locations (Zhang et al., PMID 16567710).'
     }
   ],
 
@@ -79,7 +79,7 @@ export const STROKE_SYNDROMES = {
       name: 'Medial medullary (Dejerine)',
       territory: 'Anterior spinal artery / vertebral',
       deficits: 'Contralateral hemiplegia (pyramidal tract), contralateral loss of position/vibration (medial lemniscus), ipsilateral tongue weakness (CN12).',
-      pearls: 'Rare. "Medial" = motor + medial lemniscus + CN12 nucleus.'
+      pearls: 'Medial medullary injury can involve the pyramidal tract, medial lemniscus and hypoglossal root fibers or nucleus.'
     },
     {
       name: 'Top of the basilar',
@@ -91,7 +91,7 @@ export const STROKE_SYNDROMES = {
       name: 'Basilar artery occlusion',
       territory: 'Basilar artery',
       deficits: 'Variable: bilateral limb weakness, quadriplegia, locked-in syndrome, coma, cranial nerve palsies, vertigo, ataxia.',
-      pearls: 'Locked-in syndrome = ventral pontine infarct, preserved consciousness + vertical eye movements only. High mortality without recanalization; EVT within 24 h is recommended for basilar occlusion with NIHSS ≥10, pre-stroke mRS 0-1, and PC-ASPECTS ≥6 (2026 AHA/ASA Class 1, LOE A). For NIHSS 6-9 the benefit is not well established (Class 2b).'
+      pearls: 'A classic locked-in presentation after ventral pontine injury combines preserved consciousness with severe motor paralysis and retained vertical eye movements; incomplete forms and later recovery occur. High mortality without recanalization; EVT within 24 h is recommended for basilar occlusion with NIHSS ≥10, pre-stroke mRS 0-1, and PC-ASPECTS ≥6 (2026 AHA/ASA Class 1, LOE A). For NIHSS 6-9 the benefit is not well established (Class 2b).'
     },
     {
       name: 'Top of basilar / PCA — bilateral',
@@ -109,7 +109,7 @@ export const STROKE_SYNDROMES = {
       name: 'Midbrain (Weber, Benedikt, Claude)',
       territory: 'Paramedian midbrain',
       deficits: 'Weber: CN3 ipsilateral + contralateral hemiparesis. Benedikt: CN3 + contralateral tremor/ataxia. Claude: CN3 + contralateral ataxia.',
-      pearls: 'All involve CN3 (ipsilateral ptosis, mydriasis, "down and out" eye). Differ by which red-nucleus/pyramidal fibers are involved.'
+      pearls: 'These syndromes involve CN III with different neighboring pathways. Ptosis, pupillary dilation and a down-and-out eye are possible complete findings; partial or pupil-sparing involvement can occur.'
     }
   ],
 
@@ -117,13 +117,13 @@ export const STROKE_SYNDROMES = {
     {
       name: 'Pure motor hemiparesis',
       territory: 'Posterior limb of internal capsule or basis pontis',
-      deficits: 'Contralateral face/arm/leg weakness (all equal), NO sensory, NO cortical signs.',
-      pearls: 'Most common lacunar syndrome. "Equal weakness" distinguishes from cortical strokes (which typically affect face+arm > leg for MCA).'
+      deficits: 'Contralateral pure motor weakness without sensory or cortical signs; face, arm and leg involvement can vary.',
+      pearls: 'A common lacunar presentation, but the clinical syndrome does not prove small-vessel pathology or a specific lesion site.'
     },
     {
       name: 'Pure sensory stroke',
       territory: 'Thalamus (VPL/VPM)',
-      deficits: 'Contralateral hemisensory loss (all modalities), NO weakness, NO cortical signs.',
+      deficits: 'Contralateral sensory symptoms without weakness or cortical signs; the distribution can be incomplete.',
       pearls: 'Often misdiagnosed as conversion/functional. Thalamic pain syndrome (Dejerine-Roussy) can develop weeks-months later.'
     },
     {
@@ -135,14 +135,14 @@ export const STROKE_SYNDROMES = {
     {
       name: 'Ataxic hemiparesis',
       territory: 'Basis pontis or posterior limb internal capsule',
-      deficits: 'Contralateral weakness (leg > arm typically) + ipsilateral cerebellar ataxia on the WEAK side.',
+      deficits: 'Weakness and ataxia in the same limbs, generally contralateral to a supratentorial or pontine lesion; distribution alone does not establish the site.',
       pearls: '"Ataxia in a weak limb" — a classic teaching point.'
     },
     {
       name: 'Clumsy-hand dysarthria',
-      territory: 'Basis pontis (paramedian branch)',
+      territory: 'Pons, internal capsule or corona radiata',
       deficits: 'Dysarthria + clumsy hand (contralateral), minimal weakness.',
-      pearls: 'Subtle presentation. A "clumsy hand" and slurred speech with minimal weakness → small pontine lacune.'
+      pearls: 'Dysarthria and clumsy hand movements can occur with lesions at several sites; the syndrome does not uniquely identify a pontine lacune.'
     }
   ],
 
@@ -151,18 +151,18 @@ export const STROKE_SYNDROMES = {
       name: 'Watershed (border zone)',
       territory: 'ACA-MCA or MCA-PCA border',
       deficits: 'ACA-MCA: "man-in-a-barrel" (proximal > distal arm weakness). MCA-PCA: transcortical aphasia.',
-      pearls: 'Often caused by hypotension + high-grade stenosis. Think aortic stenosis, carotid stenosis, cardiac arrest, hemodialysis.'
+      pearls: 'Internal borderzone infarcts have stronger hemodynamic associations; cortical borderzone infarcts can be embolic. Interpret the pattern with vascular imaging and the clinical setting.'
     },
     {
       name: 'Thalamic (artery of Percheron)',
       territory: 'Bilateral paramedian thalami (single perforator from PCA)',
       deficits: 'Acute coma/decreased consciousness + vertical gaze palsy + memory/behavioral change.',
-      pearls: 'Often misdiagnosed as encephalopathy or metabolic. MRI DWI shows bilateral thalamic lesions — pathognomonic.'
+      pearls: 'Bilateral paramedian thalamic infarction is a characteristic Percheron pattern, but bilateral thalamic abnormalities also have venous, inflammatory, infectious and other causes.'
     },
     {
       name: 'Central pontine (paramedian pontine)',
       territory: 'Paramedian basilar branches',
-      deficits: 'CN6 palsy (gaze palsy), contralateral hemiparesis, dysarthria.',
+      deficits: 'Abducens fascicular involvement causes ipsilateral abduction weakness; abducens-nuclear or PPRF injury causes conjugate gaze palsy. Contralateral weakness and dysarthria may accompany pontine injury.',
       pearls: 'Often an elderly patient with hypertension + small-vessel disease.'
     }
   ]
@@ -176,13 +176,13 @@ export const NEUROANATOMY = {
   cranialNerves: [
     { cn: 'I', name: 'Olfactory', testing: 'Smell', lesionEffect: 'Anosmia (often traumatic or neurodegenerative)' },
     { cn: 'II', name: 'Optic', testing: 'Visual acuity, visual fields, fundi, pupils (afferent)', lesionEffect: 'Field cut or blindness depending on where (prechiasmal = unilateral, chiasm = bitemporal, tract/radiations = homonymous)' },
-    { cn: 'III', name: 'Oculomotor', testing: 'Pupils (efferent), ptosis, EOM (all except superior oblique and lateral rectus)', lesionEffect: 'Ptosis + "down and out" eye + fixed dilated pupil (complete). Partial: pupil-sparing suggests microvascular (DM).' },
+    { cn: 'III', name: 'Oculomotor', testing: 'Pupils (efferent), ptosis, EOM (all except superior oblique and lateral rectus)', lesionEffect: 'Ptosis and a down-and-out eye, sometimes with pupillary dilation. Partial and pupil-sparing palsies occur; pupil sparing alone does not exclude compression.' },
     { cn: 'IV', name: 'Trochlear', testing: 'Superior oblique (downward in adduction)', lesionEffect: 'Vertical diplopia worse looking down and in (e.g., reading, stairs). Head tilt away from lesion side.' },
     { cn: 'V', name: 'Trigeminal', testing: 'Facial sensation V1/V2/V3, corneal reflex, masseter, jaw jerk', lesionEffect: 'Facial numbness by division; weak jaw deviates TO side of lesion.' },
     { cn: 'VI', name: 'Abducens', testing: 'Lateral rectus (horizontal abduction)', lesionEffect: 'Horizontal diplopia worse on gaze to affected side. Can be a false localizing sign with high ICP.' },
-    { cn: 'VII', name: 'Facial', testing: 'Facial symmetry (upper and lower), taste anterior 2/3 tongue, hyperacusis', lesionEffect: 'UMN: forehead spared (bilateral cortical innervation). LMN: entire face affected, + possible hyperacusis, taste change.' },
-    { cn: 'VIII', name: 'Vestibulocochlear', testing: 'Hearing, Weber/Rinne, HIT, skew, nystagmus (HINTS exam)', lesionEffect: 'Vertigo + hearing loss + nystagmus. HINTS peripheral (reassuring): abnormal head impulse (corrective saccade) + unidirectional nystagmus + normal skew → peripheral. Central (stroke) if ANY of: normal/bilateral HIT, direction-changing nystagmus, or abnormal skew.' },
-    { cn: 'IX', name: 'Glossopharyngeal', testing: 'Gag (sensory), taste posterior 1/3 tongue', lesionEffect: 'Absent gag (paired with CN10 for motor side).' },
+    { cn: 'VII', name: 'Facial', testing: 'Facial symmetry (upper and lower), taste anterior 2/3 tongue, hyperacusis', lesionEffect: 'Central lesions commonly affect the lower face more than the upper face, but forehead sparing is not an absolute discriminator. Peripheral lesions can affect the entire ipsilateral face, with possible hyperacusis or taste change.' },
+    { cn: 'VIII', name: 'Vestibulocochlear', testing: 'Hearing, Weber/Rinne', lesionEffect: 'Vertigo + hearing loss + nystagmus.' },
+    { cn: 'IX', name: 'Glossopharyngeal', testing: 'Gag (sensory), taste posterior 1/3 tongue', lesionEffect: 'Gag responses involve CN IX and X, but an absent gag alone does not diagnose their dysfunction or aspiration risk.' },
     { cn: 'X', name: 'Vagus', testing: 'Palate elevation, gag (motor), hoarseness', lesionEffect: 'Uvula deviates AWAY from lesion; hoarseness, dysphagia.' },
     { cn: 'XI', name: 'Spinal accessory', testing: 'SCM, trapezius', lesionEffect: 'Weak shoulder shrug and head turn AWAY from lesion side.' },
     { cn: 'XII', name: 'Hypoglossal', testing: 'Tongue protrusion, atrophy, fasciculations', lesionEffect: 'Tongue deviates TOWARD the weak side (lick your wounds).' }
@@ -193,14 +193,14 @@ export const NEUROANATOMY = {
     { artery: 'MCA — M1', supply: 'Deep lenticulostriates (internal capsule, basal ganglia) + most of lateral cortex' },
     { artery: 'MCA — M2 superior division', supply: 'Rolandic + Broca\'s (frontal + upper parietal)' },
     { artery: 'MCA — M2 inferior division', supply: 'Wernicke + temporoparietal' },
-    { artery: 'PCA — P1', supply: 'Bilateral thalami via perforators (art of Percheron variant), brainstem perforators' },
+    { artery: 'PCA — P1', supply: 'Paramedian thalamic and midbrain perforators. A single artery supplying both paramedian thalami is the Percheron variant, not the usual paired pattern.' },
     { artery: 'PCA — P2-P4', supply: 'Occipital cortex, medial temporal (hippocampus), splenium corpus callosum' },
     { artery: 'AChA (anterior choroidal)', supply: 'Posterior limb internal capsule, lateral geniculate, medial temporal lobe' },
     { artery: 'PICA', supply: 'Lateral medulla (Wallenberg), inferior cerebellum (vermis + tonsils)' },
     { artery: 'AICA', supply: 'Lateral pons, middle cerebellar peduncle, labyrinthine (CN7/8) — hearing loss can occur' },
     { artery: 'SCA', supply: 'Superior cerebellum, tegmentum of upper pons/midbrain' },
     { artery: 'Basilar perforators', supply: 'Pons (corticospinal, corticobulbar, CN6/7 nuclei)' },
-    { artery: 'Vertebral', supply: 'Medulla (anterior = medial medullary; lateral = Wallenberg when PICA origin involved)' }
+    { artery: 'Vertebral', supply: 'Medullary territories through direct vertebral branches and PICA-related supply; lateral medullary injury does not require PICA-origin involvement.' }
   ]
 };
 
@@ -212,86 +212,86 @@ export const TEACHING_PEARLS = [
   {
     category: 'Imaging',
     q: 'What is the hyperdense MCA sign and what does it mean?',
-    a: 'Hyperdense vessel (Hounsfield 40-60) on non-contrast CT representing acute thrombus. Specificity ~90% for proximal MCA occlusion. Detection depends on CT slice thickness; thin-section reconstruction improves detection.'
+    a: "A hyperdense intracranial artery on noncontrast CT can indicate acute thrombus. An IST-3 study and meta-analysis reported 52% sensitivity and 95% specificity for arterial obstruction overall; these are not universal proximal-MCA performance estimates. Thin-section imaging improves detection."
   },
   {
     category: 'Imaging',
     q: 'What is ASPECTS and why is it important?',
-    a: 'Alberta Stroke Program Early CT Score — 10-point score assessing early ischemic changes in 10 MCA territory regions (M1-M6, L, I, C, IC). Starts at 10, subtract 1 per affected region. ASPECTS ≥6 is the classic threshold. Under the 2026 AHA/ASA guideline (ICA/M1 occlusion, NIHSS ≥6, prestroke mRS 0-1), EVT is Class 1 for ASPECTS 3-10 within 6 h and for ASPECTS 3-5 at 6-24 h (age <80, no significant mass effect), and Class 2a for ASPECTS 0-2 within 6 h (age <80, no significant mass effect). ASPECTS 0-2: SELECT2/ANGEL-ASPECT enrolled 3-5 — the 0-2 evidence comes from LASTE (ASPECTS ≤5 including 0-2, within 6.5 h; better 90-day mRS and lower mortality) and TESLA (2-5, trend only), pooled in the ATLAS meta-analysis (benefit consistent except core ≥150 mL beyond 6 h).'
+    a: 'Alberta Stroke Program Early CT Score — 10-point score assessing early ischemic changes in 10 MCA territory regions (M1-M6, L, I, C, IC). Starts at 10, subtract 1 per affected region. ASPECTS ≥6 is the classic threshold. Under the 2026 AHA/ASA guideline (ICA/M1 occlusion, NIHSS ≥6, prestroke mRS 0-1), EVT is Class 1 for ASPECTS 3-10 within 6 h and for ASPECTS 3-5 at 6-24 h (age <80, no significant mass effect), and Class 2a for ASPECTS 0-2 within 6 h (age <80, no significant mass effect).'
   },
   {
     category: 'Imaging',
     q: 'How do you differentiate stroke from mimic on MRI?',
-    a: 'DWI positive + ADC restricted (dark) = acute ischemia. Unless: seizure (transient DWI +, corrects within days), hypoglycemia (selective regions), HSV encephalitis (temporal lobes, specific pattern), CJD (cortical + basal ganglia ribbon).'
+    a: "Restricted diffusion supports acute ischemia in the appropriate clinical setting but is not specific to it; seizures and other disorders can also restrict diffusion. A negative early DWI does not exclude stroke, particularly in the posterior circulation. Interpret the pattern with the examination, timing and follow-up imaging."
   },
   {
     category: 'NIHSS',
     q: 'What is a "fake zero" NIHSS and when is it missed?',
-    a: 'Posterior circulation stroke — vertigo, dysmetria, dysarthria, ataxia, hemianopia — can score 0-2 on NIHSS despite devastating deficit. If symptoms suggest posterior + NIHSS <4, still consider EVT and treat as stroke (not a mimic).'
+    a: "A low or zero NIHSS can underestimate gait, vestibular and other posterior-circulation disability. Hemianopia, dysarthria and limb ataxia do contribute to the score. Neither a low NIHSS nor these symptoms alone establish an EVT indication; obtain an urgent stroke assessment and appropriate vascular imaging."
   },
   {
     category: 'Thrombolysis',
     q: 'When is TNK contraindicated even if in window and no other exclusions?',
-    a: 'Glucose <50 (correct first), SBP >185/110 despite treatment (uncontrolled), INR >1.7, recent major extracranial surgery <14d (RELATIVE \u2014 careful risk-benefit), ICH on imaging, aortic dissection, endocarditis, severe head injury <14d, prior ICH (relative if amyloid; modifiable if HTN), platelets <100K, aPTT >40 (if on heparin).'
+    a: 'This incomplete contraindication checklist is withheld pending reconciliation of the 2026 AHA/ASA guideline, its correction, and the US TNKase prescribing information. It must not be used as a treatment eligibility checklist.'
   },
   {
     category: 'Thrombolysis',
     q: 'What drug for wake-up stroke?',
-    a: 'Alteplase carries the direct wake-up RCT evidence (WAKE-UP: MRI DWI-FLAIR mismatch). TNK 0.25 mg/kg is what most modern protocols (including this app\u2019s pocket cards) dispense, extrapolating from AcT/TRACE-2 equivalence — but TWIST (TNK without advanced imaging) was negative, so imaging-based selection (DWI-FLAIR mismatch OR CTP mismatch per EXTEND) is required regardless of agent.'
+    a: "WAKE-UP directly studied alteplase in selected unknown-onset stroke with MRI DWI-FLAIR mismatch. TWIST did not demonstrate a benefit from tenecteplase using its noncontrast-CT selection. These trials have different populations and do not establish an agent-independent wake-up treatment rule; apply current treatment-specific selection criteria."
   },
   {
     category: 'Guidelines',
     q: 'What is the ICH BP target per 2022 AHA/ASA?',
-    a: 'For presenting SBP 150-220 mmHg: acute lowering to a target of 140, maintaining 130-150, may be reasonable (Class 2b, LOE B-R); SMOOTH, sustained control avoiding peaks/variability is the Class 2a process recommendation. Avoid acute lowering to SBP <130 (Class 3: Harm). Basis: INTERACT2 and ATACH-2.'
+    a: "In mild-to-moderate spontaneous ICH presenting with SBP 150-220 mmHg, targeting 140 and maintaining 130-150 may be reasonable (AHA/ASA 2022, Class IIb, B-R). Smooth sustained control is recommended; acute lowering below 130 in this population can be harmful. Safety and efficacy in large/severe ICH or surgical-decompression candidates are uncertain."
   },
   {
     category: 'Guidelines',
     q: 'Post-EVT BP target?',
-    a: 'For DOCUMENTED successful recanalization (mTICI ≥2b): SBP 140-180 for ≥24h (up to 72h per local protocol). Intensive lowering (<140) is Class 3: Harm — harm was shown in ENCHANTED2-MT and OPTIMAL-BP; BP-TARGET (100-129 mmHg) was neutral; BEST-II did not meet its futility criteria but gave a low predicted probability that lower targets would succeed in a larger trial — neither showed harm.'
+    a: "AHA/ASA 2026 considers BP ≤180/105 mmHg during EVT and for 24 hours afterward reasonable. In successfully recanalized anterior-circulation LVO without another BP indication, active intensive targeting of SBP <140 for the first 72 hours is harmful. This does not mandate raising a spontaneous SBP below 140 or establish one universal lower bound."
   },
   {
     category: 'Etiology',
     q: 'How do you work up cryptogenic stroke?',
-    a: '30-day event monitor; consider implantable loop recorder when suspicion remains high (e.g., medium/high HAVOC score, atrial cardiopathy, recurrent embolic pattern), TEE with bubble study (PFO, aortic plaque, LAA thrombus), hypercoag panel only in selected patients (yield is low in unselected stroke; antiphospholipid is the highest-value test; protein C/S/AT-III are UNINTERPRETABLE during acute thrombosis or on anticoagulation \u2014 defer/repeat \u22656 weeks out), vessel wall imaging if suspicion for vasculitis/ICAD/dissection. Do NOT empirically anticoagulate (NAVIGATE/RE-SPECT/ARCADIA all neutral).'
+    a: "Use a cause-directed evaluation. Echocardiography and prolonged rhythm monitoring are reasonable in selected cryptogenic stroke; TEE and an implantable monitor are individual choices. Select thrombophilia and vessel-wall testing by the clinical phenotype. Protein C, protein S and antithrombin levels may be altered by acute thrombosis or treatment; timing and interpretation depend on the assay. Empiric anticoagulation is not indicated for ESUS without a specific indication."
   },
   {
     category: 'Etiology',
     q: 'How do you evaluate a young stroke patient (<55)?',
-    a: 'Cervicocerebral vascular imaging (CTA/MRA H&N) for dissection, vasculitis, FMD, moyamoya. TEE w/ bubble for PFO. Hypercoag panel. MELAS screening (lactate), Fabry (α-galactosidase), CADASIL (NOTCH3, skin biopsy). Drug screen. Consider RCVS vs PRES by imaging. Review for illicit stimulant use.'
+    a: "Vascular imaging and clinical phenotype guide the workup. Consider dissection, selected arteriopathies, cardiac sources, medications and substance exposure. Hypercoagulable, infectious, metabolic and genetic tests should follow specific clinical clues; age below 55 alone does not justify a universal panel, TEE or genetic screen."
   },
   {
     category: 'Differential',
     q: 'Most common stroke mimics in the ED?',
-    a: 'Seizure with Todd paralysis (~10%), migraine with aura, hypoglycemia, sepsis/infection, encephalopathy/delirium, functional neurologic disorder, central vertigo vs peripheral, Bell palsy vs stroke. Seizure + aphasia is a hard one — if in doubt, treat as stroke (safer to give lytic for mimic than miss a stroke).'
+    a: "Potential mimics include seizure with postictal deficits, migraine, hypoglycemia, infection, metabolic encephalopathy and functional neurological disorder. Registry data show low but nonzero symptomatic-ICH risk in thrombolysed mimics; this does not justify treating every uncertain presentation. Assess disabling suspected stroke promptly against eligibility and contraindications."
   },
   {
     category: 'Differential',
     q: 'HINTS exam: what is it, when positive?',
-    a: 'Head Impulse, Nystagmus, Test of Skew. For acute vestibular syndrome. Positive for central (stroke) if ANY of: (1) normal/bilateral HIT, (2) direction-changing nystagmus, (3) abnormal skew deviation. Higher sensitivity than MRI in first 48h (which can miss small brainstem lesions).'
+    a: "HINTS is a bedside examination for an appropriate acute vestibular syndrome with nystagmus, performed by a clinician trained in its use. Include hearing assessment and arrange MRI/MRA for a central or equivocal result. An abnormal head impulse or new hearing loss alone does not exclude stroke. It is not a screening test for every dizzy patient."
   },
   {
     category: 'Management',
     q: 'Post-tPA complications — what to watch for?',
-    a: '(1) Hemorrhagic transformation (stop tPA, CT, cryo/TXA if PH, platelets if <100K). (2) Orolingual angioedema (ACE-inhibitor users — stop tPA, IV diphenhydramine + methylprednisolone + H2 blocker; epinephrine if airway compromise). (3) Hypotension / reperfusion injury. Q15 neurochecks × 2h, then q30 × 6h, then q1h × 16h.'
+    a: "Urgent concerns after IV thrombolysis include symptomatic intracranial bleeding and orolingual angioedema. New neurological deterioration needs emergency assessment and brain imaging; symptomatic bleeding is not limited to parenchymal-hematoma morphology. Angioedema requires immediate airway assessment. Use the current institutional emergency pathway and complete source guideline for treatment, dosing and monitoring."
   },
   {
     category: 'Management',
     q: 'DVT prophylaxis timing after ICH?',
-    a: 'Day 0: IPC only (CLOTS-3; Class 1, LOE B-R). At 24-48h from onset with stable imaging: low-dose UFH or LMWH may be reasonable (Class 2b, LOE C-LD per AHA/ASA 2022 ICH). For immobile ischemic stroke (2026 AHA/ASA): IPC is Class 1 (LOE B-R). Prophylactic-dose UFH/LMWH is reasonable to reduce VTE (Class 2a, LOE B-R), though a survival benefit is not well established (Class 2b, LOE A). Elastic compression stockings are harmful (Class 3: Harm).'
+    a: "For nonambulatory spontaneous ICH, IPC begins on the day of diagnosis; low-dose UFH or LMWH at 24-48 hours may be reasonable after assessing hematoma stability and contraindications (AHA/ASA 2022). In immobile AIS, IPC is recommended and prophylactic-dose UFH/LMWH is reasonable to reduce VTE, although survival benefit is uncertain. Elastic compression stockings are harmful. These are prophylaxis, not treatment regimens."
   },
   {
     category: 'Rehab',
     q: 'When does spasticity typically develop?',
-    a: '2-6 weeks post-stroke. Treatment: physical therapy + stretching + oral baclofen / tizanidine. For focal severe spasticity: botulinum toxin (onabotulinum A) every 3 months.'
+    a: "Spasticity onset and severity vary. Assess its effect on function, comfort, hygiene and care goals before selecting therapy. Focal botulinum toxin treatment and oral agents have different indications and adverse effects. The onabotulinumtoxinA label allows repeat treatment when the prior effect diminishes, generally no sooner than 12 weeks; this is not a mandatory every-three-month schedule."
   },
   {
     category: 'Prognosis',
     q: 'What is the natural history of functional recovery after stroke?',
-    a: 'Most recovery occurs first 3 months. Further gains are incremental but continue at least 6-12 months. 90-day mRS is the traditional trial endpoint because most recovery has plateaued by then. Language recovery can continue for 2+ years.'
+    a: "Recovery trajectories differ across motor, language, cognitive, activity and participation outcomes. Meaningful improvement can occur beyond an early follow-up assessment. A 90-day trial endpoint or cohort average must not be used as an individual recovery ceiling."
   },
   {
     category: 'Biomarkers',
-    q: 'What is a potential CSF biomarker for NORSE (New-Onset Refractory Status Epilepticus)?',
+    q: "What peripheral-blood observation has been reported before cryptogenic NORSE?",
     a: 'In a single case report, atypical lymphocytes appeared in peripheral blood (CSF was normal) just before cryptogenic NORSE, possibly reflecting hypercytokinemia. This is hypothesis-generating, not an established biomarker. (Takatsu et al., Neurohospitalist 2026;16(3); PMID 41306648)'
   },
   {

@@ -1,7 +1,7 @@
 ---
 id: hints-simulator
 title: "HINTS+ Vestibular Simulator"
-summary: "Bedside vestibular exam simulator for differentiating central (stroke) vs. peripheral vertigo (HINTS+ algorithm)."
+summary: "Selected HINTS+ eye-movement demonstrations for trained examiners assessing an appropriate acute vestibular syndrome. The inaccurate positive-skew animation is unavailable."
 tags: ["simulators"]
 contexts: ["telestroke", "inpatient", "clinic"]
 calculators: []
@@ -10,7 +10,7 @@ lastReviewed: 2026-05-30
 provenance: src/education.jsx
 ---
 
-Bedside vestibular exam simulator for differentiating central (stroke) vs. peripheral vertigo (HINTS+ algorithm).
+Selected HINTS+ eye-movement demonstrations for trained examiners assessing an appropriate acute vestibular syndrome. The inaccurate positive-skew animation is unavailable.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
 > This file owns the module metadata (title, summary, tags, contexts, references).

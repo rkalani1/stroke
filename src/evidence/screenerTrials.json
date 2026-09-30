@@ -986,7 +986,7 @@
           "pendingLabel": "Confirm no Myocardial Infarction in the past 3 months"
         },
         {
-          "field": "exTerminalIllness",
+          "field": "exLifeExpectancy2y",
           "operator": "==",
           "value": true,
           "error": "Excludes life expectancy < 2 years",
@@ -1343,10 +1343,10 @@
           "pendingLabel": "Confirm no symptomatic stroke in prior 30 days"
         },
         {
-          "field": "exSeizures",
+          "field": "exVerifySeizure",
           "operator": "==",
           "value": true,
-          "error": "Excludes seizure since stroke onset",
+          "error": "Seizure after index stroke or within 12 months while taking antiseizure medication",
           "pendingLabel": "Confirm no seizures since stroke onset"
         }
       ]

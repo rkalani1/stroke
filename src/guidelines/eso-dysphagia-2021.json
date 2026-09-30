@@ -167,7 +167,16 @@
       "classNote": "For",
       "levelOfEvidence": "Low certainty",
       "text": "Recommendation 18: In stroke patients fed via a nasogastric tube, we suggest to use metoclopramide to promote gastric emptying and reduce the risk of esophago-pharyngeal regurgitation with subsequent aspiration.",
-      "page": null
+      "page": null,
+      "historicalRecommendation": true,
+      "currentEvidenceAsOf": "2026-09-30",
+      "currentEvidenceNote": "The 2026 ESO stroke-associated pneumonia guideline found insufficient evidence for an evidence-based recommendation on antiemetics for pneumonia prevention. A separate expert consensus (8/8) suggests not administering antiemetics solely for prevention outside clinical trials in hospitalized, non-ventilated adults within 7 days of acute ischemic or hemorrhagic stroke onset. The older metoclopramide suggestion should not be presented as current routine prevention. Treatment of nausea or vomiting remains guided by local guidance and clinical judgment.",
+      "currentEvidenceSources": [
+        {
+          "title": "Current topic-specific source",
+          "url": "https://academic.oup.com/esj/article/11/5/aakag044/8671383"
+        }
+      ]
     },
     {
       "section": "Treatment of post-stroke dysphagia - Neurostimulation treatment",
@@ -195,5 +204,13 @@
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "GRADE"
+  "gradingSystem": "GRADE",
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Primary recommendation text retrieved and compared; exact edition, source locators and unresolved correction/current-context limits in unit ledger.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
+  }
 }

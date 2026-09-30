@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import React from 'react';
+import { gcsComponentsDocumented, gcsDocumentation } from '../src/encounter-clinical-review.js';
 import { renderToStaticMarkup } from 'react-dom/server';
 import {
   calculateABCD2Score,
@@ -245,7 +246,11 @@ describe('Protocols input-boundary contracts', () => {
 
       expect(appSource).toMatch(/const isNIHSSComplete\s*=\s*\(\)\s*=>\s*\{[\s\S]*nihssItems\.every/);
       expect(nihssCard).toMatch(/\{isNIHSSComplete\(\)\s*&&\s*\([\s\S]*Copy NIHSS score/);
-      expect(gcsCard).toMatch(/\{calculateGCS\(gcsItems\)\s*!==\s*null\s*&&\s*\([\s\S]*Copy GCS score/);
+      expect(gcsCard).toMatch(/\{gcsComponentsDocumented\(gcsItems\)\s*&&\s*\([\s\S]*Copy GCS score/);
+      expect(gcsCard).toContain('gcsDocumentation(gcsItems)');
+      expect(gcsComponentsDocumented({eye:'4'})).toBe(false);
+      expect(gcsComponentsDocumented({eye:'4',verbal:'NT',motor:'6'})).toBe(true);
+      expect(gcsDocumentation({eye:'4',verbal:'NT',motor:'6'})).toContain('total not reported');
       expect(ichCard).toMatch(/\{calculateICHScore\(ichScoreItems\)\s*!==\s*null\s*&&\s*\([\s\S]*Copy ICH score/);
       expect(abcd2Card).toMatch(/\{abcd2Complete\s*&&\s*\([\s\S]*Copy ABCD² score/);
       expect(chadsCard).toMatch(/\{chads2VascComplete\s*&&\s*\([\s\S]*Copy CHA₂DS₂-VASc score/);

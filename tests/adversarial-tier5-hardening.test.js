@@ -243,7 +243,8 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
 
       // Derived field: domainMatch (STEP-EVT)
       expect(resolveField('domainMatch', {})).toBeNull();
-      expect(resolveField('domainMatch', { nihssScore: 8, telestrokeNote: { vesselOcclusion: ['M2'] } })).toBe('mevo');
+      expect(resolveField('domainMatch', { nihssScore: 8, telestrokeNote: { vesselOcclusion: ['M2'] } })).toBeNull();
+      expect(resolveField('domainMatch', { nihssScore: 8, culpritM2Dominance: 'non-dominant', telestrokeNote: { vesselOcclusion: ['M2'] } })).toBe('mevo');
       expect(resolveField('domainMatch', { nihssScore: 12, telestrokeNote: { vesselOcclusion: ['M3'] } })).toBe('mevo');
       expect(resolveField('domainMatch', { nihssScore: 7, telestrokeNote: { vesselOcclusion: ['M2'] } })).toBe('none');
       expect(resolveField('domainMatch', { nihssScore: 8, telestrokeNote: { vesselOcclusion: ['M4'] } })).toBe('none');
@@ -279,8 +280,8 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       const critTruthy = { field: 'pregnancy', operator: 'truthy', value: true };
       expect(evaluateCriterion(critTruthy, { pregnancy: true })).toBe('met');
       expect(evaluateCriterion(critTruthy, { pregnancy: false })).toBe('not_met');
-      expect(evaluateCriterion(critTruthy, {})).toBe('not_met');
-      expect(evaluateCriterion(critTruthy, { pregnancy: null })).toBe('not_met');
+      expect(evaluateCriterion(critTruthy, {})).toBe('unknown');
+      expect(evaluateCriterion(critTruthy, { pregnancy: null })).toBe('unknown');
 
       // Operator present
       const critPresent = { field: 'ctpResults', operator: 'present', value: ['mismatch', 'penumbra'] };
@@ -310,6 +311,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
           vesselOcclusion: ['M2'],
           disablingDeficit: true
         },
+        culpritM2Dominance: 'non-dominant',
         aspectsScore: 8,
         hoursFromLKW: 6.0,
         pregnancy: false,
@@ -317,7 +319,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         seizures: false
       };
       const r2 = evaluateActiveTrial(stepEvtTrial, perfectStepEvtPatient);
-      expect(r2.status).toBe('eligible');
+      expect(r2.status).toBe('needs_info'); // Partial modeled match still requires protocol/team confirmation.
       expect(r2.counts.not_met).toBe(0);
 
       // Case 3: Exclusion triggered (e.g. hemorrhage: true) -> must force not_eligible
@@ -420,7 +422,8 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       expect(appJsx).toContain("id: 'bp_post_evt'");
       expect(appJsx).toContain("classOfRec: 'III'");
       expect(appJsx).toContain("levelOfEvidence: 'A'");
-      expect(appJsx).toContain('do NOT target SBP <140');
+      expect(appJsx).toContain('advises against routine intensive lowering below 140 after successful anterior reperfusion');
+      expect(appJsx).toContain('this is not a mandatory 140 floor');
     });
 
     it('stress tests acute ICH BP lowering harm guard (ATACH-2 / AHA 2022)', () => {
@@ -487,20 +490,20 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
   // =========================================================================
   // 5. 89 GUIDELINE DATASETS & 862 RECOMMENDATIONS ADVERSARIAL VALIDATION
   // =========================================================================
-  describe('5. 109 Guideline Datasets & 4114 Indexed Rows Invariant Hardening', () => {
+  describe('5. 110 Guideline Datasets & 4171 Indexed Rows Invariant Hardening', () => {
 
-    it('verifies all 109 guideline datasets parse with 4114 indexed rows and 4113 extracted entries', () => {
+    it('verifies all 110 guideline datasets parse with 4171 indexed rows and 4170 extracted entries', () => {
       const guidelineFiles = fs.readdirSync(GUIDELINES_DIR).filter(f => f.endsWith('.json') && f !== 'index.json' && f !== 'landmark-trials.json');
-      expect(guidelineFiles.length).toBe(109);
+      expect(guidelineFiles.length).toBe(110);
 
       let totalRecs = 0;
       const validCORs = new Set([
         'I', 'IIa', 'IIb', 'III', 'Statement',
         // GRADE strengths, used by the ESO / NCS / WSO documents.
-        'Strong', 'Conditional', 'Expert Consensus', 'No recommendation',
+        'Strong', 'Weak', 'Conditional', 'Expert Consensus', 'No recommendation',
       ]);
       const validLOEs = new Set([
-        'A', 'B', 'C', 'B-R', 'B-NR', 'C-LD', 'C-EO',
+        'A', 'B', 'C', 'B-R', 'B-NR', 'C-LD', 'C-EO', 'EO-V', 'EO-C',
         'Expert Consensus', 'Guideline Summary', 'Emerging',
         'A*', 'B*', 'B/C', 'A* (LE), B (UE)', 'B/C*', 'C*',
         // GRADE certainty, used by the ESO / NCS / WSO documents. Those bodies
@@ -540,9 +543,9 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         }
       }
 
-      expect(totalRecs).toBe(4114);
+      expect(totalRecs).toBe(4171);
       expect(GUIDELINE_LIBRARY_INDEX.filter((guideline) => guideline.sourceOnly)).toHaveLength(1);
-      expect(GUIDELINE_LIBRARY_INDEX.reduce((sum, guideline) => sum + guideline.recommendationCount, 0)).toBe(4113);
+      expect(GUIDELINE_LIBRARY_INDEX.reduce((sum, guideline) => sum + guideline.recommendationCount, 0)).toBe(4170);
     });
 
     it('verifies 2026 AHA/ASA AIS guideline dataset contains 202 recommendations', () => {

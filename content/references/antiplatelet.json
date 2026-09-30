@@ -1,15 +1,5 @@
 [
   {
-    "id": "antiplatelet-dapt-after-ischemic-stroke-tia",
-    "title": "DAPT After Ischemic Stroke-TIA",
-    "category": "antiplatelet",
-    "type": "image",
-    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
-    "path": "documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg",
-    "subtitle": "Infographic - Match Patient to Trial",
-    "reviewStatus": "archive"
-  },
-  {
     "id": "antiplatelet-dapt-minor-stroke-tia-trials",
     "title": "DAPT Minor Stroke-TIA Trials",
     "category": "antiplatelet",

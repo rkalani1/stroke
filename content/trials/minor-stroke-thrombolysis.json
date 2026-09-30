@@ -6,14 +6,14 @@
     "category": "minor-stroke-thrombolysis",
     "population": "n=886, adults, NIHSS 0-5 (minor), ≤12 h",
     "finding": "No benefit: 72% (309/432) tenecteplase vs 75% (338/452) control",
-    "teachingPoint": "Argues against routine thrombolysis for minor non-disabling stroke solely because an occlusion is present; keep the disabling-deficit gate.",
+    "teachingPoint": "No routine benefit from the tested TNK strategy in this selected minor-stroke population. Do not relabel the entire cohort as nondisabling or infer that all disabling presentations were excluded.",
     "PMID": "38768626",
     "year": 2024,
     "citationIds": [
       "cit-tempo-2-2024"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

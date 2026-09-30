@@ -21,7 +21,7 @@
     "name": "ULTRA",
     "fullName": "Ultra-Early Tranexamic Acid After Subarachnoid Haemorrhage",
     "category": "sah-critical-care",
-    "population": "n=955, adults, NIHSS all grades, immediately after diagnosis, until aneurysm treatment or 24 h",
+    "population": "n=955, adults, NIHSS all grades, Ictus <24 hours; treatment continued until aneurysm treatment or a maximum of 24 hours",
     "finding": "Neutral: 60% vs 64%",
     "teachingPoint": "Routine ultra-early tranexamic acid is not indicated in aSAH — prioritise early aneurysm securing instead.",
     "PMID": "33357465",
@@ -30,7 +30,7 @@
       "cit-ultra-2021"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-15",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -47,7 +47,7 @@
       "cit-earlydrain-2023"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-15",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

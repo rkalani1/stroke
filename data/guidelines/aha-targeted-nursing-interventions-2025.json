@@ -118,7 +118,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Innovative models such as mobile simulation programs using a hub-and-spoke model to deliver onsite simulation education directly to rural hospitals, supported by centralized hub-nurse educators so that nurses in remote locations can practice high-fidelity simulations, and gamification such as escape rooms simulating acute stroke scenarios, can enhance competency, engagement, and preparedness among rural-dwelling nurses at low cost; rural stroke programs can also leverage health system partnerships for tele-education, simulation laboratories, and mentorship models, along with professional organization resources, state stroke registries, and the Get With The Guidelines-Stroke platform.",
+      "text": "Innovative models such as mobile simulation programs using a hub-and-spoke model to deliver onsite simulation education directly to rural hospitals, supported by centralized hub-nurse educators so that nurses in remote locations can practice high-fidelity simulations, and gamification such as escape rooms simulating acute stroke scenarios, can enhance competency, engagement, and preparedness among rural-dwelling nurses; rural stroke programs can also leverage health system partnerships for tele-education, simulation laboratories, and mentorship models, along with professional organization resources, state stroke registries, and the Get With The Guidelines-Stroke platform. The source describes escape rooms specifically as a low-cost strategy; this cost qualifier does not apply to every simulation format.",
       "page": null
     },
     {
@@ -235,5 +235,13 @@
     }
   ],
   "documentType": "scientific-statement",
-  "gradingSystem": "ungraded"
+  "gradingSystem": "ungraded",
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Complete current-run primary JATS, with native tables and footnotes inspected",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
+  }
 }

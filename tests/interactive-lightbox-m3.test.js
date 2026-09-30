@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
+import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 
 describe('Milestone M3-1: Interactive Lightbox & Visual Asset Integration', () => {
@@ -35,58 +36,49 @@ describe('Milestone M3-1: Interactive Lightbox & Visual Asset Integration', () =
     expect(componentsContent).toContain('onError');
   });
 
-  it('integrates VisualAssetFigure across all 8 card views in education.jsx', () => {
-    const assets = [
-      'assets/toast_classification_infographic.png',
-      'assets/dapt_flowchart_timeline.png',
-      'assets/afib_timing_protocol.png',
-      'assets/select_score_chart.png',
-      'assets/ischemic_core_penumbra_render.png',
-      'assets/aspects_10_regions_render.png',
-      'assets/evt_lvo_occlusion_sites.png',
-      'assets/hematoma_expansion_render.png',
-    ];
-
-    assets.forEach(asset => {
-      expect(educationContent).toContain(asset);
-    });
-  });
-
-  // v6.24.0 changed this contract deliberately. The 8 infographic PNGs are
-  // 2400x1800 and total ~3.6 MB — 39% of what a first-time visitor used to
-  // download before the app was offline-ready — and they are lazy-loaded, so
-  // most visitors never open one. They now cache on first view via the
-  // cache-first same-origin path in the service worker's fetch handler.
-  //
-  // Offline-before-first-view degrades gracefully rather than breaking:
-  // VisualAssetFigure renders the PNG as `src` with the SVG as its `onError`
-  // fallback, and the SVGs stay precached. They are genuine vector drawings
-  // (41-114 shape/text nodes each, no embedded raster) totalling ~83 KB, so
-  // the reader still gets the full figure.
-  const VISUAL_ASSET_STEMS = [
-    'toast_classification_infographic',
-    'dapt_flowchart_timeline',
-    'afib_timing_protocol',
-    'select_score_chart',
-    'ischemic_core_penumbra_render',
-    'aspects_10_regions_render',
-    'evt_lvo_occlusion_sites',
-    'hematoma_expansion_render',
+  // Reviewed external TOAST, AF, SeLECT, ICH/core, EVT, DAPT and ASPECTS figures were withdrawn.
+  // Their names must remain in the service-worker denylist, but never in its precache.
+  const WITHDRAWN_FIGURE_PATHS = [
+    ...[
+      'toast_classification_infographic', 'afib_timing_protocol', 'select_score_chart',
+      'dapt_flowchart_timeline', 'ischemic_core_penumbra_render', 'aspects_10_regions_render',
+      'evt_lvo_occlusion_sites', 'hematoma_expansion_render',
+    ].flatMap(stem => ['png', 'svg'].map(ext => `assets/${stem}.${ext}`)),
+    'assets/fmd_stroke_mechanisms.png',
   ];
+  const coreAssetMatch = serviceWorkerContent.match(/const CORE_ASSETS = (\[[\s\S]*?\]);/);
+  const coreAssets = coreAssetMatch ? vm.runInNewContext(coreAssetMatch[1]) : null;
 
-  it('precaches the SVG fallback for every visual asset so figures survive offline', () => {
-    for (const stem of VISUAL_ASSET_STEMS) {
-      expect(serviceWorkerContent).toContain(`'./assets/${stem}.svg'`);
+  it('does not render, ship or precache withdrawn clinical figures', () => {
+    expect(coreAssets).not.toBeNull();
+    expect(coreAssets.length).toBeGreaterThan(0);
+    for (const asset of WITHDRAWN_FIGURE_PATHS) {
+      expect(educationContent, asset).not.toContain(asset);
+      expect(fs.existsSync(path.join(repoRoot, asset)), asset).toBe(false);
+      expect(coreAssets, asset).not.toContain(`./${asset}`);
     }
   });
 
-  it('keeps the heavy PNG originals out of the install precache', () => {
-    const match = serviceWorkerContent.match(/const CORE_ASSETS = (\[[\s\S]*?\]);/);
-    expect(match).not.toBeNull();
-    // eslint-disable-next-line no-eval
-    const coreAssets = eval(match[1]);
-    for (const stem of VISUAL_ASSET_STEMS) {
-      expect(coreAssets).not.toContain(`./assets/${stem}.png`);
+  it('returns 410 for stale bookmarked figure URLs before consulting browser caches', async () => {
+    const handlers = {};
+    const origin = 'https://example.test';
+    vm.runInNewContext(serviceWorkerContent, {
+      self: { location: new URL(`${origin}/stroke/service-worker.js`), addEventListener: (name, fn) => { handlers[name] = fn; } },
+      URL, Response,
+      // These throwing stubs prove a withdrawn request cannot fall through to a stale cache or network.
+      caches: { match: () => { throw new Error('Withdrawn figure reached cache'); }, open: () => { throw new Error('Withdrawn figure opened cache'); } },
+      fetch: () => { throw new Error('Withdrawn figure reached network'); },
+    });
+    expect(typeof handlers.fetch).toBe('function');
+    for (const asset of WITHDRAWN_FIGURE_PATHS) {
+      for (const scope of ['', '/stroke']) {
+        let responsePromise;
+        handlers.fetch({ request: { url: `${origin}${scope}/${asset}`, method: 'GET' }, respondWith: result => { responsePromise = result; } });
+        const response = await responsePromise;
+        expect(response, asset).toBeDefined();
+        expect(response.status, asset).toBe(410);
+        expect(response.headers.get('Cache-Control'), asset).toBe('no-store');
+      }
     }
   });
 
@@ -95,14 +87,6 @@ describe('Milestone M3-1: Interactive Lightbox & Visual Asset Integration', () =
     // the figure when offline before first view.
     expect(componentsContent).toContain('const activeSrc = hasError && fallbackSvgSrc ? fallbackSvgSrc : src;');
     expect(componentsContent).toContain('onError={() => setHasError(true)}');
-  });
-
-  it('ships every visual asset in both formats on disk', () => {
-    for (const stem of VISUAL_ASSET_STEMS) {
-      for (const ext of ['png', 'svg']) {
-        expect(fs.existsSync(path.join(repoRoot, 'assets', `${stem}.${ext}`)), `assets/${stem}.${ext}`).toBe(true);
-      }
-    }
   });
 
   it('verifies interactive lightbox zoom bounds (1.0x to 4.0x), scale display, and position resets', () => {

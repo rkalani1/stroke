@@ -1,0 +1,1687 @@
+{
+  "baseline": "ad1ea7b64db278d0214202d5b3240a17c21e0aa5",
+  "review_date": "2026-09-30",
+  "method": "Permanent PDF redaction plus source-qualified correction panels; unchanged original pages retained. Clinical source gaps are not interpreted as false claims.",
+  "documents": [
+    {
+      "path": "documents/aneurysms/Unruptured Cerebral Aneurysms.pdf",
+      "baseline_sha256": "a3d7f51e70392d3fb06802991a0e29b4d63863b37bdfbf7e8f3cf19cc309018c",
+      "updates": [
+        {
+          "page": 10,
+          "ids": [
+            "AM-01"
+          ],
+          "text": "The 0.95% annual rupture estimate belongs to UCAS Japan. It is a cohort estimate, not a shared ISUIA/UCAS rate or an individual prediction. Across-study ranges depend on population and aneurysm characteristics.",
+          "remove_text": [
+            "ISUIA/UCAS: 0.95%"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/22738097/",
+            "https://pubmed.ncbi.nlm.nih.gov/12867109/"
+          ],
+          "inline_replacements": {
+            "ISUIA/UCAS: 0.95%": "UCAS Japan: 0.95%/year"
+          }
+        },
+        {
+          "page": 13,
+          "ids": [
+            "PDF15"
+          ],
+          "text": "Third-nerve palsy may be pupil-involving or pupil-sparing. Pupil sparing does not exclude an aneurysm or another compressive cause; it should not be used as a rule-out shortcut.",
+          "remove_text": [
+            "CN palsy (pupil-sparing 3rd)"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/27893002/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC5462106/"
+          ],
+          "inline_replacements": {
+            "CN palsy (pupil-sparing 3rd)": "CN III palsy: pupil status varies"
+          }
+        },
+        {
+          "page": 15,
+          "ids": [
+            "AM-02",
+            "PDF14"
+          ],
+          "text": "Randomized modality evidence exists. CURES randomized 291 participants to surgery or endovascular treatment: treatment failure was 9% versus 19%, mainly angiographic; mRS >2 at 1 year was 2% in both groups. TEAM stopped because of poor recruitment. These do not settle preventive intervention versus observation for every unruptured aneurysm.",
+          "remove_text": [
+            "No RCTs"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC10249696/",
+            "https://pubmed.ncbi.nlm.nih.gov/37169541/",
+            "https://trialsjournal.biomedcentral.com/articles/10.1186/1745-6215-12-64"
+          ],
+          "inline_replacements": {
+            "No RCTs": "CURES RCT"
+          }
+        },
+        {
+          "page": 16,
+          "ids": [
+            "AM-03",
+            "AM-04",
+            "PDF14"
+          ],
+          "text": "Observational complication comparisons do not establish universal endovascular superiority. Treatment depends on anatomy, patient risk and multidisciplinary judgment. The reproduced surgical forest plot contains a source-level diabetes/HTN row inconsistency; that row is withheld. The article text reports diabetes OR 2.38 (95% CI 1.54-3.67), while 1.45 (1.03-2.03) belongs to hypertension.",
+          "remove_text": [
+            "↓ morbidity/mortality"
+          ],
+          "remove_regions": [
+            [
+              536,
+              441,
+              915,
+              456
+            ]
+          ],
+          "sources": [
+            "https://professional.heart.org/en/science-news/-/media/3cde33b104bc4cdaa2a2773808cc83fa.ashx",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC9446328/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC10249696/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC6439725/",
+            "https://pubmed.ncbi.nlm.nih.gov/37169541/",
+            "https://trialsjournal.biomedcentral.com/articles/10.1186/1745-6215-12-64"
+          ],
+          "inline_replacements": {
+            "↓ morbidity/mortality": "Individualize choice"
+          }
+        }
+      ]
+    },
+    {
+      "path": "documents/ebm/Interpretation of Clinical Trials.pdf",
+      "baseline_sha256": "88fd5bf69053b1bdff03c206290829ebb4e27f2b747773d46d7b2781cd8e889e",
+      "updates": [
+        {
+          "page": 14,
+          "ids": [
+            "AM-05"
+          ],
+          "text": "Intention-to-treat analysis preserves randomized allocation despite crossover or nonadherence. It does not mean ignoring missing outcomes or treating complete-case analysis as unbiased; prespecified handling of missing data and sensitivity analyses are essential.",
+          "remove_text": [
+            "Ignores crossovers, nonadherence,",
+            "dropouts"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC2844943/",
+            "https://www.nejm.org/doi/full/10.1056/NEJMoa1912658"
+          ],
+          "inline_replacements": {
+            "Ignores crossovers, nonadherence,": "Preserves randomized allocation;",
+            "dropouts": "missing data"
+          }
+        },
+        {
+          "page": 18,
+          "ids": [
+            "AM-06",
+            "PDF19"
+          ],
+          "text": "The Bailey trial enrolled sciatica lasting 4-12 months. Prior surgery at the involved lumbar level was an exclusion; do not broaden that to every prior lumbosacral operation. Its primary pain outcome was assessed at 6 months.",
+          "remove_text": [
+            "lumbar radiculopathy x 4-6 months",
+            "prior LS surgery"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://www.nejm.org/doi/full/10.1056/NEJMoa1912658",
+            "https://pubmed.ncbi.nlm.nih.gov/32187469/",
+            "https://doi.org/10.1056/NEJMoa1912658"
+          ],
+          "inline_replacements": {
+            "lumbar radiculopathy x 4-6 months": "lumbar radiculopathy x 4-12 months",
+            "prior LS surgery": "same-level surgery"
+          }
+        }
+      ]
+    },
+    {
+      "path": "documents/csvd/Lacunar Stroke 7.13.22.pdf",
+      "baseline_sha256": "366ab88dacad5f7c59feb222697d16528d4de3ae5a72d74897519e7d6273966d",
+      "updates": [
+        {
+          "page": 11,
+          "ids": [
+            "LAC-F10"
+          ],
+          "text": "The stroke-subtype proportions reproduced from AHA/ASA 2021 Figure 1 are approximate and vary with population and diagnostic testing.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://doi.org/10.1161/STR.0000000000000375"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 12,
+          "ids": [
+            "LAC-F11"
+          ],
+          "text": "Distinguish observed associations from causality. The displayed HDL genetic association (nominal P=.031) did not meet the study’s multiple-testing threshold; LDL was not associated in that analysis. This does not establish that LDL-lowering treatment lacks clinical benefit.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8062914/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC2577185/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 15,
+          "ids": [
+            "LAC-F09"
+          ],
+          "text": "The right-hand list combines heterogeneous reported presentations and lesion locations. These are not each validated markers of lacunar small-vessel disease; a clinical syndrome alone does not establish its mechanism.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/7048128/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC10916806/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 16,
+          "ids": [
+            "LAC-F03"
+          ],
+          "text": "Capsular warning syndrome describes recurrent, stereotyped crescendo episodes; a single preceding TIA is not sufficient to establish it.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              57,
+              359,
+              282,
+              465
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/8492952/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC10916806/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 19,
+          "ids": [
+            "LAC-F01"
+          ],
+          "text": "Original INO illustration: panel A (patient 7) is ischemic infarction; panel B (patient 19) is demyelination. The images illustrate the differential and must not both be labeled lacunar infarction.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC5614936/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 20,
+          "ids": [
+            "LAC-F04",
+            "LAC-F12"
+          ],
+          "text": "The incomplete 2020 acute-treatment algorithm has been retired. Current reperfusion decisions require treatment-specific time, clinical and imaging criteria and appropriate stroke-unit care. The retained AHA 2021 diagram concerns secondary-prevention evaluation: a clinical TIA merits comparable etiologic evaluation even without a visible infarct, with appropriate basic laboratory testing.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              33,
+              145,
+              430,
+              485
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/32299596/",
+            "https://doi.org/10.1161/STR.0000000000000513",
+            "https://doi.org/10.1161/STR.0000000000000375"
+          ],
+          "inline_replacements": {},
+          "region_replacements": [
+            {
+              "rect": [
+                45,
+                170,
+                420,
+                450
+              ],
+              "text": "Acute-treatment algorithm retired.\n\nUse current treatment-specific eligibility guidance. See the source-qualified update below.",
+              "size": 20
+            }
+          ]
+        },
+        {
+          "page": 21,
+          "ids": [
+            "LAC-F02",
+            "LAC-F05"
+          ],
+          "text": "Multiple acute lesions increase suspicion for an alternative source; they do not prove embolism. STRIVE dimensions are approximate axial conventions, not stand-alone diagnostic cutoffs. A lacune is a cavity with additional imaging features; clinical small-vessel events may lack a visible DWI lesion.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              353,
+              360,
+              584,
+              485
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/15746460/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC10916806/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC3714437/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 23,
+          "ids": [
+            "LAC-F06"
+          ],
+          "text": "Diagnosis integrates a compatible clinical event, imaging and exclusion of plausible alternatives. Risk factors support the assessment but are not obligatory; a visible single-perforator lesion is not required in every clinical lacunar event.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              68,
+              338,
+              482,
+              464
+            ]
+          ],
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC10916806/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC3714437/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 24,
+          "ids": [
+            "LAC-F13"
+          ],
+          "text": "Thrombus extension, branch occlusion, hemodynamic failure and edema are proposed mechanisms of progression. The list does not establish a mechanism-directed treatment with proven benefit.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/22463492/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC10916806/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 25,
+          "ids": [
+            "LAC-F07"
+          ],
+          "text": "Short-course DAPT applies to selected acute noncardioembolic minor stroke/high-risk TIA, with initiation, duration and reperfusion exclusions specified by current guidance. The CHANCE single-acute-infarction subgroup is not synonymous with lacunar disease; the adjacent monotherapy-versus-placebo meta-analyses do not test DAPT versus monotherapy.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              67,
+              182,
+              484,
+              286
+            ]
+          ],
+          "sources": [
+            "https://doi.org/10.1161/STR.0000000000000375",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC10916806/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC5885215/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 26,
+          "ids": [
+            "LAC-F08"
+          ],
+          "text": "Original-source inconsistency: SPS3 Figure 1 baseline risk-set labels show placebo 1517 and clopidogrel 1503, whereas Tables 1-3 report placebo 1503 and clopidogrel 1517. The figure is retained as a historical reproduction with this explicit caveat; no inference is made that later risk-set counts are also wrong.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC4067036/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 28,
+          "ids": [
+            "LAC-F14"
+          ],
+          "text": "Lipid treatment should follow the patient’s atherosclerotic/ASCVD risk and current guidance. The 2021 LDL-C <70 mg/dL recommendation specifically concerns stroke/TIA with atherosclerotic disease; SPARCL tested atorvastatin 80 mg, not randomized LDL targets. This is not a reason to withhold indicated statin treatment.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              68,
+              231,
+              372,
+              317
+            ]
+          ],
+          "sources": [
+            "https://doi.org/10.1161/STR.0000000000000375",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC10916806/",
+            "https://pubmed.ncbi.nlm.nih.gov/19228842/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 30,
+          "ids": [
+            "LAC-F15"
+          ],
+          "text": "The figure describes late functional improvement in selected 3-month survivors. It is not a universal lacunar recovery trajectory or a reason to defer rehabilitation.",
+          "remove_text": [
+            "Delayed recovery"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC6288699/"
+          ],
+          "inline_replacements": {
+            "Delayed recovery": "Late recovery"
+          }
+        }
+      ]
+    },
+    {
+      "path": "documents/epidemiology/Diabetes and stroke.pdf",
+      "baseline_sha256": "4460b3026e207bcb4fcbed813d32a2fc9c8e3870ab5ee938d2b582be56245acf",
+      "updates": [
+        {
+          "page": 8,
+          "ids": [
+            "D08b",
+            "D08d",
+            "PDF20"
+          ],
+          "text": "HOMA-IR = fasting glucose (mmol/L) × fasting insulin (microU/mL) / 22.5; with glucose in mg/dL, the denominator is 405. IRIS used >3 as a study-selection cutoff, not a universal diagnosis; assay calibration and fasting timing matter. Prediabetes associations vary by definition: fasting glucose 100-125 mg/dL alone had RR 1.08 (95% CI 0.94-1.23) in the cited meta-analysis.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              69,
+              25,
+              713,
+              130
+            ],
+            [
+              543,
+              143,
+              938,
+              310
+            ]
+          ],
+          "sources": [
+            "https://doi.org/10.1056/NEJMoa1506930",
+            "https://pubmed.ncbi.nlm.nih.gov/20937946/",
+            "https://pubmed.ncbi.nlm.nih.gov/15161807/",
+            "https://pubmed.ncbi.nlm.nih.gov/22677795/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC4887756/",
+            "https://pubmed.ncbi.nlm.nih.gov/26886418/"
+          ],
+          "inline_replacements": {},
+          "region_replacements": [
+            {
+              "rect": [
+                73,
+                30,
+                705,
+                124
+              ],
+              "text": "Prediabetes and insulin resistance: definition and assay matter",
+              "size": 28
+            }
+          ]
+        },
+        {
+          "page": 9,
+          "ids": [
+            "D09a"
+          ],
+          "text": "The recurrence/vascular-event curves concern 1008 patients with first ischemic stroke at ages 15-49, including 44 with type 1 and 60 with type 2 diabetes. Their 10-year risks are not general estimates for all stroke survivors. Unpaired curve cells remain historical source values, not independently verified individual predictions.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/21606455/",
+            "https://pubmed.ncbi.nlm.nih.gov/30220102/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 13,
+          "ids": [
+            "D13a"
+          ],
+          "text": "Hyperglycemia estimates depend on threshold and timing: about 40% had admission random glucose >=130 mg/dL in a 656-patient single-center AIS cohort. Continuous monitoring in a separate 59-patient cohort showed substantial change over time. Fixed diabetes/non-diabetes percentages are not universal prevalence estimates.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              50,
+              163,
+              311,
+              249
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/12105309/",
+            "https://pubmed.ncbi.nlm.nih.gov/16873789/"
+          ],
+          "inline_replacements": {},
+          "region_replacements": [
+            {
+              "rect": [
+                54,
+                168,
+                305,
+                246
+              ],
+              "text": "Prevalence depends on threshold and timing. See source context below.",
+              "size": 15
+            }
+          ]
+        },
+        {
+          "page": 20,
+          "ids": [
+            "D20a"
+          ],
+          "text": "DCCT/EDIC studied type 1 diabetes (1441 participants) with long-term follow-up. The cardiovascular outcome was a composite; the small cerebrovascular event counts (1 versus 5) do not establish a separately powered stroke effect.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/16371630/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 21,
+          "ids": [
+            "D21a",
+            "D21c"
+          ],
+          "text": "IRIS enrolled age >=40, stroke/TIA within 6 months, HbA1c <7% and HOMA-IR >3 measured with fasting sampling at least 14 days after the event. Heart-failure and bladder-cancer/risk exclusions, gradual dose escalation and safety monitoring matter. Serious fractures requiring hospitalization or surgery occurred in 5.1% versus 3.2%; the reproduced other-fracture row of 6.9% versus 4.9% is a different adverse-event category.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://doi.org/10.1056/NEJMoa1506930",
+            "https://doi.org/10.1161/STR.0000000000000375"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 23,
+          "ids": [
+            "D23a"
+          ],
+          "text": "For most stable secondary-prevention patients, BP <130/80 mmHg is appropriate when tolerated. Regimen choice is individualized and includes thiazide/thiazide-like diuretics as well as selected ACE inhibitors, ARBs or calcium-channel blockers. This does not specify acute-stroke BP management.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://doi.org/10.1161/STR.0000000000000375",
+            "https://doi.org/10.1161/CIR.0000000000001356"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 24,
+          "ids": [
+            "D24a"
+          ],
+          "text": "Current LDL goals depend on risk: 2026 guidance uses <55 mg/dL for very-high-risk clinical ASCVD, alongside >=50% reduction and indicated nonstatin therapy. Stroke plus diabetes alone does not automatically meet every very-high-risk definition. Other clinical-ASCVD patients may retain a <70 goal.",
+          "remove_text": [
+            "Target LDL<70 mg/dL"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://doi.org/10.1161/CIR.0000000000001423",
+            "https://doi.org/10.1161/STR.0000000000000375"
+          ],
+          "inline_replacements": {
+            "Target LDL<70 mg/dL": "Use risk-specific LDL goals"
+          }
+        },
+        {
+          "page": 25,
+          "ids": [
+            "D25b"
+          ],
+          "text": "In the ARISTOTLE diabetes analysis, relative stroke/systemic-embolism, mortality and intracranial-bleeding benefits were broadly similar, but major-bleeding reduction differed (interaction P=.003), favoring a larger reduction without diabetes. Do not generalize one endpoint or one DOAC to identical efficacy and risks across all groups.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              613,
+              186,
+              901,
+              346
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/27533976/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 28,
+          "ids": [
+            "D28a"
+          ],
+          "text": "Historical outlook updated: selected GLP-1-based therapies now have established cardiovascular indications in appropriate patients, independent of HbA1c. Lipidomic and mechanistic questions remain research topics; do not group established outcome therapies with wholly experimental strategies.",
+          "remove_text": [
+            "Future Directions"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/41358894/"
+          ],
+          "inline_replacements": {
+            "Future Directions": "Historical research outlook"
+          }
+        },
+        {
+          "page": 29,
+          "ids": [
+            "D29b"
+          ],
+          "text": "SHINE found no 90-day functional benefit and more hypoglycemia with intensive acute insulin. Older type 2 diabetes intensity trials did not demonstrate a significant stroke reduction; DCCT/EDIC concerned long-term type 1 cardiovascular outcomes. These are distinct from modern drug-specific cardiovascular benefits.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              423,
+              297,
+              897,
+              378
+            ]
+          ],
+          "sources": [
+            "https://doi.org/10.1001/jama.2019.9346",
+            "https://pubmed.ncbi.nlm.nih.gov/19465231/",
+            "https://pubmed.ncbi.nlm.nih.gov/16371630/",
+            "https://pubmed.ncbi.nlm.nih.gov/41358894/"
+          ],
+          "inline_replacements": {}
+        }
+      ]
+    },
+    {
+      "path": "documents/epidemiology/Lipids and Cerebrovascular Disease.pdf",
+      "baseline_sha256": "fbc88f3e44b85368f4bcb6914d7f8d62cdcd11221a6cfe3b5fec08acc87723bb",
+      "updates": [
+        {
+          "page": 4,
+          "ids": [
+            "L04b"
+          ],
+          "text": "The Friedewald TG/5 equation requires mg/dL concentrations (use TG/2.2 with mmol/L). It should not be used with TG >=400 mg/dL; the 2026 guideline prefers Martin/Hopkins or Sampson/NIH estimation where appropriate.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              183,
+              425,
+              542,
+              477
+            ]
+          ],
+          "sources": [
+            "https://doi.org/10.1161/CIR.0000000000001423",
+            "https://pubmed.ncbi.nlm.nih.gov/4337382/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 6,
+          "ids": [
+            "L06b"
+          ],
+          "text": "ApoB100 occurs on VLDL, IDL and LDL. Chylomicron remnants contain ApoB48; distinguish these isoforms from a total ApoB measurement.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              62,
+              437,
+              381,
+              485
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/25178732/",
+            "https://pubmed.ncbi.nlm.nih.gov/9215545/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 10,
+          "ids": [
+            "L10a"
+          ],
+          "text": "Northern Manhattan Study: HDL-C >=35 mg/dL, not <=35, was associated with adjusted OR 0.53 (95% CI 0.39-0.72) for ischemic stroke (539 cases, 905 controls). The reproduced secondary table inherited the reversed threshold; that row has been removed.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              17,
+              158,
+              371,
+              207
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/11386928/",
+            "https://pubmed.ncbi.nlm.nih.gov/26451029/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 14,
+          "ids": [
+            "L14a"
+          ],
+          "text": "The unverified historical lipid-percentage treatment table has been retired. Biochemical lipid changes are not equivalent to evidence of stroke-outcome benefit; choose therapy using current indication-specific outcome evidence.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              20,
+              170,
+              397,
+              430
+            ]
+          ],
+          "sources": [
+            "https://doi.org/10.1161/CIR.0000000000001423"
+          ],
+          "inline_replacements": {},
+          "region_replacements": [
+            {
+              "rect": [
+                24,
+                185,
+                395,
+                425
+              ],
+              "text": "Historical lipid-percentage table retired.\n\nUse indication-specific outcome evidence. See the source context below.",
+              "size": 19
+            }
+          ]
+        },
+        {
+          "page": 16,
+          "ids": [
+            "L16a",
+            "PDF21"
+          ],
+          "text": "The 2013 prescribing/risk algorithm is retired from current clinical use. The 2026 guideline uses PREVENT-ASCVD risk assessment for eligible adults aged 30-79 and current risk-specific LDL goals. The retained trial figure is historical evidence, not a replacement prescribing algorithm.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              345,
+              0,
+              720,
+              540
+            ],
+            [
+              18,
+              352,
+              444,
+              431
+            ]
+          ],
+          "sources": [
+            "https://doi.org/10.1161/CIR.0000000000001423",
+            "https://fcm.aulavirtual.unc.edu.ar/pluginfile.php/608531/mod_resource/content/1/Gui%CC%81as%20Dislipemia%202026.pdf"
+          ],
+          "inline_replacements": {},
+          "region_replacements": [
+            {
+              "rect": [
+                355,
+                45,
+                705,
+                300
+              ],
+              "text": "Historical prescribing algorithm retired.\n\nUse current risk-specific lipid guidance; see sources below.",
+              "size": 22
+            }
+          ]
+        },
+        {
+          "page": 21,
+          "ids": [
+            "L21a"
+          ],
+          "text": "This was an observational study of 163 patients with ICH. It associated statin exposure with cortico-subcortical microbleeds (OR 4.15, 95% CI 1.54-11.20); it does not demonstrate recurrent lobar hemorrhage or statin causation.",
+          "remove_text": [
+            "Statins and Lobar Hemorrhage"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/22829545/"
+          ],
+          "inline_replacements": {
+            "Statins and Lobar Hemorrhage": "Statins and Microbleeds: Association"
+          }
+        },
+        {
+          "page": 23,
+          "ids": [
+            "L23a"
+          ],
+          "text": "OSLER was an open-label extension (n=4465, median 11.1 months). Its cardiovascular result was exploratory (HR 0.47, 95% CI 0.28-0.78), alongside LDL lowering. It should not stand alone as current definitive cardiovascular-outcome evidence.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/25773607/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 24,
+          "ids": [
+            "L24a",
+            "L24b",
+            "L24c",
+            "PDF21"
+          ],
+          "text": "The 2013/2014 prescribing algorithms have been retired. Use current risk-stratified lipid guidance. After ICH, AHA/ASA 2022 states that the balance of statin risks and benefits for ICH outcomes/recurrence versus cardiovascular prevention is uncertain (Class IIb, B-NR); this is not an automatic stop or continue rule.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              18,
+              103,
+              339,
+              493
+            ],
+            [
+              343,
+              0,
+              720,
+              540
+            ]
+          ],
+          "sources": [
+            "https://doi.org/10.1161/STR.0000000000000375",
+            "https://doi.org/10.1161/CIR.0000000000001423",
+            "https://doi.org/10.1161/STR.0000000000000407",
+            "https://fcm.aulavirtual.unc.edu.ar/pluginfile.php/608531/mod_resource/content/1/Gui%CC%81as%20Dislipemia%202026.pdf"
+          ],
+          "inline_replacements": {},
+          "region_replacements": [
+            {
+              "rect": [
+                30,
+                130,
+                690,
+                450
+              ],
+              "text": "Historical prescribing algorithms retired.\n\nCurrent risk-specific lipid guidance and the uncertainty after ICH are summarized below.",
+              "size": 23
+            }
+          ]
+        },
+        {
+          "page": 25,
+          "ids": [
+            "L25a"
+          ],
+          "text": "Lp(a) measurement at least once in adults and selected ApoB assessment are established roles in 2026 guidance. Lp-PLA2 and HDL-subfraction testing remain separate investigational questions.",
+          "remove_text": [
+            "Emerging Lipid Biomarkers"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://doi.org/10.1161/CIR.0000000000001423"
+          ],
+          "inline_replacements": {
+            "Emerging Lipid Biomarkers": "Lipid Biomarkers: Different Evidence Roles"
+          }
+        },
+        {
+          "page": 29,
+          "ids": [
+            "L29b"
+          ],
+          "text": "The displayed Lp-PLA2 activity estimate per 30 nmol/min/mL was HR 1.07 (95% CI 1.01-1.13). After adjustment for LDL, it attenuated to 1.04 (0.97-1.11); this limits an independent-marker interpretation.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/26311748/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 31,
+          "ids": [
+            "L31a"
+          ],
+          "text": "Statins reduce recurrent vascular risk in appropriate atherosclerotic/ASCVD populations. This should not be generalized to an identical indication after every cerebral-ischemia mechanism; apply the patient’s current risk and indication.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              37,
+              338,
+              645,
+              418
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/16899775/",
+            "https://pubmed.ncbi.nlm.nih.gov/19375663/",
+            "https://doi.org/10.1161/CIR.0000000000001423"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 32,
+          "ids": [
+            "L32a"
+          ],
+          "text": "This is a historical research outlook. Current evidence now includes nonstatin outcome therapies and an established Lp(a) screening role; remaining lipidomic, population and cognitive questions should be identified separately as research.",
+          "remove_text": [
+            "Future Directions"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://doi.org/10.1161/CIR.0000000000001423"
+          ],
+          "inline_replacements": {
+            "Future Directions": "Historical research outlook"
+          }
+        }
+      ]
+    },
+    {
+      "path": "documents/lad/CREST-2 Trial - Dec 2025.pdf",
+      "baseline_sha256": "6a77a62f68b6ee94850c97600e0dafe35b45235733a88507581fa22308b392e9",
+      "updates": [
+        {
+          "page": 2,
+          "ids": [
+            "CAR03"
+          ],
+          "text": "This timeline is historical and not a standardized comparison of benefits. ACT I established noninferiority within a prespecified margin; a nonsignificant comparison is not proof of equivalence. Trials used different endpoints, procedural windows and medical treatment.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              576,
+              314,
+              616,
+              335
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/7723155/",
+            "https://pubmed.ncbi.nlm.nih.gov/26886419/",
+            "https://pubmed.ncbi.nlm.nih.gov/36115360/",
+            "https://pubmed.ncbi.nlm.nih.gov/15470212/",
+            "https://pubmed.ncbi.nlm.nih.gov/20505173/"
+          ],
+          "inline_replacements": {},
+          "region_replacements": [
+            {
+              "rect": [
+                572,
+                309,
+                620,
+                340
+              ],
+              "text": "NI",
+              "size": 14
+            }
+          ]
+        },
+        {
+          "page": 3,
+          "ids": [
+            "CAR01",
+            "CAR02",
+            "CAR03",
+            "PDF18"
+          ],
+          "text": "ACAS medical care included aspirin and risk-factor management. CREST-1 safety rates 2.5% versus 1.4% refer to its asymptomatic subgroup. ACT I met noninferiority. ACST-2: 5-year nonprocedural stroke 5.3% versus 4.5%; procedural stroke/death 3.7% versus 2.7% among patients who underwent the procedure. ECST-2 primary hierarchical win ratio 1.01 (95% CI 0.60-1.70); its 10.5%/10.2% pair was secondary, and the unsupported 1.2% safety estimate is removed. SPACE-2 used an ECST stenosis threshold and a perioperative/later ipsilateral composite.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              789,
+              134,
+              924,
+              165
+            ],
+            [
+              633,
+              273,
+              752,
+              304
+            ],
+            [
+              431,
+              308,
+              624,
+              340
+            ],
+            [
+              425,
+              344,
+              924,
+              377
+            ],
+            [
+              173,
+              425,
+              318,
+              446
+            ],
+            [
+              428,
+              411,
+              753,
+              459
+            ],
+            [
+              425,
+              459,
+              759,
+              494
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/34469763/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8473558/",
+            "https://pubmed.ncbi.nlm.nih.gov/40252662/",
+            "https://pubmed.ncbi.nlm.nih.gov/7723155/",
+            "https://pubmed.ncbi.nlm.nih.gov/26886419/",
+            "https://pubmed.ncbi.nlm.nih.gov/36115360/",
+            "https://pubmed.ncbi.nlm.nih.gov/15470212/",
+            "https://pubmed.ncbi.nlm.nih.gov/20505173/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC2932446/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC13148431/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 4,
+          "ids": [
+            "CAR04"
+          ],
+          "text": "The annual percentage changes describe standardized utilization per 100,000 population, not raw procedure volumes. The asymptomatic proportion derives from four state databases with differing coverage periods.",
+          "remove_text": [
+            "Volumes (2006-2022, 17y)"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/40971741/"
+          ],
+          "inline_replacements": {
+            "Volumes (2006-2022, 17y)": "Utilization rates (2006-2022)"
+          }
+        },
+        {
+          "page": 5,
+          "ids": [
+            "PDF18"
+          ],
+          "text": "The AF exclusion was atrial fibrillation prompting anticoagulation, not every AF diagnosis. Interpret the eligibility diagram with the complete original criteria.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              746,
+              435,
+              912,
+              465
+            ]
+          ],
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC2932446/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC13148431/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 7,
+          "ids": [
+            "CAR05"
+          ],
+          "text": "The WHO symptom-duration boundary is at least 24 hours. Secondary tissue-based outcomes were defined composites including specified infarction/hemorrhage and death components, with territory and time-window limits; they are not a count of routine MRI lesions alone.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/41269206/",
+            "https://doi.org/10.1056/NEJMoa2508800"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 10,
+          "ids": [
+            "CAR06"
+          ],
+          "text": "Broadly similar measured risk-factor control does not establish absence of performance bias in an open-label trial. Masked endpoint adjudication is a separate design feature.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              55,
+              272,
+              314,
+              354
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/41269206/",
+            "https://doi.org/10.1056/NEJMoa2508800"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 13,
+          "ids": [
+            "CAR05"
+          ],
+          "text": "The misleading MRI-infarction row is withheld pending exact secondary-composite/appendix reconciliation. The main report’s tissue-based composites include specified death and cerebral infarction/hemorrhage components and cannot be labeled routine MRI lesions.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              49,
+              289,
+              471,
+              328
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/41269206/",
+            "https://doi.org/10.1056/NEJMoa2508800"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 14,
+          "ids": [
+            "PDF18"
+          ],
+          "text": "For CEA, the reported tipping analysis required at least 7 events removed from the CEA arm or at least 6 added to the medical arm to cross the significance boundary. Changing statistical significance does not nullify or reverse an observed treatment effect.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              512,
+              339,
+              929,
+              389
+            ],
+            [
+              33,
+              468,
+              446,
+              540
+            ],
+            [
+              510,
+              468,
+              936,
+              540
+            ]
+          ],
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC2932446/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC13148431/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 17,
+          "ids": [
+            "CAR07"
+          ],
+          "text": "The approximate NNT of 31 is for the 4-year primary composite, including perioperative death, not stroke alone. High-risk plaque features are prognostic observational findings; they are not a validated rule identifying who specifically benefits from CAS.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              44,
+              126,
+              269,
+              452
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/41269206/",
+            "https://pubmed.ncbi.nlm.nih.gov/32744595/",
+            "https://doi.org/10.1056/NEJMoa2508800",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC7400201/"
+          ],
+          "inline_replacements": {},
+          "region_replacements": [
+            {
+              "rect": [
+                44,
+                126,
+                269,
+                452
+              ],
+              "text": "Shared decisions\n\nNNT ~31 for the four-year primary composite.\n\nHigh-risk plaque features are prognostic, not a validated CAS selection rule.",
+              "size": 18
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "documents/lad/Symptomatic Cervical Carotid Artery Stenosis.pdf",
+      "baseline_sha256": "1e6a19d6fcb497bf03c331530424aa5e7bea5c1ee7db19a6aae2f54573d75a42",
+      "updates": [
+        {
+          "page": 5,
+          "ids": [
+            "PDF26"
+          ],
+          "text": "Near-occlusion with distal collapse and complete occlusion are different anatomical categories. They must not be treated as synonyms.",
+          "remove_text": [
+            "Occluded (or near-occluded)"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://doi.org/10.1016/j.ejvs.2022.04.011",
+            "https://pure.amsterdamumc.nl/ws/files/163490149/Editors-choice--european-society-for-vascular-surgery-esvs-2023-clinical-practice-guidelines-on-the-management-of-at.pdf"
+          ],
+          "inline_replacements": {
+            "Occluded (or near-occluded)": "Distinguish occlusion / near-occlusion"
+          }
+        },
+        {
+          "page": 9,
+          "ids": [
+            "CAR08"
+          ],
+          "text": "The ACES curves concern asymptomatic >=70% carotid stenosis with two-year follow-up. Their absolute risks should not be transferred to recently symptomatic disease.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/20554250/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC2890862/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 14,
+          "ids": [
+            "CAR09"
+          ],
+          "text": "The POINT carotid subgroup excluded planned carotid revascularization. A nonsignificant interaction does not prove equal DAPT benefit between stenosis groups. CARESS tested a microembolic-signal surrogate, not clinical stroke reduction.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              140,
+              283,
+              472,
+              326
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/33940954/",
+            "https://pubmed.ncbi.nlm.nih.gov/15851601/",
+            "https://doi.org/10.1016/j.ejvs.2022.04.011",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC8268075/"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 15,
+          "ids": [
+            "CAR10"
+          ],
+          "text": "LDL goals are risk-specific: <55 mg/dL for very-high-risk ASCVD in 2026 guidance; <70 remains relevant in other atherosclerotic secondary-prevention settings. Icosapent eligibility depends on triglycerides, background statin therapy and relevant comorbidities; it is not a universal response to any hypertriglyceridemia.",
+          "remove_text": [
+            "target <70 mg/dL"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://doi.org/10.1161/STR.0000000000000375",
+            "https://professional.heart.org/en/science-news/2026-guideline-on-the-management-of-dyslipidemia/top-things-to-know"
+          ],
+          "inline_replacements": {
+            "target <70 mg/dL": "risk-specific LDL target"
+          }
+        },
+        {
+          "page": 16,
+          "ids": [
+            "CAR11"
+          ],
+          "text": "The vascular evidence here is pioglitazone-specific, not a thiazolidinedione class effect; selected poststroke insulin-resistant patients require heart-failure/bladder-cancer risk assessment and adverse-effect monitoring. Individualize glycemic goals and avoid hypoglycemia; tighter HbA1c targets have not been established as recurrent-stroke treatment.",
+          "remove_text": [
+            "≤6.5% (hypoglycemia)",
+            "thaizolidinediones"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://doi.org/10.1161/STR.0000000000000375",
+            "https://doi.org/10.1016/j.ejvs.2022.04.011",
+            "https://pubmed.ncbi.nlm.nih.gov/28157748/"
+          ],
+          "inline_replacements": {
+            "≤6.5% (hypoglycemia)": "avoid hypoglycemia",
+            "thaizolidinediones": "pioglitazone"
+          }
+        },
+        {
+          "page": 17,
+          "ids": [
+            "PDF26"
+          ],
+          "text": "Routine CEA/CAS is not recommended for symptomatic near-occlusion with distal collapse. ESVS 2023 allows consideration after multidisciplinary review when recurrent carotid-territory symptoms persist despite best medical therapy; evidence is weak. Complete occlusion is a different category.",
+          "remove_text": [
+            "carotid occlusion or near occlusion,"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://doi.org/10.1016/j.ejvs.2022.04.011",
+            "https://pure.amsterdamumc.nl/ws/files/163490149/Editors-choice--european-society-for-vascular-surgery-esvs-2023-clinical-practice-guidelines-on-the-management-of-at.pdf"
+          ],
+          "inline_replacements": {
+            "carotid occlusion or near occlusion,": "assess the specific anatomy;"
+          }
+        },
+        {
+          "page": 23,
+          "ids": [
+            "PDF26"
+          ],
+          "text": "Routine CEA/CAS is not recommended for symptomatic near-occlusion with distal collapse. ESVS 2023 allows consideration after multidisciplinary review when recurrent carotid-territory symptoms persist despite best medical therapy; evidence is weak. Complete occlusion is a different category.",
+          "remove_text": [],
+          "remove_regions": [],
+          "sources": [
+            "https://doi.org/10.1016/j.ejvs.2022.04.011",
+            "https://pure.amsterdamumc.nl/ws/files/163490149/Editors-choice--european-society-for-vascular-surgery-esvs-2023-clinical-practice-guidelines-on-the-management-of-at.pdf"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 18,
+          "ids": [
+            "PDF25"
+          ],
+          "text": "Timely CEA benefits selected recently symptomatic patients. A blanket ban on intervention in the first 2 days is incorrect: ESVS permits urgent CEA, preferably within 24 hours, for selected stroke-in-evolution or crescendo-TIA patients. Large/disabling infarction or altered consciousness instead supports deferral and specialist assessment.",
+          "remove_text": [
+            "not very early / emergent (2 days)"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://doi.org/10.1016/j.ejvs.2022.04.011",
+            "https://pure.amsterdamumc.nl/ws/files/163490149/Editors-choice--european-society-for-vascular-surgery-esvs-2023-clinical-practice-guidelines-on-the-management-of-at.pdf",
+            "https://doi.org/10.1161/STR.0000000000000375"
+          ],
+          "inline_replacements": {
+            "not very early / emergent (2 days)": "urgent CEA in selected patients"
+          }
+        },
+        {
+          "page": 29,
+          "ids": [
+            "CAR12"
+          ],
+          "text": "Observational comparisons found lower in-hospital stroke/death with TCAR than transfemoral CAS, with more access complications requiring intervention. These are not randomized proof of equivalence to CEA or universally lower TCAR risk.",
+          "remove_text": [
+            "TCAR vs CEA à no difference in stroke/death/MI"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/31846015/",
+            "https://pubmed.ncbi.nlm.nih.gov/30622007/",
+            "https://pubmed.ncbi.nlm.nih.gov/32811386/",
+            "https://pubmed.ncbi.nlm.nih.gov/33616666/",
+            "https://doi.org/10.1161/STR.0000000000000375",
+            "https://doi.org/10.1016/j.ejvs.2022.04.011",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC6990823/"
+          ],
+          "inline_replacements": {
+            "TCAR vs CEA à no difference in stroke/death/MI": "TCAR versus CEA: observational comparisons"
+          }
+        },
+        {
+          "page": 31,
+          "ids": [
+            "CAR12"
+          ],
+          "text": "Observational comparisons found lower in-hospital stroke/death with TCAR than transfemoral CAS, with more access complications requiring intervention. These are not randomized proof of equivalence to CEA or universally lower TCAR risk.",
+          "remove_text": [
+            "TCAR risks lower"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/31846015/",
+            "https://pubmed.ncbi.nlm.nih.gov/30622007/",
+            "https://pubmed.ncbi.nlm.nih.gov/32811386/",
+            "https://pubmed.ncbi.nlm.nih.gov/33616666/",
+            "https://doi.org/10.1161/STR.0000000000000375",
+            "https://doi.org/10.1016/j.ejvs.2022.04.011",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC6990823/"
+          ],
+          "inline_replacements": {
+            "TCAR risks lower": "TCAR evidence"
+          }
+        },
+        {
+          "page": 32,
+          "ids": [
+            "PDF25",
+            "PDF26",
+            "CAR12"
+          ],
+          "text": "The abbreviated algorithm is retired. Symptomatic selection requires stenosis, symptom stability, infarct size/disability, procedural risk and specialist evaluation. A >5-year life-expectancy requirement belongs to selected asymptomatic guidance, not a universal symptomatic rule. Near-occlusion is distinct from complete occlusion; TCAR evidence is not interchangeable with randomized CEA evidence.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              30,
+              140,
+              940,
+              538
+            ]
+          ],
+          "sources": [
+            "https://doi.org/10.1016/j.ejvs.2022.04.011",
+            "https://pure.amsterdamumc.nl/ws/files/163490149/Editors-choice--european-society-for-vascular-surgery-esvs-2023-clinical-practice-guidelines-on-the-management-of-at.pdf",
+            "https://doi.org/10.1161/STR.0000000000000375",
+            "https://pubmed.ncbi.nlm.nih.gov/31846015/",
+            "https://pubmed.ncbi.nlm.nih.gov/30622007/",
+            "https://pubmed.ncbi.nlm.nih.gov/32811386/",
+            "https://pubmed.ncbi.nlm.nih.gov/33616666/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC6990823/"
+          ],
+          "inline_replacements": {},
+          "region_replacements": [
+            {
+              "rect": [
+                85,
+                170,
+                905,
+                440
+              ],
+              "text": "Abbreviated treatment algorithm retired.\n\nSymptom stability, infarct extent, disability, anatomy and procedural risk require specialist assessment. See the source-qualified guidance below.",
+              "size": 25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "documents/evt/MeVO & Distal Vessel Occlusion EVT Trials.pdf",
+      "baseline_sha256": "fb6f48c651bee88624e23448aec6513b79e5e098c2fc69fcfc708618b0f773bb",
+      "updates": [
+        {
+          "page": 9,
+          "ids": [
+            "PDF17"
+          ],
+          "text": "For dominant proximal M2 occlusion, AHA/ASA 2026 considers EVT reasonable within 6 hours in selected patients with prestroke mRS 0-1, NIHSS >=6 and ASPECTS >=6 (Class IIa, B-NR). Proximal OR dominant M2 plus salvageable tissue is not the complete recommendation. Other vessel recommendations have their own eligibility criteria.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              75,
+              310,
+              906,
+              483
+            ]
+          ],
+          "sources": [
+            "https://doi.org/10.1161/STR.0000000000000513"
+          ],
+          "inline_replacements": {}
+        }
+      ]
+    },
+    {
+      "path": "documents/antiplatelet/DAPT Minor Stroke-TIA Trials.pdf",
+      "baseline_sha256": "3e04c556a0847315ae46498ebd0184384b6dca1bb8440ce1cd7c0144b971314a",
+      "updates": [
+        {
+          "page": 1,
+          "ids": [
+            "PDF11",
+            "INSPIRES-QUALIFIER"
+          ],
+          "text": "THALES: NIHSS <=5, or high-risk TIA with ABCD2 >=6 or symptomatic stenosis >=50%. CHANCE moderate/severe hemorrhage was 7 (0.3%) versus 8 (0.3%); the separate hazard-ratio cell remains source-limited. Do not assign CHANCE/POINT eligibility to THALES. INSPIRES enrolled selected patients with presumed atherosclerotic origin; clinical eligibility differed for <=24 versus 24-72 hours. A general <=72-hour label is not the complete enrollment rule.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              330,
+              163,
+              410,
+              205
+            ],
+            [
+              163,
+              628,
+              239,
+              668
+            ]
+          ],
+          "sources": [
+            "https://journals.sagepub.com/doi/10.1177/1747493019830307",
+            "https://pubmed.ncbi.nlm.nih.gov/32668111/",
+            "https://pubmed.ncbi.nlm.nih.gov/23803136/",
+            "https://pubmed.ncbi.nlm.nih.gov/38157499/"
+          ],
+          "inline_replacements": {}
+        }
+      ]
+    },
+    {
+      "path": "documents/antiplatelet/Other Antithrombotics for Secondary Stroke Prevention.pdf",
+      "baseline_sha256": "5af93dc9e5f8cffb0107970baa0cce08ea0071daaf5b55efaacf842febe8095c",
+      "updates": [
+        {
+          "page": 1,
+          "ids": [
+            "PDF22",
+            "PDF23"
+          ],
+          "text": "OCEANIC-STROKE required at least one of nonlacunar infarct, history of atherosclerosis or cerebrovascular atherosclerotic plaque. Major bleeding 1.9% versus 1.7%, HR 1.10 (95% CI 0.85-1.44), does not establish absence of every bleeding effect. CSPS.com required MRI-confirmed high-risk noncardioembolic stroke with >=50% intracranial OR extracranial stenosis, OR at least two specified risk factors; ICAD was not universal.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              159,
+              301,
+              434,
+              324
+            ],
+            [
+              447,
+              301,
+              724,
+              324
+            ],
+            [
+              447,
+              370,
+              724,
+              398
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/41985132/",
+            "https://doi.org/10.1056/NEJMoa2513880",
+            "https://pubmed.ncbi.nlm.nih.gov/31122494/",
+            "https://doi.org/10.1016/S1474-4422(19)30148-6"
+          ],
+          "inline_replacements": {}
+        }
+      ]
+    },
+    {
+      "path": "documents/evt/Large Core Anterior Circulation LVO EVT Trials.pdf",
+      "baseline_sha256": "2214b37d005a6c0691ad56729f53c2a4b69f40913e7c1b42cd0b2e7c179cd678",
+      "updates": [
+        {
+          "page": 1,
+          "ids": [
+            "PDF24"
+          ],
+          "text": "ANGEL-ASPECT protocol: NIHSS 6-30; ASPECTS 3-5 without a core-volume restriction; ASPECTS <3 with core 70-100 mL within 24 hours; or ASPECTS >5 with core 70-100 mL at 6-24 hours. These trial criteria are distinct from current EVT guidance.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              441,
+              114,
+              572,
+              152
+            ]
+          ],
+          "sources": [
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC10176983/",
+            "https://doi.org/10.1136/svn-2022-001865"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 1,
+          "ids": [
+            "SELECT2-NOTICE"
+          ],
+          "text": "SELECT2 correction: the proportion meeting both ASPECTS <=5 and core >=50 mL was 66.8%, not 78%. This source correction does not change the direction or significance of the main treatment result.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              303,
+              339,
+              429,
+              367
+            ]
+          ],
+          "sources": [
+            "https://doi.org/10.1056/NEJMx230009"
+          ],
+          "inline_replacements": {}
+        }
+      ]
+    },
+    {
+      "path": "documents/evt/Basilar Artery Occlusion EVT Trials.pdf",
+      "baseline_sha256": "a1723b7f948bddf09ba661cd612fd37909d4a0677e0ca09b55a67f21663da402",
+      "updates": [
+        {
+          "page": 1,
+          "ids": [
+            "PDF32"
+          ],
+          "text": "BASICS crossover: 3/154 assigned EVT received medical treatment only, and 7/146 assigned medical treatment received EVT. The 29.2% figure concerns eligible patients treated outside the trial. Subgroup findings were descriptive, underpowered and not multiplicity-adjusted; the proximal-basilar interval crossed 1.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              258,
+              659,
+              353,
+              685
+            ]
+          ],
+          "sources": [
+            "https://doi.org/10.1056/NEJMoa2030297",
+            "https://dspace.library.uu.nl/server/api/core/bitstreams/bf7f2173-184f-4af6-8e45-be6d8277a547/content"
+          ],
+          "inline_replacements": {}
+        },
+        {
+          "page": 2,
+          "ids": [
+            "PDF32"
+          ],
+          "text": "BASICS crossover: 3/154 assigned EVT received medical treatment only, and 7/146 assigned medical treatment received EVT. The 29.2% figure concerns eligible patients treated outside the trial. Subgroup findings were descriptive, underpowered and not multiplicity-adjusted; the proximal-basilar interval crossed 1.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              258,
+              37,
+              352,
+              120
+            ]
+          ],
+          "sources": [
+            "https://doi.org/10.1056/NEJMoa2030297",
+            "https://dspace.library.uu.nl/server/api/core/bitstreams/bf7f2173-184f-4af6-8e45-be6d8277a547/content"
+          ],
+          "inline_replacements": {}
+        }
+      ]
+    },
+    {
+      "path": "documents/thrombolytic/Thrombolytic Therapy AIS 4.5-24h RCTs.pdf",
+      "baseline_sha256": "e5da8fe9c9d2f4eb26ffec6705f4b848f58f41de476b3686544fcc9b62435036",
+      "updates": [
+        {
+          "page": 1,
+          "ids": [
+            "PDF16",
+            "PDF35"
+          ],
+          "text": "Trial populations must remain separate: WAKE-UP studied MRI DWI-FLAIR mismatch of unknown onset and excluded planned EVT; EPITHET did not require mismatch in every participant; EXTEND allowed CT or MRI perfusion and wake-up midpoint selection. CHABLIS-TII included large/medium occlusions and used a 24-48-hour reperfusion-without-sICH endpoint, unlike 90-day functional outcomes. HOPE used core <=70 mL, ratio >=1.2 and mismatch >=10 mL. Unqualified cross-trial NNT/NNH and population-to-benefit shortcuts are removed; nonsignificant safety differences do not establish harm.",
+          "remove_text": [],
+          "remove_regions": [
+            [
+              709,
+              26,
+              738,
+              174
+            ],
+            [
+              6,
+              181,
+              345,
+              303
+            ],
+            [
+              148,
+              81,
+              177,
+              89
+            ],
+            [
+              392,
+              58,
+              430,
+              67
+            ],
+            [
+              391,
+              163,
+              432,
+              174
+            ]
+          ],
+          "sources": [
+            "https://pubmed.ncbi.nlm.nih.gov/29766770/",
+            "https://pubmed.ncbi.nlm.nih.gov/18296121/",
+            "https://pubmed.ncbi.nlm.nih.gov/31067369/",
+            "https://pubmed.ncbi.nlm.nih.gov/39744861/",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC12332759/",
+            "https://pubmed.ncbi.nlm.nih.gov/36549308/",
+            "https://pubmed.ncbi.nlm.nih.gov/38329148/"
+          ],
+          "inline_replacements": {}
+        }
+      ]
+    },
+    {
+      "path": "documents/exam/Differentiating Acute Confusional State (Delirium) from Aphasia.pdf",
+      "baseline_sha256": "f5ca76774c2231ced1703ee6758baa73e9e9da1e97fe48b3a632e56d65b9cc58",
+      "updates": [
+        {
+          "page": 2,
+          "ids": [
+            "PDF12"
+          ],
+          "text": "Coma is not an assessable delirium state. Persistent coma was excluded from the original CAM-ICU validation. Language-dependent attention tasks can be confounded by aphasia; interpret attention, arousal and language jointly rather than using the table as a binary diagnosis.",
+          "remove_text": [
+            "or comatose"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://jamanetwork.com/journals/jama/fullarticle/194422"
+          ],
+          "inline_replacements": {
+            "or comatose": "(not coma)"
+          }
+        }
+      ]
+    }
+  ]
+}

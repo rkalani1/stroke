@@ -233,14 +233,16 @@ function literalHashViolationsForLine(line, file) {
   return hits;
 }
 
-// File list on stdin (fd 0), newline-delimited; tolerate NUL just in case.
-function readFileList() {
+// Consume stdin through EOF: a synchronous fd-0 read can throw EAGAIN on a
+// producer-fed pipe. An incomplete list must never become a successful scan.
+// Newline-delimited; tolerate NUL just in case.
+async function readFileList() {
+  // Node can expose a directory fd as an already-ended stdin stream. Reject
+  // it explicitly instead of mistaking an unreadable input for an empty list.
+  if (fs.fstatSync(0).isDirectory()) throw new Error('Invalid stdin descriptor');
   let raw = '';
-  try {
-    raw = fs.readFileSync(0, 'utf8');
-  } catch {
-    raw = '';
-  }
+  process.stdin.setEncoding('utf8');
+  for await (const chunk of process.stdin) raw += chunk;
   const fromArgv = process.argv.slice(2).filter((a) => !a.startsWith('--'));
   const fromStdin = raw.split(/[\r\n\0]+/);
   return [...fromArgv, ...fromStdin].map((s) => s.trim()).filter(Boolean);
@@ -258,7 +260,28 @@ const violations = [];
 const binaryFiles = [];
 let scanned = 0;
 
-for (const file of readFileList()) {
+let files;
+try {
+  files = await readFileList();
+} catch {
+  const error = 'Leak guard: could not read the complete file list from stdin; scan not performed.';
+  if (JSON_OUT) {
+    console.log(JSON.stringify({
+      scanned,
+      violations,
+      binaryFiles,
+      privateDenylistLoaded,
+      privateDenylistRuleCount,
+      requirePrivateDenylist: REQUIRE_PRIVATE_DENYLIST,
+      error
+    }, null, 2));
+  } else {
+    console.error(error);
+  }
+  process.exit(1);
+}
+
+for (const file of files) {
   if (fullyExemptFiles.has(file)) continue; // the guard's own ruleset/source/hook
   const abs = path.join(ROOT, file);
   if (!fs.existsSync(abs)) continue;

@@ -26,13 +26,13 @@ describe('published guideline corrections', () => {
 
   it('ties every modified AIS entry to the correction without implying full review', () => {
     const update = ais.publicationUpdates.find((entry) => entry.pmid === '42507797');
-    expect(update.status).toBe('applied');
+    expect(update.status).toBe('partially-applied');
     expect(update.affectedRecommendationIds).toHaveLength(5);
     for (const id of update.affectedRecommendationIds) {
       expect(ais.recommendations.find((entry) => entry.id === id).correctionSourceUrl)
         .toBe('https://doi.org/10.1161/STR.0000000000000530');
     }
-    expect(ais.hasUnresolvedUpdates).toBe(false);
+    expect(ais.hasUnresolvedUpdates).toBe(true);
     expect(document('primary-prevention-2024').hasUnresolvedUpdates).toBe(true);
   });
 
@@ -77,8 +77,8 @@ describe('guideline extraction and publication integrity', () => {
     const affected = GUIDELINE_LIBRARY_INDEX.filter((entry) => entry.publicationUpdates.length);
     const updates = affected.flatMap((entry) => entry.publicationUpdates);
     expect(affected).toHaveLength(22);
-    expect(updates).toHaveLength(29);
-    expect(new Set(updates.map((entry) => entry.pmid)).size).toBe(29);
+    expect(updates).toHaveLength(30);
+    expect(new Set(updates.map((entry) => entry.pmid)).size).toBe(30);
     for (const guideline of affected) for (const update of guideline.publicationUpdates) {
       expect(update.type).toBe('correction');
       expect(update.pmid).toMatch(/^\d{7,9}$/);
@@ -94,9 +94,9 @@ describe('guideline extraction and publication integrity', () => {
 
   it('keeps all source identifiers, entries and evidence-grade vocabularies valid', () => {
     const ids = new Set();
-    const classes = ['I', 'IIa', 'IIb', 'III', 'Strong', 'Conditional', 'Expert Consensus', 'Statement', 'No recommendation'];
-    const levels = ['A', 'B', 'C', 'B-R', 'B-NR', 'C-LD', 'C-EO', 'High certainty', 'Moderate certainty', 'Low certainty', 'Very low certainty', 'Ungraded', 'Guideline Summary'];
-    expect(GUIDELINE_LIBRARY).toHaveLength(109);
+    const classes = ['I', 'IIa', 'IIb', 'III', 'Strong', 'Weak', 'Conditional', 'Expert Consensus', 'Statement', 'No recommendation'];
+    const levels = ['A', 'B', 'C', 'B-R', 'B-NR', 'C-LD', 'C-EO', 'EO-V', 'EO-C', 'High certainty', 'Moderate certainty', 'Low certainty', 'Very low certainty', 'Ungraded', 'Guideline Summary'];
+    expect(GUIDELINE_LIBRARY).toHaveLength(110);
     for (const guideline of GUIDELINE_LIBRARY_INDEX) {
       expect(guideline.pmid).toMatch(/^\d{7,9}$/);
       expect(guideline.doi).toMatch(/^10\.\d{4,9}\//);

@@ -1,7 +1,7 @@
 ---
 id: ich-surgical-decision-making
 title: "ICH Surgical Decision-Making"
-summary: "Which spontaneous intracerebral hemorrhage patients benefit from evacuation, by which technique, and when — the negative-trial spine (STICH, STICH II, MISTIE III, CLEAR III), the one positive lobar signal (ENRICH), decompressive craniectomy for deep ICH (SWITCH), the posterior-fossa rules that rest on non-randomized evidence, MISTIE-derived surgical-dose thresholds, and an integrated decision table by location, volume, GCS, age, and anticoagulation."
+summary: "Trial-specific evidence for hematoma evacuation, selected minimally invasive surgery, decompression and urgent cerebellar-ICH assessment; observational associations and prognosis limits are explicit."
 tags: ["pocket-card", "printable"]
 contexts: ["telestroke", "inpatient", "clinic"]
 calculators: []
@@ -10,7 +10,7 @@ lastReviewed: 2026-08-15
 provenance: src/education.jsx
 ---
 
-Which spontaneous intracerebral hemorrhage patients benefit from evacuation, by which technique, and when — the negative-trial spine (STICH, STICH II, MISTIE III, CLEAR III), the one positive lobar signal (ENRICH), decompressive craniectomy for deep ICH (SWITCH), the posterior-fossa rules that rest on non-randomized evidence, MISTIE-derived surgical-dose thresholds, and an integrated decision table by location, volume, GCS, age, and anticoagulation.
+Trial-specific evidence for hematoma evacuation, selected minimally invasive surgery, decompression and urgent cerebellar-ICH assessment; observational associations and prognosis limits are explicit.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
 > This file owns the module metadata (title, summary, tags, contexts, references).

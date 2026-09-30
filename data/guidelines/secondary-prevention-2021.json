@@ -1183,7 +1183,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-LD",
-      "text": "In patients with a mechanical mitral valve and prior ischemic stroke or TIA, aspirin 75-100 mg/d is recommended in addition to warfarin (INR target 3.0, range 2.5-3.5) to reduce thrombosis and recurrent stroke risk.",
+      "text": "In patients with a mechanical mitral valve and ischemic stroke or TIA before valve replacement, aspirin 75-100 mg/d is recommended in addition to warfarin (INR target 3.0, range 2.5-3.5) to reduce thrombosis and recurrent stroke risk.",
       "page": 41,
       "id": "secondary-prevention-2021-91",
       "sourceSection": "table-19",
@@ -1209,7 +1209,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "C-EO",
-      "text": "Long-term aspirin therapy is recommended over long-term anticoagulation for patients with a bioprosthetic aortic or mitral valve and prior ischemic stroke or TIA who have no other anticoagulation indication beyond 3 to 6 months after valve placement.",
+      "text": "Long-term aspirin therapy is recommended over long-term anticoagulation for patients with a bioprosthetic aortic or mitral valve and ischemic stroke or TIA before valve replacement who have no other anticoagulation indication beyond 3 to 6 months after valve placement.",
       "page": 41,
       "id": "secondary-prevention-2021-93",
       "sourceSection": "table-19",
@@ -1625,7 +1625,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "In ischemic stroke or TIA patients with AF and active cancer, DOACs are reasonable to consider over warfarin for stroke prevention.",
+      "text": "In ischemic stroke or TIA patients with AF and cancer, DOACs are reasonable to consider over warfarin for stroke prevention.",
       "page": 56,
       "id": "secondary-prevention-2021-125",
       "sourceSection": "table-29",
@@ -2121,12 +2121,14 @@
     {
       "type": "correction",
       "pmid": "34181456",
-      "doi": "10.1161/str.0000000000000383",
-      "publisherUrl": "https://doi.org/10.1161/str.0000000000000383",
+      "doi": "10.1161/STR.0000000000000383",
+      "publisherUrl": "https://doi.org/10.1161/STR.0000000000000383",
       "status": "not-applicable",
-      "note": "Corrects the PFO take-home summary, diagnostic algorithm and a trial acronym. Extracted PFO criteria and diagnostic recommendation grades already reflect the corrected recommendations; the algorithm and acronym are not reproduced.",
-      "checkedAt": "2026-09-06",
-      "affectedRecommendationIds": []
+      "note": "The complete notice corrects PFO take-home criteria, the Figure 2 diagnostic algorithm and the REDUCE-IT acronym. Imported formal recommendation tables retain the applicable text and grades.",
+      "checkedAt": "2026-09-30",
+      "affectedRecommendationIds": [],
+      "previousReviewNote": "Corrects the PFO take-home summary, diagnostic algorithm and a trial acronym. Extracted PFO criteria and diagnostic recommendation grades already reflect the corrected recommendations; the algorithm and acronym are not reproduced.",
+      "independentReviewScope": "complete primary notice read"
     }
   ],
   "coverage": {
@@ -2799,5 +2801,13 @@
       "sha256": "3347d9c0ee0e804ecaf0c0f689d0beb09b47773eb64fd63126445e48a0c16d87"
     },
     "note": "All formal recommendation tables and numbered rows reconciled against the complete source document. This is a source-inventory review, not a new clinical validation of every existing summary or supporting narrative. Existing publication-correction statuses remain separate. No separately designated ungraded consensus or good-practice recommendation set is present."
+  },
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Full104page primaryPDF and all41tables compared; fullindexedSTR0383 correction read.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
   }
 }

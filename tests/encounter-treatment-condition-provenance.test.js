@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import vm from 'node:vm';
+import { reviewedGcs, numericInput } from '../src/encounter-clinical-review.js';
 import { describe, expect, it } from 'vitest';
 import { documentedNihssValue, hasRecordedNoTreatment, hasRecordedTreatmentAdministration } from '../src/encounter-decision-status.js';
 
@@ -34,8 +35,9 @@ function actualRecommendationEnvelope(entered, hasExamInput) {
     source.slice(envelopeStart, envelopeEnd) + '\nreturn data; })()', {
     telestrokeNote: { diagnosisCategory: 'ischemic', nihss: entered, ...negative },
     nihssScore: 0,
-    nihssItems: [{ id: 'loc' }],
-    patientData: hasExamInput ? { loc: 0 } : {},
+    nihssItems: [{ id: 'loc', options: ['Alert (0)'] }],
+    patientData: hasExamInput ? { loc: 'Alert (0)' } : {},
+    reviewedGcs, numericInput,
     documentedNihssValue,
     aspectsScore: null,
     isValidAspectsScore: () => false,

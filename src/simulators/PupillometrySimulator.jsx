@@ -1,541 +1,75 @@
 /**
- * Bedside Simulator 3 — Pupillometry / NPi Simulator.
- * Drop-in: src/simulators/PupillometrySimulator.jsx
- *
- * A self-contained, dependency-free teaching simulator for quantitative
- * infrared pupillometry (Neurological Pupil Index, NPi) in severe stroke
- * and intracerebral hemorrhage. Doubles as the app's net-new NPi evidence
- * module.
- *
- * Two coupled widgets:
- *   1. Pupil Light-Reflex stage — two pupil elements (LEFT = ipsilateral /
- *      lesion, RIGHT = contralateral) rendered at width/height px = size×10.
- *      A "Simulate Light Reflex" button runs a constrict → hold → redilate
- *      animation, driven purely by React state + CSS transitions (gated by an
- *      isAnimating flag). `prefers-reduced-motion` short-circuits the
- *      animation and simply shows the end state.
- *   2. Clinical Interpreter — an interpretation cascade (ORDER MATTERS) that
- *      keys off NPi, constriction velocity (CV), % constriction, and the
- *      inter-eye NPi asymmetry, plus escalation reference cards.
- *
- * Clinical model (values are load-bearing — see app build spec):
- *   • Interpretation cascade (evaluated top → bottom; first match wins):
- *       1. NPi ≤ 1.0                              → MARKEDLY ABNORMAL (crit)
- *       2. NPi < 2.8 OR diff ≥ 0.7 OR cv < 0.5    → ABNORMAL / ASYMMETRIC (gold)
- *       3. NPi < 3.0 OR cv < 0.8 OR %change < 10  → EARLY CLINICAL ALARM (warn/amber)
- *       4. else                                   → NORMAL PROFILE (ok/green)
- *     Numeric "risk %" values were removed: they had no derivation and no
- *     source, and a displayed "100% risk" is unsupportable.
- *     These teaching tiers are not validated thresholds for diagnosing
- *     herniation, raised ICP, or a need for surgery or osmotherapy.
- *   • The millimetre midline-shift estimator was REMOVED. It converted an
- *     inter-eye NPi difference into a radiographic shift off a single uncited
- *     regression, one arm of which was not statistically significant (p=0.07).
- *   • Animation kinetics: left transition duration = 0.375/cv s; left latency =
- *     npi < 3.0 ? (5.0 − npi)×0.1 : 0.2 s; right initial size =
- *     max(1.5, size − diff×1.5) (anisocoria); right constricts 20% (0% when
- *     NPi === 0).
- *
- * Evidence (net-new content — present accurately, WITH the caveat):
- *   • Petrosino 2025 (JAMA Neurol), secondary analysis of ORANGE (n=318 with
- *     invasive ICP): NO significant association between NPi and ICP; a normal
- *     NPi does NOT safely exclude elevated ICP; pupillometry cannot replace
- *     invasive ICP monitoring. Presented prominently as a limitation/caveat
- *     that tempers the alarm thresholds.
- *
- * Styling: v7 tokens / Tailwind utilities only (teal accent, crit/warn/ok
- * semantics, slate neutrals). Pupil-stage geometry + transitions live in a
- * scoped <style> block; no dark-glass theme, no forbidden hue utilities.
- *
- * No print view, no localStorage, no institutional content.
+ * Pupillometry evidence reference.
+ * The interactive model and threshold-based action assistant are quarantined
+ * following the 2026-09-30 clinical audit. Keep the exported names for callers,
+ * but do not return an inferred diameter or clinical recommendations.
  */
-
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React from 'react';
 
 const cx = (...p) => p.filter(Boolean).join(' ');
 
-/* v7 palette (hex) for the pupil-stage drawing context where Tailwind
-   utilities don't reach. Mirrors src/design/tokens.css. */
-const C = {
-  teal:   '#0C7C8C',
-  tealDk: '#0A6571',
-  coral:  '#DC3F3A',
-  gold:   '#B07D24',
-  green:  '#2C7A52',
-  ink:    '#14171D',
-  slate300: '#CBD5E1',
-  slate400: '#94A3B8',
-  slate500: '#64748B'
-};
-
-const round1 = (n) => Math.round(n * 10) / 10;
-const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
-
-/* ── Pure helpers (exported for unit tests) ───────────────────────────── */
-
-/* Contralateral (right) initial size — anisocoria from inter-eye asymmetry.
-   Compression dilates the ipsilateral (left) pupil relative to the
-   contralateral, so the contralateral baseline is smaller by diff×1.5 mm,
-   floored at 1.5 mm. */
-export function contralateralInitialSize(size, diff) {
-  return Math.max(1.5, size - diff * 1.5);
+export function contralateralInitialSize() {
+  return null;
 }
 
-
-/* Teaching interpretation cascade; first match wins. */
-export function interpretPupillometry({ npi, cv, change, diff } = {}) {
-  if (![npi, cv, change, diff].every(Number.isFinite) || npi < 0 || npi > 5 || cv < 0 || change < 0 || change > 100 || diff < 0 || diff > 5) {
-    return { status: 'INCOMPLETE OR INVALID MEASUREMENTS', tone: 'warn', summary: 'Enter valid measurements before interpreting the pupil profile.', steps: ['Verify the measurement and device output.'] };
-  }
-  // 1 · Markedly abnormal measurements require reassessment.
-  if (npi <= 1.0) {
-    return {
-      status: 'MARKEDLY ABNORMAL — URGENT REASSESSMENT',
-      tone: 'crit',
-      summary: `Very low NPi (${npi.toFixed(1)}) warrants prompt re-examination and clinical correlation. It does not diagnose herniation or raised ICP and is not a standalone osmotherapy trigger.`,
-      steps: [
-        'Prompts immediate bedside re-examination and urgent non-contrast head CT.',
-        'Escalate to the Stroke Fellow and Neurocritical Care Attending now.',
-        'Treat according to the clinical and radiographic picture and your unit ICP protocol — pupillometry alone does not establish raised ICP (Petrosino 2025) and is not an indication to give osmotherapy.',
-        'Elevate head of bed to 30° and keep the neck midline to optimize venous drainage.'
-      ]
-    };
-  }
-  // 2 · Abnormal or asymmetric measurements require reassessment.
-  if (npi < 2.8 || diff >= 0.7 || cv < 0.5) {
-    return {
-      status: 'ABNORMAL / ASYMMETRIC — REASSESS',
-      tone: 'gold',
-      summary: 'This teaching profile uses NPi <2.8, difference ≥0.7, or CV <0.5 mm/s to prompt reassessment. These cutoffs do not establish midline shift or predict an individual need for surgery; review trends, examination, medications, ocular factors, and imaging.',
-      steps: [
-        'Notify the Stroke Fellow and Neurocritical Care Attending immediately.',
-        'Obtain an urgent non-contrast head CT to check for hematoma expansion or malignant edema.',
-        'Discuss neurosurgical evaluation when supported by the clinical and imaging findings.',
-        'Assess sedation depth and review invasive ICP-monitor readings if active.'
-      ]
-    };
-  }
-  // 3 · Early clinical alarm (action required).
-  if (npi < 3.0 || cv < 0.8 || change < 10) {
-    return {
-      status: 'EARLY CLINICAL ALARM',
-      tone: 'warn',
-      summary: 'Borderline pupillary reactivity (NPi < 3.0, CV < 0.8 mm/s, or % constriction < 10%). In Giede-Jeppe 2021 (23 sedated ICH patients), values above these CV / %-change cut-points made ICP ≥ 20 mmHg unlikely (high NPV), but values below them had a PPV of only 7–8%, so they cannot reliably flag raised ICP. See also the Petrosino 2025 caveat below.',
-      steps: [
-        'Perform a thorough clinical neurological assessment.',
-        'Review the NPi trend: a decreasing trend over the last 3 readings is an early alarm even if still > 3.0.',
-        'Verify correct device placement and clean the ocular area to rule out capture errors.',
-        'Consider a repeat non-contrast head CT if NPi has dropped from baseline.'
-      ]
-    };
-  }
-  // 4 · Normal profile.
+export function interpretPupillometry() {
   return {
-    status: 'NORMAL PROFILE',
-    tone: 'ok',
-    summary: 'No abnormal threshold is crossed in this teaching profile. Normal pupillometry does not exclude elevated ICP or replace the neurologic exam and indicated invasive monitoring (Petrosino 2025).',
-    steps: [
-      'Continue serial assessments at the frequency appropriate to illness severity and the care plan.',
-      'Ensure nursing staff are calibrated on device use.',
-      'Document values in the flowsheet and track the NPi trend over time.'
-    ]
+    status: 'INTERPRETATION UNAVAILABLE',
+    tone: 'warn',
+    summary: 'The pupil model and automatic interpretation are temporarily unavailable pending clinical review.',
+    steps: []
   };
 }
 
-/* Tone → Tailwind class fragments. `gold` maps onto warn-tinted surfaces with
-   the v7 gold accent applied inline where needed. */
-const TONE = {
-  ok:   { chip: 'bg-ok-50 text-ok-800 border-ok-200 dark:bg-ok-950 dark:text-ok-300 dark:border-ok-800',     dot: 'bg-ok-500',   bar: C.green },
-  warn: { chip: 'bg-warn-50 text-warn-800 border-warn-200 dark:bg-warn-950 dark:text-warn-300 dark:border-warn-800', dot: 'bg-warn-500', bar: C.gold },
-  gold: { chip: 'bg-warn-50 text-warn-800 border-warn-300 dark:bg-warn-950 dark:text-warn-300 dark:border-warn-800', dot: 'bg-warn-600', bar: C.gold },
-  crit: { chip: 'bg-crit-50 text-crit-800 border-crit-200 dark:bg-crit-950 dark:text-crit-300 dark:border-crit-800', dot: 'bg-crit-500', bar: C.coral }
-};
-
-/* ── Escalation reference cards (NPi action thresholds) ────────────────── */
-const ESCALATION = [
-  {
-    badge: '≤ 1.0', tone: 'crit', title: 'NPi ≤ 1.0 — Possible Herniation / Brainstem Compression',
-    detail: 'Areflexic or near-areflexic pupil. Perform emergent neurologic exam, correlate with imaging/ICP, treat clinically suspected herniation per protocol, and call neurosurgery.'
-  },
-  {
-    badge: '< 2.8', tone: 'gold', title: 'NPi < 2.8 — Local Escalation Threshold (unvalidated)',
-    detail: 'Some units use a sub-3.0 cutoff as an earlier trigger in large MCA stroke, but no indexed study validates 2.8 specifically, and the ORANGE cohort that established NPi prognostication enrolled TBI, aSAH and ICH — not ischemic stroke. Treat a falling NPi as a prompt for urgent re-examination and imaging, and let the clinical and radiographic picture — not the number — drive any hemicraniectomy discussion.'
-  },
-  {
-    badge: '< 3.0', tone: 'warn', title: 'NPi < 3.0 — Abnormal Threshold',
-    detail: 'Triggers a stat neurological exam, assessment for clinical expansion, and a non-contrast head CT.'
-  },
-  {
-    badge: '≥ 0.7', tone: 'warn', title: 'NPi-diff ≥ 0.7 — Possible Unilateral Mass Effect',
-    detail: 'May reflect asymmetric CN III/brainstem compression physiology. Correlate with the bedside exam and imaging rather than treating NPi asymmetry as diagnostic by itself.'
-  },
-  {
-    badge: 'CV / %', tone: 'warn', title: 'CV < 0.8 mm/s or % constriction < 10% — raised ICP not excluded',
-    detail: 'In Giede-Jeppe 2021 (23 sedated ICH patients), values above these cut-points had NPV ≥ 98.7% for ICP ≥ 20 mmHg, but values below them had a PPV of only 7–8%, so they cannot reliably flag intracranial hypertension. The larger Petrosino 2025 ORANGE analysis found no significant NPi–ICP association (see caveat).'
-  }
-];
-
-/* ── Evidence base (net-new NPi module) ───────────────────────────────── */
 const EVIDENCE = [
   {
     study: 'Petrosino et al. — JAMA Neurol 2025;82(2):176-184 (PMID 39652324)',
     caveat: true,
     cohort: 'Secondary analysis of ORANGE, n = 318 with invasive ICP monitoring.',
-    finding: 'NO significant association between NPi and ICP. A normal NPi does NOT safely exclude elevated ICP. Pupillometry CANNOT replace invasive ICP monitoring.'
+    finding: 'No significant overall contemporaneous association between NPi and ICP. A normal NPi does NOT safely exclude elevated ICP. Pupillometry CANNOT replace invasive ICP monitoring.'
   },
   {
     study: 'ORANGE Study — Lancet Neurol 2023;22(10):925-933 (PMID 37652068)',
     cohort: '514 acute-brain-injury patients across 8 countries — 224 TBI, 139 aSAH, 151 ICH. No ischemic stroke.',
-    finding: 'Abnormal NPi independently associated with poor 6-month outcome and in-hospital mortality (adjusted HR 5.58, 95% CI 3.92–7.95). Established NPi < 3.0 as a prognostic marker. Funding disclosure: ORANGE was funded by NeurOptics, the manufacturer of the pupillometer under study.'
+    finding: 'Abnormal NPi independently associated with poor 6-month outcome and in-hospital mortality (adjusted HR 5.58, 95% CI 3.92–7.95). NPi < 3.0 was an observational prognostic marker; the study does not establish a stand-alone treatment or withdrawal-of-support rule. Funding disclosure: ORANGE was funded by NeurOptics, the manufacturer of the pupillometer under study.'
   },
   {
-    study: 'Ischemic-stroke evidence gap',
-    cohort: 'Small observational cohorts only: Osman 2019 (94 AIS + 40 ICH), Kossel 2023 (122 post-EVT), Park 2025 (59 malignant AIS), Du 2026 (71 large MCA strokes).',
-    finding: 'Indexed evidence is limited to small retrospective cohorts: in Park 2025 (PLoS One; 59 malignant anterior-circulation AIS), ipsilateral NPi in the 10 patients who herniated fell from 4.26 (27–21 h before) to 1.80 (3–0 h before CT-diagnosed herniation); Kossel 2023 (J Neurol; 122 post-EVT patients) found low PPV but high NPV of pupillometry for space-occupying edema. No study validates NPi < 2.8 specifically. NPi trending in malignant anterior-circulation infarction is a reasonable monitoring adjunct, but the specific cut-points are not validated in ischemic stroke.'
+    study: 'Du et al. — Ann Neurol 2025 (PMID 39825740)',
+    cohort: 'Prospective single-center observational cohort of 71 patients with large MCA infarction.',
+    finding: 'Ischemic-stroke evidence includes this prospective study; it is not entirely retrospective. Observational associations do not validate an automatic treatment threshold or an individualized prognosis.'
   },
   {
     study: 'Kim et al. — Front Neurol 2022;13:1046548 (PMID 36561299)',
     cohort: 'ICH vs ischemic-stroke midline-shift markers.',
-    finding: 'Pilot study (53 patients, 74 CTs): no significant association between pupil reactivity and shift after adjustment for confounders; exploratory signal in ICH for septum-pellucidum shift vs NPi asymmetry (β = 0.11, p = 0.01). Ischemic: pineal-gland shift showed a trend toward association (β = 0.16, p = 0.07), so treat it as hypothesis-generating rather than definitive.'
+    finding: 'Pilot study (53 patients, 74 CTs): no significant association between pupil reactivity and shift after adjustment for confounders; exploratory signal in ICH for septum-pellucidum shift vs NPi asymmetry (β = 0.11, p = 0.01). Ischemic: pineal-gland shift showed a trend toward association (p = 0.07), so treat it as hypothesis-generating rather than definitive. The abstract and main table differ slightly in the coefficient; no exact coefficient is reproduced here.'
   }
 ];
 
-/* ── Animation timing constants (ms) ──────────────────────────────────── */
-const HOLD_MS = 1600;     // constrict → hold before redilation
-const REDILATE_MS = 800;  // redilation transition duration
-const UNLOCK_MS = 850;    // button unlock after redilation begins
-
-/* ── Component ────────────────────────────────────────────────────────── */
 export function PupillometrySimulator() {
-  const [npi, setNpi] = useState(4.5);
-  const [cv, setCv] = useState(1.5);
-  const [size, setSize] = useState(4.0);
-  const [change, setChange] = useState(20);
-  const [diff, setDiff] = useState(0.0);
-
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  const leftInitial = size;
-  const rightInitial = contralateralInitialSize(size, diff);
-
-  /* Live rendered pupil sizes (mm) + their CSS transition strings. Default to
-     the static initial state; the animation drives them through phases. */
-  const [leftRender, setLeftRender] = useState({ mm: leftInitial, transition: 'width 0.15s ease-out, height 0.15s ease-out', phase: 'Initial' });
-  const [rightRender, setRightRender] = useState({ mm: rightInitial, transition: 'width 0.15s ease-out, height 0.15s ease-out', phase: 'Initial' });
-
-  const timers = useRef([]);
-
-  const result = interpretPupillometry({ npi, cv, change, diff });
-  const tone = TONE[result.tone] || TONE.ok;
-
-  const reducedMotion = typeof window !== 'undefined' && window.matchMedia
-    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    : false;
-
-  const clearTimers = () => {
-    timers.current.forEach((t) => clearTimeout(t));
-    timers.current = [];
-  };
-
-  /* When sliders change while idle, keep the pupils at their static initial
-     state (no animation in flight). */
-  useEffect(() => {
-    if (isAnimating) return;
-    setLeftRender({ mm: leftInitial, transition: 'width 0.15s ease-out, height 0.15s ease-out', phase: 'Initial' });
-    setRightRender({ mm: rightInitial, transition: 'width 0.15s ease-out, height 0.15s ease-out', phase: 'Initial' });
-  }, [leftInitial, rightInitial, isAnimating]);
-
-  useEffect(() => () => clearTimers(), []);
-
-  const simulateReflex = useCallback(() => {
-    if (isAnimating) return;
-
-    // Constricted target sizes.
-    const leftConstricted = Math.max(1.0, leftInitial * (1 - change / 100));
-    const rightChange = npi === 0 ? 0 : 20; // contralateral keeps ~20% reflex unless dead
-    const rightConstricted = Math.max(1.0, rightInitial * (1 - rightChange / 100));
-
-    // prefers-reduced-motion → skip the animation; show the redilated end state.
-    if (reducedMotion) {
-      setLeftRender({ mm: leftInitial, transition: 'none', phase: 'Initial' });
-      setRightRender({ mm: rightInitial, transition: 'none', phase: 'Initial' });
-      return;
-    }
-
-    setIsAnimating(true);
-    clearTimers();
-
-    // Phase 1 · constriction. CV → transition duration; NPi → latency.
-    const leftDuration = cv > 0 ? round1(0.375 / cv) : 0;
-    const rightDuration = 0.25;
-    const leftLatency = npi < 3.0 ? round1((5.0 - npi) * 0.1) : 0.2;
-    const rightLatency = 0.2;
-    const ease = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-
-    const leftConstricts = leftDuration > 0 && change > 0;
-    setLeftRender({
-      mm: leftConstricts ? leftConstricted : leftInitial,
-      transition: leftConstricts
-        ? `width ${leftDuration}s ${ease} ${leftLatency}s, height ${leftDuration}s ${ease} ${leftLatency}s`
-        : 'none',
-      phase: leftConstricts ? 'Constricted' : 'Fixed'
-    });
-
-    const rightConstricts = rightChange > 0;
-    setRightRender({
-      mm: rightConstricts ? rightConstricted : rightInitial,
-      transition: rightConstricts
-        ? `width ${rightDuration}s ${ease} ${rightLatency}s, height ${rightDuration}s ${ease} ${rightLatency}s`
-        : 'none',
-      phase: rightConstricts ? 'Constricted' : 'Fixed'
-    });
-
-    // Phase 2 · redilation back to initial.
-    timers.current.push(setTimeout(() => {
-      setLeftRender({ mm: leftInitial, transition: `width ${REDILATE_MS / 1000}s ease-out, height ${REDILATE_MS / 1000}s ease-out`, phase: 'Initial' });
-      setRightRender({ mm: rightInitial, transition: `width ${REDILATE_MS / 1000}s ease-out, height ${REDILATE_MS / 1000}s ease-out`, phase: 'Initial' });
-
-      timers.current.push(setTimeout(() => {
-        setIsAnimating(false);
-      }, UNLOCK_MS));
-    }, HOLD_MS));
-  }, [isAnimating, leftInitial, rightInitial, change, npi, cv, diff, reducedMotion]);
-
-  const leftPx = leftRender.mm * 10;
-  const rightPx = rightRender.mm * 10;
-
   return (
     <div className="npi-sim space-y-4">
-      <style>{`
-        .npi-sim .npi-stage {
-          width: 100%;
-          background: ${C.ink};
-          border-radius: 10px;
-          padding: 18px 12px;
-          display: flex;
-          gap: 12px;
-          border: 1px solid rgba(255,255,255,0.06);
-        }
-        .npi-sim .npi-eye-box {
-          flex: 1 1 0;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 8px;
-          min-width: 0;
-        }
-        .npi-sim .npi-eye-label {
-          color: ${C.slate400};
-          font-size: 9px;
-          font-weight: 700;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-          text-align: center;
-        }
-        .npi-sim .npi-iris {
-          width: 96px; height: 96px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: radial-gradient(circle at 38% 34%, #5a4a3a 0%, #3a2e22 58%, #241c14 100%);
-          border: 2px solid ${C.slate500};
-          box-shadow: inset 0 0 14px rgba(0,0,0,0.55);
-          flex-shrink: 0;
-        }
-        .npi-sim .npi-pupil {
-          border-radius: 50%;
-          background: #050505;
-          box-shadow: 0 0 6px rgba(0,0,0,0.8);
-          /* width/height + transition are set inline from React state */
-        }
-        .npi-sim .npi-eye-metric {
-          color: #fff;
-          font-size: 11px;
-          font-weight: 600;
-          font-variant-numeric: tabular-nums;
-          text-align: center;
-        }
-        .npi-sim .npi-eye-phase {
-          color: ${C.slate400};
-          font-size: 9px;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .npi-sim .npi-pupil { transition: none !important; }
-        }
-      `}</style>
-
+      <section role="status" className="rounded-lg border border-line bg-slate-50 p-4 text-sm text-slate-700 dark:bg-paper-2 dark:text-ink-2">
+        <h4 className="font-semibold">Pupillometry simulator temporarily unavailable</h4>
+        <p className="mt-1">The pupil animation, automatic interpretation, and action thresholds are withheld pending clinical review. The evidence references below remain available.</p>
+      </section>
       <p className="text-sm text-slate-600 dark:text-ink-2">
-        Quantitative infrared pupillometry reports the <strong>Neurological Pupil Index (NPi, 0.0–5.0)</strong>, a
-        device-derived composite of the pupil light reflex. This simulator uses a selected NPi as an input; it does not calculate a clinical NPi or estimate ICP. Adjust the sliders to explore illustrative patterns, then interpret real measurements with the examination and imaging.
+        A normal NPi does not exclude elevated intracranial pressure. Pupillometry cannot replace the neurological examination or indicated invasive monitoring.
       </p>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* ── Widget 1 · Pupil light-reflex stage + controls ── */}
-        <section className="bg-white border border-line rounded-lg p-3 space-y-3 dark:bg-card">
-          <div className="flex items-center justify-between">
-            <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Pupil Light-Reflex Simulator</h4>
-            <span className="font-mono text-2xs text-slate-500 dark:text-mute">bedside teaching tool</span>
-          </div>
-
-          <div className="npi-stage" role="img"
-            aria-label={`Pupil light-reflex simulator. Left (ipsilateral) pupil ${round1(leftRender.mm)} millimeters, right (contralateral) pupil ${round1(rightRender.mm)} millimeters.`}>
-            <div className="npi-eye-box">
-              <span className="npi-eye-label">Left eye · ipsilateral (lesion)</span>
-              <div className="npi-iris">
-                <div className="npi-pupil"
-                  style={{ width: `${leftPx}px`, height: `${leftPx}px`, transition: leftRender.transition }} />
-              </div>
-              <span className="npi-eye-metric">{round1(leftRender.mm).toFixed(1)} mm</span>
-              <span className="npi-eye-phase">{leftRender.phase}</span>
-            </div>
-            <div className="npi-eye-box">
-              <span className="npi-eye-label">Right eye · contralateral</span>
-              <div className="npi-iris">
-                <div className="npi-pupil"
-                  style={{ width: `${rightPx}px`, height: `${rightPx}px`, transition: rightRender.transition }} />
-              </div>
-              <span className="npi-eye-metric">{round1(rightRender.mm).toFixed(1)} mm</span>
-              <span className="npi-eye-phase">{rightRender.phase}</span>
-            </div>
-          </div>
-
-          <button type="button" onClick={simulateReflex} disabled={isAnimating}
-            className="w-full px-3 h-9 min-h-[44px] sm:min-h-[40px] rounded-md text-sm font-semibold bg-teal-700 text-white hover:bg-teal-700 disabled:opacity-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500">
-            {isAnimating ? 'Light reflex in progress…' : 'Simulate Light Reflex'}
-          </button>
-
-          <div className="space-y-3 pt-1">
-            <Slider label="Neurological Pupil Index (NPi)" value={npi} min={0} max={5} step={0.1}
-              display={npi.toFixed(1)} onChange={setNpi}
-              scale={['0 (areflexic)', '3.0 (abnormal)', '5.0 (normal)']} />
-            <Slider label="Constriction Velocity (CV)" value={cv} min={0} max={2.5} step={0.1}
-              display={`${cv.toFixed(1)} mm/s`} onChange={setCv}
-              scale={['0.0', '0.8 (study cutoff)', '2.5']} />
-            <Slider label="Pupil Size (initial)" value={size} min={1} max={8} step={0.5}
-              display={`${size.toFixed(1)} mm`} onChange={setSize} />
-            <Slider label="% Constriction" value={change} min={0} max={50} step={5}
-              display={`${change}%`} onChange={setChange}
-              scale={['0%', '10% (study cutoff)', '50%']} />
-            <Slider label="Inter-eye Asymmetry (NPi diff)" value={diff} min={0} max={2} step={0.1}
-              display={diff.toFixed(1)} onChange={setDiff}
-              scale={['0.0', '0.7 (asymmetry)', '2.0']} />
-          </div>
-        </section>
-
-        {/* ── Widget 2 · Clinical interpreter ── */}
-        <section className="bg-white border border-line rounded-lg p-3 space-y-3 dark:bg-card">
-          <div className="flex items-center justify-between">
-            <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Clinical Interpretation</h4>
-            <span className={cx('inline-flex items-center gap-1.5 text-2xs font-bold px-2 py-0.5 rounded-pill border', tone.chip)}>
-              <span className={cx('inline-block w-2 h-2 rounded-full', tone.dot)} aria-hidden="true" />
-              {result.status}
-            </span>
-          </div>
-
-          <div className={cx('rounded-md border px-3 py-2 text-xs leading-relaxed', tone.chip)}>
-            {result.summary}
-          </div>
-
-          <div>
-            <p className="text-2xs uppercase tracking-wide font-semibold text-slate-500 mb-1 dark:text-mute">Actionable next steps</p>
-            <ul className="space-y-1">
-              {result.steps.map((s, i) => (
-                <li key={i} className="flex items-start gap-2 text-xs text-slate-700 dark:text-ink-2">
-                  <span className={cx('mt-0.5 inline-block w-1.5 h-1.5 rounded-full shrink-0', tone.dot)} aria-hidden="true" />
-                  <span>{s}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-        </section>
-      </div>
-
-      {/* ── Escalation reference cards ── */}
-      <section className="space-y-2">
-        <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Escalation reference — NPi action thresholds</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-          {ESCALATION.map((e, i) => {
-            const t = TONE[e.tone] || TONE.warn;
-            return (
-              <div key={i} className={cx('rounded-lg border p-3 flex items-start gap-3', t.chip)}>
-                <span className="font-mono font-bold text-xs shrink-0 mt-0.5 px-1.5 py-0.5 rounded bg-white border border-line dark:bg-card">
-                  {e.badge}
-                </span>
-                <div>
-                  <p className="text-xs font-bold">{e.title}</p>
-                  <p className="text-2xs leading-relaxed mt-0.5">{e.detail}</p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ── Petrosino 2025 caveat (prominent) ── */}
-      <section className="rounded-lg border-2 border-crit-300 bg-crit-50 p-3 dark:border-crit-800 dark:bg-crit-950">
-        <div className="flex items-center gap-2">
-          <span className="inline-block w-2.5 h-2.5 rounded-full bg-crit-500" aria-hidden="true" />
-          <h4 className="text-sm font-bold text-crit-800 dark:text-crit-300">Key caveat — Petrosino 2025 (JAMA Neurol)</h4>
-        </div>
-        <p className="text-xs text-slate-800 leading-relaxed mt-1.5 dark:text-ink">
-          A secondary analysis of the ORANGE study (<strong>n = 318 with invasive ICP monitoring</strong>) found
-          <strong> NO significant association between NPi and ICP</strong>. A <strong>normal NPi does NOT safely exclude
-          elevated ICP</strong>, and <strong>pupillometry cannot replace invasive ICP monitoring</strong>. The CV / %-change
-          ICP cut-points above (Giede-Jeppe 2021) should therefore be read as hypothesis-generating, not as a reliable
-          rule-out for intracranial hypertension. NPi remains a strong <em>prognostic</em> and herniation-warning signal —
-          but it is not a substitute for an ICP monitor.
-        </p>
-      </section>
-
-      {/* ── Evidence base ── */}
       <section className="space-y-2">
         <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Evidence base — pupillometry / NPi</h4>
         <div className="space-y-2">
-          {EVIDENCE.map((ev, i) => (
-            <div key={i}
+          {EVIDENCE.map((ev) => (
+            <div key={ev.study}
               className={cx('rounded-lg border p-3', ev.caveat ? 'border-crit-200 bg-crit-50 dark:border-crit-800 dark:bg-crit-950' : 'border-line bg-white dark:bg-card')}>
-              <div className="flex items-center justify-between gap-2">
-                <h5 className={cx('text-xs font-bold', ev.caveat ? 'text-crit-800 dark:text-crit-300' : 'text-slate-800 dark:text-ink')}>{ev.study}</h5>
-                {ev.caveat && <span className="text-2xs font-bold uppercase tracking-wide text-crit-700 shrink-0 dark:text-crit-300">Limitation</span>}
-              </div>
+              <h5 className={cx('text-xs font-bold', ev.caveat ? 'text-crit-800 dark:text-crit-300' : 'text-slate-800 dark:text-ink')}>{ev.study}</h5>
               <p className="text-2xs uppercase tracking-wide font-semibold text-slate-600 mt-0.5 dark:text-mute">{ev.cohort}</p>
               <p className="text-xs text-slate-700 mt-1 leading-relaxed dark:text-ink-2">{ev.finding}</p>
             </div>
           ))}
         </div>
-        <p className="text-2xs text-slate-500 dark:text-mute">
-          Educational teaching tool — not a substitute for invasive monitoring or clinical judgment.
-        </p>
+        <p className="text-2xs text-slate-500 dark:text-mute">Evidence summaries are limited to the populations and outcomes described. <a className="underline" href="https://pubmed.ncbi.nlm.nih.gov/39825740/" target="_blank" rel="noopener noreferrer">Du 2025 primary abstract</a>.</p>
       </section>
     </div>
-  );
-}
-
-/* ── Slider sub-component (mirrors the EVD simulator) ──────────────────── */
-function Slider({ label, value, min, max, step, display, onChange, scale }) {
-  return (
-    <label className="block">
-      <span className="flex items-center justify-between text-xs font-semibold text-slate-700 mb-1 dark:text-ink-2">
-        <span>{label}</span>
-        <span className="font-mono text-slate-600 dark:text-ink-2">{display}</span>
-      </span>
-      <input
-        type="range" min={min} max={max} step={step} value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-teal-600 h-2 cursor-pointer"
-        aria-label={label}
-      />
-      {scale && (
-        <span className="flex justify-between text-2xs text-slate-500 mt-0.5 dark:text-mute">
-          {scale.map((s, i) => <span key={i}>{s}</span>)}
-        </span>
-      )}
-    </label>
   );
 }
 

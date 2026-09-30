@@ -1,7 +1,7 @@
 ---
 id: ich-blood-pressure
 title: "Acute ICH Blood Pressure & Expansion Mitigation"
-summary: "Hyperacute SBP lowering (target 140 mmHg, maintained 130–150, reached within 1h; avoid <130), INTERACT2 intensive lowering, INTERACT3 care bundle, ATACH-2 renal safety floor, FASTEST, TRIDENT, minimally invasive surgery (ENRICH), and SWITCH decompressive craniectomy."
+summary: "Population-specific ICH blood-pressure evidence, INTERACT3 bundle limitations, expansion-mitigation trials and surgical assessment. Infusion titration requires a complete monitored prescription."
 tags: ["pocket-card", "printable", "icu"]
 contexts: ["telestroke", "inpatient", "clinic"]
 calculators: []
@@ -10,7 +10,7 @@ lastReviewed: 2026-08-14
 provenance: src/education.jsx
 ---
 
-Hyperacute SBP lowering (target 140 mmHg, maintained 130–150, reached within 1h; avoid <130), INTERACT2 intensive lowering, INTERACT3 care bundle, ATACH-2 renal safety floor, FASTEST, TRIDENT, minimally invasive surgery (ENRICH), and SWITCH decompressive craniectomy.
+Population-specific ICH blood-pressure evidence, INTERACT3 bundle limitations, expansion-mitigation trials and surgical assessment. Infusion titration requires a complete monitored prescription.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
 > This file owns the module metadata (title, summary, tags, contexts, references).

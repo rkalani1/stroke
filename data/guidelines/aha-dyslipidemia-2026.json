@@ -433,7 +433,7 @@
       "classOfRec": "IIa",
       "classNote": "",
       "levelOfEvidence": "B-NR",
-      "text": "With CAC 0 and a preference to avoid medication, deferring LLT and repeating CAC in 3–7 years is reasonable if higher-risk conditions are absent: FH or severe hypercholesterolemia, diabetes after age 40, smoking, or strong premature-ASCVD family history.",
+      "text": "In intermediate-risk or selected borderline-risk adults with CAC 0 and a preference to avoid medication, deferring LLT and repeating CAC in 3–7 years is reasonable if higher-risk conditions are absent: FH or severe hypercholesterolemia, diabetes after age 40, smoking, or strong premature-ASCVD family history.",
       "page": 37,
       "pdfPage": 37,
       "sourceRecommendationNumber": 2,
@@ -1148,7 +1148,7 @@
       "classOfRec": "I",
       "classNote": "",
       "levelOfEvidence": "B-R",
-      "text": "For children or adolescents aged ≥8 with persistent LDL-C ≥160 mg/dL and a presentation consistent with FH despite 3–6 months of lifestyle treatment, start a statin and other LLT as needed.",
+      "text": "For children or adolescents aged ≥8 with persistent LDL-C ≥160 mg/dL and a presentation consistent with FH despite 3–6 months of lifestyle treatment, start a statin and other LLT as needed. Homozygous FH requires specialized, aggressive treatment at diagnosis, including in infancy; the age threshold and lifestyle-treatment waiting period above do not apply to HoFH.",
       "page": 63,
       "pdfPage": 63,
       "sourceRecommendationNumber": 2,
@@ -2329,12 +2329,34 @@
       "doi": "10.1161/CIR.0000000000001457",
       "publisherUrl": "https://doi.org/10.1161/CIR.0000000000001457",
       "status": "applied",
-      "note": "Reviewed the full June 2026 correction: the ApoB take-home TG threshold is ≥150 mg/dL; hypertriglyceridemia recommendations 5 and 6 refer to Figures 16 and 17, respectively; two reviewer-name spellings are corrected. Recommendation summaries do not reproduce the erroneous figure links or take-home threshold. Formal recommendation COR/LOE and treatment wording are unchanged.",
-      "checkedAt": "2026-09-06",
+      "note": "The complete notice corrects the ApoB-testing triglyceride threshold from >200 to ≥150 mg/dL, cross-references to Figures 16 and 17, and an author name. Source figure references are retained; the incorrect diagnostic table cell is not reproduced as a formal recommendation.",
+      "checkedAt": "2026-09-30",
       "affectedRecommendationIds": [
         "aha-dyslipidemia-2026-4-2-9-5",
         "aha-dyslipidemia-2026-4-2-9-6"
-      ]
+      ],
+      "previousReviewNote": "Reviewed the full June 2026 correction: the ApoB take-home TG threshold is ≥150 mg/dL; hypertriglyceridemia recommendations 5 and 6 refer to Figures 16 and 17, respectively; two reviewer-name spellings are corrected. Recommendation summaries do not reproduce the erroneous figure links or take-home threshold. Formal recommendation COR/LOE and treatment wording are unchanged.",
+      "independentReviewScope": "complete primary notice read"
+    },
+    {
+      "type": "correction",
+      "pmid": "42709919",
+      "doi": "10.1161/CIR.0000000000001475",
+      "publisherUrl": "https://doi.org/10.1161/CIR.0000000000001475",
+      "previousReviewNote": "Colesevelam3.75mg to3.75g; cholestyramine1–4divided doses; colesevelam/colestipol1–2. Affected doses not in formal catalog rows; add missing notice metadata.",
+      "checkedAt": "2026-09-30",
+      "independentReviewScope": "complete primary notice read",
+      "note": "The September notice corrects colesevelam 3.75 mg to 3.75 g and administration schedules to 1–4 divided doses for cholestyramine and 1–2 for colesevelam/colestipol. These dose cells are not reproduced in the library.",
+      "status": "not-applicable",
+      "affectedRecommendationIds": []
     }
-  ]
+  ],
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Full123-page primary publisher PDF mirrored by university; both indexed correction bodies independently read",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Advance publisher PDF paired with the independently read June and September correction notices. Corrected drug-table cells not reproduced as recommendations remain outside this extraction.",
+    "implementationUpdatedAt": "2026-09-30"
+  }
 }

@@ -287,18 +287,24 @@
       "levelOfEvidence": "Ungraded",
       "text": "In adults with spontaneous ICH associated with use of factor Xa-inhibitor (FXaI) (apixaban, rivaroxaban) within 15 h after the last dose of a FXaI (or proven anti-FXa activity > 100 ng/mL) and within 12 h since onset of symptoms we suggest considering the use of andexanet alfa to reduce haematoma expansion. The potential clinical benefit should be evaluated in sufficiently powered randomised controlled trials.",
       "page": null,
-      "currentEvidenceNote": "US safety and availability update reviewed 2026-09-06: FDA concluded that the serious risks of Andexxa outweigh its benefits; US commercial sales ended on 22 December 2025. This 2025 ESO statement retains its original source grading and must not be interpreted as a current US endorsement or evidence of availability.",
-      "currentEvidenceCheckedAt": "2026-09-06",
+      "currentEvidenceNote": "Update through 30 September 2026: FDA concluded the US risks of Andexxa outweighed its benefits. After FDA communicated this position, AstraZeneca submitted a request for voluntary BLA withdrawal; US sales ended 22 December 2025. This does not establish worldwide withdrawal or completion of the US withdrawal process. The 2026 NCS/SCCM update conditionally suggests 4F-PCC rather than andexanet for spontaneous FXa-inhibitor ICH (moderate certainty) and traumatic ICH (very low certainty). The historical grade above belongs to the original source.",
+      "currentEvidenceCheckedAt": "2026-09-30",
       "currentEvidenceSources": [
         {
-          "title": "FDA update on the safety of Andexxa",
+          "title": "Current topic-specific source",
           "url": "https://www.fda.gov/vaccines-blood-biologics/safety-availability-biologics/update-safety-andexxa"
+        },
+        {
+          "title": "Current topic-specific source",
+          "url": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
         }
       ],
       "sourceStatementType": "consensus",
       "sourceStatementId": "PICO 3.3.2.2 consensus 1",
       "sourceReference": "Table 2; PICO 3.3.2.2; consensus 1",
-      "id": "eso-ich-2025-pico3.3.2.2-c1"
+      "id": "eso-ich-2025-pico3.3.2.2-c1",
+      "historicalRecommendation": true,
+      "currentEvidenceAsOf": "2026-09-30"
     },
     {
       "section": "PICO 3.3.2.3: Tranexamic acid for factor Xa inhibitor-associated ICH",
@@ -992,5 +998,13 @@
         "consensusCount": 1
       }
     ]
+  },
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Primary recommendation text retrieved and compared; exact edition, source locators and unresolved correction/current-context limits in unit ledger.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
   }
 }

@@ -75,9 +75,9 @@ describe('2026-09-06 registry review — source-specific screening boundaries', 
 
 describe('registry time windows in the Atlas matcher', () => {
   it.each([
-    ['verify', 23, 'not_eligible'], ['verify', 24, 'eligible'], ['verify', 96, 'eligible'], ['verify', 97, 'not_eligible'],
-    ['aspire', 335, 'not_eligible'], ['aspire', 336, 'eligible'], ['aspire', 4320, 'eligible'], ['aspire', 4321, 'not_eligible'],
-    ['saturn', 168, 'eligible'], ['saturn', 169, 'not_eligible']
+    ['verify', 23, 'not_eligible'], ['verify', 24, 'needs_info'], ['verify', 96, 'needs_info'], ['verify', 97, 'not_eligible'],
+    ['aspire', 335, 'not_eligible'], ['aspire', 336, 'needs_info'], ['aspire', 4320, 'needs_info'], ['aspire', 4321, 'not_eligible'],
+    ['saturn', 168, 'needs_info'], ['saturn', 169, 'not_eligible']
   ])('%s at %d h has status %s for a matching synthetic fixture', (id, hoursFromLKW, status) => {
     const data = { hoursFromLKW, onStatin: true, ichLocation: 'lobar', telestrokeNote: { age: '65', premorbidMRS: '1', diagnosisCategory: id === 'verify' ? 'ischemic' : 'ich', symptoms: 'arm weakness', pmh: 'atrial fibrillation' } };
     expect(evaluateActiveTrial(getActiveTrial(id), data).status).toBe(status);
@@ -91,7 +91,7 @@ describe('registry time windows in the Atlas matcher', () => {
 
 describe('first-pass trial screen presentation', () => {
   it.each([
-    [48, 'eligible', 'Possible candidate'],
+    [48, 'needs_info', 'Needs information'],
     [undefined, 'needs_info', 'Needs information'],
     [120, 'not_eligible', 'Screen criteria not met']
   ])('keeps a modeled %s-hour result separate from enrollment eligibility', (hoursFromLKW, status, label) => {
@@ -111,7 +111,7 @@ describe('documented treatment decisions in trial screening', () => {
     { entered: '', hasExamInput: false, expectedCriterion: 'unknown', expectedStatus: 'needs_info' },
     { entered: '0', hasExamInput: false, expectedCriterion: 'not_met', expectedStatus: 'not_eligible' },
     { entered: '', hasExamInput: true, expectedCriterion: 'not_met', expectedStatus: 'not_eligible' },
-    { entered: '4', hasExamInput: false, expectedCriterion: 'met', expectedStatus: 'eligible' }
+    { entered: '4', hasExamInput: false, expectedCriterion: 'met', expectedStatus: 'needs_info' }
   ])('preserves documented NIHSS provenance in the encounter matcher ($entered, exam=$hasExamInput)', ({ entered, hasExamInput, expectedCriterion, expectedStatus }) => {
     const telestrokeNote = {
       age: '60', nihss: entered, premorbidMRS: '1', ctaResults: 'tandem extracranial ICA and M1 occlusion',
@@ -146,11 +146,11 @@ describe('documented treatment decisions in trial screening', () => {
     } };
     const result = evaluateActiveTrial(getActiveTrial('picasso'), data);
     expect(result.criteria.find(c => c.id === 'tnkRecommended')).toBeUndefined();
-    expect(result.status).toBe('eligible');
+    expect(result.status).toBe('needs_info');
     // A patient who received IVT and still has the occlusion ("failed IV t-PA")
     // must not be screened out.
     data.telestrokeNote.tnkRecommended = true;
-    expect(evaluateActiveTrial(getActiveTrial('picasso'), data).status).toBe('eligible');
+    expect(evaluateActiveTrial(getActiveTrial('picasso'), data).status).toBe('needs_info');
     expect(getActiveTrial('picasso').inclusionCriteria.join(' ')).toMatch(/failed IV t-PA/);
   });
 

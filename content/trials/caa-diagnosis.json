@@ -22,15 +22,15 @@
     "fullName": "Association Between the Edinburgh CT and Genetic Diagnostic Criteria for Cerebral Amyloid Angiopathy-Associated Lobar Intracerebral Haemorrhage and Recurrent Intracerebral Haemorrhage: An Individual Patient Data Meta-Analysis",
     "category": "caa-diagnosis",
     "population": "n=1705, Primary two-stage CT-only cohort (562 patients): median 76 years (IQR 68-82), 282 (50%) female, 280 (50%) male. One-stage CT-only cohort (1620): median 73 years (IQR 62-80), 763 (47%) female, 857 (53%) male. CT-APOE cohort (1006): median 71 years (IQR 58-79), 477 (47%) female, 529 (53%) male., NIHSS Not applicable — prognostic cohort analysis, Index spontaneous lobar intracerebral haemorrhage; recurrence counted only from 30 days after the index event",
-    "finding": "Higher Edinburgh strata were associated with more recurrent haemorrhage. In the primary two-stage CT-only analysis (562 patients from three European cohorts, 69 recurrences over 1381 person-years), 5-year recurrence occurred in 48/307 (16%) of the intermediate-and-high-risk group versus 21/255 (8%) of the low-risk group.",
-    "teachingPoint": "Lets a clinician grade recurrent-haemorrhage risk after a lobar ICH from the admission CT alone, when MRI-based Boston criteria are unavailable — a roughly threefold 5-year hazard between the high- and low-risk strata.",
+    "finding": "Higher strata were associated with more recurrence. Primary 562-person analysis had 69 events over 1381 person-years: 48/307 in intermediate/high and 21/255 low. Reported five-year cumulative incidence was 16% versus 8%; these estimates are not simply the crude fractions.",
+    "teachingPoint": "May inform conditional recurrence-risk discussion in comparable 30-day event-free survivors. It does not establish an antithrombotic treatment-selection rule or describe early-event risk.",
     "PMID": "40975099",
     "year": 2025,
     "citationIds": [
       "cit-edinburgh-ct-recurrence-2025"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

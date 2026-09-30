@@ -55,16 +55,16 @@
     "name": "TNK vs alteplase · RWE",
     "fullName": "Real-World Efficacy and Safety of Tenecteplase versus Alteplase in Acute Ischemic Stroke: A Propensity Score-Matched Analysis",
     "category": "tnk-vs-alteplase",
-    "population": "n=371",
-    "finding": "Comparable (p>0.05)",
-    "teachingPoint": "Adds real-world support for tenecteplase as a practical alteplase alternative — consistent with trial-level non-inferiority.",
+    "population": "n=371, ≥18 years",
+    "finding": "Source Table 2 reports 26/68 versus 122/303; matched-population interpretation is withheld because source cohort descriptions are inconsistent",
+    "teachingPoint": "Use randomized TNK evidence for treatment decisions. This source is retained for transparency with unresolved matched-population reporting; observational nonsignificance does not establish noninferiority.",
     "PMID": "42206304",
     "year": 2026,
     "citationIds": [
       "cit-tnk-vs-alteplase-rwe-2026"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-05-30",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "recommendations",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.29.2",
-    "checksum": "sha256:271a36576e236dc3739ea4d90e7c6d2b",
+    "appVersion": "6.30.0",
+    "checksum": "sha256:2d5c225852e9497e31aba7762a7a463e",
     "count": 11,
     "source": "Evidence atlas recommendations bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -15,8 +15,12 @@
       "topic": "ich-bp-management",
       "setting": "inpatient",
       "text": "In spontaneous ICH requiring acute BP lowering, careful titration to achieve continuous, smooth, and sustained BP control, avoiding SBP peaks and large variability, can be beneficial to improve functional outcomes.",
+      "gradingSystem": "AHA",
       "classOfRecommendation": "IIa",
       "levelOfEvidence": "B-NR",
+      "nativeStrength": "",
+      "nativeCertainty": "",
+      "sourceUrl": "",
       "guidelineSource": "AHA/ASA 2022 ICH Guideline; INTERACT3 (2023)",
       "supportingClaimIds": [
         "cl-ich-bp-bundle"
@@ -36,8 +40,12 @@
       "topic": "ich-bp-management",
       "setting": "inpatient",
       "text": "In mild-to-moderate acute spontaneous ICH with presenting SBP 150-220 mmHg, targeting SBP 140 mmHg and maintaining 130-150 mmHg when appropriate is safe and may be reasonable.",
+      "gradingSystem": "AHA",
       "classOfRecommendation": "IIb",
       "levelOfEvidence": "B-R",
+      "nativeStrength": "",
+      "nativeCertainty": "",
+      "sourceUrl": "",
       "guidelineSource": "AHA/ASA 2022 ICH Guideline",
       "supportingClaimIds": [
         "cl-ich-bp-intensive-target"
@@ -57,8 +65,12 @@
       "topic": "ich-bp-management",
       "setting": "inpatient",
       "text": "In mild-to-moderate spontaneous ICH presenting with SBP >150 mmHg, acute lowering of SBP to <130 mmHg is potentially harmful.",
+      "gradingSystem": "AHA",
       "classOfRecommendation": "III-harm",
       "levelOfEvidence": "B-R",
+      "nativeStrength": "",
+      "nativeCertainty": "",
+      "sourceUrl": "",
       "guidelineSource": "AHA/ASA 2022 ICH Guideline; ATACH-2",
       "supportingClaimIds": [
         "cl-ich-bp-intensive-target"
@@ -75,34 +87,45 @@
       "id": "rec-ich-anticoag-reversal-fxa",
       "topic": "ich-anticoag-reversal",
       "setting": "inpatient",
-      "text": "In factor Xa inhibitor-associated ICH, reverse the anticoagulant effect rapidly using the locally approved 4F-PCC pathway. The AHA/ASA 2022 guideline rated andexanet alfa as reasonable (Class 2a) and 4F-PCC or aPCC as may be considered (Class 2b), but andexanet is no longer marketed in the US after the December 2025 FDA safety action on thromboembolic events, and the 2026 Neurocritical Care Society/Society of Critical Care Medicine focused update conditionally recommends 4F-PCC rather than andexanet. Monitor for thrombotic complications.",
-      "classOfRecommendation": "IIa",
-      "levelOfEvidence": "B-NR",
-      "guidelineSource": "AHA/ASA 2022 ICH Guideline (pre-ANNEXA-I); ANNEXA-I (2024); FDA Andexxa safety communication and US withdrawal (Dec 2025)",
+      "text": "For spontaneous intracranial hemorrhage associated with a factor Xa inhibitor, the 2026 NCS/SCCM focused update conditionally suggests 4-factor PCC rather than andexanet alfa (moderate-certainty evidence). Reverse promptly using the applicable local pathway, with monitoring for thrombotic complications.",
+      "gradingSystem": "GRADE",
+      "classOfRecommendation": null,
+      "levelOfEvidence": null,
+      "nativeStrength": "Conditional",
+      "nativeCertainty": "Moderate",
+      "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4",
+      "guidelineSource": "NCS/SCCM 2026 focused antithrombotic-reversal update, recommendation 1–1",
       "supportingClaimIds": [
         "cl-ich-andexanet-fxa"
       ],
       "caveats": [
-        "ANNEXA-I demonstrated higher hemostatic efficacy with andexanet but more thrombotic complications vs usual care.",
-        "The former US andexanet alfa label covered apixaban and rivaroxaban only (ANNEXA-I also enrolled edoxaban-treated patients). Since US sales ended December 22, 2025, 4F-PCC (or aPCC) per the local pathway is the US reversal option for all factor Xa inhibitors, including edoxaban (PCC use for factor Xa inhibitor reversal is off-label).",
+        "For traumatic factor Xa inhibitor-associated ICH, the separate NCS/SCCM recommendation also favors 4F-PCC over andexanet, conditionally, but with very low certainty.",
+        "The native GRADE badge applies to the 2026 4F-PCC recommendation. The linked ANNEXA-I claim describes historical trial evidence, not the source of an AHA class for PCC.",
+        "FDA communicated that US Andexxa risks outweighed benefits; AstraZeneca submitted a request for voluntary BLA withdrawal. US sales ended December 22, 2025; this does not establish worldwide withdrawal or completion of the US withdrawal process.",
+        "PCC use for factor Xa inhibitor reversal is off-label. This recommendation does not establish interchangeable efficacy or dosing for activated PCC.",
         "Reversal should not delay neurosurgical evaluation."
       ],
-      "lastReviewed": "2026-09-26",
+      "lastReviewed": "2026-09-30",
       "verificationStatus": "verified-guideline",
-      "verificationNotes": ""
+      "verificationNotes": "Native recommendation 1–1 and its moderate certainty paired to the full 2026 primary guideline; traumatic recommendation 1–2 has very low certainty."
     },
     {
       "id": "rec-ich-anticoag-reversal-warfarin",
       "topic": "ich-anticoag-reversal",
       "setting": "inpatient",
-      "text": "In warfarin-associated ICH with INR ≥2.0, give 4F-PCC dosed by INR/weight (recommended in preference to FFP) to rapidly correct the INR. Give IV vitamin K 10 mg directly after factor replacement to prevent INR rebound. FFP is a slower, inferior alternative.",
+      "text": "In warfarin-associated ICH with INR ≥2.0, give 4F-PCC dosed by INR/weight (recommended in preference to FFP) to rapidly correct the INR. Give IV vitamin K 10 mg directly after factor replacement to prevent INR rebound. 4F-PCC is preferred for rapid INR correction; this is not a claim of superiority for every clinical outcome.",
+      "gradingSystem": "AHA",
       "classOfRecommendation": "I",
       "levelOfEvidence": "B-R",
+      "nativeStrength": "",
+      "nativeCertainty": "",
+      "sourceUrl": "",
       "guidelineSource": "AHA/ASA 2022 ICH Guideline",
       "supportingClaimIds": [
         "cl-ich-warfarin-reversal-pcc-vk"
       ],
       "caveats": [
+        "The Class I/B-R badge applies to 4F-PCC over FFP when INR is ≥2.0. IV vitamin K after factor replacement is a separate Class I/C-LD recommendation.",
         "Vitamin K is required for sustained reversal; PCC alone is short-acting.",
         "FFP carries volume-overload risk and slower correction."
       ],
@@ -115,18 +138,23 @@
       "topic": "extended-window-ivt",
       "setting": "inpatient",
       "text": "IV thrombolysis can be beneficial (1) in unknown-onset stroke (e.g., wake-up) when treatment can start within 4.5 h of symptom recognition and MRI shows DWI-FLAIR mismatch (DWI lesion smaller than one-third of the MCA territory without marked FLAIR change), and (2) in patients ineligible for EVT who have salvageable penumbra on automated perfusion imaging 4.5-9 h from LKW or within 9 h of the midpoint of sleep for wake-up stroke. The pivotal trials (WAKE-UP, EXTEND) used alteplase; ESO 2023 expert consensus considers tenecteplase 0.25 mg/kg a reasonable alternative for wake-up/unknown-onset stroke selected with advanced imaging.",
+      "gradingSystem": "AHA",
       "classOfRecommendation": "IIa",
       "levelOfEvidence": "B-R",
-      "guidelineSource": "AHA/ASA 2026 AIS Guideline; ESO 2023",
+      "nativeStrength": "",
+      "nativeCertainty": "",
+      "sourceUrl": "https://doi.org/10.1161/STR.0000000000000530",
+      "guidelineSource": "AHA/ASA 2026 AIS Guideline, section 4.6.3 recommendations 1–2, with July 2026 correction item 13; ESO 2023 expert consensus is separate",
       "supportingClaimIds": [
         "cl-late-window-ivt-non-lvo",
         "cl-tnk-late-window-non-lvo"
       ],
       "caveats": [
+        "The July 2026 correction (doi:10.1161/STR.0000000000000530, item 13) added EVT-ineligibility to perfusion-selected recommendation 2 and changed its wording to can be beneficial. The original January table predates this correction. The IIa/B-R badge applies to the AHA recommendations, not the separately described ESO expert consensus.",
         "Imaging-based selection is required; unselected late-window thrombolysis is not supported (TWIST).",
         "Time from LKW remains a key safety determinant; TIMELESS extended TNK to 24 h with mismatch selection but the overall primary endpoint did not reach significance.",
         "OPTION (JAMA 2026) supports perfusion-selected tenecteplase to 24 h in non-LVO stroke without planned EVT, with sICH 2.8% vs 0%; a single-country trial that post-dates the 2026 AHA/ASA guideline, so it is not a guideline-graded indication.",
-        "Beyond 4.5 h, adding IV tenecteplase before planned EVT has not improved outcomes (TNK-PLUS for anterior LVO; ATTENTION LATE for basilar occlusion)."
+        "Late-window bridging trials differ in population and selection: TNK-PLUS and ATTENTION LATE did not demonstrate primary-outcome benefit, while TRACE-5 reported benefit in its selected population. These results do not establish that absence of EVT is a causal requirement for IVT benefit; the guideline eligibility boundaries above remain source-specific."
       ],
       "lastReviewed": "2026-09-26",
       "verificationStatus": "verified-guideline",
@@ -137,8 +165,12 @@
       "topic": "tnk-vs-alteplase",
       "setting": "inpatient",
       "text": "Tenecteplase 0.25 mg/kg (max 25 mg) is recommended as an alternative to alteplase 0.9 mg/kg (max 90 mg) for IV thrombolysis in eligible AIS within 4.5 h — either agent is first-line, and TNK is particularly practical when EVT is anticipated.",
+      "gradingSystem": "AHA",
       "classOfRecommendation": "I",
       "levelOfEvidence": "A",
+      "nativeStrength": "",
+      "nativeCertainty": "",
+      "sourceUrl": "",
       "guidelineSource": "AHA/ASA 2026 AIS Guideline; ESO 2023 (GRADE: strong recommendation, moderate-quality evidence)",
       "supportingClaimIds": [
         "cl-tnk-noninferior-alteplase"
@@ -156,8 +188,12 @@
       "topic": "evt-large-core",
       "setting": "inpatient",
       "text": "In patients with anterior-circulation proximal LVO (ICA or M1), NIHSS ≥6, prestroke mRS 0-1, and ASPECTS 3-5, EVT is recommended to improve functional outcomes within 6 h of onset and, in selected patients aged <80 without significant mass effect, at 6-24 h.",
+      "gradingSystem": "AHA",
       "classOfRecommendation": "I",
       "levelOfEvidence": "A",
+      "nativeStrength": "",
+      "nativeCertainty": "",
+      "sourceUrl": "",
       "guidelineSource": "AHA/ASA 2026 AIS Guideline",
       "supportingClaimIds": [
         "cl-evt-large-core"
@@ -175,8 +211,12 @@
       "topic": "dapt-minor-stroke",
       "setting": "inpatient",
       "text": "In patients with recent minor noncardioembolic ischemic stroke (NIHSS ≤3) or high-risk TIA (ABCD² ≥4), DAPT with aspirin plus clopidogrel should be initiated early (ideally within 12-24 h of symptom onset and at least within 7 days) and continued for 21-90 days, followed by single antiplatelet therapy, to reduce recurrent ischemic stroke.",
+      "gradingSystem": "AHA",
       "classOfRecommendation": "I",
       "levelOfEvidence": "A",
+      "nativeStrength": "",
+      "nativeCertainty": "",
+      "sourceUrl": "",
       "guidelineSource": "AHA/ASA 2021 Secondary Prevention (CHANCE, POINT); related trials: THALES (ticagrelor, separate IIb), INSPIRES (2023, post-guideline), CHANCE-2 (2021, post-guideline)",
       "supportingClaimIds": [
         "cl-dapt-minor-stroke"
@@ -197,8 +237,12 @@
       "topic": "af-anticoag-timing",
       "setting": "inpatient",
       "text": "In carefully selected (e.g., milder severity) patients with AIS and atrial fibrillation, early oral anticoagulation is low risk and is reasonable compared with delayed anticoagulation (AHA/ASA 2026, COR IIa); the guideline notes that efficacy for preventing early recurrent stroke is not established. Supporting data: OPTIMAS (DOAC start ≤4 days non-inferior to 7-14 days for the 90-day composite) and the CATALYST IPD meta-analysis (≤4 vs ≥5 days: 30-day composite OR 0.70, 95% CI 0.50-0.98, no sICH excess).",
+      "gradingSystem": "AHA",
       "classOfRecommendation": "IIa",
       "levelOfEvidence": "A",
+      "nativeStrength": "",
+      "nativeCertainty": "",
+      "sourceUrl": "",
       "guidelineSource": "AHA/ASA 2026 AIS Guideline; OPTIMAS (2024); CATALYST IPDMA (2025); ELAN (2023); TIMING (2022)",
       "supportingClaimIds": [
         "cl-af-early-anticoag"
@@ -217,8 +261,12 @@
       "topic": "evt-late-window",
       "setting": "inpatient",
       "text": "In patients with AIS from anterior-circulation proximal LVO (ICA or M1) presenting 6-24 h from symptom onset with NIHSS ≥6, prestroke mRS 0-1, and ASPECTS ≥6, EVT is recommended to improve functional outcomes and reduce mortality. Perfusion imaging is not a prerequisite; adjunctive CTP or MRI (DWI-FLAIR mismatch or DWI-PWI) can be useful in EVT evaluation if immediately available (separate COR 2a, LOE A recommendation).",
+      "gradingSystem": "AHA",
       "classOfRecommendation": "I",
       "levelOfEvidence": "A",
+      "nativeStrength": "",
+      "nativeCertainty": "",
+      "sourceUrl": "",
       "guidelineSource": "AHA/ASA 2026 AIS Guideline; DAWN; DEFUSE-3",
       "supportingClaimIds": [
         "cl-evt-late-window"

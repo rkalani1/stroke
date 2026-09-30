@@ -214,15 +214,23 @@ export function makeCitation(input = {}) {
 }
 
 export function makeRecommendation(input = {}) {
+  const gradingSystem = strOr(input.gradingSystem, 'AHA');
+  const isAha = gradingSystem === 'AHA';
   return {
     id: strOr(input.id),
     topic: strOr(input.topic),
     setting: SETTING_VALUES.includes(input.setting) ? input.setting : 'all',
     text: strOr(input.text),
-    classOfRecommendation: CLASS_VALUES.includes(input.classOfRecommendation)
-      ? input.classOfRecommendation
-      : 'IIa',
-    levelOfEvidence: LOE_VALUES.includes(input.levelOfEvidence) ? input.levelOfEvidence : 'B-R',
+    gradingSystem,
+    classOfRecommendation: isAha
+      ? (CLASS_VALUES.includes(input.classOfRecommendation) ? input.classOfRecommendation : 'IIa')
+      : null,
+    levelOfEvidence: isAha
+      ? (LOE_VALUES.includes(input.levelOfEvidence) ? input.levelOfEvidence : 'B-R')
+      : null,
+    nativeStrength: strOr(input.nativeStrength),
+    nativeCertainty: strOr(input.nativeCertainty),
+    sourceUrl: strOr(input.sourceUrl),
     guidelineSource: strOr(input.guidelineSource),
     supportingClaimIds: arrOr(input.supportingClaimIds),
     caveats: arrOr(input.caveats),
@@ -411,8 +419,17 @@ export function validateRecommendation(r, ctx = {}) {
 
   pushIf(errors, !KEBAB_ID.test(r.id || ''), `${where}: id must be kebab-case`);
   pushIf(errors, !r.text, `${where}: text required`);
-  pushIf(errors, !CLASS_VALUES.includes(r.classOfRecommendation), `${where}: classOfRecommendation invalid`);
-  pushIf(errors, !LOE_VALUES.includes(r.levelOfEvidence), `${where}: levelOfEvidence invalid`);
+  const gradingSystem = r.gradingSystem || 'AHA';
+  if (gradingSystem === 'AHA') {
+    pushIf(errors, !CLASS_VALUES.includes(r.classOfRecommendation), `${where}: classOfRecommendation invalid`);
+    pushIf(errors, !LOE_VALUES.includes(r.levelOfEvidence), `${where}: levelOfEvidence invalid`);
+  } else {
+    pushIf(errors, !['GRADE', 'consensus'].includes(gradingSystem), `${where}: gradingSystem invalid`);
+    pushIf(errors, r.classOfRecommendation != null || r.levelOfEvidence != null, `${where}: non-AHA guidance must not carry AHA COR/LOE`);
+    pushIf(errors, !r.nativeStrength, `${where}: nativeStrength required for non-AHA guidance`);
+    pushIf(errors, gradingSystem === 'GRADE' && !r.nativeCertainty, `${where}: nativeCertainty required for GRADE guidance`);
+    pushIf(errors, !/^https:\/\//.test(r.sourceUrl || ''), `${where}: primary sourceUrl required for non-AHA guidance`);
+  }
   pushIf(errors, !VERIFICATION_VALUES.includes(r.verificationStatus), `${where}: verificationStatus invalid`);
 
   if (r.classOfRecommendation === 'I') {

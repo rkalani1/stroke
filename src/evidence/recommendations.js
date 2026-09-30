@@ -67,30 +67,38 @@ export const recommendations = [
     id: 'rec-ich-anticoag-reversal-fxa',
     topic: 'ich-anticoag-reversal',
     setting: 'inpatient',
-    text: 'In factor Xa inhibitor-associated ICH, reverse the anticoagulant effect rapidly using the locally approved 4F-PCC pathway. The AHA/ASA 2022 guideline rated andexanet alfa as reasonable (Class 2a) and 4F-PCC or aPCC as may be considered (Class 2b), but andexanet is no longer marketed in the US after the December 2025 FDA safety action on thromboembolic events, and the 2026 Neurocritical Care Society/Society of Critical Care Medicine focused update conditionally recommends 4F-PCC rather than andexanet. Monitor for thrombotic complications.',
-    classOfRecommendation: 'IIa',
-    levelOfEvidence: 'B-NR',
-    guidelineSource: 'AHA/ASA 2022 ICH Guideline (pre-ANNEXA-I); ANNEXA-I (2024); FDA Andexxa safety communication and US withdrawal (Dec 2025)',
+    text: 'For spontaneous intracranial hemorrhage associated with a factor Xa inhibitor, the 2026 NCS/SCCM focused update conditionally suggests 4-factor PCC rather than andexanet alfa (moderate-certainty evidence). Reverse promptly using the applicable local pathway, with monitoring for thrombotic complications.',
+    gradingSystem: 'GRADE',
+    nativeStrength: 'Conditional',
+    nativeCertainty: 'Moderate',
+    classOfRecommendation: null,
+    levelOfEvidence: null,
+    sourceUrl: 'https://link.springer.com/article/10.1007/s12028-026-02601-4',
+    guidelineSource: 'NCS/SCCM 2026 focused antithrombotic-reversal update, recommendation 1–1',
     supportingClaimIds: ['cl-ich-andexanet-fxa'],
     caveats: [
-      'ANNEXA-I demonstrated higher hemostatic efficacy with andexanet but more thrombotic complications vs usual care.',
-      'The former US andexanet alfa label covered apixaban and rivaroxaban only (ANNEXA-I also enrolled edoxaban-treated patients). Since US sales ended December 22, 2025, 4F-PCC (or aPCC) per the local pathway is the US reversal option for all factor Xa inhibitors, including edoxaban (PCC use for factor Xa inhibitor reversal is off-label).',
+      'For traumatic factor Xa inhibitor-associated ICH, the separate NCS/SCCM recommendation also favors 4F-PCC over andexanet, conditionally, but with very low certainty.',
+      'The native GRADE badge applies to the 2026 4F-PCC recommendation. The linked ANNEXA-I claim describes historical trial evidence, not the source of an AHA class for PCC.',
+      'FDA communicated that US Andexxa risks outweighed benefits; AstraZeneca submitted a request for voluntary BLA withdrawal. US sales ended December 22, 2025; this does not establish worldwide withdrawal or completion of the US withdrawal process.',
+      'PCC use for factor Xa inhibitor reversal is off-label. This recommendation does not establish interchangeable efficacy or dosing for activated PCC.',
       'Reversal should not delay neurosurgical evaluation.'
     ],
-    lastReviewed: '2026-09-26',
-    verificationStatus: 'verified-guideline'
+    lastReviewed: '2026-09-30',
+    verificationStatus: 'verified-guideline',
+    verificationNotes: 'Native recommendation 1–1 and its moderate certainty paired to the full 2026 primary guideline; traumatic recommendation 1–2 has very low certainty.'
   }),
 
   makeRecommendation({
     id: 'rec-ich-anticoag-reversal-warfarin',
     topic: 'ich-anticoag-reversal',
     setting: 'inpatient',
-    text: 'In warfarin-associated ICH with INR ≥2.0, give 4F-PCC dosed by INR/weight (recommended in preference to FFP) to rapidly correct the INR. Give IV vitamin K 10 mg directly after factor replacement to prevent INR rebound. FFP is a slower, inferior alternative.',
+    text: 'In warfarin-associated ICH with INR ≥2.0, give 4F-PCC dosed by INR/weight (recommended in preference to FFP) to rapidly correct the INR. Give IV vitamin K 10 mg directly after factor replacement to prevent INR rebound. 4F-PCC is preferred for rapid INR correction; this is not a claim of superiority for every clinical outcome.',
     classOfRecommendation: 'I',
     levelOfEvidence: 'B-R',
     guidelineSource: 'AHA/ASA 2022 ICH Guideline',
     supportingClaimIds: ['cl-ich-warfarin-reversal-pcc-vk'],
     caveats: [
+      'The Class I/B-R badge applies to 4F-PCC over FFP when INR is ≥2.0. IV vitamin K after factor replacement is a separate Class I/C-LD recommendation.',
       'Vitamin K is required for sustained reversal; PCC alone is short-acting.',
       'FFP carries volume-overload risk and slower correction.'
     ],
@@ -105,13 +113,15 @@ export const recommendations = [
     text: 'IV thrombolysis can be beneficial (1) in unknown-onset stroke (e.g., wake-up) when treatment can start within 4.5 h of symptom recognition and MRI shows DWI-FLAIR mismatch (DWI lesion smaller than one-third of the MCA territory without marked FLAIR change), and (2) in patients ineligible for EVT who have salvageable penumbra on automated perfusion imaging 4.5-9 h from LKW or within 9 h of the midpoint of sleep for wake-up stroke. The pivotal trials (WAKE-UP, EXTEND) used alteplase; ESO 2023 expert consensus considers tenecteplase 0.25 mg/kg a reasonable alternative for wake-up/unknown-onset stroke selected with advanced imaging.',
     classOfRecommendation: 'IIa',
     levelOfEvidence: 'B-R',
-    guidelineSource: 'AHA/ASA 2026 AIS Guideline; ESO 2023',
+    sourceUrl: 'https://doi.org/10.1161/STR.0000000000000530',
+    guidelineSource: 'AHA/ASA 2026 AIS Guideline, section 4.6.3 recommendations 1–2, with July 2026 correction item 13; ESO 2023 expert consensus is separate',
     supportingClaimIds: ['cl-late-window-ivt-non-lvo', 'cl-tnk-late-window-non-lvo'],
     caveats: [
+      'The July 2026 correction (doi:10.1161/STR.0000000000000530, item 13) added EVT-ineligibility to perfusion-selected recommendation 2 and changed its wording to can be beneficial. The original January table predates this correction. The IIa/B-R badge applies to the AHA recommendations, not the separately described ESO expert consensus.',
       'Imaging-based selection is required; unselected late-window thrombolysis is not supported (TWIST).',
       'Time from LKW remains a key safety determinant; TIMELESS extended TNK to 24 h with mismatch selection but the overall primary endpoint did not reach significance.',
       'OPTION (JAMA 2026) supports perfusion-selected tenecteplase to 24 h in non-LVO stroke without planned EVT, with sICH 2.8% vs 0%; a single-country trial that post-dates the 2026 AHA/ASA guideline, so it is not a guideline-graded indication.',
-      'Beyond 4.5 h, adding IV tenecteplase before planned EVT has not improved outcomes (TNK-PLUS for anterior LVO; ATTENTION LATE for basilar occlusion).'
+      'Late-window bridging trials differ in population and selection: TNK-PLUS and ATTENTION LATE did not demonstrate primary-outcome benefit, while TRACE-5 reported benefit in its selected population. These results do not establish that absence of EVT is a causal requirement for IVT benefit; the guideline eligibility boundaries above remain source-specific.'
     ],
     lastReviewed: '2026-09-26',
     verificationStatus: 'verified-guideline'

@@ -30,8 +30,8 @@ describe('Stroke Prognosis Bedside Calculator Helpers', () => {
     }
   });
 
-  describe('ASTRAL Score & Risk Mapping', () => {
-    it('calculates baseline ASTRAL score and maps risk correctly', () => {
+  describe('ASTRAL Score and Withheld Risk Mapping', () => {
+    it('calculates baseline ASTRAL score without a probability estimate', () => {
       const inputs = {
         age: 65,
         nihss: 10,
@@ -44,7 +44,7 @@ describe('Stroke Prognosis Bedside Calculator Helpers', () => {
       const score = calculateAstralScore(inputs);
       // age (13) + nihss (10) = 23
       expect(score).toBe(23);
-      expect(getAstralRisk(score)).toBe('~15%');
+      expect(getAstralRisk(score)).toBeNull();
     });
 
     it('calculates high-risk ASTRAL score with mg/dL glucose conversion', () => {
@@ -59,7 +59,7 @@ describe('Stroke Prognosis Bedside Calculator Helpers', () => {
       };
       const score = calculateAstralScore(inputs);
       expect(score).toBe(44);
-      expect(getAstralRisk(score)).toBe('> 90%');
+      expect(getAstralRisk(score)).toBeNull();
     });
 
     it('calculates low-risk ASTRAL score', () => {
@@ -74,11 +74,22 @@ describe('Stroke Prognosis Bedside Calculator Helpers', () => {
       };
       const score = calculateAstralScore(inputs);
       expect(score).toBe(10);
-      expect(getAstralRisk(score)).toBe('< 5%');
+      expect(getAstralRisk(score)).toBeNull();
     });
   });
 
-  describe('PLAN Score & Risk Mapping', () => {
+  it.each(['', null, undefined, -1, 0, 'invalid'])('does not score missing or invalid ASTRAL glucose %s', glucose => {
+    expect(calculateAstralScore({ age: 65, nihss: 10, glucose, glucoseUnit: 'mmol' })).toBeNull();
+  });
+
+  it('renders unavailable outcome estimates rather than ASTRAL or PLAN probabilities', () => {
+    const html = ReactDOMServer.renderToStaticMarkup(React.createElement(StrokePrognosisCalculator));
+    expect(html).toContain('Outcome percentages are unavailable pending validation');
+    expect(html).not.toContain('90d Poor Outcome');
+    expect(html).not.toContain('Risk Classification');
+  });
+
+  describe('PLAN Score and Withheld Risk Mapping', () => {
     it('calculates low-risk PLAN score and risk', () => {
       const inputs = {
         dependence: false,
@@ -94,8 +105,7 @@ describe('Stroke Prognosis Bedside Calculator Helpers', () => {
       const score = calculatePlanScore(inputs);
       expect(score).toBe(4);
       const risk = getPlanRisk(score);
-      expect(risk.mortality).toBe('0.7%');
-      expect(risk.depMortality).toBe('12%');
+      expect(risk).toEqual({ mortality: null, depMortality: null, available: false });
     });
 
     it('calculates mid-range PLAN score and risk', () => {
@@ -114,10 +124,7 @@ describe('Stroke Prognosis Bedside Calculator Helpers', () => {
       // 1 (chf) + 1 (afib) + 7 (age) + 2 (leg) + 2 (arm) + 1 (aphasia) = 14 pts
       expect(score).toBe(14);
       const risk = getPlanRisk(score);
-      // score 14 is in 13-16 range:
-      // m = 15 + (14-13)*(35-15)/3 = 15 + 6.67 = 21.67
-      expect(risk.mortality).toBe('~21.7%');
-      expect(risk.depMortality).toBe('~68%');
+      expect(risk).toEqual({ mortality: null, depMortality: null, available: false });
     });
 
     it('calculates maximum PLAN score risk', () => {
@@ -135,8 +142,7 @@ describe('Stroke Prognosis Bedside Calculator Helpers', () => {
       const score = calculatePlanScore(inputs);
       expect(score).toBe(24);
       const risk = getPlanRisk(score);
-      expect(risk.mortality).toBe('> 65%');
-      expect(risk.depMortality).toBe('> 95%');
+      expect(risk).toEqual({ mortality: null, depMortality: null, available: false });
     });
   });
 

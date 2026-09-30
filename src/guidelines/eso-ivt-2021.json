@@ -136,20 +136,21 @@
       "levelOfEvidence": "Low certainty",
       "text": "For patients with acute ischaemic stroke of <4.5 h duration and not eligible for thrombectomy, we suggest intravenous thrombolysis with alteplase over intravenous thrombolysis with tenecteplase. Please see PICO 5.2 for patients eligible for mechanical thrombectomy.",
       "page": null,
-      "currentEvidenceNote": "Newer ESO guidance reviewed 2026-09-06: the 2023 expedited recommendation supports tenecteplase 0.25 mg/kg as a safe and effective alternative to alteplase 0.9 mg/kg for IVT-eligible stroke within 4.5 hours, and recommends tenecteplase over alteplase for eligible large-vessel occlusion. The 2021 drug-selection statement and its grade are historical.",
-      "currentEvidenceCheckedAt": "2026-09-06",
+      "currentEvidenceNote": "Updated by the 2023 ESO expedited recommendation: tenecteplase 0.25 mg/kg is a safe and effective alternative to alteplase 0.9 mg/kg in eligible AIS within 4.5 hours (strong recommendation, moderate-quality evidence), and is preferred over alteplase for eligible LVO in that window. Preserve the older statement as historical; do not use the 2021 preference as current guidance.",
+      "currentEvidenceCheckedAt": "2026-09-30",
       "currentEvidenceSources": [
         {
           "title": "ESO expedited tenecteplase recommendation 2023",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/37021186/",
-          "pmid": "37021186",
-          "doi": "10.1177/23969873221150022"
+          "url": "https://academic.oup.com/esj/article/8/1/8/8269148",
+          "pmid": "37021186"
         }
       ],
       "sourceStatementType": "recommendation",
       "sourceStatementId": "PICO 5.1 recommendation 1",
       "sourceReference": "Table 12 and individual formal recommendation boxes; PICO 5.1; recommendation 1",
-      "id": "eso-ivt-2021-pico5.1-r1"
+      "id": "eso-ivt-2021-pico5.1-r1",
+      "historicalRecommendation": true,
+      "currentEvidenceAsOf": "2026-09-30"
     },
     {
       "section": "PICO 5.2: Tenecteplase - large vessel occlusion",
@@ -158,20 +159,21 @@
       "levelOfEvidence": "Low certainty",
       "text": "For patients with acute ischaemic stroke of <4.5 h duration and with large vessel occlusion who are candidates for mechanical thrombectomy and for whom intravenous thrombolysis is considered before thrombectomy, we suggest intravenous thrombolysis with tenecteplase 0.25 mg/kg over intravenous thrombolysis with alteplase 0.9 mg/kg.",
       "page": null,
-      "currentEvidenceNote": "Newer ESO guidance reviewed 2026-09-06: the 2023 expedited recommendation supports tenecteplase 0.25 mg/kg as a safe and effective alternative to alteplase 0.9 mg/kg for IVT-eligible stroke within 4.5 hours, and recommends tenecteplase over alteplase for eligible large-vessel occlusion. The 2021 drug-selection statement and its grade are historical.",
-      "currentEvidenceCheckedAt": "2026-09-06",
+      "currentEvidenceNote": "Updated by the 2023 ESO expedited recommendation: tenecteplase 0.25 mg/kg is a safe and effective alternative to alteplase 0.9 mg/kg in eligible AIS within 4.5 hours (strong recommendation, moderate-quality evidence), and is preferred over alteplase for eligible LVO in that window. Preserve the older statement as historical; do not use the 2021 preference as current guidance.",
+      "currentEvidenceCheckedAt": "2026-09-30",
       "currentEvidenceSources": [
         {
           "title": "ESO expedited tenecteplase recommendation 2023",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/37021186/",
-          "pmid": "37021186",
-          "doi": "10.1177/23969873221150022"
+          "url": "https://academic.oup.com/esj/article/8/1/8/8269148",
+          "pmid": "37021186"
         }
       ],
       "sourceStatementType": "recommendation",
       "sourceStatementId": "PICO 5.2 recommendation 1",
       "sourceReference": "Table 12 and individual formal recommendation boxes; PICO 5.2; recommendation 1",
-      "id": "eso-ivt-2021-pico5.2-r1"
+      "id": "eso-ivt-2021-pico5.2-r1",
+      "historicalRecommendation": true,
+      "currentEvidenceAsOf": "2026-09-30"
     },
     {
       "section": "PICO 6.1: Low-dose alteplase",
@@ -586,12 +588,13 @@
       "classOfRec": "Expert Consensus",
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
-      "text": "For patients with acute ischaemic stroke of <4.5 h duration and with a history of intracranial haemorrhage, 8 of 9 members suggest intravenous thrombolysis with alteplase in selected cases. For example, intravenous thrombolysis may be considered if a long time has elapsed since the haemorrhage, if there was a specific underlying cause for the haemorrhage (e.g. trauma, subarachnoid haemorrhage with subsequent endovascular or surgical aneurysm removal, or use of specific antithrombotic medication).",
+      "text": "For patients with acute ischaemic stroke of <4.5 h duration and with a history of intracranial haemorrhage, 8 of 9 members suggest intravenous thrombolysis with alteplase in selected cases. For example, intravenous thrombolysis may be considered if a long time has elapsed since the haemorrhage, if there was a non-recurrent or treated underlying cause for the haemorrhage (e.g. trauma, subarachnoid haemorrhage with subsequent endovascular or surgical aneurysm removal, or use of specific antithrombotic medication). Source note: Source qualification: the detailed PICO 13.3 discussion refers to a non-recurrent or treated underlying cause of prior intracranial hemorrhage; Table 12 shortens this to a specific underlying cause. These are selected-case expert-consensus considerations, not blanket clearance for IVT after any prior ICH.",
       "page": null,
       "sourceStatementType": "consensus",
       "sourceStatementId": "PICO 13.3 consensus 1",
       "sourceReference": "Table 12 and individual formal recommendation boxes; PICO 13.3; consensus 1",
-      "id": "eso-ivt-2021-pico13.3-c1"
+      "id": "eso-ivt-2021-pico13.3-c1",
+      "sourceConflictNote": "Source qualification: the detailed PICO 13.3 discussion refers to a non-recurrent or treated underlying cause of prior intracranial hemorrhage; Table 12 shortens this to a specific underlying cause. These are selected-case expert-consensus considerations, not blanket clearance for IVT after any prior ICH."
     },
     {
       "section": "PICO 13.4: Cerebral microbleeds (unknown or low burden)",
@@ -1033,5 +1036,13 @@
         "consensusCount": 0
       }
     ]
+  },
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Primary recommendation text retrieved and compared; exact edition, source locators and unresolved correction/current-context limits in unit ledger.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
   }
 }

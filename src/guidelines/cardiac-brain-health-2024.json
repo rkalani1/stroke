@@ -279,12 +279,22 @@
     {
       "type": "correction",
       "pmid": "39705397",
-      "doi": "10.1161/str.0000000000000483",
-      "publisherUrl": "https://doi.org/10.1161/str.0000000000000483",
+      "doi": "10.1161/STR.0000000000000483",
+      "publisherUrl": "https://doi.org/10.1161/STR.0000000000000483",
       "status": "unresolved",
-      "note": "The indexed correction was confirmed, but its substantive text could not be retrieved from the publisher or an authoritative alternative. Its applicability to these entries remains unresolved; consult the correction.",
-      "checkedAt": "2026-09-06",
-      "affectedRecommendationIds": []
+      "note": "The correction was identified, but its complete primary body was not independently recovered. Earlier review notes are preserved separately; this review does not certify that the correction is inapplicable or that the entire current edition has been checked.",
+      "checkedAt": "2026-09-30",
+      "affectedRecommendationIds": [],
+      "previousReviewNote": "The indexed correction was confirmed, but its substantive text could not be retrieved from the publisher or an authoritative alternative. Its applicability to these entries remains unresolved; consult the correction.",
+      "independentReviewScope": "incomplete/unresolved"
     }
-  ]
+  ],
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Publisher/DOI and bounded primary public alternatives assessed; incomplete indexed fragments only, no complete body acquired",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency. 1 publication-update record remains partly reviewed or unresolved; see the individual notices.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
+  }
 }

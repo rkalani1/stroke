@@ -47,7 +47,7 @@
       "cit-clots1-2009"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -106,16 +106,16 @@
     "name": "HeadPoST",
     "fullName": "Head Positioning in Acute Stroke Trial: cluster-randomized, crossover trial of head positioning in acute stroke",
     "category": "stroke-unit-care",
-    "population": "n=11093, adults with acute stroke, NIHSS not reported in the primary publication abstract; 85% of strokes were ischaemic, position initiated soon after hospital admission; median 14 h from symptom onset (IQR 5-35 h) and maintained for 24 h",
+    "population": "n=11093, adults with acute stroke, NIHSS Median NIHSS 4; 85% ischemic stroke, position initiated soon after hospital admission; median 14 h from symptom onset (IQR 5-35 h) and maintained for 24 h",
     "finding": "DID NOT meet — NULL: no significant shift in the 90-day mRS distribution between lying flat and sitting up",
-    "teachingPoint": "Removes routine head-of-bed position from the list of things that change stroke outcome, leaving it a patient-specific judgement about perfusion or aspiration risk.",
+    "teachingPoint": "Individualize positioning for the patient's clinical indication; this trial did not demonstrate an average 90-day disability benefit from routinely assigning either tested position.",
     "PMID": "28636854",
     "year": 2017,
     "citationIds": [
       "cit-headpost-2017"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -140,16 +140,16 @@
     "name": "SHINE",
     "fullName": "Stroke Hyperglycemia Insulin Network Effort (SHINE): Intensive vs Standard Treatment of Hyperglycemia and Functional Outcome in Patients With Acute Ischemic Stroke",
     "category": "stroke-unit-care",
-    "population": "n=1151, mean 66 y (SD 13.1); 529 (46%) women, NIHSS not reported in the primary publication abstract; the primary outcome was adjusted for baseline stroke severity, enrolled within 12 h of stroke onset; treatment for up to 72 h",
+    "population": "n=1151, Mean 66 years (SD 13.1); 524 (46%) women, NIHSS 3–22; prestroke mRS 0 for NIHSS 3–7, or 0–1 for NIHSS 8–22, enrolled within 12 h of stroke onset; treatment for up to 72 h",
     "finding": "DID NOT meet — NULL, and enrolment was STOPPED FOR FUTILITY at a prespecified interim analysis: favourable outcome in 119/581 (20.5%) with intensive control vs 123/570 (21.6%) with standard control",
-    "teachingPoint": "Argues against intensive IV insulin targeting 80-130 mg/dL after ischaemic stroke; a moderate target avoids the hypoglycaemia without giving up any measured functional benefit.",
+    "teachingPoint": "Does not support the tested intensive 80–130 mg/dL regimen. A neutral superiority result does not prove equivalent outcomes or define all other glucose targets.",
     "PMID": "31334795",
     "year": 2019,
     "citationIds": [
       "cit-shine-2019"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

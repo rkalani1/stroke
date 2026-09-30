@@ -86,12 +86,13 @@ describe('complete cardiometabolic guideline source accounting', () => {
     expect(row(hypertension, '5.3.9.2', 6).text).toMatch(/below 140.*24–72 hours/);
   });
 
-  it('records the resolved hypertension correction and the incorporated lipid correction', () => {
+  it('separates unresolved hypertension notice bodies from independently reviewed lipid corrections', () => {
     const reviewed = hypertension.publicationUpdates.find(u => u.pmid === '41984986');
-    expect(reviewed.status).toBe('not-applicable');
-    expect(reviewed.note).toMatch(/Table 16.*lithium.*wrong column/);
+    expect(reviewed.status).toBe('unresolved');
+    expect(reviewed.previousReviewNote).toMatch(/Table 16.*lithium.*wrong column/);
+    expect(reviewed.independentReviewScope).toBe('incomplete/unresolved');
     expect(reviewed.affectedRecommendationIds).toEqual([]);
-    expect(hypertension.publicationUpdates.find(u => u.pmid === '42160500').note).toContain('10-minute intervals');
+    expect(hypertension.publicationUpdates.find(u => u.pmid === '42160500').previousReviewNote).toContain('10-minute intervals');
     const lipidCorrection = dyslipidemia.publicationUpdates.find(u => u.pmid === '42330109');
     expect(lipidCorrection.status).toBe('applied');
     expect(lipidCorrection.note).toMatch(/≥150.*Figures 16 and 17/);

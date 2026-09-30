@@ -15,7 +15,8 @@
       "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
       "text": "In adult patients with ischaemic stroke or TIA of undetermined origin, we recommend a prolonged cardiac monitoring instead of standard 24 h monitoring to increase the detection of subclinical AF. (Quality of evidence: Moderate; Strength of recommendation: Strong for intervention.)",
-      "page": null
+      "page": null,
+      "id": "eso-subclinical-af-screening-2022-1"
     },
     {
       "section": "PICO 1: Longer versus shorter duration of cardiac rhythm monitoring - Expert consensus statement",
@@ -23,7 +24,8 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "In adult patients with ischaemic stroke or TIA of undetermined origin, we suggest prolonged cardiac rhythm monitoring for AF for more than 48 h.",
-      "page": null
+      "page": null,
+      "id": "eso-subclinical-af-screening-2022-2"
     },
     {
       "section": "PICO 2: Additional outpatient cardiac rhythm monitoring versus in-hospital monitoring alone - Evidence-based recommendation",
@@ -31,7 +33,8 @@
       "classNote": "For (printed as 'Weak for intervention')",
       "levelOfEvidence": "Very low certainty",
       "text": "In adult patients with ischaemic stroke or TIA of undetermined origin, we suggest the use of additional outpatient monitoring compared with in-hospital cardiac rhythm monitoring alone to increase the detection of subclinical AF. (Quality of evidence: Very low; Strength of recommendation: Weak for intervention.)",
-      "page": null
+      "page": null,
+      "id": "eso-subclinical-af-screening-2022-3"
     },
     {
       "section": "PICO 2: Additional outpatient cardiac rhythm monitoring - Expert consensus statement",
@@ -39,7 +42,8 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "In adult patients with ischaemic stroke or TIA of undetermined origin we suggest to initiate ECG monitoring as early as possible during the in-hospital stay, to increase the rate of AF detection.",
-      "page": null
+      "page": null,
+      "id": "eso-subclinical-af-screening-2022-4"
     },
     {
       "section": "PICO 3: Implantable versus non-implantable monitoring devices - Evidence-based recommendation",
@@ -47,15 +51,18 @@
       "classNote": "For — note the statement is worded 'we suggest' but the printed strength is 'Strong for intervention' with only Low quality of evidence",
       "levelOfEvidence": "Low certainty",
       "text": "In adult patients with ischaemic stroke or TIA of undetermined origin, we suggest the use of implantable devices for prolonged cardiac monitoring instead of non-implantable devices to increase the detection of subclinical AF. (Quality of evidence: Low; Strength of recommendation: Strong for intervention.)",
-      "page": null
+      "page": null,
+      "id": "eso-subclinical-af-screening-2022-5"
     },
     {
       "section": "PICO 4: Biomarkers (blood, echocardiographic, ECG, heart or brain imaging) to guide AF detection - Evidence-based recommendation",
-      "classOfRec": "Expert Consensus",
-      "classNote": "Uncertain — neither for nor against",
+      "classOfRec": "No recommendation",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "In adult patients with ischaemic stroke or TIA of undetermined origin there is continued uncertainty over the advantages of the use of blood, echocardiographic, ECG or heart or brain imaging biomarkers to increase the detection of subclinical AF.",
-      "page": null
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "id": "eso-subclinical-af-screening-2022-6"
     },
     {
       "section": "PICO 4: Biomarkers to guide AF detection - Expert consensus statement",
@@ -63,15 +70,18 @@
       "classNote": "Against using biomarkers to EXCLUDE patients from long-term monitoring (not against biomarkers as such)",
       "levelOfEvidence": "Ungraded",
       "text": "In adult patients with ischaemic stroke or TIA of undetermined origin the presence of potential blood, echocardiographic, ECG or brain imaging biomarkers might increase the probability of AF detection, but given the limited current evidence we suggest avoiding their use for excluding patients from long-term ECG monitoring.",
-      "page": null
+      "page": null,
+      "id": "eso-subclinical-af-screening-2022-7"
     },
     {
       "section": "PICO 5: Implantable versus non-implantable monitoring in patients with PFO - Evidence-based recommendation",
-      "classOfRec": "Expert Consensus",
-      "classNote": "Uncertain — neither for nor against",
+      "classOfRec": "No recommendation",
+      "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "In adult patients with ischaemic stroke or TIA of undetermined origin and PFO, there is continued uncertainty over the risks and benefits of the use of implantable monitor devices over any non-implantable external monitor devices to increase the detection of subclinical AF.",
-      "page": null
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "id": "eso-subclinical-af-screening-2022-8"
     },
     {
       "section": "PICO 5: Implantable versus non-implantable monitoring in patients with PFO - Expert consensus statement",
@@ -79,7 +89,8 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "In adult patients with ischaemic stroke or TIA of undetermined origin and PFO, we suggest prolonged cardiac rhythm monitoring for AF for more than 48 h in patients older than 55 years to increase the detection of subclinical AF.",
-      "page": null
+      "page": null,
+      "id": "eso-subclinical-af-screening-2022-9"
     },
     {
       "section": "PICO 5: Implantable versus non-implantable monitoring in patients with PFO - Expert consensus statement",
@@ -87,7 +98,8 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "We suggest prolonged cardiac rhythm monitoring for AF to increase the rate of anticoagulation or reduce unnecessary PFO occluder implantations in patients with cryptogenic stroke and PFO older than 55 years.",
-      "page": null
+      "page": null,
+      "id": "eso-subclinical-af-screening-2022-10"
     },
     {
       "section": "PICO 5: Implantable versus non-implantable monitoring in patients with PFO - Expert consensus statement",
@@ -95,15 +107,17 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "The MWG suggests implantable monitoring devices, compared to any non-implantable external monitoring device to detect paroxysmal AF in patients with cryptogenic stroke and PFO older than 55 years.",
-      "page": null
+      "page": null,
+      "id": "eso-subclinical-af-screening-2022-11"
     },
     {
       "section": "PICO 5: Implantable versus non-implantable monitoring in patients with PFO - Expert consensus statement",
       "classOfRec": "Expert Consensus",
       "classNote": "For (basic monitoring may suffice in patients younger than 55 years)",
       "levelOfEvidence": "Ungraded",
-      "text": "In patients younger than 55 years with undetermined stroke and PFO, we suggest that a basic cardiac monitoring during 24 h by telemetry or Holter-ECG could be enough.",
-      "page": null
+      "text": "In patients younger than 55 years with undetermined stroke and PFO, we suggest that a basic cardiac monitoring during 24 h by telemetry or Holter-ECG could be enough. Clinical, stroke and PFO characteristics must be taken into account; this is not a blanket rule that 24 hours excludes occult AF.",
+      "page": null,
+      "id": "eso-subclinical-af-screening-2022-12"
     }
   ],
   "documentType": "guideline",
@@ -115,9 +129,19 @@
       "doi": "10.1177/23969873221133924",
       "publisherUrl": "https://doi.org/10.1177/23969873221133924",
       "status": "not-applicable",
-      "note": "Adds an omitted informed-consent declaration; no clinical recommendation changes.",
-      "checkedAt": "2026-09-06",
-      "affectedRecommendationIds": []
+      "note": "The complete notice adds an informed-consent declaration; no clinical recommendation change.",
+      "checkedAt": "2026-09-30",
+      "affectedRecommendationIds": [],
+      "previousReviewNote": "Adds an omitted informed-consent declaration; no clinical recommendation changes.",
+      "independentReviewScope": "complete primary notice read"
     }
-  ]
+  ],
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Primary recommendation text retrieved and compared; exact edition, source locators and unresolved correction/current-context limits in unit ledger.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
+  }
 }

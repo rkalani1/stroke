@@ -4,7 +4,7 @@
     "name": "CHOICE",
     "fullName": "Intra-arterial Alteplase Following Successful Thrombectomy",
     "category": "ia-adjunct-after-evt",
-    "population": "n=121, ≥18, NIHSS all, post-EVT",
+    "population": "n=121, ≥18, NIHSS Admission NIHSS ≤25, EVT within 24 hours of last known well; study drug after successful reperfusion",
     "finding": "Favored alteplase: 59.0% (36/61) vs 40.4% (21/52)",
     "teachingPoint": "IA alteplase after successful EVT may improve outcomes; not yet standard of care.",
     "PMID": "35143603",
@@ -13,7 +13,7 @@
       "cit-choice-2022"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -98,7 +98,7 @@
       "cit-ia-tenecteplase-dose-2025"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -123,7 +123,7 @@
     "name": "POST-TNK",
     "fullName": "Intra-Arterial Tenecteplase Following Endovascular Reperfusion for Large Vessel Occlusion Acute Ischemic Stroke",
     "category": "ia-adjunct-after-evt",
-    "population": "n=540, Median 69 y; 40.9% female, NIHSS Baseline median NIHSS 15 (IQR 11-20) IA tenecteplase vs 15 (10-20) control (ATLAS-ER Table 1); protocol NIHSS limits not verified from the primary full text, ≤24 h from last known well",
+    "population": "n=540, ≥18 years, NIHSS ≤25, ≤24 h from last known well",
     "finding": "DID NOT meet superiority: 49.1% (132/269) vs 44.1% (119/270)",
     "teachingPoint": "Neutral: adjunctive IA tenecteplase 0.0625 mg/kg after near-complete or complete reperfusion did not significantly increase 90-day mRS 0-1. It adds a neutral trial to a mixed IA-adjunct literature and is not a basis for routine use.",
     "PMID": "39804681",
@@ -132,7 +132,7 @@
       "cit-post-tnk-2025"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -166,7 +166,7 @@
       "cit-attention-ia-2025"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

@@ -2,9 +2,9 @@
 
 An [MCP](https://modelcontextprotocol.io) server that exposes the stroke
 clinical-decision-support **calculators** and **evidence atlas** as
-agent-callable tools. It wraps the *same* pure functions the web app uses
-(`../src/calculators*.js`) and reads the served data API (`../data`), so agent
-results match the app exactly.
+agent-callable tools. It uses reviewed public calculator exports (`../src/calculators*.js`) and
+reads the served data API (`../data`). Protected institutional helpers remain
+unchanged; agent tools withhold their operational instructions.
 
 **Institution-neutral. Not medical advice** — decision support for qualified
 clinicians; verify against primary sources and local policy.
@@ -24,13 +24,40 @@ npm run smoke   # optional: verify tools work
 `calc_crcl`, `calc_enoxaparin_dose`, `calc_doac_start_timing`,
 `calc_dawn_eligibility`, `calc_defuse3_eligibility`.
 
-`calc_pcc_dose` mirrors the source-gated fixed 2,000-unit pathways. It returns a
-pending result unless the required FXa or dabigatran-fallback confirmations are
-explicit. `calc_andexanet_dose` is retained for compatibility but returns only
-the non-actionable unavailable status and no dose.
+- `calc_tnk_dose` accepts `authority: "guideline"` (default: exact 0.25 mg/kg,
+  maximum 25 mg) or `"fda-label"` (US TNKase AIS weight bands). The returned
+  source and authority are explicit; a dose does not establish IVT eligibility.
+- `calc_crcl` accepts `male`/`female` and returns an adult estimate: `rawValue`
+  is used for renal thresholds; `value` is rounded for display. It does not
+  determine dialysis. Drug-specific weight conventions still require review.
+- `calc_enoxaparin_dose` gives separate adult DVT-treatment and medical-illness
+  prophylaxis label references. Missing/null CrCl selects no dose. Use an
+  unrounded clearance; obesity does not automatically double prophylaxis.
+- `calc_doac_start_timing` retains its input contract but returns `days: null`,
+  `startDate: null`, and `actionable: false`. There is no validated combined
+  NIHSS-based ELAN/OPTIMAS/CATALYST start schedule.
+- `calc_pcc_dose` retains compatibility inputs but returns no PCC dose or
+  repeat-dose/plasma instructions. Its protected institutional source cannot
+  be applied as a universal agent dosing rule.
+- `calc_andexanet_dose` returns non-actionable US availability information,
+  with no andexanet or replacement PCC dose. It does not determine availability
+  in other jurisdictions.
+- DAWN/DEFUSE-3 tools return `partialScreenMet` for the modeled criteria. A
+  positive partial screen has `eligible: null`, `actionable: false`, and named
+  missing domains; a failed screen has `eligible: false` and does not exclude
+  EVT under other evidence. DEFUSE-3's compatibility input `penumbraMl` means
+  **total Tmax >6 s hypoperfused volume including core**, not salvageable-only volume.
 
 **Atlas / data**: `list_calculators`, `search_trials`, `get_trial`,
 `list_guidelines`, `get_guideline`, `generic_bp_protocols`.
+
+`get_guideline` accepts only IDs from `list_guidelines` and retains each source
+review note. `generic_bp_protocols` retains its tool name but returns
+`protocols: null` and `actionable: false`; it does not export protected
+institutional BP targets, titrations, surgical or trial-priority instructions.
+
+`npm run smoke` exercises all 15 tools through the real stdio transport,
+including invalid inputs, withheld outputs, renal thresholds and ID traversal.
 
 ## Configure your agent
 

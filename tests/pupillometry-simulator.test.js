@@ -1,76 +1,33 @@
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, it, expect } from 'vitest';
 import {
+  PupillometrySimulator,
   interpretPupillometry,
   contralateralInitialSize
 } from '../src/simulators/PupillometrySimulator.jsx';
 
-/* Default profile = the slider defaults (normal). */
-const normal = { npi: 4.5, cv: 1.5, change: 20, diff: 0.0 };
-
-describe('Pupillometry simulator — interpretation cascade (ORDER MATTERS)', () => {
-  it('flags NORMAL PROFILE for the default healthy profile', () => {
-    const r = interpretPupillometry(normal);
-    expect(r.status).toBe('NORMAL PROFILE');
-    expect(r.tone).toBe('ok');
+describe('Pupillometry clinical quarantine', () => {
+  it.each([
+    undefined,
+    { npi: 4.5, cv: 1.5, change: 20, diff: 0 },
+    { npi: 0, cv: 0, change: 0, diff: 2 }
+  ])('does not provide clinical action instructions for any profile', (profile) => {
+    const result = interpretPupillometry(profile);
+    expect(result.status).toBe('INTERPRETATION UNAVAILABLE');
+    expect(result.steps).toEqual([]);
   });
 
-  it('flags markedly abnormal pupils without diagnosing herniation', () => {
-    expect(interpretPupillometry({ ...normal, npi: 0.5 }).status).toBe('MARKEDLY ABNORMAL — URGENT REASSESSMENT');
-    expect(interpretPupillometry({ ...normal, npi: 1.0 }).status).toBe('MARKEDLY ABNORMAL — URGENT REASSESSMENT');
-    const r = interpretPupillometry({ ...normal, npi: 0.5 });
-    expect(r.tone).toBe('crit');
+  it('does not convert an NPi difference into a pupil diameter', () => {
+    expect(contralateralInitialSize(4, 1)).toBeNull();
   });
 
-  it('does NOT call herniation just above 1.0 (1.1 falls to severe via NPi < 2.8)', () => {
-    const r = interpretPupillometry({ ...normal, npi: 1.1 });
-    expect(r.status).toBe('ABNORMAL / ASYMMETRIC — REASSESS');
-  });
-
-  it('flags SEVERE SHIFT ALARM at NPi 2.5 (NPi < 2.8)', () => {
-    const r = interpretPupillometry({ ...normal, npi: 2.5 });
-    expect(r.status).toBe('ABNORMAL / ASYMMETRIC — REASSESS');
-    expect(r.tone).toBe('gold');
-  });
-
-  it('flags SEVERE SHIFT ALARM on inter-eye diff ≥ 0.7 even with normal NPi', () => {
-    expect(interpretPupillometry({ ...normal, diff: 0.7 }).status).toBe('ABNORMAL / ASYMMETRIC — REASSESS');
-  });
-
-  it('flags SEVERE SHIFT ALARM on CV < 0.5 even with normal NPi', () => {
-    expect(interpretPupillometry({ ...normal, cv: 0.4 }).status).toBe('ABNORMAL / ASYMMETRIC — REASSESS');
-  });
-
-  it('flags EARLY CLINICAL ALARM at NPi 2.9 (NPi < 3.0 but ≥ 2.8)', () => {
-    const r = interpretPupillometry({ ...normal, npi: 2.9 });
-    expect(r.status).toBe('EARLY CLINICAL ALARM');
-    expect(r.tone).toBe('warn');
-  });
-
-  it('flags EARLY CLINICAL ALARM on CV in [0.5, 0.8) with normal NPi', () => {
-    expect(interpretPupillometry({ ...normal, cv: 0.7 }).status).toBe('EARLY CLINICAL ALARM');
-  });
-
-  it('flags EARLY CLINICAL ALARM on % constriction < 10 with normal NPi', () => {
-    expect(interpretPupillometry({ ...normal, change: 5 }).status).toBe('EARLY CLINICAL ALARM');
-  });
-
-  it('herniation wins over severe/early (cascade order)', () => {
-    // diff ≥ 0.7 would be severe, but NPi ≤ 1.0 short-circuits first.
-    expect(interpretPupillometry({ npi: 0.0, cv: 0.0, change: 0, diff: 2.0 }).status)
-      .toBe('MARKEDLY ABNORMAL — URGENT REASSESSMENT');
-  });
-});
-
-describe('Pupillometry simulator — contralateral anisocoria', () => {
-  it('mirrors the ipsilateral size when symmetric', () => {
-    expect(contralateralInitialSize(4.0, 0.0)).toBe(4.0);
-  });
-
-  it('shrinks the contralateral baseline by diff × 1.5 mm', () => {
-    expect(contralateralInitialSize(4.0, 1.0)).toBe(2.5); // 4.0 − 1.5
-  });
-
-  it('floors the contralateral size at 1.5 mm', () => {
-    expect(contralateralInitialSize(2.0, 2.0)).toBe(1.5); // would be -1.0 → floored
+  it('renders retained evidence without the quarantined controls or advice', () => {
+    const markup = renderToStaticMarkup(React.createElement(PupillometrySimulator));
+    expect(markup).toContain('Pupillometry simulator temporarily unavailable');
+    expect(markup).toContain('ORANGE Study');
+    expect(markup).toContain('Petrosino');
+    expect(markup).toContain('Kim et al.');
+    expect(markup).not.toMatch(/<input|<button|npi-pupil|Actionable next steps|NPi action thresholds|urgent non-contrast head CT|Du 2026/i);
   });
 });

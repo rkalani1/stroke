@@ -36,24 +36,6 @@
     "subtitle": "PDF Document"
   },
   {
-    "id": "quickref-external-ventricular-drain",
-    "title": "External Ventricular Drain",
-    "category": "references",
-    "type": "pdf",
-    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
-    "path": "documents/references/External Ventricular Drain.pdf",
-    "subtitle": "PDF Document"
-  },
-  {
-    "id": "quickref-intracranial-hypertension-herniation",
-    "title": "Intracranial Hypertension & Herniation",
-    "category": "references",
-    "type": "pdf",
-    "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
-    "path": "documents/references/Intracranial Hypertension & Herniation.pdf",
-    "subtitle": "PDF Document"
-  },
-  {
     "id": "quickref-malignant-infarction",
     "title": "Malignant Infarction",
     "category": "references",

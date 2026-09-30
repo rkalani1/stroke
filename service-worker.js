@@ -1,24 +1,41 @@
-/* v7.0 — service worker.
-   Drop-in replacement: service-worker.js
-
-   Per binding amendment #2:
-   - On install: self.skipWaiting() so the new SW reaches the 'waiting' state
-     immediately (no manual SKIP_WAITING postMessage like v5).
-   - On activate: do NOT call self.clients.claim() immediately. Instead,
-     broadcast {type:'sw-update-ready', version:'6.29.2'} to every open
-     client. The app shows a non-blocking toast — clinicians mid-consult are
-     never auto-interrupted. The broadcast only fires on an UPGRADE (an
-     earlier stroke-cache-v* existed); a first install stays silent.
-   - When a client messages {type:'CLAIM_AND_RELOAD'} or legacy
-     {type:'SKIP_WAITING'}, the SW calls clients.claim() and asks the client
-     to soft-reload.
-
-   Cache-name bumped to stroke-cache-v6-29-2. Old caches are cleared on activate.
+/* Service-worker updates are opt-in.
+   Installation precaches the new shell and leaves the worker waiting. A user
+   must choose Reload to update before it may activate. If another in-scope
+   window is open, activation is deferred until that window closes; legacy
+   clients otherwise reload on controllerchange and can lose an active form.
+   Old app caches are retired only on activation. Fetch policy is independent.
 */
 
-const APP_VERSION = '6.29.2';
+const APP_VERSION = '6.30.0';
 const CACHE_PREFIX = 'stroke-cache-v';
-const CACHE_NAME  = 'stroke-cache-v6-29-2';
+const CACHE_NAME  = 'stroke-cache-v6-30-0-clinical-review-20260930';
+
+// Retired teaching figures must not be served from a stale browser cache or
+// a bookmarked URL after this worker takes control. Paths are scope-relative
+// suffixes so both the local root and GitHub Pages /stroke/ deployment work.
+const WITHDRAWN_ASSETS = [
+  '/assets/afib_timing_protocol.png',
+  '/assets/afib_timing_protocol.svg',
+  '/assets/select_score_chart.png',
+  '/assets/select_score_chart.svg',
+  '/assets/toast_classification_infographic.png',
+  '/assets/toast_classification_infographic.svg',
+  '/assets/hematoma_expansion_render.png',
+  '/assets/hematoma_expansion_render.svg',
+  '/assets/ischemic_core_penumbra_render.png',
+  '/assets/ischemic_core_penumbra_render.svg',
+  '/assets/evt_lvo_occlusion_sites.png',
+  '/assets/evt_lvo_occlusion_sites.svg',
+  '/assets/fmd_stroke_mechanisms.png',
+  '/assets/dapt_flowchart_timeline.png',
+  '/assets/dapt_flowchart_timeline.svg',
+  '/assets/aspects_10_regions_render.png',
+  '/assets/aspects_10_regions_render.svg',
+  '/documents/references/External Ventricular Drain.pdf',
+  '/documents/references/Intracranial Hypertension & Herniation.pdf',
+  '/documents/exam/coma exam.pdf',
+  '/documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg'
+];
 
 const CORE_ASSETS = [
   // Install-time precache: the app shell and everything the app itself reads.
@@ -65,80 +82,107 @@ const CORE_ASSETS = [
   './assets/splash/splash-iphone-16-pro-max.png',
   './assets/splash/splash-iphone-16-pro.png',
   './assets/splash/splash-iphone-16.png',
-  './assets/splash/splash-iphone-8-7-6.png',
-  './assets/toast_classification_infographic.svg',
-  './assets/dapt_flowchart_timeline.svg',
-  './assets/afib_timing_protocol.svg',
-  './assets/select_score_chart.svg',
-  './assets/ischemic_core_penumbra_render.svg',
-  './assets/aspects_10_regions_render.svg',
-  './assets/evt_lvo_occlusion_sites.svg',
-  './assets/hematoma_expansion_render.svg'
+  './assets/splash/splash-iphone-8-7-6.png'
 ];
 
 const CDN_ASSETS = [];
 
+async function purgeWithdrawnCacheEntries() {
+  // A waiting worker does not control requests yet. Remove only retired files
+  // from this app's caches so the previous worker cannot serve those entries.
+  // Scope and origin checks preserve other deployments and foreign resources.
+  const retiredPaths = new Set(WITHDRAWN_ASSETS.map(suffix =>
+    decodeURIComponent(new URL(`.${suffix}`, self.registration.scope).pathname)
+  ));
+  const names = (await caches.keys()).filter(name => name.startsWith(CACHE_PREFIX));
+  for (const name of names) {
+    const cache = await caches.open(name);
+    const requests = await cache.keys();
+    await Promise.all(requests.map(request => {
+      let url;
+      let pathname;
+      try {
+        url = new URL(request.url);
+        pathname = decodeURIComponent(url.pathname);
+      } catch (_) { return; }
+      if (url.origin === self.location.origin && retiredPaths.has(pathname)) return cache.delete(request);
+    }));
+  }
+}
+
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) =>
-      cache.addAll(CORE_ASSETS).then(() =>
-        Promise.allSettled(CDN_ASSETS.map(url => cache.add(url)))
-      )
-    )
-  );
-  // v7 amendment #2: skip waiting so we reach 'waiting' state quickly,
-  // but do NOT claim clients until the user opts in.
-  self.skipWaiting();
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.addAll(CORE_ASSETS);
+    await Promise.allSettled(CDN_ASSETS.map(url => cache.add(url)));
+    // Only a fully staged upgrade withdraws old clinical downloads.
+    await purgeWithdrawnCacheEntries();
+  })());
+  // Do not skip waiting here: activation replaces existing controllers even
+  // without clients.claim(), and older clients reload on controllerchange.
 });
+
+// A waiting worker cannot claim clients until it has activated. These IDs
+// remain in memory across that transition; an already active worker may also
+// receive a retry and acknowledges only the window that requested it.
+const reloadRequests = new Set();
+
+async function claimAndRequestReload() {
+  await self.clients.claim();
+  const ids = [...reloadRequests];
+  reloadRequests.clear();
+  for (const id of ids) {
+    const client = await self.clients.get(id);
+    if (client) client.postMessage({ type: 'sw-claimed-reload', version: APP_VERSION });
+  }
+}
 
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-
-    // An earlier release's cache is the signal that this activate is an
-    // UPGRADE rather than a first install. Read it before the delete sweep.
-    // Without this check the first-ever visitor is told "a new version is
-    // ready" on the page they just opened — the update banner is the only
-    // channel that tells a clinician the evidence changed, so firing it
-    // spuriously trains them to dismiss it.
-    const isUpgrade = keys.some(k => k !== CACHE_NAME && k.startsWith(CACHE_PREFIX));
-
-    await Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)));
-
-    if (!isUpgrade) {
-      // eslint-disable-next-line no-console
-      console.info(`[SW] v${APP_VERSION} installed (first run) — no update banner`);
-      return;
-    }
-
-    // Broadcast the update — do NOT call clients.claim() here. Include
-    // uncontrolled windows because an already-open page may still be under the
-    // previous worker until the user accepts the visible reload banner.
-    const clientsList = await self.clients.matchAll({ includeUncontrolled: true });
-    for (const c of clientsList) {
-      c.postMessage({ type: 'sw-update-ready', version: APP_VERSION });
-    }
-    // eslint-disable-next-line no-console
-    console.info(`[SW] v${APP_VERSION} staged, awaiting client opt-in`);
+    await Promise.all(keys.filter(k => k !== CACHE_NAME && k.startsWith(CACHE_PREFIX)).map(k => caches.delete(k)));
+    // First install (or automatic activation after all old tabs close) is
+    // silent. Only a pending explicit request can claim/reload a window.
+    if (reloadRequests.size) await claimAndRequestReload();
   })());
 });
-
-async function claimAndRequestReload() {
-  await self.clients.claim();
-  const clientsList = await self.clients.matchAll({ includeUncontrolled: true });
-  for (const c of clientsList) {
-    c.postMessage({ type: 'sw-claimed-reload', version: APP_VERSION });
-  }
-}
 
 self.addEventListener('message', (event) => {
   if (!event.data) return;
   if (event.data.type === 'CLAIM_AND_RELOAD' || event.data.type === 'SKIP_WAITING') {
-    event.waitUntil(claimAndRequestReload());
+    event.waitUntil((async () => {
+      const requester = event.source;
+      if (!requester || !requester.id) return;
+      const windows = (await self.clients.matchAll({ type: 'window', includeUncontrolled: true }))
+        .filter(client => client.url.startsWith(self.registration.scope));
+      if (!windows.some(client => client.id === requester.id)) return;
+      if (windows.some(client => client.id !== requester.id)) {
+        requester.postMessage({
+          type: 'sw-update-ready',
+          // 6.29.2 reads only version, so retain usable migration guidance.
+          version: `${APP_VERSION} (close other Stroke tabs, then choose Reload again)`,
+          blocked: true,
+          message: 'Close other Stroke tabs, then choose Reload to update again. This encounter has not been reloaded.'
+        });
+        return;
+      }
+      reloadRequests.add(requester.id);
+      await self.skipWaiting();
+      try {
+        await claimAndRequestReload();
+      } catch (error) {
+        // skipWaiting resolves before activation. The activate handler above
+        // finishes this request once claim() is legal; other failures surface.
+        if (error.name !== 'InvalidStateError') throw error;
+      }
+    })());
   }
 });
 
-const isHtmlRequest = (request) => {
+const isHtmlRequest = (request, url) => {
+  // Opening a PDF or image in a new tab is also a navigation. Only app/HTML
+  // routes may fall back to the app shell when the network is unavailable.
+  if (/\.[^/]+$/.test(url.pathname) && !/\.html?$/i.test(url.pathname)) return false;
   if (request.mode === 'navigate') return true;
   return (request.headers.get('accept') || '').includes('text/html');
 };
@@ -147,29 +191,41 @@ const isShellAsset = (url) =>
   url.pathname.endsWith('/app.js') ||
   url.pathname.endsWith('/tailwind.css') ||
   url.pathname.endsWith('/manifest.json') ||
-  url.pathname.endsWith('.pdf');
+  /\.pdf$/i.test(url.pathname);
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
 
   if (url.origin === self.location.origin) {
+    let pathname = url.pathname;
+    try { pathname = decodeURIComponent(pathname); } catch { /* malformed paths are left to the server */ }
+    if (WITHDRAWN_ASSETS.some(path => pathname.endsWith(path))) {
+      event.respondWith(Promise.resolve(new Response(
+        'This teaching resource has been withdrawn. Open the current Stroke education library for the revised material.',
+        { status: 410, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' } }
+      )));
+      return;
+    }
     // Network-first for HTML + shell — always serve freshest deploy when online
-    if (isHtmlRequest(event.request) || isShellAsset(url)) {
+    if (isHtmlRequest(event.request, url) || isShellAsset(url)) {
       event.respondWith(
-        fetch(event.request).then((response) => {
+        fetch(event.request, { cache: 'no-cache' }).then((response) => {
           if (response.ok) {
             const copy = response.clone();
             caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
           }
           return response;
         }).catch(() =>
-          event.request.mode === 'navigate'
+          event.request.mode === 'navigate' && isHtmlRequest(event.request, url)
             // Offline navigation/reload: serve the cached working app shell FIRST
             // (it's in CORE_ASSETS, so always precached and fully functional offline).
             // offline.html is only a last resort if the shell was never cached.
             ? caches.match('./index.html').then(r => r || caches.match('./offline.html'))
-            : caches.match(event.request, { ignoreSearch: true }).then(c => c || caches.match('./index.html'))
+            : caches.match(event.request, { ignoreSearch: true }).then(c => c || new Response(
+              'This resource is not available offline. Reconnect and open the current library.',
+              { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } }
+            ))
         )
       );
       return;

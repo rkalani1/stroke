@@ -13,6 +13,128 @@
 import { makeCitation } from './schema.js';
 
 export const citations = [
+  makeCitation({
+    "id": "cit-ncs-neuroprognostication-ais-2026",
+    "type": "guideline",
+    "authors": "Mainali S, Fontaine GV, Rajajee V, et al.",
+    "title": "Guidelines for Neuroprognostication in Critically ill Adults with Acute Ischemic Stroke.",
+    "journal": "Neurocritical care",
+    "year": 2026,
+    "pmid": "41942818",
+    "doi": "10.1007/s12028-026-02486-3",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41942818/",
+    "verificationStatus": "verified-pubmed",
+    "verificationNotes": "Original PubMed metadata and selected guideline recommendations compared 2026-09-30. Bibliographic registration supports existing Education references; no whole-guideline clinical or correction-chain certification."
+}),
+  makeCitation({
+    "id": "cit-extend-ia-tnk-part2-2020",
+    "authors": "Campbell BCV, Mitchell PJ, Churilov L, et al.",
+    "title": "Effect of Intravenous Tenecteplase Dose on Cerebral Reperfusion Before Thrombectomy in Patients With Large Vessel Occlusion Ischemic Stroke: The EXTEND-IA TNK Part 2 Randomized Clinical Trial.",
+    "journal": "JAMA",
+    "year": 2020,
+    "pmid": "32078683",
+    "doi": "10.1001/jama.2020.1511",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32078683/",
+    "verificationStatus": "verified-pubmed",
+    "verificationNotes": "Bibliographic identity and original abstract compared. Supports a dose-specific 0.4 mg/kg safety/efficacy limitation; does not imply complete protocol or supplement review."
+  }),
+  makeCitation({
+    "id": "cit-nor-test2a-2022",
+    "authors": "Kvistad CE, Næss H, Helleberg BH, et al.",
+    "title": "Tenecteplase versus alteplase for the management of acute ischaemic stroke in Norway (NOR-TEST 2, part A): a phase 3, randomised, open-label, blinded endpoint, non-inferiority trial.",
+    "journal": "Lancet Neurology",
+    "year": 2022,
+    "pmid": "35525250",
+    "doi": "10.1016/S1474-4422(22)00124-7",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35525250/",
+    "verificationStatus": "verified-pubmed",
+    "verificationNotes": "Bibliographic identity and original abstract compared. Supports a dose-specific 0.4 mg/kg safety/efficacy limitation; does not imply complete protocol or supplement review."
+  }),
+
+  makeCitation({
+    "id": "cit-hope-bp-2026",
+    "authors": "Camps-Renom P, Guasch-Jiménez M, Álvarez-Cienfuegos J, et al.",
+    "title": "Personalized Blood Pressure Targeting After Endovascular Therapy for Acute Ischemic Stroke: A Randomized Clinical Trial.",
+    "journal": "JAMA neurology",
+    "year": 2026,
+    "pmid": "42258192",
+    "doi": "10.1001/jamaneurol.2026.1706",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42258192/",
+    "verificationStatus": "verified-pubmed",
+    "verificationNotes": "Bibliographic identity and original abstract compared 2026-09-30. Full clinical appraisal and guideline adoption are separate; see trial-specific limitations."
+  }),
+  makeCitation({
+    "id": "cit-lais-2026",
+    "authors": "Li S, Feng B, He D, et al.",
+    "title": "Loberamisal for Acute Ischemic Stroke: The LAIS Randomized Clinical Trial.",
+    "journal": "JAMA",
+    "year": 2026,
+    "pmid": "42721021",
+    "doi": "10.1001/jama.2026.16557",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42721021/",
+    "verificationStatus": "verified-pubmed",
+    "verificationNotes": "Bibliographic identity and original abstract compared 2026-09-30. Full clinical appraisal and guideline adoption are separate; see trial-specific limitations."
+  }),
+  makeCitation({
+    "id": "cit-erase-stroke-2026",
+    "authors": "Xiang Y, Jin WS, Zhu XC, et al.",
+    "title": "Early and prolonged oral edaravone for neuroprotection in acute ischemic stroke: the ERASE-STROKE randomized controlled phase 3 trial.",
+    "journal": "Science bulletin",
+    "year": 2026,
+    "pmid": "42705987",
+    "doi": "10.1016/j.scib.2026.08.038",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42705987/",
+    "verificationStatus": "verified-pubmed",
+    "verificationNotes": "Bibliographic identity and original abstract compared 2026-09-30. Full clinical appraisal and guideline adoption are separate; see trial-specific limitations."
+  }),
+  makeCitation({
+    "id": "cit-atis-nvaf-2025",
+    "authors": "Okazaki S, Tanaka K, Yazawa Y, et al.",
+    "title": "Optimal Antithrombotics for Ischemic Stroke and Concurrent Atrial Fibrillation and Atherosclerosis: A Randomized Clinical Trial.",
+    "journal": "JAMA neurology",
+    "year": 2025,
+    "pmid": "41051787",
+    "doi": "10.1001/jamaneurol.2025.3662",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41051787/",
+    "verificationStatus": "verified-pubmed",
+    "verificationNotes": "Bibliographic identity and original abstract compared 2026-09-30. Full clinical appraisal and guideline adoption are separate; see trial-specific limitations."
+  }),
+  makeCitation({
+    "id": "cit-restart-extended-2021",
+    "authors": "Al-Shahi Salman R et al.",
+    "title": "Effects of Antiplatelet Therapy After Stroke Caused by Intracerebral Hemorrhage: Extended Follow-up of the RESTART Randomized Clinical Trial",
+    "journal": "JAMA Neurology",
+    "year": 2021,
+    "pmid": "34477823",
+    "doi": "10.1001/jamaneurol.2021.2956",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34477823/",
+    "verificationStatus": "verified-pubmed",
+    "verificationNotes": "Primary extended-cohort outcome and metadata verified; follow-up of the same RESTART cohort, not a second RCT."
+  }),
+  makeCitation({
+    "id": "cit-savechilds-pro-2024",
+    "authors": "Sporns PB, Bhatia K, Abruzzo T, et al.",
+    "title": "Endovascular thrombectomy for childhood stroke (Save ChildS Pro): an international, multicentre, prospective registry study",
+    "journal": "Lancet Child & Adolescent Health",
+    "year": 2024,
+    "pmid": "39401507",
+    "doi": "10.1016/S2352-4642(24)00233-5",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39401507/",
+    "verificationStatus": "verified-pubmed",
+    "verificationNotes": "Original abstract and identity compared; prospective observational registry, not randomized evidence. Full report not appraised."
+  }),
+  makeCitation({
+    id: 'cit-ncs-sccm-reversal-2026',
+    authors: 'Vallejo MC, Kennedy LS, Dengler B, et al.',
+    title: 'Treatment of Antithrombotic-Associated Intracranial Hemorrhage in Adults: A Focused Guideline Update from the Neurocritical Care Society and the Society of Critical Care Medicine',
+    journal: 'Neurocritical Care',
+    year: 2026,
+    pmid: '42786382',
+    doi: '10.1007/s12028-026-02601-4',
+    url: 'https://link.springer.com/article/10.1007/s12028-026-02601-4',
+    verificationStatus: 'verified-guideline',
+    verificationNotes: 'Primary publisher title and selected reversal recommendations compared 2026-09-30; native GRADE strength/certainty preserved. This does not certify every guideline clause.'
+  }),
   // 1) Tenecteplase RCTs — 2021-2026 verified table
   makeCitation({
     id: 'cit-act-2022',

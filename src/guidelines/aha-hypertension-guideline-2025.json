@@ -379,7 +379,7 @@
       "classOfRec": "I",
       "classNote": "",
       "levelOfEvidence": "A",
-      "text": "Reduce dietary sodium to <2300 mg/day, progressing toward an ideal <1500 mg/day, to prevent or treat elevated BP.",
+      "text": "Reduce dietary sodium to <2300 mg/day, progressing toward an ideal <1500 mg/day, to prevent or treat elevated BP. Dietary sodium reduction may be contraindicated in severe symptomatic orthostatic hypotension.",
       "page": 28,
       "pdfPage": 28,
       "sourceRecommendationNumber": 3,
@@ -1146,7 +1146,7 @@
       "classOfRec": "I",
       "classNote": "",
       "levelOfEvidence": "B-R",
-      "text": "Treat chronic hypertension in pregnancy to <140/90 mm Hg to reduce maternal and perinatal morbidity and mortality. Chronic hypertension includes prepregnancy hypertension or SBP 140–159 and/or DBP 90–109 before 20 weeks.",
+      "text": "Treat chronic hypertension in pregnancy to <140/90 mm Hg to reduce maternal and perinatal morbidity and mortality. Chronic hypertension includes prepregnancy hypertension or SBP ≥140 and/or DBP ≥90 mm Hg on two occasions at least 4 hours apart before 20 weeks of gestation. Severe hypertension (SBP ≥160 and/or DBP ≥110 mm Hg) can be confirmed within a short interval (minutes) to facilitate timely treatment; do not delay urgent management for 4 hours.",
       "page": 58,
       "pdfPage": 58,
       "sourceRecommendationNumber": 4,
@@ -1420,33 +1420,39 @@
     {
       "type": "correction",
       "pmid": "41259465",
-      "doi": "10.1161/hyp.0000000000000257",
-      "publisherUrl": "https://doi.org/10.1161/hyp.0000000000000257",
-      "status": "not-applicable",
-      "note": "Corrects comparison/grading-table presentation and aprocitentan supporting text and figure notes. The affected clinical material is not reproduced in the extracted entries.",
-      "checkedAt": "2026-09-06",
-      "affectedRecommendationIds": []
+      "doi": "10.1161/HYP.0000000000000257",
+      "publisherUrl": "https://doi.org/10.1161/HYP.0000000000000257",
+      "status": "unresolved",
+      "note": "The correction was identified, but its complete primary body was not independently recovered. Earlier review notes are preserved separately; this review does not certify that the correction is inapplicable or that the entire current edition has been checked.",
+      "checkedAt": "2026-09-30",
+      "affectedRecommendationIds": [],
+      "previousReviewNote": "Corrects comparison/grading-table presentation and aprocitentan supporting text and figure notes. The affected clinical material is not reproduced in the extracted entries.",
+      "independentReviewScope": "incomplete/unresolved"
     },
     {
       "type": "correction",
       "pmid": "41984986",
-      "doi": "10.1161/hyp.0000000000000262",
-      "publisherUrl": "https://doi.org/10.1161/hyp.0000000000000262",
-      "status": "not-applicable",
-      "note": "Full primary notice reviewed: Table 16 had lithium and thiazide-type diuretics/RAS blockers in the wrong column. The correction identifies the antihypertensive drugs as thiazides/RAS blockers and lithium as the interacting drug. This drug-interaction reference table is not reproduced among the 108 formal recommendations; none requires alteration.",
-      "checkedAt": "2026-09-06",
+      "doi": "10.1161/HYP.0000000000000262",
+      "publisherUrl": "https://doi.org/10.1161/HYP.0000000000000262",
+      "status": "unresolved",
+      "note": "The correction was identified, but its complete primary body was not independently recovered. Earlier review notes are preserved separately; this review does not certify that the correction is inapplicable or that the entire current edition has been checked.",
+      "checkedAt": "2026-09-30",
       "affectedRecommendationIds": [],
-      "verificationSourceUrl": "https://www.ahajournals.org/doi/pdf/10.1161/HYP.0000000000000262"
+      "verificationSourceUrl": "https://www.ahajournals.org/doi/pdf/10.1161/HYP.0000000000000262",
+      "previousReviewNote": "Full primary notice reviewed: Table 16 had lithium and thiazide-type diuretics/RAS blockers in the wrong column. The correction identifies the antihypertensive drugs as thiazides/RAS blockers and lithium as the interacting drug. This drug-interaction reference table is not reproduced among the 108 formal recommendations; none requires alteration.",
+      "independentReviewScope": "incomplete/unresolved"
     },
     {
       "type": "correction",
       "pmid": "42160500",
-      "doi": "10.1161/hyp.0000000000000264",
-      "publisherUrl": "https://doi.org/10.1161/hyp.0000000000000264",
-      "status": "not-applicable",
-      "note": "Table 26 corrects the interval between slow IV labetalol injections from every 2 minutes to 10-minute intervals. This dosing reference table is not reproduced among the 108 formal recommendations; none requires alteration.",
-      "checkedAt": "2026-09-06",
-      "affectedRecommendationIds": []
+      "doi": "10.1161/HYP.0000000000000264",
+      "publisherUrl": "https://doi.org/10.1161/HYP.0000000000000264",
+      "status": "unresolved",
+      "note": "The correction was identified, but its complete primary body was not independently recovered. Earlier review notes are preserved separately; this review does not certify that the correction is inapplicable or that the entire current edition has been checked.",
+      "checkedAt": "2026-09-30",
+      "affectedRecommendationIds": [],
+      "previousReviewNote": "Table 26 corrects the interval between slow IV labetalol injections from every 2 minutes to 10-minute intervals. This dosing reference table is not reproduced among the 108 formal recommendations; none requires alteration.",
+      "independentReviewScope": "incomplete/unresolved"
     }
   ],
   "coverage": {
@@ -1932,5 +1938,13 @@
       "pageCount": 105
     },
     "note": "All 108 numbered COR/LOE recommendation rows across 30 unique tables are represented once, including expert-opinion recommendations. No separately designated ungraded good-practice or consensus statements are present. Narrative supporting text, drug-dose reference tables, figures, and duplicate What Is New/Take-Home summaries are not additional recommendation rows. All three identified Hypertension correction notices were reviewed against these entries; none changes a formal recommendation row."
+  },
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Full105-page original Circulation co-publication PDF; three Hypertension correction bodies only partially accessible",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency. 3 publication-update records remain partly reviewed or unresolved; see the individual notices.",
+    "sourceEditionNote": "August 14 advance Circulation co-publication was used for original joint-guideline text and grades. Complete bodies of all three later Hypertension correction notices remain independently unresolved.",
+    "implementationUpdatedAt": "2026-09-30"
   }
 }

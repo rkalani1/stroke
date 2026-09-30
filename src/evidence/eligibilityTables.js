@@ -47,7 +47,7 @@ const TRIALS = {
     status: 'enrolling',
     href: CTGOV('NCT05611242'),
     summary:
-      'Emergent carotid stenting plus EVT vs EVT alone for tandem extracranial-carotid + intracranial-LVO occlusions.',
+      'Acute carotid stenting versus non-stenting carotid angioplasty/aspiration, with intracranial treatment as applicable; confirm conflicting registry intracranial-occlusion wording.',
     eligibility: [
       'Age 18–79, AIS within 16 h of LKW, NIHSS ≥ 4, pre-stroke mRS ≤ 2',
       'ASPECTS ≥ 7; if EVT starts >6–16 h from onset, also CTP core < 50 mL (rCBF < 30%) or DWI core < 25 mL',
@@ -253,7 +253,7 @@ const TRIALS = {
       'Age 18–80, Pre-ICH mRS 0–2',
       'Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH',
       'Volume ≥ 20 mL by ABC/2',
-      'Randomization ≤ 16 hours since LKW (surgery < 120 min from randomization)',
+      'Randomization ≤ 16 hours since LKW AND ≤ 2 hours after arrival at the randomizing center; surgery < 120 min after randomization',
       'NIHSS ≥ 6; CTA/MRA without underlying vascular lesion',
       'Goals of care pursue life-saving therapy; no early withdrawal of care within 7 days'
     ],

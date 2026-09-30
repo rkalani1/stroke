@@ -125,14 +125,14 @@
     "category": "evt-large-core",
     "population": "n=246, Median 74 (IQR 65-80), Parent TENSION criteria (extended lesion, extended time window); NCT03094715",
     "finding": "EVT benefit in every stratum: with antiplatelets cOR 2.40 (1.22-4.99), without 2.29 (1.53-3.46); with anticoagulation cOR 2.45 (1.17-5.28), without 2.12 (1.44-3.15); with IVT cOR 1.46 (0.83-2.61), without 2.89 (1.87-4.51)",
-    "teachingPoint": "Preadmission antiplatelets or anticoagulants, or prior IV thrombolysis, should not exclude otherwise-eligible large-core patients from thrombectomy — EVT benefit and safety were unmodified by prior antithrombotic exposure.",
+    "teachingPoint": "Retain the parent-trial result and the uncertainty of exposure subgroups. Do not conflate EVT assignment with the observational prior-IVT safety comparison.",
     "PMID": "42261979",
     "year": 2026,
     "citationIds": [
       "cit-tension-antithrombotic-2026"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -159,14 +159,14 @@
     "category": "evt-large-core",
     "population": "n=432, Parent ANGEL-ASPECT criteria; NCT04551664",
     "finding": "No significant treatment-by-HMCAS interaction (p=0.19): EVT favored without HMCAS (generalized OR 2.78, 95% CI 1.80-4.27, p<0.001); not statistically significant with HMCAS (adjusted OR 1.69, 95% CI 0.93-3.08, p=0.09)",
-    "teachingPoint": "The hyperdense MCA sign marks worse prognosis and harder thrombectomy in large-core stroke but showed no significant interaction with EVT benefit — do not use HMCAS to withhold large-core thrombectomy.",
+    "teachingPoint": "Exploratory imaging association within a randomized trial. Do not use the HMCAS subgroup result alone to deny EVT or to claim a proven absence of treatment-effect modification.",
     "PMID": "41914357",
     "year": 2026,
     "citationIds": [
       "cit-angel-aspect-hmcas-2026"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-09-19",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

@@ -417,7 +417,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B-R",
-      "text": "For patients with AF receiving warfarin, a target INR between 2 and 3 is recommended, as well as optimal management of drug-drug interactions, consistency in vitamin K dietary intake, and routine INR monitoring to improve time in therapeutic range and to minimize risks of preventable thromboembolism or major bleeding.",
+      "text": "For patients with AF receiving warfarin, excluding patients with mechanical valves, a target INR between 2 and 3 is recommended, as well as optimal management of drug-drug interactions, consistency in vitamin K dietary intake, and routine INR monitoring to improve time in therapeutic range and to minimize risks of preventable thromboembolism or major bleeding.",
       "page": null,
       "id": "aha-af-guideline-2023-32",
       "sourceSection": "table-17",
@@ -588,31 +588,25 @@
       "levelOfEvidence": "B-NR",
       "text": "In patients with AF receiving factor Xa inhibitors who develop life-threatening bleeding, treatment with either andexanet alfa (apixaban or rivaroxaban, edoxaban) or 4-factor prothrombin complex concentrate is recommended to rapidly reverse factor Xa inhibitor's anticoagulation effect. (Dual LOE: B-NR applies to the apixaban and rivaroxaban data; C-LD applies to the edoxaban data and to 4-factor prothrombin complex concentrate.)",
       "page": null,
-      "currentEvidenceNote": "US safety and availability update reviewed 2026-09-26 (not part of the 2023 guideline text): andexanet alfa (Andexxa) was withdrawn from the US market in December 2025 after an FDA safety review concluded that its serious risks, including thrombotic events, outweigh its benefits. In the US, 4-factor prothrombin complex concentrate is the remaining agent named in this recommendation; its use for factor Xa inhibitor reversal is off-label. This 2023 recommendation retains its original source grading and must not be read as a current US endorsement or evidence of andexanet availability.",
-      "currentEvidenceCheckedAt": "2026-09-26",
+      "currentEvidenceNote": "Update through 30 September 2026: FDA concluded the US risks of Andexxa outweighed its benefits. After FDA communicated this position, AstraZeneca submitted a request for voluntary BLA withdrawal; US sales ended 22 December 2025. This does not establish worldwide withdrawal or completion of the US withdrawal process. The 2026 NCS/SCCM update conditionally suggests 4F-PCC rather than andexanet for spontaneous FXa-inhibitor ICH (moderate certainty) and traumatic ICH (very low certainty). The historical grade above belongs to the original source.",
+      "currentEvidenceCheckedAt": "2026-09-30",
       "currentEvidenceSources": [
         {
-          "title": "FDA update on the safety of Andexxa",
+          "title": "Current topic-specific source",
           "url": "https://www.fda.gov/vaccines-blood-biologics/safety-availability-biologics/update-safety-andexxa"
         },
         {
-          "title": "Dalal et al., JAAPA 2026 (andexanet alfa withdrawn from the US market)",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/42332398/",
-          "pmid": "42332398",
-          "doi": "10.1097/01.JAA.0000000000000354"
-        },
-        {
-          "title": "Ng et al., J Clin Med 2026 (reversal after andexanet withdrawal)",
-          "url": "https://pubmed.ncbi.nlm.nih.gov/41976898/",
-          "pmid": "41976898",
-          "doi": "10.3390/jcm15072597"
+          "title": "Current topic-specific source",
+          "url": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
         }
       ],
       "id": "aha-af-guideline-2023-45",
       "sourceSection": "table-22",
       "sourceRecommendationNumber": 3,
       "pdfPage": 44,
-      "sourceStatementType": "recommendation"
+      "sourceStatementType": "recommendation",
+      "historicalRecommendation": true,
+      "currentEvidenceAsOf": "2026-09-30"
     },
     {
       "section": "6.6 Active Bleeding on Anticoagulant Therapy and Reversal Drugs",
@@ -1958,7 +1952,7 @@
       "classOfRec": "IIa",
       "classNote": null,
       "levelOfEvidence": "B-NR",
-      "text": "In patients with AF and HF with rapid ventricular rates in whom beta blockers or calcium channel blockers are contraindicated or ineffective, intravenous amiodarone is reasonable for acute rate control.",
+      "text": "In patients with AF and HF with rapid ventricular rates in whom beta blockers or calcium channel blockers are contraindicated or ineffective, intravenous amiodarone is reasonable for acute rate control. Consider the risk of cardioversion and stroke when using amiodarone as a rate-control agent.",
       "page": null,
       "id": "aha-af-guideline-2023-148",
       "sourceSection": "table-47",
@@ -2571,32 +2565,38 @@
     {
       "type": "correction",
       "pmid": "38153996",
-      "doi": "10.1161/cir.0000000000001207",
-      "publisherUrl": "https://doi.org/10.1161/cir.0000000000001207",
+      "doi": "10.1161/CIR.0000000000001207",
+      "publisherUrl": "https://doi.org/10.1161/CIR.0000000000001207",
       "status": "not-applicable",
-      "note": "Trial-acronym, affiliation and disclosure corrections do not alter the extracted recommendations.",
-      "checkedAt": "2026-09-06",
-      "affectedRecommendationIds": []
+      "note": "The complete notice corrects the REACT-AF acronym, a disclosure and an affiliation. No imported formal recommendation changes.",
+      "checkedAt": "2026-09-30",
+      "affectedRecommendationIds": [],
+      "previousReviewNote": "Trial-acronym, affiliation and disclosure corrections do not alter the extracted recommendations.",
+      "independentReviewScope": "complete primary notice read"
     },
     {
       "type": "correction",
       "pmid": "38408149",
-      "doi": "10.1161/cir.0000000000001218",
-      "publisherUrl": "https://doi.org/10.1161/cir.0000000000001218",
+      "doi": "10.1161/CIR.0000000000001218",
+      "publisherUrl": "https://doi.org/10.1161/CIR.0000000000001218",
       "status": "not-applicable",
-      "note": "Corrects the PREVAIL trial expansion in supporting text; the library does not reproduce that expansion.",
-      "checkedAt": "2026-09-06",
-      "affectedRecommendationIds": []
+      "note": "The complete notice corrects the expansion of PREVAIL. No imported formal recommendation changes.",
+      "checkedAt": "2026-09-30",
+      "affectedRecommendationIds": [],
+      "previousReviewNote": "Corrects the PREVAIL trial expansion in supporting text; the library does not reproduce that expansion.",
+      "independentReviewScope": "complete primary notice read"
     },
     {
       "type": "correction",
       "pmid": "38857333",
-      "doi": "10.1161/cir.0000000000001263",
-      "publisherUrl": "https://doi.org/10.1161/cir.0000000000001263",
+      "doi": "10.1161/CIR.0000000000001263",
+      "publisherUrl": "https://doi.org/10.1161/CIR.0000000000001263",
       "status": "not-applicable",
-      "note": "Corrects the ATRIA hypertension point in Table 8 and a Figure 17 footnote marker; neither table nor figure is reproduced in these entries.",
-      "checkedAt": "2026-09-06",
-      "affectedRecommendationIds": []
+      "note": "The complete notice restores the hypertension point in the ATRIA table and moves the Figure 17 asterisk from IV amiodarone to verapamil/diltiazem. Imported formal recommendation text and grades are unchanged.",
+      "checkedAt": "2026-09-30",
+      "affectedRecommendationIds": [],
+      "previousReviewNote": "Corrects the ATRIA hypertension point in Table 8 and a Figure 17 footnote marker; neither table nor figure is reproduced in these entries.",
+      "independentReviewScope": "complete primary notice read"
     }
   ],
   "coverage": {
@@ -3531,5 +3531,13 @@
     },
     "note": "All formal recommendation tables and numbered rows reconciled against the complete source document. This is a source-inventory review, not a new clinical validation of every existing summary or supporting narrative. Existing publication-correction statuses remain separate. No separately designated ungraded consensus or good-practice recommendation set is present.",
     "sourceValueStatementCount": 1
+  },
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Primary recommendation text retrieved and compared; exact edition, source locators and unresolved correction/current-context limits in unit ledger.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
   }
 }

@@ -40,14 +40,14 @@
     "category": "af-anticoag-timing",
     "population": "n=3621, ≥18, Early ≤4 d vs delayed 7-14 d",
     "finding": "Non-inferior: 3.3% vs 3.3%",
-    "teachingPoint": "Early DOAC (≤4 d) non-inferior to delayed — do not routinely delay anticoagulation.",
+    "teachingPoint": "Supports early initiation in appropriately selected patients resembling the enrolled population. Do not extrapolate to PH2, contraindicated patients or every very severe stroke.",
     "PMID": "39491870",
     "year": 2024,
     "citationIds": [
       "cit-optimas-2024"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-05-29",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -57,14 +57,14 @@
     "category": "af-anticoag-timing",
     "population": "n=5441, Early ≤4 d vs later ≥5 d",
     "finding": "Favored early: 2.1% vs 3.0%",
-    "teachingPoint": "Pooled IPD shows early DOAC (≤4 d) reduces 30-d composite — supports early initiation.",
+    "teachingPoint": "Earlier DOAC initiation reduced the 30-day composite in selected AF-related stroke populations. This does not certify safety for PH2, every severe stroke, or each individual timing subgroup.",
     "PMID": "40570866",
     "year": 2025,
     "citationIds": [
       "cit-catalyst-2025"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-05-29",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

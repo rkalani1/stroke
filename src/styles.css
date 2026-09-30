@@ -766,3 +766,470 @@
     border-color: var(--teal);
   }
 }
+
+/* =====================================================================
+   Clinical workspace refinement — September 2026.
+   Additive, screen-only rules. Every selector is rooted in an allowed
+   panel. Protocols, global chrome, map links, print layouts and tokens
+   deliberately have no selectors here. Component hooks are presentation
+   only; clinical meaning and disclosure state remain in their owners.
+   ===================================================================== */
+@media screen {
+  /* Keep keyboard focus visible within dense cards and scroll regions. */
+  :is(#tabpanel-encounter, #tabpanel-trials, #research-tabpanel-guidelines,
+      #research-tabpanel-references, #research-tabpanel-calculators,
+      #research-tabpanel-education, #tabpanel-settings)
+    :is(button, summary, input, select, textarea, [tabindex="0"]):focus-visible {
+    outline: 3px solid rgb(var(--c-focus));
+    outline-offset: 3px;
+    scroll-margin-block: 6rem;
+  }
+
+  :is(#tabpanel-trials, #research-tabpanel-guidelines,
+      #research-tabpanel-references, #research-tabpanel-calculators,
+      #research-tabpanel-education, #tabpanel-settings) a[href]:focus-visible {
+    outline: 3px solid rgb(var(--c-focus));
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Opt-in evidence context: readable prose, not another status badge. */
+  :is(#tabpanel-encounter, #tabpanel-trials, #research-tabpanel-guidelines,
+      #research-tabpanel-references, #research-tabpanel-calculators,
+      #research-tabpanel-education, #tabpanel-settings)
+    :is(.clinical-source-note, .education-source-list) {
+    color: var(--mute);
+    font-size: 0.8125rem;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+
+  :is(#tabpanel-encounter, #tabpanel-trials, #research-tabpanel-guidelines,
+      #research-tabpanel-references, #research-tabpanel-calculators,
+      #research-tabpanel-education, #tabpanel-settings)
+    :is(.clinical-source-note, .education-source-list) a[href] {
+    color: var(--ink-2);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+
+  :is(#tabpanel-encounter, #tabpanel-trials, #research-tabpanel-guidelines,
+      #research-tabpanel-references, #research-tabpanel-calculators,
+      #research-tabpanel-education, #tabpanel-settings)
+    :is(.clinical-evidence-limit, .education-evidence-limit) {
+    border: 1px solid var(--line);
+    border-inline-start: 3px solid var(--caution);
+    border-radius: var(--radius-md);
+    background: var(--surface-2);
+    color: var(--ink-2);
+    padding: 0.875rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+
+  :is(#tabpanel-encounter, #tabpanel-trials, #research-tabpanel-guidelines,
+      #research-tabpanel-references, #research-tabpanel-calculators,
+      #research-tabpanel-education, #tabpanel-settings)
+    :is(.clinical-evidence-limit, .education-evidence-limit) > p + p {
+    margin-block-start: 0.5rem;
+  }
+
+  :is(#tabpanel-encounter, #tabpanel-trials, #research-tabpanel-guidelines,
+      #research-tabpanel-references, #research-tabpanel-calculators,
+      #research-tabpanel-education, #tabpanel-settings) .clinical-scroll-region {
+    max-inline-size: 100%;
+    overflow: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: auto;
+    scrollbar-gutter: stable;
+    border-radius: var(--radius-md);
+    scroll-padding: 0.75rem;
+  }
+
+  /* Research navigation remains local to this panel, separate from the
+     primary nav and the excluded Protocols route. */
+  #tabpanel-research > [role="tablist"] {
+    box-shadow: none;
+    border-radius: var(--radius-lg);
+    gap: 0.25rem;
+  }
+
+  #tabpanel-research > [role="tablist"] > [role="tab"] {
+    text-wrap: balance;
+    line-height: 1.35;
+  }
+
+  #tabpanel-research > [role="tablist"] > [role="tab"]:focus-visible {
+    outline: 3px solid rgb(var(--c-focus));
+    outline-offset: 2px;
+  }
+
+  /* Education: topic first, concise discovery, an unscaled reader. */
+  #research-tabpanel-education .education-library-header {
+    background: transparent;
+    border: 0;
+    border-block-end: 1px solid var(--line);
+    border-radius: 0;
+    box-shadow: none !important;
+    padding: 0.25rem 0 1.25rem;
+  }
+
+  #research-tabpanel-education .education-library-header h1 {
+    font-size: clamp(1.5rem, 1.25rem + 0.75vw, 2rem);
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  #research-tabpanel-education .education-library-header > p:last-child {
+    max-inline-size: 70ch;
+    line-height: 1.6;
+  }
+
+  #research-tabpanel-education .education-module-grid {
+    gap: 0.875rem;
+    align-items: stretch;
+  }
+
+  #research-tabpanel-education .education-module-button {
+    min-block-size: 11rem;
+    padding: 1.125rem;
+    box-shadow: none;
+    transform: none;
+    transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+  }
+
+  #research-tabpanel-education .education-module-button::before {
+    display: none;
+  }
+
+  #research-tabpanel-education .education-module-button h2 {
+    font-size: 1rem;
+    line-height: 1.4;
+    text-wrap: pretty;
+  }
+
+  #research-tabpanel-education .education-module-button p {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  #research-tabpanel-education .education-module-button > div:last-child {
+    margin-block-start: 1rem;
+    padding-block-start: 0.75rem;
+  }
+
+  #research-tabpanel-education .education-reader-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface-2);
+  }
+
+  #research-tabpanel-education .education-reader-toolbar button {
+    min-block-size: 2.75rem;
+    padding-inline: 0.875rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--ink-2);
+    box-shadow: none;
+  }
+
+  #research-tabpanel-education .education-reader-toolbar button[aria-pressed="true"] {
+    border-color: var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: inset 0 -2px 0 var(--accent);
+  }
+
+  #research-tabpanel-education .education-reader-toolbar > span {
+    flex: 1 1 15rem;
+    color: var(--mute);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  #research-tabpanel-education .education-reader-content,
+  #research-tabpanel-education .education-card-reader {
+    min-inline-size: 0;
+    max-inline-size: 100%;
+  }
+
+  #research-tabpanel-education .education-key-points {
+    border: 1px solid var(--line);
+    border-inline-start: 3px solid var(--accent);
+    border-radius: var(--radius-lg);
+    background: var(--surface-2);
+    color: var(--ink);
+    padding: 1rem 1.125rem;
+    line-height: 1.65;
+  }
+
+  #research-tabpanel-education .education-key-points li + li {
+    margin-block-start: 0.5rem;
+  }
+
+  #research-tabpanel-education .education-card-readable .ref-citation {
+    overflow-wrap: anywhere;
+  }
+
+  /* Source catalogs use quiet rows. The recommendation is the visual
+     anchor; the COR/LOE label remains intact and adjacent. */
+  #research-tabpanel-guidelines > section[aria-labelledby="guideline-library-heading"] {
+    border-color: var(--line);
+    box-shadow: none;
+  }
+
+  #research-tabpanel-guidelines #guideline-library-heading {
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 1.5rem !important;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  #research-tabpanel-guidelines .ref-section {
+    box-shadow: none !important;
+    overflow: visible;
+  }
+
+  #research-tabpanel-guidelines .ref-section > summary {
+    /* Reserve the disclosure icon even when legacy phone padding wins. */
+    padding-inline-end: 2.75rem !important;
+    min-block-size: 3.5rem;
+    line-height: 1.45;
+  }
+
+  #research-tabpanel-guidelines [id^="gl-rec-"] {
+    background: var(--surface-2);
+    border-color: var(--line);
+    border-inline-start: 2px solid var(--line-2);
+    padding: 1rem;
+    line-height: 1.65;
+    scroll-margin-block-start: 8rem;
+  }
+
+  #research-tabpanel-guidelines [id^="gl-rec-"] p {
+    max-inline-size: 78ch;
+    line-height: 1.65;
+  }
+
+  #research-tabpanel-guidelines [id^="gl-rec-"] a[href] {
+    text-underline-offset: 0.2em;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  /* Filtering surfaces retain the existing controls and logic. */
+  #tabpanel-trials .trial-screening-filters {
+    scrollbar-width: auto;
+    scrollbar-gutter: stable;
+    scroll-padding-block: 0.75rem;
+  }
+
+  #tabpanel-trials .trial-screening-results {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  :is(#research-tabpanel-guidelines, #research-tabpanel-calculators,
+      #tabpanel-trials, #tabpanel-settings) :is(input, select, textarea) {
+    max-inline-size: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    #research-tabpanel-guidelines .clinical-filter-bar {
+      grid-template-columns: minmax(15rem, 1.5fr) repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* Preserve readable body copy despite the legacy phone-wide 12px
+     text-sm rule. This exception is restricted to permitted panels. */
+  @media (max-width: 375px) {
+    :is(#tabpanel-encounter, #tabpanel-trials, #research-tabpanel-guidelines,
+        #research-tabpanel-references, #research-tabpanel-calculators,
+        #research-tabpanel-education, #tabpanel-settings)
+      :is(p, li, label).text-sm {
+      font-size: 0.875rem !important;
+    }
+  }
+
+  @media (hover: hover) {
+    #research-tabpanel-education .education-module-button:hover {
+      border-color: var(--accent);
+      background: var(--surface-2);
+      box-shadow: none;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    #tabpanel-research > [role="tablist"] {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      position: static;
+      overflow: visible;
+      padding: 0.375rem;
+    }
+
+    #tabpanel-research > [role="tablist"] > [role="tab"] {
+      min-inline-size: 0;
+      inline-size: 100%;
+      min-block-size: 2.75rem;
+      padding: 0.5rem;
+      white-space: normal !important;
+      font-size: 0.8125rem;
+    }
+
+    #research-tabpanel-education .education-library > * + * {
+      margin-block-start: 1rem;
+    }
+
+    #research-tabpanel-education .education-library-header {
+      padding-block-end: 1rem;
+    }
+
+    #research-tabpanel-education .education-library-header > p:last-child {
+      font-size: 0.875rem;
+    }
+
+    #research-tabpanel-education .education-module-button {
+      min-block-size: 0;
+      padding: 1rem;
+    }
+
+    #research-tabpanel-guidelines [id^="gl-rec-"] {
+      padding: 0.875rem;
+    }
+
+    :is(#tabpanel-encounter, #tabpanel-trials, #research-tabpanel-guidelines,
+        #research-tabpanel-references, #research-tabpanel-calculators,
+        #research-tabpanel-education, #tabpanel-settings)
+      :is(.clinical-evidence-limit, .education-evidence-limit) {
+      padding: 0.75rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #research-tabpanel-education .education-module-button,
+    #research-tabpanel-education .education-module-button::before {
+      transition: none;
+      transform: none;
+    }
+
+    :is(#tabpanel-encounter, #tabpanel-trials, #research-tabpanel-guidelines,
+        #research-tabpanel-references, #research-tabpanel-calculators,
+        #research-tabpanel-education, #tabpanel-settings) .clinical-scroll-region {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* Rendered Education contrast repairs: local poster aliases must not
+   override the theme ink on the new teaching-note surfaces. */
+@media screen {
+  #research-tabpanel-education :is(.education-key-points, .education-evidence-limit) {
+    --ink: rgb(var(--c-ink));
+    --ink-2: rgb(var(--c-ink-2));
+    --ink-soft: rgb(var(--c-ink-2));
+    --ink-mute: rgb(var(--c-mute));
+    background-color: rgb(var(--c-sunken));
+    color: rgb(var(--c-ink));
+  }
+
+  /* The deeper existing poster hues retain category identity while
+     supporting normal-size white header text in both screen themes. */
+  #research-tabpanel-education .education-card-readable .card-table thead tr[style*="var(--teal)"] {
+    background: var(--teal-deep) !important;
+  }
+
+  #research-tabpanel-education .education-card-readable .card-table thead tr[style*="var(--amber)"] {
+    background: var(--amber-deep) !important;
+  }
+}
+
+@media screen {
+  /* Source lists may sit inside white archival-style posters; give the
+     themed source text its matching surface instead of inheriting white. */
+  #research-tabpanel-education .education-card-readable .education-source-list {
+    --ink: rgb(var(--c-ink));
+    --ink-soft: rgb(var(--c-ink-2));
+    --ink-mute: rgb(var(--c-mute));
+    background: rgb(var(--c-surface));
+    color: rgb(var(--c-mute));
+  }
+
+  #research-tabpanel-education .education-card-readable .education-source-list a[href] {
+    color: rgb(var(--c-ink-2));
+  }
+}
+
+@media screen and (max-height: 500px) {
+  /* Native browser zoom can leave only250CSSpx of height. Keep the
+     readiness panel in document flow so the form remains reachable. */
+  #tabpanel-encounter .encounter-readiness-bar {
+    position: static !important;
+  }
+}
+
+@media screen {
+  /* Remaining legacy normal-text contrast: preserve the named hue and
+     numeric content, using each poster's deeper existing palette. */
+  #research-tabpanel-education .education-card-readable strong[style*="var(--teal)"] {
+    color: var(--teal-deep) !important;
+  }
+
+  #research-tabpanel-education .education-card-readable strong[style*="var(--amber)"] {
+    color: var(--amber-deep) !important;
+  }
+
+  #research-tabpanel-education .education-card-readable .bar-mrs-4 {
+    background: var(--amber-deep);
+  }
+
+  #research-tabpanel-education .education-card-readable .bar-mrs-5 {
+    background: var(--red-deep);
+  }
+
+  #research-tabpanel-education .education-card-readable td[style*="rgb(245, 124, 0)"] {
+    color: var(--amber-deep) !important;
+  }
+
+  #research-tabpanel-education .education-card-readable td[style*="rgb(230, 74, 25)"] {
+    color: var(--red-deep) !important;
+  }
+
+  #research-tabpanel-education [class~="text-[9px]"][class~="dark:text-slate-500"] {
+    color: rgb(var(--c-mute));
+  }
+}
+
+@media screen {
+  /* Standalone primary-source links in the seven practice disclosures
+     need their own touch area, including when all answers are expanded. */
+  #research-tabpanel-education .education-practice-cases a[href] {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.75rem;
+    min-inline-size: 2.75rem;
+    max-inline-size: 100%;
+    padding-block: 0.5rem;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media screen {
+  /* The prognosis view's inactive mobile selector needs readable ink on
+     its tinted surface; the selected button keeps its existing treatment. */
+  #research-tabpanel-education .flex.flex-col.gap-4:has(.card-stroke-prognosis) > .no-print[class~="lg:hidden"] button.text-slate-500 {
+    color: rgb(var(--c-ink-2));
+  }
+}

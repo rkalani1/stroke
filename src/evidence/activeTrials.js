@@ -87,7 +87,7 @@ export const activeTrials = [
     phase: 'Phase 3',
     status: 'recruiting',
     topic: 'tandem-lesions',
-    briefDescription: 'Emergent carotid stenting plus EVT vs EVT alone for tandem extracranial-carotid + intracranial-LVO occlusions.',
+    briefDescription: 'Acute carotid stenting versus non-stenting carotid angioplasty/aspiration, with intracranial treatment as applicable. Registry descriptions of intracranial occlusion eligibility differ; confirm the protocol.',
     rationale: 'Tandem lesions were under-represented in the pivotal EVT trials; the optimal management of the extracranial component is unresolved.',
     inclusionCriteria: [
       'Age 18-79 y',
@@ -124,7 +124,7 @@ export const activeTrials = [
     category: 'ischemic',
     keyTakeaways: [
       "Tandem lesions (extracranial carotid + intracranial LVO) are common but were under-represented in the pivotal EVT trials",
-      "Tests emergent carotid stenting + EVT vs EVT alone for tandem occlusions",
+      "Tests acute carotid stenting versus the registered non-stenting carotid angioplasty/aspiration strategy",
       "Addresses a gap where no RCT has established optimal management of the extracranial component"
     ],
     lookingFor: [
@@ -149,7 +149,7 @@ export const activeTrials = [
       'Age ≥18 y',
       'Pre-stroke mRS 3-4 for ≥3 months',
       'AIS due to ICA terminus, M1, or dominant M2 occlusion',
-      'Within 24 h of LKW',
+      'Presentation to the study hospital within 24 h of LKW; confirm enrollment timing during hospitalization',
       'NIHSS ≥6',
       'ASPECTS ≥3 (CT) or ≥4 (MRI)'
     ],
@@ -162,7 +162,7 @@ export const activeTrials = [
       { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
       { field: 'premorbidMRS', operator: 'between', value: [3, 4], label: 'Pre-stroke mRS 3-4' },
       { field: 'nihss', operator: '>=', value: 6, label: 'NIHSS ≥6' },
-      { field: 'hoursFromLKW', operator: '<=', value: 24, label: 'Within 24 h from LKW' },
+      { field: 'presentedWithin24h', operator: '==', value: true, label: 'Presented to study hospital within 24 h of LKW' },
       { field: 'aspectsScore', operator: '>=', value: 3, label: 'ASPECTS ≥3' },
       { field: 'vesselOcclusion', operator: 'in', value: ['ICA', 'M1', 'M2'], label: 'ICA, M1, or dominant M2 occlusion (confirm M2 dominance)' }
     ],
@@ -255,7 +255,7 @@ export const activeTrials = [
       'Study drug startable within 60 min (≤75 min) of thrombolysis initiation'
     ],
     exclusionCriteria: [
-      'INR >1.5 or active anticoagulant effect',
+      'Oral anticoagulant with INR >1.5; full-dose LMWH within 24 h; abnormal PTT after heparin/direct thrombin inhibitor within 48 h; factor Xa inhibitor within 48 h (distinct registry exclusions)',
       'Prior stroke within 90 days',
       'Prior intracranial hemorrhage',
       'Platelets <100,000/mm³'
@@ -267,7 +267,7 @@ export const activeTrials = [
       { field: 'premorbidMRS', operator: '<=', value: 3, label: 'Pre-stroke mRS ≤3' }
     ],
     matcherExclusions: [
-      { id: 'onAnticoag', field: 'onAnticoag', operator: '==', value: true, label: 'On anticoagulation' },
+      { id: 'mostAnticoagulantExclusion', field: 'mostAnticoagulantExclusion', operator: '==', value: true, label: 'Confirmed MOST drug/timing/laboratory anticoagulant exclusion (historical protocol only)' },
       { id: 'hemorrhage', field: 'hemorrhage', operator: '==', value: true, label: 'Evidence of hemorrhage on CT' },
     ],
     relatedCompletedTrialIds: ['act', 'trace-2', 'original'],
@@ -310,7 +310,7 @@ export const activeTrials = [
       { field: 'age', operator: '>=', value: 30, label: 'Age ≥30' },
       { field: 'diagnosisCategory', operator: 'in', value: ['ischemic'], label: 'Ischemic stroke (symptomatic infarct)' },
       { field: 'ctaResults', operator: 'present', value: ['stenosis', 'intracranial', 'icas', 'atheroscler'], label: 'Intracranial stenosis 70-99%' },
-      { field: 'premorbidMRS', operator: '<=', value: 4, label: 'mRS ≤4 at consent' }
+      { field: 'mrsAtConsent', operator: '<=', value: 4, label: 'mRS ≤4 at consent' }
     ],
     matcherExclusions: [
       { id: 'cardioembolic', field: 'cardioembolic', operator: '==', value: true, label: 'Cardioembolic source (AF, valve)' },

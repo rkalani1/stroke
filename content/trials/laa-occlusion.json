@@ -23,14 +23,14 @@
     "category": "laa-occlusion",
     "population": "n=1600, mean 69.6 ± 7.7; 34.1% women, NIHSS CHA₂DS₂-VASc ≥2 in men, ≥3 in women (mean 3.5 ± 1.3), 36 months",
     "finding": "Safety superior — 8.5% vs 18.1%; efficacy non-inferior — 5.3% vs 5.8%",
-    "teachingPoint": "After AF ablation, LAA closure was non-inferior to anticoagulation for death/stroke/embolism with about half the non-procedural bleeding.",
+    "teachingPoint": "A selected post-ablation LAA-closure strategy with required initial antithrombotic therapy. Do not infer immediate OAC-free care or stroke-specific equivalence from the composite result.",
     "PMID": "39555822",
     "year": 2025,
     "citationIds": [
       "cit-option-2025"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]
