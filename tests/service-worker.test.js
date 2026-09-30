@@ -31,6 +31,7 @@ function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-
   const context = {
     Promise,
     URL,
+    Request,
     console: { info: () => {}, error: () => {} },
     fetch: async () => ({ ok: true, clone: () => ({ ok: true }) }),
     caches: {

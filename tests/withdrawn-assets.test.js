@@ -19,10 +19,11 @@ function harness({ offline = false, cached = null, cachedHtml = null } = {}) {
       match: async (request) => typeof request === 'string' && request.endsWith('.html') ? cachedHtml : cached,
       keys: async () => ['unrelated-cache', 'stroke-cache-v6-29-2'],
       delete: async (key) => { removed.push(key); return true; },
-      open: async () => ({ put: async () => {} }),
+      open: async () => ({ put: async () => {}, match: async request => typeof request === 'string' && request.endsWith('.html') ? cachedHtml : cached }),
     },
     self: {
       location: { origin: 'https://example.test' },
+      registration: { scope: 'https://example.test/stroke/' },
       addEventListener: (name, handler) => handlers.set(name, handler),
       clients: { matchAll: async () => [] },
     },
