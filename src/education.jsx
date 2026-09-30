@@ -4685,6 +4685,7 @@ export function StrokePrognosisCalculator() {
         <div className="flex rounded-lg p-1 bg-slate-100 dark:bg-slate-800/60 border border-slate-200/40 dark:border-slate-700/40">
           <button
             onClick={() => setActiveTab('astral')}
+            aria-pressed={activeTab === 'astral'}
             className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
               activeTab === 'astral'
                 ? 'bg-cobalt-600 text-white shadow-sm'
@@ -4695,6 +4696,7 @@ export function StrokePrognosisCalculator() {
           </button>
           <button
             onClick={() => setActiveTab('plan')}
+            aria-pressed={activeTab === 'plan'}
             className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
               activeTab === 'plan'
                 ? 'bg-teal-700 text-white shadow-sm'
@@ -4705,6 +4707,7 @@ export function StrokePrognosisCalculator() {
           </button>
           <button
             onClick={() => setActiveTab('ich')}
+            aria-pressed={activeTab === 'ich'}
             className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${
               activeTab === 'ich'
                 ? 'bg-crit-700 text-white shadow-sm'
