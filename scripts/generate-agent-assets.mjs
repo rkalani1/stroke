@@ -188,6 +188,15 @@ async function main() {
       publisherUrl: g.publisherUrl, pdfUrl: g.pdfUrl,
       ...guidelineCoverage(g),
       ...(g.coverage ? { coverage: g.coverage } : {}),
+      ...(g.sourceReview ? { sourceReview: g.sourceReview } : {}),
+      ...(g.documentType ? { documentType: g.documentType } : {}),
+      ...(g.gradingSystem ? { gradingSystem: g.gradingSystem } : {}),
+      ...(g.sourceAccess ? { sourceAccess: g.sourceAccess } : {}),
+      ...(g.extractionStatus ? { extractionStatus: g.extractionStatus } : {}),
+      ...(g.extractionNote ? { extractionNote: g.extractionNote } : {}),
+      publicationUpdates: g.publicationUpdates || [],
+      hasUnresolvedUpdates: (g.publicationUpdates || []).some(update =>
+        ['unresolved', 'partially-applied'].includes(update.status)),
       url: `${BASE_URL}/data/guidelines/${f}`,
     });
   }

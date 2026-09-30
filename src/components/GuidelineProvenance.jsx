@@ -8,13 +8,13 @@ export default function GuidelineProvenance({ guideline }) {
     <div className="space-y-2 text-xs text-ink-2">
       {guideline.coverageComplete && (
         <p>
-          Complete recommendation coverage: {guideline.coverage.sourceRecommendationCount} recommendations
+          Source inventory: {guideline.coverage.sourceRecommendationCount} recommendations
           {guideline.coverage.sourceConsensusCount > 0 ? ` and ${guideline.coverage.sourceConsensusCount} consensus statements` : ''}.
           {(guideline.coverage.sourcePracticeStatementCount || guideline.coverage.sourcePracticePointCount) > 0
             ? ` Also includes ${guideline.coverage.sourcePracticeStatementCount || guideline.coverage.sourcePracticePointCount} ungraded practice statements.` : ''}
           {guideline.coverage.sourceValueStatementCount > 0
             ? ` Also includes ${guideline.coverage.sourceValueStatementCount} economic-value statement.` : ''}
-          {' '}Checked against the full source on {guideline.coverage.checkedAt}.
+          {' '}Inventory checked on {guideline.coverage.checkedAt}. Coverage describes extraction from the cited edition; it does not establish that all current or corrected clinical guidance has been verified.
         </p>
       )}
       {(guideline.sourceOnly || guideline.partialExtraction || guideline.summaryOnly) && (
@@ -76,6 +76,9 @@ export default function GuidelineProvenance({ guideline }) {
         )}
         {guideline.supplementUrl && (
           <a href={guideline.supplementUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center min-h-[44px] rounded-md border border-line px-3 font-semibold text-link-600 dark:text-link-400">Source supplement</a>
+        )}
+        {guideline.sourceAccess?.officialCollaborativeGuide && (
+          <a href={guideline.sourceAccess.officialCollaborativeGuide} target="_blank" rel="noopener noreferrer" className="inline-flex items-center min-h-[44px] rounded-md border border-line px-3 font-semibold text-link-600 dark:text-link-400">AHA/ASA collaborative guide</a>
         )}
       </div>
     </div>

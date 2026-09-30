@@ -1,5 +1,42 @@
 # CHANGELOG
 
+## v6.30.3 — 2026-09-30 — reconcile duplicate clinical screens and source limits
+
+- Make Encounter context cards respect reviewed population, imaging, treatment
+  and missing-data boundaries. Correct partial/invalid NIHSS readiness and
+  unrounded renal-threshold interpretation; replace misleading phone perfusion
+  badges and withhold unvalidated post-IVT and Phone Consult bleeding-risk
+  predictions, preserving CT observations and monitoring guidance.
+- Qualify aneurysm, dissection, DECT, spasticity and PFO teaching statements;
+  regenerate the dissection and prognosis handouts from their canonical cards.
+- Qualify OPTIMAL-BP and ECST-2 teaching conclusions and add explicitly labeled
+  registry selection context for LAIS, ERASE-STROKE and ATIS-NVAF.
+- Carry source-access and pending-correction limits through guideline displays
+  and the public agent index. Link the official AHA/ASA collaborative 2026
+  rehabilitation guide while retaining the unavailable full-article limitation.
+- Protocols and the Telestroke map remain outside the change scope. Source
+  access, correction and clinical-validation limits remain explicit.
+
+## v6.30.2 — 2026-09-30 — keep offline updates consistent
+
+- Revalidate core files during worker installation and avoid matching files
+  from obsolete caches. Synchronize HTML and versioned asset aliases so an
+  accepted update executes the current application online and offline.
+- Preserve explicit update consent, interrupted encounters and retired-download
+  handling. Published through PR #221.
+
+## v6.30.1 — 2026-09-30 — prognosis selector accessibility
+
+- Expose selected prognosis options with `aria-pressed`. Published through
+  PR #220.
+
+## v6.30.0 — 2026-09-30 — reviewed clinical content and presentation
+
+- Apply the reviewed education withholding, targeted clinical corrections,
+  download cleanup and scoped responsive/accessibility improvements in PR #219.
+- Preserve source-specific uncertainty and access limits; this release does not
+  certify every clinical claim. Protocols and the Telestroke map were excluded.
+
 ## v6.29.2 — 2026-09-27 — remove the on-page demo notice and disclaimer footer
 
 Owner decision. The Protocols tab is unchanged.

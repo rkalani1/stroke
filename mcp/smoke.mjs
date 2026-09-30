@@ -108,6 +108,11 @@ try {
 
   const guides = await call('list_guidelines');
   assert.equal(guides.count, 110);
+  const aisIndex = guides.guidelines.find(g => g.id === 'ais-2026');
+  assert.equal(aisIndex.coverageComplete, true);
+  assert.equal(aisIndex.hasUnresolvedUpdates, true);
+  assert(aisIndex.publicationUpdates.some(update => ['unresolved', 'partially-applied'].includes(update.status)));
+  assert(guides.guidelines.every(g => g.sourceReview?.scope));
   const ncs = (await call('get_guideline', { id: 'ncs-reversal-2026' })).guideline;
   assert.match(ncs.sourceReview.sourceAccess, /Full primary publisher HTML/);
   assert(ncs.recommendations.length > 0);

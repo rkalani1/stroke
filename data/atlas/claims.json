@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "claims",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.30.2",
+    "appVersion": "6.30.3",
     "checksum": "sha256:8bdec89af06a52ba18184e7d631af494",
     "count": 13,
     "source": "Evidence atlas claims bundle",
