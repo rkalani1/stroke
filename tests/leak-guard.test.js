@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, symlinkSync, copyFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, symlinkSync, copyFileSync, writeFileSync, openSync, closeSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import process from 'node:process';
 
@@ -52,6 +52,41 @@ function runGuard(cwd, files, args = []) {
   });
 }
 
+async function withAsyncTempRepo(fn) {
+  const dir = mkdtempSync(join(tmpdir(), 'stroke-leak-guard-'));
+  try {
+    return await fn(dir);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+function runGuardWithDelayedTail(cwd, head, tail) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(process.execPath, [guardScript, '--json'], {
+      cwd,
+      stdio: ['pipe', 'pipe', 'pipe'],
+      env: { ...process.env, STROKE_LEAK_GUARD_PRIVATE_DENYLIST: '', STROKE_LEAK_GUARD_REQUIRE_PRIVATE: '' }
+    });
+    let stdout = '';
+    let stderr = '';
+    child.stdout.setEncoding('utf8');
+    child.stderr.setEncoding('utf8');
+    child.stdout.on('data', chunk => { stdout += chunk; });
+    child.stderr.on('data', chunk => { stderr += chunk; });
+    // An early-exiting broken guard may close its pipe. The exit/output below
+    // must fail the assertion instead of turning EPIPE into a test-runner error.
+    child.stdin.on('error', () => {});
+    child.once('error', reject);
+    child.stdin.write(head);
+    const tailTimer = setTimeout(() => child.stdin.end(tail), 100);
+    child.once('close', status => {
+      clearTimeout(tailTimer);
+      resolve({ status, stdout, stderr });
+    });
+  });
+}
+
 function sha256(value) {
   return createHash('sha256').update(value).digest('hex');
 }
@@ -76,6 +111,95 @@ function writePrivateDenylistFile(file, sentinel) {
 }
 
 describe('leak guard scanner', () => {
+  it('scans a large piped list completely rather than passing with zero files', () => {
+    withTempRepo((dir) => {
+      writeFileSync(join(dir, 'clean.txt'), 'Clean synthetic content.\n', 'utf8');
+      const result = runGuard(dir, Array(20000).fill('clean.txt'), ['--json']);
+      expect(result.status).toBe(0);
+      const report = JSON.parse(result.stdout);
+      expect(report.scanned).toBe(20000);
+      expect(report.violations).toEqual([]);
+      expect(report.error).toBeUndefined();
+    });
+  });
+
+  it('waits for a delayed tail and detects its violation after a large clean prefix', async () => {
+    await withAsyncTempRepo(async (dir) => {
+      writeFileSync(join(dir, 'clean.txt'), 'Clean synthetic content.\n', 'utf8');
+      const phoneLikeValue = ['555', '555', '1212'].join('-');
+      writeFileSync(join(dir, 'tail.txt'), `Call ${phoneLikeValue}\n`, 'utf8');
+      const result = await runGuardWithDelayedTail(dir, 'clean.txt\n'.repeat(20000), 'tail.txt\n');
+      expect(result.status).toBe(1);
+      const report = JSON.parse(result.stdout);
+      expect(report.scanned).toBe(20001);
+      expect(report.violations).toContainEqual(expect.objectContaining({ file: 'tail.txt', tier: 'phi' }));
+      expect(result.stdout + result.stderr).not.toContain(phoneLikeValue);
+      expect(report.error).toBeUndefined();
+    });
+  });
+
+  it.each([false, true])('fails closed on a partial stdin stream error (JSON: %s)', (json) => {
+    withTempRepo((dir) => {
+      writeFileSync(join(dir, 'clean.txt'), 'Clean synthetic content.\n', 'utf8');
+      const preload = join(dir, 'broken-stdin.mjs');
+      writeFileSync(preload, `import { Readable } from 'node:stream';
+Object.defineProperty(process, 'stdin', { value: Readable.from((async function* () {
+  yield 'clean.txt\\n';
+  throw new Error('synthetic stdin failure detail');
+})()) });\n`, 'utf8');
+      const result = spawnSync(process.execPath, ['--import', preload, guardScript, ...(json ? ['--json'] : []), 'clean.txt'], {
+        cwd: dir,
+        input: '',
+        encoding: 'utf8',
+        env: { ...process.env, STROKE_LEAK_GUARD_PRIVATE_DENYLIST: '', STROKE_LEAK_GUARD_REQUIRE_PRIVATE: '' }
+      });
+      expect(result.status).toBe(1);
+      expect(result.stdout + result.stderr).toContain('could not read the complete file list');
+      expect(result.stdout + result.stderr).not.toContain('synthetic stdin failure detail');
+      if (json) {
+        const report = JSON.parse(result.stdout);
+        expect(report.scanned).toBe(0);
+        expect(report.error).toContain('scan not performed');
+      } else {
+        expect(result.stdout).not.toContain('PASS');
+      }
+    });
+  });
+
+  it.skipIf(process.platform === 'win32')('rejects a real directory stdin descriptor instead of treating it as empty', () => {
+    withTempRepo((dir) => {
+      const input = openSync(dir, 'r');
+      try {
+        const result = spawnSync(process.execPath, [guardScript, '--json'], {
+          cwd: dir, stdio: [input, 'pipe', 'pipe'], encoding: 'utf8'
+        });
+        expect(result.status).toBe(1);
+        const report = JSON.parse(result.stdout);
+        expect(report.scanned).toBe(0);
+        expect(report.error).toContain('could not read the complete file list');
+      } finally {
+        closeSync(input);
+      }
+    });
+  });
+
+  it('preserves argv, UTF-8 and mixed stdin separators, including valid empty input', () => {
+    withTempRepo((dir) => {
+      for (const file of ['argv.txt', 'café.txt', 'nul.txt', 'last.txt']) {
+        writeFileSync(join(dir, file), 'Clean synthetic content.\n', 'utf8');
+      }
+      const result = spawnSync(process.execPath, [guardScript, '--json', 'argv.txt'], {
+        cwd: dir, input: 'café.txt\r\nnul.txt\0last.txt', encoding: 'utf8'
+      });
+      expect(result.status).toBe(0);
+      expect(JSON.parse(result.stdout).scanned).toBe(4);
+      const empty = runGuard(dir, [], ['--json']);
+      expect(empty.status).toBe(0);
+      expect(JSON.parse(empty.stdout).scanned).toBe(0);
+      expect(JSON.parse(empty.stdout).error).toBeUndefined();
+    });
+  });
+
   it('keeps committed exact-token hash denylist empty', () => {
     const publicDenylist = JSON.parse(readFileSync(denylistFile, 'utf8'));
     expect(publicDenylist.literalSha256Denylist).toEqual([]);

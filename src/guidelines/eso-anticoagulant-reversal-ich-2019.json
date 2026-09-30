@@ -15,7 +15,8 @@
       "classNote": "For",
       "levelOfEvidence": "Very low certainty",
       "text": "In adults with ICH occurring during use of VKA (with an INR above normal), we recommend using PCC (30 IU/kg) to decrease mortality and normalise INR.",
-      "page": null
+      "page": null,
+      "id": "eso-anticoagulant-reversal-ich-2019-1"
     },
     {
       "section": "PICO 2: PCC versus FFP in VKA-related ICH",
@@ -23,7 +24,8 @@
       "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
       "text": "In patients with VKA-induced ICH, we recommend PCC (30 IU/kg) over FFP (20 mL/kg) to decrease mortality and normalise INR.",
-      "page": null
+      "page": null,
+      "id": "eso-anticoagulant-reversal-ich-2019-2"
     },
     {
       "section": "PICO 2: PCC versus FFP in VKA-related ICH",
@@ -31,7 +33,8 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "Expert opinion (vote: six of six experts): In patients with VKA-induced ICH, we recommend to use PCC dosages in the range from 20 to 50 IU/kg if INR >= 2 and 10 to 20 IU/kg if 1.3 <= INR < 2.",
-      "page": null
+      "page": null,
+      "id": "eso-anticoagulant-reversal-ich-2019-3"
     },
     {
       "section": "PICO 3: Vitamin K in VKA-related ICH",
@@ -39,7 +42,8 @@
       "classNote": "For",
       "levelOfEvidence": "Very low certainty",
       "text": "In adult patients with ICH occurring during use of VKA (with an INR >= 1.3), we recommend the initial use of vitamin K (10 mg intravenously (IV)) in addition to fast reversal strategies including PCC to prevent re-increase of INR, to decrease haematoma expansion and decrease mortality.",
-      "page": null
+      "page": null,
+      "id": "eso-anticoagulant-reversal-ich-2019-4"
     },
     {
       "section": "PICO 4: Recombinant factor VIIa in VKA-related ICH",
@@ -47,7 +51,8 @@
       "classNote": "Against",
       "levelOfEvidence": "Very low certainty",
       "text": "We recommend against using rFVIIa to improve outcome, decrease haematoma expansion or increase normalisation of INR in patients with ICH occurring during use of VKA.",
-      "page": null
+      "page": null,
+      "id": "eso-anticoagulant-reversal-ich-2019-5"
     },
     {
       "section": "PICO 5: Tranexamic acid in VKA-related ICH",
@@ -55,15 +60,17 @@
       "classNote": "Against",
       "levelOfEvidence": "Very low certainty",
       "text": "In adult patients with ICH occurring during use of VKA and INR >= 1.3, we recommend against use of tranexamic acid.",
-      "page": null
+      "page": null,
+      "id": "eso-anticoagulant-reversal-ich-2019-6"
     },
     {
       "section": "PICO 6: PCC in NOAC-related ICH",
       "classOfRec": "Conditional",
       "classNote": "For",
       "levelOfEvidence": "Very low certainty",
-      "text": "In patients with ICH occurring during use of NOAC and when specific reversal agents are not available, we recommend considering the use of four-factor PCC (37.5-50 IU/kg) to normalise coagulation tests.",
-      "page": null
+      "text": "In patients with ICH occurring during use of a factor Xa inhibitor and when specific reversal agents are not available, we recommend considering the use of four-factor PCC (37.5-50 IU/kg) to normalise coagulation tests.",
+      "page": null,
+      "id": "eso-anticoagulant-reversal-ich-2019-7"
     },
     {
       "section": "PICO 7: FFP in NOAC-related ICH",
@@ -71,7 +78,8 @@
       "classNote": "Against",
       "levelOfEvidence": "Very low certainty",
       "text": "In patients with ICH occurring during use of NOAC, we recommend against using FFP to improve outcome, reduce mortality, decrease haematoma expansion or reverse the effects of NOAC.",
-      "page": null
+      "page": null,
+      "id": "eso-anticoagulant-reversal-ich-2019-8"
     },
     {
       "section": "PICO 8: Idarucizumab in dabigatran-related ICH",
@@ -79,7 +87,8 @@
       "classNote": "For",
       "levelOfEvidence": "Low certainty",
       "text": "We recommend idarucizumab to reverse effects of dabigatran in adult patients with ICH occurring during use of dabigatran. Evidence for effects on clinical endpoints is limited.",
-      "page": null
+      "page": null,
+      "id": "eso-anticoagulant-reversal-ich-2019-9"
     },
     {
       "section": "PICO 9: Andexanet alfa in factor Xa inhibitor-related ICH",
@@ -87,7 +96,8 @@
       "classNote": "For",
       "levelOfEvidence": "Low certainty",
       "text": "We recommend using andexanet alfa if available - in adult patients with ICH occurring during use of rivaroxaban or apixaban. We also recommend randomising into trials as based on the low quality of evidence, there is significant uncertainty whether desirable outweigh undesirable effects. [Current-evidence note, not part of the 2019 guideline: FDA concluded that the serious risks of andexanet alfa (Andexxa), including increased thromboembolic events, outweigh its benefits, and US commercial sales ended on 22 December 2025. In the US, prothrombin complex concentrate is now the main reversal option for factor Xa inhibitor-associated ICH. The 2025 ESO/EANS ICH guideline (PICO 3.3.2.2) makes no graded recommendation for andexanet and recommends recruitment to randomised trials, with an expert-consensus suggestion that it may be considered to limit haematoma expansion.]",
-      "page": null
+      "page": null,
+      "id": "eso-anticoagulant-reversal-ich-2019-10"
     },
     {
       "section": "PICO 10: Ciraparantag in factor Xa inhibitor-related ICH",
@@ -95,9 +105,18 @@
       "classNote": "Against",
       "levelOfEvidence": "Very low certainty",
       "text": "We recommend against the administration of ciraparantag outside of clinical trials.",
-      "page": null
+      "page": null,
+      "id": "eso-anticoagulant-reversal-ich-2019-11"
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "GRADE"
+  "gradingSystem": "GRADE",
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Primary recommendation text retrieved and compared; exact edition, source locators and unresolved correction/current-context limits in unit ledger.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
+  }
 }

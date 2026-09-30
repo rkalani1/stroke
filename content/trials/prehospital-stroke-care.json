@@ -40,14 +40,14 @@
     "category": "prehospital-stroke-care",
     "population": "n=1401, median 75 (IQR 65-83); 56% men, NIHSS median NIHSS 17 (IQR 11-21), prehospital, nonurban Catalonia; estimated arrival at a thrombectomy-capable centre <7 h from last seen well",
     "finding": "Neutral: median mRS 3 in both arms",
-    "teachingPoint": "In nonurban areas, direct transport to a thrombectomy centre did not improve 90-day outcome versus the nearest stroke centre.",
+    "teachingPoint": "The tested routing strategy did not improve average disability in this setting. Transport time, local capability and patient selection matter; neutrality does not identify the mechanism or prove equivalence.",
     "PMID": "35510397",
     "year": 2022,
     "citationIds": [
       "cit-racecat-2022"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

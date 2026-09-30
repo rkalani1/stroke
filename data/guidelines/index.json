@@ -2,9 +2,9 @@
   "_meta": {
     "endpoint": "guidelines-index",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.29.2",
-    "checksum": "sha256:ca7601c3a5611acbd0515b8126106ffa",
-    "count": 109,
+    "appVersion": "6.30.0",
+    "checksum": "sha256:e568a7153a641bce267625b4e3e6f846",
+    "count": 110,
     "source": "Guideline metadata bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
@@ -2605,7 +2605,7 @@
       "coverage": {
         "status": "source-unavailable",
         "scope": "Full formal recommendations and good-practice statements await the primary article",
-        "checkedAt": "2026-09-26",
+        "checkedAt": "2026-09-30",
         "sourceRecommendationCount": null,
         "sourceConsensusCount": null,
         "sourceSections": []
@@ -3508,14 +3508,14 @@
       "summaryOnly": false,
       "coverageComplete": true,
       "partialExtraction": false,
-      "recommendationCount": 192,
+      "recommendationCount": 197,
       "coverage": {
         "status": "complete",
         "scope": "All formal recommendations and good-practice/consensus statements",
-        "checkedAt": "2026-09-06",
+        "checkedAt": "2026-09-30",
         "sourceRecommendationCount": 120,
         "sourceConsensusCount": 0,
-        "sourcePracticeStatementCount": 72,
+        "sourcePracticeStatementCount": 77,
         "sourceSections": [
           {
             "id": "Recommendation Table 1",
@@ -3741,10 +3741,10 @@
           {
             "id": "Supplementary Table S10",
             "title": "Perioperative neurological-risk mitigation after stroke",
-            "rowCount": 12,
+            "rowCount": 17,
             "sourceRecommendationCount": 0,
             "sourceConsensusCount": 0,
-            "sourcePracticeStatementCount": 12,
+            "sourcePracticeStatementCount": 17,
             "page": 12
           },
           {
@@ -4957,7 +4957,7 @@
       "summaryOnly": false,
       "coverageComplete": false,
       "partialExtraction": false,
-      "recommendationCount": 29,
+      "recommendationCount": 41,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-moyamoya-2023.json"
     },
     {
@@ -4985,13 +4985,13 @@
       "summaryOnly": false,
       "coverageComplete": true,
       "partialExtraction": false,
-      "recommendationCount": 22,
+      "recommendationCount": 24,
       "coverage": {
         "status": "complete",
         "scope": "All formal recommendations and good-practice/consensus statements",
-        "checkedAt": "2026-09-06",
-        "sourceRecommendationCount": 9,
-        "sourceConsensusCount": 13,
+        "checkedAt": "2026-09-30",
+        "sourceRecommendationCount": 10,
+        "sourceConsensusCount": 14,
         "sourceSections": [
           "PICO 1.1–1.3",
           "PICO 2",
@@ -5009,8 +5009,8 @@
           },
           {
             "section": "PICO 2",
-            "recommendationCount": 3,
-            "consensusCount": 3
+            "recommendationCount": 4,
+            "consensusCount": 4
           },
           {
             "section": "PICO 3",
@@ -5443,7 +5443,7 @@
       "summaryOnly": false,
       "coverageComplete": false,
       "partialExtraction": false,
-      "recommendationCount": 18,
+      "recommendationCount": 26,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-space-occupying-infarction-2021.json"
     },
     {
@@ -6275,7 +6275,7 @@
       "summaryOnly": false,
       "coverageComplete": false,
       "partialExtraction": false,
-      "recommendationCount": 23,
+      "recommendationCount": 32,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/ncs-neuroprognostication-ais-2026.json"
     },
     {
@@ -6291,6 +6291,35 @@
       "partialExtraction": false,
       "recommendationCount": 13,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/ncs-neuroprognostication-ich-2023.json"
+    },
+    {
+      "id": "ncs-reversal-2026",
+      "title": "Treatment of Antithrombotic-Associated Intracranial Hemorrhage in Adults: A Focused Guideline Update from the Neurocritical Care Society and the Society of Critical Care Medicine",
+      "shortTitle": "NCS/SCCM Antithrombotic Reversal Update 2026",
+      "doi": "10.1007/s12028-026-02601-4",
+      "publisherUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4",
+      "pdfUrl": null,
+      "sourceOnly": false,
+      "summaryOnly": false,
+      "coverageComplete": true,
+      "partialExtraction": false,
+      "recommendationCount": 8,
+      "coverage": {
+        "status": "complete",
+        "scope": "All eight numbered recommendations in the focused update; other 2016 reversal topics are not replaced by this update.",
+        "checkedAt": "2026-09-30",
+        "sourceRecommendationCount": 8,
+        "sourceConsensusCount": 0,
+        "sourceSections": [
+          {
+            "id": "Recommendations 1–5",
+            "rowCount": 8,
+            "sourceRecommendationCount": 8,
+            "sourceConsensusCount": 0
+          }
+        ]
+      },
+      "url": "https://rkalani1.github.io/stroke/data/guidelines/ncs-reversal-2026.json"
     },
     {
       "id": "ncs-sah-seizure-prophylaxis-2026",
@@ -6317,7 +6346,7 @@
       "summaryOnly": false,
       "coverageComplete": false,
       "partialExtraction": false,
-      "recommendationCount": 69,
+      "recommendationCount": 70,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/ncs-sccm-antithrombotic-reversal-2016.json"
     },
     {
@@ -7865,7 +7894,7 @@
       "summaryOnly": false,
       "coverageComplete": false,
       "partialExtraction": false,
-      "recommendationCount": 15,
+      "recommendationCount": 27,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/svin-dsa-collaterals-2025.json"
     },
     {

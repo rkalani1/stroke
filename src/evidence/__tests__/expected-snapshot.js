@@ -1,8 +1,6 @@
-// Engine scenario baseline.
-// 2026-09-06: only VERIFY (24-96 h) and ASPIRE (14-180 d) expectations
-// updated for source-verified registry windows; missing onset cannot establish eligibility.
-// The PICASSO scenario also leaves EVT undecided, so the historical RHAPSODY
-// reperfusion criterion is unknown rather than false after decision provenance fixes.
+// 2026-09-30 intentional safety-contract changes: closed profiles are inactive;
+// partial modeled matches require information/protocol confirmation. All other
+// exclusions remain the prior source-reviewed expectations; not generated from engine output.
 export const EXPECTED_SNAPSHOT = {
   "empty form": {
     "step-evt": {
@@ -22,15 +20,15 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -44,7 +42,7 @@ export const EXPECTED_SNAPSHOT = {
   },
   "STEP-EVT MeVO": {
     "step-evt": {
-      "status": "eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "picasso": {
@@ -60,15 +58,15 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -82,7 +80,7 @@ export const EXPECTED_SNAPSHOT = {
   },
   "STEP-EVT low-NIHSS LVO": {
     "step-evt": {
-      "status": "eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "picasso": {
@@ -98,15 +96,15 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -128,7 +126,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "tested": {
-      "status": "eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "verify": {
@@ -136,15 +134,15 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -162,7 +160,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "picasso": {
-      "status": "eligible",
+      "status": "needs_info",
       "exclusionsCount": 0
     },
     "tested": {
@@ -174,15 +172,15 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -212,15 +210,15 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -250,15 +248,15 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -288,15 +286,15 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -326,15 +324,15 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -364,15 +362,15 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -402,15 +400,15 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -440,15 +438,15 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -478,16 +476,16 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "not_eligible",
-      "exclusionsCount": 1
+      "status": "inactive",
+      "exclusionsCount": 0
     },
     "captiva": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "not_eligible",
-      "exclusionsCount": 1
+      "status": "inactive",
+      "exclusionsCount": 0
     },
     "saturn": {
       "status": "needs_info",
@@ -516,15 +514,15 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "not_eligible",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "saturn": {
@@ -554,15 +552,15 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "most": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "captiva": {
-      "status": "not_eligible",
-      "exclusionsCount": 1
+      "status": "inactive",
+      "exclusionsCount": 0
     },
     "rhapsody": {
-      "status": "needs_info",
+      "status": "inactive",
       "exclusionsCount": 0
     },
     "saturn": {

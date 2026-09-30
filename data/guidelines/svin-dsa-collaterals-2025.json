@@ -15,7 +15,8 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "DSA is primarily indicated for BD/DNC determination in cases where clinical or other ancillary tests are inconclusive or when definitive confirmation of absent cerebral blood flow is required.",
-      "page": null
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-1"
     },
     {
       "section": "DSA Indications for CCA Determination in Patients Being Evaluated for BD/DNC",
@@ -23,7 +24,8 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "DSA may be considered in complex clinical scenarios, such as in patients with severe cranial trauma, illicit substance use, electrolyte disturbances, hemodynamic instability, or other conditions that might interfere with the accuracy of other diagnostic modalities.",
-      "page": null
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-2"
     },
     {
       "section": "DSA Indications for CCA Determination in Patients Being Evaluated for BD/DNC",
@@ -31,7 +33,8 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "Survey responses demonstrated moderate agreement: 92.9% endorsed DSA as providing definitive evidence of absent cerebral blood flow, with near-perfect sensitivity and specificity. However, only 71.4% considered it the gold standard ancillary test, and just 57.1% agreed it should be considered a \"core\" test alongside clinical examination and apnea testing. The results highlight DSA's recognized diagnostic accuracy but also reflect the ongoing debate about its role relative to other ancillary modalities (eg, transcranial Doppler or single-photon emission computed tomography).",
-      "page": null
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-3"
     },
     {
       "section": "DSA Technical Performance for CCA Determination in Patients Being Evaluated for BD/DNC",
@@ -39,7 +42,8 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "No consensus was reached on arterial access route: only half of the respondents favored femoral access over radial, reflecting both evolving endovascular practice patterns and the lack of comparative data.",
-      "page": null
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-4"
     },
     {
       "section": "DSA Technical Performance for CCA Determination in Patients Being Evaluated for BD/DNC",
@@ -47,7 +51,8 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "There was greater agreement (64%-85%) on the need for a complete angiogram of all major cervical vessels with cranial fluoroscopy.",
-      "page": null
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-5"
     },
     {
       "section": "DSA Technical Performance for CCA Determination in Patients Being Evaluated for BD/DNC",
@@ -55,7 +60,8 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "There was greater agreement (64%-85%) on careful catheter positioning in standard proximal segments.",
-      "page": null
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-6"
     },
     {
       "section": "DSA Technical Performance for CCA Determination in Patients Being Evaluated for BD/DNC",
@@ -63,7 +69,8 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "There was greater agreement (64%-85%) on use of diagnostic catheters with 0.038-inch inner diameter to avoid altering cerebral flow.",
-      "page": null
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-7"
     },
     {
       "section": "DSA Technical Performance for CCA Determination in Patients Being Evaluated for BD/DNC",
@@ -71,15 +78,18 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "There was greater agreement (64%-85%) on avoidance of manual hand injections when possible; respondents generally endorsed automated injection systems (78.6%). Some variability persisted, particularly regarding hand versus automated injections, underscoring the need for case-by-case judgment while moving toward standardized practice.",
-      "page": null
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-8"
     },
     {
       "section": "DSA Technical Performance for CCA Determination in Patients Being Evaluated for BD/DNC",
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Respondents reached consensus on optimal injection parameters (flow rates 2-3 mL/s, run duration >=10 s, frame rate 2 fps, and vessel-specific pressure ranges of 150-750 PSI).",
-      "page": null
+      "text": "Respondents endorsed flow rates of 2–3 mL/s, a run duration of at least 10 seconds and 2 frames/s. The source also reports injection-console pressure settings, but its comparison with physiological arterial and intracranial pressures is unclear; those pressure numbers are withheld pending clarification. Use qualified neuroangiographic and device-specific planning.",
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-9",
+      "sourceConflictNote": "See formal Table 2G: unresolved relationship between injection-console and physiological pressures."
     },
     {
       "section": "DSA Technical Performance for CCA Determination in Patients Being Evaluated for BD/DNC",
@@ -87,7 +97,8 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "Establishing uniform technical specifications would enhance reproducibility, minimize operator-dependent variability, and ensure that negative angiograms truly reflect absent intracranial perfusion rather than suboptimal technique.",
-      "page": null
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-10"
     },
     {
       "section": "DSA Interpretation for CCA Determination in Patients Being Evaluated for BD/DNC",
@@ -95,7 +106,8 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "The interpretation of DSA for CCA determination in patients being evaluated for BD/DNC should be conducted by a qualified neurointerventionalist with rigorous adherence to specific neurovascular imaging criteria.",
-      "page": null
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-11"
     },
     {
       "section": "DSA Interpretation for CCA Determination in Patients Being Evaluated for BD/DNC",
@@ -103,7 +115,8 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "The current evidence and clinical standard practice establish CCA based on the absence of contrast within the intracranial arteries, reflecting elevated intracranial pressure exceeding systemic mean arterial pressure and resulting in absent cerebral perfusion. Published literature emphasizes clear visualization of contrast delivery from the catheter tip as well as filling of the external carotid artery branches, with complete lack of opacification of the anterior intracranial circulation distal to the clinoid portion of the internal carotid artery (ie, distal to the distal intradural ring) and of the posterior intracranial circulation distal to the intradural segment of the vertebral artery for a duration of 30 seconds.",
-      "page": null
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-12"
     },
     {
       "section": "DSA Interpretation for CCA Determination in Patients Being Evaluated for BD/DNC",
@@ -111,7 +124,8 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "Some studies also suggest that partial stasis or filling in limited segments may still be consistent with CCA and that reports of retrograde venous sinus opacification via emissary veins or jugular venous reflux should be interpreted cautiously, as such findings do not constitute evidence of cerebral activity in isolation.",
-      "page": null
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-13"
     },
     {
       "section": "DSA Interpretation for CCA Determination in Patients Being Evaluated for BD/DNC",
@@ -119,7 +133,8 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "Survey results demonstrated the strongest consensus in this domain, with 92.9% of the surveyed neurointerventionalists agreeing that absent intracranial arterial opacification is the key diagnostic marker of CCA, supporting a tiered classification (high probability, probable, possible, and inconsistent) based on the most distal level of opacification.",
-      "page": null
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-14"
     },
     {
       "section": "DSA Interpretation for CCA Determination in Patients Being Evaluated for BD/DNC",
@@ -127,9 +142,216 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "85.7% endorsed standardized reports that include blood pressure, imaging technique, timing, and multidisciplinary communication.",
-      "page": null
+      "page": null,
+      "id": "svin-dsa-collaterals-2025-15"
+    },
+    {
+      "id": "svin-dsa-t1-a",
+      "section": "T1-A — DSA as gold-standard ancillary test for cerebral circulatory arrest",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "EO-V",
+      "text": "The SVIN expert-opinion table describes cerebral DSA as the gold-standard ancillary test for determining cerebral circulatory arrest in patients being evaluated for brain death/death by neurological criteria.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "T1-A",
+      "sourceReference": "T1-A",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12959451/",
+      "nativeVote": "10/14,71.4%",
+      "nativeClass": "2b",
+      "gradingSystem": "SVIN COR/LOE (ACC/AHA-based, with Expert Opinion EO-V/EO-C)"
+    },
+    {
+      "id": "svin-dsa-t1-b",
+      "section": "T1-B — DSA evidence of absent cerebral blood flow, near100% sensitivity/specificity as expert opinion",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "EO-C",
+      "text": "The SVIN expert-opinion table states that DSA can confirm absent cerebral blood flow, with sensitivity and specificity approaching 100%. This is an expert-opinion statement, not an independently established universal diagnostic-accuracy estimate.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "T1-B",
+      "sourceReference": "T1-B",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12959451/",
+      "nativeVote": "13/14,92.9%",
+      "nativeClass": "2b",
+      "gradingSystem": "SVIN COR/LOE (ACC/AHA-based, with Expert Opinion EO-V/EO-C)"
+    },
+    {
+      "id": "svin-dsa-t1-c",
+      "section": "T1-C — DSA as core ancillary test; positive sentence conflicts with COR3",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Source inconsistency: Table 1C describes DSA positively as a core ancillary test alongside neurological examination and relevant apnea or ancillary testing, but assigns COR 3. The native grade is retained for source identification; the conflicting direction must not be used as an actionable recommendation.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "T1-C",
+      "sourceReference": "T1-C",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12959451/",
+      "nativeVote": "8/14,57.1%",
+      "nativeClass": "3",
+      "gradingSystem": "SVIN COR/LOE (ACC/AHA-based, with Expert Opinion EO-V/EO-C)",
+      "sourceConflict": true,
+      "clinicalUse": "Source identity only; conflicting high-risk direction or detail withheld pending clarification.",
+      "sourceGradeNote": "Native Table 1C: COR 3 / EO-V, 8/14 (57.1%). Positive wording conflicts with the class; no actionable direction is assigned here."
+    },
+    {
+      "id": "svin-dsa-t2-a",
+      "section": "T2-A — Access choice: both radial/femoral; source favors femoral despite no direct comparative literature",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "EO-V",
+      "text": "Both radial and femoral access can be used for DSA. The panel favors femoral access for reproducibility, established flow dynamics and comprehensive cranio-cervical evaluation, while acknowledging no direct comparative published evidence. The source labels the vote EO-V despite exactly 7/14 (50%) agreement; its stated EO-V definition uses greater than 50%.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "T2-A",
+      "sourceReference": "T2-A",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12959451/",
+      "nativeVote": "7/14,50%",
+      "nativeClass": "2a",
+      "gradingSystem": "SVIN COR/LOE (ACC/AHA-based, with Expert Opinion EO-V/EO-C)"
+    },
+    {
+      "id": "svin-dsa-t2-b",
+      "section": "T2-B — Complete angiography of arch, common/internal carotids and vertebrals with cranial fluoroscopy",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "EO-V",
+      "text": "DSA for brain death/death by neurological criteria requires a complete angiogram, including selective runs from the aortic arch, both common carotids, both internal carotids and both vertebral arteries, with cranial fluoroscopy.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "T2-B",
+      "sourceReference": "T2-B",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12959451/",
+      "nativeVote": "9/14,64.3%",
+      "nativeClass": "2a",
+      "gradingSystem": "SVIN COR/LOE (ACC/AHA-based, with Expert Opinion EO-V/EO-C)"
+    },
+    {
+      "id": "svin-dsa-t2-c",
+      "section": "T2-C — Native vessel-specific catheter positions",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "EO-C",
+      "text": "Position the diagnostic catheter in the proximal arch for arch angiography; in the common carotid before the bifurcation for selective common-carotid angiography; in the proximal internal carotid for selective internal-carotid angiography; and in the proximal vertebral V2 segment for selective vertebral angiography.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "T2-C",
+      "sourceReference": "T2-C",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12959451/",
+      "nativeVote": "11/14,78.6%",
+      "nativeClass": "2a",
+      "gradingSystem": "SVIN COR/LOE (ACC/AHA-based, with Expert Opinion EO-V/EO-C)"
+    },
+    {
+      "id": "svin-dsa-t2-d",
+      "section": "T2-D — Prefer0.038-inch internal diameter; larger diameters may alter flow",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "EO-C",
+      "text": "Catheter selection depends on patient factors, accessibility, stability and operator preference. The panel prefers a standard diagnostic catheter with a 0.038-inch internal diameter; larger internal diameters may increase forward pressure and alter cerebral flow dynamics.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "T2-D",
+      "sourceReference": "T2-D",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12959451/",
+      "nativeVote": "12/14,85.7%",
+      "nativeClass": "2a",
+      "gradingSystem": "SVIN COR/LOE (ACC/AHA-based, with Expert Opinion EO-V/EO-C)"
+    },
+    {
+      "id": "svin-dsa-t2-e",
+      "section": "T2-E — Prefer automated injection for consistency; variability of manual injection",
+      "classOfRec": "IIb",
+      "classNote": null,
+      "levelOfEvidence": "EO-C",
+      "text": "The panel prefers automated injection for consistency in injection volume and rate, to maintain the intended injection pressure and avoid forceful nonphysiological contrast filling. Manual injection introduces variability.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "T2-E",
+      "sourceReference": "T2-E",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12959451/",
+      "nativeVote": "11/14,78.6%",
+      "nativeClass": "2b",
+      "gradingSystem": "SVIN COR/LOE (ACC/AHA-based, with Expert Opinion EO-V/EO-C)"
+    },
+    {
+      "id": "svin-dsa-t2-f",
+      "section": "T2-F — Automated injection2–3mL/s,2frames/s,minimum10s run",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "EO-V",
+      "text": "For automated contrast injection, the panel lists 2–3 mL/s, fluoroscopy at 2 frames/s and a run of at least 10 seconds. These are expert-opinion technical parameters for specialist DSA, not a substitute for patient- and device-specific procedural planning.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "T2-F",
+      "sourceReference": "T2-F",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12959451/",
+      "nativeVote": "9/14,64.3%",
+      "nativeClass": "2a",
+      "gradingSystem": "SVIN COR/LOE (ACC/AHA-based, with Expert Opinion EO-V/EO-C)"
+    },
+    {
+      "id": "svin-dsa-t2-g",
+      "section": "T2-G — Vessel-specific injection-pressure console settings; source physiological-pressure comparison requires clarification",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Source clarification required: the injection-console pressure wording compares settings in PSI with mean arterial and intracranial physiological pressures without a clinically coherent relationship. Numeric pressure settings and that relationship are withheld from this summary. Select injection settings through a qualified neuroangiographic team using the equipment specifications and patient-specific procedure plan; this fallback is not assigned the source’s COR/LOE.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "T2-G",
+      "sourceReference": "T2-G",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12959451/",
+      "nativeVote": "10/14,71.4%",
+      "nativeClass": "2a",
+      "gradingSystem": "SVIN COR/LOE (ACC/AHA-based, with Expert Opinion EO-V/EO-C)",
+      "sourceConflict": true,
+      "clinicalUse": "Source identity only; conflicting high-risk direction or detail withheld pending clarification.",
+      "sourceGradeNote": "Native Table 2G: COR 2a / EO-V, 10/14 (71.4%). Grade belongs to the unresolved source statement, not the safer fallback."
+    },
+    {
+      "id": "svin-dsa-t3-a",
+      "section": "T3-A — Tiered CCA interpretation by distal opacification and venous-reflux caveat",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "EO-C",
+      "text": "The primary angiographic criterion is absent intracranial arterial contrast. The panel describes high probability of cerebral circulatory arrest when opacification stops distal to the ICA C6 paraophthalmic segment at the distal dural ring or vertebral V3; probable arrest distal to the ICA terminus or vertebral V4; and possible arrest distal to ACA A1/MCA M1 or the mid-basilar artery. Opacification beyond ACA A1/MCA M1 or the mid-basilar artery is inconsistent with arrest. Retrograde venous-sinus opacification from emissary veins or jugular reflux does not alone indicate meaningful brain activity. These expert-opinion categories require integration with the full brain-death evaluation.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "T3-A",
+      "sourceReference": "T3-A",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12959451/",
+      "nativeVote": "13/14,92.9%",
+      "nativeClass": "2a",
+      "gradingSystem": "SVIN COR/LOE (ACC/AHA-based, with Expert Opinion EO-V/EO-C)"
+    },
+    {
+      "id": "svin-dsa-t3-b",
+      "section": "T3-B — Reporting includes angiogram completion time,BP,technique,interpretation,team communication",
+      "classOfRec": "IIa",
+      "classNote": null,
+      "levelOfEvidence": "EO-C",
+      "text": "At minimum, report angiogram completion time after the final artery/run, blood pressure during angiography, technique, interpretation and communication with the multidisciplinary teams.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "T3-B",
+      "sourceReference": "T3-B",
+      "sourceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12959451/",
+      "nativeVote": "12/14,85.7%",
+      "nativeClass": "2a",
+      "gradingSystem": "SVIN COR/LOE (ACC/AHA-based, with Expert Opinion EO-V/EO-C)"
     }
   ],
   "documentType": "advisory",
-  "gradingSystem": "SVIN COR/LOE (ACC/AHA-based, with Expert Opinion EO-V/EO-C)"
+  "gradingSystem": "SVIN COR/LOE (ACC/AHA-based, with Expert Opinion EO-V/EO-C)",
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Complete PMC primary body plus all three native JPG recommendation tables from supplementaryFiles archive",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
+  }
 }

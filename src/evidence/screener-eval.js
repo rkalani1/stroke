@@ -12,18 +12,19 @@ import { screenerTrials } from './screenerTrials.js';
 /* ── Constants the UI also needs ───────────────────────────────────── */
 
 export const ONSET_PRESETS = [
-  { name: '< 4.5h', val: 2, unit: 'hours', desc: 'Hyperacute' },
-  { name: '4.5 – 24h', val: 12, unit: 'hours', desc: 'Acute' },
-  { name: '24h – 7d', val: 3, unit: 'days', desc: 'Early Subacute' },
-  { name: '7 – 30d', val: 15, unit: 'days', desc: 'Subacute' },
-  { name: '30 – 180d', val: 3, unit: 'months', desc: 'Late Subacute' },
-  { name: '> 6mo', val: 8, unit: 'months', desc: 'Chronic' }
+  { name: '< 4.5h', val: 2, unit: 'hours', rangeHours: [0, 4.5], desc: 'Hyperacute' },
+  { name: '4.5 – 24h', val: 12, unit: 'hours', rangeHours: [4.5, 24], desc: 'Acute' },
+  { name: '24h – 7d', val: 3, unit: 'days', rangeHours: [24, 168], desc: 'Early Subacute' },
+  { name: '7 – 30d', val: 15, unit: 'days', rangeHours: [168, 720], desc: 'Subacute' },
+  { name: '30 – 180d', val: 3, unit: 'months', rangeHours: [720, 4320], desc: 'Late Subacute' },
+  { name: '> 6mo', val: 8, unit: 'months', rangeHours: [4320, null], desc: 'Chronic' }
 ];
 
 export const EXCLUSION_ITEMS = [
   { id: 'exMultipleTerritories', label: 'Acute occlusions in multiple vascular territories', classifications: ['ischemic'], trials: ['STEP'] },
   { id: 'exTandem', label: 'Tandem occlusions (cervical + intracranial)', classifications: ['ischemic'], trials: ['STEP'] },
-  { id: 'exTerminalIllness', label: 'Terminal illness or life expectancy < 2y', classifications: ['ischemic', 'ich'], trials: ['TESTED', 'SATURN'] },
+  { id: 'exTerminalIllness', label: 'Known terminal cancer or terminal illness at stroke onset', classifications: ['ischemic'], trials: ['TESTED'] },
+  { id: 'exLifeExpectancy2y', label: 'Life expectancy < 2 years', classifications: ['ich'], trials: ['SATURN'] },
   { id: 'exSecondaryIch', label: 'Suspected secondary cause for ICH (AVM, aneurysm, tumor, SAH)', classifications: ['ich'], trials: ['MINUTE', 'SATURN'] },
   { id: 'exMidbrain', label: 'Midbrain extension or infratentorial/thalamic location', classifications: ['ich'], trials: ['MINUTE'] },
   { id: 'exPriorIch12m', label: 'Prior ICH in past 12 months', classifications: ['ich'], trials: ['ASPIRE'] },
@@ -48,7 +49,8 @@ export const EXCLUSION_ITEMS = [
   { id: 'exLegallyBlind', label: 'Legally blind', classifications: ['ischemic'], trials: ['VERIFY'] },
   { id: 'exDenseSensoryLoss', label: 'Dense sensory loss (NIHSS sensory score = 2)', classifications: ['ischemic'], trials: ['VERIFY'] },
   { id: 'exRecentStroke30d', label: 'Separate symptomatic stroke within prior 30 days', classifications: ['ischemic', 'ich'], trials: ['VERIFY', 'TELE-REHAB-2'] },
-  { id: 'exSeizures', label: 'Seizures since stroke onset / history of epilepsy', classifications: ['ischemic', 'ich'], trials: ['VERIFY', 'MR-PICS'] },
+  { id: 'exVerifySeizure', label: 'Seizure after the index stroke, or seizure within 12 months while taking antiseizure medication', classifications: ['ischemic'], trials: ['VERIFY'] },
+  { id: 'exSeizures', label: 'History of seizures or epilepsy', classifications: ['ischemic', 'ich'], trials: ['MR-PICS'] },
   { id: 'exBotoxVns3m', label: 'Botulinum toxin to paretic arm within past 3 months or expected by 8-month visit', classifications: ['ischemic', 'ich'], trials: ['TELE-REHAB-2'] },
   { id: 'exAnticoagulation', label: 'Currently taking anticoagulants', classifications: ['ischemic'], trials: ['MR-PICS'] },
   { id: 'exHistoryDvtPe', label: 'History of unprovoked DVT or any pulmonary embolus', classifications: ['ischemic'], trials: ['MR-PICS'] },
@@ -71,7 +73,7 @@ const ALL_EXCLUSION_IDS = [
   'exIncarcerated', 'exTrach', 'exCpapUse14d', 'exSecondaryIchOrSah',
   'exPriorDementia', 'exWorseningNeurologic', 'exDisorderInterfering',
   'exPriorUeCondition', 'exLegallyBlind', 'exDenseSensoryLoss',
-  'exRecentStroke30d', 'exSeizures', 'exSevereSpasticity', 'exArmInjury',
+  'exRecentStroke30d', 'exSeizures', 'exVerifySeizure', 'exSevereSpasticity', 'exArmInjury',
   'exSevereAphasiaCognitive', 'exSevereClaustrophobia', 'exBotoxVns3m',
   'exAnticoagulation', 'exHistoryDvtPe', 'exRecurrentStroke',
   'exPlannedCarotidIntervention', 'exDrugAlcoholAbuse',
@@ -92,13 +94,29 @@ const OPERATORS = {
   'in': (p, v) => Array.isArray(v) && v.includes(p)
 };
 
+const missing = v => v === undefined || v === null || v === '' || v === 'unselected' || (typeof v === 'number' && !Number.isFinite(v));
 function evaluateCriterion(c, p) {
   if (c.operator === 'or') {
-    return c.branches.some(b => b.criteria.every(cc => evaluateCriterion(cc, p)));
+    const branches = (c.branches || []).map(b => {
+      const results = b.criteria.map(cc => evaluateCriterion(cc, p));
+      return results.includes(false) ? false : results.includes(null) ? null : true;
+    });
+    return branches.includes(true) ? true : branches.includes(null) ? null : false;
   }
   const val = p[c.field];
   const op = OPERATORS[c.operator];
-  if (!op) return false;
+  if (!op || missing(val)) return null;
+  if (c.field?.startsWith('onset') && Array.isArray(p.onsetRangeHours)) {
+    const divisor = c.field === 'onsetDays' ? 24 : c.field === 'onsetMonths' ? 720 : 1;
+    const lo = p.onsetRangeHours[0] / divisor;
+    const hi = p.onsetRangeHours[1] === null ? Infinity : p.onsetRangeHours[1] / divisor;
+    if (c.operator === 'between') {
+      if (hi < c.value[0] || lo > c.value[1]) return false;
+      return lo >= c.value[0] && hi <= c.value[1] ? true : null;
+    }
+    const atLo = op(lo,c.value), atHi = op(hi,c.value);
+    return atLo === atHi ? atLo : null;
+  }
   return op(val, c.value);
 }
 
@@ -117,8 +135,9 @@ function formatLabel(label, p, field) {
 export function createInitialScreenerState() {
   return {
     classification: 'unselected',
-    onsetVal: 2,
+    onsetVal: null,
     onsetUnit: 'hours',
+    onsetRangeHours: null,
     age: 'unselected',
     nihss: 'unselected',
     aspects: 'unselected',
@@ -146,19 +165,23 @@ export function createInitialScreenerState() {
 }
 
 export function onsetToHours(onsetVal, onsetUnit) {
-  if (onsetUnit === 'hours') return onsetVal;
-  if (onsetUnit === 'days') return onsetVal * 24;
-  return onsetVal * 30 * 24;
+  if (typeof onsetVal !== 'number' && (typeof onsetVal !== 'string' || !/^[+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?$/i.test(onsetVal.trim()))) return null;
+  const value = Number(onsetVal);
+  const factor = onsetUnit === 'hours' ? 1 : onsetUnit === 'days' ? 24 : onsetUnit === 'months' ? 720 : null;
+  if (!Number.isFinite(value) || value < 0 || typeof factor !== 'number') return null;
+  const hours = value * factor;
+  return Number.isFinite(hours) ? hours : null;
 }
 
 export function buildScreenerParams(state) {
   const onsetHours = onsetToHours(state.onsetVal, state.onsetUnit);
-  const onsetDays = onsetHours / 24.0;
-  const onsetMonths = onsetDays / 30.0;
+  const onsetDays = onsetHours === null ? null : onsetHours / 24.0;
+  const onsetMonths = onsetDays === null ? null : onsetDays / 30.0;
 
   const p = {
     classification: state.classification,
     onsetHours,
+    onsetRangeHours: state.onsetRangeHours,
     onsetDays,
     onsetMonths,
     age: state.age,
@@ -187,9 +210,9 @@ export function buildScreenerParams(state) {
 
   const ex = state.exclusions || {};
   ALL_EXCLUSION_IDS.forEach((id) => {
-    p[id] = !!ex[id];
+    p[id] = typeof ex[id] === 'boolean' ? ex[id] : null;
   });
-  p.exMidbrain = !!ex.exMidbrain || state.ichLocation === 'thalamic' || state.ichLocation === 'infratentorial';
+  if (state.ichLocation === 'thalamic' || state.ichLocation === 'infratentorial') p.exMidbrain = true;
 
   return p;
 }
@@ -202,129 +225,38 @@ export function evaluateTrialEligibility(trial, p) {
     return { status: 'placeholder', matchedCriteria: [], pendingCriteria: [], pendingFields: [], exclusionReasons: ['Incomplete study profile in source; screening not possible'], sourceGaps: trial.sourceGaps || [] };
   }
 
-  const pessP = { ...p };
-  const UNSELECTED_MAP = { age: 17, nihss: -1, aspects: -1, gcs: -1, preMrs: 6, currentMrs: 6, vessel: 'none', etiology: 'none', ichLocation: 'none', volume: 'none', statin: false, afibHistory: false, takingOac: false, language: 'other', rehab: 'none', self_consent: false, availability_54w: false, exUeWeakness: false, unilateralSymptomatic: false, anteriorCirculation: false, presentedWithin24h: false, singleAntiplateletSoc: false };
-  Object.keys(UNSELECTED_MAP).forEach(k => { if (pessP[k] === 'unselected') pessP[k] = UNSELECTED_MAP[k]; });
-
-  const optP = { ...p };
-  const OPT_DEFAULTS = { age: 65, nihss: 8, aspects: 8, gcs: 15, preMrs: 0, currentMrs: 3, vessel: 'none', etiology: 'other', ichLocation: 'bg', volume: 'small', statin: false, afibHistory: false, takingOac: false, language: 'english', rehab: 'yes', self_consent: true, availability_54w: true, exUeWeakness: true, unilateralSymptomatic: true, anteriorCirculation: true, presentedWithin24h: true, singleAntiplateletSoc: true };
-  const trialDefaults = trial.optimisticDefaults || {};
-  Object.keys(OPT_DEFAULTS).forEach(k => { if (optP[k] === 'unselected') optP[k] = trialDefaults[k] !== undefined ? trialDefaults[k] : OPT_DEFAULTS[k]; });
-
-  // "Too early" detector: an onset-window criterion the patient fails only
-  // because they have not yet REACHED the trial's declared window start. Driven
-  // from each trial's own criteria (onsetHours/onsetDays/onsetMonths fields),
-  // not from hardcoded acronyms.
-  const isTooEarlyFailure = (c, params) => {
-    if (!c) return false;
-    if (c.operator === 'or') {
-      // An 'or' criterion is "too early" if at least one branch would pass
-      // except for a too-early onset criterion (all its non-onset criteria pass).
-      return (c.branches || []).some((b) =>
-        b.criteria.some((cc) => isTooEarlyFailure(cc, params)) &&
-        b.criteria.every((cc) => evaluateCriterion(cc, params) || isTooEarlyFailure(cc, params))
-      );
-    }
-    if (!c.field || !String(c.field).startsWith('onset')) return false;
-    const v = params[c.field];
-    if (typeof v !== 'number') return false;
-    if (c.operator === '>=' || c.operator === '>') return v < c.value;
-    if (c.operator === 'between' && Array.isArray(c.value)) return v < c.value[0];
-    return false;
-  };
-
-  const optCriterionFailures = trial.eligibility.criteria.filter(c => !evaluateCriterion(c, optP));
-  const optExclusionHits = trial.eligibility.exclusions.filter(c => evaluateCriterion(c, optP));
-  const optErrors = [...optCriterionFailures.map(c => c.error), ...optExclusionHits.map(c => c.error)];
-
-  if (optErrors.length > 0) {
-    // Previously this early return made every "enrolling soon" patient read as
-    // 'excluded' (e.g. a day-2 ICH+AF patient for ASPIRE's 14-180d window).
-    // If EVERY optimistic failure is a too-early onset criterion, the patient
-    // is a FUTURE match: surface as 'soon' with the window spelled out.
-    const allTooEarly = optExclusionHits.length === 0 &&
-      optCriterionFailures.every(c => isTooEarlyFailure(c, optP));
-    if (allTooEarly) {
-      return {
-        status: 'soon',
-        matchedCriteria: [],
-        pendingCriteria: optCriterionFailures.map(c => c.pendingLabel || c.error).filter(Boolean),
-        pendingFields: [],
-        exclusionReasons: [],
-        sourceGaps: trial.sourceGaps || []
-      };
-    }
-    return { status: 'excluded', matchedCriteria: [], pendingCriteria: [], pendingFields: [], exclusionReasons: optErrors, sourceGaps: trial.sourceGaps || [] };
+  if (!['enrolling', 'soon'].includes(trial.status)) {
+    return { status: 'closed', matchedCriteria: [], pendingCriteria: [], pendingFields: [], exclusionReasons: ['Enrollment status is unknown or inactive; confirm with the study team'], sourceGaps: trial.sourceGaps || [] };
   }
-
-  const isSoon = trial.status === 'soon';
-  const requiresSourceConfirmation = !!trial.sourceCompletenessStatus && trial.sourceCompletenessStatus !== 'complete';
-
-  const pendingFields = [];
-  const fieldsToTest = [
-    { key: 'age', label: 'Age' }, { key: 'nihss', label: 'NIHSS Score' }, { key: 'aspects', label: 'ASPECTS Score' }, { key: 'gcs', label: 'GCS Score' }, { key: 'preMrs', label: 'Pre-stroke mRS' }, { key: 'currentMrs', label: 'Current post-stroke mRS' }, { key: 'vessel', label: 'Vessel status' }, { key: 'etiology', label: 'Stroke Subtype' }, { key: 'ichLocation', label: 'Hemorrhage Location' }, { key: 'volume', label: 'Hematoma Volume' }, { key: 'statin', label: 'Statin at onset' }, { key: 'afibHistory', label: 'Atrial Fibrillation history' }, { key: 'takingOac', label: 'Anticoagulation status' }, { key: 'language', label: 'Language spoken' }, { key: 'rehab', label: 'Rehab unit placement' }, { key: 'self_consent', label: 'Patient able to self-consent' }, { key: 'availability_54w', label: '54-week visits availability' }, { key: 'exUeWeakness', label: 'Upper extremity weakness' }, { key: 'unilateralSymptomatic', label: 'Unilateral symptomatic AIS' }, { key: 'anteriorCirculation', label: 'Anterior circulation' }, { key: 'presentedWithin24h', label: 'Presented within 24h' }, { key: 'singleAntiplateletSoc', label: 'Single antiplatelet SOC' }
-  ];
-
-  fieldsToTest.forEach((f) => {
-    if (p[f.key] === 'unselected') {
-      const testP = { ...optP };
-      testP[f.key] = pessP[f.key];
-      const hasFailure = trial.eligibility.criteria.some(c => !evaluateCriterion(c, testP)) || trial.eligibility.exclusions.some(c => evaluateCriterion(c, testP));
-      if (hasFailure) pendingFields.push(f.label);
-    }
-  });
-
-  if (requiresSourceConfirmation) pendingFields.push('Full registry/protocol confirmation');
-
-  const matchedCriteria = [];
-  trial.eligibility.criteria.forEach(c => {
-    if (evaluateCriterion(c, p)) {
-      const label = c.operator === 'or'
-        ? (getActiveBranch(c, p)?.label || formatLabel(c.matchedLabel, p, c.field))
-        : formatLabel(c.matchedLabel, p, c.field);
-      // De-duplicated: distinct criteria may share a matchedLabel, and the card
-      // rendering the identical bullet twice reads as a data error.
-      if (label && !matchedCriteria.includes(label)) matchedCriteria.push(label);
-    }
-  });
-
-  const pendingCriteria = [];
-  trial.eligibility.criteria.forEach(c => {
-    if (p[c.field] === 'unselected' || (c.operator === 'or' && c.branches.some(b => b.criteria.some(cc => p[cc.field] === 'unselected')))) {
-      if (c.pendingLabel) pendingCriteria.push(c.pendingLabel);
-    }
-  });
-  trial.eligibility.exclusions.forEach(c => {
-    if (p[c.field] === 'unselected' && c.pendingLabel) pendingCriteria.push(c.pendingLabel);
-  });
-  (trial.eligibility.manualPending || []).forEach(m => pendingCriteria.push(m));
-
-  if (requiresSourceConfirmation) {
-    pendingCriteria.push('Confirm the full ClinicalTrials.gov record, approved local protocol, activation status, consent path, and study-owner instructions before any clinical or recruitment action');
-  }
-
-  // NOTE (by design): every first-pass trial carries
-  // sourceCompletenessStatus !== 'complete', which pushes 'Full
-  // registry/protocol confirmation' into pendingFields above — so
-  // 'eligible' is UNREACHABLE for first-pass records and every real match
-  // surfaces as 'pending' (possible candidate). The green 'eligible' state
-  // would only ever render for a fully registry-verified trial record.
-  const finalStatus = (pendingFields.length > 0 || trial.eligibility.criteria.some(c => !evaluateCriterion(c, pessP)) || trial.eligibility.exclusions.some(c => evaluateCriterion(c, pessP)))
-    ? (isSoon ? 'soon' : 'pending')
-    : (isSoon ? 'soon' : 'eligible');
-
+  const criteria = trial.eligibility?.criteria || [];
+  const exclusions = trial.eligibility?.exclusions || [];
+  const failed = criteria.filter(c => evaluateCriterion(c, p) === false);
+  const hits = exclusions.filter(c => evaluateCriterion(c, p) === true);
+  const tooEarly = c => c.field?.startsWith('onset') && typeof p[c.field] === 'number' &&
+    ((c.operator === '>=' && p[c.field] < c.value) || (c.operator === '>' && p[c.field] <= c.value) || (c.operator === 'between' && p[c.field] < c.value[0]));
+  const futureWindow = failed.length > 0 && failed.every(tooEarly) && hits.length === 0;
+  const pendingCriteria = [
+    ...criteria.filter(c => evaluateCriterion(c,p) === null).map(c => c.pendingLabel || c.matchedLabel || c.error || c.field),
+    ...exclusions.filter(c => evaluateCriterion(c,p) === null).map(c => c.pendingLabel || `Confirm exclusion absent: ${c.error || c.field}`),
+    ...(trial.eligibility?.manualPending || [])
+  ].filter(Boolean);
+  // Every stored profile is a partial summary. Neither absence of a modeled
+  // exclusion nor metadata verification establishes complete eligibility.
+  pendingCriteria.push('Full registry/protocol, local activation and consent confirmation required');
+  const matchedCriteria = criteria.filter(c => evaluateCriterion(c,p) === true).map(c => c.operator === 'or' ? getActiveBranch(c,p)?.label : formatLabel(c.matchedLabel,p,c.field)).filter(Boolean);
   return {
-    status: finalStatus,
-    matchedCriteria,
-    pendingCriteria,
-    pendingFields,
-    exclusionReasons: [],
-    sourceGaps: trial.sourceGaps || []
+    status: hits.length || (failed.length && !futureWindow) ? 'excluded' : (trial.status === 'soon' || futureWindow) ? 'soon' : 'pending',
+    matchedCriteria: [...new Set(matchedCriteria)],
+    pendingCriteria: [...new Set(pendingCriteria)],
+    pendingFields: [...new Set([...criteria.filter(c => evaluateCriterion(c,p) === null).flatMap(c => c.operator === 'or' ? ['Alternative eligibility pathway'] : [{age:'Age',rehab:'Rehab unit placement',language:'Language spoken',currentMrs:'Current post-stroke mRS',preMrs:'Pre-stroke mRS'}[c.field] || c.field]), ...exclusions.filter(c => evaluateCriterion(c,p) === null).map(c => c.pendingLabel || c.error || c.field), 'Full registry/protocol confirmation'])],
+    exclusionReasons: [...failed.filter(c => !futureWindow).map(c => c.error), ...hits.map(c => c.error)].filter(Boolean),
+    sourceGaps: trial.sourceGaps || [],
+    fullProtocolReviewRequired: true
   };
 }
 
 export function isTrialPotentiallyActive(trial, p) {
-  if (trial.status === 'closed' || trial.status === 'placeholder') return false;
+  if (!['enrolling', 'soon'].includes(trial.status)) return false;
   const res = evaluateTrialEligibility(trial, p);
   return res.status !== 'excluded';
 }
@@ -396,6 +328,7 @@ const ONSET_NOTE_LABELS = [
 ];
 
 function onsetNoteLabel(onsetHours) {
+  if (onsetHours === null) return 'Not recorded';
   const band = ONSET_NOTE_LABELS.find((b) => onsetHours <= b.maxHours);
   return band ? band.label : '> 6 months from LKW';
 }
@@ -409,7 +342,7 @@ export function buildBriefingNote(state, buckets) {
   const cls = CLASSIFICATION_NOTE_LABELS[state.classification] || String(state.classification || '').toUpperCase();
   const onsetHours = onsetToHours(state.onsetVal, state.onsetUnit);
 
-  const screenedAt = onsetHours < 48
+  const screenedAt = onsetHours === null ? 'not recorded' : onsetHours < 48
     ? onsetHours.toFixed(1) + ' h'
     : onsetHours < 24 * 60
     ? (onsetHours / 24).toFixed(1) + ' d'
@@ -417,7 +350,7 @@ export function buildBriefingNote(state, buckets) {
 
   let note = '=== STROKE SCREENER REFERRAL NOTE ===\n';
   note += 'Classification: ' + cls + '\n';
-  note += 'Onset window: ' + onsetNoteLabel(onsetHours) + ' (screened at ' + screenedAt + ')\n';
+  note += 'Onset window: ' + onsetNoteLabel(onsetHours) + (Array.isArray(state.onsetRangeHours) ? ' (selected range; exact interval not recorded)' : ' (screened at ' + screenedAt + ')') + '\n';
   note += '--------------------------------------------------\n';
 
   const candidates = [...eligible, ...pending];

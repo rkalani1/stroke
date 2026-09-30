@@ -57,10 +57,11 @@ describe('complete ESO source inventories', () => {
 });
 
 describe('source qualifications and grading regression checks', () => {
-  it('applies the missing-box cognition correction to every restored statement', () => {
+  it('retains correction linkage while corrected cognition boxes remain independently unresolved', () => {
     const d = documents['eso-ean-poststroke-cognition-2021'];
     const correction = d.publicationUpdates.find((u) => u.pmid === '35300261');
-    expect(correction.status).toBe('applied');
+    expect(correction.status).toBe('unresolved');
+    expect(correction.independentReviewScope).toMatch(/corrected recommendation-box supplement unavailable/);
     expect(new Set(correction.affectedRecommendationIds)).toEqual(new Set(d.recommendations.map((r) => r.id)));
     expect(d.recommendations.every((r) => r.correctionSourceUrl === 'https://doi.org/10.1177/23969873221076951')).toBe(true);
   });

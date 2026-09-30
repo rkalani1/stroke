@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import {
+import Education, {
   VesselWallMriCard,
   CryptogenicStrokeEsusCard
 } from '../src/education.jsx';
@@ -27,14 +27,21 @@ describe('Domain 4: Diagnostic Algorithms, Neuroimaging Pearls & Cryptogenic Str
     });
   });
 
-  describe('2. SVG Visualizer Dimensions & Accessibility (WCAG)', () => {
+  describe('2. Reviewed replacements and accessible reading view', () => {
     domain4Cards.forEach(({ id, Component, name }) => {
-      it(`verifies SVG in ${name} (${id}) has valid viewBox, role="img", and aria-label`, () => {
-        const html = ReactDOMServer.renderToString(React.createElement(Component));
-        expect(html).toContain('<svg');
-        expect(html).toContain('viewBox="0 0 735 168"');
-        expect(html).toContain('role="img"');
-        expect(html).toContain('aria-label=');
+      it(`keeps ${name} (${id}) readable after withdrawing the unsupported diagnostic schematic`, () => {
+        const html = ReactDOMServer.renderToStaticMarkup(React.createElement(Component));
+        expect(html).not.toContain('<svg');
+        expect(html).toContain('Key clinical boundaries');
+        // The comparison table remains reachable by keyboard after the figure removal.
+        expect(html).toMatch(/class="clinical-scroll-region" role="region" aria-label="[^"]+" tabindex="0"><table/);
+        expect(html).toContain('https://pubmed.ncbi.nlm.nih.gov/');
+
+        const view = ReactDOMServer.renderToStaticMarkup(<Education activeSubTab={id} />);
+        expect(view).toContain('education-card-reader education-card-readable');
+        expect(view).toContain('aria-label="Teaching card display"');
+        expect(view).toMatch(/<button[^>]*aria-pressed="true"[^>]*>Reading view<\/button>/);
+        expect(view).toMatch(/<button[^>]*aria-pressed="false"[^>]*>Fit card<\/button>/);
       });
     });
   });
@@ -52,9 +59,10 @@ describe('Domain 4: Diagnostic Algorithms, Neuroimaging Pearls & Cryptogenic Str
       expect(html).toContain('Eccentric');
       expect(html).toContain('Concentric');
       expect(html).toContain('Intraplaque Hemorrhage');
-      expect(html).toContain('CSF Pleocytosis');
-      expect(html).toContain('Reversible');
-      expect(html).toContain('Negative Remodeling');
+      expect(html).toContain('neither abnormal CSF nor response to immunosuppression establishes PACNS');
+      expect(html).toContain('Do not use a categorical remodeling rule to establish or exclude RCVS');
+      expect(html).toContain('Marked negative remodeling');
+      expect(html).toContain('pattern is not universal or disease-specific');
     });
 
     it('verifies Cryptogenic Stroke & ESUS card contains trials, ICM yields, and atrial cardiopathy', () => {

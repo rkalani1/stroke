@@ -214,12 +214,22 @@
     {
       "type": "correction",
       "pmid": "41871197",
-      "doi": "10.1161/str.0000000000000519",
-      "publisherUrl": "https://doi.org/10.1161/str.0000000000000519",
+      "doi": "10.1161/STR.0000000000000519",
+      "publisherUrl": "https://doi.org/10.1161/STR.0000000000000519",
       "status": "not-applicable",
-      "note": "Adds the American Academy of Neurology affirmation; no extracted clinical statement changes.",
-      "checkedAt": "2026-09-06",
-      "affectedRecommendationIds": []
+      "note": "The complete notice adds AAN educational affirmation. No imported clinical statement changes.",
+      "checkedAt": "2026-09-30",
+      "affectedRecommendationIds": [],
+      "previousReviewNote": "Adds the American Academy of Neurology affirmation; no extracted clinical statement changes.",
+      "independentReviewScope": "complete primary notice read"
     }
-  ]
+  ],
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Publisher/DOI and bounded primary public alternatives assessed; incomplete indexed fragments only, no complete body acquired",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
+  }
 }

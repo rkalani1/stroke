@@ -1,3 +1,11 @@
+// Reviewed helpers accept complete finite numbers, never partial strings or booleans.
+const reviewedNumber = (value) => {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+  if (typeof value !== 'string' || !/^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/.test(value.trim())) return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+};
+
 // Pure clinical calculator functions extracted from app.jsx.
 // Keeping these as a separate module makes them unit-testable and
 // lets the bundler tree-shake unused helpers.
@@ -302,31 +310,28 @@ export const isJune2026MieLobarLocationText = (text = '') => {
 };
 
 export const calculateEnoxaparinDose = (weightKg, crCl) => {
-  const weight = parseFloat(weightKg) || 0;
-  const parsedCrCl = parseFloat(crCl);
-  const renalClearance = (!isNaN(parsedCrCl) && parsedCrCl > 0) ? parsedCrCl : null;
-  if (weight <= 0 || weight > 350) return null;
-  const crClUnknown = renalClearance === null;
-  const isRenalAdjusted = renalClearance !== null && renalClearance < 30;
-  const treatmentDose = Math.round(weight * 1);
-  const prophylaxisDose = isRenalAdjusted ? 30 : 40;
-  const prophylaxisFreq = weight > 100 && !isRenalAdjusted ? 'q12h' : 'daily';
-  const crClWarning = crClUnknown ? ' ⚠ CrCl unknown — verify renal function before dosing' : '';
-  const obesityWarning = treatmentDose > 150 ? ' ⚠ Treatment dose >150 mg — consider anti-Xa monitoring (target 0.5-1.0 IU/mL at 4h post-dose) for morbid obesity' : '';
-  const dailyTreatmentDose = Math.round(weight * 1.5);
-  const dailyTreatmentNote = isRenalAdjusted
-    ? `Daily treatment: ${treatmentDose} mg SC daily (CrCl <30 — use 1 mg/kg daily)`
-    : `Daily treatment (alternative): ${dailyTreatmentDose} mg SC daily`;
-  const dailyTreatmentWarning = dailyTreatmentDose > 180 ? ' ⚠ Daily dose >180 mg — consider BID dosing with anti-Xa monitoring' : '';
+  const weight = reviewedNumber(weightKg);
+  const renalClearance = reviewedNumber(crCl);
+  if (weight === null || weight <= 0 || weight > 350) return null;
+  const sourceUrl = 'https://products.sanofi.us/lovenox/lovenox.pdf';
+  if (renalClearance === null || renalClearance <= 0) return {
+    status: 'incomplete', dose: null, dailyDose: null, frequency: null,
+    isRenalAdjusted: null, crClUnknown: true,
+    note: 'CrCl unknown or invalid — confirm renal function before selecting a dose.',
+    dailyTreatmentNote: 'No treatment regimen selected while renal function is unresolved.',
+    prophylaxisNote: 'No prophylaxis dose selected while renal function is unresolved.', sourceUrl
+  };
+  const isRenalAdjusted = renalClearance < 30;
+  const dailyDose = isRenalAdjusted ? weight : Number((weight * 1.5).toPrecision(12));
   return {
-    dose: treatmentDose,
-    dailyDose: dailyTreatmentDose,
-    frequency: isRenalAdjusted ? 'daily' : 'BID',
-    isRenalAdjusted,
-    crClUnknown,
-    note: (isRenalAdjusted ? `Treatment: ${treatmentDose} mg SC daily (CrCl <30)` : `Treatment: ${treatmentDose} mg SC BID`) + crClWarning + obesityWarning,
-    dailyTreatmentNote: dailyTreatmentNote + dailyTreatmentWarning + crClWarning,
-    prophylaxisNote: `VTE Prophylaxis: ${prophylaxisDose} mg SC ${prophylaxisFreq}${isRenalAdjusted ? ' (renal-adjusted)' : ''}${weight > 100 && !isRenalAdjusted ? ' (weight >100 kg)' : ''}` + crClWarning
+    status: 'reference', dose: weight, dailyDose,
+    frequency: isRenalAdjusted ? 'daily' : 'BID', isRenalAdjusted, crClUnknown: false,
+    note: `Adult acute DVT treatment reference: ${weight} mg SC ${isRenalAdjusted ? 'daily (CrCl <30)' : 'every 12 hours'} (1 mg/kg). Confirm the indication, bleeding risk, and product preparation before prescribing.`,
+    dailyTreatmentNote: isRenalAdjusted
+      ? `Renal-adjusted DVT treatment: ${weight} mg SC daily. The 1.5 mg/kg daily alternative does not apply with CrCl <30.`
+      : `For inpatient acute DVT with or without PE, a labeled alternative is ${dailyDose} mg SC daily (1.5 mg/kg). This is not a general acute-stroke treatment recommendation.`,
+    prophylaxisNote: `Medical-illness VTE prophylaxis reference: ${isRenalAdjusted ? 30 : 40} mg SC daily${isRenalAdjusted ? ' (CrCl <30)' : ''}. Obesity does not automatically change this to twice daily; the label reports no consensus for prophylactic dose adjustment in obesity. Individualize with pharmacy.`,
+    sourceUrl
   };
 };
 
@@ -551,5 +556,57 @@ export const calculateAdjunctiveIAAlteplase = (weightKg, eTICI) => {
     note: isEligibleTICI
       ? `CHOICE-2 (JAMA 2026): Adjunctive IA alteplase 0.225 mg/kg (max 20 mg) infused over 15 min after successful thrombectomy (eTICI 2b50-3); investigational. 90-day mortality was higher with IA alteplase (12.1% vs 6.4%).`
       : `CHOICE-2 criteria generally require successful reperfusion (eTICI 2b50-3) before adjunctive IA alteplase.`
+  };
+};
+
+// Separate reviewed exports keep institutional/legacy calculator semantics intact.
+export const calculateCrClReviewed = (age, weight, sex, creatinine, heightCm) => {
+  const [a, w, cr] = [age, weight, creatinine].map(reviewedNumber);
+  const heightProvided = heightCm !== undefined && heightCm !== null && heightCm !== '';
+  const h = heightProvided ? reviewedNumber(heightCm) : null;
+  if ([a, w, cr].some(x => x === null) || a < 18 || a > 120 || w <= 0 || w > 350 || cr < 0.1 || !['M', 'F'].includes(sex)) return null;
+  if (heightProvided && (h === null || h <= 0 || h > 300)) return null;
+  const result = calculateCrCl(a, w, sex, cr, h);
+  if (!result || !Number.isFinite(result.value) || (result.adjBwValue !== null && !Number.isFinite(result.adjBwValue))) return null;
+  const rawValue = ((140 - a) * w * (sex === 'F' ? 0.85 : 1)) / (72 * cr);
+  // The legacy category uses the unrounded estimate. Do not let display
+  // rounding near 15 preserve its unsupported dialysis inference.
+  const below15 = result.renalCategory === 'severe-dialysis';
+  return { ...result, rawValue, label: below15 ? 'Severe (<15 before rounding); specialist assessment required' : result.label,
+    renalCategory: below15 ? 'severe' : result.renalCategory,
+    scopeNote: 'Adult Cockcroft–Gault estimate. Confirm stable creatinine, appropriate weight convention, and the specific drug label; this estimate does not determine a dialysis indication.' };
+};
+
+export const calculateICHVolumeReviewed = (items) => {
+  if (!items || typeof items !== 'object') return null;
+  const dimensions = [items.lengthCm, items.widthCm, items.slicesCm].map(reviewedNumber);
+  if (dimensions.some(x => x === null || x <= 0)) return null;
+  const volume = dimensions.reduce((a, b) => a * b, 1) / 2;
+  if (!Number.isFinite(volume)) return null;
+  const result = calculateICHVolume({ lengthCm: dimensions[0], widthCm: dimensions[1], slicesCm: dimensions[2] });
+  if (!result || !Number.isFinite(result.volume)) return null;
+  return { ...result, unitWarning: dimensions.some(x => x > 15) || volume > 500
+    ? 'Confirm all three dimensions are in centimeters. Entering millimeters for one dimension inflates ABC/2 tenfold; doing so for all three inflates it 1000-fold.' : null };
+};
+
+export const calculateTNKDoseReviewed = (weightKg, authority = 'guideline') => {
+  const weight = reviewedNumber(weightKg);
+  if (weight === null || weight <= 0 || weight > 350 || !['guideline', 'fda-label'].includes(authority)) return null;
+  const labeledBands = [
+    { minWeight: 0, maxWeight: 60, dose: 15, vial: '3 mL' },
+    { minWeight: 60, maxWeight: 70, dose: 17.5, vial: '3.5 mL' },
+    { minWeight: 70, maxWeight: 80, dose: 20, vial: '4 mL' },
+    { minWeight: 80, maxWeight: 90, dose: 22.5, vial: '4.5 mL' },
+    { minWeight: 90, maxWeight: null, dose: 25, vial: '5 mL' }
+  ];
+  const dose = authority === 'fda-label'
+    ? labeledBands.find(band => weight >= band.minWeight && (band.maxWeight === null || weight < band.maxWeight)).dose
+    : Math.min(Number((weight * 0.25).toPrecision(12)), 25);
+  return {
+    weightKg: weight, calculatedDose: String(dose), volume: `${Number((dose / 5).toPrecision(12))} mL`, isMaxDose: dose === 25,
+    authority, authorityLabel: authority === 'fda-label' ? 'US TNKase AIS prescribing information: weight bands' : 'AHA/ASA 2026 AIS guideline: 0.25 mg/kg, maximum 25 mg',
+    sourceUrl: authority === 'fda-label' ? 'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e647640d-c395-4b4b-a0be-1162f9c21d84' : 'https://doi.org/10.1161/STR.0000000000000513',
+    roundingNote: 'No additional syringe rounding is applied. Volume assumes the labeled 5 mg/mL reconstituted concentration. This dose reference does not establish IVT eligibility or the treatment time window.',
+    doseTable: authority === 'fda-label' ? labeledBands : [{ minWeight: 0, maxWeight: null, dose: '0.25 mg/kg, maximum 25 mg', vial: 'Dose ÷ 5 mg/mL' }]
   };
 };

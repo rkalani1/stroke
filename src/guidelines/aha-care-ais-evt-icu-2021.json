@@ -294,12 +294,22 @@
     {
       "type": "correction",
       "pmid": "42507798",
-      "doi": "10.1161/str.0000000000000531",
-      "publisherUrl": "https://doi.org/10.1161/str.0000000000000531",
+      "doi": "10.1161/STR.0000000000000531",
+      "publisherUrl": "https://doi.org/10.1161/STR.0000000000000531",
       "status": "not-applicable",
-      "note": "Corrects a labetalol infusion typo in Table 4. The library names labetalol without reproducing the erroneous dose; use the corrected source for dosing.",
-      "checkedAt": "2026-09-06",
-      "affectedRecommendationIds": []
+      "note": "The complete notice corrects labetalol infusion from the malformed 208 to 2–8 mg/min in Table 4. The library names labetalol without that dose. Do not import the erroneous source number; parent-body fidelity remains unresolved.",
+      "checkedAt": "2026-09-30",
+      "affectedRecommendationIds": [],
+      "previousReviewNote": "Corrects a labetalol infusion typo in Table 4. The library names labetalol without reproducing the erroneous dose; use the corrected source for dosing.",
+      "independentReviewScope": "complete primary notice read"
     }
-  ]
+  ],
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Publisher/DOI and bounded primary public alternatives assessed; incomplete indexed fragments only, no complete body acquired",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
+  }
 }

@@ -111,7 +111,7 @@
       "classOfRec": "III",
       "classNote": null,
       "levelOfEvidence": "C",
-      "text": "Do not routinely provide dental antibiotic prophylaxis to other patients at low risk of IE.",
+      "text": "Do not provide dental antibiotic prophylaxis to other patients at low risk of IE.",
       "page": 14,
       "sourceSection": "Recommendation Table 1",
       "sourceRecommendationNumber": 9,
@@ -147,7 +147,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "A",
-      "text": "Before elective cardiac surgery or transcatheter aortic valve implantation (TAVI), screen for nasal Staphylococcus aureus carriage and treat identified carriers.",
+      "text": "Before elective cardiac surgery or transcatheter valve implantation, screen for nasal Staphylococcus aureus carriage and treat identified carriers.",
       "page": 16,
       "sourceSection": "Recommendation Table 3",
       "sourceRecommendationNumber": 1,
@@ -435,7 +435,7 @@
       "classOfRec": "I",
       "classNote": null,
       "levelOfEvidence": "B",
-      "text": "In symptomatic native- or prosthetic-valve IE, use brain and whole-body CT, FDG-PET/CT, and/or MRI to detect peripheral lesions or add diagnostic criteria.",
+      "text": "In native- or prosthetic-valve IE with symptoms suggesting septic embolic complications, use brain and whole-body CT, FDG-PET/CT, and/or MRI to detect peripheral lesions or add diagnostic criteria.",
       "page": 23,
       "sourceSection": "Recommendation Table 6",
       "sourceRecommendationNumber": 4,
@@ -2106,7 +2106,7 @@
       "classOfRec": "Statement",
       "classNote": "Ungraded practice guidance",
       "levelOfEvidence": "Ungraded",
-      "text": "For preoperative anaemia, consider a low transfusion threshold, infection treatment, and IV iron when appropriate.",
+      "text": "For preoperative anaemia, consider a low threshold for transfusion, infection treatment, and IV iron when appropriate.",
       "page": null,
       "sourcePage": 12,
       "sourceSection": "Supplementary Table S10",
@@ -2171,7 +2171,7 @@
       "classOfRec": "Statement",
       "classNote": "Ungraded practice guidance",
       "levelOfEvidence": "Ungraded",
-      "text": "For reduced haematocrit and blood oxygen content, use a low perioperative transfusion threshold and avoid further haemodilution.",
+      "text": "For reduced haematocrit and blood oxygen content, use a low threshold for transfusion in the perioperative period and avoid further haemodilution.",
       "page": null,
       "sourcePage": 12,
       "sourceSection": "Supplementary Table S10",
@@ -2528,10 +2528,90 @@
       "sourceSection": "Section 13",
       "sourceRecommendationNumber": 7,
       "sourceUrl": "https://academic.oup.com/eurheartj/article/44/39/3948/7243107"
+    },
+    {
+      "id": "esc2023-s10-postoperative-antithrombotic",
+      "section": "SupplementaryTableS10 continuation,page13,row13 — Postoperative antiplatelet/antithrombotic needs",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "For patients with infective endocarditis and stroke who will need antiplatelet or antithrombotic treatment after surgery, perioperative risk-mitigation options include non-mechanical valve substitutes, left atrial appendage occlusion when AF is present, limiting antiplatelet/antithrombotic therapy early after surgery, and guiding treatment with repeat cerebral imaging. These are ungraded perioperative considerations, not a universal instruction to stop treatment.",
+      "page": null,
+      "sourceStatementType": "practice",
+      "sourceStatementId": "SupplementaryTableS10 continuation,page13,row13",
+      "sourceReference": "SupplementaryTableS10 continuation,page13,row13",
+      "sourceUrl": "https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/eurheartj/44/39/10.1093_eurheartj_ehad193/10/ehad193_supplementary_data.pdf?Expires=2147483647&Signature=HvDryhkv-Vr6lwgVB1CMB7S4LoBaORBIvPGzABFd6U8YsgmUPItLMADkBlADSWi9Qi4Tg3POHSl8dPt6SadMF9rWuDOWwRobAwyNqFA7rSiIzQzAZXoI4VazmhVXU2c5N-ndyFX1P41gxJx9KZW-oexyn0uf0hsq-HBHxfJkdnAw5dbThD-L4NjVzSIG1knN3B1MHxI3xYF8igGhp4B~A6kHOuz99NgcMoT76sUICG91bGybE87w9HqsR8dpbS9VJOB4K06bGZhqX7wWkaI7WBKPV~d-N-p42ZSlpidCwhpljjwFiNVc137ztec-HWv0t9uhGvC3lpEu1nDjGKI9OQ__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA",
+      "sourceSection": "Supplementary Table S10",
+      "sourceRecommendationNumber": 13,
+      "sourcePage": 13
+    },
+    {
+      "id": "esc2023-s10-valve-substitute",
+      "section": "SupplementaryTableS10 continuation,page13,row14 — Valve choice after stroke",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "In patients with infective endocarditis and extensive stroke or risk of haemorrhagic transformation, avoid mechanical valve substitutes when selecting the surgical valve.",
+      "page": null,
+      "sourceStatementType": "practice",
+      "sourceStatementId": "SupplementaryTableS10 continuation,page13,row14",
+      "sourceReference": "SupplementaryTableS10 continuation,page13,row14",
+      "sourceUrl": "https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/eurheartj/44/39/10.1093_eurheartj_ehad193/10/ehad193_supplementary_data.pdf?Expires=2147483647&Signature=HvDryhkv-Vr6lwgVB1CMB7S4LoBaORBIvPGzABFd6U8YsgmUPItLMADkBlADSWi9Qi4Tg3POHSl8dPt6SadMF9rWuDOWwRobAwyNqFA7rSiIzQzAZXoI4VazmhVXU2c5N-ndyFX1P41gxJx9KZW-oexyn0uf0hsq-HBHxfJkdnAw5dbThD-L4NjVzSIG1knN3B1MHxI3xYF8igGhp4B~A6kHOuz99NgcMoT76sUICG91bGybE87w9HqsR8dpbS9VJOB4K06bGZhqX7wWkaI7WBKPV~d-N-p42ZSlpidCwhpljjwFiNVc137ztec-HWv0t9uhGvC3lpEu1nDjGKI9OQ__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA",
+      "sourceSection": "Supplementary Table S10",
+      "sourceRecommendationNumber": 14,
+      "sourcePage": 13
+    },
+    {
+      "id": "esc2023-s10-postoperative-bleeding",
+      "section": "SupplementaryTableS10 continuation,page13,row15 — Postoperative bleeding and haemodynamic instability",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "To mitigate postoperative bleeding and consequent haemodynamic instability after infective-endocarditis surgery in patients with stroke, use meticulous surgical technique, correction of coagulopathy, haemofiltration during cardiopulmonary bypass, and a low threshold for mediastinal packing and delayed chest closure.",
+      "page": null,
+      "sourceStatementType": "practice",
+      "sourceStatementId": "SupplementaryTableS10 continuation,page13,row15",
+      "sourceReference": "SupplementaryTableS10 continuation,page13,row15",
+      "sourceUrl": "https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/eurheartj/44/39/10.1093_eurheartj_ehad193/10/ehad193_supplementary_data.pdf?Expires=2147483647&Signature=HvDryhkv-Vr6lwgVB1CMB7S4LoBaORBIvPGzABFd6U8YsgmUPItLMADkBlADSWi9Qi4Tg3POHSl8dPt6SadMF9rWuDOWwRobAwyNqFA7rSiIzQzAZXoI4VazmhVXU2c5N-ndyFX1P41gxJx9KZW-oexyn0uf0hsq-HBHxfJkdnAw5dbThD-L4NjVzSIG1knN3B1MHxI3xYF8igGhp4B~A6kHOuz99NgcMoT76sUICG91bGybE87w9HqsR8dpbS9VJOB4K06bGZhqX7wWkaI7WBKPV~d-N-p42ZSlpidCwhpljjwFiNVc137ztec-HWv0t9uhGvC3lpEu1nDjGKI9OQ__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA",
+      "sourceSection": "Supplementary Table S10",
+      "sourceRecommendationNumber": 15,
+      "sourcePage": 13
+    },
+    {
+      "id": "esc2023-s10-blood-products",
+      "section": "SupplementaryTableS10 continuation,page13,row16 — Extensive blood-product requirements",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "To reduce extensive blood-product requirements during infective-endocarditis surgery after stroke, consider preoperative optimization (vitamin K and anaemia correction), haemofiltration during cardiopulmonary bypass, meticulous surgical technique, and a low threshold for mediastinal packing and delayed chest closure.",
+      "page": null,
+      "sourceStatementType": "practice",
+      "sourceStatementId": "SupplementaryTableS10 continuation,page13,row16",
+      "sourceReference": "SupplementaryTableS10 continuation,page13,row16",
+      "sourceUrl": "https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/eurheartj/44/39/10.1093_eurheartj_ehad193/10/ehad193_supplementary_data.pdf?Expires=2147483647&Signature=HvDryhkv-Vr6lwgVB1CMB7S4LoBaORBIvPGzABFd6U8YsgmUPItLMADkBlADSWi9Qi4Tg3POHSl8dPt6SadMF9rWuDOWwRobAwyNqFA7rSiIzQzAZXoI4VazmhVXU2c5N-ndyFX1P41gxJx9KZW-oexyn0uf0hsq-HBHxfJkdnAw5dbThD-L4NjVzSIG1knN3B1MHxI3xYF8igGhp4B~A6kHOuz99NgcMoT76sUICG91bGybE87w9HqsR8dpbS9VJOB4K06bGZhqX7wWkaI7WBKPV~d-N-p42ZSlpidCwhpljjwFiNVc137ztec-HWv0t9uhGvC3lpEu1nDjGKI9OQ__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA",
+      "sourceSection": "Supplementary Table S10",
+      "sourceRecommendationNumber": 16,
+      "sourcePage": 13
+    },
+    {
+      "id": "esc2023-s10-sedation-imaging",
+      "section": "SupplementaryTableS10 continuation,page13,row17 — Prolonged sedation preventing neurological examination",
+      "classOfRec": "Statement",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "If prolonged sedation prevents assessment of neurological evolution after infective-endocarditis surgery, obtain follow-up cerebral imaging if feasible.",
+      "page": null,
+      "sourceStatementType": "practice",
+      "sourceStatementId": "SupplementaryTableS10 continuation,page13,row17",
+      "sourceReference": "SupplementaryTableS10 continuation,page13,row17",
+      "sourceUrl": "https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/eurheartj/44/39/10.1093_eurheartj_ehad193/10/ehad193_supplementary_data.pdf?Expires=2147483647&Signature=HvDryhkv-Vr6lwgVB1CMB7S4LoBaORBIvPGzABFd6U8YsgmUPItLMADkBlADSWi9Qi4Tg3POHSl8dPt6SadMF9rWuDOWwRobAwyNqFA7rSiIzQzAZXoI4VazmhVXU2c5N-ndyFX1P41gxJx9KZW-oexyn0uf0hsq-HBHxfJkdnAw5dbThD-L4NjVzSIG1knN3B1MHxI3xYF8igGhp4B~A6kHOuz99NgcMoT76sUICG91bGybE87w9HqsR8dpbS9VJOB4K06bGZhqX7wWkaI7WBKPV~d-N-p42ZSlpidCwhpljjwFiNVc137ztec-HWv0t9uhGvC3lpEu1nDjGKI9OQ__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA",
+      "sourceSection": "Supplementary Table S10",
+      "sourceRecommendationNumber": 17,
+      "sourcePage": 13
     }
   ],
   "extractionStatus": "complete-formal-recommendations",
-  "extractionNote": "All 120 formal graded recommendations in Recommendation Tables 1–22 are summarized with their qualifications. Antibiotic Recommendation Tables 7–10 include the source-listed adult/paediatric doses, routes, schedules, durations, integral caps and monitoring footnotes, and explicit notices where a source cell is ambiguous or incomplete. An additional 72 ungraded practice, regimen and care-context rows are separately labeled. The primary article remains necessary for diagnostic algorithms and supporting evidence. Page numbers refer to the 95-page advance article; supplementary pages are separately identified. Current publisher table images and all three correction notices were checked.",
+  "extractionNote": "All 120 formal graded recommendations in Recommendation Tables 1–22 are summarized with their qualifications. Antibiotic Recommendation Tables 7–10 include the source-listed adult/paediatric doses, routes, schedules, durations, integral caps and monitoring footnotes, and explicit notices where a source cell is ambiguous or incomplete. An additional 77 ungraded practice, regimen and care-context rows are separately labeled. The primary article remains necessary for diagnostic algorithms and supporting evidence. Page numbers refer to the 95-page advance article; supplementary pages are separately identified. Current publisher table images and all three correction notices were checked.",
   "documentType": "guideline",
   "gradingSystem": "ESC COR/LOE",
   "publicationUpdates": [
@@ -2541,8 +2621,8 @@
       "doi": "10.1093/eurheartj/ehad625",
       "publisherUrl": "https://doi.org/10.1093/eurheartj/ehad625",
       "status": "applied",
-      "note": "Reviewed correction and current publisher tables. The summaries retain corrected adult amoxicillin 12 g/day for increased-exposure/resistant streptococcal IE and paediatric cefazolin 100 mg/kg/day (maximum 6 g/day) for staphylococcal IE. Duplicate Table 14 and diagnostic-definition Supplementary Table S6 are not separately reproduced.",
-      "checkedAt": "2026-09-06",
+      "note": "The complete antibiotic-table correction was compared with the imported formal rows. Relevant corrected regimens are retained; duplicate tables and supplementary diagnostic definitions are not additional recommendations.",
+      "checkedAt": "2026-09-30",
       "affectedRecommendationIds": [
         "esc-ie-2023-t7-4",
         "esc-ie-2023-t7-5",
@@ -2550,7 +2630,9 @@
         "esc-ie-2023-t8-2",
         "esc-ie-2023-t8-3",
         "esc-ie-2023-t8-4"
-      ]
+      ],
+      "previousReviewNote": "Reviewed correction and current publisher tables. The summaries retain corrected adult amoxicillin 12 g/day for increased-exposure/resistant streptococcal IE and paediatric cefazolin 100 mg/kg/day (maximum 6 g/day) for staphylococcal IE. Duplicate Table 14 and diagnostic-definition Supplementary Table S6 are not separately reproduced.",
+      "independentReviewScope": "complete primary notice read"
     },
     {
       "type": "correction",
@@ -2558,12 +2640,14 @@
       "doi": "10.1093/eurheartj/ehad776",
       "publisherUrl": "https://doi.org/10.1093/eurheartj/ehad776",
       "status": "applied",
-      "note": "Reviewed the full corrected notice: reference 479, the duplicate new-recommendations PET/CT wording, and paediatric penicillin G dosing in Recommendation Table 7/duplicate Table 14 changed. The library retains the current IIb/B PET/CT recommendation and paediatric penicillin G 200,000 units/kg/day IV in 4–6 doses. The reference list and duplicate tables are not reproduced.",
-      "checkedAt": "2026-09-06",
+      "note": "The complete antibiotic/supplement-table correction was reviewed. Imported graded rows retain the applicable corrected wording; no additional formal recommendation is created.",
+      "checkedAt": "2026-09-30",
       "affectedRecommendationIds": [
         "esc-ie-2023-t6-6",
         "esc-ie-2023-t7-2"
-      ]
+      ],
+      "previousReviewNote": "Reviewed the full corrected notice: reference 479, the duplicate new-recommendations PET/CT wording, and paediatric penicillin G dosing in Recommendation Table 7/duplicate Table 14 changed. The library retains the current IIb/B PET/CT recommendation and paediatric penicillin G 200,000 units/kg/day IV in 4–6 doses. The reference list and duplicate tables are not reproduced.",
+      "independentReviewScope": "complete primary notice read"
     },
     {
       "type": "correction",
@@ -2571,8 +2655,8 @@
       "doi": "10.1093/eurheartj/ehae877",
       "publisherUrl": "https://doi.org/10.1093/eurheartj/ehae877",
       "status": "applied",
-      "note": "Reviewed the full correction and current publisher tables. Table 6 paediatric prophylaxis and Recommendation Tables 7–10 adult/paediatric amoxicillin, ampicillin, cefazolin and rifampin dosing/route corrections are incorporated where reproduced. Duplicate Table 14 is not separately counted. Full dosing tables remain linked at the source.",
-      "checkedAt": "2026-09-06",
+      "note": "The complete notice corrects reference 479. It does not change the imported formal recommendation text or grades.",
+      "checkedAt": "2026-09-30",
       "affectedRecommendationIds": [
         "esc-ie-2023-practice-t6-1",
         "esc-ie-2023-practice-t6-2",
@@ -2596,16 +2680,18 @@
         "esc-ie-2023-t10-1",
         "esc-ie-2023-t10-2",
         "esc-ie-2023-t10-3"
-      ]
+      ],
+      "previousReviewNote": "Reviewed the full correction and current publisher tables. Table 6 paediatric prophylaxis and Recommendation Tables 7–10 adult/paediatric amoxicillin, ampicillin, cefazolin and rifampin dosing/route corrections are incorporated where reproduced. Duplicate Table 14 is not separately counted. Full dosing tables remain linked at the source.",
+      "independentReviewScope": "complete primary notice read"
     }
   ],
   "coverage": {
     "status": "complete",
     "scope": "All formal recommendations and good-practice/consensus statements",
-    "checkedAt": "2026-09-06",
+    "checkedAt": "2026-09-30",
     "sourceRecommendationCount": 120,
     "sourceConsensusCount": 0,
-    "sourcePracticeStatementCount": 72,
+    "sourcePracticeStatementCount": 77,
     "sourceSections": [
       {
         "id": "Recommendation Table 1",
@@ -2831,10 +2917,10 @@
       {
         "id": "Supplementary Table S10",
         "title": "Perioperative neurological-risk mitigation after stroke",
-        "rowCount": 12,
+        "rowCount": 17,
         "sourceRecommendationCount": 0,
         "sourceConsensusCount": 0,
-        "sourcePracticeStatementCount": 12,
+        "sourcePracticeStatementCount": 17,
         "page": 12
       },
       {
@@ -2955,5 +3041,13 @@
       "issue": "Adult rifampin cell omits per-day unit.",
       "handling": "Printed unit omission is stated explicitly."
     }
-  ]
+  ],
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Full original95page PDF, current publisher HTML,29 recommendation images, and updated supplementary PDF",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
+  }
 }

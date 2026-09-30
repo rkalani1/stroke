@@ -23,14 +23,14 @@
     "category": "ich-surgery",
     "population": "n=506, ≥18",
     "finding": "Negative: 45% vs 41%",
-    "teachingPoint": "No overall functional benefit; safe; outcome depends on achieving adequate evacuation.",
+    "teachingPoint": "The study does not establish routine functional benefit or prove that achieving ≤15 mL causes benefit. The evacuation association is hypothesis-generating.",
     "PMID": "30739747",
     "year": 2019,
     "citationIds": [
       "cit-mistie3-2019"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-05-29",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -91,14 +91,14 @@
     "category": "ich-surgery",
     "population": "n=601, adults, NIHSS conscious patients, ≤48 h from ictus; surgery within 12 h of randomization",
     "finding": "Neutral: unfavourable in 59% vs 62%",
-    "teachingPoint": "Early open surgery for superficial lobar ICH without IVH is not beneficial; motivates minimally invasive approaches instead.",
+    "teachingPoint": "Does not establish routine benefit from the tested early open-surgery strategy, but does not prove absence of benefit or close the question for every patient.",
     "PMID": "23726393",
     "year": 2013,
     "citationIds": [
       "cit-stich2-2013"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

@@ -21,16 +21,16 @@
     "name": "CATIS-2",
     "fullName": "China Antihypertensive Trial in Acute Ischaemic Stroke II - early versus delayed antihypertensive treatment in patients with acute ischaemic stroke",
     "category": "bp-acute-ischemic",
-    "population": "n=4810, ≥40 years, NIHSS mild-to-moderate stroke (severity distribution not given in the primary report), enrolled 24-48 h after symptom onset",
-    "finding": "NULL - early treatment DID NOT reduce dependency or death: 289/2413 (12.0%) early vs 250/2397 (10.5%) delayed. The point estimate numerically favours delaying treatment.",
-    "teachingPoint": "Supports not rushing to restart or start antihypertensives in the first week after a non-thrombolysed ischaemic stroke - deferring to day 8 was not worse at 90 days.",
+    "population": "n=4810, ≥40 years, NIHSS <21; 68% had NIHSS <5, enrolled 24-48 h after symptom onset",
+    "finding": "Death or major disability: 289/2401 versus 250/2382 analyzed participants (12.0% versus 10.5%); randomized totals were 2413 and 2397.",
+    "teachingPoint": "No significant primary benefit from the tested early BP strategy. This result does not address the first 24 hours, reperfusion-treated patients or urgent independent BP indications.",
     "PMID": "37813418",
     "year": 2023,
     "citationIds": [
       "cit-catis2-2023"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -38,16 +38,16 @@
     "name": "ENOS",
     "fullName": "Efficacy of Nitric Oxide, With or Without Continuing Antihypertensive Treatment, for Management of High Blood Pressure in Acute Stroke - a partial-factorial randomised controlled trial",
     "category": "bp-acute-ischemic",
-    "population": "n=4011, adults admitted to hospital with acute stroke (age range not stated in the primary report), NIHSS not reported in the primary report, within 48 h of stroke onset (median 26 h, IQR 16-37)",
+    "population": "n=4011, Age ≥18 years, NIHSS Motor deficit required; severity measured with Scandinavian Stroke Scale and estimated NIHSS, without a specified NIHSS eligibility range, within 48 h of stroke onset (median 26 h, IQR 16-37)",
     "finding": "NULL in BOTH comparisons - functional outcome DID NOT differ for glyceryl trinitrate versus none, nor for continuing versus stopping pre-stroke antihypertensives",
-    "teachingPoint": "The authors state there is no evidence to support continuing pre-stroke antihypertensive drugs in the first few days after acute stroke - the decision to hold or continue does not change 90-day function.",
+    "teachingPoint": "The trial did not support routine immediate continuation of prestroke antihypertensives in its selected population. It does not establish unrestricted equivalence of holding and restarting therapy.",
     "PMID": "25465108",
     "year": 2015,
     "citationIds": [
       "cit-enos-2015"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

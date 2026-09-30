@@ -12,10 +12,11 @@
     {
       "section": "PICO 1: Surgical decompression within 48 hours, age 18 up to and including 60 years - Evidence-based recommendation",
       "classOfRec": "Strong",
-      "classNote": "For — strength taken from the Discussion ('the large and consistent effects allowed a strong recommendation'); the boxed recommendation itself is an image and is absent from the available full text — text: 'the quality of the evidence was rated as moderate'; GRADE profile rates death HIGH and death-or-moderately-severe-disability (mRS 4-6) MODERATE; the Abstract says 'high-quality evidence to recommend'",
+      "classNote": "For — native PICO 1 boxed recommendation: Strong; Moderate certainty. The primary box was retrieved and visually checked on 30 September 2026.",
       "levelOfEvidence": "Moderate certainty",
-      "text": "Surgical decompression is recommended to reduce the risk of death and to increase the chance of a favourable outcome in adult patients aged 18 up to and including 60 years with space-occupying hemispheric infarction who can be treated within 48 hours of stroke onset. Meta-analysis (217 patients): death RR 0.36 (95% CI 0.25-0.53), absolute 44% reduction; poor outcome RR 0.79 (0.63-0.99); survival with moderately severe to severe disability (mRS 4 or 5) increased from 11% to 36%.",
-      "page": null
+      "text": "Surgical decompression is recommended to reduce the risk of death and to increase the chance of a favourable outcome in adult patients aged 18 up to and including 60 years with space-occupying hemispheric infarction who can be treated within 48 hours of stroke onset. Meta-analysis (217 patients): death RR 0.36 (95% CI 0.25-0.53), absolute 44% reduction; poor outcome RR 0.79 (0.63-0.99); survival with moderately severe to severe disability (mRS 4 or 5) increased from 11% to 36%. Discuss the increased risk of survival with substantial disability with the patient or representative in shared decision-making.",
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-1"
     },
     {
       "section": "PICO 1: Expert consensus statements",
@@ -23,7 +24,8 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "There is consensus among the group members that in patients with space-occupying hemispheric infarction the benefit of surgical decompression does not depend on the absence or presence of aphasia.",
-      "page": null
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-2"
     },
     {
       "section": "PICO 1: Expert consensus statements",
@@ -31,7 +33,8 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "Most group members agree that the benefit of surgical decompression does not depend on the presence of an infarct in the territory of the anterior or posterior cerebral artery in addition to that of the middle cerebral artery.",
-      "page": null
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-3"
     },
     {
       "section": "PICO 1: Expert consensus statements",
@@ -39,7 +42,8 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "There is consensus among the group members that additional space-occupying haemorrhagic transformation should not be regarded as a contraindication to surgery.",
-      "page": null
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-4"
     },
     {
       "section": "PICO 1: Expert consensus statements",
@@ -47,15 +51,17 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "There is consensus among the group members that in patients with space-occupying hemispheric infarction who will undergo decompressive surgery the diameter of the craniectomy should be at least 12 cm.",
-      "page": null
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-5"
     },
     {
       "section": "PICO 2: Surgical decompression later than 48 hours, age 18 up to and including 60 years - Evidence-based recommendation",
       "classOfRec": "No recommendation",
-      "classNote": "Uncertain — neither for nor against — text: 'the quality of the evidence was rated as low'",
+      "classNote": "Uncertain — native PICO 2 boxed recommendation assigns no strength; Low certainty.",
       "levelOfEvidence": "Low certainty",
-      "text": "There is continued uncertainty about the benefit and risks of surgical decompression in patients with space-occupying hemispheric infarction if this is done after the first 48 hours (Abstract and Discussion). In the meta-analysis of 34 patients treated 48-96 hours after onset, surgical decompression had no effect on the risk of death (RR 0.82, 95% CI 0.30-2.28) nor on the risk of a poor outcome (RR 1.07, 95% CI 0.67-1.72).",
-      "page": null
+      "text": "There is continued uncertainty about the benefit and risks of surgical decompression in patients aged 18–60 years with space-occupying hemispheric infarction if this is done after the first 48 hours (Abstract and Discussion). In the meta-analysis of 34 patients treated 48-96 hours after onset, surgical decompression did not demonstrate a reduction in the risk of death (RR 0.82, 95% CI 0.30-2.28) or in the risk of a poor outcome (RR 1.07, 95% CI 0.67-1.72).",
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-6"
     },
     {
       "section": "PICO 2: Surgical decompression later than 48 hours - Expert consensus statement",
@@ -63,15 +69,18 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "There is consensus among the module working group members that surgical decompression should also be considered later than 48 hours after stroke onset if based on clinical grounds death due to herniation appears likely.",
-      "page": null
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-7"
     },
     {
       "section": "PICO 3: Surgical decompression within 48 hours, age 61 years or older - Evidence-based recommendation",
-      "classOfRec": "Statement",
-      "classNote": "For (Abstract: 'low-quality evidence to support this treatment in older patients'; printed strength of recommendation not captured) — text: 'the quality of the evidence was rated as low'",
+      "classOfRec": "Weak",
+      "classNote": "For",
       "levelOfEvidence": "Low certainty",
-      "text": "In patients aged 61 years or older with space-occupying hemispheric infarction treated within 48 hours of stroke onset, surgical decompression reduced the risk of death by an absolute 42% (RR 0.40, 95% CI 0.24-0.67) but had no effect on the risk of a poor outcome (RR 0.72, 95% CI 0.41-1.28), and increased the chance of survival with moderately severe to severe disability (mRS 4 or 5) from 16% to 35%. The Abstract states there is low-quality evidence to support this treatment in older patients.",
-      "page": null
+      "text": "Consider surgical decompression in patients aged 61 years or older with space-occupying hemispheric infarction who can be treated within 48 hours of stroke onset (weak recommendation, low-quality evidence). Discuss the risk of survival with substantial disability with the patient or representative. In the source meta-analysis, surgery reduced death (RR 0.40, 95% CI 0.24–0.67; absolute reduction 42%); a reduction in poor outcome was not demonstrated (RR 0.72, 95% CI 0.41–1.28). Survival with mRS 4 or 5 increased from 16% to 35%.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "id": "eso-space-occupying-infarction-2021-8"
     },
     {
       "section": "PICO 4: Surgical decompression for space-occupying cerebellar infarction - Expert consensus statement",
@@ -79,7 +88,8 @@
       "classNote": "For (in selected patients only)",
       "levelOfEvidence": "Ungraded",
       "text": "All group members suggest considering surgical decompression with or without CSF drainage in selected patients with space-occupying cerebellar infarction, such as in those with a reduced consciousness caused by brainstem compression. The precise selection of patients and the optimal timing of treatment remain uncertain. There is insufficient evidence to support its routine use.",
-      "page": null
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-9"
     },
     {
       "section": "PICO 5: CSF drainage in space-occupying cerebellar infarction - Expert consensus statement",
@@ -87,7 +97,8 @@
       "classNote": "For (in selected patients only)",
       "levelOfEvidence": "Ungraded",
       "text": "All group members suggest considering CSF drainage alone or combined with surgical decompression in selected patients with space-occupying cerebellar infarction and signs of an obstructive hydrocephalus, such as in those with a reduced consciousness. The selection of patients and the optimal timing of treatment remain uncertain. There is insufficient evidence to support its routine use.",
-      "page": null
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-10"
     },
     {
       "section": "PICO 6: Intracranial pressure monitoring - Expert consensus statement",
@@ -95,7 +106,8 @@
       "classNote": "Against",
       "levelOfEvidence": "Ungraded",
       "text": "A majority of group members suggest against routine ICP monitoring as a means to reduce the risk of death or poor outcome in patients with space-occupying hemispheric infarction.",
-      "page": null
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-11"
     },
     {
       "section": "PICO 7: Intensive care unit admission - Expert consensus statement",
@@ -103,7 +115,8 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "A majority of group members suggest admission to an ICU for clinical and technical monitoring and intensive care treatment including mechanical ventilation, if required, irrespective of treatment with surgical decompression.",
-      "page": null
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-12"
     },
     {
       "section": "PICO 8: Sedation - Expert consensus statement",
@@ -111,7 +124,8 @@
       "classNote": "Against routine use; may be considered as rescue",
       "levelOfEvidence": "Ungraded",
       "text": "In patients with space-occupying hemispheric infarction, a majority of group members suggest against the use of sedation as a means to reduce the risk of death or a poor outcome if this is not otherwise indicated. Short-term sedation may be considered as a rescue procedure in patients with clinical signs of raised ICP or impending herniation.",
-      "page": null
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-13"
     },
     {
       "section": "PICO 9: Osmotic therapy - Expert consensus statement",
@@ -119,7 +133,8 @@
       "classNote": "Against routine use; may be considered as rescue",
       "levelOfEvidence": "Ungraded",
       "text": "All group members suggest against the routine use of osmotic therapy as a means to reduce the risk of death or a poor outcome. Short-term osmotic therapy (i.e. a single or a few doses) may be considered as a rescue procedure in case of signs of an increased intracranial pressure or impending herniation. For short-term osmotic therapy with mannitol, we suggest the use of bolus administration rather than continuous infusion. The choice of mannitol or hypertonic saline depends on local preferences and expertise.",
-      "page": null
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-14"
     },
     {
       "section": "PICO 10: Corticosteroids - Expert consensus statement",
@@ -127,7 +142,8 @@
       "classNote": "Against",
       "levelOfEvidence": "Ungraded",
       "text": "All group members suggest against the use of corticosteroids as a means to reduce the risk of death or a poor outcome.",
-      "page": null
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-15"
     },
     {
       "section": "PICO 11: Hyperventilation - Expert consensus statement",
@@ -135,25 +151,142 @@
       "classNote": "Against routine use; may be considered as rescue",
       "levelOfEvidence": "Ungraded",
       "text": "All group members suggest against the use of routine hyperventilation. Short-term hyperventilation may be considered as a rescue procedure in patients with clinical signs of brain herniation.",
-      "page": null
+      "page": null,
+      "id": "eso-space-occupying-infarction-2021-16"
     },
     {
       "section": "PICO 12: Hypothermia - Evidence-based recommendation",
-      "classOfRec": "Statement",
-      "classNote": "Against / no benefit shown — evidence-based GRADE statement; printed strength of recommendation not captured — text: 'the quality of the evidence was rated as very low'",
+      "classOfRec": "Weak",
+      "classNote": "Against",
       "levelOfEvidence": "Very low certainty",
-      "text": "In patients with space-occupying hemispheric infarction, there was no evidence that hypothermia reduces the risk of death (RR 1.06, 95% CI 0.63-1.78) or that of a poor outcome (RR 1.28, 95% CI 0.70-2.35) in a meta-analysis of 140 patients from four randomised trials; two trials were stopped prematurely and serious adverse events were more frequent with hypothermia (80% vs 43% at 12 months in one trial; HR 2.54, 95% CI 1.29-5.00).",
-      "page": null
+      "text": "We suggest against the routine use of hypothermia in patients with space-occupying hemispheric infarction (weak recommendation, very low-quality evidence). In patients with space-occupying hemispheric infarction, there was no evidence that hypothermia reduces the risk of death (RR 1.06, 95% CI 0.63-1.78) or that of a poor outcome (RR 1.28, 95% CI 0.70-2.35) in a meta-analysis of 140 patients from four randomised trials; two trials were stopped prematurely and serious adverse events were more frequent with hypothermia (80% vs 43% at 12 months in one trial; HR 2.54, 95% CI 1.29-5.00).",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "id": "eso-space-occupying-infarction-2021-17"
     },
     {
       "section": "PICO 13: Glyburide (glibenclamide) - Evidence-based recommendation",
-      "classOfRec": "Expert Consensus",
-      "classNote": "Against / no benefit — text: 'the quality of the evidence was rated as very low'",
+      "classOfRec": "Weak",
+      "classNote": "Against",
       "levelOfEvidence": "Very low certainty",
-      "text": "In patients with space-occupying hemispheric infarction, glyburide had no effect on the risk of death or a poor outcome (mRS 4-6) in the single identified phase 2 RCT (77 of 86 randomised patients analysed; the trial was terminated prematurely for funding reasons against a target of 240).",
-      "page": null
+      "text": "We suggest against the routine use of glyburide in patients with space-occupying hemispheric infarction (weak recommendation, very low-quality evidence). The single identified phase 2 trial did not demonstrate a reduction in death or poor outcome (mRS 4–6); 77 of 86 randomized participants were analyzed, and the trial stopped early for funding reasons against a target of 240.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "id": "eso-space-occupying-infarction-2021-18"
+    },
+    {
+      "id": "eso2-sp-missing-pico4",
+      "section": "Formal evidence-based recommendation box, PICO4 — Surgical decompression for cerebellar infarction",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with space-occupying cerebellar infarction, the benefits and risks of surgical decompression for reducing death or poor outcome remain uncertain. The source refers to a separate expert consensus statement.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "Formal evidence-based recommendation box, PICO4",
+      "sourceReference": "Formal evidence-based recommendation box, PICO4",
+      "sourceUrl": "https://academic.oup.com/esj/article/6/2/XC/8271721"
+    },
+    {
+      "id": "eso2-sp-missing-pico5",
+      "section": "Formal evidence-based recommendation box, PICO5 — CSF drainage for cerebellar infarction",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with space-occupying cerebellar infarction, the benefits and risks of CSF drainage for reducing death or poor outcome remain uncertain. The source refers to a separate expert consensus statement.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "Formal evidence-based recommendation box, PICO5",
+      "sourceReference": "Formal evidence-based recommendation box, PICO5",
+      "sourceUrl": "https://academic.oup.com/esj/article/6/2/XC/8271721"
+    },
+    {
+      "id": "eso2-sp-missing-pico6",
+      "section": "Formal evidence-based recommendation box, PICO6 — ICP monitoring for hemispheric infarction",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with space-occupying hemispheric infarction, the benefits and risks of ICP monitoring for reducing death or poor outcome remain uncertain. The source refers to a separate expert consensus statement.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "Formal evidence-based recommendation box, PICO6",
+      "sourceReference": "Formal evidence-based recommendation box, PICO6",
+      "sourceUrl": "https://academic.oup.com/esj/article/6/2/XC/8271721"
+    },
+    {
+      "id": "eso2-sp-missing-pico7",
+      "section": "Formal evidence-based recommendation box, PICO7 — ICU admission for hemispheric infarction",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with space-occupying hemispheric infarction, the benefits and risks of ICU admission for reducing death or poor outcome remain uncertain. The source refers to a separate expert consensus statement.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "Formal evidence-based recommendation box, PICO7",
+      "sourceReference": "Formal evidence-based recommendation box, PICO7",
+      "sourceUrl": "https://academic.oup.com/esj/article/6/2/XC/8271721"
+    },
+    {
+      "id": "eso2-sp-missing-pico8",
+      "section": "Formal evidence-based recommendation box, PICO8 — Sedation for hemispheric infarction",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with space-occupying hemispheric infarction, the benefits and risks of sedation for reducing death or poor outcome remain uncertain. The source refers to a separate expert consensus statement.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "Formal evidence-based recommendation box, PICO8",
+      "sourceReference": "Formal evidence-based recommendation box, PICO8",
+      "sourceUrl": "https://academic.oup.com/esj/article/6/2/XC/8271721"
+    },
+    {
+      "id": "eso2-sp-missing-pico9",
+      "section": "Formal evidence-based recommendation box, PICO9 — Osmotic treatment for hemispheric infarction",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with space-occupying hemispheric infarction, the benefits and risks of osmotic therapy for reducing death or poor outcome remain uncertain. The source refers to a separate expert consensus statement.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "Formal evidence-based recommendation box, PICO9",
+      "sourceReference": "Formal evidence-based recommendation box, PICO9",
+      "sourceUrl": "https://academic.oup.com/esj/article/6/2/XC/8271721"
+    },
+    {
+      "id": "eso2-sp-missing-pico10",
+      "section": "Formal evidence-based recommendation box, PICO10 — Corticosteroids for hemispheric infarction",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with space-occupying hemispheric infarction, the benefits and risks of corticosteroids for reducing death or poor outcome remain uncertain. The source refers to a separate expert consensus statement.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "Formal evidence-based recommendation box, PICO10",
+      "sourceReference": "Formal evidence-based recommendation box, PICO10",
+      "sourceUrl": "https://academic.oup.com/esj/article/6/2/XC/8271721"
+    },
+    {
+      "id": "eso2-sp-missing-pico11",
+      "section": "Formal evidence-based recommendation box, PICO11 — Hyperventilation for hemispheric infarction",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "In patients with space-occupying hemispheric infarction, the benefits and risks of hyperventilation for reducing death or poor outcome remain uncertain. The source refers to a separate expert consensus statement.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "Formal evidence-based recommendation box, PICO11",
+      "sourceReference": "Formal evidence-based recommendation box, PICO11",
+      "sourceUrl": "https://academic.oup.com/esj/article/6/2/XC/8271721"
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "GRADE"
+  "gradingSystem": "GRADE",
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Primary recommendation text retrieved and compared; exact edition, source locators and unresolved correction/current-context limits in unit ledger.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
+  }
 }

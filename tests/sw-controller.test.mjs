@@ -1,159 +1,101 @@
 import test from 'node:test';
-import assert from 'node:assert';
+import assert from 'node:assert/strict';
+let moduleId = 0;
+async function fixture() {
+  const handlers = {};
+  let reloads = 0;
+  const posted = [];
+  const worker = { postMessage: message => posted.push(message) };
+  const sw = { controller: {}, addEventListener: (type, handler) => { handlers[type] = handler; }, getRegistration: async () => sw.registration, registration: { waiting: worker } };
+  Object.defineProperty(globalThis, 'navigator', { value: { serviceWorker: sw }, configurable: true });
+  Object.defineProperty(globalThis, 'window', { value: { location: { reload() { reloads++; } } }, configurable: true });
+  const api = await import(`../src/design/sw-controller.js?test=${++moduleId}`);
+  api.bindSWController();
+  return { api, handlers, sw, posted, get reloads() { return reloads; } };
+}
 
-/**
- * Mocks for Service Worker API and Window Location
- */
-const mockServiceWorker = {
-  addEventListener: (type, handler) => {
-    mockServiceWorker._handlers[type] = handler;
-  },
-  getRegistration: async () => mockServiceWorker._registration,
-  _handlers: {},
-  _registration: null
-};
-
-const mockLocation = {
-  reload: () => {
-    mockLocation._reloaded = true;
-  },
-  _reloaded: false
-};
-
-// Define globals BEFORE importing the module under test.
-// We use dynamic import below to ensure these are set first.
-Object.defineProperty(global, 'navigator', {
-  value: {
-    serviceWorker: mockServiceWorker
-  },
-  configurable: true,
-  writable: true
+test('unsolicited reload messages and controller changes never reload an active encounter', async () => {
+  const f = await fixture();
+  const notices = [];
+  f.api.onUpdateReady(message => notices.push(message));
+  f.handlers.message({ data: { type: 'sw-claimed-reload' } });
+  f.handlers.controllerchange();
+  assert.equal(f.reloads, 0);
+  assert.equal(notices.length, 1);
 });
 
-Object.defineProperty(global, 'window', {
-  value: {
-    location: mockLocation
-  },
-  configurable: true,
-  writable: true
+test('first install without a controller stays silent', async () => {
+  const f = await fixture();
+  f.sw.controller = null;
+  const notices = [];
+  f.api.onUpdateReady(message => notices.push(message));
+  f.handlers.controllerchange();
+  assert.equal(f.reloads, 0);
+  assert.deepEqual(notices, []);
 });
 
-// Use dynamic import to ensure globals are defined before the module is evaluated.
-const { onUpdateReady, bindSWController, acceptUpdate } = await import('../src/design/sw-controller.js');
-
-test('onUpdateReady: registers a listener and handles execution errors', () => {
-  let count = 0;
-  const cb1 = () => { count++; };
-  const cb2 = () => { throw new Error('Simulated listener error'); };
-  const cb3 = () => { count++; };
-
-  onUpdateReady(cb1);
-  onUpdateReady(cb2);
-  const unregister3 = onUpdateReady(cb3);
-
-  // Trigger notify via internal message handling
-  bindSWController();
-  const handler = mockServiceWorker._handlers['message'];
-  if (!handler) assert.fail('Message handler not registered');
-
-  handler({ data: { type: 'sw-update-ready', version: '2.0.0' } });
-
-  assert.strictEqual(count, 2, 'Both healthy listeners should have been called despite cb2 throwing');
-
-  // Test unregister
-  unregister3();
-  count = 0;
-  handler({ data: { type: 'sw-update-ready', version: '2.1.0' } });
-  assert.strictEqual(count, 1, 'Only one listener should remain after unregistering');
+test('explicit acceptance posts the message and duplicate acknowledgments reload only once', async () => {
+  const f = await fixture();
+  await f.api.acceptUpdate();
+  assert.deepEqual(f.posted, [{ type: 'CLAIM_AND_RELOAD' }]);
+  f.handlers.controllerchange();
+  f.handlers.message({ data: { type: 'sw-claimed-reload' } });
+  f.handlers.controllerchange();
+  assert.equal(f.reloads, 1);
 });
 
-test('bindSWController: attaches a message listener and handles reload signal', () => {
-  mockLocation._reloaded = false;
-  bindSWController();
-
-  const handler = mockServiceWorker._handlers['message'];
-  assert.strictEqual(typeof handler, 'function', 'Message handler should be registered');
-
-  handler({ data: { type: 'sw-claimed-reload' } });
-  assert.strictEqual(mockLocation._reloaded, true, 'Window should have been reloaded');
+test('a blocked multi-tab request resets consent, presents guidance, and can be retried', async () => {
+  const f = await fixture();
+  const notices = [];
+  f.api.onUpdateReady(message => notices.push(message));
+  await f.api.acceptUpdate();
+  f.handlers.message({ data: { type: 'sw-update-ready', blocked: true, message: 'Close other Stroke tabs' } });
+  f.handlers.controllerchange();
+  f.handlers.message({ data: { type: 'sw-claimed-reload' } });
+  assert.equal(f.reloads, 0);
+  assert.equal(notices[0].message, 'Close other Stroke tabs');
+  await f.api.acceptUpdate();
+  f.handlers.message({ data: { type: 'sw-claimed-reload' } });
+  assert.equal(f.reloads, 1);
 });
 
-test('acceptUpdate: posts CLAIM_AND_RELOAD to waiting or active worker', async () => {
-  let postedToWaiting = null;
-  const mockWaiting = {
-    postMessage: (msg) => { postedToWaiting = msg; }
-  };
-
-  let postedToActive = null;
-  const mockActive = {
-    postMessage: (msg) => { postedToActive = msg; }
-  };
-
-  // Scenario 1: Waiting worker exists
-  mockServiceWorker._registration = { waiting: mockWaiting, active: mockActive };
-  await acceptUpdate();
-  assert.deepStrictEqual(postedToWaiting, { type: 'CLAIM_AND_RELOAD' }, 'Should post to waiting worker if available');
-  assert.strictEqual(postedToActive, null, 'Should not post to active worker if waiting exists');
-
-  // Scenario 2: Only active worker exists
-  postedToWaiting = null;
-  postedToActive = null;
-  mockServiceWorker._registration = { waiting: null, active: mockActive };
-  await acceptUpdate();
-  assert.deepStrictEqual(postedToActive, { type: 'CLAIM_AND_RELOAD' }, 'Should fallback to active worker if waiting is missing');
-
-  // Scenario 3: No workers exist
-  mockServiceWorker._registration = { waiting: null, active: null };
-  await acceptUpdate(); // Should not throw
+test('uses the current waiting worker before a stale reference, then active fallback', async () => {
+  const f = await fixture();
+  const stale = { postMessage() { throw Error('stale worker used'); } };
+  await f.api.acceptUpdate(stale);
+  assert.equal(f.posted.length, 1);
+  f.sw.registration = { active: { postMessage: message => f.posted.push(message) } };
+  await f.api.acceptUpdate();
+  assert.equal(f.posted.length, 2);
+  f.sw.registration = {};
+  await f.api.acceptUpdate();
+  assert.equal(f.posted.length, 2);
 });
 
-test('acceptUpdate: handles environments without serviceWorker support', async () => {
-  const originalNavigator = global.navigator;
-  // Temporarily remove serviceWorker
-  Object.defineProperty(global, 'navigator', {
-    value: {},
-    configurable: true,
-    writable: true
-  });
-
-  try {
-    await acceptUpdate();
-    // Should not throw and should return early
-  } finally {
-    // Restore
-    Object.defineProperty(global, 'navigator', {
-      value: originalNavigator,
-      configurable: true,
-      writable: true
-    });
-  }
+test('posting failure does not leave reload consent armed', async () => {
+  const f = await fixture();
+  f.sw.registration = { waiting: { postMessage() { throw Error('worker unavailable'); } } };
+  await assert.rejects(f.api.acceptUpdate(), /worker unavailable/);
+  f.handlers.controllerchange();
+  assert.equal(f.reloads, 0);
 });
 
-test('notify: error path explicitly swallows listener exceptions without propagating', () => {
-  let subsequentListenerExecuted = false;
-  const unregister1 = onUpdateReady(() => { throw new Error('Forced mock error state to test swallow'); });
-  const unregister2 = onUpdateReady(() => { subsequentListenerExecuted = true; });
-
-  bindSWController();
-  const handler = mockServiceWorker._handlers['message'];
-
-  assert.doesNotThrow(() => {
-    handler({ data: { type: 'sw-update-ready', version: 'error-path-test' } });
-  }, 'The notify function must swallow errors from throwing listeners');
-
-  assert.strictEqual(subsequentListenerExecuted, true, 'Listeners after the throwing listener must still execute');
-
-  unregister1();
-  unregister2();
+test('notification listeners can unsubscribe and cannot suppress later listeners', async () => {
+  const f = await fixture();
+  const notices = [];
+  f.api.onUpdateReady(() => { throw Error('listener failure'); });
+  const off = f.api.onUpdateReady(data => notices.push(data));
+  f.handlers.message({ data: { type: 'sw-update-ready', version: 'next' } });
+  assert.equal(notices.length, 1);
+  off();
+  f.handlers.message({ data: { type: 'sw-update-ready', version: 'next' } });
+  f.handlers.message({});
+  assert.equal(notices.length, 1);
 });
 
-test('bindSWController: handles messages with missing or undefined data gracefully', () => {
-  bindSWController();
-  const handler = mockServiceWorker._handlers['message'];
-  assert.strictEqual(typeof handler, 'function', 'Message handler should be registered');
-
-  // Passing event with no data should fall back to {} and not throw
-  assert.doesNotThrow(() => {
-    handler({});
-  }, 'Should handle missing event.data gracefully');
+test('environments without service workers are safe', async () => {
+  const f = await fixture();
+  Object.defineProperty(globalThis, 'navigator', { value: {}, configurable: true });
+  await f.api.acceptUpdate();
+  assert.equal(f.reloads, 0);
 });

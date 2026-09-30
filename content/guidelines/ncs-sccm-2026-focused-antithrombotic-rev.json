@@ -1,0 +1,37 @@
+[
+  {
+    "id": "rec-ich-anticoag-reversal-fxa",
+    "guideline": "NCS/SCCM 2026 focused antithrombotic-reversal update, recommendation 1–1",
+    "year": 2026,
+    "section": "ich-anticoag-reversal",
+    "COR": null,
+    "LOE": null,
+    "gradingSystem": "GRADE",
+    "nativeStrength": "Conditional",
+    "nativeCertainty": "Moderate",
+    "statement": "For spontaneous intracranial hemorrhage associated with a factor Xa inhibitor, the 2026 NCS/SCCM focused update conditionally suggests 4-factor PCC rather than andexanet alfa (moderate-certainty evidence). Reverse promptly using the applicable local pathway, with monitoring for thrombotic complications.",
+    "PMIDs": [
+      "38749032",
+      "35579034"
+    ],
+    "DOIs": [
+      "10.1056/NEJMoa2313040",
+      "10.1161/STR.0000000000000407"
+    ],
+    "citationIds": [
+      "cit-annexa-i-2024",
+      "cit-aha-ich-2022"
+    ],
+    "caveats": [
+      "For traumatic factor Xa inhibitor-associated ICH, the separate NCS/SCCM recommendation also favors 4F-PCC over andexanet, conditionally, but with very low certainty.",
+      "The native GRADE badge applies to the 2026 4F-PCC recommendation. The linked ANNEXA-I claim describes historical trial evidence, not the source of an AHA class for PCC.",
+      "FDA communicated that US Andexxa risks outweighed benefits; AstraZeneca submitted a request for voluntary BLA withdrawal. US sales ended December 22, 2025; this does not establish worldwide withdrawal or completion of the US withdrawal process.",
+      "PCC use for factor Xa inhibitor reversal is off-label. This recommendation does not establish interchangeable efficacy or dosing for activated PCC.",
+      "Reversal should not delay neurosurgical evaluation."
+    ],
+    "setting": "inpatient",
+    "lastReviewed": "2026-09-30",
+    "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4",
+    "provenance": "src/evidence/recommendations.js"
+  }
+]

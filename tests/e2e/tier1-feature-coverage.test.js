@@ -345,13 +345,13 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
   describe('Feature 7: Guideline Library & COR/LOE Catalog', () => {
     const indexData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/guidelines/index.json'), 'utf8'));
 
-    it('F7-T1.1: Guideline index lists exactly 109 guideline datasets with 4113 searchable entries and one separate source-only record', () => {
+    it('F7-T1.1: Guideline index lists exactly 110 guideline datasets with 4170 searchable entries and one separate source-only record', () => {
       const activeDatasets = indexData.data.filter(g => g.id !== 'landmark-trials');
-      expect(activeDatasets.length).toBe(109);
+      expect(activeDatasets.length).toBe(110);
       const totalRecs = activeDatasets.reduce((sum, g) => sum + g.recommendationCount, 0);
-      expect(totalRecs).toBe(4113);
+      expect(totalRecs).toBe(4170);
       expect(GUIDELINE_LIBRARY_INDEX.filter((guideline) => guideline.sourceOnly)).toHaveLength(1);
-      expect(GUIDELINE_LIBRARY_INDEX.reduce((sum, guideline) => sum + guideline.recommendationCount, 0)).toBe(4113);
+      expect(GUIDELINE_LIBRARY_INDEX.reduce((sum, guideline) => sum + guideline.recommendationCount, 0)).toBe(4170);
     });
 
     it('F7-T1.2: Every guideline in index has valid title, shortTitle, doi, and publisherUrl', () => {
@@ -468,14 +468,25 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(appSrc).toContain('tabpanel-references');
     });
 
-    it('F9-T1.4: Simulator components maintain isolated local state inside expandable containers', () => {
-      const simulators = ['EvdIcpSimulator.jsx', 'HintsSimulator.jsx', 'PupillometrySimulator.jsx', 'NeuroExamsTool.jsx'];
+    it('F9-T1.4: HINTS keeps local state and withdrawn simulators expose static evidence fallbacks', () => {
+      const simulators = ['HintsSimulator.jsx'];
       for (const sim of simulators) {
         const p = path.join(ROOT, 'src/simulators', sim);
         expect(fs.existsSync(p)).toBe(true);
         const code = fs.readFileSync(p, 'utf8');
         expect(code).toContain('useState');
       }
+      for (const sim of ['EvdIcpSimulator.jsx', 'NeuroExamsTool.jsx']) {
+        const code = fs.readFileSync(path.join(ROOT, 'src/simulators', sim), 'utf8');
+        expect(code).toContain('aria-labelledby');
+        expect(code).toContain('unavailable');
+        expect(code).not.toContain('useState');
+      }
+      const pupil = fs.readFileSync(path.join(ROOT, 'src/simulators/PupillometrySimulator.jsx'), 'utf8');
+      expect(pupil).toContain('role="status"');
+      expect(pupil).toContain('Pupillometry simulator temporarily unavailable');
+      expect(pupil).toContain('Evidence base — pupillometry / NPi');
+      expect(pupil).not.toContain('useState');
     });
 
     it('F9-T1.5: Details and summary tags are styled with accessible cursor-pointer and focus classes', () => {
@@ -583,10 +594,10 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       const json = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/bundle.json'), 'utf8'));
       const { guidelines, trials, education, calculators, references } = json._meta.counts;
       expect(guidelines).toBe(11);
-      expect(trials).toBe(260);
+      expect(trials).toBe(264);
       expect(education).toBeGreaterThanOrEqual(32);
       expect(calculators).toBe(34);
-      expect(references).toBe(32); // 28 repo-local documents + 4 external links (registry-driven seeding)
+      expect(references).toBe(28); // 24 retained PDFs + 4 external links after four reviewed retirements
       expect(guidelines + trials + education + calculators + references).toBeGreaterThanOrEqual(166);
     });
 
@@ -653,9 +664,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(result.stdout).toContain('Evidence Atlas validation passed');
     });
 
-    it('F14-T1.2: Evidence Atlas contains exactly 9 active trials and 260 completed trials', () => {
+    it('F14-T1.2: Evidence Atlas contains exactly 9 active trials and 264 completed trials', () => {
       expect(activeTrials.length).toBe(9);
-      expect(completedTrials.length).toBe(260);
+      expect(completedTrials.length).toBe(264);
     });
 
     it('F14-T1.3: Matcher engine coverage achieves 100% (42/42 criteria and 14/14 exclusions)', () => {
@@ -664,8 +675,8 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(result.stdout).toContain('14/14 exclusions (100%)');
     });
 
-    it('F14-T1.4: Evidence index exports 402 citations and 11 guideline recommendations', () => {
-      expect(citations.length).toBe(402);
+    it('F14-T1.4: Evidence index exports 412 citations and 11 guideline recommendations', () => {
+      expect(citations.length).toBe(412);
       expect(recommendations.length).toBe(11);
     });
 
@@ -702,12 +713,16 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(result.stdout).toContain('0 review warnings');
     });
 
-    it('F15-T1.4: Every citation entry in citations.js has valid 8-digit numeric PMID matching its URL', () => {
+    it('F15-T1.4: Citation identifiers and primary-source URLs have valid structure; PubMed URLs match their PMID', () => {
       for (const cit of citations) {
         if (cit.pmid) {
           expect(cit.pmid).toMatch(/^\d{7,9}$/);
           if (cit.url) {
-            expect(cit.url).toContain(cit.pmid);
+            const url = new URL(cit.url);
+            expect(url.protocol).toBe('https:');
+            if (url.hostname === 'pubmed.ncbi.nlm.nih.gov') {
+              expect(url.pathname).toBe(`/${cit.pmid}/`);
+            }
           }
         }
       }
@@ -889,9 +904,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(gitignore).toContain('leak-guard-denylist.local.json');
     });
 
-    it('F19-T1.5: package.json version matches latest release v6.29.2', () => {
+    it('F19-T1.5: package.json version matches latest release v6.30.0', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.version).toBe('6.29.2');
+      expect(pkg.version).toBe('6.30.0');
     });
 
     it('F19-T1.6: Runtime config loader declares the local-override fetch it awaits', () => {

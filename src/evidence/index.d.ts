@@ -143,8 +143,12 @@ export interface Recommendation {
   topic: string;
   setting: RecommendationSetting;
   text: string;
-  classOfRecommendation: ClassOfRecommendation;
-  levelOfEvidence: LevelOfEvidence;
+  gradingSystem: 'AHA' | 'GRADE' | 'consensus';
+  classOfRecommendation: ClassOfRecommendation | null;
+  levelOfEvidence: LevelOfEvidence | null;
+  nativeStrength: string;
+  nativeCertainty: string;
+  sourceUrl: string;
   guidelineSource: string;
   supportingClaimIds: string[];
   caveats: string[];

@@ -7,9 +7,9 @@
 // testable.
 //
 // The encounter UI now uses evaluateAllTrialsViaEngine unconditionally;
-// the former inline evaluators have been retired. An internal 'eligible'
-// result means the modeled criteria passed, not that every registry/protocol
-// criterion, consent requirement or local activation rule was verified.
+// the former inline evaluators have been retired. These partial summaries
+// never certify eligibility. A complete modeled match remains needs_info
+// until the study team verifies the current protocol and local requirements.
 //
 // Pure ES module; no React, no DOM, no React-state hooks. Imports only
 // the field-pick helpers that already exist in matcher-helpers.js and
@@ -39,6 +39,9 @@ const fieldResolvers = {
   premorbidMRS: (d) => premorbidOf(d),
   aspectsScore: (d) => d?.aspectsScore,
   hoursFromLKW: (d) => d?.hoursFromLKW,
+  presentedWithin24h: (d) => d?.presentedWithin24h,
+  mrsAtConsent: (d) => d?.mrsAtConsent ?? d?.mRSAtConsent,
+  mostAnticoagulantExclusion: (d) => d?.mostAnticoagulantExclusion,
   vesselOcclusion: (d) => d?.telestrokeNote?.vesselOcclusion || [],
   ctaResults: (d) => d?.telestrokeNote?.ctaResults || d?.strokeCodeForm?.cta || '',
   ctpResults: (d) => d?.telestrokeNote?.ctpResults || '',
@@ -92,7 +95,7 @@ const fieldResolvers = {
     if (n !== null && n >= 4 && n <= 5 && disabling === true) return true;
     if (n !== null && n < 4) return false;
     if (n === null) return null;
-    return false;
+    return typeof disabling === 'boolean' ? disabling : null;
   },
   // 'domainMatch' is a STEP-EVT-specific derived field combining NIHSS
   // and vessel-occlusion. The engine resolves it to one of the labeled
@@ -103,20 +106,13 @@ const fieldResolvers = {
     // Needs-info when EITHER input is un-entered: a fresh form must surface
     // as needs_info, not flip to a definite 'none'/not-eligible.
     if (nihss === null || occlusion.length === 0) return null;
-    // STEP MVO domain (NCT06289985): NON-dominant/co-dominant M2 or M3 AND
-    // NIHSS ≥8. M4/A/P occlusions and low-NIHSS MeVO are NOT in the trial's
-    // MVO domain. Dominance is read from CTA free text when documented: an
-    // explicitly DOMINANT M2 is excluded from the STEP MVO domain; when
-    // dominance is undocumented the first-pass match stands (registry
-    // confirmation is always required downstream).
-    const cta = String(d?.telestrokeNote?.ctaResults || '').toLowerCase();
-    const nonDominantDocumented = /non[\s-]?dominant|co[\s-]?dominant/.test(cta);
-    const dominantDocumented = !nonDominantDocumented && /\bdominant\b/.test(cta);
-    const mevoMatch =
-      nihss >= 8 &&
-      occlusion.some((v) => ['M2', 'M3'].includes(v)) &&
-      !dominantDocumented;
-    if (mevoMatch) return 'mevo';
+    // Dominance belongs to the culprit M2, not arbitrary CTA prose.
+    if (nihss >= 8 && occlusion.includes('M3')) return 'mevo';
+    if (nihss >= 8 && occlusion.includes('M2')) {
+      const dominance = d?.culpritM2Dominance ?? d?.telestrokeNote?.culpritM2Dominance;
+      if (['non-dominant', 'co-dominant'].includes(dominance)) return 'mevo';
+      if (dominance !== 'dominant') return null;
+    }
     if (nihss <= 5 && (occlusion.includes('ICA') || occlusion.includes('M1'))) {
       return 'low-nihss-lvo';
     }
@@ -152,25 +148,31 @@ export function knownFields() {
 // The criterion is met when true, not_met when false, unknown when null.
 // This matches the legacy evaluator's tri-state output.
 
-const isMissing = (v) => v === undefined || v === null || v === '';
+const isMissing = (v) => v === undefined || v === null || v === '' || v === 'unselected';
+const numeric = (v) => {
+  if (typeof v === 'number') return Number.isFinite(v) ? v : null;
+  if (typeof v !== 'string' || !/^[+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?$/i.test(v.trim())) return null;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+};
 
 const isPresentString = (v) => typeof v === 'string' && v.trim() !== '';
 
 const operators = {
   '>=': (resolved, value) => {
-    const n = tryInt(resolved);
+    const n = numeric(resolved);
     return n === null ? null : n >= value;
   },
   '<=': (resolved, value) => {
-    const n = tryInt(resolved);
+    const n = numeric(resolved);
     return n === null ? null : n <= value;
   },
   '>': (resolved, value) => {
-    const n = tryInt(resolved);
+    const n = numeric(resolved);
     return n === null ? null : n > value;
   },
   '<': (resolved, value) => {
-    const n = tryInt(resolved);
+    const n = numeric(resolved);
     return n === null ? null : n < value;
   },
   '==': (resolved, value) => {
@@ -179,11 +181,11 @@ const operators = {
       // "field is the other boolean" (false). E.g., a "no thrombolysis"
       // criterion needs tnkRecommended === false (a recorded decision
       // *not* to give TNK) and unknown when tnkRecommended is undefined.
-      if (resolved === undefined || resolved === null) return null;
+      if (typeof resolved !== 'boolean') return null;
       return resolved === value;
     }
     if (typeof value === 'number') {
-      const n = tryInt(resolved);
+      const n = numeric(resolved);
       return n === null ? null : n === value;
     }
     if (resolved === undefined || resolved === null) return null;
@@ -191,7 +193,7 @@ const operators = {
   },
   'between': (resolved, value) => {
     if (!Array.isArray(value) || value.length !== 2) return null;
-    const n = tryInt(resolved);
+    const n = numeric(resolved);
     if (n === null) return null;
     const [lo, hi] = value;
     return n >= lo && n <= hi;
@@ -206,18 +208,8 @@ const operators = {
     if (resolved === undefined || resolved === null || resolved === '') return null;
     return value.includes(resolved);
   },
-  // 'truthy' — JS-truthy match. Used for exclusion criteria such as an
-  // on-anticoagulation flag firing on !!data.telestrokeNote?.lastDOACType
-  // (a non-empty string is truthy; undefined / null / '' are falsy).
-  // For exclusion semantics: returns true when resolved is truthy,
-  // false when resolved is undefined / null / '' / 0 / false.
-  // Never returns null — the absence of the field means "not on this
-  // drug", which is a definite false, not an unknown.
-  'truthy': (resolved /* , value */) => {
-    if (resolved === undefined || resolved === null) return false;
-    if (typeof resolved === 'string' && resolved.trim() === '') return false;
-    return Boolean(resolved);
-  },
+  // An unrecorded medication/exclusion is unknown, never documented absence.
+  'truthy': (resolved) => isMissing(resolved) ? null : Boolean(resolved),
   'present': (resolved, value) => {
     // 'present' checks whether the resolved value contains any of the
     // listed needles. Used for free-text fields like ctpResults
@@ -287,13 +279,16 @@ export function evaluateCriterion(criterion, data) {
 /**
  * Evaluate every criterion on a single active trial and return a result
  * shape that retains the legacy UI contract. Internal status semantics:
- *   - 'eligible'    — every modeled required criterion met
- *   - 'needs_info'  — at least one required criterion unknown, none not_met
+ *   - 'needs_info'  — no modeled failure; full protocol review still required
+ *   - 'inactive'    — trial status does not permit current matching
  *   - 'not_eligible'— at least one required criterion not_met
  *   - 'pending'     — no criteria yet
  */
 export function evaluateActiveTrial(activeTrial, data) {
   if (!activeTrial) return null;
+  if (!MATCHABLE_TRIAL_STATUS_SET.has(activeTrial.status)) {
+    return { trialId: activeTrial.id, legacyMatcherKey: activeTrial.legacyMatcherKey, shortName: activeTrial.shortName, criteria: [], exclusions: [], unknownExclusions: [], counts: { met: 0, not_met: 0, unknown: 0 }, status: 'inactive', fullProtocolReviewRequired: true };
+  }
   const rawCriteria = activeTrial.matcherCriteria;
   const criteriaLen = rawCriteria ? rawCriteria.length : 0;
   const criteria = new Array(criteriaLen);
@@ -315,13 +310,16 @@ export function evaluateActiveTrial(activeTrial, data) {
 
   // Exclusions — inverse semantics. A criterion that evaluates to met
   // means the exclusion is *triggered*, which forces overall status to
-  // not_eligible. unknown/not_met means the exclusion is not triggered.
+  // not_eligible. Unknown exclusions remain explicitly unresolved;
+  // only not_met records an exclusion as absent.
   const exclusions = [];
+  const unknownExclusions = [];
   const rawExclusions = activeTrial.matcherExclusions;
   if (rawExclusions) {
     for (let i = 0; i < rawExclusions.length; i++) {
       const x = rawExclusions[i];
       const r = evaluateCriterion(x, data);
+      if (r === 'unknown') unknownExclusions.push({ id: x.id || x.field, label: x.label || x.field, field: x.field });
       if (r === 'met') {
         exclusions.push({
           id: x.id || x.field,
@@ -337,8 +335,8 @@ export function evaluateActiveTrial(activeTrial, data) {
   if (criteriaLen === 0 && exclusions.length === 0) status = 'pending';
   else if (exclusions.length > 0) status = 'not_eligible';
   else if (counts.not_met > 0) status = 'not_eligible';
-  else if (counts.unknown > 0) status = 'needs_info';
-  else status = 'eligible';
+  else if (counts.unknown > 0 || unknownExclusions.length > 0) status = 'needs_info';
+  else status = 'needs_info'; // Partial registry summaries never certify full eligibility.
 
   return {
     trialId: activeTrial.id,
@@ -346,6 +344,8 @@ export function evaluateActiveTrial(activeTrial, data) {
     shortName: activeTrial.shortName,
     criteria,
     exclusions,
+    unknownExclusions,
+    fullProtocolReviewRequired: true,
     counts,
     status
   };
@@ -441,8 +441,9 @@ export function evaluateAllTrialsViaEngine(activeTrialsList, data) {
       fullProtocolReviewRequired: true,
       metCount: eng.counts.met,
       notMetCount: eng.counts.not_met,
-      unknownCount: eng.counts.unknown,
-      requiredMissing: eng.criteria.filter((c) => c.required && c.status === 'not_met').length
+      unknownCount: eng.counts.unknown + eng.unknownExclusions.length,
+      unknownExclusions: eng.unknownExclusions,
+      requiredMissing: eng.criteria.filter((c) => c.required && c.status === 'unknown').length + eng.unknownExclusions.length
     };
   }
   return out;

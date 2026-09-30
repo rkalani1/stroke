@@ -1,5 +1,22 @@
 [
   {
+    "id": "hope-bp-2026",
+    "name": "HOPE (reperfusion-guided BP)",
+    "fullName": "Personalized Blood Pressure Targeting After Endovascular Therapy for Acute Ischemic Stroke: A Randomized Clinical Trial.",
+    "category": "bp-post-evt",
+    "population": "n=440, Adults; mean 75 years, NIHSS Not asserted as an eligibility threshold, After successful anterior-circulation EVT; BP strategy for 72 hours",
+    "finding": "60.0% versus reported 47.1%; 215 versus 225 analyzed. Control numerator is inconsistent: 106 in abstract/main versus 105 in Table 2.",
+    "teachingPoint": "New selected-strategy evidence requiring reconciliation with earlier BP trials and current guidance. Do not translate either arm into a universal bedside order.",
+    "PMID": "42258192",
+    "year": 2026,
+    "citationIds": [
+      "cit-hope-bp-2026"
+    ],
+    "certainty": "moderate",
+    "lastReviewed": "2026-09-30",
+    "provenance": "src/evidence/completedTrials.js"
+  },
+  {
     "id": "enchanted2-mt",
     "name": "ENCHANTED2/MT",
     "fullName": "Intensive BP Control after Endovascular Thrombectomy",
@@ -21,16 +38,16 @@
     "name": "OPTIMAL-BP",
     "fullName": "Intensive vs Conventional Blood Pressure Lowering after Successful Endovascular Thrombectomy",
     "category": "bp-post-evt",
-    "population": "n=306, ≥18, NIHSS all, After successful EVT (mTICI ≥2b)",
+    "population": "n=306, ≥20 years, NIHSS all, After successful EVT (mTICI ≥2b)",
     "finding": "Intensive worse: 39.4% vs 54.4%",
-    "teachingPoint": "Intensive SBP <140 after successful EVT reduced functional independence; reinforces ENCHANTED2/MT.",
+    "teachingPoint": "Avoid extrapolating the intensive-lowering result into a universal physiologic SBP floor or an instruction to raise every spontaneous value below 140. Respect the studied selection and current guidance.",
     "PMID": "37668619",
     "year": 2023,
     "citationIds": [
       "cit-optimal-bp-2023"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -40,14 +57,14 @@
     "category": "bp-post-evt",
     "population": "n=324, adults ≥18 years, NIHSS not reported in the primary report, target achieved within 1 h of randomisation and maintained for 24 h after reperfusion",
     "finding": "NULL - the intensive target DID NOT reduce radiographic intraparenchymal haemorrhage: 65/154 (42%) intensive vs 68/157 (43%) standard",
-    "teachingPoint": "Establishes that driving SBP to 100-129 mm Hg after successful thrombectomy does not reduce post-procedural intraparenchymal haemorrhage - it removed the main mechanistic rationale for intensive lowering before the later trials showed functional harm.",
+    "teachingPoint": "The tested 100–129 mm Hg strategy did not significantly reduce the radiographic primary endpoint. This trial alone does not establish a functional benefit, a universal lower BP boundary or the effects of other reperfusion-specific targets.",
     "PMID": "33647246",
     "year": 2021,
     "citationIds": [
       "cit-bp-target-2021"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -55,16 +72,16 @@
     "name": "BEST-II",
     "fullName": "Blood Pressure Management After Endovascular Therapy for Acute Ischemic Stroke: The BEST-II Randomized Clinical Trial",
     "category": "bp-post-evt",
-    "population": "n=120, mean 69.6 years (SD 14.5); 69 of 120 (58%) female, NIHSS not reported in the primary report, targets initiated within 60 minutes of recanalization and maintained for 24 h",
+    "population": "n=120, Age ≥18 years; mean 69.6 years (SD 14.5), NIHSS Baseline median NIHSS 16 / 18 / 14 in the <140 / <160 / ≤180 mm Hg groups, Randomization ≤45 min and target initiation ≤60 min after successful anterior-circulation reperfusion; maintained 24 h",
     "finding": "DID NOT meet the prespecified futility criteria. Mean follow-up infarct volume was 32.4 mL for the <140 mm Hg group, 50.7 mL for the <160 mm Hg group and 46.4 mL for the ≤180 mm Hg group - the MOST intensive arm had the SMALLEST infarct volume. Mean utility-weighted mRS was 0.51 (<140), 0.47 (<160) and 0.58 (≤180). This is a low probability of benefit, NOT demonstrated harm.",
-    "teachingPoint": "Teaches the difference between 'low probability of future trial success' and 'demonstrated harm' - and does not by itself justify the ≤180 mm Hg ceiling: BEST-II never tested a 140-160 band (its middle arm was 40 to <160 mm Hg), the ≤180 mm Hg ceiling is a guideline recommendation, and the harm signal behind the 2026 AHA/ASA recommendation against intensive lowering below 140 mm Hg after successful reperfusion (COR 3: Harm) comes from ENCHANTED2/MT and OPTIMAL-BP.",
+    "teachingPoint": "BEST-II tested <140, <160 and ≤180 mm Hg, with n=40 per arm. It did not establish a 140–160 mm Hg band or a low-pressure safety floor. Interpret alongside larger trials and current guidance, retaining their different reperfusion and population criteria.",
     "PMID": "37668620",
     "year": 2023,
     "citationIds": [
       "cit-best-ii-2023"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -72,16 +89,16 @@
     "name": "IDENTIFY",
     "fullName": "Early intensive blood pressure management after endovascular treatment in ischaemic stroke (IDENTIFY): a multicentre, open-label, blinded-endpoint, randomised controlled trial",
     "category": "bp-post-evt",
-    "population": "n=383, adults (age range not stated in the primary report), NIHSS not reported in the primary report, endovascular treatment within 6 h of onset; blood-pressure targets maintained until 24 h post-EVT",
+    "population": "n=383, ≥18 years, NIHSS Baseline median NIHSS 15 (IQR 12–19), not an eligibility threshold, endovascular treatment within 6 h of onset; blood-pressure targets maintained until 24 h post-EVT",
     "finding": "NULL - intensive management to <130 mm Hg DID NOT improve outcomes: 130/183 (71.0%) intensive vs 135/200 (67.5%) standard",
-    "teachingPoint": "Adds a third randomised null to the post-thrombectomy BP question - a <130 mm Hg target within the 6-hour window changed neither function, haemorrhage, oedema nor death.",
+    "teachingPoint": "No demonstrated primary benefit from the tested <130 target. The hypotension increase and exploratory disability signals preclude describing the strategy as established safe or functionally equivalent.",
     "PMID": "40538518",
     "year": 2025,
     "citationIds": [
       "cit-identify-2025"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

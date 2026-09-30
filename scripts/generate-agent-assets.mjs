@@ -26,6 +26,7 @@ import crypto from 'node:crypto';
 import process from 'node:process';
 import { pathToFileURL } from 'node:url';
 import { guidelineCoverage } from '../src/guideline-coverage.js';
+import { atomicWriteFile } from './atomic-write.mjs';
 
 const ROOT = process.cwd();
 const DATA = path.join(ROOT, 'data');
@@ -106,7 +107,7 @@ function write(rel, content) {
     return;
   }
   writes.push(
-    fs.mkdir(path.dirname(abs), { recursive: true }).then(() => fs.writeFile(abs, str, 'utf8')),
+    atomicWriteFile(abs, str),
   );
 }
 

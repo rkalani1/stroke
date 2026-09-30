@@ -6,14 +6,14 @@
     "category": "factor-xi-inhibition",
     "population": "n=12327, ≥18, ≤72 h",
     "finding": "Lower with asundexian: 6.2% vs 8.4%",
-    "teachingPoint": "Asundexian on top of antiplatelets cut ischaemic stroke ~26% without more major bleeding — could reshape noncardioembolic prevention.",
+    "teachingPoint": "Positive ischemic efficacy result in the selected trial population. Clinical use depends on regulatory authorization and current guidance; do not describe major bleeding as proven unchanged.",
     "PMID": "41985132",
     "year": 2026,
     "citationIds": [
       "cit-oceanic-stroke-2026"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-05-30",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -30,7 +30,7 @@
       "cit-oceanic-af-2025"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-15",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -38,16 +38,16 @@
     "name": "AXIOMATIC-SSP",
     "fullName": "Safety and Efficacy of Factor XIa Inhibition with Milvexian for Secondary Stroke Prevention",
     "category": "factor-xi-inhibition",
-    "population": "n=2366, adults, NIHSS acute ischaemic stroke or high-risk TIA, randomized within 48 h of symptom onset of acute ischaemic stroke or high-risk TIA (age ≥40); 90-day treatment period",
-    "finding": "NEUTRAL: placebo 16.8% vs milvexian arms 15.3-16.7%; no significant dose-response",
-    "teachingPoint": "Milvexian added to DAPT showed no efficacy signal but also no bleeding excess — groundwork for phase 3.",
+    "population": "n=2366, ≥40 years, NIHSS ≤7 (initially ≤5), randomized within 48 h of symptom onset of acute ischaemic stroke or high-risk TIA (age ≥40); 90-day treatment period",
+    "finding": "Neutral prespecified dose-response analysis. Reported 16.8% placebo and 15.3–16.7% active-arm risks are model-based estimates, not raw event proportions.",
+    "teachingPoint": "Phase 2 dose-finding evidence; no established clinical benefit. Interpret exploratory stroke and dose-specific bleeding findings separately from the neutral primary analysis.",
     "PMID": "38101902",
     "year": 2024,
     "citationIds": [
       "cit-axiomatic-ssp-2024"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

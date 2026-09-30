@@ -40,14 +40,14 @@
     "category": "cervical-dissection",
     "population": "n=444, Pooled participants of CADISS and TREAT-CAD; the paper opens by noting cervical artery dissection is the most common cause of stroke in younger adults, NIHSS Not reported as NIHSS in the abstract, 90 days of follow-up in both pooled trials",
     "finding": "DID NOT reach statistical significance: 3/218 (1.4%) with anticoagulation versus 10/226 (4.4%) with antiplatelet therapy. The direction favours anticoagulation and the point estimate is large, but with 13 events in total the confidence interval crosses 1 and the authors' own conclusion is that no significant difference was found in preventing early recurrent events.",
-    "teachingPoint": "Confirms that no randomised evidence establishes either antiplatelet or anticoagulant superiority after cervical artery dissection; both remain defensible, and the decision should turn on individual bleeding risk and practical considerations rather than on a claimed efficacy difference.",
+    "teachingPoint": "Interpret the composite and stroke-alone findings with their comparator and precision limits. Do not relabel the entire pooled antiplatelet arm as aspirin.",
     "PMID": "38739383",
     "year": 2024,
     "citationIds": [
       "cit-kaufmann-ipd-2024"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

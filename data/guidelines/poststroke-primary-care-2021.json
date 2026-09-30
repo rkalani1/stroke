@@ -1177,5 +1177,13 @@
       "url": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000382"
     },
     "countingNote": "Table 4 and Figure 2 recommendation bullets are counted individually. Mixed-class assessment domains, ungraded lists and the care strategy are grouped by action without inventing a vote or individual COR/LOE. Supplementary resource contacts are a referral directory, not additional recommendations."
+  },
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Publisher/DOI and bounded primary public alternatives assessed; incomplete indexed fragments only, no complete body acquired",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
   }
 }

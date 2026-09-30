@@ -101,7 +101,8 @@ describe('REFERENCE_LIBRARY_SECTIONS registry shape', () => {
 
   it('registers the previously unregistered quick reference sheets (P4-4b)', () => {
     const quickrefs = REFERENCE_LIBRARY_DOCS.filter((d) => d.path && d.path.startsWith('documents/references/'));
-    expect(quickrefs.length).toBe(9);
+    expect(quickrefs.length).toBe(7);
+    expect(quickrefs.some(d => /External Ventricular|Intracranial Hypertension/.test(d.path))).toBe(false);
   });
 });
 

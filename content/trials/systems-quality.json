@@ -6,14 +6,14 @@
     "category": "systems-quality",
     "population": "n=108913, mean 66.7 y (SD 15.2); 50.6% male; 71.7% non-Hispanic White, NIHSS full range; NIHSS >12 vs 0-1 was one of the strongest correlates of a shorter door-in-door-out time, emergency-department stay at the transferring hospital, January 2019 to December 2021",
     "finding": "Real-world practice falls well short of the benchmark: median door-in-door-out time 174 minutes (IQR 116-276), and only 29,741 of 108,913 patients (27.3%) were transferred within 120 minutes",
-    "teachingPoint": "Gives transfer decisions a concrete, measurable benchmark — a ≤120-minute door-in-door-out target that most US transfers currently miss — and names EMS prenotification and demographic disparity as the levers to audit.",
+    "teachingPoint": "Use as a historical workflow and equity audit benchmark. Test local bottlenecks; do not turn associations into causal or current nationwide predictions.",
     "PMID": "37581671",
     "year": 2023,
     "citationIds": [
       "cit-dido-gwtg-2023"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -39,7 +39,7 @@
     "fullName": "Diagnostic Test Accuracy of Artificial Intelligence in Large Vessel Occlusion: A Systematic Review and Meta-Analysis",
     "category": "systems-quality",
     "population": "n=10937, not reported at the pooled level, NIHSS not reported at the pooled level, acute stroke CT angiography at presentation",
-    "finding": "Accuracy is good but asymmetric, and the negative result is the weak one: pooled sensitivity 0.87 and pooled specificity 0.95. The pooled positive likelihood ratio was 9.55 and statistically significant, while the pooled negative likelihood ratio was 0.14 (95% CI 0.03-0.25), a confidence interval that excludes 1. The authors describe the NLR as 'not significant', but the p value they report with it (printed as <0.624, next to I² = 0%) appears to be the Cochran's Q heterogeneity test described in their methods, not a test of the NLR itself. The rule-out weakness is real, and the pooled sensitivity of 0.87 (95% CI 0.76-0.93) shows it better: roughly 1 in 8 occlusions was missed, so a negative AI read does not reliably rule out an occlusion",
+    "finding": "Sensitivity 0.87 and specificity 0.95. An absent AI flag cannot independently exclude LVO; performance and intended use vary by product and vessel territory.",
     "teachingPoint": "Frames AI LVO-detection output as a rule-in aid that can speed a transfer, never a rule-out that can cancel one — especially for posterior-circulation and M2 occlusions.",
     "PMID": "42028301",
     "year": 2026,
@@ -47,7 +47,7 @@
       "cit-ai-lvo-dta-2026"
     ],
     "certainty": "low",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

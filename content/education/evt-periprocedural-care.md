@@ -1,7 +1,7 @@
 ---
 id: evt-periprocedural-care
 title: "EVT Technique & Post-Thrombectomy Care"
-summary: "Running the thrombectomy and the first 24 hours after it: anesthesia and intraprocedural hemodynamic floors, device strategy and first-pass effect, bailout decisions, the post-reperfusion blood pressure guardrail, and the angio-suite handoff."
+summary: "Anesthesia, procedural evidence and individualized post-EVT care, including the distinction between an active BP target, spontaneous pressure and newer selected-strategy evidence."
 tags: ["pocket-card", "printable"]
 contexts: ["telestroke", "inpatient", "clinic"]
 calculators: []
@@ -10,7 +10,7 @@ lastReviewed: 2026-08-15
 provenance: src/education.jsx
 ---
 
-Running the thrombectomy and the first 24 hours after it: anesthesia and intraprocedural hemodynamic floors, device strategy and first-pass effect, bailout decisions, the post-reperfusion blood pressure guardrail, and the angio-suite handoff.
+Anesthesia, procedural evidence and individualized post-EVT care, including the distinction between an active BP target, spontaneous pressure and newer selected-strategy evidence.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
 > This file owns the module metadata (title, summary, tags, contexts, references).

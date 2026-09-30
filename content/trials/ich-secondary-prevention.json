@@ -23,14 +23,15 @@
     "category": "ich-secondary-prevention",
     "population": "n=537, ≥18, NIHSS ICH survivors, randomized a median of 76 days (IQR 29-146) after ICH; followed up to 5 years",
     "finding": "Fewer recurrences with antiplatelet therapy: 4% (12/268) vs 9% (23/268)",
-    "teachingPoint": "Restarting antiplatelet therapy after ICH did not raise recurrent hemorrhage; the risk is likely outweighed by secondary-prevention benefit.",
+    "teachingPoint": "Supports individualized antiplatelet resumption when indicated after ICH; the extended result does not exclude all but a very small recurrence-risk increase.",
     "PMID": "31128924",
     "year": 2019,
     "citationIds": [
-      "cit-restart-2019"
+      "cit-restart-2019",
+      "cit-restart-extended-2021"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-15",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

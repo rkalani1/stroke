@@ -86,8 +86,9 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Level IV represents the achievement of a high level of expertise in the treatment of neurovascular disease similar to Level III, and is needed for selecting/approving program directors. The candidate must meet ONE of the following criteria: Experience - a minimum of 500 neurointervention procedures (diagnostic and therapeutic) OR 5 years since fellowship training; or Reputation - having been elected by peers as a Fellow of one of the reputed neurointervention societies (e.g., Fellow of SVIN).",
-      "page": null
+      "text": "Level IV represents the achievement of a high level of expertise in the treatment of neurovascular disease similar to Level III, and is needed for selecting/approving program directors. The candidate must meet ONE of the following criteria: Experience - a minimum of 500 neurointervention procedures (diagnostic and therapeutic) OR 5 years since fellowship training; or Reputation - having been elected by peers as a Fellow of one of the reputed neurointervention societies (e.g., Fellow of SVIN). Source note: Source conflict: the Level IV narrative permits experience OR reputation, whereas Table 1 requires Level III plus experience plus peer-elected fellowship. The summary must not be used as a definitive credentialing rule without society clarification.",
+      "page": null,
+      "sourceConflictNote": "Source conflict: the Level IV narrative permits experience OR reputation, whereas Table 1 requires Level III plus experience plus peer-elected fellowship. The summary must not be used as a definitive credentialing rule without society clarification."
     },
     {
       "section": "Duration and Place of Training for Initial Certification",
@@ -331,5 +332,13 @@
     }
   ],
   "documentType": "scientific-statement",
-  "gradingSystem": "ungraded"
+  "gradingSystem": "ungraded",
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Primary recommendation text retrieved and compared; exact edition, source locators and unresolved correction/current-context limits in unit ledger.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
+  }
 }

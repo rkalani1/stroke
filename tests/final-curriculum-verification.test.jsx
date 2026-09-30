@@ -52,18 +52,19 @@ import {
 import { citations } from '../src/evidence/citations.js';
 
 describe('Comprehensive Final Challenger Curriculum Verification', () => {
-  it('keeps PH2 uncertainty separate from day-based timing bands', () => {
+  it('keeps severe hemorrhagic transformation unassigned while presenting separate trial timing strategies', () => {
     const html = ReactDOMServer.renderToStaticMarkup(<AfibAnticoagTimingCard />);
-    const annotation = html.match(/<g role="group" aria-label="PH2 hemorrhage requires individualized review; no established start day">([\s\S]*?)<\/g>/)?.[1];
-    expect(annotation).toBeDefined();
-    expect(annotation).toContain('PH2: INDIVIDUALIZED REVIEW');
-    expect(annotation).toContain('No established start day');
-    expect(annotation).not.toMatch(/<(?:line|path|polyline)\b|Day 1[234]/);
-    const box = annotation.match(/<rect x="([\d.]+)" y="([\d.]+)" width="([\d.]+)" height="([\d.]+)"/);
-    expect(Number(box[2]) + Number(box[4])).toBeLessThan(61);
-    expect(html).not.toContain('<rect x="608.5" y="61"');
-    expect(html).not.toContain('M 661.7 83 L 661.7 93');
-    expect(html).not.toContain('x="661.7" y="137"');
+    // The whole hybrid day-by-severity SVG was withdrawn, not merely its PH2 marker.
+    expect(html).not.toContain('<svg');
+    expect(html).not.toMatch(/DOAC INITIATION TIMELINE AXIS|REPEAT CT\/MRI|Pre-DOAC/);
+    expect(html).toContain('no validated combined day-by-severity schedule or mandatory day-specific rescan rule');
+    expect(html).toContain('severe hemorrhagic transformation is not assigned a start day');
+    expect(html).toContain('ELAN compared early treatment within 48 hours');
+    expect(html).toContain('OPTIMAS compared initiation within 4 days with days 7–14');
+    expect(html).toContain('CATALYST pooled early (≤4 days) versus later (≥5 days) strategies');
+    for (const pmid of ['37222476', '39491870', '40570866']) {
+      expect(html).toContain(`https://pubmed.ncbi.nlm.nih.gov/${pmid}/`);
+    }
   });
 
   const ALL_CURRICULUM_CARDS = [
@@ -150,6 +151,12 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
   });
 
   describe('2. SVG Vector Diagrams & WCAG Accessibility Audit', () => {
+    it('retains informative SVG coverage so the per-SVG accessibility audit cannot pass vacuously', () => {
+      for (const Component of [StrokePrognosisCard, CervicalDissectionCard, FibromuscularDysplasiaCard, BrainDeathCard, CvstCard, CarotidStenosisCard, BrainstemSyndromesCard, RcvsCard, PfoClosureCard]) {
+        const html = ReactDOMServer.renderToStaticMarkup(React.createElement(Component));
+        expect(html).toMatch(/<svg\b[^>]*role="img"/);
+      }
+    });
     ALL_CURRICULUM_CARDS.forEach(({ id, Component, name }) => {
       it(`audits all SVGs in ${name} (${id}) for valid bounding boxes and WCAG attributes`, () => {
         const html = ReactDOMServer.renderToString(React.createElement(Component));
@@ -198,7 +205,13 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
     const bundleData = JSON.parse(fs.readFileSync(bundlePath, 'utf8'));
 
     it('verifies content/bundle.json contains all education modules', () => {
-      expect(bundleData.education.length).toBe(41);
+      // The obsolete neuro-exams module was explicitly withdrawn; retained modules remain indexed.
+      expect(bundleData.education.length).toBe(40);
+      expect(bundleData.education.some(({ id }) => id === 'neuro-exams')).toBe(false);
+      expect(fs.existsSync(path.resolve(process.cwd(), 'content/education/neuro-exams.md'))).toBe(false);
+      for (const id of ['hints-simulator', 'pupillometry']) {
+        expect(bundleData.education.some((entry) => entry.id === id)).toBe(true);
+      }
     });
 
     ALL_CURRICULUM_CARDS.forEach(({ id }) => {
@@ -215,41 +228,32 @@ describe('Comprehensive Final Challenger Curriculum Verification', () => {
   });
 
   describe('4. Clinical Calculator Mathematical Integrity', () => {
-    it('calculates ASTRAL score and risk prediction accurately across risk strata', () => {
-      const lowRiskScore = calculateAstralScore({ age: 40, nihss: 2, delay: 60, glucose: 100, visual: false, motor: false });
-      const midRiskScore = calculateAstralScore({ age: 65, nihss: 10, delay: 180, glucose: 140, visual: true, motor: false });
-      const highRiskScore = calculateAstralScore({ age: 85, nihss: 22, delay: 240, glucose: 220, visual: true, motor: true });
-
-      expect(lowRiskScore).toBeGreaterThanOrEqual(0);
-      expect(midRiskScore).toBeGreaterThan(lowRiskScore);
-      expect(highRiskScore).toBeGreaterThan(midRiskScore);
-
-      expect(typeof getAstralRisk(lowRiskScore)).toBe('string');
-      expect(getAstralRisk(lowRiskScore)).not.toContain('NaN');
-      expect(getAstralRisk(highRiskScore)).not.toContain('NaN');
+    it('retains ASTRAL arithmetic but withholds unvalidated probability estimates', () => {
+      const base = { age: 40, nihss: 2, timeDelay: false, visualDefect: false, glucose: 100, glucoseUnit: 'mgdl', locImpaired: false };
+      expect(calculateAstralScore(base)).toBe(10);
+      expect(calculateAstralScore({ ...base, timeDelay: true, visualDefect: true, locImpaired: true })).toBe(17);
+      expect(calculateAstralScore({ ...base, glucose: 220 })).toBe(11);
+      expect(calculateAstralScore({ ...base, glucose: 100 / 18, glucoseUnit: 'mmol' })).toBe(10);
+      for (const glucose of ['', null, undefined, 'invalid', 0, -1]) {
+        expect(calculateAstralScore({ ...base, glucose })).toBeNull();
+      }
+      for (const score of [0, 10, 30, 50]) expect(getAstralRisk(score)).toBeNull();
+      const html = ReactDOMServer.renderToStaticMarkup(<StrokePrognosisCard />);
+      expect(html).toContain('Probability estimates are withheld pending validation');
     });
 
-    it('calculates PLAN score and outputs structured risk object', () => {
-      const score = calculatePlanScore({
-        preDependence: false,
-        cancer: false,
-        chf: false,
-        afib: true,
-        locReduced: false,
-        age: 70,
-        legWeakness: true,
-        armWeakness: true,
-        aphasiaNeglect: false
-      });
-
-      const risk = getPlanRisk(score);
-      expect(risk).toHaveProperty('mortality');
-      expect(risk).toHaveProperty('depMortality');
-      expect(risk.mortality).not.toContain('NaN');
-      expect(risk.depMortality).not.toContain('NaN');
+    it('retains PLAN arithmetic but exposes unavailable outcome estimates explicitly', () => {
+      const input = { dependence: false, cancer: false, chf: false, afib: true, locReduced: false, age: 70, legWeakness: true, armWeakness: true, aphasiaNeglect: false };
+      expect(calculatePlanScore(input)).toBe(12);
+      expect(calculatePlanScore({ ...input, dependence: true })).toBe(13.5);
+      for (const score of [0, 12, 25]) {
+        expect(getPlanRisk(score)).toEqual({ mortality: null, depMortality: null, available: false });
+      }
+      const html = ReactDOMServer.renderToStaticMarkup(<StrokePrognosisCard />);
+      expect(html).toContain('Outcome percentages are withheld pending validation against the original cohort');
     });
 
-    it('calculates ICH score and accurately predicts 30-day mortality risk', () => {
+    it('preserves historical ICH cohort percentages without extrapolating unestimated scores', () => {
       expect(getIchRisk(0)).toBe('0%');
       expect(getIchRisk(1)).toBe('13%');
       expect(getIchRisk(2)).toBe('26%');

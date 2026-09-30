@@ -114,10 +114,14 @@ async function main() {
   lines.push('## Recommendations (with claim chain)');
   lines.push('');
   for (const r of recommendations) {
-    lines.push(`### ${r.id} — Class ${r.classOfRecommendation}, LOE ${r.levelOfEvidence}`);
+    const grade = r.gradingSystem && r.gradingSystem !== 'AHA'
+      ? `${r.gradingSystem}: ${r.nativeStrength}${r.nativeCertainty ? `; certainty ${r.nativeCertainty}` : ''}`
+      : `Class ${r.classOfRecommendation}, LOE ${r.levelOfEvidence}`;
+    lines.push(`### ${r.id} — ${grade}`);
     lines.push(`- **Setting:** ${r.setting} · **Topic:** ${r.topic}`);
     lines.push(`- **Recommendation:** ${r.text}`);
     lines.push(`- **Source:** ${r.guidelineSource}`);
+    if (r.sourceUrl) lines.push(`- **Primary source:** ${r.sourceUrl}`);
     const expanded = resolveClaimsWithCitations(r.supportingClaimIds);
     if (expanded.length) {
       lines.push('- **Supporting claims:**');

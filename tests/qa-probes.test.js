@@ -366,19 +366,21 @@ describe('PFO — PASCAL category & NNT', () => {
 });
 
 describe('INTERACT3 ICH bundle compliance', () => {
-  it('full bundle compliant (warfarin patient)', () => {
+  it('measured targets do not certify timed bundle compliance (warfarin patient)', () => {
     const r = ichCareBundleCheck({
       sbpAt1h: 130, glucose: 6.5, glucoseUnit: 'mmol/L', isDiabetic: false, temp: 37.0,
       inr: 1.2, isOnWarfarin: true
     });
-    expect(r.fullyCompliant).toBe(true);
+    expect(r.targetsMet).toBe(true);
+    expect(r.fullyCompliant).toBeNull();
     expect(r.completed).toBe(4);
   });
   it('partial compliance flags incomplete elements', () => {
     const r = ichCareBundleCheck({
       sbpAt1h: 165, glucose: 11, glucoseUnit: 'mmol/L', isDiabetic: false, temp: 38.5
     });
-    expect(r.fullyCompliant).toBe(false);
+    expect(r.targetsMet).toBe(false);
+    expect(r.fullyCompliant).toBeNull();
   });
 });
 
@@ -411,7 +413,7 @@ describe('AF detection strategy & ARCADIA neutrality', () => {
     expect(r.strategy).toContain('ICM');
   });
   it('ARCADIA: cardiopathy markers do NOT trigger empiric DOAC', () => {
-    const r = arcadiaAdvisory({ ntProBNP: 500, laVolumeIndex: 38 });
+    const r = arcadiaAdvisory({ ntProBNP: 500, laVolumeIndex: 38, cryptogenicStroke: true, hasAF: false, otherAnticoagulationIndication: false });
     expect(r.recommendDOAC).toBe(false);
     expect(r.cardiopathyPresent).toBe(true);
   });
@@ -484,9 +486,9 @@ describe('adjunctiveAntithromboticAdvisory (MOST/MR-CLEAN-MED)', () => {
     expect(adjunctiveAntithromboticAdvisory({ ivLyticGiven: true }).recommend).toBe('No');
   });
   it('peri-EVT → No (MR CLEAN-MED stopped for harm)', () => {
-    expect(adjunctiveAntithromboticAdvisory({ evtPlanned: true }).recommend).toBe('No (periprocedural heparin/aspirin)');
+    expect(adjunctiveAntithromboticAdvisory({ evtPlanned: true }).recommend).toBe('No (routine periprocedural heparin/aspirin)');
   });
-  it('lytic-ineligible → tirofiban consideration (RESCUE BT2)', () => {
+  it('lytic-ineligible alone does not establish a tirofiban indication', () => {
     expect(adjunctiveAntithromboticAdvisory({ lyticIneligible: true }).recommend).toContain('Tirofiban');
   });
 });

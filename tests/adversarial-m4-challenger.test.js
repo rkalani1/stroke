@@ -154,7 +154,7 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
 
       const cacheMatch = swContent.match(/CACHE_NAME\s*=\s*['"]([^'"]+)['"]/);
       expect(cacheMatch, 'CACHE_NAME constant found in SW').not.toBeNull();
-      const expectedCacheName = `stroke-cache-v${pkg.version.replace(/\./g, '-')}`;
+      const expectedCacheName = `stroke-cache-v${pkg.version.replace(/\./g, '-')}-clinical-review-20260930`;
       expect(cacheMatch[1]).toBe(expectedCacheName);
     });
 
@@ -166,13 +166,14 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
       const arrayString = `[${match[1]}]`;
       const coreAssets = eval(arrayString); // Evaluates array of string paths safely
 
-      // Floor guards against the precache being gutted. Lowered from 50 in
-      // v6.24.0, which deliberately dropped 31 data/*.json agent-API entries
-      // (nothing in src/ fetches them) and 8 large infographic PNGs
-      // (lazy-loaded; the precached SVG is the onError fallback) — 9.26 MB of
-      // install payload down to 4.68 MB. Both groups still cache on first
-      // request via the cache-first same-origin fetch path.
-      expect(coreAssets.length).toBeGreaterThan(35);
+      // The reviewed release removes retired teaching SVGs from precache.
+      // Preserve the complete shell and its 34 retained installation assets.
+      expect(coreAssets).toHaveLength(34);
+      expect(coreAssets).toEqual(expect.arrayContaining([
+        './', './index.html', './app.js', './tailwind.css', './manifest.json',
+        './offline.html', './config.example.json', './icon-192.png', './icon-512.png',
+      ]));
+      expect(new Set(coreAssets).size).toBe(coreAssets.length);
 
       const missingAssets = [];
       for (const relAsset of coreAssets) {

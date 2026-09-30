@@ -1,0 +1,46 @@
+[
+  {
+    "id": "rec-late-window-ivt",
+    "guideline": "AHA/ASA 2026 AIS Guideline, section 4.6.3 recommendations 1–2, with July 2026 correction item 13; ESO 2023 expert consensus is separate",
+    "year": 2026,
+    "section": "extended-window-ivt",
+    "COR": "IIa",
+    "LOE": "B-R",
+    "statement": "IV thrombolysis can be beneficial (1) in unknown-onset stroke (e.g., wake-up) when treatment can start within 4.5 h of symptom recognition and MRI shows DWI-FLAIR mismatch (DWI lesion smaller than one-third of the MCA territory without marked FLAIR change), and (2) in patients ineligible for EVT who have salvageable penumbra on automated perfusion imaging 4.5-9 h from LKW or within 9 h of the midpoint of sleep for wake-up stroke. The pivotal trials (WAKE-UP, EXTEND) used alteplase; ESO 2023 expert consensus considers tenecteplase 0.25 mg/kg a reasonable alternative for wake-up/unknown-onset stroke selected with advanced imaging.",
+    "PMIDs": [
+      "29766770",
+      "31067369",
+      "38329148",
+      "36549308",
+      "38884324",
+      "41642827"
+    ],
+    "DOIs": [
+      "10.1056/NEJMoa1804355",
+      "10.1056/NEJMoa1813046",
+      "10.1056/NEJMoa2310392",
+      "10.1016/S1474-4422(22)00484-7",
+      "10.1056/NEJMoa2402980",
+      "10.1001/jama.2026.0210"
+    ],
+    "citationIds": [
+      "cit-wake-up-2018",
+      "cit-extend-2019",
+      "cit-timeless-2024",
+      "cit-twist-2023",
+      "cit-trace-iii-2024",
+      "cit-option-tnk-2026"
+    ],
+    "caveats": [
+      "The July 2026 correction (doi:10.1161/STR.0000000000000530, item 13) added EVT-ineligibility to perfusion-selected recommendation 2 and changed its wording to can be beneficial. The original January table predates this correction. The IIa/B-R badge applies to the AHA recommendations, not the separately described ESO expert consensus.",
+      "Imaging-based selection is required; unselected late-window thrombolysis is not supported (TWIST).",
+      "Time from LKW remains a key safety determinant; TIMELESS extended TNK to 24 h with mismatch selection but the overall primary endpoint did not reach significance.",
+      "OPTION (JAMA 2026) supports perfusion-selected tenecteplase to 24 h in non-LVO stroke without planned EVT, with sICH 2.8% vs 0%; a single-country trial that post-dates the 2026 AHA/ASA guideline, so it is not a guideline-graded indication.",
+      "Late-window bridging trials differ in population and selection: TNK-PLUS and ATTENTION LATE did not demonstrate primary-outcome benefit, while TRACE-5 reported benefit in its selected population. These results do not establish that absence of EVT is a causal requirement for IVT benefit; the guideline eligibility boundaries above remain source-specific."
+    ],
+    "setting": "inpatient",
+    "lastReviewed": "2026-09-26",
+    "sourceUrl": "https://doi.org/10.1161/STR.0000000000000530",
+    "provenance": "src/evidence/recommendations.js"
+  }
+]

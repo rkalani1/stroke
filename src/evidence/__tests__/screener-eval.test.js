@@ -134,7 +134,8 @@ describe('evaluateAll — bucketing on representative patients', () => {
     const scouts = res.pending.find((i) => i.trial.acronym === 'SCOUTS-3');
     expect(scouts.matchedCriteria.length).toBeGreaterThan(0);
     // Every hard criterion is met, so the registry gate is the only thing left.
-    expect(scouts.pendingFields).toEqual(['Full registry/protocol confirmation']);
+    expect(scouts.pendingFields).toContain('Full registry/protocol confirmation');
+    expect(scouts.pendingCriteria.some(s => /pregnan/i.test(s))).toBe(true);
   });
 
   // PATIENT B — hard-excluded from SCOUTS-3 (onset too late, > 30d).

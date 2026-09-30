@@ -21,16 +21,16 @@
     "name": "SETPOINT2",
     "fullName": "Early vs Standard Approach to Tracheostomy in Severe Stroke Receiving Mechanical Ventilation",
     "category": "neurocritical-care",
-    "population": "n=382, median 59; 49.8% women, NIHSS severe acute ischemic or hemorrhagic stroke requiring invasive ventilation, 6-month outcome",
+    "population": "n=382, median 59; 49.8% women, NIHSS severe acute ischemic or hemorrhagic stroke requiring invasive ventilation, Randomized within 4 days of intubation; functional outcome at 6 months",
     "finding": "No significant benefit: mRS 0-4 in 43.5% vs 47.1% (difference −3.6%, 95% CI −14.3% to 7.2%); wide CI cannot exclude clinically relevant benefit or harm",
-    "teachingPoint": "Early (<=5 day) tracheostomy did not improve 6-month outcome in ventilated severe stroke; a third of controls never underwent tracheostomy.",
+    "teachingPoint": "The early strategy did not demonstrate improved six-month outcome. It does not establish an individual recovery ceiling or prove that every patient can safely avoid tracheostomy.",
     "PMID": "35506515",
     "year": 2022,
     "citationIds": [
       "cit-setpoint2-2022"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

@@ -23,14 +23,14 @@
     "category": "wake-up-stroke",
     "population": "n=578, ≥18, NIHSS ≥3 or aphasia, with limb weakness, wake-up <4.5 h after waking",
     "finding": "No significant benefit overall",
-    "teachingPoint": "Late-window thrombolysis without advanced imaging is not supported.",
+    "teachingPoint": "Does not establish routine benefit for this tested wake-up strategy. Retain wide efficacy and safety uncertainty and distinguish evidence for specific imaging-selected trials from a proof that other selection cannot work.",
     "PMID": "36549308",
     "year": 2023,
     "citationIds": [
       "cit-twist-2023"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

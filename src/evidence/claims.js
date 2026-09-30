@@ -15,14 +15,14 @@ export const claims = [
     id: 'cl-tnk-noninferior-alteplase',
     statement: 'Tenecteplase 0.25 mg/kg is non-inferior to alteplase 0.9 mg/kg for 90-day functional outcome in eligible AIS within 4.5 h.',
     topic: 'tnk-vs-alteplase',
-    citationIds: ['cit-act-2022', 'cit-trace2-2023', 'cit-original-2024', 'cit-eso-tnk-2023'],
+    citationIds: ['cit-act-2022', 'cit-trace2-2023', 'cit-original-2024', 'cit-eso-tnk-2023', 'cit-extend-ia-tnk-part2-2020', 'cit-nor-test2a-2022'],
     certainty: 'high',
-    conflictNotes: '',
+    conflictNotes: 'This evidence is dose-specific. EXTEND-IA TNK Part 2 found no reperfusion advantage with 0.4 versus 0.25 mg/kg. NOR-TEST 2A, comparing 0.4 mg/kg with alteplase in NIHSS ≥6 stroke, stopped early for safety; 0.4 mg/kg must not be substituted for the supported 0.25 mg/kg regimen.',
     lastReviewed: lr
   }),
   makeClaim({
     id: 'cl-tnk-late-window-non-lvo',
-    statement: 'TNK 0.25 mg/kg in the 4.5-24 h window with perfusion-imaging selection improves outcomes vs standard care in perfusion-selected patients not receiving EVT (TRACE-III: 100% LVO, <2% EVT, positive); benefit was NOT seen when EVT was also delivered (TIMELESS: 77% EVT, p=0.45). In non-LVO stroke with a CTP target mismatch and no planned EVT, OPTION (JAMA 2026) showed mRS 0-1 43.6% vs 34.2% (RR 1.28, 95% CI 1.04-1.57) with sICH 2.8% vs 0%.',
+    statement: 'TNK 0.25 mg/kg in the 4.5-24 h window with perfusion-imaging selection improves outcomes vs standard care in perfusion-selected patients not receiving EVT (TRACE-III: 100% LVO, <2% EVT, positive); TIMELESS did not demonstrate an overall benefit in its cohort (77.3% received EVT, p=0.45). These separate trials do not establish EVT co-treatment as a causal effect modifier. In non-LVO stroke with a CTP target mismatch and no planned EVT, OPTION (JAMA 2026) showed mRS 0-1 43.6% vs 34.2% (RR 1.28, 95% CI 1.04-1.57) with sICH 2.8% vs 0%.',
     topic: 'extended-window-ivt',
     citationIds: ['cit-timeless-2024', 'cit-trace-iii-2024', 'cit-option-tnk-2026'],
     certainty: 'moderate',
@@ -102,7 +102,7 @@ export const claims = [
     topic: 'extended-window-ivt',
     citationIds: ['cit-wake-up-2018', 'cit-extend-2019', 'cit-timeless-2024', 'cit-twist-2023', 'cit-trace-iii-2024', 'cit-option-tnk-2026'],
     certainty: 'moderate',
-    conflictNotes: 'TWIST (NCCT-only wake-up TNK) was negative (adjusted OR 1.18, 95% CI 0.88-1.58; p=0.27); TIMELESS was negative in a 100% LVO population with 77% EVT (p=0.45). Benefit requires imaging-based mismatch selection and absence of EVT co-treatment.',
+    conflictNotes: 'TWIST (NCCT-only wake-up TNK) was negative (adjusted OR 1.18, 95% CI 0.88-1.58; p=0.27); TIMELESS was negative in a 100% LVO population with 77% EVT (p=0.45). Benefit was demonstrated in the particular mismatch-selected populations studied. Neutral overall trials do not prove that absence of EVT is a necessary causal condition or that imaging selection is universally necessary.',
     lastReviewed: '2026-09-26'
   }),
   makeClaim({

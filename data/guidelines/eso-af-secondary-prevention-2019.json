@@ -15,7 +15,8 @@
       "classNote": "Against",
       "levelOfEvidence": "Moderate certainty",
       "text": "In patients with non-valvular AF and previous ischemic stroke or TIA, we do not recommend antiplatelet agents, either as single or dual therapy, for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-1"
     },
     {
       "section": "Medical treatment: Vitamin K antagonists versus control",
@@ -23,7 +24,8 @@
       "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
       "text": "In patients with non-valvular AF and previous ischemic stroke or TIA, we recommend vitamin K antagonists over no antithrombotic medication for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-2"
     },
     {
       "section": "Medical treatment: Vitamin K antagonists versus antiplatelet agents",
@@ -31,7 +33,8 @@
       "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
       "text": "In patients with non-valvular AF and previous ischemic stroke or TIA we recommend vitamin K antagonists (INR 2-3) over antiplatelet therapy (single or dual) for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-3"
     },
     {
       "section": "Medical treatment: Vitamin K antagonists versus antiplatelet agents",
@@ -39,7 +42,8 @@
       "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
       "text": "In patients with non-valvular AF and previous ischemic stroke or TIA, we suggest adjusted-dose vitamin K antagonists (INR 2.0-3.0) over fixed-dose vitamin K antagonists (INR 1.2-1.5) plus aspirin for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-4"
     },
     {
       "section": "Medical treatment: NOACs versus vitamin K antagonists",
@@ -47,7 +51,8 @@
       "classNote": "For",
       "levelOfEvidence": "High certainty",
       "text": "In patients with non-valvular AF and previous ischemic stroke or TIA, we recommend non-vitamin K antagonist oral anticoagulants over vitamin K antagonists for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-5"
     },
     {
       "section": "Medical treatment: NOACs versus aspirin",
@@ -55,15 +60,17 @@
       "classNote": "For",
       "levelOfEvidence": "Moderate certainty",
       "text": "In patients with non-valvular AF and previous ischemic stroke or TIA, we suggest non-vitamin K antagonist oral anticoagulants over aspirin in patients who have failed or are unsuitable for vitamin K antagonist therapy for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-6"
     },
     {
       "section": "Timing of medical treatment after acute ischemic stroke",
       "classOfRec": "Conditional",
-      "classNote": "For",
+      "classNote": null,
       "levelOfEvidence": "Low certainty",
       "text": "We cannot make recommendations about the optimal time for initiating anticoagulation treatment in patients with acute ischemic stroke based on randomised trials. We encourage inclusion of patients in ongoing randomised controlled trials testing the efficacy and safety of early anticoagulation to answer this question.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-7"
     },
     {
       "section": "Timing of medical treatment after acute ischemic stroke",
@@ -71,7 +78,8 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "Expert opinion (Delphi vote: 6/7 agree, 1/7 disagree): We suggest antiplatelet therapy in the first 48 h after ischemic stroke associated with AF. We consider it reasonable to start anticoagulant therapy at day 3 or 4 from the index stroke in patients with mild stroke and small infarcts (<1.5 cm) and at day 7 for moderate infarcts. For large infarcts, anticoagulation treatment might be best delayed for 14 days after the index stroke. [Current-evidence note, not part of the 2019 guideline: later RCTs support starting a DOAC earlier than this schedule. ELAN (NEJM 2023) compared DOAC start within 48 h after minor or moderate stroke, or day 6-7 after major stroke, with a later schedule similar to this one (day 3-4, 6-7 or 12-14). The 30-day composite outcome was 2.9% vs 4.1% (95% CI for risk difference -2.8 to +0.5 percentage points), with symptomatic ICH 0.2% in both groups. OPTIMAS (Lancet 2024) found DOAC start within 4 days non-inferior to start at 7-14 days (primary outcome 3.3% vs 3.3%; symptomatic ICH 0.6% vs 0.7%).]",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-8"
     },
     {
       "section": "Bridging of medical treatment",
@@ -79,15 +87,17 @@
       "classNote": "Against",
       "levelOfEvidence": "Low certainty",
       "text": "In patients with non-valvular AF and previous ischemic stroke or TIA, we suggest avoiding routine bridging therapy prior to anticoagulation with vitamin K antagonists or non-vitamin K antagonist oral anticoagulants for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-9"
     },
     {
       "section": "Left atrial appendage occlusion",
       "classOfRec": "Conditional",
-      "classNote": "For",
+      "classNote": null,
       "levelOfEvidence": "Low certainty",
       "text": "For patients with non-valvular AF and previous ischemic stroke or TIA, we cannot make any recommendation on whether left atrial appendage occlusion should be preferred over long-term vitamin K antagonists for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-10"
     },
     {
       "section": "Left atrial appendage occlusion",
@@ -95,7 +105,8 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "Expert opinion (Delphi vote: 7/7 agree): LAAO can be considered in individual patients as an alternative to life-long oral anticoagulation after careful weighing of risks and benefits.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-11"
     },
     {
       "section": "(Re-)starting treatment in patients with previous intracerebral haemorrhage",
@@ -103,7 +114,8 @@
       "classNote": "No direction — source prints strength 'Weak' but makes no recommendation",
       "levelOfEvidence": "Low certainty",
       "text": "In patients with AF who have experienced an ICH, we cannot make recommendations regarding whether or not oral anticoagulation should be (re-)started or not.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-12"
     },
     {
       "section": "(Re-)starting treatment in patients with previous intracerebral haemorrhage",
@@ -111,7 +123,8 @@
       "classNote": "For",
       "levelOfEvidence": "Ungraded",
       "text": "Expert opinion (Delphi vote: 7/7 agree): In patients with AF who have experienced an intracerebral haemorrhage, restarting oral anticoagulation can be considered after careful weighing of risks and benefits.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-13"
     },
     {
       "section": "Medical treatment in specific patient subgroups: Elderly patients",
@@ -119,7 +132,8 @@
       "classNote": "For",
       "levelOfEvidence": "Low certainty",
       "text": "In elderly patients with non-valvular AF and a history of ischemic stroke or TIA, we suggest oral anticoagulant treatment over antiplatelet treatment or no oral anticoagulant treatment for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-14"
     },
     {
       "section": "Medical treatment in specific patient subgroups: Elderly patients",
@@ -127,7 +141,8 @@
       "classNote": "For",
       "levelOfEvidence": "Low certainty",
       "text": "In elderly patients with non-valvular AF and previous ischemic stroke or TIA, we suggest non-vitamin K antagonist oral anticoagulants treatment over vitamin K antagonist treatment for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-15"
     },
     {
       "section": "Medical treatment in specific patient subgroups: Patients with cognitive deficits",
@@ -135,7 +150,8 @@
       "classNote": "For",
       "levelOfEvidence": "Low certainty",
       "text": "In patients with cognitive deficits, non-valvular AF and previous ischemic stroke or TIA, we suggest oral anticoagulant treatment over antiplatelet treatment or no oral anticoagulant treatment for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-16"
     },
     {
       "section": "Medical treatment in specific patient subgroups: Patients with cognitive deficits",
@@ -143,7 +159,8 @@
       "classNote": "For",
       "levelOfEvidence": "Low certainty",
       "text": "In patients with cognitive decline, non-valvular AF and previous ischemic stroke or TIA, we suggest non-vitamin K antagonist oral anticoagulants treatment over vitamin K antagonist treatment for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-17"
     },
     {
       "section": "Medical treatment in specific patient subgroups: Patients with renal impairment",
@@ -151,7 +168,8 @@
       "classNote": "For",
       "levelOfEvidence": "Low certainty",
       "text": "In patients with non-valvular AF and previous stroke or TIA, and moderate renal impairment, we suggest non-vitamin K antagonist oral anticoagulants over vitamin K antagonists for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-18"
     },
     {
       "section": "Medical treatment in specific patient subgroups: Patients with renal impairment",
@@ -159,31 +177,35 @@
       "classNote": "For",
       "levelOfEvidence": "Low certainty",
       "text": "In patients with mild renal impairment, non-valvular AF, and previous ischemic stroke or TIA, we suggest non-vitamin K antagonists oral anticoagulants over vitamin K antagonists for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-19"
     },
     {
       "section": "Medical treatment in specific patient subgroups: Patients with small vessel disease",
       "classOfRec": "Conditional",
-      "classNote": "For",
+      "classNote": null,
       "levelOfEvidence": "Low certainty",
       "text": "In patients with non-valvular AF, previous ischemic stroke or TIA and SVD, we cannot make recommendations on whether antiplatelet therapy should be preferred over no antithrombotic treatment for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-20"
     },
     {
       "section": "Medical treatment in specific patient subgroups: Patients with small vessel disease",
       "classOfRec": "Conditional",
-      "classNote": "For",
+      "classNote": null,
       "levelOfEvidence": "Low certainty",
       "text": "In patients with non-valvular AF, previous ischemic stroke or TIA and SVD, we cannot make recommendations about whether vitamin K antagonists should be preferred over antiplatelet therapy for secondary prevention of all events.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-21"
     },
     {
       "section": "Medical treatment in specific patient subgroups: Patients with small vessel disease",
       "classOfRec": "Conditional",
-      "classNote": "For",
+      "classNote": null,
       "levelOfEvidence": "Low certainty",
       "text": "In patients with non-valvular AF, previous ischemic stroke or TIA and SVD, we cannot make recommendations about whether non-vitamin K antagonist oral anticoagulants should be preferred over vitamin K antagonists for reducing recurrent stroke or thromboembolism.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-22"
     },
     {
       "section": "Medical treatment in specific patient subgroups: Patients with small vessel disease",
@@ -191,9 +213,18 @@
       "classNote": null,
       "levelOfEvidence": "Ungraded",
       "text": "Expert opinion (Delphi vote: 7/7 agree): In patients with non-valvular AF and previous ischemic stroke or TIA, presence or absence of cerebral microbleeds cannot be used to determine if a patient should be treated with NOACs or VKAs.",
-      "page": null
+      "page": null,
+      "id": "eso-af-secondary-prevention-2019-23"
     }
   ],
   "documentType": "guideline",
-  "gradingSystem": "GRADE"
+  "gradingSystem": "GRADE",
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Primary recommendation text retrieved and compared; exact edition, source locators and unresolved correction/current-context limits in unit ledger.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
+  }
 }

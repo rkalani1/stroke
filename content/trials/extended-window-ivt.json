@@ -74,14 +74,14 @@
     "category": "extended-window-ivt",
     "population": "n=516, ≥18, NIHSS 6-25, 4.5-24 h",
     "finding": "Favored TNK: 33.0% vs 24.2%",
-    "teachingPoint": "Strongest evidence to date for late-window TNK in EVT-ineligible LVO.",
+    "teachingPoint": "Supports the tested perfusion-selected late-window TNK strategy where EVT was unavailable, within the trial selection and bleeding trade-off.",
     "PMID": "38884324",
     "year": 2024,
     "citationIds": [
       "cit-trace-iii-2024"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -91,14 +91,14 @@
     "category": "extended-window-ivt",
     "population": "n=372, median 72, 4.5-24 h",
     "finding": "Favored alteplase: 40% vs 26%",
-    "teachingPoint": "Adds positive evidence for perfusion-selected late-window IV thrombolysis in EVT-ineligible patients; remains selective and consult-dependent, not routine.",
+    "teachingPoint": "Positive evidence for the tested perfusion-selected late-window alteplase strategy in patients with no initial EVT plan, including eligible patients who declined EVT. Selective, not evidence that all participants were EVT-ineligible.",
     "PMID": "40773205",
     "year": 2025,
     "citationIds": [
       "cit-hope-2025"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-07-06",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

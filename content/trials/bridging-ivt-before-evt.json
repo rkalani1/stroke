@@ -30,7 +30,7 @@
       "cit-iris-ipd-2023"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -56,15 +56,15 @@
     "fullName": "Endovascular Thrombectomy with or without Intravenous Alteplase in Acute Stroke",
     "category": "bridging-ivt-before-evt",
     "population": "n=656, adults, NIHSS acute ischaemic stroke from anterior-circulation large-vessel occlusion, alteplase administered within 4.5 h of symptom onset",
-    "finding": "MET non-inferiority within its prespecified 0.8 margin: thrombectomy alone was non-inferior to alteplase plus thrombectomy. The authors' own conclusion states this holds 'within a 20% margin of confidence.'",
-    "teachingPoint": "The canonical worked example of why a non-inferiority margin must be read before the conclusion — a 'non-inferior' label that tolerates a 20% relative loss of benefit is a different claim from equivalence.",
+    "finding": "Met its prespecified common-OR 0.80 noninferiority margin. This permits a 20% reduction in cumulative outcome odds, not a fixed 20% risk difference or a 20% loss of benefit versus no treatment.",
+    "teachingPoint": "Interpret this trial alongside the full bridging evidence and current guidance. Avoid translating an OR 0.80 margin into a 20% loss of treatment benefit or calling DIRECT-MT the sole positive noninferiority trial.",
     "PMID": "32374959",
     "year": 2020,
     "citationIds": [
       "cit-direct-mt-2020"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

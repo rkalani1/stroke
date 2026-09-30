@@ -55,14 +55,14 @@ const SCENARIOS = {
   /* 1 · Head-Impulse Test (HIT) */
   'hit-peripheral': {
     group: 'Head Impulse Test (HIT)',
-    label: 'VOR Deficit (Peripheral)',
+    label: 'VOR Deficit',
     tone: 'ok',
     anim: 'hint-anim-hit-peripheral',
     text: 'Head Impulse Test (VOR deficit): the eyes move with the head, then make a corrective saccade back to the target. This supports peripheral vestibular dysfunction in the full HINTS+ pattern, but an abnormal HIT alone does not exclude stroke, including AICA territory ischemia.'
   },
   'hit-central': {
     group: 'Head Impulse Test (HIT)',
-    label: 'VOR Intact (Central)',
+    label: 'VOR Intact',
     tone: 'crit',
     anim: 'hint-anim-hit-central',
     text: 'Head Impulse Test (Central / VOR intact): the head rotates right, the VOR is intact, so the eyes immediately counter-rotate and stay locked on the target with no catch-up saccade. A NORMAL HIT is the CENTRAL/stroke sign in AVS — counterintuitive but load-bearing.'
@@ -71,21 +71,21 @@ const SCENARIOS = {
   /* 2 · Nystagmus (N) */
   'nys-uni': {
     group: 'Nystagmus (N)',
-    label: 'Unidirectional (Peripheral)',
+    label: 'Unidirectional',
     tone: 'ok',
     anim: 'hint-anim-nys-uni',
     text: 'Unidirectional Nystagmus: the fast phase beats in one direction across gaze positions. This can support a peripheral pattern when the other findings agree, but alone does not exclude a central cause.'
   },
   'nys-bi': {
     group: 'Nystagmus (N)',
-    label: 'Gaze-Evoked / Direction-Changing (Central)',
+    label: 'Gaze-Evoked / Direction-Changing',
     tone: 'crit',
     anim: 'hint-anim-nys-bi',
     text: 'Direction-Changing (Gaze-Evoked) Nystagmus (Central): the fast phase REVERSES with the direction of gaze — beats left on left gaze, right on right gaze. Highly specific marker of a central (posterior-fossa) lesion.'
   },
   'nys-vert': {
     group: 'Nystagmus (N)',
-    label: 'Vertical (Central)',
+    label: 'Vertical',
     tone: 'crit',
     anim: 'hint-anim-nys-vert',
     text: 'Pure Vertical Nystagmus (Central): spontaneous down-beating nystagmus — eyes drift slowly up, then fast-snap down. In the AVS, spontaneous vertical nystagmus is a central sign (brainstem or cerebellar lesion — often stroke, but also demyelination, drug toxicity or other causes); positional vertical-torsional nystagmus from BPPV is a separate episodic syndrome where HINTS does not apply.'
@@ -94,15 +94,15 @@ const SCENARIOS = {
   /* 3 · Test of Skew (TS) */
   'skew-none': {
     group: 'Test of Skew (TS)',
-    label: 'No Skew (Peripheral)',
+    label: 'No Skew',
     tone: 'ok',
     anim: 'hint-anim-skew-none',
     cover: 'alt',
-    text: 'No Skew Deviation (Peripheral): on alternating cover/uncover the eyes stay conjugate and horizontally aligned — no vertical re-fixation movement. Consistent with a peripheral pattern only if the other findings agree — skew is absent in most central AVS cases, so its absence alone does not exclude stroke.'
+    text: 'No Skew Deviation: on alternating cover/uncover the eyes stay conjugate and horizontally aligned — no vertical re-fixation movement. Consistent with a peripheral pattern only if the other findings agree — skew is absent in most central AVS cases, so its absence alone does not exclude stroke.'
   },
   'skew-present': {
     group: 'Test of Skew (TS)',
-    label: 'Skew Present (Central)',
+    label: 'Skew Present',
     tone: 'crit',
     anim: 'hint-anim-skew-present',
     cover: 'alt',
@@ -112,14 +112,14 @@ const SCENARIOS = {
   /* 4 · Bedside Hearing Test (HINTS+) */
   'hear-normal': {
     group: 'Bedside Hearing Test (HINTS+)',
-    label: 'Hearing Intact (Peripheral)',
+    label: 'No New Hearing Loss',
     tone: 'ok',
     anim: '',
-    text: 'Bedside Hearing Test (Intact / Peripheral): finger-rub or whisper is heard equally in both ears, no new hearing loss. Intact hearing fits a peripheral pattern.'
+    text: 'Bedside Hearing Test: finger-rub or whisper is heard equally in both ears, with no new hearing loss. This isolated finding does not establish a peripheral diagnosis or exclude stroke.'
   },
   'hear-loss': {
     group: 'Bedside Hearing Test (HINTS+)',
-    label: 'New Hearing Loss (Central / AICA)',
+    label: 'New Unilateral Hearing Loss',
     tone: 'crit',
     anim: '',
     text: 'Bedside Hearing Test (New Unilateral Loss): finger-rub reveals new asymmetric hearing loss on one side. This raises concern for AICA / labyrinthine ischemia but can also occur with peripheral inner-ear disorders; interpret it in the full HINTS+ and clinical context.'
@@ -440,6 +440,12 @@ export function HintsSimulator() {
             <span className="font-mono text-2xs text-slate-500 dark:text-mute">bedside teaching tool</span>
           </div>
 
+          {['skew-present', 'skew-none'].includes(activeKey) ? (
+            <div role="status" className="rounded-md border border-line bg-slate-50 p-4 text-sm text-slate-700 dark:bg-paper-2 dark:text-ink-2">
+              {activeKey === 'skew-present' ? 'Positive-skew' : 'No-skew'} animation is temporarily unavailable while its accuracy is reviewed.
+              The explanation below remains available.
+            </div>
+          ) : (
           <div className="hint-stage" role="img"
             aria-label={scenario ? `Eye simulator: ${scenario.label}` : 'Eye simulator stage — pick a HINTS test below to animate the eyes.'}>
             <span className="hint-target" aria-hidden="true" />
@@ -455,6 +461,7 @@ export function HintsSimulator() {
               </div>
             </div>
           </div>
+          )}
 
           <div className={cx('rounded-md border px-3 py-2 text-xs leading-relaxed min-h-[64px]',
             scenario ? TONE[scenario.tone].chip : 'bg-slate-50 text-slate-600 border-line dark:bg-paper-2 dark:text-ink-2')}>
@@ -471,7 +478,7 @@ export function HintsSimulator() {
                   const sc = SCENARIOS[key];
                   const active = activeKey === key;
                   return (
-                    <button key={key} type="button" onClick={() => runScenario(key)}
+                    <button key={key} type="button" aria-pressed={active} onClick={() => runScenario(key)}
                       className={cx('px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500',
                         active
                           ? (sc.tone === 'crit' ? 'bg-crit-600 text-white' : 'bg-teal-600 text-white')
@@ -518,7 +525,7 @@ export function HintsSimulator() {
             ]} />
 
           {/* Live result panel */}
-          <div className={cx('rounded-md border px-3 py-3', TONE[result.tone].chip)}>
+          <div role="status" aria-live="polite" aria-atomic="true" className={cx('rounded-md border px-3 py-3', TONE[result.tone].chip)}>
             <div className="flex items-center gap-2">
               <span className={cx('inline-block w-2.5 h-2.5 rounded-full', TONE[result.tone].dot)} aria-hidden="true" />
               <h5 className="text-sm font-bold">{result.profile}</h5>
@@ -569,8 +576,8 @@ export function HintsSimulator() {
             <thead>
               <tr>
                 <th className="border border-line bg-slate-50 px-2.5 py-2 text-left font-semibold text-slate-700 dark:bg-paper-2 dark:text-ink-2">Test phase</th>
-                <th className="border border-line bg-ok-50 px-2.5 py-2 text-left font-semibold text-ok-800 dark:bg-ok-950 dark:text-ok-300">Peripheral (benign)</th>
-                <th className="border border-line bg-crit-50 px-2.5 py-2 text-left font-semibold text-crit-800 dark:bg-crit-950 dark:text-crit-300">Central (stroke)</th>
+                <th className="border border-line bg-ok-50 px-2.5 py-2 text-left font-semibold text-ok-800 dark:bg-ok-950 dark:text-ok-300">Peripheral-compatible pattern</th>
+                <th className="border border-line bg-crit-50 px-2.5 py-2 text-left font-semibold text-crit-800 dark:bg-crit-950 dark:text-crit-300">Central warning signs</th>
               </tr>
             </thead>
             <tbody>

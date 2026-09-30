@@ -6,14 +6,14 @@
     "category": "remote-ischemic-conditioning",
     "population": "n=1500, Median 71 y; 591 (41%) women, NIHSS Not reported in the abstract — patients were enrolled prehospital on symptoms alone, before any diagnostic imaging, Prehospital stroke symptoms for less than 4 h",
     "finding": "DID NOT meet: median mRS 2 (IQR 1-3) with RIC vs 1 (IQR 1-3) with sham — RIC was not associated with improved functional outcome",
-    "teachingPoint": "Ambulance-initiated remote ischemic conditioning does not improve 90-day outcome and is not a prehospital intervention to adopt.",
+    "teachingPoint": "No demonstrated primary benefit from the tested strategy. Preserve source-reporting discrepancies and uncertainty rather than describing the trial as definitively excluding effect.",
     "PMID": "37787796",
     "year": 2023,
     "citationIds": [
       "cit-resist-2023"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {
@@ -30,7 +30,7 @@
       "cit-ricamis-2022"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-09-26",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

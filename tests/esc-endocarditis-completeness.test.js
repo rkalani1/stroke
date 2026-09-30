@@ -24,7 +24,7 @@ describe('full ESC endocarditis source reconciliation', () => {
   it('keeps ungraded practice material and source inventory distinct from formal recommendations', () => {
     const practices = guideline.recommendations.filter(r => r.classOfRec === 'Statement');
     expect(practices).toHaveLength(guideline.coverage.sourcePracticeStatementCount);
-    expect(practices.length).toBe(72);
+    expect(practices.length).toBe(77);
     expect(practices.every(r => r.levelOfEvidence === 'Ungraded')).toBe(true);
     expect(new Set(guideline.recommendations.map(r => r.id)).size).toBe(guideline.recommendations.length);
     expect(guideline.coverage.sourceSections.reduce((sum, table) => sum + table.rowCount, 0)).toBe(guideline.recommendations.length);
@@ -46,7 +46,7 @@ describe('full ESC endocarditis source reconciliation', () => {
     expect(row(9, 3).text).toMatch(/not effective against E\. faecium/);
     expect(row(10, 1).text).toMatch(/ampicillin plus \(flu\)cloxacillin and gentamicin/);
     expect(row(10, 3).text).toMatch(/penicillin-allergic/);
-    expect(guideline.publicationUpdates.find(update => /ehae877$/.test(update.doi)).note).toMatch(/Tables 7–10/);
+    expect(guideline.publicationUpdates.find(update => /ehae877$/.test(update.doi)).note).toMatch(/reference 479/);
   });
 
   it('retains complete integral drug schedules without extending unlisted routes or doses', () => {

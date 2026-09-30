@@ -7,19 +7,23 @@ import vm from 'node:vm';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
 const version = JSON.parse(readFileSync(join(repoRoot, 'package.json'), 'utf8')).version;
-const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-');
+const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-') + '-clinical-review-20260930';
 const workerSource = readFileSync(join(repoRoot, 'service-worker.js'), 'utf8');
 
-function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-cache-v6-22-0', currentCache]) {
+function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-cache-v6-22-0', currentCache], options = {}) {
   const handlers = new Map();
   const deletedCaches = [];
+  const deletedEntries = [];
+  const openedCaches = [];
   const postedMessages = [];
   const matchAllOptions = [];
   let claimCount = 0;
   let skipWaitingCount = 0;
+  let active = false;
+  let windows = [{ id: 'requester', url: 'https://example.test/', postMessage: message => postedMessages.push(message) }];
 
   const cacheStore = {
-    addAll: async () => {},
+    addAll: async () => { if (options.precacheFailure) throw Error('Precache failed'); },
     add: async () => {},
     put: async () => {},
   };
@@ -30,7 +34,13 @@ function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-
     console: { info: () => {}, error: () => {} },
     fetch: async () => ({ ok: true, clone: () => ({ ok: true }) }),
     caches: {
-      open: async () => cacheStore,
+      open: async name => {
+        openedCaches.push(name);
+        return { ...cacheStore,
+          keys: async () => (options.entries?.[name] || []).map(url => ({ url })),
+          delete: async request => { deletedEntries.push({ cache: name, url: request.url }); return true; }
+        };
+      },
       keys: async () => existingCacheKeys,
       delete: async (key) => {
         deletedCaches.push(key);
@@ -40,6 +50,7 @@ function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-
     },
     self: {
       location: { origin: 'https://example.test' },
+      registration: { scope: options.scope || 'https://example.test/' },
       addEventListener: (type, handler) => {
         handlers.set(type, handler);
       },
@@ -47,18 +58,18 @@ function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-
         skipWaitingCount += 1;
       },
       clients: {
+        get: async id => windows.find(client => client.id === id),
         claim: async () => {
+          if (!active) {
+            const error = new Error('Worker has not activated');
+            error.name = 'InvalidStateError';
+            throw error;
+          }
           claimCount += 1;
         },
         matchAll: async (options = {}) => {
           matchAllOptions.push(options);
-          return [
-            {
-              postMessage: (message) => {
-                postedMessages.push(message);
-              },
-            },
-          ];
+          return windows;
         },
       },
     },
@@ -70,8 +81,10 @@ function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-
     const handler = handlers.get(type);
     expect(handler, `${type} handler registered`).toBeTypeOf('function');
     let waitUntilPromise = Promise.resolve();
+    if (type === 'activate') active = true;
     handler({
       data,
+      source: windows[0],
       request: { method: 'GET', mode: 'navigate', headers: new Map([['accept', 'text/html']]), url: 'https://example.test/' },
       waitUntil: (promise) => {
         waitUntilPromise = Promise.resolve(promise);
@@ -84,8 +97,11 @@ function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-
   return {
     dispatch,
     deletedCaches,
+    deletedEntries,
+    openedCaches,
     postedMessages,
     matchAllOptions,
+    setWindows(next) { windows = next; },
     get claimCount() {
       return claimCount;
     },
@@ -102,7 +118,7 @@ describe('service worker update lifecycle', () => {
     const version = packageJson.version;
 
     expect(workerSource).toContain(`const APP_VERSION = '${version}'`);
-    expect(workerSource).toContain(`const CACHE_NAME  = 'stroke-cache-v${version.replaceAll('.', '-')}'`);
+    expect(workerSource).toContain(`const CACHE_NAME  = '${currentCache}'`);
     expect(indexSource).toContain(`app.js?v=${version}`);
     expect(indexSource).toContain(`tailwind.css?v=${version}`);
     expect(indexSource).toContain(`const APP_VERSION = '${version}'`);
@@ -111,70 +127,114 @@ describe('service worker update lifecycle', () => {
     expect(appSource).toContain(`const APP_VERSION = '${version}'`);
   });
 
-  it('stages updates without claiming clients during activate', async () => {
+  it('leaves an installed upgrade waiting without takeover or cache deletion', async () => {
     const worker = loadServiceWorker();
+    await worker.dispatch('install');
+    expect(worker.skipWaitingCount).toBe(0);
+    expect(worker.claimCount).toBe(0);
+    expect(worker.deletedCaches).toEqual([]);
+    expect(worker.postedMessages).toEqual([]);
+  });
 
+  it.each(['/', '/stroke/'])('withdraws only the 21 scoped retired paths after successful precache at %s', async scopePath => {
+    const suffixes = JSON.parse(workerSource.match(/const WITHDRAWN_ASSETS = (\[[\s\S]*?\]);/)[1].replaceAll("'", '"'));
+    const base = `https://example.test${scopePath}`;
+    const retired = suffixes.map(suffix => new URL(`.${suffix}`, base).href + '?old=1');
+    const retained = [base + 'app.js', base + 'documents/references/AFib%20DOAC%20Start%20Timing.pdf',
+      'https://elsewhere.test' + scopePath + 'assets/afib_timing_protocol.png',
+      base + 'another-deployment/assets/afib_timing_protocol.png', base + 'assets/%malformed'];
+    const old = 'stroke-cache-v6-29-2';
+    const worker = loadServiceWorker([old, 'foreign-cache', currentCache], { scope: base, entries: {
+      [old]: [...retired, ...retained], 'foreign-cache': retired, [currentCache]: retained
+    }});
+    await worker.dispatch('install');
+    expect(worker.deletedEntries).toEqual(retired.map(url => ({ cache: old, url })));
+    expect(worker.openedCaches).not.toContain('foreign-cache');
+    expect(worker.deletedCaches).toEqual([]);
+    expect(worker.skipWaitingCount).toBe(0);
+  });
+
+  it('preserves cached entries when the replacement shell fails to precache', async () => {
+    const worker = loadServiceWorker(['stroke-cache-v6-29-2'], { precacheFailure: true, entries: {
+      'stroke-cache-v6-29-2': ['https://example.test/assets/afib_timing_protocol.png']
+    }});
+    await expect(worker.dispatch('install')).rejects.toThrow('Precache failed');
+    expect(worker.deletedEntries).toEqual([]);
+    expect(worker.deletedCaches).toEqual([]);
+    expect(worker.skipWaitingCount).toBe(0);
+  });
+
+  it('stays silent on first install and does not claim or reload a page', async () => {
+    const worker = loadServiceWorker([]);
     await worker.dispatch('install');
     await worker.dispatch('activate');
+    expect(worker.skipWaitingCount).toBe(0);
+    expect(worker.claimCount).toBe(0);
+    expect(worker.postedMessages).toEqual([]);
+  });
 
+  it('retires only old app caches on natural activation after prior tabs close', async () => {
+    const worker = loadServiceWorker(['foreign-cache', 'stroke-cache-v6-29-2', currentCache]);
+    await worker.dispatch('activate');
+    expect(worker.deletedCaches).toEqual(['stroke-cache-v6-29-2']);
+    expect(worker.claimCount).toBe(0);
+    expect(worker.postedMessages).toEqual([]);
+  });
+
+  it.each(['CLAIM_AND_RELOAD', 'SKIP_WAITING'])('activates a waiting worker only after %s and acknowledges after activation', async type => {
+    const worker = loadServiceWorker();
+    await worker.dispatch('install');
+    await worker.dispatch('message', { type });
     expect(worker.skipWaitingCount).toBe(1);
     expect(worker.claimCount).toBe(0);
+    expect(worker.deletedCaches).toEqual([]);
+    expect(worker.postedMessages).toEqual([]);
+    await worker.dispatch('activate');
+    expect(worker.claimCount).toBe(1);
     expect(worker.deletedCaches).toContain('stroke-cache-v6-21-0');
-    expect(worker.deletedCaches).toContain('stroke-cache-v6-22-0');
     expect(worker.deletedCaches).not.toContain(currentCache);
-    expect(worker.matchAllOptions).toContainEqual({ includeUncontrolled: true });
-    expect(worker.postedMessages).toContainEqual({ type: 'sw-update-ready', version });
+    expect(worker.postedMessages).toEqual([{ type: 'sw-claimed-reload', version }]);
   });
 
-  it('stays silent on a first install so new visitors are not told about an update', async () => {
-    // No prior stroke-cache-v* exists: this activate is a first install, not an
-    // upgrade. Broadcasting here showed every first-time visitor the "a new
-    // version of Stroke is ready" banner on the page they had just opened.
-    const worker = loadServiceWorker([]);
-
-    await worker.dispatch('install');
-    await worker.dispatch('activate');
-
-    expect(worker.postedMessages).toEqual([]);
-    expect(worker.claimCount).toBe(0);
-  });
-
-  it('still announces an upgrade when only a foreign cache is present alongside an older release', async () => {
-    const worker = loadServiceWorker(['some-unrelated-cache', 'stroke-cache-v6-22-0']);
-
-    await worker.dispatch('install');
-    await worker.dispatch('activate');
-
-    expect(worker.postedMessages).toContainEqual({ type: 'sw-update-ready', version });
-  });
-
-  it('stays silent when only unrelated caches exist', async () => {
-    const worker = loadServiceWorker(['workbox-precache', 'some-unrelated-cache']);
-
-    await worker.dispatch('install');
-    await worker.dispatch('activate');
-
-    expect(worker.postedMessages).toEqual([]);
-  });
-
-  it('claims clients and requests reload for the current update message', async () => {
+  it('blocks activation with another legacy tab open and supports retry after it closes', async () => {
     const worker = loadServiceWorker();
-
+    const requesterMessages = [];
+    const otherMessages = [];
+    const requester = { id: 'requester', url: 'https://example.test/', postMessage: m => requesterMessages.push(m) };
+    worker.setWindows([requester, { id: 'other', url: 'https://example.test/#/encounter', postMessage: m => otherMessages.push(m) }]);
+    await worker.dispatch('install');
     await worker.dispatch('message', { type: 'CLAIM_AND_RELOAD' });
-
-    expect(worker.claimCount).toBe(1);
-    expect(worker.matchAllOptions).toContainEqual({ includeUncontrolled: true });
-    expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version });
+    expect(worker.skipWaitingCount).toBe(0);
+    expect(worker.claimCount).toBe(0);
+    expect(worker.deletedCaches).toEqual([]);
+    expect(requesterMessages[0]).toMatchObject({ type: 'sw-update-ready', blocked: true });
+    expect(requesterMessages[0].version).toContain('close other Stroke tabs');
+    expect(otherMessages).toEqual([]);
+    worker.setWindows([requester]);
+    await worker.dispatch('message', { type: 'CLAIM_AND_RELOAD' });
+    await worker.dispatch('activate');
+    expect(worker.skipWaitingCount).toBe(1);
+    expect(requesterMessages.at(-1)).toEqual({ type: 'sw-claimed-reload', version });
+    expect(otherMessages).toEqual([]);
   });
 
-  it('claims clients and requests reload for legacy SKIP_WAITING messages', async () => {
+  it('acknowledges an active-worker retry only to the requesting window', async () => {
     const worker = loadServiceWorker();
-
-    await worker.dispatch('message', { type: 'SKIP_WAITING' });
-
+    await worker.dispatch('activate');
+    await worker.dispatch('message', { type: 'CLAIM_AND_RELOAD' });
     expect(worker.claimCount).toBe(1);
-    expect(worker.matchAllOptions).toContainEqual({ includeUncontrolled: true });
-    expect(worker.postedMessages).toContainEqual({ type: 'sw-claimed-reload', version });
+    expect(worker.postedMessages).toEqual([{ type: 'sw-claimed-reload', version }]);
+    expect(worker.matchAllOptions).toContainEqual({ type: 'window', includeUncontrolled: true });
+  });
+
+  it('ignores missing or out-of-scope requesters', async () => {
+    const worker = loadServiceWorker();
+    worker.setWindows([]);
+    await worker.dispatch('message', { type: 'CLAIM_AND_RELOAD' });
+    worker.setWindows([{ id: 'other', url: 'https://elsewhere.test/', postMessage() { throw Error('unexpected'); } }]);
+    await worker.dispatch('message', { type: 'CLAIM_AND_RELOAD' });
+    expect(worker.skipWaitingCount).toBe(0);
+    expect(worker.claimCount).toBe(0);
   });
 
   it('precaches the app shell and the config the app actually fetches', () => {
@@ -215,8 +275,12 @@ describe('service worker update lifecycle', () => {
       expect(coreAssets).not.toContain(png);
     }
 
-    // The SVG companions are small and stay precached.
-    expect(coreAssets).toContain('./assets/toast_classification_infographic.svg');
+    // Retired teaching figures must not be reintroduced by the install
+    // precache after their source and clinical review removals.
+    for (const stem of ['toast_classification_infographic', 'afib_timing_protocol', 'select_score_chart',
+      'dapt_flowchart_timeline', 'hematoma_expansion_render', 'ischemic_core_penumbra_render', 'evt_lvo_occlusion_sites', 'aspects_10_regions_render']) {
+      expect(coreAssets).not.toContain(`./assets/${stem}.svg`);
+    }
   });
 
   it('keeps the install precache within its byte budget', () => {

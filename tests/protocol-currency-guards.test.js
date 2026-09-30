@@ -229,10 +229,12 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
   });
 
   it('keeps the visible service-worker update banner on the claim-and-reload path', () => {
-    expect(texts['src/app.jsx']).toMatch(/postMessage\(\{ type: 'CLAIM_AND_RELOAD' \}\)/);
+    expect(texts['src/app.jsx']).toMatch(/sw\.acceptUpdate\(pendingWorker\)/);
+    expect(read('src/design/sw-controller.js')).toMatch(/postMessage\(\{ type: 'CLAIM_AND_RELOAD' \}\)/);
     expect(texts['src/app.jsx']).toMatch(/setPendingUpdateAction\(\(\) => \(\) =>/);
     expect(texts['src/app.jsx']).toMatch(/setUpdateAvailable\(true\)/);
-    expect(texts['src/app.jsx']).toMatch(/sw\.acceptUpdate\(\)\.catch\(\(\) => window\.location\.reload\(\)\)/);
+    expect(texts['src/app.jsx']).toMatch(/sw\.acceptUpdate\(\)\.catch\(\(\) => addToast/);
+    expect(read('src/design/sw-controller.js')).toContain('if (!updateAccepted || reloading) return;');
     expect(texts['src/app.jsx']).toMatch(/pendingUpdateAction\(\)/);
     const staleUpdateHits = offendingLines(/postMessage\(\{ type: 'SKIP_WAITING' \}\)/, { files: ['src/app.jsx', 'app.js'] });
     expect(staleUpdateHits, `Visible update banner still posts stale service-worker message:\n${staleUpdateHits.join('\n')}`).toEqual([]);

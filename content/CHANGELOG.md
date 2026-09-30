@@ -7,6 +7,47 @@ re-verifications, and schema evolution. Dates are absolute (ISO).
 Format: newest first. Each entry: what changed, why, and the source it was
 verified against.
 
+## 2026-09-30 — Clinical evidence repairs and targeted education withholding
+
+This release applies a source-scoped review of Encounter, Trials, Guidelines,
+Preferences, education and downloads. The Protocols tab and Telestroke map are
+excluded. A completed software test is not clinical validation, and source
+access limitations remain explicit in the retained material.
+
+- Remove unvalidated PLAN/ASTRAL probability mappings, misleading SeLECT
+  graphics, deterministic tracheostomy counseling and selected procedural
+  instructions, simulations and diagrams. Preserve valid score definitions,
+  source-qualified evidence and concise concept references. For example,
+  [SETPOINT2](https://doi.org/10.1001/jama.2022.4798) compared tracheostomy
+  strategies using six-month mRS 0–4; it does not establish an individual
+  recovery ceiling.
+- Separate discovery from known onset, preserve incomplete examination and
+  calculator inputs, require relevant imaging/physiology review, and remove
+  automatic consent assertions and unsupported anticoagulation calendars.
+  The assessment screens remain partial aids requiring clinical judgment.
+- Repair trial populations, endpoints, denominators and applicability. The
+  BEST-II value 40 denotes participants per arm, not a lower SBP threshold
+  ([original report](https://pmc.ncbi.nlm.nih.gov/articles/PMC10481231/)).
+  Preserve unresolved source discrepancies and distinguish observational
+  evidence, original reports and abstract-limited additions.
+- Restore native recommendation strength and certainty, source-specific
+  qualifiers and omitted uncertainty statements. Include the focused
+  [NCS/SCCM 2026 antithrombotic-associated ICH update](https://doi.org/10.1007/s12028-026-02601-4)
+  using GRADE terminology. The 2026 rehabilitation guideline remains a
+  source-only record because its complete graded body was not recovered.
+- Regenerate current React-based teaching PDFs. Permanently redact identified
+  errors in retained archival PDFs and pair corrections with primary sources.
+  Retire the EVD, ICP/herniation and coma-examination downloads and the
+  duplicate DAPT raster; remove their links and prevent the updated service
+  worker from serving retired cached copies.
+- Use keyboard-operable education navigation, a reflowing reading view,
+  labelled scrollable comparison tables and visible source limitations.
+  Add seven synthetic cases focused on evidence applicability and uncertainty.
+
+The reference collection now contains 264 completed trial cards, 411 citation
+records and 110 guideline sources (4,170 searchable rows plus one source-only
+placeholder). These are inventory counts, not counts of fully validated claims.
+
 ## 2026-07-18 — 12 new neurovascular education modules
 
 New bedside teaching cards added to the Education section (authored in

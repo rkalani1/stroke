@@ -538,9 +538,9 @@
       "pmid": "35300261",
       "doi": "10.1177/23969873221076951",
       "publisherUrl": "https://doi.org/10.1177/23969873221076951",
-      "status": "applied",
-      "note": "The correction restores omitted recommendation boxes in online supplement 2. All 18 PICO questions and their 22 formal/no-recommendation statements plus 18 complete consensus boxes were checked against the corrected supplement.",
-      "checkedAt": "2026-09-06",
+      "status": "unresolved",
+      "note": "The notice restores missing recommendation boxes through Supplement 2. The complete corrected box supplement was not independently recovered in this review. Retained statements remain visible, but their corrected-edition grades and wording are unresolved.",
+      "checkedAt": "2026-09-30",
       "affectedRecommendationIds": [
         "eso-ean-poststroke-cognition-2021-pico1-r1",
         "eso-ean-poststroke-cognition-2021-pico1-c1",
@@ -582,7 +582,9 @@
         "eso-ean-poststroke-cognition-2021-pico18-r1",
         "eso-ean-poststroke-cognition-2021-pico18-r2",
         "eso-ean-poststroke-cognition-2021-pico18-c1"
-      ]
+      ],
+      "previousReviewNote": "The correction restores omitted recommendation boxes in online supplement 2. All 18 PICO questions and their 22 formal/no-recommendation statements plus 18 complete consensus boxes were checked against the corrected supplement.",
+      "independentReviewScope": "complete notice read; linked corrected recommendation-box supplement unavailable"
     }
   ],
   "supplementUrl": "https://journals.sagepub.com/doi/suppl/10.1177/23969873211042192/suppl_file/sj-pdf-2-eso-10.1177_23969873211042192.pdf",
@@ -706,5 +708,13 @@
         "consensusCount": 1
       }
     ]
+  },
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Original main body accessible; correction confirms omitted recommendation boxes. Linked replacement supplement not recovered through documented routes.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency. 1 publication-update record remains partly reviewed or unresolved; see the individual notices.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
   }
 }

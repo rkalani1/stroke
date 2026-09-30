@@ -46,6 +46,7 @@ export const LandmarkTrialsCard = () => {
 
   return (
     <div className="p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
+      <p className="mb-3 text-xs text-slate-600 dark:text-ink-2">Historical trial summaries. Enrollment criteria and study regimens are not complete treatment checklists; current guidance and patient-specific eligibility remain essential.</p>
       <div className="flex flex-wrap gap-1 mb-2">
         {TRIAL_CATEGORIES.map((c) => (
           <button
@@ -67,8 +68,8 @@ export const LandmarkTrialsCard = () => {
         aria-label="Filter trials"
       />
       <ul className="space-y-2">
-        {trials.map((t, i) => {
-          const key = `${cat}-${i}`;
+        {trials.map((t) => {
+          const key = `${cat}-${t.name}`;
           const open = !!expanded[key];
           return (
             <li key={key} className="border border-slate-200 rounded bg-slate-50 dark:border-line dark:bg-paper-2">
@@ -95,6 +96,18 @@ export const LandmarkTrialsCard = () => {
                   <p><strong>Outcomes:</strong> {t.outcomes}</p>
                   {t.nnt && <p><strong>NNT:</strong> {t.nnt}</p>}
                   <p className="p-1.5 rounded bg-warn-50 border border-warn-200 dark:bg-warn-950 dark:border-warn-800"><strong>📌 Teaching point:</strong> {t.teachingPoint}</p>
+                  {t.evidenceNote && <p>{t.evidenceNote}</p>}
+                  {t.reviewedSources?.length > 0 && (
+                    <details className="pt-1">
+                      <summary className="cursor-pointer font-semibold">Primary sources and interpretation</summary>
+                      <p className="mt-1 text-slate-500 dark:text-mute">Sources support the specific study results or qualifications described here. This is not a claim that every protocol detail or later correction has been independently verified.</p>
+                      <ul className="mt-1 list-disc pl-4 space-y-1">
+                        {t.reviewedSources.map((url, sourceIndex) => (
+                          <li key={url}><a href={url} target="_blank" rel="noopener noreferrer" className="text-cobalt-700 underline break-all dark:text-cobalt-300">Source {sourceIndex + 1}: {new URL(url).hostname}{url.startsWith('https://pubmed.ncbi.nlm.nih.gov/') ? ` · PMID ${url.split('/')[3]}` : ''}</a></li>
+                        ))}
+                      </ul>
+                    </details>
+                  )}
                 </div>
               )}
             </li>
@@ -307,10 +320,9 @@ export const TeachingModule = () => {
       <details className="rounded border border-slate-300 bg-slate-50 dark:border-strong dark:bg-paper-2">
         <summary className="cursor-pointer p-2 text-xs font-semibold text-slate-700 dark:text-ink-2">📋 Evidence audit notes — when was this content last reviewed?</summary>
         <div className="p-2 pt-0 text-xs text-slate-600 space-y-1 dark:text-ink-2">
-          <p><strong>Last comprehensive review:</strong> 2026-08-22 for the teaching content, against current AHA/ASA guidelines (including the 2026 AIS guideline) and primary trial publications.</p>
+          <p><strong>Review status:</strong> Field-level source review and focused corrections completed through 2026-09-30. Source-access and later-correction gaps remain; this is not whole-module clinical certification. Incomplete emergency checklists remain withheld.</p>
           <p><strong>Guidelines referenced:</strong> AHA/ASA AIS 2026 (Prabhakaran; replaces the 2018 guideline and its 2019 update), AHA/ASA ICH 2022 (Greenberg), AHA/ASA aSAH 2023, AHA/ASA CVT 2024, AHA/ASA Secondary Prevention 2021 (Kleindorfer), ESC AF 2024 (van Gelder).</p>
-          <p><strong>Trial count:</strong> 103 landmark trials across 9 categories with primary-source citations.</p>
-          <p><strong>Calculator verification:</strong> All 20+ calculators validated against primary publications (Hemphill 2001 for ICH score, Johnston 2007 for ABCD², Lip 2010 for CHA₂DS₂-VASc, Pisters 2010 for HAS-BLED, Kent 2013 for ROPE, Rocha 2019 for RCVS², Greving 2014 for PHASES, Kothari 1996 for ABC/2, etc.).</p>
+          <p><strong>Trial cards:</strong> 103 cards across 9 categories with primary-source citations; some cards group studies or describe prediction models and trial status.</p>
           <p><strong>Known caveats:</strong> Intensive SBP lowering to &lt;140 mmHg for the first 72 h after successful EVT recanalization (mTICI 2b–3) of an anterior-circulation LVO is a direct Class III: Harm (LOE A) recommendation in the 2026 AHA/ASA AIS guideline, which replaces the 2018 guideline and its 2019 update. Harm was shown in ENCHANTED2/MT (&lt;120, 72 h) and OPTIMAL-BP (&lt;140, 24 h); BP-TARGET and BEST-II were neutral. The 2026 guideline also considers BP ≤180/105 mmHg during EVT and for 24 h afterward reasonable (Class IIa, LOE B-NR). Specific titration ranges (e.g., SBP 140–180) and durations beyond these windows are institutional.</p>
           <p><strong>Rigor note:</strong> Content is for educational/decision-support use only; always cross-check against current primary literature before clinical action.</p>
         </div>

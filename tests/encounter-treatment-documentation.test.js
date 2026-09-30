@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import fs from 'node:fs';
 import * as treatment from '../src/encounter-decision-status.js';
+import * as reviewed from '../src/encounter-clinical-review.js';
+import { isSuccessfulEvtReperfusion } from '../src/institutional-protocols.js';
+import { calculateCrClReviewed, calculateTNKDoseReviewed } from '../src/calculators.js';
 
 const appSource = fs.readFileSync(new URL('../src/app.jsx', import.meta.url), 'utf8');
 const templateStart = appSource.indexOf('const defaultTelestrokeTemplate = `') + 'const defaultTelestrokeTemplate = '.length;
@@ -16,7 +19,7 @@ function outputFunction(name, note, extra = {}) {
   const end = appSource.indexOf(`\n${indent}};`, start);
   if (end < 0) throw new Error(`Unterminated output function ${name}`);
   const context = {
-    ...treatment, telestrokeNote: note, nihssScore: 0, aspectsScore: '',
+    ...treatment, ...reviewed, isSuccessfulEvtReperfusion, calculateCrClReviewed, calculateTNKDoseReviewed, telestrokeNote: note, nihssScore: 0, aspectsScore: '',
     isValidAspectsScore: () => false, calculateICHScore: () => 0,
     calculateGCS: () => 15, calculateTNKDose: () => ({ calculatedDose: 15 }),
     ichScoreItems: {}, gcsItems: {}, ANTICOAGULANT_INFO: {}, TOAST_LABELS: {},
@@ -25,7 +28,7 @@ function outputFunction(name, note, extra = {}) {
     getSahOutcomeSummary: () => '', getPathwayForDiagnosis: () => 'ischemic',
     getDocumentedNihss: () => treatment.documentedNihssValue(note, 0, false),
     mrsScore: 0, pcAspectsRegions: [], calculatePCAspects: () => 0, bpPhaseTargets: {},
-    formatBpPhaseTarget: () => '', PUBLIC_DEMO_MODE: true,
+    formatBpPhaseTarget: () => '', formatReviewedBpPhaseTarget: () => '', PUBLIC_DEMO_MODE: true,
     getPostEvtBpPlanSummary: () => '', getPediatricStrokeSummary: () => '',
     getMaternalStrokeSummary: () => '', getCancerStrokeSummary: () => '',
     getWakeUpCriteriaTrace: () => ({ wake: {} }), getWakeUpEligibilityForNote: () => ({}),

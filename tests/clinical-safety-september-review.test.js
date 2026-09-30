@@ -60,19 +60,21 @@ describe('September 2026 source and incomplete-input regressions', () => {
     expect(bpTargetPostStroke({ strokeSubtype: 'lacunar' }).target).toMatch(/SPS3 tested SBP <130, not <120/);
   });
   it('does not infer very-high-risk ASCVD from stroke subtype alone', () => {
-    expect(lipidsTargetPostStroke({ strokeSubtype: 'icad', currentLDL: 60 }).target).toMatch(/^<70/);
+    expect(lipidsTargetPostStroke({ hasASCVD: true, strokeSubtype: 'icad', currentLDL: 60 }).target).toMatch(/^<70/);
     expect(lipidsTargetPostStroke({ veryHighRiskASCVD: true, currentLDL: 60 }).atTarget).toBe(false);
   });
   it('does not substitute LAVI for an ARCADIA entry biomarker', () => {
     const result = arcadiaAdvisory({ laVolumeIndex: 40 });
     expect(result.leftAtrialEnlargement).toBe(true);
-    expect(result.cardiopathyPresent).toBe(false);
+    expect(result.cardiopathyPresent).toBeNull();
     expect(arcadiaAdvisory({ ntProBNP: 251 }).cardiopathyPresent).toBe(true);
   });
   it('does not diagnose herniation from a pupillometry measurement', () => {
-    expect(interpretPupillometry({}).status).toMatch(/INCOMPLETE/);
-    expect(interpretPupillometry({ npi: -1, cv: 1, change: 20, diff: 0 }).status).toMatch(/INVALID/);
-    expect(interpretPupillometry({ npi: 0, cv: 1, change: 20, diff: 0 }).summary).toMatch(/does not diagnose herniation/);
+    for (const input of [{}, { npi: -1, cv: 1, change: 20, diff: 0 }, { npi: 0, cv: 1, change: 20, diff: 0 }]) {
+      const result = interpretPupillometry(input);
+      expect(result.status).toBe('INTERPRETATION UNAVAILABLE');
+      expect(result.steps).toEqual([]);
+    }
   });
   const enrich = { icHLocation: 'lobar', volumeMl: 50, age: 65, gcs: 12, nihss: 12, timeFromOnsetH: 12, premorbidMRS: 0 };
   it('requires modeled ENRICH inputs and rejects late or dependent profiles', () => {

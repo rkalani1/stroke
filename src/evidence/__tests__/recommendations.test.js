@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { recommendations, getRecommendation, getAllRecommendationIds } from '../recommendations.js';
-import { CLASS_VALUES, LOE_VALUES, SETTING_VALUES, VERIFICATION_VALUES } from '../schema.js';
+import { CLASS_VALUES, LOE_VALUES, SETTING_VALUES, VERIFICATION_VALUES, makeRecommendation, validateRecommendation } from '../schema.js';
 
 describe('recommendations', () => {
   it('is an array of recommendation objects', () => {
@@ -18,8 +18,15 @@ describe('recommendations', () => {
       expect(typeof rec.guidelineSource).toBe('string');
 
       expect(SETTING_VALUES).toContain(rec.setting);
-      expect(CLASS_VALUES).toContain(rec.classOfRecommendation);
-      expect(LOE_VALUES).toContain(rec.levelOfEvidence);
+      if (rec.gradingSystem === 'AHA') {
+        expect(CLASS_VALUES).toContain(rec.classOfRecommendation);
+        expect(LOE_VALUES).toContain(rec.levelOfEvidence);
+      } else {
+        expect(rec.classOfRecommendation).toBeNull();
+        expect(rec.levelOfEvidence).toBeNull();
+        expect(rec.nativeStrength).toBeTruthy();
+        expect(rec.sourceUrl).toMatch(/^https:\/\//);
+      }
 
       expect(Array.isArray(rec.supportingClaimIds)).toBe(true);
       expect(Array.isArray(rec.caveats)).toBe(true);
@@ -65,5 +72,21 @@ describe('getAllRecommendationIds', () => {
       expect(id.length).toBeGreaterThan(0);
       expect(getRecommendation(id)).not.toBeNull();
     }
+  });
+});
+
+
+describe('native recommendation grading', () => {
+  const base = { id: 'native-test', text: 'Source recommendation', lastReviewed: '2026-09-30', verificationStatus: 'verified-guideline' };
+  it('preserves AHA defaults and explicit grades', () => {
+    expect(makeRecommendation(base)).toMatchObject({ gradingSystem: 'AHA', classOfRecommendation: 'IIa', levelOfEvidence: 'B-R' });
+    expect(makeRecommendation({ ...base, classOfRecommendation: 'I', levelOfEvidence: 'A' })).toMatchObject({ classOfRecommendation: 'I', levelOfEvidence: 'A' });
+  });
+  it('retains native GRADE without manufacturing an AHA badge', () => {
+    const rec = makeRecommendation({ ...base, gradingSystem: 'GRADE', nativeStrength: 'Conditional', nativeCertainty: 'Moderate', sourceUrl: 'https://link.springer.com/article/10.1007/s12028-026-02601-4' });
+    expect(rec).toMatchObject({ classOfRecommendation: null, levelOfEvidence: null, nativeStrength: 'Conditional', nativeCertainty: 'Moderate' });
+    expect(validateRecommendation(rec).errors).toEqual([]);
+    expect(validateRecommendation({ ...rec, classOfRecommendation: 'IIa' }).errors.join(' ')).toContain('must not carry AHA');
+    expect(validateRecommendation({ ...rec, sourceUrl: '' }).errors.join(' ')).toContain('sourceUrl required');
   });
 });

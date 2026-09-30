@@ -95,8 +95,29 @@ export function validateGuideline(g, ctx = {}) {
   req(errors, g, 'guideline', isStr, 'source guideline name is required');
   req(errors, g, 'year', (v) => isNum(v) && v >= 1990 && v <= 2100, 'must be a 4-digit year');
   req(errors, g, 'section', isStr, 'section/topic is required');
-  req(errors, g, 'COR', (v) => COR_VALUES.includes(v), `must be one of ${COR_VALUES.join(', ')}`);
-  req(errors, g, 'LOE', (v) => LOE_VALUES.includes(v), `must be one of ${LOE_VALUES.join(', ')}`);
+  const gradingSystem = g.gradingSystem || 'AHA';
+  if (!['AHA', 'GRADE', 'consensus'].includes(gradingSystem)) {
+    errors.push('gradingSystem: must be AHA, GRADE, or consensus');
+  }
+  if (gradingSystem === 'AHA') {
+    req(errors, g, 'COR', (v) => COR_VALUES.includes(v), `must be one of ${COR_VALUES.join(', ')}`);
+    req(errors, g, 'LOE', (v) => LOE_VALUES.includes(v), `must be one of ${LOE_VALUES.join(', ')}`);
+  } else {
+    // A native source grade must never acquire an invented AHA class in a
+    // generated record. Preserve the source's own strength and certainty.
+    req(errors, g, 'COR', (v) => v === null, 'must be null for non-AHA grading');
+    req(errors, g, 'LOE', (v) => v === null, 'must be null for non-AHA grading');
+    req(errors, g, 'nativeStrength', isStr, 'source-native recommendation strength is required');
+    req(errors, g, 'sourceUrl', (v) => {
+      if (!isStr(v)) return false;
+      try { return new URL(v).protocol === 'https:'; } catch { return false; }
+    }, 'HTTPS primary-source URL is required for non-AHA grading');
+    if (gradingSystem === 'GRADE') {
+      req(errors, g, 'nativeCertainty', isStr, 'source-native evidence certainty is required');
+    } else if (g.nativeCertainty != null && g.nativeCertainty !== '') {
+      req(errors, g, 'nativeCertainty', isStr, 'must be a string when supplied');
+    }
+  }
   req(errors, g, 'statement', (v) => isStr(v) && v.length >= 12, 'must be a non-trivial statement');
   req(errors, g, 'PMIDs', isArr, 'must be an array (may be empty)');
   req(errors, g, 'DOIs', isArr, 'must be an array (may be empty)');

@@ -17,14 +17,25 @@
  * target exception: the label duplicates a function already available on a
  * large-enough target.
  *
- * Run with: node scripts/lint-touch-targets.mjs [--url URL] [--browsers chromium]
+ * Run with: node scripts/lint-touch-targets.mjs [--url URL]
+ * A positional URL or LINT_URL environment variable is also accepted.
  * Default URL: http://localhost:8080
  */
 
 import { chromium } from 'playwright';
 import { exit } from 'node:process';
 
-const URL = process.env.LINT_URL || process.argv[2] || 'http://localhost:8080';
+const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  console.log('Usage: node scripts/lint-touch-targets.mjs [--url URL | URL]\nEnvironment: LINT_URL; default http://localhost:8080');
+  exit(0);
+}
+const urlFlag = args.indexOf('--url');
+if (urlFlag !== -1 && (!args[urlFlag + 1] || args[urlFlag + 1].startsWith('-'))) {
+  console.error('--url requires a URL.');
+  exit(1);
+}
+const URL = process.env.LINT_URL || (urlFlag === -1 ? args[0] : args[urlFlag + 1]) || 'http://localhost:8080';
 const ROUTES = [
   '/#/encounter', '/#/protocols', '/#/trials',
   '/#/research/guidelines', '/#/research/education'

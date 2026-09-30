@@ -7,16 +7,17 @@ A client-side educational/demo toolkit for stroke management. Runs entirely in t
 ## Features
 - Acute encounter workflow (IVT, EVT, extended-window imaging selection).
 - Protocol cards (example institutional patterns based on published evidence).
-- Calculators: NIHSS, ASPECTS, ICH score, ABCD², HAS-BLED, RCVS², PHASES, RoPE, CrCl, TNK/alteplase dose, DAWN, DEFUSE-3, CHANCE/POINT/THALES DAPT duration, ESSEN, SPI-II, BAT/BRAIN/9-point ICH expansion, VASOGRADE, Ogilvy-Carter, PHQ-9, NASCET, CHA₂DS₂-VA, HEADS².
+- Calculators: NIHSS, ASPECTS, ICH score, ABCD², HAS-BLED, PHASES, RoPE, CrCl, TNK/alteplase dose, DAWN, DEFUSE-3, CHANCE/POINT/THALES DAPT duration, ESSEN, SPI-II, BAT/BRAIN/9-point ICH expansion, VASOGRADE, Ogilvy-Carter, PHQ-9, NASCET, CHA₂DS₂-VA, HEADS².
+- Reviewed education offers 40 modules. PLAN/ASTRAL probability outputs, the RCVS² diagnostic output, and the EVD/NPi/bedside-neuro-exam simulations are withheld; source-linked concepts and qualified evidence remain.
 - Public build disables ward census, imports/exports, encounter persistence, and patient-context URL handoff. Private/approved deployments can re-enable operational modules after governance review.
 - Clinic and wards workflows.
 - Post-tPA neurocheck timer; LKW countdown to 4.5h and 24h windows.
 - Note generators for telestroke consult, transfer, signout, progress, discharge.
-- **Completed evidence** under `#/research/references` with 260 completed/landmark trials, search, topic / certainty / evidence-type filters, and citation drilldown to PMID / DOI.
+- **Completed evidence** under `#/research/references` with 264 completed/landmark trials, search, topic / certainty / evidence-type filters, source-depth limits, and citation drilldown to PMID / DOI.
 - **Context Bridge** in active-trial matcher cards: related completed trials surface as background evidence (never as eligibility criteria).
 - **"Why this recommendation?" drawer** in Management sections, walking guideline → claim → primary citation chain.
 - **Pure-function matcher engine** (`src/evidence/matcher-engine.js`) with executable coverage of 42 modeled inclusion criteria + 14 exclusions. These partial models support candidate screening, not definitive eligibility.
-- **402 citation records**, including primary reports, education sources and pre-2021 landmarks.
+- **412 citation records**, including primary reports, education sources and pre-2021 landmarks.
 
 
 ## Install
@@ -50,7 +51,7 @@ are overwritten. Full guide:
 
 | Domain | Files | Schema |
 |---|---|---|
-| Guidelines | `content/guidelines/*.json` | id, guideline, year, section, COR, LOE, statement, PMIDs[], DOIs[], lastReviewed, sourceUrl |
+| Guidelines | `content/guidelines/*.json` | id, guideline, year, section, native grading system/strength/certainty or COR/LOE, statement, PMIDs[], DOIs[], lastReviewed, sourceUrl |
 | Trials | `content/trials/*.json` | name, category, population, finding, teachingPoint, PMID, year |
 | Education | `content/education/*.md` | frontmatter: id, title, summary, tags, contexts[], calculators[], references[], lastReviewed |
 | Calculators | `content/calculators/registry.json` | single registry (id, name, category, fn, module) |
@@ -60,8 +61,9 @@ are overwritten. Full guide:
   CI) fails the build on malformed fields, bad COR/LOE, a citation that doesn't
   resolve in the single registry (`src/evidence/citations.js`), or a
   `lastReviewed` older than 18 months.
-- **Single citations module:** every PMID/DOI is defined once in
-  `src/evidence/citations.js` and referenced by id.
+- **Evidence-atlas citations module:** structured trial and claim records use
+  `src/evidence/citations.js` and reference citation IDs. Education and guideline
+  references also carry source links with their own access limitations.
 - **Update a guideline/trial/resource:** verify the primary source, edit its canonical
   source (or scaffold a draft — `npm run content:scaffold -- --type guideline --pmids
   … --now YYYY-MM-DD`), regenerate seeded data, validate, and review the diff. See
@@ -105,16 +107,34 @@ separate reviewed `npm run test:protocol-snapshot:update` commit.
 
 ### September 2026 evidence and usability review
 
-The Guidelines collection includes 109 source documents and 4,113 searchable
-recommendations/statements. This update reconciles full source inventories for
-24 documents and retains one source-only record plus five unresolved correction
-notices. See the [completeness review](docs/reviews/2026-09-06-guidelines-completeness.md)
-for exact scope, sources, improvements and remaining limits.
+The September 30 review includes 110 guideline source documents and 4,170
+searchable recommendations/statements, plus one source-only rehabilitation
+record. Source wording, recommendation grades, later evidence and correction
+notices are distinguished in the interface. Some complete articles and
+correction bodies remain unavailable; a review date does not certify every
+claim or establish comprehensive clinical currency. The earlier
+[September 6 review](docs/reviews/2026-09-06-guidelines-completeness.md) is a
+historical record, not the current coverage denominator.
 
-Teaching PDFs are generated from the same React cards as the live Education
-view. After an authored teaching change, run `node scripts/generate-pdfs.mjs`
-with Playwright Chromium installed (or set `STROKE_CHROMIUM_PATH`), then inspect
-the PDFs. This prevents the former duplicate HTML export from drifting.
+The update withdraws unsupported prognosis outputs, unsafe procedural
+simulations and selected misleading teaching figures. It retains sourced
+concept explanations and qualified evidence. Encounter assessments preserve
+unknown inputs and distinguish a partial source screen from a treatment
+decision. Public-demo safeguards and the frozen Protocols and Telestroke map
+remain in place. See [the content changelog](content/CHANGELOG.md) for the
+clinical change scope.
+
+Seven current teaching PDFs are generated from the same React cards as the
+live Education view. After an authored teaching change, run
+`node scripts/generate-pdfs.mjs` with Playwright Chromium installed (or set
+`STROKE_CHROMIUM_PATH`), then inspect every page. Other retained downloads are
+dated archival teaching documents with targeted source-qualified corrections;
+they are not presented as current stand-alone clinical instructions. The
+reproducible archival repair scripts are `scripts/repair-education-pdfs.py`
+and `scripts/repair-af-pdfs.py` (PyMuPDF and ReportLab required). Their manifests
+identify the Git baseline, permanently redacted regions and primary sources.
+Original versions remain recoverable through Git history rather than backup
+downloads in the published tree.
 
 ### Build
 - `npm run build` — production build (Tailwind + esbuild bundle).

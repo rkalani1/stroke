@@ -34,7 +34,10 @@ describe('clinical corrections (regression lock)', () => {
     const t = read('src/teaching.js');
     // the old, wrong wording labelled central signs as "peripheral"
     expect(t).not.toContain('peripheral: normal head impulse + direction-changing nystagmus');
-    expect(t).toContain('abnormal head impulse (corrective saccade) + unidirectional nystagmus + normal skew');
+    expect(t).not.toContain('normal/bilateral HIT');
+    expect(t).toContain('clinician trained in its use');
+    expect(t).toContain('MRI/MRA for a central or equivocal result');
+    expect(t).toContain('An abnormal head impulse or new hearing loss alone does not exclude stroke');
   });
 
   it('TREAT-CAD did NOT confirm aspirin non-inferiority', () => {
@@ -48,17 +51,21 @@ describe('clinical corrections (regression lock)', () => {
     expect(comp).toContain('did not confirm ASA non-inferiority');
   });
 
-  it('mannitol osmolar-gap hold threshold is >20, not >55', () => {
+  it('withholds the unvalidated universal osmolar-gap recipe', () => {
     const evd = read('src/simulators/EvdIcpSimulator.jsx');
-    expect(evd).not.toContain('Osm Gap &gt; 55');
-    expect(evd).not.toMatch(/gap &gt; 55/i);
-    expect(evd).toContain('gap &gt; 20 mOsm/kg');
+    const education = read('src/education.jsx');
+    expect(evd).not.toMatch(/gap &gt; (20|55)/i);
+    expect(evd).toContain('No validated simulation result');
+    expect(education).toContain('abbreviated osmotherapy, sedation and procedural recipes are unavailable');
+    expect(education).toContain('32227294');
   });
 
-  it('AF-timing pearl aligns with the canonical ELAN/OPTIMAS/CATALYST model', () => {
+  it('allowed AF-timing guidance uses imaging-defined evidence without a universal early-start rule', () => {
     const app = read('src/app.jsx');
     // old pearl mislabelled a later scheme as ELAN/CATALYST with severe day 6-14
     expect(app).not.toContain('severe (NIHSS ≥16): day 6-14 with repeat imaging');
-    expect(app).toContain('≤4 days reasonable across severities');
+    expect(app).not.toContain('≤4 days reasonable across severities');
+    expect(app).toContain('ELAN classified stroke severity by infarct size and territory on imaging, not NIHSS');
+    expect(app).toContain('No automatic start recommendation is generated');
   });
 });

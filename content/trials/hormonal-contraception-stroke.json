@@ -5,15 +5,15 @@
     "fullName": "Stroke and myocardial infarction with contemporary hormonal contraception: real-world, nationwide, prospective cohort study",
     "category": "hormonal-contraception-stroke",
     "population": "n=2025691, Women aged 15-49 years, NIHSS Not applicable — incident first-ever events ascertained from national registry discharge diagnoses, not a severity-stratified cohort, Denmark, 1996 to 2021; 22,209,697 person-years of follow-up",
-    "finding": "POSITIVE ASSOCIATION for every systemic route except the levonorgestrel IUD. 4730 ischaemic strokes and 2072 myocardial infarctions occurred. Standardised ischaemic stroke rate per 100,000 person-years: 18 (95% CI 18 to 19) no use, 39 (36 to 42) combined oral contraception, 33 (25 to 44) progestin-only pills, 23 (17 to 29) intrauterine device. Combined oral contraception carried an adjusted rate ratio of 2.0 (1.9 to 2.2) for ischaemic stroke, equating to 21 (18 to 24) extra strokes per 100,000 person-years — a doubling of a small number.",
-    "teachingPoint": "Gives numbers for the contraception conversation: systemic hormonal methods roughly double a small absolute arterial risk in women aged 15-49, while the levonorgestrel intrauterine device shows no detected increase — making it the default option to discuss when arterial risk is the deciding factor.",
+    "finding": "Method-specific associations varied; progestin injection was inconclusive (RR 1.8, 95% CI 0.8–4.4). 4730 ischaemic strokes and 2072 myocardial infarctions occurred. Standardised ischaemic stroke rate per 100,000 person-years: 18 (95% CI 18 to 19) no use, 39 (36 to 42) combined oral contraception, 33 (25 to 44) progestin-only pills, 23 (17 to 29) intrauterine device. Combined oral contraception carried an adjusted rate ratio of 2.0 (1.9 to 2.2) for ischaemic stroke, equating to 21 (18 to 24) extra strokes per 100,000 person-years — a doubling of a small number.",
+    "teachingPoint": "Method-specific observational associations do not by themselves define contraceptive eligibility after stroke. The levonorgestrel IUD lacked a detected increased signal; sparse nonsignificant injection data are uncertainty, not proof of safety or harm.",
     "PMID": "39938934",
     "year": 2025,
     "citationIds": [
       "cit-yonis-contraception-2025"
     ],
     "certainty": "moderate",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   },
   {

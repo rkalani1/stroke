@@ -169,24 +169,26 @@
       "classOfRec": "Conditional",
       "classNote": "Against intervention as printed in Table 12; the recommendation wording favors DAPT followed by single therapy. This source inconsistency is retained without assigning an inferred direction.",
       "levelOfEvidence": "Low certainty",
-      "text": "In patients undergoing PFO closure we suggest dual antiplatelet therapy followed by single antiplatelet therapy to reduce the risk of recurrent stroke, based on the protocol of available RCTs (please see the Expert consensus statement for details).",
+      "text": "In patients undergoing PFO closure we suggest dual antiplatelet therapy followed by single antiplatelet therapy to reduce the risk of recurrent stroke, based on the protocol of available RCTs (please see the Expert consensus statement for details). Source note: Source grade conflict: Table 12 labels the positive DAPT-then-SAPT wording low certainty/weak against; one body box uses very low/weak against and another low/no assigned strength. The displayed source grade follows Table 12, not an adjudicated treatment direction.",
       "page": null,
       "sourceStatementType": "recommendation",
       "sourceStatementId": "PICO 5 recommendation 1",
       "sourceReference": "Table 12, pages 825–826; individual recommendation blocks; PICO 5; recommendation 1",
-      "id": "eso-pfo-2024-pico5-r1"
+      "id": "eso-pfo-2024-pico5-r1",
+      "sourceConflictNote": "Source grade conflict: Table 12 labels the positive DAPT-then-SAPT wording low certainty/weak against; one body box uses very low/weak against and another low/no assigned strength. The displayed source grade follows Table 12, not an adjudicated treatment direction."
     },
     {
       "section": "PICO 5: Duration of single antiplatelet therapy after PFO closure — no evidence-based recommendation possible (Quality of evidence: Very low; Strength of recommendation: –)",
       "classOfRec": "No recommendation",
       "classNote": null,
       "levelOfEvidence": "Very low certainty",
-      "text": "No evidence-based recommendation can be formulated regarding the duration of the single antiplatelet treatment.",
+      "text": "No evidence-based recommendation can be formulated regarding the duration of the single antiplatelet treatment. Source note: Source grade conflict: Table 12 assigns very low certainty/no strength to the no-recommendation sentence, while the body box assigns low certainty/weak against. The displayed source grade follows Table 12; no duration is established by this row.",
       "page": null,
       "sourceStatementType": "recommendation",
       "sourceStatementId": "PICO 5 recommendation 2",
       "sourceReference": "Table 12, pages 825–826; individual recommendation blocks; PICO 5; recommendation 2",
-      "id": "eso-pfo-2024-pico5-r2"
+      "id": "eso-pfo-2024-pico5-r2",
+      "sourceConflictNote": "Source grade conflict: Table 12 assigns very low certainty/no strength to the no-recommendation sentence, while the body box assigns low certainty/weak against. The displayed source grade follows Table 12; no duration is established by this row."
     },
     {
       "section": "PICO 5: Antiplatelet regimen after PFO closure — Expert Consensus Statement (vote 9/9)",
@@ -271,6 +273,32 @@
       "sourceStatementId": "PICO 6 consensus 5",
       "sourceReference": "Table 12, pages 825–826; individual recommendation blocks; PICO 6; consensus 5",
       "id": "eso-pfo-2024-pico6-c5"
+    },
+    {
+      "id": "eso-pfo-2024-age-extremes",
+      "section": "PICO2 body image10 — PFO age>60 or<18: no evidence-based recommendation",
+      "classOfRec": "No recommendation",
+      "classNote": null,
+      "levelOfEvidence": "Very low certainty",
+      "text": "For patients older than 60 years or younger than 18 years, no evidence-based recommendation for PFO closure can be provided. See the separately identified expert consensus statements.",
+      "page": null,
+      "sourceStatementType": "recommendation",
+      "sourceStatementId": "PICO 2 recommendation 4",
+      "sourceReference": "PICO2 body image10",
+      "sourceUrl": "https://academic.oup.com/esj/article/9/4/800/8269146"
+    },
+    {
+      "id": "eso-pfo-2024-timing",
+      "section": "PICO2 body image14 — PFO closure within6months and as soon as possible individualized by lesion size/risk;9/9 vote",
+      "classOfRec": "Expert Consensus",
+      "classNote": null,
+      "levelOfEvidence": "Ungraded",
+      "text": "Given the lack of evidence on PFO-closure timing, the panel suggests considering closure within 6 months after the index stroke, based on randomized studies. As secondary-prevention procedures are time-dependent, closure should be performed as soon as possible according to the individual clinical scenario, including stroke lesion size and risk profile (expert consensus, 9/9 votes).",
+      "page": null,
+      "sourceStatementType": "consensus",
+      "sourceStatementId": "PICO 2 consensus 4",
+      "sourceReference": "PICO2 body image14",
+      "sourceUrl": "https://academic.oup.com/esj/article/9/4/800/8269146"
     }
   ],
   "documentType": "guideline",
@@ -278,9 +306,9 @@
   "coverage": {
     "status": "complete",
     "scope": "All formal recommendations and good-practice/consensus statements",
-    "checkedAt": "2026-09-06",
-    "sourceRecommendationCount": 9,
-    "sourceConsensusCount": 13,
+    "checkedAt": "2026-09-30",
+    "sourceRecommendationCount": 10,
+    "sourceConsensusCount": 14,
     "sourceSections": [
       "PICO 1.1–1.3",
       "PICO 2",
@@ -298,8 +326,8 @@
       },
       {
         "section": "PICO 2",
-        "recommendationCount": 3,
-        "consensusCount": 3
+        "recommendationCount": 4,
+        "consensusCount": 4
       },
       {
         "section": "PICO 3",
@@ -322,5 +350,13 @@
         "consensusCount": 5
       }
     ]
+  },
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Primary recommendation text retrieved and compared; exact edition, source locators and unresolved correction/current-context limits in unit ledger.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
   }
 }

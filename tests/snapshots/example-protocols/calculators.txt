@@ -55,6 +55,8 @@ To sound
 To pain
 1
 None
+NT
+Not testable
 Verbal Response
 5
 Oriented
@@ -66,6 +68,8 @@ Inappropriate
 Incomprehensible
 1
 None
+NT
+Not testable
 Motor Response
 6
 Obeying
@@ -79,8 +83,12 @@ Abnormal flexion
 Extending
 1
 None
+NT
+Not testable
 Incomplete:
 All three GCS components (Eye, Verbal, Motor) are required for a valid score.
+Reason a component is not testable (if applicable)
+Record E/V/M separately. NT is not a score of1; no total is reported when a component cannot be tested.
 Source: Teasdale G, Jennett B. Lancet 1974;2:81-4 (PMID 4136544).
 ICH Score
 Incomplete
@@ -104,7 +112,7 @@ Mortality
 5
 100%
 6
-Not observed (~100% expected)
+Not observed; no empirical estimate
 Hemphill JC et al. The ICH Score. Stroke 2001;32:891-897 (PMID 11283388). UCSF derivation cohort; no patient scored 6. Prognostic only — the score must NOT be used to limit treatment or justify early DNR (self-fulfilling-prophecy risk; AHA/ASA 2022 ICH).
 Glasgow Coma Scale:
 GCS 3-4
@@ -261,9 +269,8 @@ D
 rugs (antiplatelet agents, NSAIDs)
 D
 (cont.) Alcohol use — ≥8 drinks/week
-HAS-BLED Score:
-0
-Score 0-2: lower bleeding risk. Reassess when clinical factors change.
+All HAS-BLED criteria assessed in an AF patient
+Incomplete assessment — no score or risk interpretation.
 Source: Pisters R et al. Chest 2010;138:1093-1100 (HAS-BLED, PMID 20299623).
 RoPE Score and PASCAL Classification
 No history of hypertension
@@ -280,7 +287,9 @@ Atrial septal aneurysm (PASCAL)
 Unknown / not assessed
 Absent
 Present
-Enter age to compute the RoPE score (age is the largest contributor).
+PASCAL closure-effect estimates come from selected adults18–60 with PFO-associated cryptogenic ischemic stroke. They are not individual probabilities or a closure recommendation outside that population.
+All RoPE criteria assessed for cryptogenic ischemic stroke with PFO
+Incomplete or invalid assessment — no score or risk estimate.
 Sources: Kent DM et al. Neurology 2013;81:619-25 (RoPE, PMID 23864310); Kent DM et al. JAMA 2021;326:2277-86 (PASCAL, PMID 34905030).
 RCVS² Score
 Inputs retained
@@ -289,9 +298,7 @@ Intracranial carotid artery involvement
 Vasoconstrictive trigger exposure
 Female sex
 Subarachnoid hemorrhage on imaging
-RCVS² Score:
-0
-Score ≤2: RCVS unlikely (85% sensitivity, 100% specificity for exclusion) — evaluate for alternative arteriopathies (e.g., primary angiitis of the CNS).
+Numeric RCVS² scoring and diagnostic interpretation are unavailable in this edition because the original point table has not been verified. The recorded clinical features do not independently rule RCVS in or out; use the complete specialist evaluation.
 Source: Rocha EA et al. Neurology 2019;92:e639-e647 (RCVS², PMID 30635475).
 Hunt and Hess / WFNS Scale (SAH Grading)
 H&H:
@@ -326,7 +333,8 @@ Aneurysm site
 ICA
 MCA
 ACA / Pcomm / Posterior circulation
-Enter aneurysm size to compute the PHASES score.
+All PHASES criteria assessed for an unruptured intracranial aneurysm
+Incomplete or invalid assessment — no score or risk estimate.
 Source: Greving JP et al. Lancet Neurol 2014;13:59-66 (PHASES, PMID 24290159).
 ICH Volume Calculator (ABC/2 Method)
 A: Largest diameter (cm)
@@ -354,7 +362,7 @@ Source: Cockcroft DW, Gault MH. Nephron 1976;16:31-41 (PMID 1244564).
 Enoxaparin Weight-Based Dosing
 Weight (kg)
 CrCl (mL/min)
-Enter weight (and CrCl when available) to calculate enoxaparin dosing.
+Enter valid weight and renal clearance before dosing. Missing renal function does not select normal dosing.
 Source: Sherman DG et al. Lancet 2007;369:1347-55 (PREVAIL, PMID 17448820).
 ASPECTS (Interactive)
 Incomplete

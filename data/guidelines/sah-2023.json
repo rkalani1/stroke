@@ -1107,12 +1107,14 @@
     {
       "type": "correction",
       "pmid": "38011240",
-      "doi": "10.1161/str.0000000000000449",
-      "publisherUrl": "https://doi.org/10.1161/str.0000000000000449",
+      "doi": "10.1161/STR.0000000000000449",
+      "publisherUrl": "https://doi.org/10.1161/STR.0000000000000449",
       "status": "not-applicable",
-      "note": "Corrects seizure-section reference numbering without changing recommendation text or grades; the library does not reproduce numbered citations.",
-      "checkedAt": "2026-09-06",
-      "affectedRecommendationIds": []
+      "note": "The complete notice corrects and renumbers seizure-recommendation references. Formal recommendation text and grades are unchanged.",
+      "checkedAt": "2026-09-30",
+      "affectedRecommendationIds": [],
+      "previousReviewNote": "Corrects seizure-section reference numbering without changing recommendation text or grades; the library does not reproduce numbered citations.",
+      "independentReviewScope": "complete primary notice read"
     }
   ],
   "coverage": {
@@ -1395,5 +1397,13 @@
       "sha256": "b9e7deb7c10f2b18b129625dbc0f33fd31725521cc180d75fedf52dd81bc86e6"
     },
     "note": "All formal recommendation tables and numbered rows reconciled against the complete source document. This is a source-inventory review, not a new clinical validation of every existing summary or supporting narrative. Existing publication-correction statuses remain separate. No separately designated ungraded consensus or good-practice recommendation set is present."
+  },
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "sourceAccess": "Original full publisher PDF retrieved from UCSD; full indexed primary correction read. Directpublisher403 separately documented.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30"
   }
 }

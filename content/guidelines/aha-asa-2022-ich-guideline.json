@@ -100,43 +100,13 @@
     "provenance": "src/evidence/recommendations.js"
   },
   {
-    "id": "rec-ich-anticoag-reversal-fxa",
-    "guideline": "AHA/ASA 2022 ICH Guideline (pre-ANNEXA-I); ANNEXA-I (2024); FDA Andexxa safety communication and US withdrawal (Dec 2025)",
-    "year": 2022,
-    "section": "ich-anticoag-reversal",
-    "COR": "IIa",
-    "LOE": "B-NR",
-    "statement": "In factor Xa inhibitor-associated ICH, reverse the anticoagulant effect rapidly using the locally approved 4F-PCC pathway. The AHA/ASA 2022 guideline rated andexanet alfa as reasonable (Class 2a) and 4F-PCC or aPCC as may be considered (Class 2b), but andexanet is no longer marketed in the US after the December 2025 FDA safety action on thromboembolic events, and the 2026 Neurocritical Care Society/Society of Critical Care Medicine focused update conditionally recommends 4F-PCC rather than andexanet. Monitor for thrombotic complications.",
-    "PMIDs": [
-      "38749032",
-      "35579034"
-    ],
-    "DOIs": [
-      "10.1056/NEJMoa2313040",
-      "10.1161/STR.0000000000000407"
-    ],
-    "citationIds": [
-      "cit-annexa-i-2024",
-      "cit-aha-ich-2022"
-    ],
-    "caveats": [
-      "ANNEXA-I demonstrated higher hemostatic efficacy with andexanet but more thrombotic complications vs usual care.",
-      "The former US andexanet alfa label covered apixaban and rivaroxaban only (ANNEXA-I also enrolled edoxaban-treated patients). Since US sales ended December 22, 2025, 4F-PCC (or aPCC) per the local pathway is the US reversal option for all factor Xa inhibitors, including edoxaban (PCC use for factor Xa inhibitor reversal is off-label).",
-      "Reversal should not delay neurosurgical evaluation."
-    ],
-    "setting": "inpatient",
-    "lastReviewed": "2026-09-26",
-    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
-    "provenance": "src/evidence/recommendations.js"
-  },
-  {
     "id": "rec-ich-anticoag-reversal-warfarin",
     "guideline": "AHA/ASA 2022 ICH Guideline",
     "year": 2022,
     "section": "ich-anticoag-reversal",
     "COR": "I",
     "LOE": "B-R",
-    "statement": "In warfarin-associated ICH with INR ≥2.0, give 4F-PCC dosed by INR/weight (recommended in preference to FFP) to rapidly correct the INR. Give IV vitamin K 10 mg directly after factor replacement to prevent INR rebound. FFP is a slower, inferior alternative.",
+    "statement": "In warfarin-associated ICH with INR ≥2.0, give 4F-PCC dosed by INR/weight (recommended in preference to FFP) to rapidly correct the INR. Give IV vitamin K 10 mg directly after factor replacement to prevent INR rebound. 4F-PCC is preferred for rapid INR correction; this is not a claim of superiority for every clinical outcome.",
     "PMIDs": [
       "35579034",
       "27302126"
@@ -150,6 +120,7 @@
       "cit-inch-2016"
     ],
     "caveats": [
+      "The Class I/B-R badge applies to 4F-PCC over FFP when INR is ≥2.0. IV vitamin K after factor replacement is a separate Class I/C-LD recommendation.",
       "Vitamin K is required for sustained reversal; PCC alone is short-acting.",
       "FFP carries volume-overload risk and slower correction."
     ],
