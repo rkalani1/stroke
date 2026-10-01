@@ -1,9 +1,10 @@
 # Updating clinical content (`/content`)
 
-This app's clinical reference data lives in `/content` as typed, schema-validated
-files. This guide is the low-friction workflow for adding or updating a
-guideline, trial, educational resource, calculator, or reference **in under five
-minutes**, with the build refusing to ship malformed or unsourced entries.
+This app projects clinical reference data into typed, schema-validated files
+under `/content`. Edit the canonical source, verify the clinical change against
+the primary evidence, and regenerate its projections. Structural validation
+detects malformed records and broken identifiers; it does not validate clinical
+accuracy, completeness, applicability, or the current corrected edition.
 
 > **Not the Example Protocols tab.** The `#/protocols/*` clinical wording is
 > frozen byte-for-byte and is *not* edited here — see
@@ -19,8 +20,9 @@ minutes**, with the build refusing to ship malformed or unsourced entries.
 | Calculators | `content/calculators/registry.json` | one entry in the single calculator registry |
 | References | `content/references/*.json` | a reference card / PDF metadata record |
 
-Schemas and validators: [`content/schema.mjs`](content/schema.mjs). Every field
-below is enforced at build time.
+Schemas and validators: [`content/schema.mjs`](content/schema.mjs). Run the
+validation commands below before release; `npm run build` alone does not run
+all clinical-content validators.
 
 ## Required fields
 
@@ -65,15 +67,25 @@ The validator fails the build on any citation it can't resolve.
 
 ## The workflow
 
-1. **Edit** the relevant `/content` file (or scaffold a new one — see below).
-2. **Validate:** `npm run content:validate`
+1. **Verify and edit the canonical source** listed below. Record the primary
+   source, population, outcome, recommendation grade and unresolved limitations.
+2. **Regenerate:** `npm run content:seed`, `npm run build:prod`, and
+   `npm run evidence:export` when Evidence Atlas records change. Teaching-card
+   changes also require regenerating each affected approved PDF with
+   `node scripts/generate-pdfs.mjs --only <ComponentName>` and inspecting every page.
+3. **Validate:** `npm run content:seed:check`, `npm run content:validate`,
+   `npm run content:bundle:check`, `npm run agent:assets:check`, and the relevant
+   source validators and tests.
    - Fails on malformed fields, bad COR/LOE, unresolved citations, or entries
      older than `STROKE_CONTENT_MAX_AGE_MONTHS` (default 18).
-3. **Commit.** CI re-runs the same check (`npm test`) plus the Example Protocols
-   snapshot lock.
+4. **Review and release.** Review the generated diff and rendered output,
+   independently review changed clinical claims, and require CI and the Example
+   Protocols snapshot lock to pass before publication.
 
-That's it. Guidelines and references render from these files, so a data edit is
-the whole change — no component code to touch.
+Do not edit generated `/content` records directly: the seed check rejects drift
+and regeneration overwrites it. Several visible surfaces render directly from
+their canonical React or data modules, so a projection-only edit will not
+update them.
 
 ## Scaffolding a new entry from a PDF or PMIDs
 
@@ -88,10 +100,11 @@ npm run content:scaffold -- --type trial --pdf-text /tmp/trial.txt --now 2026-07
 ```
 
 This writes a draft to `content/_drafts/` (gitignored, never validated or
-published) with every clinical field as a `TODO`. Any text-mined values are
-labelled **unverified**. Fill the TODOs against the primary source, have a
-clinician confirm the clinical content, move the file into the live domain
-folder, then run `npm run content:validate`.
+published) with clinical fields marked `TODO` or **unverified**. Verify each
+field against the primary source, have the clinical content reviewed, then
+incorporate the accepted record into its canonical source and regenerate.
+Copying a draft directly into a live projection folder is not the authoring
+contract.
 
 ## Keeping content current
 
@@ -111,10 +124,15 @@ Record material content changes in [`content/CHANGELOG.md`](content/CHANGELOG.md
 
 ## Where guidelines & trials are *authored* today
 
-`content/guidelines/*` and `content/trials/*` are currently **projected** from
-the mature Evidence Atlas (`src/evidence/recommendations.js`,
-`completedTrials.js`) by `npm run content:seed`, so they stay consistent with
-the Atlas's own validators and matcher engine. `npm run content:seed:check`
-(run in CI) fails if they drift. To change a guideline/trial value, edit the
-Atlas source and re-run `content:seed`. Calculators, education, and references
-are authored directly in `/content`.
+| Content | Canonical source |
+|---|---|
+| Evidence Atlas recommendations and completed trials | `src/evidence/recommendations.js`, `src/evidence/completedTrials.js`, with linked claims/citations in `src/evidence/` |
+| Full Guidelines library | `src/guidelines/*.json`; this is distinct from the smaller Evidence Atlas recommendation projection |
+| Education metadata and teaching cards | `EDUCATION_MODULES` and components in `src/education.jsx` |
+| Calculator implementation and catalog | `src/calculators.js`, `src/calculators-extended.js`, and the catalog in `scripts/seed-content.mjs` |
+| Reference/download registry | `REFERENCE_LIBRARY_SECTIONS` in `src/app.jsx` |
+
+`npm run content:seed:check` fails if any seeded domain differs from these
+sources. Public `data/` assets are generated separately by `npm run agent:assets`
+(also run by the build). Preserve provenance and source-access qualifications in
+every projection; a new review date is not evidence of newly verified claims.

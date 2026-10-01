@@ -15,6 +15,13 @@ describe('reviewed Encounter decision boundaries', () => {
     const result = evaluateVideoTreatment({ note: { ...note, nihss: '', disablingDeficit: null }, clock: { total: 1, label: 'LKW' }, critical: [] });
     expect(result.tnk.confidence).toBe('low');
   });
+  it.each([[], [0], {}, false, true])('does not revive a prior exam from malformed NIHSS %j', value => {
+    expect(documentedExamScore({ nihss: value }, 4, true)).toBe(null);
+  });
+  it.each([null, undefined, '', ' '])('permits a complete exam when manual NIHSS is absent %j', value => {
+    expect(documentedExamScore({ nihss: value }, 4, true)).toBe(4);
+    expect(documentedExamScore({ nihss: value }, 4, false)).toBe(null);
+  });
   it('accepts documented zero elapsed time without using a falsy missing test', () => {
     expect(evaluateVideoTreatment({ note, clock: { total: 0, label: 'LKW' }, critical: [] }).tnk.eligible).toBe(true);
   });

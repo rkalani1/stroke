@@ -166,8 +166,9 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Patients in rural areas are more likely to receive thrombectomy at primary stroke centers, which have lower performance and outcomes than accredited thrombectomy centers — the latter being required to collect and report quality metrics pertaining to mechanical thrombectomy and to maintain capabilities including a 24/7 neurointerventional team, neurointensive care unit, and advanced neuroimaging. Additional support of thrombectomy-capable centers located more proximally to regions remote from Comprehensive Stroke Centers would be beneficial.",
-      "page": null
+      "text": "The statement reports that rural patients are more likely to receive thrombectomy at primary stroke centers and describes lower performance and outcomes there than at accredited thrombectomy centers. It supports additional thrombectomy-capable centers closer to communities remote from Comprehensive Stroke Centers. Source note: The original sentence has an ambiguous antecedent for its quality-reporting and staffing/capability requirements; this summary does not assign those requirements to a particular certification category.",
+      "page": null,
+      "sourceConflictNote": "The original paragraph links center comparisons and credentialing requirements with an ambiguous antecedent. The comparative-outcome and access statements are retained; the disputed credentialing assignment is not presented as an operational rule. Consult the applicable accrediting organization for current center requirements."
     },
     {
       "section": "Inpatient Care",

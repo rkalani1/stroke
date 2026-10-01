@@ -235,7 +235,7 @@
       "doi": "10.1161/ATV.0000000000000165",
       "publisherUrl": "https://doi.org/10.1161/ATV.0000000000000165",
       "status": "not-applicable",
-      "note": "The complete notice corrects mean treatment LDL-C in ASCOT-LLA from 3.34 to 2.28 mmol/L in Table 2. This numeric cell is not reproduced in the library. Complete parent-body fidelity remains unresolved.",
+      "note": "The complete notice corrects mean treatment LDL-C in ASCOT-LLA from 3.34 to 2.28 mmol/L in Table 2. This numeric cell is not reproduced in the library. All 27 retained summaries have now been compared with the original advance PDF; the corrected numeric cell is not reproduced.",
       "checkedAt": "2026-09-30",
       "affectedRecommendationIds": [],
       "previousReviewNote": "Corrects the ASCOT-LLA LDL value in a supporting evidence table; the affected value is not reproduced in the library.",
@@ -245,9 +245,9 @@
   "sourceReview": {
     "reviewedAt": "2026-09-30",
     "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-    "sourceAccess": "Publisher/DOI and bounded primary public alternatives assessed; incomplete indexed fragments only, no complete body acquired",
+    "sourceAccess": "Full original publisher-formatted advance PDF recovered from the SFMV mirror; all 27 stored summaries compared to their source passages. The later correction notice was read separately.",
     "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
-    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "sourceEditionNote": "September 14, 2023 downloaded advance edition (e1–e38) used for original wording. The October correction changes an ASCOT-LLA Table 2 value not reproduced in these summaries. Historical trial and target statements are not a replacement for current risk-specific lipid guidance.",
     "implementationUpdatedAt": "2026-09-30"
   }
 }

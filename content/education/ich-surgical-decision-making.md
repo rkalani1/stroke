@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Trial-specific evidence for hematoma evacuation, selected minimally invasive surgery, decompression and urgent cerebellar-ICH assessment; observational associations and prognosis limits are explicit.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

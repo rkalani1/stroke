@@ -94,9 +94,10 @@
   "sourceReview": {
     "reviewedAt": "2026-09-30",
     "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-    "sourceAccess": "Primaryabstract accessible; publisher fulltext subscriptionpreview; linkedPDF redirects; society link same; mirror search no fullbody.",
+    "sourceAccess": "Published abstract and subscription preview accessible. All 10 rows also compared with the complete December 17, 2024 author preprint; the published full body has not been recovered.",
     "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
-    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
-    "implementationUpdatedAt": "2026-09-30"
+    "sourceEditionNote": "Author preprint DOI 10.21203/rs.3.rs-5375341/v1 was posted four days before the version of record. Its three formal recommendations agree with the published abstract. Its seven In Our Practice statements remain version-limited expert practice, not independently verified published-body recommendations.",
+    "implementationUpdatedAt": "2026-09-30",
+    "supportingManuscriptUrl": "https://assets-eu.researchsquare.com/files/rs-5375341/v1/4257c676-4495-44b8-9115-4e8148e3f359.pdf?c=1734970555"
   }
 }

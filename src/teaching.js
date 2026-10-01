@@ -297,7 +297,7 @@ export const TEACHING_PEARLS = [
   {
     category: 'Special Populations',
     q: 'What are the key considerations for AHLE (Acute Hemorrhagic Leukoencephalitis) in pregnancy?',
-    a: 'AHLE (Acute Hemorrhagic Leukoencephalitis), a severe form of ADEM, can rarely present during pregnancy. It requires prompt recognition via MRI (hemorrhagic demyelinating lesions) and early immunotherapy. In the cited single case, high-dose corticosteroid therapy produced full neurological recovery, and the patient later delivered a healthy full-term infant. (Tuli et al., Neurohospitalist 2026;16(3); PMID 41280370)'
+    a: 'AHLE (Acute Hemorrhagic Leukoencephalitis), a rare fulminant demyelinating disorder, has been reported during pregnancy. In the cited single case, MRI supported the diagnosis and recovery followed high-dose corticosteroid treatment. A case report cannot establish a universal immunotherapy regimen or its maternal and fetal safety; diagnosis and treatment require specialist assessment. (Tuli et al., Neurohospitalist 2026;16(3); PMID 41280370)'
   }
 ];
 

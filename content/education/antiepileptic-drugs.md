@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Clinical classification of post-stroke seizures, guideline-directed management, comparison of first-line and second-line antiseizure medications (ASMs), and post-stroke epilepsy risk stratification with the SeLECT score.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

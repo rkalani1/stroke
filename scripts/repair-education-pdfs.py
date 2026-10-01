@@ -106,7 +106,9 @@ for doc in manifest['documents']:
                 padding=2 if box.height<40 else 8
                 inset=box+fitz.Rect(padding,padding,-padding,-padding)
                 size=replacement.get('size',14)
-                while size>=11:
+                minimum_size=replacement.get('min_size',11)
+                if not 9<=minimum_size<=size:raise ValueError(('Invalid replacement font bounds',replacement))
+                while size>=minimum_size:
                     spare=page.insert_textbox(inset,ascii_text(replacement['text']),fontname='helv',fontsize=size,color=(.08,.25,.3))
                     if spare>=0:break
                     size-=1

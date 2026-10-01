@@ -6,11 +6,45 @@ import Education, {
   EDUCATION_PRACTICE_CASES, EvidencePracticeCases, EVDInfographic, ICPInfographic,
   CervicalDissectionCard, MoyamoyaDiseaseCard, CancerAssociatedStrokeCard, VascularTerritoryAtlasCard,
   CvstCard, EvtPeriproceduralCareCard, SevereStrokeCriticalCareCard,
-  BrainDeathCard, MalignantInfarctionCard, AntiepilepticDrugsCard, AfibAnticoagTimingCard
+  BrainDeathCard, MalignantInfarctionCard, AntiepilepticDrugsCard, AfibAnticoagTimingCard,
+  StrokePrognosisCard, ToastClassificationCard, DeviceDetectedSubclinicalAfCard,
+  UnrupturedIntracranialAneurysmCard
 } from '../src/education.jsx';
 const render = (Component) => renderToStaticMarkup(<Component />);
 
 describe('Education safety remediation', () => {
+  it('keeps the printable prognosis principles population-specific and rejects a universal observation deadline', () => {
+    const html = render(StrokePrognosisCard);
+    expect(html).toContain('admission NIHSS or ASTRAL alone is not reliable');
+    expect(html).toContain('not a universal deadline');
+    expect(html).toContain('mild-to-moderate spontaneous ICH presenting with SBP 150–220');
+    expect(html).toContain('uncertain safety and benefit in large/severe ICH or surgical candidates');
+    expect(html).not.toContain('more predictive of final recovery than any');
+    expect(html).not.toContain('Early intensive blood-pressure lowering and hematoma-directed care remain');
+  });
+  it('does not convert historical TOAST categories into an EF threshold or contemporary treatment checklist', () => {
+    const html = render(ToastClassificationCard);
+    expect(html).toContain('not a current anticoagulation checklist');
+    expect(html).toContain('Dilated cardiomyopathy or LV thrombus');
+    expect(html).toContain('PFO or atrial septal aneurysm');
+    expect(html).not.toContain('LVEF &lt; 28%');
+  });
+  it('retains source estimates without unsupported device rankings or causal and comparative inferences', () => {
+    const ahre = render(DeviceDetectedSubclinicalAfCard);
+    expect(ahre).not.toContain('most artifact-prone');
+    expect(ahre).toContain('Confirm the stored tracing');
+    const uia = render(UnrupturedIntracranialAneurysmCard);
+    expect(uia).not.toContain('not a detection artifact');
+    expect(uia).toContain('do not establish why the cohorts differed');
+    expect(uia).toContain('do not establish comparative safety');
+  });
+  it('places uncertainty beside the duplicate SeLECT endpoint estimates in the ASM card', () => {
+    const html = render(AntiepilepticDrugsCard);
+    expect(html).toContain('Historical cohort estimates');
+    expect(html).toContain('not individual guarantees or an indication for preventive ASM');
+    expect(html).toContain('95% CI 0.7–1.8');
+    expect(html).toContain('83% (62–93)');
+  });
   it('removes erroneous assets both from owned source and direct published paths', () => {
     const source = readFileSync('src/education.jsx', 'utf8');
     for (const name of ['afib_timing_protocol','select_score_chart','toast_classification_infographic','hematoma_expansion_render','ischemic_core_penumbra_render','evt_lvo_occlusion_sites','dapt_flowchart_timeline','aspects_10_regions_render']) {

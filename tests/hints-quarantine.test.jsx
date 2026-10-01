@@ -41,9 +41,11 @@ describe('HINTS cover-test animation quarantine', () => {
   });
 
   it('retains the non-cover eye demonstrations', () => {
-    selected.key = 'hit-normal';
+    selected.key = 'hit-central';
     const markup = renderToStaticMarkup(<HintsSimulator />);
     expect(markup).toContain('class="hint-head"');
+    expect(markup).toContain('class="hint-head-wrap hint-anim-hit-central"');
+    expect(markup).toContain('Head Impulse Test (Central / VOR intact):');
     expect(markup).not.toContain('animation is temporarily unavailable');
   });
 });

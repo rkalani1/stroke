@@ -195,12 +195,13 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
   // =========================================================================
   describe('2. Matcher Engine & Field Resolvers / Operators Stress Testing', () => {
 
-    it('verifies 100% field and operator coverage across all 9 active trials with 0 gaps', () => {
+    it('verifies 47/47 inclusion criteria and 14/14 exclusions are executable across all 9 partial trial models', () => {
       const report = coverageReport(activeTrials);
-      // 42 since the 2026-09 corrections removed two non-registry gates: the tandem
-      // trial's "ineligible for IVT" hard gate and MOST's ICA/M1 occlusion gate.
-      expect(report.total).toBe(42);
-      expect(report.covered).toBe(42);
+      // The 42 prior rules plus five registry-backed diagnosis gates for
+      // STEP, PICASSO, TESTED, VERIFY and SATURN. This is executable model
+      // coverage, not complete protocol coverage or eligibility certification.
+      expect(report.total).toBe(47);
+      expect(report.covered).toBe(47);
       expect(report.percent).toBe(100);
       expect(report.exclusionsTotal).toBe(14);
       expect(report.exclusionsCovered).toBe(14);
@@ -210,9 +211,12 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
 
     it('adversarially stress tests resolveField with malformed, prototype-polluted, and null inputs', () => {
       expect(resolveField('unknown_field_xyz', {})).toBeUndefined();
-      expect(resolveField('age', null)).toBeUndefined();
-      expect(resolveField('age', undefined)).toBeUndefined();
-      expect(resolveField('age', {})).toBeUndefined();
+      expect(resolveField('age', null)).toBeNull();
+      expect(resolveField('age', undefined)).toBeNull();
+      expect(resolveField('age', {})).toBeNull();
+      for (const age of ['', ' ', false, [], {}, -1, Infinity, 'unknown']) {
+        expect(resolveField('age', { telestrokeNote: { age } })).toBeNull();
+      }
       expect(resolveField('age', { telestrokeNote: { age: 65 } })).toBe(65);
       expect(resolveField('age', { strokeCodeForm: { age: '72' } })).toBe('72');
 
@@ -221,7 +225,8 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
 
       expect(resolveField('premorbidMRS', { telestrokeNote: { premorbidMRS: 2 } })).toBe(2);
 
-      expect(resolveField('vesselOcclusion', null)).toEqual([]);
+      expect(resolveField('vesselOcclusion', null)).toBeNull();
+      expect(resolveField('vesselOcclusion', { telestrokeNote: { vesselOcclusion: [] } })).toBeNull();
       expect(resolveField('vesselOcclusion', { telestrokeNote: { vesselOcclusion: ['ICA', 'M1'] } })).toEqual(['ICA', 'M1']);
 
       // Derived field: reperfusion
@@ -273,8 +278,15 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       // Operator in with array resolved
       const critInArray = { field: 'vesselOcclusion', operator: 'in', value: ['ICA', 'M1', 'M2'] };
       expect(evaluateCriterion(critInArray, { telestrokeNote: { vesselOcclusion: ['M1'] } })).toBe('met');
-      expect(evaluateCriterion(critInArray, { telestrokeNote: { vesselOcclusion: ['PCA'] } })).toBe('not_met');
+      // P1 is a documented out-of-set vessel. Unsupported labels, empty
+      // arrays and contradictory "None" plus vessel entries remain unknown.
+      expect(evaluateCriterion(critInArray, { telestrokeNote: { vesselOcclusion: ['P1'] } })).toBe('not_met');
+      expect(evaluateCriterion(critInArray, { telestrokeNote: { vesselOcclusion: ['None'] } })).toBe('not_met');
+      expect(evaluateCriterion(critInArray, { telestrokeNote: { vesselOcclusion: ['PCA'] } })).toBe('unknown');
       expect(evaluateCriterion(critInArray, { telestrokeNote: { vesselOcclusion: [] } })).toBe('unknown');
+      for (const vesselOcclusion of ['M1', {}, ['None', 'M1']]) {
+        expect(evaluateCriterion(critInArray, { telestrokeNote: { vesselOcclusion } })).toBe('unknown');
+      }
 
       // Operator truthy
       const critTruthy = { field: 'pregnancy', operator: 'truthy', value: true };
@@ -282,12 +294,19 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       expect(evaluateCriterion(critTruthy, { pregnancy: false })).toBe('not_met');
       expect(evaluateCriterion(critTruthy, {})).toBe('unknown');
       expect(evaluateCriterion(critTruthy, { pregnancy: null })).toBe('unknown');
+      for (const pregnancy of ['false', 'true', '0', '1', '', ' ', 0, 1, [], {}]) {
+        expect(evaluateCriterion(critTruthy, { pregnancy })).toBe('unknown');
+      }
 
       // Operator present
       const critPresent = { field: 'ctpResults', operator: 'present', value: ['mismatch', 'penumbra'] };
       expect(evaluateCriterion(critPresent, { telestrokeNote: { ctpResults: 'Favorable mismatch profile' } })).toBe('met');
       expect(evaluateCriterion(critPresent, { telestrokeNote: { ctpResults: 'Penumbra volume 85mL' } })).toBe('met');
-      expect(evaluateCriterion(critPresent, { telestrokeNote: { ctpResults: 'Dense completed infarct, no salvageable tissue' } })).toBe('not_met');
+      // Unrelated prose is not a structured negative assessment of either
+      // modeled term. Explicit negation and uncertainty are distinct.
+      expect(evaluateCriterion(critPresent, { telestrokeNote: { ctpResults: 'Dense completed infarct, no salvageable tissue' } })).toBe('unknown');
+      expect(evaluateCriterion(critPresent, { telestrokeNote: { ctpResults: 'No mismatch or penumbra' } })).toBe('not_met');
+      expect(evaluateCriterion(critPresent, { telestrokeNote: { ctpResults: 'Possible mismatch' } })).toBe('unknown');
       expect(evaluateCriterion(critPresent, {})).toBe('unknown');
     });
 
@@ -302,7 +321,8 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       expect(r1.counts.unknown).toBeGreaterThan(0);
 
       // Case 2: Patient matching all inclusion criteria (MeVO domain:
-      // M2 occlusion with NIHSS >=8, age >=18, mRS <=2, within 24 h)
+      // documented suspected AIS, non-dominant M2 occlusion with NIHSS >=8,
+      // age >=18, mRS <=2, within 24 h)
       const perfectStepEvtPatient = {
         telestrokeNote: {
           age: 65,
@@ -311,6 +331,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
           vesselOcclusion: ['M2'],
           disablingDeficit: true
         },
+        acuteIschemicStroke: true,
         culpritM2Dominance: 'non-dominant',
         aspectsScore: 8,
         hoursFromLKW: 6.0,
@@ -321,6 +342,17 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       const r2 = evaluateActiveTrial(stepEvtTrial, perfectStepEvtPatient);
       expect(r2.status).toBe('needs_info'); // Partial modeled match still requires protocol/team confirmation.
       expect(r2.counts.not_met).toBe(0);
+      expect(r2.counts.unknown).toBe(0);
+      expect(r2.counts.met).toBe(6);
+
+      // Encounter's combined ischemic/TIA category does not establish AIS.
+      const unassessedDiagnosis = evaluateActiveTrial(stepEvtTrial, {
+        ...perfectStepEvtPatient,
+        acuteIschemicStroke: undefined,
+        telestrokeNote: { ...perfectStepEvtPatient.telestrokeNote, diagnosisCategory: 'ischemic' }
+      });
+      expect(unassessedDiagnosis.status).toBe('needs_info');
+      expect(unassessedDiagnosis.counts.unknown).toBe(1);
 
       // Case 3: Exclusion triggered (e.g. hemorrhage: true) -> must force not_eligible
       const excludedStepEvtPatient = {
@@ -373,7 +405,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
       for (const key of keys) {
         const trialResult = result[key];
         expect(trialResult.trialId).toBeDefined();
-        expect(['eligible', 'needs_info', 'not_eligible', 'pending']).toContain(trialResult.status);
+        expect(['needs_info', 'not_eligible', 'pending']).toContain(trialResult.status);
         expect(Array.isArray(trialResult.criteria)).toBe(true);
         expect(typeof trialResult.metCount).toBe('number');
         expect(typeof trialResult.notMetCount).toBe('number');
@@ -734,7 +766,7 @@ describe('Phase 2 Tier 5 Adversarial Coverage Hardening Suite', () => {
         cwd: REPO_ROOT,
         encoding: 'utf8'
       });
-      expect(res).toContain('42/42 criteria (100%)');
+      expect(res).toContain('47/47 criteria (100%)');
       expect(res).toContain('14/14 exclusions (100%)');
       expect(res).toContain('Evidence Atlas validation passed');
     });

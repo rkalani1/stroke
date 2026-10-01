@@ -22,10 +22,10 @@ const reviewedNumber = (value) => {
 //   Group B: age <80, NIHSS >=10, core <31 mL
 //   Group C: age <80, NIHSS >=20, core <51 mL
 export const evaluateDAWN = ({ age, nihss, coreMl, timeFromLKWh } = {}) => {
-  const a = parseFloat(age);
-  const n = parseFloat(nihss);
-  const c = parseFloat(coreMl);
-  const t = parseFloat(timeFromLKWh);
+  const a = reviewedNumber(age);
+  const n = reviewedNumber(nihss);
+  const c = reviewedNumber(coreMl);
+  const t = reviewedNumber(timeFromLKWh);
   if (![a, n, c, t].every(Number.isFinite) || a <= 0 || a > 120 || !Number.isInteger(n) || n < 0 || n > 42 || c < 0 || t < 0) return null;
   if (Number.isFinite(t) && (t < 6 || t > 24)) {
     return { eligible: false, tier: null, reason: `Outside DAWN window (6-24h); LKW ${t}h`, meetsImaging: false, meetsClinical: false };
@@ -53,11 +53,11 @@ export const evaluateDAWN = ({ age, nihss, coreMl, timeFromLKWh } = {}) => {
 // Hypoperfused volume is TOTAL Tmax >6s volume, including the core.
 // `penumbraMl` is a legacy name for that total, not salvageable-only volume.
 export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, hypoperfusedMl, timeFromLKWh, nihss, age } = {}) => {
-  const c = parseFloat(coreMl);
-  const p = parseFloat(hypoperfusedMl ?? penumbraMl);
-  const t = parseFloat(timeFromLKWh);
-  const n = parseFloat(nihss);
-  const a = parseFloat(age);
+  const c = reviewedNumber(coreMl);
+  const p = reviewedNumber(hypoperfusedMl ?? penumbraMl);
+  const t = reviewedNumber(timeFromLKWh);
+  const n = reviewedNumber(nihss);
+  const a = reviewedNumber(age);
   if (![c, p, t, n, a].every(Number.isFinite) || c < 0 || p < c || t < 0 || !Number.isInteger(n) || n < 0 || n > 42 || a <= 0 || a > 120) return null;
   if (Number.isFinite(t) && (t < 6 || t > 16)) {
     return { eligible: false, reason: `Outside DEFUSE-3 window (6-16h); LKW ${t}h`, meetsCore: c < 70, meetsMismatch: false };
@@ -113,13 +113,13 @@ export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, hypoperfusedMl, timeFromLK
 //   cyp2c19LOF       — boolean: known *2/*3 LOF carrier (CHANCE-2)
 //   ichRisk          — 'high' to suppress DAPT
 //   timeFromOnsetH   — required number of hours from symptom onset; INSPIRES requires <=72h
-export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, lvdSymptomatic, cyp2c19LOF, ichRisk, timeFromOnsetH } = {}) => {
-  const n = parseFloat(nihss);
-  const ab = parseFloat(abcd2);
-  const tH = parseFloat(timeFromOnsetH);
+export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, lvdSymptomatic, cyp2c19LOF, ichRisk, timeFromOnsetH, noncardioembolicConfirmed, hemorrhageExcluded, reperfusionExcluded, antiplateletContraindicationsReviewed } = {}) => {
+  const n = reviewedNumber(nihss);
+  const ab = reviewedNumber(abcd2);
+  const tH = reviewedNumber(timeFromOnsetH);
   const isTIA = strokeType === 'tia';
-  const isMinor = !isTIA && Number.isInteger(n) && n >= 0 && n <= 3;
-  const isUpToModerate = !isTIA && Number.isInteger(n) && n >= 0 && n <= 5;
+  const isMinor = strokeType === 'ischemic' && Number.isInteger(n) && n >= 0 && n <= 3;
+  const isUpToModerate = strokeType === 'ischemic' && Number.isInteger(n) && n >= 0 && n <= 5;
   const inInspiresWindow = tH <= 72;
   const inLegacyWindow = tH <= 24;
   const highRisk = Number.isFinite(ab) && ab >= 4;
@@ -127,7 +127,7 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
   const isAtherosclerotic = atherosclerotic === true || lvdSymptomatic === true;
 
   if (ichRisk === 'high') {
-    return { regimen: 'single-antiplatelet', rationale: 'High hemorrhagic risk — DAPT not recommended.', duration: null, source: null };
+    return { regimen: 'individualized-review', rationale: 'High hemorrhagic risk requires an individualized antithrombotic plan. This does not establish that even single antiplatelet therapy is safe.', duration: null, dosing: null, source: null };
   }
 
   // V3 — empty/invalid input guard. With no usable severity input (NIHSS for
@@ -136,7 +136,7 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
   // Show a neutral prompt instead. Once a valid NIHSS (or ABCD² for TIA) is
   // entered, the branches below compute normally.
   const severityValid = isTIA ? Number.isInteger(ab) && ab >= 0 && ab <= 7 : Number.isInteger(n) && n >= 0 && n <= 42;
-  if (!severityValid || !Number.isFinite(tH) || tH < 0) {
+  if (!['ischemic', 'tia'].includes(strokeType) || !severityValid || !Number.isFinite(tH) || tH < 0) {
     return {
       regimen: '—',
       rationale: 'Enter valid NIHSS (0–42) for stroke or ABCD² (0–7) for TIA and hours since onset. Confirm noncardioembolic mechanism, hemorrhage exclusion, and reperfusion/bleeding considerations separately.',
@@ -144,6 +144,8 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
       source: null
     };
   }
+
+  if (![noncardioembolicConfirmed, hemorrhageExcluded, reperfusionExcluded, antiplateletContraindicationsReviewed].every(v => v === true)) return { regimen: '—', duration: null, dosing: null, rationale: 'Confirm noncardioembolic mechanism, hemorrhage exclusion, no reperfusion treatment, and antiplatelet contraindication review before selecting a modeled DAPT regimen.', source: 'AHA/ASA 2026 AIS §4.7' };
 
   // THALES: ticagrelor+ASA x 30d (Class 2b, 2021) for NIHSS 4-5 noncardioembolic stroke without a presumed atherosclerotic cause, within 24h.
   // NIHSS 0-3 and high-risk TIA fall through to CHANCE/POINT (Class 1 clopidogrel+ASA); atherosclerotic NIHSS 4-5 falls through to the INSPIRES branch (clopidogrel+ASA).
@@ -160,16 +162,12 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
 
   // INSPIRES branch: NIHSS 4-5 within 72h (extended window beyond CHANCE/POINT), or atherosclerotic LVD ≥50%.
   if (isAtherosclerotic && inInspiresWindow && ((isUpToModerate && n >= 4) || (tH > 24 && (isMinor || (isTIA && highRisk))))) {
-    const useTicagrelor = cyp2c19LOF === true;
     return {
-      regimen: useTicagrelor ? 'ticagrelor+ASA (CYP2C19 LOF — CHANCE-2 extrapolation)' : 'clopidogrel+ASA',
-      duration: '21 days',
-      dosing: useTicagrelor
-        ? 'Ticagrelor 180 mg load then 90 mg BID + ASA 75-100 mg daily (off-label INSPIRES extrapolation)'
-        : 'Clopidogrel 300-600 mg load then 75 mg daily + ASA 75-100 mg daily',
-      rationale: `INSPIRES-style screen: ${isTIA ? `high-risk TIA (ABCD² ${ab})` : `NIHSS ${n}`} within ${tH}h and presumed atherosclerotic cause. Verify qualifying stenosis/multiple infarcts, age 35–80, and no thrombolysis/thrombectomy. Aspirin was given for 21 days and clopidogrel through day 90; bleeding increased.`,
-      source: 'Gao NEJM 2023;389:2413-24 (INSPIRES, PMID 38157499); CYP2C19 branch CHANCE-2 NEJM 2021',
-      class: useTicagrelor ? 'Not a guideline-specified regimen: extrapolates CHANCE-2 (CYP2C19 LOF carriers, NIHSS ≤3 or high-risk TIA, started within 24h) to an INSPIRES-type 24-72h population' : 'Class 2a (2026 AHA/ASA AIS guideline): clopidogrel+ASA for 21 days, then single antiplatelet therapy, is reasonable for noncardioembolic minor stroke (NIHSS ≤5) or high-risk TIA (ABCD² ≥4) of presumed atherosclerotic cause 24-72h after onset (or NIHSS 4-5 within 24h) in patients who did not receive IVT. The 2021 Class 1 DAPT recommendation covers NIHSS ≤3 / ABCD² ≥4 only.'
+      regimen: 'clopidogrel+ASA', duration: '21 days',
+      dosing: 'Clopidogrel 300 mg load then 75 mg daily; aspirin 100–300 mg on day 1 then 100 mg daily for 21 days (INSPIRES trial regimen)',
+      rationale: `INSPIRES-style screen: ${isTIA ? `high-risk TIA (ABCD² ${ab})` : `NIHSS ${n}`} within ${tH}h and presumed atherosclerotic cause. Verify qualifying stenosis/multiple infarcts, age 35–80, and all exclusions. Clopidogrel continued through day 90; bleeding increased. A CYP2C19 result does not validate substituting the CHANCE-2 regimen in this extended population.`,
+      source: 'Gao NEJM 2023;389:2413–24 (INSPIRES, PMID 38157499); AHA/ASA 2026 AIS §4.7',
+      class: 'Class 2a/B-R for selected noncardioembolic minor stroke or high-risk TIA with presumed atherosclerotic cause; a partial screen, not complete treatment eligibility'
     };
   }
 
@@ -186,7 +184,7 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
         ? 'Known CYP2C19 LOF carrier — CHANCE-2 showed ticagrelor+ASA superior to clopidogrel+ASA.'
         : `${isTIA ? `High-risk TIA (ABCD² ${ab} ≥4)` : `Minor stroke (NIHSS ${n} ≤3)`} within ${tH}h: CHANCE/POINT showed reduced 90-d stroke risk. Truncate DAPT at 21 d to minimize bleeding.`,
       source: useTicagrelor ? 'Wang NEJM 2021;385:2520-30 (CHANCE-2)' : 'Wang NEJM 2013;369:11-19 (CHANCE); Johnston NEJM 2018;379:215-25 (POINT)',
-      class: useTicagrelor ? 'Class 2b, 2026 AHA/ASA AIS guideline (needs confirmation); CHANCE-2 postdates the 2021 secondary-prevention guideline' : 'Class 1 (AHA/ASA 2021 secondary prevention)'
+      class: useTicagrelor ? 'Class 2b/B-R, 2026 AHA/ASA AIS §4.7; CHANCE-2 postdates the 2021 secondary-prevention guideline' : 'Class 1 (AHA/ASA 2021 secondary prevention)'
     };
   }
 
@@ -219,9 +217,11 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
 // Points: age 65-75 = 1, age >75 = 2, HTN = 1, DM = 1, prior MI = 1, other CV disease (except MI and AF) = 1,
 //         PAD = 1, current or past (<5 years) smoking = 1, prior TIA/ischemic stroke in addition to the qualifying event = 1. Max 9.
 // >=3 = high annual recurrent-stroke risk (≈4%/yr vs 2%/yr overall).
-export const calculateESSEN = ({ age, hypertension, diabetes, priorMI, otherCV, pad, smoker, priorTIA }) => {
+export const calculateESSEN = ({ age, hypertension, diabetes, priorMI, otherCV, pad, smoker, priorTIA } = {}) => {
+  const ageValue = reviewedNumber(age); if (ageValue === null || ageValue < 18 || ageValue > 120) return null;
+  if (![hypertension, diabetes, priorMI, otherCV, pad, smoker, priorTIA].every(v => typeof v === 'boolean')) return null;
   let score = 0;
-  const a = parseFloat(age);
+  const a = reviewedNumber(age);
   if (Number.isFinite(a)) {
     // Published brackets: 65-75 = 1 point, >75 = 2 points — age exactly 75
     // falls in the 65-75 bracket (Weimar Stroke 2009, PMID 19023098).
@@ -248,9 +248,11 @@ export const calculateESSEN = ({ age, hypertension, diabetes, priorMI, otherCV, 
 // coronary artery disease = 1.
 // Risk groups (pooled 2-year stroke-or-death across 3 validation cohorts):
 // Group I = 0-3 (10%), Group II = 4-7 (19%), Group III = 8-15 (31%).
-export const calculateSPI2 = ({ age, hypertension, diabetes, cad, priorStroke, chf, indexEventStroke }) => {
+export const calculateSPI2 = ({ age, hypertension, diabetes, cad, priorStroke, chf, indexEventStroke } = {}) => {
+  const ageValue = reviewedNumber(age); if (ageValue === null || ageValue < 18 || ageValue > 120) return null;
+  if (![hypertension, diabetes, cad, priorStroke, chf, indexEventStroke].every(v => typeof v === 'boolean')) return null;
   let score = 0;
-  const a = parseFloat(age);
+  const a = reviewedNumber(age);
   if (chf) score += 3;
   if (diabetes) score += 3;
   if (priorStroke) score += 3;
@@ -277,7 +279,8 @@ export const calculateSPI2 = ({ age, hypertension, diabetes, cad, priorStroke, c
 // from onset <2.5 h: +2. Range 0-5. Published dichotomization: BAT ≥3
 // predicts hematoma expansion with sensitivity 0.50 and specificity 0.89
 // (c-statistic 0.77 development; 0.65/0.70 in validation cohorts).
-export const calculateBAT = ({ blendSign, hypodensity, timeToCTHours }) => {
+export const calculateBAT = ({ blendSign, hypodensity, timeToCTHours } = {}) => {
+  if (![blendSign, hypodensity].every(v => typeof v === 'boolean') || reviewedNumber(timeToCTHours) === null || reviewedNumber(timeToCTHours) < 0) return null;
   let score = 0;
   const t = parseFloat(timeToCTHours);
   if (blendSign) score += 1;
@@ -300,7 +303,8 @@ export const calculateBAT = ({ blendSign, hypodensity, timeToCTHours }) => {
 //   I = Intraventricular haemorrhage: 2
 //   N = Number of hours onset→baseline CT: ≤1 = 5, 1-2 = 4, 2-3 = 3, 3-4 = 2, 4-5 = 1, >5 = 0
 // Predicted probability of growth ranges 3.4% (0 pts) to 85.8% (24 pts).
-export const calculateBRAIN = ({ volumeMl, recurrentICH, anticoagulated, ivh, onsetToCTHours }) => {
+export const calculateBRAIN = ({ volumeMl, recurrentICH, anticoagulated, ivh, onsetToCTHours } = {}) => {
+  if (![recurrentICH, anticoagulated, ivh].every(v => typeof v === 'boolean') || reviewedNumber(volumeMl) === null || reviewedNumber(volumeMl) < 0 || reviewedNumber(onsetToCTHours) === null || reviewedNumber(onsetToCTHours) < 0) return null;
   let score = 0;
   const v = parseFloat(volumeMl);
   const t = parseFloat(onsetToCTHours);
@@ -318,9 +322,9 @@ export const calculateBRAIN = ({ volumeMl, recurrentICH, anticoagulated, ivh, on
   }
   return {
     score,
-    // Coarse label over the 0-24 range (source reports a continuous probability,
-    // not named bands): low <8, moderate 8-15, high >15.
-    risk: score > 15 ? 'high' : score >= 8 ? 'moderate' : 'low',
+    // The primary model does not validate the former app-created risk bands.
+    risk: null,
+    riskInterpretation: 'No categorical risk band is assigned; use the original model and its population.',
     expansionNote: 'Predicts ≥6 mL hematoma growth at 24 h; probability rises from ~3.4% (0 pts) to ~85.8% (24 pts)',
     source: 'Wang X et al. Stroke 2015;46:376-381 (BRAIN score; PMID 25503550)'
   };
@@ -333,14 +337,15 @@ export const calculateBRAIN = ({ volumeMl, recurrentICH, anticoagulated, ivh, on
 // Baseline ICH volume: <30 mL = 0, 30-60 mL = 1, >60 mL = 2. Max 9.
 // Risk strata: 0 = low (5.7% expansion), 1-3 = medium (12.4%), 4-9 = high
 // (36.4%; 80% at score 9). Expansion = >6 mL or >33% growth.
-export const calculateNinePoint = ({ warfarin, spotSign, volumeMl, onsetToCTHours }) => {
+export const calculateNinePoint = ({ warfarin, spotSign, volumeMl, onsetToCTHours } = {}) => {
+  if (typeof warfarin !== 'boolean' || ![true, false, 'unavailable'].includes(spotSign) || reviewedNumber(volumeMl) === null || reviewedNumber(volumeMl) < 0 || reviewedNumber(onsetToCTHours) === null || reviewedNumber(onsetToCTHours) < 0) return null;
   let score = 0;
   const v = parseFloat(volumeMl);
   const t = parseFloat(onsetToCTHours);
   if (warfarin) score += 2;
   if (Number.isFinite(t) && t <= 6) score += 2;
   // spotSign is tri-state: true = present (3), false = absent (0),
-  // 'unavailable' / undefined / null = no baseline CTA performed (1).
+  // Explicit 'unavailable' = no baseline CTA performed (1); missing is unknown.
   if (spotSign === true) score += 3;
   else if (spotSign !== false) score += 1;
   if (Number.isFinite(v)) {
@@ -364,18 +369,19 @@ export const calculateNinePoint = ({ warfarin, spotSign, volumeMl, onsetToCTHour
 // Red: WFNS 4-5 (any mFisher). WFNS 3 + mFisher 1-2 satisfies NONE of the
 // published categories — a recognized gap in the original scheme — and is
 // returned as 'Unclassified' rather than silently coerced to Yellow.
-export const calculateVASOGRADE = ({ wfns, modifiedFisher }) => {
+export const calculateVASOGRADE = ({ wfns, modifiedFisher } = {}) => {
+  if (![reviewedNumber(wfns), reviewedNumber(modifiedFisher)].every(Number.isInteger) || reviewedNumber(wfns) < 1 || reviewedNumber(wfns) > 5 || reviewedNumber(modifiedFisher) < 0 || reviewedNumber(modifiedFisher) > 4) return null;
   const w = parseFloat(wfns);
   const m = parseFloat(modifiedFisher);
   if (!Number.isFinite(w) || !Number.isFinite(m)) return null;
   let grade; let risk;
   if (w >= 4) { grade = 'Red'; risk = 'high'; }
-  else if (w <= 2 && m <= 2) { grade = 'Green'; risk = 'low'; }
+  else if (w <= 2 && m >= 1 && m <= 2) { grade = 'Green'; risk = 'low'; }
   else if (w <= 3 && m >= 3) { grade = 'Yellow'; risk = 'moderate'; }
   else {
     grade = 'Unclassified';
     risk = 'indeterminate';
-    return { grade, risk, note: 'WFNS 3 with modified Fisher 1-2 is not classified by the published VASOGRADE definitions — use clinical judgment and full DCI risk assessment.', source: 'de Oliveira Manoel Stroke 2015;46:1826-31 (PMID 25977276)' };
+    return { grade, risk, note: 'This WFNS / modified Fisher combination is not classified by the published VASOGRADE definitions — use clinical judgment and full DCI risk assessment.', source: 'de Oliveira Manoel Stroke 2015;46:1826-31 (PMID 25977276)' };
   }
   return { grade, risk, source: 'de Oliveira Manoel Stroke 2015;46:1826-31 (PMID 25977276)' };
 };
@@ -385,8 +391,12 @@ export const calculateVASOGRADE = ({ wfns, modifiedFisher }) => {
 // Factors, 1 point each: age >50; Hunt-Hess IV-V; Fisher 3-4; aneurysm size
 // >10 mm; GIANT (≥25 mm) POSTERIOR-circulation lesion (both conditions
 // combined — not either alone; the >10 mm size point is separate).
-export const calculateOgilvyCarter = ({ age, huntHess, fisher, size, giantPosterior, posteriorCirculation }) => {
-  const a = parseFloat(age);
+export const calculateOgilvyCarter = ({ age, huntHess, fisher, size, giantPosterior, posteriorCirculation } = {}) => {
+  const ageValue = reviewedNumber(age); if (ageValue === null || ageValue < 18 || ageValue > 120) return null;
+  if (!Number.isInteger(reviewedNumber(huntHess)) || reviewedNumber(huntHess) < 1 || reviewedNumber(huntHess) > 5 || !Number.isInteger(reviewedNumber(fisher)) || reviewedNumber(fisher) < 1 || reviewedNumber(fisher) > 4 || reviewedNumber(size) === null || reviewedNumber(size) <= 0 || (typeof giantPosterior !== 'boolean' && typeof posteriorCirculation !== 'boolean')) return null;
+  if (giantPosterior === true && (reviewedNumber(size) < 25 || posteriorCirculation === false)) return null;
+  if (giantPosterior === false && posteriorCirculation === true && reviewedNumber(size) >= 25) return null;
+  const a = reviewedNumber(age);
   const hh = parseFloat(huntHess);
   const f = parseFloat(fisher);
   const sz = parseFloat(size);
@@ -408,15 +418,15 @@ export const calculateOgilvyCarter = ({ age, huntHess, fisher, size, giantPoster
 
 // PHQ-9 interpretation
 export const interpretPHQ9 = (score) => {
-  const s = parseFloat(score);
-  if (!Number.isFinite(s) || s < 0 || s > 27) return null;
+  const s = reviewedNumber(score);
+  if (!Number.isInteger(s) || s < 0 || s > 27) return null;
   let severity, action;
-  if (s <= 4) { severity = 'none'; action = 'No treatment needed; monitor.'; }
+  if (s <= 4) { severity = 'none'; action = 'Minimal reported symptoms; assess function, clinical history and safety before deciding follow-up or treatment.'; }
   else if (s <= 9) { severity = 'mild'; action = 'Watchful waiting; repeat PHQ-9 at follow-up.'; }
   else if (s <= 14) { severity = 'moderate'; action = 'Consider treatment (psychotherapy and/or an antidepressant such as an SSRI); no single agent is established as first-line for post-stroke depression.'; }
   else if (s <= 19) { severity = 'moderately-severe'; action = 'Active treatment with pharmacotherapy and psychotherapy.'; }
   else { severity = 'severe'; action = 'Immediate initiation of antidepressant and/or psychotherapy; assess for suicidality.'; }
-  return { score: s, severity, action, source: 'Kroenke JGIM 2001;16:606-13' };
+  return { score: s, severity, action, safetyNote: 'A total score is not a diagnosis or a suicide-risk assessment. Review item 9 and any safety concern separately at every score.', source: 'Kroenke JGIM 2001;16:606-13; PHQ-9 instruction manual' };
 };
 
 // mRS-9Q structured interpretation (Patel N et al. Neurosurgery 2012;71:971-5, PMID 22843133). Bruno et al. Stroke 2010;41:1048-50 is the separate simplified mRS questionnaire (smRSq).
@@ -429,7 +439,9 @@ export const interpretPHQ9 = (score) => {
 //   mRS 0 = no symptoms
 // Earlier implementation incorrectly mapped q5WalkingUnaided=false to mRS 3 even
 // though the mRS 3 description requires walking unassisted — fixed in v5.33.0.
-export const interpretMRS9Q = ({ q1Symptoms, q2BowelBladder, q3Dressing, q4Walking, q5WalkingUnaided, q6Work, q7Chores, q8Hobbies, q9NeedsHelp }) => {
+export const interpretMRS9Q = ({ q1Symptoms, q2BowelBladder, q3Dressing, q4Walking, q5WalkingUnaided, q6Work, q7Chores, q8Hobbies, q9NeedsHelp } = {}) => {
+  if (![q1Symptoms, q2BowelBladder, q3Dressing, q4Walking, q5WalkingUnaided, q6Work, q7Chores, q8Hobbies].every(v => typeof v === 'boolean') || !['none', 'some', 'constant', 'bedridden'].includes(q9NeedsHelp)) return null;
+  if (q9NeedsHelp === 'some' && q2BowelBladder === false && q3Dressing === false && q4Walking === true && q5WalkingUnaided === true) return null; // Reconcile an explicit help need with the otherwise independent answers.
   if (q9NeedsHelp === 'bedridden') return { mrs: 5, description: 'Severe disability: bedridden, requires constant nursing care.' };
   if (q9NeedsHelp === 'constant') return { mrs: 5, description: 'Severe disability: requires constant nursing care and attention.' };
   // mRS 4 — cannot walk without assistance (regardless of bowel/bladder or dressing status).
@@ -468,9 +480,11 @@ export const calculateNASCET = ({ stenosisDiameterMm, distalICADiameterMm, sympt
 };
 
 // CHA2DS2-VA (2024 ESC update — dropped sex)
-export const calculateCHADS2VA = ({ chf, hypertension, age, diabetes, strokeTia, vascular }) => {
+export const calculateCHADS2VA = ({ chf, hypertension, age, diabetes, strokeTia, vascular } = {}) => {
+  const ageValue = reviewedNumber(age); if (ageValue === null || ageValue < 18 || ageValue > 120) return null;
+  if (![chf, hypertension, diabetes, strokeTia, vascular].every(v => typeof v === 'boolean')) return null;
   let score = 0;
-  const a = parseFloat(age);
+  const a = reviewedNumber(age);
   if (chf) score += 1;
   if (hypertension) score += 1;
   if (Number.isFinite(a)) { if (a >= 75) score += 2; else if (a >= 65) score += 1; }
@@ -490,9 +504,11 @@ export const calculateCHADS2VA = ({ chf, hypertension, age, diabetes, strokeTia,
 // Kwong et al., Cardiology 2017 (PMID 28654919).
 // HTN 2, age ≥75 2, valvular disease 2, peripheral vascular disease 1,
 // obesity 1, CHF 4, CAD 2. Risk bands: low 0-4, medium 5-9, high 10-14.
-export const calculateHAVOC = ({ hypertension, age, valvularDisease, peripheralVascularDisease, obesity, heartFailure, coronaryArteryDisease }) => {
+export const calculateHAVOC = ({ hypertension, age, valvularDisease, peripheralVascularDisease, obesity, heartFailure, coronaryArteryDisease } = {}) => {
+  const ageValue = reviewedNumber(age); if (ageValue === null || ageValue < 18 || ageValue > 120) return null;
+  if (![hypertension, valvularDisease, peripheralVascularDisease, obesity, heartFailure, coronaryArteryDisease].every(v => typeof v === 'boolean')) return null;
   let score = 0;
-  const a = parseFloat(age);
+  const a = reviewedNumber(age);
   if (hypertension) score += 2;
   if (Number.isFinite(a) && a >= 75) score += 2;
   if (valvularDisease) score += 2;
@@ -504,11 +520,7 @@ export const calculateHAVOC = ({ hypertension, age, valvularDisease, peripheralV
   return {
     score,
     riskBand,
-    monitoringStrategy: riskBand === 'high'
-      ? 'High HAVOC risk: prolonged rhythm monitoring; consider implantable cardiac monitor when external monitoring is negative or rapid ICM access is available.'
-      : riskBand === 'medium'
-        ? 'Medium HAVOC risk: at least 30-day external monitoring; escalate to ICM when suspicion remains high or monitoring is unrevealing.'
-        : 'Low HAVOC risk: standard telemetry plus outpatient monitoring guided by cryptogenic/ESUS mechanism and clinical suspicion.',
+    monitoringStrategy: 'HAVOC predicts AF detection risk; the score does not establish a monitoring duration or device indication. Select monitoring using stroke mechanism, prior testing, clinical suspicion and patient preference.',
     source: 'HAVOC score, Kwong et al. Cardiology 2017 (PMID 28654919)'
   };
 };
@@ -516,29 +528,28 @@ export const calculateHAVOC = ({ hypertension, age, valvularDisease, peripheralV
 // =====================================================================
 // Post-stroke driving / return-to-activity (heuristic — not a validated score)
 // =====================================================================
-export const recommendDriving = ({ strokeType, severity, cognitiveDeficit, visualField, motorDeficit, seizure }) => {
+export const recommendDriving = ({ strokeType, cognitiveDeficit, visualField, motorDeficit, seizure } = {}) => {
   const blockers = [];
-  if (seizure) blockers.push('Post-stroke seizure within past 6 months');
-  if (cognitiveDeficit) blockers.push('Persistent cognitive deficit (MoCA <26 or attention/executive deficit)');
-  if (visualField) blockers.push('Visual field cut (hemianopia or quadrantanopia)');
-  if (motorDeficit === 'severe') blockers.push('Severe motor deficit of dominant hand or either leg');
-  const waitWeeks = strokeType === 'tia' ? 2 : severity === 'minor' ? 4 : 8;
+  if (seizure === true) blockers.push('A seizure requires clinical and jurisdiction-specific licensing review');
+  if (cognitiveDeficit === true) blockers.push('Cognitive deficit requires functional driving assessment');
+  if (visualField === true) blockers.push('Visual field deficit requires visual and licensing assessment');
+  if (motorDeficit === 'severe') blockers.push('Severe motor deficit requires functional assessment');
   return {
-    mayDrive: blockers.length === 0,
+    mayDrive: blockers.length ? false : null,
     blockers,
-    minWait: `${waitWeeks} weeks minimum`,
-    guidance: blockers.length === 0
-      ? `Patient may resume driving after minimum ${waitWeeks}-week observation if symptom-free. Recommend formal driving evaluation for any residual deficit or commercial drivers.`
-      : `Driving NOT recommended until: ${blockers.join('; ')}. Refer to rehabilitation medicine / occupational therapy for formal driving evaluation.`,
-    commercialDriver: 'Interstate commercial (CMV) drivers must be certified by a medical examiner on the FMCSA National Registry under 49 CFR 391.41: an established epilepsy diagnosis, or another condition likely to cause loss of consciousness or loss of ability to control a CMV, is disqualifying unless FMCSA grants an exemption (FMCSA epilepsy exemption guidance cites 8 seizure-free years, on or off medication), and residual deficits must not compromise safe driving. Intrastate rules vary by state; confirm current FMCSA rules.',
-    source: 'Heuristic only (not a validated score); waiting periods vary by jurisdiction — follow local licensing regulations and formal driving evaluation'
+    minWait: null,
+    guidance: 'This input does not establish fitness or legal permission to drive. Confirm jurisdiction, licence class, event date, recurrence or seizure history, and visual, cognitive and motor function. Follow local restrictions and arrange a formal driving evaluation when indicated.',
+    commercialDriver: 'Commercial licence standards differ from private-driver standards; obtain the applicable licensing and medical-certification assessment.',
+    source: 'Canadian Stroke Best Practices 2025, Health Management and Return to Driving §4; local licensing authority',
+    sourceUrl: 'https://www.strokebestpractices.ca/recommendations/activity-participation-following-stroke/4-health-management-return-to-vocational-roles'
   };
 };
 
 // =====================================================================
 // Dysphagia screens (simple decision logic)
 // =====================================================================
-export const interpretBarnesJewishDysphagia = ({ gcs15, canSitUpright, lowerFacialAsymmetry, tongueAsymmetry, palatalAsymmetry, throatClearing, coughOnWater3oz, voiceChange }) => {
+export const interpretBarnesJewishDysphagia = ({ gcs15, canSitUpright, lowerFacialAsymmetry, tongueAsymmetry, palatalAsymmetry, throatClearing, coughOnWater3oz, voiceChange } = {}) => {
+  if (![gcs15, canSitUpright, lowerFacialAsymmetry, tongueAsymmetry, palatalAsymmetry, throatClearing, coughOnWater3oz, voiceChange].every(v => typeof v === 'boolean')) return { pass: null, reason: 'Screen incomplete or invalid', action: 'Do not infer a safe swallow from missing observations. Use the trained local screening pathway; stop before any water challenge when a prerequisite fails.' };
   if (!gcs15) return { pass: false, reason: 'Not fully alert (this tool requires GCS 15; the published BJH-SDS fails at GCS <13) — NPO, defer screen', action: 'Strict NPO; rescreen or SLP consult when alertness improves.' };
   if (!canSitUpright) return { pass: false, reason: 'Unable to sit upright', action: 'Strict NPO; reassess when mobility allows.' };
   if (lowerFacialAsymmetry || tongueAsymmetry || palatalAsymmetry) return { pass: false, reason: 'Lower facial, tongue, or palatal asymmetry/weakness — stop screen before any water is given', action: 'Patient fails: keep NPO including medications (arrange non-oral medication routes with pharmacy); order speech pathology evaluation; notify the primary team the patient remains NPO.' };
@@ -549,16 +560,17 @@ export const interpretBarnesJewishDysphagia = ({ gcs15, canSitUpright, lowerFaci
 // =====================================================================
 // VTE prophylaxis timing (CLOTS-3 / AHA-ASA 2022 ICH)
 // =====================================================================
-export const recommendVTEProphylaxis = ({ diagnosis, days, hematomaStable, immobile }) => {
+export const recommendVTEProphylaxis = ({ diagnosis, days, hematomaStable, immobile, aneurysmSecured } = {}) => {
+  const elapsed = reviewedNumber(days);
+  if (!['ich', 'ischemic', 'sah'].includes(diagnosis) || typeof immobile !== 'boolean' || elapsed === null || elapsed < 0) return { modality: 'assessment required', agent: null, rationale: 'Confirm diagnosis, mobility, elapsed time, bleeding risk and procedural plans; unknown inputs do not establish a prophylaxis plan.' };
+  if (!immobile) return { modality: 'individualized risk assessment', agent: null, rationale: 'Mobility alone does not exclude other VTE indications. Review overall risk and contraindications.' };
+  const ipc = 'IPC when appropriate and without contraindications';
   if (diagnosis === 'ich') {
-    if (days < 1) return { modality: 'mechanical (IPC) only', agent: 'Sequential compression devices', rationale: 'Day 0-1 ICH: IPC reduces DVT (CLOTS-3 Lancet 2013).' };
-    if (!hematomaStable) return { modality: 'mechanical only', agent: 'IPC', rationale: 'Unstable hematoma — defer chemical ppx; re-image and reassess.' };
-    return { modality: 'chemical + mechanical', agent: 'Enoxaparin 40 mg SC daily (or UFH 5000 U BID) + IPC', rationale: 'ICH, nonambulatory, from 24-48h onward with stable imaging: starting low-dose UFH or LMWH may be reasonable (Class 2b, LOE C-LD, AHA/ASA 2022 ICH); continue IPC.' };
+    if (elapsed < 1 || hematomaStable !== true) return { modality: 'mechanical prophylaxis review', agent: ipc, rationale: 'Nonambulatory ICH: IPC from diagnosis is recommended. Do not infer hematoma stability or readiness for heparin from missing imaging or elapsed time alone.' };
+    return { modality: 'chemical + mechanical prophylaxis review', agent: ipc, rationale: 'Low-dose UFH or LMWH at 24–48 hours after ICH onset may be reasonable (IIb/C-LD) after individualized stability and bleeding-risk review. This is not therapeutic anticoagulation timing. Select agent and dose using renal function, body weight and contraindications.' };
   }
-  if (diagnosis === 'ischemic' && immobile) return { modality: 'chemical ± mechanical', agent: 'Enoxaparin 40 mg SC daily (or UFH 5000 U TID) + IPC when possible', rationale: 'Ischemic stroke with impaired mobility: IPC in addition to routine care is recommended (Class 1, LOE B-R; CLOTS 3); prophylactic-dose SC heparin (UFH or LMWH) is reasonable to reduce VTE risk (Class 2a, LOE B-R), although a survival benefit is not well established (Class 2b, LOE A) per AHA/ASA 2026 AIS. Individualize timing after IVT/EVT based on bleeding risk.' };
-  if (diagnosis === 'sah') return { modality: 'mechanical until secured, then chemical 24h post-securing', agent: 'IPC, then enoxaparin 40 mg SC daily 24h after clip/coil if no bleeding', rationale: 'AHA/ASA aSAH 2023: mechanical ppx initially; chemical ppx 24h post-aneurysm securing.' };
-  if (immobile) return { modality: 'chemical ± mechanical', agent: 'Enoxaparin 40 mg SC daily (or UFH 5000 U BID) + IPC when possible', rationale: 'Non-ambulatory patient: VTE prophylaxis indicated; tailor agent to diagnosis and bleeding risk.' };
-  return { modality: 'ambulate', agent: 'None required', rationale: 'Ambulatory patient; no VTE ppx needed.' };
+  if (diagnosis === 'sah') return { modality: 'mechanical / chemical prophylaxis review', agent: ipc, rationale: aneurysmSecured === true ? 'After the ruptured aneurysm is secured, pharmacologic or mechanical VTE prophylaxis is recommended. The optimal pharmacologic timing relative to securing and neurosurgical procedures is uncertain; AHA/ASA 2023 does not mandate a universal 24-hour start.' : 'Confirm whether the ruptured aneurysm is secured and review bleeding and procedural risks before pharmacologic prophylaxis. Missing securing status is unresolved.' };
+  return { modality: 'chemical + mechanical prophylaxis review', agent: ipc, rationale: 'Nonambulatory ischemic stroke: IPC is recommended and prophylactic-dose heparin is reasonable to reduce VTE. Assess actual IVT/EVT exposure, follow-up imaging and bleeding risk before selecting timing and a renal-/weight-appropriate agent and dose.' };
 };
 
 // =====================================================================
@@ -742,7 +754,7 @@ export const evaluateLargeCoreEVT = (input = {}) => {
 //   mismatchRatio — penumbra/core ratio
 //   mismatchVolumeMl — penumbra - core
 export const recommendLateWindowLytic = ({ timeFromLKWh, evtAvailable, lvo, nihss, age, coreMl, mismatchRatio, mismatchVolumeMl } = {}) => {
-  const [t, n, a, c, r, v] = [timeFromLKWh, nihss, age, coreMl, mismatchRatio, mismatchVolumeMl].map(parseFloat);
+  const [t, n, a, c, r, v] = [timeFromLKWh, nihss, age, coreMl, mismatchRatio, mismatchVolumeMl].map(reviewedNumber);
   const source = 'TRACE-III NEJM 2024;391:203-12 (doi: 10.1056/NEJMoa2402980); AHA/ASA 2026 AIS guideline (doi: 10.1161/STR.0000000000000513)';
   if (!Number.isFinite(t) || t < 0) return { eligible: false, status: 'incomplete', reason: 'Enter a valid non-negative interval from last known well.', source };
   if (t <= 4.5) return { eligible: false, reason: 'Within the standard IVT window: assess the complete acute thrombolysis criteria. This extended-window screen does not determine standard-window eligibility.', source };
@@ -897,8 +909,8 @@ export const adjunctiveAntithromboticAdvisory = ({ ivLyticGiven, evtPlanned, lyt
 // Benefit DRIVEN BY LOBAR subgroup (basal ganglia stratum dropped after futility analysis).
 // Implication: lobar ICH ≥30 mL → call neurosurgery early for MIS evaluation.
 export const evaluateENRICHEligibility = ({ icHLocation, volumeMl, timeFromOnsetH, gcs, premorbidMRS, age, nihss } = {}) => {
-  const [v, g, a, t, pm, n] = [volumeMl, gcs, age, timeFromOnsetH, premorbidMRS, nihss].map(parseFloat);
-  const loc = (icHLocation || '').trim().toLowerCase();
+  const [v, g, a, t, pm, n] = [volumeMl, gcs, age, timeFromOnsetH, premorbidMRS, nihss].map(reviewedNumber);
+  const loc = typeof icHLocation === 'string' ? icHLocation.trim().toLowerCase() : '';
   if (![v, g, a, t, pm, n].every(Number.isFinite) || !loc || v < 0 || t < 0 || !Number.isInteger(g) || g < 3 || g > 15 || !Number.isInteger(pm) || pm < 0 || pm > 6 || !Number.isInteger(n) || n < 0 || n > 42 || a <= 0) {
     return { eligible: false, status: 'incomplete', rationale: 'Enter valid location, volume, age, GCS, NIHSS, premorbid mRS, and hours since onset before applying the ENRICH screen.' };
   }
@@ -931,8 +943,8 @@ export const evaluateENRICHEligibility = ({ icHLocation, volumeMl, timeFromOnset
 // SWITCH: 201 randomized; stopped early for funding. Primary mRS 5–6 at 180d
 // 44% vs 58%, aRR 0.77 (95% CI 0.59–1.01), p=0.057: weak evidence, not proof.
 export const evaluateSWITCHEligibility = ({ icHLocation, volumeMl, gcs, timeFromOnsetH, age, premorbidMRS, nihss, clotStable } = {}) => {
-  const [v, g, t, a, pm, n] = [volumeMl, gcs, timeFromOnsetH, age, premorbidMRS, nihss].map(parseFloat);
-  const loc = (icHLocation || '').trim().toLowerCase();
+  const [v, g, t, a, pm, n] = [volumeMl, gcs, timeFromOnsetH, age, premorbidMRS, nihss].map(reviewedNumber);
+  const loc = typeof icHLocation === 'string' ? icHLocation.trim().toLowerCase() : '';
   if (![v, g, t, a, pm, n].every(Number.isFinite) || !loc || v < 0 || t < 0 || a <= 0 || !Number.isInteger(g) || g < 3 || g > 15 || !Number.isInteger(n) || n < 0 || n > 42 || !Number.isInteger(pm) || pm < 0 || pm > 6 || typeof clotStable !== 'boolean') {
     return { eligible: false, status: 'incomplete', rationale: 'Confirm location, volume, GCS, NIHSS, onset time, age, premorbid mRS, and clot stability before applying the SWITCH screen.' };
   }
@@ -1012,7 +1024,7 @@ export const ichCareBundleCheck = ({ sbpAt1h, glucose, glucoseUnit, isDiabetic, 
 // Combines RoPE score with PFO morphology (large shunt or atrial septal aneurysm).
 // Categories: Unlikely / Possible / Probable. Closure benefit seen in Possible (HR 0.38) and Probable (HR 0.10), both with 2-year ARR 2.1%; none in Unlikely (HR 1.14).
 export const evaluatePASCAL = ({ ropeScore, largeShunt, atrialSeptalAneurysm } = {}) => {
-  const rope = parseFloat(ropeScore);
+  const rope = reviewedNumber(ropeScore);
   if (!Number.isInteger(rope) || rope < 0 || rope > 10) return null;
   if (largeShunt !== true && atrialSeptalAneurysm !== true && (largeShunt !== false || atrialSeptalAneurysm !== false)) return { category: 'Incomplete', recommendation: 'Confirm shunt size and atrial septal aneurysm status before assigning a PASCAL category.', nnt: null };
   const highRiskMorphology = largeShunt === true || atrialSeptalAneurysm === true;
@@ -1205,25 +1217,20 @@ export const arcadiaAdvisory = ({ ptfv1, ntProBNP, laVolumeIndex, laDiameterCmM2
 // AF detection strategy — ICM vs Holter (HAVOC + clinical)
 // =====================================================================
 // Builds on HAVOC score when available; gives the actual recommendation in workflow terms.
-export const afDetectionStrategy = ({ havocScore, strokeSubtype, hasICMAccess }) => {
-  const score = parseFloat(havocScore);
+export const afDetectionStrategy = ({ havocScore, strokeSubtype, hasICMAccess } = {}) => {
+  const score = reviewedNumber(havocScore);
+  if (typeof strokeSubtype !== 'string' || !strokeSubtype.trim() || (score !== null && (!Number.isInteger(score) || score < 0 || score > 14))) return { status: 'incomplete', strategy: 'Confirm the stroke mechanism and any documented HAVOC score before choosing a monitoring strategy; missing data do not imply low AF risk.' };
   const isCryptogenic = (strokeSubtype || '').toLowerCase().includes('cryptogenic') || (strokeSubtype || '').toLowerCase().includes('esus');
 
   let strategy, evidence;
-  if (Number.isFinite(score) && score >= 5) {
-    strategy = 'Prolonged rhythm monitoring; consider ICM if external monitoring is negative or direct ICM access is available.';
-    evidence = 'Medium/high HAVOC risk (5-14) predicts higher AF detection; CRYSTAL-AF, STROKE-AF, PER DIEM all showed ICM superior for AF detection.';
-  } else if (isCryptogenic) {
+  if (isCryptogenic) {
     strategy = hasICMAccess === false
-      ? '30-day external loop monitor or 14-day ECG patch (Zio); escalate to ICM if negative.'
-      : 'Initial rhythm monitoring, with extended monitoring and an ICM if needed; no required 90-day delay.';
-    evidence = 'CRYSTAL-AF (NEJM 2014, PMID 24963567): AF detection at 12 months 12.4% vs 2.0%. The 2023 AF guideline supports initial and, if needed, extended monitoring with an ICM after stroke/TIA of undetermined cause.';
-  } else if (Number.isFinite(score) && score >= 1) {
-    strategy = '30-day external monitor first; ICM if negative and clinical suspicion remains.';
-    evidence = 'STROKE-AF (JAMA 2021, PMID 34061145) — even non-cardioembolic strokes show 12.1% AF.';
+      ? 'Initial and extended external rhythm monitoring as appropriate; consider an ICM if needed and accessible. No single external-monitor duration is required by this score.'
+      : 'Initial rhythm monitoring and, if needed, extended monitoring with an ICM after individualized assessment; no required 90-day delay.';
+    evidence = 'The 2023 AF guideline supports initial and, if needed, extended monitoring with an ICM after stroke/TIA of undetermined cause. CRYSTAL-AF demonstrated greater AF detection; detection yield is not itself proof of improved stroke outcomes.';
   } else {
-    strategy = 'Standard inpatient telemetry + 24-48h Holter; ICM not routinely indicated.';
-    evidence = 'Low HAVOC + non-cryptogenic mechanism — yield is lower; escalate only if clinical suspicion remains high.';
+    strategy = 'Individualize rhythm monitoring using the documented stroke mechanism, initial testing, clinical suspicion and patient preferences. A low or absent HAVOC score does not exclude AF; a high score does not mandate a particular device or duration.';
+    evidence = 'STROKE-AF demonstrated additional AF detection after strokes attributed to small-/large-vessel disease. It did not establish a universal monitoring-duration rule or outcome benefit for every such patient.';
   }
 
   return {
@@ -1250,7 +1257,7 @@ export const afDetectionStrategy = ({ havocScore, strokeSubtype, hasICMAccess })
 // feature. vs autopsy: sensitivity 74.5% (65.4-82.4), specificity 95.0%
 // (83.1-99.4) for probable CAA.
 export const evaluateBostonCAA20 = ({ age, lobarICH, corticalSiderosis, lobarMicrobleeds, lobarHemorrhagicLesionCount, csoPVSSevere, multispotWMH, otherCause, deepHemorrhagicLesions, qualifyingPresentation } = {}) => {
-  const a = parseFloat(age);
+  const a = reviewedNumber(age);
   if (!Number.isFinite(a) || a <= 0) return { category: 'Incomplete', rationale: 'Enter a valid age before applying Boston v2.0.' };
   const meetsAge = a >= 50;
   const hasOtherCause = otherCause === true;
@@ -1280,11 +1287,12 @@ export const evaluateBostonCAA20 = ({ age, lobarICH, corticalSiderosis, lobarMic
   // and each focus of cortical superficial siderosis counts individually).
   // Prefer the explicit count; otherwise derive a LOWER BOUND from the
   // boolean marker flags.
-  const explicitCount = parseFloat(lobarHemorrhagicLesionCount);
+  const explicitCount = reviewedNumber(lobarHemorrhagicLesionCount);
   if (lobarHemorrhagicLesionCount !== undefined && lobarHemorrhagicLesionCount !== '' && (!Number.isInteger(explicitCount) || explicitCount < 0)) {
     return { category: 'Incomplete', rationale: 'Lobar hemorrhagic lesion count must be a non-negative whole number.' };
   }
   const derivedMinCount = (lobarICH === true ? 1 : 0) + (corticalSiderosis === true ? 1 : 0) + (lobarMicrobleeds === true ? 1 : 0);
+  if (Number.isFinite(explicitCount) && explicitCount < derivedMinCount) return { category: 'Incomplete', rationale: 'The documented lesion total is smaller than the known-positive lobar markers. Reconcile the imaging observations before assigning Boston v2.0.' };
   const lesionCount = Number.isFinite(explicitCount) ? explicitCount : derivedMinCount;
   const wmFeatures = (csoPVSSevere === true ? 1 : 0) + (multispotWMH === true ? 1 : 0);
 
@@ -1327,10 +1335,13 @@ export const AI_PROVIDERS = ['openai', 'anthropic', 'gemini', 'grok'];
 
 export const getAIConfiguration = () => {
   const unconfigured = { provider: '', apiKey: '' };
-  if (typeof window === 'undefined' || !window.localStorage) {
+  if (typeof window === 'undefined') {
     return unconfigured;
   }
   try {
+    // Accessing the storage property itself can throw SecurityError before
+    // getItem is called (for example when site storage is blocked).
+    if (!window.localStorage) return unconfigured;
     const prefix = 'strokeApp:';
     const providerRaw = window.localStorage.getItem(prefix + 'apiProvider');
     try { window.localStorage.removeItem(prefix + 'apiKey'); } catch (e) {}
@@ -1362,8 +1373,8 @@ export const evaluateCRAOTreatment = ({
   ivtContraindicated,
   age
 } = {}) => {
-  const t = parseFloat(onsetHours);
-  const a = parseFloat(age);
+  const t = reviewedNumber(onsetHours);
+  const a = reviewedNumber(age);
   if (!Number.isFinite(t)) return null;
 
   const windowOk = t >= 0 && t <= 4.5;
@@ -1426,18 +1437,14 @@ export const calculateSeLECTScore = ({
   corticalInvolvement,
   earlySeizure,
   largeArteryAtherosclerosis,
-  lvoArtery, // deprecated alias retained for backward compatibility
   middleCerebralTerritory
 } = {}) => {
-  const n = parseFloat(nihss);
+  const n = reviewedNumber(nihss);
   if (!Number.isFinite(n)) return null;
 
-  const toBool = (val) => val === true || String(val).toLowerCase() === 'true' || val === 1;
-
-  const isCortical = toBool(corticalInvolvement);
-  const isEarlySeizure = toBool(earlySeizure);
-  const isLargeArtery = toBool(largeArteryAtherosclerosis !== undefined ? largeArteryAtherosclerosis : lvoArtery);
-  const isMca = toBool(middleCerebralTerritory);
+  if (!Number.isInteger(n) || n < 0 || n > 42 || ![corticalInvolvement, earlySeizure, largeArteryAtherosclerosis, middleCerebralTerritory].every(v => typeof v === 'boolean')) return null;
+  const isCortical = corticalInvolvement, isEarlySeizure = earlySeizure;
+  const isLargeArtery = largeArteryAtherosclerosis, isMca = middleCerebralTerritory;
 
   const nihssPts = n >= 11 ? 2 : n >= 4 ? 1 : 0;
   const corticalPts = isCortical ? 2 : 0;
@@ -1447,33 +1454,19 @@ export const calculateSeLECTScore = ({
 
   const score = nihssPts + corticalPts + earlySeizurePts + largeArteryPts + mcaPts;
 
-  // Published anchors (Galovic 2018): score 0 = 0.7% (1 y) / 1.3% (5 y);
-  // score 9 = 63% (95% CI 42-77) at 1 y and 83% (95% CI 62-93) at 5 y.
-  // Intermediate rows (scores 1-8) and tier labels are unverified and need confirmation against Galovic 2018 (Lancet Neurol 17:143-152, score-specific risk figure) (needs confirmation).
-  const riskTable = {
-    0: { y1: '0.7%', y5: '1.3%', numY1: 0.7, numY5: 1.3, tier: 'Low' },
-    1: { y1: '1.2%', y5: '2.4%', numY1: 1.2, numY5: 2.4, tier: 'Low' },
-    2: { y1: '2.1%', y5: '4.2%', numY1: 2.1, numY5: 4.2, tier: 'Low-Moderate' },
-    3: { y1: '3.7%', y5: '7.3%', numY1: 3.7, numY5: 7.3, tier: 'Moderate' },
-    4: { y1: '6.4%', y5: '12.4%', numY1: 6.4, numY5: 12.4, tier: 'Moderate-High' },
-    5: { y1: '10.9%', y5: '20.3%', numY1: 10.9, numY5: 20.3, tier: 'High' },
-    6: { y1: '17.9%', y5: '31.6%', numY1: 17.9, numY5: 31.6, tier: 'High' },
-    7: { y1: '28.1%', y5: '46.0%', numY1: 28.1, numY5: 46.0, tier: 'Very High' },
-    8: { y1: '41.3%', y5: '61.7%', numY1: 41.3, numY5: 61.7, tier: 'Very High' },
-    9: { y1: '63%', y5: '83%', numY1: 63, numY5: 83, tier: 'Very High' }
-  };
-
-  const clampedScore = Math.min(Math.max(score, 0), 9);
-  const risk = riskTable[clampedScore];
-
+  // Galovic2018 accepted manuscript Figure3 (UCL), visually paired 2026-09-30.
+  // Keep published rounded Figure3 estimates; score0 5-year precision1.3% is from the abstract.
+  const y1 = ['0.7%', '1%', '2%', '4%', '6%', '11%', '18%', '28%', '44%', '63%'];
+  const y5 = ['1.3%', '2%', '4%', '6%', '11%', '18%', '29%', '45%', '65%', '83%'];
+  const ci1 = ['0.4–1%', '1–2%', '2–3%', '3–4%', '5–7%', '8–13%', '13–22%', '20–36%', '30–55%', '42–77%'];
+  const ci5 = ['0.7–1.8%', '1–3%', '3–5%', '5–8%', '9–13%', '15–21%', '23–35%', '34–54%', '48–76%', '62–93%'];
   return {
-    score: clampedScore,
-    oneYearRisk: risk.y1,
-    fiveYearRisk: risk.y5,
-    riskTier: risk.tier,
-    recommendation: clampedScore >= 4
-      ? `${risk.tier} risk of late post-stroke epilepsy (${risk.y5} at 5 years). Monitor closely and counsel patient/family on seizure precautions. Routine prophylactic ASM is NOT recommended, but initiate ASM promptly if an unprovoked seizure occurs >7 days post-stroke.`
-      : `Low-to-moderate risk of post-stroke epilepsy (${risk.y5} at 5 years). Standard post-stroke follow-up without prophylactic ASM.`,
+    score,
+    oneYearRisk: y1[score], fiveYearRisk: y5[score],
+    oneYearConfidenceInterval: ci1[score], fiveYearConfidenceInterval: ci5[score],
+    riskTier: null,
+    recommendation: 'Original 2018 SeLECT model estimate for late seizures after ischemic stroke; use the confidence intervals and source population in counseling. This score does not diagnose epilepsy or establish a prophylactic antiseizure medication indication. Assess any actual seizure separately.',
+    sourceUrl: 'https://discovery.ucl.ac.uk/id/eprint/10043594/',
     breakdown: {
       nihssPoints: nihssPts,
       corticalPoints: corticalPts,
@@ -1504,11 +1497,10 @@ export const calculateEDEMAScore = ({
   midlineShiftMm,
   noPreviousStroke
 } = {}) => {
-  const shift = parseFloat(midlineShiftMm);
-  const gMg = parseFloat(glucoseMgDl);
-  const gMmol = parseFloat(glucoseMmolL);
-  // The score is defined only when its imaging inputs are assessable.
-  if (!Number.isFinite(shift)) return null;
+  const shift = reviewedNumber(midlineShiftMm);
+  const gMg = reviewedNumber(glucoseMgDl), gMmol = reviewedNumber(glucoseMmolL);
+  if (shift === null || shift < 0 || ![basalCisternEffacement, noReperfusionTherapy, noPreviousStroke].every(v => typeof v === 'boolean')) return null;
+  if ((gMg === null) === (gMmol === null) || (gMg !== null && gMg <= 0) || (gMmol !== null && gMmol <= 0)) return null;
 
   const cisternPts = basalCisternEffacement === true ? 3 : 0;
   const glucosePts = ((Number.isFinite(gMg) && gMg >= 150) || (Number.isFinite(gMmol) && gMmol >= 8.3)) ? 2 : 0;
@@ -1528,7 +1520,7 @@ export const calculateEDEMAScore = ({
     highRiskForMalignantEdema: highRisk,
     riskTier: highRisk ? 'High (>=7)' : 'Below published high-risk threshold',
     recommendation: highRisk
-      ? `EDEMA Score ${score} (>=7): high specificity (99%) and PPV (93%) for potentially lethal malignant edema. Trigger early neurosurgical consultation for decompressive hemicraniectomy evaluation (DESTINY/DECIMAL/HAMLET); Neuro-ICU monitoring with q1-2h neurochecks; prepare osmotherapy; avoid hypoventilation and hyperthermia.`
+      ? `EDEMA Score ${score} (>=7): in the original selected 222-patient anterior-stroke cohort (NIHSS ≥8, observations within 24h), specificity was 99% and PPV 93%. These are cohort estimates, not an individual prognosis or a treatment order. Assess neurologic deterioration and imaging urgently; select neurosurgical or critical-care management independently of this score.`
       : `EDEMA Score ${score} (<7): below the published high-risk threshold. Continue serial neurologic and imaging surveillance — the score is specific, not sensitive, so a low score does not exclude edema progression.`,
     breakdown: {
       basalCisternPoints: cisternPts,

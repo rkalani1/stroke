@@ -8,6 +8,7 @@
 // 'eligible' — the engine forces a full registry/protocol confirmation step.
 
 import { screenerTrials } from './screenerTrials.js';
+import { tryInt } from './matcher-helpers.js';
 
 /* ── Constants the UI also needs ───────────────────────────────────── */
 
@@ -94,7 +95,40 @@ const OPERATORS = {
   'in': (p, v) => Array.isArray(v) && v.includes(p)
 };
 
-const missing = v => v === undefined || v === null || v === '' || v === 'unselected' || (typeof v === 'number' && !Number.isFinite(v));
+const missing = v => v === undefined || v === null || (typeof v === 'string' && (!v.trim() || v === 'unselected')) || (typeof v === 'number' && !Number.isFinite(v));
+const SCORE_RANGES = { nihss: [0, 42], aspects: [0, 10], gcs: [3, 15], preMrs: [0, 6], currentMrs: [0, 6] };
+const CLASSIFICATIONS = ['ischemic', 'tia', 'ich'];
+const CATEGORICAL_VALUES = {
+  classification: CLASSIFICATIONS,
+  vessel: ['ica_m1', 'dominant_m2', 'm2_m3_nd', 'other', 'none'],
+  ichLocation: ['bg', 'lobar', 'thalamic', 'infratentorial', 'other'],
+  volume: ['bg_large', 'small', 'other'],
+  etiology: ['esus', 'cardioembolic', 'laa', 'small_vessel', 'other'],
+  rehab: ['yes', 'none'], language: ['english', 'spanish', 'other']
+};
+function criterionValue(c, p) {
+  const value = p[c.field];
+  if (missing(value)) return null;
+  if (typeof c.value === 'boolean') return typeof value === 'boolean' ? value : null;
+  if (CATEGORICAL_VALUES[c.field] && !CATEGORICAL_VALUES[c.field].includes(value)) return null;
+  const numeric = ['>=', '<=', '>', '<', 'between'].includes(c.operator) ||
+    typeof c.value === 'number' || (Array.isArray(c.value) && c.value.every(v => typeof v === 'number'));
+  if (numeric) {
+    const n = tryInt(value);
+    if (n === null || n < 0) return null;
+    const range = SCORE_RANGES[c.field];
+    if (range && (!Number.isInteger(n) || n < range[0] || n > range[1])) return null;
+    return n;
+  }
+  return typeof value === 'string' ? value : null;
+}
+function validOnsetRange(range, hours) {
+  if (!Array.isArray(range) || range.length !== 2 || hours === null) return false;
+  const [lo, hi] = range;
+  return typeof lo === 'number' && Number.isFinite(lo) && lo >= 0 &&
+    (hi === null || (typeof hi === 'number' && Number.isFinite(hi) && hi >= lo)) &&
+    hours >= lo && (hi === null || hours <= hi);
+}
 function evaluateCriterion(c, p) {
   if (c.operator === 'or') {
     const branches = (c.branches || []).map(b => {
@@ -103,10 +137,11 @@ function evaluateCriterion(c, p) {
     });
     return branches.includes(true) ? true : branches.includes(null) ? null : false;
   }
-  const val = p[c.field];
+  const val = criterionValue(c, p);
   const op = OPERATORS[c.operator];
   if (!op || missing(val)) return null;
   if (c.field?.startsWith('onset') && Array.isArray(p.onsetRangeHours)) {
+    if (!validOnsetRange(p.onsetRangeHours, p.onsetHours)) return null;
     const divisor = c.field === 'onsetDays' ? 24 : c.field === 'onsetMonths' ? 720 : 1;
     const lo = p.onsetRangeHours[0] / divisor;
     const hi = p.onsetRangeHours[1] === null ? Infinity : p.onsetRangeHours[1] / divisor;
@@ -174,14 +209,16 @@ export function onsetToHours(onsetVal, onsetUnit) {
 }
 
 export function buildScreenerParams(state) {
-  const onsetHours = onsetToHours(state.onsetVal, state.onsetUnit);
+  const rawHours = onsetToHours(state.onsetVal, state.onsetUnit);
+  const rangeValid = state.onsetRangeHours == null || validOnsetRange(state.onsetRangeHours, rawHours);
+  const onsetHours = rangeValid ? rawHours : null;
   const onsetDays = onsetHours === null ? null : onsetHours / 24.0;
   const onsetMonths = onsetDays === null ? null : onsetDays / 30.0;
 
   const p = {
     classification: state.classification,
     onsetHours,
-    onsetRangeHours: state.onsetRangeHours,
+    onsetRangeHours: rangeValid ? state.onsetRangeHours : null,
     onsetDays,
     onsetMonths,
     age: state.age,
@@ -195,8 +232,8 @@ export function buildScreenerParams(state) {
     ichLocation: state.ichLocation,
     volume: state.volume,
     statin: state.statin,
-    language: state.language === true ? 'english' : state.language === false ? 'other' : 'unselected',
-    rehab: state.rehab === true ? 'yes' : state.rehab === false ? 'none' : 'unselected',
+    language: ['english', 'spanish', 'other'].includes(state.language) ? state.language : state.language === true ? 'english' : state.language === false ? 'other' : 'unselected',
+    rehab: ['yes', 'none'].includes(state.rehab) ? state.rehab : state.rehab === true ? 'yes' : state.rehab === false ? 'none' : 'unselected',
     self_consent: state.self_consent,
     availability_54w: state.availability_54w,
     exUeWeakness: state.ueWeakness,
@@ -262,12 +299,14 @@ export function isTrialPotentiallyActive(trial, p) {
 }
 
 export function patientTimeCategory(onsetDays) {
+  if (typeof onsetDays !== 'number' || !Number.isFinite(onsetDays) || onsetDays < 0) return 'unknown';
   if (onsetDays <= 1) return 'hyperacute';
   if (onsetDays > 1 && onsetDays <= 30) return 'acute_subacute';
   return 'subacute_chronic';
 }
 
 export function getTimeSortingScore(trialCategory, patientCategory) {
+  if (patientCategory === 'unknown') return 0;
   if (patientCategory === 'hyperacute') {
     if (trialCategory === 'hyperacute') return 3;
     if (trialCategory === 'acute_subacute') return 2;
@@ -294,7 +333,7 @@ function sortListByTime(list, patientCategory) {
 }
 
 export function evaluateAll(state, trials = screenerTrials) {
-  const ready = !!state.classification && state.classification !== 'unselected' && state.classification !== '';
+  const ready = CLASSIFICATIONS.includes(state.classification);
   const params = buildScreenerParams(state);
   const buckets = { eligible: [], pending: [], soon: [], excluded: [], closed: [], incomplete: [] };
 
@@ -340,7 +379,7 @@ function onsetNoteLabel(onsetHours) {
 export function buildBriefingNote(state, buckets) {
   const { eligible, pending, soon } = buckets;
   const cls = CLASSIFICATION_NOTE_LABELS[state.classification] || String(state.classification || '').toUpperCase();
-  const onsetHours = onsetToHours(state.onsetVal, state.onsetUnit);
+  const { onsetHours, onsetRangeHours } = buildScreenerParams(state);
 
   const screenedAt = onsetHours === null ? 'not recorded' : onsetHours < 48
     ? onsetHours.toFixed(1) + ' h'
@@ -350,7 +389,7 @@ export function buildBriefingNote(state, buckets) {
 
   let note = '=== STROKE SCREENER REFERRAL NOTE ===\n';
   note += 'Classification: ' + cls + '\n';
-  note += 'Onset window: ' + onsetNoteLabel(onsetHours) + (Array.isArray(state.onsetRangeHours) ? ' (selected range; exact interval not recorded)' : ' (screened at ' + screenedAt + ')') + '\n';
+  note += 'Onset window: ' + onsetNoteLabel(onsetHours) + (Array.isArray(onsetRangeHours) ? ' (selected range; exact interval not recorded)' : ' (screened at ' + screenedAt + ')') + '\n';
   note += '--------------------------------------------------\n';
 
   const candidates = [...eligible, ...pending];

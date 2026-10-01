@@ -61,7 +61,7 @@ describe('2026-09-06 registry review — source-specific screening boundaries', 
 
   it('keeps overall registry verification distinct from local activation and complete protocol verification', () => {
     for (const t of screenerTrials.filter(t => t.externalMetadata.nct)) {
-      expect(t.externalMetadata.verificationDate).toBe('2026-09-06');
+      expect(t.externalMetadata.verificationDate).toBe('2026-09-30');
       expect(t.externalMetadata.registryLastUpdatePosted).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       expect(t.externalMetadata.localActivationStatus).toBe('not_assessed');
       expect(t.sourceCompletenessStatus).toBe('first_pass');

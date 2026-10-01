@@ -27,6 +27,7 @@ function outputFunction(name, note, extra = {}) {
     getDaptAdherenceSummary: () => '', getAis2026DeltaSummary: () => '',
     getSahOutcomeSummary: () => '', getPathwayForDiagnosis: () => 'ischemic',
     getDocumentedNihss: () => treatment.documentedNihssValue(note, 0, false),
+    getDocumentedDischargeNihss: () => reviewed.numericInput(note.dischargeNIHSS, { min: 0, max: 42, integer: true }),
     mrsScore: 0, pcAspectsRegions: [], calculatePCAspects: () => 0, bpPhaseTargets: {},
     formatBpPhaseTarget: () => '', formatReviewedBpPhaseTarget: () => '', PUBLIC_DEMO_MODE: true,
     getPostEvtBpPlanSummary: () => '', getPediatricStrokeSummary: () => '',

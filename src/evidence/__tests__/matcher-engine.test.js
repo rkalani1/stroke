@@ -97,7 +97,7 @@ describe('matcher engine — operators', () => {
   describe('present (substring / array contains)', () => {
     it('matches free-text fields case-insensitively', () => {
       expect(evaluateCriterion({ field: 'ctpResults', operator: 'present', value: ['mismatch', 'penumbra'] }, { telestrokeNote: { ctpResults: 'CTP shows MISMATCH ratio 1.5' } })).toBe('met');
-      expect(evaluateCriterion({ field: 'ctpResults', operator: 'present', value: ['mismatch', 'penumbra'] }, { telestrokeNote: { ctpResults: 'no relevant findings' } })).toBe('not_met');
+      expect(evaluateCriterion({ field: 'ctpResults', operator: 'present', value: ['mismatch', 'penumbra'] }, { telestrokeNote: { ctpResults: 'no relevant findings' } })).toBe('unknown');
       expect(evaluateCriterion({ field: 'ctpResults', operator: 'present', value: ['mismatch', 'penumbra'] }, {})).toBe('unknown');
     });
     it('matches array fields (vesselOcclusion present in [M2,M3,...])', () => {

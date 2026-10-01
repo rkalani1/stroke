@@ -6,6 +6,12 @@ const cards = Object.values(data).flat();
 const trial = name => cards.find(card => card.name === name);
 
 describe('source-qualified teaching repairs', () => {
+  it('does not promote a pregnancy AHLE case report to a universal treatment or safety rule', () => {
+    const pearl = TEACHING_PEARLS.find(p => p.q.includes('AHLE'));
+    expect(pearl.a).toContain('single case');
+    expect(pearl.a).toContain('cannot establish a universal immunotherapy regimen');
+    expect(pearl.a).not.toContain('requires prompt recognition');
+  });
   it('retains the 103-card teaching library and working source links', () => {
     expect(cards).toHaveLength(103);
     for (const card of cards) {

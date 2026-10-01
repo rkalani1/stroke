@@ -59,6 +59,7 @@ const printCss = [
   '.toast-grid,.checklist-grid,.card-content [style*="grid-template-columns"] { display:block !important; }',
   '.toast-card,.checklist-box { margin:10px 0 !important; }',
   '.card-stroke-prognosis [style*="repeat(6"] { display:grid !important; }',
+  '.card-stroke-prognosis th:first-child { padding-right:8px !important; }',
   '.clinical-scroll-region { overflow:visible !important; max-height:none !important; }',
   '.card-content :is(p,li,td,th,span,div,strong) { font-size:9.5pt !important; line-height:1.3 !important; }',
   '.card-content :is(h2,h3,h4) { font-size:12pt !important; }',
@@ -88,6 +89,16 @@ try {
     await fs.writeFile(htmlPath,html);
     await page.goto(pathToFileURL(htmlPath).href,{waitUntil:'load'});
     await page.evaluate((name) => {
+      // Flatten the two-column teaching layout into its numbered reading order.
+      if (name === 'ToastClassificationCard') {
+        const grid = document.querySelector('.toast-grid');
+        const cards = [...(grid?.querySelectorAll('.toast-card') || [])];
+        if (cards.length !== 5) throw new Error('Expected all five TOAST categories');
+        const number = card => Number(card.querySelector('h3')?.textContent.match(/^\s*(\d+)\./)?.[1]);
+        cards.sort((a, b) => number(a) - number(b));
+        if (cards.some((card, i) => number(card) !== i + 1)) throw new Error('Invalid TOAST category order');
+        grid.replaceChildren(...cards);
+      }
       const card = document.querySelector('.evd-infographic-card,.icp-infographic-card');
       if(card) document.querySelectorAll('body > div').forEach(x => {if(x.contains(card)) x.replaceWith(card);});
       document.querySelectorAll('img').forEach(img => {img.loading='eager';});

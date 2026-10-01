@@ -1,3 +1,4 @@
+import { completeCases } from './fixtures/clinical-complete-cases.js';
 import { describe, expect, it } from 'vitest';
 import {
   evaluateDAWN, evaluateDEFUSE3, recommendAcuteDAPT, evaluateCRAOTreatment,
@@ -24,15 +25,15 @@ describe('September 2026 source and incomplete-input regressions', () => {
     expect(evaluateDEFUSE3(perfusion).reason).toMatch(/not complete EVT eligibility/);
   });
   it('does not give low-risk TIA a minor-stroke DAPT branch or assume onset time', () => {
-    expect(recommendAcuteDAPT({ strokeType: 'tia', nihss: 0, abcd2: 2, timeFromOnsetH: 12 }).regimen).toBe('single-antiplatelet');
-    expect(recommendAcuteDAPT({ strokeType: 'ischemic', nihss: 2 }).regimen).toBe('—');
-    expect(recommendAcuteDAPT({ strokeType: 'ischemic', nihss: 2, timeFromOnsetH: -1 }).regimen).toBe('—');
+    expect(recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, strokeType: 'tia', nihss: 0, abcd2: 2, timeFromOnsetH: 12 }).regimen).toBe('single-antiplatelet');
+    expect(recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, strokeType: 'ischemic', nihss: 2 }).regimen).toBe('—');
+    expect(recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, strokeType: 'ischemic', nihss: 2, timeFromOnsetH: -1 }).regimen).toBe('—');
   });
   it('requires atherosclerotic features for the INSPIRES extension', () => {
-    const patient = { strokeType: 'ischemic', nihss: 4, timeFromOnsetH: 48 };
+    const patient = { ...completeCases.recommendAcuteDAPT, strokeType: 'ischemic', nihss: 4, timeFromOnsetH: 48 };
     expect(recommendAcuteDAPT(patient).regimen).toBe('single-antiplatelet');
-    expect(recommendAcuteDAPT({ ...patient, atherosclerotic: true }).rationale).toMatch(/INSPIRES/);
-    expect(recommendAcuteDAPT({ strokeType: 'ischemic', nihss: 2, timeFromOnsetH: 80 }).regimen).toBe('individualized-review');
+    expect(recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, ...patient, atherosclerotic: true }).rationale).toMatch(/INSPIRES/);
+    expect(recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, strokeType: 'ischemic', nihss: 2, timeFromOnsetH: 80 }).regimen).toBe('individualized-review');
   });
   const crao = { age: 65, onsetHours: 4.5, visualAcuity: '20/200', fundusHemorrhage: false, ivtContraindicated: false };
   it('preserves historical CRAO screen boundaries without making lysis actionable', () => {

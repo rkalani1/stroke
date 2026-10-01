@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "calculators",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.30.3",
+    "appVersion": "6.30.4",
     "checksum": "sha256:fd369f3ca628e87cb16e7165e5ba7c07",
     "count": 34,
     "source": "Calculator catalog bundle",

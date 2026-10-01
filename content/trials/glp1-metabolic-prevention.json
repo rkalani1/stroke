@@ -21,16 +21,16 @@
     "name": "SURPASS-CVOT",
     "fullName": "Cardiovascular Outcomes with Tirzepatide versus Dulaglutide in Type 2 Diabetes (SURPASS-CVOT)",
     "category": "glp1-metabolic-prevention",
-    "population": "n=13165, mean 64.1 ± 8.8 years; 29.0% women, NIHSS not applicable — enrolment by diabetes and atherosclerotic disease status, event-driven; follow-up duration not stated in the abstract",
+    "population": "n=13165, Age ≥40 years; mean 64.1 years (SD 8.8), NIHSS not applicable — enrolment by diabetes and atherosclerotic disease status, Median follow-up 4.0 years",
     "finding": "MET non-inferiority but DID NOT meet superiority: 801 events (12.2%) with tirzepatide vs 862 (13.1%) with dulaglutide",
-    "teachingPoint": "Caps expectations for incretin therapy: tirzepatide matched but did not beat dulaglutide on cardiovascular events, so agent choice within the class should turn on glycemic, weight, tolerability and access considerations rather than on an assumed cardiovascular advantage.",
+    "teachingPoint": "Interpret as noninferiority in the studied diabetes/ASCVD population, with uncertain superiority and no demonstrated stroke-specific advantage.",
     "PMID": "41406444",
     "year": 2025,
     "citationIds": [
       "cit-surpass-cvot-2025"
     ],
     "certainty": "high",
-    "lastReviewed": "2026-08-28",
+    "lastReviewed": "2026-09-30",
     "provenance": "src/evidence/completedTrials.js"
   }
 ]

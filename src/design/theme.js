@@ -19,6 +19,7 @@
 
 const PREF_KEY = 'stroke.v7.theme';
 const MIGRATED_KEY = 'stroke.v7.migrated';
+let transientPref = null;
 
 const isPublicPages = () => (
   typeof window !== 'undefined'
@@ -29,7 +30,7 @@ const safeGet = (k) => {
   try { return localStorage.getItem(k); } catch { return null; }
 };
 const safeSet = (k, v) => {
-  try { localStorage.setItem(k, v); } catch { /* ignore quota */ }
+  try { localStorage.setItem(k, v); return true; } catch { return false; }
 };
 const safeJSONGet = (k) => {
   try { return JSON.parse(localStorage.getItem(k)); } catch { return null; }
@@ -63,6 +64,7 @@ export function runV7Migration() {
      unset default light.
    - Non-public: default to 'auto' so OS preference wins when unset. */
 export function getThemePref() {
+  if (transientPref !== null) return transientPref;
   const stored = safeGet(PREF_KEY);
   if (isPublicPages()) {
     return (stored === 'light' || stored === 'dark' || stored === 'auto')
@@ -83,7 +85,9 @@ export function getThemePref() {
    distinct states, which is what the 3-way control needs. */
 export function setThemePref(value) {
   const next = (value === 'light' || value === 'dark' || value === 'auto') ? value : 'auto';
-  safeSet(PREF_KEY, next);
+  // A blocked/quota-limited store must not make the visible control inert.
+  // Keep the explicit choice for this page when it cannot be persisted.
+  transientPref = safeSet(PREF_KEY, next) ? null : next;
   applyTheme();
 }
 

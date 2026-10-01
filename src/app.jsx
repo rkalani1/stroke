@@ -48,6 +48,7 @@ import {
   PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX
 } from './public-demo-guardrails.js';
 import { BUILD_PUBLIC_DEMO, BUILD_TARGET_MARKER } from './build-flags.js';
+import { projectAppData, projectStoredValue, projectTelestrokeNote, projectStrokeCodeForm } from './private-persistence.js';
 import {
   createEncounterOutputGate,
   renderEncounterOutput as renderGatedEncounterOutput,
@@ -147,7 +148,7 @@ import {
   bootstrapTheme as v7BootstrapTheme,
 } from './design/theme.js';
 // Patient-store is consumed by components.jsx, no direct imports needed here.
-import { GUIDELINE_LIBRARY, GUIDELINE_LIBRARY_INDEX, guidelineSearchFields } from './guideline-library.js';
+import { GUIDELINE_LIBRARY, GUIDELINE_LIBRARY_INDEX, guidelineSearchFields, guidelineGradeLabel } from './guideline-library.js';
 // Acute Stroke Pathways — de-identified, evidence-bound management cards. Pure
 // static data (bundled at build time, no runtime fetch) rendered at the top of
 // the Ischemic protocols sub-tab. See src/management-guidance.js.
@@ -281,7 +282,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.30.3';
+const APP_VERSION = '6.30.4';
 // The header search hint mirrors the key the shortcut actually listens for
 // (metaKey || ctrlKey): ⌘ on Apple hardware, Ctrl everywhere else.
 const SEARCH_SHORTCUT_LABEL = (typeof navigator !== 'undefined'
@@ -387,6 +388,9 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
 };
 
         const STORAGE_PREFIX = (window.strokeAppStorage && window.strokeAppStorage.prefix) || 'strokeApp:';
+        // Queued/unload writes consult the latest policy, not a stale render closure.
+        // Start closed before application settings and canonical shapes are available.
+        let privatePersistencePolicy = { allowFreeText: false };
         const APP_DATA_KEY = (window.strokeAppStorage && window.strokeAppStorage.appDataKey) || 'stroke.appData.v2';
         const LEGACY_KEYS = (window.strokeAppStorage && window.strokeAppStorage.legacyKeys) || [
           'app_version',
@@ -469,14 +473,16 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
 
         const getKey = (name, fallback) => {
           if (PUBLIC_DEMO_MODE) return fallback;
-          const namespaced = localStorage.getItem(STORAGE_PREFIX + name);
-          if (namespaced !== null) {
-            return normalizeStoredValue(parseStoredValue(namespaced), fallback);
-          }
-          const legacy = localStorage.getItem(name);
-          if (legacy !== null) {
-            return normalizeStoredValue(parseStoredValue(legacy), fallback);
-          }
+          try {
+            const namespaced = localStorage.getItem(STORAGE_PREFIX + name);
+            if (namespaced !== null) {
+              return normalizeStoredValue(parseStoredValue(namespaced), fallback);
+            }
+            const legacy = localStorage.getItem(name);
+            if (legacy !== null) {
+              return normalizeStoredValue(parseStoredValue(legacy), fallback);
+            }
+          } catch (_) { /* Continue in memory when site storage is blocked. */ }
           return fallback;
         };
 
@@ -493,8 +499,10 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
 
         const setKey = (name, value, options = {}) => {
           if (PUBLIC_DEMO_MODE) return;
+          const storedValue = projectStoredValue(name, value, privatePersistencePolicy);
+          if (storedValue === undefined) return;
           try {
-            localStorage.setItem(STORAGE_PREFIX + name, JSON.stringify(value));
+            localStorage.setItem(STORAGE_PREFIX + name, JSON.stringify(storedValue));
             if (!options.skipLastUpdated && name !== LAST_UPDATED_KEY) {
               touchLastUpdated();
             }
@@ -548,6 +556,9 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
 
         const migrateLegacyStorage = () => {
           if (PUBLIC_DEMO_MODE) return;
+          // Legacy objects have no reliable typed schema. Do not copy narrative
+          // payloads to a new persistent key without the explicit opt-in.
+          if (privatePersistencePolicy.allowFreeText !== true) return;
           try {
             const migrated = localStorage.getItem(STORAGE_PREFIX + LEGACY_MIGRATION_KEY);
             if (migrated) return;
@@ -1106,11 +1117,10 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
 
         const loadAppData = () => {
           const base = getDefaultAppData();
-          const raw = localStorage.getItem(APP_DATA_KEY);
-          if (!raw) {
-            return migrateLegacyToAppData(base);
-          }
+          if (PUBLIC_DEMO_MODE) return base;
           try {
+            const raw = localStorage.getItem(APP_DATA_KEY);
+            if (!raw) return migrateLegacyToAppData(base);
             const parsed = JSON.parse(raw);
             const merged = mergeAppData(base, parsed);
             return migrateLegacyToAppData(migrateAppData(merged));
@@ -1122,7 +1132,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
         const saveAppData = (data) => {
           if (PUBLIC_DEMO_MODE) return;
           try {
-            localStorage.setItem(APP_DATA_KEY, JSON.stringify(data));
+            localStorage.setItem(APP_DATA_KEY, JSON.stringify(projectAppData(data, privatePersistencePolicy)));
             touchLastUpdated();
           } catch (e) {
             if (e.name === 'QuotaExceededError' || e.code === 22) {
@@ -1156,8 +1166,9 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
           return false;
         };
 
-        migrateLegacyStorage();
         const INITIAL_APP_DATA = loadAppData();
+        privatePersistencePolicy = { allowFreeText: INITIAL_APP_DATA.settings.allowFreeTextStorage === true };
+        migrateLegacyStorage();
         const storedTtlOverride = INITIAL_APP_DATA.settings.ttlHoursOverride ?? getKey('ttlHoursOverride', null);
         const initialTtlHours = Number.isFinite(storedTtlOverride) && storedTtlOverride > 0
           ? storedTtlOverride
@@ -2966,7 +2977,9 @@ Clinician Name`;
           // reading the key from sessionStorage only, and evicting any key found
           // in localStorage — so it must be called once rather than have those
           // rules restated here and drift.
-          const [storedAiConfig] = useState(getAIConfiguration);
+          const [storedAiConfig] = useState(() => PUBLIC_DEMO_MODE
+            ? { provider: '', apiKey: '' }
+            : getAIConfiguration());
           const [apiProvider, setApiProvider] = useState(storedAiConfig.provider);
           const [apiKey, setApiKey] = useState(storedAiConfig.apiKey);
           const [tempProvider, setTempProvider] = useState(storedAiConfig.provider);
@@ -4328,7 +4341,7 @@ Clinician Name`;
               id: 'ich_vte_ipc',
               category: 'Supportive Care',
               title: 'ICH: IPC for VTE prophylaxis',
-              recommendation: 'Start intermittent pneumatic compression (IPC) on the day of diagnosis for VTE prophylaxis.',
+              recommendation: "For nonambulatory spontaneous ICH patients, start intermittent pneumatic compression on the day of diagnosis after checking device-specific contraindications.",
               detail: 'IPC reduces DVT/PE risk in nonambulatory ICH patients.',
               classOfRec: 'I',
               levelOfEvidence: 'B-R',
@@ -4343,8 +4356,8 @@ Clinician Name`;
               id: 'ich_vte_heparin',
               category: 'Supportive Care',
               title: 'ICH: pharmacologic VTE prophylaxis timing',
-              recommendation: 'SQ heparin 48 hours after IPH onset once hematoma is stable on repeat imaging (AHA/ASA 2022 COR 2b/C-LD for starting at 24-48h). SCDs/IPC in the interim.',
-              detail: 'Suggested protocol: SQ heparin at 48h after ICH onset. Use SCDs/IPC immediately on admission until pharmacologic prophylaxis initiated. AHA/ASA 2022: Low-dose UFH or LMWH at 24-48h may be reasonable (Class IIb). Balance thrombosis prevention against hematoma expansion risk; obtain a stability CT before starting.',
+              recommendation: "In nonambulatory spontaneous ICH, starting low-dose UFH or LMWH prophylaxis at 24–48 hours after onset may be reasonable after individualized bleeding-risk and hematoma-stability assessment (IIb/C-LD). Continue appropriate IPC; this is not therapeutic anticoagulation timing.",
+              detail: "Balance prevention of venous thrombosis against hematoma expansion. Confirm onset, repeat imaging, current bleeding and procedural plans before selecting the agent and timing. A 48-hour timestamp alone does not authorize heparin. Select doses for renal function, body weight and other contraindications.",
               classOfRec: 'IIb',
               levelOfEvidence: 'C-LD',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -4438,7 +4451,7 @@ Clinician Name`;
               category: 'ICH',
               title: 'IVH: EVD for large IVH with decreased consciousness',
               recommendation: 'EVD is recommended for large IVH with impaired consciousness to reduce mortality.',
-              detail: 'Use EVD over medical management alone for obstructive hydrocephalus or large IVH.',
+              detail: "For spontaneous ICH with large IVH and impaired consciousness, EVD is recommended over medical management alone to reduce mortality. Ventricular drainage is also recommended when hydrocephalus contributes to decreased consciousness. IVH or ventricular enlargement alone does not establish either indication; obtain urgent neurosurgical assessment of the examination and imaging.",
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
               guideline: 'AHA/ASA Spontaneous ICH 2022',
@@ -4753,8 +4766,8 @@ Clinician Name`;
               id: 'goc_ich',
               category: 'Goals of Care',
               title: 'Goals-of-care discussion in ICH',
-              recommendation: 'Initiate goals-of-care discussion for ICH Score >= 3, using the score as a framework for communication, not as the sole basis for limiting treatment. For patients without preexisting documented limits on life-sustaining therapy, aggressive care with postponement of new DNAR orders or withdrawal of support until at least the second full day of hospitalization is reasonable (AHA/ASA 2022 Class 2a, LOE B-NR).',
-              detail: 'Self-fulfilling prophecy of early care withdrawal is well-documented in ICH. Recommend full care for minimum 24-48 hours while prognostic picture clarifies. ICH Score is for prognostication, not to determine treatment limits.',
+              recommendation: 'Discuss goals, prognosis and patient preferences in ICH; a severity score can support communication but must not determine treatment limits. The app reminder is not a guideline-specified ICH Score threshold. For patients without preexisting documented limits on life-sustaining therapy, aggressive care with postponement of new DNAR orders or withdrawal of support until at least the second full day of hospitalization is reasonable (AHA/ASA 2022 Class 2a, LOE B-NR).',
+              detail: "Discuss goals and previously expressed preferences early. In spontaneous ICH without preexisting documented limits on life-sustaining treatment, postponing new DNAR orders or withdrawal until at least the second full hospital day is reasonable; this is not a fixed 24–48-hour cutoff. A severity score alone must not determine treatment limits.",
               classOfRec: "IIa",
               levelOfEvidence: "B-NR",
               guideline: 'AHA/ASA Spontaneous ICH 2022 + AHA Palliative Care in Stroke 2024',
@@ -4819,15 +4832,15 @@ Clinician Name`;
             sah_seizure: {
               id: 'sah_seizure',
               category: 'SAH Management',
-              title: 'SAH: Seizure management',
-              recommendation: 'Prophylactic antiseizure medication may be considered only with high seizure-risk features (ruptured MCA aneurysm, high-grade SAH, ICH, hydrocephalus, cortical infarction) (Class 2b, LOE B-NR); it is not beneficial without these features. For seizures at onset, treat for no more than 7 days.',
-              detail: 'Consider levetiracetam over phenytoin (phenytoin associated with worse cognitive outcomes). Continuous EEG monitoring for poor-grade SAH (HH 4-5). Phenytoin prophylaxis is associated with excess morbidity and mortality (Class 3: Harm); continuing antiseizure medication beyond 7 days after onset seizures does not reduce later seizure risk (Class 3: No Benefit).',
-              classOfRec: 'IIb',
-              levelOfEvidence: 'B-NR',
-              guideline: 'AHA/ASA Aneurysmal SAH 2023',
-              reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436',
+              title: "Aneurysmal SAH: seizure and prophylaxis review",
+              recommendation: "AHA/ASA 2023: prophylactic antiseizure medication may be considered with high-risk features (IIb/B-NR), but is not beneficial without them. For seizures presenting at hemorrhage onset, treatment for ≤7 days is reasonable (IIa/B-NR). The no-benefit finding for longer treatment applies to patients without prior epilepsy; new later seizures require a separate treatment plan.",
+              detail: "High-risk features include a ruptured MCA aneurysm, high-grade aneurysmal SAH, associated ICH, hydrocephalus or cortical infarction. Consider continuous EEG when the examination is depressed or fluctuating or seizure risk is high. Phenytoin prophylaxis is associated with excess morbidity and mortality (AHA III: Harm); do not apply a prophylaxis statement as a blanket prohibition during emergency seizure treatment. The 2026 NCS prophylaxis guideline permits ASM or no ASM with a conditional recommendation and low-certainty evidence; discuss the selected source framework, duration and patient-specific risks.",
+              classOfRec: "Statement",
+              levelOfEvidence: "See source",
+              guideline: 'AHA/ASA Aneurysmal SAH 2023; NCS prophylaxis 2026',
+              reference: 'Hoh BL et al. Stroke. 2023;54:e314-e370. DOI: 10.1161/STR.0000000000000436; NCS2026 DOI: 10.1007/s12028-026-02614-z',
               sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000436#page=31',
-              medications: ['Levetiracetam 500-1000 mg IV/PO q12h (preferred)', 'Avoid phenytoin if possible'],
+              medications: [],
               conditions: (data) => {
                 return data.telestrokeNote?.diagnosisCategory === 'sah';
               }
@@ -5415,7 +5428,7 @@ Clinician Name`;
               category: 'Supportive Care',
               title: 'Early mobilization after stroke (AVERT)',
               recommendation: 'Do not use high-dose, very early mobilization within 24 hours of stroke onset (AVERT: fewer favorable outcomes; COR III: Harm, LOE B-R in both the 2026 AHA/ASA AIS and 2022 AHA/ASA ICH guidelines). Mobilize when stable with short, frequent sessions.',
-              detail: 'AVERT Phase III (n=2,104): Very early mobilization within 24 hours was HARMFUL (aOR 0.73, P=0.004), especially in severe strokes and ICH. Optimal: start at 24-48 hours from onset with hemodynamic stability. Recommended session: 15-45 minutes, 1-3 times daily. Short frequent sessions superior to prolonged single sessions (AVERT dose-response analysis).',
+              detail: "AVERT tested an added, higher-dose out-of-bed mobilization intervention begun within 24 hours; it reduced the odds of a favorable outcome (adjusted OR 0.73). This does not show that every movement or every brief session before 24 hours is harmful. Assess neurologic and hemodynamic stability, assistance needs and tolerance, and individualize rehabilitation. The secondary dose-response analysis is associative and does not establish a universal 15–45-minute, 1–3-session prescription.",
               classOfRec: "III: Harm",
               levelOfEvidence: "B-R",
               guideline: 'AVERT Phase III (Lancet 2015); VA/DoD Stroke Rehab CPG 2024',
@@ -5817,11 +5830,11 @@ Clinician Name`;
               category: 'Acute',
               title: 'Nutritional support after stroke',
               recommendation: 'Start enteral diet within 7 days of admission (2026 AHA/ASA: COR I, LOE B-R). With dysphagia, NG feeding is reasonable initially (within the first 7 days), with PEG when inability to swallow safely is expected to persist beyond 2-3 weeks (COR IIa, LOE B-NR; FOOD trial).',
-              detail: 'FOOD trial: early PEG (within 7 days) had worse 6-month outcomes than NG feeding. Nutritional targets: 25-30 kcal/kg/day, protein 1.0-1.5 g/kg/day. Enteral nutrition within 24-48h. ASGE distinguishes antiplatelets from anticoagulants: do not apply antiplatelet continuation guidance to all anticoagulants. Make an individualized multidisciplinary bleeding/thrombosis plan for anticoagulation around PEG.',
+              detail: "Assess nutrition and swallowing early and individualize energy, protein and route with the care team. In FOOD, early PEG increased death or poor outcome compared with NG feeding; this does not justify a universal PEG-first strategy. The stroke recommendation is to establish enteral nutrition within 7 days, not an automatic 24–48-hour order for every patient. Make an individualized bleeding/thrombosis plan for anticoagulation around PEG; antiplatelet guidance cannot be applied to all anticoagulants.",
               classOfRec: "Statement",
               levelOfEvidence: "See source",
-              guideline: 'FOOD Trial; ESPEN Guidelines; AHA/ASA 2019',
-              reference: 'FOOD Trial: Lancet 2005.',
+              guideline: "AHA/ASA Acute Ischemic Stroke 2026 §5.3; FOOD trial",
+              reference: "Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513; FOOD Trial, Lancet 2005. DOI: 10.1016/S0140-6736(05)17983-5",
               conditions: (data) => {
                 return !!(data.telestrokeNote?.dysphagiaScreening?.bedsideScreenResult === 'fail');
               }
@@ -6624,6 +6637,17 @@ Clinician Name`;
             { id: 'extinction', name: '11. Extinction and Inattention', options: ['No neglect (0)', 'Visual, tactile, auditory, spatial, or personal inattention (1)', 'Profound hemi-inattention (2)'] }
           ];
 
+          const persistenceShapes = React.useMemo(() => ({
+            noteDefaults: getDefaultTelestrokeNote(),
+            aspectsRegions: getDefaultAspectsRegionState(),
+            pcAspectsRegions: getDefaultPcAspectsRegions()
+          }), []);
+          privatePersistencePolicy = {
+            ...persistenceShapes,
+            nihssItems,
+            allowFreeText: settings.allowFreeTextStorage === true
+          };
+
           // Calculate NIHSS score
           // calculateNIHSS, calculatePCAspects, calculateGCS, calculateICHScore,
           // calculateABCD2Score imported from ./calculators.js
@@ -7396,7 +7420,7 @@ Clinician Name`;
             const age = telestrokeNote.age || '?';
             const sex = telestrokeNote.sex || '?';
             const symptoms = telestrokeNote.symptoms || 'Stroke symptoms';
-            const nihss = telestrokeNote.nihss || nihssScore || '?';
+            const nihss = getDocumentedNihss() || 'not documented';
             const timeFromLKW = calculateTimeFromLKW();
             const timeDisplay = timeFromLKW ? `${timeFromLKW.hours}h ${timeFromLKW.minutes}m` : '?';
 
@@ -7569,8 +7593,12 @@ Clinician Name`;
             });
           };
 
-          const getDocumentedNihss = () => documentedNihssValue(telestrokeNote, nihssScore,
-            nihssItems.every((item) => item.options.includes(patientData[item.id])));
+          const getDocumentedNihss = () => {
+            const score = documentedExamScore(telestrokeNote, nihssScore,
+              nihssItems.every((item) => item.options.includes(patientData[item.id])));
+            return score === null ? '' : String(score);
+          };
+          const getDocumentedDischargeNihss = () => numericInput(telestrokeNote.dischargeNIHSS, { min: 0, max: 42, integer: true });
 
           const buildEncounterTemplateContext = () => {
             const lkw = telestrokeNote.lkwDate && telestrokeNote.lkwTime
@@ -7863,7 +7891,7 @@ Clinician Name`;
             setEncounterHistory(prev => {
               if (PUBLIC_DEMO_MODE) return prev;
               const next = [snapshot, ...prev].slice(0, 20);
-              try { localStorage.setItem('strokeApp:encounterHistory', JSON.stringify(next)); } catch (e) { if (e.name === 'QuotaExceededError' || e.code === 22) { try { addToast('Storage full — encounter history may not be saved. Export your data or clear old encounters.', 'error'); } catch (_) {} } }
+              try { setKey('encounterHistory', next); } catch (e) { if (e.name === 'QuotaExceededError' || e.code === 22) { try { addToast('Storage full — encounter history may not be saved. Export your data or clear old encounters.', 'error'); } catch (_) {} } }
               return next;
             });
           }, [telestrokeNote, nihssScore, consultationType]);
@@ -8353,7 +8381,7 @@ Clinician Name`;
           const buildTransferDecisionText = (decision, reason = '') => {
             const age = telestrokeNote.age || '?';
             const sex = telestrokeNote.sex || '?';
-            const nihss = telestrokeNote.nihss || nihssScore || '?';
+            const nihss = getDocumentedNihss() || 'not documented';
             const reference = getReferenceTime();
             const onsetLabel = reference ? reference.label : 'LKW';
             const onsetTime = reference ? formatDateTimeDisplay(reference.time) : 'unknown';
@@ -8365,7 +8393,7 @@ Clinician Name`;
           const getHandoffSummaryFields = () => {
             const age = telestrokeNote.age || '--';
             const sex = telestrokeNote.sex || '--';
-            const nihss = telestrokeNote.nihss || nihssScore || '--';
+            const nihss = getDocumentedNihss() || 'not documented';
             const nihssDetails = telestrokeNote.nihssDetails || '';
             const diagnosis = telestrokeNote.diagnosis
               || (telestrokeNote.diagnosisCategory === 'ischemic'
@@ -8452,7 +8480,7 @@ Clinician Name`;
 
           const getSafetyChecks = () => {
             const hasOnset = Boolean(getReferenceTime());
-            const hasNihss = Boolean(telestrokeNote.nihss || nihssScore);
+            const hasNihss = getDocumentedNihss() !== '';
             const hasBP = Boolean(telestrokeNote.presentingBP);
             const hasGlucose = Boolean(telestrokeNote.glucose);
             const hasCT = Boolean(telestrokeNote.ctResults);
@@ -8629,88 +8657,11 @@ Clinician Name`;
           };
 
 
-          const sanitizeTelestrokeNoteForStorage = (note) => {
-            if (shouldPersistFreeText) return note;
-            const allowedKeys = [
-              'consultStartTime', 'callerName', 'callerRole', 'attendingPhysician',
-              'alias', 'age', 'sex', 'weight', 'height', 'nihss', 'vesselOcclusion', 'diagnosisCategory',
-              'toastClassification', 'secondaryPrevention',
-              'lkwDate', 'lkwTime', 'lkwUnknown', 'discoveryDate', 'discoveryTime', 'ctDate', 'ctTime', 'ctaDate', 'ctaTime', 'tnkAdminTime',
-              'presentingBP', 'heartRate', 'spO2', 'temperature', 'bpPreTNK', 'bpPreTNKTime', 'bpPhase', 'bpPostEVT', 'bpProtocolCheck',
-              'glucose', 'plateletCount', 'inr', 'pt', 'ptt', 'creatinine', 'disablingDeficit',
-              'tnkRecommended', 'evtRecommended', 'tnkDecisionRecorded', 'evtDecisionRecorded', 'tnkContraindicationChecklist',
-              'tnkContraindicationReviewed', 'tnkContraindicationReviewTime', 'tnkConsentDiscussed',
-              'tnkConsentType', 'tnkConsentTime', 'tnkConsentWith',
-              'patientFamilyConsent', 'presumedConsent', 'preTNKSafetyPause', 'tnkAutoBlocked', 'tnkAutoBlockReason',
-              'postTnkNeuroChecksStarted', 'postTnkBpMonitoring', 'postTnkRepeatCTOrdered', 'postTnkAntiplateletHeld',
-              'sichDetected', 'angioedemaDetected', 'reperfusionHemorrhage', 'clinicalDeterioration', 'complicationNotes',
-              'ichBPManaged', 'ichReversalInitiated', 'ichReversalStartTime', 'ichTransferDecisionTime', 'ichNeurosurgeryConsulted', 'ichSeizureProphylaxis',
-              'transferAccepted', 'transferReceivingFacility', 'transferImagingShared', 'transferLabsSent', 'transferIVAccess', 'transferBPStable', 'transferFamilyNotified',
-              'transferRationale', 'disposition', 'codeStatus',
-              'transferImagingShareMethod', 'transferImagingShareLink', 'transportMode', 'transportEta', 'transportNotes',
-              'lastDOACType', 'lastDOACDose',
-              'punctureTime',
-              'dtnEdArrival', 'dtnStrokeAlert', 'dtnCtStarted', 'dtnCtRead',
-              'dtnTnkOrdered', 'dtnTnkAdministered',
-              'decisionLog',
-              // Free-text clinical data (persisted for note generation)
-              'symptoms', 'pmh', 'medications', 'rationale', 'allergies',
-              // Structured clinical data
-              'diagnosis', 'premorbidMRS', 'affectedSide', 'weightEstimated', 'contrastAllergy',
-              'chiefComplaint', 'doorTime', 'needleTime', 'admitLocation',
-              'wakeUpStrokeWorkflow', 'recommendationsText', 'consentKit',
-              // SAH/CVT/TIA pathway fields
-              'sahGrade', 'sahGradeScale', 'sahBPManaged', 'sahNimodipine', 'sahEVDPlaced', 'sahAneurysmSecured', 'sahNeurosurgeryConsulted', 'sahSeizureProphylaxis', 'fisherGrade',
-              'sahAneurysmLocation', 'sahAneurysmSize', 'sahSecuringMethod', 'sahVasospasmMonitoring', 'sahOutcomeSet',
-              'ichSurgicalCriteria', 'strokeTerritory', 'strokePhenotype',
-              'familyCommunication', 'symptomTrajectory', 'symptomOnsetNIHSS', 'postTNKMonitoring',
-              'aspectsRegions', 'pcAspectsRegions', 'ticiScore',
-              'evtAccessSite', 'evtDevice', 'evtNumberOfPasses', 'evtTechnique', 'reperfusionTime', 'postEvtBP',
-              'cvtAnticoagStarted', 'cvtAnticoagType', 'cvtIcpManaged', 'cvtSeizureManaged', 'cvtHematologyConsulted',
-              'cvtSpecialPopulation',
-              'tiaWorkup', 'tiaWorkupReviewed', 'tiaDisposition',
-              // Clinical pathway nested objects
-              'cardiacWorkup', 'dissectionPathway', 'screeningTools', 'etiologyWorkup',
-              'esusWorkup', 'doacTiming', 'hemorrhagicTransformation', 'angioedema',
-              'ichAnticoagResumption', 'carotidManagement', 'cvtAnticoag',
-              // Nursing/management
-              'dysphagiaScreening', 'earlyMobilization', 'vteProphylaxis', 'feverManagement',
-              'osmoticTherapy', 'nutritionalSupport',
-              // Drug interactions and bridging
-              'drugInteractions', 'anticoagBridging',
-              // Special workups and assessments
-              'youngAdultWorkup', 'drivingRestrictions', 'returnToWork',
-              'sexualHealthCounseling', 'airTravelRestrictions',
-              'spasticity', 'centralPain', 'fatigue', 'substanceScreening', 'hormonalRisk',
-              'palliativeCare', 'fallsRisk', 'pregnancyStroke', 'pediatricStrokePathway', 'maternalStrokePathway', 'activeCancer', 'cancerStrokePathway', 'sickleCellDisease', 'infectiveEndocarditis', 'decompressiveCraniectomy', 'rehabReferral',
-              // Discharge
-              'dischargeChecklist', 'dischargeChecklistReviewed', 'dischargeNIHSS', 'mrsAssessment',
-              // Imaging and exam results
-              'ctResults', 'ctaResults', 'ctpResults', 'ctpStructured', 'collateralGrade', 'earlyInfarctSigns', 'denseArterySign', 'ekgResults', 'nihssDetails',
-              // Inline calculator state
-              'ichVolumeCalc', 'andexanetCalc', 'crclCalc', 'enoxCalc'
-            ];
-            return allowedKeys.reduce((acc, key) => {
-              if (note && Object.prototype.hasOwnProperty.call(note, key)) {
-                acc[key] = note[key];
-              }
-              return acc;
-            }, {});
-          };
+          const sanitizeTelestrokeNoteForStorage = (note) =>
+            projectTelestrokeNote(note, persistenceShapes.noteDefaults, shouldPersistFreeText);
 
-          const sanitizeStrokeCodeFormForStorage = (form) => {
-            if (shouldPersistFreeText) return form;
-            const allowedKeys = [
-              'age', 'sex', 'lkw', 'lkw_date', 'nihss', 'aspects',
-              'tnk', 'tnk_rec', 'evt_rec'
-            ];
-            return allowedKeys.reduce((acc, key) => {
-              if (form && Object.prototype.hasOwnProperty.call(form, key)) {
-                acc[key] = form[key];
-              }
-              return acc;
-            }, {});
-          };
+          const sanitizeStrokeCodeFormForStorage = (form) =>
+            projectStrokeCodeForm(form, shouldPersistFreeText);
 
           const generateAlias = () => {
             const adjectives = ['Swift', 'Calm', 'Brisk', 'Bright', 'Sable', 'Quiet', 'Sturdy', 'Clear'];
@@ -8968,12 +8919,12 @@ Clinician Name`;
             if (telestrokeNote.rationale) brief += `- Rationale: ${telestrokeNote.rationale}\n`;
             if (telestrokeNote.affectedSide) brief += `- Affected side: ${telestrokeNote.affectedSide}\n`;
             if (telestrokeNote.sichDetected) brief += `- sICH detected\n`;
-            if (telestrokeNote.dischargeNIHSS) {
-              const admNIHSS = parseInt(telestrokeNote.nihss || nihssScore, 10);
-              const dischNIHSS = parseInt(telestrokeNote.dischargeNIHSS, 10);
+            if (getDocumentedDischargeNihss() !== null) {
+              const admNIHSS = documentedExamScore(telestrokeNote, nihssScore, isNIHSSComplete());
+              const dischNIHSS = getDocumentedDischargeNihss();
               let nihssDelta = '';
-              if (!isNaN(admNIHSS) && !isNaN(dischNIHSS)) nihssDelta = ` (${admNIHSS > dischNIHSS ? 'improved' : admNIHSS < dischNIHSS ? 'worsened' : 'unchanged'} from ${admNIHSS})`;
-              brief += `- Discharge NIHSS: ${telestrokeNote.dischargeNIHSS}${nihssDelta}\n`;
+              if (admNIHSS !== null) nihssDelta = ` (${admNIHSS > dischNIHSS ? 'improved' : admNIHSS < dischNIHSS ? 'worsened' : 'unchanged'} from ${admNIHSS})`;
+              brief += `- Discharge NIHSS: ${dischNIHSS}${nihssDelta}\n`;
             }
             {
               const fuMRS = telestrokeNote.mrsAssessment || {};
@@ -9302,7 +9253,7 @@ Clinician Name`;
             const symptoms = telestrokeNote.symptoms || "***";
             const lkw = lkwTime ? lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "[time]";
             const lkwDate = lkwTime ? lkwTime.toLocaleDateString('en-US') : "[date]";
-            const nihss = telestrokeNote.nihss || nihssScore || "[score]";
+            const nihss = getDocumentedNihss() || '[not documented]';
             const nihssDeficits = telestrokeNote.nihssDetails ? ` (${telestrokeNote.nihssDetails})` : "";
             const ctResults = telestrokeNote.ctResults || "[CT findings]";
             const ctaResults = telestrokeNote.ctaResults || "[CTA findings]";
@@ -9374,7 +9325,7 @@ Clinician Name`;
           };
           const generatePulsaraPreview = () => {
             const age = telestrokeNote.age || "***";
-            const nihss = telestrokeNote.nihss || nihssScore || "[score]";
+            const nihss = getDocumentedNihss() || '[not documented]';
             const dx = telestrokeNote.diagnosis || '[Diagnosis]';
             return `${age}${telestrokeNote.sex || ''} NIHSS ${nihss} - ${dx}`;
           };
@@ -9989,12 +9940,12 @@ Clinician Name`;
               if (telestrokeNote.affectedSide) note += `Affected side: ${telestrokeNote.affectedSide}\n`;
               if (telestrokeNote.weight) note += `Weight: ${telestrokeNote.weight} kg\n`;
               note += `NIHSS: ${getDocumentedNihss() || 'N/A'}`;
-              if (telestrokeNote.dischargeNIHSS) {
-                const snAdmNIHSS = parseInt(telestrokeNote.nihss || nihssScore, 10);
-                const snDischNIHSS = parseInt(telestrokeNote.dischargeNIHSS, 10);
+              if (getDocumentedDischargeNihss() !== null) {
+                const snAdmNIHSS = documentedExamScore(telestrokeNote, nihssScore, isNIHSSComplete());
+                const snDischNIHSS = getDocumentedDischargeNihss();
                 let snNihssDelta = '';
-                if (!isNaN(snAdmNIHSS) && !isNaN(snDischNIHSS)) snNihssDelta = snAdmNIHSS > snDischNIHSS ? ' improved' : snAdmNIHSS < snDischNIHSS ? ' worsened' : ' unchanged';
-                note += ` → current ${telestrokeNote.dischargeNIHSS}${snNihssDelta}`;
+                if (snAdmNIHSS !== null) snNihssDelta = snAdmNIHSS > snDischNIHSS ? ' improved' : snAdmNIHSS < snDischNIHSS ? ' worsened' : ' unchanged';
+                note += ` → current ${snDischNIHSS}${snNihssDelta}`;
               }
               const signoutGCS = reviewedGcs(gcsItems);
               if (signoutGCS > 0) note += ` | GCS: ${signoutGCS}`;
@@ -10474,7 +10425,7 @@ Clinician Name`;
               note += `- Hold antiplatelets/anticoagulants x 24h\n`;
               note += `- Repeat CT at 24h\n`;
               note += `- Bedrest with HOB 30° x 6h post-sheath removal\n`;
-              if (telestrokeNote.dischargeNIHSS) note += `\nPost-procedure NIHSS: ${telestrokeNote.dischargeNIHSS}\n`;
+              if (getDocumentedDischargeNihss() !== null) note += `\nPost-procedure NIHSS: ${getDocumentedDischargeNihss()}\n`;
               return note;
             }
 
@@ -10520,7 +10471,7 @@ Clinician Name`;
                 note += `Vitals: ${pnVitals.join(' ')}\n`;
               }
               note += `I/O: ___\n`;
-              note += `NIHSS: ${telestrokeNote.dischargeNIHSS || getDocumentedNihss() || '___'} (admission: ${getDocumentedNihss() || '___'})\n`;
+              note += `NIHSS: ${getDocumentedDischargeNihss() ?? 'not documented'} (admission: ${getDocumentedNihss() || 'not documented'})\n`;
               note += `Neuro exam: ___\n\n`;
               note += `LABS/IMAGING:\n`;
               note += `- CT Head: ${telestrokeNote.ctResults || '___'}`;
@@ -11471,7 +11422,7 @@ Clinician Name`;
               }
               note += '\n';
               const dischMRS = (telestrokeNote.mrsAssessment || {}).discharge;
-              note += `DISCHARGE NIHSS: ${telestrokeNote.dischargeNIHSS || nihssScore || '___'}${!telestrokeNote.dischargeNIHSS && nihssScore ? ' (admission — update before finalizing)' : ''}\n`;
+              note += `DISCHARGE NIHSS: ${getDocumentedDischargeNihss() ?? 'not documented'}${getDocumentedNihss() !== '' ? ` (admission: ${getDocumentedNihss()}; document discharge assessment separately)` : ''}\n`;
               note += `DISCHARGE mRS: ${dischMRS || '___'}\n\n`;
               // Rehab referrals
               {
@@ -14773,7 +14724,7 @@ Clinician Name`;
                 score: 959,
                 action: () => {
                   runEncounterOutput(() => {
-                    let exam = `NIHSS: ${telestrokeNote.nihss || nihssScore || 'N/A'}`;
+                    let exam = `NIHSS: ${getDocumentedNihss() || 'not documented'}`;
                     exam += `\nBP: ${telestrokeNote.presentingBP || 'N/A'}, Glucose: ${telestrokeNote.glucose || 'N/A'}, INR: ${telestrokeNote.inr || 'N/A'}, Plt: ${telestrokeNote.plateletCount || 'N/A'}`;
                     copyToClipboard(exam, 'tel-exam');
                     navigateTo('encounter', { clearSearch: true });
@@ -14946,7 +14897,7 @@ Clinician Name`;
               { name: 'Onboarding', keywords: ['education', 'onboarding', 'curriculum', 'trainee', 'resident', 'rotation', 'survival guide'], tab: 'education', subTab: 'onboarding' },
               { name: 'ICU Curriculum', keywords: ['education', 'icu', 'curriculum', 'nihss', 'hemodynamics', 'ventilation', 'critical care'], tab: 'education', subTab: 'icu' },
               { name: 'Nurse Education', keywords: ['education', 'nurse', 'nursing', 'competency', 'nihss', 'swallow screen', 'call parameters'], tab: 'education', subTab: 'nursing' },
-              { name: 'External Ventricular Drain', keywords: ['education', 'evd', 'external ventricular drain', 'ventriculostomy', 'leveling', 'zeroing', 'drainage', 'simulator'], tab: 'education', subTab: 'evd-maintenance' },
+              { name: 'External Ventricular Drain Reference', keywords: ['education', 'evd', 'external ventricular drain', 'ventriculostomy', 'csf', 'measurement', 'reference'], tab: 'education', subTab: 'evd-maintenance' },
               { name: 'Pocket Cards', keywords: ['education', 'pocket cards', 'cheat sheets', 'references', 'dosing', 'anatomy', 'visual aids'], tab: 'education', subTab: 'pocket-cards' }
             ];
 
@@ -14965,45 +14916,8 @@ Clinician Name`;
               }
             });
 
-            // Search in Evidence documents
-            const evidenceDocuments = [
-              { title: 'DAPT Minor Stroke-TIA Trials', section: 'Antiplatelet Therapy', keywords: ['dapt', 'antiplatelet', 'tia', 'minor stroke'] },
-              { title: 'Other Antithrombotics', section: 'Antiplatelet Therapy', keywords: ['oceanic', 'asundexian', 'factor xia', 'fxia', 'cilostazol', 'csps', 'pde3', 'novel antithrombotic', 'secondary prevention'] },
-              { title: 'Timing of Anticoagulation after AF-Related Stroke', section: 'Risk Factors', keywords: ['anticoagulation', 'atrial fibrillation', 'afib', 'timing'] },
-              { title: 'Atrial Fibrillation & Secondary Stroke Prevention', section: 'Risk Factors', keywords: ['afib', 'atrial fibrillation', 'prevention'] },
-              { title: 'AFib Stroke EPI519', section: 'Risk Factors', keywords: ['afib', 'atrial fibrillation', 'epidemiology', 'stroke', 'epi', 'epi519'] },
-              { title: 'Diabetes and stroke', section: 'Risk Factors', keywords: ['diabetes', 'risk factor', 'dm'] },
-              { title: 'Lipids and Cerebrovascular Disease', section: 'Risk Factors', keywords: ['lipids', 'cholesterol', 'statins', 'ldl'] },
-              { title: 'WAKE-UP Trial', section: 'Thrombolytic Therapy', keywords: ['wake-up', 'thrombolysis', 'tpa', 'alteplase', 'mri'] },
-              { title: 'Thrombolytic Therapy AIS 4.5-24h RCTs', section: 'Thrombolytic Therapy', keywords: ['thrombolysis', 'tpa', 'alteplase', 'rct', 'extended window', '4.5-24h'] },
-              { title: 'Lacunar Stroke', section: 'Cerebral Small Vessel Disease', keywords: ['lacunar', 'small vessel', 'csvd'] },
-              { title: 'Symptomatic Cervical Carotid Artery Stenosis', section: 'Large Artery Disease', keywords: ['carotid', 'stenosis', 'endarterectomy', 'cea', 'cas'] },
-              { title: 'CREST-2 Trial', section: 'Large Artery Disease', keywords: ['crest', 'crest-2', 'carotid', 'stenting', 'endarterectomy', 'cea', 'cas', 'asymptomatic'] },
-              { title: 'Differentiating Acute Confusional State (Delirium) from Aphasia', section: 'Exam', keywords: ['delirium', 'aphasia', 'confusion', 'exam'] },
-              { title: 'Coma Exam', section: 'Exam', keywords: ['coma', 'exam', 'consciousness'] },
-              { title: 'Large Core Anterior Circulation LVO EVT Trials', section: 'Endovascular Therapy', keywords: ['large core', 'lvo', 'thrombectomy', 'evt'] },
-              { title: 'Basilar Artery Occlusion EVT Trials', section: 'Endovascular Therapy', keywords: ['basilar', 'posterior circulation', 'evt'] },
-              { title: 'MeVO & Distal Vessel Occlusion EVT Trials', section: 'Endovascular Therapy', keywords: ['mevo', 'distal', 'medium vessel'] },
-              { title: 'Unruptured Cerebral Aneurysms', section: 'Aneurysms & Vascular Malformations', keywords: ['aneurysm', 'unruptured', 'sah'] },
-              { title: 'Interpretation of Clinical Trials', section: 'Critical Appraisal', keywords: ['ebm', 'clinical trials', 'evidence', 'statistics', 'critical appraisal'] },
-              { title: 'CEBM Oxford Resources', section: 'Critical Appraisal', keywords: ['cebm', 'oxford', 'ebm', 'evidence-based medicine', 'critical appraisal', 'study designs', 'levels of evidence'] }
-            ];
-
-            evidenceDocuments.forEach(doc => {
-              const score = scoreFor([doc.title, doc.section, ...(doc.keywords || [])], doc.priority || 0);
-              if (score > 0) {
-                results.push({
-                  type: 'Evidence',
-                  title: doc.title,
-                  description: `${doc.section} section`,
-                  score,
-                  action: () => {
-                    navigateTo('research', { clearSearch: true, subTab: 'references' });
-                  }
-                });
-              }
-            });
-
+            // Search the canonical reference projection below. A separate
+            // hand-maintained document list can advertise withdrawn downloads.
             // Unified /content index — guidelines, trials, education,
             // calculators, references — so global search spans every data source
             // at once. Indexed UNCONDITIONALLY (the workflow context never scopes
@@ -16899,9 +16813,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           }
                         }}
                         role="combobox"
-                        aria-expanded={searchOpen && searchResults.length > 0}
-                        aria-controls="search-listbox"
-                        aria-activedescendant={(searchOpen && searchResults.length > 0 && searchActiveIndex >= 0) ? `search-opt-${searchActiveIndex}` : undefined}
+                        aria-expanded={searchOpen && searchContext === 'header'}
+                        aria-controls={searchOpen && searchContext === 'header' ? [
+                          searchResults.length > 0 && 'search-listbox',
+                          searchQuery.trim().length >= 2 && searchResults.length === 0 && 'search-no-results',
+                          searchQuery.trim().length < 2 && 'search-quick-commands'
+                        ].filter(Boolean).join(' ') || undefined : undefined}
+                        aria-activedescendant={(searchOpen && searchContext === 'header' && searchActiveIndex >= 0 && searchActiveIndex < searchResults.length) ? `search-opt-${searchActiveIndex}` : undefined}
                         className="pl-8 pr-16 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cobalt-500 w-full dark:border-strong"
                         aria-label="Search trials, management tools, and references"
                       />
@@ -16963,7 +16881,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       )}
 
                       {searchOpen && searchContext === 'header' && searchQuery.trim().length >= 2 && searchResults.length === 0 && (
-                        <div className="absolute top-12 left-0 right-0 bg-white rounded-lg border border-line shadow-lg z-50 p-3 dark:bg-card">
+                        <div id="search-no-results" className="absolute top-12 left-0 right-0 bg-white rounded-lg border border-line shadow-lg z-50 p-3 dark:bg-card">
                           <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">No exact match found</p>
                           <p className="text-xs text-slate-500 mt-0.5 mb-2 dark:text-mute">Try one of these quick commands:</p>
                           <div className="space-y-1.5">
@@ -16994,7 +16912,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       )}
 
                       {searchOpen && searchContext === 'header' && searchQuery.trim().length < 2 && (
-                        <div className="absolute top-12 left-0 right-0 bg-white rounded-lg border border-line shadow-lg z-50 p-3 max-h-[70vh] overflow-y-auto dark:bg-card">
+                        <div id="search-quick-commands" className="absolute top-12 left-0 right-0 bg-white rounded-lg border border-line shadow-lg z-50 p-3 max-h-[70vh] overflow-y-auto dark:bg-card">
                           {(() => {
                             const categoryOrder = ['Navigation', 'Data Entry', 'Copy / Export', 'Resources'];
                             const grouped = {};
@@ -17649,9 +17567,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         elapsed: lkwElapsed || '—',
                         elapsedStatus: elapsedStatusForStrip,
                         elapsedMin: elapsedMinForStrip,
-                        nihss: telestrokeNote.nihss || (nihssScore > 0 ? nihssScore : '—'),
+                        nihss: documentedExamScore(telestrokeNote, nihssScore, isNIHSSComplete()) ?? '—',
                         aspects: isValidAspectsScore(aspectsScore) ? aspectsScore : '—',
-                        anticoag: telestrokeNote.lastDOACType || (telestrokeNote.anticoagBridging || {}).doacType || 'None',
+                        anticoag: telestrokeNote.lastDOACType || 'Not assessed',
                         lkwUnknown: !!telestrokeNote.lkwUnknown
                       };
                       return (
@@ -17673,9 +17591,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               {telestrokeNote.age}{telestrokeNote.sex ? telestrokeNote.sex : ''}
                             </span>
                           )}
-                          {(nihssScore > 0 || telestrokeNote.nihss) && (
+                          {getDocumentedNihss() !== '' && (
                             <span className="font-semibold text-slate-900 dark:text-ink">
-                              NIHSS: {telestrokeNote.nihss || nihssScore}
+                              NIHSS: {getDocumentedNihss()}
                             </span>
                           )}
                           {lkwElapsed && (
@@ -18823,7 +18741,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <h3 className="text-md font-bold text-crit-900 flex items-center gap-2 dark:text-crit-300">
                                                             NIHSS Examination
                             </h3>
-                            <span className="text-2xl font-bold text-crit-600 dark:text-crit-300">Score: {getDocumentedNihss() || (isNIHSSComplete() ? '0' : 'Incomplete')}</span>
+                            <span className="text-2xl font-bold text-crit-600 dark:text-crit-300">Score: {getDocumentedNihss() || 'Incomplete'}</span>
                           </div>
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -20123,7 +20041,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center justify-between mb-3">
                             <h2 className="text-lg font-bold text-crit-900 dark:text-crit-300">3. NIHSS Examination</h2>
                             <div className="flex items-center gap-2">
-                              <span className="text-2xl font-bold text-crit-600 dark:text-crit-300">Score: {getDocumentedNihss() || (isNIHSSComplete() ? '0' : 'Incomplete')}</span>
+                              <span className="text-2xl font-bold text-crit-600 dark:text-crit-300">Score: {getDocumentedNihss() || 'Incomplete'}</span>
                                                           </div>
                           </div>
 
@@ -21867,7 +21785,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* TNK-Only Consent Doc Copy (when TNK but no EVT/transfer) */}
                             {telestrokeNote.tnkRecommended && telestrokeNote.tnkConsentDiscussed && !telestrokeNote.evtRecommended && !telestrokeNote.transferAccepted && (
                               <button onClick={() => {
-                                const tnkDoc = `TNK CONSENT DOCUMENTATION:\nTenecteplase was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${telestrokeNote.nihss || nihssScore || '***'}).\nTreatment window: within 4.5 hours of LKW (or mismatch imaging criteria for extended window).\nRisks discussed: symptomatic intracranial hemorrhage (up to 4%), allergic reaction (rare).\nBenefits discussed: improved chance of recovery without disability; earlier treatment provides greater benefit.\nAlternatives discussed: no thrombolytic treatment (associated with higher risk of disability).\nConsent: ${telestrokeNote.patientFamilyConsent ? 'Patient/family consent obtained' : telestrokeNote.presumedConsent ? 'Presumed consent — treatment in best interest' : '***'}`;
+                                const tnkDoc = `TNK CONSENT DOCUMENTATION:\nTenecteplase was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${getDocumentedNihss() || 'not documented'}).\nTreatment window: within 4.5 hours of LKW (or mismatch imaging criteria for extended window).\nRisks discussed: symptomatic intracranial hemorrhage (up to 4%), allergic reaction (rare).\nBenefits discussed: improved chance of recovery without disability; earlier treatment provides greater benefit.\nAlternatives discussed: no thrombolytic treatment (associated with higher risk of disability).\nConsent: ${telestrokeNote.patientFamilyConsent ? 'Patient/family consent obtained' : telestrokeNote.presumedConsent ? 'Presumed consent — treatment in best interest' : '***'}`;
                                 copyToClipboard(tnkDoc, 'tnk-consent');
                               }}
                                 className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'tnk-consent' ? 'bg-ok-600 text-white' : 'bg-cobalt-600 text-white hover:bg-cobalt-700'}`}>
@@ -26279,10 +26197,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <input type="number" min="0" max="42" step="1"
                                 value={telestrokeNote.dischargeNIHSS}
                                 onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, dischargeNIHSS: v})); }}
-                                placeholder={nihssScore ? `${nihssScore} (admission)` : '___'}
+                                placeholder={getDocumentedNihss() !== '' ? `${getDocumentedNihss()} (admission only)` : '___'}
                                 className="w-20 px-2 py-1 border rounded text-sm text-center" />
-                              {!telestrokeNote.dischargeNIHSS && nihssScore > 0 && (
-                                <span className="text-xs text-warn-600 dark:text-warn-300">Defaults to admission NIHSS — update before finalizing</span>
+                              {getDocumentedDischargeNihss() === null && getDocumentedNihss() !== '' && (
+                                <span className="text-xs text-warn-600 dark:text-warn-300">Admission reference only — document discharge NIHSS separately</span>
                               )}
                             </div>
 
@@ -27652,7 +27570,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     const railMissing = [
                       !telestrokeNote.age && 'Age',
                       !lkwTime && !telestrokeNote.lkwUnknown && 'LKW',
-                      !(telestrokeNote.nihss || nihssScore) && 'NIHSS',
+                      getDocumentedNihss() === '' && 'NIHSS',
                       !telestrokeNote.diagnosisCategory && 'Diagnosis',
                       !telestrokeNote.ctResults && 'CT Results',
                       !telestrokeNote.ctaResults && 'CTA Results',
@@ -31884,7 +31802,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             <div key={rec.id} id={`gl-rec-${rec.id}`} className="border border-cobalt-100 rounded-lg p-2 bg-cobalt-50/50 dark:bg-cobalt-900/50">
                                               <div className="flex flex-col sm:flex-row items-start gap-2">
                                                 <span className={`inline-flex items-center max-w-full px-1.5 py-0.5 rounded text-xs font-bold sm:max-w-[12rem] sm:shrink-0 ${GUIDELINE_CLASS_COLORS[normalizeGuidelineClass(recClass, rec.classNote)] || 'bg-slate-500 text-white'}`}>
-                                                  {recClass}/{recLevel}
+                                                  {guidelineGradeLabel(rec, guideline)}
                                                 </span>
                                                 <div className="flex-1 min-w-0">
                                                   <p className="text-sm text-slate-800 dark:text-ink">{rec.text}</p>
@@ -32248,7 +32166,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="ref-evd" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
                       <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
                         <span className="ref-section-icon ref-tone-info" aria-hidden="true"><i data-lucide="activity" className="w-4 h-4"></i></span>
-                        External Ventricular Drain Infographic
+                        External Ventricular Drain Reference
                       </summary>
                       <div className="px-4 pb-4">
                         <EVDInfographic />
@@ -32259,7 +32177,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     <details id="ref-icp" className="ref-section bg-white border border-line rounded-lg dark:bg-card">
                       <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
                         <span className="ref-section-icon ref-tone-crit" aria-hidden="true"><i data-lucide="alert-triangle" className="w-4 h-4"></i></span>
-                        Intracranial Hypertension &amp; Herniation Infographic
+                        Intracranial Hypertension &amp; Herniation Reference
                       </summary>
                       <div className="px-4 pb-4">
                         <ICPInfographic />
@@ -33133,9 +33051,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 credential into a clinical tool on that assumption. */}
                             <p className="font-sans text-sm text-mute mt-2 text-pretty">
                               No feature sends data to a provider yet, so a key saved here is stored but
-                              unused. The key is kept in this browser tab only — never written to disk
-                              and never transmitted.
+                              unused. In enabled builds, it is stored in this tab’s session storage.
+                              Browser storage is not a guarantee that a key never reaches disk.
                             </p>
+                            {!PUBLIC_DEMO_MODE && <p className="font-sans text-sm text-mute mt-2 text-pretty">
+                              In private builds, disabling free-text storage saves only selected structured fields.
+                              New shift records, encounter history and edited templates are not saved. Previously stored data is not removed by this setting.
+                            </p>}
                             {PUBLIC_DEMO_MODE && (
                               <p className="font-sans text-sm font-semibold text-ink mt-2 text-pretty" data-testid="public-demo-api-disabled">
                                 Key entry is disabled in the public demo build. Do not paste credentials into a public site.
@@ -33167,12 +33089,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                           {tempProvider && (
                             <div>
-                              <label className="block text-sm font-semibold text-ink mb-1.5">
+                              <label htmlFor="api-key-input" className="block text-sm font-semibold text-ink mb-1.5">
                                 API Key
                               </label>
                               <div className="relative max-w-md">
                                 <input
+                                  id="api-key-input"
                                   type={showKey ? 'text' : 'password'}
+                                  disabled={PUBLIC_DEMO_MODE}
                                   value={tempKey}
                                   onChange={(e) => setTempKey(e.target.value)}
                                   placeholder={(API_PROVIDERS.find((p) => p.value === tempProvider) || {}).placeholder || ''}
@@ -33201,10 +33125,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 if (!selectedProvider) {
                                   // Clearing the provider clears the key too, so a
                                   // stale key can't outlive the provider it belonged to.
+                                  try { sessionStorage.removeItem('apiKey'); }
+                                  catch (_) {
+                                    addToast('Browser storage is unavailable. API settings could not be cleared; close this tab to end the session.', 'error');
+                                    return;
+                                  }
                                   setApiProvider('');
                                   setApiKey('');
                                   setKey('apiProvider', '');
-                                  sessionStorage.removeItem('apiKey');
                                   addToast('API provider cleared.', 'success');
                                   navigateTo('encounter');
                                   return;
@@ -33213,10 +33141,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   addToast(`${selectedProvider.label} key must start with "${selectedProvider.keyPrefix}".`, 'error');
                                   return;
                                 }
+                                try { sessionStorage.setItem('apiKey', trimmedKey); }
+                                catch (_) {
+                                  addToast('Browser storage is unavailable. API settings were not saved.', 'error');
+                                  return;
+                                }
                                 setApiProvider(tempProvider);
                                 setApiKey(trimmedKey);
                                 setKey('apiProvider', tempProvider); // was an undefined saveToStorage() — ReferenceError blocked the save
-                                sessionStorage.setItem('apiKey', trimmedKey);
                                 addToast('API Settings saved successfully.', 'success');
                                 navigateTo('encounter');
                               }}

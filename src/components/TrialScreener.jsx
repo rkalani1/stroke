@@ -147,7 +147,7 @@ const STATUS_MAP = {
     rail: 'bg-warn-500'
   },
   soon: {
-    text: 'Enrolling soon',
+    text: 'Later window / opening soon',
     dot: 'bg-warn-500',
     cls: 'bg-warn-50 text-warn-800 border-warn-200 dark:bg-warn-950 dark:text-warn-200 dark:border-warn-800',
     rail: 'bg-warn-300'
@@ -637,7 +637,9 @@ function ResultsPanel({ results, ready, candidateCount, excludedCount, copyBrief
       <div>
         <SectionRule title="Possible candidates" count={candidateCount} />
         <p className="mt-2 text-xs leading-relaxed text-mute">
-          {results.timeCategory === 'hyperacute'
+          {results.timeCategory === 'unknown'
+            ? 'Onset window is unknown; studies are not prioritised by timing.'
+            : results.timeCategory === 'hyperacute'
             ? 'Prioritising hyperacute studies (0–24 h).'
             : results.timeCategory === 'acute_subacute'
             ? 'Prioritising acute–subacute studies (24 h–30 d).'
@@ -656,7 +658,7 @@ function ResultsPanel({ results, ready, candidateCount, excludedCount, copyBrief
 
       {results.soon.length > 0 && (
         <section className="space-y-3">
-          <SectionRule title="Enrolling soon" count={results.soon.length} tone="warn" />
+          <SectionRule title="Later window / opening soon" count={results.soon.length} tone="warn" />
           {results.soon.map((item) => (
             <ResultCard key={item.trial.acronym} item={item} onOpenDetails={setModalTrial} />
           ))}

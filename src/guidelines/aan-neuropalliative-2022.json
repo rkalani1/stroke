@@ -78,7 +78,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Clinicians are at risk of overestimating prognosis (when they have a longstanding relationship with a patient) or underestimating prognosis (when withdrawal bias is present) and must remember to use evidence-based estimates and explore personal biases when offering prognostic assessments. Statistical language is easily misinterpreted by patients and families, whose low numeracy can lead to discordant surrogate prognostic estimates.",
+      "text": "Clinicians are at risk of overestimating prognosis (when they have a longstanding relationship with a patient) or underestimating prognosis (when withdrawal bias is present) and must remember to use evidence-based estimates and explore personal biases when offering prognostic assessments. Statistical language can be misinterpreted; the statement cites a critical-care study in which low numeracy contributed to discordant surrogate prognostic estimates.",
       "page": null
     },
     {
@@ -198,7 +198,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "Those experiencing an acute stroke will benefit from serial assessments of recovery, a best-case/worst-case prognostic framework, time-limited trials of 3 to 6 months when in line with goals of care, efforts to enhance communication ability, and support for surrogates when capacity is lost. Surrogates mistrust clinicians' prognostic estimates, and being as general as possible while providing a range of best and worst outcomes improves communication and decision-making about complex supportive care measures.",
+      "text": "Those experiencing an acute stroke will benefit from serial assessments of recovery, a best-case/worst-case prognostic framework, time-limited trials of 3 to 6 months when in line with goals of care, efforts to enhance communication ability, and support for surrogates when capacity is lost. The statement cites one study suggesting that presenting a range of possible outcomes can improve communication with surrogates who mistrust prognostic estimates.",
       "page": null
     },
     {
@@ -303,9 +303,9 @@
   "sourceReview": {
     "reviewedAt": "2026-09-30",
     "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-    "sourceAccess": "Discontinuous indexed original publisher fragments; zero complete bodies; exact public route outcomes retained in aan-ethics89-review",
+    "sourceAccess": "Complete original publisher PDF recovered from an ABN society mirror; all 36 stored statements compared with source passages, including two repaired study-scope qualifiers.",
     "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
-    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "sourceEditionNote": "Original Neurology 2022;98:409–416 statement, DOI 10.1212/WNL.0000000000200063. Full-body source fidelity is distinct from an exhaustive review of subsequent clinical evidence.",
     "implementationUpdatedAt": "2026-09-30"
   }
 }

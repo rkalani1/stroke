@@ -633,8 +633,13 @@
       "question": "Does andexanet alfa reduce hematoma expansion in factor Xa inhibitor-associated ICH?",
       "design": "Single-arm (ANNEXA-4) → RCT (ANNEXA-I): andexanet vs usual care",
       "outcomes": "ANNEXA-I: hemostatic efficacy 67% vs 53%. Thrombotic events: 10.3% vs 5.6%, including ischemic stroke 6.5% vs 1.5%.",
-      "bottomLine": "Effective at reducing expansion but higher thrombotic risk; individualized decision.",
-      "teachingPoint": "Andexanet is no longer sold in the US (sales ended in December 2025 after the FDA concluded its risks, including thrombosis, outweigh its benefits); use 4F-PCC (or aPCC) per the local reversal pathway. The 2026 NCS/SCCM focused update conditionally recommends 4F-PCC over andexanet. The 2022 AHA/ASA ICH guideline Class 2a (LOE B-NR) recommendation for andexanet predates ANNEXA-I and the US withdrawal; that guideline grades 4F-PCC or aPCC for factor Xa inhibitor-associated ICH only Class 2b (LOE B-NR)."
+      "bottomLine": "ANNEXA-I improved hemostatic efficacy but increased thrombosis, without demonstrated 30-day functional or mortality benefit. Andexanet is no longer sold in the US.",
+      "teachingPoint": "FDA concluded that risks outweigh benefits; AstraZeneca submitted a voluntary BLA-withdrawal request and ended US sales on 22 December 2025. A submitted request is not evidence here of completed regulatory withdrawal. The September 2026 NCS/SCCM update conditionally suggests 4F-PCC over andexanet for spontaneous factor Xa inhibitor-associated ICH (moderate certainty); its traumatic-ICH recommendation has very-low certainty. This comparison does not establish aPCC equivalence.",
+      "reviewedSources": [
+        "https://pubmed.ncbi.nlm.nih.gov/38749032/",
+        "https://www.fda.gov/vaccines-blood-biologics/safety-availability-biologics/update-safety-andexxa",
+        "https://link.springer.com/article/10.1007/s12028-026-02601-4"
+      ]
     },
     {
       "name": "INTERACT4",
@@ -656,7 +661,7 @@
       "question": "Does tranexamic acid improve outcome after spontaneous ICH?",
       "design": "RCT, n=2325, 124 sites in 12 countries. TXA 1g bolus + 1g over 8h vs placebo within 8h of onset.",
       "outcomes": "mRS shift at 90d: aOR 0.88 (95% CI 0.76-1.03, p=0.11). Death by day 7 LOWER: 9% vs 11% (aOR 0.73, p=0.041). 90-day case fatality unchanged: 22% vs 21%. Fewer serious adverse events with TXA.",
-      "bottomLine": "TXA is safe and reduced early death but did not improve function — not routine in ICH.",
+      "bottomLine": "Tranexamic acid reduced early deaths and serious adverse events but did not significantly improve the primary 90-day functional outcome. This does not establish universal safety or routine benefit in ICH.",
       "teachingPoint": "Tranexamic acid reduced early hematoma expansion without a significant primary functional benefit. Earlier treatment or imaging enrichment are hypotheses for future study, not established explanations of the neutral result or proven ways to obtain benefit.",
       "reviewedSources": [
         "https://pubmed.ncbi.nlm.nih.gov/29778325/"
@@ -697,7 +702,7 @@
       "question": "Is it safe to restart antiplatelet therapy after intracerebral hemorrhage?",
       "design": "RCT, n=537, 122 UK hospitals. Patients on antithrombotics when ICH occurred, randomized a median of 76 days later to start vs avoid antiplatelet therapy.",
       "outcomes": "Recurrent ICH: 4% (12/268) vs 9% (23/268), adjusted HR 0.51 (95% CI 0.25-1.03, p=0.060). Major hemorrhagic events 7% vs 9%. Major occlusive events 15% vs 14%.",
-      "bottomLine": "Restarting an antiplatelet did not increase recurrent ICH — the point estimate favoured restarting.",
+      "bottomLine": "No statistically significant increase in recurrent ICH was detected in the selected population; the estimate favored antiplatelet restart but remained imprecise.",
       "teachingPoint": "The results are reassuring for selected patients with an antiplatelet indication after ICH, but timing-specific uncertainty remains. Randomization included 21 patients at 1-6 days and 118 at 7-30 days. Extended follow-up recurrent-ICH HR was 0.87 (95% CI 0.49-1.55), so the trial does not guarantee no increased risk for every patient or restart time.",
       "reviewedSources": [
         "https://pubmed.ncbi.nlm.nih.gov/31128924/",
@@ -946,8 +951,12 @@
       "question": "Is an SBP target <120 better than <140 in patients with diabetes or prior stroke?",
       "design": "ESPRIT n=11,255 (3022 with prior stroke, 4359 with diabetes), median 3.4y. BPROAD n=12,821 with type 2 diabetes, median 4.2y. Both open-label, blinded outcomes, China.",
       "outcomes": "ESPRIT: 9.7% vs 11.1% (HR 0.88, 95% CI 0.78-0.99, p=0.028), no heterogeneity by diabetes or prior stroke. BPROAD: 1.65 vs 2.09 per 100 person-years (HR 0.79, 95% CI 0.69-0.90, p<0.001).",
-      "bottomLine": "Both support an SBP target <120 for vascular prevention, including in stroke survivors.",
-      "teachingPoint": "Together they close the gaps SPRINT and ACCORD-BP left open — diabetes and prior stroke. ESPRIT found no subgroup heterogeneity, which is the key result for stroke clinicians. Balance against BPROAD’s excess symptomatic hypotension and hyperkalemia in frail patients."
+      "bottomLine": "The tested SBP target below 120 reduced composite vascular events in selected high-risk populations. ESPRIT included prior-stroke participants; this is not a universal target for every stroke survivor.",
+      "teachingPoint": "ESPRIT found no detected treatment-effect heterogeneity by prior stroke or diabetes, but this does not prove equal benefit in every subgroup. These were chronic prevention strategies in selected participants, not acute-stroke targets. Balance benefit against syncope in ESPRIT and symptomatic hypotension and hyperkalemia in BPROAD, using the complete current guideline and patient context.",
+      "reviewedSources": [
+        "https://pubmed.ncbi.nlm.nih.gov/38945140/",
+        "https://pubmed.ncbi.nlm.nih.gov/39555827/"
+      ]
     },
     {
       "name": "SAVE",
@@ -1137,10 +1146,13 @@
       "year": 2022,
       "citation": "JAMA 2022;328:534-42 (PMID 35943472)",
       "question": "With better selection and experienced operators, does intracranial stenting beat medical therapy?",
-      "design": "RCT, n=358, 8 Chinese centres. Symptomatic 70-99% intracranial stenosis, NON-perforator territory, enrolled >3 weeks after the last event. Stenting + medical vs medical alone. 3-year follow-up.",
+      "design": "RCT: 380 randomized, 358 confirmed eligible, at 8 Chinese centers. Symptomatic 70-99% intracranial stenosis with TIA or nondisabling nonperforator-territory stroke; enrolled more than 3 weeks after the latest event. Stenting plus medical therapy versus medical therapy alone; 3-year follow-up.",
       "outcomes": "No significant difference in stroke/death at 30 days or qualifying-territory stroke through 1 year; no difference at 2 or 3 years; no mortality difference.",
-      "bottomLine": "Stenting added nothing, even under conditions designed to give it the best chance.",
-      "teachingPoint": "Deliberately corrected what critics blamed for SAMMPRIS: it used experienced operators, excluded perforator-territory events, and imposed a 3-week cooling-off period past the hyperacute phase. It still failed. Aggressive medical therapy remains the standard for intracranial atherosclerosis."
+      "bottomLine": "Stenting did not demonstrate added benefit in this selected population; the primary HR was 1.10 (95% CI 0.52-2.35), so the result does not prove zero effect.",
+      "teachingPoint": "The trial used experienced operators, excluded qualifying perforator-territory stroke, and delayed enrollment beyond 3 weeks. The findings do not support routine added stenting under these conditions, while leaving uncertainty about other specifically selected rescue scenarios.",
+      "reviewedSources": [
+        "https://pubmed.ncbi.nlm.nih.gov/35943472/"
+      ]
     },
     {
       "name": "CMOSS",

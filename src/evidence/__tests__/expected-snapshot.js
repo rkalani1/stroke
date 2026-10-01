@@ -1,6 +1,7 @@
 // 2026-09-30 intentional safety-contract changes: closed profiles are inactive;
 // partial modeled matches require information/protocol confirmation. All other
 // exclusions remain the prior source-reviewed expectations; not generated from engine output.
+// Diagnostic-gate updates: documented ICH/TIA cannot satisfy AIS or lobar-ICH entry criteria.
 export const EXPECTED_SNAPSHOT = {
   "empty form": {
     "step-evt": {
@@ -116,7 +117,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     }
   },
-  "TESTED — pre-existing disability LVO": {
+  "TESTED \u2014 pre-existing disability LVO": {
     "step-evt": {
       "status": "not_eligible",
       "exclusionsCount": 0
@@ -154,7 +155,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     }
   },
-  "PICASSO — tandem": {
+  "PICASSO \u2014 tandem": {
     "step-evt": {
       "status": "not_eligible",
       "exclusionsCount": 0
@@ -192,7 +193,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     }
   },
-  "boundary — NIHSS = 6": {
+  "boundary \u2014 NIHSS = 6": {
     "step-evt": {
       "status": "not_eligible",
       "exclusionsCount": 0
@@ -270,19 +271,19 @@ export const EXPECTED_SNAPSHOT = {
   },
   "ICH lobar on statin": {
     "step-evt": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "picasso": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "tested": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "most": {
@@ -308,19 +309,19 @@ export const EXPECTED_SNAPSHOT = {
   },
   "ICH + AF (ASPIRE)": {
     "step-evt": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "picasso": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "tested": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "most": {
@@ -346,7 +347,7 @@ export const EXPECTED_SNAPSHOT = {
   },
   "TIA + ICAS (CAPTIVA)": {
     "step-evt": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "picasso": {
@@ -358,7 +359,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "most": {
@@ -374,7 +375,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "saturn": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "aspire": {
@@ -498,19 +499,19 @@ export const EXPECTED_SNAPSHOT = {
   },
   "ASPIRE eligible BUT mechanical valve": {
     "step-evt": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "picasso": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "tested": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "most": {
@@ -536,7 +537,7 @@ export const EXPECTED_SNAPSHOT = {
   },
   "CAPTIVA eligible BUT cardioembolic": {
     "step-evt": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "picasso": {
@@ -548,7 +549,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "verify": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "most": {
@@ -564,7 +565,7 @@ export const EXPECTED_SNAPSHOT = {
       "exclusionsCount": 0
     },
     "saturn": {
-      "status": "needs_info",
+      "status": "not_eligible",
       "exclusionsCount": 0
     },
     "aspire": {

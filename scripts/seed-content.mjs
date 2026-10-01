@@ -17,11 +17,9 @@
 //   node scripts/seed-content.mjs --check   # fail if regenerating would change
 //                                             any file (drift guard for CI)
 //
-// After seeding, edit /content directly — but re-running this OVERWRITES it, so
-// the interim contract is: guidelines/trials remain authored in src/evidence and
-// projected here; calculators/education/references are authored here and this
-// script only bootstraps them (guarded by --check, so intentional edits show up
-// as drift to reconcile). See CONTRIBUTING-content.md.
+// All emitted records are projections. Edit the canonical sources above, then
+// regenerate; direct /content edits are overwritten and fail --check.
+// See CONTRIBUTING-content.md for the full authoring and validation contract.
 
 import fs from 'node:fs/promises';
 import fsSync from 'node:fs';
@@ -313,7 +311,7 @@ async function seedEducation() {
       m.purpose || '',
       '',
       '> The interactive teaching card for this module renders from `src/education.jsx`.',
-      '> This file owns the module metadata (title, summary, tags, contexts, references).',
+      '> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.',
       '',
     ].join('\n');
     await emit(`education/${m.id}.md`, front);

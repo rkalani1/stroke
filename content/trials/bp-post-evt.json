@@ -108,7 +108,7 @@
     "category": "bp-post-evt",
     "population": "n=306, adults (age range not stated in the extension report; age was an adjustment covariate), NIHSS baseline NIHSS used as an adjustment covariate; distribution not reported in the extension, randomisation within 2 h after recanalization; BP targets applied for 24 h after enrolment; follow-up extended to 1 year",
     "finding": "Functional independence at 1 year was NUMERICALLY LOWER with intensive management (40.5% vs 52.7%), but the INTENTION-TO-TREAT estimate did NOT cross conventional significance (P=0.051). Only the per-protocol analysis did (41.1% vs 54.7%, P=0.040). State this as persistence of the early signal, not as newly proven long-term harm, and never quote the per-protocol figure as if it were the intention-to-treat result.",
-    "teachingPoint": "Shows the functional cost of 24 hours of intensive post-thrombectomy BP lowering is still measurable at one year, reinforcing existing recommendations against intensive lowering after successful reperfusion.",
+    "teachingPoint": "The one-year estimates remain concerning in the selected OPTIMAL-BP population, but the ITT analysis did not reach conventional statistical significance. Preserve the parent-trial population, tested targets, and distinction from newer individualized strategies.",
     "PMID": "42212393",
     "year": 2026,
     "citationIds": [
@@ -125,7 +125,7 @@
     "category": "bp-post-evt",
     "population": "n=4381, adults enrolled in the included randomized trials, NIHSS pooled as an outcome, not an inclusion criterion, blood-pressure management during and after reperfusion by systemic thrombolysis or endovascular thrombectomy",
     "finding": "Intensive management results in LITTLE TO NO clinically meaningful difference in clinical function (high-certainty evidence). The review protocol defines the dichotomous clinical-function outcome on the mRS (0 to 2 favourable, 3 to 6 poor), and the plain-language summary reports it as the chance of living independently at about 3 months; read that way, RR 0.89 (95% CI 0.80 to 0.98) means slightly fewer patients were functionally independent with intensive lowering, a difference the authors judged not clinically meaningful.",
-    "teachingPoint": "Supplies the GRADE-graded bottom line for post-reperfusion BP: intensive systolic lowering below 160 mm Hg buys no clinically meaningful functional benefit and probably increases all-cause mortality.",
+    "teachingPoint": "Supports caution with the intensive strategies studied through March 2025. Interpret the pooled mortality increase alongside heterogeneous targets, mixed reperfusion modalities, and subsequent selected-population trials such as HOPE.",
     "PMID": "42445947",
     "year": 2026,
     "citationIds": [
