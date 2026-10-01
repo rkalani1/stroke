@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import fs from 'node:fs';
 import { completedTrials, filterCompletedTrials } from '../src/evidence/index.js';
-import { getSearchIndex } from '../src/content-context.js';
+import { getBrowserSearchIndex as getSearchIndex } from '../src/content-search-index.js';
 
 const source = fs.readFileSync(new URL('../src/app.jsx', import.meta.url), 'utf8');
 const start = source.indexOf('const navigateToCompletedTrial = (entry) => {');

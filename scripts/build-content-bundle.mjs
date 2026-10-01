@@ -3,7 +3,8 @@
 // Builds content/bundle.json — a single app-consumable projection of the
 // authored /content data layer. esbuild bundles JSON natively but not the
 // education .md files, so the browser gets one import instead of a directory
-// glob. This is a generated artifact (like data/*); never hand-edit it.
+// glob. Also emits content/search-index.json with only the browser search
+// fields. Both are generated artifacts (like data/*); never hand-edit them.
 //
 //   node scripts/build-content-bundle.mjs           # write content/bundle.json
 //   node scripts/build-content-bundle.mjs --check    # fail if it would change (CI)
@@ -14,6 +15,7 @@ import crypto from 'node:crypto';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { parseFrontmatter } from '../content/schema.mjs';
+import { projectContentSearchEntries } from '../src/content-search-projection.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.join(__dirname, '..');
@@ -63,16 +65,25 @@ const bundle = {
 
 const outPath = path.join(CONTENT, 'bundle.json');
 const text = JSON.stringify(bundle, null, 2) + '\n';
+const searchPath = path.join(CONTENT, 'search-index.json');
+const searchText = JSON.stringify(projectContentSearchEntries(bundle), null, 2) + '\n';
 
 if (check) {
-  let existing = null;
-  try { existing = fs.readFileSync(outPath, 'utf8').replace(/\r\n/g, '\n'); } catch { /* new */ }
-  if (existing !== text) {
-    console.error('build-content-bundle --check: content/bundle.json is stale. Run `npm run content:bundle`.');
-    process.exit(1);
+  let stale = false;
+  for (const [file, expected] of [[outPath, text], [searchPath, searchText]]) {
+    let existing = null;
+    try { existing = fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n'); } catch { /* new */ }
+    if (existing !== expected) {
+      console.error(`build-content-bundle --check: ${path.relative(REPO, file)} is stale. Run \`npm run content:bundle\`.`);
+      stale = true;
+    }
   }
+  if (stale) process.exit(1);
   console.log('build-content-bundle --check: bundle is up to date.');
+  console.log('build-content-bundle --check: search index is up to date.');
 } else {
   fs.writeFileSync(outPath, text, 'utf8');
+  fs.writeFileSync(searchPath, searchText, 'utf8');
   console.log(`Wrote content/bundle.json (${Object.entries(bundle._meta.counts).map(([k, v]) => `${k}=${v}`).join(', ')}).`);
+  console.log('Wrote content/search-index.json (search labels and navigation identifiers only).');
 }

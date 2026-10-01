@@ -57,13 +57,23 @@ describe('complete ESO source inventories', () => {
 });
 
 describe('source qualifications and grading regression checks', () => {
-  it('retains correction linkage while corrected cognition boxes remain independently unresolved', () => {
+  it('resolves only the recovered cognition boxes while retaining source-depth and currency limits', () => {
     const d = documents['eso-ean-poststroke-cognition-2021'];
     const correction = d.publicationUpdates.find((u) => u.pmid === '35300261');
-    expect(correction.status).toBe('unresolved');
-    expect(correction.independentReviewScope).toMatch(/corrected recommendation-box supplement unavailable/);
+    expect(correction.status).toBe('applied');
+    expect(correction.independentReviewScope).toContain('complete 19-page corrected recommendation-box text');
+    expect(correction.independentReviewScope).toContain('all 40 retained units paired');
+    expect(correction.independentReviewScope).toContain('correction-specific source gap only');
+    expect(correction.note).toContain('22 formal/no-recommendation units and 18 consensus units');
+    expect(correction.note).toContain('no comprehensive review of later clinical evidence');
+    expect(correction.priorIndependentReviewScope).toContain('supplement unavailable');
+    expect(d.sourceReview.sourceAccess).toContain('Direct PDF binary download remained HTTP 403');
+    expect(d.sourceReview.sourceAccess).toContain('visual inspection was unavailable');
+    expect(d.sourceReview.currencyNote).toContain('does not establish comprehensive clinical currency');
     expect(new Set(correction.affectedRecommendationIds)).toEqual(new Set(d.recommendations.map((r) => r.id)));
     expect(d.recommendations.every((r) => r.correctionSourceUrl === 'https://doi.org/10.1177/23969873221076951')).toBe(true);
+    expect(row(d.id, '13', 'consensus').sourceReference).toContain('Supplement 2, p.14');
+    expect(row(d.id, '14', 'consensus').sourceReference).toContain('Supplement 2, p.15');
   });
 
   it('limits cognition-prevention uncertainty to cognition and separates screening from diagnosis', () => {
@@ -84,7 +94,10 @@ describe('source qualifications and grading regression checks', () => {
     expect(row(id, '5', 'consensus').text).toMatch(/mild-to-moderate.*advanced dementia.*short life expectancy/);
     expect(row(id, '12', 'consensus').text).toMatch(/mixed.*Alzheimer.*Lewy body/);
     expect(row(id, '13', 'consensus').text).toMatch(/moderate-to-severe Alzheimer/);
-    expect(row(id, '14', 'consensus').text).toMatch(/Avoid actovegin and cerebrolysin.*serious adverse/);
+    expect(row(id, '13', 'consensus').text).toMatch(/Any benefit.*likely modest.*may lack clinical relevance/);
+    expect(row(id, '13', 'consensus').text).not.toContain('at most');
+    expect(row(id, '14', 'consensus').text).toMatch(/expert consensus suggests against using actovegin and cerebrolysin.*serious adverse/);
+    expect(row(id, '14', 'consensus')).toMatchObject({ classOfRec: 'Expert Consensus', levelOfEvidence: 'Ungraded' });
   });
 
   it('retains BP source thresholds and unequal certainty without inventing a new recommendation', () => {

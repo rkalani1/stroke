@@ -904,9 +904,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(gitignore).toContain('leak-guard-denylist.local.json');
     });
 
-    it('F19-T1.5: package.json version matches latest release v6.30.4', () => {
+    it('F19-T1.5: package.json version matches latest release v6.30.5', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.version).toBe('6.30.4');
+      expect(pkg.version).toBe('6.30.5');
     });
 
     it('F19-T1.6: Runtime config loader declares the local-override fetch it awaits', () => {

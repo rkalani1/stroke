@@ -3,7 +3,7 @@ import { classifyHints, DEFAULT_FINDINGS } from '../src/simulators/HintsSimulato
 
 const PERIPHERAL_FINDINGS = { hit: 'abnormal', nystagmus: 'uni', skew: 'none', hearing: 'normal' };
 
-describe('HINTS+ simulator — classifier', () => {
+describe('HINTS+ reference — classifier', () => {
   it('starts with an incomplete exam instead of a reassuring result', () => {
     const r = classifyHints(DEFAULT_FINDINGS);
     expect(r.complete).toBe(false);
@@ -19,11 +19,12 @@ describe('HINTS+ simulator — classifier', () => {
     expect(r.reasons).toEqual([]);
   });
 
-  it('treats a NORMAL/intact head-impulse as the CENTRAL sign (counterintuitive — do not "fix")', () => {
+  it('treats the bilaterally normal HIT key as a central warning', () => {
     const r = classifyHints({ ...DEFAULT_FINDINGS, hit: 'normal' });
     expect(r.isCentralHIT).toBe(true);
     expect(r.isCentral).toBe(true);
     expect(r.profile).toBe('CENTRAL WARNING PATTERN - URGENT STROKE EVALUATION');
+    expect(r.reasons).toEqual(['Bilaterally normal HIT (no corrective saccade to either side)']);
   });
 
   it('does NOT flag central when the head-impulse is abnormal (peripheral)', () => {
@@ -32,10 +33,11 @@ describe('HINTS+ simulator — classifier', () => {
     expect(r.isCentral).toBe(false);
   });
 
-  it('flags direction-changing / vertical nystagmus as central', () => {
+  it('flags the pathologic direction-changing / vertical / pure torsional key as central', () => {
     const r = classifyHints({ ...DEFAULT_FINDINGS, nystagmus: 'bi' });
     expect(r.isCentralNystagmus).toBe(true);
     expect(r.isCentral).toBe(true);
+    expect(r.reasons).toEqual(['Pathologic direction-changing, vertical or purely torsional nystagmus']);
   });
 
   it('flags skew deviation present as central', () => {
@@ -61,5 +63,38 @@ describe('HINTS+ simulator — classifier', () => {
     const r = classifyHints({ hit: 'normal', nystagmus: 'bi', skew: 'skew', hearing: 'loss' });
     expect(r.isCentral).toBe(true);
     expect(r.reasons).toHaveLength(4);
+  });
+
+  // Preserve every assessed/unassessed combination when changing presentation.
+  // These are behavior checks, not validation of HINTS diagnostic performance.
+  const combinations = [];
+  for (const hit of ['', 'abnormal', 'normal']) {
+    for (const nystagmus of ['', 'uni', 'bi']) {
+      for (const skew of ['', 'none', 'skew']) {
+        for (const hearing of ['', 'normal', 'loss']) {
+          combinations.push({ hit, nystagmus, skew, hearing });
+        }
+      }
+    }
+  }
+  it.each(combinations)('preserves missing and warning findings: %j', (findings) => {
+    const result = classifyHints(findings);
+    const warningCount = [findings.hit === 'normal', findings.nystagmus === 'bi',
+      findings.skew === 'skew', findings.hearing === 'loss'].filter(Boolean).length;
+    const complete = Object.values(findings).every(Boolean);
+    expect(result.complete).toBe(complete);
+    expect(result.isCentral).toBe(warningCount > 0);
+    expect(result.reasons).toHaveLength(warningCount);
+    if (warningCount) {
+      expect(result.profile).toBe('CENTRAL WARNING PATTERN - URGENT STROKE EVALUATION');
+      expect(result.tone).toBe('crit');
+    } else if (complete) {
+      expect(findings).toEqual(PERIPHERAL_FINDINGS);
+      expect(result.profile).toBe('PERIPHERAL VESTIBULAR PROFILE');
+      expect(result.tone).toBe('ok');
+    } else {
+      expect(result.profile).toBe('EXAM INCOMPLETE — NO CLASSIFICATION');
+      expect(result.tone).toBe('warn');
+    }
   });
 });

@@ -157,11 +157,10 @@ import {
   AIS_SOURCE_LINKS,
   AIS_COMMAND_CENTER_LAST_REVIEWED
 } from './management-guidance.js';
-// Content data layer access. Pure module over the build-time /content bundle;
-// powers the unified command-palette index.
+// Compact generated search projection; full content remains in its canonical sources.
 import {
-  getSearchIndex as getContentSearchIndex
-} from './content-context.js';
+  getBrowserSearchIndex as getContentSearchIndex
+} from './content-search-index.js';
 // StrokeOps v6 Evidence Atlas — structured active/completed-trial data.
 // After the retirement sprint, the engine drives the matcher
 // unconditionally from the structured atlas. The legacy
@@ -282,7 +281,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.30.4';
+const APP_VERSION = '6.30.5';
 // The header search hint mirrors the key the shortcut actually listens for
 // (metaKey || ctrlKey): ⌘ on Apple hardware, Ctrl everywhere else.
 const SEARCH_SHORTCUT_LABEL = (typeof navigator !== 'undefined'
@@ -1309,7 +1308,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               }
               return { tab: 'protocols', sub: normalizeManagementSubTab(sub) };
             case 'settings':
-              return { tab: 'settings' };
+              return { tab: PUBLIC_DEMO_MODE ? 'encounter' : 'settings' };
             case 'ich':
               return { tab: 'protocols', sub: LEGACY_MANAGEMENT_TABS[root] };
             case 'calculators':
@@ -1349,7 +1348,7 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             case 'encounter':
               return '#/encounter';
             case 'settings':
-              return '#/settings';
+              return PUBLIC_DEMO_MODE ? '#/encounter' : '#/settings';
             case 'protocols':
             case 'library':
             case 'management': {
@@ -8152,7 +8151,7 @@ Clinician Name`;
             } else if (rawTab === 'references' || rawTab === 'evidence' || rawTab === 'teaching') {
               nextTab = 'research';
               subTab = 'references';
-            } else if (!VALID_TABS.includes(nextTab)) {
+            } else if ((PUBLIC_DEMO_MODE && nextTab === 'settings') || !VALID_TABS.includes(nextTab)) {
               nextTab = 'encounter';
             }
 
@@ -8271,11 +8270,11 @@ Clinician Name`;
             { id: 'sub-nursing', group: 'Education', label: 'Nurse Education', hint: 'Stroke nurse curriculum', icon: 'brain', keywords: ['nurse', 'nursing', 'education', 'curriculum'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('nursing'); } },
             { id: 'sub-pocket-cards', group: 'Education', label: 'Pocket Cards', hint: 'Clinical pocket references', icon: 'brain', keywords: ['pocket cards', 'references', 'cheat sheets', 'cards'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('pocket-cards'); } },
             // ---- Simulators (each card lives in the Simulators sub-tab of Education) ----
-            { id: 'sim-all', group: 'Bedside Simulators', label: 'Bedside Simulators', hint: 'All teaching simulators', icon: 'test-tubes', keywords: ['simulators', 'simulation', 'teaching', 'bedside'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('simulators'); } },
-            { id: 'sim-evd', group: 'Bedside Simulators', label: 'External Ventricular Drain', hint: 'EVD educational overview', icon: 'activity', keywords: ['evd', 'external ventricular drain', 'ventriculostomy', 'leveling', 'zeroing', 'overdrainage'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('evd-maintenance'); } },
-            { id: 'sim-icp', group: 'Bedside Simulators', label: 'ICP & Herniation Management', hint: 'ICP educational overview', icon: 'alert-triangle', keywords: ['icp', 'intracranial pressure', 'herniation', 'compliance', 'osmotherapy', 'mannitol'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('herniation-icp'); } },
-            { id: 'sim-hints', group: 'Bedside Simulators', label: 'HINTS+ Eye-Movement Simulator', hint: 'Vestibular exam', icon: 'eye', keywords: ['hints', 'eye movement', 'vestibular', 'nystagmus', 'vertigo', 'dizziness'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('hints-simulator'); } },
-            { id: 'sim-pupil', group: 'Bedside Simulators', label: 'Pupillometry / NPi Evidence', hint: 'Evidence and limitations', icon: 'circle', keywords: ['pupillometry', 'npi', 'pupil', 'reactivity'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('pupillometry'); } },
+            { id: 'sim-all', group: 'Bedside References', label: 'Bedside References', hint: 'Written teaching references and checklists', icon: 'test-tubes', keywords: ['simulators', 'simulation', 'teaching', 'bedside'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('simulators'); } },
+            { id: 'sim-evd', group: 'Bedside References', label: 'External Ventricular Drain', hint: 'EVD educational overview', icon: 'activity', keywords: ['evd', 'external ventricular drain', 'ventriculostomy', 'leveling', 'zeroing', 'overdrainage'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('evd-maintenance'); } },
+            { id: 'sim-icp', group: 'Bedside References', label: 'ICP & Herniation Management', hint: 'ICP educational overview', icon: 'alert-triangle', keywords: ['icp', 'intracranial pressure', 'herniation', 'compliance', 'osmotherapy', 'mannitol'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('herniation-icp'); } },
+            { id: 'sim-hints', group: 'Bedside References', label: 'HINTS+ Reference', hint: 'Written findings and pattern checklist', icon: 'eye', keywords: ['hints', 'eye movement', 'vestibular', 'nystagmus', 'vertigo', 'dizziness'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('hints-simulator'); } },
+            { id: 'sim-pupil', group: 'Bedside References', label: 'Pupillometry / NPi Evidence', hint: 'Evidence and limitations', icon: 'circle', keywords: ['pupillometry', 'npi', 'pupil', 'reactivity'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('pupillometry'); } },
             // ---- Calculators ----
             { id: 'calc-all', group: 'Calculators', label: 'All Calculators', hint: 'Scores & dosing', icon: 'table', keywords: ['calculators', 'scores', 'calc'], run: () => gotoCalculator() },
             { id: 'calc-nihss', group: 'Calculators', label: 'NIHSS', hint: 'Stroke severity scale', icon: 'table', keywords: ['nihss', 'severity', 'stroke scale'], run: () => gotoCalculator('calc-nihss', 'nihss') },
@@ -16213,7 +16212,7 @@ Clinician Name`;
                   return;
                 }
                 if (VALID_TABS.includes(savedTab)) {
-                  setActiveTab(savedTab);
+                  setActiveTab(PUBLIC_DEMO_MODE && savedTab === 'settings' ? 'encounter' : savedTab);
                   return;
                 }
               }
@@ -16316,8 +16315,16 @@ Clinician Name`;
 
           useEffect(() => {
             const syncMobileHeader = () => {
-              const compact = window.matchMedia('(max-width: 767px)').matches && window.scrollY > 72;
-              setMobileHeaderCompact((current) => (current === compact ? current : compact));
+              const mobile = window.matchMedia('(max-width: 767px)').matches;
+              // Encounter header height changes can trigger native scroll anchoring.
+              // Its content position stays stable while raw scrollY crosses itself.
+              const contentTop = document.getElementById('main')?.getBoundingClientRect().top;
+              setMobileHeaderCompact((current) => {
+                const compact = mobile && (document.getElementById('tabpanel-encounter') && Number.isFinite(contentTop)
+                  ? contentTop < (current ? 12 : 0)
+                  : window.scrollY > 72);
+                return current === compact ? current : compact;
+              });
             };
             syncMobileHeader();
             window.addEventListener('scroll', syncMobileHeader, { passive: true });
@@ -17103,6 +17110,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 </div>
                               </div>
                               <div className="border-t border-line my-1" role="separator"></div>
+                              {!PUBLIC_DEMO_MODE && <>
                               <button
                                 role="menuitem"
                                 onClick={() => { navigateTo('settings'); setSettingsMenuOpen(false); }}
@@ -17112,6 +17120,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <span>API Settings</span>
                               </button>
                               <div className="border-t border-line my-1" role="separator"></div>
+                              </>}
                               <button
                                 role="menuitem"
                                 onClick={() => { handleClearLocalData(); setSettingsMenuOpen(false); }}
@@ -33029,7 +33038,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* ============================================ */}
                 {/* SETTINGS TAB                                 */}
                 {/* ============================================ */}
-                {activeTab === 'settings' && (
+                {!PUBLIC_DEMO_MODE && activeTab === 'settings' && (
                   <ErrorBoundary>
                     {/* Settings has no tab in the main tablist (it opens from the
                         header menu), so label the panel directly instead of

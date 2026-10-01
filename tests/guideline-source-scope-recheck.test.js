@@ -13,7 +13,7 @@ describe('bounded source recovery and applicability', () => {
     }
   });
 
-  it('closes only the three recovered notices and preserves their exact scope', () => {
+  it('preserves the specific scope of recovered notices without clearing incomplete AIS corrections', () => {
     const updates = document('aha-hypertension-guideline-2025').publicationUpdates;
     expect(updates.map(u => u.doi)).toEqual([
       '10.1161/HYP.0000000000000257', '10.1161/HYP.0000000000000262', '10.1161/HYP.0000000000000264'
@@ -24,7 +24,11 @@ describe('bounded source recovery and applicability', () => {
       expect(update.independentReviewScope).toContain('Direct publisher PDF remains inaccessible');
     }
     expect(document('ais-2026').publicationUpdates.some(u => u.status === 'partially-applied')).toBe(true);
-    expect(document('eso-ean-poststroke-cognition-2021').publicationUpdates.some(u => u.status === 'unresolved')).toBe(true);
+    const cognition = document('eso-ean-poststroke-cognition-2021');
+    expect(cognition.publicationUpdates.find(u => u.pmid === '35300261').status).toBe('applied');
+    expect(cognition.sourceReview.sourceAccess).toContain('all 22 formal/no-recommendation and 18 consensus units independently paired');
+    expect(cognition.sourceReview.currencyNote).toContain('does not establish comprehensive clinical currency');
+    expect(cognition.sourceReview.sourceEditionNote).toContain('January 25, 2022 erratum');
   });
 
   it('does not turn source ambiguity or an author manuscript into certainty', () => {

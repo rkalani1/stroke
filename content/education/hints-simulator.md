@@ -1,7 +1,7 @@
 ---
 id: hints-simulator
-title: "HINTS+ Vestibular Simulator"
-summary: "Selected HINTS+ eye-movement demonstrations for trained examiners assessing an appropriate acute vestibular syndrome. Both skew animations are unavailable; the retained motions are teaching schematics, not validated examination recordings."
+title: "HINTS+ Reference"
+summary: "Written HINTS+ finding examples and a qualified pattern checklist for trained examiners assessing an appropriate acute vestibular syndrome. Eye-movement animations are unavailable."
 tags: ["simulators"]
 contexts: ["telestroke", "inpatient", "clinic"]
 calculators: []
@@ -10,7 +10,7 @@ lastReviewed: 2026-05-30
 provenance: src/education.jsx
 ---
 
-Selected HINTS+ eye-movement demonstrations for trained examiners assessing an appropriate acute vestibular syndrome. Both skew animations are unavailable; the retained motions are teaching schematics, not validated examination recordings.
+Written HINTS+ finding examples and a qualified pattern checklist for trained examiners assessing an appropriate acute vestibular syndrome. Eye-movement animations are unavailable.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
 > This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.
