@@ -6,9 +6,9 @@
    Old app caches are retired only on activation. Fetch policy is independent.
 */
 
-const APP_VERSION = '7.2.0';
+const APP_VERSION = '7.3.0';
 const CACHE_PREFIX = 'stroke-cache-v';
-const CACHE_NAME  = 'stroke-cache-v7-2-0-workflow-20261001';
+const CACHE_NAME  = 'stroke-cache-v7-3-0-reference-20261001';
 
 // Retired teaching figures must not be served from a stale browser cache or
 // a bookmarked URL after this worker takes control. Paths are scope-relative
@@ -56,6 +56,7 @@ const CORE_ASSETS = [
   './app.js',
   './tailwind.css',
   './offline.html',
+  './data/clinical-reference.json',
   './assets/fonts/bricolage-400.woff2',
   './assets/fonts/bricolage-500.woff2',
   './assets/fonts/bricolage-600.woff2',
@@ -87,18 +88,25 @@ const CDN_ASSETS = [];
 
 // The build writes content-addressed modules here. Installation must cache
 // ALL of them before the worker is installed/offline-ready. Downloading does
-// not execute the deferred Education, Guidelines, trial or search modules.
+// not execute deferred protocols, trials, calculators or reference modules.
 // BEGIN GENERATED APP CHUNKS
 const APP_CHUNKS = [
-  "./chunks/chunk-AXN7GAUD.js",
-  "./chunks/chunk-FGN2KSO6.js",
-  "./chunks/chunk-UXZVT6HN.js",
-  "./chunks/chunk-YWB2RKRB.js",
-  "./chunks/ProtectedProtocols-6LA4ZCCH.js",
-  "./chunks/Tools-MWEVMHL5.js",
-  "./chunks/Trials-B3X3DRH6.js"
+  "./chunks/chunk-6WMD6WYZ.js",
+  "./chunks/chunk-CCC5QWPU.js",
+  "./chunks/chunk-DVCKIJPQ.js",
+  "./chunks/chunk-KF43PX6Y.js",
+  "./chunks/chunk-MEDXAGMH.js",
+  "./chunks/InstallAppButton-INPP7ERU.js",
+  "./chunks/ProtectedProtocols-4H3ALOSI.js",
+  "./chunks/Reference-2LYFTKIK.js",
+  "./chunks/Tools-HS373C5H.js",
+  "./chunks/Trials-7QXC3WGG.js"
 ];
 // END GENERATED APP CHUNKS
+
+const validReferenceEnvelope = reference =>
+  reference?._meta?.appVersion === APP_VERSION && reference?._meta?.schemaVersion === '2.0.0' &&
+  ['topics', 'studies'].every(key => Array.isArray(reference?.data?.[key]) && reference.data[key].length > 0);
 
 async function purgeWithdrawnCacheEntries() {
   // A waiting worker does not control requests yet. Remove only retired files
@@ -131,6 +139,11 @@ self.addEventListener('install', (event) => {
     await cache.addAll([...CORE_ASSETS, ...APP_CHUNKS].map(asset =>
       new Request(new URL(asset, self.registration.scope), { cache: 'reload' })
     ));
+    const referenceResponse = await cache.match(new URL('./data/clinical-reference.json', self.registration.scope).href);
+    const reference = await referenceResponse?.json();
+    if (!validReferenceEnvelope(reference)) {
+      throw new Error('Reference cache version or content mismatch');
+    }
     await Promise.allSettled(CDN_ASSETS.map(url => cache.add(url)));
     // Only a fully staged upgrade withdraws old clinical downloads.
     await purgeWithdrawnCacheEntries();
@@ -214,7 +227,7 @@ const isVersionedShell = url => {
   const root = new URL('./', self.registration.scope);
   if (url.origin !== root.origin) return false;
   if (url.pathname === root.pathname || url.pathname === new URL('index.html', root).pathname) return true;
-  return ['app.js', 'tailwind.css', 'manifest.json', ...APP_CHUNKS.map(asset => asset.replace(/^\.\//, ''))]
+  return ['app.js', 'tailwind.css', 'manifest.json', 'data/clinical-reference.json', ...APP_CHUNKS.map(asset => asset.replace(/^\.\//, ''))]
     .some(asset => url.pathname === new URL(asset, root).pathname);
 };
 
@@ -226,10 +239,14 @@ const offlineUnavailable = () => new Response(
 async function persistResponse(request, response) {
   if (!response.ok) return;
   try {
-    const cache = await caches.open(CACHE_NAME);
     const url = new URL(request.url);
     const root = new URL('./', self.registration.scope);
     const index = new URL('./index.html', self.registration.scope);
+    // A missing reference cache may reach a partially deployed or newer server.
+    // Leave invalid responses uncached so the UI can retry a corrected download.
+    if (url.origin === root.origin && url.pathname === new URL('data/clinical-reference.json', root).pathname &&
+        !validReferenceEnvelope(await response.clone().json())) return;
+    const cache = await caches.open(CACHE_NAME);
     const keys = new Set([request.url]);
     // Root and index are two names for the same app document. Keep both fresh
     // after an online navigation; unrelated HTML must not replace the shell.
@@ -258,7 +275,7 @@ async function matchCurrentCache(request, url, navigation = false) {
         if (cached) return cached;
       }
     } else if (url.search &&
-        ['app.js', 'tailwind.css', 'manifest.json'].some(asset =>
+        ['app.js', 'tailwind.css', 'manifest.json', 'data/clinical-reference.json'].some(asset =>
           url.href.split('?')[0] === new URL(asset, self.registration.scope).href)) {
       // Only these intentionally precached shell files have a canonical alias.
       // Do not select an arbitrary query variant or erase PDF query identity.

@@ -1,0 +1,402 @@
+[
+  {
+    "id": "af-timing",
+    "title": "AF after ischemic stroke: anticoagulation timing",
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "atrial fibrillation",
+      "DOAC",
+      "ELAN",
+      "OPTIMAS",
+      "CATALYST",
+      "restart anticoagulation"
+    ],
+    "summary": "Timing requires an established AF indication and review of brain imaging. ELAN used imaging-defined infarct severity; OPTIMAS compared initiation within 4 days with days 7–14. CATALYST pooled initiation within 4 days versus day 5 or later.",
+    "consider": [
+      "Which trial population and imaging definition fit this infarct, rather than using NIHSS as a substitute for infarct size?",
+      "Have hemorrhagic transformation, clinical stability and other contraindications been reconciled?",
+      "Is the selected drug and dose appropriate after medication, interaction and organ-function review?"
+    ],
+    "caution": "Trial schedules do not generate an individual start date. Major infarcts and hemorrhagic transformation need their own source-specific assessment; an early-treatment result is not blanket clearance.",
+    "sources": [
+      {
+        "title": "ELAN: imaging-based analysis of the randomized trial",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38805207/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed primary methods section checked for imaging definitions; full trial exclusions not re-reviewed."
+      },
+      {
+        "title": "OPTIMAS randomized trial",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39491870/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract checked for population and timing arms; linked correction noticed, full correction text not reviewed here."
+      },
+      {
+        "title": "CATALYST individual-participant meta-analysis",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40570866/",
+        "year": 2025,
+        "type": "Meta-analysis",
+        "checkedAt": "2026-10-01",
+        "access": "Indexed primary abstract checked for pooled timing groups; full text and individual trial exclusions not re-reviewed."
+      }
+    ],
+    "related": [
+      {
+        "label": "Renal function worksheet",
+        "href": "#/encounter/crcl"
+      }
+    ]
+  },
+  {
+    "id": "stroke-workup",
+    "title": "Stroke mechanism, ESUS and rhythm monitoring",
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "etiology",
+      "TOAST",
+      "cryptogenic",
+      "ESUS",
+      "AF",
+      "telemetry",
+      "loop recorder",
+      "echocardiography"
+    ],
+    "summary": "Define the mechanism before selecting prevention. For cryptogenic stroke, ACC recommends at least 14 days of rhythm monitoring when AF detection could change treatment; selected high-risk patients may start with an implanted monitor.",
+    "consider": [
+      "Are arterial imaging, cardiac evaluation and relevant laboratory results complete, with competing causes assessed?",
+      "Which monitoring strategy fits the mechanism, feasibility and treatment implications?",
+      "Who will review pending results and communicate the plan?"
+    ],
+    "caution": "A negative brief ECG does not exclude intermittent AF. Incomplete testing does not establish ESUS; empirical anticoagulation for ESUS requires a separate indication.",
+    "sources": [
+      {
+        "title": "AHA/ASA secondary prevention: diagnostic and mechanism-based approach",
+        "url": "https://professional.heart.org/en/science-news/2021-guideline-for-the-prevention-of-stroke-in-patients-with-stroke-and-transient-ischemic-attack/top-things-to-know",
+        "year": 2021,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary checked; indexed primary guideline definition of ESUS also consulted. Full recommendation tables not re-reviewed."
+      },
+      {
+        "title": "ACC post-stroke arrhythmia monitoring pathway",
+        "url": "https://www.acc.org/Latest-in-Cardiology/ten-points-to-remember/2024/12/17/03/23/2024-acc-ecdp-on-practical",
+        "year": 2024,
+        "type": "Clinical policy",
+        "checkedAt": "2026-10-01",
+        "access": "Official expert-consensus summary checked; full JACC pathway was access-restricted."
+      }
+    ],
+    "related": [
+      {
+        "label": "Encounter",
+        "href": "#/encounter"
+      }
+    ]
+  },
+  {
+    "id": "pfo",
+    "title": "PFO: attribution and closure discussion",
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "patent foramen ovale",
+      "RoPE",
+      "PASCAL",
+      "atrial septal aneurysm",
+      "shunt",
+      "cryptogenic stroke"
+    ],
+    "summary": "Closure evidence is strongest for selected adults aged 18–60 with PFO-associated ischemic stroke after a competing-cause evaluation. Use PASCAL and the complete clinical assessment to support shared selection, including review of shunt and septal anatomy.",
+    "consider": [
+      "Does the infarct and diagnostic evaluation support a causal PFO rather than an incidental finding?",
+      "Have alternative arterial and cardiac causes, including AF, been assessed?",
+      "Have the expected recurrence benefit, procedural complications and AF risk been discussed with the patient and closure team?"
+    ],
+    "caution": "Neither PFO presence nor RoPE alone determines closure eligibility. Evidence beyond age 60 is limited; post-device medication and follow-up plans require the treating team's review.",
+    "sources": [
+      {
+        "title": "ESO PFO guideline: official presentation",
+        "url": "https://eso-stroke.org/wp-content/uploads/ESO_PFO_Guideline.pdf",
+        "year": 2024,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Official guideline presentation checked for patient selection, anatomy and age-related evidence gaps; full guideline not comprehensively reviewed."
+      },
+      {
+        "title": "AAN PFO advisory: patient and family summary",
+        "url": "https://www.aan.com/Guidelines/home/GetGuidelineContent/1008",
+        "year": 2020,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Official two-page summary read for competing-cause assessment and benefit-risk counseling; full advisory not re-reviewed."
+      }
+    ],
+    "related": [
+      {
+        "label": "RoPE worksheet",
+        "href": "#/tools/rope"
+      },
+      {
+        "label": "PASCAL worksheet",
+        "href": "#/tools/pascal"
+      }
+    ]
+  },
+  {
+    "id": "carotid",
+    "title": "Carotid stenosis: symptoms, severity and referral",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "CEA",
+      "CAS",
+      "endarterectomy",
+      "carotid stenting",
+      "NASCET",
+      "CREST-2",
+      "revascularization"
+    ],
+    "summary": "For symptomatic disease, ESO recommends endarterectomy for 70–99% stenosis and suggests it for selected 50–69% stenosis. When surgery is appropriate, benefit favors early treatment, ideally within two weeks of the last retinal or cerebral ischemic event.",
+    "consider": [
+      "Are recent ipsilateral retinal or cerebral symptoms attributable to this lesion, and how was stenosis measured?",
+      "Do infarct burden, hemorrhage, disability, anatomy and procedural risk support intervention and its timing?",
+      "If asymptomatic, has the separate contemporary evidence, including CREST-2, been reviewed with intensive medical management?"
+    ],
+    "caution": "Do not apply symptomatic thresholds or timing automatically to asymptomatic disease, near-occlusion or a large disabling infarct. CREST-2 used two parallel trials; it was not a direct stenting-versus-endarterectomy comparison.",
+    "sources": [
+      {
+        "title": "ESO carotid endarterectomy and stenting guideline",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/34414302/",
+        "year": 2021,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed recommendation table checked for symptomatic severity and timing; full guideline access was challenged."
+      },
+      {
+        "title": "CREST-2: medical management and revascularization for asymptomatic stenosis",
+        "url": "https://www.nejm.org/doi/full/10.1056/NEJMoa2508800",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Indexed primary abstract checked for asymptomatic population and parallel-trial design; no effect estimate reproduced here."
+      }
+    ],
+    "related": [
+      {
+        "label": "Ischemic protocol",
+        "href": "#/protocols/ischemic"
+      }
+    ]
+  },
+  {
+    "id": "sicas",
+    "title": "Symptomatic intracranial atherosclerosis",
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "sICAS",
+      "intracranial stenosis",
+      "SAMMPRIS",
+      "BASIS",
+      "angioplasty",
+      "DAPT"
+    ],
+    "summary": "AAN's 2022 advisory prioritizes medical management: for severe 70–99% sICAS with low hemorrhagic-transformation risk, aspirin plus clopidogrel for up to 90 days; high-intensity lipid treatment; and a long-term BP target below 140/90 in clinically stable patients.",
+    "consider": [
+      "Is atherosclerotic stenosis the cause of the event, with severity and territory confirmed?",
+      "Are bleeding risk, antiplatelet duration and the transition plan documented?",
+      "If events recur, have mechanism, medication adherence and specialist options been reassessed?"
+    ],
+    "caution": "The advisory discourages stenting as initial therapy. BASIS later studied submaximal balloon angioplasty in a selected Chinese population; its findings do not establish routine acute intervention or make balloon angioplasty and stenting interchangeable. Long-term BP targets are not acute perfusion targets.",
+    "sources": [
+      {
+        "title": "AAN symptomatic intracranial atherosclerosis advisory",
+        "url": "https://www.aan.com/Guidelines/home/GetGuidelineContent/1069",
+        "year": 2022,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Official seven-page clinician summary read; relevant antithrombotic, stable-BP and stenting recommendations checked, not a new whole-guideline review."
+      },
+      {
+        "title": "BASIS randomized trial",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39235816/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract checked for intervention, selected population, timing and procedural risks; full trial protocol not re-reviewed."
+      }
+    ],
+    "related": [
+      {
+        "label": "DAPT source screen",
+        "href": "#/encounter/dapt"
+      }
+    ]
+  },
+  {
+    "id": "dissection",
+    "title": "Cervical artery dissection",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "carotid dissection",
+      "vertebral dissection",
+      "neck pain",
+      "arteriopathy",
+      "antithrombotic"
+    ],
+    "summary": "Confirm the vascular diagnosis and distinguish cervical from intracranial or aortic disease. The AHA statement supports individualized antithrombotic selection, generally continued for at least 3–6 months, with reassessment informed by clinical and imaging findings.",
+    "consider": [
+      "What do CTA, MRA or other reviewed studies show about the lesion and associated ischemia?",
+      "Which antithrombotic strategy fits the ischemic and bleeding risks, and when will it be reassessed?",
+      "Who will coordinate imaging follow-up and any targeted evaluation for an underlying arteriopathy?"
+    ],
+    "caution": "The statement does not turn dissection into a uniform drug choice, imaging calendar or activity restriction. Recurrent neurologic symptoms require reassessment; isolated cervical dissection is not equivalent to aortic dissection.",
+    "sources": [
+      {
+        "title": "AHA cervical artery dissection statement: overview",
+        "url": "https://professional.heart.org/en/science-news/treatment-and-outcomes-of-cervical-artery-dissection-in-adults/top-things-to-know",
+        "year": 2024,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary read for diagnostic modalities and individualized management."
+      },
+      {
+        "title": "AHA cervical artery dissection statement: primary article",
+        "url": "https://doi.org/10.1161/STR.0000000000000457",
+        "year": 2024,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-01",
+        "access": "Indexed primary abstract checked for the individualized 3–6-month antithrombotic statement; full publisher text was access-restricted."
+      }
+    ],
+    "related": [
+      {
+        "label": "Ischemic protocol",
+        "href": "#/protocols/ischemic"
+      }
+    ]
+  },
+  {
+    "id": "secondary-prevention",
+    "title": "Secondary prevention and medication review",
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "blood pressure",
+      "LDL",
+      "lipids",
+      "statin",
+      "diabetes",
+      "adherence",
+      "smoking",
+      "DAPT transition"
+    ],
+    "summary": "Match prevention to mechanism and review adherence. Antiplatelet plus anticoagulant treatment is usually unnecessary; DAPT has specific indications. The 2026 lipid guideline uses risk-specific LDL and non-HDL goals, with lower goals for very-high-risk ASCVD.",
+    "consider": [
+      "Are antithrombotic indication, duration and planned DAPT transition explicit?",
+      "Are BP, lipid and diabetes goals individualized, with follow-up measurements and tolerance reviewed?",
+      "Do affordability, missed doses, tobacco, diet, activity or support needs require action?"
+    ],
+    "caution": "Review the mechanism, comorbidities and current lipid-risk definition. Avoid indefinite DAPT or combination therapy without a separate reviewed indication.",
+    "sources": [
+      {
+        "title": "AHA/ASA secondary stroke prevention guideline: overview",
+        "url": "https://professional.heart.org/en/science-news/2021-guideline-for-the-prevention-of-stroke-in-patients-with-stroke-and-transient-ischemic-attack/top-things-to-know",
+        "year": 2021,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary checked for mechanism-based prevention, antithrombotic limits and risk-factor care; full tables not re-reviewed."
+      },
+      {
+        "title": "2026 multisociety dyslipidemia guideline: overview",
+        "url": "https://professional.heart.org/en/science-news/2026-guideline-on-the-management-of-dyslipidemia/top-things-to-know",
+        "year": 2026,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary read for contemporary risk-specific lipid goals; no complete treatment algorithm or risk classification reproduced."
+      }
+    ],
+    "related": [
+      {
+        "label": "DAPT source screen",
+        "href": "#/encounter/dapt"
+      },
+      {
+        "label": "Encounter",
+        "href": "#/encounter"
+      }
+    ]
+  },
+  {
+    "id": "recovery",
+    "title": "Recovery, rehabilitation and follow-up",
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "rehabilitation",
+      "function",
+      "mood",
+      "depression",
+      "anxiety",
+      "caregiver",
+      "participation",
+      "telehealth"
+    ],
+    "summary": "The 2026 rehabilitation guideline emphasizes coordinated multidisciplinary care, repeated functional assessment and re-engagement in therapy when needs change. Screen for depression and anxiety early and again during recovery, with an evaluation and treatment pathway for identified concerns.",
+    "consider": [
+      "Which impairments, daily activities and participation goals need assessment or renewed therapy?",
+      "Have the patient and care partner received appropriate education, training and support?",
+      "Is follow-up feasible, including transport, access barriers or telehealth, and who will reassess progress?"
+    ],
+    "caution": "A screening score does not establish a diagnosis or replace clinical assessment. Recovery plans and therapy intensity need individual review; this card supplies no universal driving, work or travel clearance interval.",
+    "sources": [
+      {
+        "title": "2026 AHA/ASA adult stroke rehabilitation and recovery guideline: overview",
+        "url": "https://professional.heart.org/en/science-news/2026-guideline-for-adult-stroke-rehabilitation-and-recovery/top-things-to-know",
+        "year": 2026,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary read, published August 27, 2026; full guideline and therapy-specific recommendations not re-reviewed."
+      }
+    ],
+    "related": [
+      {
+        "label": "PHQ-2 worksheet",
+        "href": "#/tools/phq2"
+      },
+      {
+        "label": "mRS descriptors",
+        "href": "#/tools/mrs-descriptors"
+      },
+      {
+        "label": "Encounter",
+        "href": "#/encounter"
+      }
+    ]
+  }
+]

@@ -129,7 +129,7 @@ describe('CI leak-guard workflow enforcement', () => {
     expect(liveSmokeWorkflow).not.toMatch(/continue-on-error: true[\s\S]{0,120}npm run qa:latency-adaptive-strict/);
     expect(liveSmokeWorkflow).toContain('output/diagnostics/qa-latency-threshold-advisory.log');
     expect(liveSmokeWorkflow).not.toContain('qa:latency-adaptive-strict');
-    expect(qaSmokeScript).toContain('live deployed version parity and retained smoke');
+    expect(qaSmokeScript).toContain('live deployed app/reference version parity, Evidence and completed studies');
     expect(qaSmokeScript).toContain('--live');
   });
 });

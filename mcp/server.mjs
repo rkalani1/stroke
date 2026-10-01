@@ -20,6 +20,8 @@ import { z } from 'zod';
 
 import { calculateTNKDoseReviewed, calculateAlteplaseDoseReviewed, calculateCrClReviewed } from '../src/calculators.js';
 import { evaluateDAWN, evaluateDEFUSE3 } from '../src/calculators-extended.js';
+import { searchReference } from '../src/reference-search.js';
+import { validateClinicalReference } from '../scripts/validate-reference.mjs';
 
 const DISCLAIMER = 'Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.';
 
@@ -27,6 +29,16 @@ const DISCLAIMER = 'Synthetic educational demo only - NOT medical advice, NOT an
 const readData = rel => JSON.parse(fs.readFileSync(new URL(rel, import.meta.url), 'utf8'));
 const calculatorsIndex = readData('../data/calculators-index.json').data;
 const maintainedSources = readData('../data/sources.json');
+const clinicalReference = readData('../data/clinical-reference.json');
+const appVersion = readData('../package.json').version;
+const referenceErrors = validateClinicalReference(clinicalReference.data);
+if (clinicalReference._meta?.status !== 'maintained' || clinicalReference._meta?.schemaVersion !== '2.0.0' || clinicalReference._meta?.appVersion !== appVersion || referenceErrors.length) {
+  throw new Error(`Invalid or stale clinical-reference endpoint; run npm run agent:assets. ${referenceErrors.join('; ')}`);
+}
+const referenceRecords = [
+  ...clinicalReference.data.topics.map(record => ({ ...record, type: 'topic' })),
+  ...clinicalReference.data.studies.map(record => ({ ...record, type: 'study' })),
+];
 
 function partialTrialScreen(result, sourceUrl) {
   if (!result) return null;
@@ -81,6 +93,18 @@ server.registerTool('list_calculators',
 server.registerTool('get_sources',
  { title: 'Maintained sources and limits', description: 'Bounded retained source identities, original review scopes and correction limitations. No full reference corpus or recruitment data.', inputSchema: {} },
  async () => ok({ sources: maintainedSources.data, metadata: maintainedSources._meta }));
+
+server.registerTool('search_reference',
+  { title: 'Search Evidence and completed studies', description: 'Search the bounded local Evidence topics and completed primary-study summaries. Returns source-access scope and limitations. This does not fetch sources, screen enrollment or establish treatment eligibility.', inputSchema: {
+    query: z.string().max(200).default('').describe('Words matched locally across the card and source titles; no patient details'),
+    type: z.enum(['all', 'topic', 'study']).default('all'),
+    setting: z.enum(['all', 'on-call', 'hospital', 'clinic']).default('all'),
+    limit: z.number().int().min(1).max(25).default(10),
+  } },
+  async ({ query, type, setting, limit }) => {
+    const matches = searchReference(referenceRecords.filter(record => type === 'all' || record.type === type), query, setting);
+    return ok({ query, type, setting, count: Math.min(matches.length, limit), totalMatched: matches.length, truncated: matches.length > limit, records: matches.slice(0, limit), metadata: clinicalReference._meta });
+  });
 
 const transport = new StdioServerTransport();
 await server.connect(transport);

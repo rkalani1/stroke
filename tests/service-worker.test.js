@@ -7,8 +7,9 @@ import vm from 'node:vm';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
 const version = JSON.parse(readFileSync(join(repoRoot, 'package.json'), 'utf8')).version;
-const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-') + '-workflow-20261001';
+const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-') + '-reference-20261001';
 const workerSource = readFileSync(join(repoRoot, 'service-worker.js'), 'utf8');
+const referenceFixture = { _meta: { appVersion: version, schemaVersion: '2.0.0' }, data: { topics: [{ id: 'topic' }], studies: [{ id: 'study' }] } };
 
 function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-cache-v6-22-0', currentCache], options = {}) {
   const handlers = new Map();
@@ -17,6 +18,9 @@ function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-
   const openedCaches = [];
   const postedMessages = [];
   const matchAllOptions = [];
+  const precacheRequests = [];
+  const referenceBodies = new Map();
+  const referenceUrl = new URL('data/clinical-reference.json', options.scope || 'https://example.test/').href;
   let claimCount = 0;
   let skipWaitingCount = 0;
   let active = false;
@@ -27,6 +31,10 @@ function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-
       if (options.precacheFailure) throw Error('Precache failed');
       if (options.chunkFailure && requests.some(request => request.url.includes('/chunks/'))) throw Error('Chunk unavailable');
       if (options.delayPrecache) await options.delayPrecache;
+      precacheRequests.push(...requests);
+      if (requests.some(request => request.url === referenceUrl)) {
+        referenceBodies.set(currentCache, options.referenceBody === undefined ? JSON.stringify(referenceFixture) : options.referenceBody);
+      }
     },
     add: async () => {},
     put: async () => {},
@@ -36,12 +44,17 @@ function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-
     Promise,
     URL,
     Request,
+    Response,
     console: { info: () => {}, error: () => {} },
     fetch: async () => ({ ok: true, clone: () => ({ ok: true }) }),
     caches: {
       open: async name => {
         openedCaches.push(name);
         return { ...cacheStore,
+          match: async key => {
+            const body = referenceBodies.get(name);
+            return key === referenceUrl && typeof body === 'string' ? new Response(body, { headers: { 'Content-Type': 'application/json' } }) : undefined;
+          },
           keys: async () => (options.entries?.[name] || []).map(url => ({ url })),
           delete: async request => { deletedEntries.push({ cache: name, url: request.url }); return true; }
         };
@@ -106,6 +119,7 @@ function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-
     openedCaches,
     postedMessages,
     matchAllOptions,
+    precacheRequests,
     setWindows(next) { windows = next; },
     get claimCount() {
       return claimCount;
@@ -139,6 +153,49 @@ describe('service worker update lifecycle', () => {
     expect(worker.claimCount).toBe(0);
     expect(worker.deletedCaches).toEqual([]);
     expect(worker.postedMessages).toEqual([]);
+  });
+
+  it.each(['/', '/stroke/'])('precaches a matching reference envelope with the scoped release at %s', async scopePath => {
+    const scope = `https://example.test${scopePath}`;
+    const worker = loadServiceWorker([], { scope });
+    await worker.dispatch('install');
+    const reference = worker.precacheRequests.find(request => request.url === new URL('data/clinical-reference.json', scope).href);
+    expect(reference?.cache).toBe('reload');
+    expect(worker.skipWaitingCount).toBe(0);
+  });
+
+  it.each([
+    ['another app version', JSON.stringify({ ...referenceFixture, _meta: { ...referenceFixture._meta, appVersion: 'old-release' } })],
+    ['another schema version', JSON.stringify({ ...referenceFixture, _meta: { ...referenceFixture._meta, schemaVersion: '1.0.0' } })],
+    ['missing reference', null],
+    ['malformed JSON', '{'],
+    ['missing topics', JSON.stringify({ ...referenceFixture, data: { studies: [] } })],
+    ['non-array studies', JSON.stringify({ ...referenceFixture, data: { topics: [{}], studies: {} } })],
+    ['empty collection', JSON.stringify({ ...referenceFixture, data: { topics: [], studies: [{}] } })],
+  ])('rejects %s without retiring the previous usable cache', async (_label, referenceBody) => {
+    const old = 'stroke-cache-v6-29-2';
+    const worker = loadServiceWorker([old, currentCache], { referenceBody, entries: {
+      [old]: ['https://example.test/assets/afib_timing_protocol.png', 'https://example.test/app.js']
+    }});
+    await expect(worker.dispatch('install')).rejects.toThrow();
+    expect(worker.deletedEntries).toEqual([]);
+    expect(worker.deletedCaches).toEqual([]);
+    expect(worker.skipWaitingCount).toBe(0);
+    expect(worker.claimCount).toBe(0);
+  });
+
+  it('retries a rejected reference installation with a fresh matching response', async () => {
+    const old = 'stroke-cache-v6-29-2';
+    const options = { referenceBody: '{', entries: { [old]: ['https://example.test/assets/afib_timing_protocol.png'] } };
+    const worker = loadServiceWorker([old, currentCache], options);
+    await expect(worker.dispatch('install')).rejects.toThrow();
+    expect(worker.deletedEntries).toEqual([]);
+    options.referenceBody = JSON.stringify(referenceFixture);
+    await worker.dispatch('install');
+    expect(worker.precacheRequests.filter(request => request.url.endsWith('/data/clinical-reference.json'))).toHaveLength(2);
+    expect(worker.deletedEntries).toEqual([{ cache: old, url: 'https://example.test/assets/afib_timing_protocol.png' }]);
+    expect(worker.deletedCaches).toEqual([]);
+    expect(worker.skipWaitingCount).toBe(0);
   });
 
   it.each(['/', '/stroke/'])('withdraws scoped teaching assets/documents after successful precache at %s', async scopePath => {
@@ -266,28 +323,21 @@ describe('service worker update lifecycle', () => {
   });
 
   it('precaches the retained shell without retired config', () => {
-    for (const shell of ['./', './index.html', './app.js', './tailwind.css', './manifest.json', './offline.html']) {
+    for (const shell of ['./', './index.html', './app.js', './tailwind.css', './manifest.json', './offline.html', './data/clinical-reference.json']) {
       expect(workerSource).toContain(`'${shell}'`);
     }
-    // config.example.json is the ONE runtime fetch in src/ (src/app.jsx), so it
-    // stays precached.
     expect(workerSource).not.toContain("'./config.example.json'");
   });
 
   it('keeps the agent-API JSON and heavy infographics out of the install precache', () => {
-    // data/*.json is the machine-readable agent / llms.txt API. Nothing under
-    // src/ fetches it — the app compiles its guideline JSON into the bundle —
-    // so precaching it made every first-time visitor download ~929 KB of a
-    // second copy of data they already had. The large infographics (~3.6 MB)
-    // are lazy-loaded and opened by a minority of visitors. Both are still
-    // cached on first request by the cache-first same-origin fetch path, so
-    // offline availability after a visit is unchanged.
+    // The reference UI consumes one versioned JSON payload. Other data exports
+    // are agent-only and must not add a duplicate corpus to the install cache.
     const match = workerSource.match(/const CORE_ASSETS = (\[[\s\S]*?\]);/);
     expect(match).not.toBeNull();
     // eslint-disable-next-line no-eval
     const coreAssets = eval(match[1]);
 
-    expect(coreAssets.filter((asset) => asset.startsWith('./data/'))).toEqual([]);
+    expect(coreAssets.filter((asset) => asset.startsWith('./data/'))).toEqual(['./data/clinical-reference.json']);
 
     const heavyInfographics = [
       './assets/toast_classification_infographic.png',

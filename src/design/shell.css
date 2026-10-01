@@ -165,3 +165,29 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
   .encounter-section-select select { flex: 1; padding: 8px; border: 1px solid rgb(var(--c-line-control)); border-radius: var(--radius-md); background: var(--surface); color: var(--ink); }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+
+/* The bounded reference collection uses the same disclosure and form language. */
+.workspace-quick, .reference-links { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
+.workspace-quick { padding: 6px 0; margin-bottom: 12px; border-bottom: 1px solid var(--line); font-size: .8125rem; }
+.workspace-quick > span { color: var(--ink-2); font-weight: 600; }
+.workspace-quick a, .reference-links a, .reference-sources a, .reference-surface > p a, .workspace-details > a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: 3px; }
+.reference-surface { max-width: 100%; }
+.reference-surface h1 { font-size: 1.5rem; font-weight: 700; }
+.reference-surface h2 { font-size: 1.2rem; font-weight: 700; }
+.reference-filters { display: grid; grid-template-columns: minmax(0, 1fr) minmax(150px, .3fr) auto; align-items: end; gap: 12px; margin: 20px 0 12px; }
+.reference-card { margin: 12px 0; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--surface); overflow-wrap: anywhere; scroll-margin-top: 12px; }
+.reference-card > summary { min-height: 56px; padding: 14px 16px; font-weight: 650; cursor: pointer; }
+.reference-year { color: var(--ink-2); font-size: .8125rem; margin-left: 12px; font-weight: 400; }
+.reference-body { padding: 0 16px 16px; }
+.reference-body > p, .reference-body > ul, .reference-body > dl { margin: 12px 0; }
+.reference-body ul { list-style: disc; padding-left: 22px; }
+.reference-body li + li { margin-top: 8px; }
+.reference-body dt { font-weight: 650; }
+.reference-body dd { margin: 2px 0 12px; }
+.reference-limits { border-left: 3px solid var(--line); padding-left: 12px; }
+.reference-sources { margin: 16px 0; padding-top: 12px; border-top: 1px solid var(--line); font-size: .8125rem; }
+.reference-sources h3 { font-weight: 700; }
+.reference-sources > div + div { margin-top: 12px; }
+.reference-sources p { color: var(--ink-2); margin: 2px 0; }
+.reference-body textarea { width: 100%; }
+@media (max-width: 639px) { .reference-filters { grid-template-columns: minmax(0, 1fr); } .workspace-quick { gap: 0 12px; } }

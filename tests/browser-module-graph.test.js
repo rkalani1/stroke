@@ -11,7 +11,8 @@ describe('Encounter-first browser module graph', () => {
       entryPoints: ['src/app.jsx'],
       outdir: 'unused-module-graph-test',
       bundle: true, splitting: true, format: 'esm', target: 'es2018',
-      write: false, metafile: true, minify: true,
+      write: false, metafile: true, minify: true, charset: 'utf8',
+      jsxFactory: 'createElement', inject: ['src/jsx-factory.js'],
       define: { __STROKE_BUILD_PUBLIC_DEMO__: 'true' }
     });
     const outputs = result.metafile.outputs;
@@ -30,7 +31,7 @@ describe('Encounter-first browser module graph', () => {
       expect(initialInputs.has(deferred), `${deferred} must load only on request`).toBe(false);
       expect(Object.keys(result.metafile.inputs), `${deferred} must be absent from the entire shipped graph`).not.toContain(deferred);
     }
-    for (const deferred of ['src/Trials.jsx','src/components/TrialScreener.jsx','src/components/EligibilityTables.jsx','src/evidence/screenerTrials.json']) {
+    for (const deferred of ['src/Reference.jsx','src/reference-search.js','src/components/InstallAppButton.jsx','src/Trials.jsx','src/components/TrialScreener.jsx','src/components/EligibilityTables.jsx','src/evidence/screenerTrials.json']) {
       expect(initialInputs.has(deferred)).toBe(false);
       expect(Object.keys(result.metafile.inputs)).toContain(deferred);
     }

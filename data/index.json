@@ -1,7 +1,7 @@
 {
   "_meta": {
     "name": "stroke",
-    "appVersion": "7.2.0",
+    "appVersion": "7.3.0",
     "schemaVersion": "2.0.0",
     "baseUrl": "https://rkalani1.github.io/stroke",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -11,6 +11,7 @@
   },
   "endpoints": [
     "https://rkalani1.github.io/stroke/data/trials.json",
+    "https://rkalani1.github.io/stroke/data/clinical-reference.json",
     "https://rkalani1.github.io/stroke/data/sources.json",
     "https://rkalani1.github.io/stroke/data/calculators-index.json",
     "https://rkalani1.github.io/stroke/data/atlas/recommendations.json",
@@ -41,8 +42,13 @@
       "url": "https://rkalani1.github.io/stroke/#/protocols/ich"
     },
     {
+      "route": "#/evidence",
+      "label": "Evidence: source-bound on-call, hospital and clinic topics",
+      "url": "https://rkalani1.github.io/stroke/#/evidence"
+    },
+    {
       "route": "#/trials",
-      "label": "Trials: screener, criteria tables and study database",
+      "label": "Trials: screener, criteria tables, study database and completed evidence",
       "url": "https://rkalani1.github.io/stroke/#/trials"
     },
     {
@@ -54,6 +60,11 @@
       "route": "#/trials/database",
       "label": "Study database",
       "url": "https://rkalani1.github.io/stroke/#/trials/database"
+    },
+    {
+      "route": "#/trials/completed",
+      "label": "Completed trials: curated pivotal studies and limits",
+      "url": "https://rkalani1.github.io/stroke/#/trials/completed"
     },
     {
       "route": "#/tools",

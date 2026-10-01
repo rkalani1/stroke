@@ -3,16 +3,18 @@ import { createRoot } from 'react-dom/client';
 import Encounter from './Encounter.jsx';
 import { BUILD_PUBLIC_DEMO, BUILD_TARGET_MARKER } from './build-flags.js';
 import { newEncounter, updateEncounter, setEncounterReviewedScore, encounterVolume, protocolVolumeEstimate, protocolEncounter, encounterNihss, encounterTiming, copySummary } from './workspace-state.js';
+import { PROTOCOL_TARGETS, revealProtocolTarget } from './protocol-navigation.js';
 import { parseWorkspaceRoute } from './workspace-routing.js';
 import { bootstrapTheme, getThemePref, setThemePref } from './design/theme.js';
 import { bindSWController, onUpdateReady, acceptUpdate } from './design/sw-controller.js';
-import { InstallAppButton } from './components/InstallAppButton.jsx';
+const InstallAppButton = lazy(() => import('./components/InstallAppButton.jsx').then(module => ({ default: module.InstallAppButton })));
 import { elapsedEncounterTime } from './clinical/encounter-time.js';
 import { useCurrentTime } from './use-current-time.js';
 const ProtectedProtocols = lazy(() => import('./ProtectedProtocols.jsx'));
 const Trials = lazy(() => import('./Trials.jsx'));
+const Reference = lazy(() => import('./Reference.jsx'));
 const Tools = lazy(() => import('./Tools.jsx'));
-const APP_VERSION = '7.2.0';
+const APP_VERSION = '7.3.0';
 const getPublicDemoMode = () => {
   if (BUILD_PUBLIC_DEMO) return true;
   return /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -30,9 +32,11 @@ class SurfaceBoundary extends React.Component {
 function App() {
   const [state, setState] = useState(newEncounter);
   const utilitiesRef = useRef(null);
+  const [utilitiesVisited, setUtilitiesVisited] = useState(false);
   const stateRef = useRef(state); stateRef.current = state;
   const [route, setRoute] = useState(() => parseWorkspaceRoute(location.hash));
   const [protocolVisited, setProtocolVisited] = useState(route.surface === 'protocols');
+  const [evidenceVisited, setEvidenceVisited] = useState(route.surface === 'evidence');
   const [trialsVisited, setTrialsVisited] = useState(route.surface === 'trials');
   const [epoch, setEpoch] = useState(0);
   const hasTimestamp = Boolean(Object.values(state.timeline || {}).some(Boolean) || state.note.lkwDate && state.note.lkwTime || state.note.discoveryDate && state.note.discoveryTime || state.note.lastDOACDose || state.note.wakeUpStrokeWorkflow.sleepMidpoint || state.actions.consentTime || state.actions.evtConsentTime || state.actions.administrationTime || state.actions.punctureTime || state.actions.reperfusionTime);
@@ -46,14 +50,14 @@ function App() {
   const update = updater => { refreshNow(); setState(prev => updateEncounter(prev, updater)); setCopyStatus(''); };
   useEffect(() => {
     if (!location.hash) history.replaceState(null, '', `${location.pathname}${location.search}#/encounter`);
-    const changed = () => { const next = parseWorkspaceRoute(location.hash); setRoute(next); if (next.surface === 'protocols') setProtocolVisited(true); if (next.surface === 'trials') setTrialsVisited(true); };
+    const changed = () => { const next = parseWorkspaceRoute(location.hash); setRoute(next); if (next.surface === 'protocols') setProtocolVisited(true); if (next.surface === 'trials') setTrialsVisited(true); if (next.surface === 'evidence') setEvidenceVisited(true); };
     window.addEventListener('hashchange', changed);
     return () => window.removeEventListener('hashchange', changed);
   }, []);
   useEffect(() => {
-    if (!route.tool || route.surface !== 'encounter') return;
+    if ((!route.tool && !route.section) || route.surface !== 'encounter') return;
     const frame = requestAnimationFrame(() => {
-      const target = document.getElementById(`calc-${route.tool}`);
+      const target = document.getElementById(route.section ? `encounter-details-${route.section}` : `calc-${route.tool}`);
       if (!target) return;
       const container = target.closest('details'); if (container) container.open = true;
       target.querySelectorAll('details').forEach(detail => { detail.open = true; });
@@ -63,6 +67,14 @@ function App() {
     });
     return () => cancelAnimationFrame(frame);
   }, [route, state.note.diagnosisCategory]);
+  useEffect(() => {
+    if (route.surface !== 'protocols' || !route.target) return;
+    const reveal = () => revealProtocolTarget(route.target);
+    if (reveal()) return;
+    const observer = new MutationObserver(() => { if (reveal()) observer.disconnect(); });
+    observer.observe(document.getElementById('workspace-main'), { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, [route]);
   useEffect(() => {
     bindSWController();
     const unsubscribe = onUpdateReady(payload => setUpdateReady(payload));
@@ -110,12 +122,14 @@ function App() {
   const targetUnavailable = route.tool && !['nihss', 'mrs', 'crcl'].includes(route.tool) && (['ich-volume', 'ich-score', 'gcs'].includes(route.tool) ? !(['ich-volume', 'ich-score'].includes(route.tool) ? state.note.diagnosisCategory === 'ich' : ['ich','sah','cvt'].includes(state.note.diagnosisCategory)) : !(state.context === 'acute' && (state.note.diagnosisCategory === 'ischemic' || route.tool === 'dapt' && state.note.diagnosisCategory === 'tia')));
   return <div className="app-shell workspace-shell" data-build={BUILD_TARGET_MARKER} data-demo={PUBLIC_DEMO_MODE ? 'synthetic' : 'private'} data-version={APP_VERSION}>
     <a className="workspace-skip" href="#workspace-main" onClick={event => { event.preventDefault(); const main = document.getElementById('workspace-main'); main?.focus(); main?.scrollIntoView({ block: 'start' }); }}>Skip to content</a>
-    <header className="workspace-header"><a className="workspace-brand" href="#/encounter"><span className="workspace-mark" aria-hidden="true"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg></span>Stroke</a><details ref={utilitiesRef} className="workspace-utilities"><summary aria-label="Utilities">More</summary><div className="utility-panel"><label>Theme<select aria-label="Theme" value={theme} onChange={e => { setThemePref(e.target.value); setTheme(e.target.value); }}>{[['auto', 'System'], ['light', 'Light'], ['dark', 'Dark']].map(([v, t]) => <option key={v} value={v}>{t}</option>)}</select></label><InstallAppButton installPrompt={installPrompt} isInstalled={isInstalled} onInstall={async () => { if (!installPrompt) return; try { await installPrompt.prompt(); const choice = await installPrompt.userChoice; if (choice.outcome === 'accepted') setInstalled(true); setInstallPrompt(null); } catch { setInstallPrompt(null); } }} /><p>Version {APP_VERSION}</p><p role="status">{offlineStatus}</p></div></details><nav className="workspace-secondary" aria-label="Primary navigation"><a href="#/encounter" aria-current={route.surface === 'encounter' ? 'page' : undefined}>Encounter</a><a href="#/protocols/ischemic" aria-current={route.surface === 'protocols' ? 'page' : undefined}>Protocols</a><a href="#/trials" aria-current={route.surface === 'trials' ? 'page' : undefined}>Trials</a><a href="#/tools" aria-current={route.surface === 'tools' ? 'page' : undefined}>Calculators & Links</a></nav></header>
+    <header className="workspace-header"><a className="workspace-brand" href="#/encounter"><span className="workspace-mark" aria-hidden="true"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg></span>Stroke</a><details ref={utilitiesRef} className="workspace-utilities" onToggle={event => { if (event.currentTarget.open) setUtilitiesVisited(true); }}><summary aria-label="Utilities">More</summary><div className="utility-panel"><label>Theme<select aria-label="Theme" value={theme} onChange={e => { setThemePref(e.target.value); setTheme(e.target.value); }}>{[['auto', 'System'], ['light', 'Light'], ['dark', 'Dark']].map(([v, t]) => <option key={v} value={v}>{t}</option>)}</select></label>{utilitiesVisited && <Suspense fallback={<p role="status">Loading install options…</p>}><InstallAppButton installPrompt={installPrompt} isInstalled={isInstalled} onInstall={async () => { if (!installPrompt) return; try { await installPrompt.prompt(); const choice = await installPrompt.userChoice; if (choice.outcome === 'accepted') setInstalled(true); setInstallPrompt(null); } catch { setInstallPrompt(null); } }} /></Suspense>}<p>Version {APP_VERSION}</p><p role="status">{offlineStatus}</p></div></details><nav className="workspace-secondary" aria-label="Primary navigation"><a href="#/encounter" aria-current={route.surface === 'encounter' ? 'page' : undefined}>Encounter</a><a href="#/protocols/ischemic" aria-current={route.surface === 'protocols' ? 'page' : undefined}>Protocols</a><a href="#/trials" aria-current={route.surface === 'trials' ? 'page' : undefined}>Trials</a><a href="#/evidence" aria-current={route.surface === 'evidence' ? 'page' : undefined}>Evidence</a><a href="#/tools" aria-current={route.surface === 'tools' ? 'page' : undefined}>Calculators & Links</a></nav></header>
+    <nav className="workspace-quick" aria-label="Quick protocols"><span>Quick protocols</span>{['reversal', 'post-lytic', 'angioedema'].map(id => <a key={id} href={`#/protocols/${PROTOCOL_TARGETS[id].sub}/${id}`} onClick={event => { if (event.currentTarget.hash === location.hash) { event.preventDefault(); setRoute(parseWorkspaceRoute(location.hash)); } }}>{PROTOCOL_TARGETS[id].label}</a>)}</nav>
     {updateReady && <aside className="workspace-update" aria-label="App update"><p>{updateReady.message || 'A new version is ready. Updating reloads this page and clears its session; finish or copy your note first.'}</p><button type="button" onClick={() => acceptUpdate().catch(() => setUpdateReady({ message: 'Update failed. Current encounter remains open; try again when connected.' }))}>Reload to update</button><button type="button" onClick={() => setUpdateReady(null)}>Later</button></aside>}
     <main id="workspace-main" tabIndex={-1}>
       <div hidden={route.surface !== 'encounter'}>{targetUnavailable && <p role="status" className="workspace-result">This tool is inactive in the current context. Select the applicable working diagnosis/context in Encounter; retained values have not been cleared.</p>}<Encounter onReset={reset} state={state} update={update} now={now} copyStatus={copyStatus} onCopy={copy} onGenerate={text => { setState(prev => ({ ...prev, draft: { text, revision: prev.revision, stale: false } })); setCopyStatus(''); }} /></div>
       {protocolVisited && <div hidden={route.surface !== 'protocols'}><p className="workspace-help">Interactive protocol cards share Encounter measurements. Changing a source value clears their independent checks and attestations; navigation and elapsed-time updates preserve them. The active NIHSS score and elapsed hours are derived from Encounter. Ischemic-specific inputs are unavailable outside an acute ischemic context.</p>{sharedProtocol.safetyReviewRequired && <p role="status" className="workspace-result">Encounter records a contraindication, relative risk or contradictory finding requiring clinician review. A protocol-card acknowledgement does not resolve it; reconcile the visible Encounter concerns before an affirmative IVT result.</p>}<SurfaceBoundary key={epoch}><Suspense fallback={<p role="status">Loading retained protocols…</p>}><ProtectedProtocols encounter={sharedProtocol} key={epoch} active={route.surface === 'protocols'} telestrokeNote={state.note} setTelestrokeNote={change => update(prev => ({ ...prev, note: typeof change === 'function' ? change(prev.note) : change }))} nihssScore={encounterNihss(state).total ?? 0} consultationType={state.consultationType === 'phone' ? 'telephone' : 'video'} pocketCardsCaseEpoch={epoch} managementSubTab={route.sub || 'ischemic'} setManagementSubTab={sub => { location.hash = `#/protocols/${sub}`; }} navigateTo={tab => { location.hash = tab === 'encounter' ? '#/encounter' : '#/tools'; }} timeFromLKW={timing.clock ? elapsedEncounterTime({ time: new Date(timing.timestamp), label: timing.label }, new Date(now)) : null} ichVolumeParams={state.volume} setIchVolumeParams={change => update(prev => ({ ...prev, volume: typeof change === 'function' ? change(prev.volume) : change }))} ichVolumeEstimate={protocolVolumeEstimate(volume)} /></Suspense></SurfaceBoundary></div>}
-      {trialsVisited && <div hidden={route.surface !== 'trials'}><SurfaceBoundary label="Trials" key={epoch}><Suspense fallback={<p role="status">Loading trials…</p>}><Trials key={epoch} sub={route.sub || 'screener'} onNavigate={sub => { location.hash = sub === 'screener' ? '#/trials' : `#/trials/${sub}`; }} active={route.surface === 'trials'} /></Suspense></SurfaceBoundary></div>}
+      {trialsVisited && <div hidden={route.surface !== 'trials'}><SurfaceBoundary label="Trials" key={epoch}><Suspense fallback={<p role="status">Loading trials…</p>}><Trials key={epoch} version={APP_VERSION} focusId={route.focusId} sub={route.sub || 'screener'} onNavigate={sub => { location.hash = sub === 'screener' ? '#/trials' : `#/trials/${sub}`; }} active={route.surface === 'trials'} /></Suspense></SurfaceBoundary></div>}
+      {evidenceVisited && <div hidden={route.surface !== 'evidence'}><SurfaceBoundary label="Evidence"><Suspense fallback={<p role="status">Loading evidence…</p>}><Reference version={APP_VERSION} focusId={route.focusId} active={route.surface === 'evidence'} /></Suspense></SurfaceBoundary></div>}
       {route.surface === 'tools' && <SurfaceBoundary label="Calculators"><Suspense fallback={<p role="status">Loading calculators…</p>}><Tools state={state} update={update} tool={route.tool} mapUrl={MAP_URL} /></Suspense></SurfaceBoundary>}
       {route.surface === 'retired' && <section className="retirement-message"><h1>Retired destination</h1><p>This route is no longer maintained in the lean Stroke workspace.</p><p><a href="#/encounter">Return to Encounter</a> · <a href="#/tools">Calculators & Links</a></p></section>}
     </main>

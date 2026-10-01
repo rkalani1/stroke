@@ -1,0 +1,459 @@
+[
+  {
+    "id": "acute-reperfusion",
+    "title": "Acute ischemic stroke: reperfusion review",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "AIS",
+      "thrombolysis",
+      "thrombectomy",
+      "tenecteplase",
+      "alteplase",
+      "large core",
+      "basilar",
+      "wake-up",
+      "disabling deficit"
+    ],
+    "summary": "The 2026 AHA/ASA guideline expands reperfusion evaluation, including selected large-core and basilar occlusions. Disability matters beyond the NIHSS total. Late or unknown-onset thrombolysis requires appropriate imaging selection; use the ischemic protocol for the full eligibility review.",
+    "consider": [
+      "Is the deficit disabling despite a low NIHSS score?",
+      "Are onset certainty, vascular imaging and any required tissue imaging established?",
+      "Does the occlusion and imaging profile warrant prompt review by an EVT-capable team?"
+    ],
+    "caution": "Expanded eligibility does not establish treatment clearance. A numeric NIHSS alone cannot resolve whether a deficit is disabling.",
+    "sources": [
+      {
+        "title": "AHA/ASA 2026 acute ischemic stroke guideline — official summary",
+        "url": "https://professional.heart.org/en/science-news/2026-guideline-for-the-early-management-of-patients-with-acute-ischemic-stroke/top-things-to-know",
+        "year": 2026,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary read; full guideline recommendations and eligibility tables were not reviewed for this card."
+      }
+    ],
+    "related": [
+      {
+        "label": "Ischemic stroke protocol",
+        "href": "#/protocols/ischemic"
+      },
+      {
+        "label": "Current NIHSS",
+        "href": "#/encounter/nihss"
+      }
+    ]
+  },
+  {
+    "id": "tia-evaluation",
+    "title": "TIA: evaluation and disposition",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "transient ischemic attack",
+      "ABCD2",
+      "transient symptoms",
+      "DWI",
+      "vascular imaging",
+      "rapid follow-up"
+    ],
+    "summary": "Resolved symptoms still require prompt evaluation. The AHA statement prioritizes diagnostic certainty, brain and vascular imaging, cardiac evaluation and a reliable prevention and follow-up plan. MRI with DWI is preferred for detecting tissue injury; CT with CTA can address hemorrhage and relevant arterial disease when appropriate.",
+    "consider": [
+      "Does the history fit focal ischemia, and what competing diagnosis remains?",
+      "Have brain imaging, vascular imaging and relevant cardiac testing been completed or explicitly arranged?",
+      "Who owns outstanding results, prevention treatment and rapid neurology follow-up?"
+    ],
+    "caution": "A risk score complements the evaluation; it does not establish the diagnosis or independently justify discharge. Recurrent or persistent deficits require acute stroke reassessment.",
+    "sources": [
+      {
+        "title": "AHA 2023 TIA diagnosis, workup and risk reduction statement — official summary",
+        "url": "https://professional.heart.org/en/science-news/diagnosis-workup-risk-reduction-of-transient-ischemic-attack-in-the-emergency-department-setting/top-things-to-know",
+        "year": 2023,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary read; full statement and disposition tables were not reviewed for this card."
+      }
+    ],
+    "related": [
+      {
+        "label": "DAPT review",
+        "href": "#/encounter/dapt"
+      },
+      {
+        "label": "Ischemic stroke protocol",
+        "href": "#/protocols/ischemic"
+      }
+    ]
+  },
+  {
+    "id": "ich-management",
+    "title": "Spontaneous ICH: immediate priorities",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "intracerebral hemorrhage",
+      "hematoma expansion",
+      "anticoagulation reversal",
+      "blood pressure",
+      "neurocritical care",
+      "DNAR"
+    ],
+    "summary": "Early ICH care combines assessment for expansion, smooth blood-pressure control, prompt review of anticoagulant exposure and access to neurocritical and neurosurgical care. The ICH protocol contains the local management and reversal instructions; also investigate the underlying vascular cause.",
+    "consider": [
+      "Do examination and imaging suggest expansion or a need for escalation?",
+      "Is antithrombotic exposure verified, and has the reversal protocol been reviewed?",
+      "Is transfer or neurosurgical assessment needed, and what hemorrhage mechanism requires further imaging?"
+    ],
+    "caution": "ICH severity scores must not be the sole basis for limiting life-sustaining treatment. A resuscitation decision does not itself limit other medical or surgical care.",
+    "sources": [
+      {
+        "title": "AHA/ASA 2022 spontaneous ICH guideline — official summary",
+        "url": "https://professional.heart.org/en/science-news/2022-guideline-for-the-management-of-patients-with-spontaneous-intracerebral-hemorrhage/top-things-to-know",
+        "year": 2022,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary read; no drug-reversal instructions or prognostic probabilities reproduced."
+      }
+    ],
+    "related": [
+      {
+        "label": "ICH protocol",
+        "href": "#/protocols/ich"
+      },
+      {
+        "label": "ICH volume",
+        "href": "#/encounter/ich-volume"
+      },
+      {
+        "label": "Glasgow Coma Scale",
+        "href": "#/encounter/gcs"
+      }
+    ]
+  },
+  {
+    "id": "ich-surgery",
+    "title": "ICH: when to revisit surgical options",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "minimally invasive surgery",
+      "MIS",
+      "ENRICH",
+      "MIND",
+      "lobar",
+      "deep hemorrhage",
+      "cerebellar",
+      "hydrocephalus"
+    ],
+    "summary": "The 2026 AHA advisory updates minimally invasive surgery evidence. ENRICH found functional benefit principally in lobar ICH; MIND did not demonstrate improved 180-day function or mortality. Technique, patient selection and timing matter, so these findings are not interchangeable.",
+    "consider": [
+      "How do location, volume, premorbid function and time from onset compare with the studied population?",
+      "Can an experienced surgical team assess the applicable procedure and realistic goals promptly?",
+      "Is cerebellar hemorrhage accompanied by deterioration, brainstem compression or hydrocephalus requiring urgent surgical review?"
+    ],
+    "caution": "Technical evacuation success is not the same as proven functional benefit. Do not extrapolate selected lobar-ICH results to every deep or infratentorial hemorrhage.",
+    "sources": [
+      {
+        "title": "AHA 2026 minimally invasive ICH evacuation advisory — official summary",
+        "url": "https://professional.heart.org/en/science-news/evidence-update-for-minimally-invasive-surgical-evacuation-of-supratentorial-spontaneous-intracerebr/top-things-to-know",
+        "year": 2026,
+        "type": "Science advisory",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary read, including ENRICH/MIND distinctions; full advisory and surgical selection algorithm not reviewed."
+      },
+      {
+        "title": "AHA/ASA 2022 spontaneous ICH guideline — official summary",
+        "url": "https://professional.heart.org/en/science-news/2022-guideline-for-the-management-of-patients-with-spontaneous-intracerebral-hemorrhage/top-things-to-know",
+        "year": 2022,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary read for cerebellar hemorrhage and urgent surgical assessment; newer supratentorial MIS evidence is linked separately."
+      }
+    ],
+    "related": [
+      {
+        "label": "ICH protocol",
+        "href": "#/protocols/ich"
+      },
+      {
+        "label": "ICH volume",
+        "href": "#/encounter/ich-volume"
+      }
+    ]
+  },
+  {
+    "id": "sah",
+    "title": "Aneurysmal SAH: coordinated specialist care",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "subarachnoid hemorrhage",
+      "aneurysm",
+      "thunderclap",
+      "DCI",
+      "vasospasm",
+      "nimodipine",
+      "hydrocephalus"
+    ],
+    "summary": "Aneurysmal SAH calls for timely access to a team experienced in aneurysm treatment and neurocritical care. Priorities include securing the ruptured aneurysm, monitoring for delayed cerebral ischemia and other complications, and arranging subsequent vascular imaging and rehabilitation.",
+    "consider": [
+      "Has the aneurysmal source and a plan to secure it been established with the specialist team?",
+      "Are nimodipine, volume status and surveillance for neurological deterioration being reviewed?",
+      "Could a changing examination reflect delayed cerebral ischemia, hydrocephalus or seizures?",
+      "Who owns follow-up vascular imaging and cognitive, mood and functional recovery needs?"
+    ],
+    "caution": "This is an aneurysmal SAH reference, not a thunderclap-headache rule-out pathway. Prophylactic hypervolemia or hemodynamic augmentation is not recommended.",
+    "sources": [
+      {
+        "title": "AHA/ASA 2023 aneurysmal SAH guideline — official summary",
+        "url": "https://professional.heart.org/en/science-news/2023-guideline-for-the-management-of-patients-with-aneurysmal-subarachnoid-hemorrhage/top-things-to-know",
+        "year": 2023,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary read; full guideline and diagnostic exclusion pathways were not reviewed for this card."
+      }
+    ],
+    "related": [
+      {
+        "label": "Glasgow Coma Scale",
+        "href": "#/encounter/gcs"
+      }
+    ]
+  },
+  {
+    "id": "cvt",
+    "title": "Cerebral venous thrombosis",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "CVST",
+      "venous sinus thrombosis",
+      "headache",
+      "pregnancy",
+      "postpartum",
+      "papilledema",
+      "venography"
+    ],
+    "summary": "CVT can present with headache, visual symptoms, seizures or encephalopathy, reflecting raised intracranial pressure or parenchymal injury. CT venography or MR venography can establish the diagnosis. The AHA statement addresses anticoagulation and escalation options for severe presentations.",
+    "consider": [
+      "Does the presentation and imaging warrant dedicated venous imaging?",
+      "Have pregnancy/postpartum status, hormonal exposure, infection and prothrombotic conditions been reviewed?",
+      "Are visual symptoms, seizures, consciousness changes or mass effect prompting specialist escalation?"
+    ],
+    "caution": "Anticoagulant selection and rescue procedures depend on the clinical context. This card does not establish an individualized regimen or procedural eligibility.",
+    "sources": [
+      {
+        "title": "AHA 2024 CVT diagnosis and management statement — official summary",
+        "url": "https://professional.heart.org/en/science-news/diagnosis-and-management-of-cerebral-venous-thrombosis/top-things-to-know",
+        "year": 2024,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary read; full statement and treatment pathways were not reviewed for this card."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "dizziness",
+    "title": "Acute dizziness: timing, triggers and examination",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "vertigo",
+      "HINTS",
+      "HINTS+",
+      "GRACE-3",
+      "posterior circulation",
+      "acute vestibular syndrome",
+      "BPPV",
+      "Dix-Hallpike"
+    ],
+    "summary": "GRACE-3 organizes acute dizziness by timing and triggers. In acute vestibular syndrome with nystagmus, HINTS is intended for trained clinicians; without nystagmus, gait assessment matters. Central or equivocal HINTS findings warrant MRI/MRA evaluation.",
+    "consider": [
+      "Is this persistent acute vestibular syndrome, spontaneous episodic dizziness or triggered episodic dizziness?",
+      "Is the examiner trained, and are the syndrome and nystagmus appropriate for HINTS interpretation?",
+      "Have hearing, gait and other focal neurological findings been assessed?",
+      "Does concern for TIA in spontaneous episodic symptoms warrant vascular imaging?"
+    ],
+    "caution": "HINTS is not a universal dizziness screen. Routine noncontrast CT is not the GRACE-3 approach to distinguish central from peripheral dizziness.",
+    "sources": [
+      {
+        "title": "SAEM GRACE-3 acute dizziness and vertigo — official recommendations",
+        "url": "https://www.saem.org/publications/grace/grace-3",
+        "year": 2023,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Official recommendation summary read; full journal methods and evidence profiles were not reviewed. Applies to adult ED presentations with acute dizziness."
+      }
+    ],
+    "related": [
+      {
+        "label": "Ischemic stroke protocol",
+        "href": "#/protocols/ischemic"
+      }
+    ]
+  },
+  {
+    "id": "inpatient-care",
+    "title": "Inpatient stroke: complication review",
+    "settings": [
+      "hospital"
+    ],
+    "keywords": [
+      "stroke unit",
+      "dysphagia",
+      "aspiration",
+      "fever",
+      "glucose",
+      "DVT",
+      "VTE",
+      "pressure injury",
+      "urinary retention",
+      "post-thrombectomy"
+    ],
+    "summary": "Organized stroke-unit care and systematic complication surveillance are central to recovery. Review swallowing, fever, glucose, respiratory and urinary problems alongside the neurological course. Nursing, medical and rehabilitation teams need a shared plan for prevention and escalation.",
+    "consider": [
+      "Are swallowing safety and the feeding/medication route established?",
+      "Are fever, glucose, infection, urinary retention and bowel problems being addressed?",
+      "Are VTE prevention, mobility, falls and skin integrity covered by an individualized plan?",
+      "After reperfusion, are examination, access-site concerns and blood-pressure goals handed over clearly?"
+    ],
+    "caution": "The 2026 AIS guideline advises against intensive glucose control and intensive systolic BP lowering below 140 mm Hg after IVT/EVT. Apply the treatment-specific protocol and clinical context.",
+    "sources": [
+      {
+        "title": "AHA 2024 systemic complications of acute stroke statement — official summary",
+        "url": "https://professional.heart.org/en/science-news/addressing-systemic-complications-of-acute-stroke/top-things-to-know",
+        "year": 2024,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary read; full statement and complication-specific recommendations were not reviewed."
+      },
+      {
+        "title": "AHA 2021 acute stroke nursing care statements — official summary",
+        "url": "https://professional.heart.org/en/science-news/2021-update-care-of-the-patient-with-acute-ischemic-stroke/top-things-to-know",
+        "year": 2021,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary read for nursing assessments and complications; full statements were not reviewed."
+      },
+      {
+        "title": "AHA/ASA 2026 acute ischemic stroke guideline — official summary",
+        "url": "https://professional.heart.org/en/science-news/2026-guideline-for-the-early-management-of-patients-with-acute-ischemic-stroke/top-things-to-know",
+        "year": 2026,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Official summary read for glucose and post-reperfusion blood-pressure cautions; full guideline not reviewed."
+      }
+    ],
+    "related": [
+      {
+        "label": "Ischemic stroke protocol",
+        "href": "#/protocols/ischemic"
+      },
+      {
+        "label": "ICH protocol",
+        "href": "#/protocols/ich"
+      }
+    ]
+  },
+  {
+    "id": "anticoagulant-labels",
+    "title": "Anticoagulants: label and interaction review",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "DOAC",
+      "apixaban",
+      "Eliquis",
+      "rivaroxaban",
+      "Xarelto",
+      "dabigatran",
+      "Pradaxa",
+      "edoxaban",
+      "Savaysa",
+      "warfarin",
+      "renal",
+      "P-gp",
+      "CYP3A4"
+    ],
+    "summary": "Use the exact drug's U.S. label for the indication, formulation, renal considerations, interactions and administration requirements. AF and VTE instructions differ. Apixaban's AF adjustment incorporates age, weight and serum creatinine; edoxaban has an upper-creatinine-clearance restriction for AF. Warfarin requires individualized INR monitoring.",
+    "consider": [
+      "Are the indication, current formulation, last dose, adherence and any planned procedure established?",
+      "Are current renal function, weight, age and hepatic status appropriate for the specific label?",
+      "Have P-gp/CYP interactions, other antithrombotics and nonprescription products been checked?",
+      "Do food, swallowing or feeding-tube requirements affect reliable administration?"
+    ],
+    "caution": "A creatinine-clearance result alone does not select a dose. Review the complete current label and pharmacist input for the individual case; use the ICH protocol for urgent reversal.",
+    "sources": [
+      {
+        "title": "Eliquis (apixaban) U.S. prescribing information",
+        "url": "https://packageinserts.bms.com/pi/pi_eliquis.pdf",
+        "year": 2026,
+        "type": "Drug label",
+        "checkedAt": "2026-10-01",
+        "access": "Full primary label accessed, revision 08/2026; indications, adult adjustment, renal and interaction sections spot-checked, not a complete label review."
+      },
+      {
+        "title": "Xarelto (rivaroxaban) U.S. prescribing information",
+        "url": "https://www.janssenlabels.com/package-insert/product-monograph/prescribing-information/XARELTO-pi.pdf",
+        "year": 2026,
+        "type": "Drug label",
+        "checkedAt": "2026-10-01",
+        "access": "Full primary label accessed, revision 03/2026; indications, renal, interaction and administration sections spot-checked, not a complete label review."
+      },
+      {
+        "title": "Pradaxa (dabigatran) capsules — U.S. label on DailyMed",
+        "url": "https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=ba74e3cd-b06f-4145-b284-5fd6b84ff3c9",
+        "year": 2025,
+        "type": "Drug label",
+        "checkedAt": "2026-10-01",
+        "access": "Full primary label accessed, revision 06/2025; indication-specific renal and interaction sections spot-checked, not a complete label review."
+      },
+      {
+        "title": "Savaysa (edoxaban) — U.S. label on DailyMed",
+        "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e77d3400-56ad-11e3-949a-0800200c9a66",
+        "year": 2023,
+        "type": "Drug label",
+        "checkedAt": "2026-10-01",
+        "access": "Full primary label accessed, revision 10/2023 (DailyMed updated 07/2025); boxed warning, indications, renal and interaction sections spot-checked."
+      },
+      {
+        "title": "Warfarin sodium — U.S. label on DailyMed",
+        "url": "https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=541c9a70-adaf-4ef3-94ba-ad4e70dfa057",
+        "year": 2026,
+        "type": "Drug label",
+        "checkedAt": "2026-10-01",
+        "access": "Full primary label accessed, revision 09/2026; boxed warning, indications, INR monitoring and interaction sections spot-checked, not a complete label review."
+      }
+    ],
+    "related": [
+      {
+        "label": "Creatinine clearance",
+        "href": "#/encounter/crcl"
+      },
+      {
+        "label": "ICH protocol",
+        "href": "#/protocols/ich"
+      }
+    ]
+  }
+]

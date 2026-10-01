@@ -86,6 +86,7 @@ async function main() {
   await fs.mkdir(outDir, { recursive: true });
   const site = path.resolve(arg('--site-dir', 'output/site'));
   if (!fsSync.existsSync(path.join(site, 'index.html'))) throw new Error('Published QA artifact missing. Run npm run publish:stage or supply an explicit --site-dir.');
+  const reference = JSON.parse(await fs.readFile(path.join(site, 'data/clinical-reference.json'), 'utf8'));
   const server = await servePublished(() => site, Number(arg('--port', '4177')));
   const browser = await launchChromium();
   const report = { scope: 'Rendered production artifact; Chromium simulations, not physical devices', site, checks: [], screenshots: [], metrics: {}, runs: [], latency: {profile:latency.name,profilesFile:latency.file,enforced:latency.enforce}, live: { status: 'not run', reason: '--local-only or no --live; no implied deployed verification' } };
@@ -295,7 +296,7 @@ async function main() {
       await reset(page);await page.evaluate(()=>{location.hash='#/tools/phq2';});await phq.waitFor({state:'visible'});assert.equal(await phq.locator('select').first().inputValue(),'');
       await reset(page);
     });
-    await check('restored Trials navigation, three views and unchanged Encounter session', async () => {
+    await check('restored Trials registry views and unchanged Encounter session', async () => {
       try {
       await page.getByLabel('Age (years)', { exact: true }).fill('67');
       await page.getByRole('link', { name: 'Trials', exact: true }).click();
@@ -324,6 +325,104 @@ async function main() {
       await screen.getByText('Choose a classification to see possible study profiles.', { exact: true }).waitFor({ state: 'visible' });
       const visibleText = await page.locator('main').innerText();
       assert(!/synthetic|public demo|educational demo|no PHI|not a real clinical note/i.test(visibleText));
+      } finally { await reset(page); }
+    });
+    await check('Evidence filters, deep links, completed studies and source copy preserve Encounter entries', async () => {
+      const clipboard = await page.evaluate(() => ({ entries: window.__qaClipboard, denied: window.__qaDenyClipboard }));
+      try {
+        await reset(page); await setupIschemic(page);
+        const marker = 'QA evidence navigation marker: specialist review pending.';
+        await page.getByLabel('Manual rationale / recommendations', { exact: true }).fill(marker);
+        await page.getByRole('link', { name: 'Evidence', exact: true }).click();
+        const evidence = page.getByRole('region', { name: 'Evidence', exact: true });
+        await evidence.getByText('17 topics found.', { exact: true }).waitFor();
+        await evidence.getByLabel('Care setting', { exact: true }).selectOption('clinic');
+        await evidence.getByRole('searchbox', { name: 'Find a clinical question', exact: true }).fill('PFO');
+        await evidence.locator('[data-reference-id="pfo"]').waitFor({ state: 'visible' });
+        const filteredIds = await evidence.locator('[data-reference-id]').evaluateAll(cards => cards.map(card => card.dataset.referenceId));
+        assert(filteredIds.length < 17);
+        assert(filteredIds.every(id => reference.data.topics.find(topic => topic.id === id).settings.includes('clinic')));
+        await evidence.getByRole('searchbox', { name: 'Find a clinical question', exact: true }).fill('unmatchableqareference');
+        await evidence.getByText('0 topics found.', { exact: true }).waitFor();
+        await page.evaluate(() => { location.hash = '#/evidence/af-timing'; });
+        const topic = evidence.locator('[data-reference-id="af-timing"]');
+        await page.waitForFunction(() => { const card = document.querySelector('[aria-label="Evidence"] [data-reference-id="af-timing"]'); return card?.open && card.contains(document.activeElement); });
+        assert.equal(await evidence.getByLabel('Care setting', { exact: true }).inputValue(), 'all');
+        assert.equal(await evidence.getByRole('searchbox', { name: 'Find a clinical question', exact: true }).inputValue(), '');
+        await topic.getByRole('link', { name: 'Related completed evidence', exact: true }).click();
+        const completed = page.getByRole('region', { name: 'Completed evidence', exact: true });
+        await completed.getByText('3 studies found.', { exact: true }).waitFor();
+        assert.deepEqual((await completed.locator('[data-reference-id]').evaluateAll(cards => cards.map(card => card.dataset.referenceId))).sort(), ['catalyst', 'elan', 'optimas']);
+        const study = completed.locator('[data-reference-id="elan"]'), expected = reference.data.studies.find(record => record.id === 'elan');
+        await study.locator('summary').click();
+        await study.getByRole('button', { name: `Copy ${expected.title} evidence`, exact: true }).click();
+        await study.getByText('Copied with sources and limits.', { exact: true }).waitFor();
+        const copied = await page.evaluate(() => window.__qaClipboard.at(-1));
+        assert(copied.includes(expected.population)); assert(copied.includes(`Limits: ${expected.limits}`));
+        for (const source of expected.sources) { assert(copied.includes(source.url)); assert(copied.includes(`Source checked ${source.checkedAt}: ${source.access}`)); }
+        await completed.getByRole('link', { name: 'Show all completed evidence', exact: true }).click();
+        await completed.getByText('16 studies found.', { exact: true }).waitFor();
+        await study.getByRole('link', { name: 'Related guidance', exact: true }).click();
+        await topic.waitFor({ state: 'visible' });
+        assert.equal(new URL(page.url()).hash, '#/evidence/af-timing');
+        await page.getByRole('link', { name: 'Encounter', exact: true }).click();
+        assert.equal(await page.getByLabel('Age (years)', { exact: true }).inputValue(), '65');
+        assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)', { exact: true }).inputValue(), '83');
+        assert.equal(await page.getByLabel('Manual rationale / recommendations', { exact: true }).inputValue(), marker);
+      } finally {
+        await page.evaluate(saved => { window.__qaClipboard = saved.entries; window.__qaDenyClipboard = saved.denied; }, clipboard);
+        await reset(page);
+      }
+    });
+    await check('quick protocol links switch protocols and reopen the current collapsed target with focus', async () => {
+      try {
+        await reset(page); await setupIschemic(page);
+        const quick = page.getByRole('navigation', { name: 'Quick protocols', exact: true });
+        await quick.getByRole('link', { name: 'Anticoagulant reversal', exact: true }).click();
+        await page.waitForFunction(() => document.activeElement?.textContent.trim() === 'Anticoagulation Reversal' && document.activeElement.closest('#mgmt-tabpanel-ich'));
+        await quick.getByRole('link', { name: 'Post-lytic hemorrhage', exact: true }).click();
+        const target = page.locator('#isch-postlytic');
+        await page.waitForFunction(() => { const card = document.getElementById('isch-postlytic'); return card?.open && card.contains(document.activeElement); });
+        await target.locator('summary').first().click();
+        assert.equal(await target.evaluate(card => card.open), false);
+        await quick.getByRole('link', { name: 'Post-lytic hemorrhage', exact: true }).click();
+        await page.waitForFunction(() => { const card = document.getElementById('isch-postlytic'); return card?.open && card.contains(document.activeElement); });
+        assert.equal(new URL(page.url()).hash, '#/protocols/ischemic/post-lytic');
+        await quick.getByRole('link', { name: 'Angioedema', exact: true }).click();
+        await page.waitForFunction(() => { const card = document.getElementById('isch-angioedema'); return card?.open && card.contains(document.activeElement); });
+        await quick.getByRole('link', { name: 'Anticoagulant reversal', exact: true }).click();
+        await page.waitForFunction(() => document.activeElement?.textContent.trim() === 'Anticoagulation Reversal' && document.activeElement.closest('#mgmt-tabpanel-ich'));
+        await page.getByRole('link', { name: 'Encounter', exact: true }).click();
+        assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)', { exact: true }).inputValue(), '83');
+      } finally { await reset(page); }
+    });
+    await check('canonical TIA details distinguish unknown, positive, reviewed and cleared findings without discharge clearance', async () => {
+      try {
+        await reset(page);
+        await page.getByLabel('Working diagnosis', { exact: true }).selectOption('tia');
+        const review = page.locator('section[aria-labelledby="tia-readiness-title"]');
+        await review.getByText(/Disposition assessment incomplete/).waitFor();
+        assert((await review.innerText()).includes('0/5 high-risk features explicitly reviewed.'));
+        await review.getByRole('link', { name: 'Review TIA findings and workup', exact: true }).click();
+        await page.waitForFunction(() => { const details = document.getElementById('encounter-details-diagnosis-details'); return details?.open && details.contains(document.activeElement); });
+        assert.equal(new URL(page.url()).hash, '#/encounter/section/diagnosis-details');
+        const riskLabels = ['TIA presentation with DWI lesion', 'Crescendo or recurrent episodes', 'Persistent deficit at reassessment', 'Severe symptomatic carotid stenosis', 'Suspected cardioembolic source'];
+        for (const label of riskLabels) assert.equal(await page.getByLabel(label, { exact: true }).count(), 1);
+        await page.getByLabel('Suspected cardioembolic source', { exact: true }).selectOption('yes');
+        await review.getByRole('alert').filter({ hasText: 'Urgent stroke-team evaluation' }).waitFor();
+        assert((await review.innerText()).includes('1/5 high-risk features explicitly reviewed.'));
+        await page.getByLabel('Suspected cardioembolic source', { exact: true }).selectOption('');
+        await review.getByText(/Disposition assessment incomplete/).waitFor();
+        for (const label of riskLabels) await page.getByLabel(label, { exact: true }).selectOption('no');
+        await review.getByText(/Risk-feature assessment recorded/).waitFor();
+        assert((await review.innerText()).includes('ABCD² alone cannot clear discharge'));
+        await review.getByRole('heading', { name: 'Workup & follow-up gaps', exact: true }).waitFor();
+        for (const label of ['TIA MRI / DWI workup', 'TIA head / neck vascular imaging workup', 'TIA ECG / rhythm workup']) await page.getByLabel(label, { exact: true }).selectOption('Completed');
+        for (const label of ['Same-day TIA workup complete', 'Prompt outpatient follow-up confirmed']) await page.getByLabel(label, { exact: true }).selectOption('yes');
+        await review.getByRole('heading', { name: 'Workup & follow-up gaps', exact: true }).waitFor({ state: 'hidden' });
+        await page.getByLabel('Severe symptomatic carotid stenosis', { exact: true }).selectOption('');
+        await review.getByText(/Disposition assessment incomplete/).waitFor();
+        assert((await review.innerText()).includes('4/5 high-risk features explicitly reviewed.'));
       } finally { await reset(page); }
     });
     await check('protocol clocks show validated LKW and Discovery components', async () => {
@@ -387,7 +486,12 @@ async function main() {
       for(const [route,id] of [['#/calculators/nihss','calc-nihss'],['#/research/calculators/crcl','calc-crcl'],['#/encounter/aspects','calc-aspects'],['#/calculators/tnk-dose','calc-tnk']]) {
         await page.evaluate(hash=>location.hash=hash,route);await page.waitForFunction(target=>{const el=document.getElementById(target);return el&&(el===document.activeElement||el.contains(document.activeElement));},id);
       }
-      for(const route of ['#/education','#/research/guidelines','#/calculators/rcvs2','#/encounter/unknown-calc']) {await page.evaluate(hash=>location.hash=hash,route);await page.getByRole('heading',{name:/Retired/}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).isVisible(),false);}
+      await page.evaluate(() => { location.hash = '#/research/guidelines'; });
+      const restoredEvidence = page.getByRole('region', { name: 'Evidence', exact: true });
+      await restoredEvidence.getByRole('heading', { name: 'Evidence', exact: true }).waitFor();
+      await restoredEvidence.getByRole('searchbox', { name: 'Find a clinical question', exact: true }).waitFor();
+      assert.equal(await restoredEvidence.locator('[data-reference-id]').count(), 17);
+      for(const route of ['#/education','#/calculators/rcvs2','#/encounter/unknown-calc']) {await page.evaluate(hash=>location.hash=hash,route);await page.getByRole('heading',{name:/Retired/}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).isVisible(),false);}
       await page.evaluate(()=>location.hash='#/encounter/ich-score');await page.getByText('This tool is inactive in the current context.',{exact:false}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');await page.getByRole('link',{name:'Stroke',exact:true}).click();
     });
     await check('complete vs partial NIHSS, explicit zero, valid dose and clearing weight', async () => {
@@ -443,19 +547,82 @@ async function main() {
     await check('console and resource errors', async () => {assert.deepEqual(errors,[]);assert.deepEqual(failedResources,[]);assert.deepEqual(consoleMessages.filter(x=>x.type==='error'),[]);});
     report.metrics.totalPageJsTransferBytes=await page.evaluate(()=>performance.getEntriesByType('resource').filter(x=>x.initiatorType==='script'||new URL(x.name).pathname.endsWith('.js')).reduce((sum,x)=>sum+x.transferSize,0));
     await context.close();
-    await check('fresh complete installation, offline reload, full synthetic encounter and protected drug modal', async () => {
+    await check('fresh complete installation, offline Encounter, Evidence, completed studies and protected drug modal', async () => {
       const offline=await browser.newContext({viewport:{width:390,height:844},timezoneId:'America/Los_Angeles'});const p=await offline.newPage();const offlineErrors=[];p.on('pageerror',e=>offlineErrors.push(e.message));try{
         await p.goto(server.url);await p.getByRole('heading',{name:'Encounter',exact:true}).waitFor();await waitForInstalled(p);await p.reload();await p.waitForFunction(()=>Boolean(navigator.serviceWorker.controller));
-        const cache=await p.evaluate(async()=>{const names=await caches.keys();const active=names.filter(name=>name.startsWith('stroke-cache-v'));let totalBytes=0,entries=0,urls=[];for(const name of active){const c=await caches.open(name);for(const req of await c.keys()){entries++;urls.push(req.url);totalBytes+=(await(await c.match(req)).arrayBuffer()).byteLength;}}return{names:active,totalBytes,entries,urls};});assert(!cache.urls.some(url=>/education|teaching|TrialScreener|deferred-reference/.test(url)));report.metrics.offlineCacheBytes=cache.totalBytes;
+        const cache = await p.evaluate(async () => {
+          const active = (await caches.keys()).filter(name => name.startsWith('stroke-cache-v'));
+          let totalBytes = 0, entries = 0, reference; const urls = [];
+          for (const name of active) {
+            const cached = await caches.open(name);
+            for (const request of await cached.keys()) {
+              entries++; urls.push(request.url);
+              const response = await cached.match(request);
+              if (new URL(request.url).pathname === '/stroke/data/clinical-reference.json') {
+                const data = await response.clone().json();
+                reference = { appVersion: data._meta.appVersion, schemaVersion: data._meta.schemaVersion, topics: data.data.topics.length, studies: data.data.studies.length };
+              }
+              totalBytes += (await response.arrayBuffer()).byteLength;
+            }
+          }
+          return { names: active, totalBytes, entries, urls, reference };
+        });
+        assert(!cache.urls.some(url=>/education|teaching|TrialScreener|deferred-reference/.test(url)));report.metrics.offlineCacheBytes=cache.totalBytes;
+        assert.deepEqual(cache.reference, { appVersion: await p.locator('.app-shell').getAttribute('data-version'), schemaVersion: '2.0.0', topics: 17, studies: 16 });
+        assert.equal(cache.reference.appVersion, reference._meta.appVersion);
         await offline.setOffline(true);await p.reload({waitUntil:'domcontentloaded'});await setupIschemic(p);await p.getByLabel('Manual rationale / recommendations',{exact:true}).fill('Synthetic offline encounter; specialist review pending.');const items=p.locator('#calc-nihss select[id^="nihss-"]');await openDetails(items.first());for(let i=0;i<15;i++){const value=await items.nth(i).locator('option').evaluateAll(els=>els.find(e=>e.textContent.includes('(0)')).value);await items.nth(i).selectOption(value);}assert((await p.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));assert((await(await generate(p)).inputValue()).includes('NIHSS score: 0/42'));
-        await p.getByRole('link',{name:'Trials',exact:true}).click();await p.getByRole('heading',{name:'Trials',exact:true}).waitFor();await p.getByRole('tab',{name:'Database',exact:true}).click();await p.getByRole('searchbox',{name:'Search the study database by acronym, name or NCT number',exact:true}).fill('STEP');assert((await p.getByRole('tabpanel',{name:'Database',exact:true}).innerText()).includes('STEP'));await p.screenshot({path:path.join(outDir,'trials-offline-mobile.png'),fullPage:true});await p.getByRole('link',{name:'Protocols',exact:true}).click();await p.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();const trigger=p.getByRole('button',{name:'Vitamin K 10 mg IV',exact:true,includeHidden:true}).first();await openDetails(trigger);await trigger.click();await p.getByRole('dialog').waitFor();assert((await p.getByRole('dialog').innerText()).includes('Vitamin K'));await p.keyboard.press('Escape');assert.equal(await p.getByRole('dialog').count(),0);assert.deepEqual(offlineErrors,[]);await p.screenshot({path:path.join(outDir,'offline-protocol-mobile.png'),fullPage:true});return{cache,simulation:true};
+        await p.getByRole('link',{name:'Trials',exact:true}).click();await p.getByRole('heading',{name:'Trials',exact:true}).waitFor();await p.getByRole('tab',{name:'Database',exact:true}).click();await p.getByRole('searchbox',{name:'Search the study database by acronym, name or NCT number',exact:true}).fill('STEP');assert((await p.getByRole('tabpanel',{name:'Database',exact:true}).innerText()).includes('STEP'));await p.screenshot({path:path.join(outDir,'trials-offline-mobile.png'),fullPage:true});
+        assert.equal(await p.evaluate(() => navigator.onLine), false);
+        await p.getByRole('link', { name: 'Evidence', exact: true }).click();
+        const evidence = p.getByRole('region', { name: 'Evidence', exact: true });
+        await evidence.getByText('17 topics found.', { exact: true }).waitFor();
+        assert.equal(await evidence.locator('[data-reference-id]').count(), 17);
+        const topic = evidence.locator('[data-reference-id="af-timing"]');
+        await topic.locator('summary').click();
+        await topic.getByRole('heading', { name: 'Sources', exact: true }).waitFor();
+        await p.getByRole('link', { name: 'Trials', exact: true }).click();
+        await p.getByRole('tab', { name: 'Completed evidence', exact: true }).click();
+        const completed = p.getByRole('region', { name: 'Completed evidence', exact: true });
+        await completed.getByText('16 studies found.', { exact: true }).waitFor();
+        assert.equal(await completed.locator('[data-reference-id]').count(), 16);
+        const study = completed.locator('[data-reference-id="elan"]');
+        await study.locator('summary').click();
+        await study.getByRole('link', { name: 'ELAN primary report', exact: true }).waitFor();
+        assert.equal(await p.evaluate(() => navigator.onLine), false);
+        await p.screenshot({ path: path.join(outDir, 'evidence-offline-mobile.png'), fullPage: true });
+        await p.getByRole('link', { name: 'Encounter', exact: true }).click();
+        assert.equal(await p.locator('#tabpanel-encounter').getByLabel('Weight (kg)', { exact: true }).inputValue(), '83');
+        assert.equal(await p.getByLabel('Manual rationale / recommendations', { exact: true }).inputValue(), 'Synthetic offline encounter; specialist review pending.');
+        await p.getByRole('link',{name:'Protocols',exact:true}).click();await p.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();const trigger=p.getByRole('button',{name:'Vitamin K 10 mg IV',exact:true,includeHidden:true}).first();await openDetails(trigger);await trigger.click();await p.getByRole('dialog').waitFor();assert((await p.getByRole('dialog').innerText()).includes('Vitamin K'));await p.keyboard.press('Escape');assert.equal(await p.getByRole('dialog').count(),0);assert.deepEqual(offlineErrors,[]);await p.screenshot({path:path.join(outDir,'offline-protocol-mobile.png'),fullPage:true});return{cache,simulation:true};
       }finally{await offline.close();}
     });
     await check('published retired raw URLs unavailable and old JSON endpoints return retirement metadata', async () => {
       for(const relative of ['src/app.jsx','documents/references/External Ventricular Drain.pdf','content/bundle.json','assets/select_score_chart.png']){const response=await fetch(new URL(relative,server.url));assert([404,410].includes(response.status),`${relative}: ${response.status}`);}
       for(const relative of ['data/atlas/completed-trials.json','data/atlas/active-trials.json','data/guidelines/index.json']){const response=await fetch(new URL(relative,server.url));if(response.status===404||response.status===410)continue;assert((response.headers.get('content-type')||'').includes('json'));const data=await response.json();assert(data.retired||data.status==='retired'||data.status==='deprecated'||data._meta?.status==='retired',relative);}
     });
-    if(args.includes('--live')&&!args.includes('--local-only'))await check('live deployed version parity and retained smoke',async()=>{const p=await browser.newPage();try{await p.goto(process.env.STROKE_LIVE_URL||'https://rkalani1.github.io/stroke/');await p.getByRole('heading',{name:'Encounter',exact:true}).waitFor();assert.equal(await p.locator('.app-shell').getAttribute('data-version'),JSON.parse(await fs.readFile('package.json','utf8')).version);report.live={status:'passed',url:p.url()};}finally{await p.close();}});
+    if (args.includes('--live') && !args.includes('--local-only')) await check('live deployed app/reference version parity, Evidence and completed studies', async () => {
+      const p = await browser.newPage();
+      try {
+        await p.goto(process.env.STROKE_LIVE_URL || 'https://rkalani1.github.io/stroke/');
+        await p.getByRole('heading', { name: 'Encounter', exact: true }).waitFor();
+        const version = JSON.parse(await fs.readFile('package.json', 'utf8')).version;
+        assert.equal(await p.locator('.app-shell').getAttribute('data-version'), version);
+        const endpoint = new URL('data/clinical-reference.json', p.url()).href;
+        const response = await p.request.get(endpoint);
+        assert.equal(response.status(), 200);
+        assert((response.headers()['content-type'] || '').includes('json'));
+        const deployed = await response.json();
+        assert.equal(deployed._meta.appVersion, version);
+        assert.equal(deployed._meta.schemaVersion, '2.0.0');
+        assert.deepEqual(deployed.data, reference.data);
+        await p.getByRole('link', { name: 'Evidence', exact: true }).click();
+        await p.getByRole('region', { name: 'Evidence', exact: true }).getByText('17 topics found.', { exact: true }).waitFor();
+        await p.getByRole('link', { name: 'Trials', exact: true }).click();
+        await p.getByRole('tab', { name: 'Completed evidence', exact: true }).click();
+        await p.getByRole('region', { name: 'Completed evidence', exact: true }).getByText('16 studies found.', { exact: true }).waitFor();
+        report.live = { status: 'passed', url: p.url(), version, referenceEndpoint: endpoint, topics: deployed.data.topics.length, studies: deployed.data.studies.length };
+      } finally { await p.close(); }
+    });
   } finally {await browser.close();await server.close();report.passed=report.checks.every(c=>c.status==='passed');await fs.writeFile(path.join(outDir,'qa-smoke-report.json'),JSON.stringify(report,null,2)+'\n');console.log(`Browser QA ${report.passed?'PASS':'FAIL'}: ${report.checks.filter(c=>c.status==='passed').length}/${report.checks.length}; output/playwright/qa-smoke-report.json`);if(!report.passed)process.exitCode=1;}
 }
 if(import.meta.url===pathToFileURL(process.argv[1]).href)main().catch(error=>{console.error(error);process.exitCode=1;});

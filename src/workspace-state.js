@@ -1,4 +1,4 @@
-import { formatEncounterDetails, encounterDetailWarnings } from './encounter-details.js';
+import { formatEncounterDetails, encounterDetailWarnings, TIA_RISK_FIELDS } from './encounter-details.js';
 import { formatTimeline, encounterClockTimestamp } from './encounter-timeline.js';
 import { formatDocumentation } from './documentation-output.js';
 import { reconcileSupplementaryAppliedScores } from './supplementary-calculators.js';
@@ -6,7 +6,7 @@ import { NIHSS_ITEMS } from './clinical/nihss-items.js';
 import { calculateNIHSS, calculateICHVolumeReviewed } from './calculators.js';
 import { formatPerfusionForExport } from './clinical/perfusion-documentation.js';
 import { formatWakeUpScreenForExport } from './clinical/wake-up-documentation.js';
-import { numericInput, reviewedGcs, evaluateVideoTreatment } from './encounter-clinical-review.js';
+import { numericInput, reviewedGcs, evaluateVideoTreatment, reviewedTiaDisposition } from './encounter-clinical-review.js';
 import { computeLKWCountdown } from './calculators-extended.js';
 import { getPublicDemoPhiWarnings } from './public-demo-guardrails.js';
 
@@ -32,6 +32,24 @@ export function daptReperfusionReview(state) {
   const recordedTreatment = state.actions.administered || state.actions.administrationTime || state.actions.punctureTime || state.actions.reperfusionTime;
   const decisionsReviewed = state.note.diagnosisCategory === 'tia' || (state.decisions.ivt === 'Not recommended' && state.decisions.evt === 'Not recommended');
   return { excluded: state.dapt.reperfusionExcluded === true && !recordedTreatment && decisionsReviewed, recordedTreatment: Boolean(recordedTreatment) };
+}
+export function encounterTiaReadiness(state) {
+  if (state.context !== 'acute' || state.note?.diagnosisCategory !== 'tia') return null;
+  const details = state.details || {};
+  const assessment = Object.fromEntries(TIA_RISK_FIELDS.map(([key, name]) => [name,
+    details[key] === 'yes' ? true : details[key] === 'no' ? false : undefined]));
+  const missing = TIA_RISK_FIELDS.filter(([, name]) => typeof assessment[name] !== 'boolean').map(([, , label]) => label);
+  const concerns = TIA_RISK_FIELDS.filter(([, name]) => assessment[name] === true).map(([, , label]) => label);
+  const gaps = [
+    ...[['tiaMri', 'MRI / DWI'], ['tiaVascularImaging', 'Head / neck vascular imaging'], ['tiaCardiacWorkup', 'ECG / rhythm workup']]
+      .filter(([key]) => !['Completed', 'Not indicated'].includes(details[key]))
+      .map(([, label]) => `${label}: completion or a clinician-reviewed alternative remains to be documented.`),
+    ...[['tiaWorkupComplete', 'Same-day workup'], ['tiaFollowupAccess', 'Prompt outpatient follow-up']]
+      .filter(([key]) => details[key] !== 'yes')
+      .map(([key, label]) => `${label}: ${details[key] === 'no' ? 'not confirmed' : 'confirmation not documented'}.`)
+  ];
+  return { ...reviewedTiaDisposition({ ...assessment, assessmentReviewed: missing.length === 0 }),
+    reviewed: missing.length === 0, reviewedCount: TIA_RISK_FIELDS.length - missing.length, missing, concerns, gaps };
 }
 export function protocolEncounter(state, nowMs = Date.now()) {
   const n = state.note, compatible = state.context === 'acute' && n.diagnosisCategory === 'ischemic';

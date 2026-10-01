@@ -79,7 +79,7 @@ describe('lucide-subset empirical stress test suite', () => {
   // --------------------------------------------------------------------------
   describe('WCAG & ARIA Conflict Edge Cases', () => {
     it('Sets aria-hidden="false" when aria-label is present without explicit aria-hidden', () => {
-      const el = globalThis.createMockLucideElement('activity', {
+      const el = globalThis.createMockLucideElement('arrow-right', {
         'aria-label': 'Heart activity indicator'
       });
       createIcons();
@@ -101,7 +101,7 @@ describe('lucide-subset empirical stress test suite', () => {
     });
 
     it('Sets aria-hidden="false" when role="img" and aria-label are present', () => {
-      const el = globalThis.createMockLucideElement('brain', {
+      const el = globalThis.createMockLucideElement('shield-alert', {
         'role': 'img',
         'aria-label': 'Brain diagram'
       });
@@ -113,7 +113,7 @@ describe('lucide-subset empirical stress test suite', () => {
     });
 
     it('Handles explicit aria-hidden="false" correctly', () => {
-      const el = globalThis.createMockLucideElement('activity', {
+      const el = globalThis.createMockLucideElement('arrow-right', {
         'aria-label': 'Activity indicator',
         'aria-hidden': 'false'
       });
@@ -124,7 +124,7 @@ describe('lucide-subset empirical stress test suite', () => {
     });
 
     it('Handles aria-hidden="" (empty string) by coercing to "true"', () => {
-      const el = globalThis.createMockLucideElement('activity', {
+      const el = globalThis.createMockLucideElement('arrow-right', {
         'aria-hidden': ''
       });
       createIcons();
@@ -139,7 +139,7 @@ describe('lucide-subset empirical stress test suite', () => {
   // --------------------------------------------------------------------------
   describe('Attribute Loss Edge Cases', () => {
     it('FAILS TO TRANSFER: DOM id attribute', () => {
-      const el = globalThis.createMockLucideElement('search', {
+      const el = globalThis.createMockLucideElement('info', {
         'id': 'global-search-icon'
       });
       createIcons();
@@ -149,7 +149,7 @@ describe('lucide-subset empirical stress test suite', () => {
     });
 
     it('FAILS TO TRANSFER: inline style attribute', () => {
-      const el = globalThis.createMockLucideElement('search', {
+      const el = globalThis.createMockLucideElement('info', {
         'style': 'color: red; margin: 4px;'
       });
       createIcons();
@@ -159,7 +159,7 @@ describe('lucide-subset empirical stress test suite', () => {
     });
 
     it('FAILS TO TRANSFER: tabindex attribute', () => {
-      const el = globalThis.createMockLucideElement('search', {
+      const el = globalThis.createMockLucideElement('info', {
         'tabindex': '0',
         'aria-label': 'Search button'
       });
@@ -171,7 +171,7 @@ describe('lucide-subset empirical stress test suite', () => {
     });
 
     it('FAILS TO TRANSFER: data-* custom attributes', () => {
-      const el = globalThis.createMockLucideElement('check', {
+      const el = globalThis.createMockLucideElement('arrow-right', {
         'data-testid': 'check-icon-unit',
         'data-state': 'checked'
       });
@@ -183,7 +183,7 @@ describe('lucide-subset empirical stress test suite', () => {
     });
 
     it('FAILS TO TRANSFER: extra aria-* attributes like aria-describedby, aria-expanded, aria-controls', () => {
-      const el = globalThis.createMockLucideElement('chevron-down', {
+      const el = globalThis.createMockLucideElement('arrow-right', {
         'aria-describedby': 'tooltip-1',
         'aria-expanded': 'true',
         'aria-controls': 'dropdown-menu'
@@ -202,7 +202,7 @@ describe('lucide-subset empirical stress test suite', () => {
   // --------------------------------------------------------------------------
   describe('Empty String and Falsy Value Edge Cases', () => {
     it('Ignores empty string values for aria-label, role, aria-labelledby, title, and class', () => {
-      const el = globalThis.createMockLucideElement('heart', {
+      const el = globalThis.createMockLucideElement('sparkles', {
         'aria-label': '',
         'role': '',
         'aria-labelledby': '',
@@ -225,16 +225,16 @@ describe('lucide-subset empirical stress test suite', () => {
   // --------------------------------------------------------------------------
   describe('Icon Name Normalization and Edge Cases', () => {
     it('Handles data-lucide with multiple consecutive hyphens or leading/trailing hyphens', () => {
-      const el = globalThis.createMockLucideElement('--alert---circle--');
+      const el = globalThis.createMockLucideElement('--shield---alert--');
       createIcons();
 
       const newSvg = el._replacedWith;
       expect(newSvg).toBeDefined();
-      expect(newSvg._children.length).toBe(icons.AlertCircle.length);
+      expect(newSvg._children.length).toBe(icons.ShieldAlert.length);
     });
 
     it('Fails to match underscore-separated icon names (e.g., alert_circle)', () => {
-      const el = globalThis.createMockLucideElement('alert_circle');
+      const el = globalThis.createMockLucideElement('shield_alert');
       createIcons();
 
       expect(el.replaceWith).not.toHaveBeenCalled();
@@ -263,7 +263,7 @@ describe('lucide-subset empirical stress test suite', () => {
   describe('Icon Map Integrity & Vector Shapes', () => {
     it('Ensures all exported icons have valid tag names and attribute objects', () => {
       const iconEntries = Object.entries(icons);
-      expect(iconEntries.length).toBeGreaterThan(50);
+      expect(iconEntries.length).toBe(10);
 
       for (const [name, shapes] of iconEntries) {
         expect(Array.isArray(shapes), `Icon ${name} should be an array`).toBe(true);
