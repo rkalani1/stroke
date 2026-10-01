@@ -1,10 +1,10 @@
 import { NIHSS_ITEMS } from './clinical/nihss-items.js';
 import { numericInput } from './encounter-clinical-review.js';
-import { DIAGNOSES, encounterTiming, nihssAssessment } from './workspace-state.js';
+import { DIAGNOSES, encounterTiming, encounterNihss } from './workspace-state.js';
 
 // Navigation cues only. These do not gate documentation or determine eligibility.
 export function encounterOverview(state, now) {
-  const n = state.note, exam = nihssAssessment(state.nihss), timing = encounterTiming(n, now);
+  const n = state.note, exam = encounterNihss(state), timing = encounterTiming(n, now);
   const missing = [];
   const requireEntry = (entered, label, target) => { if (!entered) missing.push({ label, target }); };
   requireEntry(Boolean(DIAGNOSES[n.diagnosisCategory]), 'Working diagnosis', 'input-diagnosis');
@@ -14,13 +14,13 @@ export function encounterOverview(state, now) {
   if (state.context === 'acute') {
     requireEntry(n.lkwUnknown || Boolean(timing.clock), 'LKW date and time', 'input-lkw-date');
     const unassessed = NIHSS_ITEMS.find(item => !item.options.includes(state.nihss[item.id]) || state.nihss[item.id]?.includes('(UN)'));
-    requireEntry(exam.complete, 'NIHSS examination', `nihss-${unassessed?.id}`);
+    requireEntry(exam.complete, exam.source === 'reported' ? 'Reported NIHSS total' : 'NIHSS examination', exam.source === 'reported' ? 'input-reported-nihss' : `nihss-${unassessed?.id}`);
     requireEntry(['absent', 'present', 'uncertain'].includes(n.ctHemorrhageStatus), 'CT hemorrhage review', 'input-ct-review');
   }
   requireEntry(Boolean(state.actions.disposition), 'Disposition', 'input-disposition');
   return {
     diagnosis: DIAGNOSES[n.diagnosisCategory] || 'Not documented',
-    examination: exam.complete ? `${exam.total}/42` : `${exam.count}/15 items · incomplete`,
+    examination: exam.source === 'reported' ? exam.complete ? `${exam.total}/42 · reported` : 'Reported total missing / invalid' : exam.complete ? `${exam.total}/42` : `${exam.count}/15 items · incomplete`,
     timingLabel: n.lkwUnknown ? 'Discovery · LKW unknown' : 'Last known well',
     timing: timing.invalid ? 'Invalid / future time' : timing.clock ? `${timing.clock.elapsedMinutes} min elapsed` : n.lkwUnknown ? 'Onset unknown' : 'Not documented',
     missing

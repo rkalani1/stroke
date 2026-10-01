@@ -1,6 +1,30 @@
 # Encounter-first implementation and verification
 
-## Current release — 7.1.0
+## Release candidate — 7.2.0
+
+Baseline: clean `b3656cb403f7fb9dfdc13b8e5fc8dfc8269233ce`, deployed application 7.1.0. The owner authorized restoring the remaining useful prior functionality. A bounded comparison of archived mounted UI with current source identified the additions below. Prior Trials actions are already represented; withdrawn calculators, unfinished score placeholders, duplicate summaries and the education portal remain retired.
+
+- Reported NIHSS entry is separate from the itemized examination; the selected source supplies shared Encounter/protocol values. Source changes invalidate dependent reviews. Zero remains valid; missing/invalid reports never use hidden examination values.
+- Discharge NIHSS and mRS are separately recorded without copying current or onset scores. Compact Team handoff uses the existing guarded generation/copy pipeline.
+- Explicit current-time shortcuts cover LKW, discovery and documented events. Replacement requires confirmation; a timestamp never attests administration. Exact instants survive the repeated daylight-saving hour. Manual edits permanently clear shortcut provenance, including edit/revert.
+- Calculator name/alias search preserves worksheet inputs and open state. Copying a complete, currently reviewed result includes its source and limits. Denied clipboard access offers selectable text; edits, routing and filtering invalidate stale asynchronous responses.
+
+Final local candidate checks: production build; **1,178** unit cases and **8** controller cases; full `npm test` with **25** rendered workflows; **6** archived-baseline update/failure/recovery scenarios; **41** MCP calls across seven tools; ICH **524** / ischemic **754** protected snapshot lines; token lint, **72** contrast pairs and **21** touch viewport/route combinations. Fifteen additional 320/390/768/1440px light/dark layout checks have no overflow. Screenshots were inspected. Bounded independent review found a repeated-hour shortcut defect, which was fixed and regression-tested; scoped rereview found no remaining issue.
+
+| Artifact | 7.1.0 bytes | 7.2.0 bytes | Existing ceiling |
+|---|---:|---:|---:|
+| Initial JavaScript, raw | 298,759 | 303,272 | 307,200 |
+| Initial JavaScript, gzip | 97,993 | 99,368 | 102,400 |
+| All JavaScript, raw | 699,868 | 708,892 | 716,800 |
+| All JavaScript, gzip | 195,038 | 197,941 | 200,704 |
+| CSS | 82,781 | 83,129 | 92,160 |
+| Complete cache, 40 responses | 1,551,462 | 1,560,834 | 2,097,152 |
+
+No asset ceiling or runtime dependency changed. Source/protocol content and clinical review dates are preserved; the 125 generated JSON exports change only application-version metadata. No new score algorithm or clinical validation is claimed. The official NLM NIHSS total definition was accessible; the original NINDS page/booklet blocked automated retrieval. Existing source-access limitations continue to apply. No physical iOS/Android test, native release build, accessibility certification or production rollback was performed.
+
+This is the checked source candidate. Normal PR/main CI, private identifier gates, Pages publication, exact live-byte parity and actual-production browser checks determine release completion and are recorded in the release PR/final handoff. Immediate prior main is the baseline above. Archival rollback remains `archive/pre-encounter-first-20261001-4f8e99d`, restored through a forward release with a new coherent application/cache identity.
+
+## Prior verified release — 7.1.0
 
 The restored application is live at [GitHub Pages](https://rkalani1.github.io/stroke/). [PR #232](https://github.com/rkalani1/stroke/pull/232) merged on 2026-10-01 as application release commit `687e7a543914707789124837af064e66338d6d2a`. The sections below preserve the chronological implementation checkpoints; their pending statements describe those earlier stages, not the current release. Later owner-approved restorations supersede the initial retirement scope where explicitly described.
 

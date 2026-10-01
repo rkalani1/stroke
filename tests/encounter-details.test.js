@@ -14,6 +14,25 @@ const reviewedWorksheet = (state, id, values) => {
 };
 
 describe('optional encounter details', () => {
+  it.each(['acute', 'follow-up'])('records distinct discharge outcomes without copying onset or current scores in %s', context => {
+    const state = encounter('ischemic', context, { onsetNihss: '12', followupMrs: '3' });
+    expect(renderedFields(state)).toContain('dischargeNihss');
+    expect(renderedFields(state)).toContain('dischargeMrs');
+    expect(output(state)).not.toContain('Recorded discharge');
+    state.details = { ...state.details, dischargeNihss: '0', dischargeMrs: '0', dischargeScoreSource: 'Discharge assessment reviewed' };
+    expect(output(state)).toContain('Recorded discharge NIHSS: 0');
+    expect(output(state)).toContain('Recorded discharge mRS: 0 — No symptoms');
+    expect(output(state)).toContain('Discharge assessment reviewed');
+    expect(renderedFields(state).filter(key => key === 'dischargeMrs')).toHaveLength(1);
+    state.details.dischargeNihss = '';
+    state.details.dischargeMrs = '';
+    expect(output(state)).not.toContain('Recorded discharge');
+    expect(output(state)).not.toContain('Discharge assessment reviewed');
+  });
+  it.each(['-1', '43', '1.5', 'NaN', '0x10'])('qualifies invalid discharge NIHSS %s without making it a current assessment', value => {
+    const state = encounter('ischemic', 'acute', { dischargeNihss: value });
+    expect(output(state)).toContain(`Recorded discharge NIHSS: ${value} (invalid value; review)`);
+  });
   it('does not create undocumented findings, negative attestations, or empty output', () => {
     expect(formatEncounterDetails(encounter())).toEqual([]);
     expect(formatEncounterDetails({ context: 'acute', note: {} })).toEqual([]);

@@ -1,7 +1,7 @@
 export const DOCUMENT_FORMATS = [
   ['consultation', 'Consultation · Pulsara / Epic'], ['follow-up', 'Follow-up note'],
   ['progress', 'Progress note'], ['discharge', 'Discharge summary'],
-  ['transfer', 'Transfer handoff'], ['procedure', 'Procedure record']
+  ['transfer', 'Transfer handoff'], ['handoff', 'Team handoff'], ['procedure', 'Procedure record']
 ];
 export function documentationLabel(state) {
   const selected = DOCUMENT_FORMATS.find(([id]) => id === state.documentFormat);
@@ -11,6 +11,10 @@ export function formatDocumentation(state, consultation, groups, timeline) {
   const extras = groups.map(group => `${group.title}:\n${group.lines.join('\n')}`);
   if (timeline) extras.push(timeline);
   const format = DOCUMENT_FORMATS.some(([id]) => id === state.documentFormat) ? state.documentFormat : 'consultation';
+  if (format === 'handoff') {
+    const transfer = groups.find(group => group.id === 'transfer');
+    return [consultation, transfer && `${transfer.title}:\n${transfer.lines.join('\n')}`].filter(Boolean).join('\n\n');
+  }
   if (format === 'consultation') {
     if (!extras.length) return consultation;
     const text = [consultation, ...extras].join('\n\n');

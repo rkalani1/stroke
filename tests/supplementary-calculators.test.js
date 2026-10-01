@@ -162,7 +162,7 @@ describe('mounted calculator controls', () => {
     expect(await page.locator('#calc-abcd2').evaluate(node=>node.open)).toBe(true);
     const applicable=page.getByLabel('Clinical TIA diagnosis confirmed');expect(await applicable.evaluate(node=>node===document.activeElement)).toBe(true);
     await applicable.selectOption('true');expect(await applicable.evaluate(node=>node===document.activeElement)).toBe(true);
-    await page.getByLabel('TIA clinical features').selectOption('other');await page.getByLabel('TIA symptom duration').selectOption('under10');await page.getByLabel('History of diabetes',{exact:true}).selectOption('false');
+    await page.getByLabel('TIA clinical features').selectOption('other');await page.getByLabel('TIA symptom duration').selectOption('under10');await page.locator('#calc-abcd2').getByLabel('History of diabetes',{exact:true}).selectOption('false');
     await page.getByRole('checkbox').check();expect(await page.getByRole('status').textContent()).toContain('ABCD²: 0/7');
     await page.getByRole('button',{name:'Use reviewed score in Encounter'}).click();expect(await page.evaluate(()=>window.model.dapt.abcd2)).toBe(0);
     await page.evaluate(()=>window.editShared('age',''));expect(await page.getByRole('status').textContent()).toContain('no score');expect(await page.evaluate(()=>window.model.dapt.abcd2)).toBe('');expect(await page.getByRole('checkbox').isChecked()).toBe(false);
