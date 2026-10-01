@@ -6,9 +6,9 @@
    Old app caches are retired only on activation. Fetch policy is independent.
 */
 
-const APP_VERSION = '6.30.6';
+const APP_VERSION = '6.30.7';
 const CACHE_PREFIX = 'stroke-cache-v';
-const CACHE_NAME  = 'stroke-cache-v6-30-6-clinical-utility-20261001';
+const CACHE_NAME  = 'stroke-cache-v6-30-7-utility-refinement-20261001';
 
 // Retired teaching figures must not be served from a stale browser cache or
 // a bookmarked URL after this worker takes control. Paths are scope-relative

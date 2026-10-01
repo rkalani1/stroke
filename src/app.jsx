@@ -12,6 +12,9 @@ import GeneratedNoteDraft from './components/GeneratedNoteDraft.jsx';
 import { getClinicalClaim } from './clinical/claim-registry.js';
 import ClinicalClaimContext from './components/ClinicalClaimContext.jsx';
 import { buildTnkConsentDocumentation } from './clinical/consent-documentation.js';
+import { localDateTimeInputValues, formatEncounterClock as formatTime, elapsedEncounterTime } from './clinical/encounter-time.js';
+import { formatWakeUpScreenForExport } from './clinical/wake-up-documentation.js';
+import { formatPerfusionForExport } from './clinical/perfusion-documentation.js';
 import { createIcons, icons } from './lucide-subset.js';
 import {
   DOAC_PROTOCOLS,
@@ -72,6 +75,8 @@ import {
 // Deferred reference loading: Encounter remains immediately usable.
 import { Education, EVDInfographic, ICPInfographic, TrialScreener, StudyDatabase, EligibilityTables, LandmarkTrialsCard, useDeferredResource, DeferredLoadStatus, DeferredCompletedEvidence } from './deferred-components.jsx';
 import { referenceResource, loadReferenceData, evidenceCompletedTrials, resolveCompletedTrials, filterCompletedTrials, getContentSearchIndex } from './reference-loader.js';
+// Navigation intent integration 6307
+import { createNavigationIntents, revealNavigationTarget, calculatorAnchorFor } from './navigation-intent.js';
 /* v7 design primitives — single accent (cobalt), one alarm (crit), one alert (warn).
    Adopted progressively as Encounter (Phase 5), Trials (Phase 6), and Management
    (Phase 7) regions are touched. Existing v6 inline elements continue to work
@@ -282,7 +287,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.30.6';
+const APP_VERSION = '6.30.7';
 // The header search hint mirrors the key the shortcut actually listens for
 // (metaKey || ctrlKey): ⌘ on Apple hardware, Ctrl everywhere else.
 const SEARCH_SHORTCUT_LABEL = (typeof navigator !== 'undefined'
@@ -881,7 +886,9 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
               const [year, month, day] = dateStr.split('-').map(Number);
               const [hours, minutes] = timeStr.split(':').map(Number);
               if (!year || !month || !day || Number.isNaN(hours) || Number.isNaN(minutes)) return null;
-              return new Date(year, month - 1, day, hours, minutes);
+              const parsed = new Date(year, month - 1, day, hours, minutes);
+              if (parsed.getFullYear() !== year || parsed.getMonth() !== month - 1 || parsed.getDate() !== day || parsed.getHours() !== hours || parsed.getMinutes() !== minutes) return null;
+              return parsed;
             };
 
             const discovery = buildDate(discoveryDate, discoveryTime);
@@ -892,20 +899,14 @@ const V7HeroReadoutTicker = ({ lkwIso, unknownLkw = false, size = '3xl', classNa
             }
 
             const nowTime = now instanceof Date ? now : new Date();
-            const diffMs = Math.max(0, nowTime - reference);
-            const diffHrs = diffMs / (1000 * 60 * 60);
-            const diffMins = (diffMs / (1000 * 60)) % 60;
-            const timeFrom = {
-              hours: Math.floor(diffHrs),
-              minutes: Math.floor(Math.abs(diffMins)),
-              total: diffHrs,
-              label: lkwUnknown ? 'Discovery' : 'LKW'
-            };
-            return {
-              timeFrom,
-              status: getWindowStatusFromTime(timeFrom),
-              label: timeFrom.label
-            };
+            const timeFrom = elapsedEncounterTime({ time: reference, label: lkwUnknown ? 'Discovery' : 'LKW' }, nowTime);
+            if (!timeFrom) return { timeFrom: null, status: null, label: lkwUnknown ? 'Discovery' : 'LKW' };
+            const status = timeFrom.futureWarning
+              ? { color: 'yellow', message: 'Future time — reconcile the recorded date and time', urgent: false, eligible: 'unknown' }
+              : lkwUnknown
+                ? { color: 'gray', message: 'Onset unknown; discovery is not LKW. Review imaging-selected treatment criteria.', urgent: false, eligible: 'unknown' }
+                : getWindowStatusFromTime(timeFrom);
+            return { timeFrom, status, label: timeFrom.label };
           }, [lkwDate, lkwTime, lkwUnknown, discoveryDate, discoveryTime, now instanceof Date ? now.getTime() : now]);
         };
 
@@ -1593,7 +1594,7 @@ Clinician Name`;
             hx: '',
             sx: '',
             lkw: '',
-            lkw_date: new Date().toISOString().split('T')[0],
+            lkw_date: localDateTimeInputValues().date,
             nihss: '',
             aspects: '',
             def: '',
@@ -2424,6 +2425,7 @@ Clinician Name`;
           })();
 
           const [activeTab, setActiveTab] = useState(initialActiveTab);
+          const [navigationIntents] = useState(createNavigationIntents);
           const [educationSubTab, setEducationSubTab] = useState(initialEducationSubTab);
           const [routeReady, setRouteReady] = useState(false);
           const [notice, setNotice] = useState(null);
@@ -2513,6 +2515,10 @@ Clinician Name`;
           // Phase 2: Guided Clinical Pathway UI state
           const [pathwayCollapsed, setPathwayCollapsed] = useState(true);
           const [guidelineRecsExpanded, setGuidelineRecsExpanded] = useState(false);
+          const changeWorkspaceView = (view) => {
+            setWorkspaceView(view);
+            setGuidelineRecsExpanded(view === 'teaching');
+          };
           const [appConfig, setAppConfig] = useState({ institutionLinks: [], ttlHoursOverride: null });
           const [configLoaded, setConfigLoaded] = useState(false);
           const [ttlHours, setTtlHours] = useState(settings.ttlHoursOverride || DEFAULT_TTL_HOURS);
@@ -2522,6 +2528,7 @@ Clinician Name`;
           const [aspectsScore, setAspectsScore] = useState(() => normalizeAspectsScore(loadFromStorage('aspectsScore', '')));
 
           const [searchQuery, setSearchQuery] = useState('');
+          const [searchResultsQuery, setSearchResultsQuery] = useState('');
           const [readinessFieldsExpanded, setReadinessFieldsExpanded] = useState(false);
           const [copiedText, setCopiedText] = useState('');
           const [isMounted, setIsMounted] = useState(false);
@@ -5749,8 +5756,9 @@ Clinician Name`;
               detail: 'Post-stroke depression affects ~30% of survivors. Treat diagnosed PSD with antidepressants and/or nonpharmacological therapy (2026 AHA/ASA: COR I, LOE B-R); SSRIs are NOT recommended to improve motor recovery or function (COR III: No Benefit, LOE A; FOCUS/AFFINITY/EFFECTS). Routine screening with a structured inventory is COR I, LOE B-NR, but optimal screening timing is uncertain — the discharge/1/3/6/12-month schedule is a practice suggestion. Preferred agents: sertraline, escitalopram. Drug interaction flag: A retrospective matched-cohort analysis associated SSRI/SNRI use with29% higher hemorrhagic-stroke risk over one year among DAPT users; this is an observational association, not a proven causal effect or a reason to withhold indicated depression treatment automatically. FLAME trial (small) suggested fluoxetine enhanced motor recovery, but 3 large RCTs (FOCUS n=3,127, AFFINITY n=1,280, EFFECTS) all negative for functional recovery. SSRIs increase falls, fractures, and hyponatremia risk.',
               classOfRec: 'I',
               levelOfEvidence: 'B-NR',
-              guideline: 'AHA/ASA 2021; FOCUS (Lancet 2019); AFFINITY (JAMA Neurol 2020)',
-              reference: 'FOCUS: Lancet 2019. AFFINITY: Lancet Neurol 2020;19:651-660 (PMID 32702334). EFFECTS: Lancet Neurol 2020;19:661-669 (PMID 32702335).',
+              guideline: "AHA/ASA Early Management of Acute Ischemic Stroke 2026 (screening/treatment); FOCUS, AFFINITY and EFFECTS (motor-recovery trials)",
+              reference: "Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513. FOCUS: Lancet 2019. AFFINITY: Lancet Neurol 2020;19:651-660 (PMID 32702334). EFFECTS: Lancet Neurol 2020;19:661-669 (PMID 32702335).",
+              sourceUrl: "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 return !!cat && cat !== 'mimic';
@@ -5787,8 +5795,9 @@ Clinician Name`;
               detail: "Do not transfer a primary-prevention grade to this secondary-prevention claim. Lack of randomized stroke-endpoint evidence for a particular diet is not proof that the diet is ineffective.",
               classOfRec: "IIa",
               levelOfEvidence: "B-R",
-              guideline: 'AHA/ASA 2024; PREDIMED; Italian National Guidelines 2025',
-              reference: 'PREDIMED: NEJM 2018. Meta-analysis: Wiley 2024.',
+              guideline: "AHA/ASA Secondary Stroke Prevention 2021 (Mediterranean-type diet after stroke/TIA)",
+              reference: "Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375; Nutrition, recommendation 1 (source PDF p.14).",
+              sourceUrl: "https://www.ahajournals.org/doi/10.1161/STR.0000000000000375",
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 return !!cat && cat !== 'mimic';
@@ -6059,9 +6068,9 @@ Clinician Name`;
               detail: "Assess harmful use, dependence and withdrawal risk and arrange appropriate support. Screening instrument thresholds and substance-specific risks require their own validated context.",
               classOfRec: "I",
               levelOfEvidence: "B-NR",
-              guideline: 'AHA/ASA 2021 Secondary Prevention; 2024 Primary Prevention',
-              reference: 'AHA/ASA Secondary Prevention 2021.',
-              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000475#page=40',
+              guideline: "AHA/ASA Secondary Stroke Prevention 2021 (alcohol counseling after ischemic stroke/TIA)",
+              reference: "Kleindorfer DO et al. Stroke. 2021;52:e364-e467. DOI: 10.1161/STR.0000000000000375; Substance Use, recommendation 1 (source PDF p.18).",
+              sourceUrl: "https://www.ahajournals.org/doi/10.1161/STR.0000000000000375",
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 return !!cat && cat !== 'mimic';
@@ -6097,9 +6106,9 @@ Clinician Name`;
               detail: "APS needs subtype-specific review, with VKA preferred and particularly important in triple-positive APS. Pregnancy and other exceptions require separate pathways. Canadian GRADE strength/certainty must not be converted into ACC/AHA I/B-R. Recanalization alone does not determine duration.",
               classOfRec: "Statement",
               levelOfEvidence: "See source",
-              guideline: 'CSBP CVT 2024; ESO CVT Guidelines',
-              reference: 'CSBP CVT Module 2024.',
-              sourceUrl: 'https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000456#page=6',
+              guideline: "Canadian Stroke Best Practices: Cerebral Venous Thrombosis, 7th edition, 2024 (acute and post-acute anticoagulation; source-native grades)",
+              reference: "Canadian Stroke Best Practices, Cerebral Venous Thrombosis, 7th edition (2024), sections 2.1 and 3.1.",
+              sourceUrl: "https://www.strokebestpractices.ca/recommendations/cerebral-venous-thrombosis",
               conditions: (data) => {
                 const dx = (data.telestrokeNote?.diagnosis || '').toLowerCase();
                 return dx.includes('cvt') || dx.includes('venous') || dx.includes('sinus');
@@ -6130,8 +6139,9 @@ Clinician Name`;
               detail: "Do not label an unverified bundle or numerical fall reduction as ClassI/A. A TIA diagnosis alone does not establish impairment; equipment, supervision and rehabilitation should address actual needs.",
               classOfRec: "Statement",
               levelOfEvidence: "See source",
-              guideline: 'AHA/ASA Adult Stroke Rehabilitation and Recovery Guideline 2026 (replaces 2016; fall-prevention COR/LOE needs confirmation)',
-              reference: 'AHA/ASA Rehab Guideline 2016.',
+              guideline: "AHA/ASA Adult Stroke Rehabilitation and Recovery Guideline 2026 (replaces 2016; fall-prevention COR/LOE needs confirmation)",
+              reference: "2026 AHA/ASA Guideline for Adult Stroke Rehabilitation and Recovery. DOI: 10.1161/STR.0000000000000536 (PMID 42657476). Full primary recommendation body was not recovered; no fall-prevention grade is newly asserted.",
+              sourceUrl: "https://www.ahajournals.org/doi/10.1161/STR.0000000000000536",
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 return !!cat && cat !== 'mimic';
@@ -6173,40 +6183,52 @@ Clinician Name`;
             navigateTo('trials');
           };
 
-          const navigateToCompletedTrial = async (entry) => {
-            navigateTo('research', { clearSearch: true, subTab: 'references' });
-            window.location.hash = '#/research/references';
-            const requestedRoute = window.location.hash;
+          const navigateToCompletedTrial = async (entry, navigationToken = navigationIntents.begin()) => {
+            if (!navigationIntents.isCurrent(navigationToken)) return;
+            const destination = '#/research/references';
+            navigationIntents.expectHash(navigationToken, destination, window.location.hash);
+            navigateTo('research', { clearSearch: true, subTab: 'references', navigationToken });
+            window.location.hash = destination;
             try { await loadReferenceData(); }
-            catch (_) { if (window.location.hash !== requestedRoute) return; navigateTo('research', { clearSearch: true, subTab: 'references' }); addToast('References could not be loaded. Use Open in new tab to retry; this encounter remains open.', 'error'); return; }
-            if (window.location.hash !== requestedRoute) return;
+            catch (_) {
+              if (!navigationIntents.isCurrent(navigationToken)) return;
+              addToast('References could not be loaded. Use Open in new tab to retry; this encounter remains open.', 'error');
+              return;
+            }
+            if (!navigationIntents.isCurrent(navigationToken)) return;
             const completed = evidenceCompletedTrials.find((trial) => trial.id === entry.id || trial.shortName === entry.title || trial.shortName === entry.name);
             setAtlasFilters({ topic: '', certainty: '', evidenceType: '', verificationStatus: '', query: completed?.shortName || entry.title || entry.name || '' });
             setAtlasExpandAll(true);
-            navigateTo('research', { clearSearch: true, subTab: 'references' });
-            setTimeout(() => {
-              const section = document.getElementById('ref-trials');
-              if (!section) return;
-              section.open = true;
-              section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              section.querySelector('input[aria-label="Search completed trials"]')?.focus({ preventScroll: true });
-            }, 0);
+            revealNavigationTarget({
+              isCurrent: () => navigationIntents.isCurrent(navigationToken),
+              findTarget: () => document.getElementById('ref-trials'),
+              reveal: (section) => {
+                section.open = true;
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                section.querySelector('input[aria-label="Search completed trials"]')?.focus({ preventScroll: true });
+              }
+            });
           };
 
           const navigateToTrialCard = async (trialName, category) => {
+            const navigationToken = navigationIntents.begin();
             if (referenceResource.getSnapshot().status !== 'ready') addToast('Loading trial references…', 'info');
-            const requestedRoute = window.location.hash;
             try { await loadReferenceData(); }
-            catch (_) { if (window.location.hash !== requestedRoute) return; navigateTo('research', { clearSearch: true, subTab: 'references' }); addToast('References could not be loaded. Use Open in new tab to retry; this encounter remains open.', 'error'); return; }
-            if (window.location.hash !== requestedRoute) return;
+            catch (_) {
+              if (!navigationIntents.isCurrent(navigationToken)) return;
+              navigateTo('research', { clearSearch: true, subTab: 'references', navigationToken });
+              addToast('References could not be loaded. Use Open in new tab to retry; this encounter remains open.', 'error');
+              return;
+            }
+            if (!navigationIntents.isCurrent(navigationToken)) return;
             const completed = evidenceCompletedTrials.find((trial) => trial.shortName === trialName || trial.fullName === trialName);
             if (completed) {
-              navigateToCompletedTrial({ id: completed.id });
+              await navigateToCompletedTrial({ id: completed.id }, navigationToken);
               return;
             }
             updateTrialsView('screener');
             if (category) setTrialsCategory(category);
-            navigateTo('trials');
+            navigateTo('trials', { navigationToken });
           };
 
           const isTrialActivelyRecruiting = (trial) => {
@@ -8141,6 +8163,9 @@ Clinician Name`;
           };
 
           const navigateTo = (tab, options = {}) => {
+            const { navigationToken } = options;
+            if (navigationToken === undefined) navigationIntents.cancel();
+            else if (!navigationIntents.isCurrent(navigationToken)) return;
             let { clearSearch = false, subTab = null } = options;
             const rawTab = tab || 'encounter';
 
@@ -8240,19 +8265,19 @@ Clinician Name`;
           };
 
           const gotoCalculator = (anchorId, calcFilter) => {
-            navigateTo('research', { clearSearch: true, subTab: 'calculators' });
-            if (typeof setCalculatorFilter === 'function') {
-              setCalculatorFilter(calcFilter || '');
-            }
-            requestAnimationFrame(() => {
-              window.setTimeout(() => {
-                if (!anchorId) return;
-                const el = document.getElementById(anchorId);
-                if (el) {
-                  if (el.tagName === 'DETAILS' && !el.open) el.open = true;
-                  scrollToSection(anchorId);
-                }
-              }, 260);
+            const navigationToken = navigationIntents.begin();
+            navigationIntents.expectHash(navigationToken, '#/research/calculators', window.location.hash);
+            navigateTo('research', { clearSearch: true, subTab: 'calculators', navigationToken });
+            window.location.hash = '#/research/calculators';
+            setCalculatorFilter(calcFilter || '');
+            if (!anchorId) return;
+            revealNavigationTarget({
+              isCurrent: () => navigationIntents.isCurrent(navigationToken),
+              findTarget: () => document.getElementById(anchorId),
+              reveal: (el) => {
+                if (el.tagName === 'DETAILS') el.open = true;
+                scrollToSection(anchorId);
+              }
             });
           };
 
@@ -8901,7 +8926,7 @@ Clinician Name`;
             {
               const fuLkwParts = [];
               if (telestrokeNote.lkwUnknown) fuLkwParts.push('LKW unknown');
-              if (telestrokeNote.lkwDate && telestrokeNote.lkwTime) fuLkwParts.push(`LKW: ${telestrokeNote.lkwDate} ${formatTime(telestrokeNote.lkwTime)}`);
+              if (!telestrokeNote.lkwUnknown && telestrokeNote.lkwDate && telestrokeNote.lkwTime) fuLkwParts.push(`LKW: ${telestrokeNote.lkwDate} ${formatTime(telestrokeNote.lkwTime)}`);
               if (telestrokeNote.discoveryDate && telestrokeNote.discoveryTime) fuLkwParts.push(`Discovery: ${telestrokeNote.discoveryDate} ${formatTime(telestrokeNote.discoveryTime)}`);
               if (fuLkwParts.length > 0) brief += `${fuLkwParts.join(' | ')}\n`;
             }
@@ -8949,42 +8974,16 @@ Clinician Name`;
             brief += `- CT Head: ${telestrokeNote.ctResults || 'N/A'}\n`;
             brief += `- CTA: ${telestrokeNote.ctaResults || 'N/A'}\n`;
             {
-              const ctpS = telestrokeNote.ctpStructured || {};
-              const ctpParts = [];
-              if (ctpS.coreVolume) ctpParts.push(`Core: ${ctpS.coreVolume} mL`);
-              if (ctpS.penumbraVolume) ctpParts.push(`Penumbra: ${ctpS.penumbraVolume} mL`);
-              if (ctpS.coreVolume && ctpS.penumbraVolume) {
-                const c = parseFloat(ctpS.coreVolume), p = parseFloat(ctpS.penumbraVolume);
-                if (!isNaN(c) && !isNaN(p)) {
-                  if (c > 0) {
-                    const ratio = p / c;
-                    ctpParts.push(`Mismatch ratio: ${isFinite(ratio) && ratio < 1000 ? ratio.toFixed(1) : '>999'}`);
-                  } else if (p > 0) ctpParts.push(`Mismatch ratio: Favorable (core=0)`);
-                }
-              }
-              if (telestrokeNote.ctpResults) ctpParts.push(telestrokeNote.ctpResults);
-              if (ctpParts.length > 0) brief += `- CTP: ${ctpParts.join('; ')}\n`;
+              const perfusionText = formatPerfusionForExport(telestrokeNote);
+              if (perfusionText) brief += `- CTP: ${perfusionText}\n`;
             }
             if (telestrokeNote.collateralGrade) brief += `- Collaterals: ${telestrokeNote.collateralGrade}\n`;
             const briefVessels = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None');
             if (briefVessels.length > 0) brief += `- Vessel occlusion: ${briefVessels.join(', ')}\n`;
             if (telestrokeNote.ekgResults) brief += `- EKG: ${telestrokeNote.ekgResults}\n`;
-            // Wake-up stroke evaluation
-            {
-              const fuWus = telestrokeNote.wakeUpStrokeWorkflow || {};
-              if (fuWus.isWakeUpStroke) {
-                brief += `\nWAKE-UP STROKE:\n`;
-                const fuDwi = fuWus.dwi || {};
-                const fuFlair = fuWus.flair || {};
-                if (fuWus.mriAvailable) {
-                  brief += `- MRI guided: DWI ${fuDwi.positiveForLesion ? '+' : '-'} / FLAIR ${fuFlair.noMarkedHyperintensity ? 'no hyperintensity' : 'hyperintense'}\n`;
-                  if (fuDwi.positiveForLesion && fuFlair.noMarkedHyperintensity && fuWus.ageEligible && fuWus.nihssEligible) brief += `- Met WAKE-UP criteria\n`;
-                } else if (fuWus.mriAvailable === false) {
-                  const fuExt = fuWus.extendCriteria || {};
-                  const fuExtCount = [fuExt.nihss4to26, fuExt.premorbidMRSLt2, fuExt.ischemicCoreLte70, fuExt.mismatchRatioGte1_2, fuExt.timeWindow4_5to9h].filter(Boolean).length;
-                  brief += `- CTP guided: EXTEND ${fuExtCount}/5 criteria met${getWakeUpEligibilityForNote(telestrokeNote).extendEligible ? ' — partial source screen met; full eligibility requires review' : ''}\n`;
-                }
-              }
+            // Use the same qualified source screen as the Encounter assessment.
+            if (telestrokeNote.wakeUpStrokeWorkflow?.isWakeUpStroke) {
+              brief += `\n${formatWakeUpScreenForExport(telestrokeNote)}\n`;
             }
             brief += `\nCARDIAC WORKUP:\n`;
             if (cw.ecgComplete) brief += `- ECG: completed\n`;
@@ -9302,20 +9301,8 @@ Clinician Name`;
               if (pIchVol && pIchVol.volume) ichVolStr = ` ICH vol: ${pIchVol.volume} mL${pIchVol.isLarge ? ' (LARGE)' : ''}.`;
             }
             // Wake-up stroke
-            let wusStr = '';
-            const pWus = telestrokeNote.wakeUpStrokeWorkflow || {};
-            if (pWus.isWakeUpStroke) {
-              if (pWus.mriAvailable) {
-                const pDwi = pWus.dwi || {};
-                const pFlair = pWus.flair || {};
-                const wakeUpMet = pDwi.positiveForLesion && pFlair.noMarkedHyperintensity && pWus.ageEligible && pWus.nihssEligible;
-                wusStr = wakeUpMet ? ' WAKE-UP eligible.' : ' Wake-up eval in progress.';
-              } else if (pWus.mriAvailable === false) {
-                const pExt = pWus.extendCriteria || {};
-                const extCount = [pExt.nihss4to26, pExt.premorbidMRSLt2, pExt.ischemicCoreLte70, pExt.mismatchRatioGte1_2, pExt.timeWindow4_5to9h].filter(Boolean).length;
-                wusStr = getWakeUpEligibilityForNote(telestrokeNote).extendEligible ? ' EXTEND partial source screen met; full eligibility requires review.' : ` EXTEND ${extCount}/5.`;
-              }
-            }
+            const wusStr = telestrokeNote.wakeUpStrokeWorkflow?.isWakeUpStroke
+              ? ` ${formatWakeUpScreenForExport(telestrokeNote).split('\n')[0]}` : '';
             // Weight, GCS, premorbid mRS
             const wtStr = telestrokeNote.weight ? ` Wt: ${telestrokeNote.weight}kg${telestrokeNote.weightEstimated ? '(est)' : ''}.` : '';
             const gcsVal = typeof calculateGCS === 'function' ? reviewedGcs(gcsItems) : null;
@@ -9355,18 +9342,6 @@ Clinician Name`;
                 : new Date(dateStr);
               if (Number.isNaN(date.getTime())) return String(dateStr);
               return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear().toString().slice(-2)}`;
-            };
-
-            const formatTime = (timeStr) => {
-              if (!timeStr) return '';
-              const parts = timeStr.split(':');
-              if (parts.length < 2) return String(timeStr);
-              const hour = parseInt(parts[0], 10);
-              const minutes = parts[1];
-              if (isNaN(hour)) return String(timeStr);
-              const ampm = hour >= 12 ? 'pm' : 'am';
-              const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
-              return `${displayHour}:${minutes} ${ampm}`;
             };
 
             // Template-specific note generation
@@ -9450,19 +9425,8 @@ Clinician Name`;
               if (transferVessels.length > 0) note += ` — Occlusion: ${transferVessels.join(', ')}`;
               note += `\n`;
               {
-                const ctpS = telestrokeNote.ctpStructured || {};
-                const ctpParts = [];
-                if (ctpS.coreVolume) ctpParts.push(`Core: ${ctpS.coreVolume} mL`);
-                if (ctpS.penumbraVolume) ctpParts.push(`Penumbra (Tmax>6s): ${ctpS.penumbraVolume} mL`);
-                if (ctpS.coreVolume && ctpS.penumbraVolume) {
-                  const c = parseFloat(ctpS.coreVolume), p = parseFloat(ctpS.penumbraVolume);
-                  if (!isNaN(c) && !isNaN(p)) {
-                    if (c > 0) { const r = p/c; ctpParts.push(`Mismatch ratio: ${isFinite(r) && r < 1000 ? r.toFixed(1) : '>999'}`); }
-                    else if (p > 0) ctpParts.push(`Mismatch ratio: Favorable (core=0)`);
-                  }
-                }
-                if (telestrokeNote.ctpResults) ctpParts.push(telestrokeNote.ctpResults);
-                if (ctpParts.length > 0) note += `- CTP: ${ctpParts.join('; ')}\n`;
+                const perfusionText = formatPerfusionForExport(telestrokeNote);
+                if (perfusionText) note += `- CTP: ${perfusionText}\n`;
               }
               if (telestrokeNote.collateralGrade) note += `- Collaterals: ${telestrokeNote.collateralGrade}\n`;
               if (telestrokeNote.ekgResults) note += `- EKG: ${telestrokeNote.ekgResults}\n`;
@@ -9477,37 +9441,8 @@ Clinician Name`;
                 if (cw.pfoEvaluation) cwItems.push(`PFO: ${cw.pfoEvaluation.replace(/-/g, ' ')}`);
                 if (cwItems.length > 0) note += `- Cardiac workup: ${cwItems.join(', ')}\n`;
               }
-              // Wake-up stroke evaluation
-              const transferWus = telestrokeNote.wakeUpStrokeWorkflow || {};
-              const transferWakeTrace = getWakeUpCriteriaTrace(telestrokeNote);
-              if (transferWus.isWakeUpStroke) {
-                note += `\nWAKE-UP / EXTENDED WINDOW ASSESSMENT:\n`;
-                note += `- MRI available: ${transferWus.mriAvailable ? 'Yes' : transferWus.mriAvailable === false ? 'No (CTP pathway)' : 'Not assessed'}\n`;
-                if (transferWus.mriAvailable) {
-                  const twDwi = transferWus.dwi || {};
-                  const twFlair = transferWus.flair || {};
-                  if (twDwi.positiveForLesion) note += `- DWI: Positive lesion${twDwi.lesionVolume ? ` (volume: ${twDwi.lesionVolume} mL)` : ''}\n`;
-                  if (twFlair.noMarkedHyperintensity) note += `- FLAIR: No marked hyperintensity (DWI-FLAIR mismatch — favorable)\n`;
-                  if (transferWus.ageEligible) note += `- Age: Eligible (18-80)\n`;
-                  if (transferWus.nihssEligible) note += `- NIHSS: ≤25\n`;
-                  if (twDwi.positiveForLesion && twFlair.noMarkedHyperintensity && transferWus.ageEligible && transferWus.nihssEligible) {
-                    note += `- *** DWI-FLAIR mismatch, age 18-80, NIHSS ≤25 documented — confirm IVT can start within 4.5 h of symptom recognition, DWI lesion <1/3 MCA territory, and pre-stroke mRS ≤1 (WAKE-UP) before IV thrombolysis ***\n`;
-                  } else {
-                    note += `- WAKE-UP criteria not met yet: ${formatMissingCriteria(transferWakeTrace.wakeMissing)}\n`;
-                  }
-                }
-                if (transferWus.mriAvailable === false) {
-                  const ext = transferWus.extendCriteria || {};
-                  const extMet = [];
-                  if (ext.nihss4to26) extMet.push('NIHSS 4-26');
-                  if (ext.premorbidMRSLt2) extMet.push('pre-mRS <2');
-                  if (ext.ischemicCoreLte70) extMet.push('core ≤70cc');
-                  if (ext.mismatchRatioGte1_2) extMet.push('mismatch ratio ≥1.2 (confirm absolute mismatch >10 mL per EXTEND)');
-                  if (ext.timeWindow4_5to9h) extMet.push('4.5-9h window');
-                  if (extMet.length > 0) note += `- EXTEND criteria: ${extMet.join(', ')}\n`;
-                  if (transferWakeTrace.wake.extendEligible) note += `- *** MODELED EXTEND SCREEN MET — specialist review of full criteria and drug-specific IVT pathway required ***\n`;
-                  else note += `- EXTEND criteria not met yet: ${formatMissingCriteria(transferWakeTrace.extendMissing)}\n`;
-                }
+              if (telestrokeNote.wakeUpStrokeWorkflow?.isWakeUpStroke) {
+                note += `\n${formatWakeUpScreenForExport(telestrokeNote)}\n`;
               }
               note += `\nTreatment:\n`;
               if (telestrokeNote.tnkRecommended || hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
@@ -10029,22 +9964,8 @@ Clinician Name`;
               if (telestrokeNote.strokeTerritory) note += `Territory: ${telestrokeNote.strokeTerritory}${telestrokeNote.strokePhenotype ? ` (${telestrokeNote.strokePhenotype})` : ''}\n`;
               if (telestrokeNote.symptomTrajectory) note += `Trajectory: ${telestrokeNote.symptomTrajectory}${telestrokeNote.symptomOnsetNIHSS ? ` (onset NIHSS ~${telestrokeNote.symptomOnsetNIHSS})` : ''}\n`;
               if (telestrokeNote.allergies) note += `Allergies: ${telestrokeNote.allergies}\n`;
-              // Wake-up stroke evaluation (concise)
-              {
-                const snWus = telestrokeNote.wakeUpStrokeWorkflow || {};
-                const signoutWakeTrace = getWakeUpCriteriaTrace(telestrokeNote);
-                if (snWus.isWakeUpStroke) {
-                  const snDwi = snWus.dwi || {};
-                  const snFlair = snWus.flair || {};
-                  if (snWus.mriAvailable) {
-                    const wakeUpMet = snDwi.positiveForLesion && snFlair.noMarkedHyperintensity && snWus.ageEligible && snWus.nihssEligible;
-                    note += `Wake-up stroke: MRI — DWI ${snDwi.positiveForLesion ? '+' : '-'}/FLAIR ${snFlair.noMarkedHyperintensity ? '-' : '+'}${wakeUpMet ? ' → WAKE-UP eligible' : ` → not yet eligible (${formatMissingCriteria(signoutWakeTrace.wakeMissing, 2)})`}\n`;
-                  } else if (snWus.mriAvailable === false) {
-                    const snExt = snWus.extendCriteria || {};
-                    const extCount = [snExt.nihss4to26, snExt.premorbidMRSLt2, snExt.ischemicCoreLte70, snExt.mismatchRatioGte1_2, snExt.timeWindow4_5to9h].filter(Boolean).length;
-                    note += `Wake-up stroke: CTP pathway — EXTEND criteria ${extCount}/5 met${signoutWakeTrace.wake.extendEligible ? ' → partial screen met; full eligibility requires review' : ` → not yet eligible (${formatMissingCriteria(signoutWakeTrace.extendMissing, 2)})`}\n`;
-                  }
-                }
+              if (telestrokeNote.wakeUpStrokeWorkflow?.isWakeUpStroke) {
+                note += `${formatWakeUpScreenForExport(telestrokeNote)}\n`;
               }
               note += '\n';
               note += `Treatment decisions/course:\n`;
@@ -10525,24 +10446,8 @@ Clinician Name`;
                 if (telestrokeNote.glucose) pnLabs.push(`Gluc ${telestrokeNote.glucose}`);
                 note += `- Labs: ${pnLabs.length > 0 ? pnLabs.join(', ') : '___'}\n`;
               }
-              // Wake-up stroke evaluation
-              {
-                const prWus = telestrokeNote.wakeUpStrokeWorkflow || {};
-                const progressWakeTrace = getWakeUpCriteriaTrace(telestrokeNote);
-                if (prWus.isWakeUpStroke) {
-                  const prDwi = prWus.dwi || {};
-                  const prFlair = prWus.flair || {};
-                  if (prWus.mriAvailable) {
-                    note += `- Wake-up stroke: DWI ${prDwi.positiveForLesion ? '+' : '-'} / FLAIR ${prFlair.noMarkedHyperintensity ? 'no hyperintensity' : 'hyperintense'}`;
-                    if (prDwi.positiveForLesion && prFlair.noMarkedHyperintensity && prWus.ageEligible && prWus.nihssEligible) note += ` → WAKE-UP eligible`;
-                    else note += ` → not yet eligible (${formatMissingCriteria(progressWakeTrace.wakeMissing, 2)})`;
-                    note += `\n`;
-                  } else if (prWus.mriAvailable === false) {
-                    const prExt = prWus.extendCriteria || {};
-                    const prExtCount = [prExt.nihss4to26, prExt.premorbidMRSLt2, prExt.ischemicCoreLte70, prExt.mismatchRatioGte1_2, prExt.timeWindow4_5to9h].filter(Boolean).length;
-                    note += `- Wake-up stroke: CTP — EXTEND ${prExtCount}/5 criteria met${progressWakeTrace.wake.extendEligible ? ' → partial screen met; full eligibility requires review' : ` → not yet eligible (${formatMissingCriteria(progressWakeTrace.extendMissing, 2)})`}\n`;
-                  }
-                }
+              if (telestrokeNote.wakeUpStrokeWorkflow?.isWakeUpStroke) {
+                note += `${formatWakeUpScreenForExport(telestrokeNote)}\n`;
               }
               note += `\n`;
               note += `ASSESSMENT & PLAN:\n`;
@@ -11017,53 +10922,15 @@ Clinician Name`;
               if (dischVessels.length > 0) note += ` — Occlusion: ${dischVessels.join(', ')}`;
               note += `\n`;
               {
-                const ctpS = telestrokeNote.ctpStructured || {};
-                const ctpParts = [];
-                if (ctpS.coreVolume) ctpParts.push(`Core: ${ctpS.coreVolume} mL`);
-                if (ctpS.penumbraVolume) ctpParts.push(`Penumbra: ${ctpS.penumbraVolume} mL`);
-                if (ctpS.coreVolume && ctpS.penumbraVolume) {
-                  const c = parseFloat(ctpS.coreVolume), p = parseFloat(ctpS.penumbraVolume);
-                  if (!isNaN(c) && !isNaN(p)) {
-                    if (c > 0) { const r = p/c; ctpParts.push(`Ratio: ${isFinite(r) && r < 1000 ? r.toFixed(1) : '>999'}`); }
-                    else if (p > 0) ctpParts.push(`Ratio: Favorable (core=0)`);
-                  }
-                }
-                if (telestrokeNote.ctpResults) ctpParts.push(telestrokeNote.ctpResults);
-                if (ctpParts.length > 0) note += `- CTP: ${ctpParts.join('; ')}\n`;
+                const perfusionText = formatPerfusionForExport(telestrokeNote);
+                if (perfusionText) note += `- CTP: ${perfusionText}\n`;
               }
               if (telestrokeNote.collateralGrade) note += `- Collaterals: ${telestrokeNote.collateralGrade}\n`;
               if (telestrokeNote.ekgResults) note += `- EKG: ${telestrokeNote.ekgResults}\n`;
-              // Wake-up stroke evaluation
-              {
-                const dcWus = telestrokeNote.wakeUpStrokeWorkflow || {};
-                const dischargeWakeTrace = getWakeUpCriteriaTrace(telestrokeNote);
-                if (dcWus.isWakeUpStroke) {
-                  note += `\nWAKE-UP STROKE ASSESSMENT:\n`;
-                  note += `- MRI available: ${dcWus.mriAvailable ? 'Yes' : dcWus.mriAvailable === false ? 'No (CTP pathway)' : 'Not assessed'}\n`;
-                  if (dcWus.mriAvailable) {
-                    const dcDwi = dcWus.dwi || {};
-                    const dcFlair = dcWus.flair || {};
-                    if (dcDwi.positiveForLesion) note += `- DWI: Positive lesion${dcDwi.lesionVolume ? ` (volume: ${dcDwi.lesionVolume} mL)` : ''}\n`;
-                    if (dcFlair.noMarkedHyperintensity) note += `- FLAIR: No hyperintensity (DWI-FLAIR mismatch)\n`;
-                    if (dcDwi.positiveForLesion && dcFlair.noMarkedHyperintensity && dcWus.ageEligible && dcWus.nihssEligible) {
-                      note += `- Met WAKE-UP trial criteria (MRI DWI-FLAIR mismatch) — IV thrombolysis eligible; ${hasRecordedTreatmentAdministration(telestrokeNote, 'tnk') ? 'thrombolysis administered (see ACUTE TREATMENT)' : 'no thrombolytic administration recorded'}\n`;
-                    } else {
-                      note += `- WAKE-UP criteria not fully met during evaluation: ${formatMissingCriteria(dischargeWakeTrace.wakeMissing)}\n`;
-                    }
-                  } else if (dcWus.mriAvailable === false) {
-                    const dcExt = dcWus.extendCriteria || {};
-                    const dcExtMet = [];
-                    if (dcExt.nihss4to26) dcExtMet.push('NIHSS 4-26');
-                    if (dcExt.premorbidMRSLt2) dcExtMet.push('pre-mRS <2');
-                    if (dcExt.ischemicCoreLte70) dcExtMet.push('core ≤70cc');
-                    if (dcExt.mismatchRatioGte1_2) dcExtMet.push('mismatch ratio ≥1.2 (confirm absolute mismatch >10 mL per EXTEND)');
-                    if (dcExt.timeWindow4_5to9h) dcExtMet.push('4.5-9h');
-                    if (dcExtMet.length > 0) note += `- EXTEND criteria: ${dcExtMet.join(', ')}\n`;
-                    if (dischargeWakeTrace.wake.extendEligible) note += `- Modeled EXTEND screen met — complete eligibility and drug-specific treatment decision require review; ${hasRecordedTreatmentAdministration(telestrokeNote, 'tnk') ? 'thrombolysis administered (see ACUTE TREATMENT)' : 'no thrombolytic administration recorded'}\n`;
-                    else note += `- EXTEND criteria not fully met during evaluation: ${formatMissingCriteria(dischargeWakeTrace.extendMissing)}\n`;
-                  }
-                }
+              if (telestrokeNote.wakeUpStrokeWorkflow?.isWakeUpStroke) {
+                note += `\n${formatWakeUpScreenForExport(telestrokeNote)}\n`;
               }
+
               note += '\n';
               note += `ACUTE TREATMENT:\n`;
               if (telestrokeNote.tnkRecommended || hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
@@ -11635,21 +11502,7 @@ Clinician Name`;
             const vesselStr = (telestrokeNote.vesselOcclusion || []).filter(v => v !== 'None').join(', ');
             note = note.replace(/{vesselOcclusion}/g, vesselStr ? `Occlusion: ${vesselStr}` : '');
             {
-              const ctpS = telestrokeNote.ctpStructured || {};
-              const ctpParts = [];
-              if (ctpS.coreVolume) ctpParts.push(`Core: ${ctpS.coreVolume} mL`);
-              if (ctpS.penumbraVolume) ctpParts.push(`Penumbra (Tmax>6s): ${ctpS.penumbraVolume} mL`);
-              if (ctpS.coreVolume && ctpS.penumbraVolume) {
-                const c = parseFloat(ctpS.coreVolume), p = parseFloat(ctpS.penumbraVolume);
-                if (!isNaN(c) && !isNaN(p)) {
-                  if (c > 0) {
-                    const ratio = p / c;
-                    ctpParts.push(`Mismatch ratio: ${isFinite(ratio) && ratio < 1000 ? ratio.toFixed(1) : '>999'}`);
-                  } else if (p > 0) ctpParts.push(`Mismatch ratio: Favorable (core=0)`);
-                }
-              }
-              if (telestrokeNote.ctpResults) ctpParts.push(telestrokeNote.ctpResults);
-              note = note.replace(/{ctpResults}/g, ctpParts.length > 0 ? ctpParts.join('; ') : 'N/A');
+              note = note.replace(/{ctpResults}/g, formatPerfusionForExport(telestrokeNote) || 'N/A');
             }
             if (telestrokeNote.collateralGrade) {
               note = note.replace(/CTP:([^\n]*)\n/, `CTP:$1\nCollaterals: ${telestrokeNote.collateralGrade}\n`);
@@ -11829,41 +11682,8 @@ Clinician Name`;
               note += `\nEtiologic Classification (TOAST): ${TOAST_LABELS[telestrokeNote.toastClassification] || telestrokeNote.toastClassification}\n`;
             }
 
-            // Wake-up stroke workflow documentation
-            const wus = telestrokeNote.wakeUpStrokeWorkflow || {};
-            if (wus.isWakeUpStroke) {
-              const wake = getWakeUpEligibilityForNote(telestrokeNote);
-              const wakeTrace = getWakeUpCriteriaTrace(telestrokeNote);
-              note += `\nWAKE-UP STROKE EVALUATION:\n`;
-              note += `- MRI available: ${wus.mriAvailable ? 'Yes' : wus.mriAvailable === false ? 'No (CTP pathway)' : 'Not assessed'}\n`;
-              if (wus.mriAvailable) {
-                const cwDwi = wus.dwi || {};
-                const cwFlair = wus.flair || {};
-                if (cwDwi.positiveForLesion) note += `- DWI: Positive lesion${cwDwi.lesionVolume ? ` (volume: ${cwDwi.lesionVolume} mL)` : ''}\n`;
-                if (cwFlair.noMarkedHyperintensity) note += `- FLAIR: No marked hyperintensity (DWI-FLAIR mismatch — favorable)\n`;
-                if (wus.ageEligible) note += `- Age: Eligible (18-80)\n`;
-                if (wus.nihssEligible) note += `- NIHSS: ≤25\n`;
-                if (wake.wakeUpEligible) {
-                  note += `- *** DWI-FLAIR mismatch, age 18-80, NIHSS ≤25 documented — confirm IVT can start within 4.5 h of symptom recognition, DWI lesion <1/3 MCA territory, and pre-stroke mRS ≤1 (WAKE-UP) before IV thrombolysis ***\n`;
-                } else {
-                  note += `- WAKE-UP criteria not met yet: ${formatMissingCriteria(wakeTrace.wakeMissing)}\n`;
-                }
-              }
-              if (wus.mriAvailable === false) {
-                const ext = wus.extendCriteria || {};
-                const extMet = [];
-                if (ext.nihss4to26) extMet.push('NIHSS 4-26');
-                if (ext.premorbidMRSLt2) extMet.push('pre-mRS <2');
-                if (ext.ischemicCoreLte70) extMet.push('core ≤70cc');
-                if (ext.mismatchRatioGte1_2) extMet.push('mismatch ratio ≥1.2 (confirm absolute mismatch >10 mL per EXTEND)');
-                if (ext.timeWindow4_5to9h) extMet.push('4.5-9h window');
-                if (extMet.length > 0) note += `- EXTEND criteria: ${extMet.join(', ')}\n`;
-                if (wake.perfusion.coreVolume !== null || wake.perfusion.mismatchRatio !== null) {
-                  note += `- CTP perfusion: core ${wake.perfusion.coreVolume ?? 'N/A'} mL, mismatch ratio ${wake.perfusion.mismatchRatio !== null ? wake.perfusion.mismatchRatio.toFixed(1) : 'N/A'}, mismatch volume ${wake.perfusion.mismatchVolume !== null ? `${Math.round(wake.perfusion.mismatchVolume)} mL` : 'N/A'}\n`;
-                }
-                if (wake.extendEligible) note += `- *** MODELED EXTEND SCREEN MET — specialist review of full criteria and drug-specific IVT pathway required ***\n`;
-                else note += `- EXTEND criteria not met yet: ${formatMissingCriteria(wakeTrace.extendMissing)}\n`;
-              }
+            if (telestrokeNote.wakeUpStrokeWorkflow?.isWakeUpStroke) {
+              note += `\n${formatWakeUpScreenForExport(telestrokeNote)}\n`;
             }
 
             // Treatment rationale
@@ -11970,6 +11790,7 @@ Clinician Name`;
               const vmDc = telestrokeNote.sahVasospasmMonitoring || {};
               if (vmDc.dciSuspected) sahNote += `- DCI suspected during inpatient stay\n`;
               if (vmDc.inducedHypertension) sahNote += `- Induced hypertension used for DCI rescue\n`;
+              if (vmDc.notes?.trim()) sahNote += `- Clinician-entered vasospasm/DCI notes: ${vmDc.notes}\n`;
               const consultSahOutcome = getSahOutcomeSummary(telestrokeNote);
               if (consultSahOutcome) sahNote += `- SAH outcomes tracking: ${consultSahOutcome}\n`;
               if (sahNote !== '\nSAH MANAGEMENT:\n') note += sahNote;
@@ -14406,6 +14227,7 @@ Clinician Name`;
           };
 
           const performSearch = (query) => {
+            setSearchResultsQuery(query || '');
             if (!query || query.length < 2) {
               setSearchResults([]);
               setSearchActiveIndex(-1);
@@ -14957,6 +14779,7 @@ Clinician Name`;
             ];
 
             searchableItems.forEach(item => {
+              if (item.tab === 'research' && item.subTab === 'calculators' && !calculatorAnchorFor(item.name)) return;
               const score = scoreFor([item.name, ...(item.keywords || [])], item.priority || 0);
               if (score > 0) {
                 results.push({
@@ -14965,7 +14788,8 @@ Clinician Name`;
                   description: `Go to ${item.name}`,
                   score,
                   action: () => {
-                    navigateTo(item.tab, { clearSearch: true, subTab: item.subTab });
+                    if (item.tab === 'research' && item.subTab === 'calculators') gotoCalculator(calculatorAnchorFor(item.name));
+                    else navigateTo(item.tab, { clearSearch: true, subTab: item.subTab });
                   }
                 });
               }
@@ -14982,7 +14806,7 @@ Clinician Name`;
               guideline: () => navigateTo('research', { clearSearch: true, subTab: 'guidelines' }),
               trial: () => navigateToCompletedTrial(entry),
               education: () => navigateTo('research', { clearSearch: true, subTab: 'education', educationSubTab: entry.id }),
-              calculator: () => navigateTo('research', { clearSearch: true, subTab: 'calculators' }),
+              calculator: () => entry.id === 'tnk-dose' ? openEncounterAtField('Weight') : gotoCalculator(calculatorAnchorFor(entry.id)),
               reference: () => {
                 const doc = REFERENCE_DOC_BY_ID.get(entry.id);
                 setEvidenceFilter(doc?.title || entry.title || '');
@@ -14990,11 +14814,12 @@ Clinician Name`;
               }
             }[entry.domain] || (() => navigateTo('research', { clearSearch: true })));
             getContentSearchIndex().forEach((entry) => {
+              if (entry.domain === 'calculator' && entry.id !== 'tnk-dose' && !calculatorAnchorFor(entry.id)) return;
               const score = scoreFor([entry.title, entry.subtitle, entry.keywords, entry.id]);
               if (score <= 0) return;
               results.push({
-                type: CONTENT_TYPE_LABELS[entry.domain] || 'Content',
-                title: String(entry.title || '').slice(0, 90),
+                type: entry.domain === 'calculator' && entry.id === 'tnk-dose' ? 'Encounter' : CONTENT_TYPE_LABELS[entry.domain] || 'Content',
+                title: entry.domain === 'calculator' && entry.id === 'tnk-dose' ? 'TNK dose in Encounter' : String(entry.title || '').slice(0, 90),
                 description: String(entry.subtitle || CONTENT_TYPE_LABELS[entry.domain] || '').slice(0, 120),
                 score,
                 action: contentNav(entry)
@@ -15849,22 +15674,24 @@ Clinician Name`;
             setKey('thrombolysisAlertsMuted', newMuted, { skipLastUpdated: true });
           };
 
-          // Second-level timer for elapsed time and alert checking
-          // Runs on all tabs when LKW is set — timer strip + alerts must stay live
+          // Display and alerts share the currently selected time reference.
+          // Discovery may tick, but cannot drive ordinary LKW-window alerts.
           useEffect(() => {
-            if (!lkwTime) return;
+            const reference = getReferenceTime();
+            if (!elapsedEncounterTime(reference)) {
+              setElapsedSeconds(0);
+              return;
+            }
 
             const checkAlertsAndUpdate = () => {
               const now = new Date();
-              const diffMs = Math.max(0, now - lkwTime);
-              const diffMinutes = diffMs / (1000 * 60);
-              const remainingMinutes = (4.5 * 60) - diffMinutes; // Minutes until 4.5h window closes
-
-              setElapsedSeconds(Math.floor(diffMs / 1000));
+              const clock = elapsedEncounterTime(reference, now);
+              if (!clock) return;
+              setElapsedSeconds(clock.seconds);
               setCurrentTime(now);
 
-              // Only check alerts if tab is visible and LKW is set
-              if (document.hidden || !lkwTime) return;
+              if (document.hidden || telestrokeNote.lkwUnknown || clock.futureWarning) return;
+              const remainingMinutes = (4.5 * 60) - clock.total * 60;
 
               // Check for alert thresholds (within 30 seconds of the threshold)
               const alertThresholds = [
@@ -15901,14 +15728,14 @@ Clinician Name`;
               clearInterval(timer);
               if (alertFlashTimeoutRef.current) clearTimeout(alertFlashTimeoutRef.current);
             };
-          }, [lkwTime, alertsMuted]);
+          }, [lkwTime, telestrokeNote.lkwUnknown, telestrokeNote.discoveryDate, telestrokeNote.discoveryTime, alertsMuted]);
 
-          // Reset last alert when LKW changes
+          // A changed reference must not retain a previous window warning.
           useEffect(() => {
             lastAlertPlayedRef.current = null;
             setLastAlertPlayed(null);
             setAlertFlashing(false);
-          }, [lkwTime]);
+          }, [lkwTime, telestrokeNote.lkwUnknown, telestrokeNote.discoveryDate, telestrokeNote.discoveryTime]);
 
           // =================================================================
           // TRIAL ELIGIBILITY - Auto-update when form data changes
@@ -15951,10 +15778,8 @@ Clinician Name`;
           useEffect(() => {
             const alerts = [];
 
-            if (lkwTime) {
-              const timeFromLKW = calculateTimeFromLKW();
-              if (!timeFromLKW) return;
-
+            const timeFromLKW = elapsedEncounterTime(getReferenceTime(), currentTime);
+            if (!telestrokeNote.lkwUnknown && timeFromLKW && !timeFromLKW.futureWarning) {
               const totalHours = timeFromLKW.total;
               const remainingToTNK = 4.5 - totalHours;
               const remainingToEVT = 6 - totalHours;
@@ -15987,7 +15812,7 @@ Clinician Name`;
               const nonTimeAlerts = prev.filter(a => !timeAlertIds.includes(a.id));
               return [...alerts, ...nonTimeAlerts];
             });
-          }, [currentTime, lkwTime]);
+          }, [currentTime, lkwTime, telestrokeNote.lkwUnknown, telestrokeNote.discoveryDate, telestrokeNote.discoveryTime]);
 
           // Multi-tab sync: warn if another tab modifies stroke data
           useEffect(() => {
@@ -16225,7 +16050,8 @@ Clinician Name`;
           useEffect(() => {
             createIcons({ icons });
 
-            const resolveRoute = () => {
+            const resolveRoute = (event) => {
+              if (event) navigationIntents.onHashChange(event.newURL ? new URL(event.newURL).hash : window.location.hash, event.oldURL ? new URL(event.oldURL).hash : undefined);
               if (storageExpired && !hasHandledExpiredRef.current) {
                 hasHandledExpiredRef.current = true;
                 setActiveTab('encounter');
@@ -16320,6 +16146,7 @@ Clinician Name`;
             };
           }, []);
 
+          // Explicit sub-view navigation also cancels pending same-route intent.
           // Keep hash in sync with the active view
           useEffect(() => {
             if (!routeReady) return;
@@ -16660,20 +16487,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           const noteCopiedRecently = ['Consult Note', 'encounter-note', 'smart-note-encounter', 'telephone-note'].includes(copiedText);
           const hasDocumentedNihss = (telestrokeNote.nihss !== undefined && String(telestrokeNote.nihss).trim() !== '') ||
             nihssItems.some((item) => patientData[item.id] !== undefined && patientData[item.id] !== '');
-          const setUnknownLkwFromNow = () => {
-            setTelestrokeNote((prev) => ({
-              ...prev,
-              lkwUnknown: true,
-              wakeUpStrokeWorkflow: { ...(prev.wakeUpStrokeWorkflow || {}), isWakeUpStroke: true },
-              discoveryDate: prev.discoveryDate || new Date().toISOString().split('T')[0],
-              discoveryTime: prev.discoveryTime || new Date().toTimeString().slice(0, 5)
-            }));
+          const setDiscoveryTimeToNow = () => {
+            const { date, time } = localDateTimeInputValues();
+            setTelestrokeNote(prev => ({ ...prev, discoveryDate: date, discoveryTime: time }));
           };
           const openEncounterAtField = (fieldName) => {
             navigateTo('encounter');
             window.setTimeout(() => jumpToEncounterField(fieldName), 120);
           };
-          const todayDate = new Date().toISOString().slice(0, 10);
           const hasLegacyKeys = LEGACY_KEYS.some((key) => {
             try {
               return localStorage.getItem(key) !== null;
@@ -16702,9 +16523,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
           ];
           const timeFromLKW = calculateTimeFromLKW();
           const windowStatus = timeFromLKW && timeFromLKW.futureWarning
-            ? { color: 'red', message: 'FUTURE — check LKW time', urgent: true }
+            ? { color: 'red', message: 'FUTURE — check recorded time', urgent: true }
             : telestrokeNote.lkwUnknown
-              ? (timeFromLKW ? { ...(getWindowStatus(timeFromLKW) || { color: 'gray' }), message: `Discovery ${timeFromLKW.hours}h ${timeFromLKW.minutes}m` } : { color: 'gray', message: 'LKW unknown' })
+              ? (timeFromLKW ? { color: 'gray', message: `Discovery ${timeFromLKW.hours}h ${timeFromLKW.minutes}m — onset unknown`, urgent: false } : { color: 'gray', message: 'LKW unknown' })
               : getWindowStatus(timeFromLKW) || { color: 'gray', message: 'Set LKW time' };
           const windowToneClass = {
             green: 'bg-ok-100 text-ok-800 border-ok-200 dark:bg-ok-950 dark:text-ok-300 dark:border-ok-800',
@@ -16847,6 +16668,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         value={searchQuery}
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
+                          setSearchResults([]);
+                          setSearchActiveIndex(-1);
+                          setSearchResultsQuery('');
                           setSearchOpen(true);
                           setSearchContext('header');
                         }}
@@ -16865,7 +16689,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             setSearchActiveIndex(-1);
                             return;
                           }
-                          if (!searchOpen || !searchResults.length) return;
+                          if (!searchOpen || !searchResults.length || searchResultsQuery !== searchQuery) return;
                           const total = searchResults.length;
                           if (e.key === 'ArrowDown') {
                             e.preventDefault();
@@ -16936,7 +16760,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                       id={`search-opt-${idx}`}
                                       key={`search-${idx}`}
                                       aria-selected={isActive}
-                                      onClick={() => { result.action(); setSearchOpen(false); setSearchQuery(''); }}
+                                      onClick={() => { if (searchResultsQuery !== searchQuery) return; result.action(); setSearchOpen(false); setSearchQuery(''); }}
                                       onMouseEnter={() => setSearchActiveIndex(idx)}
                                       className={`w-full text-left p-3 border-b transition-colors ${isActive ? 'bg-cobalt-100 dark:bg-cobalt-900' : 'hover:bg-cobalt-50 dark:hover:bg-cobalt-900'}`}
                                     >
@@ -17276,7 +17100,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
               {/* ===== PERSISTENT TIMER STRIP (visible across all tabs) ===== */}
               {(() => {
-                const timeFromLKW = calculateTimeFromLKW();
+                const timeFromLKW = elapsedEncounterTime(getReferenceTime(), currentTime);
                 if (!timeFromLKW) {
                   return null;
                 }
@@ -17284,6 +17108,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 const tnkRemaining = 4.5 - totalHours;
                 const tnkRemainingMin = Math.max(0, Math.floor(tnkRemaining * 60));
                 const evtEarlyRemaining = 6 - totalHours;
+                const elapsedSeconds = timeFromLKW.seconds;
                 const elH = Math.floor(elapsedSeconds / 3600);
                 const elM = Math.floor((elapsedSeconds % 3600) / 60);
                 const elS = elapsedSeconds % 60;
@@ -17293,17 +17118,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 // so as a SOLID fill under white text they fail WCAG 1.4.3 (confirm 2.5:1, critical
                 // 3.0:1 — small captions need 4.5:1). Pin the dark fill to the un-lightened ramp
                 // step the light token already uses (ok-700 / crit-700) → white reads 8.8:1 / 7.6:1.
-                const timerBg = totalHours <= 4.5 ? 'bg-confirm dark:bg-ok-700' : 'bg-critical dark:bg-crit-700';
+                const timerBg = telestrokeNote.lkwUnknown || timeFromLKW.futureWarning ? 'bg-cobalt-700 dark:bg-cobalt-800' : totalHours <= 4.5 ? 'bg-confirm dark:bg-ok-700' : 'bg-critical dark:bg-crit-700';
                 return (
                   <div className={`mb-3 ${timerBg} rounded-md px-4 py-2 text-white flex flex-wrap items-center justify-between gap-2 ${alertFlashing ? 'alert-flash' : ''}`} role="timer" aria-live="polite" aria-label="Stroke treatment window timer">
                     <div className="flex items-center gap-3">
                       <i aria-hidden="true" data-lucide="clock" className="w-4 h-4"></i>
-                      <span className="font-mono font-bold text-lg">{elH}h {String(elM).padStart(2,'0')}m {String(elS).padStart(2,'0')}s</span>
+                      <span className="font-mono font-bold text-lg">{timeFromLKW.futureWarning ? 'Future time — review' : `${elH}h ${String(elM).padStart(2,'0')}m ${String(elS).padStart(2,'0')}s`}</span>
                       <span className="text-xs opacity-80">from {timeFromLKW.label || 'LKW'}</span>
                     </div>
                     <div className="flex items-center gap-4 text-xs">
-                      {telestrokeNote.lkwUnknown ? (
-                        <span className="font-semibold">TNK: onset unknown — standard window N/A; imaging-selected IVT only {tnkRemaining > 0 ? `(MRI DWI-FLAIR mismatch: ${Math.floor(tnkRemainingMin/60)}h ${tnkRemainingMin%60}m left from recognition; or perfusion mismatch)` : '(perfusion mismatch)'}</span>
+                      {timeFromLKW.futureWarning ? (
+                        <span className="font-semibold">Reconcile the recorded date and time before interpreting treatment windows.</span>
+                      ) : telestrokeNote.lkwUnknown ? (
+                        <span className="font-semibold">Onset unknown; discovery is not LKW. Review imaging-selected treatment criteria.</span>
                       ) : tnkRemaining > 0 ? (
                         <span className={`font-semibold ${tnkRemainingMin <= 30 ? 'animate-pulse' : ''}`}>
                           TNK: {Math.floor(tnkRemainingMin/60)}h {tnkRemainingMin%60}m left
@@ -17311,11 +17138,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       ) : (
                         <span className="opacity-90">{totalHours < 24 ? 'Standard TNK window closed — imaging-selected IVT only' : 'TNK window closed'}</span>
                       )}
-                      {evtEarlyRemaining > 0 ? (
+                      {!telestrokeNote.lkwUnknown && !timeFromLKW.futureWarning && (evtEarlyRemaining > 0 ? (
                         <span>EVT early: {Math.floor(evtEarlyRemaining)}h {Math.floor((evtEarlyRemaining%1)*60)}m</span>
                       ) : totalHours < 24 ? (
                         <span>EVT late window</span>
-                      ) : null}
+                      ) : null)}
                     </div>
                     <div className="flex items-center gap-1">
                       <button onClick={toggleAlertMute} aria-pressed={alertsMuted} className="p-2 rounded-full hover:bg-white/20 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center" title={alertsMuted ? 'Unmute' : 'Mute'} aria-label={alertsMuted ? 'Unmute alerts' : 'Mute alerts'}>
@@ -17458,10 +17285,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   {/* LEFT PANE — the existing Encounter form, untouched (keeps space-y-4 rhythm). */}
                   <div className="space-y-4 min-w-0">
 
-                    <WorkspaceViewControl view={workspaceView} onChange={(view) => {
-                      setWorkspaceView(view);
-                      setGuidelineRecsExpanded(view === 'teaching');
-                    }} />
+                    <WorkspaceViewControl view={workspaceView} onChange={changeWorkspaceView} />
 
                     {/* ===== U11 — ENCOUNTER SECTION NAVIGATOR (TOC + scrollspy) =====
                          Mobile (<1024px): a labeled "Jump to…" <select> (≥44px touch target).
@@ -17844,7 +17668,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       </div>
 
                       {/* Wake-up Stroke / Unknown LKW — v7 SegmentedControl (replaces v6 checkbox).
-                          Clearer two-state choice; reveals discovery-time defaults on switch. */}
+                          Changing onset type preserves the separately documented discovery time. */}
                       <div className="mt-3">
                         <V7SegmentedControl
                           ariaLabel="Last Known Well type"
@@ -17858,9 +17682,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             setTelestrokeNote(prev => ({
                               ...prev,
                               lkwUnknown: nextValue,
-                              wakeUpStrokeWorkflow: { ...(prev.wakeUpStrokeWorkflow || {}), isWakeUpStroke: nextValue },
-                              discoveryDate: nextValue ? (prev.discoveryDate || new Date().toISOString().split('T')[0]) : prev.discoveryDate,
-                              discoveryTime: nextValue ? (prev.discoveryTime || new Date().toTimeString().slice(0, 5)) : prev.discoveryTime
+                              wakeUpStrokeWorkflow: { ...(prev.wakeUpStrokeWorkflow || {}), isWakeUpStroke: nextValue }
                             }));
                           }}
                         />
@@ -17871,11 +17693,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <div className="flex items-center justify-between mb-2">
                             <span className="text-sm font-semibold text-cobalt-800 dark:text-cobalt-300">Discovery Time</span>
                             <button
-                              onClick={() => setTelestrokeNote(prev => ({...prev,
-                                discoveryDate: new Date().toISOString().split('T')[0],
-                                discoveryTime: new Date().toTimeString().slice(0, 5)
-                              }))}
-                              className="text-xs font-semibold text-cobalt-700 hover:text-cobalt-900 min-h-[36px] dark:text-cobalt-300"
+                              onClick={setDiscoveryTimeToNow}
+                              className="min-h-[44px] px-2 text-xs font-semibold text-cobalt-700 hover:text-cobalt-900 dark:text-cobalt-300"
                               type="button"
                               aria-label="Set discovery time to now"
                             >
@@ -18309,7 +18128,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             }`}>
                               <div className="flex flex-wrap items-center justify-between gap-2">
                                 <span className="font-semibold">{strokeWindow.status?.message || 'Treatment window'}</span>
-                                <span>{strokeWindow.timeFrom.hours}h {strokeWindow.timeFrom.minutes}m since {strokeWindow.label}</span>
+                                <span>{strokeWindow.timeFrom.futureWarning ? 'Elapsed time requires review' : `${strokeWindow.timeFrom.hours}h ${strokeWindow.timeFrom.minutes}m since ${strokeWindow.label}`}</span>
                               </div>
                             </div>
                           )}
@@ -18327,9 +18146,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 const nextValue = id === 'wakeup';
                                 setTelestrokeNote(prev => ({...prev,
                                   lkwUnknown: nextValue,
-                                  wakeUpStrokeWorkflow: { ...(prev.wakeUpStrokeWorkflow || {}), isWakeUpStroke: nextValue },
-                                  discoveryDate: nextValue ? (prev.discoveryDate || new Date().toISOString().split('T')[0]) : prev.discoveryDate,
-                                  discoveryTime: nextValue ? (prev.discoveryTime || new Date().toTimeString().slice(0, 5)) : prev.discoveryTime
+                                  wakeUpStrokeWorkflow: { ...(prev.wakeUpStrokeWorkflow || {}), isWakeUpStroke: nextValue }
                                 }));
                               }}
                             />
@@ -18340,12 +18157,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               <div className="flex items-center justify-between">
                                 <span className="text-sm font-semibold text-cobalt-800 dark:text-cobalt-300">Discovery Time</span>
                                 <button
-                                  onClick={() => setTelestrokeNote(prev => ({...prev,
-                                    discoveryDate: new Date().toISOString().split('T')[0],
-                                    discoveryTime: new Date().toTimeString().slice(0, 5)
-                                  }))}
-                                  className="text-xs font-semibold text-cobalt-700 hover:text-cobalt-900 dark:text-cobalt-300"
+                                  onClick={setDiscoveryTimeToNow}
+                                  className="min-h-[44px] px-2 text-xs font-semibold text-cobalt-700 hover:text-cobalt-900 dark:text-cobalt-300"
                                   type="button"
+                                  aria-label="Set discovery time to now"
                                 >
                                   Use Now
                                 </button>
@@ -22225,7 +22040,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                           return (
                             <div className="bg-white border-2 border-cobalt-300 rounded-lg dark:bg-card dark:border-cobalt-700 ">
-                              <details open={guidelineRecsExpanded} onToggle={(e) => setGuidelineRecsExpanded(e.target.open)}>
+                              <details open={guidelineRecsExpanded} onToggle={(e) => { if (e.target === e.currentTarget) setGuidelineRecsExpanded(e.currentTarget.open); }}>
                                 <summary className="cursor-pointer p-4 font-semibold text-cobalt-900 hover:bg-cobalt-50 rounded-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-900">
                                   <span className="flex items-center gap-2">
                                                                         Guideline Recommendations ({recs.length})
@@ -26980,6 +26795,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   if (fc.topicsDiscussed) note += `- Topics: ${fc.topicsDiscussed}\n`;
                                 }
 
+                                if (telestrokeNote.rationale?.trim()) {
+                                  note += `\nCLINICIAN-ENTERED RATIONALE:\n${telestrokeNote.rationale}\n`;
+                                }
+                                if (hasRecordedTreatmentAdministration(telestrokeNote, 'tnk') &&
+                                    (telestrokeNote.sichDetected === true || telestrokeNote.clinicalDeterioration === true) &&
+                                    telestrokeNote.complicationNotes?.trim()) {
+                                  note += `\nCLINICIAN-ENTERED COMPLICATION NOTES:\n${telestrokeNote.complicationNotes}\n`;
+                                }
                                 if (telestrokeNote.recommendationsText?.trim()) {
                                   note += `\nCLINICIAN-ENTERED RECOMMENDATIONS:\n${telestrokeNote.recommendationsText}\n`;
                                 }
@@ -27242,9 +27065,19 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                         {/* Treatment Window Countdown - Enhanced with Elapsed Timer & Audible Alerts */}
                         {(() => {
-                          const timeFromLKW = calculateTimeFromLKW();
+                          const timeFromLKW = elapsedEncounterTime(getReferenceTime(), currentTime);
                           if (!timeFromLKW) return null;
+                          if (telestrokeNote.lkwUnknown || timeFromLKW.futureWarning) {
+                            return (
+                              <div className="rounded-lg border border-cobalt-300 bg-cobalt-50 p-4 text-cobalt-950 dark:border-cobalt-700 dark:bg-cobalt-950 dark:text-cobalt-100" role="status" aria-label="Time reference review">
+                                <h3 className="font-semibold">{timeFromLKW.futureWarning ? 'Check the recorded time' : 'Time since discovery'}</h3>
+                                <p className="mt-2">{timeFromLKW.futureWarning ? 'The recorded time is in the future. Reconcile the date and time before interpreting treatment windows.' : `${timeFromLKW.hours}h ${String(timeFromLKW.minutes).padStart(2, '0')}m since discovery. Onset remains unknown; discovery is not LKW.`}</p>
+                                <p className="mt-2 text-sm">{timeFromLKW.futureWarning ? 'LKW-window countdowns and alerts are inactive until the timing is resolved.' : 'Review imaging-selected treatment criteria. Discovery time alone does not establish IVT or EVT eligibility; ordinary LKW-window countdowns and alerts are inactive.'}</p>
+                              </div>
+                            );
+                          }
 
+                          const elapsedSeconds = timeFromLKW.seconds;
                           const totalHours = timeFromLKW.total;
                           const totalMinutes = totalHours * 60;
                           const tnkRemaining = 4.5 - totalHours;
@@ -29834,7 +29667,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {activeTab === 'research' && researchSubTab === 'calculators' && (
                   <ErrorBoundary>
                   <div id="tabpanel-research" role="tabpanel" aria-labelledby="tab-research" className="space-y-8">
-                    <WorkspaceViewControl view={workspaceView} onChange={setWorkspaceView} />
+                    <WorkspaceViewControl view={workspaceView} onChange={changeWorkspaceView} />
                     <div className="bg-white border border-line rounded-md p-2 flex !flex-nowrap overflow-x-auto no-scrollbar gap-2 sticky top-0 z-30 dark:bg-card sm:!flex-wrap sm:overflow-visible" role="tablist" aria-label="Guidelines & References sub-sections" onKeyDown={(e) => {
                       const ci = RESEARCH_SUBTABS.indexOf(researchSubTab);
                       let ni;
@@ -29843,6 +29676,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       else if (e.key === 'Home') { e.preventDefault(); ni = 0; }
                       else if (e.key === 'End') { e.preventDefault(); ni = RESEARCH_SUBTABS.length - 1; }
                       if (ni !== undefined) {
+                        navigationIntents.cancel();
                         const nextSubTab = RESEARCH_SUBTABS[ni];
                         setResearchSubTab(nextSubTab);
                         window.location.hash = `#/research/${nextSubTab}`;
@@ -29867,6 +29701,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             aria-controls={`research-tabpanel-${tab.id}`}
                             tabIndex={active ? 0 : -1}
                             onClick={() => {
+                              navigationIntents.cancel();
                               setResearchSubTab(tab.id);
                               window.location.hash = `#/research/${tab.id}`;
                             }}
@@ -29961,10 +29796,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <button
                               key={id}
                               type="button"
-                              onClick={() => {
-                                const el = document.getElementById(`calc-${id}`);
-                                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                              }}
+                              onClick={() => gotoCalculator(`calc-${id}`)}
                               className="px-2 py-1 rounded-full border border-line bg-white text-slate-700 hover:bg-slate-100 dark:bg-card dark:text-ink-2 dark:hover:bg-paper-2"
                             >
                               {calculatorLabelMap[id] || id}
@@ -29996,7 +29828,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         {!isNIHSSComplete() && <p className="mb-2 rounded border border-warn-200 bg-warn-50 p-2 text-xs text-warn-800 dark:border-warn-800 dark:bg-warn-950 dark:text-warn-300"><strong>Incomplete:</strong> complete every NIHSS item in the Encounter tab before using or copying the score.</p>}
                         <p className="text-xs text-slate-600 mb-2 dark:text-mute">Use the NIHSS panel in the Encounter tab for full item-by-item scoring.</p>
                         <p className="text-xs text-slate-600 dark:text-ink-2">The institutional acute-stroke algorithm requires NIHSS documentation but does not supply scoring definitions or interpretation.</p>
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Brott T et al. Stroke 1989;20:864-70 (PMID 2749846).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Brott T et al. Stroke 1989;20:864-70 (<a href="https://pubmed.ncbi.nlm.nih.gov/2749846/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 2749846</a>).</p>
                       </div>
                     </details>
 
@@ -30069,7 +29901,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <input type="text" value={gcsItems.notTestableReason || ''} onChange={e => setGcsItems(prev => ({...prev, notTestableReason:e.target.value}))} className="w-full rounded border p-2" />
                       </label>
                       <p className="clinical-evidence-limit text-xs">Record E/V/M separately. NT is not a score of1; no total is reported when a component cannot be tested.</p>
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Teasdale G, Jennett B. Lancet 1974;2:81-4 (PMID 4136544).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Teasdale G, Jennett B. Lancet 1974;2:81-4 (<a href="https://pubmed.ncbi.nlm.nih.gov/4136544/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 4136544</a>).</p>
                       </div>
                     </details>
 
@@ -30155,7 +29987,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   </tbody>
                                 </table>
                               </div>
-                              <p className="mt-2 text-slate-600 dark:text-ink-2">Hemphill JC et al. The ICH Score. Stroke 2001;32:891-897 (PMID 11283388). UCSF derivation cohort; no patient scored 6. Prognostic only — the score must NOT be used to limit treatment or justify early DNR (self-fulfilling-prophecy risk; AHA/ASA 2022 ICH).</p>
+                              <p className="mt-2 text-slate-600 dark:text-ink-2">Hemphill JC et al. The ICH Score. Stroke 2001;32:891-897 (<a href="https://pubmed.ncbi.nlm.nih.gov/11283388/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 11283388</a>). UCSF derivation cohort; no patient scored 6. Prognostic only — the score must NOT be used to limit treatment or justify early DNR (self-fulfilling-prophecy risk; AHA/ASA 2022 ICH).</p>
                             </div>
                           </details>
                         );
@@ -30399,7 +30231,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </label>
                           </div>
                         </div>
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Rost NS et al. Stroke 2008;39:2304-9 (FUNC score, PMID 18556582).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Rost NS et al. Stroke 2008;39:2304-9 (FUNC score, <a href="https://pubmed.ncbi.nlm.nih.gov/18556582/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 18556582</a>).</p>
                       </div>
                     </details>
 
@@ -30456,7 +30288,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           <p className="text-sm text-cobalt-800 dark:text-cobalt-300">The institutional EVT flowchart supplies the selected category definition above; it does not add an outcome label.</p>
                         </div>
                       )}
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Bruno A et al. Stroke 2010;41:1048-50 (simplified mRS questionnaire, PMID 20224060).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Bruno A et al. Stroke 2010;41:1048-50 (simplified mRS questionnaire, <a href="https://pubmed.ncbi.nlm.nih.gov/20224060/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 20224060</a>).</p>
                       </div>
                     </details>
 
@@ -30574,7 +30406,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         </div>
                       </div>
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Johnston SC et al. Lancet 2007;369:283-92 (ABCD², PMID 17258668).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Johnston SC et al. Lancet 2007;369:283-92 (ABCD², <a href="https://pubmed.ncbi.nlm.nih.gov/17258668/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 17258668</a>).</p>
                       </div>
                     </details>
 
@@ -30712,7 +30544,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         </div>
                       </div>
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Lip GY et al. Chest 2010;137:263-72 (CHA₂DS₂-VASc derivation, PMID 19762550). Annual rates shown appear to correspond to ischemic-stroke rates in patients not taking anticoagulants in the Swedish Atrial Fibrillation cohort (Friberg L et al. Eur Heart J 2012;33:1500-10, PMID 22246443; needs confirmation); absolute risk at a given score varies widely across cohorts.</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Lip GY et al. Chest 2010;137:263-72 (CHA₂DS₂-VASc derivation, <a href="https://pubmed.ncbi.nlm.nih.gov/19762550/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 19762550</a>). Annual rates shown appear to correspond to ischemic-stroke rates in patients not taking anticoagulants in the Swedish Atrial Fibrillation cohort (Friberg L et al. Eur Heart J 2012;33:1500-10, <a href="https://pubmed.ncbi.nlm.nih.gov/22246443/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 22246443</a>; needs confirmation); absolute risk at a given score varies widely across cohorts.</p>
                       </div>
                     </details>
 
@@ -30821,7 +30653,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           );
                         })()}
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Pisters R et al. Chest 2010;138:1093-1100 (HAS-BLED, PMID 20299623).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Pisters R et al. Chest 2010;138:1093-1100 (HAS-BLED, <a href="https://pubmed.ncbi.nlm.nih.gov/20299623/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 20299623</a>).</p>
                       </div>
                     </details>
 
@@ -30939,7 +30771,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                         );
                       })()}
-                    <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Sources: Kent DM et al. Neurology 2013;81:619-25 (RoPE, PMID 23864310); Kent DM et al. JAMA 2021;326:2277-86 (PASCAL, PMID 34905030).</p>
+                    <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Sources: Kent DM et al. Neurology 2013;81:619-25 (RoPE, <a href="https://pubmed.ncbi.nlm.nih.gov/23864310/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 23864310</a>); Kent DM et al. JAMA 2021;326:2277-86 (PASCAL, <a href="https://pubmed.ncbi.nlm.nih.gov/34905030/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 34905030</a>).</p>
                       </div>
                     </details>
 
@@ -31001,7 +30833,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </label>
                         </div>
                         <p className="clinical-evidence-limit rounded-lg border border-line p-3 text-sm" role="status">Numeric RCVS² scoring and diagnostic interpretation are unavailable in this edition because the original point table has not been verified. The recorded clinical features do not independently rule RCVS in or out; use the complete specialist evaluation.</p>
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Rocha EA et al. Neurology 2019;92:e639-e647 (RCVS², PMID 30635475).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Rocha EA et al. Neurology 2019;92:e639-e647 (RCVS², <a href="https://pubmed.ncbi.nlm.nih.gov/30635475/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 30635475</a>).</p>
                       </div>
                     </details>
 
@@ -31057,7 +30889,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           </div>
                         </div>
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Sources: Hunt WE, Hess RM. J Neurosurg 1968;28:14-20 (PMID 5635959); WFNS Committee report, J Neurosurg 1988;68:985-6 (PMID 3131498).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Sources: Hunt WE, Hess RM. J Neurosurg 1968;28:14-20 (<a href="https://pubmed.ncbi.nlm.nih.gov/5635959/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 5635959</a>); WFNS Committee report, J Neurosurg 1988;68:985-6 (<a href="https://pubmed.ncbi.nlm.nih.gov/3131498/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 3131498</a>).</p>
                       </div>
                     </details>
 
@@ -31134,7 +30966,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           );
                         })()}
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Greving JP et al. Lancet Neurol 2014;13:59-66 (PHASES, PMID 24290159).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Greving JP et al. Lancet Neurol 2014;13:59-66 (PHASES, <a href="https://pubmed.ncbi.nlm.nih.gov/24290159/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 24290159</a>).</p>
                       </div>
                     </details>
 
@@ -31184,7 +31016,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           );
                         })()}
                         <p className="text-xs text-slate-600 mt-2 dark:text-mute">ABC/2 method: A = largest diameter, B = perpendicular diameter on same slice, C = number of slices with ICH x slice thickness.</p>
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Kothari RU et al. Stroke 1996;27:1304-5 (ABC/2, PMID 8711791).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Kothari RU et al. Stroke 1996;27:1304-5 (ABC/2, <a href="https://pubmed.ncbi.nlm.nih.gov/8711791/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 8711791</a>).</p>
                       </div>
                     </details>
 
@@ -31265,7 +31097,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           );
                         })()}
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Cockcroft DW, Gault MH. Nephron 1976;16:31-41 (PMID 1244564).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Cockcroft DW, Gault MH. Nephron 1976;16:31-41 (<a href="https://pubmed.ncbi.nlm.nih.gov/1244564/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 1244564</a>).</p>
                       </div>
                     </details>
 
@@ -31310,7 +31142,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             </div>
                           );
                         })()}
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Sherman DG et al. Lancet 2007;369:1347-55 (PREVAIL, PMID 17448820).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Sherman DG et al. Lancet 2007;369:1347-55 (PREVAIL, <a href="https://pubmed.ncbi.nlm.nih.gov/17448820/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 17448820</a>).</p>
                       </div>
                     </details>
 
@@ -31390,7 +31222,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         })()}
                         <button type="button" onClick={() => { setTelestrokeNote(prev => ({...prev, aspectsRegions: {}, aspectsAssessed: false})); if (typeof setAspectsScore === 'function') setAspectsScore(''); setAspectsRegionState(getDefaultAspectsRegionState()); }}
                           className="mt-2 text-xs text-slate-600 hover:text-slate-700 underline dark:text-mute dark:hover:text-ink">Reset all regions</button>
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Barber PA et al. Lancet 2000;355:1670-4 (ASPECTS, PMID 10905241).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Barber PA et al. Lancet 2000;355:1670-4 (ASPECTS, <a href="https://pubmed.ncbi.nlm.nih.gov/10905241/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 10905241</a>).</p>
                       </div>
                     </details>
 
@@ -31402,7 +31234,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <span className="ml-auto text-sm font-normal text-slate-600 dark:text-mute">{telestrokeNote.pcAspectsAssessed === true ? (() => { const r = telestrokeNote.pcAspectsRegions || {}; return `${10 - ((r.pons ? 2 : 0) + (r.midbrain ? 2 : 0) + (r.cerebL ? 1 : 0) + (r.cerebR ? 1 : 0) + (r.pcaL ? 1 : 0) + (r.pcaR ? 1 : 0) + (r.thalL ? 1 : 0) + (r.thalR ? 1 : 0))}/10`; })() : 'Incomplete'}</span>
                       </summary>
                       <div className="p-4">
-                        <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Click regions with early ischemic changes. PC-ASPECTS starts at 10; pons and midbrain deduct 2 points each, and each other listed region deducts 1 point. Source: Puetz V et al. Stroke 2008;39:2485-90 (pc-ASPECTS, PMID 18617663).</p>
+                        <p className="text-xs text-slate-600 mb-3 dark:text-ink-2">Click regions with early ischemic changes. PC-ASPECTS starts at 10; pons and midbrain deduct 2 points each, and each other listed region deducts 1 point. Source: Puetz V et al. Stroke 2008;39:2485-90 (pc-ASPECTS, <a href="https://pubmed.ncbi.nlm.nih.gov/18617663/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 18617663</a>).</p>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-3">
                           {[
                             { id: 'pons', label: 'Pons', pts: 2 },
@@ -31551,7 +31383,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <strong>Selected grade: mTICI {telestrokeNote.ticiScore}</strong>
                           </div>
                         )}
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Zaidat OO et al. Stroke 2013;44:2650-63 (mTICI consensus defining grades 0, 1, 2a, 2b and 3, PMID 23920012); mTICI 2c (near-complete reperfusion): Goyal M et al. J Neurointerv Surg 2014;6:83-6 (PMID 23390038).</p>
+                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: Zaidat OO et al. Stroke 2013;44:2650-63 (mTICI consensus defining grades 0, 1, 2a, 2b and 3, <a href="https://pubmed.ncbi.nlm.nih.gov/23920012/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 23920012</a>); mTICI 2c (near-complete reperfusion): Goyal M et al. J Neurointerv Surg 2014;6:83-6 (<a href="https://pubmed.ncbi.nlm.nih.gov/23390038/" target="_blank" rel="noopener noreferrer" className="underline decoration-current underline-offset-2">PMID 23390038</a>).</p>
                       </div>
                     </details>
 
@@ -31622,7 +31454,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             role="tab"
                             aria-selected={active}
                             aria-controls={`trials-${item.id}-panel`}
-                            onClick={() => updateTrialsView(item.id)}
+                            onClick={() => { navigationIntents.cancel(); updateTrialsView(item.id); }}
                             className={`inline-flex min-h-[44px] items-center justify-center rounded-md px-4 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cobalt-500 ${
                               active
                                 ? 'bg-card text-ink shadow-card font-bold'
@@ -31664,13 +31496,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* What's New feed (verified PubMed) + compact   */}
                 {/* guideline list + Evidence Atlas entry.        */}
                 {/* ============================================ */}
-                {activeTab === 'research' && researchSubTab !== 'calculators' && referenceState.status !== 'ready' && (
-                  <DeferredLoadStatus resource={referenceResource} label="Guidelines and references" />
-                )}
-                {activeTab === 'research' && researchSubTab !== 'calculators' && referenceState.status === 'ready' && (
+                {activeTab === 'research' && researchSubTab !== 'calculators' && (
                   <ErrorBoundary>
                   <div id="tabpanel-research" role="tabpanel" aria-labelledby="tab-research" className="space-y-8">
-                    <WorkspaceViewControl view={workspaceView} onChange={setWorkspaceView} />
+                    <WorkspaceViewControl view={workspaceView} onChange={changeWorkspaceView} />
                     {/* Research sub-tabs navigation. The nowrap / no-shrink utilities are
                         important-flagged because index.html's phone rules
                         (`.flex.gap-2 { flex-wrap: wrap }` and `.flex.gap-2 > button
@@ -31686,6 +31515,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       else if (e.key === 'Home') { e.preventDefault(); ni = 0; }
                       else if (e.key === 'End') { e.preventDefault(); ni = subTabs.length - 1; }
                       if (ni !== undefined) {
+                        navigationIntents.cancel();
                         setResearchSubTab(subTabs[ni]);
                         window.location.hash = `#/research/${subTabs[ni]}`;
                         const el = document.getElementById(`research-tab-${subTabs[ni]}`);
@@ -31709,6 +31539,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             aria-controls={`research-tabpanel-${tab.id}`}
                             tabIndex={active ? 0 : -1}
                             onClick={() => {
+                              navigationIntents.cancel();
                               setResearchSubTab(tab.id);
                               window.location.hash = `#/research/${tab.id}`;
                             }}
@@ -31724,6 +31555,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       })}
                     </div>
 
+                    {referenceState.status !== 'ready' && <DeferredLoadStatus resource={referenceResource} label="Guidelines and references" />}
+                    {referenceState.status === 'ready' && <>
                     {researchSubTab === 'guidelines' && (
                       <div id="research-tabpanel-guidelines" role="tabpanel" aria-labelledby="research-tab-guidelines" className="space-y-6">
 
@@ -33065,6 +32898,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                     />
                   </div>
                 )}
+                    </>}
                   </div>
                 </ErrorBoundary>
               )}

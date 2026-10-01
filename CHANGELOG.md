@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## v6.30.7 — 2026-10-01 — consistent documentation and reliable navigation
+
+- Use one qualified wake-up assessment across seven documentation surfaces;
+  preserve unknown discovery times and reserve “Use Now” for an explicit action.
+- Repair populated follow-up handoffs, validate perfusion arithmetic without
+  inferring eligibility, and retain entered rationale and applicable narratives.
+- Align five Encounter source captions/links; make existing calculator PMIDs
+  actionable without changing their clinical text or source-review limitations.
+- Prevent stale search commands and delayed navigation from overriding newer
+  choices. Keep reference navigation available during loading/failure and reveal
+  calculator targets consistently. Hide search-only actions for unmounted tools.
+- Make Bedside/Teaching transitions consistent and isolate nested disclosures.
+- Preserve Protocols, the Telestroke map, existing downloads and unresolved
+  clinical-source/correction limits.
+
 ## v6.30.4 — 2026-10-01 — clinical input and evidence consistency
 
 - Preserve unknown, invalid and contradictory clinical inputs in helpers, trial
