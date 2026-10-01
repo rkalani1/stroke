@@ -21,27 +21,27 @@ Same Chromium 143.0.7499.4, uncompressed local Python HTTP, no CPU/network throt
 
 | Metric | Baseline | Candidate |
 |---|---:|---:|
-| Initial JavaScript, raw | 2,306,209 B | 251,280 B |
-| Initial JavaScript, gzip | 580,151 B | 80,954 B |
-| All initial/deferred JavaScript, raw | 6,377,252 B | 536,333 B |
-| All JavaScript, gzip | 1,562,623 B | 147,130 B |
+| Initial JavaScript, raw | 2,306,209 B | 255,027 B |
+| Initial JavaScript, gzip | 580,151 B | 82,218 B |
+| All initial/deferred JavaScript, raw | 6,377,252 B | 542,570 B |
+| All JavaScript, gzip | 1,562,623 B | 149,275 B |
 | CSS, raw | 180,352 B | 71,334 B |
-| Installed cache | 7,352,562 B / 48 responses | 1,376,861 B / 35 responses |
-| Initial JS transfer, uncompressed local HTTP | 2,309,576 B | 251,880 B |
-| Usable Encounter median | 94.08 ms | 32.95 ms |
-| Input fill + two frames median | 23.42 ms | 14.48 ms |
+| Installed cache | 7,352,562 B / 48 responses | 1,383,098 B / 35 responses |
+| Initial JS transfer, uncompressed local HTTP | 2,309,576 B | 255,627 B |
+| Usable Encounter median | 94.08 ms | 35.43 ms |
+| Input fill + two frames median | 23.42 ms | 16.87 ms |
 
-Initial raw JS falls 89.1%, total raw JS 91.6%, installed cache 81.3%. Baseline static web inventory: 297 files / 92,996,564 B. Explicit candidate: 165 raw files / 1,821,883 B (181 files / 2,125,236 B including optional compression). The baseline inventory was not a complete Pages manifest; this is qualified static accounting, not transfer or live deletion evidence.
+Initial raw JS falls 88.9%, total raw JS 91.5%, installed cache 81.2%. Baseline static web inventory: 297 files / 92,996,564 B. Explicit candidate: 165 raw files / 1,828,120 B (181 files / 2,135,376 B including optional compression). The baseline inventory was not a complete Pages manifest; this is qualified static accounting, not transfer or live deletion evidence.
 
 Budgets tightened to 300 KB initial raw / 100 KB gzip, 600 KB all raw / 180 KB gzip, 90 KB CSS and 2 MB complete precache. No budgets raised.
 
 ## Final engineering checks
 
 - Production build/stage, checksum/version coherence and module/asset/API retirement guards: passed.
-- Full unit suite: 47 files, **847 passed / 3 deployment-state skipped**; controller **8/8 passed**. Main-only deployment checks remain enforced on main. Exact retired-test reasons and retained vectors are recorded in `tests/LEAN-TEST-MIGRATION.md` and JSON inventories; no new Vitest exclusions.
-- `npm test`: passed byte/public/source/retirement/protocol guards, public leak scan, citation/PMID/inline/evidence/content schema, AutoMedBench-Lite and **13/13 rendered browser checks**. Live PMID lookup: 43 resolved, zero identity mismatches; existing volume-omission warnings remain. Currency: zero stale records, five missing genuine review dates.
+- Full unit suite: 48 files, **878 passed / 3 deployment-state skipped**; controller **8/8 passed**. Main-only deployment checks remain enforced on main. Exact retired-test reasons and retained vectors are recorded in `tests/LEAN-TEST-MIGRATION.md` and JSON inventories; no new Vitest exclusions.
+- `npm test`: passed byte/public/source/retirement/protocol guards, public leak scan, citation/PMID/inline/evidence/content schema, AutoMedBench-Lite and **15/15 rendered browser checks**. Live PMID lookup: 43 resolved, zero identity mismatches; existing volume-omission warnings remain. Currency: zero stale records, five missing genuine review dates.
 - Protected snapshots: unchanged **ICH 524 / ischemic 754 lines**, including drug modals. General calculator-directory fixture remains byte-identical; its retired traversal is replaced by embedded regressions. Telestroke link and observed external HTML fingerprint remain unchanged.
-- Browser: 360/390/768/1440 light/dark, keyboard/focus/labels/numeric semantics and simulated 200% text zoom; no overflow, console errors or failed core resources. Eight independent adaptive viewport/theme runs preserve existing ceilings; invalid profiles/files/missing values and a deliberate 1 ms breach fail closed.
+- Browser: 360/390/768/1440 light/dark, keyboard/focus/labels/numeric semantics and 200% CSS layout scaling and 720px desktop-reflow simulations; no overflow, console errors or failed core resources. Eight independent adaptive viewport/theme runs preserve existing ceilings; invalid profiles/files/missing values and a deliberate 1 ms breach fail closed.
 - Offline: fresh complete online install, offline reload, synthetic Encounter/calculations/summary and protected drug modal passed. Core requests require no external service; external links carry no encounter context.
 - Actual archived-baseline upgrade **6/6 passed**: defer preserves old graph/entries; explicit acceptance activates the complete graph and clears the session; disconnected/503 chunk installs preserve the old offline version then retry; second client blocks activation; protocol corruption isolates failure and permits explicit reload recovery; scoped cleanup preserves unrelated origin caches. CI reproduces the baseline via `git archive`, not local setup.
 - Privacy instrumentation found no encounter values in storage/IndexedDB, network/URLs, console or cached responses. Arbitrary-host public build and private-output separation passed. Free-text safeguards include BP.
@@ -55,7 +55,7 @@ Screenshots were visually inspected. Browser/offline/update checks simulate Chro
 
 ## Review and clinical limits
 
-Bounded independent review found and fixed BP free-text export protection, invalid DST normalization, stale async clipboard completion and future consent-time qualification. Re-review exposed subminute rounding at source-window boundaries; strict validation now precedes exact millisecond arithmetic with just-after-boundary regressions. Hidden GCS state no longer enters incompatible summaries. Declared theme-token coverage prevents undefined link variables. No actionable engineering finding is silently accepted.
+Bounded independent review found and fixed BP free-text export protection, invalid DST normalization, stale async clipboard completion and future consent-time qualification. Re-review exposed subminute rounding at source-window boundaries; strict validation now precedes exact millisecond arithmetic with just-after-boundary regressions. Hidden GCS state no longer enters incompatible summaries. Declared theme-token coverage prevents undefined link variables. The pre-merge review also found rounded ICH threshold comparisons, an unreachable fresh-TIA DAPT review and stale protocol input copies. These are repaired: unrounded 15/30 mL flags, explicit current-context reperfusion review with recorded-event conflict holds, and canonical protocol measurements with source-dependent review invalidation. Independent below/at/above boundary tests, fresh/switched TIA checks and 18 React DOM cases cover clearing, explicit zero, incompatible contexts, focus, navigation and wall-clock updates. Focused re-review reports no remaining findings. No actionable engineering finding is silently accepted.
 
 **Publication blocker:** protected ICH reversal prose considers factor-Xa dialysis in renal failure while its PK table says the agents are not dialyzable. Locked locations already display the unresolved conflict and select no dialysis action. Primary Xarelto/FDA Eliquis label statements located during this run conflict with dialysis-removal inference; see `docs/source-limits.md`. Protected wording/baselines remain unchanged. Owner adjudication through the protected clinical review process is required before merge/deployment.
 

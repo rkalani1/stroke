@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import Encounter from './Encounter.jsx';
 import { BUILD_PUBLIC_DEMO, BUILD_TARGET_MARKER } from './build-flags.js';
-import { newEncounter, updateEncounter, encounterVolume, nihssAssessment, encounterTiming, copySummary } from './workspace-state.js';
+import { newEncounter, updateEncounter, encounterVolume, protocolVolumeEstimate, protocolEncounter, nihssAssessment, encounterTiming, copySummary } from './workspace-state.js';
 import { parseWorkspaceRoute } from './workspace-routing.js';
 import { bootstrapTheme, getThemePref, setThemePref } from './design/theme.js';
 import { bindSWController, onUpdateReady, acceptUpdate } from './design/sw-controller.js';
@@ -97,6 +97,17 @@ function App() {
   };
   const timing = encounterTiming(state.note, now);
   const volume = encounterVolume(state.volume);
+  const sharedProtocol = { ...protocolEncounter(state, now), onChange: (key, value) => update(prev => {
+    if (key === 'aspectsScore' || key === 'pcAspects' || key === 'massEffect') return { ...prev, [key === 'aspectsScore' ? 'aspects' : key === 'massEffect' ? 'evtMassEffect' : key]: value };
+    if (key === 'bpSystolic' || key === 'bpDiastolic') {
+      const parts = prev.note.presentingBP.split('/');
+      parts[key === 'bpSystolic' ? 0 : 1] = value;
+      return { ...prev, note: { ...prev.note, presentingBP: `${parts[0] || ''}/${parts[1] || ''}` } };
+    }
+    const noteKey = { preMRS: 'premorbidMRS', wakeUpOrUnknownOnset: 'lkwUnknown', ichOnCT: 'ctHemorrhageStatus' }[key] || key;
+    const noteValue = key === 'ichOnCT' ? value === null ? '' : value ? 'present' : 'absent' : value;
+    return { ...prev, note: { ...prev.note, [noteKey]: noteValue } };
+  }) };
   const targetUnavailable = route.tool && !['nihss', 'mrs', 'crcl'].includes(route.tool) && (['ich-volume', 'ich-score', 'gcs'].includes(route.tool) ? !(['ich-volume', 'ich-score'].includes(route.tool) ? state.note.diagnosisCategory === 'ich' : ['ich','sah','cvt'].includes(state.note.diagnosisCategory)) : !(state.context === 'acute' && (state.note.diagnosisCategory === 'ischemic' || route.tool === 'dapt' && state.note.diagnosisCategory === 'tia')));
   return <div className="app-shell workspace-shell" data-build={BUILD_TARGET_MARKER} data-demo={PUBLIC_DEMO_MODE ? 'synthetic' : 'private'} data-version={APP_VERSION}>
     <a className="workspace-skip" href="#workspace-main">Skip to content</a>
@@ -104,7 +115,7 @@ function App() {
     {updateReady && <aside className="workspace-update" aria-label="App update"><p>{updateReady.message || 'A new version is ready. Updating reloads this page and clears its session; finish or copy your synthetic summary first.'}</p><button type="button" onClick={() => acceptUpdate().catch(() => setUpdateReady({ message: 'Update failed. Current encounter remains open; try again when connected.' }))}>Reload to update</button><button type="button" onClick={() => setUpdateReady(null)}>Later</button></aside>}
     <main id="workspace-main" tabIndex={-1}>
       <div hidden={route.surface !== 'encounter'}>{targetUnavailable && <p role="status" className="workspace-result">This tool is inactive in the current context. Select the applicable working diagnosis/context in Encounter; retained values have not been cleared.</p>}<Encounter state={state} update={update} now={now} copyStatus={copyStatus} onCopy={copy} onGenerate={text => { setState(prev => ({ ...prev, draft: { text, revision: prev.revision, stale: false } })); setCopyStatus(''); }} /></div>
-      {protocolVisited && <div hidden={route.surface !== 'protocols'}><ProtocolBoundary key={epoch}><Suspense fallback={<p role="status">Loading retained protocols…</p>}><ProtectedProtocols key={epoch} active={route.surface === 'protocols'} telestrokeNote={state.note} setTelestrokeNote={change => update(prev => ({ ...prev, note: typeof change === 'function' ? change(prev.note) : change }))} nihssScore={nihssAssessment(state.nihss).total ?? 0} consultationType={state.consultationType === 'phone' ? 'telephone' : 'video'} pocketCardsCaseEpoch={epoch} managementSubTab={route.sub || 'ischemic'} setManagementSubTab={sub => { location.hash = `#/protocols/${sub}`; }} navigateTo={tab => { location.hash = tab === 'encounter' ? '#/encounter' : '#/tools'; }} timeFromLKW={timing.clock ? { total: timing.hours, label: timing.label } : null} ichVolumeParams={state.volume} setIchVolumeParams={change => update(prev => ({ ...prev, volume: typeof change === 'function' ? change(prev.volume) : change }))} ichVolumeEstimate={volume ? { value: volume.volume, display: volume.volume.toFixed(1), exceeds15: volume.volume >= 15, exceeds30: volume.volume >= 30, unitWarning: volume.unitWarning } : null} /></Suspense></ProtocolBoundary></div>}
+      {protocolVisited && <div hidden={route.surface !== 'protocols'}><p className="workspace-help">Interactive protocol cards share Encounter measurements. Changing a source value clears their independent checks and attestations; navigation and elapsed-time updates preserve them. Completed NIHSS and elapsed hours are derived from Encounter. Ischemic-specific inputs are unavailable outside an acute ischemic context.</p>{sharedProtocol.safetyReviewRequired && <p role="status" className="workspace-result">Encounter records a contraindication, relative risk or contradictory finding requiring clinician review. A protocol-card acknowledgement does not resolve it; reconcile the visible Encounter concerns before an affirmative IVT result.</p>}<ProtocolBoundary key={epoch}><Suspense fallback={<p role="status">Loading retained protocols…</p>}><ProtectedProtocols encounter={sharedProtocol} key={epoch} active={route.surface === 'protocols'} telestrokeNote={state.note} setTelestrokeNote={change => update(prev => ({ ...prev, note: typeof change === 'function' ? change(prev.note) : change }))} nihssScore={nihssAssessment(state.nihss).total ?? 0} consultationType={state.consultationType === 'phone' ? 'telephone' : 'video'} pocketCardsCaseEpoch={epoch} managementSubTab={route.sub || 'ischemic'} setManagementSubTab={sub => { location.hash = `#/protocols/${sub}`; }} navigateTo={tab => { location.hash = tab === 'encounter' ? '#/encounter' : '#/tools'; }} timeFromLKW={timing.clock ? { total: timing.hours, label: timing.label } : null} ichVolumeParams={state.volume} setIchVolumeParams={change => update(prev => ({ ...prev, volume: typeof change === 'function' ? change(prev.volume) : change }))} ichVolumeEstimate={protocolVolumeEstimate(volume)} /></Suspense></ProtocolBoundary></div>}
       {route.surface === 'tools' && <Tools />}
       {route.surface === 'retired' && <section className="retirement-message"><h1>Retired destination</h1><p>This route is no longer maintained in the lean Stroke workspace.</p><p><a href="#/encounter">Return to Encounter</a> · <a href="#/tools">Tools & sources</a></p></section>}
     </main>

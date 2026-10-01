@@ -35,11 +35,33 @@ const LoeChip = ({ loe }) => {
   return <span className="inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-300 whitespace-nowrap dark:bg-paper-2 dark:text-ink-2 dark:border-strong">LOE {loe}</span>;
 };
 
+// Overlapping Encounter inputs are controlled. Independent protocol-card
+// inputs belong to the source revision that was reviewed. Align the local
+// store during rendering, before any evaluator can see an old attestation;
+// keeping the component mounted preserves focus and ordinary navigation.
+export function useProtocolCaseState(initial, encounter, canonical = {}, readOnlyKeys = []) {
+  const controlled = encounter !== undefined && encounter !== null;
+  const sourceKey = controlled ? encounter.sourceKey : undefined;
+  const [stored, setStored] = useState(() => ({ controlled, sourceKey, values: initial }));
+  const changed = stored.controlled !== controlled || stored.sourceKey !== sourceKey;
+  const local = changed ? initial : stored.values;
+  if (changed) setStored({ controlled, sourceKey, values: initial });
+  const state = controlled ? { ...local, ...canonical } : local;
+  const set = (key, value) => {
+    if (controlled && Object.prototype.hasOwnProperty.call(canonical, key)) {
+      if (!readOnlyKeys.includes(key)) encounter.onChange?.(key, value);
+      return;
+    }
+    setStored(previous => ({ controlled, sourceKey, values: { ...(previous.controlled === controlled && previous.sourceKey === sourceKey ? previous.values : initial), [key]: value } }));
+  };
+  return [state, set];
+}
+
 // ----------------------------------------------------------------------
 // IVT Eligibility interactive card
 // ----------------------------------------------------------------------
-const IVTEligibilityCard = ({ defaults = {} }) => {
-  const [state, setState] = useState({
+const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
+  const [state, set] = useProtocolCaseState({
     ichOnCT: defaults.ichOnCT === true ? true : defaults.ichOnCT === false ? false : null,
     disablingDeficit: defaults.disablingDeficit === true ? true : defaults.disablingDeficit === false ? false : null,
     hoursFromLKW: defaults.hoursFromLKW || '',
@@ -58,8 +80,7 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
     ctpCoreMl: '', ctpRatio: '', ctpMismatchVolMl: '',
     smallVessel: false, posteriorCirc: false, contrastAllergy: false,
     crao: false
-  });
-  const set = (k, v) => setState((s) => ({ ...s, [k]: v }));
+  }, encounter, encounter?.ivt, ['hoursFromLKW']);
   const result = useMemo(() => evaluateIVT({
     ichOnCT: state.ichOnCT,
     disablingDeficit: state.disablingDeficit,
@@ -69,7 +90,7 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
     age: state.age,
     bpSystolic: state.bpSystolic,
     bpDiastolic: state.bpDiastolic,
-    contraindicationsReviewed: state.contraindicationsReviewed,
+    contraindicationsReviewed: state.contraindicationsReviewed && !encounter?.safetyReviewRequired,
     preMRS: state.preMRS,
     evtStatus: state.evtStatus,
     consentObtained: state.consentObtained,
@@ -85,7 +106,7 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
       contrastAllergy: state.contrastAllergy
     },
     crao: state.crao
-  }), [state]);
+  }), [state, encounter?.safetyReviewRequired]);
 
   const colorByEligible = (e) => e === true ? 'border-ok-400 bg-ok-50 dark:bg-ok-950' : e === 'consider' ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-950' : e === 'pending' ? 'border-warn-400 bg-warn-50 dark:bg-warn-950' : e === false ? 'border-rose-400 bg-rose-50 dark:bg-rose-950' : 'border-slate-300 bg-slate-50 dark:border-strong dark:bg-paper-2';
 
@@ -97,21 +118,21 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
       </h4>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs mb-3">
         <label><span className="block text-slate-600 dark:text-ink-2">CT hemorrhage assessment</span>
-          <select value={state.ichOnCT === null ? '' : state.ichOnCT ? 'present' : 'absent'} onChange={(e) => set('ichOnCT', e.target.value === '' ? null : e.target.value === 'present')} className="w-full px-2 py-1 border rounded text-sm">
+          <select value={state.ichOnCT === null ? '' : state.ichOnCT ? 'present' : 'absent'} disabled={encounter?.compatible === false} onChange={(e) => set('ichOnCT', e.target.value === '' ? null : e.target.value === 'present')} className="w-full px-2 py-1 border rounded text-sm">
             <option value="">Not confirmed</option>
             <option value="absent">No intracranial hemorrhage</option>
             <option value="present">Intracranial hemorrhage present</option>
           </select>
         </label>
         <label><span className="block text-slate-600 dark:text-ink-2">Deficit assessment</span>
-          <select value={state.disablingDeficit === null ? '' : state.disablingDeficit ? 'disabling' : 'non-disabling'} onChange={(e) => set('disablingDeficit', e.target.value === '' ? null : e.target.value === 'disabling')} className="w-full px-2 py-1 border rounded text-sm">
+          <select value={state.disablingDeficit === null ? '' : state.disablingDeficit ? 'disabling' : 'non-disabling'} disabled={encounter?.compatible === false} onChange={(e) => set('disablingDeficit', e.target.value === '' ? null : e.target.value === 'disabling')} className="w-full px-2 py-1 border rounded text-sm">
             <option value="">Not confirmed</option>
             <option value="disabling">Disabling deficit</option>
             <option value="non-disabling">Non-disabling deficit</option>
           </select>
         </label>
-        <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={state.hoursFromLKW} onChange={(e) => set('hoursFromLKW', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
-        <label className="flex items-center gap-1"><input type="checkbox" checked={state.wakeUpOrUnknownOnset} onChange={(e) => set('wakeUpOrUnknownOnset', e.target.checked)} />Wake-up or unknown LKW (leave LKW hours blank)</label>
+        <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={state.hoursFromLKW} readOnly={!!encounter} onChange={(e) => set('hoursFromLKW', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+        <label className="flex items-center gap-1"><input type="checkbox" checked={state.wakeUpOrUnknownOnset} disabled={encounter?.compatible === false} onChange={(e) => set('wakeUpOrUnknownOnset', e.target.checked)} />Wake-up or unknown LKW (leave LKW hours blank)</label>
         <label><span className="block text-slate-600 dark:text-ink-2">Glucose</span><input type="number" value={state.glucose} onChange={(e) => set('glucose', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
         <label><span className="block text-slate-600 dark:text-ink-2">Weight (kg)</span><input type="number" value={state.weight} onChange={(e) => set('weight', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
         <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={state.age} onChange={(e) => set('age', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
@@ -121,6 +142,7 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
           <select value={state.preMRS} onChange={(e) => set('preMRS', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
             <option value="">Not assessed</option>
             {['0', '1', '2', '3', '4', '5'].map((x) => <option key={x} value={x}>{x}</option>)}
+            {encounter && String(state.preMRS) === '6' && <option value={state.preMRS}>{state.preMRS}</option>}
           </select>
         </label>
         <label><span className="block text-slate-600 dark:text-ink-2">EVT candidacy / feasibility</span>
@@ -185,18 +207,19 @@ const IVTEligibilityCard = ({ defaults = {} }) => {
 // ----------------------------------------------------------------------
 // EVT Eligibility matrix (anterior / M2 / basilar)
 // ----------------------------------------------------------------------
-const EVTEligibilityCard = ({ defaults = {} }) => {
+const EVTEligibilityCard = ({ defaults = {}, encounter }) => {
   const [branch, setBranch] = useState('anterior');
-  const [ant, setAnt] = useState({ aspectsScore: defaults.aspects || '', timeFromLKWh: defaults.hoursFromLKWh || '', nihss: defaults.nihss || '', preMRS: defaults.preMRS ?? '', age: defaults.age ?? '', massEffect: null, coreVolume: '' });
-  const [m2, setM2] = useState({ segment: '', dominant: true, hoursFromLKWh: '', nihss: '', preMRS: '', aspectsScore: '', ctpMismatch: false, age: defaults.age ?? '' });
-  const [bas, setBas] = useState({ nihss: '', hoursFromLKWh: '', preMRS: '', pcAspects: '', age: defaults.age ?? '' });
+  const [ant, setAnt] = useProtocolCaseState({ aspectsScore: defaults.aspects || '', timeFromLKWh: defaults.hoursFromLKWh || '', nihss: defaults.nihss || '', preMRS: defaults.preMRS ?? '', age: defaults.age ?? '', massEffect: null, coreVolume: '' }, encounter, encounter?.anterior, ['nihss', 'timeFromLKWh']);
+  const [m2, setM2] = useProtocolCaseState({ segment: '', dominant: true, hoursFromLKWh: '', nihss: '', preMRS: '', aspectsScore: '', ctpMismatch: false, age: defaults.age ?? '' }, encounter, encounter?.m2, ['nihss', 'hoursFromLKWh']);
+  const [bas, setBas] = useProtocolCaseState({ nihss: '', hoursFromLKWh: '', preMRS: '', pcAspects: '', age: defaults.age ?? '' }, encounter, encounter?.basilar, ['nihss', 'hoursFromLKWh']);
 
   useEffect(() => {
+    if (encounter) return;
     const age = defaults.age ?? '';
-    setAnt((prev) => prev.age === age ? prev : { ...prev, age });
-    setM2((prev) => prev.age === age ? prev : { ...prev, age });
-    setBas((prev) => prev.age === age ? prev : { ...prev, age });
-  }, [defaults.age]);
+    if (ant.age !== age) setAnt('age', age);
+    if (m2.age !== age) setM2('age', age);
+    if (bas.age !== age) setBas('age', age);
+  }, [defaults.age, encounter]);
 
   const rAnt = useMemo(() => evaluateEVT_Anterior(ant), [ant]);
   const rM2 = useMemo(() => evaluateEVT_M2(m2), [m2]);
@@ -223,19 +246,19 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
       {branch === 'anterior' && (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs mb-3">
-            <label><span className="block text-slate-600 dark:text-ink-2">ASPECTS</span><input type="number" value={ant.aspectsScore} onChange={(e) => setAnt({ ...ant, aspectsScore: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={ant.timeFromLKWh} onChange={(e) => setAnt({ ...ant, timeFromLKWh: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label><span className="block text-slate-600 dark:text-ink-2">NIHSS</span><input type="number" value={ant.nihss} onChange={(e) => setAnt({ ...ant, nihss: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">ASPECTS</span><input type="number" value={ant.aspectsScore} disabled={encounter?.compatible === false} onChange={(e) => setAnt('aspectsScore', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={ant.timeFromLKWh} readOnly={!!encounter} onChange={(e) => setAnt('timeFromLKWh', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">NIHSS</span><input type="number" value={ant.nihss} readOnly={!!encounter} onChange={(e) => setAnt('nihss', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">Pre-stroke mRS</span>
-              <select value={ant.preMRS} onChange={(e) => setAnt({ ...ant, preMRS: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
+              <select value={ant.preMRS} onChange={(e) => setAnt('preMRS', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
                 <option value="">Not assessed</option>
                 {['0', '1', '2', '3', '4', '5', '6'].map((x) => <option key={x} value={x}>{x}</option>)}
               </select>
             </label>
-            <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={ant.age} onChange={(e) => setAnt({ ...ant, age: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label><span className="block text-slate-600 dark:text-ink-2">CTP core (mL)</span><input type="number" value={ant.coreVolume} onChange={(e) => setAnt({ ...ant, coreVolume: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={ant.age} onChange={(e) => setAnt('age', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">CTP core (mL)</span><input type="number" value={ant.coreVolume} disabled={encounter?.compatible === false} onChange={(e) => setAnt('coreVolume', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">Significant mass effect</span>
-              <select value={ant.massEffect === null ? '' : ant.massEffect ? 'present' : 'absent'} onChange={(e) => setAnt({ ...ant, massEffect: e.target.value === '' ? null : e.target.value === 'present' })} className="w-full px-2 py-1 border rounded text-sm">
+              <select value={ant.massEffect === null ? '' : ant.massEffect ? 'present' : 'absent'} disabled={encounter?.compatible === false} onChange={(e) => setAnt('massEffect', e.target.value === '' ? null : e.target.value === 'present')} className="w-full px-2 py-1 border rounded text-sm">
                 <option value="">Not assessed</option>
                 <option value="absent">Absent</option>
                 <option value="present">Present</option>
@@ -258,7 +281,7 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs mb-3">
             <label className="md:col-span-2">
               <span className="block text-slate-600 dark:text-ink-2">Segment</span>
-              <select value={m2.segment} onChange={(e) => setM2({ ...m2, segment: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
+              <select value={m2.segment} onChange={(e) => setM2('segment', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
                 <option value="">Not assessed</option>
                 <option value="M2-proximal-dominant">M2 proximal dominant (≤1 cm from bifurcation, ≥50% MCA)</option>
                 <option value="M2-codominant">M2 codominant</option>
@@ -267,17 +290,17 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
                 <option value="PCA">PCA</option>
               </select>
             </label>
-            <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={m2.hoursFromLKWh} onChange={(e) => setM2({ ...m2, hoursFromLKWh: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label><span className="block text-slate-600 dark:text-ink-2">NIHSS</span><input type="number" value={m2.nihss} onChange={(e) => setM2({ ...m2, nihss: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={m2.hoursFromLKWh} readOnly={!!encounter} onChange={(e) => setM2('hoursFromLKWh', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">NIHSS</span><input type="number" value={m2.nihss} readOnly={!!encounter} onChange={(e) => setM2('nihss', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">Pre-mRS</span>
-              <select value={m2.preMRS} onChange={(e) => setM2({ ...m2, preMRS: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
+              <select value={m2.preMRS} onChange={(e) => setM2('preMRS', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
                 <option value="">Not assessed</option>
                 {['0', '1', '2', '3', '4', '5', '6'].map((x) => <option key={x} value={x}>{x}</option>)}
               </select>
             </label>
-            <label><span className="block text-slate-600 dark:text-ink-2">ASPECTS</span><input type="number" value={m2.aspectsScore} onChange={(e) => setM2({ ...m2, aspectsScore: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={m2.age} onChange={(e) => setM2({ ...m2, age: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={m2.ctpMismatch} onChange={(e) => setM2({ ...m2, ctpMismatch: e.target.checked })} />CTP hypoperfusion–hypodensity mismatch present (required beyond 6h)</label>
+            <label><span className="block text-slate-600 dark:text-ink-2">ASPECTS</span><input type="number" value={m2.aspectsScore} disabled={encounter?.compatible === false} onChange={(e) => setM2('aspectsScore', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={m2.age} onChange={(e) => setM2('age', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={m2.ctpMismatch} onChange={(e) => setM2('ctpMismatch', e.target.checked)} />CTP hypoperfusion–hypodensity mismatch present (required beyond 6h)</label>
           </div>
           {(rM2.eligible === true || rM2.eligible === 'consider' || rM2.eligible === false) && <div className={`p-2 rounded border-2 ${colorByEligible(rM2.eligible)}`}>
             <div className="flex items-center flex-wrap gap-2">
@@ -293,16 +316,16 @@ const EVTEligibilityCard = ({ defaults = {} }) => {
       {branch === 'basilar' && (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs mb-3">
-            <label><span className="block text-slate-600 dark:text-ink-2">NIHSS</span><input type="number" value={bas.nihss} onChange={(e) => setBas({ ...bas, nihss: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={bas.hoursFromLKWh} onChange={(e) => setBas({ ...bas, hoursFromLKWh: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">NIHSS</span><input type="number" value={bas.nihss} readOnly={!!encounter} onChange={(e) => setBas('nihss', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={bas.hoursFromLKWh} readOnly={!!encounter} onChange={(e) => setBas('hoursFromLKWh', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">Pre-mRS</span>
-              <select value={bas.preMRS} onChange={(e) => setBas({ ...bas, preMRS: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
+              <select value={bas.preMRS} onChange={(e) => setBas('preMRS', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
                 <option value="">Not assessed</option>
                 {['0', '1', '2', '3', '4', '5', '6'].map((x) => <option key={x} value={x}>{x}</option>)}
               </select>
             </label>
-            <label><span className="block text-slate-600 dark:text-ink-2">PC-ASPECTS</span><input type="number" value={bas.pcAspects} onChange={(e) => setBas({ ...bas, pcAspects: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={bas.age} onChange={(e) => setBas({ ...bas, age: e.target.value })} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">PC-ASPECTS</span><input type="number" value={bas.pcAspects} disabled={encounter?.compatible === false} onChange={(e) => setBas('pcAspects', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={bas.age} onChange={(e) => setBas('age', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
           </div>
           {(rBas.eligible === true || rBas.eligible === 'consider') && <div className={`p-2 rounded border-2 ${colorByEligible(rBas.eligible)}`}>
             <div className="flex items-center flex-wrap gap-2">
@@ -394,8 +417,8 @@ const ContraindicationsCard = () => (
 // ----------------------------------------------------------------------
 // Safe Pause card
 // ----------------------------------------------------------------------
-const SafePauseCard = ({ defaults = {} }) => {
-  const [st, setSt] = useState({ consentType: defaults.consentType || '', bp: defaults.bp || '', contraindications: 'not reviewed', providerAgreement: 'not confirmed' });
+const SafePauseCard = ({ defaults = {}, encounter }) => {
+  const [st, setSt] = useProtocolCaseState({ consentType: encounter ? '' : defaults.consentType || '', bp: encounter ? '' : defaults.bp || '', contraindications: 'not reviewed', providerAgreement: 'not confirmed' }, encounter);
   const issues = getSafePauseIssues(st);
   const complete = issues.length === 0;
   const text = getSafePauseText(st);
@@ -408,7 +431,7 @@ const SafePauseCard = ({ defaults = {} }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs mb-2">
         <label>
           <span className="block text-slate-600 dark:text-ink-2">Consent type</span>
-          <select value={st.consentType} onChange={(e) => setSt({ ...st, consentType: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
+          <select value={st.consentType} onChange={(e) => setSt('consentType', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
             <option value="">Not confirmed</option>
             <option value="informed">informed</option>
             <option value="presumed (unable to provide, no surrogate)">presumed (unable to provide, no surrogate)</option>
@@ -416,17 +439,17 @@ const SafePauseCard = ({ defaults = {} }) => {
             <option value="declined">declined</option>
           </select>
         </label>
-        <label><span className="block text-slate-600 dark:text-ink-2">BP at attestation</span><input type="text" value={st.bp} onChange={(e) => setSt({ ...st, bp: e.target.value })} placeholder="e.g. 178/96" className="w-full px-2 py-1 border rounded text-sm" /></label>
+        <label><span className="block text-slate-600 dark:text-ink-2">BP at attestation</span><input type="text" value={st.bp} onChange={(e) => setSt('bp', e.target.value)} placeholder="e.g. 178/96" className="w-full px-2 py-1 border rounded text-sm" /></label>
         <label>
           <span className="block text-slate-600 dark:text-ink-2">Contraindications</span>
-          <select value={st.contraindications} onChange={(e) => setSt({ ...st, contraindications: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
+          <select value={st.contraindications} onChange={(e) => setSt('contraindications', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
             <option value="not reviewed">Not reviewed</option>
             <option value="reviewed">Absolute and relative contraindications reviewed</option>
           </select>
         </label>
         <label>
           <span className="block text-slate-600 dark:text-ink-2">Provider agreement</span>
-          <select value={st.providerAgreement} onChange={(e) => setSt({ ...st, providerAgreement: e.target.value })} className="w-full px-2 py-1 border rounded text-sm">
+          <select value={st.providerAgreement} onChange={(e) => setSt('providerAgreement', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
             <option value="not confirmed">Not confirmed</option>
             <option value="confirmed">All providers agree with the thrombolytic decision</option>
           </select>
@@ -444,7 +467,7 @@ const SafePauseCard = ({ defaults = {} }) => {
 // ----------------------------------------------------------------------
 // Main PocketCards container
 // ----------------------------------------------------------------------
-export const PocketCards = ({ defaults = {} }) => {
+export const PocketCards = ({ defaults = {}, encounter }) => {
   return (
     <div className="flex flex-col gap-3 [&>*]:min-w-0 [&>*]:max-w-full" role="region" aria-label="Protocol cards">
       <div className="px-3 py-2 bg-gradient-to-r from-cobalt-900 to-cobalt-800 text-white rounded-lg flex items-center justify-between">
@@ -453,11 +476,11 @@ export const PocketCards = ({ defaults = {} }) => {
         </div>
         <span className="text-[10px] bg-white/20 dark:bg-slate-900/20 rounded px-2 py-0.5">v2</span>
       </div>
-      <IVTEligibilityCard defaults={defaults} />
+      <IVTEligibilityCard defaults={defaults} encounter={encounter} />
       <ContraindicationsCard />
-      <EVTEligibilityCard defaults={defaults} />
+      <EVTEligibilityCard defaults={defaults} encounter={encounter} />
       <BPProtocolCard />
-      <SafePauseCard defaults={defaults} />
+      <SafePauseCard defaults={defaults} encounter={encounter} />
     </div>
   );
 };

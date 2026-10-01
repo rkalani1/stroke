@@ -4,8 +4,7 @@
  * Drop-in: scripts/lint-touch-targets.mjs
  *
  * Walks the live DOM via Playwright at three mobile viewports (320/375/768)
- * across the app's surfaces (#/encounter, #/protocols, #/trials, and the
- * research sub-tabs) and asserts that every interactive element has
+ * across the retained Encounter, ischemic/ICH protocols and Tools surfaces and asserts that every interactive element has
  * getBoundingClientRect() ≥ 44 × 44.
  *
  * Interactive = button, [role=button], a[href], input:not(hidden), select,

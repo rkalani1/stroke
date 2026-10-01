@@ -2,7 +2,7 @@ import { NIHSS_ITEMS } from './clinical/nihss-items.js';
 import { calculateNIHSS, calculateICHVolumeReviewed } from './calculators.js';
 import { formatPerfusionForExport } from './clinical/perfusion-documentation.js';
 import { formatWakeUpScreenForExport } from './clinical/wake-up-documentation.js';
-import { numericInput, reviewedGcs } from './encounter-clinical-review.js';
+import { numericInput, reviewedGcs, evaluateVideoTreatment } from './encounter-clinical-review.js';
 import { computeLKWCountdown } from './calculators-extended.js';
 import { PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX, getPublicDemoPhiWarnings } from './public-demo-guardrails.js';
 
@@ -20,9 +20,37 @@ export function encounterVolume(volume) {
   const slices = numericInput(volume.numSlices, { min: 1, integer: true });
   return thickness === null || slices === null ? null : calculateICHVolumeReviewed({ lengthCm: volume.a, widthCm: volume.b, slicesCm: thickness * slices / 10 });
 }
+// Clinical thresholds use the unrounded ABC/2 flags, never its display value.
+export function protocolVolumeEstimate(volume) {
+  return volume ? { value: volume.volume, display: volume.volume.toFixed(1), exceeds15: volume.meetsNonTraumaticIphDualConsultVolume, exceeds30: volume.isLarge, unitWarning: volume.unitWarning } : null;
+}
+export function daptReperfusionReview(state) {
+  const recordedTreatment = state.actions.administered || state.actions.administrationTime || state.actions.punctureTime || state.actions.reperfusionTime;
+  const decisionsReviewed = state.note.diagnosisCategory === 'tia' || (state.decisions.ivt === 'Not recommended' && state.decisions.evt === 'Not recommended');
+  return { excluded: state.dapt.reperfusionExcluded === true && !recordedTreatment && decisionsReviewed, recordedTreatment: Boolean(recordedTreatment) };
+}
+export function protocolEncounter(state, nowMs = Date.now()) {
+  const n = state.note, compatible = state.context === 'acute' && n.diagnosisCategory === 'ischemic';
+  const hours = compatible ? encounterTiming(n, nowMs).hours ?? '' : '';
+  const nihss = compatible ? nihssAssessment(state.nihss).total ?? '' : '';
+  const [bpSystolic = '', bpDiastolic = ''] = n.presentingBP.split('/').map(value => numericInput(value, { min: 0 }) === null ? '' : value.trim());
+  const shared = { age: n.age, nihss, preMRS: n.premorbidMRS };
+  const safetyReviewRequired = compatible && evaluateVideoTreatment({ note: { ...n, nihss }, clock: hours === '' ? null : { total: hours, label: 'LKW' }, aspects: state.aspects, pcAspects: state.pcAspects, now: new Date(nowMs) }).tnk.reviewRequired === true;
+  // Fixed source values define review validity; wall-clock advancement does not
+  // reset local attestations, but elapsed time is recalculated on every render.
+  const sourceKey = JSON.stringify([state.context, n, state.nihss, state.aspects, state.pcAspects, state.evtMassEffect]);
+  return {
+    sourceKey, compatible, safetyReviewRequired,
+    ivt: { age: n.age, weight: n.weight, glucose: n.glucose, hoursFromLKW: hours, wakeUpOrUnknownOnset: n.lkwUnknown, preMRS: n.premorbidMRS, bpSystolic, bpDiastolic, ichOnCT: compatible && ['present', 'absent'].includes(n.ctHemorrhageStatus) ? n.ctHemorrhageStatus === 'present' : null, disablingDeficit: compatible && typeof n.disablingDeficit === 'boolean' ? n.disablingDeficit : null },
+    anterior: { ...shared, aspectsScore: compatible ? state.aspects : '', timeFromLKWh: hours, coreVolume: compatible ? n.coreVolume : '', massEffect: compatible && typeof state.evtMassEffect === 'boolean' ? state.evtMassEffect : null },
+    m2: { ...shared, aspectsScore: compatible ? state.aspects : '', hoursFromLKWh: hours },
+    basilar: { ...shared, pcAspects: compatible ? state.pcAspects : '', hoursFromLKWh: hours }
+  };
+}
 export function updateEncounter(state, updater) {
   const next = typeof updater === 'function' ? updater(state) : { ...state, ...updater };
-  return { ...next, revision: state.revision + 1, draft: state.draft ? { ...state.draft, stale: true } : null };
+  const contextChanged = next.context !== state.context || next.note.diagnosisCategory !== state.note.diagnosisCategory;
+  return { ...next, dapt: contextChanged ? { ...next.dapt, reperfusionExcluded: undefined } : next.dapt, revision: state.revision + 1, draft: state.draft ? { ...state.draft, stale: true } : null };
 }
 export function nihssAssessment(responses) {
   const complete = NIHSS_ITEMS.every(item => item.options.includes(responses[item.id]) && !responses[item.id].includes('(UN)'));

@@ -1,7 +1,7 @@
 // Preserved protocol surface extracted from the committed application.
 // Clinical literals, source-defined rules, and modal wording are unchanged.
 import React, { useEffect, useMemo, useState } from 'react';
-import { PocketCards } from './pocket-cards.jsx';
+import { PocketCards, useProtocolCaseState } from './pocket-cards.jsx';
 import { getLocalInstitutionalContent, GENERALIZABILITY_LIMITATIONS, ICH_INITIAL_EVALUATION_ALGORITHM, isSuccessfulEvtReperfusion } from './institutional-protocols.js';
 import { AIS_COMMAND_CENTER_CARDS, AIS_SOURCE_LINKS, AIS_COMMAND_CENTER_LAST_REVIEWED } from './management-guidance.js';
 import { recommendations, resolveClaimsWithCitations, citationLink } from './evidence-encounter.js';
@@ -69,7 +69,7 @@ const DEFAULT_EVT = Object.freeze({ population: 'adult', occlusion: '', timeWind
 // an explicit New encounter boundary with the same case epoch as Encounter.
 export default function ProtectedProtocols({
   telestrokeNote = {}, setTelestrokeNote,
-  nihssScore = 0, consultationType = 'telephone', pocketCardsCaseEpoch = 0,
+  nihssScore = 0, consultationType = 'telephone', pocketCardsCaseEpoch = 0, encounter,
   managementSubTab = 'ischemic', setManagementSubTab,
   ichVolumeParams: sharedVolumeParams, setIchVolumeParams: setSharedVolumeParams,
   navigateTo, setEncounterPhase = () => {}, setTrialsCategory = () => {},
@@ -79,7 +79,35 @@ export default function ProtectedProtocols({
   const [localVolumeParams, setLocalVolumeParams] = useState({ ...DEFAULT_VOLUME });
   const ichVolumeParams = sharedVolumeParams || localVolumeParams;
   const setIchVolumeParams = setSharedVolumeParams || setLocalVolumeParams;
-  const [evtDecisionInputs, setEvtDecisionInputs] = useState({ ...DEFAULT_EVT });
+  const exactScore = value => {
+    if (typeof value !== 'number' && (typeof value !== 'string' || !/^\d+$/.test(value.trim()))) return null;
+    const parsed = Number(value);
+    return Number.isInteger(parsed) ? parsed : null;
+  };
+  const aspects = exactScore(encounter?.anterior?.aspectsScore);
+  const mrs = exactScore(encounter?.anterior?.preMRS);
+  const pcAspects = exactScore(encounter?.basilar?.pcAspects);
+  const evtCanonical = encounter ? {
+    age: encounter.anterior.age,
+    nihss: encounter.anterior.nihss,
+    aspects: aspects === null || aspects < 0 || aspects > 10 ? '' : aspects >= 6 ? '6-10' : aspects >= 3 ? '3-5' : '0-2',
+    mrs: mrs === null || mrs < 0 || mrs > 6 ? '' : mrs <= 1 ? '0-1' : mrs === 2 ? '2' : mrs <= 4 ? '3-4' : '5-6',
+    pcAspects: pcAspects === null || pcAspects < 0 || pcAspects > 10 ? '' : pcAspects >= 6 ? '>=6' : '<6',
+    coreVolume: encounter.anterior.coreVolume,
+    massEffect: encounter.anterior.massEffect === true ? 'present' : encounter.anterior.massEffect === false ? 'none' : '',
+    disablingDeficit: encounter.ivt.disablingDeficit,
+  } : {};
+  const builderEncounter = encounter ? { ...encounter, onChange: (key, value) => {
+    const aliases = { disablingDeficit: 'disablingDeficit', age: 'age', coreVolume: 'coreVolume', massEffect: 'massEffect' };
+    if (aliases[key]) encounter.onChange?.(aliases[key], key === 'massEffect' ? value === '' ? null : value === 'present' : value);
+  } } : undefined;
+  const [evtDecisionInputs, setEvtField] = useProtocolCaseState({ ...DEFAULT_EVT }, builderEncounter, evtCanonical, ['nihss', 'aspects', 'mrs', 'pcAspects']);
+  const setEvtDecisionInputs = update => {
+    const next = typeof update === 'function' ? update(evtDecisionInputs) : update;
+    for (const [key, value] of Object.entries(next)) {
+      if (!Object.is(evtDecisionInputs[key], value)) setEvtField(key, value);
+    }
+  };
   const [protocolModal, setProtocolModal] = useState(null);
   const [currentTime, setCurrentTime] = useState(() => new Date());
   useEffect(() => {
@@ -94,7 +122,7 @@ export default function ProtectedProtocols({
     };
   }, []);
   useEffect(() => {
-    setEvtDecisionInputs({ ...DEFAULT_EVT });
+    if (!encounter) setEvtDecisionInputs({ ...DEFAULT_EVT });
     setLocalVolumeParams({ ...DEFAULT_VOLUME });
     setProtocolModal(null);
   }, [pocketCardsCaseEpoch]);
@@ -1846,6 +1874,7 @@ export default function ProtectedProtocols({
                               <label htmlFor="evt-aspects" className="block text-xs text-slate-500 mb-1 dark:text-mute">ASPECTS</label>
                               <select
                                 id="evt-aspects"
+                                disabled={!!encounter}
                                 value={evtDecisionInputs.aspects}
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, aspects: e.target.value }))}
                                 className="w-full px-2 py-2 border border-line rounded-lg"
@@ -1860,6 +1889,7 @@ export default function ProtectedProtocols({
                               <label htmlFor="evt-prestroke-mrs" className="block text-xs text-slate-500 mb-1 dark:text-mute">Pre-stroke mRS</label>
                               <select
                                 id="evt-prestroke-mrs"
+                                disabled={!!encounter}
                                 value={evtDecisionInputs.mrs}
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, mrs: e.target.value }))}
                                 className="w-full px-2 py-2 border border-line rounded-lg"
@@ -1875,6 +1905,7 @@ export default function ProtectedProtocols({
                               <label htmlFor="evt-nihss-basilar" className="block text-xs text-slate-500 mb-1 dark:text-mute">NIHSS</label>
                               <input
                                 id="evt-nihss-basilar"
+                                readOnly={!!encounter}
                                 type="number"
                                 value={evtDecisionInputs.nihss}
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, nihss: e.target.value }))}
@@ -1886,6 +1917,7 @@ export default function ProtectedProtocols({
                               <label htmlFor="evt-pc-aspects-basilar" className="block text-xs text-slate-500 mb-1 dark:text-mute">PC-ASPECTS (Basilar)</label>
                               <select
                                 id="evt-pc-aspects-basilar"
+                                disabled={!!encounter}
                                 value={evtDecisionInputs.pcAspects}
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, pcAspects: e.target.value }))}
                                 className="w-full px-2 py-2 border border-line rounded-lg"
@@ -1912,6 +1944,7 @@ export default function ProtectedProtocols({
                               <label htmlFor="evt-mass-effect" className="block text-xs text-slate-500 mb-1 dark:text-mute">Significant mass effect</label>
                               <select
                                 id="evt-mass-effect"
+                                disabled={encounter?.compatible === false}
                                 value={evtDecisionInputs.massEffect}
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, massEffect: e.target.value }))}
                                 className="w-full px-2 py-2 border border-line rounded-lg"
@@ -1925,6 +1958,7 @@ export default function ProtectedProtocols({
                               <label htmlFor="evt-ctp-core" className="block text-xs text-slate-500 mb-1 dark:text-mute">CTP Core (mL)</label>
                               <input
                                 id="evt-ctp-core"
+                                disabled={encounter?.compatible === false}
                                 type="number"
                                 min="0"
                                 max="500"
@@ -1965,6 +1999,7 @@ export default function ProtectedProtocols({
                               <input
                                 type="checkbox"
                                 checked={!!evtDecisionInputs.disablingDeficit}
+                                disabled={encounter?.compatible === false}
                                 onChange={(e) => setEvtDecisionInputs(prev => ({ ...prev, disablingDeficit: e.target.checked }))}
                                 className="rounded border-slate-300 text-cobalt-600 dark:border-strong dark:text-cobalt-300"
                               />
@@ -1987,7 +2022,7 @@ export default function ProtectedProtocols({
                                 const perf = getPerfusionMetrics(telestrokeNote);
                                 setEvtDecisionInputs(prev => ({
                                   ...prev,
-                                  coreVolume: perf.coreVolume !== null ? String(Math.round(perf.coreVolume)) : prev.coreVolume,
+                                  coreVolume: !encounter && perf.coreVolume !== null ? String(Math.round(perf.coreVolume)) : prev.coreVolume,
                                   mismatchRatio: perf.mismatchRatio !== null ? perf.mismatchRatio.toFixed(1) : prev.mismatchRatio,
                                   mismatchVolume: perf.mismatchVolume !== null ? String(Math.round(perf.mismatchVolume)) : prev.mismatchVolume
                                 }));
@@ -2348,7 +2383,7 @@ export default function ProtectedProtocols({
                         {/* Pocket Cards — interactive IVT/EVT/BP/contraindication decision aids
                             (formerly its own sub-tab; folded into Ischemic since the cards
                             are AIS-acute-phase decision support). */}
-                        <PocketCards key={`case-${pocketCardsCaseEpoch}`} defaults={{
+                        <PocketCards key={`case-${pocketCardsCaseEpoch}`} encounter={encounter} defaults={{
                           hoursFromLKW: (() => {
                             try {
                               if (telestrokeNote.lkwUnknown === true) return '';

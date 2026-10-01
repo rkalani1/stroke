@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { newEncounter, updateEncounter, nihssAssessment, activeNote, buildSummary, encounterTiming, validTimestamp, outputWarnings, encounterVolume, copySummary } from '../src/workspace-state.js';
+import { newEncounter, updateEncounter, nihssAssessment, activeNote, buildSummary, encounterTiming, validTimestamp, outputWarnings, encounterVolume, protocolVolumeEstimate, protocolEncounter, copySummary } from '../src/workspace-state.js';
 import { evaluateWakeUpScreen } from '../src/encounter-clinical-review.js';
 import { NIHSS_ITEMS } from '../src/clinical/nihss-items.js';
 const NOW = new Date('2026-10-01T12:00:00').getTime();
@@ -89,6 +89,35 @@ describe('canonical state and honest documentation', () => {
   it('shares strict ABC/2 dimensions and clears stale arithmetic', () => {
     const v={a:'4.2',b:'3.6',thicknessMm:'5',numSlices:'6'};expect(encounterVolume(v).volume).toBeCloseTo(22.7,1);
     expect(encounterVolume({...v,a:''})).toBeNull();expect(encounterVolume({...v,numSlices:'1.5'})).toBeNull();expect(encounterVolume({...v,thicknessMm:'5mm'})).toBeNull();
+  });
+  it.each([['5.99', '1', false, false], ['6', '1', true, false], ['6.01', '1', true, false], ['5.99', '2', true, false], ['6', '2', true, true], ['6.01', '2', true, true]])('preserves independent unrounded 15/30 mL protocol flags for %s by %s slices', (a, numSlices, exceeds15, exceeds30) => {
+    // One 1 cm slice yields 2.5A mL; two yield 5A mL.
+    const volume = encounterVolume({ a, b: '5', thicknessMm: '10', numSlices });
+    expect(protocolVolumeEstimate(volume)).toMatchObject({ exceeds15, exceeds30 });
+    expect(protocolVolumeEstimate(null)).toBeNull();
+  });
+  it('projects current protocol measurements, complete zero, exact hours and intentional clears', () => {
+    const s = newEncounter();
+    s.note = { ...s.note, diagnosisCategory: 'ischemic', age: '65', weight: '83', glucose: '100', presentingBP: '140/80', lkwDate: '2026-10-01', lkwTime: '10:00' };
+    s.nihss = Object.fromEntries(NIHSS_ITEMS.map(item => [item.id, item.options[0]]));s.aspects = '0';
+    const first = protocolEncounter(s, NOW);
+    expect(first.anterior).toMatchObject({ nihss: 0, aspectsScore: '0', timeFromLKWh: 2 });
+    expect(first.ivt).toMatchObject({ weight: '83', glucose: '100', bpSystolic: '140', bpDiastolic: '80' });
+    const resumed = protocolEncounter(s, NOW + 30000);
+    expect(resumed.sourceKey).toBe(first.sourceKey);expect(resumed.ivt.hoursFromLKW).toBeCloseTo(2.0083333333, 9);
+    s.note.weight = '';s.nihss.dysarthria = '';s.aspects = '';
+    const cleared = protocolEncounter(s, NOW);
+    expect(cleared.sourceKey).not.toBe(first.sourceKey);expect(cleared.ivt.weight).toBe('');expect(cleared.anterior.nihss).toBe('');expect(cleared.anterior.aspectsScore).toBe('');
+    s.note.lkwUnknown = true;expect(protocolEncounter(s, NOW).ivt.hoursFromLKW).toBe('');
+    s.note.diagnosisCategory = 'ich';expect(protocolEncounter(s, NOW)).toMatchObject({ compatible: false, anterior: { nihss: '', aspectsScore: '', coreVolume: '', massEffect: null } });
+  });
+  it('uses existing concern distinctions for protocol safety review without classifying blue-tier flags as exclusions', () => {
+    const s = newEncounter();s.note.diagnosisCategory = 'ischemic';
+    s.note.tnkContraindicationChecklist = { aceInhibitor: true, dualAntiplatelet: true, seizureAtOnset: true };
+    expect(protocolEncounter(s, NOW).safetyReviewRequired).toBe(false);
+    const before = protocolEncounter(s, NOW).sourceKey;
+    s.note.tnkContraindicationChecklist.priorICH = true;
+    expect(protocolEncounter(s, NOW).sourceKey).not.toBe(before);expect(protocolEncounter(s, NOW).safetyReviewRequired).toBe(true);
   });
   it('reset clears all source groups, draft and timers without reusing nested state', () => {
     const s=newEncounter();s.note.age='80';s.actions.administered=true;s.draft={text:'old'};

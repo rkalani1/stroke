@@ -10,9 +10,9 @@
   "files": [
     {
       "path": "app.js",
-      "bytes": 239327,
-      "gzipBytes": 76423,
-      "sha256": "649b818381cf3505ff41547090db63849b5583b40ea55594d17295edc90942f8"
+      "bytes": 243074,
+      "gzipBytes": 77687,
+      "sha256": "2e24ac5f3ba3bed3042781bb398454d373ecbb9f8d389e148890cfd382cd3484"
     },
     {
       "path": "chunks/chunk-AAACGAWZ.js",
@@ -21,10 +21,10 @@
       "sha256": "0ffa0e5733e73cd09171fcc4b63a59eefaa515ac555adc8ef433f17347f769f8"
     },
     {
-      "path": "chunks/ProtectedProtocols-7XC4JVOS.js",
-      "bytes": 285053,
-      "gzipBytes": 66176,
-      "sha256": "451ccbbd2cb4e2073399cb8cdd88767225c676c7ab19ea25dd1e4b49683e0608"
+      "path": "chunks/ProtectedProtocols-JVGTPXRX.js",
+      "bytes": 287543,
+      "gzipBytes": 67057,
+      "sha256": "946713e123249b8f48a4346e32ed58109bcb9f60a414e514a4c183f7f43ecd28"
     }
   ]
 }

@@ -82,8 +82,32 @@ describe('retained Encounter behavior replacing monolith output and duplicate-to
     expect(html).toContain('severity framework; no individual prognosis');
     expect(html).not.toMatch(/mortality:|97%|survival probability/i);
   });
+  it.each([['5.99', 0], ['6', 1], ['6.01', 1]])('uses unrounded 30 mL severity threshold at diameter %s', (a, score) => {
+    // Independent ABC/2: 5 cm * 2 cm * A / 2 = 5A; 29.95, 30, 30.05 mL.
+    const state = make({ note: { diagnosisCategory: 'ich', age: '65' }, gcs: { eye: '4', verbal: '5', motor: '6' }, volume: { a, b: '5', thicknessMm: '10', numSlices: '2' }, ich: { ivh: false, infratentorial: false } });
+    expect(render(state)).toContain(`ICH score ${score}/6`);
+  });
+  it('fresh TIA can explicitly complete its own reperfusion review without hidden ischemic decisions', () => {
+    const state = make({ note: { diagnosisCategory: 'tia', lkwDate: '2026-10-01', lkwTime: '10:00', ctHemorrhageStatus: 'absent' }, dapt: { abcd2: '4', noncardioembolicConfirmed: true, antiplateletContraindicationsReviewed: true, ichRisk: 'reviewed', atherosclerotic: false, lvdSymptomatic: false, cyp2c19LOF: false } });
+    expect(render(state)).toContain('No reperfusion treatment after review');
+    expect(render(state)).not.toContain('clopidogrel+ASA:');
+    const reviewed = updateEncounter(state, prev => ({ ...prev, dapt: { ...prev.dapt, reperfusionExcluded: true } }));
+    expect(render(reviewed)).toContain('clopidogrel+ASA:');
+    expect(reviewed.decisions).toEqual({ ivt: '', evt: '' });
+    expect(render({ ...reviewed, actions: { ...reviewed.actions, punctureTime: '2026-10-01T11:00' } })).not.toContain('clopidogrel+ASA:');
+    expect(render({ ...reviewed, actions: { ...reviewed.actions, punctureTime: '2026-10-01T11:00' } })).toContain('Recorded reperfusion');
+  });
+  it('ischemic-to-TIA and follow-up changes invalidate the explicit DAPT reperfusion review', () => {
+    const state = make({ note: { diagnosisCategory: 'ischemic', lkwDate: '2026-10-01', lkwTime: '10:00', ctHemorrhageStatus: 'absent' }, nihss: zeroExam, decisions: { ivt: 'Not recommended', evt: 'Not recommended' }, dapt: { reperfusionExcluded: true, abcd2: '4', noncardioembolicConfirmed: true, antiplateletContraindicationsReviewed: true, ichRisk: 'reviewed', atherosclerotic: false, lvdSymptomatic: false, cyp2c19LOF: false } });
+    const switched = updateEncounter(state, prev => ({ ...prev, note: { ...prev.note, diagnosisCategory: 'tia' } }));
+    expect(switched.decisions).toEqual(state.decisions);
+    expect(switched.dapt.reperfusionExcluded).toBeUndefined();
+    expect(render(switched)).not.toContain('clopidogrel+ASA:');
+    expect(render(updateEncounter(switched, prev => ({ ...prev, dapt: { ...prev.dapt, reperfusionExcluded: true } })))).toContain('clopidogrel+ASA:');
+    expect(updateEncounter(state, prev => ({ ...prev, context: 'follow-up' })).dapt.reperfusionExcluded).toBeUndefined();
+  });
   it('a recorded bleeding concern cannot be cleared by DAPT review attestation', () => {
-    const state = make({ note: { diagnosisCategory: 'ischemic', lkwDate: '2026-10-01', lkwTime: '10:00', ctHemorrhageStatus: 'absent' }, nihss: zeroExam, decisions: { ivt: 'Not recommended', evt: 'Not recommended' }, dapt: { noncardioembolicConfirmed: true, antiplateletContraindicationsReviewed: true, ichRisk: 'reviewed', atherosclerotic: false, lvdSymptomatic: false, cyp2c19LOF: false } });
+    const state = make({ note: { diagnosisCategory: 'ischemic', lkwDate: '2026-10-01', lkwTime: '10:00', ctHemorrhageStatus: 'absent' }, nihss: zeroExam, decisions: { ivt: 'Not recommended', evt: 'Not recommended' }, dapt: { reperfusionExcluded: true, noncardioembolicConfirmed: true, antiplateletContraindicationsReviewed: true, ichRisk: 'reviewed', atherosclerotic: false, lvdSymptomatic: false, cyp2c19LOF: false } });
     expect(render(state)).toContain('clopidogrel+ASA:');
     for (const key of ['currentICH', 'activeInternalBleeding', 'lowPlatelets', 'knownBleedingDiathesis', 'recentGIGUBleeding']) {
       expect(render({ ...state, note: { ...state.note, tnkContraindicationChecklist: { [key]: true } } })).not.toContain('clopidogrel+ASA:');
