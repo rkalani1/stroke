@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:4d43cb86bfc5af9a42cd646fa376334c",
+    "checksum": "sha256:e8e0b10112215a63fa11ef20d1870b0f",
     "counts": {
       "guidelines": 11,
       "trials": 264,
@@ -5760,8 +5760,8 @@
     },
     {
       "id": "hints-simulator",
-      "title": "HINTS+ Vestibular Simulator",
-      "summary": "Selected HINTS+ eye-movement demonstrations for trained examiners assessing an appropriate acute vestibular syndrome. Both skew animations are unavailable; the retained motions are teaching schematics, not validated examination recordings.",
+      "title": "HINTS+ Reference",
+      "summary": "Written HINTS+ finding examples and a qualified pattern checklist for trained examiners assessing an appropriate acute vestibular syndrome. Eye-movement animations are unavailable.",
       "tags": [
         "simulators"
       ],
@@ -5785,7 +5785,7 @@
       ],
       "lastReviewed": "2026-05-30",
       "provenance": "src/education.jsx",
-      "body": "Selected HINTS+ eye-movement demonstrations for trained examiners assessing an appropriate acute vestibular syndrome. Both skew animations are unavailable; the retained motions are teaching schematics, not validated examination recordings.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
+      "body": "Written HINTS+ finding examples and a qualified pattern checklist for trained examiners assessing an appropriate acute vestibular syndrome. Eye-movement animations are unavailable.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "ich-blood-pressure",

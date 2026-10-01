@@ -255,9 +255,9 @@ const EDUCATION_MODULES = [
   },
   {
     id: 'hints-simulator',
-    title: 'HINTS+ Vestibular Simulator',
-    purpose: 'Selected HINTS+ eye-movement demonstrations for trained examiners assessing an appropriate acute vestibular syndrome. Both skew animations are unavailable; the retained motions are teaching schematics, not validated examination recordings.',
-    actions: 'hints vestibular nystagmus skew eye movement vertigo hearing loss avs nystagmus simulator interactive',
+    title: 'HINTS+ Reference',
+    purpose: 'Written HINTS+ finding examples and a qualified pattern checklist for trained examiners assessing an appropriate acute vestibular syndrome. Eye-movement animations are unavailable.',
+    actions: 'hints vestibular nystagmus skew eye movement vertigo hearing loss avs reference pattern checklist',
     categories: ['simulators'],
     lastReviewed: '2026-05-30',
     references: [
@@ -818,11 +818,15 @@ export const EDUCATION_PRACTICE_CASES = [
   {
     id: 'seizure', title: 'Seizure treatment versus prophylaxis',
     scenario: 'A patient with ischemic stroke has no witnessed or electrographic seizure. Another has a confirmed ongoing seizure.',
-    options: ['Give routine antiseizure prophylaxis to every stroke patient.', 'Treat a confirmed seizure; do not equate this with routine prophylaxis in a patient without seizures.', 'A seizure is only important after the first week.'],
+    options: ['Give routine antiseizure prophylaxis to every stroke patient.', 'Treat the ongoing seizure; do not equate this with routine prophylaxis in a patient without seizures.', 'A seizure is only important after the first week.'],
     answer: 1,
-    feedback: ['Routine prophylaxis after ischemic stroke is not recommended. ICH and aSAH guidance must be read in their own populations.', 'Correct. Confirmed seizures need clinical treatment. Altered consciousness may justify EEG evaluation; neither timing alone nor a risk score creates a universal prophylaxis order.', 'Acute seizures can require urgent treatment; the early/late distinction serves a different prognostic and diagnostic purpose.'],
+    feedback: ['Routine prophylaxis after ischemic stroke is not recommended. ICH and aSAH guidance must be read in their own populations.', 'Correct. Ongoing seizures require prompt assessment and treatment. In critically ill patients with acute brain injury, altered consciousness may justify continuous EEG evaluation for nonconvulsive seizures; neither timing alone nor a risk score creates a universal prophylaxis order.', 'Acute seizures can require urgent treatment; the early/late distinction serves a different prognostic and diagnostic purpose.'],
     changes: 'Electrographic findings, ongoing status, hemorrhage type, recurrence and drug interactions alter care.',
-    source: 'https://pubmed.ncbi.nlm.nih.gov/41582814/', sourceLabel: 'AHA/ASA 2026 AIS guideline'
+    source: 'https://pubmed.ncbi.nlm.nih.gov/41582814/', sourceLabel: 'AHA/ASA 2026 AIS guideline',
+    additionalSources: [
+      { url: 'https://escholarship.org/content/qt94w9q47j/qt94w9q47j.pdf', label: 'ACNS 2015 continuous EEG consensus · Part I' },
+      { url: 'https://www.neurocriticalcare.org/Portals/0/ENLS%205.0/ENLS%206.0/Protocol%20V6_0%20Status%20Epilepticus.pdf?ver=2beXp_6hIhevmW_aQFedPA%3D%3D', label: 'NCS ENLS 6.0 status epilepticus protocol · July 2024' }
+    ]
   },
   {
     id: 'prognosis', title: 'A cohort estimate is not an individual ceiling',
@@ -861,6 +865,9 @@ export function EvidencePracticeCases() {
               <summary className="cursor-pointer min-h-[44px] font-semibold">What could change the answer?</summary>
               <p>{item.changes}</p>
               <a href={item.source} target="_blank" rel="noopener noreferrer" className="underline">{item.sourceLabel}</a>
+              {item.additionalSources?.map((source) => (
+                <p key={source.url} className="mt-2"><a href={source.url} target="_blank" rel="noopener noreferrer" className="underline">{source.label}</a></p>
+              ))}
             </details>
           </fieldset>
         ))}
@@ -927,7 +934,7 @@ export default function Education({ activeSubTab, onSubTabChange, onBack, copyTo
   // ('epic', 'trials', 'needs-review') matched zero modules and were removed.
   const categories = [
     { key: "all", label: "All Modules" },
-    { key: "simulators", label: "Interactive Simulators" },
+    { key: "simulators", label: "Interactive References" },
     { key: "pocket-card", label: "Pocket Cards" },
     { key: "printable", label: "Printable / Infographics" },
     { key: "icu", label: "Neuro ICU / NCC" },
@@ -1339,7 +1346,7 @@ function renderSubModuleContent(moduleId, viewMode, onNavigate, copyToClipboard,
       return (
         <ErrorBoundary>
           <div className="bg-card border border-line rounded-lg p-6">
-            <h2 className="font-serif text-xl font-bold text-ink mb-4">HINTS+ Vestibular Exam Simulator</h2>
+            <h2 className="font-serif text-xl font-bold text-ink mb-4">HINTS+ Reference</h2>
             <HintsSimulator />
           </div>
         </ErrorBoundary>

@@ -123,6 +123,12 @@ describe('Education navigation and synthetic teaching cases', () => {
     const html = render(EvidencePracticeCases);
     expect((html.match(/type="radio"/g) || []).length).toBe(21);
     expect(html).not.toContain('checked=""');
+    const seizure = EDUCATION_PRACTICE_CASES.find((item) => item.id === 'seizure');
+    expect(seizure.additionalSources).toHaveLength(2);
+    for (const source of seizure.additionalSources) {
+      expect(html).toContain(source.url);
+      expect(html).toContain(source.label);
+    }
   });
   it('makes insufficient information the supported branch where context is absent', () => {
     const keyed = Object.fromEntries(EDUCATION_PRACTICE_CASES.map((row) => [row.id,row]));

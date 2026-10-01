@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "guidelines-index",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.30.4",
-    "checksum": "sha256:eec1948c4448b5ceffc3eebb0503cdee",
+    "appVersion": "6.30.5",
+    "checksum": "sha256:9539be783767028e24f8fddcf0cf6782",
     "count": 110,
     "source": "Guideline metadata bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -5377,10 +5377,10 @@
       "sourceReview": {
         "reviewedAt": "2026-09-30",
         "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-        "sourceAccess": "Original main body accessible; correction confirms omitted recommendation boxes. Linked replacement supplement not recovered through documented routes.",
-        "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency. 1 publication-update record remains partly reviewed or unresolved; see the individual notices.",
-        "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
-        "implementationUpdatedAt": "2026-09-30"
+        "sourceAccess": "Complete publisher-linked corrected Supplement 2, 19 pages, available as page-labeled PDF text: all 22 formal/no-recommendation and 18 consensus units independently paired. Direct PDF binary download remained HTTP 403; visual inspection was unavailable.",
+        "currencyNote": "The 2022 correction-specific box/grade gap is resolved for these 40 retained units. Their source fidelity does not establish comprehensive clinical currency through 2026; later evidence and individual applicability still require review.",
+        "sourceEditionNote": "2021 guideline recommendation boxes restored by the January 25, 2022 erratum and its linked Supplement 2. The current review concerns this corrected supplement, not a newly published guideline edition.",
+        "implementationUpdatedAt": "2026-10-01"
       },
       "documentType": "guideline",
       "gradingSystem": "GRADE",
@@ -5390,8 +5390,8 @@
           "pmid": "35300261",
           "doi": "10.1177/23969873221076951",
           "publisherUrl": "https://doi.org/10.1177/23969873221076951",
-          "status": "unresolved",
-          "note": "The notice restores missing recommendation boxes through Supplement 2. The complete corrected box supplement was not independently recovered in this review. Retained statements remain visible, but their corrected-edition grades and wording are unresolved.",
+          "status": "applied",
+          "note": "The publisher-linked corrected Supplement 2 was retrieved as complete page-labeled PDF text and all 18 PICO boxes were paired to the 22 formal/no-recommendation units and 18 consensus units retained here. Native strength, certainty and scope are supported, with two small wording-calibration refinements. Direct binary download remained blocked; no comprehensive review of later clinical evidence is implied.",
           "checkedAt": "2026-09-30",
           "affectedRecommendationIds": [
             "eso-ean-poststroke-cognition-2021-pico1-r1",
@@ -5436,10 +5436,13 @@
             "eso-ean-poststroke-cognition-2021-pico18-c1"
           ],
           "previousReviewNote": "The correction restores omitted recommendation boxes in online supplement 2. All 18 PICO questions and their 22 formal/no-recommendation statements plus 18 complete consensus boxes were checked against the corrected supplement.",
-          "independentReviewScope": "complete notice read; linked corrected recommendation-box supplement unavailable"
+          "independentReviewScope": "Complete correction notice and complete 19-page corrected recommendation-box text read; all 40 retained units paired. This resolves this correction-specific source gap only.",
+          "priorIndependentReviewNote": "The notice restores missing recommendation boxes through Supplement 2. The complete corrected box supplement was not independently recovered in this review. Retained statements remain visible, but their corrected-edition grades and wording are unresolved.",
+          "priorIndependentReviewScope": "complete notice read; linked corrected recommendation-box supplement unavailable",
+          "reviewPerformedAt": "2026-10-01"
         }
       ],
-      "hasUnresolvedUpdates": true,
+      "hasUnresolvedUpdates": false,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/eso-ean-poststroke-cognition-2021.json"
     },
     {

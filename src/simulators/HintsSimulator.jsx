@@ -1,93 +1,47 @@
 /**
- * Bedside Simulator 2 — HINTS+ Eye-Movement Simulator.
- * Drop-in: src/simulators/HintsSimulator.jsx
- *
- * A self-contained, dependency-free teaching simulator for the 3-step
- * HINTS (plus bedside hearing → HINTS+) exam used to differentiate a
- * CENTRAL (posterior-circulation stroke) from a PERIPHERAL (vestibular
- * neuritis) cause of the Acute Vestibular Syndrome (AVS).
- *
- * Two linked widgets:
- *   1. Eye Simulator stage — an animated round head + 2 eyes whose pupils
- *      sit on a fixation target. Buttons trigger the 4 HINTS components.
- *      Each scenario's eye/head motion is a NAMED CSS @keyframes class
- *      toggled by React state (activeAnim) — no setInterval / inline-style
- *      mutation. Selecting a new scenario cancels/replaces the prior one.
- *   2. Diagnostic Assistant — 4 toggle pairs feeding {hit, nystagmus,
- *      skew, hearing} into the classifier.
- *
- * Classifier (ported EXACTLY from the source — counterintuitive, by design):
- *   • A NORMAL/intact head-impulse is the CENTRAL sign in AVS.
- *   • isCentral = HIT-normal || direction-changing-nystagmus || skew
- *                 || new unilateral hearing loss. Any central or equivocal
- *     finding prompts urgent central-cause / stroke evaluation.
- *
- * Styling: v7 tokens / Tailwind utilities only (teal accent, crit/warn/ok
- * semantics, slate neutrals). The eye-stage geometry + @keyframes live in a
- * scoped <style> block; no dark-glass theme, no forbidden hue utilities.
- *
- * No print view, no localStorage, no institutional content.
+ * HINTS+ Reference: written finding examples and a qualified pattern checklist.
+ * The legacy module filename/export remain stable for existing imports.
+ * Synthetic head, eye and cover movements are deliberately unavailable;
+ * this reference does not establish examination competence or exclude stroke.
  */
 
 import React, { useState } from 'react';
 
 const cx = (...p) => p.filter(Boolean).join(' ');
 
-/* v7 palette (hex) for the eye-stage drawing context where Tailwind
-   utilities don't reach. Mirrors src/design/tokens.css. */
-const C = {
-  teal:   '#0C7C8C',
-  tealDk: '#0A6571',
-  coral:  '#DC3F3A',
-  gold:   '#B07D24',
-  green:  '#2C7A52',
-  ink:    '#14171D',
-  slate300: '#CBD5E1',
-  slate400: '#94A3B8',
-  slate500: '#64748B'
-};
-
-/* ── Scenario catalogue ───────────────────────────────────────────────
-   Each entry maps a button to an animation class + an explanation. The
-   `anim` value becomes a CSS class on the eye stage (see scoped <style>).
-   `cover` selects which cover-patch animation runs (test-of-skew only). */
+/* Written examples only; no movement model or rendering is retained. */
 const SCENARIOS = {
   /* 1 · Head-Impulse Test (HIT) */
   'hit-peripheral': {
     group: 'Head Impulse Test (HIT)',
-    label: 'VOR Deficit',
+    label: 'Unilateral VOR Deficit',
     tone: 'ok',
-    anim: 'hint-anim-hit-peripheral',
-    text: 'Head Impulse Test (VOR deficit): the eyes move with the head, then make a corrective saccade back to the target. This supports peripheral vestibular dysfunction in the full HINTS+ pattern, but an abnormal HIT alone does not exclude stroke, including AICA territory ischemia.'
+    text: 'Head Impulse Test (unilateral VOR deficit): an impulse toward the affected side produces a corrective saccade. That saccade should match the fast-phase direction of the direction-fixed horizontal nystagmus. This supports a peripheral pattern only when the other findings agree; an abnormal HIT alone does not exclude stroke, including AICA territory ischemia.'
   },
   'hit-central': {
     group: 'Head Impulse Test (HIT)',
-    label: 'VOR Intact',
+    label: 'VOR Intact Bilaterally',
     tone: 'crit',
-    anim: 'hint-anim-hit-central',
-    text: 'Head Impulse Test (Central / VOR intact): the head rotates right, the VOR is intact, so the eyes immediately counter-rotate and stay locked on the target with no catch-up saccade. A NORMAL HIT is the CENTRAL/stroke sign in AVS — counterintuitive but load-bearing.'
+    text: 'Head Impulse Test (bilaterally normal): in continuous AVS with nystagmus, no corrective saccade on impulses to either side is a central warning pattern. A normal response in only one direction does not establish a bilaterally normal HIT. Interpret the complete HINTS+ examination in clinical context.'
   },
 
   /* 2 · Nystagmus (N) */
   'nys-uni': {
     group: 'Nystagmus (N)',
-    label: 'Unidirectional',
+    label: 'Unidirectional Horizontal',
     tone: 'ok',
-    anim: 'hint-anim-nys-uni',
-    text: 'Unidirectional Nystagmus: the fast phase beats in one direction across gaze positions. This can support a peripheral pattern when the other findings agree, but alone does not exclude a central cause.'
+    text: 'Unidirectional Horizontal Nystagmus: the horizontal fast phase beats in one direction across gaze positions, sometimes with a slight torsional component. This can support a peripheral pattern when the other findings agree, but alone does not exclude a central cause.'
   },
   'nys-bi': {
     group: 'Nystagmus (N)',
     label: 'Gaze-Evoked / Direction-Changing',
     tone: 'crit',
-    anim: 'hint-anim-nys-bi',
-    text: 'Direction-Changing (Gaze-Evoked) Nystagmus (Central): the fast phase REVERSES with the direction of gaze — beats left on left gaze, right on right gaze. Highly specific marker of a central (posterior-fossa) lesion.'
+    text: 'Direction-Changing (Gaze-Evoked) Nystagmus: sustained horizontal nystagmus that reverses with gaze direction is a central warning sign. Distinguish this from a few low-amplitude beats only at extreme lateral gaze, which may be physiologic. Interpret the full examination and clinical context.'
   },
   'nys-vert': {
     group: 'Nystagmus (N)',
     label: 'Vertical',
     tone: 'crit',
-    anim: 'hint-anim-nys-vert',
     text: 'Pure Vertical Nystagmus (Central): spontaneous down-beating nystagmus — eyes drift slowly up, then fast-snap down. In the AVS, spontaneous vertical nystagmus is a central sign (brainstem or cerebellar lesion — often stroke, but also demyelination, drug toxicity or other causes); positional vertical-torsional nystagmus from BPPV is a separate episodic syndrome where HINTS does not apply.'
   },
 
@@ -96,16 +50,12 @@ const SCENARIOS = {
     group: 'Test of Skew (TS)',
     label: 'No Skew',
     tone: 'ok',
-    anim: 'hint-anim-skew-none',
-    cover: 'alt',
-    text: 'No Skew Deviation: on alternating cover/uncover the eyes stay conjugate and horizontally aligned — no vertical re-fixation movement. Consistent with a peripheral pattern only if the other findings agree — skew is absent in most central AVS cases, so its absence alone does not exclude stroke.'
+    text: 'No Skew Deviation: alternate cover testing shows no vertical re-fixation. Horizontal refixation alone is not skew deviation. This supports a peripheral pattern only when the other findings agree; absence of skew alone does not exclude stroke.'
   },
   'skew-present': {
     group: 'Test of Skew (TS)',
     label: 'Skew Present',
     tone: 'crit',
-    anim: 'hint-anim-skew-present',
-    cover: 'alt',
     text: 'Skew Deviation Present (Central): the covered eye vertical-drifts; on uncover it makes a vertical re-fixation movement to realign. Vertical ocular misalignment reflects a right–left imbalance of otolith (graviceptive) input to the oculomotor system; in AVS it is a specific but insensitive sign of a central, usually brainstem, lesion (occasionally reported with peripheral vestibular disease).'
   },
 
@@ -114,14 +64,12 @@ const SCENARIOS = {
     group: 'Bedside Hearing Test (HINTS+)',
     label: 'No New Hearing Loss',
     tone: 'ok',
-    anim: '',
-    text: 'Bedside Hearing Test: finger-rub or whisper is heard equally in both ears, with no new hearing loss. This isolated finding does not establish a peripheral diagnosis or exclude stroke.'
+    text: 'Bedside Hearing Test: finger-rub is heard equally in both ears, with no new hearing loss. This isolated finding does not establish a peripheral diagnosis or exclude stroke.'
   },
   'hear-loss': {
     group: 'Bedside Hearing Test (HINTS+)',
     label: 'New Unilateral Hearing Loss',
     tone: 'crit',
-    anim: '',
     text: 'Bedside Hearing Test (New Unilateral Loss): finger-rub reveals new asymmetric hearing loss on one side. This raises concern for AICA / labyrinthine ischemia but can also occur with peripheral inner-ear disorders; interpret it in the full HINTS+ and clinical context.'
   }
 };
@@ -135,24 +83,24 @@ const GROUPS = [
 ];
 
 /* ── Classifier (pure — exported for unit tests) ──────────────────────
-   PORTED EXACTLY from the source. Do NOT "fix" the counterintuitive HIT
-   rule: in the Acute Vestibular Syndrome a NORMAL head-impulse is the
-   CENTRAL/stroke sign. */
+   The normal HIT key denotes a bilaterally normal response in appropriate
+   AVS with nystagmus. A recorded warning component prompts evaluation;
+   this checklist does not independently establish a diagnosis. */
 export function classifyHints({ hit, nystagmus, skew, hearing } = {}) {
   const complete = ['normal', 'abnormal'].includes(hit)
     && ['uni', 'bi'].includes(nystagmus)
     && ['none', 'skew'].includes(skew)
     && ['normal', 'loss'].includes(hearing);
-  const isCentralHIT = hit === 'normal';        // intact VOR (no saccade) → central
-  const isCentralNystagmus = nystagmus === 'bi'; // direction-changing / vertical → central
+  const isCentralHIT = hit === 'normal';        // bilaterally intact VOR → central warning
+  const isCentralNystagmus = nystagmus === 'bi'; // pathologic direction-changing / vertical / pure torsional
   const isCentralSkew = skew === 'skew';         // skew deviation present → central
   const isCentralHearing = hearing === 'loss';   // new unilateral hearing loss → AICA
 
   const isCentral = isCentralHIT || isCentralNystagmus || isCentralSkew || isCentralHearing;
 
   const reasons = [];
-  if (isCentralHIT) reasons.push('Normal / intact VOR (no catch-up saccade)');
-  if (isCentralNystagmus) reasons.push('Direction-changing or vertical nystagmus');
+  if (isCentralHIT) reasons.push('Bilaterally normal HIT (no corrective saccade to either side)');
+  if (isCentralNystagmus) reasons.push('Pathologic direction-changing, vertical or purely torsional nystagmus');
   if (isCentralSkew) reasons.push('Skew deviation present (vertical re-fixation)');
   if (isCentralHearing) reasons.push('New unilateral hearing loss (+, AICA)');
 
@@ -174,17 +122,17 @@ export const DEFAULT_FINDINGS = { hit: '', nystagmus: '', skew: '', hearing: '' 
 
 /* INFARCT mnemonic rows. */
 const INFARCT = [
-  { letter: 'I N', label: 'Impulse Normal', detail: 'Head-impulse VOR is intact (no catch-up saccade).' },
-  { letter: 'F A', label: 'Fast-phase Alternating nystagmus', detail: 'Direction-changing (gaze-evoked) or vertical nystagmus.' },
+  { letter: 'I N', label: 'Impulse Normal (both sides)', detail: 'No corrective saccade on head impulses to either side.' },
+  { letter: 'F A', label: 'Fast-phase Alternating nystagmus', detail: 'Pathologic direction-changing horizontal, vertical or purely torsional nystagmus.' },
   { letter: 'R C T', label: 'Refixation on Cover Test', detail: 'Vertical re-fixation = skew deviation present.' },
   { letter: '+', label: 'Unilateral hearing loss (AICA)', detail: 'New unilateral hearing loss adds the "+" → HINTS+.' }
 ];
 
 /* HINTS interpretation reference table. */
 const HINTS_TABLE = [
-  { phase: 'Head Impulse (HIT)', peripheral: 'Abnormal — corrective catch-up saccade', central: 'Normal — eyes stay locked on target' },
-  { phase: 'Nystagmus (N)', peripheral: 'Unidirectional — beats away from lesion', central: 'Direction-changing or vertical' },
-  { phase: 'Test of Skew (TS)', peripheral: 'Stable — no vertical movement', central: 'Skew deviation — vertical re-fixation' },
+  { phase: 'Head Impulse (HIT)', peripheral: 'Unilateral corrective saccade, concordant with horizontal nystagmus', central: 'Bilaterally normal — no corrective saccade to either side' },
+  { phase: 'Nystagmus (N)', peripheral: 'Unidirectional horizontal (may have slight torsion)', central: 'Pathologic direction-changing horizontal, vertical or purely torsional' },
+  { phase: 'Test of Skew (TS)', peripheral: 'No vertical refixation', central: 'Skew deviation — vertical re-fixation' },
   { phase: 'Hearing (+)', peripheral: 'Intact bilaterally', central: 'New unilateral loss raises AICA / labyrinthine ischemia concern' }
 ];
 
@@ -197,10 +145,8 @@ const TONE = {
 
 /* ── Component ────────────────────────────────────────────────────────── */
 export function HintsSimulator() {
-  // Active eye-stage scenario key (null = idle).
+  // Selected written example (null = no selection).
   const [activeKey, setActiveKey] = useState(null);
-  // Bump a nonce so re-clicking the same scenario restarts the CSS animation.
-  const [animNonce, setAnimNonce] = useState(0);
 
   // Diagnostic-assistant findings.
   const [findings, setFindings] = useState(DEFAULT_FINDINGS);
@@ -208,266 +154,31 @@ export function HintsSimulator() {
   const scenario = activeKey ? SCENARIOS[activeKey] : null;
   const result = classifyHints(findings);
 
-  const runScenario = (key) => {
-    setActiveKey(key);
-    setAnimNonce((n) => n + 1); // restart the keyframes even on repeat click
-  };
-
   const setFinding = (field, value) =>
     setFindings((f) => ({ ...f, [field]: value }));
 
-  const stageAnimClass = scenario && scenario.anim ? scenario.anim : '';
-  const coverMode = scenario && scenario.cover ? scenario.cover : '';
-
   return (
     <div className="hints-sim space-y-4">
-      <style>{`
-        .hints-sim .hint-stage {
-          width: 100%;
-          height: 170px;
-          background: ${C.ink};
-          border-radius: 10px;
-          position: relative;
-          overflow: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid rgba(255,255,255,0.06);
-        }
-        .hints-sim .hint-target {
-          width: 9px; height: 9px;
-          background: ${C.coral};
-          border-radius: 50%;
-          position: absolute;
-          top: 20px; left: 50%;
-          transform: translateX(-50%);
-          box-shadow: 0 0 10px ${C.coral};
-          z-index: 10;
-        }
-        .hints-sim .hint-target-label {
-          position: absolute;
-          top: 33px; left: 50%;
-          transform: translateX(-50%);
-          color: ${C.slate400};
-          font-size: 9px;
-          font-weight: 600;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-        }
-        .hints-sim .hint-head {
-          width: 120px; height: 120px;
-          border-radius: 50%;
-          background: #1f2630;
-          position: relative;
-          border: 3px solid ${C.slate500};
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 18px;
-          transform: rotate(0deg);
-        }
-        .hints-sim .hint-nose {
-          position: absolute;
-          top: -11px;
-          width: 13px; height: 22px;
-          background: ${C.slate500};
-          border-radius: 50% 50% 0 0;
-        }
-        .hints-sim .hint-eye {
-          width: 30px; height: 18px;
-          background: #ffffff;
-          border-radius: 50% / 50%;
-          position: relative;
-          overflow: hidden;
-          border: 1px solid #000;
-        }
-        .hints-sim .hint-pupil {
-          width: 12px; height: 12px;
-          border-radius: 50%;
-          background: ${C.ink};
-          border: 2px solid ${C.teal};
-          position: absolute;
-          top: 50%; left: 50%;
-          transform: translate(-50%, -50%);
-        }
-        .hints-sim .hint-cover {
-          position: absolute;
-          width: 40px; height: 30px;
-          background: rgba(0,0,0,0.88);
-          border: 1.5px solid ${C.slate500};
-          border-radius: 4px;
-          z-index: 20;
-          opacity: 0;
-          top: 50%;
-        }
-        .hints-sim .hint-cover.left  { transform: translate(-66px, -50%); }
-        .hints-sim .hint-cover.right { transform: translate(26px, -50%); }
-
-        /* ── 1 · Head-Impulse: PERIPHERAL (eyes drag, then catch-up saccade) ── */
-        @keyframes hint-head-turn {
-          0%   { transform: rotate(0deg); }
-          30%  { transform: rotate(20deg); }
-          100% { transform: rotate(20deg); }
-        }
-        @keyframes hint-pupil-drag {
-          /* eyes ride with the head, then a bouncy catch-up saccade (~450ms after turn) */
-          0%   { transform: translate(-50%, -50%); }
-          30%  { transform: translate(-50%, -50%); }
-          62%  { transform: translate(-50%, -50%); }
-          78%  { transform: translate(-86%, -50%); }
-          100% { transform: translate(-86%, -50%); }
-        }
-        .hint-anim-hit-peripheral .hint-head {
-          animation: hint-head-turn 1500ms cubic-bezier(0.25,1,0.5,1) forwards;
-        }
-        .hint-anim-hit-peripheral .hint-pupil {
-          animation: hint-pupil-drag 1500ms cubic-bezier(0.18,0.89,0.32,1.28) forwards;
-        }
-
-        /* ── 1 · Head-Impulse: CENTRAL (VOR intact — eyes stay on target) ── */
-        @keyframes hint-pupil-vor {
-          0%   { transform: translate(-50%, -50%); }
-          30%  { transform: translate(-86%, -50%); }
-          100% { transform: translate(-86%, -50%); }
-        }
-        .hint-anim-hit-central .hint-head {
-          animation: hint-head-turn 1500ms cubic-bezier(0.25,1,0.5,1) forwards;
-        }
-        .hint-anim-hit-central .hint-pupil {
-          animation: hint-pupil-vor 1500ms cubic-bezier(0.25,1,0.5,1) forwards;
-        }
-
-        /* ── 2 · Nystagmus: UNIDIRECTIONAL (slow drift right, fast snap left) ── */
-        @keyframes hint-nys-uni {
-          0%   { transform: translate(-80%, -50%); }
-          88%  { transform: translate(-20%, -50%); }   /* slow drift */
-          100% { transform: translate(-80%, -50%); }   /* fast snap */
-        }
-        .hint-anim-nys-uni .hint-pupil {
-          animation: hint-nys-uni 900ms linear infinite;
-        }
-
-        /* ── 2 · Nystagmus: DIRECTION-CHANGING (reverses with gaze) ── */
-        @keyframes hint-nys-bi {
-          /* first half: gaze left, beats left; second half: gaze right, beats right */
-          0%   { transform: translate(-85%, -50%); }
-          20%  { transform: translate(-60%, -50%); }
-          22%  { transform: translate(-90%, -50%); }
-          40%  { transform: translate(-60%, -50%); }
-          42%  { transform: translate(-90%, -50%); }
-          50%  { transform: translate(-20%, -50%); }   /* shift gaze right */
-          70%  { transform: translate(-40%, -50%); }
-          72%  { transform: translate(-10%, -50%); }
-          90%  { transform: translate(-40%, -50%); }
-          92%  { transform: translate(-10%, -50%); }
-          100% { transform: translate(-85%, -50%); }   /* shift gaze left */
-        }
-        .hint-anim-nys-bi .hint-pupil {
-          animation: hint-nys-bi 2600ms linear infinite;
-        }
-
-        /* ── 2 · Nystagmus: VERTICAL (slow up-drift, fast down-snap) ── */
-        @keyframes hint-nys-vert {
-          0%   { transform: translate(-50%, -25%); }
-          82%  { transform: translate(-50%, -78%); }   /* slow drift up */
-          100% { transform: translate(-50%, -25%); }   /* fast snap down */
-        }
-        .hint-anim-nys-vert .hint-pupil {
-          animation: hint-nys-vert 900ms linear infinite;
-        }
-
-        /* ── 3 · Test-of-Skew: alternating cover (no skew) ── */
-        @keyframes hint-cover-left {
-          0%, 49%   { opacity: 1; }
-          50%, 100% { opacity: 0; }
-        }
-        @keyframes hint-cover-right {
-          0%, 49%   { opacity: 0; }
-          50%, 100% { opacity: 1; }
-        }
-        .hint-anim-skew-none .hint-cover.left,
-        .hint-anim-skew-present .hint-cover.left {
-          animation: hint-cover-left 3000ms steps(1) infinite;
-        }
-        .hint-anim-skew-none .hint-cover.right,
-        .hint-anim-skew-present .hint-cover.right {
-          animation: hint-cover-right 3000ms steps(1) infinite;
-        }
-
-        /* ── 3 · Test-of-Skew: skew present (covered eye drifts, re-fixates on uncover) ── */
-        @keyframes hint-skew-left-pupil {
-          /* left eye covered in 2nd half: drifts down under cover, snaps up on uncover (1st half) */
-          0%   { transform: translate(-50%, -50%); }   /* uncovered, aligned */
-          49%  { transform: translate(-50%, -50%); }
-          50%  { transform: translate(-50%, -32%); }   /* covered → drifts down */
-          99%  { transform: translate(-50%, -32%); }
-          100% { transform: translate(-50%, -50%); }   /* uncover → re-fixation up */
-        }
-        @keyframes hint-skew-right-pupil {
-          0%   { transform: translate(-50%, -32%); }   /* covered → drifts down */
-          49%  { transform: translate(-50%, -32%); }
-          50%  { transform: translate(-50%, -50%); }   /* uncover → re-fixation up */
-          99%  { transform: translate(-50%, -50%); }
-          100% { transform: translate(-50%, -32%); }
-        }
-        .hint-anim-skew-present .hint-eye:nth-child(2) .hint-pupil {
-          animation: hint-skew-left-pupil 3000ms ease-out infinite;
-        }
-        .hint-anim-skew-present .hint-eye:nth-child(3) .hint-pupil {
-          animation: hint-skew-right-pupil 3000ms ease-out infinite;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .hints-sim .hint-head,
-          .hints-sim .hint-pupil,
-          .hints-sim .hint-cover { animation: none !important; }
-        }
-      `}</style>
-
       <p className="text-sm text-slate-600 dark:text-ink-2">
         The 3-step HINTS exam (plus bedside hearing → HINTS+) differentiates a CENTRAL
-        posterior-circulation stroke from a PERIPHERAL vestibular neuritis in patients with the
+        posterior-circulation stroke from a PERIPHERAL vestibular neuritis in adult patients with the
         Acute Vestibular Syndrome (continuous vertigo, nystagmus, head-motion intolerance). In this
         setting HINTS+ can outperform early MRI-DWI when performed by trained clinicians. Use it only
         when spontaneous/active nystagmus is present — never for episodic positional vertigo (e.g. BPPV).
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* ── Widget 1 · Eye Simulator stage ── */}
+        {/* Written finding examples */}
         <section className="bg-white border border-line rounded-lg p-3 space-y-3 dark:bg-card">
-          <div className="flex items-center justify-between">
-            <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Interactive Eye Simulator</h4>
-            <span className="font-mono text-2xs text-slate-500 dark:text-mute">schematic demonstration</span>
-          </div>
+          <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Finding examples</h4>
+          <p className="text-xs text-slate-600 dark:text-ink-2">
+            Eye-movement animations are unavailable. The former synthetic motions were not validated
+            for examination training. Use the written explanations below as a reference.
+          </p>
 
-          <p className="text-xs text-slate-600 dark:text-ink-2">Synthetic eye movements illustrate concepts; this animation has not been validated for examiner training or diagnostic accuracy.</p>
-
-          {['skew-present', 'skew-none'].includes(activeKey) ? (
-            <div role="status" className="rounded-md border border-line bg-slate-50 p-4 text-sm text-slate-700 dark:bg-paper-2 dark:text-ink-2">
-              {activeKey === 'skew-present' ? 'Positive-skew' : 'No-skew'} animation is temporarily unavailable while its accuracy is reviewed.
-              The explanation below remains available.
-            </div>
-          ) : (
-          <div className="hint-stage" role="img"
-            aria-label={scenario ? `Eye simulator: ${scenario.label}` : 'Eye simulator stage — pick a HINTS test below to animate the eyes.'}>
-            <span className="hint-target" aria-hidden="true" />
-            <span className="hint-target-label" aria-hidden="true">Target (nose)</span>
-            {/* key forces a remount so the keyframes restart on every selection */}
-            <div key={`${activeKey || 'idle'}-${animNonce}`} className={cx('hint-head-wrap', stageAnimClass)}>
-              <div className="hint-head">
-                <div className="hint-nose" aria-hidden="true" />
-                <div className={cx('hint-cover left', coverMode)} aria-hidden="true" />
-                <div className={cx('hint-cover right', coverMode)} aria-hidden="true" />
-                <div className="hint-eye"><div className="hint-pupil" /></div>
-                <div className="hint-eye"><div className="hint-pupil" /></div>
-              </div>
-            </div>
-          </div>
-          )}
-
-          <div className={cx('rounded-md border px-3 py-2 text-xs leading-relaxed min-h-[64px]',
+          <div aria-live="polite" aria-atomic="true" className={cx('rounded-md border px-3 py-2 text-xs leading-relaxed min-h-[64px]',
             scenario ? TONE[scenario.tone].chip : 'bg-slate-50 text-slate-600 border-line dark:bg-paper-2 dark:text-ink-2')}>
-            {scenario ? scenario.text : 'Select a HINTS test scenario below to animate the eye movement and read its interpretation.'}
+            {scenario ? scenario.text : 'Select a finding below to read its explanation.'}
           </div>
 
           {GROUPS.map((g, gi) => (
@@ -480,8 +191,8 @@ export function HintsSimulator() {
                   const sc = SCENARIOS[key];
                   const active = activeKey === key;
                   return (
-                    <button key={key} type="button" aria-pressed={active} onClick={() => runScenario(key)}
-                      className={cx('px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500',
+                    <button key={key} type="button" aria-pressed={active} onClick={() => setActiveKey(key)}
+                      className={cx('px-3 py-2 h-auto min-h-[44px] max-w-full whitespace-normal rounded-md text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500',
                         active
                           ? (sc.tone === 'crit' ? 'bg-crit-600 text-white' : 'bg-teal-600 text-white')
                           : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-paper-2 dark:text-ink-2 dark:hover:bg-overlay')}>
@@ -494,11 +205,11 @@ export function HintsSimulator() {
           ))}
         </section>
 
-        {/* ── Widget 2 · Diagnostic Assistant ── */}
+        {/* Qualified pattern checklist */}
         <section className="bg-white border border-line rounded-lg p-3 space-y-3 dark:bg-card">
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Bedside Diagnostic Assistant</h4>
-            <span className="font-mono text-2xs text-slate-500 dark:text-mute">HINTS+ classifier</span>
+            <h4 className="text-sm font-semibold text-slate-800 dark:text-ink">Pattern checklist</h4>
+            <span className="font-mono text-2xs text-slate-500 dark:text-mute">HINTS+ findings</span>
           </div>
           <p className="text-xs text-slate-600 dark:text-ink-2">
             Enter your four exam findings. Any central or equivocal finding should prompt urgent
@@ -507,17 +218,21 @@ export function HintsSimulator() {
 
           <FindingToggle label="Head Impulse Test (HIT)" value={findings.hit} onChange={(v) => setFinding('hit', v)}
             options={[
-              { value: 'abnormal', label: 'Abnormal VOR (saccade)', central: false },
-              { value: 'normal', label: 'Normal VOR (intact)', central: true }
+              { value: 'abnormal', label: 'Unilateral abnormal VOR (saccade)', central: false },
+              { value: 'normal', label: 'Bilaterally normal VOR', central: true }
             ]} />
+          <p className="text-xs text-slate-600 dark:text-ink-2">
+            For a bilaterally abnormal, untestable or equivocal HIT, neither option applies:
+            leave HIT unselected and seek clinical reassessment.
+          </p>
           <FindingToggle label="Nystagmus (N)" value={findings.nystagmus} onChange={(v) => setFinding('nystagmus', v)}
             options={[
-              { value: 'uni', label: 'Unidirectional', central: false },
-              { value: 'bi', label: 'Direction-changing / vertical', central: true }
+              { value: 'uni', label: 'Unidirectional Horizontal', central: false },
+              { value: 'bi', label: 'Pathologic direction-changing / vertical / pure torsional', central: true }
             ]} />
           <FindingToggle label="Test of Skew (TS)" value={findings.skew} onChange={(v) => setFinding('skew', v)}
             options={[
-              { value: 'none', label: 'Stable (no skew)', central: false },
+              { value: 'none', label: 'No vertical refixation', central: false },
               { value: 'skew', label: 'Skew present', central: true }
             ]} />
           <FindingToggle label="Bedside Hearing Test (+)" value={findings.hearing} onChange={(v) => setFinding('hearing', v)}
@@ -597,6 +312,11 @@ export function HintsSimulator() {
           Apply HINTS+ only in the Acute Vestibular Syndrome with active nystagmus. In this setting it
           can be more sensitive than early MRI-DWI for posterior-circulation stroke when performed by trained clinicians.
         </p>
+        <p className="text-xs text-slate-600 dark:text-ink-2">
+          Source: <a href="https://doi.org/10.1111/acem.14728" target="_blank" rel="noopener noreferrer"
+            className="underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cobalt-600">GRACE-3 (2023), recommendations 2–3 and Tables 2 and 4</a>.
+          This reference does not replace supervised examination training.
+        </p>
       </section>
     </div>
   );
@@ -613,7 +333,7 @@ function FindingToggle({ label, value, onChange, options }) {
           return (
             <button key={opt.value} type="button" onClick={() => onChange(opt.value)}
               aria-pressed={active}
-              className={cx('px-3 h-9 min-h-[44px] sm:min-h-0 rounded-md text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500',
+              className={cx('px-3 py-2 h-auto min-h-[44px] max-w-full whitespace-normal rounded-md text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500',
                 active
                   ? (opt.central ? 'bg-crit-600 text-white' : 'bg-ok-600 text-white')
                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-paper-2 dark:text-ink-2 dark:hover:bg-overlay')}>

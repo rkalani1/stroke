@@ -16,6 +16,7 @@ describe('Navigation Reorganization and Consolidation (R1, R2)', () => {
   const scope = {};
   const fnModule = new Function(
     'scope',
+    'PUBLIC_DEMO_MODE',
     routingSlice + `
       scope.MANAGEMENT_SUBTABS = MANAGEMENT_SUBTABS;
       scope.RESEARCH_SUBTABS = RESEARCH_SUBTABS;
@@ -27,7 +28,16 @@ describe('Navigation Reorganization and Consolidation (R1, R2)', () => {
       scope.buildHashRoute = buildHashRoute;
     `
   );
-  fnModule(scope);
+  fnModule(scope, true);
+
+  it('withdraws the unused API route from public builds while preserving private routing', () => {
+    expect(scope.parseHashRoute('#/settings')).toEqual({ tab: 'encounter' });
+    expect(scope.buildHashRoute('settings')).toBe('#/encounter');
+    const privateScope = {};
+    fnModule(privateScope, false);
+    expect(privateScope.parseHashRoute('#/settings')).toEqual({ tab: 'settings' });
+    expect(privateScope.buildHashRoute('settings')).toBe('#/settings');
+  });
 
   it('R1: Primary navigation sequence is Encounter -> Protocols -> Trials -> Guidelines & References', () => {
     // Check desktop tab keydown sequence
