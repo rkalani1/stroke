@@ -8,6 +8,9 @@ import { isSuccessfulEvtReperfusion } from '../src/institutional-protocols.js';
 import { calculateCrClReviewed, calculateTNKDoseReviewed } from '../src/calculators.js';
 import { getClinicalClaim } from '../src/clinical/claim-registry.js';
 import { buildTnkConsentDocumentation } from '../src/clinical/consent-documentation.js';
+import { formatWakeUpScreenForExport } from '../src/clinical/wake-up-documentation.js';
+import { formatEncounterClock as formatTime } from '../src/clinical/encounter-time.js';
+import { formatPerfusionForExport } from '../src/clinical/perfusion-documentation.js';
 import GeneratedNoteDraft from '../src/components/GeneratedNoteDraft.jsx';
 
 const appSource = fs.readFileSync(new URL('../src/app.jsx', import.meta.url), 'utf8');
@@ -24,7 +27,7 @@ function outputFunction(name, note, extra = {}) {
   const end = appSource.indexOf(`\n${indent}};`, start);
   if (end < 0) throw new Error(`Unterminated output function ${name}`);
   const context = {
-    ...treatment, ...reviewed, isSuccessfulEvtReperfusion, calculateCrClReviewed, calculateTNKDoseReviewed, getClinicalClaim, buildTnkConsentDocumentation, telestrokeNote: note, nihssScore: 0, aspectsScore: '',
+    ...treatment, ...reviewed, isSuccessfulEvtReperfusion, calculateCrClReviewed, calculateTNKDoseReviewed, getClinicalClaim, buildTnkConsentDocumentation, formatWakeUpScreenForExport, formatTime, formatPerfusionForExport, telestrokeNote: note, nihssScore: 0, aspectsScore: '', lkwTime: null,
     isValidAspectsScore: () => false, calculateICHScore: () => 0,
     calculateGCS: () => 15, calculateTNKDose: () => ({ calculatedDose: 15 }),
     ichScoreItems: {}, gcsItems: {}, ANTICOAGULANT_INFO: {}, TOAST_LABELS: {},
@@ -59,6 +62,108 @@ const declined = {
 };
 
 const legacyDefaultAttestations = 'After ensuring that there were no evident contraindications, TNK administration was recommended at {tnkAdminTime}. Potential benefits, potential risks (including a potential risk of sx ICH of up to 4%), and alternatives to treatment were discussed with the patient, family/LNOK, and OSH provider.\nTNK was administered at {tnkAdminTime} after a brief time-out.\n';
+
+describe.each([
+  ['follow-up brief', 'generateFollowUpBrief', null],
+  ...['consult', 'transfer', 'discharge'].map(template => [template, 'generateTelestrokeNoteBody', template])
+])('authored CTP measurements in %s', (_surface, functionName, noteTemplate) => {
+  it.each([
+    ['zero core with 1 mL total volume', '0', '1', 'Calculated mismatch volume: 1 mL', 'zero'],
+    ['zero core with 20 mL total volume', '0', '20', 'Calculated mismatch volume: 20 mL', 'zero'],
+    ['numeric zero core', 0, 20, 'Calculated mismatch volume: 20 mL', 'zero'],
+    ['negative core', '-1', '20', 'Core: invalid measurement; review required', 'invalid'],
+    ['conflicting volumes', '20', '10', 'Perfusion volumes conflict: total hypoperfused volume is below core; reconcile measurements', 'conflict'],
+    ['ordinary measurements', '10', '30', 'Mismatch ratio: 3.00; arithmetic does not establish eligibility', 'normal'],
+    ['null measurements', null, null, null, 'missing'],
+    ['blank measurements', '', '', null, 'missing']
+  ])('preserves the entered impression and describes %s accurately', (_label, coreVolume, penumbraVolume, expected, category) => {
+    const ctpResults = 'CTP radiology impression: motion-limited study; clinician review pending.';
+    const note = { ...declined, ctpStructured: { coreVolume, penumbraVolume }, ctpResults };
+    const output = outputFunction(functionName, note, { noteTemplate });
+    expect(output).not.toContain('Error generating note');
+    expect(output).toContain(ctpResults);
+    expect(output.split(ctpResults)).toHaveLength(2);
+    expect(output).not.toMatch(/Mismatch ratio: Favorable|Infinity/);
+    if (expected) expect(output).toContain(expected);
+    if (category === 'zero') expect(output).toContain('Mismatch ratio: not calculable (core 0); review volumes and complete eligibility');
+    if (['invalid', 'conflict', 'missing'].includes(category)) {
+      expect(output).not.toContain('Calculated mismatch volume:');
+      expect(output).not.toContain('Mismatch ratio:');
+    }
+    if (category === 'missing') {
+      expect(output).not.toContain('Core: 0 mL');
+      expect(output).not.toContain('Total hypoperfused volume (Tmax >6 s): 0 mL');
+    }
+  });
+});
+
+describe('authored wake-up documentation across export surfaces', () => {
+  const now = new Date('2026-10-01T12:00:00');
+  const workflow = {
+    isWakeUpStroke: true, mriAvailable: true, ageEligible: false, nihssEligible: false,
+    dwi: { positiveForLesion: true, lesionVolume: '14.5' }, flair: { noMarkedHyperintensity: true },
+    mriLesionExtentReviewed: true
+  };
+  const mri = {
+    ...declined, age: '60', nihss: '10', ctHemorrhageStatus: 'absent', lkwUnknown: true,
+    discoveryDate: '2026-10-01', discoveryTime: '10:00', wakeUpStrokeWorkflow: workflow
+  };
+  const ctp = {
+    ...mri, coreVolume: '20', penumbraVolume: '50', premorbidMRS: '0',
+    wakeUpStrokeWorkflow: { ...workflow, mriAvailable: false, sleepMidpoint: '2026-10-01T06:00' }
+  };
+  const cases = [
+    ['legacy four checks with missing recognition and lesion review', {
+      ...mri, discoveryDate: '', discoveryTime: '', wakeUpStrokeWorkflow: { ...workflow, ageEligible: true, nihssEligible: true, mriLesionExtentReviewed: false }
+    }, 'MRI (WAKE-UP)', false],
+    ['met MRI with unchecked legacy age and NIHSS boxes', mri, 'MRI (WAKE-UP)', true],
+    ['measured age outside MRI source screen despite checked legacy box', {
+      ...mri, age: '81', wakeUpStrokeWorkflow: { ...workflow, ageEligible: true }
+    }, 'MRI (WAKE-UP)', false],
+    ['unconfirmed MRI observations', {
+      ...mri, wakeUpStrokeWorkflow: { ...workflow, dwi: { positiveForLesion: false }, flair: { noMarkedHyperintensity: false } }
+    }, 'MRI (WAKE-UP)', false],
+    ['met CTP source screen', ctp, 'CTP (EXTEND)', true],
+    ['selected CTP incomplete even though MRI source screen is met', {
+      ...mri, wakeUpStrokeWorkflow: { ...workflow, mriAvailable: false }
+    }, 'CTP (EXTEND)', false],
+    ['selected MRI incomplete even though CTP source screen is met', {
+      ...ctp, discoveryTime: '', wakeUpStrokeWorkflow: { ...ctp.wakeUpStrokeWorkflow, mriAvailable: true }
+    }, 'MRI (WAKE-UP)', false],
+    ['no selected pathway despite both source screens being met', {
+      ...ctp, wakeUpStrokeWorkflow: { ...ctp.wakeUpStrokeWorkflow, mriAvailable: null }
+    }, 'pathway not documented', false]
+  ];
+  describe.each([
+    ['follow-up brief', 'generateFollowUpBrief', null],
+    ['Pulsara summary', 'generatePulsaraSummary', null],
+    ...['consult', 'transfer', 'signout', 'progress', 'discharge'].map(template => [template, 'generateTelestrokeNoteBody', template])
+  ])('%s', (surface, functionName, noteTemplate) => {
+    it.each(cases)('keeps the canonical status for %s', (_label, note, pathway, met) => {
+      const output = outputFunction(functionName, note, {
+        noteTemplate,
+        formatWakeUpScreenForExport: current => formatWakeUpScreenForExport(current, now)
+      });
+      expect(output).not.toContain('Error generating note');
+      expect(output).toContain(`${pathway}: ${met ? 'partial source screen met' : 'incomplete or not met'}; complete eligibility and drug-specific treatment decision require review.`);
+      expect(output).not.toMatch(/WAKE-UP eligible|Met WAKE-UP criteria|Met WAKE-UP trial criteria|IV thrombolysis eligible|Age: Eligible/);
+      expect(output).not.toMatch(/DWI: Negative|DWI -|DWI -\/FLAIR|FLAIR hyperintense|FLAIR \+/);
+      if (surface === 'discharge') {
+        expect(output).toContain('ACUTE TREATMENT:');
+        expect(output).toContain(`TNK: ${treatment.treatmentCourseStatus(note, 'tnk')}`);
+        expect(output).toContain(`EVT: ${treatment.treatmentCourseStatus(note, 'evt')}`);
+      }
+      if (surface !== 'Pulsara summary') {
+        expect(output).toContain(`Documented age: ${note.age}; NIHSS: ${note.nihss}.`);
+        if (note.wakeUpStrokeWorkflow.mriAvailable === true) {
+          const confirmed = note.wakeUpStrokeWorkflow.dwi.positiveForLesion === true;
+          expect(output).toContain(`DWI-positive lesion: ${confirmed ? 'documented' : 'not documented'}.`);
+          if (note.wakeUpStrokeWorkflow.dwi.lesionVolume) expect(output).toContain('Recorded MRI lesion volume: 14.5 mL.');
+        }
+      }
+    });
+  });
+});
 
 describe('recorded treatment state', () => {
   it('distinguishes legacy positive, explicit negative, and undocumented decisions', () => {

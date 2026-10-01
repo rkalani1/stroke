@@ -244,7 +244,7 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       const baselineCounts = {
         ich: 524,
         ischemic: 754,
-        calculators: 454
+        calculators: 498
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);
