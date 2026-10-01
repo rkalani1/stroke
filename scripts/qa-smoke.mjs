@@ -530,7 +530,11 @@ async function main() {
       for(const width of [360,390,768,1440]) for(const theme of ['light','dark']) {
         const viewport=width>=1000?'desktop':width>=768?'tablet':'mobile';const started=performance.now();const sections=[];
         const timed=async(name,thresholdKey,fn)=>{const began=performance.now();await fn();const durationMs=Math.round(performance.now()-began),thresholdMs=latency.section('local',viewport,thresholdKey);sections.push({name,thresholdKey,durationMs,thresholdMs});if(latency.enforce)assert(durationMs<=thresholdMs,`${width}/${theme} ${name}: ${durationMs} exceeds ${thresholdMs}ms`);};
-        await page.setViewportSize({width,height:900});const picker=page.getByLabel('Theme',{exact:true});await openDetails(picker);await picker.selectOption(theme);await picker.evaluate(el=>el.closest('details').open=false);await page.reload();await page.getByRole('heading',{name:'Encounter',exact:true}).waitFor();
+        await page.setViewportSize({width,height:900});const picker=page.getByLabel('Theme',{exact:true});await openDetails(picker);await picker.selectOption(theme);
+        // Utilities starts a lazy download. Wait for its rendered control before
+        // intentionally reloading; keep the resource-failure assertions strict.
+        await page.getByRole('button',{name:'Install App',exact:true}).waitFor({state:'visible'});
+        await picker.evaluate(el=>el.closest('details').open=false);await page.reload();await page.getByRole('heading',{name:'Encounter',exact:true}).waitFor();
         assert.equal(await page.locator('html').getAttribute('data-theme'),theme);const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);assert.equal(overflow,false,`overflow ${width}/${theme}`);
         await timed('encounter-workflow','encounter-workflow',async()=>{
           await setupIschemic(page);const weight=page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true});assert.equal(await weight.getAttribute('type'),'number');await weight.focus();await page.keyboard.press('Tab');await page.keyboard.press('Shift+Tab');assert(await weight.evaluate(el=>document.activeElement===el));assert(await weight.evaluate(el=>getComputedStyle(el).outlineStyle!=='none'),'visible keyboard focus missing');
