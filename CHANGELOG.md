@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v7.2.0 — 2026-10-01 — Remaining workflow conveniences restored
+
+- Restore explicit reported NIHSS entry alongside the itemized examination, with source provenance, valid zero handling and dependent-review invalidation.
+- Restore separately recorded discharge NIHSS/mRS and a compact team handoff through the existing generation/copy pipeline.
+- Restore explicit current-time shortcuts for LKW, discovery and documented events; replacement requires confirmation and timestamps never attest administration.
+- Restore calculator name/alias search and copying of reviewed results with source/limits, clipboard fallback and stale-response protection.
+- Preserve protocol/source content, Trials workflows, session-only state and existing asset ceilings.
+
 ## v7.1.0 — 2026-10-01 — Encounter, Trials and calculator restoration
 
 - Restore optional consultation, phenotype, diagnosis, prevention, follow-up, rehabilitation, transfer, procedure and discharge documentation within the four Encounter sections. Restore consultation/event timing, weight units, NIHSS keyboard scoring and separate IVT/EVT consent records.

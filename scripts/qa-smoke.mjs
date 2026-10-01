@@ -156,7 +156,7 @@ async function main() {
       await page.getByRole('button', { name: 'Next: NIHSS examination' }).click();
       assert((await page.evaluate(() => document.activeElement.id)).startsWith('nihss-'));
       assert.equal(await page.locator('#calc-nihss details').first().evaluate(el => el.open), true);
-      const examItems = page.locator('#calc-nihss select');
+      const examItems = page.locator('#calc-nihss select[id^="nihss-"]');
       for (let index = 0; index < await examItems.count(); index++) await examItems.nth(index).selectOption({ index: 1 });
       await page.getByLabel('CT hemorrhage review', { exact: true }).selectOption('uncertain');
       await page.getByLabel('Disposition', { exact: true }).selectOption('Pending');
@@ -223,7 +223,7 @@ async function main() {
       await page.getByLabel('ED arrival (local)',{exact:true}).fill(await localStamp(page,30));
       await page.getByLabel('CT start (local)',{exact:true}).fill(await localStamp(page,20));
       assert((await page.locator('.timeline-intervals').innerText()).includes('10 min'));
-      const selectors=page.locator('#calc-nihss select');await openDetails(selectors.first());await selectors.first().focus();await selectors.first().press('0');
+      const selectors=page.locator('#calc-nihss select[id^="nihss-"]');await openDetails(selectors.first());await selectors.first().focus();await selectors.first().press('0');
       assert((await selectors.first().inputValue()).endsWith('(0)'));
       assert(await selectors.nth(1).evaluate(el=>document.activeElement===el));
       const transferStatus=page.getByLabel('Transfer coordination status',{exact:true});await openDetails(transferStatus);await transferStatus.selectOption('Accepted');
@@ -235,7 +235,32 @@ async function main() {
       await reset(page);await openDetails(page.getByRole('button',{name:'Start consultation timer',exact:true,includeHidden:true}));await page.getByRole('button',{name:'Start consultation timer',exact:true,includeHidden:true}).waitFor({state:'visible'});
       assert.equal(await page.getByLabel('ED arrival (local)',{exact:true}).inputValue(),'');
     });
-    await check('restored worksheets apply explicit scores, clear stale sources and feed follow-up notes', async () => {
+    await check('reported NIHSS, distinct discharge outcomes, compact handoff and explicit current timestamps', async () => {
+      try {
+        await reset(page); await setupIschemic(page);
+        await page.getByLabel('Current NIHSS source', {exact:true}).selectOption('reported');
+        await page.getByLabel('Reported NIHSS total (0–42)', {exact:true}).fill('8');
+        await page.getByLabel('Documentation format', {exact:true}).selectOption('handoff');
+        let text = await (await generate(page)).inputValue();
+        assert(text.startsWith('Team handoff\n')); assert(text.includes('NIHSS: 8/42 (reported total)'));
+        assert(!text.includes('all items documented'));
+        const discharge = page.getByLabel('Recorded discharge NIHSS', {exact:true}); await openDetails(discharge);
+        await discharge.fill('0'); await page.getByLabel('Recorded discharge mRS', {exact:true}).selectOption('1');
+        await page.getByLabel('Documentation format', {exact:true}).selectOption('discharge');
+        text = await (await generate(page)).inputValue();
+        assert(text.includes('NIHSS score: 8/42 (reported total)')); assert(text.includes('Recorded discharge NIHSS: 0')); assert(text.includes('Recorded discharge mRS: 1'));
+        page.once('dialog', dialog => dialog.accept());
+        await page.getByRole('button', {name:'Set LKW to now', exact:true}).click();
+        assert.equal(await page.locator('[data-generated-note]').count(),0);
+        assert(await page.getByLabel('LKW time (local)', {exact:true}).inputValue());
+        await page.getByRole('button', {name:'Set IVT timestamp to now', exact:true}).click();
+        assert.equal(await page.getByLabel('IV thrombolytic administration explicitly recorded').isChecked(),false);
+        assert((await page.locator('#handoff').innerText()).includes('Monitoring timer inactive'));
+        await page.getByLabel('Reported NIHSS total (0–42)', {exact:true}).fill('43');
+        assert((await (await generate(page)).inputValue()).includes('reported total missing or invalid'));
+      } finally { await reset(page); }
+    });
+    await check('restored worksheets apply explicit scores, search/copy safely and feed follow-up notes', async () => {
       await reset(page);await page.getByLabel('Working diagnosis',{exact:true}).selectOption('tia');
       await page.getByLabel('Age (years)',{exact:true}).fill('60');await page.getByLabel('Current BP (mmHg, systolic/diastolic)',{exact:true}).fill('140/90');
       await page.evaluate(()=>{location.hash='#/tools/abcd2';});
@@ -246,6 +271,16 @@ async function main() {
       await calculator.getByLabel('History of diabetes',{exact:true}).selectOption('false');
       await calculator.getByLabel('All required inputs and source applicability reviewed',{exact:true}).check();
       assert((await calculator.getByRole('status').innerText()).includes('6/7'));
+      await calculator.getByRole('button',{name:'Copy reviewed result',exact:true}).click();
+      await calculator.getByText('ABCD² copied.',{exact:true}).waitFor();
+      const copied=await page.evaluate(()=>window.__qaClipboard.at(-1));assert(copied.includes('6/7'));assert(copied.includes('Source:'));assert(copied.includes('Limits:'));
+      const search=page.getByRole('searchbox',{name:'Find a calculator'});await search.fill('Cockcroft');
+      assert(await page.getByRole('link',{name:'Renal calculation',exact:true}).isVisible());assert.equal(await calculator.isVisible(),false);
+      await page.getByRole('button',{name:'Clear search',exact:true}).click();assert(await calculator.isVisible());assert.equal(await calculator.getByLabel('TIA symptom duration',{exact:true}).inputValue(),'60plus');
+      await page.evaluate(()=>window.__qaDenyClipboard=true);await calculator.getByRole('button',{name:'Copy reviewed result',exact:true}).click();
+      const fallback=calculator.getByLabel('ABCD² copy fallback',{exact:true});await fallback.waitFor();assert((await fallback.inputValue()).includes('6/7'));
+      await search.fill('missing calculator');assert((await page.getByRole('status').filter({hasText:'No calculators found'}).innerText()).includes('No calculators found'));
+      await page.getByRole('button',{name:'Clear search',exact:true}).click();assert.equal(await fallback.count(),0);await page.evaluate(()=>window.__qaDenyClipboard=false);
       await calculator.getByRole('button',{name:'Use reviewed score in Encounter',exact:true}).click();
       await page.getByRole('link',{name:'Encounter',exact:true}).click();const score=page.getByLabel('Reviewed ABCD² (0–7)',{exact:true});await openDetails(score);assert.equal(await score.inputValue(),'6');
       await page.getByLabel('Age (years)',{exact:true}).fill('61');assert.equal(await score.inputValue(),'');
@@ -356,7 +391,7 @@ async function main() {
       await page.evaluate(()=>location.hash='#/encounter/ich-score');await page.getByText('This tool is inactive in the current context.',{exact:false}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');await page.getByRole('link',{name:'Stroke',exact:true}).click();
     });
     await check('complete vs partial NIHSS, explicit zero, valid dose and clearing weight', async () => {
-      const items=page.locator('#calc-nihss select');await openDetails(items.first());assert.equal(await items.count(),15);
+      const items=page.locator('#calc-nihss select[id^="nihss-"]');await openDetails(items.first());assert.equal(await items.count(),15);
       await items.first().selectOption({label:'Alert (0)'});assert((await page.locator('#calc-nihss').innerText()).includes('1/15 items documented · partial sum 0'));
       for(let i=0;i<15;i++){const value=await items.nth(i).locator('option').evaluateAll(els=>els.find(e=>e.textContent.includes('(0)')).value);await items.nth(i).selectOption(value);}
       assert((await page.locator('#calc-nihss').innerText()).includes('Complete NIHSS: 0/42'));const interactionStarted=performance.now();await items.first().selectOption('Drowsy (1)');await page.getByText('Complete NIHSS: 1/42',{exact:true}).waitFor();report.metrics.representativeInteractionMs=Math.round(performance.now()-interactionStarted);report.metrics.interactionMeasurement='Playwright select action through visible NIHSS update; driver overhead included';await items.first().selectOption('Alert (0)');await items.first().selectOption('');assert((await page.locator('#calc-nihss').innerText()).includes('14/15 items documented'));await items.first().selectOption('Alert (0)');
@@ -390,7 +425,7 @@ async function main() {
     });
     await check('canonical protocol measurements, clears and source-review invalidation after repeated navigation', async () => {
       await setupIschemic(page);await page.getByLabel('Glucose (mg/dL)',{exact:true}).fill('100');await page.getByLabel('Reviewed ASPECTS (0–10)',{exact:true}).fill('3');await page.getByLabel('Baseline mRS',{exact:true}).selectOption('0');
-      const items=page.locator('#calc-nihss select');await openDetails(items.first());for(let i=0;i<15;i++){const value=await items.nth(i).locator('option').evaluateAll(els=>els.find(e=>e.textContent.includes('(0)')).value);await items.nth(i).selectOption(value);}
+      const items=page.locator('#calc-nihss select[id^="nihss-"]');await openDetails(items.first());for(let i=0;i<15;i++){const value=await items.nth(i).locator('option').evaluateAll(els=>els.find(e=>e.textContent.includes('(0)')).value);await items.nth(i).selectOption(value);}
       await page.getByRole('link',{name:'Protocols',exact:true}).click();await page.getByRole('tab',{name:'Ischemic/TIA protocol tab',exact:true}).click();const cards=page.getByRole('region',{name:'Protocol cards',exact:true});await openDetails(cards);
       assert.equal(await cards.getByLabel('NIHSS',{exact:true}).inputValue(),'0');assert(await cards.getByLabel('NIHSS',{exact:true}).evaluate(el=>el.readOnly));assert.equal(await cards.getByLabel('ASPECTS',{exact:true}).inputValue(),'3');assert.equal(await cards.getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');assert.equal(await page.locator('#evt-aspects').inputValue(),'3-5');assert(await page.locator('#evt-aspects').isDisabled());
       const ivtAge=cards.getByLabel('Age',{exact:true}).first();await ivtAge.fill('70');assert(await ivtAge.evaluate(el=>document.activeElement===el));const review=cards.getByLabel('Absolute and relative contraindications reviewed',{exact:true});await review.check();assert(await review.isChecked());
@@ -412,7 +447,7 @@ async function main() {
       const offline=await browser.newContext({viewport:{width:390,height:844},timezoneId:'America/Los_Angeles'});const p=await offline.newPage();const offlineErrors=[];p.on('pageerror',e=>offlineErrors.push(e.message));try{
         await p.goto(server.url);await p.getByRole('heading',{name:'Encounter',exact:true}).waitFor();await waitForInstalled(p);await p.reload();await p.waitForFunction(()=>Boolean(navigator.serviceWorker.controller));
         const cache=await p.evaluate(async()=>{const names=await caches.keys();const active=names.filter(name=>name.startsWith('stroke-cache-v'));let totalBytes=0,entries=0,urls=[];for(const name of active){const c=await caches.open(name);for(const req of await c.keys()){entries++;urls.push(req.url);totalBytes+=(await(await c.match(req)).arrayBuffer()).byteLength;}}return{names:active,totalBytes,entries,urls};});assert(!cache.urls.some(url=>/education|teaching|TrialScreener|deferred-reference/.test(url)));report.metrics.offlineCacheBytes=cache.totalBytes;
-        await offline.setOffline(true);await p.reload({waitUntil:'domcontentloaded'});await setupIschemic(p);await p.getByLabel('Manual rationale / recommendations',{exact:true}).fill('Synthetic offline encounter; specialist review pending.');const items=p.locator('#calc-nihss select');await openDetails(items.first());for(let i=0;i<15;i++){const value=await items.nth(i).locator('option').evaluateAll(els=>els.find(e=>e.textContent.includes('(0)')).value);await items.nth(i).selectOption(value);}assert((await p.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));assert((await(await generate(p)).inputValue()).includes('NIHSS score: 0/42'));
+        await offline.setOffline(true);await p.reload({waitUntil:'domcontentloaded'});await setupIschemic(p);await p.getByLabel('Manual rationale / recommendations',{exact:true}).fill('Synthetic offline encounter; specialist review pending.');const items=p.locator('#calc-nihss select[id^="nihss-"]');await openDetails(items.first());for(let i=0;i<15;i++){const value=await items.nth(i).locator('option').evaluateAll(els=>els.find(e=>e.textContent.includes('(0)')).value);await items.nth(i).selectOption(value);}assert((await p.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));assert((await(await generate(p)).inputValue()).includes('NIHSS score: 0/42'));
         await p.getByRole('link',{name:'Trials',exact:true}).click();await p.getByRole('heading',{name:'Trials',exact:true}).waitFor();await p.getByRole('tab',{name:'Database',exact:true}).click();await p.getByRole('searchbox',{name:'Search the study database by acronym, name or NCT number',exact:true}).fill('STEP');assert((await p.getByRole('tabpanel',{name:'Database',exact:true}).innerText()).includes('STEP'));await p.screenshot({path:path.join(outDir,'trials-offline-mobile.png'),fullPage:true});await p.getByRole('link',{name:'Protocols',exact:true}).click();await p.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();const trigger=p.getByRole('button',{name:'Vitamin K 10 mg IV',exact:true,includeHidden:true}).first();await openDetails(trigger);await trigger.click();await p.getByRole('dialog').waitFor();assert((await p.getByRole('dialog').innerText()).includes('Vitamin K'));await p.keyboard.press('Escape');assert.equal(await p.getByRole('dialog').count(),0);assert.deepEqual(offlineErrors,[]);await p.screenshot({path:path.join(outDir,'offline-protocol-mobile.png'),fullPage:true});return{cache,simulation:true};
       }finally{await offline.close();}
     });

@@ -3,6 +3,7 @@
 // Sources: AHA/ASA AIS2026 doi:10.1161/STR.0000000000000513 §§4.6–4.7;
 // EXTEND doi:10.1056/NEJMoa1813046; WAKE-UP doi:10.1056/NEJMoa1804355.
 import { computeLKWCountdown } from './calculators-extended.js';
+import { encounterClockTimestamp } from './encounter-timeline.js';
 import { hasRecordedTreatmentAdministration, hasRecordedNoTreatment, recordedTreatmentDecision } from './encounter-decision-status.js';
 
 export function numericInput(value, { min = -Infinity, max = Infinity, integer = false } = {}) {
@@ -42,8 +43,8 @@ export function evaluateWakeUpScreen(note = {}, now = new Date()) {
   const age = numericInput(note.age, { min: 18, max: 120 });
   const nihss = documentedExamScore(note);
   const mrs = numericInput(note.premorbidMRS, { min: 0, max: 6, integer: true });
-  const discoveryHours = hoursSince(note.discoveryDate && note.discoveryTime ? `${note.discoveryDate}T${note.discoveryTime}` : null, now);
-  const onsetHours = note.lkwUnknown ? null : hoursSince(note.lkwDate && note.lkwTime ? `${note.lkwDate}T${note.lkwTime}` : null, now);
+  const discoveryHours = hoursSince(encounterClockTimestamp(note, 'discovery'), now);
+  const onsetHours = note.lkwUnknown ? null : hoursSince(encounterClockTimestamp(note, 'lkw'), now);
   const midpointHours = hoursSince(workflow.sleepMidpoint, now);
   const withinExtendTime = note.lkwUnknown === true ? midpointHours !== null && midpointHours <= 9 : onsetHours !== null && onsetHours >= 4.5 && onsetHours <= 9;
   const perfusionCoreOk = core !== null && core < 70;

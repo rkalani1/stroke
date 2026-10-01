@@ -18,6 +18,14 @@ export function localTimestamp(now = Date.now()) {
   const date = new Date(now), pad = value => String(value).padStart(2, '0');
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
 }
+// A clock shortcut retains its exact instant independently of the displayed
+// local fields, including a repeated DST hour or a later system-zone change.
+export function encounterClockTimestamp(note, prefix) {
+  const date = note[`${prefix}Date`], time = note[`${prefix}Time`];
+  if (!date || !time) return '';
+  const value = `${date}T${time}`, clock = note[`${prefix}Clock`];
+  return clock?.value === value ? typeof clock.instant === 'string' ? clock.instant : '' : value;
+}
 export function timelineIntervals(state, now) {
   const t = state.timeline || {}, acute = state.context === 'acute';
   const ivt = acute && state.note.diagnosisCategory === 'ischemic' && state.actions.administered && state.drug ? state.actions.administrationTime : '';

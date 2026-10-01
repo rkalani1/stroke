@@ -36,6 +36,11 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .workspace-heading { display: flex; align-items: baseline; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin: 24px 0 18px; }
 .workspace-secondary-action { min-height: 44px; padding: 8px 14px; border: 1px solid rgb(var(--c-line-control)); border-radius: var(--radius-md); background: var(--surface); color: var(--ink-2); font-size: .875rem; font-weight: 600; }
 .workspace-secondary-action:hover { background: var(--paper-2); color: var(--ink); }
+.timestamp-shortcut { margin-block: 4px 12px; }
+.calculator-search { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
+.calculator-search .workspace-field { flex: 1 1 240px; max-width: 480px; }
+.calculator-search > button { margin: 8px 0; }
+.tools-surface a.workspace-secondary-action { display: inline-flex; align-items: center; }
 .consultation-switch { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--paper-2); }
 .consultation-switch label { position: relative; display: block; }
 .consultation-switch input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }

@@ -1,6 +1,7 @@
 // Optional encounter documentation, shared by the form and note formatter.
 // These fields record clinician observations and plans; none determine care.
 import { supplementaryResult, supplementaryReviewed } from './supplementary-calculators.js';
+import { numericInput } from './encounter-clinical-review.js';
 
 const choice = (key, label, options, extra = {}) => ({ key, label, type: 'select', options: options.map(option => Array.isArray(option) ? option : [option, option]), ...extra });
 const text = (key, label, extra = {}) => ({ key, label, type: 'textarea', ...extra });
@@ -155,7 +156,6 @@ export const ENCOUNTER_DETAIL_GROUPS = [
   { id: 'follow-up-review', section: 'safety', title: 'Follow-up: events, function & screening', when: followUp, fields: [
     yesNo('recurrentEvents', 'Recurrent neurologic events since discharge'),
     text('recurrentEventDetails', 'Recurrent events / evaluation', { when: yes('recurrentEvents') }),
-    choice('dischargeMrs', 'Recorded discharge mRS', mrsOptions),
     choice('followupMrs', 'Current follow-up mRS', mrsOptions),
     choice('followupInterval', 'Follow-up assessment interval', ['30 days', '90 days', '6 months', '12 months', 'Other']),
     number('reviewedMoca', 'Reviewed MoCA score', 0, 30),
@@ -212,6 +212,9 @@ export const ENCOUNTER_DETAIL_GROUPS = [
   ] },
   { id: 'discharge-continuity', section: 'handoff', title: 'Discharge & continuity of care', fields: [
     choice('dischargeReview', 'Discharge / transition review', ['Planning', 'Completed', 'Follow-up reconciliation']),
+    number('dischargeNihss', 'Recorded discharge NIHSS', 0, 42),
+    choice('dischargeMrs', 'Recorded discharge mRS', mrsOptions),
+    text('dischargeScoreSource', 'Discharge score source / assessment date / limitations', { when: state => entered('dischargeNihss')(state) || entered('dischargeMrs')(state) }),
     date('admissionDate', 'Actual admission date', { actual: true, when: entered('dischargeReview') }),
     date('dischargeDate', 'Actual discharge date', { actual: true, after: 'admissionDate', when: entered('dischargeReview') }),
     text('hospitalCourse', 'Hospital course / interval care summary', { when: entered('dischargeReview') }),
@@ -249,9 +252,8 @@ function formatField(field, value, values, now) {
     return option ? option[1] : `${source} (unrecognized selection; review)`;
   }
   if (field.type === 'number') {
-    const numeric = Number(source);
-    const valid = Number.isFinite(numeric) && numeric >= field.min && (field.max === undefined || numeric <= field.max) && (field.step === 'any' || Number.isInteger(numeric));
-    return valid ? source : `${source} (invalid value; review)`;
+    const numeric = numericInput(source, { min: field.min, max: field.max, integer: field.step !== 'any' });
+    return numeric !== null ? source : `${source} (invalid value; review)`;
   }
   if (field.type === 'date') {
     if (!validDate(source)) return `${source} (invalid date; review)`;

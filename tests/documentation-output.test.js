@@ -3,7 +3,44 @@ import { buildSummary, newEncounter, updateEncounter, outputWarnings } from '../
 import { documentationLabel, DOCUMENT_FORMATS } from '../src/documentation-output.js';
 const now = new Date('2026-10-01T12:00:00').getTime();
 describe('restored optional documentation formats', () => {
-  it.each(DOCUMENT_FORMATS.map(([id]) => id))('uses explicit recorded facts and missing-status labels in %s', documentFormat => {
+  it.each(['phone', 'video'])('produces a compact team handoff from current canonical facts in %s', consultationType => {
+    const state = newEncounter();
+    Object.assign(state, { consultationType, documentFormat: 'handoff', nihssSource: 'reported', reportedNihss: '0', drug: 'TNK', rationale: 'Confirm receiving-team plan.' });
+    Object.assign(state.note, { diagnosisCategory: 'ischemic', age: '65', sex: 'F', lkwUnknown: true, discoveryDate: '2026-10-01', discoveryTime: '11:00', ctResults: 'No hemorrhage described', ctaResults: 'No occlusion described', pmh: 'LONG HISTORY NOT FOR THE COMPACT HANDOFF' });
+    Object.assign(state.actions, { administrationTime: '2026-10-01T11:30', administered: false, disposition: 'Transfer', handoff: 'Pending transport.' });
+    state.details = { transferStatus: 'Requested', transferDestination: 'Receiving stroke service', transferAcceptance: 'no', dischargeReview: 'Planning', hospitalCourse: 'LONG HOSPITAL COURSE NOT FOR HANDOFF' };
+    const note = buildSummary(state, now);
+    expect(note).toMatch(/^Team handoff\n65 year old female · Ischemic stroke/);
+    expect(note).toContain('Last known well: UNKNOWN');
+    expect(note).toContain('discovery does not establish onset');
+    expect(note).toContain('NIHSS: 0/42 (reported total)');
+    expect(note).toContain('IVT administration: not documented with a valid drug and timestamp');
+    expect(note).toContain('Receiving service acceptance documented: No');
+    expect(note).toContain('Handoff: Pending transport.');
+    expect(note).not.toContain('LONG HISTORY');
+    expect(note).not.toContain('LONG HOSPITAL');
+    expect(note).not.toContain('TNK at');
+    expect(note.split(state.rationale)).toHaveLength(2);
+    state.actions.administered = true;
+    expect(buildSummary(state, now)).toContain('TNK at 2026-10-01T11:30');
+    state.actions.administrationTime = '2026-10-01T13:00';
+    expect(buildSummary(state, now)).toContain('entered time is invalid or future');
+    expect(buildSummary(state, now)).not.toContain('TNK at');
+    state.context = 'follow-up';
+    const followup = buildSummary(state, now);
+    expect(followup).toContain('· follow-up');
+    expect(followup).not.toContain('IVT administration');
+    expect(followup).not.toContain('Receiving stroke service');
+  });
+  it('keeps compact handoff and discharge output freshness tied to their source fields', () => {
+    const state = newEncounter(); state.documentFormat = 'handoff'; state.draft = { text: 'Old handoff', stale: false };
+    for (const patch of [{ documentFormat: 'discharge' }, { reportedNihss: '7' }, { details: { dischargeNihss: '0' } }, { actions: { ...state.actions, handoff: 'Changed plan' } }]) {
+      expect(updateEncounter(state, patch).draft.stale).toBe(true);
+    }
+    state.details.dischargeScoreSource = 'contact@example.invalid';
+    expect(outputWarnings(state)).toContain('Possible email address');
+  });
+  it.each(DOCUMENT_FORMATS.filter(([id]) => id !== 'handoff').map(([id]) => id))('uses explicit recorded facts and missing-status labels in %s', documentFormat => {
     const state = newEncounter(); state.documentFormat = documentFormat;
     state.note.diagnosisCategory = 'ischemic';
     state.details = { transferStatus: 'Requested', transferDestination: 'Receiving stroke service', transferAcceptance: 'no', dischargeReview: 'Planning', dischargeDate: '2026-10-02' };
