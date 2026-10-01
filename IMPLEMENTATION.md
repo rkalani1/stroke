@@ -6,7 +6,7 @@ The owner authorized a deep on-call, hospital and clinic review, implementation,
 
 - Evidence adds 17 source-bound topics with question search and on-call/hospital/clinic filters. Trials gains 16 completed-study cards, separately from registry screening. Cards preserve population, outcome, limitations and actual source-access scope; copy includes sources and limitations. One canonical JSON endpoint supplies UI, offline installation and the eighth MCP tool.
 - Quick links reveal existing reversal, post-lytic hemorrhage and angioedema sections. Contextual Encounter links connect guidance and worksheets. TIA readiness projects canonical explicit yes/no findings and workup/follow-up gaps, with no discharge clearance or duplicated form state.
-- Reference loading is lazy, app-version matched, retryable and included in the atomic offline cache. Unknown values, Encounter isolation, manual generation/copy and source-edit invalidation remain intact. Pending evidence copies invalidate on filtering, navigation and disclosure collapse. Repeated quick links reopen and focus their target.
+- Reference loading is lazy, app-version matched, retryable and included in the atomic offline cache. Unknown values, Encounter isolation, manual generation/copy and source-edit invalidation remain intact. Pending evidence copies invalidate on filtering, navigation and disclosure collapse. Repeated quick links reopen and focus their target. Topic deep links synchronously commit filter resets before scheduling focus; a slower-CI rendering race was corrected and regression-tested.
 - Bounded independent content review corrected PRESTIGE-AF's association to ICH and stated the ENRICH utility-weighted mRS direction. Primary/official sources were accessed on2026-10-01; access ranges from official summaries/abstracts to selected full sections. PRESTIGE-AF/SWITCH correction bodies remained inaccessible and the cards say so. No blanket clinical certification or protected-protocol recertification is claimed.
 - Removed unused icon vectors, supplied three previously missing protocol glyphs, deferred install-dialog code, omitted an unused calculator-source projection from the browser, and shared React's standard JSX element factory. Clinical content was not removed to satisfy budgets. No runtime dependency or size ceiling changed.
 
@@ -15,11 +15,11 @@ Final local candidate checks: production build; **1,285 unit cases** plus **8 co
 | Artifact | 7.2.0 bytes | 7.3.0 bytes | Unchanged ceiling |
 |---|---:|---:|---:|
 | Initial JavaScript, raw | 303,272 | 300,666 | 307,200 |
-| Initial JavaScript, gzip | 99,368 | 99,386 | 102,400 |
-| All JavaScript, raw | 708,892 | 704,539 | 716,800 |
-| All JavaScript, gzip | 197,941 | 200,561 | 200,704 |
+| Initial JavaScript, gzip | 99,368 | 99,385 | 102,400 |
+| All JavaScript, raw | 708,892 | 704,545 | 716,800 |
+| All JavaScript, gzip | 197,941 | 200,567 | 200,704 |
 | CSS | 83,129 | 84,912 | 92,160 |
-| Complete cache | 1,560,834 /40responses | 1,625,785 /44responses | 2,097,152 |
+| Complete cache | 1,560,834 /40responses | 1,625,791 /44responses | 2,097,152 |
 
 The broad archived corpus, withdrawn prediction tools, old teaching files and simulations remain retired. Root guideline/reference aliases now open the curated Evidence view; legacy full-corpus JSON endpoints remain explicit null retirement envelopes. Protected clinical source/modal text, the map and existing calculation algorithms are unchanged. The TIA assessment helper is reused unchanged.
 

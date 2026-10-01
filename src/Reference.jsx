@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { CARE_SETTINGS, searchReference, referenceText, validReferenceData } from './reference-search.js';
 
 let cached;
@@ -26,7 +26,7 @@ export default function Reference({ version, mode = 'topics', focusId, active = 
     return () => { current = false; epoch.current++; };
   }, [version, attempt]);
   useEffect(() => { clearCopy(); }, [active, mode, focusId]);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!active || !focusId || !data) return;
     setQuery(''); setSetting('all'); setOpened(previous => ({ ...previous, [focusId]: true }));
     const frame = requestAnimationFrame(() => {

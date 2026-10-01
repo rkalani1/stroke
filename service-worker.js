@@ -98,9 +98,9 @@ const APP_CHUNKS = [
   "./chunks/chunk-MEDXAGMH.js",
   "./chunks/InstallAppButton-INPP7ERU.js",
   "./chunks/ProtectedProtocols-4H3ALOSI.js",
-  "./chunks/Reference-2LYFTKIK.js",
+  "./chunks/Reference-P26PLBYF.js",
   "./chunks/Tools-HS373C5H.js",
-  "./chunks/Trials-7QXC3WGG.js"
+  "./chunks/Trials-KSNMCJCB.js"
 ];
 // END GENERATED APP CHUNKS
 

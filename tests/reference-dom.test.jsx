@@ -49,6 +49,11 @@ describe('curated reference integrity and interaction',()=>{
       const card=page.locator('[data-reference-id="pfo"]');await card.locator('summary').click();await card.getByRole('button').click();
       const fallback=page.getByLabel('Evidence copy fallback');await fallback.waitFor();expect(await fallback.inputValue()).toContain('Limits:');expect(await fallback.inputValue()).toContain('https://');
       await page.getByLabel('Find a clinical question').fill('no matches xyz');expect(await fallback.count()).toBe(0);expect(await page.locator('.reference-card').count()).toBe(0);
+      const session=await page.context().newCDPSession(page);await session.send('Emulation.setCPUThrottlingRate',{rate:4});
+      await page.evaluate(()=>window.renderReference({focusId:'af-timing'}));
+      await page.waitForFunction(()=>document.querySelector('[data-reference-id="af-timing"]')?.open && document.activeElement.closest('[data-reference-id]')?.dataset.referenceId==='af-timing');
+      expect(await page.getByLabel('Find a clinical question').inputValue()).toBe('');
+      await session.send('Emulation.setCPUThrottlingRate',{rate:1});
       await page.evaluate(()=>window.renderReference({mode:'studies',focusId:'topic-af-timing'}));await page.getByText('Show all completed evidence',{exact:true}).waitFor();
       expect(await page.locator('.reference-card').count()).toBe(3);expect(await page.getByText('Reference not found.',{exact:false}).count()).toBe(0);
       await page.evaluate(()=>window.renderReference({mode:'studies',focusId:'elan'}));await page.waitForFunction(()=>document.querySelector('[data-reference-id="elan"]').open && document.activeElement.closest('[data-reference-id]')?.dataset.referenceId==='elan');
