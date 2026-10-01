@@ -50,5 +50,17 @@
     "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
     "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
     "implementationUpdatedAt": "2026-09-30"
+  },
+  "maintainedProjection": {
+    "scope": "Only recommendations needed by the maintained Encounter workflow, source limits and protected protocol context. Full historical source transcription is at the archival Git ref.",
+    "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+    "originalRecommendationCount": 4,
+    "retainedRecommendationIds": [
+      "source-order-1",
+      "source-order-2",
+      "source-order-3",
+      "source-order-4"
+    ],
+    "clinicalReviewUnchanged": true
   }
 }

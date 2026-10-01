@@ -1,136 +1,168 @@
-// src/evidence/claims.js
-//
-// Atomic evidence claims that recommendations cite. A claim is a single
-// auditable statement supported by ≥1 citations. Recommendations are then
-// composed of claims, giving the UI the ability to drill from a guideline
-// recommendation through claims to primary sources without rewriting prose
-// each time.
-
-import { makeClaim } from './schema.js';
-
-const lr = '2026-04-25'; // last-reviewed for this seed batch
-
+// Maintained Encounter/protocol dependency closure. Wording and review dates retained.
 export const claims = [
-  makeClaim({
-    id: 'cl-tnk-noninferior-alteplase',
-    statement: 'Tenecteplase 0.25 mg/kg is non-inferior to alteplase 0.9 mg/kg for 90-day functional outcome in eligible AIS within 4.5 h.',
-    topic: 'tnk-vs-alteplase',
-    citationIds: ['cit-act-2022', 'cit-trace2-2023', 'cit-original-2024', 'cit-eso-tnk-2023', 'cit-extend-ia-tnk-part2-2020', 'cit-nor-test2a-2022'],
-    certainty: 'high',
-    conflictNotes: 'This evidence is dose-specific. EXTEND-IA TNK Part 2 found no reperfusion advantage with 0.4 versus 0.25 mg/kg. NOR-TEST 2A, comparing 0.4 mg/kg with alteplase in NIHSS ≥6 stroke, stopped early for safety; 0.4 mg/kg must not be substituted for the supported 0.25 mg/kg regimen.',
-    lastReviewed: lr
-  }),
-  makeClaim({
-    id: 'cl-tnk-late-window-non-lvo',
-    statement: 'TNK 0.25 mg/kg in the 4.5-24 h window with perfusion-imaging selection improves outcomes vs standard care in perfusion-selected patients not receiving EVT (TRACE-III: 100% LVO, <2% EVT, positive); TIMELESS did not demonstrate an overall benefit in its cohort (77.3% received EVT, p=0.45). These separate trials do not establish EVT co-treatment as a causal effect modifier. In non-LVO stroke with a CTP target mismatch and no planned EVT, OPTION (JAMA 2026) showed mRS 0-1 43.6% vs 34.2% (RR 1.28, 95% CI 1.04-1.57) with sICH 2.8% vs 0%.',
-    topic: 'extended-window-ivt',
-    citationIds: ['cit-timeless-2024', 'cit-trace-iii-2024', 'cit-option-tnk-2026'],
-    certainty: 'moderate',
-    conflictNotes: 'TIMELESS was neutral (adjusted common OR 1.13, 95% CI 0.82-1.57; p=0.45) with 77.3% of patients undergoing thrombectomy. TRACE-III showed benefit (mRS 0-1 33.0% vs 24.2%; p=0.03) in an LVO-only late-window population without EVT access; sICH appeared higher (3.0% vs 0.8%).',
-    lastReviewed: '2026-09-26'
-  }),
-  makeClaim({
-    id: 'cl-evt-large-core',
-    statement: 'EVT improves functional outcomes vs medical therapy in selected patients with large-core infarct (ASPECTS 3-5, or perfusion/DWI core ≥50 mL in SELECT2 and 70-100 mL in ANGEL-ASPECT).',
-    topic: 'evt-large-core',
-    citationIds: ['cit-select2-2023', 'cit-rescue-japan-2022', 'cit-angel-aspect-2023', 'cit-tension-2023'],
-    certainty: 'high',
-    lastReviewed: '2026-09-26'
-  }),
-  makeClaim({
-    id: 'cl-evt-late-window',
-    statement: 'EVT improves functional outcomes in the late window with imaging-based selection (DAWN: 6-24 h from LKW, clinical-core mismatch; DEFUSE-3: 6-16 h from LKW, perfusion mismatch).',
-    topic: 'evt-late-window',
-    citationIds: ['cit-dawn-2018', 'cit-defuse3-2018'],
-    certainty: 'high',
-    lastReviewed: '2026-09-26'
-  }),
-  makeClaim({
-    id: 'cl-ich-bp-bundle',
-    statement: 'A care bundle of intensive BP lowering, glycemic and temperature control, and rapid anticoagulant reversal improves functional outcome after acute ICH (INTERACT3).',
-    topic: 'ich-bp-management',
-    citationIds: ['cit-interact3-2023'],
-    certainty: 'high',
-    lastReviewed: '2026-09-26'
-  }),
-  makeClaim({
-    id: 'cl-ich-bp-intensive-target',
-    statement: 'In acute spontaneous ICH with elevated SBP, intensive SBP lowering did not significantly reduce the primary outcome in either major BP-only trial. INTERACT2 (target <140 vs <180 mmHg within 1 h, enrolled within 6 h): death or major disability (mRS 3-6) at 90 days 52.0% vs 55.6% (OR 0.87, 95% CI 0.75-1.01; p=0.06), with a favourable prespecified ordinal mRS shift (OR 0.87, 95% CI 0.77-1.00; p=0.04) and similar mortality and serious adverse events. ATACH-2 (IV nicardipine within 4.5 h, target 110-139 vs 140-179 mmHg; mean baseline SBP 200.6 mmHg; stopped for futility): death or disability (mRS 4-6) at 3 months 38.7% vs 37.7% (RR 1.04, 95% CI 0.85-1.27), with more renal adverse events within 7 days in the intensive arm (9.0% vs 4.0%; p=0.002). INTERACT3 showed that a care bundle combining early intensive SBP lowering (target <140 mmHg) with glucose, temperature, and warfarin-reversal protocols improved 6-month functional outcome (common OR for poor outcome 0.86, 95% CI 0.76-0.97; p=0.015).',
-    topic: 'ich-bp-management',
-    citationIds: ['cit-interact2-2013', 'cit-atach2-2016', 'cit-interact3-2023', 'cit-aha-ich-2022'],
-    certainty: 'moderate',
-    conflictNotes: 'Neither INTERACT2 nor ATACH-2 met its primary endpoint; the AHA/ASA 2022 ICH guideline rates targeting SBP 140 mmHg (maintaining 130-150 mmHg) in mild-to-moderate ICH presenting with SBP 150-220 mmHg as Class 2b and acute lowering to <130 mmHg as Class 3: Harm. INTERACT3 (published after the 2022 guideline) was a stepped-wedge cluster trial of a multicomponent bundle, so its benefit cannot be attributed to BP lowering alone.',
-    lastReviewed: '2026-09-26'
-  }),
-  makeClaim({
-    id: 'cl-ich-andexanet-fxa',
-    statement: 'Andexanet alfa achieves better hemostatic efficacy than usual care (predominantly 4F-PCC) in factor Xa inhibitor-associated ICH, with monitoring required for thrombotic events (ANNEXA-I).',
-    topic: 'ich-anticoag-reversal',
-    citationIds: ['cit-annexa-i-2024', 'cit-aha-ich-2022'],
-    certainty: 'moderate',
-    conflictNotes: 'Hemostatic efficacy improved (67.0% vs 53.1%), but thrombotic events (10.3% vs 5.6%), including ischemic stroke (6.5% vs 1.5%), were more frequent with andexanet than with usual care (85.5% received PCC), with no appreciable difference in modified Rankin scale score or death within 30 days. The AHA/ASA 2022 Class IIa recommendation (LOE B-NR) predates ANNEXA-I and the FDA safety action after which US commercial sales of andexanet ended on December 22, 2025; the 2026 NCS/SCCM focused update conditionally recommends 4F-PCC over andexanet.',
-    lastReviewed: '2026-09-26'
-  }),
-  makeClaim({
-    id: 'cl-ich-mis-evacuation',
-    statement: 'Early minimally invasive evacuation of moderate-volume lobar ICH improves functional outcome at 6 months (ENRICH).',
-    topic: 'ich-surgery',
-    citationIds: ['cit-enrich-2024', 'cit-mind-2025', 'cit-aha-mis-ich-2026'],
-    certainty: 'moderate',
-    conflictNotes: 'ENRICH adaptive design enriched for lobar location after early stop for futility in deep ICH; generalization to deep ICH not supported. MIND (JAMA Neurol 2025; Artemis device; supratentorial ICH 20-80 mL; surgery within 72 h; 69.5% deep bleeds; stopped early at n=236) found no significant 180-day benefit (ordinal mRS OR 1.03, 96% CI 0.62-1.72; P=.45). The 2026 AHA science advisory (ungraded; PMID 42634945) reviews this randomized evidence and frames consideration of MIS around lobar hemorrhage.',
-    lastReviewed: '2026-09-26'
-  }),
-  makeClaim({
-    id: 'cl-dapt-minor-stroke',
-    statement: 'Short-course DAPT reduces early recurrent stroke vs aspirin alone in minor stroke or high-risk TIA: aspirin + clopidogrel (CHANCE: 21 days of DAPT, 90-day stroke; POINT: 90 days of DAPT, 90-day major ischemic events; INSPIRES: 21 days of DAPT started up to 72 h in presumed atherosclerotic stroke/TIA, 90-day stroke) and aspirin + ticagrelor for 30 days (THALES, NIHSS <=5: 30-day stroke or death). Bleeding was higher with DAPT in POINT (major), THALES (severe) and INSPIRES (moderate-to-severe), but not in CHANCE. In CYP2C19 loss-of-function carriers, ticagrelor-aspirin reduced 90-day stroke vs clopidogrel-aspirin (CHANCE-2).',
-    topic: 'dapt-minor-stroke',
-    citationIds: ['cit-chance-2013', 'cit-point-2018', 'cit-thales-2020', 'cit-inspires-2024', 'cit-chance2-2021'],
-    certainty: 'high',
-    lastReviewed: '2026-09-26'
-  }),
-  makeClaim({
-    id: 'cl-af-early-anticoag',
-    statement: 'Early DOAC initiation within 4 days was non-inferior to delayed (7-14 day) initiation (OPTIMAS) and reduced the 30-day composite of recurrent ischemic stroke, symptomatic intracranial hemorrhage (sICH), or unclassified stroke vs ≥5 days in pooled individual-patient data (CATALYST IPDMA: OR 0.70, 95% CI 0.50-0.98, p=0.039) without excess sICH. TIMING (≤4 vs 5-10 days) was non-inferior for recurrent ischemic stroke, sICH, or death at 90 days; ELAN (estimation design, no formal non-inferiority test) estimated a 30-day risk difference of -1.18 percentage points (95% CI -2.84 to 0.47) with early start for the composite of recurrent ischemic stroke, systemic embolism, major extracranial bleeding, sICH, or vascular death.',
-    topic: 'af-anticoag-timing',
-    citationIds: ['cit-optimas-2024', 'cit-catalyst-2025', 'cit-elan-2023', 'cit-timing-2022'],
-    certainty: 'high',
-    lastReviewed: '2026-09-26'
-  }),
-  makeClaim({
-    id: 'cl-late-window-ivt-non-lvo',
-    statement: 'Mismatch-selected IVT improved functional outcome vs placebo or standard care in patients not undergoing EVT: alteplase with DWI-FLAIR mismatch in unknown-onset stroke (WAKE-UP) and alteplase with perfusion mismatch at 4.5-9 h from onset or on waking within 9 h of the sleep midpoint (EXTEND); in ICA/MCA occlusion without EVT access, tenecteplase at 4.5-24 h improved mRS 0-1 (TRACE-III). TIMELESS (77% thrombectomy) and TWIST (non-contrast CT-selected wake-up) were neutral.',
-    topic: 'extended-window-ivt',
-    citationIds: ['cit-wake-up-2018', 'cit-extend-2019', 'cit-timeless-2024', 'cit-twist-2023', 'cit-trace-iii-2024', 'cit-option-tnk-2026'],
-    certainty: 'moderate',
-    conflictNotes: 'TWIST (NCCT-only wake-up TNK) was negative (adjusted OR 1.18, 95% CI 0.88-1.58; p=0.27); TIMELESS was negative in a 100% LVO population with 77% EVT (p=0.45). Benefit was demonstrated in the particular mismatch-selected populations studied. Neutral overall trials do not prove that absence of EVT is a necessary causal condition or that imaging selection is universally necessary.',
-    lastReviewed: '2026-09-26'
-  }),
-  makeClaim({
-    id: 'cl-bp-post-evt-conventional',
-    statement: 'After successful EVT, intensive SBP lowering worsened functional outcome vs conventional 140-180 mmHg targets (ENCHANTED2/MT: <120 mmHg; OPTIMAL-BP: <140 mmHg); BP-TARGET (100-129 vs 130-185 mmHg) found no difference in intraparenchymal hemorrhage.',
-    topic: 'bp-post-evt',
-    citationIds: ['cit-enchanted2-mt-2022', 'cit-optimal-bp-2023', 'cit-bp-target-2021'],
-    certainty: 'moderate',
-    conflictNotes: 'BP-TARGET found no harm or benefit of intensive lowering; ENCHANTED2/MT and OPTIMAL-BP both favor conventional targets after EVT.',
-    lastReviewed: '2026-09-26'
-  }),
-  makeClaim({
-    id: 'cl-ich-warfarin-reversal-pcc-vk',
-    statement: 'In warfarin-associated ICH, 4F-PCC dosed by INR/weight plus IV vitamin K achieves faster INR correction and is preferred over FFP, which is slower and carries volume-overload risk (AHA/ASA 2022 ICH guideline; Steiner INCH Lancet Neurol 2016).',
-    topic: 'ich-anticoag-reversal',
-    citationIds: ['cit-aha-ich-2022', 'cit-inch-2016'],
-    certainty: 'high',
-    conflictNotes: 'Vitamin K is required for sustained reversal; PCC alone is short-acting. FFP remains an alternative when PCC is unavailable.',
-    lastReviewed: '2026-09-26'
-  })
+  {
+    "id": "cl-tnk-noninferior-alteplase",
+    "statement": "Tenecteplase 0.25 mg/kg is non-inferior to alteplase 0.9 mg/kg for 90-day functional outcome in eligible AIS within 4.5 h.",
+    "topic": "tnk-vs-alteplase",
+    "citationIds": [
+      "cit-act-2022",
+      "cit-trace2-2023",
+      "cit-original-2024",
+      "cit-eso-tnk-2023",
+      "cit-extend-ia-tnk-part2-2020",
+      "cit-nor-test2a-2022"
+    ],
+    "certainty": "high",
+    "conflictNotes": "This evidence is dose-specific. EXTEND-IA TNK Part 2 found no reperfusion advantage with 0.4 versus 0.25 mg/kg. NOR-TEST 2A, comparing 0.4 mg/kg with alteplase in NIHSS ≥6 stroke, stopped early for safety; 0.4 mg/kg must not be substituted for the supported 0.25 mg/kg regimen.",
+    "lastReviewed": "2026-04-25"
+  },
+  {
+    "id": "cl-tnk-late-window-non-lvo",
+    "statement": "TNK 0.25 mg/kg in the 4.5-24 h window with perfusion-imaging selection improves outcomes vs standard care in perfusion-selected patients not receiving EVT (TRACE-III: 100% LVO, <2% EVT, positive); TIMELESS did not demonstrate an overall benefit in its cohort (77.3% received EVT, p=0.45). These separate trials do not establish EVT co-treatment as a causal effect modifier. In non-LVO stroke with a CTP target mismatch and no planned EVT, OPTION (JAMA 2026) showed mRS 0-1 43.6% vs 34.2% (RR 1.28, 95% CI 1.04-1.57) with sICH 2.8% vs 0%.",
+    "topic": "extended-window-ivt",
+    "citationIds": [
+      "cit-timeless-2024",
+      "cit-trace-iii-2024",
+      "cit-option-tnk-2026"
+    ],
+    "certainty": "moderate",
+    "conflictNotes": "TIMELESS was neutral (adjusted common OR 1.13, 95% CI 0.82-1.57; p=0.45) with 77.3% of patients undergoing thrombectomy. TRACE-III showed benefit (mRS 0-1 33.0% vs 24.2%; p=0.03) in an LVO-only late-window population without EVT access; sICH appeared higher (3.0% vs 0.8%).",
+    "lastReviewed": "2026-09-26"
+  },
+  {
+    "id": "cl-evt-large-core",
+    "statement": "EVT improves functional outcomes vs medical therapy in selected patients with large-core infarct (ASPECTS 3-5, or perfusion/DWI core ≥50 mL in SELECT2 and 70-100 mL in ANGEL-ASPECT).",
+    "topic": "evt-large-core",
+    "citationIds": [
+      "cit-select2-2023",
+      "cit-rescue-japan-2022",
+      "cit-angel-aspect-2023",
+      "cit-tension-2023"
+    ],
+    "certainty": "high",
+    "conflictNotes": "",
+    "lastReviewed": "2026-09-26"
+  },
+  {
+    "id": "cl-evt-late-window",
+    "statement": "EVT improves functional outcomes in the late window with imaging-based selection (DAWN: 6-24 h from LKW, clinical-core mismatch; DEFUSE-3: 6-16 h from LKW, perfusion mismatch).",
+    "topic": "evt-late-window",
+    "citationIds": [
+      "cit-dawn-2018",
+      "cit-defuse3-2018"
+    ],
+    "certainty": "high",
+    "conflictNotes": "",
+    "lastReviewed": "2026-09-26"
+  },
+  {
+    "id": "cl-ich-bp-bundle",
+    "statement": "A care bundle of intensive BP lowering, glycemic and temperature control, and rapid anticoagulant reversal improves functional outcome after acute ICH (INTERACT3).",
+    "topic": "ich-bp-management",
+    "citationIds": [
+      "cit-interact3-2023"
+    ],
+    "certainty": "high",
+    "conflictNotes": "",
+    "lastReviewed": "2026-09-26"
+  },
+  {
+    "id": "cl-ich-bp-intensive-target",
+    "statement": "In acute spontaneous ICH with elevated SBP, intensive SBP lowering did not significantly reduce the primary outcome in either major BP-only trial. INTERACT2 (target <140 vs <180 mmHg within 1 h, enrolled within 6 h): death or major disability (mRS 3-6) at 90 days 52.0% vs 55.6% (OR 0.87, 95% CI 0.75-1.01; p=0.06), with a favourable prespecified ordinal mRS shift (OR 0.87, 95% CI 0.77-1.00; p=0.04) and similar mortality and serious adverse events. ATACH-2 (IV nicardipine within 4.5 h, target 110-139 vs 140-179 mmHg; mean baseline SBP 200.6 mmHg; stopped for futility): death or disability (mRS 4-6) at 3 months 38.7% vs 37.7% (RR 1.04, 95% CI 0.85-1.27), with more renal adverse events within 7 days in the intensive arm (9.0% vs 4.0%; p=0.002). INTERACT3 showed that a care bundle combining early intensive SBP lowering (target <140 mmHg) with glucose, temperature, and warfarin-reversal protocols improved 6-month functional outcome (common OR for poor outcome 0.86, 95% CI 0.76-0.97; p=0.015).",
+    "topic": "ich-bp-management",
+    "citationIds": [
+      "cit-interact2-2013",
+      "cit-atach2-2016",
+      "cit-interact3-2023",
+      "cit-aha-ich-2022"
+    ],
+    "certainty": "moderate",
+    "conflictNotes": "Neither INTERACT2 nor ATACH-2 met its primary endpoint; the AHA/ASA 2022 ICH guideline rates targeting SBP 140 mmHg (maintaining 130-150 mmHg) in mild-to-moderate ICH presenting with SBP 150-220 mmHg as Class 2b and acute lowering to <130 mmHg as Class 3: Harm. INTERACT3 (published after the 2022 guideline) was a stepped-wedge cluster trial of a multicomponent bundle, so its benefit cannot be attributed to BP lowering alone.",
+    "lastReviewed": "2026-09-26"
+  },
+  {
+    "id": "cl-ich-andexanet-fxa",
+    "statement": "Andexanet alfa achieves better hemostatic efficacy than usual care (predominantly 4F-PCC) in factor Xa inhibitor-associated ICH, with monitoring required for thrombotic events (ANNEXA-I).",
+    "topic": "ich-anticoag-reversal",
+    "citationIds": [
+      "cit-annexa-i-2024",
+      "cit-aha-ich-2022"
+    ],
+    "certainty": "moderate",
+    "conflictNotes": "Hemostatic efficacy improved (67.0% vs 53.1%), but thrombotic events (10.3% vs 5.6%), including ischemic stroke (6.5% vs 1.5%), were more frequent with andexanet than with usual care (85.5% received PCC), with no appreciable difference in modified Rankin scale score or death within 30 days. The AHA/ASA 2022 Class IIa recommendation (LOE B-NR) predates ANNEXA-I and the FDA safety action after which US commercial sales of andexanet ended on December 22, 2025; the 2026 NCS/SCCM focused update conditionally recommends 4F-PCC over andexanet.",
+    "lastReviewed": "2026-09-26"
+  },
+  {
+    "id": "cl-ich-mis-evacuation",
+    "statement": "Early minimally invasive evacuation of moderate-volume lobar ICH improves functional outcome at 6 months (ENRICH).",
+    "topic": "ich-surgery",
+    "citationIds": [
+      "cit-enrich-2024",
+      "cit-mind-2025",
+      "cit-aha-mis-ich-2026"
+    ],
+    "certainty": "moderate",
+    "conflictNotes": "ENRICH adaptive design enriched for lobar location after early stop for futility in deep ICH; generalization to deep ICH not supported. MIND (JAMA Neurol 2025; Artemis device; supratentorial ICH 20-80 mL; surgery within 72 h; 69.5% deep bleeds; stopped early at n=236) found no significant 180-day benefit (ordinal mRS OR 1.03, 96% CI 0.62-1.72; P=.45). The 2026 AHA science advisory (ungraded; PMID 42634945) reviews this randomized evidence and frames consideration of MIS around lobar hemorrhage.",
+    "lastReviewed": "2026-09-26"
+  },
+  {
+    "id": "cl-dapt-minor-stroke",
+    "statement": "Short-course DAPT reduces early recurrent stroke vs aspirin alone in minor stroke or high-risk TIA: aspirin + clopidogrel (CHANCE: 21 days of DAPT, 90-day stroke; POINT: 90 days of DAPT, 90-day major ischemic events; INSPIRES: 21 days of DAPT started up to 72 h in presumed atherosclerotic stroke/TIA, 90-day stroke) and aspirin + ticagrelor for 30 days (THALES, NIHSS <=5: 30-day stroke or death). Bleeding was higher with DAPT in POINT (major), THALES (severe) and INSPIRES (moderate-to-severe), but not in CHANCE. In CYP2C19 loss-of-function carriers, ticagrelor-aspirin reduced 90-day stroke vs clopidogrel-aspirin (CHANCE-2).",
+    "topic": "dapt-minor-stroke",
+    "citationIds": [
+      "cit-chance-2013",
+      "cit-point-2018",
+      "cit-thales-2020",
+      "cit-inspires-2024",
+      "cit-chance2-2021"
+    ],
+    "certainty": "high",
+    "conflictNotes": "",
+    "lastReviewed": "2026-09-26"
+  },
+  {
+    "id": "cl-late-window-ivt-non-lvo",
+    "statement": "Mismatch-selected IVT improved functional outcome vs placebo or standard care in patients not undergoing EVT: alteplase with DWI-FLAIR mismatch in unknown-onset stroke (WAKE-UP) and alteplase with perfusion mismatch at 4.5-9 h from onset or on waking within 9 h of the sleep midpoint (EXTEND); in ICA/MCA occlusion without EVT access, tenecteplase at 4.5-24 h improved mRS 0-1 (TRACE-III). TIMELESS (77% thrombectomy) and TWIST (non-contrast CT-selected wake-up) were neutral.",
+    "topic": "extended-window-ivt",
+    "citationIds": [
+      "cit-wake-up-2018",
+      "cit-extend-2019",
+      "cit-timeless-2024",
+      "cit-twist-2023",
+      "cit-trace-iii-2024",
+      "cit-option-tnk-2026"
+    ],
+    "certainty": "moderate",
+    "conflictNotes": "TWIST (NCCT-only wake-up TNK) was negative (adjusted OR 1.18, 95% CI 0.88-1.58; p=0.27); TIMELESS was negative in a 100% LVO population with 77% EVT (p=0.45). Benefit was demonstrated in the particular mismatch-selected populations studied. Neutral overall trials do not prove that absence of EVT is a necessary causal condition or that imaging selection is universally necessary.",
+    "lastReviewed": "2026-09-26"
+  },
+  {
+    "id": "cl-bp-post-evt-conventional",
+    "statement": "After successful EVT, intensive SBP lowering worsened functional outcome vs conventional 140-180 mmHg targets (ENCHANTED2/MT: <120 mmHg; OPTIMAL-BP: <140 mmHg); BP-TARGET (100-129 vs 130-185 mmHg) found no difference in intraparenchymal hemorrhage.",
+    "topic": "bp-post-evt",
+    "citationIds": [
+      "cit-enchanted2-mt-2022",
+      "cit-optimal-bp-2023",
+      "cit-bp-target-2021"
+    ],
+    "certainty": "moderate",
+    "conflictNotes": "BP-TARGET found no harm or benefit of intensive lowering; ENCHANTED2/MT and OPTIMAL-BP both favor conventional targets after EVT.",
+    "lastReviewed": "2026-09-26"
+  },
+  {
+    "id": "cl-ich-warfarin-reversal-pcc-vk",
+    "statement": "In warfarin-associated ICH, 4F-PCC dosed by INR/weight plus IV vitamin K achieves faster INR correction and is preferred over FFP, which is slower and carries volume-overload risk (AHA/ASA 2022 ICH guideline; Steiner INCH Lancet Neurol 2016).",
+    "topic": "ich-anticoag-reversal",
+    "citationIds": [
+      "cit-aha-ich-2022",
+      "cit-inch-2016"
+    ],
+    "certainty": "high",
+    "conflictNotes": "Vitamin K is required for sustained reversal; PCC alone is short-acting. FFP remains an alternative when PCC is unavailable.",
+    "lastReviewed": "2026-09-26"
+  }
 ];
 
-const byId = new Map(claims.map((c) => [c.id, c]));
-
-export function getClaim(id) {
-  return byId.get(id) || null;
-}
-
-export function getAllClaimIds() {
-  return new Set(byId.keys());
-}
+const byId = new Map(claims.map(record => [record.id, record]));
+export function getClaim(id) { return byId.get(id) || null; }
+export function getAllClaimIds() { return new Set(byId.keys()); }

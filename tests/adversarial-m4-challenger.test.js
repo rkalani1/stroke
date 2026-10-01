@@ -40,7 +40,7 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
         'index.html',
         'manifest.json',
         'service-worker.js',
-        'content/bundle.json'
+        'app-assets.json'
       ];
       for (const target of targets) {
         const fullPath = path.join(REPO_ROOT, target);
@@ -83,14 +83,6 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
       }
     });
 
-    it('verifies content bundle idempotency and synchronization', () => {
-      const res = spawnSync('node', ['./scripts/build-content-bundle.mjs', '--check'], {
-        cwd: REPO_ROOT,
-        encoding: 'utf8',
-      });
-      expect(res.status, 'Content bundle is out of sync').toBe(0);
-      expect(res.stdout).toContain('bundle is up to date');
-    });
 
     it('verifies agent assets idempotency and synchronization', () => {
       const res = spawnSync('node', ['./scripts/generate-agent-assets.mjs', '--check'], {
@@ -100,16 +92,6 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
       expect(res.status, 'Agent assets are out of sync').toBe(0);
     });
 
-    it('verifies seed content synchronization', () => {
-      const res = spawnSync('node', ['./scripts/seed-content.mjs', '--check'], {
-        cwd: REPO_ROOT,
-        encoding: 'utf8',
-      });
-      expect(res.status, 'Seed content is out of sync').toBe(0);
-    });
-  });
-
-  describe('2. Offline Service Worker Caching Integrity & PWA Manifest Validity', () => {
 
     it('validates manifest.json syntax, required fields, and category tags', () => {
       expect(fs.existsSync(MANIFEST_PATH), 'manifest.json must exist').toBe(true);
@@ -154,7 +136,7 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
 
       const cacheMatch = swContent.match(/CACHE_NAME\s*=\s*['"]([^'"]+)['"]/);
       expect(cacheMatch, 'CACHE_NAME constant found in SW').not.toBeNull();
-      const expectedCacheName = `stroke-cache-v${pkg.version.replace(/\./g, '-')}-utility-refinement-20261001`;
+      const expectedCacheName = `stroke-cache-v${pkg.version.replace(/\./g, '-')}-encounter-first-20261001`;
       expect(cacheMatch[1]).toBe(expectedCacheName);
     });
 
@@ -167,12 +149,15 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
       const coreAssets = eval(arrayString); // Evaluates array of string paths safely
 
       // The reviewed release removes retired teaching SVGs from precache.
-      // Preserve the complete shell and its 34 retained installation assets.
-      expect(coreAssets).toHaveLength(34);
+      // Preserve the complete retained installation graph; deterministic byte budgets cover shell assets.
+      expect(coreAssets.length).toBeGreaterThan(0);
+      expect(coreAssets.some(asset => /documents|education|search-index/.test(asset))).toBe(false);
+      expect(coreAssets.filter(asset => asset.startsWith('./assets/')).every(asset => /^\.\/assets\/(fonts|splash)\//.test(asset))).toBe(true);
       expect(coreAssets).toEqual(expect.arrayContaining([
-        './', './index.html', './app.js', './tailwind.css', './manifest.json',
-        './offline.html', './config.example.json', './icon-192.png', './icon-512.png',
+        './', './index.html', './tailwind.css', './manifest.json',
+        './offline.html', './icon-192.png', './icon-512.png',
       ]));
+      expect(coreAssets.some(asset => asset.split('?')[0] === './app.js')).toBe(true);
       expect(new Set(coreAssets).size).toBe(coreAssets.length);
 
       const chunkMatch = swContent.match(/const APP_CHUNKS = (\[[\s\S]*?\]);/);
@@ -185,7 +170,7 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
       const missingAssets = [];
       for (const relAsset of [...coreAssets, ...chunks]) {
         if (relAsset === './' || relAsset === '/') continue; // root alias
-        const normalizedRel = relAsset.replace(/^\.\//, '');
+        const normalizedRel = relAsset.replace(/^\.\//, '').split('?')[0];
         const assetPath = path.join(REPO_ROOT, normalizedRel);
         if (!fs.existsSync(assetPath)) {
           missingAssets.push(relAsset);
@@ -296,7 +281,7 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
 
     it('verifies all built production modules and shell assets have zero leak violations', () => {
       const browserAssets = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'app-assets.json'), 'utf8'));
-      const targets = [...new Set(['app.js', 'tailwind.css', 'index.html', 'content/bundle.json', 'app-assets.json', ...browserAssets.files.map(file => file.path)])];
+      const targets = [...new Set(['app.js', 'tailwind.css', 'index.html', 'app-assets.json', 'app-assets.json', ...browserAssets.files.map(file => file.path)])];
       const input = targets.join('\n');
       const res = spawnSync('node', [LEAK_GUARD_SCRIPT, '--json'], {
         cwd: REPO_ROOT,

@@ -1,0 +1,502 @@
+{
+  "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+  "baseline": "4f8e99d",
+  "projections": [
+    {
+      "file": "src/guidelines/ais-2026.json",
+      "originalSha256": "d83212f2d8382831935ccf8e2cbc27f34e46b62303fd599ae9f87d9b3bb67741",
+      "maintainedSha256": "c722aa51d5355100fac83f5d757e42f9f318925887ba06d981e40251c084499c",
+      "retainedRecommendations": [
+        {
+          "id": "ais-2026-46",
+          "sha256": "99f9caa6211e1fbfda6c44b22b4228d48ff58030b02d40c05a6b53c88ff7d18d"
+        },
+        {
+          "id": "ais-2026-47",
+          "sha256": "319914d36fa33db5e21e904821e69206535df8fe5ccc1baea4e612c25164b46e"
+        },
+        {
+          "id": "ais-2026-48",
+          "sha256": "4780a13d3a26f40057e18facbb4cb5d2418e2c00f5ac299056b334c3b49eb45d"
+        },
+        {
+          "id": "ais-2026-49",
+          "sha256": "10bd981af4f8d801de1c3838d112105a853d2155c4e062a24de5019f672d1223"
+        },
+        {
+          "id": "ais-2026-50",
+          "sha256": "08218e815c683cff389467e11ff3a918fe0062a182fcf97eaa2e89dd2766b1a6"
+        },
+        {
+          "id": "ais-2026-51",
+          "sha256": "12b42d3034fdb10d50525bf8a9f524d03e251a835cb808ff735c9ab296f7d45d"
+        },
+        {
+          "id": "ais-2026-52",
+          "sha256": "229ade39681452ca670f6c0ac4d6c3e67f32c9d3287ee8ef5fe8432e27b6242c"
+        },
+        {
+          "id": "ais-2026-53",
+          "sha256": "6ef4ac895a72d469ec68d0bd0a23c17044d41ee68e2a44ac1494e1cd9b31a87e"
+        },
+        {
+          "id": "ais-2026-54",
+          "sha256": "62d38b493770d26b861817b6ffbfb38e9deb6289578de29553aa8b07f4886357"
+        },
+        {
+          "id": "ais-2026-55",
+          "sha256": "b87a7084b0c3259734e87b4b428b91eb17360ffe2f33875b45f3c9dd6fbeaa72"
+        },
+        {
+          "id": "ais-2026-56",
+          "sha256": "b380fffa7f6d4ab9b5ec036723619914cb422055255e7dca8dc44c58f8e96f3b"
+        },
+        {
+          "id": "ais-2026-57",
+          "sha256": "ac9bebf3b3cf6c02be28aa0ccedcd8caf4454cb4fd4ff156839f5cdf9e223254"
+        },
+        {
+          "id": "ais-2026-58",
+          "sha256": "9159992962d8c203ef7a51338859be5905af242daa33284b48189497bbc1c4e5"
+        },
+        {
+          "id": "ais-2026-59",
+          "sha256": "5671662c5c91b6f2f3cc561bc0785ece8a06b7a7d6c8a909326a3edbe2501bc5"
+        },
+        {
+          "id": "ais-2026-76",
+          "sha256": "667e044c9b4b2d41d26c97c3af3977cf58e8d40b6b93747af5d42f6972d8106f"
+        },
+        {
+          "id": "ais-2026-77",
+          "sha256": "72c7f1afa39de4888e7f5aec5a6ef5664892d38b329a0bb5ee3f1036fed96818"
+        },
+        {
+          "id": "ais-2026-78",
+          "sha256": "c3c9e78aa7c1ee07831b44bacec741f693b73be45d6ba37358c714a78b5b8af4"
+        },
+        {
+          "id": "ais-2026-79",
+          "sha256": "661f824410afe82155d78cafea700f39461ea31022b2dcbdfcf50e402e9ce226"
+        },
+        {
+          "id": "ais-2026-80",
+          "sha256": "be8dad9f17ef86d12bbc7fc74386ed18ef379f2624ae886321fc781d614f4be8"
+        },
+        {
+          "id": "ais-2026-81",
+          "sha256": "685ea38c906faa45f3950297ba18754d447a29ad8fb6302419c2bd283ec239e1"
+        },
+        {
+          "id": "ais-2026-82",
+          "sha256": "552c75a03c0028e20729a07cd1b456a6195ce6f25e0020bf3e97ca6bd5ef2c50"
+        },
+        {
+          "id": "ais-2026-83",
+          "sha256": "8f1a99d821f56914cdd59fc5e00d300810ee447f2724a5440f6793e08e434d9b"
+        },
+        {
+          "id": "ais-2026-84",
+          "sha256": "793717e0e19558b21c4cd1f0ae41b5ca645db936aff43af5d181e6d43b402052"
+        },
+        {
+          "id": "ais-2026-85",
+          "sha256": "8b0d069182ed4b46091148e64db8b4208e71f7af01b6ed8ef47d0171f13eb474"
+        },
+        {
+          "id": "ais-2026-86",
+          "sha256": "a8d61fbe6a82bc25e007797a959eabf755bf6f1c11dd5b8abb0cf7c575a9d13b"
+        },
+        {
+          "id": "ais-2026-87",
+          "sha256": "80b503c033dc008022315354bfd22ba12f450b5c47060c48f9b0c200b6755309"
+        },
+        {
+          "id": "ais-2026-88",
+          "sha256": "3f1b1c738364da06caf8bb73d09a3d698ad82d64a9ce0bafbd5109eadc8ecae5"
+        },
+        {
+          "id": "ais-2026-89",
+          "sha256": "04189a431b9988754ba22178c7f718be75e103f59ad332320ed1078a000546d6"
+        },
+        {
+          "id": "ais-2026-90",
+          "sha256": "f9b389113de4f3f615fd0b74700f85dd4521427208e404ca5ad4bf393647ee79"
+        },
+        {
+          "id": "ais-2026-91",
+          "sha256": "abcb8bd7c63c011674957194318f97809514ea7e4b3056bc6ebc442b4c22a376"
+        },
+        {
+          "id": "ais-2026-92",
+          "sha256": "1c0339350705cd142ebbc2e647a87b6c181eb8a2c944a59cfb70e568d4be4e20"
+        },
+        {
+          "id": "ais-2026-93",
+          "sha256": "bfa68bf9b6c184a05e7f61650b7d646d02e08569eb1b5e7fe1ded55bcb1b72ab"
+        },
+        {
+          "id": "ais-2026-94",
+          "sha256": "f5b80bd12ceef46291f8b1ea41b20368528d7f6b03dcb3d5633c9073d6a88cf3"
+        },
+        {
+          "id": "ais-2026-95",
+          "sha256": "f8aeec85a0b37ee10b0ff06a706fe1724bd6335c16e947af52fcf1d50655268b"
+        },
+        {
+          "id": "ais-2026-96",
+          "sha256": "90b013605c14e77e9475c5487659dd3965517cb7f751098c8a380d5974bc72b3"
+        },
+        {
+          "id": "ais-2026-97",
+          "sha256": "4dca056b4b4995b3a4b56211f07f96d706939825e0ddaa9d1b9e775814501ea5"
+        },
+        {
+          "id": "ais-2026-98",
+          "sha256": "9c10c4af76f6155175645a88d19fdf5697d84cd323971372c220ed8ccd4ac71f"
+        },
+        {
+          "id": "ais-2026-99",
+          "sha256": "a255a82c5c5ceea8650233e3c6f71c153451e6473b7b6f2693a62fff2d3b9133"
+        },
+        {
+          "id": "ais-2026-107",
+          "sha256": "0efa040389b555ad40f3f1ebe9c391c8d1fb05b7a5dcbc76d9f25345b630cafb"
+        },
+        {
+          "id": "ais-2026-108",
+          "sha256": "0a593b1d19cf170a06a670caa277fd2c76f0fcd7f2dc7186a8a50d68142502f8"
+        },
+        {
+          "id": "ais-2026-109",
+          "sha256": "c5c667caff0d127b4d551182b3264aa4248dbacfc0e06568dc624a0de89793c7"
+        },
+        {
+          "id": "ais-2026-110",
+          "sha256": "87bbfee4a4541d6a72cce6e1c778da09fa169f985c812f0654dd531480d4e363"
+        },
+        {
+          "id": "ais-2026-114",
+          "sha256": "a4457847f80997b1c075ed611f443e844b0d090bb4f7ff3c687b6c450ed8dbc8"
+        },
+        {
+          "id": "ais-2026-115",
+          "sha256": "34cb407bfeda7a0fc4f4b15da745074833df1a6d9b77caa477af9ce2632727b2"
+        },
+        {
+          "id": "ais-2026-116",
+          "sha256": "60565ef3f5c7302c73c2f928240c81ec97f42ad3927ba9c4e2ec540796139a29"
+        },
+        {
+          "id": "ais-2026-117",
+          "sha256": "c2934aebda56306a1651a9384ebe3f986cc7d10d02d25f79e5443e9279f3bf63"
+        },
+        {
+          "id": "ais-2026-118",
+          "sha256": "ae09012ad58892d0d5cf5afd45e042e54dbd13f09c471b051d79e5ab43105d9d"
+        },
+        {
+          "id": "ais-2026-119",
+          "sha256": "404302f4c5deda92db2c52be7e5cee9e61e5252edb5890c017cf4bd88a50ff88"
+        },
+        {
+          "id": "ais-2026-120",
+          "sha256": "17aac7dcd950efe2d1eba52e3536b2db4776b350ce1ca97bf14a4cdb06ca38ac"
+        },
+        {
+          "id": "ais-2026-121",
+          "sha256": "5f210e7155b378ac1374f864788b4106fa015abb3dfa42c9c1c81d59cf380771"
+        },
+        {
+          "id": "ais-2026-122",
+          "sha256": "5b3db7295c9df796a38237431903832a46a443795ef981bf31f295db681cbd45"
+        },
+        {
+          "id": "ais-2026-123",
+          "sha256": "615148a9af69133f4c209e47aefde36e3541afa1251c81ad48771e3ac0564886"
+        },
+        {
+          "id": "ais-2026-147",
+          "sha256": "15ce35e09c4e43178e2a6f8544966c5e9240efd0c72f0f909e4de7d58b6f583e"
+        },
+        {
+          "id": "ais-2026-148",
+          "sha256": "8ac7cda3297c7b5791b4609d8f7c5e0cd9542bec71ac33da44942df7dc5038a9"
+        },
+        {
+          "id": "ais-2026-149",
+          "sha256": "4fd32773205551f7628156fa2f3643cfc4eeb1e548ee0c561c76d957c151b0b4"
+        },
+        {
+          "id": "ais-2026-150",
+          "sha256": "28050e2a805d438c8d035635421acb7d6d0ca389ff49f99596bce84349083438"
+        }
+      ],
+      "retiredRecommendationCount": 146,
+      "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+      "reason": "Verbatim retained recommendation projection; original review and publication-update metadata unchanged. Archived transcription coverage is provenance only."
+    },
+    {
+      "file": "src/guidelines/ich-2022.json",
+      "originalSha256": "036a2a35390ca99a6e6b3517ce1914d9d11a29b288f30a3c8f99bec59e41326c",
+      "maintainedSha256": "af7e9051bed55183b984644af5fe7e9eabbdc29a699884d026a2f29adeb0e5b8",
+      "retainedRecommendations": [
+        {
+          "id": "ich-2022-8",
+          "sha256": "fe18cad0321904306d0b7274d4f88d5c434bfd0c384781e767cf71280c3a5594"
+        },
+        {
+          "id": "ich-2022-9",
+          "sha256": "75b83ce637595c21b505c04319db8c60d0a50d9975484627c1bcc5e943cd3b28"
+        },
+        {
+          "id": "ich-2022-10",
+          "sha256": "7b697b667897fd71788c3db2045e0bd16450d17bdc2e626d019443a9e2b98dae"
+        },
+        {
+          "id": "ich-2022-11",
+          "sha256": "f9972ba139ab245416c646ff3619a2d5e5390594f958d00c1d1b556113ef4f77"
+        },
+        {
+          "id": "ich-2022-12",
+          "sha256": "3a954e9c06c00aa9ce4c383232e467c2b6533b11ba4518b7db654b34754f817b"
+        },
+        {
+          "id": "ich-2022-18",
+          "sha256": "3120ad484378c96658acde2d34cdf35265ed7d30fab64e3a4d765d356f4122b0"
+        },
+        {
+          "id": "ich-2022-19",
+          "sha256": "402c0594a7920a4cda3c23a2fe31663c32f52e8f815c2a16377d7d46d79a3f54"
+        },
+        {
+          "id": "ich-2022-20",
+          "sha256": "c3394b8a936138ec700b6134b0c23fdf83b27fff5ae4174f917b401b91dab06d"
+        },
+        {
+          "id": "ich-2022-21",
+          "sha256": "553c689dbabb0faca2edfe817eaca357a637a6f9ea1752c639091da2c209873f"
+        },
+        {
+          "id": "ich-2022-22",
+          "sha256": "2921980e2797b7e327a89f397b215aadaf4eccb9549ebb47ad332d0405b49e33"
+        },
+        {
+          "id": "ich-2022-23",
+          "sha256": "fd6e1fe2589678a93e9dd2d7e91d34210f3fa47a708d4a491c5c6de48e3d1063"
+        },
+        {
+          "id": "ich-2022-24",
+          "sha256": "252aa44b4d55cc304322be43b25779185f94b347a821278a1085d0d027d18a04"
+        },
+        {
+          "id": "ich-2022-25",
+          "sha256": "aa5dcafdc478cfd0243051b00d93193a607ff327df3eaea20a40138e8a3fd4fc"
+        },
+        {
+          "id": "ich-2022-26",
+          "sha256": "adda41385bd3b616a17cbf418e32b9e4797e9caf2863dd45186ab290f1bb2562"
+        },
+        {
+          "id": "ich-2022-27",
+          "sha256": "f449d55fa957004a3f8ee8671a345807a10ef2564bce832f91b2425bdd161fdb"
+        },
+        {
+          "id": "ich-2022-28",
+          "sha256": "3dfe0497878bc4c298db9faf492789ad6e6294636d22bc8154c1aa10067c38fc"
+        },
+        {
+          "id": "ich-2022-29",
+          "sha256": "3d2d2edd79bd30727ba327a02dc4ed789574f2a4bd238c5b677e0af208c44855"
+        },
+        {
+          "id": "ich-2022-30",
+          "sha256": "3accbe7d4f4cc5763535807ff02ef00d18cd94963d16804648947f8fdc1d6171"
+        },
+        {
+          "id": "ich-2022-31",
+          "sha256": "57faaa95ff6029cdaa25830cad85274242e213d5160e25957bf5c1ec36a8f77b"
+        },
+        {
+          "id": "ich-2022-32",
+          "sha256": "61f3a374a5977952c9db63812fdd0aaeae09ffd6cfe91cc493f5ee5f9a416920"
+        },
+        {
+          "id": "ich-2022-33",
+          "sha256": "cb309f4d2506793e70b21993a009351748a0ab87ec4f7125b32b4ec758479cb5"
+        },
+        {
+          "id": "ich-2022-34",
+          "sha256": "531e2bf7b0b4adb95b7f3cc8a8322bb4e893034cfeb3de5639c09c2f69264169"
+        },
+        {
+          "id": "ich-2022-35",
+          "sha256": "a1dc19e03c07e7587051c5fe0e76f5017c4cd58a44d5dc525b96b97f8f0925f6"
+        },
+        {
+          "id": "ich-2022-36",
+          "sha256": "71da6a13fc61a1e383896e7ff59d79ee242a52c8fd929ff4cf45deb28892da6c"
+        },
+        {
+          "id": "ich-2022-37",
+          "sha256": "5f473324c4c6d0c0c2bfd8b6abeaede209092d3f1926ff68f0c333c3234b9ae9"
+        },
+        {
+          "id": "ich-2022-38",
+          "sha256": "bd85b348022578c4c4dad6033f7400435b87b3d123be7786d7439d07111e6a32"
+        },
+        {
+          "id": "ich-2022-39",
+          "sha256": "596d69355efbe6c6d0ea82485a8b3468dae1e019c4f19d56ae9ca34a9eb46f82"
+        },
+        {
+          "id": "ich-2022-62",
+          "sha256": "c1b7e351277464ef185aeb009af1a47ea46cf85309341258994d46878a599d71"
+        },
+        {
+          "id": "ich-2022-89",
+          "sha256": "f811237c5a8933980d267835525e4e2b429bb40b1b441b0c07ddb436d04c52c9"
+        },
+        {
+          "id": "ich-2022-92",
+          "sha256": "c8769cead83ef40cc0a8f3e1c5d11af23ae42195850a418aaae8739d6c49d01e"
+        },
+        {
+          "id": "ich-2022-93",
+          "sha256": "cd1e6386c314ecd8b5998762c468417c4c279e7ecf5c31f6089486601c8d7a15"
+        },
+        {
+          "id": "ich-2022-94",
+          "sha256": "84deaedc88fae75bb5f756cc6a3d5722d1944b7130fbbcb9aca499b33556bca3"
+        }
+      ],
+      "retiredRecommendationCount": 92,
+      "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+      "reason": "Verbatim retained recommendation projection; original review and publication-update metadata unchanged. Archived transcription coverage is provenance only."
+    },
+    {
+      "file": "src/guidelines/ncs-neuroprognostication-ais-2026.json",
+      "originalSha256": "63da59ff0803f0430af272a6a18bd9a937e694695aef4d34bbbe0f9cc5c693b1",
+      "maintainedSha256": "48fbcbb0fe95a48afdfe7d1d0147d160924f83bc2fdf99db9f6bad285b4df362",
+      "retainedRecommendations": [
+        {
+          "id": "ncs-neuroprognostication-ais-2026-12",
+          "sha256": "b734ae4d23090746250e58e8dfb97ccca429124ab891d9e74f99ea799b7bb2d3"
+        },
+        {
+          "id": "ncs-neuroprognostication-ais-2026-20",
+          "sha256": "7060c3542f75101b2d88657a0ccc7fe7effd1515ec75608d5d2854b14fd6df75"
+        },
+        {
+          "id": "ncs-ais-prognosis-mortality-2",
+          "sha256": "f2a81c7328129b251c18b0495bb9e2b4bcf97b7c609e3da46d0596f2693bf1f4"
+        },
+        {
+          "id": "ncs-ais-prognosis-mortality-8",
+          "sha256": "042b10c8da48796951b1734ab708152c2e1cb71e33182b68903d730c806cafa6"
+        }
+      ],
+      "retiredRecommendationCount": 28,
+      "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+      "reason": "Verbatim retained recommendation projection; original review and publication-update metadata unchanged. Archived transcription coverage is provenance only."
+    },
+    {
+      "file": "src/guidelines/ncs-reversal-2026.json",
+      "originalSha256": "85b458569a225f80be7f53548097deb584f44b2d1dca1cc252775415f1a3f3c7",
+      "maintainedSha256": "57dd7efac56e73678ebd42e286962c18b3b0b69f544c07ad31e1e8d674d34d33",
+      "retainedRecommendations": [
+        {
+          "id": "ncs-reversal-2026-1-1",
+          "sha256": "2002817a86973f405f3bd58370d982490d7fd2ed8c32ec9b0c7a9db232db9e3b"
+        },
+        {
+          "id": "ncs-reversal-2026-1-2",
+          "sha256": "e077a6ca9952a316dca7212347456f9e9684c83dd2047349f0c067eb2bbe1b62"
+        },
+        {
+          "id": "ncs-reversal-2026-2-1",
+          "sha256": "6cf7930b66fae9d506e9f8671145b6bef16e633900f3cd557ff812dcf0387e2f"
+        },
+        {
+          "id": "ncs-reversal-2026-2-2",
+          "sha256": "3b39d6b15db7fe5a31d2cc81ed4ab91806c2c9b5ea492ab5707df302f0411be6"
+        },
+        {
+          "id": "ncs-reversal-2026-2-3",
+          "sha256": "6e2c3e766a935bb851e53a57b9e6272450472290486b89d09031645106c57d5a"
+        },
+        {
+          "id": "ncs-reversal-2026-3-1",
+          "sha256": "0528c1c5e1a1a0408d23f7c319c6ac8db072106cfd886590ca886dcb638ac0a6"
+        },
+        {
+          "id": "ncs-reversal-2026-4-1",
+          "sha256": "52d630b6857ab9d5dc0dd4f4fc049be3198e458aaaa944abb978ad21397cc74d"
+        },
+        {
+          "id": "ncs-reversal-2026-5-1",
+          "sha256": "19d6944f142b37c9f8136545cb28c0f23f487443943e85b8a56182e06f4db9a4"
+        }
+      ],
+      "retiredRecommendationCount": 0,
+      "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+      "reason": "Verbatim retained recommendation projection; original review and publication-update metadata unchanged. Archived transcription coverage is provenance only."
+    },
+    {
+      "file": "src/guidelines/secondary-prevention-2021.json",
+      "originalSha256": "99d33a3a08a3b7ea648bd66a5b0ba47c6fb5a72e65119a606c78d6527da72dfd",
+      "maintainedSha256": "b46b84f980d1d0c4fc12a0b6eaa3adf9ba34f1f015717ccdedafb7e0bdba63b8",
+      "retainedRecommendations": [
+        {
+          "id": "secondary-prevention-2021-51",
+          "sha256": "fd92d03ec2bde348e03ed625d2c5fa5b2efde6b5f2c0a4e83185030b4cc392fe"
+        },
+        {
+          "id": "secondary-prevention-2021-145",
+          "sha256": "04587ceb13616a27847ee21b28c49d3421f01d3b2f501ac73d5cb6f87d1a0bf3"
+        },
+        {
+          "id": "secondary-prevention-2021-146",
+          "sha256": "f2a3ebd2e7c130804e603920dca81624976b5c9e60f320ee580ff467a0be16f5"
+        },
+        {
+          "id": "secondary-prevention-2021-147",
+          "sha256": "6796413cd56ebac04a1a66e2aa071e874cd58000861d99b7786813caf4e3f047"
+        },
+        {
+          "id": "secondary-prevention-2021-149",
+          "sha256": "76ca07a3a0b2b4e546cb0064e8dd2f584590f8e08404034b0c8ce38d17fc86e4"
+        }
+      ],
+      "retiredRecommendationCount": 157,
+      "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+      "reason": "Verbatim retained recommendation projection; original review and publication-update metadata unchanged. Archived transcription coverage is provenance only."
+    },
+    {
+      "file": "src/guidelines/svin-large-core-2025.json",
+      "originalSha256": "06d64dc3d8f3ad9cd13c22f3098a2b4c27dd8d0440bc86d8f5522ac8b49b7ef5",
+      "maintainedSha256": "dd0176a9a26b1f5e25f7f8569a5f8f7235f4a8ce57f78c5a1fed40f92afbea71",
+      "retainedRecommendations": [
+        {
+          "id": "original-source-order-1",
+          "sha256": "4f0259f55c8ca94f63c6c354c6368eac05a618d3d0ea634ecb494715c767cbfe"
+        },
+        {
+          "id": "original-source-order-2",
+          "sha256": "7acc3fbcf11e5644fd766bce45af86d383125153d1c2bd0261c08719ba7e6870"
+        },
+        {
+          "id": "original-source-order-3",
+          "sha256": "c21d29c875ae08cdcffe41bd72a5b167764e75dccffe59a3a4e3434767165407"
+        },
+        {
+          "id": "original-source-order-4",
+          "sha256": "08888aa221e0458e7e9606a61f19bc8027330458bdeec7a2f478e18d103e5a89"
+        }
+      ],
+      "retiredRecommendationCount": 0,
+      "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+      "reason": "Verbatim retained recommendation projection; original review and publication-update metadata unchanged. Archived transcription coverage is provenance only."
+    }
+  ]
+}

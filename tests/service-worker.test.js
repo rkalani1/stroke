@@ -7,7 +7,7 @@ import vm from 'node:vm';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
 const version = JSON.parse(readFileSync(join(repoRoot, 'package.json'), 'utf8')).version;
-const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-') + '-utility-refinement-20261001';
+const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-') + '-encounter-first-20261001';
 const workerSource = readFileSync(join(repoRoot, 'service-worker.js'), 'utf8');
 
 function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-cache-v6-22-0', currentCache], options = {}) {
@@ -141,11 +141,11 @@ describe('service worker update lifecycle', () => {
     expect(worker.postedMessages).toEqual([]);
   });
 
-  it.each(['/', '/stroke/'])('withdraws only the 21 scoped retired paths after successful precache at %s', async scopePath => {
+  it.each(['/', '/stroke/'])('withdraws scoped teaching assets/documents after successful precache at %s', async scopePath => {
     const suffixes = JSON.parse(workerSource.match(/const WITHDRAWN_ASSETS = (\[[\s\S]*?\]);/)[1].replaceAll("'", '"'));
     const base = `https://example.test${scopePath}`;
-    const retired = suffixes.map(suffix => new URL(`.${suffix}`, base).href + '?old=1');
-    const retained = [base + 'app.js', base + 'documents/references/AFib%20DOAC%20Start%20Timing.pdf',
+    const retired = [...suffixes, '/documents/references/AFib%20DOAC%20Start%20Timing.pdf', '/assets/brain_death_evaluation.png', '/src/education.jsx', '/content/bundle.json'].map(suffix => new URL(`.${suffix}`, base).href + '?old=1');
+    const retained = [base + 'app.js', base + 'assets/fonts/inter-latin.woff2', base + 'assets/splash/startup.png',
       'https://elsewhere.test' + scopePath + 'assets/afib_timing_protocol.png',
       base + 'another-deployment/assets/afib_timing_protocol.png', base + 'assets/%malformed'];
     const old = 'stroke-cache-v6-29-2';
@@ -265,13 +265,13 @@ describe('service worker update lifecycle', () => {
     expect(worker.claimCount).toBe(0);
   });
 
-  it('precaches the app shell and the config the app actually fetches', () => {
+  it('precaches the retained shell without retired config', () => {
     for (const shell of ['./', './index.html', './app.js', './tailwind.css', './manifest.json', './offline.html']) {
       expect(workerSource).toContain(`'${shell}'`);
     }
     // config.example.json is the ONE runtime fetch in src/ (src/app.jsx), so it
     // stays precached.
-    expect(workerSource).toContain("'./config.example.json'");
+    expect(workerSource).not.toContain("'./config.example.json'");
   });
 
   it('keeps the agent-API JSON and heavy infographics out of the install precache', () => {
@@ -326,7 +326,7 @@ describe('service worker update lifecycle', () => {
     // and app.jsx guarantees the Guidelines tab works fully offline, so that
     // payload has to be precached. See the budget history in
     // scripts/check-asset-budget.mjs for why splitting does not avoid this.
-    expect(total).toBeLessThan(8 * 1024 * 1024);
+    expect(total).toBeLessThan(2 * 1024 * 1024);
   });
 
   it('includes iOS splash screens in precache list', () => {
@@ -363,7 +363,7 @@ describe('service worker update lifecycle', () => {
     const manifest = JSON.parse(readFileSync(join(repoRoot, 'app-assets.json'), 'utf8'));
     const chunks = JSON.parse(workerSource.match(/const APP_CHUNKS = (\[[\s\S]*?\]);/)[1]);
     expect(chunks).toEqual(manifest.files.filter(file => file.path !== manifest.entry).map(file => './' + file.path));
-    expect(chunks.length).toBeGreaterThan(3);
+    expect(chunks.length).toBeGreaterThan(0);
     for (const chunk of chunks) expect(existsSync(join(repoRoot, chunk.slice(2)))).toBe(true);
     const index = readFileSync(join(repoRoot, 'index.html'), 'utf8');
     expect(index).toMatch(/<script type="module" src="app\.js\?v=/);

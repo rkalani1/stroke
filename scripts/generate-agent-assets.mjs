@@ -1,315 +1,55 @@
-// scripts/generate-agent-assets.mjs
-//
-// Build-time generator for the AGENT-READINESS layer: a served, machine-readable
-// "API" plus AI-crawler manifests. Output is committed + served by GitHub Pages,
-// so it is DETERMINISTIC: every endpoint is stamped with appVersion + a sha256
-// checksum of its payload (NOT a wall-clock timestamp), so files change only when
-// the underlying clinical data changes.
-//
-// Writes:
-//   data/index.json                      — endpoint manifest + addressable routes
-//   data/atlas/*.json                    — evidence atlas (trials, recs, citations…)
-//   data/management-cards.json           — AIS command-center cards
-//   data/generic-protocols.json          — institution-neutral BP protocols
-//   data/guidelines/index.json + *.json  — guideline metadata + copies
-//   data/calculators-index.json          — calculator catalog
-//   llms.txt / llms-full.txt             — AI-crawler manifests
-//   robots.txt / sitemap.xml             — crawler guidance
-//
-// Usage:
-//   node ./scripts/generate-agent-assets.mjs           # write all
-//   node ./scripts/generate-agent-assets.mjs --check   # validate-only, no writes
-
+// Deterministic maintained-subset API and explicit legacy retirement responses.
+// A rebuild never changes a clinical review date.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import process from 'node:process';
 import { pathToFileURL } from 'node:url';
-import { guidelineCoverage } from '../src/guideline-coverage.js';
 import { atomicWriteFile } from './atomic-write.mjs';
-
 const ROOT = process.cwd();
-const DATA = path.join(ROOT, 'data');
-const args = new Set(process.argv.slice(2));
-const checkOnly = args.has('--check');
-
-const SCHEMA_VERSION = '1.0.0';
 const BASE_URL = 'https://rkalani1.github.io/stroke';
+const SCHEMA_VERSION = '2.0.0';
 const LICENSE = 'Synthetic educational reference content for qualified review. No warranty.';
-// NOTE: must stay byte-identical to PUBLIC_DEMO_AGENT_DISCLAIMER in
-// src/public-demo-guardrails.js (duplicated because that file is ESM-syntax in a
-// CJS-default package). tests/public-demo-labels.test.js asserts the two match.
 const DISCLAIMER = 'Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.';
-
-const pkg = JSON.parse(await fs.readFile(path.join(ROOT, 'package.json'), 'utf8'));
-const APP_VERSION = pkg.version;
-
-function checksum(data) {
-  return 'sha256:' + crypto.createHash('sha256').update(JSON.stringify(data)).digest('hex').slice(0, 32);
-}
-
-function envelope(endpoint, source, data) {
-  const count = Array.isArray(data) ? data.length : Object.keys(data || {}).length;
-  return {
-    _meta: {
-      endpoint,
-      schemaVersion: SCHEMA_VERSION,
-      appVersion: APP_VERSION,
-      checksum: checksum(data),
-      count,
-      source,
-      license: LICENSE,
-      disclaimer: DISCLAIMER,
-    },
-    data,
-  };
-}
-
-const PUBLIC_SOURCE_LABELS = {
-  'src/evidence/completedTrials.js': 'Evidence atlas completed-trials bundle',
-  'src/evidence/activeTrials.js': 'Evidence atlas active-trials bundle',
-  'src/evidence/recommendations.js': 'Evidence atlas recommendations bundle',
-  'src/evidence/citations.js': 'Evidence atlas citations bundle',
-  'src/evidence/claims.js': 'Evidence atlas claims bundle',
-  'src/evidence/topics.js': 'Evidence atlas topics bundle',
-  'src/evidence/index.js': 'Evidence atlas labels bundle',
-  'src/management-guidance.js': 'Management-card reference bundle',
-  'src/institutional-protocols.js': 'Public protocol reference bundle',
-  'src/guidelines/': 'Guideline metadata bundle',
-  'src/calculators.js, src/calculators-extended.js': 'Calculator catalog bundle',
-};
-
-function publicSourceLabel(source) {
-  return PUBLIC_SOURCE_LABELS[source] || source;
-}
-
-const writes = [];
-const stalePaths = [];
-
+const ARCHIVE_REF = 'archive/pre-encounter-first-20261001-4f8e99d';
+const ARCHIVE_URL = `https://github.com/rkalani1/stroke/tree/${ARCHIVE_REF}`;
+const checkOnly = process.argv.includes('--check');
 export async function generatedFileIsCurrent(abs, expected) {
-  try {
-    return (await fs.readFile(abs, 'utf8')).replace(/\r\n/g, '\n') === expected.replace(/\r\n/g, '\n');
-  } catch (error) {
-    if (error?.code === 'ENOENT') return false;
-    throw error;
-  }
+  try { return (await fs.readFile(abs, 'utf8')).replace(/\r\n/g,'\n') === expected.replace(/\r\n/g,'\n'); }
+  catch(error) { if(error.code === 'ENOENT') return false; throw error; }
 }
-
-function write(rel, content) {
-  const abs = path.join(ROOT, rel);
-  const str = typeof content === 'string' ? content : JSON.stringify(content, null, 2) + '\n';
-  if (checkOnly) {
-    writes.push(
-      generatedFileIsCurrent(abs, str).then((current) => {
-        if (!current) stalePaths.push(rel);
-      }),
-    );
-    return;
-  }
-  writes.push(
-    atomicWriteFile(abs, str),
-  );
-}
-
-// ── Calculator catalog ───────────────────────────────────────────────────────
-// Single source of truth: content/calculators/registry.json (seeded from and
-// verified against the compute-module exports by scripts/seed-content.mjs).
-// Projected to the served {id,name,category,fn} shape so this asset stays
-// decoupled from the registry's internal fields (e.g. `module`).
-const CALCULATOR_REGISTRY = JSON.parse(
-  await fs.readFile(path.join(ROOT, 'content', 'calculators', 'registry.json'), 'utf8')
-);
-const CALCULATORS = CALCULATOR_REGISTRY.map(({ id, name, category, fn }) => ({ id, name, category, fn }));
-
-// ── Addressable hash routes (deep links for agents + humans) ──────────────────
-const ROUTES = [
-  { route: '#/encounter', label: 'Synthetic encounter demo' },
-  { route: '#/protocols', label: 'Example protocols (not local policy)' },
-  { route: '#/protocols/ischemic', label: 'Example acute ischemic stroke pathways' },
-  { route: '#/protocols/ich', label: 'Intracerebral hemorrhage' },
-  { route: '#/research/calculators', label: 'Calculators' },
-  { route: '#/research', label: 'Evidence atlas / guidelines' },
-  { route: '#/trials', label: 'Trial screener / matrix' },
-  { route: '#/education', label: 'Education hub' },
-];
-
 async function main() {
-  // ---- Evidence atlas ----
-  const atlas = await import(pathToFileURL(path.join(ROOT, 'src/evidence/index.js')).href);
-  write('data/atlas/completed-trials.json', envelope('completed-trials', publicSourceLabel('src/evidence/completedTrials.js'), atlas.completedTrials));
-  write('data/atlas/active-trials.json', envelope('active-trials', publicSourceLabel('src/evidence/activeTrials.js'), atlas.activeTrials));
-  write('data/atlas/recommendations.json', envelope('recommendations', publicSourceLabel('src/evidence/recommendations.js'), atlas.recommendations));
-  write('data/atlas/citations.json', envelope('citations', publicSourceLabel('src/evidence/citations.js'), atlas.citations));
-  write('data/atlas/claims.json', envelope('claims', publicSourceLabel('src/evidence/claims.js'), atlas.claims));
-  write('data/atlas/topics.json', envelope('topics', publicSourceLabel('src/evidence/topics.js'), atlas.topics));
-  write('data/atlas/labels.json', envelope('labels', publicSourceLabel('src/evidence/index.js'), {
-    verificationStatus: atlas.VERIFICATION_STATUS_LABELS,
-    certainty: atlas.CERTAINTY_LABELS,
-    evidenceType: atlas.EVIDENCE_TYPE_LABELS,
-    activeStatus: atlas.ACTIVE_STATUS_LABELS,
-  }));
-
-  // ---- Management cards ----
-  const mg = await import(pathToFileURL(path.join(ROOT, 'src/management-guidance.js')).href);
-  write('data/management-cards.json', envelope('management-cards', publicSourceLabel('src/management-guidance.js'), {
-    lastReviewed: mg.AIS_COMMAND_CENTER_LAST_REVIEWED,
-    sourceLinks: mg.AIS_SOURCE_LINKS,
-    cards: mg.AIS_COMMAND_CENTER_CARDS,
-  }));
-
-  // ---- Generic (institution-neutral) protocols ----
-  try {
-    const ip = await import(pathToFileURL(path.join(ROOT, 'src/institutional-protocols.js')).href);
-    write('data/generic-protocols.json', envelope('generic-protocols', publicSourceLabel('src/institutional-protocols.js'), {
-      bpProtocols: ip.INSTITUTIONAL_BP_PROTOCOLS,
-      ichInitialEvaluation: ip.ICH_INITIAL_EVALUATION_ALGORITHM,
-      safePauseAttestation: ip.SAFE_PAUSE_ATTESTATION,
-    }));
-  } catch (e) {
-    if (checkOnly) throw e;
-    console.warn(`! skipped generic-protocols (${e.message})`);
-  }
-
-  // ---- Guidelines: copy each + build an index ----
-  const gdir = path.join(ROOT, 'src/guidelines');
-  const gfiles = (await fs.readdir(gdir)).filter((f) => f.endsWith('.json'));
-  const gindex = [];
-  for (const f of gfiles) {
-    const raw = await fs.readFile(path.join(gdir, f), 'utf8');
-    const g = JSON.parse(raw);
-    write(`data/guidelines/${f}`, raw); // verbatim copy — no reformatting churn
-    // landmark-trials.json is a trials catalog, not a graded guideline dataset;
-    // it is still copied above but is excluded from the guidelines index.
-    if (f === 'landmark-trials.json') continue;
-    const derivedId = f.replace(/\.json$/, '');
-    const humanTitle = derivedId.replace(/(^|-)([a-z])/g, (_, sep, c) => (sep ? ' ' : '') + c.toUpperCase());
-    gindex.push({
-      id: g.id || derivedId, title: g.title || humanTitle, shortTitle: g.shortTitle, doi: g.doi,
-      publisherUrl: g.publisherUrl, pdfUrl: g.pdfUrl,
-      ...guidelineCoverage(g),
-      ...(g.coverage ? { coverage: g.coverage } : {}),
-      ...(g.sourceReview ? { sourceReview: g.sourceReview } : {}),
-      ...(g.documentType ? { documentType: g.documentType } : {}),
-      ...(g.gradingSystem ? { gradingSystem: g.gradingSystem } : {}),
-      ...(g.sourceAccess ? { sourceAccess: g.sourceAccess } : {}),
-      ...(g.extractionStatus ? { extractionStatus: g.extractionStatus } : {}),
-      ...(g.extractionNote ? { extractionNote: g.extractionNote } : {}),
-      publicationUpdates: g.publicationUpdates || [],
-      hasUnresolvedUpdates: (g.publicationUpdates || []).some(update =>
-        ['unresolved', 'partially-applied'].includes(update.status)),
-      url: `${BASE_URL}/data/guidelines/${f}`,
-    });
-  }
-  write('data/guidelines/index.json', envelope('guidelines-index', publicSourceLabel('src/guidelines/'), gindex));
-
-  // ---- calculators index ----
-  write('data/calculators-index.json', envelope('calculators', publicSourceLabel('src/calculators.js, src/calculators-extended.js'), CALCULATORS));
-
-  // ---- master manifest ----
-  const endpoints = [
-    'data/atlas/completed-trials.json', 'data/atlas/active-trials.json',
-    'data/atlas/recommendations.json', 'data/atlas/citations.json',
-    'data/atlas/claims.json', 'data/atlas/topics.json', 'data/atlas/labels.json',
-    'data/management-cards.json', 'data/generic-protocols.json',
-    'data/guidelines/index.json', 'data/calculators-index.json',
-  ];
-  write('data/index.json', {
-    _meta: {
-      name: pkg.name, appVersion: APP_VERSION, schemaVersion: SCHEMA_VERSION,
-      baseUrl: BASE_URL, license: LICENSE, disclaimer: DISCLAIMER,
-      institutionNeutral: true,
-      note: 'Static, deterministic JSON API. Endpoints stamped with appVersion + payload checksum (no wall-clock).',
-    },
-    endpoints: endpoints.map((e) => `${BASE_URL}/${e}`),
-    routes: ROUTES.map((r) => ({ ...r, url: `${BASE_URL}/${r.route}` })),
-    mcpServer: null,
-  });
-
-  // ---- llms.txt ----
-  const llms = [
-    '# Stroke CDS Educational Demo',
-    '',
-    `> Synthetic educational stroke decision-support demo (v${APP_VERSION}): example acute ischemic & hemorrhagic stroke pathways, ${CALCULATORS.length} calculators, an evidence atlas (${atlas.completedTrials.length} landmark trials, ${atlas.activeTrials.length} active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.`,
-    '',
-    `${DISCLAIMER}`,
-    '',
-    '## Machine-readable data (static JSON API)',
-    `- [API manifest](${BASE_URL}/data/index.json): all endpoints + addressable routes`,
-    `- [Completed trials](${BASE_URL}/data/atlas/completed-trials.json)`,
-    `- [Active trials](${BASE_URL}/data/atlas/active-trials.json)`,
-    `- [Recommendations](${BASE_URL}/data/atlas/recommendations.json)`,
-    `- [Citations](${BASE_URL}/data/atlas/citations.json)`,
-    `- [Guidelines index](${BASE_URL}/data/guidelines/index.json)`,
-    `- [Management cards](${BASE_URL}/data/management-cards.json)`,
-    `- [Generic BP protocols](${BASE_URL}/data/generic-protocols.json)`,
-    `- [Calculators index](${BASE_URL}/data/calculators-index.json)`,
-    '',
-    '## Addressable views (hash routes)',
-    ...ROUTES.map((r) => `- \`${r.route}\` — ${r.label}`),
-    '',
-    '## For AI agents',
-    '- Each JSON endpoint carries `_meta` (schemaVersion, appVersion, checksum, public source label, disclaimer). Agents must propagate the disclaimer with any output.',
-    '- Agents must not process PHI or real encounter details from this public demo.',
-    '- No hospital-specific protocols are published here; do not use this public demo for real encounters or PHI.',
-    '',
-    '## Policy',
-    '- Not medical advice. Do not enter PHI or real encounter details. Verify against primary sources (PMIDs/DOIs included in the atlas) and approved local protocol.',
-    `- License: ${LICENSE}`,
-    '',
-  ].join('\n');
-  write('llms.txt', llms);
-
-  // ---- llms-full.txt (adds endpoint detail) ----
-  const llmsFull = [
-    llms.trimEnd(),
-    '',
-    '## Endpoint detail',
-    `All endpoints share the envelope: \`{ "_meta": {...}, "data": ... }\`. \`_meta.checksum\` is a`,
-    'sha256 prefix of the payload — poll it to detect data changes (it is stable across rebuilds',
-    'unless the underlying clinical data changed).',
-    '',
-    '### Calculators',
-    ...CALCULATORS.map((c) => `- \`${c.id}\` — ${c.name} (${c.category})`),
-    '',
-    '### Guidelines',
-    ...gindex.map((g) => `- ${g.shortTitle || g.title} — ${g.recommendationCount} recommendations${g.doi ? ` (doi:${g.doi})` : ''}`),
-    '',
-  ].join('\n');
-  write('llms-full.txt', llmsFull);
-
-  // ---- robots.txt ----
-  write('robots.txt', [
-    'User-agent: *',
-    'Allow: /',
-    '',
-    `Sitemap: ${BASE_URL}/sitemap.xml`,
-    '# AI manifest: /llms.txt',
-    '',
-  ].join('\n'));
-
-  // ---- sitemap.xml (real crawlable URLs only; SPA hash routes are in llms.txt) ----
-  const urls = [`${BASE_URL}/`, `${BASE_URL}/llms.txt`, `${BASE_URL}/data/index.json`, ...endpoints.map((e) => `${BASE_URL}/${e}`)];
-  write('sitemap.xml', [
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...urls.map((u) => `  <url><loc>${u}</loc></url>`),
-    '</urlset>',
-    '',
-  ].join('\n'));
-
-  await Promise.all(writes);
-  if (checkOnly && stalePaths.length > 0) {
-    process.stderr.write(`${stalePaths.sort().join('\n')}\n`);
-    process.exitCode = 1;
-    return;
-  }
-  console.log(`agent-assets: ${checkOnly ? 'check OK' : `wrote ${endpoints.length + gfiles.length + 6} files`} (v${APP_VERSION}, schema ${SCHEMA_VERSION}).`);
+ const pkg = JSON.parse(await fs.readFile(path.join(ROOT,'package.json'),'utf8'));
+ const writes = [], stale = [];
+ const checksum = data => 'sha256:'+crypto.createHash('sha256').update(JSON.stringify(data)).digest('hex').slice(0,32);
+ const envelope = (endpoint, source, data, status='maintained') => ({_meta:{endpoint,schemaVersion:SCHEMA_VERSION,appVersion:pkg.version,checksum:checksum(data),count:Array.isArray(data)?data.length:data===null?0:Object.keys(data).length,source,license:LICENSE,disclaimer:DISCLAIMER,status},data});
+ async function write(rel,content) { const str=typeof content==='string'?content:JSON.stringify(content,null,2)+'\n';const abs=path.join(ROOT,rel);if(checkOnly){if(!await generatedFileIsCurrent(abs,str))stale.push(rel);}else await atomicWriteFile(abs,str); }
+ const put = (rel,content) => writes.push(write(rel,content));
+ const load = rel => import(pathToFileURL(path.join(ROOT,rel)).href);
+ const atlas = await load('src/evidence/index.js');
+ for(const key of ['recommendations','claims','citations'])put(`data/atlas/${key}.json`,envelope(key,'Maintained Encounter/protocol evidence dependency closure',atlas[key]));
+ const sourceRecords = JSON.parse(await fs.readFile(path.join(ROOT,'src/clinical/workspace-sources.json'),'utf8'));
+ const clinicalClaims = JSON.parse(await fs.readFile(path.join(ROOT,'src/clinical/claims.json'),'utf8'));
+ const guidelineFiles=(await fs.readdir(path.join(ROOT,'src/guidelines'))).filter(x=>x.endsWith('.json')).sort();
+ const guidelines=[];
+ for(const file of guidelineFiles)guidelines.push(JSON.parse(await fs.readFile(path.join(ROOT,'src/guidelines',file),'utf8')));
+ put('data/sources.json',envelope('sources','Canonical clinical claims, source identities and retained primary-source projections',{sources:sourceRecords,clinicalClaims,guidelines,scope:'Retained source/limits access only; no general guideline browser or trial encyclopedia. Existing review scopes, correction warnings and source-access gaps remain applicable.'}));
+ const registry=JSON.parse(await fs.readFile(path.join(ROOT,'content/calculators/registry.json'),'utf8'));
+ put('data/calculators-index.json',envelope('calculators','Canonical retained tool registry',registry));
+ const mg=await load('src/management-guidance.js');
+ put('data/management-cards.json',envelope('management-cards','Protected public protocol reference bundle',{lastReviewed:mg.AIS_COMMAND_CENTER_LAST_REVIEWED,sourceLinks:mg.AIS_SOURCE_LINKS,cards:mg.AIS_COMMAND_CENTER_CARDS,scope:'Protected reference content; not universal treatment eligibility or approved local policy.'}));
+ const ip=await load('src/institutional-protocols.js');
+ put('data/generic-protocols.json',envelope('generic-protocols','Protected public protocol reference bundle',{bpProtocols:ip.INSTITUTIONAL_BP_PROTOCOLS,ichInitialEvaluation:ip.ICH_INITIAL_EVALUATION_ALGORITHM,safePauseAttestation:ip.SAFE_PAUSE_ATTESTATION,scope:'Protected public reference context. Agents must not promote institutional instructions into universal automated dosing or treatment.'}));
+ const retirement=JSON.parse(await fs.readFile(path.join(ROOT,'docs/retired-endpoints.json'),'utf8'));
+ for(const endpoint of retirement.endpoints)put(endpoint,{...envelope(endpoint,'Retired historical portal endpoint',null,'retired'),retirement:{status:'retired',reason:'The broad reference, trial and teaching portal is retired from the maintained product.',replacement:`${BASE_URL}/data/sources.json`,archiveRef:ARCHIVE_REF,archiveUrl:ARCHIVE_URL,compatibility:'HTTP transport may return 200 on static Pages; clients must inspect _meta.status. The data payload is null and is not a current clinical corpus.'}});
+ const endpoints=['data/sources.json','data/calculators-index.json','data/atlas/recommendations.json','data/atlas/claims.json','data/atlas/citations.json','data/management-cards.json','data/generic-protocols.json'];
+ const routes=[{route:'#/encounter',label:'Synthetic Encounter workspace'},{route:'#/protocols',label:'Protected example protocols'},{route:'#/protocols/ischemic',label:'Example ischemic stroke protocol'},{route:'#/protocols/ich',label:'Example ICH protocol'},{route:'#/tools',label:'Tools & sources'}];
+ put('data/index.json',{_meta:{name:pkg.name,appVersion:pkg.version,schemaVersion:SCHEMA_VERSION,baseUrl:BASE_URL,license:LICENSE,disclaimer:DISCLAIMER,status:'maintained',note:'Static deterministic maintained subset. Payload checksums are build integrity metadata, never clinical review dates.'},endpoints:endpoints.map(e=>`${BASE_URL}/${e}`),routes:routes.map(r=>({...r,url:`${BASE_URL}/${r.route}`})),retiredEndpoints:retirement.endpoints.map(e=>`${BASE_URL}/${e}`),archive:{ref:ARCHIVE_REF,url:ARCHIVE_URL},limitations:['Synthetic inputs only; no PHI or real encounters.','Dose arithmetic is separate from eligibility and administration.','Historical DAWN/DEFUSE-3 screens are partial; neither is a universal EVT gate.','Severity scores do not establish an individual prognosis.','No recruitment service, AI runtime, or EHR integration.','Retained source-access and correction limitations remain unresolved unless their original record says otherwise.'],mcpServer:null});
+ const llms=['# Stroke Encounter Educational Demo','',`> v${pkg.version}: deterministic synthetic Encounter workflow with embedded retained tools, protected example protocols and bounded source/limits access.`,'',DISCLAIMER,'','## Maintained data',...endpoints.map(e=>`- [${e}](${BASE_URL}/${e})`),'','## Views',...routes.map(r=>`- ${r.route} — ${r.label}`),'','## Scope and limits','- Propagate the disclaimer and each output’s source-specific limits. Do not process real encounter details.','- Dose calculations do not establish eligibility or administration; severity scores do not predict an individual outcome.','- DAWN/DEFUSE-3 are partial historical screens; absence of a modeled criterion does not exclude current EVT.','- Source review dates and correction/source-access warnings are retained. A build is not clinical review.','- External references require explicit opening and network access; do not append encounter inputs to URLs.','',`The historical Education, Trials and general guideline/reference portal is retired. Archive: [${ARCHIVE_REF}](${ARCHIVE_URL}). Legacy JSON endpoints return explicit retirement metadata with null data.`,''].join('\n');
+ put('llms.txt',llms);
+ put('llms-full.txt',llms+['','## Retained tool contracts',...registry.map(c=>`- ${c.id}: ${c.name}; canonical helper ${c.fn}; reveal at ${c.route}.`),'','Endpoints carry _meta.status, schemaVersion, appVersion and stable payload checksums. Inspect status before consuming data. Schema 2 retires broad corpus exports; legacy payloads are null with archive/replacement pointers.',''].join('\n'));
+ put('robots.txt',`User-agent: *\nAllow: /stroke/\nDisallow: /stroke/src/\nDisallow: /stroke/content/\nDisallow: /stroke/assets/pdfs/\n\nSitemap: ${BASE_URL}/sitemap.xml\n`);
+ put('sitemap.xml','<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+[`${BASE_URL}/`,`${BASE_URL}/llms.txt`,`${BASE_URL}/data/index.json`,...endpoints.map(e=>`${BASE_URL}/${e}`)].map(u=>`  <url><loc>${u}</loc></url>`).join('\n')+'\n</urlset>\n');
+ await Promise.all(writes);
+ if(stale.length){console.error(stale.sort().join('\n'));process.exitCode=1;}else console.log(`agent-assets: ${checkOnly?'check OK':'wrote maintained subset and retirement envelopes'} (v${pkg.version}, schema ${SCHEMA_VERSION}).`);
 }
-
-const invokedPath = process.argv[1] ? pathToFileURL(path.resolve(process.argv[1])).href : '';
-if (import.meta.url === invokedPath) {
-  main().catch((e) => {
-    console.error('agent-assets generation failed:', e);
-    process.exit(1);
-  });
-}
+if(import.meta.url === (process.argv[1]?pathToFileURL(path.resolve(process.argv[1])).href:''))main().catch(error=>{console.error(error);process.exitCode=1;});

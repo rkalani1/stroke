@@ -1,7 +1,7 @@
 {
   "name": "Stroke CDS Educational Demo",
   "short_name": "Stroke Demo",
-  "description": "Synthetic educational stroke decision-support demo with calculators, example protocols, evidence summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.",
+  "description": "Synthetic Encounter workspace with embedded calculations and protected example protocols. Not an approved clinical tool; do not enter PHI or real encounter data.",
   "id": "stroke-cds-app",
   "start_url": "./#/encounter",
   "display": "standalone",
@@ -22,31 +22,21 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["medical", "healthcare", "education"],
+  "categories": [
+    "medical",
+    "healthcare",
+    "education"
+  ],
   "shortcuts": [
     {
-      "name": "New encounter",
-      "short_name": "Encounter",
+      "name": "Encounter",
       "url": "./#/encounter",
-      "description": "Open synthetic encounter demo"
+      "description": "Open synthetic Encounter"
     },
     {
-      "name": "Calculators",
-      "short_name": "Calc",
-      "url": "./#/management/calculators",
-      "description": "Stroke calculators (NIHSS, ASPECTS, ICH, ABCD2, HAS-BLED, ...)"
-    },
-    {
-      "name": "Trial screener",
-      "short_name": "Screener",
-      "url": "./#/trials",
-      "description": "Two-tap bedside trial screener"
-    },
-    {
-      "name": "Eligibility tables",
-      "short_name": "Tables",
-      "url": "./#/trials/tables",
-      "description": "Ischemic and hemorrhage eligibility reference tables"
+      "name": "Protocols",
+      "url": "./#/protocols/ischemic",
+      "description": "Retained protected protocol cards"
     }
   ],
   "scope": "./",

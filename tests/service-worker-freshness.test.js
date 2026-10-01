@@ -147,13 +147,14 @@ for (const scope of ['https://example.test/', 'https://example.test/stroke/']) {
       expect(h.entries.has(new URL('index.html', scope).href)).toBe(true);
     });
 
-    it('returns a successful PDF network body even if persistence fails', async () => {
+    it('retires historical PDFs even when a stale cache or successful network body exists', async () => {
       const h = harness(scope, { offline: false, writeFailure: true });
-      h.seed('documents/current.pdf', 'stale cache');
+      h.seed('documents/current.pdf', '%PDF-stale', 'application/pdf');
       const response = await h.fetch('documents/current.pdf');
-      expect(response.status).toBe(200);
-      expect(await response.text()).toBe('fresh network');
-      expect(h.network[0].options.cache).toBe('no-cache');
+      expect(response.status).toBe(410);
+      expect(response.headers.get('cache-control')).toBe('no-store');
+      expect(await response.text()).not.toContain('%PDF-stale');
+      expect(h.network).toEqual([]);
     });
 
     it('pins an entry and its chunks to the installed release while a newer release is online', async () => {
@@ -176,13 +177,16 @@ for (const scope of ['https://example.test/', 'https://example.test/stroke/']) {
       expect(h.globalMatches).toBe(0);
     });
 
-    it('preserves exact offline PDF identity and never returns HTML for missing binary navigation', async () => {
+    it('never exposes cached historical PDFs or the HTML shell for retired binary navigation', async () => {
       const h = harness(scope);
       h.seed('index.html', '<html>shell</html>', 'text/html');
-      h.seed('documents/retained.pdf?v=old', '%PDF-old', 'application/pdf');
       h.seed('documents/retained.pdf?v=current', '%PDF-current', 'application/pdf');
-      expect(await (await h.fetch('documents/retained.pdf?v=current', true)).text()).toBe('%PDF-current');
-      expect((await h.fetch('documents/retained.pdf?v=unknown', true)).status).toBe(503);
+      for (const key of ['documents/retained.pdf?v=current', 'documents/retained.pdf?v=unknown']) {
+        const response = await h.fetch(key, true);
+        expect(response.status).toBe(410);
+        expect(response.headers.get('content-type')).toContain('text/plain');
+        expect(await response.text()).not.toMatch(/%PDF|<html>/);
+      }
     });
 
     it('does not read obsolete cache namespaces for ordinary assets', async () => {

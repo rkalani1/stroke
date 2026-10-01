@@ -90,8 +90,10 @@ function collectArtifacts() {
   const apiIndex = JSON.parse(readFileSync('data/index.json', 'utf8'));
   for (const endpoint of apiIndex.endpoints || []) add(toRel(endpoint));
 
-  const guidelineIndex = JSON.parse(readFileSync('data/guidelines/index.json', 'utf8'));
-  for (const guideline of guidelineIndex.data || []) add(toRel(guideline.url));
+  for (const endpoint of apiIndex.retiredEndpoints || []) add(toRel(endpoint));
+  add('app-assets.json');
+  const manifest = JSON.parse(readFileSync('app-assets.json', 'utf8'));
+  for (const file of manifest.files) add(file.path);
 
   if (missing.length > 0) {
     for (const rel of missing) {

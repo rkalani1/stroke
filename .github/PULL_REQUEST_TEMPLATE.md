@@ -8,7 +8,7 @@
 
 ## Validation
 
-- [ ] `npm run test:unit` — 427/427 (or specify the new total)
+- [ ] `npm run test:unit` — report actual passed/skipped counts
 - [ ] `npm run evidence:validate` — clean
 - [ ] `npm run build` — succeeds
 
@@ -31,4 +31,4 @@
 
 ## Routes to inspect (if UI changed)
 
-<!-- e.g., #/encounter, #/management/ich, #/trials → Atlas sub-tab -->
+<!-- e.g., #/encounter, #/protocols/ich, #/tools, retained-tool/retired-route behavior -->

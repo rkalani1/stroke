@@ -23,15 +23,18 @@ describe('Encounter-first browser module graph', () => {
     };
     visit(Object.keys(outputs).find(name => outputs[name].entryPoint === 'src/app.jsx'));
     const initialInputs = new Set([...initial].flatMap(name => Object.keys(outputs[name].inputs)));
-    expect(initialInputs.has('src/evidence/activeTrials.js')).toBe(true);
-    expect(initialInputs.has('src/evidence/claims.js')).toBe(true);
+    expect(initialInputs.has('src/Encounter.jsx')).toBe(true);
+    expect(initialInputs.has('src/workspace-state.js')).toBe(true);
+    expect(initialInputs.has('src/clinical/claims.json')).toBe(true);
     for (const deferred of ['src/education.jsx', 'src/evidence/completedTrials.js', 'src/guideline-library.js', 'content/search-index.json', 'src/components/TrialScreener.jsx', 'src/components/EligibilityTables.jsx']) {
       expect(initialInputs.has(deferred), `${deferred} must load only on request`).toBe(false);
-      expect(Object.keys(result.metafile.inputs)).toContain(deferred);
+      expect(Object.keys(result.metafile.inputs), `${deferred} must be absent from the entire shipped graph`).not.toContain(deferred);
     }
     expect([...initialInputs].filter(name => name.startsWith('src/guidelines/'))).toEqual([]);
     const reactCopies = Object.values(outputs).filter(output => Object.keys(output.inputs).some(input => /node_modules\/react\/cjs\/react\.production\.min\.js$/.test(input)));
     expect(reactCopies).toHaveLength(1);
-    expect(Object.values(outputs).some(output => output.entryPoint === 'src/design/sw-controller.js')).toBe(true);
+    expect(Object.keys(result.metafile.inputs)).toContain('src/design/sw-controller.js');
+    expect(initialInputs.has('src/ProtectedProtocols.jsx')).toBe(false);
+    expect(Object.keys(result.metafile.inputs)).toContain('src/ProtectedProtocols.jsx');
   });
 });

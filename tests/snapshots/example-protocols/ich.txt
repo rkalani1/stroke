@@ -180,8 +180,8 @@ activated charcoal
 2.
 Andexanet alfa is not available on the local formulary; give
 4F-PCC 2000 units IV
-Unresolved institutional conflict:
-the reversal section says to consider emergent dialysis in renal failure, while the same document's pharmacokinetic table labels these agents not dialyzable. No dialysis action is selected pending owner adjudication.
+Drug-removal limits:
+Rivaroxaban is not dialyzable. Hemodialysis does not appear to substantially affect apixaban exposure and does not significantly contribute to edoxaban clearance. Follow the approved agent-specific reversal pathway and specialist assessment.
 Absolute Contraindications to PCC:
 • Disseminated intravascular coagulation (DIC)
 • Heparin-induced thrombocytopenia (HIT)
@@ -344,8 +344,8 @@ not available on the local formulary.
 2000 units IV — give if Direct Xa Inhibitor screen elevated and no contraindications.
 Activated charcoal:
 if ingestion <2 hours.
-Unresolved dialysis conflict:
-the reversal section says to consider emergent dialysis in renal failure, while the same document's pharmacokinetic table labels these agents not dialyzable. No dialysis action is selected pending owner adjudication.
+Drug-removal limits:
+Rivaroxaban is not dialyzable. Hemodialysis does not appear to substantially affect apixaban exposure and does not significantly contribute to edoxaban clearance. Follow the approved agent-specific reversal pathway and specialist assessment.
 Heparins
 Treatment-dose UFH (COR 2a/C):
 assess anti-Xa. Protamine 25 mg IV immediately; recheck anti-Xa after infusion and, if >0.1, give an additional 10 mg protamine (max cumulative dose 55 mg).

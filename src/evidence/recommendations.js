@@ -183,24 +183,6 @@ export const recommendations = [
   }),
 
   makeRecommendation({
-    id: 'rec-af-early-anticoag',
-    topic: 'af-anticoag-timing',
-    setting: 'inpatient',
-    text: 'In carefully selected (e.g., milder severity) patients with AIS and atrial fibrillation, early oral anticoagulation is low risk and is reasonable compared with delayed anticoagulation (AHA/ASA 2026, COR IIa); the guideline notes that efficacy for preventing early recurrent stroke is not established. Supporting data: OPTIMAS (DOAC start ≤4 days non-inferior to 7-14 days for the 90-day composite) and the CATALYST IPD meta-analysis (≤4 vs ≥5 days: 30-day composite OR 0.70, 95% CI 0.50-0.98, no sICH excess).',
-    classOfRecommendation: 'IIa',
-    levelOfEvidence: 'A',
-    guidelineSource: 'AHA/ASA 2026 AIS Guideline; OPTIMAS (2024); CATALYST IPDMA (2025); ELAN (2023); TIMING (2022)',
-    supportingClaimIds: ['cl-af-early-anticoag'],
-    caveats: [
-      'Reserve longer delay for very severe stroke or extensive hemorrhagic transformation; confirm absence of significant hemorrhagic transformation on follow-up imaging before starting in moderate-large stroke.',
-      'Early initiation (≤4 d) is non-inferior across severities (OPTIMAS) and superior at 30 d in pooled IPD (CATALYST); individualize for the highest-risk presentations.',
-      'Scope note: this COR IIa early-start statement reflects the 2026 AHA/ASA AIS guideline (early oral anticoagulation reasonable in carefully selected patients, e.g., milder severity). The 2021 secondary-prevention guideline carries a separate, weaker COR IIb statement for starting at 2-14 days, which predates TIMING, ELAN, OPTIMAS and CATALYST.'
-    ],
-    lastReviewed: '2026-09-26',
-    verificationStatus: 'verified-guideline'
-  }),
-
-  makeRecommendation({
     id: 'rec-evt-late-window',
     topic: 'evt-late-window',
     setting: 'inpatient',

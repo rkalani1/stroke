@@ -1,151 +1,22 @@
 {
-  "id": "eso-carotid-stenosis-2021",
-  "title": "European Stroke Organisation guideline on endarterectomy and stenting for carotid artery stenosis",
-  "shortTitle": "ESO Carotid Stenosis 2021",
-  "doi": "10.1177/23969873211012121",
-  "publisherUrl": "https://doi.org/10.1177/23969873211012121",
-  "pdfUrl": null,
-  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/34414302/",
-  "pmid": "34414302",
-  "society": "ESO",
-  "recommendations": [
-    {
-      "section": "Endarterectomy or medical therapy for asymptomatic carotid stenosis",
-      "classOfRec": "Strong",
-      "classNote": "For",
-      "levelOfEvidence": "Moderate certainty",
-      "text": "In patients with >=60% asymptomatic carotid artery stenosis considered to be at increased risk of stroke on best medical therapy alone, we recommend carotid endarterectomy. (Strength of recommendation: Strong for carotid endarterectomy)",
-      "page": null
-    },
-    {
-      "section": "Endarterectomy or medical therapy for asymptomatic carotid stenosis",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For",
-      "levelOfEvidence": "Ungraded",
-      "text": "In selected patients 75 years of age or older with >=60% asymptomatic carotid artery stenosis and an expected survival of at least five years, who are considered to be at an increased risk of stroke on best medical therapy alone, carotid endarterectomy is suggested after careful consideration of the risks and benefits at a multi-disciplinary team meeting. (12/12 experts)",
-      "page": null
-    },
-    {
-      "section": "Stenting or medical therapy for asymptomatic carotid stenosis",
-      "classOfRec": "Conditional",
-      "classNote": "Against",
-      "levelOfEvidence": "Very low certainty",
-      "text": "In patients with asymptomatic carotid stenosis, we recommend against carotid artery stenting as a routine alternative to best medical therapy alone. (Strength of recommendation: Weak against carotid stenting) [Current-evidence note: CREST-2 (NEJM, published 2025) in ≥70% asymptomatic stenosis found stenting plus intensive medical management lowered 4-year periprocedural stroke/death or ipsilateral stroke vs intensive medical management alone (2.8% vs 6.0%); endarterectomy did not show a significant benefit (3.7% vs 5.3%).]",
-      "page": null
-    },
-    {
-      "section": "Stenting or endarterectomy for asymptomatic carotid stenosis",
-      "classOfRec": "Conditional",
-      "classNote": "For",
-      "levelOfEvidence": "Moderate certainty",
-      "text": "In patients with asymptomatic carotid stenosis in whom revascularisation is considered to be appropriate, we suggest endarterectomy as the current treatment of choice. (Strength of recommendation: Weak for carotid endarterectomy)",
-      "page": null
-    },
-    {
-      "section": "Stenting or endarterectomy for asymptomatic carotid stenosis",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For",
-      "levelOfEvidence": "Ungraded",
-      "text": "In patients with asymptomatic carotid stenosis in whom revascularisation is considered to be appropriate and who are less suitable for surgery, stenting may be suggested. We recommend careful consideration of the risks and benefits at a multi-disciplinary team meeting. (12/12 experts)",
-      "page": null
-    },
-    {
-      "section": "Stenting or endarterectomy for asymptomatic carotid stenosis",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For",
-      "levelOfEvidence": "Ungraded",
-      "text": "The independently assessed risk of in-hospital stroke or death following endarterectomy or stenting for asymptomatic carotid stenosis should be as low as possible, ideally below 2%. (12/12 experts)",
-      "page": null
-    },
-    {
-      "section": "Endarterectomy or medical therapy for symptomatic carotid stenosis",
-      "classOfRec": "Strong",
-      "classNote": "For",
-      "levelOfEvidence": "Moderate certainty",
-      "text": "In patients with severe (70–99%) symptomatic carotid artery stenosis, we recommend carotid endarterectomy. (Strength of recommendation: Strong for carotid endarterectomy)",
-      "page": null
-    },
-    {
-      "section": "Endarterectomy or medical therapy for symptomatic carotid stenosis",
-      "classOfRec": "Conditional",
-      "classNote": "For",
-      "levelOfEvidence": "Low certainty",
-      "text": "In patients with moderate (50–69%) symptomatic carotid artery stenosis, we suggest carotid endarterectomy. (Strength of recommendation: Weak for carotid endarterectomy)",
-      "page": null
-    },
-    {
-      "section": "Endarterectomy or medical therapy for symptomatic carotid stenosis",
-      "classOfRec": "Strong",
-      "classNote": "Against",
-      "levelOfEvidence": "Very low certainty",
-      "text": "In patients with mild (<50%) symptomatic carotid artery stenosis, we recommend against carotid endarterectomy. (Strength of recommendation: Strong against carotid endarterectomy)",
-      "page": null
-    },
-    {
-      "section": "Endarterectomy or medical therapy for symptomatic carotid stenosis",
-      "classOfRec": "Strong",
-      "classNote": "For",
-      "levelOfEvidence": "High certainty",
-      "text": "In patients with 50–99% symptomatic carotid stenosis in whom surgery is considered appropriate, we recommend early endarterectomy, ideally within two weeks of the last neurological event. (Strength of recommendation: Strong for carotid endarterectomy)",
-      "page": null
-    },
-    {
-      "section": "Stenting or endarterectomy for symptomatic carotid stenosis",
-      "classOfRec": "Strong",
-      "classNote": "For",
-      "levelOfEvidence": "Moderate certainty",
-      "text": "In patients with symptomatic carotid artery stenosis requiring revascularisation, we recommend endarterectomy as the treatment of choice. (Strength of recommendation: Strong for carotid endarterectomy)",
-      "page": null
-    },
-    {
-      "section": "Stenting or endarterectomy for symptomatic carotid stenosis",
-      "classOfRec": "Conditional",
-      "classNote": "For",
-      "levelOfEvidence": "Low certainty",
-      "text": "In patients with symptomatic carotid stenosis <70 years old requiring revascularisation, we suggest that stenting may be considered as an alternative to endarterectomy. (Strength of recommendation: Weak for carotid stenting)",
-      "page": null
-    },
-    {
-      "section": "Stenting or endarterectomy for symptomatic carotid stenosis",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For",
-      "levelOfEvidence": "Ungraded",
-      "text": "The suitability of a patient with symptomatic carotid stenosis for carotid endarterectomy versus stenting should also take into account the interval since their last ischaemic cerebrovascular event, as well as anatomical and morphological features, including the atherosclerotic burden of the aortic arch. (12/12 experts)",
-      "page": null
-    },
-    {
-      "section": "Stenting or endarterectomy for symptomatic carotid stenosis",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For",
-      "levelOfEvidence": "Ungraded",
-      "text": "The independently assessed risk of in-hospital stroke or death following endarterectomy or stenting for symptomatic carotid stenosis should be as low as possible, ideally below 4%. (11/12 experts)",
-      "page": null
-    },
-    {
-      "section": "Stenting or endarterectomy for symptomatic carotid stenosis",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For",
-      "levelOfEvidence": "Ungraded",
-      "text": "Where possible, the indication for carotid endarterectomy or carotid artery stenting should be discussed at a multi-disciplinary team meeting. Consensus decisions can be made in between meetings, in order not to delay urgent revascularisations. (12/12 experts)",
-      "page": null
-    },
-    {
-      "section": "Stenting or endarterectomy for symptomatic carotid stenosis",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For",
-      "levelOfEvidence": "Ungraded",
-      "text": "The establishment of validated local, regional or national registries, including audit systems for carotid interventions to monitor complication rates in patients with asymptomatic and symptomatic carotid stenosis, is recommended. (12/12 experts)",
-      "page": null
-    }
-  ],
-  "documentType": "guideline",
-  "gradingSystem": "GRADE",
-  "sourceReview": {
-    "reviewedAt": "2026-09-30",
-    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-    "sourceAccess": "primary full text retrieved and reviewed",
-    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
-    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
-    "implementationUpdatedAt": "2026-09-30"
+  "_meta": {
+    "endpoint": "data/guidelines/eso-carotid-stenosis-2021.json",
+    "schemaVersion": "2.0.0",
+    "appVersion": "7.0.0",
+    "checksum": "sha256:74234e98afe7498fb5daf1f36ac2d78a",
+    "count": 0,
+    "source": "Retired historical portal endpoint",
+    "license": "Synthetic educational reference content for qualified review. No warranty.",
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.",
+    "status": "retired"
+  },
+  "data": null,
+  "retirement": {
+    "status": "retired",
+    "reason": "The broad reference, trial and teaching portal is retired from the maintained product.",
+    "replacement": "https://rkalani1.github.io/stroke/data/sources.json",
+    "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+    "archiveUrl": "https://github.com/rkalani1/stroke/tree/archive/pre-encounter-first-20261001-4f8e99d",
+    "compatibility": "HTTP transport may return 200 on static Pages; clients must inspect _meta.status. The data payload is null and is not a current clinical corpus."
   }
 }

@@ -1,0 +1,3892 @@
+{
+  "_meta": {
+    "endpoint": "sources",
+    "schemaVersion": "2.0.0",
+    "appVersion": "7.0.0",
+    "checksum": "sha256:640726e9084abef039ef89dca50d153f",
+    "count": 4,
+    "source": "Canonical clinical claims, source identities and retained primary-source projections",
+    "license": "Synthetic educational reference content for qualified review. No warranty.",
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.",
+    "status": "maintained"
+  },
+  "data": {
+    "sources": [
+      {
+        "id": "nihss",
+        "label": "NIH Stroke Scale: original clinical examination scale",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/2749846/",
+        "sourceIdentity": "Brott et al., Stroke 1989;20:864-870",
+        "reviewedAt": null,
+        "reviewScope": "Primary bibliographic identity located; no newly claimed clinical scoring review. Complete item entry is separate from a partial numeric sum.",
+        "population": "Stroke severity examination; use the scale's complete standardized item instructions.",
+        "limits": "A partial total is not a completed examination or an individualized prognosis."
+      },
+      {
+        "id": "crcl",
+        "label": "Cockcroft–Gault creatinine clearance",
+        "url": "https://doi.org/10.1159/000180580",
+        "sourceIdentity": "Cockcroft and Gault, Prediction of creatinine clearance from serum creatinine, Nephron 1976;16:31-41",
+        "reviewedAt": null,
+        "reviewScope": "Existing formula provenance retained. No clinical review date was recorded for this calculation; adding a source link is not a new clinical review.",
+        "population": "Adult Cockcroft–Gault estimate.",
+        "limits": "Confirm stable creatinine, appropriate weight convention, and the specific drug label; this estimate does not determine a dialysis indication."
+      },
+      {
+        "id": "ich-score",
+        "label": "ICH Score original report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/11283388/",
+        "citationId": "cit-education-pmid-11283388",
+        "sourceIdentity": "Hemphill et al., Stroke 2001;32:891-897",
+        "reviewedAt": null,
+        "reviewScope": "Existing PubMed identity/title/year/DOI metadata verification retained; no full-text clinical-claim review was recorded in the citation.",
+        "population": "Original historical ICH severity cohort.",
+        "limits": "A severity score is not an individual prognosis or a sole basis for limiting life-sustaining treatment; retained AHA/ASA 2022 ICH source qualifiers apply."
+      },
+      {
+        "id": "ich-volume",
+        "label": "ABC/2 hemorrhage volume",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/8711791/",
+        "sourceIdentity": "Kothari et al., The ABCs of measuring intracerebral hemorrhage volumes, Stroke 1996;27:1304-1305",
+        "reviewedAt": null,
+        "reviewScope": "Existing Kothari formula provenance retained and primary identity/abstract located. No newly claimed full-text clinical review.",
+        "population": "Approximate CT hemorrhage volume.",
+        "limits": "Confirm all three dimensions are in centimeters. Volume arithmetic does not establish treatment selection."
+      },
+      {
+        "id": "gcs",
+        "label": "Glasgow Coma Scale original report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/4136544/",
+        "sourceIdentity": "Teasdale and Jennett, Assessment of coma and impaired consciousness. A practical scale, Lancet 1974",
+        "reviewedAt": null,
+        "reviewScope": "Primary source identity located; no newly claimed item-scoring or current worksheet review.",
+        "population": "Level of consciousness assessment.",
+        "limits": "All three components must be entered. A total does not replace component assessment or establish an individual prognosis."
+      },
+      {
+        "id": "dawn",
+        "label": "DAWN historical partial screen",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29129157/",
+        "citationId": "cit-dawn-2018",
+        "reviewedAt": "2026-09-26",
+        "reviewScope": "Existing late-window evidence-claim review date retained; original citation verification limits remain applicable.",
+        "population": "Original DAWN age/severity/core-volume strata, 6-24 hours from last known well.",
+        "limits": "Partial historical trial screen; confirm ICA/proximal MCA occlusion, baseline function and all original exclusions. Failure does not exclude EVT under newer evidence."
+      },
+      {
+        "id": "defuse3",
+        "label": "DEFUSE-3 historical partial screen",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29364767/",
+        "citationId": "cit-defuse3-2018",
+        "reviewedAt": "2026-09-26",
+        "reviewScope": "Existing late-window evidence-claim review date retained; original citation verification limits remain applicable.",
+        "population": "Original DEFUSE-3 age/severity/perfusion screen, 6-16 hours from last known well.",
+        "limits": "Partial historical trial screen; confirm ICA/proximal MCA occlusion, baseline function and all exclusions. Hypoperfused volume includes the core; it is not salvageable-only volume. Failure does not exclude current EVT."
+      },
+      {
+        "id": "large-core",
+        "label": "Retained large-core EVT source context",
+        "url": "https://doi.org/10.1161/STR.0000000000000513",
+        "claimId": "cl-evt-large-core",
+        "reviewedAt": "2026-09-26",
+        "reviewScope": "Existing evidence-claim date retained. AIS source has separate 2026-09-30 review scope and partially applied correction warnings.",
+        "population": "Source-specific anterior-circulation proximal LVO populations.",
+        "limits": "Preserve each recommendation's time window, age, prestroke function, mass-effect and imaging bounds. Historical screens are not universal EVT gates."
+      },
+      {
+        "id": "acute-dapt",
+        "label": "Acute DAPT source context",
+        "url": "https://doi.org/10.1161/STR.0000000000000513",
+        "claimId": "cl-dapt-minor-stroke",
+        "reviewedAt": "2026-09-26",
+        "reviewScope": "Existing DAPT evidence-claim date retained; AIS recommendation transcription retains its own review/correction limitations.",
+        "population": "Source-specific noncardioembolic minor stroke or high-risk TIA populations.",
+        "limits": "Retain trial-specific time, severity, mechanism, hemorrhage, reperfusion and contraindication review. Treatment selection is not arithmetic."
+      }
+    ],
+    "clinicalClaims": [
+      {
+        "id": "tnk-stroke-dose",
+        "severity": "critical",
+        "text": "TNK 0.25 mg/kg IV bolus (max 25 mg)",
+        "dose": "0.25 mg/kg, max 25 mg",
+        "population": "Adults with acute ischemic stroke who meet the complete IV thrombolysis eligibility criteria; the standard-window recommendation applies within 4.5 hours of onset or last known well.",
+        "limits": "Weight and complete eligibility/contraindication review are required. Dose arithmetic does not establish treatment eligibility. Extended-window and trial populations require their own criteria.",
+        "sourceLabel": "AHA/ASA 2026 AIS guideline, recommendation 98",
+        "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
+        "sourceFile": "src/guidelines/ais-2026.json",
+        "sourceRecommendationId": "ais-2026-98",
+        "reviewedAt": "2026-09-30",
+        "reviewScope": "Recorded review covers the cited AIS recommendation. The source record retains partially applied correction warnings; it does not establish complete verification of current guidance.",
+        "maintenanceNote": "Existing wording consolidated without a new clinical review."
+      },
+      {
+        "id": "alteplase-stroke-dose",
+        "severity": "critical",
+        "text": "Alteplase 0.9 mg/kg IV (max 90 mg): 10% bolus, 90% over 60 min",
+        "dose": "0.9 mg/kg, max 90 mg",
+        "population": "Adults with acute ischemic stroke who meet the complete IV thrombolysis eligibility criteria; the standard-window recommendation applies within 4.5 hours of onset or last known well.",
+        "limits": "Weight and complete eligibility/contraindication review are required. Dose arithmetic does not establish treatment eligibility. Extended-window and trial populations require their own criteria.",
+        "sourceLabel": "AHA/ASA 2026 AIS guideline; existing alteplase calculator regimen",
+        "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
+        "sourceFile": "src/guidelines/ais-2026.json",
+        "sourceRecommendationId": "ais-2026-98",
+        "sources": [
+          {
+            "label": "AHA/ASA 2026 AIS guideline, standard-window eligibility and dose",
+            "url": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
+            "file": "src/guidelines/ais-2026.json"
+          },
+          {
+            "label": "US Activase prescribing information §2.1, dose and administration",
+            "url": "https://www.gene.com/download/pdf/activase_prescribing.pdf",
+            "scope": "Supports the dose and infusion split; the guideline's 4.5-hour population is a separate recommendation."
+          }
+        ],
+        "reviewedAt": "2026-09-30",
+        "reviewScope": "Recorded date is the local AIS source review. The Activase label supports dose and administration; the guideline's 4.5-hour eligibility scope is separate. The AIS source record retains partially applied correction warnings.",
+        "maintenanceNote": "Existing calculator regimen and previously checked Activase label retained without a new clinical review; the infusion split is not inferred from recommendation 98."
+      },
+      {
+        "id": "prognostic-score-limits",
+        "severity": "critical",
+        "text": "Historical scores describe severity and cohort outcomes, not individual recovery ceilings. In critically ill adults with ischemic stroke, admission NIHSS or ASTRAL alone is not reliable for poor-outcome counseling. The ICH Score can provide a general framework for communication, but no score should be the sole basis for an individual prognosis or for withholding reperfusion, decompression or life-sustaining treatment.",
+        "population": "Interpret each score in its original population and outcome horizon. Historical cohort outcomes are not an individual prognosis.",
+        "limits": "Do not combine score definitions or outcome models. Preserve missing-input states and model-specific uncertainty.",
+        "sourceLabel": "AHA/ASA 2022 ICH guideline",
+        "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
+        "sourceFile": "src/guidelines/ich-2022.json",
+        "sources": [
+          {
+            "label": "AHA/ASA 2022 ICH guideline",
+            "url": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
+            "file": "src/guidelines/ich-2022.json"
+          },
+          {
+            "label": "NCS 2026 AIS neuroprognostication, recommendations 12 and 20",
+            "url": "https://doi.org/10.1007/s12028-026-02486-3",
+            "file": "src/guidelines/ncs-neuroprognostication-ais-2026.json"
+          }
+        ],
+        "reviewedAt": "2026-09-30",
+        "reviewScope": "Recorded review covers the cited ICH and AIS guidance, not validation of every prognostic model. The AIS source retains an unresolved body/table evidence-grade discrepancy for ASTRAL.",
+        "maintenanceNote": "Safety paragraph retained verbatim from education without a new clinical review."
+      }
+    ],
+    "guidelines": [
+      {
+        "id": "ais-2026",
+        "title": "AHA/ASA Early Management of Acute Ischemic Stroke 2026",
+        "shortTitle": "AIS 2026",
+        "doi": "10.1161/STR.0000000000000513",
+        "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
+        "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000513",
+        "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41582814/",
+        "pmid": "41582814",
+        "correctedBy": {
+          "pmid": "42507797",
+          "doi": "10.1161/STR.0000000000000530",
+          "citation": "Stroke. 2026;57(8):e461-e467",
+          "note": "Recovered correction items 12, 13, 22, 23 and 24 support the five linked recommendation repairs, including PES Class IIb. The complete seven-page notice was not recovered: portions of items 8, 11 and 25, references 19/34 and final page e467 remain incomplete. This is a partial correction review, not certification of the full current edition.",
+          "status": "partially-applied",
+          "checkedAt": "2026-09-30"
+        },
+        "recommendations": [
+          {
+            "section": "Stroke Registries and Quality Improvement",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "Measurement and documentation of baseline stroke severity (e.g., NIHSS score) in all acute stroke patients is recommended to enable sufficiently accurate and reliable risk adjustment models for comparing facility performance.",
+            "page": 24,
+            "id": "ais-2026-46",
+            "sourceSection": "table-10",
+            "sourceRecommendationNumber": 3,
+            "pdfPage": 24,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Initial, Vascular, and Multimodal Imaging",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "Emergent brain imaging with NCCT or MRI is recommended on initial evaluation of suspected AIS to assess ischemic burden (e.g., ASPECTS) and exclude intracranial hemorrhage before initiating reperfusion interventions.",
+            "page": 26,
+            "id": "ais-2026-47",
+            "sourceSection": "table-12",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 26,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Initial, Vascular, and Multimodal Imaging",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "Facilities caring for suspected AIS patients are recommended to establish process improvement protocols so emergent brain imaging can be performed as rapidly as possible (e.g., within 25 minutes) to facilitate timely reperfusion interventions.",
+            "page": 26,
+            "id": "ais-2026-48",
+            "sourceSection": "table-12",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 26,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Initial, Vascular, and Multimodal Imaging",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "In patients with suspected AIS and LVO, emergent vascular imaging with CTA and/or CTP is recommended not to be delayed to obtain serum creatinine.",
+            "page": 26,
+            "id": "ais-2026-49",
+            "sourceSection": "table-12",
+            "sourceRecommendationNumber": 3,
+            "pdfPage": 26,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Initial, Vascular, and Multimodal Imaging",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "In pediatric patients with suspected AIS, emergent brain and vascular imaging with MRI/MRA of the cervical and intracranial vessels is reasonable to identify LVO and differentiate arterial ischemic stroke from hemorrhagic stroke or stroke mimics.",
+            "page": 26,
+            "id": "ais-2026-50",
+            "sourceSection": "table-12",
+            "sourceRecommendationNumber": 4,
+            "pdfPage": 26,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Initial, Vascular, and Multimodal Imaging",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "In pediatric patients with suspected AIS, emergent CT/CTA of the cervical and intracranial vessels is reasonable when MRI/MRA is not immediately available (within 25 minutes) to identify LVO.",
+            "page": 26,
+            "id": "ais-2026-51",
+            "sourceSection": "table-12",
+            "sourceRecommendationNumber": 5,
+            "pdfPage": 26,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Initial, Vascular, and Multimodal Imaging",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-R",
+            "text": "In patients with suspected AIS who awaken with symptoms or have unknown time of onset beyond 4.5 hours from last known well but are otherwise eligible for thrombolysis, MRI DWI-FLAIR mismatch selection can be useful to determine eligibility for extended-window IVT.",
+            "page": 26,
+            "id": "ais-2026-52",
+            "sourceSection": "table-12",
+            "sourceRecommendationNumber": 6,
+            "pdfPage": 26,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Initial, Vascular, and Multimodal Imaging",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-R",
+            "text": "In patients with suspected AIS who awaken with symptoms or have unknown time of onset 4.5 to 24 hours from last known well, CTP or MR DWI-PWI selection with automated postprocessing software can be useful to determine eligibility for extended-window IVT.",
+            "page": 27,
+            "id": "ais-2026-53",
+            "sourceSection": "table-12",
+            "sourceRecommendationNumber": 7,
+            "pdfPage": 27,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Initial, Vascular, and Multimodal Imaging",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "In patients with suspected AIS and LVO presenting within 24 hours of last known well, emergent brain and vascular imaging (CT/CTA or MRI/MRA) of the cervical and intracranial vessels is recommended to be performed as rapidly as possible for EVT selection and treatment planning.",
+            "page": 27,
+            "id": "ais-2026-54",
+            "sourceSection": "table-12",
+            "sourceRecommendationNumber": 8,
+            "pdfPage": 27,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Initial, Vascular, and Multimodal Imaging",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "In patients with suspected AIS and LVO presenting 6 to 24 hours from last known well, adjunctive CTP, MRI (DWI-FLAIR mismatch), or MR DWI-PWI with automated postprocessing software can be useful in EVT evaluation if immediately available.",
+            "page": 27,
+            "id": "ais-2026-55",
+            "sourceSection": "table-12",
+            "sourceRecommendationNumber": 9,
+            "pdfPage": 27,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Initial, Vascular, and Multimodal Imaging",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "B-R",
+            "text": "In patients with suspected AIS and LVO identified by prefacility assessment with a validated stroke severity scale (e.g., RACE >4) who are EVT-eligible, direct triage to the angiography suite for flat-panel head CT may be considered to reduce time to intervention and improve functional outcomes compared with conventional imaging workflow.",
+            "currentEvidenceCheckedAt": "2026-09-26",
+            "currentEvidenceSources": [
+              {
+                "title": "DIRECT ANGIO (Lancet Neurology, 2026)",
+                "url": "https://pubmed.ncbi.nlm.nih.gov/41864232/",
+                "pmid": "41864232",
+                "doi": "10.1016/S1474-4422(26)00056-6"
+              }
+            ],
+            "currentEvidenceNote": "Newer evidence reviewed 2026-09-26: DIRECT ANGIO (Lancet Neurology, 2026), a French multicenter RCT published after this guideline, randomly assigned 115 patients aged 85 years or younger who were admitted directly to an endovascular-capable center within 5 hours of onset with a severe deficit suggestive of LVO (selected by neurologist examination on arrival, not a prehospital scale) to direct transfer to the angiography suite for cone-beam CT and angiography or to conventional imaging first. It was stopped early for safety. Symptomatic ICH was higher with direct transfer (5/34 vs 0/42; adjusted OR 11.0, 95% CI 1.28-1406), with no evidence of functional benefit (mRS 0-2 at 90 days 36% vs 42%; adjusted OR 0.73, 95% CI 0.32-1.69). The small sample limits precision. This IIb recommendation predates the trial, so read its stated functional-outcome benefit with caution.",
+            "page": 27,
+            "id": "ais-2026-56",
+            "sourceSection": "table-12",
+            "sourceRecommendationNumber": 10,
+            "pdfPage": 27,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Initial, Vascular, and Multimodal Imaging",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "In emergently transferred patients with suspected AIS due to LVO who are EVT-eligible, direct triage to the angiography suite may be considered without repeat brain imaging on arrival at the thrombectomy center, unless there is clinical change or transfer delay.",
+            "page": 27,
+            "id": "ais-2026-57",
+            "sourceSection": "table-12",
+            "sourceRecommendationNumber": 11,
+            "pdfPage": 27,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Other Diagnostic Tests",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "Baseline ECG assessment is recommended in patients with suspected acute stroke but is not recommended to delay initiation of IVT or EVT.",
+            "page": 31,
+            "id": "ais-2026-58",
+            "sourceSection": "table-13",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 31,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Other Diagnostic Tests",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "Baseline troponin measurement is recommended in patients with suspected acute stroke but is not recommended to delay initiation of IVT or EVT.",
+            "page": 31,
+            "id": "ais-2026-59",
+            "sourceSection": "table-13",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 31,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Blood Pressure Management",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "In patients who undergo EVT, it is reasonable to maintain BP at or below 180/105 mmHg during and for 24 hours after the procedure.",
+            "page": 35,
+            "id": "ais-2026-76",
+            "sourceSection": "table-16",
+            "sourceRecommendationNumber": 9,
+            "pdfPage": 35,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Blood Pressure Management",
+            "classOfRec": "III",
+            "classNote": "Harm",
+            "levelOfEvidence": "A",
+            "text": "In AIS patients with anterior circulation LVO who have been successfully recanalized by EVT (mTICI 2b, 2c, or 3) without other indications for specific BP targets, intensive SBP reduction to below 140 mmHg for the first 72 hours is harmful and not recommended.",
+            "page": 35,
+            "id": "ais-2026-77",
+            "sourceSection": "table-16",
+            "sourceRecommendationNumber": 10,
+            "pdfPage": 35,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Temperature Management",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "B-R",
+            "text": "In AIS patients with hyperthermia, targeting normothermia (including nurse-initiated fever management protocols) is recommended to improve functional outcomes and reduce mortality.",
+            "page": 37,
+            "id": "ais-2026-78",
+            "sourceSection": "table-17",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 37,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Temperature Management",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "C-EO",
+            "text": "In AIS patients with hyperthermia, identifying and treating the source of fever (such as infection) is recommended to avoid complications.",
+            "page": 37,
+            "id": "ais-2026-79",
+            "sourceSection": "table-17",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 37,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Temperature Management",
+            "classOfRec": "III",
+            "classNote": "No Benefit",
+            "levelOfEvidence": "B-R",
+            "text": "In AIS patients who are normothermic, induced hypothermia or prophylactic fever prevention is not recommended as it does not improve outcomes.",
+            "page": 37,
+            "id": "ais-2026-80",
+            "sourceSection": "table-17",
+            "sourceRecommendationNumber": 3,
+            "pdfPage": 37,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Blood Glucose Management",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "In AIS patients, hypoglycemia (blood glucose below 60 mg/dL) is recommended to be treated to avoid complications.",
+            "page": 37,
+            "id": "ais-2026-81",
+            "sourceSection": "table-18",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 37,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Blood Glucose Management",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "In AIS patients, it is reasonable to treat persistent hyperglycemia to achieve blood glucose levels of 140-180 mg/dL with close monitoring to prevent worse functional outcomes.",
+            "page": 37,
+            "id": "ais-2026-82",
+            "sourceSection": "table-18",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 37,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Blood Glucose Management",
+            "classOfRec": "III",
+            "classNote": "No Benefit",
+            "levelOfEvidence": "A",
+            "text": "In inpatient AIS patients with hyperglycemia, IV insulin targeting blood glucose of 80-130 mg/dL is not recommended as it does not improve 3-month functional outcomes.",
+            "page": 37,
+            "id": "ais-2026-83",
+            "sourceSection": "table-18",
+            "sourceRecommendationNumber": 3,
+            "pdfPage": 37,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Thrombolysis Decision-Making",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "In adult AIS patients with disabling deficits (regardless of NIHSS score) who are eligible for IVT, faster treatment is recommended as it improves functional outcomes.",
+            "page": 38,
+            "id": "ais-2026-84",
+            "sourceSection": "table-19",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 38,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Thrombolysis Decision-Making",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "In adult AIS patients eligible for IVT within 4.5 hours of symptom onset, treatment is recommended to be initiated as quickly as possible while ensuring safe administration, avoiding potential delays from additional multimodal neuroimaging (CTA/MRA, CT/MR perfusion).",
+            "page": 38,
+            "id": "ais-2026-85",
+            "sourceSection": "table-19",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 38,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Thrombolysis Decision-Making",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "Healthcare professionals are recommended to be prepared to treat potential emergent adverse effects of IVT, including bleeding complications and angioedema (which may cause partial airway obstruction), to reduce poor clinical outcomes.",
+            "page": 38,
+            "id": "ais-2026-86",
+            "sourceSection": "table-19",
+            "sourceRecommendationNumber": 3,
+            "pdfPage": 38,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Thrombolysis Decision-Making",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "C-EO",
+            "text": "For AIS patients eligible for IVT, it is recommended that healthcare professionals discuss potential risks and benefits with competent patients and/or available patient representatives (when feasible) to ensure shared decision-making.",
+            "page": 38,
+            "id": "ais-2026-87",
+            "sourceSection": "table-19",
+            "sourceRecommendationNumber": 4,
+            "pdfPage": 38,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Thrombolysis Decision-Making",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "Blood glucose levels are recommended to be determined before IVT initiation in suspected ischemic stroke patients to assess and urgently treat severe hypoglycemia and hyperglycemia, which may mimic acute stroke presentations.",
+            "page": 38,
+            "id": "ais-2026-88",
+            "sourceSection": "table-19",
+            "sourceRecommendationNumber": 5,
+            "pdfPage": 38,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Thrombolysis Decision-Making",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "In suspected ischemic stroke patients with severe hypoglycemia or hyperglycemia, if disabling stroke symptoms persist despite correction to normoglycemia, IVT administration is recommended to improve functional outcomes.",
+            "page": 38,
+            "id": "ais-2026-89",
+            "sourceSection": "table-19",
+            "sourceRecommendationNumber": 6,
+            "pdfPage": 38,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Thrombolysis Decision-Making",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "In AIS patients otherwise eligible for IVT who have early ischemic change of mild to moderate extent (other than frank hypodensity attributable to the clinical presentation) on initial brain imaging, IVT is recommended to improve functional outcome.",
+            "page": 38,
+            "id": "ais-2026-90",
+            "sourceSection": "table-19",
+            "sourceRecommendationNumber": 7,
+            "pdfPage": 38,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Thrombolysis Decision-Making",
+            "classOfRec": "III",
+            "classNote": "No Benefit",
+            "levelOfEvidence": "B-R",
+            "text": "In eligible adult AIS patients presenting with mild, non-disabling stroke deficits (e.g., isolated sensory syndrome) within 4.5 hours of symptom onset or last known well, IVT is not recommended as it has not shown superiority over dual antiplatelet treatment for improving functional outcomes.",
+            "page": 38,
+            "id": "ais-2026-91",
+            "sourceSection": "table-19",
+            "sourceRecommendationNumber": 8,
+            "pdfPage": 38,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Thrombolysis Decision-Making",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "In suspected AIS patients taking single or dual antiplatelet therapy who are otherwise eligible for IVT, IVT is recommended to improve functional outcomes despite an increased risk of sICH compared with no antiplatelet therapy.",
+            "page": 38,
+            "id": "ais-2026-92",
+            "sourceSection": "table-19",
+            "sourceRecommendationNumber": 9,
+            "pdfPage": 38,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Thrombolysis Decision-Making",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "In AIS patients within 4.5 hours of last known well who are eligible for IVT, it is reasonable not to delay IVT while waiting for hematologic or coagulation testing if there is no reason to suspect an abnormal result.",
+            "page": 38,
+            "id": "ais-2026-93",
+            "sourceSection": "table-19",
+            "sourceRecommendationNumber": 10,
+            "pdfPage": 38,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Thrombolysis Decision-Making",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "In AIS patients eligible for IVT within 4.5 hours of symptom onset with unknown cerebral microbleed (CMB) burden, IVT is recommended to be administered without first obtaining MRI to exclude CMBs.",
+            "page": 38,
+            "id": "ais-2026-94",
+            "sourceSection": "table-19",
+            "sourceRecommendationNumber": 11,
+            "pdfPage": 38,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Thrombolysis Decision-Making",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "In AIS patients within 4.5 hours of last known well who are eligible for IVT, administration of IVT is reasonable to achieve better functional outcomes if a small number of CMBs (e.g., 1-10) was demonstrated on MRI.",
+            "page": 38,
+            "id": "ais-2026-95",
+            "sourceSection": "table-19",
+            "sourceRecommendationNumber": 12,
+            "pdfPage": 38,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Thrombolysis Decision-Making",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "In AIS patients within 4.5 hours of last known well who are eligible for IVT and previously had a high burden of CMBs (e.g., >10) on MRI, the usefulness of IVT is uncertain as it may be associated with increased sICH risk.",
+            "page": 38,
+            "id": "ais-2026-96",
+            "sourceSection": "table-19",
+            "sourceRecommendationNumber": 13,
+            "pdfPage": 38,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Thrombolysis Decision-Making",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "In pediatric patients aged 28 days to 18 years with confirmed AIS presenting within 4.5 hours of symptom onset with disabling deficits, IVT with alteplase may be considered as it appears safe, though efficacy is uncertain.",
+            "page": 38,
+            "id": "ais-2026-97",
+            "sourceSection": "table-19",
+            "sourceRecommendationNumber": 14,
+            "pdfPage": 38,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Choice of Thrombolytic Agent",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "In adult AIS patients presenting within 4.5 hours of symptom onset or last known well who are eligible for IVT, tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg) is recommended to improve functional outcomes.",
+            "page": 42,
+            "correctionSourceUrl": "https://doi.org/10.1161/STR.0000000000000530",
+            "id": "ais-2026-98",
+            "sourceSection": "table-20",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 42,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Choice of Thrombolytic Agent",
+            "classOfRec": "III",
+            "classNote": "No Benefit",
+            "levelOfEvidence": "A",
+            "text": "In adult AIS patients presenting within 4.5 hours of symptom onset or last known well who are eligible for IVT, tenecteplase at a dose of 0.4 mg/kg is not recommended.",
+            "page": 42,
+            "id": "ais-2026-99",
+            "sourceSection": "table-20",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 42,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Other IV Fibrinolytics and Sonothrombolysis",
+            "classOfRec": "III",
+            "classNote": "No Benefit",
+            "levelOfEvidence": "B-R",
+            "text": "In eligible AIS patients within 6 hours of last known normal, IV urokinase is not beneficial for decreasing the odds of death or dependency.",
+            "page": 45,
+            "id": "ais-2026-107",
+            "sourceSection": "table-22",
+            "sourceRecommendationNumber": 5,
+            "pdfPage": 45,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Other IV Fibrinolytics and Sonothrombolysis",
+            "classOfRec": "III",
+            "classNote": "Harm",
+            "levelOfEvidence": "A",
+            "text": "In eligible AIS patients within 6 hours of last known normal, IV streptokinase is not recommended as it does not improve functional independence at 90 days and is associated with increased early mortality.",
+            "page": 45,
+            "id": "ais-2026-108",
+            "sourceSection": "table-22",
+            "sourceRecommendationNumber": 6,
+            "pdfPage": 45,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Other IV Fibrinolytics and Sonothrombolysis",
+            "classOfRec": "III",
+            "classNote": "No Benefit",
+            "levelOfEvidence": "A",
+            "text": "In AIS patients, sonothrombolysis as an adjunct to IVT is not recommended as it did not increase early neurological improvement or improve 90-day functional outcomes compared with IVT alone.",
+            "page": 45,
+            "id": "ais-2026-109",
+            "sourceSection": "table-22",
+            "sourceRecommendationNumber": 7,
+            "pdfPage": 45,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Other Specific Circumstances",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "In eligible adult AIS patients with known sickle cell disease, IVT can be beneficial to improve functional outcome without increased rates of sICH, life-threatening systemic hemorrhage, or other thrombolytic complications.",
+            "page": 47,
+            "id": "ais-2026-110",
+            "sourceSection": "table-23",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 47,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Endovascular Thrombectomy for Adult",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "In AIS patients with anterior circulation proximal LVO (ICA or M1), presenting within 6 hours of symptom onset, with NIHSS 6 or greater, prestroke mRS 0-1, and ASPECTS 3-10, EVT (endovascular thrombectomy) is recommended to improve functional outcomes and reduce mortality.",
+            "page": 53,
+            "id": "ais-2026-114",
+            "sourceSection": "table-25",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 53,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Endovascular Thrombectomy for Adult",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "In AIS patients with anterior circulation proximal LVO (ICA or M1) presenting 6-24 hours from symptom onset, with NIHSS 6 or greater, prestroke mRS 0-1, and ASPECTS 6 or greater, EVT is recommended to improve functional outcomes and reduce mortality.",
+            "page": 53,
+            "id": "ais-2026-115",
+            "sourceSection": "table-25",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 53,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Endovascular Thrombectomy for Adult",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "In selected patients with AIS from anterior circulation proximal LVO (ICA or M1), presenting 6-24 hours from symptom onset, age under 80, NIHSS 6 or greater, prestroke mRS 0-1, ASPECTS 3-5, and without significant mass effect on imaging, EVT is recommended to improve functional outcomes and reduce mortality.",
+            "page": 53,
+            "id": "ais-2026-116",
+            "sourceSection": "table-25",
+            "sourceRecommendationNumber": 3,
+            "pdfPage": 53,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Endovascular Thrombectomy for Adult",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-R",
+            "text": "In selected AIS patients with anterior circulation proximal LVO (ICA or M1) presenting within 6 hours, age under 80, NIHSS 6 or greater, prestroke mRS 0-1, ASPECTS 0-2, and without significant mass effect, EVT is reasonable to improve functional outcomes and reduce mortality.",
+            "page": 53,
+            "id": "ais-2026-117",
+            "sourceSection": "table-25",
+            "sourceRecommendationNumber": 4,
+            "pdfPage": 53,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Endovascular Thrombectomy for Adult",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "In AIS patients with anterior circulation proximal LVO (ICA or M1) presenting within 6 hours, NIHSS 6 or greater, ASPECTS 6 or greater, and prestroke mRS of 2, EVT is reasonable to improve functional outcomes and reduce accumulated disability.",
+            "page": 53,
+            "id": "ais-2026-118",
+            "sourceSection": "table-25",
+            "sourceRecommendationNumber": 5,
+            "pdfPage": 53,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Endovascular Thrombectomy for Adult",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "In AIS patients with anterior circulation proximal LVO (ICA or M1) presenting within 6 hours, NIHSS 6 or greater, ASPECTS 6 or greater, and prestroke mRS of 3-4, EVT might be reasonable to improve functional outcomes and reduce accumulated disability.",
+            "page": 53,
+            "id": "ais-2026-119",
+            "sourceSection": "table-25",
+            "sourceRecommendationNumber": 6,
+            "pdfPage": 53,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Endovascular Thrombectomy for Adult",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "In AIS patients with occlusion of the dominant proximal M2 division of the MCA presenting within 6 hours, prestroke mRS 0-1, NIHSS 6 or greater, and ASPECTS 6 or greater, EVT is reasonable to improve functional outcomes, though benefits are uncertain.",
+            "page": 53,
+            "id": "ais-2026-120",
+            "sourceSection": "table-25",
+            "sourceRecommendationNumber": 7,
+            "pdfPage": 53,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Endovascular Thrombectomy for Adult",
+            "classOfRec": "III",
+            "classNote": "No Benefit",
+            "levelOfEvidence": "A",
+            "text": "In AIS patients with occlusion of the proximal nondominant or codominant M2 segment, distal MCA, anterior cerebral artery, or posterior cerebral artery, EVT is not recommended as it does not improve functional outcomes. [Current-evidence note, not part of the 2026 guideline: ORIENTAL-MeVO (NEJM 2026), published after this guideline, randomized patients with medium-vessel occlusion and NIHSS 6 or greater within 24 hours; EVT increased 90-day functional independence (58.6% vs 46.6%) but also symptomatic ICH (4.7% vs 2.2%). DISTAL, ESCAPE-MeVO and DISCOUNT found no functional benefit. This Class III grading predates ORIENTAL-MeVO.]",
+            "page": 54,
+            "id": "ais-2026-121",
+            "sourceSection": "table-25",
+            "sourceRecommendationNumber": 8,
+            "pdfPage": 54,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Posterior Circulation Stroke",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "In AIS patients with basilar artery occlusion, baseline mRS 0-1, NIHSS 10 or greater, and PC-ASPECTS 6 or greater (mild ischemic damage), EVT within 24 hours of symptom onset is recommended to achieve better functional outcome and reduce mortality.",
+            "page": 56,
+            "id": "ais-2026-122",
+            "sourceSection": "table-26",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 56,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Posterior Circulation Stroke",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "B-R",
+            "text": "In AIS patients with basilar artery occlusion, baseline mRS 0-1, NIHSS 6-9, and PC-ASPECTS 6 or greater, the effectiveness of EVT within 24 hours for improving functional outcomes and reducing mortality is not well established.",
+            "page": 57,
+            "id": "ais-2026-123",
+            "sourceSection": "table-26",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 57,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Antiplatelet Treatment",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "In patients with minor noncardioembolic AIS (NIHSS 3 or less) or high-risk TIA (ABCD2 4 or greater) who did not receive IVT, DAPT (aspirin plus clopidogrel with loading dose) is recommended to be initiated within 24 hours of symptom onset and continued for 21 days, followed by single antiplatelet therapy, to reduce the 90-day risk of recurrent ischemic stroke.",
+            "page": 62,
+            "id": "ais-2026-147",
+            "sourceSection": "table-29",
+            "sourceRecommendationNumber": 12,
+            "pdfPage": 62,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Antiplatelet Treatment",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "B-R",
+            "text": "In patients with recent (under 24 hours) minor noncardioembolic AIS (NIHSS 5 or less) or high-risk TIA (ABCD2 6 or greater, or symptomatic intracranial/extracranial stenosis 50% or greater) who did not receive IVT, DAPT with ticagrelor (including loading dose) plus aspirin for 30 days may be considered to reduce 30-day recurrent stroke risk.",
+            "page": 62,
+            "id": "ais-2026-148",
+            "sourceSection": "table-29",
+            "sourceRecommendationNumber": 13,
+            "pdfPage": 62,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Antiplatelet Treatment",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-R",
+            "text": "In patients with minor noncardioembolic AIS (NIHSS 5 or less) or high-risk TIA (ABCD2 4 or greater) within 24-72 hours of onset (or NIHSS 4-5 within 24 hours) who did not receive IVT and have presumed atherosclerotic cause (50% or greater intracranial or extracranial stenosis or acute infarctions of presumed large artery origin), DAPT (clopidogrel plus aspirin) for 21 days followed by SAPT is reasonable to reduce 90-day recurrent stroke risk.",
+            "page": 62,
+            "id": "ais-2026-149",
+            "sourceSection": "table-29",
+            "sourceRecommendationNumber": 14,
+            "pdfPage": 62,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Antiplatelet Treatment",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "B-R",
+            "text": "In patients with minor noncardioembolic AIS (NIHSS 3 or less) or high-risk TIA (ABCD2 4 or greater) within 24 hours of onset who did not receive IVT and carry the CYP2C19 loss-of-function allele, DAPT with ticagrelor plus aspirin for 21 days (followed by ticagrelor monotherapy) may be reasonable over clopidogrel-based DAPT to reduce 90-day recurrent stroke risk.",
+            "page": 62,
+            "id": "ais-2026-150",
+            "sourceSection": "table-29",
+            "sourceRecommendationNumber": 15,
+            "pdfPage": 62,
+            "sourceStatementType": "recommendation"
+          }
+        ],
+        "documentType": "guideline",
+        "gradingSystem": "ACC/AHA",
+        "publicationUpdates": [
+          {
+            "type": "correction",
+            "pmid": "42507797",
+            "doi": "10.1161/STR.0000000000000530",
+            "publisherUrl": "https://doi.org/10.1161/STR.0000000000000530",
+            "status": "partially-applied",
+            "note": "Recovered correction items 12, 13, 22, 23 and 24 support the five linked recommendation repairs, including PES Class IIb. The complete seven-page notice was not recovered: portions of items 8, 11 and 25, references 19/34 and final page e467 remain incomplete. This is a partial correction review, not certification of the full current edition.",
+            "checkedAt": "2026-09-30",
+            "affectedRecommendationIds": [
+              "ais-2026-98",
+              "ais-2026-101",
+              "ais-2026-162",
+              "ais-2026-164",
+              "ais-2026-165"
+            ],
+            "previousReviewNote": "All 34 correction items checked for applicability to this library. Five recommendation changes applied; remaining items concern material not reproduced here. This does not represent a new clinical review of the full guideline.",
+            "independentReviewScope": "partial primary notice read; substantial numbered passages recovered, not complete seven-page notice"
+          }
+        ],
+        "sourceReview": {
+          "reviewedAt": "2026-09-30",
+          "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+          "sourceAccess": "Full January primary PDF and substantial indexed July correction passages; complete seven-page correction not recovered",
+          "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency. 1 publication-update record remains partly reviewed or unresolved; see the individual notices.",
+          "sourceEditionNote": "January 2026 publisher PDF plus recovered July correction passages. Five linked recommendation corrections are supported; the entire seven-page correction was not recovered.",
+          "implementationUpdatedAt": "2026-09-30"
+        },
+        "maintainedProjection": {
+          "scope": "Only recommendations needed by the maintained Encounter workflow, source limits and protected protocol context. Full historical source transcription is at the archival Git ref.",
+          "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+          "originalRecommendationCount": 202,
+          "retainedRecommendationIds": [
+            "ais-2026-46",
+            "ais-2026-47",
+            "ais-2026-48",
+            "ais-2026-49",
+            "ais-2026-50",
+            "ais-2026-51",
+            "ais-2026-52",
+            "ais-2026-53",
+            "ais-2026-54",
+            "ais-2026-55",
+            "ais-2026-56",
+            "ais-2026-57",
+            "ais-2026-58",
+            "ais-2026-59",
+            "ais-2026-76",
+            "ais-2026-77",
+            "ais-2026-78",
+            "ais-2026-79",
+            "ais-2026-80",
+            "ais-2026-81",
+            "ais-2026-82",
+            "ais-2026-83",
+            "ais-2026-84",
+            "ais-2026-85",
+            "ais-2026-86",
+            "ais-2026-87",
+            "ais-2026-88",
+            "ais-2026-89",
+            "ais-2026-90",
+            "ais-2026-91",
+            "ais-2026-92",
+            "ais-2026-93",
+            "ais-2026-94",
+            "ais-2026-95",
+            "ais-2026-96",
+            "ais-2026-97",
+            "ais-2026-98",
+            "ais-2026-99",
+            "ais-2026-107",
+            "ais-2026-108",
+            "ais-2026-109",
+            "ais-2026-110",
+            "ais-2026-114",
+            "ais-2026-115",
+            "ais-2026-116",
+            "ais-2026-117",
+            "ais-2026-118",
+            "ais-2026-119",
+            "ais-2026-120",
+            "ais-2026-121",
+            "ais-2026-122",
+            "ais-2026-123",
+            "ais-2026-147",
+            "ais-2026-148",
+            "ais-2026-149",
+            "ais-2026-150"
+          ],
+          "clinicalReviewUnchanged": true
+        },
+        "archivedTranscriptionCoverage": {
+          "status": "complete",
+          "scope": "All formal recommendations and good-practice/consensus statements",
+          "checkedAt": "2026-09-06",
+          "sourceRecommendationCount": 202,
+          "sourceConsensusCount": 0,
+          "sourceSections": [
+            {
+              "id": "table-01",
+              "title": "Stroke Awareness (Population Level)",
+              "sourceTable": "Recommendations for Stroke Awareness (Population Level)",
+              "rowCount": 4,
+              "pageRange": [
+                10,
+                10
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            {
+              "id": "table-02",
+              "title": "EMS Systems",
+              "sourceTable": "Recommendations for EMS Systems",
+              "rowCount": 3,
+              "pageRange": [
+                11,
+                11
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-03",
+              "title": "Prefacility Assessment and Management",
+              "sourceTable": "Recommendations for Prefacility Assessment and Management",
+              "rowCount": 7,
+              "pageRange": [
+                12,
+                12
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ]
+            },
+            {
+              "id": "table-04",
+              "title": "EMS Destination Management",
+              "sourceTable": "Recommendations for EMS Destination Management",
+              "rowCount": 5,
+              "pageRange": [
+                14,
+                15
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            {
+              "id": "table-05",
+              "title": "Role of Mobile Stroke Units",
+              "sourceTable": "Recommendations for Role of Mobile Stroke Units",
+              "rowCount": 4,
+              "pageRange": [
+                16,
+                16
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            {
+              "id": "table-06",
+              "title": "Hospital Stroke Capabilities",
+              "sourceTable": "Recommendation for Hospital Stroke Capabilities",
+              "rowCount": 1,
+              "pageRange": [
+                17,
+                17
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "table-07",
+              "title": "Emergency Evaluation of Patients With Suspected Stroke",
+              "sourceTable": "Recommendations for Emergency Evaluation of Patients With",
+              "rowCount": 5,
+              "pageRange": [
+                18,
+                18
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            {
+              "id": "table-08",
+              "title": "Telemedicine",
+              "sourceTable": "Recommendations for Telemedicine",
+              "rowCount": 7,
+              "pageRange": [
+                20,
+                20
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ]
+            },
+            {
+              "id": "table-09",
+              "title": "Organization and Integration of Components",
+              "sourceTable": "Recommendations for Organization and Integration of Components",
+              "rowCount": 8,
+              "pageRange": [
+                22,
+                22
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ]
+            },
+            {
+              "id": "table-10",
+              "title": "Stroke Registries and Quality Improvement",
+              "sourceTable": "Recommendations for Stroke Registries, Quality Improvement, and",
+              "rowCount": 3,
+              "pageRange": [
+                24,
+                24
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-11",
+              "title": "Stroke Scales",
+              "sourceTable": "Recommendation for Stroke Scales",
+              "rowCount": 1,
+              "pageRange": [
+                26,
+                26
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "table-12",
+              "title": "Initial, Vascular, and Multimodal Imaging",
+              "sourceTable": "Recommendations for Initial, Vascular, and Multimodal Imaging",
+              "rowCount": 11,
+              "pageRange": [
+                26,
+                27
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11
+              ]
+            },
+            {
+              "id": "table-13",
+              "title": "Other Diagnostic Tests",
+              "sourceTable": "Recommendations for Other Diagnostic Tests",
+              "rowCount": 2,
+              "pageRange": [
+                31,
+                31
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-14",
+              "title": "Airway, Breathing, and Oxygenation",
+              "sourceTable": "Recommendations for Airway, Breathing, and Oxygenation",
+              "rowCount": 6,
+              "pageRange": [
+                31,
+                32
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ]
+            },
+            {
+              "id": "table-15",
+              "title": "Head Positioning",
+              "sourceTable": "Recommendations for Head Positioning",
+              "rowCount": 2,
+              "pageRange": [
+                34,
+                34
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-16",
+              "title": "Blood Pressure Management",
+              "sourceTable": "Recommendations for Blood Pressure Management",
+              "rowCount": 10,
+              "pageRange": [
+                35,
+                35
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+              ]
+            },
+            {
+              "id": "table-17",
+              "title": "Temperature Management",
+              "sourceTable": "Recommendations for Temperature Management",
+              "rowCount": 3,
+              "pageRange": [
+                37,
+                37
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-18",
+              "title": "Blood Glucose Management",
+              "sourceTable": "Recommendations for Blood Glucose Management",
+              "rowCount": 3,
+              "pageRange": [
+                37,
+                37
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-19",
+              "title": "Thrombolysis Decision-Making",
+              "sourceTable": "Recommendations for Thrombolysis Decision-Making",
+              "rowCount": 14,
+              "pageRange": [
+                38,
+                38
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14
+              ]
+            },
+            {
+              "id": "table-20",
+              "title": "Choice of Thrombolytic Agent",
+              "sourceTable": "Recommendations for Choice of Thrombolytic Agent",
+              "rowCount": 2,
+              "pageRange": [
+                42,
+                42
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-21",
+              "title": "Extended Time Windows for Intravenous Thrombolysis",
+              "sourceTable": "Recommendations for Extended Time Windows for Intravenous",
+              "rowCount": 3,
+              "pageRange": [
+                44,
+                44
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-22",
+              "title": "Other IV Fibrinolytics and Sonothrombolysis",
+              "sourceTable": "Recommendations for Other IV Fibrinolytics and Sonothrombolysis",
+              "rowCount": 7,
+              "pageRange": [
+                45,
+                45
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ]
+            },
+            {
+              "id": "table-23",
+              "title": "Other Specific Circumstances",
+              "sourceTable": "Recommendations for Other Specific Circumstances",
+              "rowCount": 2,
+              "pageRange": [
+                47,
+                47
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-24",
+              "title": "Concomitant With IVT",
+              "sourceTable": "Recommendations for Concomitant With IVT",
+              "rowCount": 2,
+              "pageRange": [
+                48,
+                48
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-25",
+              "title": "Endovascular Thrombectomy for Adult Patients",
+              "sourceTable": "Recommendations for Endovascular Thrombectomy for Adult",
+              "rowCount": 8,
+              "pageRange": [
+                53,
+                54
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ]
+            },
+            {
+              "id": "table-26",
+              "title": "Posterior Circulation Stroke",
+              "sourceTable": "Recommendations for Posterior Circulation Stroke",
+              "rowCount": 2,
+              "pageRange": [
+                56,
+                57
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-27",
+              "title": "Endovascular Techniques",
+              "sourceTable": "Recommendations for Endovascular Techniques",
+              "rowCount": 9,
+              "pageRange": [
+                57,
+                58
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9
+              ]
+            },
+            {
+              "id": "table-28",
+              "title": "Endovascular Thrombectomy in Pediatric Patients",
+              "sourceTable": "Recommendations for Endovascular Thrombectomy in Pediatric",
+              "rowCount": 3,
+              "pageRange": [
+                60,
+                60
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-29",
+              "title": "Antiplatelet Treatment",
+              "sourceTable": "Recommendations for Antiplatelet Treatment",
+              "rowCount": 18,
+              "pageRange": [
+                62,
+                62
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18
+              ]
+            },
+            {
+              "id": "table-30",
+              "title": "Anticoagulants",
+              "sourceTable": "Recommendations for Anticoagulants",
+              "rowCount": 6,
+              "pageRange": [
+                68,
+                68
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ]
+            },
+            {
+              "id": "table-31",
+              "title": "Hemodynamic Augmentation",
+              "sourceTable": "Recommendations for Hemodynamic Augmentation",
+              "rowCount": 2,
+              "pageRange": [
+                71,
+                71
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-32",
+              "title": "Neuroprotective Agents",
+              "sourceTable": "Recommendation for Neuroprotective Agents",
+              "rowCount": 1,
+              "pageRange": [
+                71,
+                71
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "table-33",
+              "title": "Emergency Carotid Endarterectomy, Carotid Angioplasty, and Stenting Without Intracranial Clot",
+              "sourceTable": "Recommendation for Emergency Carotid Endarterectomy, Carotid Angioplasty, and Stenting Without Intracranial Clot",
+              "rowCount": 1,
+              "pageRange": [
+                72,
+                72
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "table-34",
+              "title": "Stroke Units",
+              "sourceTable": "Recommendation for Stroke Units",
+              "rowCount": 1,
+              "pageRange": [
+                72,
+                72
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "table-35",
+              "title": "Dysphagia",
+              "sourceTable": "Recommendations for Dysphagia",
+              "rowCount": 6,
+              "pageRange": [
+                74,
+                74
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ]
+            },
+            {
+              "id": "table-36",
+              "title": "Nutrition",
+              "sourceTable": "Recommendations for Nutrition",
+              "rowCount": 3,
+              "pageRange": [
+                75,
+                75
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-37",
+              "title": "Deep Vein Thrombosis Prophylaxis",
+              "sourceTable": "Recommendations for Deep Vein Thrombosis Prophylaxis",
+              "rowCount": 5,
+              "pageRange": [
+                76,
+                76
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            {
+              "id": "table-38",
+              "title": "Depression",
+              "sourceTable": "Recommendations for Depression",
+              "rowCount": 2,
+              "pageRange": [
+                77,
+                77
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-39",
+              "title": "Other In-Facility Management Considerations",
+              "sourceTable": "Recommendations for Other In-Facility Management Considerations",
+              "rowCount": 3,
+              "pageRange": [
+                79,
+                79
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-40",
+              "title": "Rehabilitation",
+              "sourceTable": "Recommendations for Rehabilitation",
+              "rowCount": 3,
+              "pageRange": [
+                80,
+                80
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-41",
+              "title": "Brain Swelling (General Recommendations)",
+              "sourceTable": "Recommendations for Brain Swelling (General Recommendations)",
+              "rowCount": 3,
+              "pageRange": [
+                81,
+                81
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-42",
+              "title": "Brain Swelling (Medical Management)",
+              "sourceTable": "Recommendations for Brain Swelling (Medical Management)",
+              "rowCount": 3,
+              "pageRange": [
+                81,
+                81
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-43",
+              "title": "Supratentorial Infarction (Surgical Management)",
+              "sourceTable": "Recommendations for Supratentorial Infarction (Surgical Management)",
+              "rowCount": 4,
+              "pageRange": [
+                82,
+                82
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            {
+              "id": "table-44",
+              "title": "Cerebellar Infarction (Surgical Management)",
+              "sourceTable": "Recommendations for Cerebellar Infarction (Surgical Management)",
+              "rowCount": 2,
+              "pageRange": [
+                84,
+                84
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-45",
+              "title": "Seizures",
+              "sourceTable": "Recommendations for Seizures",
+              "rowCount": 2,
+              "pageRange": [
+                84,
+                84
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            }
+          ],
+          "sourceDocument": {
+            "doi": "10.1161/STR.0000000000000513",
+            "edition": "Complete publisher PDF; physical PDF pagination. Ahead-of-print edition.",
+            "pdfUrl": "https://www.setrac.org/wp-content/uploads/2026/01/2026-guideline-for-the-early-management-of-patients-with-acute-ischemic-stroke-a-guideline-from.pdf",
+            "pageCount": 119,
+            "sha256": "54207c7520f4b297b7510aa3b1fdf81f3eb4c36682326fc7c1bf98c3d4e91482"
+          },
+          "note": "All formal recommendation tables and numbered rows reconciled against the complete source document. This is a source-inventory review, not a new clinical validation of every existing summary or supporting narrative. Existing publication-correction statuses remain separate. No separately designated ungraded consensus or good-practice recommendation set is present."
+        }
+      },
+      {
+        "id": "ich-2022",
+        "title": "AHA/ASA Spontaneous ICH Guideline 2022",
+        "shortTitle": "ICH 2022",
+        "doi": "10.1161/STR.0000000000000407",
+        "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
+        "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000407",
+        "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/35579034/",
+        "pmid": "35579034",
+        "recommendations": [
+          {
+            "section": "Physical Examination and Laboratory Assessment",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "A focused history, physical examination, and baseline laboratory workup (including CBC, PT/INR/PTT, creatinine/eGFR, glucose, troponin, ECG, toxicology screen, and inflammatory markers) are recommended on admission to characterize the hemorrhage type, identify active medical issues, and assess prognosis.",
+            "page": 10,
+            "id": "ich-2022-8",
+            "sourceSection": "table-02",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 10,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Neuroimaging for ICH Diagnosis and Acute Course",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "Rapid neuroimaging with CT or MRI is recommended for patients presenting with stroke-like symptoms to confirm the diagnosis of spontaneous ICH.",
+            "page": 12,
+            "id": "ich-2022-9",
+            "sourceSection": "table-03",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 12,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Neuroimaging for ICH Diagnosis and Acute Course",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "Serial head CT within the first 24 hours of symptom onset can be useful for patients with spontaneous ICH and/or IVH to evaluate for hemorrhage expansion.",
+            "page": 12,
+            "id": "ich-2022-10",
+            "sourceSection": "table-03",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 12,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Neuroimaging for ICH Diagnosis and Acute Course",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "Serial head CT can be useful for patients with spontaneous ICH and/or IVH who have a low GCS score or neurological deterioration, to evaluate for hemorrhage expansion, hydrocephalus, brain swelling, or herniation.",
+            "page": 12,
+            "id": "ich-2022-11",
+            "sourceSection": "table-03",
+            "sourceRecommendationNumber": 3,
+            "pdfPage": 12,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Neuroimaging for ICH Diagnosis and Acute Course",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "CTA within the first few hours of ICH onset may be reasonable to identify patients at risk for subsequent hemorrhage expansion.",
+            "page": 13,
+            "id": "ich-2022-12",
+            "sourceSection": "table-03",
+            "sourceRecommendationNumber": 4,
+            "pdfPage": 13,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Diagnostic Assessment for ICH Pathogenesis",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "When CTA/venography is negative in patients with spontaneous ICH, MRI and MRA are reasonable to identify a nonmacrovascular cause such as CAA, deep perforating vasculopathy, cavernous malformation, or malignancy.",
+            "page": 14,
+            "id": "ich-2022-18",
+            "sourceSection": "table-04",
+            "sourceRecommendationNumber": 5,
+            "pdfPage": 14,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Diagnostic Assessment for ICH Pathogenesis",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "Acute CTA or MRA with consideration of venography can be useful for patients with spontaneous ICH who undergo initial CT or MRI, to exclude macrovascular causes or cerebral venous thrombosis.",
+            "page": 14,
+            "id": "ich-2022-19",
+            "sourceSection": "table-04",
+            "sourceRecommendationNumber": 6,
+            "pdfPage": 14,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Diagnostic Assessment for ICH Pathogenesis",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "When initial catheter-based DSA is negative and no clear microvascular diagnosis or structural lesion is identified, a repeat DSA 3 to 6 months after ICH onset may be reasonable to detect a previously obscured vascular lesion.",
+            "page": 14,
+            "id": "ich-2022-20",
+            "sourceSection": "table-04",
+            "sourceRecommendationNumber": 7,
+            "pdfPage": 14,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Acute BP Lowering",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "For patients with spontaneous ICH requiring acute BP lowering, careful titration to achieve continuous, smooth, and sustained BP control while avoiding SBP peaks and large variability can be beneficial for functional outcomes.",
+            "page": 16,
+            "id": "ich-2022-21",
+            "sourceSection": "table-05",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 16,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Acute BP Lowering",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "Initiating acute BP treatment within 2 hours of ICH onset and reaching the target within 1 hour can be beneficial to reduce hemorrhage expansion risk and improve functional outcome.",
+            "page": 16,
+            "id": "ich-2022-22",
+            "sourceSection": "table-05",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 16,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Acute BP Lowering",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "B-R",
+            "text": "For patients with mild to moderate spontaneous ICH presenting with SBP 150-220 mm Hg, acutely lowering SBP to a target of 140 mm Hg (maintaining 130-150 mm Hg range) is safe and may be reasonable for improving functional outcomes.",
+            "page": 17,
+            "id": "ich-2022-23",
+            "sourceSection": "table-05",
+            "sourceRecommendationNumber": 3,
+            "pdfPage": 17,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Acute BP Lowering",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "The safety and efficacy of intensive BP lowering are not well established for patients with large or severe spontaneous ICH or those requiring surgical decompression.",
+            "page": 17,
+            "id": "ich-2022-24",
+            "sourceSection": "table-05",
+            "sourceRecommendationNumber": 4,
+            "pdfPage": 17,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Acute BP Lowering",
+            "classOfRec": "III",
+            "classNote": "Harm",
+            "levelOfEvidence": "B-R",
+            "text": "Acute lowering of SBP to <130 mm Hg is potentially harmful in patients with mild to moderate spontaneous ICH presenting with SBP >150 mm Hg.",
+            "page": 17,
+            "id": "ich-2022-25",
+            "sourceSection": "table-05",
+            "sourceRecommendationNumber": 5,
+            "pdfPage": 17,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Anticoagulant-Related Hemorrhage",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "Immediate discontinuation of anticoagulation and rapid reversal are recommended as soon as possible after diagnosis of anticoagulant-associated spontaneous ICH to improve survival.",
+            "page": 19,
+            "id": "ich-2022-26",
+            "sourceSection": "table-06",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 19,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Anticoagulant-Related Hemorrhage",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "B-R",
+            "text": "4-factor PCC is recommended over FFP for patients with VKA-associated spontaneous ICH and INR >= 2.0 to achieve rapid INR correction and limit hemorrhage expansion.",
+            "page": 19,
+            "id": "ich-2022-27",
+            "sourceSection": "table-06",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 19,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Anticoagulant-Related Hemorrhage",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "Intravenous vitamin K is recommended immediately after coagulation factor replacement (PCC or other) for VKA-associated spontaneous ICH to prevent subsequent INR elevation and hemorrhage expansion.",
+            "page": 19,
+            "id": "ich-2022-28",
+            "sourceSection": "table-06",
+            "sourceRecommendationNumber": 3,
+            "pdfPage": 19,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Anticoagulant-Related Hemorrhage",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "PCC may be reasonable for patients with VKA-associated spontaneous ICH and INR 1.3-1.9 to achieve rapid INR correction and limit hemorrhage expansion.",
+            "page": 19,
+            "id": "ich-2022-29",
+            "sourceSection": "table-06",
+            "sourceRecommendationNumber": 4,
+            "pdfPage": 19,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Anticoagulant-Related Hemorrhage",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "Andexanet alfa is reasonable for patients with direct factor Xa inhibitor-associated spontaneous ICH to reverse the anticoagulant effect.",
+            "currentEvidenceNote": "US safety and availability update reviewed 2026-09-26 (not part of the 2022 guideline): FDA concluded that the serious risks of Andexxa outweigh its benefits; US commercial sales ended on 22 December 2025. In ANNEXA-I (2024), andexanet improved hemostatic efficacy versus usual care (67.0% vs 53.1%) but increased thrombotic events (10.3% vs 5.6%), including ischemic stroke (6.5% vs 1.5%), with no appreciable difference in mRS or 30-day death. The 2026 NCS/SCCM focused update conditionally recommends 4F-PCC over andexanet; in the US, 4F-PCC or aPCC (off-label for this indication) is now the principal reversal option for factor Xa inhibitor-associated ICH. This 2022 statement keeps its original grading and is not a current US endorsement or evidence of andexanet availability.",
+            "currentEvidenceCheckedAt": "2026-09-26",
+            "currentEvidenceSources": [
+              {
+                "title": "FDA update on the safety of Andexxa",
+                "url": "https://www.fda.gov/vaccines-blood-biologics/safety-availability-biologics/update-safety-andexxa"
+              },
+              {
+                "title": "Connolly et al., N Engl J Med 2024 (ANNEXA-I)",
+                "url": "https://pubmed.ncbi.nlm.nih.gov/38749032/",
+                "pmid": "38749032",
+                "doi": "10.1056/NEJMoa2313040"
+              },
+              {
+                "title": "NCS/SCCM focused guideline update, Neurocrit Care 2026 (4F-PCC rather than andexanet alfa)",
+                "url": "https://pubmed.ncbi.nlm.nih.gov/42786382/",
+                "pmid": "42786382",
+                "doi": "10.1007/s12028-026-02601-4"
+              }
+            ],
+            "page": 19,
+            "id": "ich-2022-30",
+            "sourceSection": "table-06",
+            "sourceRecommendationNumber": 5,
+            "pdfPage": 19,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Anticoagulant-Related Hemorrhage",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "Idarucizumab is reasonable for patients with dabigatran-associated spontaneous ICH to reverse the anticoagulant effect.",
+            "page": 19,
+            "id": "ich-2022-31",
+            "sourceSection": "table-06",
+            "sourceRecommendationNumber": 6,
+            "pdfPage": 19,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Anticoagulant-Related Hemorrhage",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "4-factor PCC or activated PCC (aPCC) may be considered for patients with direct factor Xa inhibitor-associated spontaneous ICH to improve hemostasis.",
+            "page": 19,
+            "id": "ich-2022-32",
+            "sourceSection": "table-06",
+            "sourceRecommendationNumber": 7,
+            "pdfPage": 19,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Anticoagulant-Related Hemorrhage",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "Activated charcoal may be reasonable for patients with dabigatran- or factor Xa inhibitor-associated spontaneous ICH when the DOAC was ingested within the previous few hours, to prevent further drug absorption.",
+            "page": 19,
+            "id": "ich-2022-33",
+            "sourceSection": "table-06",
+            "sourceRecommendationNumber": 8,
+            "pdfPage": 19,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Anticoagulant-Related Hemorrhage",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "When idarucizumab is unavailable, aPCC or PCCs may be considered for patients with dabigatran-associated spontaneous ICH to improve hemostasis.",
+            "page": 19,
+            "id": "ich-2022-34",
+            "sourceSection": "table-06",
+            "sourceRecommendationNumber": 9,
+            "pdfPage": 19,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Anticoagulant-Related Hemorrhage",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "When idarucizumab is unavailable, renal replacement therapy may be considered for patients with dabigatran-associated spontaneous ICH to reduce circulating dabigatran concentration.",
+            "page": 19,
+            "id": "ich-2022-35",
+            "sourceSection": "table-06",
+            "sourceRecommendationNumber": 10,
+            "pdfPage": 19,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Anticoagulant-Related Hemorrhage",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "Intravenous protamine is reasonable for patients with UFH-associated spontaneous ICH to reverse the anticoagulant effect of heparin.",
+            "page": 19,
+            "id": "ich-2022-36",
+            "sourceSection": "table-06",
+            "sourceRecommendationNumber": 11,
+            "pdfPage": 19,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Anticoagulant-Related Hemorrhage",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "Intravenous protamine may be considered for patients with LMWH-associated spontaneous ICH to partially reverse the anticoagulant effect.",
+            "page": 19,
+            "id": "ich-2022-37",
+            "sourceSection": "table-06",
+            "sourceRecommendationNumber": 12,
+            "pdfPage": 19,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Antiplatelet-Related Hemorrhage",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "Platelet transfusion might be considered for patients with aspirin-associated spontaneous ICH who require emergency neurosurgery, to reduce postoperative bleeding and mortality.",
+            "page": 23,
+            "id": "ich-2022-38",
+            "sourceSection": "table-07",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 23,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Antiplatelet-Related Hemorrhage",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "The effectiveness of desmopressin, with or without platelet transfusions, to reduce hematoma expansion in patients with antiplatelet-associated spontaneous ICH is uncertain.",
+            "page": 23,
+            "id": "ich-2022-39",
+            "sourceSection": "table-07",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 23,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Nursing Care",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "C-LD",
+            "text": "Frequent neurological assessments (including GCS) by ED nurses are recommended during the early hyperacute phase of spontaneous ICH to detect changes in neurological status or level of consciousness.",
+            "page": 31,
+            "id": "ich-2022-62",
+            "sourceSection": "table-12",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 31,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Craniotomy for Posterior Fossa Hemorrhage",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "For patients with cerebellar ICH who are deteriorating neurologically, have brainstem compression and/or hydrocephalus from ventricular obstruction, or have cerebellar ICH volume >=15 mL, immediate surgical removal of the hemorrhage with or without EVD is recommended in preference to medical management alone to reduce mortality.",
+            "localNote": "Local operational note (June 2026 institutional overlay — NOT AHA/ASA guideline content): the local June 2026 initial-evaluation algorithm does not use cerebellar hematoma volume alone as an operative trigger.",
+            "page": 42,
+            "id": "ich-2022-89",
+            "sourceSection": "table-20",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 42,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Outcome Prediction",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "A baseline hemorrhage severity score is recommended as part of the initial evaluation for patients with spontaneous ICH to provide an overall measure of clinical severity.",
+            "page": 44,
+            "id": "ich-2022-92",
+            "sourceSection": "table-22",
+            "sourceRecommendationNumber": 1,
+            "pdfPage": 44,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Outcome Prediction",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "A baseline severity score might be reasonable as a general framework for communication with patients and their caregivers about prognosis.",
+            "page": 44,
+            "id": "ich-2022-93",
+            "sourceSection": "table-22",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 44,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Outcome Prediction",
+            "classOfRec": "III",
+            "classNote": "No Benefit",
+            "levelOfEvidence": "B-NR",
+            "text": "A baseline severity score alone is not recommended as the sole basis for forecasting individual prognosis or deciding to limit life-sustaining treatment in patients with spontaneous ICH.",
+            "page": 44,
+            "id": "ich-2022-94",
+            "sourceSection": "table-22",
+            "sourceRecommendationNumber": 3,
+            "pdfPage": 44,
+            "sourceStatementType": "recommendation"
+          }
+        ],
+        "documentType": "guideline",
+        "gradingSystem": "ACC/AHA",
+        "sourceReview": {
+          "reviewedAt": "2026-09-30",
+          "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+          "sourceAccess": "Primary recommendation text retrieved and compared; exact edition, source locators and unresolved correction/current-context limits in unit ledger.",
+          "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+          "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+          "implementationUpdatedAt": "2026-09-30"
+        },
+        "maintainedProjection": {
+          "scope": "Only recommendations needed by the maintained Encounter workflow, source limits and protected protocol context. Full historical source transcription is at the archival Git ref.",
+          "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+          "originalRecommendationCount": 124,
+          "retainedRecommendationIds": [
+            "ich-2022-8",
+            "ich-2022-9",
+            "ich-2022-10",
+            "ich-2022-11",
+            "ich-2022-12",
+            "ich-2022-18",
+            "ich-2022-19",
+            "ich-2022-20",
+            "ich-2022-21",
+            "ich-2022-22",
+            "ich-2022-23",
+            "ich-2022-24",
+            "ich-2022-25",
+            "ich-2022-26",
+            "ich-2022-27",
+            "ich-2022-28",
+            "ich-2022-29",
+            "ich-2022-30",
+            "ich-2022-31",
+            "ich-2022-32",
+            "ich-2022-33",
+            "ich-2022-34",
+            "ich-2022-35",
+            "ich-2022-36",
+            "ich-2022-37",
+            "ich-2022-38",
+            "ich-2022-39",
+            "ich-2022-62",
+            "ich-2022-89",
+            "ich-2022-92",
+            "ich-2022-93",
+            "ich-2022-94"
+          ],
+          "clinicalReviewUnchanged": true
+        },
+        "archivedTranscriptionCoverage": {
+          "status": "complete",
+          "scope": "All formal recommendations and good-practice/consensus statements",
+          "checkedAt": "2026-09-06",
+          "sourceRecommendationCount": 124,
+          "sourceConsensusCount": 0,
+          "sourceSections": [
+            {
+              "id": "table-01",
+              "title": "Organization of Prehospital and Initial Systems of Care",
+              "sourceTable": "Recommendations for Organization of Prehospital and Initial Systems of Care",
+              "rowCount": 7,
+              "pageRange": [
+                8,
+                8
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ]
+            },
+            {
+              "id": "table-02",
+              "title": "Physical Examination and Laboratory Assessment",
+              "sourceTable": "Recommendations for Physical Examination and Laboratory Assessment",
+              "rowCount": 1,
+              "pageRange": [
+                10,
+                10
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "table-03",
+              "title": "Neuroimaging for ICH Diagnosis and Acute Course",
+              "sourceTable": "Recommendations for Neuroimaging for ICH Diagnosis and Acute Course",
+              "rowCount": 5,
+              "pageRange": [
+                12,
+                13
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            {
+              "id": "table-04",
+              "title": "Diagnostic Assessment for ICH Pathogenesis",
+              "sourceTable": "Recommendations for Diagnostic Assessment for ICH Pathogenesis",
+              "rowCount": 7,
+              "pageRange": [
+                14,
+                14
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+              ]
+            },
+            {
+              "id": "table-05",
+              "title": "Acute BP Lowering",
+              "sourceTable": "Recommendations for Acute BP Lowering",
+              "rowCount": 5,
+              "pageRange": [
+                16,
+                17
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            {
+              "id": "table-06",
+              "title": "Anticoagulant-Related Hemorrhage",
+              "sourceTable": "Recommendations for Anticoagulant-Related Hemorrhage",
+              "rowCount": 12,
+              "pageRange": [
+                19,
+                19
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12
+              ]
+            },
+            {
+              "id": "table-07",
+              "title": "Antiplatelet-Related Hemorrhage",
+              "sourceTable": "Recommendations for Antiplatelet-Related Hemorrhage",
+              "rowCount": 3,
+              "pageRange": [
+                23,
+                23
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-08",
+              "title": "General Hemostatic Treatments",
+              "sourceTable": "Recommendations for General Hemostatic Treatments",
+              "rowCount": 2,
+              "pageRange": [
+                24,
+                24
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-09",
+              "title": "Inpatient Care Setting",
+              "sourceTable": "Recommendations for Inpatient Care Setting",
+              "rowCount": 9,
+              "pageRange": [
+                25,
+                25
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9
+              ]
+            },
+            {
+              "id": "table-10",
+              "title": "Prevention and Management of Acute Medical Complications",
+              "sourceTable": "Recommendations for Prevention and Management of Acute Medical Complications",
+              "rowCount": 4,
+              "pageRange": [
+                27,
+                27
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            {
+              "id": "table-11",
+              "title": "Thromboprophylaxis and Treatment of Thrombosis",
+              "sourceTable": "Recommendations for Thromboprophylaxis and Treatment of Thrombosis",
+              "rowCount": 6,
+              "pageRange": [
+                29,
+                29
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ]
+            },
+            {
+              "id": "table-12",
+              "title": "Nursing Care",
+              "sourceTable": "Recommendations for Nursing Care",
+              "rowCount": 3,
+              "pageRange": [
+                31,
+                31
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-13",
+              "title": "Glucose Management",
+              "sourceTable": "Recommendations for Glucose Management",
+              "rowCount": 3,
+              "pageRange": [
+                32,
+                32
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-14",
+              "title": "Temperature Management",
+              "sourceTable": "Recommendations for Temperature Management",
+              "rowCount": 2,
+              "pageRange": [
+                33,
+                33
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-15",
+              "title": "Seizures and Antiseizure Drugs",
+              "sourceTable": "Recommendations for Seizures and Antiseizure Drugs",
+              "rowCount": 4,
+              "pageRange": [
+                34,
+                34
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            {
+              "id": "table-16",
+              "title": "Neuroinvasive Monitoring, ICP, and Edema",
+              "sourceTable": "Recommendations for Neuroinvasive Monitoring, ICP, and Edema Treatment",
+              "rowCount": 5,
+              "pageRange": [
+                35,
+                35
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            {
+              "id": "table-17",
+              "title": "MIS Evacuation of ICH",
+              "sourceTable": "Recommendations for MIS Evacuation of ICH",
+              "rowCount": 3,
+              "pageRange": [
+                37,
+                37
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-18",
+              "title": "MIS Evacuation of IVH",
+              "sourceTable": "Recommendations for MIS Evacuation of IVH",
+              "rowCount": 5,
+              "pageRange": [
+                39,
+                39
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            {
+              "id": "table-19",
+              "title": "Craniotomy for Supratentorial Hemorrhage",
+              "sourceTable": "Recommendations for Craniotomy for Supratentorial Hemorrhage",
+              "rowCount": 2,
+              "pageRange": [
+                41,
+                41
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-20",
+              "title": "Craniotomy for Posterior Fossa Hemorrhage",
+              "sourceTable": "Recommendations for Craniotomy for Posterior Fossa Hemorrhage",
+              "rowCount": 1,
+              "pageRange": [
+                42,
+                42
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "table-21",
+              "title": "Craniectomy for ICH",
+              "sourceTable": "Recommendations for Craniectomy for ICH",
+              "rowCount": 2,
+              "pageRange": [
+                43,
+                43
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-22",
+              "title": "Outcome Prediction",
+              "sourceTable": "Recommendations for Outcome Prediction",
+              "rowCount": 3,
+              "pageRange": [
+                44,
+                44
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-23",
+              "title": "Decisions to Limit Life-Sustaining Treatment",
+              "sourceTable": "Recommendations for Decisions to Limit Life-Sustaining Treatment",
+              "rowCount": 3,
+              "pageRange": [
+                45,
+                45
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-24",
+              "title": "Rehabilitation and Recovery",
+              "sourceTable": "Recommendations for Rehabilitation and Recovery",
+              "rowCount": 5,
+              "pageRange": [
+                47,
+                47
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            {
+              "id": "table-25",
+              "title": "Neurobehavioral Complications",
+              "sourceTable": "Recommendations for Neurobehavioral Complications",
+              "rowCount": 6,
+              "pageRange": [
+                48,
+                48
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ]
+            },
+            {
+              "id": "table-26",
+              "title": "Prognostication of Future ICH Risk",
+              "sourceTable": "Recommendations for Prognostication of Future ICH Risk",
+              "rowCount": 1,
+              "pageRange": [
+                50,
+                50
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "table-27",
+              "title": "BP Management",
+              "sourceTable": "Recommendations for BP Management",
+              "rowCount": 2,
+              "pageRange": [
+                51,
+                51
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-28",
+              "title": "Management of Antithrombotic Agents",
+              "sourceTable": "Recommendations for Management of Antithrombotic Agents",
+              "rowCount": 5,
+              "pageRange": [
+                52,
+                52
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            {
+              "id": "table-29",
+              "title": "Management of Other Medications",
+              "sourceTable": "Recommendations for Management of Other Medications",
+              "rowCount": 2,
+              "pageRange": [
+                54,
+                54
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-30",
+              "title": "Lifestyle Modifications/Patient and Caregiver Education",
+              "sourceTable": "Recommendations for Lifestyle Modifications/Patient and Caregiver Education",
+              "rowCount": 5,
+              "pageRange": [
+                55,
+                55
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            {
+              "id": "table-31",
+              "title": "Primary ICH Prevention in Individuals With High-Risk Imaging Findings",
+              "sourceTable": "Recommendations for Primary ICH Prevention in Individuals With High- Risk Imaging Findings",
+              "rowCount": 1,
+              "pageRange": [
+                56,
+                56
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            }
+          ],
+          "sourceDocument": {
+            "doi": "10.1161/STR.0000000000000407",
+            "edition": "Complete publisher PDF; physical PDF pagination.",
+            "pdfUrl": "https://www.mcgill.ca/anesthesia/files/anesthesia/mx_spontaneous_intracer._hemorrhage_-_aha-_2022_1.pdf",
+            "pageCount": 80,
+            "sha256": "e9e60ea55197db85c041b6830543fa5f5c77bb0b27c86a2ef12fc0a4dfa58f68"
+          },
+          "note": "All formal recommendation tables and numbered rows reconciled against the complete source document. This is a source-inventory review, not a new clinical validation of every existing summary or supporting narrative. Existing publication-correction statuses remain separate. No separately designated ungraded consensus or good-practice recommendation set is present."
+        }
+      },
+      {
+        "id": "ncs-neuroprognostication-ais-2026",
+        "title": "Guidelines for Neuroprognostication in Critically ill Adults with Acute Ischemic Stroke",
+        "shortTitle": "NCS Neuroprognostication AIS 2026",
+        "doi": "10.1007/s12028-026-02486-3",
+        "publisherUrl": "https://link.springer.com/article/10.1007/s12028-026-02486-3",
+        "pdfUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13249629/pdf/",
+        "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41942818/",
+        "pmid": "41942818",
+        "recommendations": [
+          {
+            "section": "Clinical variables as predictors of functional outcome — PICO 2: Admission NIHSS",
+            "classOfRec": "Conditional",
+            "classNote": "Against (suggests the predictor NOT be relied upon)",
+            "levelOfEvidence": "Very low certainty",
+            "text": "When counseling critically ill adults with AIS or their surrogates, we suggest the admission National Institutes of Health Stroke Scale (NIHSS) alone not be considered a reliable predictor of poor functional outcome assessed at 3 months or later (weak recommendation; very low quality evidence).",
+            "page": null,
+            "id": "ncs-neuroprognostication-ais-2026-12"
+          },
+          {
+            "section": "Clinical prediction models as predictors of functional outcome — PICO 10: ASTRAL score",
+            "classOfRec": "Conditional",
+            "classNote": "Against (suggests the model NOT be relied upon)",
+            "levelOfEvidence": "Low certainty",
+            "text": "When counseling critically ill patients with AIS or their surrogates, we suggest the Acute Stroke Registry and Analysis of Lausanne (ASTRAL) score not be considered a reliable predictor of poor functional outcome assessed at 3 months or later (weak recommendation; low quality evidence). Source note: The source body and summary Table 3 assign different evidence certainty. This row retains the body wording and grade; it is not a resolved corrected grade. Do not use ASTRAL alone for prognosis.",
+            "page": null,
+            "id": "ncs-neuroprognostication-ais-2026-20",
+            "sourceConflictNote": "The source body and summary Table 3 assign different evidence certainty. This row retains the body wording and grade; it is not a resolved corrected grade. Do not use ASTRAL alone for prognosis."
+          },
+          {
+            "id": "ncs-ais-prognosis-mortality-2",
+            "section": "Supplementary Table 2 — Admission NIHSS as stand-alone mortality predictor: not reliable",
+            "classOfRec": "Weak",
+            "classNote": null,
+            "levelOfEvidence": "Very low certainty",
+            "text": "When counseling critically-ill adults with AIS or their surrogates, we suggest the admission NIHSS alone not be considered a reliable predictor of mortality (weak recommendation; very low quality evidence).",
+            "page": null,
+            "sourceStatementType": "recommendation",
+            "sourceStatementId": "Supplementary Table 2",
+            "sourceReference": "Supplementary Table 2",
+            "sourceUrl": "https://media.springernature.com/original/springer-static/esm/art%3A10.1007%2Fs12028-026-02486-3/MediaObjects/12028_2026_2486_MOESM1_ESM.docx"
+          },
+          {
+            "id": "ncs-ais-prognosis-mortality-8",
+            "section": "Supplementary Table 2 — ASTRAL as stand-alone mortality predictor: not reliable",
+            "classOfRec": "Weak",
+            "classNote": null,
+            "levelOfEvidence": "Very low certainty",
+            "text": "When counseling critically-ill AIS patients or their surrogates, we suggest the ASTRAL score not be considered a reliable predictor of mortality (weak recommendation; very low quality evidence).",
+            "page": null,
+            "sourceStatementType": "recommendation",
+            "sourceStatementId": "Supplementary Table 2",
+            "sourceReference": "Supplementary Table 2",
+            "sourceUrl": "https://media.springernature.com/original/springer-static/esm/art%3A10.1007%2Fs12028-026-02486-3/MediaObjects/12028_2026_2486_MOESM1_ESM.docx"
+          }
+        ],
+        "documentType": "guideline",
+        "gradingSystem": "GRADE",
+        "sourceReview": {
+          "reviewedAt": "2026-09-30",
+          "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+          "sourceAccess": "Primary recommendation text retrieved and compared; exact edition, source locators and unresolved correction/current-context limits in unit ledger.",
+          "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+          "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+          "implementationUpdatedAt": "2026-09-30"
+        },
+        "maintainedProjection": {
+          "scope": "Only recommendations needed by the maintained Encounter workflow, source limits and protected protocol context. Full historical source transcription is at the archival Git ref.",
+          "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+          "originalRecommendationCount": 32,
+          "retainedRecommendationIds": [
+            "ncs-neuroprognostication-ais-2026-12",
+            "ncs-neuroprognostication-ais-2026-20",
+            "ncs-ais-prognosis-mortality-2",
+            "ncs-ais-prognosis-mortality-8"
+          ],
+          "clinicalReviewUnchanged": true
+        }
+      },
+      {
+        "id": "ncs-reversal-2026",
+        "title": "Treatment of Antithrombotic-Associated Intracranial Hemorrhage in Adults: A Focused Guideline Update from the Neurocritical Care Society and the Society of Critical Care Medicine",
+        "shortTitle": "NCS/SCCM Antithrombotic Reversal Update 2026",
+        "doi": "10.1007/s12028-026-02601-4",
+        "publisherUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4",
+        "pdfUrl": null,
+        "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42786382/",
+        "pmid": "42786382",
+        "society": "NCS/SCCM",
+        "documentType": "guideline",
+        "gradingSystem": "GRADE",
+        "recommendations": [
+          {
+            "id": "ncs-reversal-2026-1-1",
+            "section": "Recommendation 1-1 — Spontaneous FXa ICH: PCC preferred to andexanet",
+            "classOfRec": "Conditional",
+            "classNote": null,
+            "levelOfEvidence": "Moderate certainty",
+            "text": "We suggest using 4-factor prothrombin complex concentrate rather than andexanet alfa in patients with factor Xa inhibitor-associated spontaneous ICH (conditional recommendation; moderate certainty evidence).",
+            "page": null,
+            "sourceStatementType": "recommendation",
+            "sourceStatementId": "Recommendation 1-1",
+            "sourceReference": "Recommendation 1-1",
+            "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
+          },
+          {
+            "id": "ncs-reversal-2026-1-2",
+            "section": "Recommendation 1-2 — Traumatic FXa ICH: PCC preferred to andexanet",
+            "classOfRec": "Conditional",
+            "classNote": null,
+            "levelOfEvidence": "Very low certainty",
+            "text": "We suggest using 4-factor prothrombin complex concentrate rather than andexanet alfa in patients with factor Xa inhibitor-associated traumatic ICH (conditional recommendation; very low certainty evidence).",
+            "page": null,
+            "sourceStatementType": "recommendation",
+            "sourceStatementId": "Recommendation 1-2",
+            "sourceReference": "Recommendation 1-2",
+            "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
+          },
+          {
+            "id": "ncs-reversal-2026-2-1",
+            "section": "Recommendation 2-1 — Spontaneous IPH, antiplatelets, no surgery: avoid platelets",
+            "classOfRec": "Conditional",
+            "classNote": null,
+            "levelOfEvidence": "Low certainty",
+            "text": "we suggest against administering platelet transfusions to patients with spontaneous intraparenchymal hemorrhage taking antiplatelet agents who do not require neurosurgical intervention. (Conditional recommendation, low certainty of evidence).",
+            "page": null,
+            "sourceStatementType": "recommendation",
+            "sourceStatementId": "Recommendation 2-1",
+            "sourceReference": "Recommendation 2-1",
+            "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
+          },
+          {
+            "id": "ncs-reversal-2026-2-2",
+            "section": "Recommendation 2-2 — Spontaneous IPH, aspirin, surgery: give platelets",
+            "classOfRec": "Conditional",
+            "classNote": null,
+            "levelOfEvidence": "Very low certainty",
+            "text": "we suggest administering platelet transfusions to patients with spontaneous intraparenchymal hemorrhage who were on aspirin therapy who require neurosurgical intervention (Conditional recommendation, very low certainty evidence).",
+            "page": null,
+            "sourceStatementType": "recommendation",
+            "sourceStatementId": "Recommendation 2-2",
+            "sourceReference": "Recommendation 2-2",
+            "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
+          },
+          {
+            "id": "ncs-reversal-2026-2-3",
+            "section": "Recommendation 2-3 — Traumatic ICH, antiplatelets: no recommendation",
+            "classOfRec": "No recommendation",
+            "classNote": null,
+            "levelOfEvidence": "Ungraded",
+            "text": "we make no recommendation regarding administration of platelets for patients with traumatic intracranial hemorrhage who were on antiplatelet therapy.",
+            "page": null,
+            "sourceStatementType": "recommendation",
+            "sourceStatementId": "Recommendation 2-3",
+            "sourceReference": "Recommendation 2-3",
+            "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
+          },
+          {
+            "id": "ncs-reversal-2026-3-1",
+            "section": "Recommendation 3-1 — Antiplatelet-associated ICH, DDAVP: no recommendation",
+            "classOfRec": "No recommendation",
+            "classNote": null,
+            "levelOfEvidence": "Ungraded",
+            "text": "we make no recommendation regarding use of desmopressin in patients with intracranial hemorrhage on antiplatelet therapy.",
+            "page": null,
+            "sourceStatementType": "recommendation",
+            "sourceStatementId": "Recommendation 3-1",
+            "sourceReference": "Recommendation 3-1",
+            "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
+          },
+          {
+            "id": "ncs-reversal-2026-4-1",
+            "section": "Recommendation 4-1 — Small IPH, anticoagulant reversal: no recommendation",
+            "classOfRec": "No recommendation",
+            "classNote": null,
+            "levelOfEvidence": "Ungraded",
+            "text": "we cannot make a recommendation regarding treatment of anticoagulant effects in patients with small intraparenchymal hemorrhage due to lack of evidence.",
+            "page": null,
+            "sourceStatementType": "recommendation",
+            "sourceStatementId": "Recommendation 4-1",
+            "sourceReference": "Recommendation 4-1",
+            "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
+          },
+          {
+            "id": "ncs-reversal-2026-5-1",
+            "section": "Recommendation 5-1 — Traumatic ICH: viscoelastic-assay-guided treatment if available",
+            "classOfRec": "Conditional",
+            "classNote": null,
+            "levelOfEvidence": "Very low certainty",
+            "text": "we suggest using VHA-guided management in patients with traumatic intracranial hemorrhage, when VHAs are available (conditional recommendation, very low quality evidence).",
+            "page": null,
+            "sourceStatementType": "recommendation",
+            "sourceStatementId": "Recommendation 5-1",
+            "sourceReference": "Recommendation 5-1",
+            "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
+          }
+        ],
+        "sourceReview": {
+          "reviewedAt": "2026-09-30",
+          "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+          "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+          "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+          "implementationUpdatedAt": "2026-09-30",
+          "sourceAccess": "Full primary publisher HTML, including recommendations, native GRADE strength/certainty and remarks; retrieved September 30, 2026. No later indexed notice identified at the review cutoff."
+        },
+        "maintainedProjection": {
+          "scope": "Only recommendations needed by the maintained Encounter workflow, source limits and protected protocol context. Full historical source transcription is at the archival Git ref.",
+          "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+          "originalRecommendationCount": 8,
+          "retainedRecommendationIds": [
+            "ncs-reversal-2026-1-1",
+            "ncs-reversal-2026-1-2",
+            "ncs-reversal-2026-2-1",
+            "ncs-reversal-2026-2-2",
+            "ncs-reversal-2026-2-3",
+            "ncs-reversal-2026-3-1",
+            "ncs-reversal-2026-4-1",
+            "ncs-reversal-2026-5-1"
+          ],
+          "clinicalReviewUnchanged": true
+        },
+        "archivedTranscriptionCoverage": {
+          "status": "complete",
+          "scope": "All eight numbered recommendations in the focused update; other 2016 reversal topics are not replaced by this update.",
+          "checkedAt": "2026-09-30",
+          "sourceRecommendationCount": 8,
+          "sourceConsensusCount": 0,
+          "sourceSections": [
+            {
+              "id": "Recommendations 1–5",
+              "rowCount": 8,
+              "sourceRecommendationCount": 8,
+              "sourceConsensusCount": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "secondary-prevention-2021",
+        "title": "AHA/ASA Secondary Stroke Prevention 2021",
+        "shortTitle": "Secondary Prevention 2021",
+        "doi": "10.1161/STR.0000000000000375",
+        "publisherUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000375",
+        "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/STR.0000000000000375",
+        "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/34024117/",
+        "pmid": "34024117",
+        "recommendations": [
+          {
+            "section": "Intracranial Large Artery Atherosclerosis",
+            "classOfRec": "IIa",
+            "classNote": null,
+            "levelOfEvidence": "B-NR",
+            "text": "In patients with recent stroke or TIA (within 30 days) attributable to severe intracranial stenosis (70-99%), adding clopidogrel 75 mg/d to aspirin for up to 90 days is reasonable to further reduce recurrent stroke risk.",
+            "page": 29,
+            "id": "secondary-prevention-2021-51",
+            "sourceSection": "table-12",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 29,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Antithrombotic Medications",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "For noncardioembolic ischemic stroke or TIA, aspirin 50-325 mg daily, clopidogrel 75 mg daily, or aspirin 25 mg plus extended-release dipyridamole 200 mg twice daily is recommended for secondary prevention.",
+            "page": 64,
+            "id": "secondary-prevention-2021-145",
+            "sourceSection": "table-38",
+            "sourceRecommendationNumber": 2,
+            "pdfPage": 64,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Antithrombotic Medications",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "For recent minor noncardioembolic ischemic stroke (NIHSS 3 or below) or high-risk TIA (ABCD2 4 or above), dual antiplatelet therapy (aspirin plus clopidogrel) is recommended to be initiated early (ideally within 12-24 hours, at least within 7 days of onset) and continued for 21 to 90 days, followed by single antiplatelet therapy, to reduce recurrent ischemic stroke.",
+            "page": 64,
+            "id": "secondary-prevention-2021-146",
+            "sourceSection": "table-38",
+            "sourceRecommendationNumber": 3,
+            "pdfPage": 64,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Antithrombotic Medications",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "B-R",
+            "text": "For recent (within 24 hours) minor to moderate stroke (NIHSS 5 or below), high-risk TIA (ABCD2 6 or above), or symptomatic 30% or greater stenosis of a relevant artery, dual antiplatelet therapy with ticagrelor plus aspirin for 30 days may be considered to reduce 30-day recurrent stroke but may increase serious bleeding risk including ICH.",
+            "page": 64,
+            "id": "secondary-prevention-2021-147",
+            "sourceSection": "table-38",
+            "sourceRecommendationNumber": 4,
+            "pdfPage": 64,
+            "sourceStatementType": "recommendation"
+          },
+          {
+            "section": "Antithrombotic Medications",
+            "classOfRec": "III",
+            "classNote": "Harm",
+            "levelOfEvidence": "A",
+            "text": "Continuous dual antiplatelet therapy (aspirin plus clopidogrel) beyond 90 days or use of triple antiplatelet therapy is associated with excess hemorrhage risk in noncardioembolic ischemic stroke or TIA patients.",
+            "page": 64,
+            "id": "secondary-prevention-2021-149",
+            "sourceSection": "table-38",
+            "sourceRecommendationNumber": 6,
+            "pdfPage": 64,
+            "sourceStatementType": "recommendation"
+          }
+        ],
+        "documentType": "guideline",
+        "gradingSystem": "ACC/AHA",
+        "publicationUpdates": [
+          {
+            "type": "correction",
+            "pmid": "34181456",
+            "doi": "10.1161/STR.0000000000000383",
+            "publisherUrl": "https://doi.org/10.1161/STR.0000000000000383",
+            "status": "not-applicable",
+            "note": "The complete notice corrects PFO take-home criteria, the Figure 2 diagnostic algorithm and the REDUCE-IT acronym. Imported formal recommendation tables retain the applicable text and grades.",
+            "checkedAt": "2026-09-30",
+            "affectedRecommendationIds": [],
+            "previousReviewNote": "Corrects the PFO take-home summary, diagnostic algorithm and a trial acronym. Extracted PFO criteria and diagnostic recommendation grades already reflect the corrected recommendations; the algorithm and acronym are not reproduced.",
+            "independentReviewScope": "complete primary notice read"
+          }
+        ],
+        "sourceReview": {
+          "reviewedAt": "2026-09-30",
+          "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+          "sourceAccess": "Full104page primaryPDF and all41tables compared; fullindexedSTR0383 correction read.",
+          "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+          "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+          "implementationUpdatedAt": "2026-09-30"
+        },
+        "maintainedProjection": {
+          "scope": "Only recommendations needed by the retained DAPT source context; historical full transcription remains at the archival ref.",
+          "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+          "originalRecommendationCount": 162,
+          "retainedRecommendationIds": [
+            "secondary-prevention-2021-51",
+            "secondary-prevention-2021-145",
+            "secondary-prevention-2021-146",
+            "secondary-prevention-2021-147",
+            "secondary-prevention-2021-149"
+          ],
+          "clinicalReviewUnchanged": true
+        },
+        "archivedTranscriptionCoverage": {
+          "status": "complete",
+          "scope": "All formal recommendations and good-practice/consensus statements",
+          "checkedAt": "2026-09-06",
+          "sourceRecommendationCount": 162,
+          "sourceConsensusCount": 0,
+          "sourceSections": [
+            {
+              "id": "table-01",
+              "title": "Diagnostic Evaluation",
+              "sourceTable": "Recommendations for Diagnostic Evaluation",
+              "rowCount": 14,
+              "pageRange": [
+                10,
+                10
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14
+              ]
+            },
+            {
+              "id": "table-02",
+              "title": "Nutrition",
+              "sourceTable": "Recommendations for Nutrition",
+              "rowCount": 2,
+              "pageRange": [
+                14,
+                14
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-03",
+              "title": "Physical Activity",
+              "sourceTable": "Recommendations for Physical Activity",
+              "rowCount": 4,
+              "pageRange": [
+                16,
+                16
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            {
+              "id": "table-04",
+              "title": "Smoking Cessation",
+              "sourceTable": "Recommendations for Smoking Cessation",
+              "rowCount": 3,
+              "pageRange": [
+                17,
+                17
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-05",
+              "title": "Substance Use",
+              "sourceTable": "Recommendations for Substance Use",
+              "rowCount": 3,
+              "pageRange": [
+                18,
+                18
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-06",
+              "title": "Hypertension",
+              "sourceTable": "Recommendations for Hypertension",
+              "rowCount": 4,
+              "pageRange": [
+                20,
+                20
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            {
+              "id": "table-07",
+              "title": "Treating and Monitoring Hyperlipidemia",
+              "sourceTable": "Recommendations for Treating and Monitoring Hyperlipidemia",
+              "rowCount": 4,
+              "pageRange": [
+                21,
+                21
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            {
+              "id": "table-08",
+              "title": "Hypertriglyceridemia",
+              "sourceTable": "Recommendations for Hypertriglyceridemia",
+              "rowCount": 2,
+              "pageRange": [
+                23,
+                23
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-09",
+              "title": "Glucose",
+              "sourceTable": "Recommendations for Glucose",
+              "rowCount": 8,
+              "pageRange": [
+                24,
+                24
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+              ]
+            },
+            {
+              "id": "table-10",
+              "title": "Obesity",
+              "sourceTable": "Recommendations for Obesity",
+              "rowCount": 3,
+              "pageRange": [
+                27,
+                27
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-11",
+              "title": "Obstructive Sleep Apnea",
+              "sourceTable": "Recommendations for Obstructive Sleep Apnea",
+              "rowCount": 2,
+              "pageRange": [
+                28,
+                28
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-12",
+              "title": "Intracranial Large Artery Atherosclerosis",
+              "sourceTable": "Recommendations for Intracranial Large Artery Atherosclerosis",
+              "rowCount": 10,
+              "pageRange": [
+                29,
+                30
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+              ]
+            },
+            {
+              "id": "table-13",
+              "title": "Extracranial Carotid Stenosis",
+              "sourceTable": "Recommendations for Extracranial Carotid Stenosis",
+              "rowCount": 12,
+              "pageRange": [
+                32,
+                33
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12
+              ]
+            },
+            {
+              "id": "table-14",
+              "title": "Extracranial Vertebral Artery Stenosis",
+              "sourceTable": "Recommendations for Extracranial Vertebral Artery Stenosis",
+              "rowCount": 3,
+              "pageRange": [
+                34,
+                34
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-15",
+              "title": "Aortic Arch Atherosclerosis",
+              "sourceTable": "Recommendations for Aortic Arch Atherosclerosis",
+              "rowCount": 2,
+              "pageRange": [
+                35,
+                35
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-16",
+              "title": "Moyamoya Disease",
+              "sourceTable": "Recommendations for Moyamoya Disease",
+              "rowCount": 2,
+              "pageRange": [
+                36,
+                36
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-17",
+              "title": "Small Vessel Stroke",
+              "sourceTable": "Recommendation for Small Vessel Stroke",
+              "rowCount": 1,
+              "pageRange": [
+                37,
+                37
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "table-18",
+              "title": "AF",
+              "sourceTable": "Recommendations for AF",
+              "rowCount": 10,
+              "pageRange": [
+                38,
+                38
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+              ]
+            },
+            {
+              "id": "table-19",
+              "title": "Valvular Disease",
+              "sourceTable": "Recommendations for Valvular Disease",
+              "rowCount": 10,
+              "pageRange": [
+                41,
+                41
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+              ]
+            },
+            {
+              "id": "table-20",
+              "title": "LV Thrombus",
+              "sourceTable": "Recommendations for LV Thrombus",
+              "rowCount": 4,
+              "pageRange": [
+                44,
+                44
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            {
+              "id": "table-21",
+              "title": "Cardiomyopathy",
+              "sourceTable": "Recommendations for Cardiomyopathy",
+              "rowCount": 5,
+              "pageRange": [
+                46,
+                46
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            {
+              "id": "table-22",
+              "title": "PFO",
+              "sourceTable": "Recommendations for PFO",
+              "rowCount": 4,
+              "pageRange": [
+                48,
+                48
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            {
+              "id": "table-23",
+              "title": "Congenital Heart Disease",
+              "sourceTable": "Recommendations for Congenital Heart Disease",
+              "rowCount": 2,
+              "pageRange": [
+                50,
+                50
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-24",
+              "title": "Cardiac Tumors",
+              "sourceTable": "Recommendation for Cardiac Tumors",
+              "rowCount": 1,
+              "pageRange": [
+                52,
+                52
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "table-25",
+              "title": "Dissection",
+              "sourceTable": "Recommendations for Dissection",
+              "rowCount": 3,
+              "pageRange": [
+                52,
+                52
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-26",
+              "title": "Hematologic Traits",
+              "sourceTable": "Recommendation for Hematologic Traits",
+              "rowCount": 1,
+              "pageRange": [
+                53,
+                53
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "table-27",
+              "title": "Antiphospholipid Syndrome",
+              "sourceTable": "Recommendations for Antiphospholipid Syndrome",
+              "rowCount": 4,
+              "pageRange": [
+                54,
+                54
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            {
+              "id": "table-28",
+              "title": "Hyperhomocysteinemia",
+              "sourceTable": "Recommendation for Hyperhomocysteinemia",
+              "rowCount": 1,
+              "pageRange": [
+                55,
+                55
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "table-29",
+              "title": "Malignancy",
+              "sourceTable": "Recommendation for Malignancy",
+              "rowCount": 1,
+              "pageRange": [
+                56,
+                56
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "table-30",
+              "title": "Sickle Cell Disease",
+              "sourceTable": "Recommendations for Sickle Cell Disease",
+              "rowCount": 2,
+              "pageRange": [
+                57,
+                57
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-31",
+              "title": "Autoimmune Vasculitis",
+              "sourceTable": "Recommendations for Autoimmune Vasculitis",
+              "rowCount": 4,
+              "pageRange": [
+                58,
+                58
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4
+              ]
+            },
+            {
+              "id": "table-32",
+              "title": "Infectious Vasculitis",
+              "sourceTable": "Recommendations for Infectious Vasculitis",
+              "rowCount": 2,
+              "pageRange": [
+                59,
+                59
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-33",
+              "title": "Other Genetic Disorders",
+              "sourceTable": "Recommendations for Other Genetic Disorders",
+              "rowCount": 2,
+              "pageRange": [
+                60,
+                60
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-34",
+              "title": "Carotid Web",
+              "sourceTable": "Recommendations for Carotid Web",
+              "rowCount": 2,
+              "pageRange": [
+                61,
+                61
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-35",
+              "title": "Fibromuscular Dysplasia",
+              "sourceTable": "Recommendations for Fibromuscular Dysplasia",
+              "rowCount": 3,
+              "pageRange": [
+                62,
+                62
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-36",
+              "title": "Dolichoectasia",
+              "sourceTable": "Recommendation for Dolichoectasia",
+              "rowCount": 1,
+              "pageRange": [
+                62,
+                62
+              ],
+              "recommendationNumbers": [
+                1
+              ]
+            },
+            {
+              "id": "table-37",
+              "title": "ESUS",
+              "sourceTable": "Recommendations for ESUS",
+              "rowCount": 2,
+              "pageRange": [
+                63,
+                63
+              ],
+              "recommendationNumbers": [
+                1,
+                2
+              ]
+            },
+            {
+              "id": "table-38",
+              "title": "Antithrombotic Medications",
+              "sourceTable": "Recommendations for Antithrombotic Medications",
+              "rowCount": 6,
+              "pageRange": [
+                64,
+                64
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ]
+            },
+            {
+              "id": "table-39",
+              "title": "Health Systems–Based Interventions",
+              "sourceTable": "Recommendations for Health Systems–Based Interventions",
+              "rowCount": 3,
+              "pageRange": [
+                67,
+                67
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3
+              ]
+            },
+            {
+              "id": "table-40",
+              "title": "Behavior Change Interventions",
+              "sourceTable": "Recommendations for Behavior Change Interventions",
+              "rowCount": 6,
+              "pageRange": [
+                69,
+                69
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ]
+            },
+            {
+              "id": "table-41",
+              "title": "Health Equity",
+              "sourceTable": "Recommendations for Health Equity",
+              "rowCount": 4,
+              "pageRange": [
+                71,
+                71
+              ],
+              "recommendationNumbers": [
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+          ],
+          "sourceDocument": {
+            "doi": "10.1161/STR.0000000000000375",
+            "edition": "Complete publisher PDF; physical PDF pagination.",
+            "pdfUrl": "https://www.ohsu.edu/sites/default/files/2022-04/AHA%20%20Stroke%20Prevention%20Guidlines%202021.pdf",
+            "pageCount": 104,
+            "sha256": "3347d9c0ee0e804ecaf0c0f689d0beb09b47773eb64fd63126445e48a0c16d87"
+          },
+          "note": "All formal recommendation tables and numbered rows reconciled against the complete source document. This is a source-inventory review, not a new clinical validation of every existing summary or supporting narrative. Existing publication-correction statuses remain separate. No separately designated ungraded consensus or good-practice recommendation set is present."
+        }
+      },
+      {
+        "id": "svin-large-core-2025",
+        "title": "SVIN 2025 Guideline: EVT for Large Infarct",
+        "shortTitle": "SVIN Large-Core EVT 2025",
+        "doi": "10.1161/SVIN.124.001581",
+        "publisherUrl": "https://www.ahajournals.org/doi/10.1161/SVIN.124.001581",
+        "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/SVIN.124.001581",
+        "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41573174/",
+        "pmid": "41573174",
+        "recommendations": [
+          {
+            "section": "EVT within 0-6 hours",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "In patients with anterior circulation stroke presenting within 0-6 h from symptom onset, baseline mRS score 0-1, age 18-80 years, occlusion of the ICA or MCA M1 segment, and ASPECTS of 0-5 on noncontrast CT or MRI, EVT is recommended. (Evidence: LASTE trial; meta-analyses AlMajali et al, Roman et al, Winkelmeier et al)",
+            "page": 10
+          },
+          {
+            "section": "EVT within 6-24 hours",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "In patients with anterior circulation LVO presenting within 6-24 h from symptom onset, baseline mRS score 0-1, age 18-80 years, occlusion of the ICA or MCA M1 segment, and ASPECTS of 3-5 on noncontrast CT or MRI, EVT is recommended. (Evidence: ANGEL-ASPECT, RESCUE-Japan LIMIT; meta-analyses Palaiodimou et al, Wei et al, Li et al)",
+            "page": 10
+          },
+          {
+            "section": "EVT within 6-24 hours",
+            "classOfRec": "I",
+            "classNote": null,
+            "levelOfEvidence": "A",
+            "text": "In patients with anterior circulation LVO presenting within 6-24 h from symptom onset, baseline mRS score 0-1, age 18-80 years, occlusion of the ICA or MCA M1 segment with CTP imaging according to the SELECT2 and ANGEL-ASPECT eligibility criteria, EVT is recommended. (Evidence: ANGEL-ASPECT, SELECT2)",
+            "page": 10
+          },
+          {
+            "section": "EVT within 6-24 hours",
+            "classOfRec": "IIb",
+            "classNote": null,
+            "levelOfEvidence": "B-R",
+            "text": "In patients with anterior circulation LVO presenting within 6-24 h from symptom onset, baseline mRS score 0-1, age 18-80 years, occlusion of the ICA or MCA M1 segment, and ASPECTS of 0-2 on noncontrast CT or MRI, the benefit of EVT is uncertain.",
+            "page": 10
+          }
+        ],
+        "documentType": "guideline",
+        "gradingSystem": "ACC/AHA",
+        "sourceReview": {
+          "reviewedAt": "2026-09-30",
+          "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+          "sourceAccess": "primary full text retrieved and reviewed",
+          "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+          "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+          "implementationUpdatedAt": "2026-09-30"
+        },
+        "maintainedProjection": {
+          "scope": "Only recommendations needed by the maintained Encounter workflow, source limits and protected protocol context. Full historical source transcription is at the archival Git ref.",
+          "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+          "originalRecommendationCount": 4,
+          "retainedRecommendationIds": [
+            "source-order-1",
+            "source-order-2",
+            "source-order-3",
+            "source-order-4"
+          ],
+          "clinicalReviewUnchanged": true
+        }
+      }
+    ],
+    "scope": "Retained source/limits access only; no general guideline browser or trial encyclopedia. Existing review scopes, correction warnings and source-access gaps remain applicable."
+  }
+}

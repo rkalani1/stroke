@@ -1,13 +1,14 @@
 {
   "_meta": {
     "endpoint": "management-cards",
-    "schemaVersion": "1.0.0",
-    "appVersion": "6.30.7",
-    "checksum": "sha256:af88a0e420b753b1494d19f465f9db00",
-    "count": 3,
-    "source": "Management-card reference bundle",
+    "schemaVersion": "2.0.0",
+    "appVersion": "7.0.0",
+    "checksum": "sha256:845564aad88f627ff9b39f4223b794af",
+    "count": 4,
+    "source": "Protected public protocol reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
-    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.",
+    "status": "maintained"
   },
   "data": {
     "lastReviewed": "2026-08-16",
@@ -546,6 +547,7 @@
         "teachingPearl": "Pediatric acute reperfusion mirrors the adult framework, but the evidence and approvals do not: confirm true arterial ischemic stroke, engage pediatric stroke expertise, and verify every agent and dose locally. Note the pediatric EVT evidence (B-NR) is stronger than the lytic evidence (C-LD).",
         "changedSinceLastGuideline": "The 2026 AHA/ASA guideline extended consideration of IV thrombolysis (alteplase; ages 28 days-18 years; COR IIb/C-LD) and EVT (age >=6y COR IIa/B-NR; age 28 days-<6y COR IIb/B-NR) — pediatric reperfusion is not categorically excluded in young children, but stays expert-guided, off-label for lytics, and shared-decision-based."
       }
-    ]
+    ],
+    "scope": "Protected reference content; not universal treatment eligibility or approved local policy."
   }
 }

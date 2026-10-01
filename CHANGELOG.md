@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v7.0.0 — 2026-10-01 — Encounter-first workspace
+
+- Replace the broad portal with four contextual Encounter steps, two secondary actions, embedded tools and one explicit synthetic summary. Preserve unknown/invalid states and separate decisions, consent, administration and procedure timestamps.
+- Preserve locked ischemic/ICH protocols, drug modals and Telestroke Map; retire Education, trial/general guideline/reference browsing, standalone calculator directory, teaching downloads, matcher and obsolete maintenance machinery.
+- Keep a bounded evidence/API/MCP closure with explicit retirement envelopes and original clinical review provenance. Allowlist published assets and reduce/tighten initial, deferred and offline budgets.
+- Preserve session-only state, public/private build separation and atomic opt-in PWA updates; add focused state/arithmetic/navigation/privacy/browser/update regressions.
+- Use unrounded ICH threshold flags, make fresh-TIA reperfusion review explicit, and synchronize protocol measurements with Encounter while invalidating dependent reviews after edits. Preserve entered treatment conflicts and incomplete/zero distinctions.
+- Apply the owner-authorized primary-label correction to two protected ICH factor-Xa drug-removal passages; update only their four snapshot lines. Preserve all other protected content and review dates. See docs/source-limits.md for accepted wording and IMPLEMENTATION.md for verification/release status.
+
 ## v6.30.7 — 2026-10-01 — consistent documentation and reliable navigation
 
 - Use one qualified wake-up assessment across seven documentation surfaces;

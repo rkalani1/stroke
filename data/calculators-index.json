@@ -1,218 +1,156 @@
 {
   "_meta": {
     "endpoint": "calculators",
-    "schemaVersion": "1.0.0",
-    "appVersion": "6.30.7",
-    "checksum": "sha256:fd369f3ca628e87cb16e7165e5ba7c07",
-    "count": 34,
-    "source": "Calculator catalog bundle",
+    "schemaVersion": "2.0.0",
+    "appVersion": "7.0.0",
+    "checksum": "sha256:0ad1600835b517a1db1baaa7232086b2",
+    "count": 10,
+    "source": "Canonical retained tool registry",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
-    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.",
+    "status": "maintained"
   },
   "data": [
     {
       "id": "nihss",
       "name": "NIH Stroke Scale",
       "category": "severity",
-      "fn": "calculateNIHSS"
+      "fn": "calculateNIHSS",
+      "module": "calculators",
+      "route": "#/encounter/nihss",
+      "sourceEndpoint": "data/sources.json",
+      "sourceIds": [
+        "nihss"
+      ],
+      "scope": "Synthetic arithmetic/score aid; no eligibility, administration or individual prognosis inference",
+      "limits": "Read each referenced source population, limits and actual review scope before interpreting an output."
     },
     {
       "id": "ich-score",
       "name": "ICH Score",
-      "category": "prognosis",
-      "fn": "calculateICHScore"
+      "category": "severity",
+      "fn": "calculateICHScore",
+      "module": "calculators",
+      "route": "#/encounter/ich-score",
+      "sourceEndpoint": "data/sources.json",
+      "sourceIds": [
+        "ich-score",
+        "prognostic-score-limits"
+      ],
+      "scope": "Synthetic arithmetic/score aid; no eligibility, administration or individual prognosis inference",
+      "limits": "Read each referenced source population, limits and actual review scope before interpreting an output."
     },
     {
       "id": "ich-volume",
       "name": "ICH Volume (ABC/2)",
       "category": "imaging",
-      "fn": "calculateICHVolume"
+      "fn": "calculateICHVolumeReviewed",
+      "module": "calculators",
+      "route": "#/encounter/ich-volume",
+      "sourceEndpoint": "data/sources.json",
+      "sourceIds": [
+        "ich-volume"
+      ],
+      "scope": "Synthetic arithmetic/score aid; no eligibility, administration or individual prognosis inference",
+      "limits": "Read each referenced source population, limits and actual review scope before interpreting an output."
     },
     {
       "id": "gcs",
       "name": "Glasgow Coma Scale",
       "category": "severity",
-      "fn": "calculateGCS"
-    },
-    {
-      "id": "abcd2",
-      "name": "ABCD² (TIA risk)",
-      "category": "risk",
-      "fn": "calculateABCD2WithDetail"
-    },
-    {
-      "id": "aspects-pc",
-      "name": "pc-ASPECTS",
-      "category": "imaging",
-      "fn": "calculatePCAspects"
-    },
-    {
-      "id": "chadsvasc",
-      "name": "CHA₂DS₂-VASc",
-      "category": "risk",
-      "fn": "calculateCHADS2VascScore"
-    },
-    {
-      "id": "hasbled",
-      "name": "HAS-BLED",
-      "category": "risk",
-      "fn": "calculateHASBLEDScore"
-    },
-    {
-      "id": "rope",
-      "name": "RoPE (PFO)",
-      "category": "risk",
-      "fn": "calculateROPEScore"
-    },
-    {
-      "id": "rcvs2",
-      "name": "RCVS²",
-      "category": "risk",
-      "fn": "calculateRCVS2Score"
-    },
-    {
-      "id": "phases",
-      "name": "PHASES (aneurysm)",
-      "category": "risk",
-      "fn": "calculatePHASESScore"
+      "fn": "calculateGCS",
+      "module": "calculators",
+      "route": "#/encounter/gcs",
+      "sourceEndpoint": "data/sources.json",
+      "sourceIds": [
+        "gcs"
+      ],
+      "scope": "Synthetic arithmetic/score aid; no eligibility, administration or individual prognosis inference",
+      "limits": "Read each referenced source population, limits and actual review scope before interpreting an output."
     },
     {
       "id": "tnk-dose",
-      "name": "Tenecteplase dose (0.25 mg/kg)",
+      "name": "Tenecteplase dose (explicit authority)",
       "category": "dosing",
-      "fn": "calculateTNKDose"
+      "fn": "calculateTNKDoseReviewed",
+      "module": "calculators",
+      "route": "#/encounter/tnk-dose",
+      "sourceEndpoint": "data/sources.json",
+      "sourceIds": [
+        "tnk-stroke-dose"
+      ],
+      "scope": "Synthetic arithmetic/score aid; no eligibility, administration or individual prognosis inference",
+      "limits": "Read each referenced source population, limits and actual review scope before interpreting an output."
     },
     {
       "id": "alteplase-dose",
       "name": "Alteplase dose (0.9 mg/kg)",
       "category": "dosing",
-      "fn": "calculateAlteplaseDose"
-    },
-    {
-      "id": "doac-start",
-      "name": "DOAC start timing (post-stroke AF)",
-      "category": "dosing",
-      "fn": "calculateDOACStart"
-    },
-    {
-      "id": "pcc-dose",
-      "name": "4F-PCC dose",
-      "category": "dosing",
-      "fn": "calculatePCCDose"
-    },
-    {
-      "id": "andexanet",
-      "name": "Andexanet alfa (US sales ended; dosing disabled)",
-      "category": "dosing",
-      "fn": "calculateAndexanetDose"
-    },
-    {
-      "id": "enoxaparin",
-      "name": "Enoxaparin dose",
-      "category": "dosing",
-      "fn": "calculateEnoxaparinDose"
+      "fn": "calculateAlteplaseDoseReviewed",
+      "module": "calculators",
+      "route": "#/encounter/alteplase-dose",
+      "sourceEndpoint": "data/sources.json",
+      "sourceIds": [
+        "alteplase-stroke-dose"
+      ],
+      "scope": "Synthetic arithmetic/score aid; no eligibility, administration or individual prognosis inference",
+      "limits": "Read each referenced source population, limits and actual review scope before interpreting an output."
     },
     {
       "id": "crcl",
       "name": "Creatinine clearance (Cockcroft-Gault)",
       "category": "dosing",
-      "fn": "calculateCrCl"
+      "fn": "calculateCrClReviewed",
+      "module": "calculators",
+      "route": "#/encounter/crcl",
+      "sourceEndpoint": "data/sources.json",
+      "sourceIds": [
+        "crcl"
+      ],
+      "scope": "Synthetic arithmetic/score aid; no eligibility, administration or individual prognosis inference",
+      "limits": "Read each referenced source population, limits and actual review scope before interpreting an output."
     },
     {
       "id": "dawn",
-      "name": "DAWN EVT eligibility",
+      "name": "DAWN historical partial screen",
       "category": "reperfusion",
-      "fn": "evaluateDAWN"
+      "fn": "evaluateDAWN",
+      "module": "calculators-extended",
+      "route": "#/encounter/dawn",
+      "sourceEndpoint": "data/sources.json",
+      "sourceIds": [
+        "dawn"
+      ],
+      "scope": "Historical partial screen",
+      "limits": "Read each referenced source population, limits and actual review scope before interpreting an output."
     },
     {
       "id": "defuse3",
-      "name": "DEFUSE-3 EVT eligibility",
+      "name": "DEFUSE-3 historical partial screen",
       "category": "reperfusion",
-      "fn": "evaluateDEFUSE3"
+      "fn": "evaluateDEFUSE3",
+      "module": "calculators-extended",
+      "route": "#/encounter/defuse3",
+      "sourceEndpoint": "data/sources.json",
+      "sourceIds": [
+        "defuse3"
+      ],
+      "scope": "Historical partial screen",
+      "limits": "Read each referenced source population, limits and actual review scope before interpreting an output."
     },
     {
       "id": "acute-dapt",
       "name": "Acute DAPT recommendation",
       "category": "secondary-prevention",
-      "fn": "recommendAcuteDAPT"
-    },
-    {
-      "id": "essen",
-      "name": "Essen Stroke Risk Score",
-      "category": "risk",
-      "fn": "calculateESSEN"
-    },
-    {
-      "id": "spi2",
-      "name": "Stroke Prognosis Instrument II",
-      "category": "prognosis",
-      "fn": "calculateSPI2"
-    },
-    {
-      "id": "vasograde",
-      "name": "VASOGRADE (DCI risk)",
-      "category": "risk",
-      "fn": "calculateVASOGRADE"
-    },
-    {
-      "id": "chadsva",
-      "name": "CHA₂DS₂-VA (2024 ESC)",
-      "category": "risk",
-      "fn": "calculateCHADS2VA"
-    },
-    {
-      "id": "nascet",
-      "name": "NASCET carotid stenosis",
-      "category": "imaging",
-      "fn": "calculateNASCET"
-    },
-    {
-      "id": "havoc",
-      "name": "HAVOC (occult AF risk)",
-      "category": "risk",
-      "fn": "calculateHAVOC"
-    },
-    {
-      "id": "boston-caa",
-      "name": "Boston Criteria v2.0 (CAA)",
-      "category": "imaging",
-      "fn": "evaluateBostonCAA20"
-    },
-    {
-      "id": "bat",
-      "name": "BAT Score (ICH expansion)",
-      "category": "prognosis",
-      "fn": "calculateBAT"
-    },
-    {
-      "id": "brain",
-      "name": "BRAIN Score (ICH expansion)",
-      "category": "prognosis",
-      "fn": "calculateBRAIN"
-    },
-    {
-      "id": "nine-point",
-      "name": "9-Point ICH Expansion Score",
-      "category": "prognosis",
-      "fn": "calculateNinePoint"
-    },
-    {
-      "id": "ogilvy-carter",
-      "name": "Ogilvy-Carter (SAH surgical risk)",
-      "category": "prognosis",
-      "fn": "calculateOgilvyCarter"
-    },
-    {
-      "id": "phq9",
-      "name": "PHQ-9 (post-stroke depression)",
-      "category": "screening",
-      "fn": "interpretPHQ9"
-    },
-    {
-      "id": "mrs-9q",
-      "name": "mRS-9Q (9-question mRS survey)",
-      "category": "severity",
-      "fn": "interpretMRS9Q"
+      "fn": "recommendAcuteDAPT",
+      "module": "calculators-extended",
+      "route": "#/encounter/dapt",
+      "sourceEndpoint": "data/sources.json",
+      "sourceIds": [
+        "acute-dapt"
+      ],
+      "scope": "Treatment-selection source screen; full explicit input review required",
+      "limits": "Read each referenced source population, limits and actual review scope before interpreting an output."
     }
   ]
 }

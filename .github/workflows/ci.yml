@@ -45,19 +45,11 @@ jobs:
           STROKE_VERIFY_DEPLOYMENT_STATE: '1'
         run: >-
           npx vitest run
-          tests/e2e/tier1-feature-coverage.test.js
-          tests/e2e/tier2-boundary-corners.test.js
-          tests/e2e/tier3-cross-feature-combinations.test.js
           tests/adversarial-m4-challenger.test.js
           --testNamePattern
-          'F19-T1\.[12]:|F19-T2\.5:|F18xF19:|verifies working tree is completely clean|verifies current branch is main and tracks origin/main|verifies git log commit message and author metadata'
+          'verifies working tree is completely clean|verifies current branch is main and tracks origin/main|verifies git log commit message and author metadata'
 
-      # test:unit includes adversarial-tier5-hardening, which shells out to
-      # scripts/snapshot-example-protocols.mjs and therefore needs a browser.
-      # Without these steps that test fails on every run with "Executable
-      # doesn't exist", which is a CI setup gap rather than a code defect —
-      # the same suite passes in build-and-smoke, which does install one.
-      # Steps mirror build-and-smoke so both jobs share the cache entry.
+      # Browser-backed protection checks require Chromium.
       - name: Cache Playwright browsers
         id: playwright-cache
         uses: actions/cache@v4
@@ -84,9 +76,6 @@ jobs:
       # network-dependent checks are deliberately NOT wired here).
       - name: Content validation
         run: npm run content:validate
-
-      - name: Content bundle check
-        run: npm run content:bundle:check
 
       - name: Agent assets check
         run: npm run agent:assets:check
@@ -172,12 +161,6 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps chromium
 
-      - name: Validate churn profile schema
-        run: |
-          mkdir -p output/diagnostics
-          set -o pipefail
-          npm run validate:evidence-churn-profiles 2>&1 | tee output/diagnostics/churn-profile-validation.log
-
       - name: Validate QA latency profile schema
         run: |
           mkdir -p output/diagnostics
@@ -219,6 +202,13 @@ jobs:
       - name: Validate citations and run local smoke
         run: npm test
 
+      - name: Archived baseline upgrade and failure recovery
+        run: |
+          git fetch --no-tags origin refs/tags/archive/pre-encounter-first-20261001-4f8e99d:refs/tags/archive/pre-encounter-first-20261001-4f8e99d
+          mkdir -p output/baseline
+          git archive archive/pre-encounter-first-20261001-4f8e99d | tar -x -C output/baseline
+          node scripts/qa-upgrade.mjs --baseline-dir output/baseline
+
       - name: Run adaptive strict local latency smoke
         run: |
           mkdir -p output/diagnostics
@@ -232,10 +222,8 @@ jobs:
           name: qa-smoke-artifacts
           path: |
             output/playwright
-            output/diagnostics/churn-profile-validation.log
             output/diagnostics/qa-latency-profile-validation.log
             output/diagnostics/qa-latency-adaptive-local.log
-            docs/evidence-churn-profiles.json
             docs/qa-latency-profiles.json
           if-no-files-found: ignore
 
@@ -299,7 +287,7 @@ jobs:
         run: |
           mkdir -p output/diagnostics
           set -o pipefail
-          npm run qa:latency-adaptive-strict 2>&1 | tee output/diagnostics/qa-latency-adaptive-strict.log
+          node scripts/qa-smoke.mjs --live --latency-profile adaptive --latency-profiles-file docs/qa-latency-profiles.json --enforce-latency-thresholds 2>&1 | tee output/diagnostics/qa-latency-adaptive-strict.log
 
       - name: Upload adaptive latency smoke artifacts
         if: always()
@@ -309,8 +297,6 @@ jobs:
           path: |
             output/playwright
             output/diagnostics/qa-latency-adaptive-strict.log
-            output/diagnostics/churn-profile-validation.log
             output/diagnostics/qa-latency-profile-validation.log
-            docs/evidence-churn-profiles.json
             docs/qa-latency-profiles.json
           if-no-files-found: ignore

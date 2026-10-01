@@ -1,165 +1,49 @@
-# Stroke Clinical Decision Support
+# Stroke Encounter workspace
 
-A client-side educational/demo toolkit for stroke management. Runs entirely in the browser; no backend, no tracking.
+Version 7.0.0 is a lean, deterministic browser workspace. Encounter opens immediately; the two secondary actions are **Protocols** and **Tools & sources**.
 
-**The public GitHub Pages deployment is a synthetic demo only. It is not medical advice, not an official system, and not endorsed by any named institution. Do not enter PHI, patient identifiers, MRN fragments, ward census data, real encounter details, or confidential institutional information.**
+**The public build is a synthetic demo. Do not enter PHI, identifiers, real encounter details or confidential information. It is not an approved clinical tool, medical advice, or an institutional system.**
 
-## Features
-- Acute encounter workflow (IVT, EVT, extended-window imaging selection).
-- Protocol cards (example institutional patterns based on published evidence).
-- Encounter and educational calculations include stroke scales, renal function and reperfusion-dose support. The source also contains exported scoring helpers that are not mounted as interactive panels; helper availability does not imply a visible or clinically validated calculator. Published model populations, missing-input limits and withheld outputs are described at the relevant surface.
-- Reviewed education offers 40 modules. PLAN/ASTRAL probability outputs, the RCVS² diagnostic output, and the EVD/NPi/bedside-neuro-exam simulations are withheld; source-linked concepts and qualified evidence remain.
-- Public build disables ward census, imports/exports, encounter persistence, and patient-context URL handoff. Private/approved deployments can re-enable operational modules after governance review.
-- Clinic and wards workflows.
-- Post-tPA neurocheck timer; LKW countdown to 4.5h and 24h windows.
-- Note generators for telestroke consult, transfer, signout, progress, discharge.
-- **Completed evidence** under `#/research/references` with 264 completed/landmark trials, search, topic / certainty / evidence-type filters, source-depth limits, and citation drilldown to PMID / DOI.
-- **Context Bridge** in active-trial matcher cards: related completed trials surface as background evidence (never as eligibility criteria).
-- **"Why this recommendation?" drawer** in Management sections, walking guideline → claim → primary citation chain.
-- **Pure-function matcher engine** (`src/evidence/matcher-engine.js`) with executable coverage of 47 modeled inclusion criteria + 14 exclusions. These partial models support candidate screening, not definitive eligibility.
-- **412 citation records**, including primary reports, education sources and pre-2021 landmarks.
+## What remains
 
+- Four Encounter steps: context/baseline/timing, examination/imaging, safety and decision review, documented actions/monitoring/handoff. Relevant branches support video/telephone, ischemic/hemorrhagic and follow-up contexts without inventing unsupported pathways.
+- Embedded NIHSS, GCS, ICH severity/ABC2 volume, renal and lytic-dose calculations. Unknown and invalid inputs remain unresolved; arithmetic does not establish treatment eligibility. Historical DAWN/DEFUSE-3 and acute DAPT screens retain their population and source limitations.
+- Protected ischemic and ICH example protocols, interactive drug modals/PocketCards, and the external Telestroke Map. Their clinical locks are preserved except for the two explicitly authorized ICH drug-removal corrections documented below. Interactive cards share Encounter measurements; edits invalidate dependent card reviews, while navigation and elapsed-time updates preserve them. Completed NIHSS and elapsed hours are derived rather than separately entered.
+- One explicitly generated synthetic summary; any source change invalidates its copy control. Decisions, review, discussion/consent, administration and procedure timestamps remain separate.
+- Session state survives navigation. New encounter requires deliberate confirmation and clears entries/drafts/timers. Reload clears clinical state; no encounter persistence, census, imports, patient-context URLs, AI submission, analytics or backend integration.
+- Compact theme/install/update controls, local runtime dependencies, and atomic opt-in PWA updates. External references require internet and receive no encounter context.
 
-## Install
+The Education/Trials/general Guidelines/References portal, general calculator directory, teaching PDFs/graphics, simulators, matcher and broad content-generation machinery are retired. Legacy hash routes explain retirement; supported calculator deep links reveal their embedded tool. No hidden archive library is shipped.
 
-The app is a Progressive Web App and runs in any modern browser. Three install paths are supported, plus an optional native distribution path.
+## Maintained evidence and interfaces
 
-| Platform | How |
-|---|---|
-| Web | Open ` /stroke/` |
-| iOS Safari | **Install App** button in the Trials header opens an Add-to-Home-Screen walkthrough (Share → Add to Home Screen) |
-| Android Chrome / Desktop Chrome / Edge | **Install App** button in the Trials header fires the browser install prompt (the browser's own menu → Install also works) |
-| App Store / Play Store | Optional Capacitor wrapper — see [docs/pwa-and-app.md](docs/pwa-and-app.md) |
+The active evidence closure has 10 recommendation records, 12 evidence claims and 43 citations, plus canonical shared clinical statements and the protected literal exceptions. Six selected source projections preserve original review/correction provenance. Missing review dates remain missing; builds and retirement dates are not clinical reviews.
 
-Updates roll out via a non-intrusive **"A new version of Stroke is ready"** banner — clinicians mid-encounter are never auto-reloaded. See [docs/pwa-and-app.md](docs/pwa-and-app.md) for the full update / offline behavior, manifest shortcut targets, and Lighthouse run instructions.
+`data/index.json`, `data/sources.json`, `data/calculators-index.json`, `llms.txt` and the bounded MCP tools describe the maintained scope. Former corpus endpoints return explicit schema-2 retirement envelopes with null data, replacement and archival pointers. This is an intentional compatibility change; consumers must inspect `_meta.status`. See [content maintenance](CONTRIBUTING-content.md), [clinical trace](docs/clinical-claim-maintenance.md), [MCP](mcp/README.md) and [source limitations](docs/source-limits.md).
 
-## Privacy & safety
-- Public GitHub Pages use is synthetic/demo-only.
-- Demo mode is fixed at **build time**, not guessed from the hostname: `npm run build` (the bundle committed to `main` and deployed to Pages) always compiles `src/build-flags.js` with `__STROKE_BUILD_PUBLIC_DEMO__ = true`, so the shipped `app.js` runs as a synthetic demo on any host (no persistence, census, imports/exports, or patient-context URL handoff). A governed private deployment must opt out explicitly with `STROKE_BUILD_TARGET=private STROKE_BUILD_OUTFILE=<path outside the deployed tree> npm run build:js`; the build refuses to write a private bundle over the committed `app.js`. The hostname and `?publicDemo=1` checks remain only as defense in depth for private builds.
-- The app shell carries the build marker (`data-build`); `tests/public-build-gate.test.js` asserts that the committed `app.js` is a public-demo build and that the shell is stamped with the marker. The on-page demo notice and disclaimer footer were removed by owner decision in v6.29.2.
-- Do not enter PHI, patient identifiers, MRN fragments, dates of birth, real ward census data, real encounter details, learner records, or confidential institutional information.
-- Real clinical use requires organization-approved hosting, storage, access control, governance, and incident-response paths outside this public deployment.
+**Scoped clinical correction:** the owner authorized correcting the two protected ICH factor-Xa drug-removal passages on 2026-10-01 using primary drug-label evidence. Only the affected four snapshot lines were updated. See [source limitations](docs/source-limits.md) for accepted wording and provenance; other protected content and review dates are preserved. This resolves the named release gate without claiming clinical certification.
 
-## Clinical workspace and maintained content
+## Development and verification
 
-Encounter opens with the clinical core; teaching modules, completed-trial details,
-full guideline rows and the document search index load on demand. The installed
-service worker stages the complete module graph before an update becomes ready.
-A failed module download offers an explicit new-tab recovery path: the original
-encounter remains open, and its inputs are not copied into the new tab.
+```sh
+npm ci
+npm run build:prod
+npm run publish:stage
+npm run test:unit
+npm test
+npm run test:mcp
+npm run test:protocol-snapshot
+node scripts/qa-upgrade.mjs
+```
 
-The session-only **Bedside / Teaching** control changes presentation, not clinical
-calculations. Generated note drafts remain separate from manually entered
-recommendations and are invalidated when their source inputs change. Documented
-discussion, consent status, administration and safety review remain distinct.
+The production artifact is explicitly staged in `output/site`. Pages currently publishes the repository root via Jekyll; generated `_config.yml` exclusions limit that output to the same public roots. `check:retirement` prevents retired source/assets from returning to the module graph or public artifact. Private bundles require `STROKE_BUILD_TARGET=private` and `STROKE_BUILD_OUTFILE` outside the deployed tree; the build refuses to overwrite public artifacts. That flag does not supply clinical approval or enable persistence.
 
-Downloads feature seven generated education references; seventeen historical
-teaching documents remain in a separately labelled archive. Generated status
-means source/export maintenance, not blanket clinical-currentness certification.
+Required guards cover clinical-source tracing, bounded schemas/citations, leak prevention, public builds, retained protocols, module checksums, asset budgets, synthetic state/summary behavior, PWA updates and rendered browser workflows. Protected snapshots and the Telestroke link baseline are not blanket-regenerated. Only four ICH snapshot lines reflect the owner-authorized drug-removal correction. Retired test consumers have explicit inventories and replacement guards; see `tests/CALCULATOR-TEST-RETIREMENTS.json` and `docs/retired-maintenance.json`.
 
-Selected repeated dose and prognosis statements live in `src/clinical/claims.json`.
-`docs/clinical-claim-occurrences.json` maps four bounded rule groups, including
-manual and protected exceptions, and seven generated exports. Run
-`npm run check:clinical-claims` after edits. A changed source, occurrence or export
-requires reviewing the affected uses before updating the trace; it is not a
-substitute for primary-source clinical review.
+[IMPLEMENTATION.md](IMPLEMENTATION.md) records exact before/after measurements, results, final release status and limitations. Browser viewport/offline checks simulate devices; they are not physical iPhone/Android validation or accessibility certification.
 
-## Clinical content data layer (`/content`)
+## Install and rollback
 
-Clinical reference data has a typed, schema-validated projection under
-`/content`. Edit the canonical sources in `src/evidence/`, `src/guidelines/`,
-`src/education.jsx`, and the reference registry in `src/app.jsx`; then run
-`npm run content:seed` and `npm run build:prod`. Hand edits to seeded projections
-are overwritten. Full guide:
-[CONTRIBUTING-content.md](CONTRIBUTING-content.md).
+Open the site, then **More → Install App**, or use the browser's installation menu. Shortcuts open Encounter or Protocols. Offline core use requires a successful complete online cache installation; an uncached first visit requires network. Updates never automatically reload an active session. See [PWA behavior](docs/pwa-and-app.md). Existing optional Capacitor distributions remain in the repository; native builds were not changed or certified by this redesign.
 
-| Domain | Files | Schema |
-|---|---|---|
-| Guidelines | `content/guidelines/*.json` | id, guideline, year, section, native grading system/strength/certainty or COR/LOE, statement, PMIDs[], DOIs[], lastReviewed, sourceUrl |
-| Trials | `content/trials/*.json` | name, category, population, finding, teachingPoint, PMID, year |
-| Education | `content/education/*.md` | frontmatter: id, title, summary, tags, contexts[], calculators[], references[], lastReviewed |
-| Calculators | `content/calculators/registry.json` | single registry (id, name, category, fn, module) |
-| References | `content/references/*.json` | reference cards + PDF metadata |
-
-- **Validation** (`content/schema.mjs`, run by `npm run content:validate` and in
-  CI) fails the build on malformed fields, bad COR/LOE, a citation that doesn't
-  resolve in the single registry (`src/evidence/citations.js`), or a
-  `lastReviewed` older than 18 months.
-- **Evidence-atlas citations module:** structured trial and claim records use
-  `src/evidence/citations.js` and reference citation IDs. Education and guideline
-  references also carry source links with their own access limitations.
-- **Update a guideline/trial/resource:** verify the primary source, edit its canonical
-  source (or scaffold a draft — `npm run content:scaffold -- --type guideline --pmids
-  … --now YYYY-MM-DD`), regenerate seeded data, validate, and review the diff. See
-  CONTRIBUTING-content.md.
-- **Currency worklist:** `npm run content:currency` lists entries due for
-  re-verification with their source URLs/PMIDs.
-- `content/bundle.json` is the generated single-import projection consumed via
-  `src/content-context.js` (pure access + Telestroke/Inpatient/Clinic filtering).
-
-The full architecture audit and the sequenced refactor plan live in
-[REFACTOR_MAP.md](REFACTOR_MAP.md); remaining render-integration work is scoped
-in [REMAINING-WORK.md](REMAINING-WORK.md).
-
-### Example Protocols content lock
-
-The Example Protocols tab (`#/protocols/*`) clinical wording is frozen. A
-rendered-DOM snapshot lock (`npm run test:protocol-snapshot`, in CI) captures
-every subtab's visible text + drug-modal content and fails on any drift, so
-refactors can't silently alter clinical text/values. Intentional changes are a
-separate reviewed `npm run test:protocol-snapshot:update` commit.
-
-## GitHub Pages routing
-- Deployed under `/stroke/` using hash routes (`#/encounter`, `#/protocols`, `#/research`, etc.).
-
-## Deep links
-- `#/encounter` · `#/protocols` · `#/protocols/ischemic` · `#/protocols/ich` · `#/protocols/calculators` · `#/research` · `#/trials` · `#/education`
-
-## QA commands
-
-### Validation
-- `npm run validate:citations` — verifies the 24-row citation table in `docs/evidence-review-2021-2026.md` (PMID, DOI, NCT structure; year range; URL format).
-- `npm run validate:automedbench-lite` — verifies that `docs/ai-agent-evals/automedbench-lite.md` keeps the S1-S5 gate for AI-assisted evidence and protocol updates.
-- `npm run evidence:validate` — structural validation of `src/evidence/` (schema conformance, FK integrity, identifier patterns, Class-I-without-supporting-claim auditability, stale-evidence warnings). Reports matcher-engine coverage. Standalone runnable for fast iteration.
-- `npm run evidence:export` — emits Markdown + CSV + JSON to `output/` (atlas summary, completed trials, active trials, claim-source map, PICO table).
-- `npm run validate:evidence-churn-profiles`, `npm run validate:qa-latency-profiles`, `npm run validate:evidence-promotion` — operational validators for the QA-governance pipeline.
-
-### Tests
-- `npm run test:unit` — runs Vitest across calculators, atlas, matcher engine, e2e tiers, and scenario snapshots. One tier-2 e2e spec needs outbound network access. Guards every PR via CI.
-- `npm test` — full local chain: validators + Playwright local smoke. Slower (~5–10 min). Requires Playwright browsers (`npx playwright install`).
-- `npm run qa` — full chain with live smoke against the deployed site.
-
-### September 2026 evidence and usability review
-
-The September 30 review includes 110 guideline source documents and 4,170
-searchable recommendations/statements, plus one source-only rehabilitation
-record. Source wording, recommendation grades, later evidence and correction
-notices are distinguished in the interface. Some complete articles and
-correction bodies remain unavailable; a review date does not certify every
-claim or establish comprehensive clinical currency. The earlier
-[September 6 review](docs/reviews/2026-09-06-guidelines-completeness.md) is a
-historical record, not the current coverage denominator.
-
-The update withdraws unsupported prognosis outputs, unsafe procedural
-simulations and selected misleading teaching figures. It retains sourced
-concept explanations and qualified evidence. Encounter assessments preserve
-unknown inputs and distinguish a partial source screen from a treatment
-decision. Public-demo safeguards and the frozen Protocols and Telestroke map
-remain in place. See [the content changelog](content/CHANGELOG.md) for the
-clinical change scope.
-
-Seven current teaching PDFs are generated from the same React cards as the
-live Education view. After an authored teaching change, run
-`node scripts/generate-pdfs.mjs` with Playwright Chromium installed (or set
-`STROKE_CHROMIUM_PATH`), then inspect every page. Other retained downloads are
-dated archival teaching documents with targeted source-qualified corrections;
-they are not presented as current stand-alone clinical instructions. The
-reproducible archival repair scripts are `scripts/repair-education-pdfs.py`
-and `scripts/repair-af-pdfs.py` (PyMuPDF and ReportLab required). Their manifests
-identify the Git baseline, permanently redacted regions and primary sources.
-Original versions remain recoverable through Git history rather than backup
-downloads in the published tree.
-
-### Build
-- `npm run build` — production build (Tailwind + esbuild bundle).
-- `npm run build:js` / `npm run build:css` — individual steps.
+The complete committed prior application is preserved at **`archive/pre-encounter-first-20261001-4f8e99d`**, commit `4f8e99de9f605327bb901d0585f279cc7ebcd12e` (6.30.7). Rollback requires a reviewed forward commit restoring that tree, then a *new* coherent app/cache version, production build and normal checks/release. Reusing an old worker version is insufficient for clients already running 7.x. This deployment rollback has not been executed; the baseline-to-new-version update/failure path is tested separately. An already-open old page or permanently offline device cannot be remotely guaranteed to update.

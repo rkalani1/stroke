@@ -1,36 +1,43 @@
-# GitHub Pages/Jekyll output allowlist by exclusion.
-# Runtime assets stay public; source, tests, scripts, docs, and local-only
-# support folders do not.
+# Generated public-output exclusions. See scripts/publish-stage.mjs.
 exclude:
   - .claude/
   - .discovery/
   - .githooks/
   - .github/
+  - .agents/
   - .remember/
+  - private/
+  - CHANGELOG.md
+  - COMPLIANCE.md
+  - CONTRIBUTING-content.md
+  - CONTRIBUTING.md
+  - GATE_STATUS.md
+  - IMPLEMENTATION.md
+  - LICENSE
+  - OPTIN_NATIVE_WRAPPER
+  - ORIGINAL_REQUEST.md
+  - PROJECT.md
+  - README.md
+  - REFACTOR_MAP.md
+  - REMAINING-WORK.md
+  - SECURITY.md
+  - TEST_INFRA.md
+  - TEST_READY.md
   - android/
+  - benchmark_config.mjs
+  - capacitor.config.json
+  - config.example.json
   - content/
   - docs/
   - ios/
   - mcp/
   - node_modules/
   - output/
-  - private/
-  - scratch/
-  - scripts/
-  - src/
-  - tests/
-  - CHANGELOG.md
-  - COMPLIANCE.md
-  - CONTRIBUTING.md
-  - CONTRIBUTING-content.md
-  - REFACTOR_MAP.md
-  - REMAINING-WORK.md
-  - LICENSE
-  - OPTIN_NATIVE_WRAPPER
-  - README.md
-  - SECURITY.md
-  - capacitor.config.json
   - package-lock.json
   - package.json
+  - scripts/
+  - src/
   - tailwind.config.js
+  - tests/
   - vitest.config.js
+  - work/

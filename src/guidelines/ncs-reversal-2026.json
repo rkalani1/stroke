@@ -116,7 +116,31 @@
       "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
     }
   ],
-  "coverage": {
+  "sourceReview": {
+    "reviewedAt": "2026-09-30",
+    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
+    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
+    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "implementationUpdatedAt": "2026-09-30",
+    "sourceAccess": "Full primary publisher HTML, including recommendations, native GRADE strength/certainty and remarks; retrieved September 30, 2026. No later indexed notice identified at the review cutoff."
+  },
+  "maintainedProjection": {
+    "scope": "Only recommendations needed by the maintained Encounter workflow, source limits and protected protocol context. Full historical source transcription is at the archival Git ref.",
+    "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+    "originalRecommendationCount": 8,
+    "retainedRecommendationIds": [
+      "ncs-reversal-2026-1-1",
+      "ncs-reversal-2026-1-2",
+      "ncs-reversal-2026-2-1",
+      "ncs-reversal-2026-2-2",
+      "ncs-reversal-2026-2-3",
+      "ncs-reversal-2026-3-1",
+      "ncs-reversal-2026-4-1",
+      "ncs-reversal-2026-5-1"
+    ],
+    "clinicalReviewUnchanged": true
+  },
+  "archivedTranscriptionCoverage": {
     "status": "complete",
     "scope": "All eight numbered recommendations in the focused update; other 2016 reversal topics are not replaced by this update.",
     "checkedAt": "2026-09-30",
@@ -130,13 +154,5 @@
         "sourceConsensusCount": 0
       }
     ]
-  },
-  "sourceReview": {
-    "reviewedAt": "2026-09-30",
-    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
-    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
-    "implementationUpdatedAt": "2026-09-30",
-    "sourceAccess": "Full primary publisher HTML, including recommendations, native GRADE strength/certainty and remarks; retrieved September 30, 2026. No later indexed notice identified at the review cutoff."
   }
 }

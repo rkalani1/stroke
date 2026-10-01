@@ -4,8 +4,7 @@
  * Drop-in: scripts/lint-touch-targets.mjs
  *
  * Walks the live DOM via Playwright at three mobile viewports (320/375/768)
- * across the app's surfaces (#/encounter, #/protocols, #/trials, and the
- * research sub-tabs) and asserts that every interactive element has
+ * across the retained Encounter, ischemic/ICH protocols and Tools surfaces and asserts that every interactive element has
  * getBoundingClientRect() ≥ 44 × 44.
  *
  * Interactive = button, [role=button], a[href], input:not(hidden), select,
@@ -37,8 +36,7 @@ if (urlFlag !== -1 && (!args[urlFlag + 1] || args[urlFlag + 1].startsWith('-')))
 }
 const URL = process.env.LINT_URL || (urlFlag === -1 ? args[0] : args[urlFlag + 1]) || 'http://localhost:8080';
 const ROUTES = [
-  '/#/encounter', '/#/protocols', '/#/trials',
-  '/#/research/guidelines', '/#/research/education'
+  '/#/encounter', '/#/protocols/ischemic', '/#/protocols/ich', '/#/tools'
 ];
 const VIEWPORTS = [
   { name: '320', width: 320, height: 568 },
@@ -77,6 +75,16 @@ for (const route of ROUTES) {
       const bad = [];
       document.querySelectorAll(SEL).forEach(el => {
         if (el.hasAttribute('data-skip-tap')) return;
+        // Native wrapped checkbox/radio labels enlarge the same hit target.
+        // Count the effective native label target, while preserving the strict
+        // 44px requirement when no equivalent label target is present.
+        if (el.matches('input[type="checkbox"],input[type="radio"]')) {
+          const label = el.closest('label');
+          if (label && label.control === el) {
+            const target = label.getBoundingClientRect();
+            if (target.width >= min && target.height >= min) return;
+          }
+        }
         // A <label for> directly associated with a full-size control is not an
         // independent tap target (tapping it focuses the control) — exempt it
         // when the control meets the minimum and sits adjacent to the label.

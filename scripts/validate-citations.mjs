@@ -2,9 +2,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 
-const filePath = path.join(process.cwd(), 'docs', 'evidence-review-2021-2026.md');
+// Validate the maintained citation records directly; the historical review table is archived.
 const citationsJsUrl = new URL('../src/evidence/citations.js', import.meta.url);
-const yearMin = 2021;
+const yearMin = 2001; // Retained original ICH Score report, not only recent trials.
 const yearMax = 2026;
 const args = new Set(process.argv.slice(2));
 const checkLinks = args.has('--check-links');
@@ -497,8 +497,8 @@ async function validateCitationsJsIdentifiers(entries) {
 }
 
 async function main() {
-  const markdown = await fs.readFile(filePath, 'utf8');
-  const rows = parseTableRows(markdown);
+  const { citations } = await import(citationsJsUrl.href);
+  const rows = citations.map(c => `| maintained | ${c.verificationStatus} | ${c.title.replaceAll('|', '/')} | ${c.year} | ${c.journal || c.type} | ${c.url || (c.doi ? 'https://doi.org/' + c.doi : '')} | ${[c.pmid ? 'PMID: ' + c.pmid : '', c.doi ? 'DOI: ' + c.doi : ''].filter(Boolean).join('; ')} |`);
   if (rows.length === 0) {
     console.error('No citation metadata table found.');
     process.exit(1);

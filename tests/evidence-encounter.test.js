@@ -1,25 +1,29 @@
 import { describe, expect, it } from 'vitest';
-import * as eager from '../src/evidence-encounter.js';
+import * as encounter from '../src/evidence-encounter.js';
 import * as canonical from '../src/evidence/index.js';
-import { readFileSync } from 'node:fs';
-
-describe('Encounter evidence retains canonical clinical behavior', () => {
-  it('retains the canonical active records, claims, recommendations, citations and labels', () => {
-    for (const name of ['activeTrials', 'recommendations', 'claims', 'citations', 'topics']) expect(eager[name]).toBe(canonical[name]);
-    for (const name of ['VERIFICATION_STATUS_LABELS', 'CERTAINTY_LABELS', 'EVIDENCE_TYPE_LABELS', 'ACTIVE_STATUS_LABELS']) expect(eager[name]).toEqual(canonical[name]);
-  });
-  it('resolves every claim and citation exactly as the atlas does', () => {
-    const claims = canonical.claims.map(item => item.id);
-    const citations = canonical.citations.map(item => item.id);
-    expect(eager.resolveClaimsWithCitations(claims)).toEqual(canonical.resolveClaimsWithCitations(claims));
-    expect(eager.resolveCitations(citations)).toEqual(canonical.resolveCitations(citations));
-    expect(eager.resolveClaimsWithCitations(['missing', null])).toEqual([]);
-    for (const filters of [{}, { query: 'stroke' }, { topic: 'thrombolysis' }, { status: 'recruiting' }]) {
-      expect(eager.filterActiveTrials(filters)).toEqual(canonical.filterActiveTrials(filters));
-    }
-  });
-  it('does not import a reference-data barrel or the deferred detail datasets', () => {
-    const source = readFileSync(new URL('../src/evidence-encounter.js', import.meta.url), 'utf8');
-    expect(source).not.toMatch(/from ['"].*(completedTrials|guideline-library|evidence\/index)/);
-  });
+import fs from 'node:fs';
+const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
+describe('maintained evidence and explicit portal retirement',()=>{
+ it('keeps one canonical small dependency closure and no trial matcher advertising',()=>{
+  for(const name of ['recommendations','claims','citations','topics'])expect(encounter[name]).toBe(canonical[name]);
+  expect(canonical.activeTrials).toBeUndefined();expect(canonical.completedTrials).toBeUndefined();expect(canonical.filterActiveTrials).toBeUndefined();
+  for(const file of ['src/evidence/activeTrials.js','src/evidence/completedTrials.js','src/evidence/matcher-engine.js','content/bundle.json','content/search-index.json','scripts/generate-pdfs.mjs'])expect(fs.existsSync(file)).toBe(false);
+ });
+ it('resolves all required claims/citations and preserves independent grades/limits',()=>{
+  for(const rec of canonical.recommendations){const resolved=encounter.resolveClaimsWithCitations(rec.supportingClaimIds);expect(resolved).toHaveLength(rec.supportingClaimIds.length);for(const claim of resolved)expect(claim.citationRecords).toHaveLength(claim.citationIds.length);}
+  expect(encounter.resolveCitations(['missing'])).toEqual([]);
+  const ncs=canonical.recommendations.find(r=>r.id==='rec-ich-anticoag-reversal-fxa');expect(ncs.gradingSystem).toBe('GRADE');expect(ncs.classOfRecommendation).toBeNull();expect(ncs.nativeStrength).toBeTruthy();
+  expect(canonical.recommendations.find(r=>r.id==='rec-evt-large-core').caveats.join(' ')).toMatch(/age|mRS|ASPECTS 0-2/);
+ });
+ it('returns explicit null retirement at every old trial/guideline URL',()=>{
+  const {endpoints,archiveRef}=read('docs/retired-endpoints.json');expect(endpoints.length).toBeGreaterThan(100);
+  for(const endpoint of endpoints){const row=read(endpoint);expect(row._meta.status).toBe('retired');expect(row.data).toBeNull();expect(row.retirement.archiveRef).toBe(archiveRef);expect(row.retirement.replacement).toMatch(/\/data\/sources\.json$/);expect(row._meta.checksum).toMatch(/^sha256:[a-f0-9]{32}$/);}
+ });
+ it('advertises only maintained routes/tools and preserves review/correction limitations',()=>{
+  const api=read('data/index.json');expect(api._meta.schemaVersion).toBe('2.0.0');expect(api.routes.map(r=>r.route)).toContain('#/encounter');expect(api.routes.some(r=>/education|trials|research/.test(r.route))).toBe(false);
+  const tools=read('data/calculators-index.json').data;expect(tools).toHaveLength(10);expect(tools.find(t=>t.id==='tnk-dose').fn).toBe('calculateTNKDoseReviewed');expect(tools.find(t=>t.id==='alteplase-dose').fn).toBe('calculateAlteplaseDoseReviewed');expect(tools.find(t=>t.id==='ich-score').category).toBe('severity');
+  const sources=read('data/sources.json').data;expect(sources.guidelines).toHaveLength(6);for(const g of sources.guidelines){expect(g.sourceReview.scope).toBeTruthy();expect(g.maintainedProjection.clinicalReviewUnchanged).toBe(true);expect(g.coverage).toBeUndefined();}
+  const ais=sources.guidelines.find(g=>g.id==='ais-2026');expect(ais.sourceReview.reviewedAt).toBe('2026-09-30');expect(ais.publicationUpdates.some(u=>u.status==='partially-applied')).toBe(true);
+  expect(sources.sources.find(s=>s.id==='crcl').reviewedAt).toBeNull();expect(sources.sources.find(s=>s.id==='dawn').limits).toMatch(/not|does not|Failure/);
+ });
 });

@@ -1,100 +1,61 @@
-// src/evidence/topics.js
-// Topic taxonomy used for filtering and cross-linking. Flat list with optional
-// parentId; mirrors the existing trialsData.category structure.
-//
-// PHILOSOPHY (post-v5.35.0 cleanup):
-// — Disease-area topics (ich, sah, cvt, secondary-prevention) and parent topics
-//   are kept even when no atlas data references them yet. They define the UI's
-//   topic-tree filter.
-// — Pure-placeholder topics (no data, no parent role) were trimmed in v5.35.0:
-//   removed `ivt-on-doac`, `cadasil`, `special-populations`, `imaging-selection`.
-//   Add back when atlas data lands for them.
-
-import { makeTopic } from './schema.js';
-
 export const topics = [
-  makeTopic({ id: 'acute-ischemic-stroke', label: 'Acute ischemic stroke' }),
-  makeTopic({ id: 'extended-window-ivt', label: 'Extended-window IV thrombolysis', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'wake-up-stroke', label: 'Wake-up / unknown-onset stroke', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'tnk-vs-alteplase', label: 'Tenecteplase vs alteplase', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'novel-thrombolytics', label: 'Novel thrombolytics (reteplase, non-immunogenic staphylokinase)', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'minor-stroke-thrombolysis', label: 'Thrombolysis vs antiplatelets in minor non-disabling stroke', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'evt-technique', label: 'EVT technique & adjuncts (catheters, bailout stenting, anesthesia)', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'evt-early-window', label: 'EVT in early window (0-6h) — landmark trials', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'evt-large-core', label: 'EVT for large-core infarct', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'evt-late-window', label: 'EVT in late window (6-24h)', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'bp-post-evt', label: 'Blood pressure target after EVT', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'evt-mevo', label: 'EVT for medium / distal vessel occlusion', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'evt-basilar', label: 'EVT for basilar-artery occlusion', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'ia-adjunct-after-evt', label: 'IA adjunctive thrombolysis after EVT', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'crao-thrombolysis', label: 'CRAO thrombolysis', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'tandem-lesions', label: 'Tandem lesions', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'icas-prevention', label: 'Intracranial atherosclerotic disease — secondary prevention' }),
-
-  makeTopic({ id: 'ich', label: 'Intracerebral hemorrhage' }),
-  makeTopic({ id: 'ich-bp-management', label: 'ICH blood pressure management', parentId: 'ich' }),
-  makeTopic({ id: 'ich-anticoag-reversal', label: 'Anticoagulant-associated ICH reversal', parentId: 'ich' }),
-  makeTopic({ id: 'ich-surgery', label: 'ICH surgical evacuation', parentId: 'ich' }),
-  makeTopic({ id: 'ich-secondary-prevention', label: 'Secondary prevention after ICH (AF, statin)', parentId: 'ich' }),
-  makeTopic({ id: 'ich-hemostatic', label: 'ICH hemostatic therapy (antifibrinolytics, factor concentrates)', parentId: 'ich' }),
-  makeTopic({ id: 'ivh-management', label: 'Intraventricular hemorrhage & EVD thrombolysis', parentId: 'ich' }),
-  makeTopic({ id: 'prehospital-stroke-care', label: 'Prehospital stroke care (mobile stroke units, ambulance triage & BP)' }),
-
-  makeTopic({ id: 'sah', label: 'Aneurysmal subarachnoid hemorrhage' }),
-  makeTopic({ id: 'sah-critical-care', label: 'aSAH critical care (transfusion, CSF drainage, antifibrinolytics)', parentId: 'sah' }),
-  makeTopic({ id: 'aneurysm-treatment', label: 'Ruptured aneurysm securing (clip vs coil)', parentId: 'sah' }),
-  makeTopic({ id: 'unruptured-aneurysms', label: 'Unruptured intracranial aneurysms — rupture risk & management' }),
-  makeTopic({ id: 'cvt', label: 'Cerebral venous thrombosis' }),
-
-  makeTopic({ id: 'secondary-prevention', label: 'Secondary stroke prevention' }),
-  makeTopic({ id: 'dapt-minor-stroke', label: 'DAPT for minor stroke / high-risk TIA', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'af-anticoag-timing', label: 'AF anticoagulation timing after stroke', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'af-after-ich', label: 'Anticoagulation in AF after ICH', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'pfo-closure', label: 'PFO closure', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'carotid-revasc', label: 'Carotid revascularization', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'esus', label: 'Embolic stroke of undetermined source (ESUS)', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'lacunar-svd-prevention', label: 'Lacunar stroke & small-vessel disease — secondary prevention', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'subclinical-af', label: 'Device-detected / subclinical atrial fibrillation', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'laa-occlusion', label: 'Left atrial appendage occlusion', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'valvular-rheumatic-af', label: 'Valvular & rheumatic atrial fibrillation', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'inflammation-stroke-prevention', label: 'Anti-inflammatory therapy for stroke prevention (colchicine)', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'factor-xi-inhibition', label: 'Factor XI / XIa inhibition', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'acute-antithrombotic-adjuncts', label: 'Acute antithrombotic adjuncts (tirofiban, argatroban, eptifibatide)', parentId: 'acute-ischemic-stroke' }),
-
-  makeTopic({ id: 'rehabilitation', label: 'Stroke rehabilitation' }),
-  makeTopic({ id: 'bp-targets-prevention', label: 'Blood-pressure targets for vascular prevention', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'malignant-edema', label: 'Malignant cerebral edema — prevention & treatment', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'neurocritical-care', label: 'Neurocritical care of severe stroke (fever, airway, tracheostomy)' }),
-  makeTopic({ id: 'ec-ic-bypass', label: 'EC-IC bypass for symptomatic occlusion', parentId: 'icas-prevention' }),
-  makeTopic({ id: 'cognitive-trajectories', label: 'Post-stroke cognitive trajectories' }),
-  makeTopic({ id: 'special-populations', label: 'Special populations (pregnancy, cancer, pediatrics)' }),
-  makeTopic({ id: 'stroke-unit-care', label: 'Stroke-unit care and the admission bundle (VTE, dysphagia, oxygen, glucose, positioning, mobilisation)', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'systems-quality', label: 'Systems of care, transfer benchmarks, quality measurement and AI triage', parentId: 'prehospital-stroke-care' }),
-  makeTopic({ id: 'bp-acute-ischemic', label: 'Acute BP management (non-reperfused ischaemic stroke)', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'bridging-ivt-before-evt', label: 'Bridging IV thrombolysis before thrombectomy', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'cardiac-source-stroke', label: 'Non-AF cardiac sources of stroke (prosthetic valves, LV thrombus, TAVR, LVAD, ECMO)', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'endocarditis-stroke', label: 'Infective endocarditis and stroke', parentId: 'cardiac-source-stroke' }),
-  makeTopic({ id: 'evt-anesthesia', label: 'Anesthesia strategy for thrombectomy (general anesthesia vs conscious sedation)', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'ich-seizure-prophylaxis', label: 'Seizure prophylaxis after intracerebral hemorrhage', parentId: 'ich' }),
-  makeTopic({ id: 'caa-diagnosis', label: 'Cerebral amyloid angiopathy — diagnosis & recurrence risk', parentId: 'ich' }),
-  makeTopic({ id: 'acute-neuroprotection', label: 'Acute neuroprotection / cytoprotection', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'remote-ischemic-conditioning', label: 'Remote ischemic conditioning', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'lipid-lowering-prevention', label: 'Lipid lowering for vascular prevention (statins, PCSK9, LDL targets)', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'glp1-metabolic-prevention', label: 'GLP-1 receptor agonists & metabolic therapy for vascular prevention', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'sleep-apnea-stroke', label: 'Sleep-disordered breathing after stroke', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'cervical-dissection', label: 'Cervical artery dissection', parentId: 'secondary-prevention' }),
-  makeTopic({ id: 'young-stroke-workup', label: 'Young-stroke workup and diagnostic yield', parentId: 'acute-ischemic-stroke' }),
-  makeTopic({ id: 'hormonal-contraception-stroke', label: 'Hormonal contraception and stroke risk' }),
-  makeTopic({ id: 'pregnancy-stroke', label: 'Stroke in pregnancy and the puerperium', parentId: 'special-populations' }),
-  makeTopic({ id: 'pediatric-stroke', label: 'Pediatric and childhood stroke', parentId: 'special-populations' }),
+  {
+    "id": "extended-window-ivt",
+    "label": "Extended-window IV thrombolysis",
+    "parentId": "acute-ischemic-stroke",
+    "notes": ""
+  },
+  {
+    "id": "tnk-vs-alteplase",
+    "label": "Tenecteplase vs alteplase",
+    "parentId": "acute-ischemic-stroke",
+    "notes": ""
+  },
+  {
+    "id": "evt-large-core",
+    "label": "EVT for large-core infarct",
+    "parentId": "acute-ischemic-stroke",
+    "notes": ""
+  },
+  {
+    "id": "evt-late-window",
+    "label": "EVT in late window (6-24h)",
+    "parentId": "acute-ischemic-stroke",
+    "notes": ""
+  },
+  {
+    "id": "bp-post-evt",
+    "label": "Blood pressure target after EVT",
+    "parentId": "acute-ischemic-stroke",
+    "notes": ""
+  },
+  {
+    "id": "ich-bp-management",
+    "label": "ICH blood pressure management",
+    "parentId": "ich",
+    "notes": ""
+  },
+  {
+    "id": "ich-anticoag-reversal",
+    "label": "Anticoagulant-associated ICH reversal",
+    "parentId": "ich",
+    "notes": ""
+  },
+  {
+    "id": "ich-surgery",
+    "label": "ICH surgical evacuation",
+    "parentId": "ich",
+    "notes": ""
+  },
+  {
+    "id": "dapt-minor-stroke",
+    "label": "DAPT for minor stroke / high-risk TIA",
+    "parentId": "secondary-prevention",
+    "notes": ""
+  }
 ];
 
-const topicById = new Map(topics.map((t) => [t.id, t]));
-
-export function getTopic(id) {
-  return topicById.get(id) || null;
-}
-
-export function topicLabel(id) {
-  return topicById.get(id)?.label || id || '';
-}
+const byId = new Map(topics.map(record => [record.id, record]));
+export function getTopic(id) { return byId.get(id) || null; }
+export function getAllTopicIds() { return new Set(byId.keys()); }
+export function topicLabel(id) { return getTopic(id)?.label || id; }
