@@ -7,7 +7,8 @@ describe('Encounter-first navigation and explicit retirement', () => {
     expect(parseWorkspaceRoute('#/protocols/ich')).toEqual({ surface: 'protocols', sub: 'ich' });
     expect(parseWorkspaceRoute('#/protocols/ischemic')).toEqual({ surface: 'protocols', sub: 'ischemic' });
   });
-  it.each(['education','education/icu','curriculum/nursing','simulators','trials','trials/tables','research/guidelines','research/references','guidelines','references','settings','protocols/sah','protocols/cvt'])('retires %s explicitly', route => expect(parseWorkspaceRoute('#/'+route)).toEqual({ surface: 'retired', path: route }));
+  it.each(['education','education/icu','curriculum/nursing','simulators','trials/unknown','research/guidelines','research/references','guidelines','references','settings','protocols/sah','protocols/cvt'])('retires %s explicitly', route => expect(parseWorkspaceRoute('#/'+route)).toEqual({ surface: 'retired', path: route }));
+  it.each([['trials', 'screener'], ['trials/active','screener'], ['trials/tables','tables'], ['trials/database','database'], ['research/trials/studies','database']])('restores %s without unrelated portal routes', (path, sub) => expect(parseWorkspaceRoute('#/'+path)).toEqual({surface:'trials',sub}));
   it.each(['nihss','gcs','ich-score','ich-volume','crcl','aspects','pc-aspects','alteplase','tnk','mrs','dawn','defuse3','dapt'])('maps retained deep links to %s', tool => {
     expect(parseWorkspaceRoute('#/research/calculators/'+tool)).toEqual({ surface: 'encounter', tool });
     expect(parseWorkspaceRoute('#/encounter/'+tool)).toEqual({ surface: 'encounter', tool });

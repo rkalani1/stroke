@@ -107,12 +107,13 @@ describe('canonical Encounter bindings in retained protocol cards', () => {
     await safe().getByLabel('BP at attestation', { exact: true }).fill('178/96');
     await safe().getByLabel('Contraindications').selectOption('reviewed');
     await safe().getByLabel('Provider agreement').selectOption('confirmed');
-    expect(await safe().getByRole('button', { name: 'Copy completed safety pause' }).isEnabled()).toBe(true);
+    expect(await safe().getByRole('button', { name: 'Copy completed safety pause' }).isEnabled()).toBe(false);
     const tick = { ...complete, ivt: { ...complete.ivt, hoursFromLKW: 1.01 }, anterior: { ...complete.anterior, timeFromLKWh: 1.01 } };
     await update(tick);
     expect(await ivt().getByLabel('Absolute and relative contraindications reviewed', { exact: true }).isChecked()).toBe(true);
     expect(await evt().getByLabel('Segment').inputValue()).toBe('M2-proximal-dominant');
-    expect(await safe().getByRole('button', { name: 'Copy completed safety pause' }).isEnabled()).toBe(true);
+    expect(await safe().getByRole('button', { name: 'Copy completed safety pause' }).isEnabled()).toBe(false);
+    expect(await safe().getByLabel('Consent type').inputValue()).toBe('informed');
     const immediate = await page.evaluate(value => {
       window.renderCards(value);
       return {
@@ -126,6 +127,18 @@ describe('canonical Encounter bindings in retained protocol cards', () => {
     expect(await evt().getByLabel('Segment').inputValue()).toBe('');
     expect(await evt().getByLabel('CTP hypoperfusion–hypodensity mismatch present (required beyond 6h)').isChecked()).toBe(false);
     expect(await safe().getByLabel('Consent type').inputValue()).toBe('');
+  });
+
+  it.each([true, false])('withholds unrecorded safety-pause events with compatible context %s', async compatible => {
+    await render({ ...complete, compatible });
+    await safe().getByLabel('Consent type').selectOption('informed');
+    await safe().getByLabel('BP at attestation', { exact: true }).fill('178/96');
+    await safe().getByLabel('Contraindications').selectOption('reviewed');
+    await safe().getByLabel('Provider agreement').selectOption('confirmed');
+    expect(await safe().getByRole('button', { name: 'Copy completed safety pause' }).isDisabled()).toBe(true);
+    const text = await safe().locator('textarea').inputValue();
+    expect(text).toContain('Completed attestation unavailable');
+    expect(text).not.toMatch(/Dose confirmed|Pause performed|Pause confirmed|Safety pause documented/);
   });
 
   it('disables incompatible ischemic edits and preserves numeric zero and tri-state false values', async () => {

@@ -14,10 +14,11 @@ const make = (patch = {}) => {
 const render = state => renderToStaticMarkup(<Encounter state={state} update={() => {}} now={now} onGenerate={() => {}} onCopy={() => {}} copyStatus="" />);
 
 describe('retained Encounter behavior replacing monolith output and duplicate-tool contracts', () => {
-  it.each(['phone', 'video'])('keeps %s consultation summaries explicitly synthetic without default attestations', consultationType => {
+  it.each(['phone', 'video'])('uses the requested %s documentation format without default attestations', consultationType => {
     const summary = buildSummary(make({ consultationType, note: { diagnosisCategory: 'ischemic' } }), now);
-    expect(summary).toContain('SYNTHETIC EDUCATIONAL DEMO - NOT A REAL CLINICAL NOTE. NO PHI.');
-    expect(summary).toContain(consultationType === 'phone' ? 'telephone consultation' : 'video consultation');
+    expect(summary).not.toMatch(/SYNTHETIC EDUCATIONAL DEMO|NOT A REAL CLINICAL NOTE|NO PHI/);
+    expect(summary).not.toMatch(/telephone consultation|video consultation|Acute consultation/);
+    expect(summary).toContain(consultationType === 'phone' ? 'NIHSS score:' : 'Assessment and Plan:');
     expect(summary).toContain('IVT clinician decision: not documented');
     expect(summary).toContain('Consent status: not documented');
     expect(summary).not.toContain('Potential benefits, potential risks');
@@ -27,11 +28,11 @@ describe('retained Encounter behavior replacing monolith output and duplicate-to
     const state = make({ nihss: { motor_arm_left: 'No movement (4)' } });
     expect(nihssAssessment(state.nihss)).toMatchObject({ complete: false, partial: 4, total: null });
     expect(activeNote(state).nihss).toBe('');
-    expect(buildSummary(state, now)).toContain('NIHSS incomplete: 1/15 items; partial sum 4; no completed score');
+    expect(buildSummary(state, now)).toContain('NIHSS score: incomplete: 1/15 items; partial sum 4; no completed score');
   });
   it('preserves a complete explicit NIHSS zero and withdraws it when one field is cleared', () => {
     const state = make({ nihss: zeroExam });
-    expect(buildSummary(state, now)).toContain('NIHSS: 0/42 (all items documented)');
+    expect(buildSummary(state, now)).toContain('NIHSS score: 0/42 (all items documented)');
     const cleared = updateEncounter(state, previous => ({ ...previous, nihss: { ...previous.nihss, dysarthria: '' } }));
     expect(activeNote(cleared).nihss).toBe('');
     expect(buildSummary(cleared, now)).toContain('no completed score');
@@ -58,7 +59,7 @@ describe('retained Encounter behavior replacing monolith output and duplicate-to
     const html = render(make({ draft: { text: 'OBSOLETE GENERATED TEXT', stale: true } }));
     expect(html).toContain('Encounter inputs changed');
     expect(html).not.toContain('OBSOLETE GENERATED TEXT');
-    expect(html).not.toContain('Copy reviewed summary');
+    expect(html).not.toContain('Copy Pulsara summary');
   });
   it('a recommendation and a timestamp alone do not attest administration', () => {
     const state = make({ note: { diagnosisCategory: 'ischemic' }, decisions: { ivt: 'Recommended', evt: '' }, drug: 'TNK', actions: { administrationTime: '2026-10-01T11:00', administered: false } });

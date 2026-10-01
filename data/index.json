@@ -1,7 +1,7 @@
 {
   "_meta": {
     "name": "stroke",
-    "appVersion": "7.0.0",
+    "appVersion": "7.0.1",
     "schemaVersion": "2.0.0",
     "baseUrl": "https://rkalani1.github.io/stroke",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -10,6 +10,7 @@
     "note": "Static deterministic maintained subset. Payload checksums are build integrity metadata, never clinical review dates."
   },
   "endpoints": [
+    "https://rkalani1.github.io/stroke/data/trials.json",
     "https://rkalani1.github.io/stroke/data/sources.json",
     "https://rkalani1.github.io/stroke/data/calculators-index.json",
     "https://rkalani1.github.io/stroke/data/atlas/recommendations.json",
@@ -40,8 +41,23 @@
       "url": "https://rkalani1.github.io/stroke/#/protocols/ich"
     },
     {
+      "route": "#/trials",
+      "label": "Trials: screener, criteria tables and study database",
+      "url": "https://rkalani1.github.io/stroke/#/trials"
+    },
+    {
+      "route": "#/trials/tables",
+      "label": "Trial criteria tables",
+      "url": "https://rkalani1.github.io/stroke/#/trials/tables"
+    },
+    {
+      "route": "#/trials/database",
+      "label": "Study database",
+      "url": "https://rkalani1.github.io/stroke/#/trials/database"
+    },
+    {
       "route": "#/tools",
-      "label": "Tools & sources",
+      "label": "Calculators & Links",
       "url": "https://rkalani1.github.io/stroke/#/tools"
     }
   ],

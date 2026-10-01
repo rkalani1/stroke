@@ -11,10 +11,10 @@ a { color: rgb(var(--link-600)); text-decoration: underline; text-underline-offs
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 2px solid rgb(var(--cobalt-600)); outline-offset: 3px; }
 button:disabled { opacity: .55; cursor: not-allowed; }
 .workspace-shell { max-width: 1120px; margin: 0 auto; padding: 0 24px 48px; }
-.workspace-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.workspace-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
 .workspace-brand { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; font: 700 1.5rem var(--font-display); color: var(--ink); text-decoration: none; }
-.workspace-secondary { display: flex; align-items: center; gap: 16px; font-size: .875rem; }
-.workspace-secondary > a { display: flex; align-items: center; min-height: 44px; text-decoration: none; font-weight: 600; }
+.workspace-secondary { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; font-size: .875rem; }
+.workspace-secondary > a { display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; text-decoration: none; font-weight: 600; }
 .workspace-utilities { position: relative; }
 .workspace-utilities > summary { display: flex; align-items: center; padding: 0 8px; font-weight: 600; }
 .utility-panel { position: absolute; right: 0; z-index: 50; top: 100%; padding: 20px; width: min(320px, calc(100vw - 32px)); border: 1px solid var(--line); border-radius: 8px; background: var(--card); box-shadow: 0 8px 24px #0002; }
@@ -84,3 +84,10 @@ h3 { font-weight: 650; margin: 12px 0; }
 
 html[data-theme="dark"] a { color: rgb(var(--link-400)); }
 html[data-theme="dark"] .workspace-brand { color: var(--ink); }
+
+.workspace-secondary > a[aria-current="page"] { text-decoration: underline; text-underline-offset: 6px; }
+
+[id^="trials-"][role="tabpanel"] a[href] { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; }
+
+.trials-surface button[aria-pressed="true"] { background: rgb(var(--cobalt-600)); border-color: rgb(var(--cobalt-600)); color: #fff; }
+.trials-surface button[aria-pressed="true"] .text-mute { color: #fff; }

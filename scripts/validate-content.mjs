@@ -14,5 +14,17 @@ for(const r of registry){if(seen.has(r.id))errors.push(`duplicate tool ${r.id}`)
 for(const s of sources){if(!s.id||!s.label||!/^https:\/\//.test(s.url||'')||!s.population||!s.limits)errors.push(`${s.id}: incomplete source/limits record`);if(s.citationId&&!citationIds.has(s.citationId))errors.push(`${s.id}: unknown citation ${s.citationId}`);review(s.id,s.reviewedAt,s.reviewScope);}
 for(const claim of Object.values(CLINICAL_CLAIMS)){review(claim.id,claim.reviewedAt,claim.reviewScope);for(const file of new Set([claim.sourceFile,...(claim.sources||[]).map(s=>s.file)].filter(Boolean))){const source=read(file);if(source.sourceReview?.reviewedAt!==claim.reviewedAt)errors.push(`${claim.id}: review date disagrees with ${file}`);if(claim.sourceRecommendationId&&!source.recommendations.some(r=>r.id===claim.sourceRecommendationId)&&file===claim.sourceFile)errors.push(`${claim.id}: required recommendation removed`);}}
 for(const file of fs.readdirSync('src/guidelines').filter(f=>f.endsWith('.json'))){const g=read('src/guidelines/'+file);review(g.id,g.sourceReview?.reviewedAt,g.sourceReview?.scope);if(!g.recommendations?.length||!g.maintainedProjection?.clinicalReviewUnchanged)errors.push(`${g.id}: missing maintained projection`);if(g.coverage)errors.push(`${g.id}: archived full-transcription coverage advertised for subset`);}
-const result={ok:!errors.length,scope:'Maintained Encounter tools and source dependencies',tools:registry.length,sources:sources.length,errors,warnings};
-if(process.argv.includes('--json'))console.log(JSON.stringify(result,null,2));else{console.log(`content-validate: ${result.ok?'PASS':'FAIL'} (${registry.length} retained tools, ${sources.length} source/limits records)`);errors.forEach(x=>console.error(x));warnings.forEach(x=>console.warn(x));}process.exitCode=result.ok?0:1;
+const trials=read('src/evidence/screenerTrials.json'), trialNames=new Set();
+for(const trial of trials){
+ if(!trial.acronym||trialNames.has(trial.acronym)) errors.push('Missing or duplicate trial acronym');
+ trialNames.add(trial.acronym);
+ if(trial.noContactInfo!==true||!['enrolling','soon','closed','placeholder'].includes(trial.status)||!trial.sourceGaps?.length||!trial.exactInclusionCriteria?.length||!trial.exactExclusionCriteria?.length) errors.push(`${trial.acronym}: incomplete bounded trial profile`);
+ const metadata=trial.externalMetadata||{};
+ if(trial.sourceCompletenessStatus==='not_registry_verified') warnings.push(`${trial.acronym}: unverified profile; screening remains withheld`);
+ else {
+  if(!/^NCT\d{8}$/.test(metadata.nct||'')||metadata.registryUrl!==`https://clinicaltrials.gov/study/${metadata.nct}`) errors.push(`${trial.acronym}: missing primary registry identity`);
+  review(`trial ${trial.acronym}`,metadata.verificationDate||null,'Dated first-pass registry status and partial criteria only; current recruitment/local activation require confirmation');
+ }
+}
+const result={ok:!errors.length,scope:'Maintained Encounter tools, source dependencies and restored trial profiles',trialProfiles:trials.length,tools:registry.length,sources:sources.length,errors,warnings};
+if(process.argv.includes('--json'))console.log(JSON.stringify(result,null,2));else{console.log(`content-validate: ${result.ok?'PASS':'FAIL'} (${registry.length} retained tools, ${sources.length} source/limits records, ${trials.length} trial profiles)`);errors.forEach(x=>console.error(x));warnings.forEach(x=>console.warn(x));}process.exitCode=result.ok?0:1;

@@ -420,8 +420,10 @@ const ContraindicationsCard = () => (
 const SafePauseCard = ({ defaults = {}, encounter }) => {
   const [st, setSt] = useProtocolCaseState({ consentType: encounter ? '' : defaults.consentType || '', bp: encounter ? '' : defaults.bp || '', contraindications: 'not reviewed', providerAgreement: 'not confirmed' }, encounter);
   const issues = getSafePauseIssues(st);
-  const complete = issues.length === 0;
-  const text = getSafePauseText(st);
+  const complete = !encounter && issues.length === 0;
+  const text = encounter && issues.length === 0
+    ? 'Completed attestation unavailable: dose confirmation, pause performance, required-role confirmation and documentation are not recorded in this workspace.'
+    : getSafePauseText(st);
   return (
     <div className="p-3 rounded-lg border border-ok-300 bg-white dark:border-ok-800 dark:bg-card">
       <h4 className="font-bold text-ok-900 mb-2 flex items-center gap-2 dark:text-ok-300">
@@ -455,7 +457,8 @@ const SafePauseCard = ({ defaults = {}, encounter }) => {
           </select>
         </label>
       </div>
-      <textarea readOnly aria-label="Safe Pause attestation text (read-only, copyable)" value={text} rows={7} className="w-full px-2 py-1 border rounded text-[11px] font-mono bg-slate-50 dark:bg-paper-2" />
+      {encounter && issues.length === 0 && <p className="text-xs mb-2">Reference checklist only. These fields do not record a completed safety pause. Document actual actions in Encounter; completed attestation and copy are unavailable here.</p>}
+      <textarea readOnly aria-label={encounter ? 'Safe Pause reference checklist (read-only)' : 'Safe Pause attestation text (read-only, copyable)'} value={text} rows={7} className="w-full px-2 py-1 border rounded text-[11px] font-mono bg-slate-50 dark:bg-paper-2" />
       <div className="flex gap-2 mt-1">
         <button type="button" disabled={!complete} onClick={() => { try { navigator.clipboard.writeText(text); } catch (_) {} }} className="px-2 py-1 bg-ok-600 hover:bg-ok-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white text-xs rounded">Copy completed safety pause</button>
         <span className="text-[10px] text-slate-500 self-center dark:text-mute">Attestation placeholder: <strong>{SAFE_PAUSE_ATTESTATION}</strong></span>

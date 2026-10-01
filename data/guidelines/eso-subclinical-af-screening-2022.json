@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "data/guidelines/eso-subclinical-af-screening-2022.json",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.0.0",
+    "appVersion": "7.0.1",
     "checksum": "sha256:74234e98afe7498fb5daf1f36ac2d78a",
     "count": 0,
     "source": "Retired historical portal endpoint",

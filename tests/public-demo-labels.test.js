@@ -27,20 +27,20 @@ function lines(relPath) {
 }
 
 describe('public demo labeling and agent disclaimers', () => {
-  it('uses public educational-demo framing in shipped metadata', () => {
+  it('uses the owner-requested concise workspace metadata', () => {
     const index = readText('index.html');
     const manifest = readJson('manifest.json');
 
     expect(index).toContain('<title>Stroke · Encounter workspace</title>');
-    expect(index).toMatch(/do not enter PHI/i);
-    expect(index).toContain('not an approved clinical tool');
+    expect(index).not.toMatch(/do not enter PHI|synthetic|educational demo|not an approved clinical tool/i);
+    expect(index).toContain('Pulsara summaries and Epic note templates');
     expect(index).not.toMatch(syntheticPrivateOrg);
     expect(index).not.toMatch(/Comprehensive clinical decision support tool/i);
 
-    expect(manifest.name).toBe('Stroke CDS Educational Demo');
-    expect(manifest.description).toContain('Synthetic Encounter workspace');
-    expect(manifest.description).toContain('do not enter PHI');
-    expect(manifest.shortcuts[0].description).toBe('Open synthetic Encounter');
+    expect(manifest.name).toBe('Stroke workspace');
+    expect(manifest.description).toContain('Encounter workspace');
+    expect(JSON.stringify(manifest)).not.toMatch(/synthetic|educational demo|do not enter PHI/i);
+    expect(manifest.shortcuts[0].description).toBe('Open Encounter');
     expect(JSON.stringify(manifest)).not.toMatch(/Clinical decision support toolkit for stroke management/i);
   });
 

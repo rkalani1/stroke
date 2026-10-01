@@ -161,26 +161,17 @@
     "scripts/validate-evidence-promotion.mjs",
     "src/evidence/__tests__/activeTrials.test.js",
     "src/evidence/__tests__/atlas.test.js",
-    "src/evidence/__tests__/eligibility-tables.test.js",
     "src/evidence/__tests__/expected-snapshot.js",
     "src/evidence/__tests__/matcher-engine.test.js",
     "src/evidence/__tests__/matcher.test.js",
     "src/evidence/__tests__/review-safety.test.js",
     "src/evidence/__tests__/scenario-snapshot.test.js",
     "src/evidence/__tests__/scenarios.json",
-    "src/evidence/__tests__/screener-eval.test.js",
-    "src/evidence/__tests__/screener-exclusions-ui.test.js",
-    "src/evidence/__tests__/screenerTrials.test.js",
     "src/evidence/__tests__/screening-input-integrity.test.js",
     "src/evidence/activeTrials.js",
     "src/evidence/completedTrials.js",
-    "src/evidence/eligibilityTables.js",
     "src/evidence/index.d.ts",
     "src/evidence/matcher-engine.js",
-    "src/evidence/matcher-helpers.js",
-    "src/evidence/screener-eval.js",
-    "src/evidence/screenerTrials.js",
-    "src/evidence/screenerTrials.json",
     "tests/adversarial-m2.test.js",
     "tests/adversarial-m3-challenger.test.js",
     "tests/adversarial-tier5-hardening.test.js",
@@ -217,5 +208,19 @@
     "tests/teaching-review-repairs.test.js",
     "tests/teaching.test.js",
     "tests/trial-context-6306.test.jsx"
-  ]
+  ],
+  "restoredTrials": {
+    "reason": "Owner explicitly restored Trials on 2026-10-01; these canonical dependencies and tests are maintained again.",
+    "paths": [
+      "src/evidence/__tests__/eligibility-tables.test.js",
+      "src/evidence/__tests__/screener-eval.test.js",
+      "src/evidence/__tests__/screener-exclusions-ui.test.js",
+      "src/evidence/__tests__/screenerTrials.test.js",
+      "src/evidence/eligibilityTables.js",
+      "src/evidence/matcher-helpers.js",
+      "src/evidence/screener-eval.js",
+      "src/evidence/screenerTrials.js",
+      "src/evidence/screenerTrials.json"
+    ]
+  }
 }

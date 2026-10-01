@@ -10,6 +10,11 @@ export function parseWorkspaceRoute(hash = '') {
     const id = ALIASES[sub] || sub;
     return RETAINED_TOOLS.has(id) ? { surface: 'encounter', tool: id } : { surface: 'retired', path };
   }
+  if (first === 'trials' || first === 'research' && sub === 'trials') {
+    const view = first === 'trials' ? sub : tool;
+    const normalized = { active: 'screener', eligibility: 'tables', studies: 'database' }[view] || view || 'screener';
+    return ['screener', 'tables', 'database'].includes(normalized) ? { surface: 'trials', sub: normalized } : { surface: 'retired', path };
+  }
   if (first === 'tools') return { surface: 'tools' };
   if (['protocols', 'management'].includes(first) && (!sub || ['ich', 'ischemic', 'tia'].includes(sub))) return { surface: 'protocols', sub: sub === 'ich' ? 'ich' : 'ischemic' };
   if (first === 'calculators' || ['protocols', 'management', 'research'].includes(first) && sub === 'calculators') {

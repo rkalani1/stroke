@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v7.0.1 — 2026-10-01 — Documentation and Trials restoration
+
+- Restore telephone Pulsara summaries and full video Epic templates from canonical Encounter fields, including optional history, examination, imaging and labs. Preserve incomplete findings, explicit events and invalidated drafts.
+- Restore Trials beside Protocols; rename Tools & sources to Calculators & Links and remove the requested interface prose. These owner decisions supersede the earlier Trials retirement and visible demo labels.
+- Repair skip-link navigation, elapsed protocol display and unsupported completed safety-pause attestations. Consolidate elapsed-time refresh into one clock that pauses outside relevant visible views.
+
 ## v7.0.0 — 2026-10-01 — Encounter-first workspace
 
 - Replace the broad portal with four contextual Encounter steps, two secondary actions, embedded tools and one explicit synthetic summary. Preserve unknown/invalid states and separate decisions, consent, administration and procedure timestamps.

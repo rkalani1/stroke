@@ -1,7 +1,7 @@
 {
-  "name": "Stroke CDS Educational Demo",
-  "short_name": "Stroke Demo",
-  "description": "Synthetic Encounter workspace with embedded calculations and protected example protocols. Not an approved clinical tool; do not enter PHI or real encounter data.",
+  "name": "Stroke workspace",
+  "short_name": "Stroke",
+  "description": "Encounter workspace with embedded calculations, protocols, Pulsara summaries and Epic note templates.",
   "id": "stroke-cds-app",
   "start_url": "./#/encounter",
   "display": "standalone",
@@ -24,14 +24,13 @@
   ],
   "categories": [
     "medical",
-    "healthcare",
-    "education"
+    "healthcare"
   ],
   "shortcuts": [
     {
       "name": "Encounter",
       "url": "./#/encounter",
-      "description": "Open synthetic Encounter"
+      "description": "Open Encounter"
     },
     {
       "name": "Protocols",

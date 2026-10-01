@@ -74,3 +74,24 @@ Rollback ref: **`archive/pre-encounter-first-20261001-4f8e99d`**. Restore throug
 PR #228 merged as `cc2b53f789d9d4f12e5a5e5f88d88d72422ca16c`. Pages published version 7.0.0 and all 137 declared shell/module/API artifacts match the checked bytes. The full actual-live smoke passes 16/16; 50 direct retired/support URLs, including all 24 teaching downloads, return 404/410.
 
 Main CI's separate adaptive job failed its local retired-URL assertion because it lacked `output/site` and the harness implicitly served the repository root. Actual live retirement was verified separately. Standalone main/scheduled jobs now stage the same public allowlist before local QA; the default harness fails fast when that stage is missing. No test assertion, latency ceiling or public exclusion is weakened. Final repair PR/main check results are recorded in the release handoff.
+
+
+## Owner-requested follow-up — 7.0.1 (in progress)
+
+The owner authorized production refinement, then explicitly requested restoring telephone Pulsara and video Epic formats, removing the named visible demo/session/source-directory prose, and restoring Trials as a top tab beside Protocols. These supersede the earlier visible-label and Trials retirement choices. Calculators & Links replaces Tools & sources. Other retirement restrictions, public-build separation, identifier screening, session-only state, source limitations and release gates remain active.
+
+Documentation is generated from canonical fields on explicit action; incomplete exams, unknown events and missing values remain qualified. Optional history, imaging, labs and narrative fields are empty by default and screened. Format or source changes invalidate the draft.
+
+Final review found and repaired a skip-link hash-routing bug and a completed safety-pause attestation that had no recorded confirmation events. The protected helper corpus remains unchanged; controlled production cards suppress unsupported completion and copy. One visibility-aware wall-clock refresh replaces duplicate intervals; source edits and visibility/resume refresh absolute elapsed times.
+
+Combined candidate verification: 968 Vitest cases and 8 controller tests pass (three repository-state cases are intentionally main-only). npm test passes all validators and 20 browser cases. Upgrade/failure recovery 6/6, MCP 41 calls over seven maintained tools, protected ICH524/ischemic754 text locks, generated metadata, tokens/contrast and 21 touch-target viewport/route combinations pass. Rendered desktop/mobile Trials reviewed. No protected corpus or snapshot changes in this follow-up. Trial profile schema/currency validation retains original dated checks and the two unverified withheld profiles.
+
+Current initial JS 252,011 raw/82,060 gzip; whole offline JS 630,088/171,342; CSS 72,758; complete cache 1,471,659 bytes/38 entries. Trials contributes90,671 raw/22,211 gzip on demand. Shared table criteria removed duplicate facts. The newly authorized Trials scope raises only the reviewed whole-JS raw ceiling from600 to640KiB; initial300KiB/100KiB gzip, total180KiB gzip, CSS90KiB and cache2MiB remain unchanged. No packed-data layer was added.
+
+Same uncompressed local Chromium143, 1440×900, SW blocked, no throttling, three fresh contexts and2600ms idle samples: empty Encounter and Tools after Protocols now have zero periodic callbacks (previous2 and5). Active timed Encounter uses one interval; exact sample callback counts depend on phase. Median script work is3.803→0ms empty,6.932→3.799ms timed,16.682→0ms Tools. Median usable-load77.795→78.960ms establishes no startup speedup; initial bytes255,027→252,011. Values are local measurements, not device/cloud guarantees.
+
+Additional repairs: protocol timing receives the validated complete elapsed shape and labels Discovery separately; unknown LKW does not invent onset circumstances; telephone follow-up context survives; confirmed New encounter closes its utility menu. Browser regressions cover these and both complete/incomplete documentation paths.
+
+Next: commit/push this reviewed candidate, normal PR checks and merge, then verify main CI, Pages build, exact live bytes and actual-live browser/retired-URL checks.
+
+Local leak checks use the public denylist; the authoritative private list is held by existing CI. An optional local hook installation was reverted to the original unset configuration after it could not load that private list. No hook file, private scan, CI gate or release protection was changed. The full private CI scans must pass on this exact candidate before merge.
