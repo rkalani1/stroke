@@ -16,7 +16,7 @@ describe('bounded clinical-reference data', () => {
     expect(canonical.topics).toHaveLength(80);
     expect(new Set(canonical.topics.map(topic => topic.category)).size).toBe(9);
     expect(canonical.calculators).toHaveLength(16);
-    expect(canonical.studies).toHaveLength(16);
+    expect(canonical.studies).toHaveLength(29);
     expect(validate(canonical)).toEqual([]);
   });
 
@@ -32,7 +32,7 @@ describe('bounded clinical-reference data', () => {
   it('serves the exact canonical records and source dates with matching version and checksum', () => {
     const endpoint = read('data/clinical-reference.json');
     expect(endpoint.data).toEqual(canonical);
-    expect(endpoint._meta).toMatchObject({ status: 'maintained', schemaVersion: '2.0.0', appVersion: read('package.json').version, count: canonical.topics.length + canonical.studies.length, topicCount: canonical.topics.length, studyCount: 16 });
+    expect(endpoint._meta).toMatchObject({ status: 'maintained', schemaVersion: '2.0.0', appVersion: read('package.json').version, count: canonical.topics.length + canonical.studies.length, topicCount: canonical.topics.length, studyCount: canonical.studies.length });
     expect(endpoint._meta.checksum).toBe(`sha256:${crypto.createHash('sha256').update(JSON.stringify(canonical)).digest('hex').slice(0, 32)}`);
     expect(endpoint._meta.scope).toContain('not full clinical certification');
   });

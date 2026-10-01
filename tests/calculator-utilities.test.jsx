@@ -6,11 +6,11 @@ import { calculatorDefinitions } from '../src/supplementary-calculator-definitio
 import { ENCOUNTER_TOOLS, matchesCalculatorSearch, reviewedCalculatorText } from '../src/calculator-utilities.js';
 import { updateSupplementaryField as edit } from '../src/supplementary-calculators.js';
 
-const state = () => ({context:'acute', note:{diagnosisCategory:'tia',age:'59',presentingBP:'139/89',premorbidMRS:'0',name:'Unrelated note text'},gcs:{},dapt:{},supplementary:{}});
+const state = () => ({context:'acute', note:{diagnosisCategory:'tia',age:'59',presentingBP:'170/100',premorbidMRS:'0',name:'Unrelated note text'},gcs:{},dapt:{},supplementary:{}});
 const definition = id => calculatorDefinitions.find(item => item.id === id);
 const prepared = () => {
   let result = state();
-  for (const [key,value] of Object.entries({tiaConfirmed:true,clinicalFeatures:'other',duration:'under10',diabetes:false,reviewed:true})) result = edit(result,'abcd2',key,value);
+  for (const [key,value] of Object.entries({tiaConfirmed:true,initialSystolic:'139',initialDiastolic:'89',clinicalFeatures:'other',duration:'under10',diabetes:false,reviewed:true})) result = edit(result,'abcd2',key,value);
   return result;
 };
 

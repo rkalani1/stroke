@@ -45,8 +45,8 @@ describe('calculateGCS', () => {
     expect(calculateGCS({ eye: '4', verbal: '5' })).toBeNull();
   });
 
-  it('clamps out-of-range values', () => {
-    expect(calculateGCS({ eye: '9', verbal: '9', motor: '9' })).toBe(15);
+  it('rejects out-of-range values', () => {
+    expect(calculateGCS({ eye: '9', verbal: '9', motor: '9' })).toBeNull();
   });
 });
 

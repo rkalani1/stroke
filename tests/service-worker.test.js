@@ -7,7 +7,7 @@ import vm from 'node:vm';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
 const version = JSON.parse(readFileSync(join(repoRoot, 'package.json'), 'utf8')).version;
-const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-') + '-comprehensive-20261001';
+const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-') + '-utility-review-20261001';
 const workerSource = readFileSync(join(repoRoot, 'service-worker.js'), 'utf8');
 const referenceFixture = JSON.parse(readFileSync(new URL('../data/clinical-reference.json', import.meta.url), 'utf8'));
 referenceFixture._meta.appVersion = version;

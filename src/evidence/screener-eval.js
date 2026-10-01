@@ -25,22 +25,23 @@ export const EXCLUSION_ITEMS = [
   { id: 'exMultipleTerritories', label: 'Acute occlusions in multiple vascular territories', classifications: ['ischemic'], trials: ['STEP'] },
   { id: 'exTandem', label: 'Tandem occlusions (cervical + intracranial)', classifications: ['ischemic'], trials: ['STEP'] },
   { id: 'exTerminalIllness', label: 'Known terminal cancer or terminal illness at stroke onset', classifications: ['ischemic'], trials: ['TESTED'] },
-  { id: 'exLifeExpectancy2y', label: 'Life expectancy < 2 years', classifications: ['ich'], trials: ['SATURN'] },
+  { id: 'exTerminalComorbidity2y', label: 'Life expectancy <24 months due to comorbid terminal conditions', classifications: ['ich'], trials: ['SATURN'] },
   { id: 'exSecondaryIch', label: 'Suspected secondary cause for ICH (AVM, aneurysm, tumor, SAH)', classifications: ['ich'], trials: ['MINUTE', 'SATURN'] },
   { id: 'exMidbrain', label: 'Midbrain extension or infratentorial/thalamic location', classifications: ['ich'], trials: ['MINUTE'] },
   { id: 'exPriorIch12m', label: 'Prior ICH in past 12 months', classifications: ['ich'], trials: ['ASPIRE'] },
   { id: 'exClearAnticoagulationIndication', label: 'Separate mandatory anticoagulation indication (e.g., DVT/PE)', classifications: ['ich'], trials: ['ASPIRE'] },
   { id: 'exClearAntiplateletIndication', label: 'Clear baseline indication for antiplatelet therapy', classifications: ['ich'], trials: ['ASPIRE'] },
   { id: 'exIchScore3', label: 'Clinical ICH Score > 3', classifications: ['ich'], trials: ['SATURN'] },
-  { id: 'exRecentMi3m', label: 'Myocardial Infarction within past 3 months', classifications: ['ich'], trials: ['SATURN'] },
+  { id: 'exRecentCoronarySyndrome', label: 'CAD-related MI or unstable angina within the previous 3 months', classifications: ['ich'], trials: ['SATURN'] },
   { id: 'exEgfr35', label: 'eGFR < 35 ml/min/1.73m²', classifications: ['ischemic'], trials: ['ESUS', 'MOCHA'] },
   { id: 'exMriContraindication', label: 'Contraindication to MRI or gadolinium contrast', classifications: ['ischemic'], trials: ['ESUS', 'MOCHA'] },
   { id: 'exRecentSurgery30d', label: 'Surgery within 30 days prior to stroke onset', classifications: ['ischemic'], trials: ['ESUS'] },
   { id: 'exBilateralCarotidRevasc', label: 'History of bilateral carotid endarterectomy/stenting', classifications: ['ischemic'], trials: ['MOCHA'] },
-  { id: 'exPriorIchHistory', label: 'Prior history of spontaneous ICH / brain hemorrhage', classifications: ['ischemic', 'tia'], trials: ['INTERCEPT', 'MR-PICS'] },
+  { id: 'exSpontaneousHemorrhagicStroke', label: 'History of spontaneous hemorrhagic stroke', classifications: ['ischemic'], trials: ['MR-PICS'] },
+  { id: 'exIntracranialHemorrhage', label: 'History of intracranial hemorrhage', classifications: ['ischemic'], trials: ['INTERCEPT'] },
   { id: 'exBrainBleed2y', label: 'Spontaneous brain bleed within past 2 years', classifications: ['ischemic', 'tia'], trials: ['CLARITY'] },
   { id: 'exSaptContraindication', label: 'Contraindication to additional SAPT for 6 months', classifications: ['ischemic'], trials: ['INTERCEPT'] },
-  { id: 'exCarotidStenosis50', label: 'Carotid/vertebral/subclavian/intracranial stenosis ≥ 50%', classifications: ['ischemic'], trials: ['INTERCEPT'] },
+  { id: 'exUntreatedStenosisPlaque', label: 'Untreated ≥50% stenosis or investigator-defined high-risk plaque: carotid, subclavian, vertebral or intracranial artery', classifications: ['ischemic'], trials: ['INTERCEPT'] },
   { id: 'exPregnancy', label: 'Pregnancy', classifications: ['ischemic', 'ich'], trials: ['SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2', 'INTERCEPT'] },
   { id: 'exIncarcerated', label: 'Patient is incarcerated (prisoner)', classifications: ['ischemic', 'ich'], trials: ['SCOUTS-3'] },
   { id: 'exTrach', label: 'Mechanical ventilation, tracheostomy, or oxygen > 4 L/min', classifications: ['ischemic', 'ich'], trials: ['SCOUTS-3'] },
@@ -53,32 +54,30 @@ export const EXCLUSION_ITEMS = [
   { id: 'exVerifySeizure', label: 'Seizure after the index stroke, or seizure within 12 months while taking antiseizure medication', classifications: ['ischemic'], trials: ['VERIFY'] },
   { id: 'exSeizures', label: 'History of seizures or epilepsy', classifications: ['ischemic', 'ich'], trials: ['MR-PICS'] },
   { id: 'exBotoxVns3m', label: 'Botulinum toxin to paretic arm within past 3 months or expected by 8-month visit', classifications: ['ischemic', 'ich'], trials: ['TELE-REHAB-2'] },
-  { id: 'exAnticoagulation', label: 'Currently taking anticoagulants', classifications: ['ischemic'], trials: ['MR-PICS'] },
+  { id: 'exTherapeuticAnticoagulation', label: 'Currently taking therapeutic anticoagulation', classifications: ['ischemic'], trials: ['MR-PICS'] },
   { id: 'exHistoryDvtPe', label: 'History of unprovoked DVT or any pulmonary embolus', classifications: ['ischemic'], trials: ['MR-PICS'] },
   { id: 'exRecurrentStroke', label: 'Recurrent stroke since the index stroke', classifications: ['ischemic', 'ich'], trials: ['TELE-REHAB-2'] },
   { id: 'exLifeExpectancy9m', label: 'Life expectancy < 9 months', classifications: ['ischemic', 'ich'], trials: ['TELE-REHAB-2'] },
   { id: 'exCongestiveHeartFailure', label: 'Congestive Heart Failure (moderate/severe)', classifications: ['ischemic', 'tia'], trials: ['CLARITY'] },
-  { id: 'exSevereAphasiaCognitive', label: 'Moderate-to-severe cognitive impairment, dementia, or severe aphasia', classifications: ['ischemic', 'ich'], trials: ['MR-PICS', 'CAPPRICORN-1'] },
+  { id: 'exMrPicsCommunication', label: 'Aphasia or cognitive deficits prevent communicating pain/discomfort or understanding motor testing/rehabilitation tasks', classifications: ['ischemic'], trials: ['MR-PICS'] },
+  { id: 'exCaaCognitiveImpairment', label: 'Moderate/severe Alzheimer disease or significant cognitive impairment', classifications: ['ich'], trials: ['CAPPRICORN-1'] },
   { id: 'exEgfr30', label: 'eGFR < 30 ml/min/1.73m²', classifications: ['ich'], trials: ['CAPPRICORN-1'] }
 ];
 
 const ALL_EXCLUSION_IDS = [
+  'exTerminalComorbidity2y', 'exRecentCoronarySyndrome', 'exSpontaneousHemorrhagicStroke',
+  'exTherapeuticAnticoagulation', 'exMrPicsCommunication', 'exCaaCognitiveImpairment', 'exIntracranialHemorrhage', 'exUntreatedStenosisPlaque',
   'exMultipleTerritories', 'exTandem',
-  'exTerminalIllness', 'exSecondaryIch', 'exMidbrain', 'exMassiveIvh',
-  'exAbsentBrainstem', 'exEvdEvacuation', 'exPriorIch12m',
+  'exTerminalIllness', 'exSecondaryIch', 'exMidbrain', 'exPriorIch12m',
   'exClearAnticoagulationIndication', 'exClearAntiplateletIndication',
   'exIchScore3', 'exRecentMi3m', 'exLifeExpectancy2y', 'exLifeExpectancy9m',
   'exEgfr35', 'exMriContraindication', 'exRecentSurgery30d',
   'exBilateralCarotidRevasc', 'exPriorIchHistory', 'exBrainBleed2y',
   'exSaptContraindication', 'exCarotidStenosis50', 'exPregnancy',
   'exIncarcerated', 'exTrach', 'exCpapUse14d', 'exSecondaryIchOrSah',
-  'exPriorDementia', 'exWorseningNeurologic', 'exDisorderInterfering',
   'exPriorUeCondition', 'exLegallyBlind', 'exDenseSensoryLoss',
-  'exRecentStroke30d', 'exSeizures', 'exVerifySeizure', 'exSevereSpasticity', 'exArmInjury',
-  'exSevereAphasiaCognitive', 'exSevereClaustrophobia', 'exBotoxVns3m',
+  'exRecentStroke30d', 'exSeizures', 'exVerifySeizure', 'exSevereAphasiaCognitive', 'exBotoxVns3m',
   'exAnticoagulation', 'exHistoryDvtPe', 'exRecurrentStroke',
-  'exPlannedCarotidIntervention', 'exDrugAlcoholAbuse',
-  'exMsParkinsonAlsDementia', 'exMajorPsychiatric', 'exOtherUpperLimbTrial',
   'exCongestiveHeartFailure', 'exEgfr30'
 ];
 
@@ -194,6 +193,7 @@ export function createInitialScreenerState() {
     presentedWithin24h: 'unselected',
     singleAntiplateletSoc: 'unselected',
     afibHistory: 'unselected',
+    afOrFlutterHistory: 'unselected',
     takingOac: 'unselected',
     exclusions: {}
   };
@@ -242,6 +242,8 @@ export function buildScreenerParams(state) {
     presentedWithin24h: state.presentedWithin24h,
     singleAntiplateletSoc: state.singleAntiplateletSoc,
     afibHistory: state.afibHistory,
+    // AF establishes this broader ASPIRE criterion; absent AF does not exclude flutter.
+    afOrFlutterHistory: typeof state.afOrFlutterHistory === 'boolean' ? state.afOrFlutterHistory : state.afibHistory === true ? true : 'unselected',
     takingOac: state.takingOac
   };
 

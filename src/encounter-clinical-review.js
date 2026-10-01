@@ -156,7 +156,14 @@ export function buildEvtConsentText(note = {}) {
   return lines.join('\n');
 }
 
-// GCS owner assessment aid: do not total an untestable component or impute one.
+// GCS owner structured assessment aid, checked 2026-10-01:
+// https://www.glasgowcomascale.org/download-aid/
+export const GCS_RESPONSES = {
+  eye: ['None', 'To pressure', 'To sound', 'Spontaneous'],
+  verbal: ['None', 'Sounds', 'Words', 'Confused', 'Oriented'],
+  motor: ['None', 'Extension', 'Abnormal flexion', 'Normal flexion', 'Localising', 'Obeys commands']
+};
+// Do not total an untestable component or impute one.
 export function reviewedGcs(items = {}) {
   const eye = numericInput(items.eye, { min: 1, max: 4, integer: true });
   const verbal = numericInput(items.verbal, { min: 1, max: 5, integer: true });
@@ -165,7 +172,13 @@ export function reviewedGcs(items = {}) {
 }
 export function gcsDocumentation(items = {}) {
   const total = reviewedGcs(items);
-  return `GCS E${items.eye || '?'} V${items.verbal || '?'} M${items.motor || '?'}${total === null ? '; total not reported (incomplete or not testable)' : ` = ${total}/15`}${items.notTestableReason ? `; limitation: ${items.notTestableReason}` : ''}`;
+  const untestable = value => value === 'UN' || value === 'NT';
+  const entries = Object.entries(GCS_RESPONSES).map(([key, descriptions]) => {
+    const score = numericInput(items[key], { min: 1, max: descriptions.length, integer: true });
+    return { key, score: untestable(items[key]) ? 'NT' : score ?? '?', description: untestable(items[key]) ? 'not testable' : score === null ? 'not assessed' : descriptions[score - 1] };
+  });
+  const limitation = entries.some(entry => entry.score === 'NT') && items.notTestableReason ? `; limitation: ${items.notTestableReason}` : '';
+  return `GCS ${entries.map(entry => `${entry.key[0].toUpperCase()}${entry.score}`).join(' ')}${total === null ? '; total not reported (incomplete or not testable)' : ` = ${total}/15`}; ${entries.map(entry => `${entry.key}: ${entry.description}`).join('; ')}${limitation}`;
 }
 export function reviewedAspects(regions = {}, assessed = false) {
   const keys = ['C','L','IC','I','M1','M2','M3','M4','M5','M6'];

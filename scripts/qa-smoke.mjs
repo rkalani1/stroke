@@ -267,6 +267,8 @@ async function main() {
       await page.evaluate(()=>{location.hash='#/tools/abcd2';});
       const calculator=page.locator('#calc-abcd2');await calculator.waitFor({state:'visible'});
       await calculator.getByLabel('Clinical TIA diagnosis confirmed',{exact:true}).selectOption('true');
+      await calculator.getByLabel('First BP after TIA: systolic (mmHg)',{exact:true}).fill('140');
+      await calculator.getByLabel('First BP after TIA: diastolic (mmHg)',{exact:true}).fill('90');
       await calculator.getByLabel('TIA clinical features',{exact:true}).selectOption('weakness');
       await calculator.getByLabel('TIA symptom duration',{exact:true}).selectOption('60plus');
       await calculator.getByLabel('History of diabetes',{exact:true}).selectOption('false');
@@ -284,6 +286,7 @@ async function main() {
       await page.getByRole('button',{name:'Clear search',exact:true}).click();assert.equal(await fallback.count(),0);await page.evaluate(()=>window.__qaDenyClipboard=false);
       await calculator.getByRole('button',{name:'Use reviewed score in Encounter',exact:true}).click();
       await page.getByRole('link',{name:'Encounter',exact:true}).click();const score=page.getByLabel('Reviewed ABCD² (0–7)',{exact:true});await openDetails(score);assert.equal(await score.inputValue(),'6');
+      await page.getByLabel('Current BP (mmHg, systolic/diastolic)',{exact:true}).fill('120/70');assert.equal(await score.inputValue(),'6');
       await page.getByLabel('Age (years)',{exact:true}).fill('61');assert.equal(await score.inputValue(),'');
       await page.getByLabel('Context',{exact:true}).selectOption('follow-up');
       await page.evaluate(()=>{location.hash='#/tools/phq2';});const phq=page.locator('#calc-phq2');await phq.waitFor({state:'visible'});
@@ -360,6 +363,16 @@ async function main() {
         assert.equal(await page.getByLabel('Working diagnosis', { exact: true }).inputValue(), 'ischemic');
         for (const [name, value] of [['Eye','4'],['Verbal','5'],['Motor','6']]) await gcs.getByLabel(`GCS ${name}`, { exact: true }).selectOption(value);
         await gcs.getByText('GCS 15/15', { exact: true }).waitFor();
+        assert((await (await generate(page)).inputValue()).includes('GCS E4 V5 M6 = 15/15'));
+        await gcs.getByLabel('GCS Verbal', { exact: true }).selectOption('UN');
+        await gcs.getByLabel('GCS assessment limitation (optional)', { exact: true }).fill('Intubation');
+        assert.equal(await page.locator('[data-generated-note]').count(),0);
+        let note = await (await generate(page)).inputValue();
+        assert(note.includes('GCS E4 VNT M6; total not reported')); assert(note.includes('limitation: Intubation')); assert(!note.includes('GCS E4 V5 M6 = 15/15'));
+        await page.getByRole('radio', { name: 'Video', exact: true }).check();
+        assert((await (await generate(page)).inputValue()).includes('GCS E4 VNT M6; total not reported'));
+        await gcs.getByLabel('GCS Verbal', { exact: true }).selectOption('5');
+        note = await (await generate(page)).inputValue(); assert(note.includes('GCS E4 V5 M6 = 15/15')); assert(!note.includes('limitation: Intubation'));
         await page.evaluate(() => { location.hash = '#/tools/nascet'; });
         const card = page.locator('#calc-nascet');
         await card.getByLabel('Measured ICA side', { exact: true }).selectOption('left');
@@ -412,7 +425,7 @@ async function main() {
         assert(copied.includes(expected.population)); assert(copied.includes(`Limits: ${expected.limits}`));
         for (const source of expected.sources) { assert(copied.includes(source.url)); assert(copied.includes(`Source checked ${source.checkedAt}: ${source.access}`)); }
         await completed.getByRole('link', { name: 'Show all completed evidence', exact: true }).click();
-        await completed.getByText('16 studies found.', { exact: true }).waitFor();
+        await completed.getByText(`${reference.data.studies.length} studies found.`, { exact: true }).waitFor();
         await study.getByRole('link', { name: 'Related guidance', exact: true }).click();
         await topic.waitFor({ state: 'visible' });
         assert.equal(new URL(page.url()).hash, '#/evidence/af-timing');
@@ -425,23 +438,25 @@ async function main() {
         await reset(page);
       }
     });
-    await check('quick protocol links switch protocols and reopen the current collapsed target with focus', async () => {
+    await check('header omits Quick protocols while existing protocol deep links retain focus and state', async () => {
       try {
         await reset(page); await setupIschemic(page);
-        const quick = page.getByRole('navigation', { name: 'Quick protocols', exact: true });
-        await quick.getByRole('link', { name: 'Anticoagulant reversal', exact: true }).click();
+        assert.equal(await page.getByRole('navigation', { name: 'Quick protocols', exact: true }).count(), 0);
+        await page.evaluate(() => { location.hash = '#/protocols/ich/reversal'; });
         await page.waitForFunction(() => document.activeElement?.textContent.trim() === 'Anticoagulation Reversal' && document.activeElement.closest('#mgmt-tabpanel-ich'));
-        await quick.getByRole('link', { name: 'Post-lytic hemorrhage', exact: true }).click();
+        await page.evaluate(() => { location.hash = '#/protocols/ischemic/post-lytic'; });
         const target = page.locator('#isch-postlytic');
         await page.waitForFunction(() => { const card = document.getElementById('isch-postlytic'); return card?.open && card.contains(document.activeElement); });
         await target.locator('summary').first().click();
         assert.equal(await target.evaluate(card => card.open), false);
-        await quick.getByRole('link', { name: 'Post-lytic hemorrhage', exact: true }).click();
+        await page.evaluate(() => { location.hash = '#/protocols/ischemic'; });
+        await page.waitForFunction(() => location.hash === '#/protocols/ischemic');
+        await page.evaluate(() => { location.hash = '#/protocols/ischemic/post-lytic'; });
         await page.waitForFunction(() => { const card = document.getElementById('isch-postlytic'); return card?.open && card.contains(document.activeElement); });
         assert.equal(new URL(page.url()).hash, '#/protocols/ischemic/post-lytic');
-        await quick.getByRole('link', { name: 'Angioedema', exact: true }).click();
+        await page.evaluate(() => { location.hash = '#/protocols/ischemic/angioedema'; });
         await page.waitForFunction(() => { const card = document.getElementById('isch-angioedema'); return card?.open && card.contains(document.activeElement); });
-        await quick.getByRole('link', { name: 'Anticoagulant reversal', exact: true }).click();
+        await page.evaluate(() => { location.hash = '#/protocols/ich/reversal'; });
         await page.waitForFunction(() => document.activeElement?.textContent.trim() === 'Anticoagulation Reversal' && document.activeElement.closest('#mgmt-tabpanel-ich'));
         await page.getByRole('link', { name: 'Encounter', exact: true }).click();
         assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)', { exact: true }).inputValue(), '83');
@@ -637,8 +652,8 @@ async function main() {
         await p.getByRole('link', { name: 'Trials', exact: true }).click();
         await p.getByRole('tab', { name: 'Completed evidence', exact: true }).click();
         const completed = p.getByRole('region', { name: 'Completed evidence', exact: true });
-        await completed.getByText('16 studies found.', { exact: true }).waitFor();
-        assert.equal(await completed.locator('[data-reference-id]').count(), 16);
+        await completed.getByText(`${reference.data.studies.length} studies found.`, { exact: true }).waitFor();
+        assert.equal(await completed.locator('[data-reference-id]').count(), reference.data.studies.length);
         const study = completed.locator('[data-reference-id="elan"]');
         await study.locator('summary').click();
         await study.getByRole('link', { name: 'ELAN primary report', exact: true }).waitFor();
@@ -673,7 +688,7 @@ async function main() {
         await p.getByRole('region', { name: 'Evidence', exact: true }).getByText(`${reference.data.topics.length} topics found.`, { exact: true }).waitFor();
         await p.getByRole('link', { name: 'Trials', exact: true }).click();
         await p.getByRole('tab', { name: 'Completed evidence', exact: true }).click();
-        await p.getByRole('region', { name: 'Completed evidence', exact: true }).getByText('16 studies found.', { exact: true }).waitFor();
+        await p.getByRole('region', { name: 'Completed evidence', exact: true }).getByText(`${reference.data.studies.length} studies found.`, { exact: true }).waitFor();
         report.live = { status: 'passed', url: p.url(), version, referenceEndpoint: endpoint, topics: deployed.data.topics.length, studies: deployed.data.studies.length };
       } finally { await p.close(); }
     });

@@ -166,7 +166,7 @@ const engines = { abcd2:calculateReviewedABCD2, chadsvasc:calculateReviewedCHADS
 export const SUPPLEMENTARY_IDS = Object.keys(engines);
 // Keep the canonical scoring dependency map independent of presentation/source
 // prose so opening Encounter does not eagerly load the calculator directory.
-const sharedInputs = { abcd2:['age','bp'], chadsvasc:['age','sex'], 'has-bled':['age'], rope:['age'], pascal:['age'], phases:['age'], 'mrs-descriptors':['mrs'], wfns:['gcs'], 'modified-fisher':['sahCause'], mtici:['mtici'], 'stop-bang':['age','sex','weight','height'] };
+const sharedInputs = { abcd2:['age'], chadsvasc:['age','sex'], 'has-bled':['age'], rope:['age'], pascal:['age'], phases:['age'], 'mrs-descriptors':['mrs'], wfns:['gcs'], 'modified-fisher':['sahCause'], mtici:['mtici'], 'stop-bang':['age','sex','weight','height'] };
 const canonicalValue = value => value === undefined ? null : value;
 export function supplementarySourceKey(state, id) {
   const n = state.note || {};
@@ -190,6 +190,8 @@ export function supplementaryResult(state, id) {
   }
   if (id === 'mtici') return describeReviewedMTICI({ ...data, grade:n.ticiScore, ischemic:state.context === 'acute' && n.diagnosisCategory === 'ischemic' });
   if (id === 'modified-fisher') return calculateReviewedModifiedFisher({ ...data, aneurysmalSah:n.diagnosisCategory === 'sah' && state.details?.sahCause === 'Aneurysmal' });
+  // ABCD² uses the first measurement after the TIA, not a later treatment BP.
+  if (id === 'abcd2') return calculateReviewedABCD2({ ...data, age:n.age, bp:`${data.initialSystolic ?? ''}/${data.initialDiastolic ?? ''}` });
   return engines[id]({ ...data, age:n.age, sex:n.sex, bp:n.presentingBP, gcs:state.gcs, weight:n.weight, heightCm:n.heightCm });
 }
 export function supplementaryReviewed(state, id) { return reviewedGroup(state, id).reviewed; }

@@ -22,15 +22,10 @@ export const calculateNIHSS = (responses) => {
 };
 
 export const calculateGCS = (items) => {
-  if (!items || typeof items !== 'object') return null;
-  const rawEye = parseInt(items.eye || 0, 10) || 0;
-  const rawVerbal = parseInt(items.verbal || 0, 10) || 0;
-  const rawMotor = parseInt(items.motor || 0, 10) || 0;
-  if (rawEye === 0 || rawVerbal === 0 || rawMotor === 0) return null;
-  const eye = Math.min(4, Math.max(1, rawEye));
-  const verbal = Math.min(5, Math.max(1, rawVerbal));
-  const motor = Math.min(6, Math.max(1, rawMotor));
-  return eye + verbal + motor;
+  if (!items || typeof items !== 'object' || Array.isArray(items)) return null;
+  const values = ['eye', 'verbal', 'motor'].map(key => reviewedNumber(items[key]));
+  if (values.some((value, index) => !Number.isInteger(value) || value < 1 || value > [4, 5, 6][index])) return null;
+  return values.reduce((total, value) => total + value, 0);
 };
 
 export const calculateICHScore = (items) => {
@@ -136,7 +131,12 @@ export const calculateCrClReviewed = (age, weight, sex, creatinine, heightCm) =>
   // The legacy category uses the unrounded estimate. Do not let display
   // rounding near 15 preserve its unsupported dialysis inference.
   const below15 = result.renalCategory === 'severe-dialysis';
-  return { ...result, rawValue, label: below15 ? 'Severe (<15 before rounding); specialist assessment required' : result.label,
+  let rawAdjBwValue = null;
+  if (result.isObese) {
+    const ibw = Math.max(30, (sex === 'M' ? 50 : 45.5) + 2.3 * (h / 2.54 - 60));
+    rawAdjBwValue = ((140 - a) * (ibw + 0.4 * (w - ibw)) * (sex === 'F' ? 0.85 : 1)) / (72 * cr);
+  }
+  return { ...result, rawValue, rawAdjBwValue, label: below15 ? 'Severe (<15 before rounding); specialist assessment required' : result.label,
     renalCategory: below15 ? 'severe' : result.renalCategory,
     scopeNote: 'Adult Cockcroft–Gault estimate. Confirm stable creatinine, appropriate weight convention, and the specific drug label; this estimate does not determine a dialysis indication.' };
 };

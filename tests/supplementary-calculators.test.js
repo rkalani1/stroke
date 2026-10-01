@@ -6,7 +6,7 @@ import * as calculators from '../src/supplementary-calculators.js';
 import { calculatorDefinitions, sourceRecords } from '../src/supplementary-calculator-definitions.js';
 
 const { calculateReviewedABCD2:abcd, calculateReviewedCHADS2VASc:chads, calculateReviewedHASBLED:hasBled, calculateReviewedRoPE:rope, classifyReviewedPASCAL:pascal, calculateReviewedPHASES:phases, calculateReviewedWFNS:wfns, calculateReviewedPHQ2:phq2, calculateReviewedSTOPBANG:stopBang, supplementaryResult, updateSupplementaryField:edit, applySupplementaryScore:apply, reconcileSupplementaryAppliedScores:reconcile } = calculators;
-const ABCD = { reviewed:true, tiaConfirmed:true, age:59, bp:'139/89', clinicalFeatures:'other', duration:'under10', diabetes:false };
+const ABCD = { reviewed:true, tiaConfirmed:true, age:59, bp:'139/89', initialSystolic:'139', initialDiastolic:'89', clinicalFeatures:'other', duration:'under10', diabetes:false };
 const CHADS = { reviewed:true, afConfirmed:true, age:64, sex:'M', chf:false, hypertension:false, diabetes:false, strokeTia:false, vascular:false };
 const HAS = { reviewed:true, afConfirmed:true, age:65, uncontrolledHypertension:false, renal:false, liver:false, stroke:false, bleeding:false, labileINR:false, drugs:false, alcohol:false };
 const ROPE = { reviewed:true, cryptogenicStrokeWithPfo:true, age:29, hypertension:false, diabetes:false, priorStrokeTia:false, smoker:false, corticalInfarct:true };
@@ -105,13 +105,14 @@ describe('canonical source review and explicit application', () => {
     const empty=caseState();expect(supplementaryResult(empty,'abcd2')).toBeNull();expect(empty.supplementary).toEqual({});
     const reviewed=prepared(empty,'abcd2',ABCD);expect(supplementaryResult(reviewed,'abcd2').score).toBe(0);
     expect(supplementaryResult({...reviewed,note:{...reviewed.note,age:'60'}},'abcd2')).toBeNull();
-    expect(supplementaryResult({...reviewed,note:{...reviewed.note,presentingBP:''}},'abcd2')).toBeNull();
+    expect(supplementaryResult({...reviewed,note:{...reviewed.note,presentingBP:''}},'abcd2').score).toBe(0);
     expect(supplementaryResult({...reviewed,context:'follow-up'},'abcd2')).toBeNull();
   });
   it('invalidates an applied zero before the next evaluation, including source clearing', () => {
     const reviewed=prepared(caseState(),'abcd2',ABCD), applied=apply(reviewed,'abcd2');expect(applied.dapt.abcd2).toBe(0);
     const edited=edit(applied,'abcd2','duration','60plus');expect(edited.dapt.abcd2).toBe('');expect(edited.supplementary.applied.abcd2).toBeUndefined();
-    const sourceEdit={...applied,note:{...applied.note,presentingBP:''}};expect(reconcile(applied,sourceEdit).dapt.abcd2).toBe('');
+    const sourceEdit={...applied,note:{...applied.note,age:''}};expect(reconcile(applied,sourceEdit).dapt.abcd2).toBe('');
+    expect(edit(applied,'abcd2','initialSystolic','').dapt.abcd2).toBe('');
     expect(reconcile(applied,{...applied,revision:99}).dapt.abcd2).toBe(0);
   });
   it('preserves a newer manual score while removing obsolete provenance', () => {
@@ -163,6 +164,9 @@ describe('mounted calculator controls', () => {
     expect(await page.locator('#calc-abcd2').evaluate(node=>node.open)).toBe(true);
     const applicable=page.getByLabel('Clinical TIA diagnosis confirmed');expect(await applicable.evaluate(node=>node===document.activeElement)).toBe(true);
     await applicable.selectOption('true');expect(await applicable.evaluate(node=>node===document.activeElement)).toBe(true);
+    const initialSystolic=page.getByLabel('First BP after TIA: systolic (mmHg)'),initialDiastolic=page.getByLabel('First BP after TIA: diastolic (mmHg)');
+    expect(await initialSystolic.inputValue()).toBe('');expect(await initialDiastolic.inputValue()).toBe('');
+    await initialSystolic.fill('139');await initialDiastolic.fill('89');
     await page.getByLabel('TIA clinical features').selectOption('other');await page.getByLabel('TIA symptom duration').selectOption('under10');await page.locator('#calc-abcd2').getByLabel('History of diabetes',{exact:true}).selectOption('false');
     await page.getByRole('checkbox').check();expect(await page.getByRole('status').textContent()).toContain('ABCD²: 0/7');
     await page.getByRole('button',{name:'Use reviewed score in Encounter'}).click();expect(await page.evaluate(()=>window.model.dapt.abcd2)).toBe(0);

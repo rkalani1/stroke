@@ -1,27 +1,21 @@
 {
   "schemaVersion": 1,
-  "appVersion": "7.4.0",
+  "appVersion": "7.5.0",
   "buildTarget": "public",
   "entry": "app.js",
   "initial": [
     "app.js",
-    "chunks/chunk-6MMDZQ2P.js",
     "chunks/chunk-CCC5QWPU.js",
     "chunks/chunk-KF43PX6Y.js",
-    "chunks/chunk-MEDXAGMH.js"
+    "chunks/chunk-MEDXAGMH.js",
+    "chunks/chunk-YW2HWXUA.js"
   ],
   "files": [
     {
       "path": "app.js",
-      "bytes": 120090,
-      "gzipBytes": 38109,
-      "sha256": "aba25dfe1b2af027bb1e25e2bcd1bd5242163479314424f21d5464955e89f42c"
-    },
-    {
-      "path": "chunks/chunk-6MMDZQ2P.js",
-      "bytes": 36573,
-      "gzipBytes": 14121,
-      "sha256": "20b4912a761c5060c3399ec43507b30196eb9fd8c96567c45a8832768c8a4540"
+      "bytes": 121312,
+      "gzipBytes": 38568,
+      "sha256": "eaeb3c63a81b48f7342686c9999ccf1c419f6b805b368c361c2385eadbab60f1"
     },
     {
       "path": "chunks/chunk-CCC5QWPU.js",
@@ -54,6 +48,12 @@
       "sha256": "7e827981c6f8b888e79bceff57c1ae1522a46d31a179965f136b791fbba211d5"
     },
     {
+      "path": "chunks/chunk-YW2HWXUA.js",
+      "bytes": 37455,
+      "gzipBytes": 14493,
+      "sha256": "039576754989aac102f4e4aa1cc73a910dc20adc07d6c97ba078844e0b30b56b"
+    },
+    {
       "path": "chunks/InstallAppButton-INPP7ERU.js",
       "bytes": 6328,
       "gzipBytes": 2042,
@@ -72,16 +72,16 @@
       "sha256": "53f23f748e3cae5c1e39209bf1312836ca912d5ea95a8acaaa853312a106689e"
     },
     {
-      "path": "chunks/Tools-XEAU5M46.js",
+      "path": "chunks/Tools-DINM6NPS.js",
       "bytes": 12339,
-      "gzipBytes": 4683,
-      "sha256": "a57397f762ec3de3f3ff45e0d73609e9553127b6dc46ba14526264603a2b6a2d"
+      "gzipBytes": 4682,
+      "sha256": "bbefd7581bf207df02b0a308b004d3f1e84adb8715dccaa90791148486a67766"
     },
     {
-      "path": "chunks/Trials-TVWIK4OW.js",
-      "bytes": 95467,
-      "gzipBytes": 23423,
-      "sha256": "f3033e47499eef9d52168237d838cadef463f3cbe723e42490dd6b44f7a6144b"
+      "path": "chunks/Trials-HLKDMBYZ.js",
+      "bytes": 98449,
+      "gzipBytes": 24058,
+      "sha256": "7d9ebbd9320968ebb9eaba49d8c5df32f6930716f27298bf81e08321ac95d0c4"
     }
   ]
 }

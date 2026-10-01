@@ -167,10 +167,8 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
 
 /* The reference collection uses the same disclosure and form language. */
-.workspace-external, .workspace-quick, .reference-links { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
-.workspace-quick { padding: 6px 0; margin-bottom: 12px; border-bottom: 1px solid var(--line); font-size: .8125rem; }
-.workspace-quick > span { color: var(--ink-2); font-weight: 600; }
-.workspace-external a, .workspace-quick a, .reference-links a, .reference-sources a, .reference-surface > p a, .workspace-details > a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: 3px; }
+.workspace-external, .reference-links { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; }
+.workspace-external a, .reference-links a, .reference-sources a, .reference-surface > p a, .workspace-details > a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: 3px; }
 .reference-surface { max-width: 100%; }
 .reference-surface h1 { font-size: 1.5rem; font-weight: 700; }
 .reference-surface h2 { font-size: 1.2rem; font-weight: 700; }
@@ -190,7 +188,7 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
 .reference-sources > div + div { margin-top: 12px; }
 .reference-sources p { color: var(--ink-2); margin: 2px 0; }
 .reference-body textarea { width: 100%; }
-@media (max-width: 639px) { .reference-filters { grid-template-columns: minmax(0, 1fr); } .workspace-quick { gap: 0 12px; } }
+@media (max-width: 639px) { .reference-filters { grid-template-columns: minmax(0, 1fr); } }
 
 .workspace-external { padding-top: 4px; font-size: .8125rem; }
 .reference-group { margin: 24px 0; }
