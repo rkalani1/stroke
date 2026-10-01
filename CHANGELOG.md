@@ -9,6 +9,8 @@
 - Use unrounded ICH threshold flags, make fresh-TIA reperfusion review explicit, and synchronize protocol measurements with Encounter while invalidating dependent reviews after edits. Preserve entered treatment conflicts and incomplete/zero distinctions.
 - Apply the owner-authorized primary-label correction to two protected ICH factor-Xa drug-removal passages; update only their four snapshot lines. Preserve all other protected content and review dates. See docs/source-limits.md for accepted wording and IMPLEMENTATION.md for verification/release status.
 
+- Stage the public allowlist in standalone main/scheduled QA jobs and fail fast when the default published stage is missing, instead of implicitly serving source/support roots.
+
 ## v6.30.7 — 2026-10-01 — consistent documentation and reliable navigation
 
 - Use one qualified wake-up assessment across seven documentation surfaces;

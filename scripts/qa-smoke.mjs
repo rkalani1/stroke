@@ -83,7 +83,8 @@ function latencyConfiguration() {
 async function main() {
   const latency=latencyConfiguration();
   await fs.mkdir(outDir, { recursive: true });
-  const site = path.resolve(arg('--site-dir', fsSync.existsSync('output/site') ? 'output/site' : '.'));
+  const site = path.resolve(arg('--site-dir', 'output/site'));
+  if (!fsSync.existsSync(path.join(site, 'index.html'))) throw new Error('Published QA artifact missing. Run npm run publish:stage or supply an explicit --site-dir.');
   const server = await servePublished(() => site, Number(arg('--port', '4177')));
   const browser = await launchChromium();
   const report = { scope: 'Rendered production artifact; Chromium simulations, not physical devices', site, checks: [], screenshots: [], metrics: {}, runs: [], latency: {profile:latency.name,profilesFile:latency.file,enforced:latency.enforce}, live: { status: 'not run', reason: '--local-only or no --live; no implied deployed verification' } };
