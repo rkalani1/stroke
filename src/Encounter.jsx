@@ -19,7 +19,7 @@ export function SourceLimits({ claim, url, label, children }) {
   return <details className="source-limits"><summary>Source / limits</summary>{record ? <><p>{record.population}</p><p>{record.limits}</p><p>{record.reviewScope} Recorded review: {record.reviewedAt}.</p><a href={record.sourceUrl} target="_blank" rel="noopener noreferrer">{record.sourceLabel}</a>{record.sources?.filter(s => s.url !== record.sourceUrl).map(s => <p key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer">{s.label}</a></p>)}</> : <><p>{children}</p><a href={url} target="_blank" rel="noopener noreferrer">{label}</a><p>Existing source retained; no new comprehensive clinical review is implied.</p></>}</details>;
 }
 function Section({ step, title, id, children }) {
-  return <section className="workflow-section" aria-labelledby={`${id}-title`} id={id}><h2 id={`${id}-title`}><span aria-hidden="true">{step}.</span> {title}</h2>{children}</section>;
+  return <section className="workflow-section" aria-labelledby={`${id}-title`} id={id}><h2 id={`${id}-title`}><span aria-hidden="true">{String(step).padStart(2, '0')}</span> {title}</h2>{children}</section>;
 }
 function Result({ children }) { return <p className="workspace-result" role="status">{children}</p>; }
 

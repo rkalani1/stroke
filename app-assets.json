@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "appVersion": "7.0.1",
+  "appVersion": "7.0.2",
   "buildTarget": "public",
   "entry": "app.js",
   "initial": [
@@ -12,9 +12,9 @@
   "files": [
     {
       "path": "app.js",
-      "bytes": 103340,
-      "gzipBytes": 33328,
-      "sha256": "f1998d61e5ad5803aae24a93f4c019d36cb6810c03c745cca69b78a30b062528"
+      "bytes": 103727,
+      "gzipBytes": 33399,
+      "sha256": "e126996eabbc8af1bce94f020ce5b14919e98c9f856b8a100e3fc31cbf02d1a5"
     },
     {
       "path": "chunks/chunk-AXN7GAUD.js",

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v7.0.2 — 2026-10-01 — Original visual style restored
+
+- Restore the original pearl/mineral app sheet, teal activity mark, Bricolage wordmark, navigation pills, section cards, rounded controls and monospaced readouts.
+- Keep the trimmed Encounter, Protocols, Trials and Calculators & Links content and their existing state and note behavior.
+- Use the original theme tokens, accessible control boundaries, visible keyboard focus, 44px touch controls and reduced-motion-aware transitions; retain the compact top navigation.
+
 ## v7.0.1 — 2026-10-01 — Documentation and Trials restoration
 
 - Restore telephone Pulsara summaries and full video Epic templates from canonical Encounter fields, including optional history, examination, imaging and labs. Preserve incomplete findings, explicit events and invalidated drafts.
