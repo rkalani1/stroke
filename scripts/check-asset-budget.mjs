@@ -20,6 +20,7 @@
 
 import { readFileSync, statSync, existsSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
+import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -37,12 +38,30 @@ const gzipSizeOf = (rel) => {
   return gzipSync(readFileSync(abs), { level: 9 }).length;
 };
 
+const manifest = JSON.parse(readFileSync(join(repoRoot, 'app-assets.json'), 'utf8'));
+const manifestProblems = [];
+if (manifest.buildTarget !== 'public') manifestProblems.push('Deployed browser manifest must identify a public build');
+if (manifest.appVersion !== JSON.parse(readFileSync(join(repoRoot, 'package.json'), 'utf8')).version) manifestProblems.push('Browser manifest version is stale');
+for (const file of manifest.files) {
+  if (!/^(app\.js|chunks\/[A-Za-z0-9_-]+\.js)$/.test(file.path)) { manifestProblems.push(`Invalid generated asset path: ${file.path}`); continue; }
+  if (!existsSync(join(repoRoot, file.path))) { manifestProblems.push(`Missing generated asset: ${file.path}`); continue; }
+  const bytes = readFileSync(join(repoRoot, file.path));
+  if (createHash('sha256').update(bytes).digest('hex') !== file.sha256) manifestProblems.push(`Generated asset checksum mismatch: ${file.path}`);
+}
+if (!manifest.initial.includes(manifest.entry) || manifest.initial.some(file => !manifest.files.some(entry => entry.path === file))) manifestProblems.push('Initial module graph is incomplete');
+const sumSizes = (files, measure) => files.reduce((sum, rel) => sum + (measure(rel) ?? Infinity), 0);
+
 function corePrecacheBytes() {
   const source = readFileSync(join(repoRoot, 'service-worker.js'), 'utf8');
   const match = source.match(/const CORE_ASSETS = (\[[\s\S]*?\]);/);
   if (!match) throw new Error('CORE_ASSETS not found in service-worker.js');
   // eslint-disable-next-line no-eval
-  const assets = eval(match[1]);
+  const chunksMatch = source.match(/const APP_CHUNKS = (\[[\s\S]*?\]);/);
+  if (!chunksMatch) throw new Error('APP_CHUNKS not found in service-worker.js');
+  const chunks = JSON.parse(chunksMatch[1]);
+  const expectedChunks = manifest.files.filter(file => file.path !== manifest.entry).map(file => './' + file.path).sort();
+  if (JSON.stringify([...chunks].sort()) !== JSON.stringify(expectedChunks)) manifestProblems.push('Service-worker chunk list does not match the generated browser manifest');
+  const assets = [...eval(match[1]), ...chunks];
   let total = 0;
   const missing = [];
   for (const asset of assets) {
@@ -76,14 +95,10 @@ const precache = corePrecacheBytes();
 // most of them a single "scope" line quoting an abstract) to complete extracted
 // recommendation sets: 3547 recommendations across the same 108 documents.
 //
-// CORRECTION to the 2026-08-28 note above, which said to split rather than raise
-// again. Route-level splitting was investigated and does NOT help here: app.jsx
-// documents that the Guidelines tab works fully offline, so the recommendation
-// payload has to reach the device either way. Lazy-loading it would move ~2.2 MB
-// out of app.js and straight into the service-worker precache, which is the
-// tighter of the two budgets. Splitting relocates the bytes; it does not remove
-// them, and it would trade a documented offline guarantee for a cosmetically
-// smaller bundle.
+// Splitting preserves offline availability by precaching all modules while
+// delaying parsing and execution of reference modules until requested. The
+// whole install retains its separate 8 MB limit; the initial graph now has its
+// own stricter limits so moving bytes to a shared eager chunk cannot hide growth.
 //
 // The one real saving available is de-duplication: the same content ships twice,
 // bundled into app.js via src/guideline-library.js AND as static data/guidelines/
@@ -106,21 +121,31 @@ const precache = corePrecacheBytes();
 const checks = [
   {
     id: 'app-js-gzip',
-    label: 'app.js (gzip)',
-    actual: gzipSizeOf('app.js'),
-    budget: 1600 * KB,
+    label: 'Initial module graph (gzip)',
+    actual: sumSizes(manifest.initial, gzipSizeOf),
+    budget: 700 * KB,
     unit: KB,
     unitLabel: 'KB',
     note: 'route-level code splitting is the lever that moves this',
   },
   {
     id: 'app-js-raw',
-    label: 'app.js (raw)',
-    actual: sizeOf('app.js'),
-    budget: 6.5 * MB,
+    label: 'Initial module graph (raw)',
+    actual: sumSizes(manifest.initial, sizeOf),
+    budget: 3 * MB,
     unit: MB,
     unitLabel: 'MB',
     note: 'parse/execute cost scales with this, not the gzip figure',
+  },
+  {
+    id: 'all-js-gzip', label: 'All offline JavaScript (gzip)',
+    actual: sumSizes(manifest.files.map(file => file.path), gzipSizeOf),
+    budget: 1600 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
+  },
+  {
+    id: 'all-js-raw', label: 'All offline JavaScript (raw)',
+    actual: sumSizes(manifest.files.map(file => file.path), sizeOf),
+    budget: 6.5 * MB, unit: MB, unitLabel: 'MB', note: '',
   },
   {
     id: 'tailwind-css',
@@ -150,7 +175,8 @@ const results = checks.map((check) => ({
 
 if (asJson) {
   console.log(JSON.stringify({
-    ok: results.every((r) => r.ok),
+    ok: results.every((r) => r.ok) && !precache.missing.length && !manifestProblems.length,
+    manifestProblems,
     precacheMissing: precache.missing,
     checks: results.map(({ id, label, actual, budget, ok }) => ({ id, label, actual, budget, ok })),
   }, null, 2));
@@ -183,5 +209,9 @@ if (breached.length) {
 }
 if (precache.missing.length) {
   console.error('\nservice-worker.js lists precache entries that do not exist — install would fail.');
+  process.exit(1);
+}
+if (manifestProblems.length) {
+  console.error(`\nBrowser asset manifest failed: ${manifestProblems.join('; ')}`);
   process.exit(1);
 }

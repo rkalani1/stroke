@@ -1,19 +1,8 @@
-Quick Dosing Reference
-TNK (Tenecteplase)
-0.25 mg/kg IV bolus (max 25 mg)
-Click to copy
-Alteplase (tPA)
-0.9 mg/kg IV (max 90 mg): 10% bolus, 90% over 60 min
-Click to copy
-PCC / Kcentra (institutional example)
-2000 units IV immediately (institutional fixed-dose example; guideline dosing is weight-based, e.g., 25-50 units/kg by INR for VKA reversal; do not combine the two schemes). If INR >1.5 after infusion, page hematology and consider an additional 500 units.
-Click to copy
-Idarucizumab
-Two 2.5 g IV doses, given no more than 15 minutes apart; infuse each dose over 5-10 minutes. For dabigatran reversal.
-Click to copy
-FFP (if no PCC)
-15 mL/kg IV (give 4 units emergency-release plasma immediately and request 4 additional units; if INR remains >1.5 after infusion, give 4 more units and consult Hematology; each unit is 250-300 mL).
-Click to copy
+Dosing and safety references
+Open the full calculator with its input checks and applicable limits. Dose arithmetic does not establish treatment eligibility.
+TNK dose in Encounter
+Alteplase calculator
+Source guidelines
 Patient snapshot
 Age:
 --
@@ -431,7 +420,16 @@ confirm that every PC-ASPECTS region was reviewed before using the score.
 Alteplase (tPA) Dosing Calculator
 0.9 mg/kg, max 90 mg
 Enter patient weight in the encounter section to calculate dose.
-Source: NINDS rt-PA Stroke Study Group. NEJM 1995;333:1581-7 (PMID 7477192).
+Applies to:
+Adults with acute ischemic stroke who meet the complete IV thrombolysis eligibility criteria; the standard-window recommendation applies within 4.5 hours of onset or last known well.
+Weight and complete eligibility/contraindication review are required. Dose arithmetic does not establish treatment eligibility. Extended-window and trial populations require their own criteria.
+AHA/ASA 2026 AIS guideline, standard-window eligibility and dose
+;
+US Activase prescribing information §2.1, dose and administration
+· Recorded source review:
+2026-09-30
+.
+Recorded date is the local AIS source review. The Activase label supports dose and administration; the guideline's 4.5-hour eligibility scope is separate. The AIS source record retains partially applied correction warnings.
 SPAN-100 and SEDAN
 Inputs retained
 SPAN-100 Index

@@ -3,15 +3,16 @@ import vm from 'node:vm';
 import { reviewedGcs, numericInput, documentedExamScore } from '../src/encounter-clinical-review.js';
 import { describe, expect, it } from 'vitest';
 import { documentedNihssValue, hasRecordedNoTreatment, hasRecordedTreatmentAdministration } from '../src/encounter-decision-status.js';
+import { getClinicalClaim } from '../src/clinical/claim-registry.js';
 
 // Exercise the actual Encounter recommendation conditions, not copied predicates.
 const source = fs.readFileSync(new URL('../src/app.jsx', import.meta.url), 'utf8');
 const start = source.indexOf('const documentedNIHSS =');
 const end = source.indexOf('const getPathwayForDiagnosis =', start);
 if (start < 0 || end < start) throw new Error('Encounter recommendation boundaries missing');
-const recommendations = new Function('hasRecordedNoTreatment', 'hasRecordedTreatmentAdministration', 'getGuidelineUrl', 'documentedExamScore',
+const recommendations = new Function('hasRecordedNoTreatment', 'hasRecordedTreatmentAdministration', 'getGuidelineUrl', 'documentedExamScore', 'getClinicalClaim',
   source.slice(start, end) + '\nreturn GUIDELINE_RECOMMENDATIONS;')(
-  hasRecordedNoTreatment, hasRecordedTreatmentAdministration, () => 'https://example.test/guideline', documentedExamScore);
+  hasRecordedNoTreatment, hasRecordedTreatmentAdministration, () => 'https://example.test/guideline', documentedExamScore, getClinicalClaim);
 
 const negative = { tnkRecommended: false, tnkDecisionRecorded: true, evtRecommended: false, evtDecisionRecorded: true };
 const data = (note = {}, nihss = '3') => ({ telestrokeNote: { diagnosisCategory: 'ischemic', nihss, vesselOcclusion: ['None'], ...note } });

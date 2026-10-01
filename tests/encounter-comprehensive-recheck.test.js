@@ -7,9 +7,10 @@ import * as decisions from '../src/encounter-decision-status.js';
 import * as baseCalculators from '../src/calculators.js';
 import { isSuccessfulEvtReperfusion } from '../src/institutional-protocols.js';
 import { completeCases } from './fixtures/clinical-complete-cases.js';
+import { getClinicalClaim } from '../src/clinical/claim-registry.js';
 const source = fs.readFileSync(new URL('../src/app.jsx', import.meta.url), 'utf8');
 const start=source.indexOf('const GUIDELINE_URLS ='), end=source.indexOf('const getPathwayForDiagnosis',start);
-const cards=vm.runInNewContext(source.slice(start,end)+'\nGUIDELINE_RECOMMENDATIONS',{...reviewed,...decisions,...baseCalculators,isSuccessfulEvtReperfusion});
+const cards=vm.runInNewContext(source.slice(start,end)+'\nGUIDELINE_RECOMMENDATIONS',{...reviewed,...decisions,...baseCalculators,isSuccessfulEvtReperfusion,getClinicalClaim});
 const cases = {
  ...Object.fromEntries(['calculateESSEN','calculateSPI2','calculateBAT','calculateBRAIN','calculateNinePoint','calculateCHADS2VA','calculateHAVOC','interpretMRS9Q'].map(k=>[k,completeCases[k]])),
  calculateSeLECTScore: {...completeCases.calculateSeLECTScore, nihss:2},

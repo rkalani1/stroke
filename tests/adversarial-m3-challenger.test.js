@@ -239,10 +239,12 @@ describe('Empirical Adversarial Verification: Milestone 3', () => {
       // redundant "Score:" prefix ("NIHSS Score  Score: 12" read as "Score Score").
       // 2026-09-30: calculators 448->456 for reviewed missing-input, scope,
       // and withheld-output explanations. ICH/ischemic snapshots are unchanged.
+      // 2026-10-01: calculators 456->454 after approved duplicate dosing strip
+      // withdrawal and source/population context. Protected ICH/ischemic unchanged.
       const baselineCounts = {
         ich: 524,
         ischemic: 754,
-        calculators: 456
+        calculators: 454
       };
       for (const [subtab, expectedLines] of Object.entries(baselineCounts)) {
         const file = path.join(SNAPSHOT_DIR, `${subtab}.txt`);

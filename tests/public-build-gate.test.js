@@ -10,7 +10,8 @@ import { spawnSync } from 'node:child_process';
 import { PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX } from '../src/public-demo-guardrails.js';
 
 const ROOT = path.resolve(__dirname, '..');
-const bundle = fs.readFileSync(path.join(ROOT, 'app.js'), 'utf8');
+const browserAssets = JSON.parse(fs.readFileSync(path.join(ROOT, 'app-assets.json'), 'utf8'));
+const bundle = browserAssets.files.map(file => fs.readFileSync(path.join(ROOT, file.path), 'utf8')).join('\n');
 const appSource = fs.readFileSync(path.join(ROOT, 'src/app.jsx'), 'utf8');
 
 describe('on-page notice and footer (removed by owner decision)', () => {
@@ -40,7 +41,8 @@ describe('build-time public-demo gate', () => {
     expect(appSource).toMatch(/className="app-shell[^"]*" data-build=\{BUILD_TARGET_MARKER\}/);
   });
 
-  it('the committed app.js is a public-demo build', () => {
+  it('the complete committed browser module graph is a public-demo build', () => {
+    expect(browserAssets.buildTarget).toBe('public');
     expect(bundle).toContain('stroke-public-demo-build');
     expect(bundle).not.toContain('stroke-private-build');
     expect(bundle).not.toContain('__STROKE_BUILD_PUBLIC_DEMO__');
@@ -53,10 +55,10 @@ describe('build-time public-demo gate', () => {
     expect(body.indexOf('if (BUILD_PUBLIC_DEMO) return true;')).toBeLessThan(body.indexOf('github'));
   });
 
-  it('refuses to write a private build over the committed app.js', () => {
+  it.each(['app.js', 'chunks/private.js', 'private-candidate.js'])('refuses to write a private build anywhere in the deployed tree: %s', outfile => {
     const res = spawnSync(process.execPath, [path.join(ROOT, 'scripts/build-browser.mjs')], {
       cwd: ROOT,
-      env: { ...process.env, STROKE_BUILD_TARGET: 'private', STROKE_BUILD_OUTFILE: 'app.js' },
+      env: { ...process.env, STROKE_BUILD_TARGET: 'private', STROKE_BUILD_OUTFILE: outfile },
       encoding: 'utf8'
     });
     expect(res.status).not.toBe(0);

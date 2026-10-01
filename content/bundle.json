@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:e8e0b10112215a63fa11ef20d1870b0f",
+    "checksum": "sha256:7f09309b0784b6aa31e2f43b4d27ab35",
     "counts": {
       "guidelines": 11,
       "trials": 264,
@@ -234,7 +234,7 @@
       "section": "tnk-vs-alteplase",
       "COR": "I",
       "LOE": "A",
-      "statement": "Tenecteplase 0.25 mg/kg (max 25 mg) is recommended as an alternative to alteplase 0.9 mg/kg (max 90 mg) for IV thrombolysis in eligible AIS within 4.5 h — either agent is first-line, and TNK is particularly practical when EVT is anticipated.",
+      "statement": "Tenecteplase (0.25 mg/kg, max 25 mg) is recommended as an alternative to alteplase (0.9 mg/kg, max 90 mg) for IV thrombolysis in eligible AIS within 4.5 h — either agent is first-line, and TNK is particularly practical when EVT is anticipated.",
       "PMIDs": [
         "35779553",
         "36774935",
@@ -7171,7 +7171,7 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/references/AFib DOAC Start Timing.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "Generated teaching reference"
     },
     {
       "id": "quickref-brain-death-guidelines",
@@ -7180,7 +7180,7 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/references/Brain Death Guidelines.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "Generated teaching reference"
     },
     {
       "id": "quickref-cervical-artery-dissection",
@@ -7189,7 +7189,7 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/references/Cervical Artery Dissection.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "Generated teaching reference"
     },
     {
       "id": "quickref-dapt-guidelines",
@@ -7198,7 +7198,7 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/references/DAPT Guidelines.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "Generated teaching reference"
     },
     {
       "id": "quickref-malignant-infarction",
@@ -7207,7 +7207,7 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/references/Malignant Infarction.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "Generated teaching reference"
     },
     {
       "id": "quickref-stroke-prognosis",
@@ -7216,7 +7216,7 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/references/Stroke Prognosis.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "Generated teaching reference"
     },
     {
       "id": "quickref-toast-stroke-classification",
@@ -7225,7 +7225,7 @@
       "type": "pdf",
       "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
       "path": "documents/references/TOAST Stroke Classification.pdf",
-      "subtitle": "PDF Document"
+      "subtitle": "Generated teaching reference"
     },
     {
       "id": "afib-aha-af-guidelines-2023",

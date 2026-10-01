@@ -4,6 +4,7 @@ import { describe, it, expect } from 'vitest';
 import * as reviewed from '../src/encounter-clinical-review.js';
 import * as decisions from '../src/encounter-decision-status.js';
 import * as calculators from '../src/calculators.js';
+import { buildTnkConsentDocumentation } from '../src/clinical/consent-documentation.js';
 
 const source = fs.readFileSync(new URL('../src/app.jsx', import.meta.url), 'utf8');
 const between = (start, end) => {
@@ -71,15 +72,23 @@ describe('actual Encounter summary and transfer generators', () => {
 
 describe('actual copy bindings and duplicate display', () => {
   const exam = source.match(/let exam = `NIHSS: \$\{([^}]+)\}`;/)[1];
-  const consent = source.match(/patient with \$\{telestrokeNote\.diagnosis[^\n]+?\(NIHSS \$\{([^}]+)\}\)\./)[1];
+
   for (const scenario of scenarios) {
-    it(`copy and consent score bindings: ${scenario.name}`, () => {
-      for (const expression of [exam, consent]) {
+    it(`exam copy score binding: ${scenario.name}`, () => {
+      for (const expression of [exam]) {
         const actual = vm.runInNewContext(code + '\n' + expression, environment(scenario.note, scenario.data));
         expect(actual).toBe(scenario.value || 'not documented');
       }
     });
   }
+  it('consent records use entered discussion fields without inferring a patient score or eligibility', () => {
+    expect(source).toContain('const tnkDoc = buildTnkConsentDocumentation(telestrokeNote);');
+    for (const scenario of scenarios) {
+      const text = buildTnkConsentDocumentation(scenario.note);
+      expect(text).not.toMatch(/NIHSS|within 4.5 hours|Risks discussed/);
+      expect(text).toContain('Discussion: Not documented');
+    }
+  });
   it('the allowed inline display has a documented-score guard and getter', () => {
     const inline = between('{/* v6 inline strip', '{/* ===== CLINICIAN WORKBENCH');
     expect(inline).toContain("getDocumentedNihss() !== ''");

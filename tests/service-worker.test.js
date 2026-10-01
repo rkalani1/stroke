@@ -7,7 +7,7 @@ import vm from 'node:vm';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
 const version = JSON.parse(readFileSync(join(repoRoot, 'package.json'), 'utf8')).version;
-const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-') + '-clinical-review-20260930';
+const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-') + '-clinical-utility-20261001';
 const workerSource = readFileSync(join(repoRoot, 'service-worker.js'), 'utf8');
 
 function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-cache-v6-22-0', currentCache], options = {}) {
@@ -23,7 +23,11 @@ function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-
   let windows = [{ id: 'requester', url: 'https://example.test/', postMessage: message => postedMessages.push(message) }];
 
   const cacheStore = {
-    addAll: async () => { if (options.precacheFailure) throw Error('Precache failed'); },
+    addAll: async requests => {
+      if (options.precacheFailure) throw Error('Precache failed');
+      if (options.chunkFailure && requests.some(request => request.url.includes('/chunks/'))) throw Error('Chunk unavailable');
+      if (options.delayPrecache) await options.delayPrecache;
+    },
     add: async () => {},
     put: async () => {},
   };
@@ -165,6 +169,29 @@ describe('service worker update lifecycle', () => {
     expect(worker.skipWaitingCount).toBe(0);
   });
 
+  it('rejects an incomplete deferred-module installation without retiring old caches or activating', async () => {
+    const worker = loadServiceWorker(['stroke-cache-v6-30-5'], { chunkFailure: true });
+    await expect(worker.dispatch('install')).rejects.toThrow('Chunk unavailable');
+    expect(worker.deletedEntries).toEqual([]);
+    expect(worker.deletedCaches).toEqual([]);
+    expect(worker.skipWaitingCount).toBe(0);
+    expect(worker.postedMessages).toEqual([]);
+  });
+
+  it('keeps installation pending until the complete shell and module cache resolves', async () => {
+    let finish;
+    const pending = new Promise(resolve => { finish = resolve; });
+    const worker = loadServiceWorker([], { delayPrecache: pending });
+    let installed = false;
+    const installing = worker.dispatch('install').then(() => { installed = true; });
+    await Promise.resolve();
+    expect(installed).toBe(false);
+    expect(worker.skipWaitingCount).toBe(0);
+    finish();
+    await installing;
+    expect(installed).toBe(true);
+  });
+
   it('stays silent on first install and does not claim or reload a page', async () => {
     const worker = loadServiceWorker([]);
     await worker.dispatch('install');
@@ -288,7 +315,8 @@ describe('service worker update lifecycle', () => {
     const match = workerSource.match(/const CORE_ASSETS = (\[[\s\S]*?\]);/);
     // eslint-disable-next-line no-eval
     const coreAssets = eval(match[1]);
-    const total = coreAssets.reduce((sum, asset) => {
+    const chunks = JSON.parse(workerSource.match(/const APP_CHUNKS = (\[[\s\S]*?\]);/)[1]);
+    const total = [...coreAssets, ...chunks].reduce((sum, asset) => {
       const rel = asset === './' ? 'index.html' : asset.replace(/^\.\//, '');
       return sum + (existsSync(join(repoRoot, rel)) ? statSync(join(repoRoot, rel)).size : 0);
     }, 0);
@@ -329,6 +357,17 @@ describe('service worker update lifecycle', () => {
       const fullPath = join(repoRoot, relPath);
       expect(existsSync(fullPath), `Asset ${asset} should exist on disk`).toBe(true);
     }
+  });
+
+  it('precaches every generated module and verifies that the shell loads ESM', () => {
+    const manifest = JSON.parse(readFileSync(join(repoRoot, 'app-assets.json'), 'utf8'));
+    const chunks = JSON.parse(workerSource.match(/const APP_CHUNKS = (\[[\s\S]*?\]);/)[1]);
+    expect(chunks).toEqual(manifest.files.filter(file => file.path !== manifest.entry).map(file => './' + file.path));
+    expect(chunks.length).toBeGreaterThan(3);
+    for (const chunk of chunks) expect(existsSync(join(repoRoot, chunk.slice(2)))).toBe(true);
+    const index = readFileSync(join(repoRoot, 'index.html'), 'utf8');
+    expect(index).toMatch(/<script type="module" src="app\.js\?v=/);
+    expect(index).toMatch(/<link rel="modulepreload" href="app\.js\?v=/);
   });
 });
 

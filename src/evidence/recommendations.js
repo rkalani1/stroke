@@ -4,6 +4,7 @@
 // recommendation is unsupported.
 
 import { makeRecommendation } from './schema.js';
+import { getClinicalClaim } from '../clinical/claim-registry.js';
 
 const lr = '2026-04-25';
 
@@ -131,7 +132,7 @@ export const recommendations = [
     id: 'rec-tnk-first-line',
     topic: 'tnk-vs-alteplase',
     setting: 'inpatient',
-    text: 'Tenecteplase 0.25 mg/kg (max 25 mg) is recommended as an alternative to alteplase 0.9 mg/kg (max 90 mg) for IV thrombolysis in eligible AIS within 4.5 h — either agent is first-line, and TNK is particularly practical when EVT is anticipated.',
+    text: `Tenecteplase (${getClinicalClaim('tnk-stroke-dose').dose}) is recommended as an alternative to alteplase (${getClinicalClaim('alteplase-stroke-dose').dose}) for IV thrombolysis in eligible AIS within 4.5 h — either agent is first-line, and TNK is particularly practical when EVT is anticipated.`,
     classOfRecommendation: 'I',
     levelOfEvidence: 'A',
     guidelineSource: 'AHA/ASA 2026 AIS Guideline; ESO 2023 (GRADE: strong recommendation, moderate-quality evidence)',

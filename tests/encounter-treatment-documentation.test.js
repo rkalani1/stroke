@@ -1,9 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import fs from 'node:fs';
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import * as treatment from '../src/encounter-decision-status.js';
 import * as reviewed from '../src/encounter-clinical-review.js';
 import { isSuccessfulEvtReperfusion } from '../src/institutional-protocols.js';
 import { calculateCrClReviewed, calculateTNKDoseReviewed } from '../src/calculators.js';
+import { getClinicalClaim } from '../src/clinical/claim-registry.js';
+import { buildTnkConsentDocumentation } from '../src/clinical/consent-documentation.js';
+import GeneratedNoteDraft from '../src/components/GeneratedNoteDraft.jsx';
 
 const appSource = fs.readFileSync(new URL('../src/app.jsx', import.meta.url), 'utf8');
 const templateStart = appSource.indexOf('const defaultTelestrokeTemplate = `') + 'const defaultTelestrokeTemplate = '.length;
@@ -19,7 +24,7 @@ function outputFunction(name, note, extra = {}) {
   const end = appSource.indexOf(`\n${indent}};`, start);
   if (end < 0) throw new Error(`Unterminated output function ${name}`);
   const context = {
-    ...treatment, ...reviewed, isSuccessfulEvtReperfusion, calculateCrClReviewed, calculateTNKDoseReviewed, telestrokeNote: note, nihssScore: 0, aspectsScore: '',
+    ...treatment, ...reviewed, isSuccessfulEvtReperfusion, calculateCrClReviewed, calculateTNKDoseReviewed, getClinicalClaim, buildTnkConsentDocumentation, telestrokeNote: note, nihssScore: 0, aspectsScore: '',
     isValidAspectsScore: () => false, calculateICHScore: () => 0,
     calculateGCS: () => 15, calculateTNKDose: () => ({ calculatedDose: 15 }),
     ichScoreItems: {}, gcsItems: {}, ANTICOAGULANT_INFO: {}, TOAST_LABELS: {},
@@ -52,6 +57,8 @@ const declined = {
   ...undecided, ...treatment.treatmentDecisionFields('tnk', false),
   ...treatment.treatmentDecisionFields('evt', false)
 };
+
+const legacyDefaultAttestations = 'After ensuring that there were no evident contraindications, TNK administration was recommended at {tnkAdminTime}. Potential benefits, potential risks (including a potential risk of sx ICH of up to 4%), and alternatives to treatment were discussed with the patient, family/LNOK, and OSH provider.\nTNK was administered at {tnkAdminTime} after a brief time-out.\n';
 
 describe('recorded treatment state', () => {
   it('distinguishes legacy positive, explicit negative, and undocumented decisions', () => {
@@ -242,5 +249,280 @@ describe('authored encounter exports', () => {
     const output = outputFunction('generateTelestrokeNoteBody', note, { noteTemplate: 'patient-ed' });
     expect(output).not.toContain('Error generating note');
     expect(output).not.toContain('a catheter-based procedure to remove the blood clot');
+  });
+
+  it.each(['consult', 'transfer', 'signout', 'procedure'])('does not infer consent, review, or a time-out from TNK administration in %s', (noteTemplate) => {
+    for (const key of ['tnkAdminTime', 'needleTime', 'dtnTnkAdministered']) {
+      const administered = {
+        ...declined,
+        [key]: key === 'dtnTnkAdministered' ? '2026-10-01T13:40:00Z' : '13:40'
+      };
+      const output = outputFunction('generateTelestrokeNoteBody', administered, { noteTemplate });
+      expect(output).not.toContain('Error generating note');
+      expect(output).toContain('Administration recorded at');
+      expect(output).not.toMatch(/consent (?:obtained|recorded)|discussion recorded|risks\/benefits discussion|Contraindication review: completed|THROMBOLYSIS CONTRAINDICATION REVIEW|safety pause:? completed|after a brief time-out|no evident contraindications/i);
+    }
+  });
+
+  it.each(['consult', 'transfer', 'signout'])('keeps discussion distinct from unrecorded consent and numerical risk in %s', (noteTemplate) => {
+    const note = {
+      ...declined, ...treatment.treatmentDecisionFields('tnk', true),
+      tnkConsentDiscussed: true, tnkConsentType: '',
+      tnkConsentWith: 'Synthetic surrogate', tnkConsentTime: '13:10'
+    };
+    const output = outputFunction('generateTelestrokeNoteBody', note, { noteTemplate });
+    expect(output).not.toContain('Error generating note');
+    expect(output).toMatch(/discussion recorded/i);
+    expect(output).toMatch(/consent status not documented/i);
+    expect(output).toContain('Synthetic surrogate');
+    expect(output).toContain('13:10');
+    expect(output).not.toMatch(/consent (?:obtained|recorded)|presumed consent|\d+(?:\.\d+)?%|understanding|time-out|safety pause:? completed/i);
+  });
+
+  it('retains explicitly documented consent, review and safety pause without using administration as proof', () => {
+    const note = {
+      ...declined, ...treatment.treatmentDecisionFields('tnk', true),
+      tnkConsentDiscussed: true, tnkConsentType: 'informed',
+      tnkContraindicationReviewed: true, preTNKSafetyPause: true
+    };
+    const output = outputFunction('generateTelestrokeNoteBody', note, { noteTemplate: 'consult' });
+    expect(output).not.toContain('Error generating note');
+    expect(output).toContain('Informed consent obtained');
+    expect(output).toContain('THROMBOLYSIS CONTRAINDICATION REVIEW');
+    expect(output).toContain('Pre-TNK safety pause completed');
+    expect(output).toContain('Recommended; administration not documented');
+  });
+
+  it.each([false, true])('removes the exact persisted default attestations with administration recorded=%s', (administered) => {
+    const clinicianText = 'Clinician narrative: Risks and alternatives discussed with the synthetic surrogate, who requested more time.\nTNK was administered per the outside record; the time-out record is unavailable.\nImaging review: I personally reviewed the provided axial images.';
+    const note = { ...declined, ...(administered ? { tnkAdminTime: '13:40' } : {}) };
+    const output = outputFunction('generateTelestrokeNoteBody', note, {
+      noteTemplate: 'consult',
+      editableTemplate: `Consultation\n${legacyDefaultAttestations}${clinicianText}\n`
+    });
+    expect(output).not.toContain('Error generating note');
+    expect(output).not.toContain('After ensuring that there were no evident contraindications');
+    expect(output).not.toContain('up to 4%');
+    expect(output).not.toContain('after a brief time-out');
+    expect(output).toContain(clinicianText);
+    expect(output).toContain(administered ? 'TNK: Administration recorded at 13:40' : 'TNK: Not recommended');
+  });
+
+  it.each(['consult', 'transfer'])('keeps October 1 date-only LKW and discovery on October 1 west of UTC in %s', (noteTemplate) => {
+    const previousTz = process.env.TZ;
+    process.env.TZ = 'America/Los_Angeles';
+    try {
+      // Prove the fixture exposes the former UTC-midnight parsing defect.
+      expect(new Date('2026-10-01').getDate()).toBe(30);
+      const known = outputFunction('generateTelestrokeNoteBody', {
+        ...declined, lkwDate: '2026-10-01', lkwTime: '08:20'
+      }, { noteTemplate });
+      const discovered = outputFunction('generateTelestrokeNoteBody', {
+        ...declined, lkwUnknown: true, discoveryDate: '2026-10-01', discoveryTime: '09:05'
+      }, { noteTemplate });
+      for (const output of [known, discovered]) {
+        expect(output).not.toContain('Error generating note');
+        expect(output).toContain('10/1/26');
+        expect(output).not.toContain('9/30/26');
+      }
+      expect(known).toMatch(/(?:Last known well \(date\/time\)|LKW): 10\/1\/26 8:20 am/);
+      expect(discovered).toMatch(/Discovery (?:date\/time|time): 10\/1\/26 9:05 am/);
+    } finally {
+      if (previousTz === undefined) delete process.env.TZ;
+      else process.env.TZ = previousTz;
+    }
+  });
+});
+
+describe('authored consent copy surfaces', () => {
+  it('keeps both IVT and EVT canned copy templates as documentation prompts', () => {
+    const start = appSource.indexOf('          const DOC_TEMPLATES = {');
+    const end = appSource.indexOf('\n          };', start);
+    expect(start).toBeGreaterThanOrEqual(0);
+    expect(end).toBeGreaterThan(start);
+    const templates = new Function(appSource.slice(start, end + '\n          };'.length) + '\nreturn DOC_TEMPLATES;')();
+    for (const name of ['tnkRiskBenefit', 'evtRiskBenefit']) {
+      expect(templates[name]).toContain('Documentation prompt:');
+      expect(templates[name]).toMatch(/explicitly documented|only if they occurred/);
+      expect(templates[name]).not.toMatch(/were discussed|verbalized understanding|consent was obtained|\d+(?:\.\d+)?%/i);
+    }
+  });
+
+  it('uses the authored consent-copy helper and does not upgrade administration to documentation', () => {
+    expect(appSource).toContain('const tnkDoc = buildTnkConsentDocumentation(telestrokeNote);');
+    const output = buildTnkConsentDocumentation({ tnkRecommended: true, tnkAdminTime: '13:40' });
+    expect(output).toContain('Discussion: Not documented');
+    expect(output).toContain('Consent status: Not documented');
+    expect(output).toContain('Contraindication review: Not documented');
+    expect(output).toContain('Pre-TNK safety pause: Not documented');
+    expect(output).not.toMatch(/\d+(?:\.\d+)?%|consent obtained|Risks discussed|within 4.5 hours/i);
+  });
+
+  it('copies an explicit discussion with missing consent type without inventing a risk estimate', () => {
+    const output = buildTnkConsentDocumentation({ tnkConsentDiscussed: true, tnkConsentType: '', tnkConsentWith: 'Synthetic surrogate', tnkConsentTime: '13:10' });
+    expect(output).toContain('Discussion: Recorded');
+    expect(output).toContain('Participants: Synthetic surrogate');
+    expect(output).toContain('Time: 13:10');
+    expect(output).toContain('Consent status: Not documented');
+    expect(output).not.toMatch(/\d+(?:\.\d+)?%|consent obtained|Risks discussed|within 4.5 hours/i);
+    const recorded = buildTnkConsentDocumentation({ tnkConsentDiscussed: true, tnkConsentType: 'declined', tnkContraindicationReviewed: true, preTNKSafetyPause: true });
+    expect(recorded).toContain('Consent status: Patient/family declined');
+    expect(recorded).toContain('Contraindication review: Recorded');
+    expect(recorded).toContain('Pre-TNK safety pause: Recorded');
+  });
+
+  it('keeps the generic up-to-4% counseling assertion only in the exact legacy cleanup pattern', () => {
+    const matches = appSource.split('\n').filter((line) => line.includes('up to 4%'));
+    expect(matches).toHaveLength(1);
+    expect(matches[0]).toContain('note = note.replace(/^After ensuring');
+    expect(defaultTemplate).not.toMatch(/up to 4%|after a brief time-out|I personally reviewed imaging/);
+  });
+});
+
+describe('generated drafts remain separate from clinician inputs', () => {
+  it('keeps both Generate Auto-Note handlers from writing generated output into recommendations', () => {
+    const labels = [...appSource.matchAll(/Generate Auto-Note/g)];
+    expect(labels).toHaveLength(2);
+    for (const { index } of labels) {
+      const start = appSource.lastIndexOf('<button', index);
+      const end = appSource.indexOf('</button>', index);
+      expect(start).toBeGreaterThan(0);
+      expect(end).toBeGreaterThan(index);
+      const button = appSource.slice(start, end + '</button>'.length);
+      expect(button).toContain('setGeneratedNoteDraft(');
+      expect(button).toContain('inputKey: generatedNoteInputKey');
+      expect(button).not.toContain('setTelestrokeNote');
+      expect(button).not.toMatch(/recommendationsText\s*:/);
+    }
+  });
+
+  it('regenerates from current consent state and preserves manual recommendations exactly once', () => {
+    const manual = 'Manual recommendation: await review of the repeat imaging.';
+    const recorded = Object.freeze({
+      ...declined, ...treatment.treatmentDecisionFields('tnk', true),
+      recommendationsText: manual, tnkConsentDiscussed: true, tnkConsentType: 'informed'
+    });
+    const first = outputFunction('generateTelestrokeNoteBody', recorded, { noteTemplate: 'consult' });
+    expect(first).toContain('Informed consent obtained');
+    // Deliberately retain the old type while clearing the discussion checkbox.
+    // A prior generated snapshot must not supply the now-cleared attestation.
+    const cleared = Object.freeze({ ...recorded, tnkConsentDiscussed: false });
+    const regenerated = outputFunction('generateTelestrokeNoteBody', cleared, { noteTemplate: 'consult' });
+    for (const output of [first, regenerated]) {
+      expect(output).not.toContain('Error generating note');
+      expect(output.split(manual)).toHaveLength(2);
+      expect(output.split('TELEPHONE CONSULTATION NOTE')).toHaveLength(2);
+    }
+    expect(regenerated).not.toContain('Informed consent obtained');
+    expect(regenerated).not.toContain('IV thrombolysis risks/benefits discussion recorded');
+    expect(recorded.recommendationsText).toBe(manual);
+    expect(cleared.recommendationsText).toBe(manual);
+  });
+
+  it('runs the actual video Auto-Note handler with current recommendations and unknown-onset state', () => {
+    const labels = [...appSource.matchAll(/Generate Auto-Note/g)];
+    expect(labels).toHaveLength(2);
+    const labelIndex = labels[1].index;
+    const buttonStart = appSource.lastIndexOf('<button', labelIndex);
+    const handlerStart = appSource.indexOf('onClick={() => {', buttonStart) + 'onClick={() => {'.length;
+    const handlerEnd = appSource.lastIndexOf('\n                              }}', labelIndex);
+    expect(handlerStart).toBeGreaterThan(buttonStart);
+    expect(handlerEnd).toBeGreaterThan(handlerStart);
+    const authoredHandler = appSource.slice(handlerStart, handlerEnd);
+    const runHandler = (note, extra = {}) => {
+      const drafts = [];
+      const context = {
+        ...treatment, ...reviewed, telestrokeNote: note,
+        getContextualRecommendations: () => [], getPathwayForDiagnosis: () => 'ischemic',
+        getDocumentedNihss: () => '', isValidAspectsScore: () => false,
+        aspectsScore: '', lkwTime: null, trialEligibility: {},
+        getPediatricStrokeSummary: () => '', PUBLIC_DEMO_MODE: true,
+        DEMO_NOTE_DISCLAIMER: '[Synthetic test documentation]', generatedNoteInputKey: 'current-inputs',
+        ...extra,
+        setGeneratedNoteDraft: (draft) => drafts.push(draft)
+      };
+      new Function(...Object.keys(context), authoredHandler)(...Object.values(context));
+      expect(drafts).toHaveLength(1);
+      expect(drafts[0].inputKey).toBe('current-inputs');
+      return drafts[0].text;
+    };
+    const manual = 'Manual recommendation A: await outside imaging review.';
+    const revisedManual = 'Manual recommendation B: clarify the remaining questions.';
+    const original = Object.freeze({ ...declined, recommendationsText: manual });
+    const revised = Object.freeze({ ...declined, recommendationsText: revisedManual });
+    const first = runHandler(original);
+    const regenerated = runHandler(revised);
+    expect(first).toContain(`CLINICIAN-ENTERED RECOMMENDATIONS:\n${manual}`);
+    expect(first.split(manual)).toHaveLength(2);
+    expect(regenerated).toContain(`CLINICIAN-ENTERED RECOMMENDATIONS:\n${revisedManual}`);
+    expect(regenerated.split(revisedManual)).toHaveLength(2);
+    expect(regenerated).not.toContain(manual);
+    expect(original.recommendationsText).toBe(manual);
+    expect(revised.recommendationsText).toBe(revisedManual);
+
+    // Unknown-onset status takes precedence over a previously entered known LKW.
+    const previousLkw = new Date('2026-09-29T15:40:00Z');
+    const unknown = Object.freeze({
+      ...declined, lkwUnknown: true, lkwDate: '2026-09-29', lkwTime: '15:40',
+      discoveryDate: '2026-10-01', discoveryTime: '09:05'
+    });
+    const discovered = runHandler(unknown, { lkwTime: previousLkw });
+    expect(discovered).toContain('Last known well: Unknown (wake-up/unwitnessed).');
+    expect(discovered).toContain('Discovery (date/time): 2026-10-01 09:05');
+    expect(discovered).not.toContain(previousLkw.toLocaleDateString());
+
+    const missingDiscovery = runHandler(Object.freeze({
+      ...unknown, discoveryDate: '', discoveryTime: ''
+    }), { lkwTime: previousLkw });
+    expect(missingDiscovery).toContain('Last known well: Unknown (wake-up/unwitnessed).');
+    expect(missingDiscovery).toContain('Discovery (date/time): date not documented time not documented');
+    expect(missingDiscovery).not.toContain(previousLkw.toLocaleDateString());
+    expect(missingDiscovery).not.toContain('Discovery (date/time): 2026-10-01 09:05');
+  });
+
+  it('invalidates a generated snapshot when any authored note, exam or template input group changes', () => {
+    const declaration = appSource.match(/^\s*const generatedNoteInputKey = [^\n]+;/m)?.[0];
+    expect(declaration).toBeTruthy();
+    const baseline = {
+      telestrokeNote: { recommendationsText: 'Manual text', tnkConsentDiscussed: true },
+      patientData: { '1a': 'Alert (0)' }, gcsItems: { eye: '4' },
+      ichScoreItems: { gcs: 'gcs1315' }, aspectsScore: 8,
+      abcd2Items: { duration: 'duration1059' }, nihssScore: 0, mrsScore: 0,
+      pcAspectsRegions: [], lkwTime: new Date('2026-10-01T10:00:00Z'),
+      strokeCodeForm: { tnk: [] }, trialEligibility: {},
+      noteTemplate: 'consult', consultationType: 'telephone', editableTemplate: defaultTemplate
+    };
+    const evaluate = new Function(...Object.keys(baseline), declaration + '\nreturn generatedNoteInputKey;');
+    const keyFor = (inputs) => evaluate(...Object.keys(baseline).map((key) => inputs[key]));
+    const original = keyFor(baseline);
+    const changes = {
+      telestrokeNote: { ...baseline.telestrokeNote, tnkConsentDiscussed: false },
+      patientData: { '1a': 'Not alert (1)' }, gcsItems: { eye: '3' },
+      ichScoreItems: { gcs: 'gcs512' }, aspectsScore: 7,
+      abcd2Items: { duration: 'duration60' }, nihssScore: 1, mrsScore: 1,
+      pcAspectsRegions: ['pons'], lkwTime: new Date('2026-10-01T11:00:00Z'),
+      strokeCodeForm: { tnk: ['review-needed'] }, trialEligibility: { study: { status: 'needs_info' } },
+      noteTemplate: 'transfer', consultationType: 'videoTelestroke', editableTemplate: 'Edited template'
+    };
+    for (const [field, value] of Object.entries(changes)) {
+      expect(keyFor({ ...baseline, [field]: value }), `${field} must invalidate the draft`).not.toBe(original);
+    }
+    expect(appSource).toContain("text={generatedNoteIsCurrent ? generatedNoteDraft.text : ''}");
+    expect(appSource).toContain('stale={!!generatedNoteDraft && !generatedNoteIsCurrent}');
+  });
+
+  it('renders current drafts read-only and withholds both stale text and stale copy controls', () => {
+    const previousText = 'Prior generated snapshot: Informed consent obtained.';
+    const render = (props) => renderToStaticMarkup(React.createElement(GeneratedNoteDraft, { onCopy: () => {}, ...props }));
+    const current = render({ text: previousText, stale: false });
+    expect(current).toContain(previousText);
+    expect(current).toMatch(/<textarea[^>]*readonly=""/i);
+    expect(current).toContain('Copy generated note');
+    const stale = render({ text: previousText, stale: true });
+    expect(stale).toContain('Encounter inputs changed');
+    expect(stale).toContain('Generate the note again');
+    expect(stale).not.toContain(previousText);
+    expect(stale).not.toMatch(/<textarea|<button|Copy generated note/);
+    expect(render({ text: '', stale: false })).toBe('');
   });
 });

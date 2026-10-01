@@ -40,6 +40,30 @@ Updates roll out via a non-intrusive **"A new version of Stroke is ready"** bann
 - Do not enter PHI, patient identifiers, MRN fragments, dates of birth, real ward census data, real encounter details, learner records, or confidential institutional information.
 - Real clinical use requires organization-approved hosting, storage, access control, governance, and incident-response paths outside this public deployment.
 
+## Clinical workspace and maintained content
+
+Encounter opens with the clinical core; teaching modules, completed-trial details,
+full guideline rows and the document search index load on demand. The installed
+service worker stages the complete module graph before an update becomes ready.
+A failed module download offers an explicit new-tab recovery path: the original
+encounter remains open, and its inputs are not copied into the new tab.
+
+The session-only **Bedside / Teaching** control changes presentation, not clinical
+calculations. Generated note drafts remain separate from manually entered
+recommendations and are invalidated when their source inputs change. Documented
+discussion, consent status, administration and safety review remain distinct.
+
+Downloads feature seven generated education references; seventeen historical
+teaching documents remain in a separately labelled archive. Generated status
+means source/export maintenance, not blanket clinical-currentness certification.
+
+Selected repeated dose and prognosis statements live in `src/clinical/claims.json`.
+`docs/clinical-claim-occurrences.json` maps four bounded rule groups, including
+manual and protected exceptions, and seven generated exports. Run
+`npm run check:clinical-claims` after edits. A changed source, occurrence or export
+requires reviewing the affected uses before updating the trace; it is not a
+substitute for primary-source clinical review.
+
 ## Clinical content data layer (`/content`)
 
 Clinical reference data has a typed, schema-validated projection under

@@ -26,6 +26,7 @@ import fsSync from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { MAINTAINED_DOWNLOADS, GENERATED_DOWNLOAD_NOTE, HISTORICAL_DOWNLOAD_NOTE } from '../src/download-manifest.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.join(__dirname, '..');
@@ -347,9 +348,13 @@ async function seedReferences() {
     else if (ch === ']') { depth -= 1; if (depth === 0) { end = i; break; } }
   }
   if (end === -1) throw new Error('seedReferences: unbalanced REFERENCE_LIBRARY_SECTIONS array');
-  // The registry is a pure data literal (no identifiers, calls or spreads), so
-  // evaluating it is equivalent to parsing it.
-  const sections = new Function(`return ${src.slice(open, end + 1)};`)();
+  // The authored registry projects the canonical download manifest. Supply
+  // those exact dependencies just as the application does; never duplicate
+  // IDs, lifecycle labels or paths in the seed layer.
+  const sections = new Function(
+    'MAINTAINED_DOWNLOADS', 'GENERATED_DOWNLOAD_NOTE', 'HISTORICAL_DOWNLOAD_NOTE',
+    `return ${src.slice(open, end + 1)};`
+  )(MAINTAINED_DOWNLOADS, GENERATED_DOWNLOAD_NOTE, HISTORICAL_DOWNLOAD_NOTE);
 
   const seen = new Map();
   for (const section of sections) {

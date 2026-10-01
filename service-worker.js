@@ -6,9 +6,9 @@
    Old app caches are retired only on activation. Fetch policy is independent.
 */
 
-const APP_VERSION = '6.30.5';
+const APP_VERSION = '6.30.6';
 const CACHE_PREFIX = 'stroke-cache-v';
-const CACHE_NAME  = 'stroke-cache-v6-30-5-clinical-review-20260930';
+const CACHE_NAME  = 'stroke-cache-v6-30-6-clinical-utility-20261001';
 
 // Retired teaching figures must not be served from a stale browser cache or
 // a bookmarked URL after this worker takes control. Paths are scope-relative
@@ -87,6 +87,28 @@ const CORE_ASSETS = [
 
 const CDN_ASSETS = [];
 
+// The build writes content-addressed modules here. Installation must cache
+// ALL of them before the worker is installed/offline-ready. Downloading does
+// not execute the deferred Education, Guidelines, trial or search modules.
+// BEGIN GENERATED APP CHUNKS
+const APP_CHUNKS = [
+  "./chunks/chunk-C5XJQ7C4.js",
+  "./chunks/chunk-DF3BHIJK.js",
+  "./chunks/chunk-I52U4GRJ.js",
+  "./chunks/chunk-IZUYVIPG.js",
+  "./chunks/chunk-JE3YJTWB.js",
+  "./chunks/chunk-P43AE5U6.js",
+  "./chunks/chunk-RCTS46XC.js",
+  "./chunks/chunk-WUBJWKVG.js",
+  "./chunks/deferred-reference-data-Y5YBGYFC.js",
+  "./chunks/education-BMA5BB32.js",
+  "./chunks/EligibilityTables-X6TRGNWK.js",
+  "./chunks/sw-controller-NJX7VE5V.js",
+  "./chunks/teaching-6YGZPLVU.js",
+  "./chunks/TrialScreener-LJZC6KII.js"
+];
+// END GENERATED APP CHUNKS
+
 async function purgeWithdrawnCacheEntries() {
   // A waiting worker does not control requests yet. Remove only retired files
   // from this app's caches so the previous worker cannot serve those entries.
@@ -115,7 +137,7 @@ self.addEventListener('install', (event) => {
     const cache = await caches.open(CACHE_NAME);
     // A recently visited deployment can still be fresh in the HTTP cache.
     // Stage this deployment from the network, not those previous shell bytes.
-    await cache.addAll(CORE_ASSETS.map(asset =>
+    await cache.addAll([...CORE_ASSETS, ...APP_CHUNKS].map(asset =>
       new Request(new URL(asset, self.registration.scope), { cache: 'reload' })
     ));
     await Promise.allSettled(CDN_ASSETS.map(url => cache.add(url)));
@@ -197,6 +219,14 @@ const isShellAsset = (url) =>
   url.pathname.endsWith('/manifest.json') ||
   /\.pdf$/i.test(url.pathname);
 
+const isVersionedShell = url => {
+  const root = new URL('./', self.registration.scope);
+  if (url.origin !== root.origin) return false;
+  if (url.pathname === root.pathname || url.pathname === new URL('index.html', root).pathname) return true;
+  return ['app.js', 'tailwind.css', 'manifest.json', ...APP_CHUNKS.map(asset => asset.replace(/^\.\//, ''))]
+    .some(asset => url.pathname === new URL(asset, root).pathname);
+};
+
 const offlineUnavailable = () => new Response(
   'This resource is not available offline. Reconnect and open the current library.',
   { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } }
@@ -264,10 +294,14 @@ async function networkFirst(request, url) {
 }
 
 async function cacheFirst(request, url) {
-  const cached = await matchCurrentCache(request, url);
+  const cached = await matchCurrentCache(request, url,
+    request.mode === 'navigate' && isHtmlRequest(request, url));
   if (cached) return cached;
-  const response = await fetch(request, url.origin === self.location.origin
-    ? { cache: 'no-cache' } : undefined);
+  let response;
+  try {
+    response = await fetch(request, url.origin === self.location.origin
+      ? { cache: 'no-cache' } : undefined);
+  } catch (_) { return offlineUnavailable(); }
   await persistResponse(request, response);
   return response;
 }
@@ -284,6 +318,13 @@ self.addEventListener('fetch', (event) => {
         'This teaching resource has been withdrawn. Open the current Stroke education library for the revised material.',
         { status: 410, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' } }
       )));
+      return;
+    }
+    // Keep a controlled document, entry and chunks on one installed release.
+    // A waiting update must never replace the running module graph before the
+    // user chooses Reload. PDF freshness remains network-first.
+    if (isVersionedShell(url)) {
+      event.respondWith(cacheFirst(event.request, url));
       return;
     }
     if (isHtmlRequest(event.request, url) || isShellAsset(url)) {

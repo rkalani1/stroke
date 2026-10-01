@@ -283,6 +283,10 @@ export function evaluateTrialEligibility(trial, p) {
   const matchedCriteria = criteria.filter(c => evaluateCriterion(c,p) === true).map(c => c.operator === 'or' ? getActiveBranch(c,p)?.label : formatLabel(c.matchedLabel,p,c.field)).filter(Boolean);
   return {
     status: hits.length || (failed.length && !futureWindow) ? 'excluded' : (trial.status === 'soon' || futureWindow) ? 'soon' : 'pending',
+    // A patient before the study window is different from a registry that is
+    // not yet recruiting. Preserve both facts when they happen together.
+    beforeWindow: futureWindow,
+    notYetEnrolling: trial.status === 'soon',
     matchedCriteria: [...new Set(matchedCriteria)],
     pendingCriteria: [...new Set(pendingCriteria)],
     pendingFields: [...new Set([...criteria.filter(c => evaluateCriterion(c,p) === null).flatMap(c => c.operator === 'or' ? ['Alternative eligibility pathway'] : [{age:'Age',rehab:'Rehab unit placement',language:'Language spoken',currentMrs:'Current post-stroke mRS',preMrs:'Pre-stroke mRS'}[c.field] || c.field]), ...exclusions.filter(c => evaluateCriterion(c,p) === null).map(c => c.pendingLabel || c.error || c.field), 'Full registry/protocol confirmation'])],
@@ -340,7 +344,7 @@ export function evaluateAll(state, trials = screenerTrials) {
   if (ready) {
     trials.forEach((trial) => {
       const r = evaluateTrialEligibility(trial, params);
-      const item = { trial, status: r.status, matchedCriteria: r.matchedCriteria, pendingCriteria: r.pendingCriteria, pendingFields: r.pendingFields || [], exclusionReasons: r.exclusionReasons || [], sourceGaps: r.sourceGaps || [] };
+      const item = { trial, status: r.status, beforeWindow: r.beforeWindow || false, notYetEnrolling: r.notYetEnrolling || false, matchedCriteria: r.matchedCriteria, pendingCriteria: r.pendingCriteria, pendingFields: r.pendingFields || [], exclusionReasons: r.exclusionReasons || [], sourceGaps: r.sourceGaps || [] };
       if (r.status === 'placeholder') buckets.incomplete.push(item);
       else buckets[r.status].push(item);
     });
@@ -372,6 +376,12 @@ function onsetNoteLabel(onsetHours) {
   return band ? band.label : '> 6 months from LKW';
 }
 
+function briefingSourceLine(trial) {
+  const metadata = trial.externalMetadata || {};
+  const status = metadata.registryStatus ? metadata.registryStatus.replace(/_/g, ' ').toLowerCase() : 'not verified';
+  return `   Registry: ${status}; recorded check: ${metadata.verificationDate || 'not recorded'}; local activation: not confirmed.\n`;
+}
+
 // Paste-ready referral note. Deliberately carries only what the screener was
 // actually told — classification and onset window — plus the matched studies
 // and their referral pathway. It never asserts bedside facts the user did not
@@ -397,13 +407,20 @@ export function buildBriefingNote(state, buckets) {
     note += 'POSSIBLE CANDIDATES (' + candidates.length + '):\n';
     candidates.forEach((item) => {
       note += ' - ' + item.trial.acronym + ' (' + (item.trial.externalMetadata.nct || 'No NCT') + ')\n';
+      note += briefingSourceLine(item.trial);
       note += '   Pathway: ' + item.trial.pathway + '\n';
     });
   }
-  if (soon.length > 0) {
-    note += 'ENROLLING SOON / FUTURE MATCH (' + soon.length + '):\n';
-    soon.forEach((item) => {
+  for (const [label, items] of [
+    ['BEFORE STUDY WINDOW', soon.filter(item => !item.notYetEnrolling)],
+    ['NOT YET ENROLLING', soon.filter(item => item.notYetEnrolling)]
+  ]) {
+    if (!items.length) continue;
+    note += label + ' (' + items.length + '):\n';
+    items.forEach((item) => {
       note += ' - ' + item.trial.acronym + ' (' + (item.trial.externalMetadata.nct || 'No NCT') + ')\n';
+      note += briefingSourceLine(item.trial);
+      if (item.beforeWindow) note += '   Timing: before the modeled study window; eligibility remains unconfirmed.\n';
       note += '   Pathway: ' + item.trial.pathway + '\n';
     });
   }

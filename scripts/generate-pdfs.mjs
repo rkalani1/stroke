@@ -7,34 +7,29 @@ import path from 'node:path';
 import os from 'node:os';
 import { createRequire } from 'node:module';
 import { pathToFileURL } from 'node:url';
+import { MAINTAINED_DOWNLOADS, RETIRED_DOWNLOADS } from '../src/download-manifest.js';
 const root = process.cwd();
 const exportDate = process.env.STROKE_PDF_EXPORT_DATE || new Date().toISOString().slice(0, 10);
 if (!/^\d{4}-\d{2}-\d{2}$/.test(exportDate)) throw new Error('STROKE_PDF_EXPORT_DATE must be YYYY-MM-DD');
 const temporary = await fs.mkdtemp(path.join(os.tmpdir(), 'stroke-quickrefs-'));
-const destinations = [
-  ['ToastClassificationCard','TOAST Stroke Classification'],
-  ['DaptRegimensCard','DAPT Guidelines'],
-  ['MalignantInfarctionCard','Malignant Infarction'],
-  ['AfibAnticoagTimingCard','AFib DOAC Start Timing'],
-  ['StrokePrognosisCard','Stroke Prognosis'],
-  ['CervicalDissectionCard','Cervical Artery Dissection'],
-  ['BrainDeathCard','Brain Death Guidelines']
-];
+const destinations = MAINTAINED_DOWNLOADS;
+const outputArg = process.argv.indexOf('--output-dir');
+if (outputArg >= 0 && (!process.argv[outputArg + 1] || process.argv[outputArg + 1].startsWith('--'))) {
+  throw new Error('--output-dir requires a candidate directory');
+}
+// Candidate exports stay outside the public documents tree until reviewed.
+const outputDir = outputArg >= 0 ? path.resolve(process.argv[outputArg + 1]) : path.join(root, 'documents/references');
+await fs.mkdir(outputDir, { recursive: true });
 // Operational EVD/ICP handouts were retired by the source review. Do not
 // regenerate them from reference-only replacement cards or stale components.
-const retired = [
-  'documents/references/External Ventricular Drain.pdf',
-  'documents/references/Intracranial Hypertension & Herniation.pdf',
-  'documents/exam/coma exam.pdf'
-];
-for (const file of retired) {
+for (const { path: file } of RETIRED_DOWNLOADS) {
   try { await fs.access(path.join(root, file)); }
   catch { continue; }
   throw new Error('Retired clinical export is still present: ' + file);
 }
 const selected = process.argv.indexOf('--only');
 const selectedName = selected >= 0 ? process.argv[selected + 1] : null;
-if (selected >= 0 && !destinations.some(([component]) => component === selectedName)) {
+if (selected >= 0 && !destinations.some(({ component }) => component === selectedName)) {
   throw new Error('--only must name an approved export component');
 }
 const rendererPath = path.join(temporary,'render.cjs');
@@ -80,13 +75,14 @@ try {
   browser = await chromium.launch(process.env.STROKE_CHROMIUM_PATH ? {executablePath:process.env.STROKE_CHROMIUM_PATH} : {});
   const page = await browser.newPage({viewport:{width:816,height:1056}});
   await page.emulateMedia({media:'print',colorScheme:'light'});
-  for (const [component,name] of destinations) {
+  for (const { component, title: name, path: publicPath } of destinations) {
     if (selectedName && component !== selectedName) continue;
     const html = '<!doctype html><html lang="en"><head><meta charset="utf-8"><base href="' +
       pathToFileURL(root+path.sep).href+'"><title>'+name.replaceAll('&','&amp;') +
       '</title><style>'+css+'</style></head><body>'+render(component)+'<style>'+printCss+'</style></body></html>';
     const htmlPath = path.join(temporary,component+'.html');
     await fs.writeFile(htmlPath,html);
+    if (outputArg >= 0) await fs.writeFile(path.join(outputDir, component + '.html'), html);
     await page.goto(pathToFileURL(htmlPath).href,{waitUntil:'load'});
     await page.evaluate((name) => {
       // Flatten the two-column teaching layout into its numbered reading order.
@@ -123,7 +119,7 @@ try {
     await page.evaluate(async () => {await document.fonts.ready; await Promise.all([...document.images].map(img => img.decode().catch(()=>{})));});
     const broken=await page.evaluate(()=>[...document.images].filter(img=>!img.naturalWidth).map(img=>img.src));
     if(broken.length) throw new Error('Missing images in '+name+': '+broken.join(', '));
-    const destination=path.join(root,'documents/references',name+'.pdf');
+    const destination=path.join(outputDir,path.basename(publicPath));
     await page.pdf({path:destination,format:'Letter',printBackground:true,preferCSSPageSize:true,
       displayHeaderFooter:true, headerTemplate:'<span></span>',
       footerTemplate:'<div style="width:100%;text-align:center;font:8px Arial;color:#475569">' + name.replaceAll('&','&amp;') + ' · Teaching reference · Generated ' + exportDate + ' · <span class="pageNumber"></span>/<span class="totalPages"></span></div>'});

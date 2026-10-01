@@ -1,0 +1,69 @@
+[
+  {
+    "id": "tnk-stroke-dose",
+    "severity": "critical",
+    "text": "TNK 0.25 mg/kg IV bolus (max 25 mg)",
+    "dose": "0.25 mg/kg, max 25 mg",
+    "population": "Adults with acute ischemic stroke who meet the complete IV thrombolysis eligibility criteria; the standard-window recommendation applies within 4.5 hours of onset or last known well.",
+    "limits": "Weight and complete eligibility/contraindication review are required. Dose arithmetic does not establish treatment eligibility. Extended-window and trial populations require their own criteria.",
+    "sourceLabel": "AHA/ASA 2026 AIS guideline, recommendation 98",
+    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
+    "sourceFile": "src/guidelines/ais-2026.json",
+    "sourceRecommendationId": "ais-2026-98",
+    "reviewedAt": "2026-09-30",
+    "reviewScope": "Recorded review covers the cited AIS recommendation. The source record retains partially applied correction warnings; it does not establish complete verification of current guidance.",
+    "maintenanceNote": "Existing wording consolidated without a new clinical review."
+  },
+  {
+    "id": "alteplase-stroke-dose",
+    "severity": "critical",
+    "text": "Alteplase 0.9 mg/kg IV (max 90 mg): 10% bolus, 90% over 60 min",
+    "dose": "0.9 mg/kg, max 90 mg",
+    "population": "Adults with acute ischemic stroke who meet the complete IV thrombolysis eligibility criteria; the standard-window recommendation applies within 4.5 hours of onset or last known well.",
+    "limits": "Weight and complete eligibility/contraindication review are required. Dose arithmetic does not establish treatment eligibility. Extended-window and trial populations require their own criteria.",
+    "sourceLabel": "AHA/ASA 2026 AIS guideline; existing alteplase calculator regimen",
+    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
+    "sourceFile": "src/guidelines/ais-2026.json",
+    "sourceRecommendationId": "ais-2026-98",
+    "sources": [
+      {
+        "label": "AHA/ASA 2026 AIS guideline, standard-window eligibility and dose",
+        "url": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000513",
+        "file": "src/guidelines/ais-2026.json"
+      },
+      {
+        "label": "US Activase prescribing information §2.1, dose and administration",
+        "url": "https://www.gene.com/download/pdf/activase_prescribing.pdf",
+        "scope": "Supports the dose and infusion split; the guideline's 4.5-hour population is a separate recommendation."
+      }
+    ],
+    "reviewedAt": "2026-09-30",
+    "reviewScope": "Recorded date is the local AIS source review. The Activase label supports dose and administration; the guideline's 4.5-hour eligibility scope is separate. The AIS source record retains partially applied correction warnings.",
+    "maintenanceNote": "Existing calculator regimen and previously checked Activase label retained without a new clinical review; the infusion split is not inferred from recommendation 98."
+  },
+  {
+    "id": "prognostic-score-limits",
+    "severity": "critical",
+    "text": "Historical scores describe severity and cohort outcomes, not individual recovery ceilings. In critically ill adults with ischemic stroke, admission NIHSS or ASTRAL alone is not reliable for poor-outcome counseling. The ICH Score can provide a general framework for communication, but no score should be the sole basis for an individual prognosis or for withholding reperfusion, decompression or life-sustaining treatment.",
+    "population": "Interpret each score in its original population and outcome horizon. Historical cohort outcomes are not an individual prognosis.",
+    "limits": "Do not combine score definitions or outcome models. Preserve missing-input states and model-specific uncertainty.",
+    "sourceLabel": "AHA/ASA 2022 ICH guideline",
+    "sourceUrl": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
+    "sourceFile": "src/guidelines/ich-2022.json",
+    "sources": [
+      {
+        "label": "AHA/ASA 2022 ICH guideline",
+        "url": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000407",
+        "file": "src/guidelines/ich-2022.json"
+      },
+      {
+        "label": "NCS 2026 AIS neuroprognostication, recommendations 12 and 20",
+        "url": "https://doi.org/10.1007/s12028-026-02486-3",
+        "file": "src/guidelines/ncs-neuroprognostication-ais-2026.json"
+      }
+    ],
+    "reviewedAt": "2026-09-30",
+    "reviewScope": "Recorded review covers the cited ICH and AIS guidance, not validation of every prognostic model. The AIS source retains an unresolved body/table evidence-grade discrepancy for ASTRAL.",
+    "maintenanceNote": "Safety paragraph retained verbatim from education without a new clinical review."
+  }
+]
