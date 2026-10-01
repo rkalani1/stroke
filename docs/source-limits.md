@@ -38,3 +38,12 @@ by retained recommendations; it is not a restored guideline browser.
 Retired public guideline URLs return a schema-2 retirement envelope with null
 data. The full committed source corpus and teaching artifacts are preserved at
 `archive/pre-encounter-first-20261001-4f8e99d`; they are not current API content.
+
+
+## Expanded Evidence source scope (7.4.0)
+
+All 110 archived document PMID/DOI pairs matched live NLM bibliographic metadata on 2026-10-01. Cards distinguish that identity check from an abstract, official summary or selected full-text review. The source crosswalk retains companion guidance without reviving 3,547 historical extracted statements as current recommendations. Per-card scope and correction-access notes remain visible.
+
+Two archive labels were misleading despite correct identifiers: `svin-dsa-collaterals-2025` concerns DSA determination of cerebral circulatory arrest, and `svin-lab-consensus-2025` concerns training/certification standards. Their source titles and topic destinations now reflect the actual publications. The 2026 rehabilitation archive was an access placeholder; its prior presence was not a full guideline extraction.
+
+Modified Fisher and mTICI are source-specific grading/descriptor aids without individual prognosis. NASCET requires paired extracranial ICA measurements, explicit patency and exclusion of near-occlusion; it does not determine intervention. CHA₂DS₂-VA was not derived by subtracting sex from the original worksheet because the 2024 ESC clinical definitions differ.

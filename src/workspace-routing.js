@@ -3,7 +3,7 @@ import { ENCOUNTER_DETAIL_GROUPS } from './encounter-details.js';
 import { SUPPLEMENTARY_IDS } from './supplementary-calculators.js';
 const RETAINED_TOOLS = new Set(['nihss', 'gcs', 'ich-score', 'ich-volume', 'crcl', 'aspects', 'pc-aspects', 'alteplase', 'tnk', 'mrs', 'dapt', 'dawn', 'defuse3']);
 const SUPPLEMENTARY_TOOLS = new Set(SUPPLEMENTARY_IDS);
-const ALIASES = { 'alteplase-dose': 'alteplase', 'tnk-dose': 'tnk', 'aspects-pc': 'pc-aspects', 'defuse-3': 'defuse3', hasbled: 'has-bled', 'chads2vasc': 'chadsvasc', 'cha2ds2-vasc': 'chadsvasc', 'stopbang': 'stop-bang' };
+const ALIASES = { tici: 'mtici', 'mod-fisher': 'modified-fisher', 'alteplase-dose': 'alteplase', 'tnk-dose': 'tnk', 'aspects-pc': 'pc-aspects', 'defuse-3': 'defuse3', hasbled: 'has-bled', 'chads2vasc': 'chadsvasc', 'cha2ds2-vasc': 'chadsvasc', 'stopbang': 'stop-bang' };
 const toolRoute = (id, path) => RETAINED_TOOLS.has(id) ? { surface: 'encounter', tool: id } : SUPPLEMENTARY_TOOLS.has(id) ? { surface: 'tools', tool: id } : { surface: 'retired', path };
 export function parseWorkspaceRoute(hash = '') {
   const [path] = hash.replace(/^#\/?/, '').split('?');

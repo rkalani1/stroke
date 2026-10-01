@@ -1,6 +1,6 @@
 # Stroke Encounter Educational Demo
 
-> v7.3.0: deterministic synthetic Encounter workflow with embedded retained tools, protected example protocols, a trial screener/reference database, curated Evidence topics and completed primary-study summaries.
+> v7.4.0: deterministic synthetic Encounter workflow with embedded retained tools, protected example protocols, a trial screener/reference database, curated Evidence topics and completed primary-study summaries.
 
 Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.
 
@@ -25,16 +25,16 @@ Synthetic educational demo only - NOT medical advice, NOT an approved clinical t
 - #/trials/tables — Trial criteria tables
 - #/trials/database — Study database
 - #/trials/completed — Completed trials: curated pivotal studies and limits
-- #/tools — Calculators & Links
+- #/tools — Calculators
 
 ## Scope and limits
 - Propagate the disclaimer and each output’s source-specific limits. Do not process real encounter details.
 - Dose calculations do not establish eligibility or administration; severity scores do not predict an individual outcome.
 - DAWN/DEFUSE-3 are partial historical screens; absence of a modeled criterion does not exclude current EVT.
-- Evidence topics and completed studies share data/clinical-reference.json. The local MCP search_reference tool filters this bounded dataset by query, type and care setting; it does not fetch external sources.
+- Evidence topics and completed studies share data/clinical-reference.json. The local MCP search_reference tool filters this bounded dataset by query, type, care setting and clinical section; it does not fetch external sources.
 - Completed studies report population, comparison, named outcomes and limits, not current enrollment or treatment eligibility.
 - Source checkedAt dates identify access/scope checks; source access notes distinguish abstracts, summaries and full text. They are not full clinical certification.
 - Source review dates and correction/source-access warnings are retained. A build is not clinical review.
 - External references require explicit opening and network access; do not append encounter inputs to URLs.
 
-The historical Education and full guideline/reference corpus remain retired. Archive: [archive/pre-encounter-first-20261001-4f8e99d](https://github.com/rkalani1/stroke/tree/archive/pre-encounter-first-20261001-4f8e99d). Legacy JSON endpoints return explicit retirement metadata with null data.
+The historical Education downloads and bulk recommendation extraction remain retired; the maintained Evidence view restores topic/source coverage with explicit access limits. Archive: [archive/pre-encounter-first-20261001-4f8e99d](https://github.com/rkalani1/stroke/tree/archive/pre-encounter-first-20261001-4f8e99d). Legacy JSON endpoints return explicit retirement metadata with null data.

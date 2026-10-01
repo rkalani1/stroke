@@ -140,7 +140,7 @@ async function main() {
       for (const section of ['Reason for Consultation:', 'Chief complaint:', 'HPI:', 'Objective:', 'Imaging findings:', 'Assessment and Plan:', 'Recommendations:', 'Clinician Name']) assert(video.includes(section));
       assert(video.includes('QA specialist review pending.'));
       assert(!/SYNTHETIC|EDUCATIONAL DEMO|NO PHI|NOT A REAL CLINICAL NOTE|Acute video consultation/i.test(video));
-      await page.getByRole('link', { name: 'Calculators & Links', exact: true }).click();
+      await page.getByRole('link', { name: 'Calculators', exact: true }).click();
       assert.equal(await page.getByRole('heading', { name: 'Retained primary sources', exact: true }).count(), 0);
       assert(!(await page.locator('main').innerText()).includes('archival Git ref'));
       await reset(page);
@@ -327,6 +327,55 @@ async function main() {
       assert(!/synthetic|public demo|educational demo|no PHI|not a real clinical note/i.test(visibleText));
       } finally { await reset(page); }
     });
+    await check('header references and all clinical sections remain reachable without sharing Encounter values', async () => {
+      await reset(page); await setupIschemic(page);
+      const links = page.getByRole('navigation', { name: 'External references', exact: true }).getByRole('link');
+      assert.deepEqual(await links.allTextContents(), ['Telestroke Map', 'UpToDate', 'OpenEvidence']);
+      for (const link of await links.all()) { assert.equal(await link.getAttribute('target'), '_blank'); assert((await link.getAttribute('rel')).includes('noopener')); assert(!(await link.getAttribute('href')).includes('83')); }
+      await page.getByRole('link', { name: 'Evidence', exact: true }).click();
+      const evidence = page.getByRole('region', { name: 'Evidence', exact: true });
+      await evidence.getByLabel('Clinical section', { exact: true }).waitFor();
+      await evidence.getByLabel('Find a clinical question', { exact: true }).fill('');
+      await evidence.getByLabel('Care setting', { exact: true }).selectOption('all');
+      const sections = [...new Set(reference.data.topics.map(topic => topic.category))];
+      assert.equal(sections.length, 9);
+      for (const section of sections) {
+        await evidence.getByLabel('Clinical section', { exact: true }).selectOption(section);
+        const expected = reference.data.topics.filter(topic => topic.category === section).map(topic => topic.id).sort();
+        await page.waitForFunction(count => document.querySelectorAll('[aria-label="Evidence"] [data-reference-id]').length === count, expected.length);
+        assert.deepEqual((await evidence.locator('[data-reference-id]').evaluateAll(nodes => nodes.map(node => node.dataset.referenceId))).sort(), expected);
+      }
+      await evidence.getByLabel('Clinical section', { exact: true }).selectOption('all');
+      await page.getByRole('link', { name: 'Calculators', exact: true }).click();
+      await page.getByRole('heading', { name: 'Calculators', exact: true }).waitFor();
+      assert.equal(await page.locator('.tools-surface').getByRole('heading', { name: 'External references', exact: true }).count(), 0);
+      await reset(page);
+    });
+    await check('restored GCS access and NASCET arithmetic preserve explicit review and invalidation', async () => {
+      try {
+        await reset(page); await setupIschemic(page);
+        await page.evaluate(() => { location.hash = '#/encounter/gcs'; });
+        const gcs = page.locator('#calc-gcs');
+        await gcs.getByLabel('GCS Eye', { exact: true }).waitFor({ state: 'visible' });
+        assert.equal(await page.getByLabel('Working diagnosis', { exact: true }).inputValue(), 'ischemic');
+        for (const [name, value] of [['Eye','4'],['Verbal','5'],['Motor','6']]) await gcs.getByLabel(`GCS ${name}`, { exact: true }).selectOption(value);
+        await gcs.getByText('GCS 15/15', { exact: true }).waitFor();
+        await page.evaluate(() => { location.hash = '#/tools/nascet'; });
+        const card = page.locator('#calc-nascet');
+        await card.getByLabel('Measured ICA side', { exact: true }).selectOption('left');
+        await card.getByLabel('Minimum residual lumen diameter (mm)', { exact: true }).fill('3');
+        await card.getByLabel('Normal distal ICA diameter (mm)', { exact: true }).fill('4');
+        await card.getByLabel('Patent extracranial ICA and suitable distal reference confirmed', { exact: true }).selectOption('true');
+        await card.getByLabel('Near-occlusion suspected or present', { exact: true }).selectOption('false');
+        const reviewed = card.getByRole('checkbox', { name: 'All required inputs and source applicability reviewed', exact: true });
+        await reviewed.check(); await card.getByText('NASCET carotid stenosis: 25%', { exact: true }).waitFor();
+        await card.getByLabel('Minimum residual lumen diameter (mm)', { exact: true }).fill('');
+        await card.getByText('Required inputs or source review incomplete; no score.', { exact: true }).waitFor();
+        assert.equal(await card.getByRole('button', { name: 'Copy reviewed result', exact: true }).isEnabled(), false);
+        await page.getByRole('link', { name: 'Encounter', exact: true }).click();
+        assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)', { exact: true }).inputValue(), '83');
+      } finally { await reset(page); }
+    });
     await check('Evidence filters, deep links, completed studies and source copy preserve Encounter entries', async () => {
       const clipboard = await page.evaluate(() => ({ entries: window.__qaClipboard, denied: window.__qaDenyClipboard }));
       try {
@@ -335,12 +384,13 @@ async function main() {
         await page.getByLabel('Manual rationale / recommendations', { exact: true }).fill(marker);
         await page.getByRole('link', { name: 'Evidence', exact: true }).click();
         const evidence = page.getByRole('region', { name: 'Evidence', exact: true });
-        await evidence.getByText('17 topics found.', { exact: true }).waitFor();
+        await evidence.getByText(`${reference.data.topics.length} topics found.`, { exact: true }).waitFor();
         await evidence.getByLabel('Care setting', { exact: true }).selectOption('clinic');
+        await evidence.getByLabel('Clinical section', { exact: true }).selectOption('Stroke mechanisms and vascular disorders');
         await evidence.getByRole('searchbox', { name: 'Find a clinical question', exact: true }).fill('PFO');
         await evidence.locator('[data-reference-id="pfo"]').waitFor({ state: 'visible' });
         const filteredIds = await evidence.locator('[data-reference-id]').evaluateAll(cards => cards.map(card => card.dataset.referenceId));
-        assert(filteredIds.length < 17);
+        assert(filteredIds.length < reference.data.topics.length);
         assert(filteredIds.every(id => reference.data.topics.find(topic => topic.id === id).settings.includes('clinic')));
         await evidence.getByRole('searchbox', { name: 'Find a clinical question', exact: true }).fill('unmatchableqareference');
         await evidence.getByText('0 topics found.', { exact: true }).waitFor();
@@ -348,6 +398,7 @@ async function main() {
         const topic = evidence.locator('[data-reference-id="af-timing"]');
         await page.waitForFunction(() => { const card = document.querySelector('[aria-label="Evidence"] [data-reference-id="af-timing"]'); return card?.open && card.contains(document.activeElement); });
         assert.equal(await evidence.getByLabel('Care setting', { exact: true }).inputValue(), 'all');
+        assert.equal(await evidence.getByLabel('Clinical section', { exact: true }).inputValue(), 'all');
         assert.equal(await evidence.getByRole('searchbox', { name: 'Find a clinical question', exact: true }).inputValue(), '');
         await topic.getByRole('link', { name: 'Related completed evidence', exact: true }).click();
         const completed = page.getByRole('region', { name: 'Completed evidence', exact: true });
@@ -471,7 +522,7 @@ async function main() {
           const primary=await page.locator('.workspace-primary').evaluateAll(els=>els.filter(e=>e.offsetParent!==null).map(e=>({width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height})));assert(primary.every(x=>x.width>=44&&x.height>=44));
           await page.getByRole('button',{name:'Generate Pulsara summary',exact:true}).click();assert((await page.getByLabel('Generated Pulsara summary',{exact:true}).inputValue()).includes('NIHSS score: incomplete'));const shot=path.join(outDir,`encounter-${width}-${theme}.png`);await page.screenshot({path:shot,fullPage:true});report.screenshots.push(shot);
         });
-        await timed('navigation-tools','library-workflow',async()=>{await page.getByRole('link',{name:'Calculators & Links',exact:true}).click();await page.getByRole('heading',{name:'Calculators & Links',exact:true}).waitFor();await page.evaluate(()=>location.hash='#/education');await page.getByRole('heading',{name:'Retired destination',exact:true}).waitFor();await page.getByRole('link',{name:'Stroke',exact:true}).click();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');});
+        await timed('navigation-tools','library-workflow',async()=>{await page.getByRole('link',{name:'Calculators',exact:true}).click();await page.getByRole('heading',{name:'Calculators',exact:true}).waitFor();await page.evaluate(()=>location.hash='#/education');await page.getByRole('heading',{name:'Retired destination',exact:true}).waitFor();await page.getByRole('link',{name:'Stroke',exact:true}).click();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');});
         await timed('retained-protocols-pediatric','pediatric-workflow',async()=>{await page.getByRole('link',{name:'Protocols',exact:true}).click();await page.locator('#mgmt-tabpanel-ischemic').waitFor();const age=page.locator('#evt-age');await openDetails(age);await age.fill('17');assert((await page.locator('#mgmt-tabpanel-ischemic').innerText()).includes('Adult EVT algorithm does not apply'));await page.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();const trigger=page.getByRole('button',{name:'Vitamin K 10 mg IV',exact:true,includeHidden:true}).first();await openDetails(trigger);await trigger.click();await page.getByRole('dialog').waitFor();await page.keyboard.press('Escape');assert.equal(await page.getByRole('dialog').count(),0);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,`protocol overflow ${width}/${theme}`);});
         const durationMs=Math.round(performance.now()-started),thresholdMs=latency.run('local',viewport);report.runs.push({target:'local',viewport,width,theme,durationMs,thresholdMs,sections});if(latency.enforce)assert(durationMs<=thresholdMs,`${width}/${theme}: ${durationMs} exceeds ${thresholdMs}ms`);results.push({width,theme,overflow});await page.getByRole('link',{name:'Stroke',exact:true}).click();
       }
@@ -480,7 +531,7 @@ async function main() {
     await check('canonical state survives Protocols, Tools and browser back/forward', async () => {
       await setupIschemic(page); await page.getByLabel('Manual rationale / recommendations',{exact:true}).fill('Synthetic QA marker zeta: clinician review pending.');
       await page.getByRole('link',{name:'Protocols',exact:true}).click();await page.locator('#mgmt-tabpanel-ischemic').waitFor();
-      await page.getByRole('link',{name:'Calculators & Links',exact:true}).click();await page.getByRole('heading',{name:'Calculators & Links',exact:true}).waitFor();await page.goBack();await page.locator('#mgmt-tabpanel-ischemic').waitFor();await page.goBack();await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');await page.goForward();await page.locator('#mgmt-tabpanel-ischemic').waitFor();await page.getByRole('link',{name:'Stroke',exact:true}).click();assert((await page.getByLabel('Manual rationale / recommendations',{exact:true}).inputValue()).includes('marker zeta'));
+      await page.getByRole('link',{name:'Calculators',exact:true}).click();await page.getByRole('heading',{name:'Calculators',exact:true}).waitFor();await page.goBack();await page.locator('#mgmt-tabpanel-ischemic').waitFor();await page.goBack();await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');await page.goForward();await page.locator('#mgmt-tabpanel-ischemic').waitFor();await page.getByRole('link',{name:'Stroke',exact:true}).click();assert((await page.getByLabel('Manual rationale / recommendations',{exact:true}).inputValue()).includes('marker zeta'));
     });
     await check('legacy tool links reveal and focus retained tools; unavailable and retired routes explicit', async () => {
       for(const [route,id] of [['#/calculators/nihss','calc-nihss'],['#/research/calculators/crcl','calc-crcl'],['#/encounter/aspects','calc-aspects'],['#/calculators/tnk-dose','calc-tnk']]) {
@@ -490,7 +541,7 @@ async function main() {
       const restoredEvidence = page.getByRole('region', { name: 'Evidence', exact: true });
       await restoredEvidence.getByRole('heading', { name: 'Evidence', exact: true }).waitFor();
       await restoredEvidence.getByRole('searchbox', { name: 'Find a clinical question', exact: true }).waitFor();
-      assert.equal(await restoredEvidence.locator('[data-reference-id]').count(), 17);
+      assert.equal(await restoredEvidence.locator('[data-reference-id]').count(), reference.data.topics.length);
       for(const route of ['#/education','#/calculators/rcvs2','#/encounter/unknown-calc']) {await page.evaluate(hash=>location.hash=hash,route);await page.getByRole('heading',{name:/Retired/}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).isVisible(),false);}
       await page.evaluate(()=>location.hash='#/encounter/ich-score');await page.getByText('This tool is inactive in the current context.',{exact:false}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');await page.getByRole('link',{name:'Stroke',exact:true}).click();
     });
@@ -560,7 +611,7 @@ async function main() {
               const response = await cached.match(request);
               if (new URL(request.url).pathname === '/stroke/data/clinical-reference.json') {
                 const data = await response.clone().json();
-                reference = { appVersion: data._meta.appVersion, schemaVersion: data._meta.schemaVersion, topics: data.data.topics.length, studies: data.data.studies.length };
+                reference = { appVersion: data._meta.appVersion, schemaVersion: data._meta.schemaVersion, topics: data.data.topics.length, studies: data.data.studies.length, calculators: data.data.calculators.length };
               }
               totalBytes += (await response.arrayBuffer()).byteLength;
             }
@@ -568,15 +619,18 @@ async function main() {
           return { names: active, totalBytes, entries, urls, reference };
         });
         assert(!cache.urls.some(url=>/education|teaching|TrialScreener|deferred-reference/.test(url)));report.metrics.offlineCacheBytes=cache.totalBytes;
-        assert.deepEqual(cache.reference, { appVersion: await p.locator('.app-shell').getAttribute('data-version'), schemaVersion: '2.0.0', topics: 17, studies: 16 });
+        assert.deepEqual(cache.reference, { appVersion: await p.locator('.app-shell').getAttribute('data-version'), schemaVersion: '2.0.0', topics: reference.data.topics.length, studies: reference.data.studies.length, calculators: reference.data.calculators.length });
         assert.equal(cache.reference.appVersion, reference._meta.appVersion);
         await offline.setOffline(true);await p.reload({waitUntil:'domcontentloaded'});await setupIschemic(p);await p.getByLabel('Manual rationale / recommendations',{exact:true}).fill('Synthetic offline encounter; specialist review pending.');const items=p.locator('#calc-nihss select[id^="nihss-"]');await openDetails(items.first());for(let i=0;i<15;i++){const value=await items.nth(i).locator('option').evaluateAll(els=>els.find(e=>e.textContent.includes('(0)')).value);await items.nth(i).selectOption(value);}assert((await p.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));assert((await(await generate(p)).inputValue()).includes('NIHSS score: 0/42'));
         await p.getByRole('link',{name:'Trials',exact:true}).click();await p.getByRole('heading',{name:'Trials',exact:true}).waitFor();await p.getByRole('tab',{name:'Database',exact:true}).click();await p.getByRole('searchbox',{name:'Search the study database by acronym, name or NCT number',exact:true}).fill('STEP');assert((await p.getByRole('tabpanel',{name:'Database',exact:true}).innerText()).includes('STEP'));await p.screenshot({path:path.join(outDir,'trials-offline-mobile.png'),fullPage:true});
         assert.equal(await p.evaluate(() => navigator.onLine), false);
+        await p.getByRole('link', { name: 'Calculators', exact: true }).click();
+        await p.getByRole('heading', { name: 'Calculators', exact: true }).waitFor();
+        assert.equal(await p.locator('.supplementary-calculators .tool-target').count(), reference.data.calculators.length);
         await p.getByRole('link', { name: 'Evidence', exact: true }).click();
         const evidence = p.getByRole('region', { name: 'Evidence', exact: true });
-        await evidence.getByText('17 topics found.', { exact: true }).waitFor();
-        assert.equal(await evidence.locator('[data-reference-id]').count(), 17);
+        await evidence.getByText(`${reference.data.topics.length} topics found.`, { exact: true }).waitFor();
+        assert.equal(await evidence.locator('[data-reference-id]').count(), reference.data.topics.length);
         const topic = evidence.locator('[data-reference-id="af-timing"]');
         await topic.locator('summary').click();
         await topic.getByRole('heading', { name: 'Sources', exact: true }).waitFor();
@@ -616,7 +670,7 @@ async function main() {
         assert.equal(deployed._meta.schemaVersion, '2.0.0');
         assert.deepEqual(deployed.data, reference.data);
         await p.getByRole('link', { name: 'Evidence', exact: true }).click();
-        await p.getByRole('region', { name: 'Evidence', exact: true }).getByText('17 topics found.', { exact: true }).waitFor();
+        await p.getByRole('region', { name: 'Evidence', exact: true }).getByText(`${reference.data.topics.length} topics found.`, { exact: true }).waitFor();
         await p.getByRole('link', { name: 'Trials', exact: true }).click();
         await p.getByRole('tab', { name: 'Completed evidence', exact: true }).click();
         await p.getByRole('region', { name: 'Completed evidence', exact: true }).getByText('16 studies found.', { exact: true }).waitFor();

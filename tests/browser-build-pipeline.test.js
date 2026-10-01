@@ -15,10 +15,11 @@ describe('generated browser module pipeline', () => {
       fs.symlinkSync(path.join(root, 'node_modules'), path.join(fixture, 'node_modules'), 'dir');
       for (const file of ['build-browser.mjs', 'atomic-write.mjs']) fs.copyFileSync(path.join(root, 'scripts', file), path.join(fixture, 'scripts', file));
       fs.copyFileSync(path.join(root, 'src/jsx-factory.js'), path.join(fixture, 'src/jsx-factory.js'));
+      fs.copyFileSync(path.join(root, 'src/reference-search.js'), path.join(fixture, 'src/reference-search.js'));
       const gate = path.join(fixture, 'scripts/check-clinical-claims.mjs');
       fs.writeFileSync(gate, 'export const runClinicalClaimCheck = () => ({ok:true});');
       fs.writeFileSync(path.join(fixture, 'package.json'), '{"version":"0.0.0"}');
-      fs.writeFileSync(path.join(fixture, 'service-worker.js'), '// BEGIN GENERATED APP CHUNKS\nconst APP_CHUNKS = [];\n// END GENERATED APP CHUNKS\n');
+      fs.writeFileSync(path.join(fixture, 'service-worker.js'), '// BEGIN GENERATED APP CHUNKS\nconst APP_CHUNKS = [];\n// END GENERATED APP CHUNKS\n// BEGIN GENERATED REFERENCE VALIDATION\n// END GENERATED REFERENCE VALIDATION\n');
       fs.writeFileSync(path.join(fixture, 'src/app.jsx'), "import {shared} from './shared.js'; window.initial = shared; window.loadReference = () => import('./reference.js');");
       fs.writeFileSync(path.join(fixture, 'src/shared.js'), 'export const shared = {version: 1};');
       fs.writeFileSync(path.join(fixture, 'src/reference.js'), "import {shared} from './shared.js'; export const reference = {shared, title: 'first'};");

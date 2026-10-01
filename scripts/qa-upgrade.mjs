@@ -4,6 +4,10 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { launchChromium, servePublished, waitForInstalled, waitForBrowserState, arg, outDir, setupIschemic } from './qa-smoke.mjs';
 const baseline=path.resolve(arg('--baseline-dir','../baseline/site'));
+const baselineManifest=await fs.readFile(path.join(baseline,'app-assets.json'),'utf8').then(JSON.parse).catch(error=>{if(error.code==='ENOENT')return null;throw error;});
+// The original 6.x shell predates the data-version marker.
+const baselineSource=await fs.readFile(path.join(baseline,'src/app.jsx'),'utf8');
+const baselineVersion=baselineSource.includes('data-version={APP_VERSION}') ? baselineManifest?.appVersion : null;
 const current=path.resolve(arg('--site-dir','output/site'));
 const currentManifest=JSON.parse(await fs.readFile(path.join(current,'app-assets.json'),'utf8'));
 const chunk=currentManifest.files.find(file=>file.path.startsWith('chunks/'))?.path;
@@ -29,9 +33,9 @@ async function stage(page){await page.evaluate(async()=>{const reg=await navigat
 async function accept(page){await page.getByRole('button',{name:'Reload to update',exact:true}).click();await page.getByRole('heading',{name:'Encounter',exact:true}).waitFor({timeout:30000});assert.equal(await page.locator('.app-shell').getAttribute('data-version'),currentManifest.appVersion);}
 try{
   await check('archived baseline upgrade waits; Later preserves active entered state and installed graph',async()=>{
-    const session=await oldSession();try{const{page,numeric,original}=session;serving=current;await stage(page);await page.getByRole('button',{name:'Reload to update',exact:true}).waitFor();assert.equal(await numeric.inputValue(),'83');assert.equal(await page.locator('.app-shell').getAttribute('data-version'),null);
-      await page.getByRole('button',{name:'Dismiss update notification',exact:true}).click();await page.waitForTimeout(1200);assert.equal(await numeric.inputValue(),'83');assert.equal(await page.locator('.app-shell').getAttribute('data-version'),null);
-      const script=await page.evaluate(async()=>await(await fetch('app.js')).text());assert.equal(script,original.app,'waiting worker replaced old app.js');return{baselineCache:original.names,explicitDefer:true};
+    const session=await oldSession();try{const{page,numeric,original}=session;serving=current;await stage(page);await page.getByRole('button',{name:'Reload to update',exact:true}).waitFor();assert.equal(await numeric.inputValue(),'83');assert.equal(await page.locator('.app-shell').getAttribute('data-version'),baselineVersion);
+      await page.getByRole('button',{name:baselineVersion ? 'Later' : 'Dismiss update notification',exact:true}).click();await page.waitForTimeout(1200);assert.equal(await numeric.inputValue(),'83');assert.equal(await page.locator('.app-shell').getAttribute('data-version'),baselineVersion);
+      const script=await page.evaluate(async()=>await(await fetch('app.js')).text());assert.equal(script,original.app,'waiting worker replaced old app.js');return{baselineVersion,baselineCache:original.names,explicitDefer:true};
     }finally{await session.context.close();}
   });
   await check('explicit upgrade acceptance, retired-cache cleanup and unrelated cache preservation',async()=>{
@@ -45,11 +49,11 @@ try{
     const session=await oldSession();try{const{page,original}=session;serving=current;mode=injected;
       await page.evaluate(async()=>{window.__qaSWStates=[];const reg=await navigator.serviceWorker.getRegistration();reg.addEventListener('updatefound',()=>{const worker=reg.installing;worker?.addEventListener('statechange',()=>window.__qaSWStates.push(worker.state));});await reg.update();});
       await page.waitForFunction(()=>window.__qaSWStates.includes('redundant'),null,{timeout:60000});assert.equal(await session.numeric.inputValue(),'83');const failed=await page.evaluate(async()=>{const reg=await navigator.serviceWorker.getRegistration();return{waiting:Boolean(reg.waiting),script:await(await fetch('app.js')).text()};});assert.equal(failed.waiting,false);assert.equal(failed.script,original.app);
-      await session.context.setOffline(true);await page.reload();await page.locator('#tabpanel-encounter').waitFor();assert.equal(await page.locator('.app-shell').getAttribute('data-version'),null);await session.context.setOffline(false);mode='normal';await stage(page);await accept(page);return{failedAsset:failPath,failureStates:await page.evaluate(()=>window.__qaSWStates||[]),offlineBaselineReload:true,retryAccepted:true};
+      await session.context.setOffline(true);await page.reload();await page.locator('#tabpanel-encounter').waitFor();assert.equal(await page.locator('.app-shell').getAttribute('data-version'),baselineVersion);await session.context.setOffline(false);mode='normal';await stage(page);await accept(page);return{failedAsset:failPath,failureStates:await page.evaluate(()=>window.__qaSWStates||[]),offlineBaselineReload:true,retryAccepted:true};
     }finally{await session.context.close();mode='normal';}
   });
   await check('additional open Stroke window blocks activation without reloading either encounter',async()=>{
-    const session=await oldSession();try{const{page}=session;const other=await session.context.newPage();await other.goto(server.url+'#/encounter');await other.locator('#tabpanel-encounter').waitFor();serving=current;await stage(page);await page.getByRole('button',{name:'Reload to update',exact:true}).click();await page.getByText(/close other Stroke tabs/i).first().waitFor();assert.equal(await session.numeric.inputValue(),'83');assert.equal(await other.locator('.app-shell').getAttribute('data-version'),null);await other.close();await accept(page);return{blockedWithSecondClient:true,retryAfterClosingSecondClient:true};}finally{await session.context.close();}
+    const session=await oldSession();try{const{page}=session;const other=await session.context.newPage();await other.goto(server.url+'#/encounter');await other.locator('#tabpanel-encounter').waitFor();serving=current;await stage(page);await page.getByRole('button',{name:'Reload to update',exact:true}).click();await page.getByText(/close other Stroke tabs/i).first().waitFor();assert.equal(await session.numeric.inputValue(),'83');assert.equal(await other.locator('.app-shell').getAttribute('data-version'),baselineVersion);await other.close();await accept(page);return{blockedWithSecondClient:true,retryAfterClosingSecondClient:true};}finally{await session.context.close();}
   });
   await check('current-version deferred chunk corruption reports failure and preserves Encounter; network restoration and explicit recovery',async()=>{
     serving=current;mode='normal';const context=await browser.newContext({timezoneId:'America/Los_Angeles'});const page=await context.newPage();page.setDefaultTimeout(12000);try{

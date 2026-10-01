@@ -43,7 +43,8 @@
         "label": "Current NIHSS",
         "href": "#/encounter/nihss"
       }
-    ]
+    ],
+    "category": "Acute ischemic stroke"
   },
   {
     "id": "tia-evaluation",
@@ -87,7 +88,8 @@
         "label": "Ischemic stroke protocol",
         "href": "#/protocols/ischemic"
       }
-    ]
+    ],
+    "category": "Acute ischemic stroke"
   },
   {
     "id": "ich-management",
@@ -134,7 +136,8 @@
         "label": "Glasgow Coma Scale",
         "href": "#/encounter/gcs"
       }
-    ]
+    ],
+    "category": "Hemorrhage and neurocritical care"
   },
   {
     "id": "ich-surgery",
@@ -187,7 +190,8 @@
         "label": "ICH volume",
         "href": "#/encounter/ich-volume"
       }
-    ]
+    ],
+    "category": "Hemorrhage and neurocritical care"
   },
   {
     "id": "sah",
@@ -229,7 +233,8 @@
         "label": "Glasgow Coma Scale",
         "href": "#/encounter/gcs"
       }
-    ]
+    ],
+    "category": "Hemorrhage and neurocritical care"
   },
   {
     "id": "cvt",
@@ -265,7 +270,8 @@
         "access": "Official summary read; full statement and treatment pathways were not reviewed for this card."
       }
     ],
-    "related": []
+    "related": [],
+    "category": "Stroke mechanisms and vascular disorders"
   },
   {
     "id": "dizziness",
@@ -307,7 +313,8 @@
         "label": "Ischemic stroke protocol",
         "href": "#/protocols/ischemic"
       }
-    ]
+    ],
+    "category": "Acute ischemic stroke"
   },
   {
     "id": "inpatient-care",
@@ -370,7 +377,8 @@
         "label": "ICH protocol",
         "href": "#/protocols/ich"
       }
-    ]
+    ],
+    "category": "Inpatient care and complications"
   },
   {
     "id": "anticoagulant-labels",
@@ -454,6 +462,7 @@
         "label": "ICH protocol",
         "href": "#/protocols/ich"
       }
-    ]
+    ],
+    "category": "Prevention and antithrombotics"
   }
 ]

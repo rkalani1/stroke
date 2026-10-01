@@ -1,8 +1,9 @@
 // Structural/source-access validation only; this does not certify clinical currency.
+import { validCalculatorDefinitions } from '../src/reference-search.js';
 import { parseWorkspaceRoute } from '../src/workspace-routing.js';
 
 const SETTINGS = new Set(['on-call', 'hospital', 'clinic']);
-const SOURCE_TYPES = new Set(['Guideline', 'Scientific statement', 'Science advisory', 'Clinical policy', 'Randomized trial', 'Meta-analysis', 'Drug label']);
+const SOURCE_TYPES = new Set(['Guideline', 'Scientific statement', 'Science advisory', 'Clinical policy', 'Randomized trial', 'Meta-analysis', 'Drug label', 'Practice advisory', 'Consensus statement', 'Report', 'Educational resource', 'Policy statement', 'Position statement', 'Performance measures', 'Practice update']);
 const text = value => typeof value === 'string' && value.trim().length > 0;
 const slug = value => text(value) && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value);
 const strings = value => Array.isArray(value) && value.every(text);
@@ -28,6 +29,7 @@ export function validateClinicalReference(data, { now = new Date() } = {}) {
   if (!data || !['topics', 'studies'].every(key => Array.isArray(data[key]) && data[key].length)) {
     return ['Clinical reference requires nonempty topics and studies arrays'];
   }
+  if (!validCalculatorDefinitions(data.calculators)) errors.push('Invalid calculator presentation definitions');
   const ids = new Set();
   const topicIds = new Set(data.topics.map(record => record?.id));
   const studyIds = new Set(data.studies.map(record => record?.id));
@@ -39,6 +41,7 @@ export function validateClinicalReference(data, { now = new Date() } = {}) {
     if (!slug(record.id)) fail('invalid slug id');
     if (ids.has(record.id)) fail('duplicate id');
     ids.add(record.id);
+    if (kind === 'topics' && !text(record.category)) fail('clinical category required');
     if (!text(record.title) || !strings(record.keywords)) fail('title and keyword strings required');
     if (!Array.isArray(record.settings) || !record.settings.length || record.settings.some(setting => !SETTINGS.has(setting)) || new Set(record.settings).size !== record.settings.length) fail('invalid or duplicate care settings');
     if (!Array.isArray(record.sources) || !record.sources.length) fail('at least one source required');

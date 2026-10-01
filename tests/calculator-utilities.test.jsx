@@ -43,10 +43,10 @@ describe('mounted search and copy', () => {
   beforeAll(async () => {
     const bundled = await build({bundle:true,write:false,format:'iife',platform:'browser',stdin:{resolveDir:fileURLToPath(new URL('../',import.meta.url)),loader:'jsx',contents:`
       import React from 'react';import {createRoot} from 'react-dom/client';import {flushSync} from 'react-dom';
-      import Tools from './src/Tools.jsx';import {reconcileSupplementaryAppliedScores,updateSupplementaryField} from './src/supplementary-calculators.js';
+      import {CalculatorDirectory as Tools} from './src/Tools.jsx';import {calculatorDefinitions} from './src/supplementary-calculator-definitions.js';import {reconcileSupplementaryAppliedScores,updateSupplementaryField} from './src/supplementary-calculators.js';
       const root=createRoot(document.getElementById('root'));window.model=null;window.pending=[];window.copied=[];
       Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:text=>{window.copied.push(text);return new Promise((resolve,reject)=>window.pending.push({resolve,reject}));}}});
-      const draw=()=>root.render(<Tools state={window.model} tool={window.tool} mapUrl="https://example.com" update={fn=>{window.model=reconcileSupplementaryAppliedScores(window.model,fn(window.model));flushSync(draw);}}/>);
+      const draw=()=>root.render(<Tools definitions={calculatorDefinitions} state={window.model} tool={window.tool} mapUrl="https://example.com" update={fn=>{window.model=reconcileSupplementaryAppliedScores(window.model,fn(window.model));flushSync(draw);}}/>);
       window.renderTools=(state,tool)=>{window.model=state;window.tool=tool;flushSync(draw)};
       window.editShared=(key,value)=>{window.model=reconcileSupplementaryAppliedScores(window.model,{...window.model,note:{...window.model.note,[key]:value}});flushSync(draw)};
       window.editWorksheet=(key,value)=>{window.model=updateSupplementaryField(window.model,'abcd2',key,value);flushSync(draw)};

@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "appVersion": "7.3.0",
+  "appVersion": "7.4.0",
   "buildTarget": "public",
   "entry": "app.js",
   "initial": [
     "app.js",
-    "chunks/chunk-6WMD6WYZ.js",
+    "chunks/chunk-6MMDZQ2P.js",
     "chunks/chunk-CCC5QWPU.js",
     "chunks/chunk-KF43PX6Y.js",
     "chunks/chunk-MEDXAGMH.js"
@@ -13,15 +13,15 @@
   "files": [
     {
       "path": "app.js",
-      "bytes": 118391,
-      "gzipBytes": 37586,
-      "sha256": "69841357fb533f1fcd1347a2397262b11202cfb1c43c375f999ebdd0fa282cf2"
+      "bytes": 120090,
+      "gzipBytes": 38109,
+      "sha256": "aba25dfe1b2af027bb1e25e2bcd1bd5242163479314424f21d5464955e89f42c"
     },
     {
-      "path": "chunks/chunk-6WMD6WYZ.js",
-      "bytes": 34741,
-      "gzipBytes": 13489,
-      "sha256": "e84140d4101a6516e976dbbe3c76e744d44e5dac981848ef133a377732294af4"
+      "path": "chunks/chunk-6MMDZQ2P.js",
+      "bytes": 36573,
+      "gzipBytes": 14121,
+      "sha256": "20b4912a761c5060c3399ec43507b30196eb9fd8c96567c45a8832768c8a4540"
     },
     {
       "path": "chunks/chunk-CCC5QWPU.js",
@@ -34,6 +34,12 @@
       "bytes": 1319,
       "gzipBytes": 632,
       "sha256": "9a358cb96035e270dad099c0516ea1ca36f1b40f34ea8a2d8787c7b79a85961c"
+    },
+    {
+      "path": "chunks/chunk-K3NFTK3I.js",
+      "bytes": 3781,
+      "gzipBytes": 1719,
+      "sha256": "59d08532b891845eb3b8f26b605eccf22b7eb3410681f04c5cbbbc6969b9893d"
     },
     {
       "path": "chunks/chunk-KF43PX6Y.js",
@@ -60,22 +66,22 @@
       "sha256": "28b3876df12d3655c6a16f4a345104b42101c568a95615def986486c0abf1be9"
     },
     {
-      "path": "chunks/Reference-P26PLBYF.js",
-      "bytes": 8750,
-      "gzipBytes": 3300,
-      "sha256": "940aefbb4e7d53242fb4208fa64b03e24b2ed0d53bb85b8f69b9477949574a0b"
+      "path": "chunks/Reference-LUVQXXXZ.js",
+      "bytes": 7109,
+      "gzipBytes": 2482,
+      "sha256": "53f23f748e3cae5c1e39209bf1312836ca912d5ea95a8acaaa853312a106689e"
     },
     {
-      "path": "chunks/Tools-HS373C5H.js",
-      "bytes": 21782,
-      "gzipBytes": 8192,
-      "sha256": "647acd44bcd8537a85f0750110e00007a0fd83a5d1f2ca5f338db1e3d2b20763"
+      "path": "chunks/Tools-XEAU5M46.js",
+      "bytes": 12339,
+      "gzipBytes": 4683,
+      "sha256": "a57397f762ec3de3f3ff45e0d73609e9553127b6dc46ba14526264603a2b6a2d"
     },
     {
-      "path": "chunks/Trials-KSNMCJCB.js",
+      "path": "chunks/Trials-TVWIK4OW.js",
       "bytes": 95467,
-      "gzipBytes": 23421,
-      "sha256": "8769f218af1cacbaf19b74ee5193cc82d0277826a5b1f0a8c42f54352d080007"
+      "gzipBytes": 23423,
+      "sha256": "f3033e47499eef9d52168237d838cadef463f3cbe723e42490dd6b44f7a6144b"
     }
   ]
 }

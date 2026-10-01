@@ -6,9 +6,9 @@
    Old app caches are retired only on activation. Fetch policy is independent.
 */
 
-const APP_VERSION = '7.3.0';
+const APP_VERSION = '7.4.0';
 const CACHE_PREFIX = 'stroke-cache-v';
-const CACHE_NAME  = 'stroke-cache-v7-3-0-reference-20261001';
+const CACHE_NAME  = 'stroke-cache-v7-4-0-comprehensive-20261001';
 
 // Retired teaching figures must not be served from a stale browser cache or
 // a bookmarked URL after this worker takes control. Paths are scope-relative
@@ -91,22 +91,24 @@ const CDN_ASSETS = [];
 // not execute deferred protocols, trials, calculators or reference modules.
 // BEGIN GENERATED APP CHUNKS
 const APP_CHUNKS = [
-  "./chunks/chunk-6WMD6WYZ.js",
+  "./chunks/chunk-6MMDZQ2P.js",
   "./chunks/chunk-CCC5QWPU.js",
   "./chunks/chunk-DVCKIJPQ.js",
+  "./chunks/chunk-K3NFTK3I.js",
   "./chunks/chunk-KF43PX6Y.js",
   "./chunks/chunk-MEDXAGMH.js",
   "./chunks/InstallAppButton-INPP7ERU.js",
   "./chunks/ProtectedProtocols-4H3ALOSI.js",
-  "./chunks/Reference-P26PLBYF.js",
-  "./chunks/Tools-HS373C5H.js",
-  "./chunks/Trials-KSNMCJCB.js"
+  "./chunks/Reference-LUVQXXXZ.js",
+  "./chunks/Tools-XEAU5M46.js",
+  "./chunks/Trials-TVWIK4OW.js"
 ];
 // END GENERATED APP CHUNKS
 
-const validReferenceEnvelope = reference =>
-  reference?._meta?.appVersion === APP_VERSION && reference?._meta?.schemaVersion === '2.0.0' &&
-  ['topics', 'studies'].every(key => Array.isArray(reference?.data?.[key]) && reference.data[key].length > 0);
+// BEGIN GENERATED REFERENCE VALIDATION
+var ReferenceValidation=(()=>{var m=Object.defineProperty;var c=Object.getOwnPropertyDescriptor;var $=Object.getOwnPropertyNames;var o=Object.prototype.hasOwnProperty;var f=(s,i)=>{for(var t in i)m(s,t,{get:i[t],enumerable:!0})},b=(s,i,t,l)=>{if(i&&typeof i=="object"||typeof i=="function")for(let u of $(i))!o.call(s,u)&&u!==t&&m(s,u,{get:()=>i[u],enumerable:!(l=c(i,u))||l.enumerable});return s};var x=s=>b(m({},"__esModule",{value:!0}),s);var v={};f(v,{validReferenceData:()=>h});var n=s=>typeof s=="string"&&s.trim().length>0,p=s=>Array.isArray(s)&&s.every(n),r=s=>n(s)&&/^[a-z0-9-]+$/.test(s),g=s=>typeof s=="string"&&/^https:\/\/[^\s]+$/.test(s);function w(s){return Array.isArray(s)&&s.length>0&&new Set(s.map(i=>i==null?void 0:i.id)).size===s.length&&s.every(i=>i&&r(i.id)&&["name","category","limits","sourceLabel","reviewScope"].every(t=>n(i[t]))&&g(i.sourceUrl)&&(!i.verificationUrl||g(i.verificationUrl))&&Array.isArray(i.fields)&&i.fields.every(t=>t&&n(t.key)&&n(t.label)&&["truth","select","number"].includes(t.type)&&(t.type!=="select"?t.options===void 0:Array.isArray(t.options)&&t.options.length>0&&t.options.every(l=>Array.isArray(l)&&l.length===2&&l.every(n))))&&(!i.shared||Array.isArray(i.shared)&&i.shared.every(t=>["age","sex","bp","mrs","gcs","weight","height","mtici","sahCause"].includes(t)))&&(!i.regions||Array.isArray(i.regions)&&i.regions.every(t=>t&&n(t.key)&&n(t.label)&&[1,2].includes(t.weight))))}function h(s,i){var l,u;let t=s==null?void 0:s.data;return((l=s==null?void 0:s._meta)==null?void 0:l.appVersion)===i&&((u=s==null?void 0:s._meta)==null?void 0:u.schemaVersion)==="2.0.0"&&w(t==null?void 0:t.calculators)&&["topics","studies"].every(y=>Array.isArray(t==null?void 0:t[y])&&t[y].length>0&&new Set(t[y].map(a=>a==null?void 0:a.id)).size===t[y].length&&t[y].every(a=>a&&r(a.id)&&n(a.title)&&p(a.keywords)&&p(a.settings)&&a.settings.length&&a.settings.every(e=>["on-call","hospital","clinic"].includes(e))&&Array.isArray(a.sources)&&a.sources.length&&a.sources.every(e=>e&&["title","type","checkedAt","access"].every(A=>n(e[A]))&&Number.isInteger(e.year)&&typeof e.url=="string"&&/^https:\/\/[^\s]+$/.test(e.url))&&(y==="topics"?n(a.category)&&["summary","caution"].every(e=>n(a[e]))&&p(a.consider)&&a.consider.length&&Array.isArray(a.related)&&a.related.every(e=>n(e.label)&&/^#\/(?:encounter|tools|protocols|evidence|trials)(?:\/[a-z0-9-]+){0,2}$/.test(e.href)):["question","population","comparison","result","limits"].every(e=>n(a[e]))&&Number.isInteger(a.year)&&(a.relatedTopic===""||r(a.relatedTopic)))))&&t.studies.every(y=>y.relatedTopic===""||t.topics.some(a=>a.id===y.relatedTopic))}return x(v);})();
+// END GENERATED REFERENCE VALIDATION
+const validReferenceEnvelope = reference => ReferenceValidation.validReferenceData(reference, APP_VERSION);
 
 async function purgeWithdrawnCacheEntries() {
   // A waiting worker does not control requests yet. Remove only retired files

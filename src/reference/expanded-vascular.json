@@ -1,0 +1,1589 @@
+[
+  {
+    "id": "extended-window-ivt",
+    "title": "Wake-up and extended-window thrombolysis",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "wake up",
+      "unknown onset",
+      "DWI FLAIR",
+      "perfusion mismatch",
+      "EXTEND",
+      "WAKE-UP",
+      "late window"
+    ],
+    "summary": "Unknown onset and late presentation require a treatment-specific imaging and time framework. The older ESO guidance distinguishes MRI mismatch selection from ordinary clock-based eligibility.",
+    "consider": [
+      "Confirm last known well, symptom discovery and the exact imaging selection method.",
+      "Review whether thrombectomy is planned and which lytic evidence applies to that pathway.",
+      "Check remaining exclusions and the current guideline before extrapolating a trial profile."
+    ],
+    "caution": "A tissue mismatch does not establish the true onset time or remove other eligibility requirements. The 2021 document predates subsequent lytic trials and the 2026 AHA/ASA guideline.",
+    "sources": [
+      {
+        "title": "European Stroke Organisation (ESO) guidelines on intravenous thrombolysis for acute ischaemic stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33817340/",
+        "year": 2021,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      },
+      {
+        "title": "WAKE-UP: MRI-Guided Thrombolysis for Stroke with Unknown Time of Onset",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29766770/",
+        "year": 2018,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary publication identity checked live to restore the archived trial link; this link check does not claim a complete trial or supplement review."
+      }
+    ],
+    "related": [
+      {
+        "label": "Reperfusion overview",
+        "href": "#/evidence/acute-reperfusion"
+      },
+      {
+        "label": "Ischemic protocol",
+        "href": "#/protocols/ischemic"
+      }
+    ]
+  },
+  {
+    "id": "minor-stroke-antiplatelets",
+    "title": "Minor stroke, TIA and short-course antiplatelets",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "minor stroke",
+      "nondisabling",
+      "DAPT",
+      "aspirin",
+      "clopidogrel",
+      "ticagrelor",
+      "CHANCE",
+      "POINT",
+      "THALES"
+    ],
+    "summary": "Short-course dual antiplatelet evidence concerns selected early noncardioembolic stroke or TIA populations. Agent combinations and enrollment severity differ.",
+    "consider": [
+      "Is the deficit disabling despite a low NIHSS, and has reperfusion evaluation been completed?",
+      "Does the presentation match the timing, severity and mechanism studied for the proposed regimen?",
+      "Record the intended stop or transition date and bleeding considerations."
+    ],
+    "caution": "Do not convert a low NIHSS or ABCD2 score alone into an antiplatelet or discharge decision. The source does not support indefinite dual therapy.",
+    "sources": [
+      {
+        "title": "European Stroke Organisation expedited recommendation for the use of short-term dual antiplatelet therapy early after minor stroke and high-risk TIA",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/34414300/",
+        "year": 2021,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": [
+      {
+        "label": "DAPT review",
+        "href": "#/encounter/dapt"
+      },
+      {
+        "label": "TIA evaluation",
+        "href": "#/evidence/tia-evaluation"
+      }
+    ]
+  },
+  {
+    "id": "thrombolytic-choice",
+    "title": "Thrombolytic agent and evidence selection",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "tenecteplase",
+      "alteplase",
+      "reteplase",
+      "staphylokinase",
+      "AcT",
+      "TRACE",
+      "EXTEND-IA TNK",
+      "bolus"
+    ],
+    "summary": "ESO tenecteplase recommendations distinguish standard-window, large-vessel and unknown-onset scenarios. Agent, dose authority and the supporting trial population must remain explicit.",
+    "consider": [
+      "Confirm which agent and dosing authority the local pathway uses.",
+      "Check whether onset, vessel status, imaging and planned EVT match the evidence.",
+      "For a newer thrombolytic, distinguish published trial findings from local authorization and availability."
+    ],
+    "caution": "Do not interchange doses, extend a standard-window recommendation to every late presentation, or infer regulatory approval from a positive trial.",
+    "sources": [
+      {
+        "title": "European Stroke Organisation (ESO) expedited recommendation on tenecteplase for acute ischaemic stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37021186/",
+        "year": 2023,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      },
+      {
+        "title": "RAISE: Reteplase versus Alteplase for Acute Ischemic Stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38884332/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract identity, scope and result sections checked; complete article and supplements not reviewed. No approval or availability inference."
+      }
+    ],
+    "related": [
+      {
+        "label": "Tenecteplase calculator",
+        "href": "#/encounter/tnk"
+      },
+      {
+        "label": "Alteplase calculator",
+        "href": "#/encounter/alteplase"
+      }
+    ]
+  },
+  {
+    "id": "evt-selection",
+    "title": "Thrombectomy selection and bridging thrombolysis",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "thrombectomy",
+      "EVT",
+      "LVO",
+      "early window",
+      "late window",
+      "DAWN",
+      "DEFUSE3",
+      "bridging",
+      "drip and ship"
+    ],
+    "summary": "The ESO/ESMINT documents address time-sensitive LVO thrombectomy and the separate question of IV thrombolysis before EVT. Historical trial criteria are an evidence framework rather than a universal exclusion list.",
+    "consider": [
+      "Review vessel location, deficit, imaging, baseline function and transfer timing together.",
+      "If eligible for IVT and EVT, coordinate both pathways without avoidable delay.",
+      "Check dedicated large-core, basilar and distal-occlusion evidence when the usual anterior-circulation profile does not fit."
+    ],
+    "caution": "The 2019 document predates the large-core and later posterior-circulation trials. Read newer sources before applying its unresolved subgroup boundaries.",
+    "sources": [
+      {
+        "title": "European Stroke Organisation (ESO) - European Society for Minimally Invasive Neurological Therapy (ESMINT) Guidelines on Mechanical Thrombectomy in Acute Ischaemic StrokeEndorsed by Stroke Alliance for Europe (SAFE)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/31165090/",
+        "year": 2019,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      },
+      {
+        "title": "European Stroke Organisation - European Society for Minimally Invasive Neurological Therapy expedited recommendation on indication for intravenous thrombolysis before mechanical thrombectomy in patients with acute ischaemic stroke and anterior circulation large vessel occlusion",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/35300256/",
+        "year": 2022,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card. Indexed correction/notice PMID(s): 37021163; correction bodies not reconciled by this identity check."
+      }
+    ],
+    "related": [
+      {
+        "label": "DAWN partial screen",
+        "href": "#/encounter/dawn"
+      },
+      {
+        "label": "DEFUSE-3 partial screen",
+        "href": "#/encounter/defuse3"
+      }
+    ]
+  },
+  {
+    "id": "large-core-evt",
+    "title": "Large-core infarction and thrombectomy",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "large core",
+      "ASPECTS",
+      "SELECT2",
+      "ANGEL-ASPECT",
+      "RESCUE-Japan LIMIT",
+      "TENSION",
+      "LASTEST",
+      "TESLA"
+    ],
+    "summary": "The SVIN focused guideline synthesizes large-infarct anterior-circulation EVT trials, with separate early and later time-window recommendations.",
+    "consider": [
+      "Compare the clinical and imaging profile with the studied population, including baseline function.",
+      "Review the core measurement method, early ischemic change and time window with the intervention team.",
+      "Discuss possible disability, hemorrhage and edema alongside the potential treatment benefit."
+    ],
+    "caution": "A large core alone is not a complete treatment decision. Benefit varies across studied profiles; trial averages are not an individual outcome prediction.",
+    "sources": [
+      {
+        "title": "Endovascular Therapy in Patients With Acute Ischemic Stroke With Large Infarct: A Guideline From the Society of Vascular and Interventional Neurology",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41573174/",
+        "year": 2025,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": [
+      {
+        "label": "ASPECTS",
+        "href": "#/encounter/aspects"
+      },
+      {
+        "label": "SELECT2 evidence",
+        "href": "#/trials/completed/select2"
+      }
+    ]
+  },
+  {
+    "id": "basilar-occlusion",
+    "title": "Basilar artery occlusion",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "basilar",
+      "posterior circulation",
+      "BAO",
+      "ATTENTION",
+      "BAOCHE",
+      "BASICS",
+      "pc-ASPECTS"
+    ],
+    "summary": "The ESO/ESMINT BAO guideline separates severity, occlusion location, posterior-fossa injury and treatment-window questions. Much of its supporting evidence is low certainty.",
+    "consider": [
+      "Confirm the occlusion and assess brainstem/posterior-fossa injury, timing and baseline function.",
+      "Review severe and mild presentations separately with the stroke and intervention teams.",
+      "Consider IVT eligibility and transfer or rescue planning alongside EVT evaluation."
+    ],
+    "caution": "Mild BAO, extensive established injury and the populations of Asian trials require particular care in extrapolation. A low NIHSS may underrepresent posterior-circulation disability.",
+    "sources": [
+      {
+        "title": "European Stroke Organisation and European Society for Minimally Invasive Neurological Therapy guideline on acute management of basilar artery occlusion",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38752743/",
+        "year": 2024,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": [
+      {
+        "label": "Posterior ASPECTS",
+        "href": "#/encounter/pc-aspects"
+      },
+      {
+        "label": "BAOCHE evidence",
+        "href": "#/trials/completed/baoche"
+      }
+    ]
+  },
+  {
+    "id": "medium-distal-evt",
+    "title": "Medium and distal vessel occlusion",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "MeVO",
+      "DMVO",
+      "distal",
+      "M2",
+      "M3",
+      "dominant M2",
+      "ESCAPE-MeVO",
+      "DISTAL",
+      "DISCOUNT"
+    ],
+    "summary": "The 2026 SVIN focused guideline does not support routine EVT for the broad distal/medium-vessel population. It distinguishes selected disabling dominant-M2 occlusion from that general conclusion.",
+    "consider": [
+      "Confirm the vessel segment, dominance, disabling deficit and viable tissue context.",
+      "Compare the case with neutral randomized populations and any relevant subgroup evidence.",
+      "Discuss procedural risk and remaining reperfusion options with the intervention team."
+    ],
+    "caution": "Neither the broad neutral result nor a selected subgroup should be generalized to every M2 or distal lesion.",
+    "sources": [
+      {
+        "title": "Endovascular Thrombectomy in Medium and Distal Vessel Occlusions: A Focused Guideline From the Society of Vascular and Interventional Neurology Guidelines and Practice Standards Committee",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42404835/",
+        "year": 2026,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": [
+      {
+        "label": "DISTAL evidence",
+        "href": "#/trials/completed/distal"
+      },
+      {
+        "label": "ESCAPE-MeVO evidence",
+        "href": "#/trials/completed/escape-mevo"
+      }
+    ]
+  },
+  {
+    "id": "retinal-ischemia",
+    "title": "Acute retinal ischemia and CRAO",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "CRAO",
+      "retinal artery",
+      "monocular vision",
+      "amaurosis",
+      "retinal stroke",
+      "ophthalmology"
+    ],
+    "summary": "The AHA statement treats acute central retinal artery occlusion as an emergency requiring rapid assessment and vascular risk evaluation; acute-treatment evidence in that document was limited.",
+    "consider": [
+      "Clarify onset, visual symptoms and the ophthalmologic diagnosis urgently.",
+      "Coordinate stroke and ophthalmology evaluation and assess the underlying vascular mechanism.",
+      "Check newer randomized evidence and the local pathway before considering acute treatment."
+    ],
+    "caution": "The 2021 statement is a dated evidence framework, not proof of benefit for a specific reperfusion treatment. A retinal diagnosis does not replace evaluation for systemic vascular disease.",
+    "sources": [
+      {
+        "title": "Management of Central Retinal Artery Occlusion: A Scientific Statement From the American Heart Association",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33677974/",
+        "year": 2021,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card. Indexed correction/notice PMID(s): 34029154; correction bodies not reconciled by this identity check."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "neurointerventional-care",
+    "title": "EVT technique, anesthesia and rescue questions",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "anesthesia",
+      "aspiration",
+      "stent retriever",
+      "tandem lesion",
+      "rescue stenting",
+      "angioplasty",
+      "intra arterial thrombolysis",
+      "adjuncts"
+    ],
+    "summary": "Patient selection, procedural technique and anesthesia are separate evidence questions. The ESO/ESMINT EVT guidance provides a starting framework while acknowledging procedural uncertainty.",
+    "consider": [
+      "Clarify the occlusion pattern, tandem disease, reperfusion goal and airway/hemodynamic plan.",
+      "For rescue stenting or adjunct intra-arterial therapy, identify the specific evidence and antithrombotic consequences.",
+      "Document reperfusion, complications and the postprocedure plan for the receiving team."
+    ],
+    "caution": "This card supplies review questions, not a procedural protocol. Technique-specific practice requires current operator expertise, device information and newer trial review.",
+    "sources": [
+      {
+        "title": "European Stroke Organisation (ESO) - European Society for Minimally Invasive Neurological Therapy (ESMINT) Guidelines on Mechanical Thrombectomy in Acute Ischaemic StrokeEndorsed by Stroke Alliance for Europe (SAFE)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/31165090/",
+        "year": 2019,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": [
+      {
+        "label": "Post-EVT reference",
+        "href": "#/protocols/ischemic/post-evt"
+      }
+    ]
+  },
+  {
+    "id": "malignant-edema",
+    "title": "Large infarction, swelling and decompression",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "malignant infarction",
+      "edema",
+      "hemicraniectomy",
+      "cerebellar infarct",
+      "hydrocephalus",
+      "mannitol",
+      "hypertonic saline"
+    ],
+    "summary": "Space-occupying hemispheric or cerebellar infarction requires early specialist planning. Decompression evidence depends on age, timing and anatomy; osmotherapy and surgery answer different questions.",
+    "consider": [
+      "Watch for clinical deterioration and evolving mass effect; clarify the escalation setting.",
+      "Discuss surgical candidacy and acceptable outcomes before deterioration when possible.",
+      "If considering edema treatment, review physiology, renal/electrolyte risks and the monitoring plan."
+    ],
+    "caution": "Reducing intracranial pressure does not itself establish improved long-term function. Late decompression and some posterior-fossa decisions have important evidence gaps.",
+    "sources": [
+      {
+        "title": "European Stroke Organisation (ESO) guidelines on the management of space-occupying brain infarction",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/34414308/",
+        "year": 2021,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      },
+      {
+        "title": "NCS acute treatment of cerebral edema guideline",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/32227294/",
+        "year": 2020,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and source scope checked; full recommendation text not reviewed."
+      }
+    ],
+    "related": [
+      {
+        "label": "Goals and prognosis",
+        "href": "#/evidence/neuroprognostication"
+      }
+    ]
+  },
+  {
+    "id": "acute-bp",
+    "title": "Acute blood pressure: identify the clinical pathway",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "blood pressure",
+      "post EVT",
+      "hypertension",
+      "permissive hypertension",
+      "ICH",
+      "asymptomatic inpatient BP"
+    ],
+    "summary": "Acute BP evidence differs among IVT, successful EVT, non-reperfused ischemia, ICH and asymptomatic inpatient hypertension. The ESO update was published in 2026 under a 2025-update title.",
+    "consider": [
+      "Confirm measurement quality and whether acute target-organ injury is present.",
+      "Identify the reperfusion/hemorrhage pathway and its prescribed monitoring plan.",
+      "Avoid carrying an intensive post-EVT target or a chronic outpatient target into a different acute context."
+    ],
+    "caution": "One BP threshold cannot serve every stroke scenario. The AHA general inpatient statement does not replace stroke-specific guidance.",
+    "sources": [
+      {
+        "title": "2025 update to European Stroke Organisation (ESO) guideline on blood pressure management in acute ischaemic stroke and intracerebral haemorrhage",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42095756/",
+        "year": 2026,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      },
+      {
+        "title": "The Management of Elevated Blood Pressure in the Acute Care Setting: A Scientific Statement From the American Heart Association",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38804130/",
+        "year": 2024,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": [
+      {
+        "label": "Ischemic BP reference",
+        "href": "#/protocols/ischemic/bp"
+      },
+      {
+        "label": "ICH reference",
+        "href": "#/protocols/ich"
+      }
+    ]
+  },
+  {
+    "id": "antithrombotic-reversal",
+    "title": "Antithrombotic-associated ICH: dated reversal evidence",
+    "category": "Hemorrhage and neurocritical care",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "reversal",
+      "PCC",
+      "andexanet",
+      "idarucizumab",
+      "vitamin K",
+      "platelets",
+      "DDAVP",
+      "anticoagulant hemorrhage"
+    ],
+    "summary": "The September 2026 NCS/SCCM focused update provides conditional recommendations for factor-Xa inhibitor effects and selected antiplatelet-associated hemorrhage contexts; it leaves several questions unresolved.",
+    "consider": [
+      "Identify the drug, last exposure, renal function, relevant assays and hemorrhage/surgical context.",
+      "Compare the updated factor-Xa and platelet recommendations with local product availability and policy.",
+      "Distinguish spontaneous from traumatic hemorrhage and neurosurgical from nonsurgical settings."
+    ],
+    "caution": "The focused update is not a replacement for every 2016 reversal question. Evidence strength, product labels and current local protocol must remain explicit; this card adds no dose algorithm.",
+    "sources": [
+      {
+        "title": "Treatment of Antithrombotic-Associated Intracranial Hemorrhage in Adults: A Focused Guideline Update from the Neurocritical Care Society and the Society of Critical Care Medicine",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42786382/",
+        "year": 2026,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": [
+      {
+        "label": "Protected reversal reference",
+        "href": "#/protocols/ich/reversal"
+      },
+      {
+        "label": "Anticoagulant labels",
+        "href": "#/evidence/anticoagulant-labels"
+      }
+    ]
+  },
+  {
+    "id": "caa-ich-recurrence",
+    "title": "CAA, lobar hemorrhage and recurrence risk",
+    "category": "Hemorrhage and neurocritical care",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "CAA",
+      "amyloid angiopathy",
+      "lobar ICH",
+      "cortical superficial siderosis",
+      "convexity SAH",
+      "TFNE",
+      "CAA-ri",
+      "anticoagulation after ICH"
+    ],
+    "summary": "CAA can present with lobar hemorrhage, convexity SAH or transient focal episodes and can alter antithrombotic and antiamyloid decisions. The ICAA/WSO statement addresses diagnosis, recurrence and inflammatory presentations.",
+    "consider": [
+      "Review the hemorrhage pattern, MRI markers and competing causes before assigning CAA.",
+      "Balance recurrent hemorrhage risk against the actual ischemic indication for antithrombotic therapy.",
+      "Consider whether inflammation or antiamyloid exposure changes the diagnostic discussion."
+    ],
+    "caution": "Do not interpret transient focal episodes automatically as ischemic TIA, or apply a recurrence estimate as an individual prognosis.",
+    "sources": [
+      {
+        "title": "Diagnosis and management of cerebral amyloid angiopathy: a scientific statement from the International CAA Association and the World Stroke Organization",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40721902/",
+        "year": 2025,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": [
+      {
+        "label": "PRESTIGE-AF evidence",
+        "href": "#/trials/completed/prestige-af"
+      }
+    ]
+  },
+  {
+    "id": "unruptured-aneurysms",
+    "title": "Unruptured intracranial aneurysm review",
+    "category": "Hemorrhage and neurocritical care",
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "aneurysm",
+      "UIA",
+      "PHASES",
+      "ELAPSS",
+      "UIATS",
+      "rupture risk",
+      "coiling",
+      "clipping",
+      "flow diversion"
+    ],
+    "summary": "ESO guidance frames preventive aneurysm treatment as a balance between rupture risk, treatment risk and patient preferences. Most recommendations rest on very low-certainty evidence.",
+    "consider": [
+      "Review aneurysm size, location, morphology, growth and prior hemorrhage alongside patient factors.",
+      "Clarify the purpose and interval of surveillance with the treating team.",
+      "Discuss treatment alternatives, smoking/BP review and preferences in a multidisciplinary setting."
+    ],
+    "caution": "Risk scores support discussion; they do not select a procedure or capture every relevant feature. Evidence for one treatment cannot be generalized to all aneurysms.",
+    "sources": [
+      {
+        "title": "European Stroke Organisation (ESO) guidelines on management of unruptured intracranial aneurysms",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36082246/",
+        "year": 2022,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "poststroke-seizures",
+    "title": "Seizures after stroke: treatment versus prophylaxis",
+    "category": "Hemorrhage and neurocritical care",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "seizure",
+      "EEG",
+      "levetiracetam",
+      "phenytoin",
+      "prophylaxis",
+      "epilepsy",
+      "ASM withdrawal"
+    ],
+    "summary": "A witnessed or electrographic seizure, prophylaxis without seizures and later epilepsy are different problems. NCS ICH and aSAH prophylaxis statements have different conclusions and generally limited certainty.",
+    "consider": [
+      "Clarify whether clinical or electrographic seizures have occurred and whether EEG is needed.",
+      "Use the hemorrhage-specific source rather than transferring a prophylaxis rule between ICH and aSAH.",
+      "If an ASM continues after discharge, document its indication and reassessment plan."
+    ],
+    "caution": "Weak or permissive prophylaxis recommendations do not justify automatic indefinite treatment. Withdrawal decisions require the separate epilepsy history and source.",
+    "sources": [
+      {
+        "title": "Guidelines for Seizure Prophylaxis in Patients Hospitalized with Nontraumatic Intracerebral Hemorrhage: A Clinical Practice Guideline for Health Care Professionals from the Neurocritical Care Society",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39707127/",
+        "year": 2024,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      },
+      {
+        "title": "Guidelines for Seizure Prophylaxis in Patients with Aneurysmal Subarachnoid Hemorrhage: A Statement for Healthcare Professionals from the Neurocritical Care Society",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42552475/",
+        "year": 2026,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "functional-seizures",
+    "title": "Functional seizures and diagnostic communication",
+    "category": "Hemorrhage and neurocritical care",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "functional seizure",
+      "PNES",
+      "dissociative seizure",
+      "video EEG",
+      "nonepileptic"
+    ],
+    "summary": "The AAN guideline emphasizes positive diagnostic assessment, respectful explanation and review for coexisting epilepsy and psychiatric conditions.",
+    "consider": [
+      "Review event history, witness information and typical-event recording or video-EEG when feasible.",
+      "Explain the diagnostic rationale and arrange continuity rather than relying on a label alone.",
+      "Reassess ASM or benzodiazepine exposure against any coexisting indication."
+    ],
+    "caution": "Functional seizures and epilepsy can coexist. Do not infer the diagnosis solely from a normal routine EEG or one bedside feature.",
+    "sources": [
+      {
+        "title": "Management of Functional Seizures Practice Guideline Executive Summary: Report of the AAN Guidelines Subcommittee",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41370742/",
+        "year": 2025,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "neuroprognostication",
+    "title": "Stroke prognosis: timing, confounders and uncertainty",
+    "category": "Hemorrhage and neurocritical care",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "prognosis",
+      "ICH score",
+      "NIHSS",
+      "withdrawal of life support",
+      "swallow",
+      "tracheostomy",
+      "recovery"
+    ],
+    "summary": "NCS guidance supports careful timing, confounder review and multimodal counseling. A single score or isolated finding is not a reliable substitute for an individualized assessment.",
+    "consider": [
+      "Identify sedation, medical instability and other confounders before discussing prognosis.",
+      "Explain the outcome being estimated, the time horizon and the range of uncertainty.",
+      "Revisit recovery over time and incorporate what outcomes the patient would value."
+    ],
+    "caution": "Association with poor outcome is not deterministic prediction. Premature withdrawal can distort both individual care and the evidence used to estimate prognosis.",
+    "sources": [
+      {
+        "title": "Guidelines for Neuroprognostication in Critically ill Adults with Acute Ischemic Stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41942818/",
+        "year": 2026,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      },
+      {
+        "title": "Guidelines for Neuroprognostication in Critically Ill Adults with Intracerebral Hemorrhage",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37923968/",
+        "year": 2023,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": [
+      {
+        "label": "ICH severity score",
+        "href": "#/encounter/ich-score"
+      },
+      {
+        "label": "Goals of care",
+        "href": "#/evidence/goals-of-care"
+      }
+    ]
+  },
+  {
+    "id": "goals-of-care",
+    "title": "Consent, goals of care and palliative support",
+    "category": "Hemorrhage and neurocritical care",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "consent",
+      "capacity",
+      "surrogate",
+      "palliative",
+      "goals of care",
+      "end of life",
+      "shared decision"
+    ],
+    "summary": "Palliative support can accompany restorative stroke care across the illness course. Communication should address symptoms, uncertainty, patient priorities and caregiver needs.",
+    "consider": [
+      "Clarify capacity, the appropriate surrogate and known preferences.",
+      "Explain the decision, alternatives and uncertainty in language suited to the situation.",
+      "Identify symptom burden, psychosocial needs and when specialist support would help."
+    ],
+    "caution": "Palliative care is not synonymous with withdrawal of treatment. Emergency consent and legal requirements depend on the setting; use the applicable institutional process.",
+    "sources": [
+      {
+        "title": "Palliative and End-of-Life Care in Stroke: A Scientific Statement From the American Heart Association",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39676661/",
+        "year": 2024,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "brain-death",
+    "title": "BD/DNC: determination and communication resources",
+    "category": "Hemorrhage and neurocritical care",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "brain death",
+      "BD DNC",
+      "apnea test",
+      "ancillary testing",
+      "cerebral circulatory arrest",
+      "DSA"
+    ],
+    "summary": "The 2023 multisociety consensus guideline addresses determination; the 2025 AAN statement separately addresses communication, objections and ethical concerns.",
+    "consider": [
+      "Use the complete institutional process for prerequisites, confounders and examiner qualifications.",
+      "Consult the guideline for neurologic examination, apnea testing and valid ancillary-test indications.",
+      "Plan clear communication and address accommodations or objections through the relevant process."
+    ],
+    "caution": "This is a source navigator, not a determination checklist. The archived SVIN DSA source concerns cerebral circulatory arrest, not ischemic collateral grading.",
+    "sources": [
+      {
+        "title": "2023 Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Guideline",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37821233/",
+        "year": 2023,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and source scope checked; full recommendation text not reviewed."
+      },
+      {
+        "title": "Brain Death/Death by Neurologic Criteria Guidance on Communication, Objections, Pregnancy, and Public Trust: An AAN Position Statement",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41187308/",
+        "year": 2025,
+        "type": "Clinical policy",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "moyamoya",
+    "title": "Moyamoya disease and syndrome",
+    "category": "Stroke mechanisms and vascular disorders",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "moyamoya",
+      "RNF213",
+      "bypass",
+      "hemodynamic impairment",
+      "collaterals"
+    ],
+    "summary": "Moyamoya requires attention to ischemic versus hemorrhagic presentation, perfusion physiology and specialized revascularization assessment. Evidence strength differs across these settings.",
+    "consider": [
+      "Confirm the vascular pattern and whether a secondary moyamoya syndrome is plausible.",
+      "Review recurrent symptoms, perfusion studies and hemorrhagic features with an experienced team.",
+      "Clarify surveillance, perioperative planning and the rationale for any antithrombotic therapy."
+    ],
+    "caution": "Moyamoya should not be treated as ordinary atherosclerotic stenosis. Many management questions depend on expert consensus and specialized assessment.",
+    "sources": [
+      {
+        "title": "European Stroke Organisation (ESO) Guidelines on Moyamoya angiopathy Endorsed by Vascular European Reference Network (VASCERN)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37021176/",
+        "year": 2023,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "cns-vasculitis",
+    "title": "Suspected primary CNS vasculitis",
+    "category": "Stroke mechanisms and vascular disorders",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "PACNS",
+      "CNS vasculitis",
+      "angiitis",
+      "RCVS",
+      "CSF",
+      "biopsy",
+      "vessel wall MRI"
+    ],
+    "summary": "The ESO PACNS guideline emphasizes diagnostic uncertainty and expert multidisciplinary evaluation. No single MRI pattern or routine CSF abnormality establishes PACNS.",
+    "consider": [
+      "Review alternative vascular, infectious, inflammatory and noninflammatory explanations.",
+      "Discuss the roles and limitations of vascular imaging, CSF studies and tissue diagnosis.",
+      "Clarify what evidence supports the diagnosis before committing to prolonged immunotherapy."
+    ],
+    "caution": "Available evidence is sparse and often very low certainty. Noninvasive vessel abnormalities alone cannot distinguish all mimics or replace an expert workup.",
+    "sources": [
+      {
+        "title": "European Stroke Organisation (ESO) guidelines on Primary Angiitis of the Central Nervous System (PACNS)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37903069/",
+        "year": 2023,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "inherited-arteriopathy",
+    "title": "Inherited small-vessel disease and CADASIL",
+    "category": "Stroke mechanisms and vascular disorders",
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "CADASIL",
+      "NOTCH3",
+      "CARASIL",
+      "HTRA1",
+      "COL4A1",
+      "Fabry",
+      "genetic stroke",
+      "young stroke"
+    ],
+    "summary": "The AHA statement reviews CADASIL and other inherited cerebral small-vessel disorders, including variable clinical expression and the role of molecular diagnosis.",
+    "consider": [
+      "Review the age, family history, clinical pattern and imaging phenotype together.",
+      "Consider genetic counseling and the implications of testing for the patient and relatives.",
+      "Address modifiable vascular factors while distinguishing established care from unproven disease-modifying treatment."
+    ],
+    "caution": "A suggestive MRI pattern is not a molecular diagnosis. Variant interpretation and counseling require appropriate expertise.",
+    "sources": [
+      {
+        "title": "Management of Inherited CNS Small Vessel Diseases: The CADASIL Example: A Scientific Statement From the American Heart Association",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37602377/",
+        "year": 2023,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "lacunar-small-vessel",
+    "title": "Lacunar stroke and covert small-vessel disease",
+    "category": "Stroke mechanisms and vascular disorders",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "lacunar",
+      "small vessel",
+      "white matter hyperintensity",
+      "covert infarct",
+      "leukoaraiosis",
+      "SPS3"
+    ],
+    "summary": "Symptomatic lacunar stroke and incidental covert small-vessel disease are distinct populations. ESO provides separate guidance for each, including important antiplatelet differences.",
+    "consider": [
+      "Is there a corresponding clinical stroke syndrome or only an incidental imaging finding?",
+      "Review BP, lifestyle and competing stroke mechanisms rather than assuming every small lesion is lacunar.",
+      "Address cognition, gait and functional consequences when clinically relevant."
+    ],
+    "caution": "Do not prescribe an antiplatelet solely because covert white-matter changes are present. Progression and deterioration questions remain incompletely resolved.",
+    "sources": [
+      {
+        "title": "European stroke organisation (ESO) guideline on cerebral small vessel disease, part 2, lacunar ischaemic stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38380638/",
+        "year": 2024,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      },
+      {
+        "title": "ESO Guideline on covert cerebral small vessel disease",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/34414301/",
+        "year": 2021,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "cardiac-sources",
+    "title": "LV thrombus, LV dysfunction and other cardiac sources",
+    "category": "Stroke mechanisms and vascular disorders",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "LV thrombus",
+      "LV dysfunction",
+      "cardiomyopathy",
+      "echo",
+      "cardiac MRI",
+      "prosthetic valve",
+      "TAVR",
+      "LVAD",
+      "ECMO",
+      "cardioembolic"
+    ],
+    "summary": "A documented LV thrombus and LV dysfunction without visible thrombus are separate evidence questions. The 2022 and 2026 AHA statements should not be conflated.",
+    "consider": [
+      "Clarify the suspected source and whether the cardiac imaging adequately addresses it.",
+      "Review valve/device status, rhythm, ventricular function and the antithrombotic indication with cardiology.",
+      "Consider bleeding risk and concurrent antiplatelet exposure when discussing therapy."
+    ],
+    "caution": "Reduced ejection fraction alone is not a universal anticoagulation indication. Prosthetic valves and circulatory support devices require their own specialized pathways.",
+    "sources": [
+      {
+        "title": "Management of Patients at Risk for and With Left Ventricular Thrombus: A Scientific Statement From the American Heart Association",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36106537/",
+        "year": 2022,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      },
+      {
+        "title": "Management of Patients at Risk of Ischemic Stroke With Left Ventricular Systolic Dysfunction in the Absence of Intracardiac Thrombus: A Scientific Statement From the American Heart Association",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42389837/",
+        "year": 2026,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "endocarditis",
+    "title": "Stroke with suspected infective endocarditis",
+    "category": "Stroke mechanisms and vascular disorders",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "endocarditis",
+      "septic embolus",
+      "infective aneurysm",
+      "mycotic aneurysm",
+      "vegetation",
+      "prosthetic valve"
+    ],
+    "summary": "The ESC guideline links endocarditis diagnosis, embolic complications and cardiac surgical decisions through coordinated specialist care.",
+    "consider": [
+      "Assess whether the presentation warrants an endocarditis evaluation and multidisciplinary team involvement.",
+      "Clarify the neurologic complication and any hemorrhage or infective aneurysm concern.",
+      "Coordinate antimicrobial, valve/device and surgical timing decisions with neurology, cardiology and infectious diseases."
+    ],
+    "caution": "Do not transfer a routine cardioembolic stroke pathway to infective endocarditis without checking the dedicated guidance. Full corrected recommendation tables were not reviewed for this card.",
+    "sources": [
+      {
+        "title": "2023 ESC endocarditis guideline — official overview",
+        "url": "https://www.escardio.org/guidelines/clinical-practice-guidelines/all-esc-practice-guidelines/endocarditis/",
+        "year": 2023,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Official ESC guideline overview read; primary article identity checked, full text access failed. Indexed corrections are retained in the companion source catalog."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "primary-prevention",
+    "title": "First-stroke prevention and metabolic health",
+    "category": "Prevention and antithrombotics",
+    "settings": [
+      "clinic",
+      "hospital"
+    ],
+    "keywords": [
+      "primary prevention",
+      "diabetes",
+      "GLP-1",
+      "obesity",
+      "smoking",
+      "exercise",
+      "diet",
+      "Life Essential 8"
+    ],
+    "summary": "The AHA/ASA 2024 primary-prevention guideline addresses people without prior stroke and updates prevention across the life span.",
+    "consider": [
+      "Review BP, lipids, glycemia, tobacco exposure, activity, diet, weight and sleep in context.",
+      "Clarify sex-specific and other risk factors that affect the prevention discussion.",
+      "Assess medication indications, access and adherence using the relevant disease-specific guidance."
+    ],
+    "caution": "Primary prevention differs from prevention after stroke. Evidence for a metabolic drug in one population does not establish an indication in every stroke-risk group.",
+    "sources": [
+      {
+        "title": "2024 Guideline for the Primary Prevention of Stroke: A Guideline From the American Heart Association/American Stroke Association",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39429201/",
+        "year": 2024,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card. Indexed correction/notice PMID(s): 39585937, 39869715; correction bodies not reconciled by this identity check."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "af-prevention",
+    "title": "AF stroke prevention beyond start timing",
+    "category": "Prevention and antithrombotics",
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "atrial fibrillation",
+      "subclinical AF",
+      "device detected",
+      "AHRE",
+      "LAAO",
+      "Watchman",
+      "rheumatic",
+      "mitral stenosis",
+      "mechanical valve"
+    ],
+    "summary": "The AF guideline separates thromboembolic risk assessment, anticoagulation, left-atrial appendage occlusion and risk-factor management. Mechanism and valve status matter beyond the timing of therapy.",
+    "consider": [
+      "Confirm how AF was documented, its clinical context and the actual thromboembolic indication.",
+      "Review valve disease, renal function, interactions, prior bleeding and concurrent antiplatelets.",
+      "If considering LAAO or a device-detected AF strategy, review that specific evidence and follow-up requirements."
+    ],
+    "caution": "A risk score is not a substitute for valve-specific or device-specific guidance. New-onset AF during illness still requires a follow-up plan.",
+    "sources": [
+      {
+        "title": "2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38033089/",
+        "year": 2023,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card. Indexed correction/notice PMID(s): 38153996, 38408149, 38857333; correction bodies not reconciled by this identity check."
+      },
+      {
+        "title": "2024 ESC/EACTS atrial fibrillation guideline",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39210723/",
+        "year": 2024,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary publication identity and official ESC overview checked live; complete corrected recommendations not reviewed for this companion source."
+      }
+    ],
+    "related": [
+      {
+        "label": "AF timing after stroke",
+        "href": "#/evidence/af-timing"
+      },
+      {
+        "label": "Anticoagulant label review",
+        "href": "#/evidence/anticoagulant-labels"
+      }
+    ]
+  },
+  {
+    "id": "lipid-management",
+    "title": "Lipids, vascular risk and treatment follow-up",
+    "category": "Prevention and antithrombotics",
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "LDL",
+      "statin",
+      "ezetimibe",
+      "PCSK9",
+      "Lp(a)",
+      "apolipoprotein B",
+      "triglycerides",
+      "hemorrhagic stroke"
+    ],
+    "summary": "The 2026 multisociety dyslipidemia guideline replaces the 2018 cholesterol guideline and covers lipid evaluation, treatment and monitoring.",
+    "consider": [
+      "Clarify the vascular indication, lipid profile, prior treatment and adherence.",
+      "Review medication tolerance, interactions and the plan for measuring response.",
+      "When hemorrhage or cognitive concerns influence treatment, consult the dedicated brain-safety statement and weigh the actual competing risks."
+    ],
+    "caution": "The source abstract does not establish every treatment threshold or sequence. Indexed corrections and the complete guideline require review for detailed prescribing.",
+    "sources": [
+      {
+        "title": "2026 ACC/AHA/AACVPR/ABC/ACPM/ADA/AGS/APhA/ASPC/NLA/PCNA Guideline on the Management of Dyslipidemia: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41824552/",
+        "year": 2026,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card. Indexed correction/notice PMID(s): 42330109, 42709919; correction bodies not reconciled by this identity check."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "bp-prevention",
+    "title": "Long-term blood pressure prevention",
+    "category": "Prevention and antithrombotics",
+    "settings": [
+      "clinic",
+      "hospital"
+    ],
+    "keywords": [
+      "hypertension",
+      "home BP",
+      "ambulatory BP",
+      "orthostasis",
+      "adherence",
+      "secondary prevention"
+    ],
+    "summary": "The 2025 multisociety adult BP guideline replaces the 2017 edition. Long-term prevention depends on reliable measurements and sustained follow-up.",
+    "consider": [
+      "Confirm measurement technique, home readings and possible orthostatic symptoms.",
+      "Review adherence, reversible contributors and access to treatment.",
+      "Individualize the follow-up and medication plan using current guidance and comorbidities."
+    ],
+    "caution": "Chronic targets should not be copied into an acute stroke setting. The abstract-level source review does not recertify all graded thresholds or prescribing details.",
+    "sources": [
+      {
+        "title": "2025 AHA/ACC/AANP/AAPA/ABC/ACCP/ACPM/AGS/AMA/ASPC/NMA/PCNA/SGIM Guideline for the Prevention, Detection, Evaluation and Management of High Blood Pressure in Adults: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40811516/",
+        "year": 2025,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card. Indexed correction/notice PMID(s): 41259465, 41984986, 42160500; correction bodies not reconciled by this identity check."
+      }
+    ],
+    "related": [
+      {
+        "label": "Acute BP context",
+        "href": "#/evidence/acute-bp"
+      }
+    ]
+  },
+  {
+    "id": "brain-avm",
+    "title": "Brain arteriovenous malformation",
+    "category": "Stroke mechanisms and vascular disorders",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "AVM",
+      "bAVM",
+      "arteriovenous malformation",
+      "Spetzler Martin",
+      "ARUBA",
+      "embolization",
+      "radiosurgery"
+    ],
+    "summary": "The AHA/ASA statement distinguishes ruptured and unruptured AVMs and reviews natural history and surgical, endovascular and radiosurgical approaches.",
+    "consider": [
+      "Clarify rupture status, anatomy, symptoms and associated lesions.",
+      "Review expected natural history and treatment risks with a multidisciplinary vascular team.",
+      "Discuss the specific treatment goal and follow-up plan with the patient."
+    ],
+    "caution": "The 2017 statement is a dated overview. No grading scale or single trial can select treatment for every AVM.",
+    "sources": [
+      {
+        "title": "AHA/ASA brain AVM statement — official key points",
+        "url": "https://professional.heart.org/en/science-news/management-of-brain-arteriovenous-malformations/top-things-to-know",
+        "year": 2017,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-01",
+        "access": "Official AHA key-point summary checked; full statement and later evidence not comprehensively reviewed."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "cavernous-malformation",
+    "title": "Cerebral and spinal cavernous malformation",
+    "category": "Stroke mechanisms and vascular disorders",
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "cavernoma",
+      "CCM",
+      "cavernous angioma",
+      "DVA",
+      "familial",
+      "hemorrhage",
+      "seizure"
+    ],
+    "summary": "The 2025 consensus update addresses cavernous-malformation natural history, genetics, imaging and neurologic/neurosurgical care, with substantial remaining evidence gaps.",
+    "consider": [
+      "Clarify lesion location, prior symptomatic hemorrhage, seizures and whether lesions are familial or multiple.",
+      "Review imaging, genetic counseling and follow-up needs in the appropriate specialty setting.",
+      "Compare intervention risks with the clinical history and the outcomes the patient values."
+    ],
+    "caution": "Many recommendations rely on limited evidence. Incidental discovery and symptomatic brainstem or spinal disease require different discussions.",
+    "sources": [
+      {
+        "title": "2025 Alliance to Cure Cavernous Malformation consensus guideline",
+        "url": "https://www.alliancetocure.org/ccm-clinical-care-guidelines-publish/",
+        "year": 2025,
+        "type": "Consensus statement",
+        "checkedAt": "2026-10-01",
+        "access": "Primary full PDF accessible; abstract, scope and introductory source sections checked. Complete recommendation-level review not claimed."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "sah-critical-care",
+    "title": "aSAH critical care and CSF diversion",
+    "category": "Hemorrhage and neurocritical care",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "subarachnoid hemorrhage",
+      "DCI",
+      "vasospasm",
+      "EVD",
+      "hydrocephalus",
+      "CSF drainage",
+      "transfusion",
+      "antifibrinolytic"
+    ],
+    "summary": "The NCS aSAH guidance complements aneurysm-focused care; the EVD consensus addresses drain placement and management risks.",
+    "consider": [
+      "Review neurologic deterioration, hydrocephalus and delayed-ischemia surveillance with neurocritical care.",
+      "Clarify CSF diversion orders, monitoring, infection prevention and the escalation plan.",
+      "Consider systemic complications and the individual rationale for each proposed intervention."
+    ],
+    "caution": "CSF drainage and critical-care interventions require the full specialist protocol. Much of the supporting evidence is limited; a summary is not a drain-management order set.",
+    "sources": [
+      {
+        "title": "NCS 2023 neurocritical care of aneurysmal SAH",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37202712/",
+        "year": 2023,
+        "type": "Guideline",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and source scope checked; full recommendation text not reviewed."
+      },
+      {
+        "title": "NCS insertion and management of external ventricular drains",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/26738503/",
+        "year": 2016,
+        "type": "Consensus statement",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and source scope checked; full recommendation text not reviewed."
+      }
+    ],
+    "related": [
+      {
+        "label": "aSAH overview",
+        "href": "#/evidence/sah"
+      }
+    ]
+  },
+  {
+    "id": "research-adjuncts",
+    "title": "New and adjunct therapies: match the evidence",
+    "category": "Prevention and antithrombotics",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "factor XI",
+      "asundexian",
+      "OCEANIC-STROKE",
+      "OCEANIC-AF",
+      "colchicine",
+      "CONVINCE",
+      "CHANCE-3",
+      "neuroprotection",
+      "nerinetide",
+      "ESCAPE-NEXT",
+      "remote ischemic conditioning",
+      "RESIST",
+      "reteplase",
+      "staphylokinase",
+      "tirofiban",
+      "argatroban",
+      "eptifibatide",
+      "intra arterial adjunct"
+    ],
+    "summary": "In selected noncardioembolic stroke/TIA patients, asundexian reduced ischemic stroke as an antiplatelet add-on in OCEANIC-STROKE. In OCEANIC-AF it increased stroke/systemic embolism versus apixaban despite less major bleeding. Nerinetide, conditioning and colchicine require trial-specific interpretation.",
+    "consider": [
+      "Identify the mechanism, background therapy and primary endpoint before comparing a new treatment with standard care.",
+      "Compare neutral ESCAPE-NEXT/RESIST and colchicine findings with the selected positive SERIC-EVT population; distinguish confirmatory outcomes from subgroup signals.",
+      "Check independent replication, safety uncertainty, current guidance and authorization before clinical adoption."
+    ],
+    "caution": "Research results do not establish availability, approval or an individualized treatment recommendation. Avoid treating diverse adjunct drugs or conditioning strategies as a single effective class.",
+    "sources": [
+      {
+        "title": "OCEANIC-STROKE: Asundexian for Secondary Stroke Prevention",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41985132/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via NLM; selected noncardioembolic add-on population and endpoint checked. No regulatory or availability inference."
+      },
+      {
+        "title": "OCEANIC-AF: Asundexian versus Apixaban",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39225267/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract identity, scope and result sections checked; complete article and supplements not reviewed. No approval or availability inference."
+      },
+      {
+        "title": "ESCAPE-NEXT: Nerinetide with EVT without previous thrombolysis",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39955119/",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract identity, scope and result sections checked; complete article and supplements not reviewed. No approval or availability inference."
+      },
+      {
+        "title": "RESIST: Remote Ischemic Conditioning for Acute Stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37787796/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract identity, scope and result sections checked; complete article and supplements not reviewed. No approval or availability inference."
+      },
+      {
+        "title": "SERIC-EVT: Remote ischaemic conditioning after thrombectomy",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40796242/",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract identity, scope and result sections checked; complete article and supplements not reviewed. No approval or availability inference."
+      },
+      {
+        "title": "CONVINCE: Long-term colchicine after noncardioembolic stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38857611/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract identity, scope and result sections checked; complete article and supplements not reviewed. No approval or availability inference."
+      },
+      {
+        "title": "CHANCE-3: Colchicine after acute stroke or TIA",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38925803/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract identity, scope and result sections checked; complete article and supplements not reviewed. No approval or availability inference."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "evidence-interpretation",
+    "title": "Rapid appraisal of a trial or guideline",
+    "category": "Systems and transitions of care",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "evidence based medicine",
+      "EBM",
+      "critical appraisal",
+      "relative risk",
+      "absolute risk",
+      "NNT",
+      "confidence interval",
+      "noninferiority",
+      "subgroup",
+      "systematic review"
+    ],
+    "summary": "Use a structured appraisal before converting a study headline into a clinical decision: population, comparison, outcome, uncertainty and applicability.",
+    "consider": [
+      "Is the outcome patient-important, and is the quoted result the prespecified primary analysis?",
+      "Compare absolute and relative effects, confidence intervals, missing data and harms.",
+      "Check whether subgroup, noninferiority or composite-endpoint claims support the proposed inference."
+    ],
+    "caution": "A neutral superiority trial does not prove equivalence. A source title, evidence level or publication date alone does not establish validity or relevance.",
+    "sources": [
+      {
+        "title": "Oxford CEBM critical appraisal and EBM tools",
+        "url": "https://www.cebm.ox.ac.uk/resources/ebm-tools",
+        "year": 2026,
+        "type": "Educational resource",
+        "checkedAt": "2026-10-01",
+        "access": "Official resource index verified in live search; direct page returned 403. Year records this resource check, not a new guideline publication."
+      }
+    ],
+    "related": []
+  },
+  {
+    "id": "ich-expansion-ivh",
+    "title": "ICH expansion and intraventricular extension",
+    "category": "Hemorrhage and neurocritical care",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "hematoma expansion",
+      "IVH",
+      "intraventricular hemorrhage",
+      "EVD",
+      "CLEAR III",
+      "TICH-2",
+      "tranexamic acid",
+      "factor VII",
+      "hemostatic"
+    ],
+    "summary": "Hemostatic treatment and removal of ventricular blood address different problems. TICH-2 and CLEAR III illustrate why less bleeding or lower mortality must be distinguished from improved functional outcome.",
+    "consider": [
+      "Clarify whether the immediate problem is expansion, ventricular obstruction, hydrocephalus or mass effect.",
+      "Compare the intervention, anatomy and outcome with the actual trial population.",
+      "Discuss neurosurgical and neurocritical-care options, procedural risks and patient-valued outcomes."
+    ],
+    "caution": "Neither trial established improvement in its primary functional endpoint. The studies do not create an automatic hemostatic-drug or intraventricular-lytic protocol.",
+    "sources": [
+      {
+        "title": "TICH-2: Tranexamic acid for hyperacute primary ICH",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29778325/",
+        "year": 2018,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract identity, scope and result sections checked; complete article and supplements not reviewed. No approval or availability inference."
+      },
+      {
+        "title": "CLEAR III: Thrombolytic removal of intraventricular hemorrhage",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/28081952/",
+        "year": 2017,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract identity, scope and result sections checked; complete article and supplements not reviewed. No approval or availability inference."
+      }
+    ],
+    "related": [
+      {
+        "label": "ICH immediate priorities",
+        "href": "#/evidence/ich-management"
+      },
+      {
+        "label": "ICH surgical options",
+        "href": "#/evidence/ich-surgery"
+      }
+    ]
+  }
+]

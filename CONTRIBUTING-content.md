@@ -1,9 +1,8 @@
 # Maintaining Encounter evidence
 
 The maintained product contains an in-memory synthetic Encounter workflow,
-embedded tools, protected example protocols, restored Trials, and bounded source/limits access.
-Education, the general guideline/reference portal,
-and teaching PDFs are retired. Their full committed history is at
+embedded tools, protected example protocols, restored Trials, a comprehensive topic-organized Evidence library and source/limits access.
+The old bulk recommendation extraction, Education and teaching PDFs remain retired. Their full committed history is at
 `archive/pre-encounter-first-20261001-4f8e99d`.
 
 Trials uses `src/evidence/screenerTrials.json`, its pure evaluator, and canonical reference-table projections. Original dated verification records and missing criteria remain visible; restoring a study does not verify present recruitment or local activation. `data/trials.json` is the maintained machine-readable projection.
@@ -15,6 +14,8 @@ and `content/calculators/registry.json` for retained tool contracts. The six
 `src/guidelines/*.json` files are explicitly bounded projections. Their original
 source review/correction warnings remain applicable; archived full-transcription
 coverage is retained as provenance, never advertised as subset completeness.
+
+Evidence topics live in `src/reference/*-topics.json` and `expanded-*.json`; completed study cards are in `studies.json`. Maintain a clinical `category`, care settings, concise review questions, source access scope and applicability limits. `coverage.json` maps each archived document to current topic IDs. The shared reader merges bibliographic sources without importing historical recommendations. Add or correct publication identity from primary sources; retain older companion editions with explicit limits. Calculator presentation records are generated into the same offline resource; scoring helpers stay canonical JavaScript with independent boundary tests.
 
 A moved file, generated endpoint or successful build is not a clinical review.
 Preserve actual review dates, missing-date states, original applicability and

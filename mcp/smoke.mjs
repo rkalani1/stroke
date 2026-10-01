@@ -2,6 +2,9 @@
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const canonical = JSON.parse(fs.readFileSync(new URL('../data/clinical-reference.json', import.meta.url)));
+const toolRegistry = JSON.parse(fs.readFileSync(new URL('../data/calculators-index.json', import.meta.url))).data;
 const client = new Client({name:'smoke',version:'2.0.0'});
 await client.connect(new StdioClientTransport({command:'node',args:[new URL('./server.mjs',import.meta.url).pathname]}));
 const called=new Set();let count=0;
@@ -19,13 +22,14 @@ try {
  for(const [sex,factor] of [['male',1],['female',0.85]]) { const r=(await call('calc_crcl',{age:70,weight:80,sex,creatinine:1})).result;assert(Math.abs(r.rawValue-70*80*factor/72)<1e-10); }
  for(const patch of [{sex:'M'},{age:10},{creatinine:''},{weight:[80]}])await rejects('calc_crcl',{age:70,weight:80,sex:'male',creatinine:1,...patch});
  for(const [name,args] of [['calc_dawn_eligibility',{age:70,nihss:15,coreMl:10,timeFromLKWh:10}],['calc_defuse3_eligibility',{age:70,nihss:15,coreMl:10,penumbraMl:30,timeFromLKWh:10}]]){const r=(await call(name,args)).result;assert.equal(r.eligible,null);assert.equal(r.partialScreenMet,true);assert.equal(r.actionable,false);assert.equal(r.missingDomains.length,3);await rejects(name,{...args,nihss:15.5});}
- const registry=await call('list_calculators');assert.equal(registry.count,23);assert(registry.calculators.every(x=>/^#\/(encounter|tools)\//.test(x.route)));assert.equal(registry.calculators.filter(x=>x.module==='supplementary-calculators').length,13);assert(!registry.calculators.some(x=>['rcvs2','pcc-dose','doac-start','enoxaparin'].includes(x.id)));
+ const registry=await call('list_calculators');assert.equal(registry.count,toolRegistry.length);assert(registry.calculators.every(x=>/^#\/(encounter|tools)\//.test(x.route)));assert.equal(registry.calculators.filter(x=>x.module==='supplementary-calculators').length,canonical.data.calculators.length);assert(!registry.calculators.some(x=>['rcvs2','pcc-dose','doac-start','enoxaparin'].includes(x.id)));
  const sources=await call('get_sources');assert.equal(sources.metadata.status,'maintained');assert.equal(sources.sources.guidelines.length,6);assert(sources.sources.guidelines.find(g=>g.id==='ais-2026').publicationUpdates.some(u=>u.status==='partially-applied'));
- const reference=await call('search_reference');assert.equal(reference.count,10);assert.equal(reference.totalMatched,33);assert.equal(reference.truncated,true);assert.equal(reference.metadata.topicCount,17);assert.equal(reference.metadata.studyCount,16);
+ const reference=await call('search_reference');assert.equal(reference.count,10);assert.equal(reference.totalMatched,canonical.data.topics.length+canonical.data.studies.length);assert.equal(reference.truncated,true);assert.equal(reference.metadata.topicCount,canonical.data.topics.length);assert.equal(reference.metadata.studyCount,16);
  const elan=await call('search_reference',{query:'ELAN',type:'study',setting:'hospital'});assert.deepEqual(elan.records.map(record=>record.id),['elan','catalyst']);assert(elan.records[0].limits);assert(elan.records[0].sources.every(source=>source.access&&source.checkedAt&&source.url.startsWith('https://')));
- const topics=await call('search_reference',{type:'topic',setting:'clinic',limit:25});assert(topics.count>0);assert(topics.records.every(record=>record.type==='topic'&&record.settings.includes('clinic')&&record.caution));assert.equal(topics.truncated,false);
+ const topics=await call('search_reference',{type:'topic',setting:'clinic',limit:25});assert(topics.count>0);assert(topics.records.every(record=>record.type==='topic'&&record.settings.includes('clinic')&&record.caution));assert.equal(topics.truncated,topics.totalMatched>25);
+ const section=canonical.data.topics[0].category;const sectionResults=await call('search_reference',{section,limit:25});assert(sectionResults.records.length>0);assert(sectionResults.records.every(record=>record.category===section));
  const empty=await call('search_reference',{query:'no-such-reference-xyz'});assert.equal(empty.count,0);assert.equal(empty.totalMatched,0);assert.equal(empty.truncated,false);
- for(const args of [{query:'x'.repeat(201)},{query:12},{type:'enrolling'},{setting:'emergency'},{limit:0},{limit:26},{limit:1.5},{limit:'10'}])await rejects('search_reference',args);
+ for(const args of [{query:'x'.repeat(201)},{query:12},{type:'enrolling'},{setting:'emergency'},{section:'not-a-section'},{limit:0},{limit:26},{limit:1.5},{limit:'10'}])await rejects('search_reference',args);
  await rejects('search_trials',{query:'stroke'});await rejects('get_guideline',{id:'ais-2026'});
  assert.equal(called.size,tools.length);
  console.log(`SMOKE OK: ${count} calls across all ${tools.length} maintained tools; retired tool names unavailable.`);
