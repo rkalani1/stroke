@@ -11,6 +11,7 @@ import {
   calculateGCS,
   calculateICHScore,
   calculateTNKDose,
+  calculateTNKDoseReviewed,
 } from '../src/calculators.js';
 import {
   ICH_INITIAL_EVALUATION_ALGORITHM,
@@ -120,24 +121,33 @@ describe('Protocols input-boundary contracts', () => {
     });
   });
 
-  describe('weight-derived quick dosing', () => {
-    it('gates inline dose derivation on the canonical finite 0-350 kg boundary', () => {
-      const quickDosingSource = sourceBetween(
+  describe('retained dosing destinations and weight boundaries', () => {
+    it('replaces the copy-ready dosing strip with the guarded Encounter, alteplase and source destinations', () => {
+      const destinations = sourceBetween(
         appSource,
-        '{/* Quick Dosing Reference */}',
+        '{/* Reviewed dosing destinations: no duplicate copy-ready regimen. */}',
         '<CalculatorSync />',
       );
-
-      expect(appSource).toMatch(
-        /const hasValidProtocolDosingWeight\s*=\s*Number\.isFinite\(protocolDosingWeightKg\)\s*&&\s*protocolDosingWeightKg\s*>\s*0\s*&&\s*protocolDosingWeightKg\s*<=\s*350/,
-      );
-      expect((quickDosingSource.match(/hasValidProtocolDosingWeight\s*\?/g) || []).length).toBe(3);
-      expect(quickDosingSource).not.toMatch(/(?:TNK|Alteplase|FFP)[\s\S]*?\$\{protocolDosingWeightKg\s*\*/);
+      expect(appSource).not.toContain('{/* Quick Dosing Reference */}');
+      expect(destinations).toContain("openEncounterAtField('Weight')");
+      expect(destinations).toContain('TNK dose in Encounter');
+      expect(destinations).toContain("gotoCalculator('calc-alteplase', 'Alteplase')");
+      expect(destinations).toContain('Alteplase calculator');
+      expect(destinations).toContain("navigateTo('research', { subTab: 'guidelines', clearSearch: true })");
+      expect(destinations).toContain('Source guidelines');
+      expect(destinations).not.toMatch(/copyToClipboard|protocolDosingWeightKg|\b(?:FFP|PCC)\b|\d+\s*mg\/kg/);
+      expect(appSource).toContain('telestrokeNote.weight && calculateTNKDoseReviewed(telestrokeNote.weight) && (');
+      expect(appSource).toContain('id="calc-alteplase"');
+      const alteplase = sourceBetween(appSource, '{/* Alteplase (tPA) Dosing Calculator */}', '{/* SPAN-100 / DRAGON / SEDAN */}');
+      expect(alteplase).toContain('calculateAlteplaseDose(wt)');
+      expect(alteplase).toContain('return alt ? (');
+      expect(alteplase).toContain('Enter patient weight in the encounter section to calculate dose.');
     });
 
     it('does not derive thrombolytic doses for non-finite or non-positive weights', () => {
       for (const weight of ['', 'not-a-number', Number.NaN, Number.POSITIVE_INFINITY, 0, -1]) {
         expect(calculateTNKDose(weight)).toBeNull();
+        expect(calculateTNKDoseReviewed(weight)).toBeNull();
         expect(calculateAlteplaseDose(weight)).toBeNull();
       }
       expect(calculateTNKDose(80)).not.toBeNull();
@@ -145,6 +155,8 @@ describe('Protocols input-boundary contracts', () => {
       expect(calculateTNKDose(350)).not.toBeNull();
       expect(calculateAlteplaseDose(350)).not.toBeNull();
       expect(calculateTNKDose(350.01)).toBeNull();
+      expect(calculateTNKDoseReviewed(350)).not.toBeNull();
+      expect(calculateTNKDoseReviewed(350.01)).toBeNull();
       expect(calculateAlteplaseDose(351)).toBeNull();
     });
   });

@@ -147,13 +147,19 @@ const STATUS_MAP = {
     rail: 'bg-warn-500'
   },
   soon: {
-    text: 'Later window / opening soon',
+    text: 'Not yet enrolling',
+    dot: 'bg-warn-500',
+    cls: 'bg-warn-50 text-warn-800 border-warn-200 dark:bg-warn-950 dark:text-warn-200 dark:border-warn-800',
+    rail: 'bg-warn-300'
+  },
+  before_window: {
+    text: 'Before study window',
     dot: 'bg-warn-500',
     cls: 'bg-warn-50 text-warn-800 border-warn-200 dark:bg-warn-950 dark:text-warn-200 dark:border-warn-800',
     rail: 'bg-warn-300'
   },
   enrolling: {
-    text: 'Enrolling',
+    text: 'Registry recruiting',
     dot: 'bg-ok-500',
     cls: 'bg-ok-50 text-ok-800 border-ok-200 dark:bg-ok-950 dark:text-ok-200 dark:border-ok-800',
     rail: 'bg-ok-500'
@@ -202,6 +208,19 @@ const trialBadgeStatus = (trial) =>
     : trial.status === 'placeholder'
     ? 'placeholder'
     : 'closed';
+
+export function TrialSourceContext({ trial }) {
+  const metadata = trial.externalMetadata || {};
+  return (
+    <div className="mt-2 space-y-1 text-2xs leading-relaxed text-ink-2" data-trial-source-context={trial.acronym}>
+      <p><strong>Registry status:</strong> {metadata.registryStatus ? metadata.registryStatus.replace(/_/g, ' ').toLowerCase() : 'Not verified'}.
+        {' '}<strong>Recorded registry check:</strong> {metadata.verificationDate ? <time dateTime={metadata.verificationDate}>{metadata.verificationDate}</time> : 'Not recorded'}.
+        {metadata.registryLastUpdatePosted && <> Registry last update posted: <time dateTime={metadata.registryLastUpdatePosted}>{metadata.registryLastUpdatePosted}</time>.</>}
+      </p>
+      <p><strong>Local activation:</strong> not confirmed here. Confirm with the study team; the registry check does not establish complete eligibility or local availability.</p>
+    </div>
+  );
+}
 
 /* ───────────────────────── trial details sheet ─────────────────────────── */
 
@@ -268,6 +287,7 @@ function TrialDetailsModal({ trial, onClose }) {
           <div>
             <p className="font-mono text-2xs font-semibold uppercase tracking-[0.1em] text-mute">Clinical hypothesis</p>
             <p className="mt-1 text-sm leading-relaxed text-ink-2">{trial.sourceHypothesisText || 'Not specified in source'}</p>
+            <TrialSourceContext trial={trial} />
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
@@ -337,6 +357,7 @@ function TrialDetailsModal({ trial, onClose }) {
 
 function ResultCard({ item, onOpenDetails, compact = false }) {
   const { trial, status, matchedCriteria, pendingFields, exclusionReasons } = item;
+  const badgeStatus = status === 'soon' && !item.notYetEnrolling ? 'before_window' : status;
   const rail = (STATUS_MAP[status] || STATUS_MAP.excluded).rail;
   const isHyperacute = trial.timeCategory === 'hyperacute';
 
@@ -350,13 +371,14 @@ function ResultCard({ item, onOpenDetails, compact = false }) {
               {trial.externalMetadata.nct || 'No registry record'}
             </p>
           </div>
-          <StatusBadge status={status} />
+          <StatusBadge status={badgeStatus} />
         </div>
         <p className="mt-1.5 text-xs leading-relaxed text-mute">
           {exclusionReasons && exclusionReasons.length > 0
             ? exclusionReasons.join(' · ')
             : trial.conciseBedsideSummary}
         </p>
+        <TrialSourceContext trial={trial} />
         <button
           type="button"
           onClick={() => onOpenDetails(trial)}
@@ -378,7 +400,7 @@ function ResultCard({ item, onOpenDetails, compact = false }) {
             <h3 className="font-serif text-lg font-bold tracking-tight text-ink">{trial.acronym}</h3>
             <p className="mt-0.5 text-xs leading-snug text-mute">{trial.exactFullStudyName}</p>
           </div>
-          <StatusBadge status={status} />
+          <StatusBadge status={badgeStatus} />
         </div>
 
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
@@ -397,6 +419,8 @@ function ResultCard({ item, onOpenDetails, compact = false }) {
         </div>
 
         <p className="mt-3 text-sm leading-relaxed text-ink-2">{trial.conciseBedsideSummary}</p>
+        {item.beforeWindow && <p className="mt-2 text-xs text-warn-800 dark:text-warn-200">The selected onset is before the modeled study window. Other eligibility criteria still need confirmation.</p>}
+        <TrialSourceContext trial={trial} />
 
         {matchedCriteria && matchedCriteria.length > 0 && (
           <div className="mt-3 border-t border-paper-2 pt-3">
@@ -425,9 +449,8 @@ function ResultCard({ item, onOpenDetails, compact = false }) {
 
         {/* Facts the engine could not settle from classification + onset alone.
             Rendered as a quiet checklist, not a warning: it is what to check at
-            the bedside, not a form to fill in. Registry/protocol source notes
-            live in the details sheet — repeating them on every card was
-            noise. */}
+            the bedside, not a form to fill in. Registry timing and local
+            activation limits stay beside the result. */}
         {pendingFields && pendingFields.length > 0 && (
           <p className="mt-3 border-t border-paper-2 pt-3 text-2xs leading-relaxed text-mute">
             <span className="font-semibold uppercase tracking-[0.06em] text-ink-2">Still to confirm · </span>
@@ -656,14 +679,17 @@ function ResultsPanel({ results, ready, candidateCount, excludedCount, copyBrief
         </div>
       )}
 
-      {results.soon.length > 0 && (
-        <section className="space-y-3">
-          <SectionRule title="Later window / opening soon" count={results.soon.length} tone="warn" />
-          {results.soon.map((item) => (
+      {[
+        ['Before study window', results.soon.filter(item => !item.notYetEnrolling)],
+        ['Not yet enrolling', results.soon.filter(item => item.notYetEnrolling)]
+      ].filter(([, items]) => items.length > 0).map(([title, items]) => (
+        <section key={title} className="space-y-3">
+          <SectionRule title={title} count={items.length} tone="warn" />
+          {items.map((item) => (
             <ResultCard key={item.trial.acronym} item={item} onOpenDetails={setModalTrial} />
           ))}
         </section>
-      )}
+      ))}
 
       {candidateCount === 0 && results.soon.length === 0 && (
         <div className="rounded-lg border border-line bg-card px-6 py-8 text-center">
@@ -835,7 +861,7 @@ export function TrialScreener({ copyToClipboard, addToast, initialState }) {
 const DB_FILTERS = [
   { id: 'all', label: 'All', match: () => true },
   { id: 'enrolling', label: 'Enrolling', match: (t) => t.status === 'enrolling' },
-  { id: 'soon', label: 'Soon', match: (t) => t.status === 'soon' },
+  { id: 'soon', label: 'Not yet enrolling', match: (t) => t.status === 'soon' },
   { id: 'unverified', label: 'Unverified', match: (t) => t.status === 'placeholder' },
   { id: 'closed', label: 'Not enrolling', match: (t) => t.status === 'closed' }
 ];
@@ -932,6 +958,7 @@ export function StudyDatabase() {
               </div>
 
               <p className="mt-3 text-sm leading-relaxed text-ink-2">{trial.conciseBedsideSummary}</p>
+              <TrialSourceContext trial={trial} />
 
               {trial.enrollmentWindowText && trial.enrollmentWindowText !== 'N/A' && (
                 <div className="mt-3">

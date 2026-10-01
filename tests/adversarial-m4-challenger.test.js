@@ -154,7 +154,7 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
 
       const cacheMatch = swContent.match(/CACHE_NAME\s*=\s*['"]([^'"]+)['"]/);
       expect(cacheMatch, 'CACHE_NAME constant found in SW').not.toBeNull();
-      const expectedCacheName = `stroke-cache-v${pkg.version.replace(/\./g, '-')}-clinical-review-20260930`;
+      const expectedCacheName = `stroke-cache-v${pkg.version.replace(/\./g, '-')}-clinical-utility-20261001`;
       expect(cacheMatch[1]).toBe(expectedCacheName);
     });
 
@@ -175,8 +175,15 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
       ]));
       expect(new Set(coreAssets).size).toBe(coreAssets.length);
 
+      const chunkMatch = swContent.match(/const APP_CHUNKS = (\[[\s\S]*?\]);/);
+      expect(chunkMatch, 'Generated deferred module precache found').not.toBeNull();
+      const chunks = JSON.parse(chunkMatch[1]);
+      const browserAssets = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'app-assets.json'), 'utf8'));
+      expect(chunks).toEqual(browserAssets.files.filter(file => file.path !== browserAssets.entry).map(file => './' + file.path));
+      expect(chunks.length).toBeGreaterThan(0);
+
       const missingAssets = [];
-      for (const relAsset of coreAssets) {
+      for (const relAsset of [...coreAssets, ...chunks]) {
         if (relAsset === './' || relAsset === '/') continue; // root alias
         const normalizedRel = relAsset.replace(/^\.\//, '');
         const assetPath = path.join(REPO_ROOT, normalizedRel);
@@ -287,8 +294,9 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
       expect(res.stdout).toContain('No institutional / PHI-adjacent content found');
     });
 
-    it('verifies built production artifacts (app.js, tailwind.css, index.html) have zero leak violations', () => {
-      const targets = ['app.js', 'tailwind.css', 'index.html', 'content/bundle.json'];
+    it('verifies all built production modules and shell assets have zero leak violations', () => {
+      const browserAssets = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'app-assets.json'), 'utf8'));
+      const targets = [...new Set(['app.js', 'tailwind.css', 'index.html', 'content/bundle.json', 'app-assets.json', ...browserAssets.files.map(file => file.path)])];
       const input = targets.join('\n');
       const res = spawnSync('node', [LEAK_GUARD_SCRIPT, '--json'], {
         cwd: REPO_ROOT,
@@ -298,7 +306,7 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
       expect(res.status, `Leak guard found violations in production bundle: ${res.stdout}`).toBe(0);
       const json = JSON.parse(res.stdout);
       expect(json.violations).toEqual([]);
-      expect(json.scanned).toBeGreaterThanOrEqual(4);
+      expect(json.scanned).toBe(targets.length);
     });
 
     it('adversarially tests leak guard scanner detection against synthetic phone numbers', () => {

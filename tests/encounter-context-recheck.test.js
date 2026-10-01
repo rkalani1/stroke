@@ -5,9 +5,10 @@ import * as reviewed from '../src/encounter-clinical-review.js';
 import * as decisions from '../src/encounter-decision-status.js';
 import * as calculators from '../src/calculators.js';
 import { isSuccessfulEvtReperfusion } from '../src/institutional-protocols.js';
+import { getClinicalClaim } from '../src/clinical/claim-registry.js';
 const source=fs.readFileSync(new URL('../src/app.jsx',import.meta.url),'utf8');
 const start=source.indexOf('const GUIDELINE_URLS ='), end=source.indexOf('const getPathwayForDiagnosis',start);
-const cards=vm.runInNewContext(source.slice(start,end)+'\nGUIDELINE_RECOMMENDATIONS',{...reviewed,...decisions,...calculators,isSuccessfulEvtReperfusion});
+const cards=vm.runInNewContext(source.slice(start,end)+'\nGUIDELINE_RECOMMENDATIONS',{...reviewed,...decisions,...calculators,isSuccessfulEvtReperfusion,getClinicalClaim});
 const a=source.indexOf('const getContextualRecommendations ='), b=source.indexOf('// NIHSS validation',a);
 const base={diagnosisCategory:'ischemic',age:'60',nihss:'10',disablingDeficit:true,premorbidMRS:'0',lastDOACType:'none',ctHemorrhageStatus:'absent',ivtContraindicationsReviewed:true,presentingBP:'140/80',glucose:'100',vesselOcclusion:['M1']};
 function visible(patch={},clock={total:1,label:'LKW'},aspects=8){

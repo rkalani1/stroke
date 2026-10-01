@@ -8,6 +8,9 @@ import { GUIDELINE_LIBRARY_INDEX } from '../../src/guideline-library.js';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
+import { transformSync } from 'esbuild';
+import { createHash } from 'node:crypto';
+import { gunzipSync, brotliDecompressSync } from 'node:zlib';
 
 import {
   activeTrials,
@@ -830,12 +833,29 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
   // Feature 18: Production Build & Compression (ORIGINAL_REQUEST §R4)
   // =========================================================================
   describe('Feature 18: Production Build & Compression Pipeline', () => {
-    it('F18-T1.1: Production app.js exists and is minified IIFE bundle', () => {
+    it('F18-T1.1: Production app.js is valid minified ESM with a complete content-addressed graph', () => {
       const appJs = path.join(ROOT, 'app.js');
       expect(fs.existsSync(appJs)).toBe(true);
       const content = fs.readFileSync(appJs, 'utf8');
       expect(content.length).toBeGreaterThan(1_000_000);
-      expect(content.startsWith('(()=>{') || content.startsWith('(() => {')).toBe(true);
+      expect(content).toMatch(/^import\s*\{/);
+      // Clinical template strings deliberately contain newlines. Verify
+      // minification by re-minifying, rather than counting those data lines.
+      const reminified = transformSync(content, { loader: 'js', format: 'esm', target: 'es2018', minify: true });
+      expect(content.length).toBeLessThanOrEqual(reminified.code.length * 1.03);
+      const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'app-assets.json'), 'utf8'));
+      expect(manifest.entry).toBe('app.js');
+      expect(manifest.buildTarget).toBe('public');
+      expect(manifest.initial).toContain('app.js');
+      expect(manifest.files.length).toBeGreaterThan(manifest.initial.length);
+      for (const file of manifest.files) {
+        expect(file.path).toMatch(/^(app\.js|chunks\/[A-Za-z0-9_-]+\.js)$/);
+        const bytes = fs.readFileSync(path.join(ROOT, file.path));
+        expect(bytes.length).toBe(file.bytes);
+        expect(createHash('sha256').update(bytes).digest('hex')).toBe(file.sha256);
+      }
+      const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+      expect(index).toMatch(/<script type="module" src="app\.js\?v=/);
     });
 
     it('F18-T1.2: Production tailwind.css exists and is minified', () => {
@@ -871,7 +891,15 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
     it('F18-T1.5: scripts/compress-assets.mjs executes cleanly and compresses production files', () => {
       const result = spawnSync('node', [path.join(ROOT, 'scripts/compress-assets.mjs')], { cwd: ROOT, encoding: 'utf8' });
       expect(result.status).toBe(0);
-      expect(result.stdout).toContain('Compressed 5 file(s)');
+      const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'app-assets.json'), 'utf8'));
+      const targets = [...new Set(['app.js', 'tailwind.css', 'index.html', 'manifest.json', 'service-worker.js', 'app-assets.json', ...manifest.files.map(file => file.path)])]
+        .filter(file => fs.existsSync(path.join(ROOT, file)) && fs.statSync(path.join(ROOT, file)).size >= 512);
+      expect(result.stdout).toContain(`Compressed ${targets.length} file(s)`);
+      for (const file of targets) {
+        const bytes = fs.readFileSync(path.join(ROOT, file));
+        expect(gunzipSync(fs.readFileSync(path.join(ROOT, file + '.gz'))).equals(bytes), file).toBe(true);
+        expect(brotliDecompressSync(fs.readFileSync(path.join(ROOT, file + '.br'))).equals(bytes), file).toBe(true);
+      }
     });
   });
 
@@ -904,9 +932,11 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(gitignore).toContain('leak-guard-denylist.local.json');
     });
 
-    it('F19-T1.5: package.json version matches latest release v6.30.5', () => {
+    it('F19-T1.5: package.json and browser manifest match release v6.30.6', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.version).toBe('6.30.5');
+      expect(pkg.version).toBe('6.30.6');
+      const assets = JSON.parse(fs.readFileSync(path.join(ROOT, 'app-assets.json'), 'utf8'));
+      expect(assets.appVersion).toBe(pkg.version);
     });
 
     it('F19-T1.6: Runtime config loader declares the local-override fetch it awaits', () => {

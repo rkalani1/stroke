@@ -1,10 +1,17 @@
 import React, { useState, useEffect, useRef, useMemo, useContext } from 'react';
 import { createRoot } from 'react-dom/client';
+import { MAINTAINED_DOWNLOADS, GENERATED_DOWNLOAD_NOTE, HISTORICAL_DOWNLOAD_NOTE } from './download-manifest.js';
 import { scoreSearchMatch, matchesSearchText } from './search-match.js';
 import { recordedTreatmentDecision, treatmentDecisionFields, treatmentCourseStatus, treatmentCourseSummary, treatmentAdministrationTime, hasRecordedTreatmentAdministration, hasRecordedNoTreatment, treatmentDocumentationComplete, documentedNihssValue } from './encounter-decision-status.js';
 import { evaluateWakeUpScreen, evaluateVideoTreatment, assessAnticoagulantExposure, documentedIvtContext, documentedExamScore, numericInput, calculatorField, buildEvtConsentText, reviewedGcs, gcsDocumentation, reviewedAspects, reviewedPhq2, reviewedStopBang, reviewedTiaDisposition, gcsComponentsDocumented, reviewedContextCardMatch } from './encounter-clinical-review.js';
 import TreatmentDecisionControl from './components/TreatmentDecisionControl.jsx';
 import GuidelineProvenance from './components/GuidelineProvenance.jsx';
+import WorkspaceViewControl from './components/WorkspaceViewControl.jsx';
+import ClinicalExplanation from './components/ClinicalExplanation.jsx';
+import GeneratedNoteDraft from './components/GeneratedNoteDraft.jsx';
+import { getClinicalClaim } from './clinical/claim-registry.js';
+import ClinicalClaimContext from './components/ClinicalClaimContext.jsx';
+import { buildTnkConsentDocumentation } from './clinical/consent-documentation.js';
 import { createIcons, icons } from './lucide-subset.js';
 import {
   DOAC_PROTOCOLS,
@@ -62,8 +69,9 @@ import {
   normalizeAspectsScore,
   normalizeFuncItems,
 } from './case-state.js';
-import { LandmarkTrialsCard } from './teaching.jsx';
-import Education, { EVDInfographic, ICPInfographic } from './education.jsx';
+// Deferred reference loading: Encounter remains immediately usable.
+import { Education, EVDInfographic, ICPInfographic, TrialScreener, StudyDatabase, EligibilityTables, LandmarkTrialsCard, useDeferredResource, DeferredLoadStatus, DeferredCompletedEvidence } from './deferred-components.jsx';
+import { referenceResource, loadReferenceData, evidenceCompletedTrials, resolveCompletedTrials, filterCompletedTrials, getContentSearchIndex } from './reference-loader.js';
 /* v7 design primitives — single accent (cobalt), one alarm (crit), one alert (warn).
    Adopted progressively as Encounter (Phase 5), Trials (Phase 6), and Management
    (Phase 7) regions are touched. Existing v6 inline elements continue to work
@@ -89,9 +97,7 @@ import { HeroReadout as V7HeroReadout } from './design/hero-readout.jsx';
 import { DrugChip as V7DrugChip } from './design/drug-chip.jsx';
 import { PatientStripMobile as V7PatientStripMobile, PatientStripRail as V7PatientStripRail } from './design/patient-strip.jsx';
 import { TimeWindowRing } from './design/time-window-ring.jsx';
-import { TrialScreener, StudyDatabase } from './components/TrialScreener.jsx';
 import { screenerTrials } from './evidence/screenerTrials.js';
-import { EligibilityTables } from './components/EligibilityTables.jsx';
 import { InstallAppButton } from './components/InstallAppButton.jsx';
 import {
 
@@ -148,7 +154,7 @@ import {
   bootstrapTheme as v7BootstrapTheme,
 } from './design/theme.js';
 // Patient-store is consumed by components.jsx, no direct imports needed here.
-import { GUIDELINE_LIBRARY, GUIDELINE_LIBRARY_INDEX, guidelineSearchFields, guidelineGradeLabel } from './guideline-library.js';
+import { GUIDELINE_LIBRARY, GUIDELINE_LIBRARY_INDEX, guidelineSearchFields, guidelineGradeLabel } from './reference-loader.js';
 // Acute Stroke Pathways — de-identified, evidence-bound management cards. Pure
 // static data (bundled at build time, no runtime fetch) rendered at the top of
 // the Ischemic protocols sub-tab. See src/management-guidance.js.
@@ -158,24 +164,19 @@ import {
   AIS_COMMAND_CENTER_LAST_REVIEWED
 } from './management-guidance.js';
 // Compact generated search projection; full content remains in its canonical sources.
-import {
-  getBrowserSearchIndex as getContentSearchIndex
-} from './content-search-index.js';
+
 // StrokeOps v6 Evidence Atlas — structured active/completed-trial data.
 // After the retirement sprint, the engine drives the matcher
 // unconditionally from the structured atlas. The legacy
 // TRIAL_ELIGIBILITY_CONFIG and its inline evaluators were deleted.
 import {
   activeTrials as evidenceActiveTrials,
-  completedTrials as evidenceCompletedTrials,
   citations as evidenceCitations,
   recommendations as evidenceRecommendations,
   claims as evidenceClaims,
   topics as evidenceTopics,
-  resolveCompletedTrials,
   resolveClaimsWithCitations,
   resolveCitations,
-  filterCompletedTrials,
   filterActiveTrials,
   citationLink,
   topicLabel,
@@ -184,7 +185,7 @@ import {
   CERTAINTY_LABELS,
   EVIDENCE_TYPE_LABELS,
   ACTIVE_STATUS_LABELS
-} from './evidence/index.js';
+} from './evidence-encounter.js';
 
 
 // Optimized lookup map for evidenceRecommendations
@@ -281,7 +282,7 @@ const evidenceActiveTrialsById = new Map(evidenceActiveTrials.map(t => [t.id, t]
 // Single in-bundle source of truth for the app version. RELEASE LOCKSTEP: bump
 // together with package.json "version", index.html APP_VERSION (+ ?v= asset
 // queries), and service-worker.js APP_VERSION/CACHE_NAME.
-const APP_VERSION = '6.30.5';
+const APP_VERSION = '6.30.6';
 // The header search hint mirrors the key the shortcut actually listens for
 // (metaKey || ctrlKey): ⌘ on Apple hardware, Ctrl everywhere else.
 const SEARCH_SHORTCUT_LABEL = (typeof navigator !== 'undefined'
@@ -1528,30 +1529,33 @@ const REFERENCE_LIBRARY_SECTIONS = [
     ]
   },
   {
-    // Previously rendered only from the Educational Resources modules
-    // (src/education.jsx pdfPath props) and absent from the reference
-    // registry. Registered here so the Reference Library lists every
-    // repo-served document (P4-4b). All files exist under documents/references/.
     id: 'quickrefs',
-    title: 'Quick Reference Sheets',
+    title: 'Generated teaching references',
     matchTitle: 'Quick Reference Sheets',
     anchorId: 'ref-quickrefs',
-    note: 'Generated from the same teaching cards shown in Education; refreshed September 6, 2026. Use the original sources and approved local guidance for patient-specific decisions.',
-    items: [
-      { id: 'quickref-afib-doac-start-timing', title: 'AFib DOAC Start Timing', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/AFib DOAC Start Timing.pdf' },
-      { id: 'quickref-brain-death-guidelines', title: 'Brain Death Guidelines', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Brain Death Guidelines.pdf' },
-      { id: 'quickref-cervical-artery-dissection', title: 'Cervical Artery Dissection', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Cervical Artery Dissection.pdf' },
-      { id: 'quickref-dapt-guidelines', title: 'DAPT Guidelines', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/DAPT Guidelines.pdf' },
-      { id: 'quickref-malignant-infarction', title: 'Malignant Infarction', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Malignant Infarction.pdf' },
-      { id: 'quickref-stroke-prognosis', title: 'Stroke Prognosis', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/Stroke Prognosis.pdf' },
-      { id: 'quickref-toast-stroke-classification', title: 'TOAST Stroke Classification', subtitle: 'PDF Document', type: 'pdf', path: 'documents/references/TOAST Stroke Classification.pdf' }
-    ]
+    note: GENERATED_DOWNLOAD_NOTE,
+    items: MAINTAINED_DOWNLOADS.map((entry) => ({ ...entry, subtitle: 'Generated teaching reference', type: 'pdf' }))
   }
 ];
 const REFERENCE_LIBRARY_DOCS = REFERENCE_LIBRARY_SECTIONS.flatMap((section) =>
   section.items.flatMap((item) => (item.docs ? item.docs : [item]))
 );
 const REFERENCE_DOC_BY_ID = new Map(REFERENCE_LIBRARY_DOCS.map((doc) => [doc.id, doc]));
+// Keep source links outside the historical-PDF archive, including mixed groups.
+const selectReferenceSections = (predicate) => REFERENCE_LIBRARY_SECTIONS
+  .filter((section) => section.id !== 'quickrefs')
+  .map((section) => ({
+    ...section,
+    items: section.items.flatMap((item) => {
+      if (!item.docs) return predicate(item) ? [item] : [];
+      const docs = item.docs.filter(predicate);
+      return docs.length ? [{ ...item, docs }] : [];
+    })
+  }))
+  .filter((section) => section.items.length);
+const REFERENCE_GENERATED_SECTION = REFERENCE_LIBRARY_SECTIONS.find((section) => section.id === 'quickrefs');
+const REFERENCE_ARCHIVE_SECTIONS = selectReferenceSections((doc) => doc.reviewStatus === 'archive');
+const REFERENCE_SOURCE_SECTIONS = selectReferenceSections((doc) => doc.reviewStatus !== 'archive');
 // end REFERENCE_LIBRARY_SECTIONS
 
         const StrokeClinicalTool = () => {
@@ -1569,7 +1573,7 @@ Vitals: BP {presentingBP}, HR {heartRate}, SpO2 {spO2}%, Temp {temperature}°F
 Labs: Glucose {glucose}, Plt {plateletCount}K, Cr {creatinine}, INR {inr}{ptt}{pt}
 Exam: NIHSS {nihss} {gcs}{affectedSide}{premorbidMRS}- {nihssDetails}
 
-Imaging: I personally reviewed imaging
+Imaging findings:
 NCCT Head ({ctTime}): {ctResults} {aspects}
 CTA Head/Neck ({ctaDate} {ctaTime}): {ctaResults} {vesselOcclusion}
 CTP: {ctpResults}
@@ -1577,8 +1581,6 @@ Telemetry/EKG: {ekgResults}
 
 Assessment and Plan:
 Suspected Diagnosis: {diagnosis}
-After ensuring that there were no evident contraindications, TNK administration was recommended at {tnkAdminTime}. Potential benefits, potential risks (including a potential risk of sx ICH of up to 4%), and alternatives to treatment were discussed with the patient, family/LNOK, and OSH provider.
-TNK was administered at {tnkAdminTime} after a brief time-out.
 
 Recommendations:
 {recommendationsText}
@@ -2382,8 +2384,8 @@ Clinician Name`;
 
           const [appData, setAppData] = useState(() => INITIAL_APP_DATA);
           const settings = appData.settings || getDefaultSettings();
-          const userPersona = settings.workflowPersona === 'trainee' ? 'trainee' : 'senior';
-          const isTraineeMode = userPersona === 'trainee';
+          const [workspaceView, setWorkspaceView] = useState('bedside');
+          const isTraineeMode = workspaceView === 'teaching';
 
           const updateAppData = (updater) => {
             setAppData((prev) => {
@@ -2434,6 +2436,7 @@ Clinician Name`;
             return consultMode === 'videoTelestroke' ? 'acute' : 'phone';
           });
           const [noteTemplate, setNoteTemplate] = useState(loadFromStorage('noteTemplate', 'consult'));
+          const [generatedNoteDraft, setGeneratedNoteDraft] = useState(null);
           const [calcDrawerOpen, setCalcDrawerOpen] = useState(false);
           const [settingsMenuOpen, setSettingsMenuOpen] = useState(false);
           // Theme is owned entirely by the v7 controller (src/design/theme.js):
@@ -2619,6 +2622,8 @@ Clinician Name`;
             return 'guidelines';
           })();
           const [researchSubTab, setResearchSubTab] = useState(initialResearchSubTab);
+          const referenceState = useDeferredResource(referenceResource,
+            (activeTab === 'research' && researchSubTab !== 'calculators') || searchQuery.trim().length >= 2);
 
           // Toast notification system
           const [toasts, setToasts] = useState([]);
@@ -3995,7 +4000,7 @@ Clinician Name`;
               levelOfEvidence: 'A',
               guideline: 'AHA/ASA Early Management of Acute Ischemic Stroke 2026',
               reference: 'Prabhakaran S et al. Stroke. 2026. DOI: 10.1161/STR.0000000000000513',
-              medications: ['TNK 0.25 mg/kg IV bolus (max 25 mg)'],
+              medications: [getClinicalClaim('tnk-stroke-dose').text],
               conditions: (data) => {
                 const cat = data.telestrokeNote?.diagnosisCategory;
                 const timeFrom = data.timeFromLKW;
@@ -6168,7 +6173,13 @@ Clinician Name`;
             navigateTo('trials');
           };
 
-          const navigateToCompletedTrial = (entry) => {
+          const navigateToCompletedTrial = async (entry) => {
+            navigateTo('research', { clearSearch: true, subTab: 'references' });
+            window.location.hash = '#/research/references';
+            const requestedRoute = window.location.hash;
+            try { await loadReferenceData(); }
+            catch (_) { if (window.location.hash !== requestedRoute) return; navigateTo('research', { clearSearch: true, subTab: 'references' }); addToast('References could not be loaded. Use Open in new tab to retry; this encounter remains open.', 'error'); return; }
+            if (window.location.hash !== requestedRoute) return;
             const completed = evidenceCompletedTrials.find((trial) => trial.id === entry.id || trial.shortName === entry.title || trial.shortName === entry.name);
             setAtlasFilters({ topic: '', certainty: '', evidenceType: '', verificationStatus: '', query: completed?.shortName || entry.title || entry.name || '' });
             setAtlasExpandAll(true);
@@ -6182,7 +6193,12 @@ Clinician Name`;
             }, 0);
           };
 
-          const navigateToTrialCard = (trialName, category) => {
+          const navigateToTrialCard = async (trialName, category) => {
+            if (referenceResource.getSnapshot().status !== 'ready') addToast('Loading trial references…', 'info');
+            const requestedRoute = window.location.hash;
+            try { await loadReferenceData(); }
+            catch (_) { if (window.location.hash !== requestedRoute) return; navigateTo('research', { clearSearch: true, subTab: 'references' }); addToast('References could not be loaded. Use Open in new tab to retry; this encounter remains open.', 'error'); return; }
+            if (window.location.hash !== requestedRoute) return;
             const completed = evidenceCompletedTrials.find((trial) => trial.shortName === trialName || trial.fullName === trialName);
             if (completed) {
               navigateToCompletedTrial({ id: completed.id });
@@ -8253,7 +8269,7 @@ Clinician Name`;
             { id: 'go-protocols', group: 'Go to', label: 'Protocols', hint: 'Example pathways & step-cards', icon: 'library', keywords: ['protocols', 'algorithms', 'pathways', 'management', 'library', 'example', 'not local policy'], run: () => navigateTo('protocols', { clearSearch: true }) },
             { id: 'go-trials', group: 'Go to', label: 'Trials & Evidence', hint: 'Screener, tables, atlas', icon: 'flask-conical', keywords: ['trials', 'evidence', 'atlas', 'eligibility', 'screener'], run: () => navigateTo('trials', { clearSearch: true }) },
             { id: 'go-research', group: 'Go to', label: 'Guidelines & References', hint: 'Guidelines, Reference Library, Educational Resources', icon: 'book-open', keywords: ['research', 'references', 'guidelines', 'whats new', "what's new", 'evidence', 'updates', 'education'], run: () => navigateTo('research', { clearSearch: true }) },
-            { id: 'go-education', group: 'Go to', label: 'Educational Resources', hint: 'Curricula & pocket cards', icon: 'brain', keywords: ['education', 'curricula', 'onboarding', 'icu', 'resident', 'nurse', 'pocket cards', 'teaching'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab(null); } },
+            { id: 'go-education', group: 'Go to', label: 'Educational Resources', hint: 'Education modules and teaching references', icon: 'brain', keywords: ['education', 'curricula', 'onboarding', 'icu', 'resident', 'nurse', 'pocket cards', 'teaching'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab(null); } },
             // ---- Protocols sub-tabs ----
             { id: 'sub-ich', group: 'Protocols', label: 'ICH Management', hint: 'Hemorrhage protocols', icon: 'droplets', keywords: ['ich', 'intracerebral', 'hemorrhage', 'reversal'], run: () => gotoProtocolsSub('ich') },
             { id: 'sub-ischemic', group: 'Protocols', label: 'Ischemic Stroke', hint: 'Reperfusion & DAPT', icon: 'zap', keywords: ['ischemic', 'tnk', 'thrombolysis', 'evt', 'thrombectomy', 'dapt'], run: () => gotoProtocolsSub('ischemic') },
@@ -8265,9 +8281,9 @@ Clinician Name`;
             { id: 'sub-references', group: 'Guidelines & References', label: 'Guideline & Reference Library', hint: 'Landmark trials, guidelines, HINTS & CVT', icon: 'clipboard-list', keywords: ['reference library', 'references', 'docs', 'toast', 'classification', 'guidelines', 'trials'], run: () => navigateTo('research', { clearSearch: true, subTab: 'references' }) },
             { id: 'sub-calculators', group: 'Guidelines & References', label: 'Calculators', hint: 'Scores & dosing references', icon: 'table', keywords: ['calculators', 'scores', 'dosing'], run: () => gotoCalculator() },
             // ---- Education sub-tabs ----
-            { id: 'sub-onboarding', group: 'Education', label: 'Onboarding', hint: 'Onboarding packet', icon: 'brain', keywords: ['onboarding', 'resident', 'packet', 'education', 'training'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('onboarding'); } },
-            { id: 'sub-icu', group: 'Education', label: 'ICU Curriculum', hint: 'Stroke ICU teaching packet', icon: 'brain', keywords: ['icu', 'curriculum', 'intensive care', 'education'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('icu'); } },
-            { id: 'sub-nursing', group: 'Education', label: 'Nurse Education', hint: 'Stroke nurse curriculum', icon: 'brain', keywords: ['nurse', 'nursing', 'education', 'curriculum'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('nursing'); } },
+            { id: 'sub-onboarding', group: 'Education', label: 'All education modules', hint: 'Browse all education topics', icon: 'brain', keywords: ['onboarding', 'resident', 'packet', 'education', 'training'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('onboarding'); } },
+            { id: 'sub-icu', group: 'Education', label: 'Neuro ICU references', hint: 'Education filtered to Neuro ICU', icon: 'brain', keywords: ['icu', 'curriculum', 'intensive care', 'education'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('icu'); } },
+            { id: 'sub-nursing', group: 'Education', label: 'Quality metrics', hint: 'Education filtered to Quality Metrics', icon: 'brain', keywords: ['nurse', 'nursing', 'education', 'curriculum'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('nursing'); } },
             { id: 'sub-pocket-cards', group: 'Education', label: 'Pocket Cards', hint: 'Clinical pocket references', icon: 'brain', keywords: ['pocket cards', 'references', 'cheat sheets', 'cards'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('pocket-cards'); } },
             // ---- Simulators (each card lives in the Simulators sub-tab of Education) ----
             { id: 'sim-all', group: 'Bedside References', label: 'Bedside References', hint: 'Written teaching references and checklists', icon: 'test-tubes', keywords: ['simulators', 'simulation', 'teaching', 'bedside'], run: () => { navigateTo('research', { clearSearch: true, subTab: 'education' }); setEducationSubTab('simulators'); } },
@@ -8708,7 +8724,7 @@ Clinician Name`;
           // against the approved local protocol before clinical use.
           const DOC_TEMPLATES = {
             tnkRiskBenefit: `Thrombolysis (IV tenecteplase/alteplase) risk-benefit discussion — documentation:\nDocumentation prompt: record the individualized IVT indication and contraindication review, participants, benefits, risks, alternatives, questions and decision. Do not state that discussion, understanding, consent or treatment occurred until explicitly documented.`,
-            evtRiskBenefit: `Endovascular therapy (mechanical thrombectomy) risk-benefit discussion — documentation:\nGiven a large-vessel occlusion with disabling neurological deficits and no evident contraindications, mechanical thrombectomy was recommended and the patient will be transferred to a thrombectomy-capable comprehensive stroke center for evaluation. The potential benefits, the potential risks (including groin/access-site complications, vessel injury, and intracranial hemorrhage), and the alternatives to treatment were discussed with the referring provider and the patient/family; the neurointerventional team will obtain informed consent from the patient/family prior to the procedure.`,
+            evtRiskBenefit: `Endovascular therapy (mechanical thrombectomy) risk-benefit discussion — documentation:\nDocumentation prompt: record the individualized indication and contraindication review, participants, benefits, risks, alternatives, questions and decision. Document the neurointerventional discussion, consent and transfer arrangements only if they occurred. A recommendation is not documentation of consent, transfer or treatment.`,
             postTnk: `Post-IV thrombolysis (TNK/tPA) management:\n- Admit to ICU / monitored stroke unit\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h\n- No antiplatelet or anticoagulant agents for 24h after thrombolysis; antiplatelet use may be considered if a concomitant condition gives substantial benefit or withholding poses substantial risk (2026 AHA/ASA, COR IIb)\n- Maintain BP <180/105 for 24h after thrombolysis\n- Non-contrast head CT at ~24h post-thrombolysis (sooner if any deterioration)\n- MRI brain with diffusion-weighted imaging when feasible\n- EKG and continuous telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention\n- Monitor for post-thrombolysis complications: symptomatic ICH and orolingual angioedema`,
             postEvt: `Post-endovascular thrombectomy (EVT) management:\n- Admit to Neuro ICU for ≥24h\n- Neuro checks + BP: q15 min x 2h, then q30 min x 6h, then q1h x 16h; monitor arterial access site and distal pulses\n- Blood pressure during the procedure: maintain SBP >140 mmHg (neuroanesthesia responsible)\n- Blood pressure after DOCUMENTED successful reperfusion (mTICI 2b-3): keep BP ≤180/105 mmHg during and for 24h after EVT; do not actively lower SBP below 140 mmHg during the first 72h (intensive lowering was harmful in ENCHANTED2/MT [target <120] and OPTIMAL-BP [target <140]; no benefit in BP-TARGET [100-129]; BEST-II suggested a low probability of benefit from lower targets); avoid and correct hypotension, but induced hypertension is not routine; keep BP <180/105 if IV lytic given\n- Antithrombotic timing per the neurointerventional team, after 24h imaging excludes hemorrhage\n- Non-contrast head CT (or dual-energy CT if available) at ~24h; immediate CT if clinical deterioration or failed recanalization (mTICI 0-2a)\n- MRI brain with diffusion-weighted imaging when feasible; EKG and telemetry; transthoracic echocardiogram\n- Fasting lipid panel, HbA1c\n- Swallow screen before any oral intake; PT/OT/SLP evaluations\n- Sequential compression devices for VTE prophylaxis\n- Inpatient neurology consultation for ongoing evaluation and secondary prevention`
           };
@@ -9334,7 +9350,9 @@ Clinician Name`;
             try {
             const formatDate = (dateStr) => {
               if (!dateStr) return '';
-              const date = new Date(dateStr);
+              const date = /^\d{4}-\d{2}-\d{2}$/.test(String(dateStr))
+                ? new Date(`${dateStr}T00:00:00`)
+                : new Date(dateStr);
               if (Number.isNaN(date.getTime())) return String(dateStr);
               return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear().toString().slice(-2)}`;
             };
@@ -9500,7 +9518,7 @@ Clinician Name`;
                   note += `- Contraindication review: completed${telestrokeNote.tnkContraindicationReviewTime ? ` at ${telestrokeNote.tnkContraindicationReviewTime}` : ''}\n`;
                 }
                 if (telestrokeNote.tnkConsentDiscussed) {
-                  note += `- Consent: ${telestrokeNote.tnkConsentType || '(type not specified)'} consent`;
+                  note += `- IV thrombolysis discussion recorded; ${telestrokeNote.tnkConsentType ? `consent status: ${telestrokeNote.tnkConsentType}` : 'consent status not documented'}`;
                   if (telestrokeNote.tnkConsentWith) note += ` with ${telestrokeNote.tnkConsentWith}`;
                   if (telestrokeNote.tnkConsentTime) note += ` at ${telestrokeNote.tnkConsentTime}`;
                   note += `\n`;
@@ -9519,7 +9537,7 @@ Clinician Name`;
                 if (telestrokeNote.reperfusionTime) note += `  Reperfusion: ${telestrokeNote.reperfusionTime}\n`;
                 if ((telestrokeNote.consentKit || {}).evtConsentDiscussed) {
                   const evtConType = (telestrokeNote.consentKit || {}).evtConsentType;
-                  note += `- EVT consent: ${evtConType || '(type not specified)'}`;
+                  note += `- EVT discussion recorded; ${evtConType ? `consent status: ${evtConType}` : 'consent status not documented'}`;
                   if ((telestrokeNote.consentKit || {}).evtConsentWith) note += ` with ${telestrokeNote.consentKit.evtConsentWith}`;
                   if ((telestrokeNote.consentKit || {}).evtConsentTime) note += ` at ${telestrokeNote.consentKit.evtConsentTime}`;
                   note += `\n`;
@@ -10306,9 +10324,9 @@ Clinician Name`;
               if (sp.cyp2c19Tested && sp.cyp2c19Result) note += `- CYP2C19: ${sp.cyp2c19Result.replace(/-/g, ' ')}\n`;
               // Consent
               if (telestrokeNote.tnkRecommended && telestrokeNote.tnkConsentDiscussed) {
-                const consentType = telestrokeNote.tnkConsentType || '(type not specified)';
+                const consentType = telestrokeNote.tnkConsentType ? `consent status: ${telestrokeNote.tnkConsentType}` : 'consent status not documented';
                 const consentWith = telestrokeNote.tnkConsentWith || '';
-                note += `- Consent: ${consentType}${consentWith ? ` with ${consentWith}` : ''}${telestrokeNote.tnkConsentTime ? ` at ${telestrokeNote.tnkConsentTime}` : ''}\n`;
+                note += `- IV thrombolysis discussion recorded; ${consentType}${consentWith ? ` with ${consentWith}` : ''}${telestrokeNote.tnkConsentTime ? ` at ${telestrokeNote.tnkConsentTime}` : ''}\n`;
               }
               // Family communication
               const snFc = telestrokeNote.familyCommunication || {};
@@ -11640,9 +11658,11 @@ Clinician Name`;
             note = note.replace(/{tnkAdminTime}/g, treatmentAdministrationTime(telestrokeNote, 'tnk'));
             note = note.replace(/{recommendationsText}/g, telestrokeNote.recommendationsText || '');
             note += '\n' + treatmentCourseSummary(telestrokeNote) + '\n';
-            // Administration narrative requires a recorded administration, not just a recommendation.
+            // Remove only the former default template's unsupported attestations,
+            // including persisted copies. Administration alone proves no consent or time-out.
+            note = note.replace(/^After ensuring that there were no evident contraindications, TNK administration was recommended at [^\n]*\. Potential benefits, potential risks \(including a potential risk of sx ICH of up to 4%\), and alternatives to treatment were discussed with the patient, family\/LNOK, and OSH provider\.\nTNK was administered at [^\n]* after a brief time-out\.\n?/m, '');
+            note = note.replace(/^Imaging: I personally reviewed imaging$/m, 'Imaging findings:');
             if (!hasRecordedTreatmentAdministration(telestrokeNote, 'tnk')) {
-              note = note.replace(/After ensuring that there were no evident contraindications.*?brief time-out\.\n?/s, '');
               note = note.replace(/BP prior to TNK administration:.*?\n/g, '');
             }
             // Add EVT procedural details if performed
@@ -11877,7 +11897,7 @@ Clinician Name`;
 
             // Add TNK consent documentation
             if (telestrokeNote.tnkRecommended && telestrokeNote.tnkConsentDiscussed) {
-              note += `\nTNK Consent: Risks and benefits of IV thrombolysis (including an approximately 2-3.5% risk of sICH) discussed`;
+              note += `\nIV thrombolysis risks/benefits discussion recorded`;
               if (telestrokeNote.tnkConsentWith) note += ` with ${telestrokeNote.tnkConsentWith}`;
               if (telestrokeNote.tnkConsentTime) note += ` at ${telestrokeNote.tnkConsentTime}`;
               note += '. ';
@@ -11886,6 +11906,7 @@ Clinician Name`;
               else if (ct === 'surrogate') note += 'Surrogate/family consent obtained. ';
               else if (ct === 'presumed') note += 'Presumed consent — patient unable to consent, no surrogate available. ';
               else if (ct === 'declined') note += 'Patient/family declined after informed discussion. ';
+              else note += 'Consent status not documented. ';
               if (telestrokeNote.preTNKSafetyPause) note += 'Pre-TNK safety pause completed. ';
               note += '\n';
             }
@@ -12282,6 +12303,15 @@ Clinician Name`;
             }
             return note;
           };
+          // A generated snapshot never becomes input to the next generated note.
+          // Any changed source field invalidates its display/copy, including a cleared consent.
+          const generatedNoteInputKey = JSON.stringify({ telestrokeNote, patientData, gcsItems, ichScoreItems, abcd2Items, aspectsScore, nihssScore, mrsScore, pcAspectsRegions, lkwTime, strokeCodeForm, trialEligibility, noteTemplate, consultationType, editableTemplate });
+          const generatedNoteIsCurrent = generatedNoteDraft?.inputKey === generatedNoteInputKey;
+          const showGeneratedNote = () => <GeneratedNoteDraft
+            text={generatedNoteIsCurrent ? generatedNoteDraft.text : ''}
+            stale={!!generatedNoteDraft && !generatedNoteIsCurrent}
+            onCopy={copyToClipboard}
+          />;
           generateNoteRef.current = generateTelestrokeNote;
           copyToClipboardRef.current = copyToClipboard;
 
@@ -13057,13 +13087,10 @@ Clinician Name`;
               }
             }
 
-            // Cardiac complication warning (troponin/EKG)
-            const ekgLower = (n.ekgResults || '').toLowerCase();
-            if (/stemi|st.?elevation|acute.?mi|st.?changes/.test(ekgLower)) {
-              warnings.push({ id: 'cardiac-complication', severity: 'critical', msg: 'EKG suggests acute cardiac event — Differentiate: Type 2 MI (demand ischemia, most common in stroke), concurrent STEMI, or Takotsubo/neurogenic stunned myocardium. Cardiology consult. If concurrent ACS: heparin conflicts with post-TNK hold (24h) and post-ICH management. For Takotsubo: avoid catecholamines, consider milrinone if shock. Serial troponins, bedside echo.' });
-            } else if (/takotsubo|stress.?cardio|wall.?motion|apical.?balloon/.test(ekgLower)) {
-              warnings.push({ id: 'takotsubo-warning', severity: 'warn', msg: 'Takotsubo/neurogenic stunned myocardium suspected — common in large strokes and SAH. Bedside echo, serial troponins. Avoid catecholamines if cardiogenic shock (milrinone preferred). Usually self-resolving. Monitor for LV thrombus if severe wall motion abnormality.' });
-            }
+            // EKG prose is documentation, not a diagnosis or a treatment input.
+            // Keyword matches cannot distinguish negation, suspected disease,
+            // outflow obstruction or the mechanism of shock. Do not select a
+            // cardiac drug or diagnosis from this field.
 
             // Cancer-associated stroke warnings
             if (n.activeCancer) {
@@ -14021,7 +14048,7 @@ Clinician Name`;
             const superseder = doc.supersededBy ? REFERENCE_DOC_BY_ID.get(doc.supersededBy) : null;
             const isExternal = doc.type === 'external-link';
             return (
-              <div key={doc.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
+              <div key={doc.id} id={doc.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-slate-50 rounded-lg border border-line hover:bg-slate-100 transition-colors dark:bg-paper-2 dark:hover:bg-paper-2">
                 <div className="flex items-center gap-3 flex-1">
                   {(doc.icon || isExternal) && (
                     <i aria-hidden="true" data-lucide={doc.icon || 'external-link'} className={`w-6 h-6 ${doc.icon === 'image' ? 'text-ok-600 dark:text-ok-300' : 'text-cobalt-600 dark:text-cobalt-300'}`}></i>
@@ -14040,7 +14067,7 @@ Clinician Name`;
                     </HeadingTag>
                     <p className="text-xs text-slate-600 dark:text-mute">{doc.subtitle}</p>
                     {doc.reviewStatus === 'archive' && (
-                      <p className="mt-1 text-xs text-warn-800 dark:text-warn-300">Teaching archive · Currentness not verified. Consult the current guideline or teaching card before applying clinical recommendations.</p>
+                      <p className="mt-1 text-xs text-warn-800 dark:text-warn-300">{HISTORICAL_DOWNLOAD_NOTE}</p>
                     )}
                   </div>
                 </div>
@@ -14087,6 +14114,35 @@ Clinician Name`;
                 </div>
               </div>
             );
+          };
+
+          const renderReferenceSection = (section, { defaultOpen = false, sourceOnly = false } = {}) => {
+            if (!section) return null;
+                      const sectionDocs = section.items.flatMap((item) => (item.docs ? item.docs : [item]));
+                      if (!evidenceSectionMatches(section.matchTitle || section.title, [section.title, ...sectionDocs.map((doc) => doc.title)])) return null;
+                      return (
+                        <details key={`${sourceOnly ? 'source' : 'download'}-${section.id}`} id={section.anchorId || `ref-${sourceOnly ? 'source' : 'download'}-${section.id}`} open={defaultOpen || Boolean(evidenceFilter.trim())} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                          <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                            <span className="ref-section-icon ref-tone-neutral" aria-hidden="true"><i data-lucide="library" className="w-4 h-4"></i></span>
+                            <span>{section.title}</span>
+                          </summary>
+                          <div className="space-y-3 p-4 pt-0">
+                            {section.note && (
+                              <p className="text-xs text-slate-600 dark:text-mute">{section.note}</p>
+                            )}
+                            {section.items.map((item) => (
+                              item.docs ? (
+                                <div key={item.group} className="border-l-4 border-cobalt-500 pl-4">
+                                  <h4 className="text-base font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">{item.group}</h4>
+                                  <div className="space-y-3">
+                                    {item.docs.map((doc) => renderReferenceDoc(doc, true))}
+                                  </div>
+                                </div>
+                              ) : renderReferenceDoc(item)
+                            ))}
+                          </div>
+                        </details>
+                      );
           };
 
           const fuzzyScore = (query, target) => {
@@ -14152,7 +14208,7 @@ Clinician Name`;
               id: guideline.id,
               label: guideline.shortTitle || guideline.title
             }));
-          }, []);
+          }, [referenceState.status]);
 
           const guidelineLibrarySectionOptions = useMemo(() => {
             const sections = new Set();
@@ -14165,7 +14221,7 @@ Clinician Name`;
               });
             });
             return Array.from(sections).sort();
-          }, [guidelineLibraryGuideline]);
+          }, [guidelineLibraryGuideline, referenceState.status]);
 
           const guidelineLibraryClassOptions = useMemo(() => {
             const classSet = new Set();
@@ -14178,7 +14234,7 @@ Clinician Name`;
             const ordered = preferredOrder.filter((item) => classSet.has(item));
             const remaining = Array.from(classSet).filter((item) => !preferredOrder.includes(item)).sort();
             return [...ordered, ...remaining];
-          }, []);
+          }, [referenceState.status]);
 
           const filteredGuidelineLibrary = useMemo(() => {
             const query = guidelineLibraryQuery.trim().toLowerCase();
@@ -14212,7 +14268,7 @@ Clinician Name`;
                 return { ...guideline, recommendations: filteredRecs };
               })
               .filter((guideline) => guideline.recommendations.length > 0);
-          }, [guidelineLibraryQuery, guidelineLibraryGuideline, guidelineLibrarySection, guidelineLibraryClass]);
+          }, [guidelineLibraryQuery, guidelineLibraryGuideline, guidelineLibrarySection, guidelineLibraryClass, referenceState.status]);
 
           const guidelineLibraryResultsCount = useMemo(() => {
             return filteredGuidelineLibrary.reduce((sum, guideline) => sum + (guideline.sourceOnly ? 0 : guideline.recommendations.length), 0);
@@ -14893,9 +14949,9 @@ Clinician Name`;
               { name: 'Ischemic Stroke Management', keywords: ['ischemic', 'ais', 'acute ischemic', 'lvo', 'large vessel', 'secondary prevention'], tab: 'management', subTab: 'ischemic' },
               { name: 'Discharge Checklist', keywords: ['discharge', 'checklist', 'disposition', 'follow up', 'quality measures'], tab: 'encounter' },
               { name: 'Order Bundles', keywords: ['order', 'bundle', 'orders', 'copy orders', 'nursing orders', 'medication orders'], tab: 'encounter' },
-              { name: 'Onboarding', keywords: ['education', 'onboarding', 'curriculum', 'trainee', 'resident', 'rotation', 'survival guide'], tab: 'education', subTab: 'onboarding' },
-              { name: 'ICU Curriculum', keywords: ['education', 'icu', 'curriculum', 'nihss', 'hemodynamics', 'ventilation', 'critical care'], tab: 'education', subTab: 'icu' },
-              { name: 'Nurse Education', keywords: ['education', 'nurse', 'nursing', 'competency', 'nihss', 'swallow screen', 'call parameters'], tab: 'education', subTab: 'nursing' },
+              { name: 'All education modules', keywords: ['education', 'onboarding', 'curriculum', 'trainee', 'resident', 'rotation', 'survival guide'], tab: 'education', subTab: 'onboarding' },
+              { name: 'Neuro ICU references', keywords: ['education', 'icu', 'curriculum', 'nihss', 'hemodynamics', 'ventilation', 'critical care'], tab: 'education', subTab: 'icu' },
+              { name: 'Quality metrics', keywords: ['education', 'nurse', 'nursing', 'competency', 'nihss', 'swallow screen', 'call parameters'], tab: 'education', subTab: 'nursing' },
               { name: 'External Ventricular Drain Reference', keywords: ['education', 'evd', 'external ventricular drain', 'ventriculostomy', 'csf', 'measurement', 'reference'], tab: 'education', subTab: 'evd-maintenance' },
               { name: 'Pocket Cards', keywords: ['education', 'pocket cards', 'cheat sheets', 'references', 'dosing', 'anatomy', 'visual aids'], tab: 'education', subTab: 'pocket-cards' }
             ];
@@ -14927,7 +14983,11 @@ Clinician Name`;
               trial: () => navigateToCompletedTrial(entry),
               education: () => navigateTo('research', { clearSearch: true, subTab: 'education', educationSubTab: entry.id }),
               calculator: () => navigateTo('research', { clearSearch: true, subTab: 'calculators' }),
-              reference: () => navigateTo('research', { clearSearch: true, subTab: 'references' })
+              reference: () => {
+                const doc = REFERENCE_DOC_BY_ID.get(entry.id);
+                setEvidenceFilter(doc?.title || entry.title || '');
+                navigateTo('research', { clearSearch: true, subTab: 'references' });
+              }
             }[entry.domain] || (() => navigateTo('research', { clearSearch: true })));
             getContentSearchIndex().forEach((entry) => {
               const score = scoreFor([entry.title, entry.subtitle, entry.keywords, entry.id]);
@@ -15316,6 +15376,9 @@ Clinician Name`;
               setPendingWorker(worker);
               setUpdateAvailable(true);
             };
+            let registrationTimer;
+            const registrationFrame = requestAnimationFrame(() => {
+            registrationTimer = setTimeout(() => {
             navigator.serviceWorker.register('service-worker.js').then((registration) => {
               // Already a waiting worker from a previous visit.
               if (registration.waiting && navigator.serviceWorker.controller) {
@@ -15332,6 +15395,9 @@ Clinician Name`;
               });
             }).catch((err) => {
             });
+            }, 0);
+            });
+            return () => { cancelAnimationFrame(registrationFrame); clearTimeout(registrationTimer); };
           }, []);
 
           const applyPendingUpdate = () => {
@@ -15948,7 +16014,7 @@ Clinician Name`;
               performSearch(searchQuery);
             }, 200);
             return () => clearTimeout(timer);
-          }, [searchQuery]);
+          }, [searchQuery, referenceState.status]);
 
           // De-ID warning scan for free-text inputs
           useEffect(() => {
@@ -16853,13 +16919,15 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
 
                       {searchOpen && searchContext === 'header' && (
                         <div aria-live="polite" aria-atomic="true" className="sr-only">
-                          {searchResults.length > 0 ? `${searchResults.length} results found` : searchQuery.length >= 2 ? 'No results found' : ''}
+                          {searchQuery.trim().length >= 2 && referenceState.status !== 'ready' ? 'Reference search is loading; available results are shown.' : searchResults.length > 0 ? `${searchResults.length} results found` : searchQuery.length >= 2 ? 'No results found' : ''}
                         </div>
                       )}
 
 
                       {searchOpen && searchContext === 'header' && searchResults.length > 0 && (
-                        <div id="search-listbox" role="listbox" aria-label="Search results" className="absolute top-12 left-0 right-0 bg-white rounded-lg border border-line shadow-lg max-h-96 overflow-y-auto z-50 dark:bg-card">
+                        <div className="absolute top-12 left-0 right-0 bg-white rounded-lg border border-line shadow-lg max-h-96 overflow-y-auto z-50 dark:bg-card">
+                          {searchQuery.trim().length >= 2 && referenceState.status !== 'ready' && <DeferredLoadStatus resource={referenceResource} label="Reference search" />}
+                          <div id="search-listbox" role="listbox" aria-label="Search results">
                           {searchResults.map((result, idx) => {
                             const isActive = idx === searchActiveIndex;
                             return (
@@ -16884,10 +16952,14 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                     </button>
                             );
                           })}
+                          </div>
                         </div>
                       )}
 
-                      {searchOpen && searchContext === 'header' && searchQuery.trim().length >= 2 && searchResults.length === 0 && (
+                      {searchOpen && searchContext === 'header' && searchQuery.trim().length >= 2 && searchResults.length === 0 && referenceState.status !== 'ready' && (
+                        <DeferredLoadStatus resource={referenceResource} label="Reference search" className="absolute top-12 left-0 right-0 z-50 shadow-lg" />
+                      )}
+                      {searchOpen && searchContext === 'header' && searchQuery.trim().length >= 2 && searchResults.length === 0 && referenceState.status === 'ready' && (
                         <div id="search-no-results" className="absolute top-12 left-0 right-0 bg-white rounded-lg border border-line shadow-lg z-50 p-3 dark:bg-card">
                           <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">No exact match found</p>
                           <p className="text-xs text-slate-500 mt-0.5 mb-2 dark:text-mute">Try one of these quick commands:</p>
@@ -17386,6 +17458,11 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                   {/* LEFT PANE — the existing Encounter form, untouched (keeps space-y-4 rhythm). */}
                   <div className="space-y-4 min-w-0">
 
+                    <WorkspaceViewControl view={workspaceView} onChange={(view) => {
+                      setWorkspaceView(view);
+                      setGuidelineRecsExpanded(view === 'teaching');
+                    }} />
+
                     {/* ===== U11 — ENCOUNTER SECTION NAVIGATOR (TOC + scrollspy) =====
                          Mobile (<1024px): a labeled "Jump to…" <select> (≥44px touch target).
                          Desktop (≥1024px): a sticky horizontal jump-link bar (radio-free nav
@@ -17435,7 +17512,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                             <h2 id="encounter-readiness-title" className="font-serif text-base text-ink">
-                              <span className="hidden sm:inline">Encounter readiness</span>
+                                      <span className="hidden sm:inline">Documentation completeness</span>
                               <button type="button" className="sm:hidden min-h-[44px] text-sm underline underline-offset-4"
                                 aria-expanded={readinessFieldsExpanded} aria-controls="encounter-completion-fields"
                                 onClick={() => setReadinessFieldsExpanded((value) => !value)}>
@@ -17488,8 +17565,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <div className="mt-2 flex flex-col gap-2 border-t border-line pt-2 sm:flex-row sm:items-center sm:justify-between">
                         <p className="hidden sm:block text-[11px] leading-snug text-mute" role="status" aria-live="polite">
                           {encounterReadiness.missing.length === 0
-                            ? 'All fields complete.'
-                            : `${encounterReadiness.completedCount} of ${encounterReadiness.trackedFields.length} fields filled · templates ready.`}
+                            ? 'Tracked fields complete; clinical review is still required.'
+                            : `${encounterReadiness.completedCount} of ${encounterReadiness.trackedFields.length} tracked fields filled. Missing information remains unknown in the draft.`}
                         </p>
                         <div className="grid grid-cols-2 gap-2 sm:flex">
                           <button
@@ -19686,7 +19763,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               onClick={() => {
                                 const result = runEncounterOutput(generateTelestrokeNote);
                                 if (result.ok) {
-                                  setTelestrokeNote(prev => ({...prev, recommendationsText: result.value}));
+                                  setGeneratedNoteDraft({ text: result.value, inputKey: generatedNoteInputKey });
                                 }
                               }}
                               className="flex items-center gap-2 px-3 py-1.5 bg-cobalt-600 text-white text-xs font-medium rounded-lg hover:bg-cobalt-700 transition-colors"
@@ -19694,11 +19771,12 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               Generate Auto-Note
                             </button>
                           </div>
+                          {showGeneratedNote()}
                           <textarea
                             id="input-recommendations"
                             value={telestrokeNote.recommendationsText}
                             onChange={(e) => { const v = e.target.value; setTelestrokeNote(prev => ({...prev, recommendationsText: v})); }}
-                            placeholder="Click 'Generate Auto-Note' or type recommendations..."
+                            placeholder="Enter your recommendations; generated drafts appear separately."
                             rows="5"
                             className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-cobalt-500 text-sm dark:border-strong"
                           />
@@ -19854,13 +19932,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                           </div>
                           {/* Auto TNK Dose Display */}
                           {telestrokeNote.weight && calculateTNKDoseReviewed(telestrokeNote.weight) && (
+                            <div>
                             <div className="mt-2 bg-orange-50 border border-orange-200 rounded-lg p-2 flex items-center justify-between dark:bg-orange-950 dark:border-orange-800">
                               <div className="flex items-center gap-2">
                                 <span className="text-orange-800 font-medium inline-flex items-center gap-1 dark:text-orange-300">TNK Dose:</span>
                                 <span className="text-lg font-bold text-orange-700 dark:text-orange-300">{calculateTNKDoseReviewed(telestrokeNote.weight).calculatedDose} mg</span>
-                                <span className="text-sm text-orange-800 dark:text-orange-300">({calculateTNKDoseReviewed(telestrokeNote.weight).volume}; guideline0.25 mg/kg, max25 mg)</span>
+                                <span className="text-sm text-orange-800 dark:text-orange-300">({calculateTNKDoseReviewed(telestrokeNote.weight).volume}; {getClinicalClaim('tnk-stroke-dose').dose})</span>
                               </div>
-                              <span className="text-xs text-orange-800 dark:text-orange-300">0.25 mg/kg, max 25 mg</span>
+                              <span className="text-xs text-orange-800 dark:text-orange-300">{getClinicalClaim('tnk-stroke-dose').dose}</span>
+                            </div>
+                            <ClinicalClaimContext claimId="tnk-stroke-dose" />
                             </div>
                           )}
                           <div className="mt-3">
@@ -21186,7 +21267,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                               </summary>
                               <div className="p-4 space-y-3 text-sm">
                                 <div>
-                                  <h3 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Standard Window (&le;4.5h) — TNK 0.25 mg/kg IV bolus (max 25 mg):</h3>
+                                  <h3 className="font-semibold text-ok-700 mb-2 dark:text-ok-300">Standard Window (&le;4.5h) — {getClinicalClaim('tnk-stroke-dose').text}:</h3>
                                   <ul className="space-y-1 ml-4">
                                     <li>• Diagnosis of ischemic stroke causing measurable neurologic deficit</li>
                                     <li>• Age ≥18 years</li>
@@ -21222,7 +21303,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   <ul className="space-y-1 ml-4">
                                     <li>• Unknown onset/awoke with symptoms; treat within 4.5h of symptom recognition; DWI lesion &lt;1/3 MCA territory; thrombectomy not planned (WAKE-UP used alteplase)</li>
                                     <li>• MRI with DWI-FLAIR mismatch (DWI+, FLAIR-)</li>
-                                    <li>• TNK 0.25 mg/kg IV bolus (max 25 mg)</li>
+                                    <li>• {getClinicalClaim('tnk-stroke-dose').text}</li>
                                     <li>• Discuss lower certainty of benefit and hemorrhage risk</li>
                                   </ul>
                                 </div>
@@ -21530,8 +21611,9 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 <div className="bg-white border border-ok-300 rounded-lg p-3 space-y-2 dark:bg-card dark:border-ok-800">
                                   <div className="flex items-center justify-between">
                                     <span className="text-sm font-semibold text-ok-800 inline-flex items-center gap-1 dark:text-ok-300">TNK Dosing Calculator</span>
-                                    <span className="text-xs text-slate-500 dark:text-mute">0.25 mg/kg, max 25 mg</span>
+                                    <span className="text-xs text-slate-500 dark:text-mute">{getClinicalClaim('tnk-stroke-dose').dose}</span>
                                   </div>
+                                  <ClinicalClaimContext claimId="tnk-stroke-dose" />
 
                                   <div className="flex items-center gap-3">
                                     <label className="text-sm text-slate-700 dark:text-ink-2">Weight:</label>
@@ -21623,7 +21705,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 {telestrokeNote.tnkConsentDiscussed && (
                                   <div className="bg-white border border-cobalt-200 rounded-lg p-3 space-y-2 dark:bg-card dark:border-cobalt-700">
                                     <p className="text-sm text-slate-700 dark:text-ink-2">
-                                      We recommend a medication called Tenecteplase (TNK), which is a "clot-buster" drug. TNK reduces the risk of being disabled; people who get TNK have an improved chance of recovering without disability than people who don't get the medication. All medications have risks – the main risk is bleeding, up to 4% of people develop bleeding in the brain that leads to new symptoms. Very rarely, people have an allergic reaction. The potential benefits are thought to be higher than the potential risks and we recommend TNK is administered. Time is very important here - the sooner the treatment is started, the higher the likelihood of benefit.
+                                      Discuss the individualized expected benefit, bleeding and other treatment risks, alternatives, and the effect of treatment delay. Use the applicable evidence and the patient’s circumstances; a population event rate is not an individualized prediction. Record the participants, questions, decision and consent status below.
                                     </p>
 
                                     <div className="mt-3 space-y-2">
@@ -21794,7 +21876,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* TNK-Only Consent Doc Copy (when TNK but no EVT/transfer) */}
                             {telestrokeNote.tnkRecommended && telestrokeNote.tnkConsentDiscussed && !telestrokeNote.evtRecommended && !telestrokeNote.transferAccepted && (
                               <button onClick={() => {
-                                const tnkDoc = `TNK CONSENT DOCUMENTATION:\nTenecteplase was recommended for ${telestrokeNote.age || '***'} ${telestrokeNote.sex === 'M' ? 'male' : telestrokeNote.sex === 'F' ? 'female' : '***'} patient with ${telestrokeNote.diagnosis || 'acute ischemic stroke'} (NIHSS ${getDocumentedNihss() || 'not documented'}).\nTreatment window: within 4.5 hours of LKW (or mismatch imaging criteria for extended window).\nRisks discussed: symptomatic intracranial hemorrhage (up to 4%), allergic reaction (rare).\nBenefits discussed: improved chance of recovery without disability; earlier treatment provides greater benefit.\nAlternatives discussed: no thrombolytic treatment (associated with higher risk of disability).\nConsent: ${telestrokeNote.patientFamilyConsent ? 'Patient/family consent obtained' : telestrokeNote.presumedConsent ? 'Presumed consent — treatment in best interest' : '***'}`;
+                                const tnkDoc = buildTnkConsentDocumentation(telestrokeNote);
                                 copyToClipboard(tnkDoc, 'tnk-consent');
                               }}
                                 className={`w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 ${copiedText === 'tnk-consent' ? 'bg-ok-600 text-white' : 'bg-cobalt-600 text-white hover:bg-cobalt-700'}`}>
@@ -22164,6 +22246,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                               <div className="flex-1 min-w-0">
                                                 <p className="text-sm font-semibold text-slate-900 dark:text-ink">{rec.title}</p>
                                                 <p className="text-sm text-slate-700 mt-0.5 dark:text-ink-2">{rec.recommendation}</p>
+                                                {rec.detail && <ClinicalExplanation teaching={isTraineeMode}>{rec.detail}</ClinicalExplanation>}
                                                 {rec.medications && rec.medications.length > 0 && (
                                                   <div className="mt-1.5 flex flex-wrap gap-1">
                                                     {rec.medications.map((med, i) => (
@@ -22398,14 +22481,8 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                             criterion checklist above. */}
                                         {(() => {
                                           const atlasActive = getActiveTrialByLegacyKey(trial.trialId);
-                                          const related = atlasActive ? resolveCompletedTrials(atlasActive.relatedCompletedTrialIds) : [];
-                                          if (related.length === 0) return null;
-                                          return (
-                                            <details className="mt-2 border border-cobalt-200 bg-slate-50 rounded dark:border-cobalt-700 dark:bg-paper-2">
-                                              <summary className="cursor-pointer px-2.5 py-1.5 text-xs font-semibold text-cobalt-900 hover:bg-slate-100 rounded flex items-center gap-2 dark:text-cobalt-300 dark:hover:bg-paper-2">
-                                                Background evidence ({related.length})
-                                                <span className="ml-auto text-[11px] font-normal text-slate-500 italic dark:text-mute">Evidence Library reference</span>
-                                              </summary>
+                                          if (!atlasActive?.relatedCompletedTrialIds?.length) return null;
+                                          return <DeferredCompletedEvidence ids={atlasActive.relatedCompletedTrialIds}>{related => (
                                               <div className="px-2.5 pb-2 pt-1 space-y-1.5">
                                                 {related.map((rt) => {
                                                   const certaintyMeta = (CERTAINTY_LABELS && CERTAINTY_LABELS[rt.certainty]) || { label: rt.certainty, tone: 'slate' };
@@ -22448,8 +22525,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                                   );
                                                 })}
                                               </div>
-                                            </details>
-                                          );
+                                          )}</DeferredCompletedEvidence>;
                                         })()}
                                       </div>
                                     </details>
@@ -26436,8 +26512,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                 note += `HPI: ${age} year old ${sex}`;
                                 if (telestrokeNote.pmh) note += ` with PMH of ${telestrokeNote.pmh}`;
                                 note += ` presenting with ${telestrokeNote.symptoms || '***'}.\n`;
-                                if (lkwTime) {
+                                if (telestrokeNote.lkwUnknown) {
+                                  note += 'Last known well: Unknown (wake-up/unwitnessed).\n';
+                                  note += `Discovery (date/time): ${telestrokeNote.discoveryDate || 'date not documented'} ${telestrokeNote.discoveryTime || 'time not documented'}\n`;
+                                } else if (lkwTime) {
                                   note += `Last known well: ${lkwTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} on ${lkwTime.toLocaleDateString()}.\n`;
+                                } else {
+                                  note += 'Last known well: Not documented.\n';
                                 }
                                 note += '\n';
 
@@ -26899,7 +26980,10 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                                   if (fc.topicsDiscussed) note += `- Topics: ${fc.topicsDiscussed}\n`;
                                 }
 
-                                setTelestrokeNote(prev => ({...prev, recommendationsText: note}));
+                                if (telestrokeNote.recommendationsText?.trim()) {
+                                  note += `\nCLINICIAN-ENTERED RECOMMENDATIONS:\n${telestrokeNote.recommendationsText}\n`;
+                                }
+                                setGeneratedNoteDraft({ text: PUBLIC_DEMO_MODE && !note.startsWith(DEMO_NOTE_DISCLAIMER) ? `${DEMO_NOTE_DISCLAIMER}\n${note}` : note, inputKey: generatedNoteInputKey });
                               }}
                               className="flex items-center gap-2 px-4 py-2 bg-cobalt-600 text-white text-sm font-medium rounded-lg hover:bg-cobalt-700 transition-colors"
                             >
@@ -26912,6 +26996,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <div className="flex items-center justify-between mb-1">
                               <span className="text-sm font-medium text-slate-700 dark:text-ink-2">Recommendation Summary</span>
                             </div>
+                            {showGeneratedNote()}
                             <textarea
                               aria-label="Recommendation summary"
                               value={telestrokeNote.recommendationsText}
@@ -27029,7 +27114,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* TNK risk/benefit discussion documentation */}
                             <div className="bg-white p-3 rounded border dark:bg-card">
                               <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">TNK risk/benefit discussion documentation:</h3>
-                              <p className="text-sm">After ensuring that there were no evident contraindications, TNK administration was recommended. Potential benefits, potential risks (including a potential risk of sx ICH of up to 4%), and alternatives to treatment were discussed with the OSH provider and patient/family prior to initiating treatment.</p>
+                              <p className="text-sm whitespace-pre-line">{DOC_TEMPLATES.tnkRiskBenefit}</p>
                             </div>
                           </div>
 
@@ -27037,26 +27122,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             {/* Post-IV TNK/tPA recommendations */}
                             <div className="bg-white p-3 rounded border dark:bg-card">
                               <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">Post-IV TNK/tPA recommendations:</h3>
-                              <ul className="text-sm space-y-1">
-                                <li>• Admit to ICU</li>
-                                <li>• Neuro checks + BP q15min x 2h, then q30min x 6h, then q1h x 16h</li>
-                                <li>• NO antithrombotics/anticoagulants for 24 hours after thrombolysis</li>
-                                <li>• Maintain BP&lt;180/105 for 24 hours after thrombolysis</li>
-                                <li>• NCCT 24 hours post-thrombolysis</li>
-                                <li>• MRI Brain with diffusion weighted imaging</li>
-                                <li>• EKG/telemetry</li>
-                                <li>• Transthoracic echocardiogram</li>
-                                <li>• Fasting lipid panel, HgA1c</li>
-                                <li>• PT/OT/SLP evaluations</li>
-                                <li>• SCDs for DVT ppx</li>
-                                <li>• Inpatient neurology consultation for further diagnostic evaluation and management</li>
-                              </ul>
+                              <p className="text-sm whitespace-pre-line">{DOC_TEMPLATES.postTnk}</p>
                             </div>
 
                             {/* MT risk/benefit discussion */}
                             <div className="bg-white p-3 rounded border dark:bg-card">
                               <h3 className="font-semibold text-slate-700 mb-2 dark:text-ink-2">MT risk/benefit discussion:</h3>
-                              <p className="text-sm">Given the presence of a large vessel occlusion, disabling neurological symptoms, and no evident contraindications - the patient will be transferred to the hub for mechanical thrombectomy consideration. Potential benefits, potential risks, and alternatives to treatment were discussed with the OSH provider and patient/family; the neuro-IR team at the hub will obtain informed consent from the patient/family.</p>
+                              <p className="text-sm whitespace-pre-line">{DOC_TEMPLATES.evtRiskBenefit}</p>
                             </div>
                           </div>
                         </div>
@@ -29762,6 +29834,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {activeTab === 'research' && researchSubTab === 'calculators' && (
                   <ErrorBoundary>
                   <div id="tabpanel-research" role="tabpanel" aria-labelledby="tab-research" className="space-y-8">
+                    <WorkspaceViewControl view={workspaceView} onChange={setWorkspaceView} />
                     <div className="bg-white border border-line rounded-md p-2 flex !flex-nowrap overflow-x-auto no-scrollbar gap-2 sticky top-0 z-30 dark:bg-card sm:!flex-wrap sm:overflow-visible" role="tablist" aria-label="Guidelines & References sub-sections" onKeyDown={(e) => {
                       const ci = RESEARCH_SUBTABS.indexOf(researchSubTab);
                       let ni;
@@ -29818,51 +29891,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       if (Number.isNaN(administeredAt.getTime())) return null;
                       return <NeurocheckTimer tpaGivenIso={administeredAt.toISOString()} />;
                     })()}
-                    {/* Quick Dosing Reference */}
-                    <details className="ref-section bg-white border border-line rounded-lg dark:bg-card">
-                      <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
-                        <span className="ref-section-icon ref-tone-warn" aria-hidden="true"><i data-lucide="pill" className="w-4 h-4"></i></span>
-                        Quick Dosing Reference
-                      </summary>
-                      <div className="px-3 pb-3 grid grid-cols-1 md:grid-cols-2 gap-2">
-                        {[
-                          { label: 'TNK (Tenecteplase)', dose: `0.25 mg/kg IV bolus (max 25 mg)${hasValidProtocolDosingWeight ? ` → ${Math.min(25, Math.round(protocolDosingWeightKg * 0.25 * 2) / 2)} mg` : ''}`, color: 'emerald' },
-                          { label: 'Alteplase (tPA)', dose: `0.9 mg/kg IV (max 90 mg): 10% bolus, 90% over 60 min${hasValidProtocolDosingWeight ? ` → ${Math.min(90, Math.round(protocolDosingWeightKg * 0.9 * 10) / 10)} mg` : ''}`, color: 'blue' },
-                          { label: 'PCC / Kcentra (institutional example)', dose: '2000 units IV immediately (institutional fixed-dose example; guideline dosing is weight-based, e.g., 25-50 units/kg by INR for VKA reversal; do not combine the two schemes). If INR >1.5 after infusion, page hematology and consider an additional 500 units.', color: 'red' },
-                          { label: 'Idarucizumab', dose: 'Two 2.5 g IV doses, given no more than 15 minutes apart; infuse each dose over 5-10 minutes. For dabigatran reversal.', color: 'rose' },
-                          { label: 'FFP (if no PCC)', dose: `15 mL/kg IV (give 4 units emergency-release plasma immediately and request 4 additional units; if INR remains >1.5 after infusion, give 4 more units and consult Hematology; each unit is 250-300 mL).${hasValidProtocolDosingWeight ? ` → ${Math.round(protocolDosingWeightKg * 15)} mL (~${Math.round(protocolDosingWeightKg * 15 / 250)} units)` : ''}`, color: 'amber' },
-                        ].map(item => {
-                          // Each entry: container (border + hover, incl. dark variants)
-                          // kept separate from the label text color (light + dark) so
-                          // the dark:text-*-300 token is never dropped (the prior
-                          // `classes.split(' ')` truncation rendered text-*-800 dark-on-
-                          // dark in dark mode — a real AA color-contrast fail).
-                          const colorMap = {
-                            emerald: { container: 'border-ok-200 hover:bg-ok-50 dark:border-ok-800', text: 'text-ok-800 dark:text-ok-300' },
-                            blue:    { container: 'border-cobalt-200 hover:bg-cobalt-50 dark:border-cobalt-700 dark:hover:bg-cobalt-900', text: 'text-cobalt-800 dark:text-cobalt-300' },
-                            purple:  { container: 'border-cobalt-200 hover:bg-cobalt-50 dark:border-cobalt-700 dark:hover:bg-cobalt-900', text: 'text-cobalt-800 dark:text-cobalt-300' },
-                            red:     { container: 'border-crit-200 hover:bg-crit-50 dark:border-crit-800', text: 'text-crit-800 dark:text-crit-300' },
-                            rose:    { container: 'border-rose-200 hover:bg-rose-50 dark:border-rose-800', text: 'text-rose-800 dark:text-rose-300' },
-                            amber:   { container: 'border-warn-200 hover:bg-warn-50 dark:border-warn-800', text: 'text-warn-800 dark:text-warn-300' },
-                            slate:   { container: 'border-slate-200 hover:bg-slate-50 dark:border-line dark:hover:bg-paper-2', text: 'text-slate-800 dark:text-ink' },
-                            indigo:  { container: 'border-cobalt-200 hover:bg-cobalt-50 dark:border-cobalt-700 dark:hover:bg-cobalt-900', text: 'text-cobalt-800 dark:text-cobalt-300' }
-                          };
-                          const entry = colorMap[item.color] || { container: 'border-slate-200 hover:bg-slate-50 dark:border-line dark:hover:bg-paper-2', text: 'text-slate-800 dark:text-ink' };
-                          const containerClass = entry.container;
-                          const textClass = entry.text;
-                          return (
-                          <button key={item.label} type="button"
-                            aria-label={`Copy ${item.label} dosing`}
-                            onClick={() => copyToClipboard(`${item.label}: ${item.dose}`, 'dosing-ref')}
-                            className={`text-left px-3 py-2 bg-white border dark:bg-card ${containerClass} rounded-lg transition-colors group`}>
-                            <span className={`text-xs font-bold ${textClass} block`}>{item.label}</span>
-                            <span className="text-xs text-slate-600 block dark:text-ink-2">{item.dose}</span>
-                            <span className="text-xs text-slate-600 opacity-0 group-hover:opacity-100 transition-opacity dark:text-mute">Click to copy</span>
-                          </button>
-                          );
-                        })}
+                    {/* Reviewed dosing destinations: no duplicate copy-ready regimen. */}
+                    <section aria-labelledby="dosing-destinations-title" className="rounded-lg border border-line bg-card p-3">
+                      <h3 id="dosing-destinations-title" className="text-sm font-semibold text-ink">Dosing and safety references</h3>
+                      <p className="mt-1 text-xs text-ink-2">Open the full calculator with its input checks and applicable limits. Dose arithmetic does not establish treatment eligibility.</p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        <button type="button" onClick={() => openEncounterAtField('Weight')} className="min-h-[44px] rounded-md border border-line px-3 py-2 text-sm font-semibold text-link-600 dark:text-link-400">TNK dose in Encounter</button>
+                        <button type="button" onClick={() => gotoCalculator('calc-alteplase', 'Alteplase')} className="min-h-[44px] rounded-md border border-line px-3 py-2 text-sm font-semibold text-link-600 dark:text-link-400">Alteplase calculator</button>
+                        <button type="button" onClick={() => navigateTo('research', { subTab: 'guidelines', clearSearch: true })} className="min-h-[44px] rounded-md border border-line px-3 py-2 text-sm font-semibold text-link-600 dark:text-link-400">Source guidelines</button>
                       </div>
-                    </details>
+                    </section>
                     <CalculatorSync />
                     <CalculatorPatientSnapshot />
                     <div className="bg-white border border-line rounded-lg p-3 flex flex-wrap items-center gap-3 text-xs dark:bg-card">
@@ -31414,7 +31452,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                       <summary className="ref-section-summary cursor-pointer p-3 pr-11 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
                         <span className="ref-section-icon ref-tone-cobalt" aria-hidden="true"><i data-lucide="flask-conical" className="w-4 h-4"></i></span>
                         <span>Alteplase (tPA) Dosing Calculator</span>
-                        <span className="ml-auto text-xs font-normal text-slate-600 dark:text-mute">0.9 mg/kg, max 90 mg</span>
+                        <span className="ml-auto text-xs font-normal text-slate-600 dark:text-mute">{getClinicalClaim('alteplase-stroke-dose').dose}</span>
                       </summary>
                       <div className="p-4">
                         {(() => {
@@ -31447,7 +31485,7 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                             <p className="text-sm text-warn-700 dark:text-warn-300">Enter patient weight in the encounter section to calculate dose.</p>
                           );
                         })()}
-                      <p className="text-[11px] text-slate-600 mt-2 dark:text-mute">Source: NINDS rt-PA Stroke Study Group. NEJM 1995;333:1581-7 (PMID 7477192).</p>
+                      <ClinicalClaimContext claimId="alteplase-stroke-dose" />
                       </div>
                     </details>
 
@@ -31626,9 +31664,13 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                 {/* What's New feed (verified PubMed) + compact   */}
                 {/* guideline list + Evidence Atlas entry.        */}
                 {/* ============================================ */}
-                {activeTab === 'research' && researchSubTab !== 'calculators' && (
+                {activeTab === 'research' && researchSubTab !== 'calculators' && referenceState.status !== 'ready' && (
+                  <DeferredLoadStatus resource={referenceResource} label="Guidelines and references" />
+                )}
+                {activeTab === 'research' && researchSubTab !== 'calculators' && referenceState.status === 'ready' && (
                   <ErrorBoundary>
                   <div id="tabpanel-research" role="tabpanel" aria-labelledby="tab-research" className="space-y-8">
+                    <WorkspaceViewControl view={workspaceView} onChange={setWorkspaceView} />
                     {/* Research sub-tabs navigation. The nowrap / no-shrink utilities are
                         important-flagged because index.html's phone rules
                         (`.flex.gap-2 { flex-wrap: wrap }` and `.flex.gap-2 > button
@@ -31987,12 +32029,16 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         ['ref-spinalcord', 'Spinal Cord'],
                         ['ref-ctp', 'CTP Guide'],
                         ['ref-orders', 'Admission Orders'],
-                        ['ref-quickrefs', 'Quick Ref PDFs'],
+                        ['ref-quickrefs', 'Generated PDFs'],
+                        ['ref-historical-downloads', 'Teaching archive'],
                         ['ref-guidelines', 'Guidelines'],
                       ].map(([id, label]) => (
                         <button key={id} onClick={() => { const el = document.getElementById(id); if (el) { if (el.tagName === 'DETAILS') el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}} className="px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-cobalt-100 text-slate-700 hover:text-cobalt-700 rounded-full border border-line hover:border-cobalt-300 transition-colors min-h-[36px] dark:bg-paper-2 dark:hover:bg-cobalt-800 dark:text-ink-2 dark:hover:text-cobalt-300">{label}</button>
                       ))}
                     </div>
+
+                    {/* Featured maintained exports; generation does not imply clinical certification. */}
+                    {renderReferenceSection(REFERENCE_GENERATED_SECTION, { defaultOpen: true })}
 
                     {/* Major Stroke Trials — merged Landmark Trials (study-guide cards
                         with category filters) + Completed Trials (atlas filter UI with
@@ -32985,33 +33031,22 @@ NIHSS: ${nihssDisplay} - reassess ${receivedTNK ? 'per neuro check schedule' : '
                         below is projected from the module-level
                         REFERENCE_LIBRARY_SECTIONS registry, which carries the
                         optional year / supersededBy metadata. */}
-                    {REFERENCE_LIBRARY_SECTIONS.map((section) => {
-                      const sectionDocs = section.items.flatMap((item) => (item.docs ? item.docs : [item]));
-                      if (!evidenceSectionMatches(section.matchTitle || section.title, [section.title, ...sectionDocs.map((doc) => doc.title)])) return null;
-                      return (
-                        <details key={section.id} id={section.anchorId || undefined} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
-                          <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
-                            <span className="ref-section-icon ref-tone-neutral" aria-hidden="true"><i data-lucide="library" className="w-4 h-4"></i></span>
-                            <span>{section.title}</span>
-                          </summary>
-                          <div className="space-y-3 p-4 pt-0">
-                            {section.note && (
-                              <p className="text-xs text-slate-600 dark:text-mute">{section.note}</p>
-                            )}
-                            {section.items.map((item) => (
-                              item.docs ? (
-                                <div key={item.group} className="border-l-4 border-cobalt-500 pl-4">
-                                  <h4 className="text-base font-semibold text-cobalt-800 mb-3 dark:text-cobalt-300">{item.group}</h4>
-                                  <div className="space-y-3">
-                                    {item.docs.map((doc) => renderReferenceDoc(doc, true))}
-                                  </div>
-                                </div>
-                              ) : renderReferenceDoc(item)
-                            ))}
-                          </div>
-                        </details>
-                      );
-                    })}
+                    {/* Original external source links remain available outside the archive. */}
+                    {REFERENCE_SOURCE_SECTIONS.map((section) => renderReferenceSection(section, { sourceOnly: true }))}
+
+                    <details id="ref-historical-downloads" open={Boolean(evidenceFilter.trim())} className="ref-section bg-white border border-line rounded-lg dark:bg-card">
+                      <summary className="ref-section-summary cursor-pointer p-4 pr-12 font-semibold text-slate-800 hover:bg-slate-50 rounded-lg flex items-center gap-3 dark:text-ink dark:hover:bg-paper-2">
+                        <span className="ref-section-icon ref-tone-neutral" aria-hidden="true"><i data-lucide="library" className="w-4 h-4"></i></span>
+                        Historical teaching archive · 17 PDFs
+                      </summary>
+                      <div className="space-y-3 p-4 pt-0">
+                        <p className="text-sm text-warn-800 dark:text-warn-300">{HISTORICAL_DOWNLOAD_NOTE}</p>
+                        {REFERENCE_ARCHIVE_SECTIONS.map((section) => renderReferenceSection(section))}
+                        {evidenceFilter.trim() && !REFERENCE_ARCHIVE_SECTIONS.some((section) => evidenceSectionMatches(section.matchTitle || section.title, [section.title, ...section.items.flatMap((item) => item.docs || [item]).map((doc) => doc.title)])) && (
+                          <p className="text-sm text-mute">No historical downloads match this filter.</p>
+                        )}
+                      </div>
+                    </details>
                   </div>
                 )}
                 {/* End of References/Evidence Content */}

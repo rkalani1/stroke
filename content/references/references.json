@@ -6,7 +6,7 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/AFib DOAC Start Timing.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "Generated teaching reference"
   },
   {
     "id": "quickref-brain-death-guidelines",
@@ -15,7 +15,7 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/Brain Death Guidelines.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "Generated teaching reference"
   },
   {
     "id": "quickref-cervical-artery-dissection",
@@ -24,7 +24,7 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/Cervical Artery Dissection.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "Generated teaching reference"
   },
   {
     "id": "quickref-dapt-guidelines",
@@ -33,7 +33,7 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/DAPT Guidelines.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "Generated teaching reference"
   },
   {
     "id": "quickref-malignant-infarction",
@@ -42,7 +42,7 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/Malignant Infarction.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "Generated teaching reference"
   },
   {
     "id": "quickref-stroke-prognosis",
@@ -51,7 +51,7 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/Stroke Prognosis.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "Generated teaching reference"
   },
   {
     "id": "quickref-toast-stroke-classification",
@@ -60,6 +60,6 @@
     "type": "pdf",
     "provenance": "src/app.jsx REFERENCE_LIBRARY_SECTIONS",
     "path": "documents/references/TOAST Stroke Classification.pdf",
-    "subtitle": "PDF Document"
+    "subtitle": "Generated teaching reference"
   }
 ]

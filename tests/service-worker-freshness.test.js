@@ -106,12 +106,11 @@ for (const scope of ['https://example.test/', 'https://example.test/stroke/']) {
       expect(h.globalMatches).toBe(0);
     });
 
-    it.each(['./', 'index.html?updated=1'])('synchronizes root/index aliases after fresh HTML at %s', async key => {
+    it.each(['./', 'index.html', './?publicDemo=1', 'index.html?v=new'])('keeps the installed shell at %s until the user accepts an update', async key => {
       const h = harness(scope, { offline: false, body: '<html>fresh shell</html>', contentType: 'text/html' });
-      h.seed('./', 'old root'); h.seed('index.html', 'old index');
-      await h.fetch(key, true);
-      expect(await h.entries.get(new URL('./', scope).href).text()).toBe('<html>fresh shell</html>');
-      expect(await h.entries.get(new URL('index.html', scope).href).text()).toBe('<html>fresh shell</html>');
+      h.seed('./', '<html>installed shell</html>', 'text/html'); h.seed('index.html', '<html>installed shell</html>', 'text/html');
+      expect(await (await h.fetch(key, true)).text()).toBe('<html>installed shell</html>');
+      expect(h.network).toEqual([]);
     });
 
     it.each([['unrelated.html', 'text/html'], ['./', 'text/plain']])('does not poison shell aliases from %s / %s', async (key, contentType) => {
@@ -148,13 +147,33 @@ for (const scope of ['https://example.test/', 'https://example.test/stroke/']) {
       expect(h.entries.has(new URL('index.html', scope).href)).toBe(true);
     });
 
-    it('returns the successful fresh network body even if persistence fails', async () => {
+    it('returns a successful PDF network body even if persistence fails', async () => {
       const h = harness(scope, { offline: false, writeFailure: true });
-      h.seed('app.js?v=current', 'stale cache');
-      const response = await h.fetch('app.js?v=current');
+      h.seed('documents/current.pdf', 'stale cache');
+      const response = await h.fetch('documents/current.pdf');
       expect(response.status).toBe(200);
       expect(await response.text()).toBe('fresh network');
       expect(h.network[0].options.cache).toBe('no-cache');
+    });
+
+    it('pins an entry and its chunks to the installed release while a newer release is online', async () => {
+      const h = harness(scope, { offline: false, body: 'new server entry imports new chunks' });
+      h.seed('app.js', 'installed entry imports installed chunks');
+      h.seed('chunks/reference-OLDHASH.js', 'installed reference records');
+      expect(await (await h.fetch('app.js?v=current')).text()).toBe('installed entry imports installed chunks');
+      expect(await (await h.fetch('chunks/reference-OLDHASH.js')).text()).toBe('installed reference records');
+      expect(h.network).toEqual([]);
+      expect(h.globalMatches).toBe(0);
+    });
+
+    it('does not substitute the HTML shell or another release for a missing offline chunk', async () => {
+      const h = harness(scope);
+      h.seed('index.html', '<html>installed shell</html>', 'text/html');
+      h.oldEntries.set(new URL('chunks/missing-HASH.js', scope).href, new Response('old records'));
+      const response = await h.fetch('chunks/missing-HASH.js');
+      expect(response.status).toBe(503);
+      expect(response.headers.get('content-type')).toContain('text/plain');
+      expect(h.globalMatches).toBe(0);
     });
 
     it('preserves exact offline PDF identity and never returns HTML for missing binary navigation', async () => {

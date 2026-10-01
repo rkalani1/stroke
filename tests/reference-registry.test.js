@@ -22,6 +22,7 @@ import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 import { guidelineGradeLabel } from '../src/guideline-library.js';
+import { MAINTAINED_DOWNLOADS, GENERATED_DOWNLOAD_NOTE, HISTORICAL_DOWNLOAD_NOTE } from '../src/download-manifest.js';
 
 const ROOT = process.cwd();
 const appJsxContent = fs.readFileSync(path.join(ROOT, 'src', 'app.jsx'), 'utf8');
@@ -35,12 +36,15 @@ const registrySlice = appJsxContent.substring(
 const scope = {};
 new Function(
   'scope',
+  'MAINTAINED_DOWNLOADS',
+  'GENERATED_DOWNLOAD_NOTE',
+  'HISTORICAL_DOWNLOAD_NOTE',
   registrySlice + `
     scope.REFERENCE_LIBRARY_SECTIONS = REFERENCE_LIBRARY_SECTIONS;
     scope.REFERENCE_LIBRARY_DOCS = REFERENCE_LIBRARY_DOCS;
     scope.REFERENCE_DOC_BY_ID = REFERENCE_DOC_BY_ID;
   `
-)(scope);
+)(scope, MAINTAINED_DOWNLOADS, GENERATED_DOWNLOAD_NOTE, HISTORICAL_DOWNLOAD_NOTE);
 
 const { REFERENCE_LIBRARY_SECTIONS, REFERENCE_LIBRARY_DOCS, REFERENCE_DOC_BY_ID } = scope;
 

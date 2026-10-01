@@ -21,6 +21,8 @@ import {
 } from './evidence/index.js';
 
 import { GUIDELINE_LIBRARY, GUIDELINE_LIBRARY_INDEX } from './guideline-library.js';
+import { getClinicalClaim } from './clinical/claim-registry.js';
+import { ICH_HISTORICAL_COHORT, ICH_COHORT_HEADING, ICH_COHORT_LIMIT, ICH_COHORT_SOURCE, PROGNOSIS_TEACHING_NOTE, historicalIchMortality } from './clinical-prognosis-content.js';
 
 // =====================================================================
 // ERROR BOUNDARY FOR SIMULATORS
@@ -1181,16 +1183,13 @@ function ScaledCardWrapper({ children, isLandscape }) {
 const PdfActionBar = ({ title, subtitle, pdfPath, pdfName, iconColorClass = "text-cobalt-600 dark:text-cobalt-400", children }) => {
   const [showPdf, setShowPdf] = useState(false);
 
-  const isHttp = window.location.protocol.startsWith('http');
-  const buildVersion = '6.9.24';
-
-  // Extract clean path and cache-busted path. When no pdfPath is provided the
+  // The release service worker manages freshness for this canonical path. When no pdfPath is provided the
   // module has no downloadable PDF on disk — render the header and card only,
   // with no Preview/Download/Email actions (they would otherwise point at the
   // app page itself and 404-shaped dead ends).
   const hasPdf = Boolean(pdfPath);
   const cleanPath = pdfPath ? pdfPath.split('?')[0] : '';
-  const resolvedPath = isHttp ? `${cleanPath}?v=${buildVersion}` : cleanPath;
+  const resolvedPath = cleanPath;
 
   const emailDoc = () => {
     const fullUrl = window.location.origin + window.location.pathname.replace(/\/$/, '') + '/' + cleanPath;
@@ -4097,57 +4096,45 @@ export function StkCoreMeasuresCard() {
   );
 }
 
-const StrokePrognosisView = () => {
-  const [mobileView, setMobileView] = useState('calculator'); // 'calculator' or 'pocket-card'
+export const StrokePrognosisView = () => {
+  const [view, setView] = useState('reference');
 
   return (
     <PdfActionBar
       title="Stroke Prognosis & Clinical Scores"
-      subtitle="Stroke Prognosis Reference Guide"
+      subtitle="Historical score reference and synthetic teaching examples"
       pdfPath="documents/references/Stroke Prognosis.pdf"
       pdfName="Stroke Prognosis.pdf"
       iconColorClass="text-ok-600 dark:text-ok-400"
     >
-      {/* Mobile Selector Tab */}
-      <div className="flex justify-center mb-4 lg:hidden no-print">
-        <div className="inline-flex rounded-lg p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60">
-          <button
-            onClick={() => setMobileView('calculator')}
-            className={`px-4 py-2 text-xs font-bold rounded-md transition-colors ${
-              mobileView === 'calculator'
-                ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-white'
-                : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
-            }`}
-          >
-            Bedside Calculator
-          </button>
-          <button
-            onClick={() => setMobileView('pocket-card')}
-            className={`px-4 py-2 text-xs font-bold rounded-md transition-colors ${
-              mobileView === 'pocket-card'
-                ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-white'
-                : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
-            }`}
-          >
-            Pocket Card Reference
-          </button>
-        </div>
+      <div className="flex flex-wrap justify-center gap-2 mb-4 no-print" role="group" aria-label="Prognosis view">
+        <button
+          type="button"
+          onClick={() => setView('reference')}
+          aria-pressed={view === 'reference'}
+          className={`min-h-[44px] px-4 py-2 text-sm font-bold rounded-md border transition-colors ${view === 'reference' ? 'bg-cobalt-600 border-cobalt-600 text-white' : 'bg-card border-line text-ink hover:bg-paper-2'}`}
+        >
+          Score reference
+        </button>
+        <button
+          type="button"
+          onClick={() => setView('teaching')}
+          aria-pressed={view === 'teaching'}
+          className={`min-h-[44px] px-4 py-2 text-sm font-bold rounded-md border transition-colors ${view === 'teaching' ? 'bg-cobalt-600 border-cobalt-600 text-white' : 'bg-card border-line text-ink hover:bg-paper-2'}`}
+        >
+          Teaching examples
+        </button>
       </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Calculator Column */}
-        <div className={`col-span-1 lg:col-span-7 no-print ${mobileView === 'calculator' ? 'block' : 'hidden lg:block'}`}>
+      {view === 'teaching' ? (
+        <div className="max-w-3xl mx-auto no-print">
           <StrokePrognosisCalculator />
         </div>
-
-        {/* Pocket Card Column */}
-        <div className={`col-span-1 lg:col-span-5 ${mobileView === 'pocket-card' ? 'block' : 'hidden lg:block'}`}>
-          <ScaledCardWrapper isLandscape={false}>
-            <BedsidePocketCardsStyles />
-            <StrokePrognosisCard />
-          </ScaledCardWrapper>
-        </div>
-      </div>
+      ) : (
+        <ScaledCardWrapper isLandscape={false}>
+          <BedsidePocketCardsStyles />
+          <StrokePrognosisCard />
+        </ScaledCardWrapper>
+      )}
     </PdfActionBar>
   );
 };
@@ -4223,15 +4210,7 @@ export function calculateIchScore({ gcsCategory, age80, volume30, ivh, infratent
 }
 
 export function getIchRisk(score) {
-  switch (score) {
-    case 0: return "0%";
-    case 1: return "13%";
-    case 2: return "26%";
-    case 3: return "72%";
-    case 4: return "97%";
-    case 5: return "100%";
-    default: return "Not estimated";
-  }
+  return historicalIchMortality(score);
 }
 
 
@@ -4388,7 +4367,7 @@ function AstralCalculatorTab() {
               onClick={resetAstral}
               className="px-3 py-1.5 text-xs font-semibold rounded-md border border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors"
             >
-              Reset Inputs
+              Reset teaching example
             </button>
           </div>
   );
@@ -4532,7 +4511,7 @@ function PlanCalculatorTab() {
               onClick={resetPlan}
               className="px-3 py-1.5 text-xs font-semibold rounded-md border border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors"
             >
-              Reset Inputs
+              Reset teaching example
             </button>
           </div>
   );
@@ -4647,7 +4626,7 @@ function IchCalculatorTab() {
                   <h4 className="text-2xl font-black text-crit-900 dark:text-white">{ichTotal} <span className="text-sm font-normal text-slate-500 dark:text-mute">points</span></h4>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] uppercase tracking-wide font-bold text-crit-700 dark:text-crit-400">30d Mortality Risk</span>
+                  <span className="text-[10px] uppercase tracking-wide font-bold text-crit-700 dark:text-crit-400">{ICH_COHORT_HEADING}</span>
                   <h4 className="text-2xl font-black text-crit-900 dark:text-white">{ichRisk}</h4>
                 </div>
               </div>
@@ -4660,7 +4639,7 @@ function IchCalculatorTab() {
                 </div>
               </div>
               <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
-                • <strong>Historical cohort estimate</strong>: {ichRisk}. This is not an individual prognosis; no percentage is assigned here to score 6.
+                {ICH_COHORT_LIMIT} <a className="underline" href={ICH_COHORT_SOURCE.url} target="_blank" rel="noopener noreferrer">{ICH_COHORT_SOURCE.label}</a>
                 <br/>• <strong>Clinical Context</strong>: AHA/ASA guidelines emphasize that the ICH Score is a communication aid and must <strong>never</strong> be used as the sole basis for withholding care or making early DNR decisions. In patients without prior documented treatment limitations, postponing new DNAR orders or withdrawal of support until at least the second full hospital day is reasonable; this is not an automatic point for prognostic certainty or withdrawal.
               </p>
             </div>
@@ -4669,7 +4648,7 @@ function IchCalculatorTab() {
               onClick={resetIch}
               className="px-3 py-1.5 text-xs font-semibold rounded-md border border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors"
             >
-              Reset Inputs
+              Reset teaching example
             </button>
           </div>
   );
@@ -4683,8 +4662,8 @@ export function StrokePrognosisCalculator() {
       {/* Header */}
       <div className="p-4 bg-slate-50 border-b border-slate-200 dark:bg-slate-800/40 dark:border-slate-700/60 flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">Historical Score Explorer</h3>
-          <p className="text-[10px] text-slate-500 dark:text-slate-400">Pre-filled teaching examples; verify the original model definitions before using a score.</p>
+          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">Teaching examples · Historical score explorer</h3>
+          <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">{PROGNOSIS_TEACHING_NOTE}</p>
         </div>
         <span className="font-mono text-[9px] uppercase tracking-wider text-slate-500 dark:text-slate-500 font-semibold">teaching reference</span>
       </div>
@@ -4747,7 +4726,7 @@ export function StrokePrognosisCard() {
           <div className="card-content" style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
             <h1 style={{textAlign: 'center', marginBottom: '4px'}}>Stroke Prognosis &amp; Clinical Scores</h1>
             <p style={{fontSize: '8.8pt', color: 'var(--ink-soft)', marginBottom: '12px', textAlign: 'center', fontWeight: '500'}}>
-              Clinical prediction scales for ischemic and hemorrhagic stroke outcomes.
+              Historical cohort reference for ischemic and hemorrhagic stroke; not an individual outcome prediction.
             </p>
 
             <svg viewBox="0 0 735 88" role="img" focusable="false" aria-label="Stroke prognosis scales: ASTRAL and PLAN for ischemic stroke; ICH Score for hemorrhagic stroke" style={{width: '100%', height: '88px', marginBottom: '8px'}}>
@@ -4821,7 +4800,7 @@ export function StrokePrognosisCard() {
               {/* ICH Score Card */}
               <div className="toast-card alert-red" style={{fontSize: '7.8pt', padding: '10px 12px'}}>
                 <h3 style={{fontSize: '9.5pt', fontWeight: '800', color: 'var(--red-deep)', marginBottom: '3px'}}>ICH Score (Intracerebral Hemorrhage)</h3>
-                <p style={{color: 'var(--ink-soft)', fontSize: '7.5pt', marginBottom: '4px', fontStyle: 'italic'}}>Predicts 30-day mortality in spontaneous ICH</p>
+                <p style={{color: 'var(--ink-soft)', fontSize: '7.5pt', marginBottom: '4px', fontStyle: 'italic'}}>Historical 30-day mortality cohort in spontaneous ICH</p>
                 <div className="clinical-scroll-region" role="region" aria-label="Clinical comparison table; scroll horizontally if needed" tabIndex={0}><table style={{width: '100%', borderCollapse: 'collapse', marginBottom: '4px'}}>
                   <thead>
                     <tr style={{borderBottom: '1px solid var(--rule-soft)', fontSize: '7.2pt', fontWeight: 'bold'}}>
@@ -4837,16 +4816,15 @@ export function StrokePrognosisCard() {
                     <tr><td><strong>Infratentorial Origin of Hemorrhage</strong></td><td style={{textAlign: 'right'}}>1 pt</td></tr>
                   </tbody>
                 </table></div>
-                <strong style={{color: 'var(--red-deep)', display: 'block', marginTop: '6px', fontSize: '7.8pt'}}>Score vs. 30-Day Mortality Risk:</strong>
+                <strong style={{color: 'var(--red-deep)', display: 'block', marginTop: '6px', fontSize: '7.8pt'}}>{ICH_COHORT_HEADING} by score:</strong>
                 <div style={{display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '3px', textAlign: 'center', fontSize: '7.2pt', marginTop: '3px'}}>
-                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>0</strong><br/><span className="badge-pill badge-pill-ok">0%</span></div>
-                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>1</strong><br/><span className="badge-pill badge-pill-ok">13%</span></div>
-                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>2</strong><br/><span className="badge-pill badge-pill-warn">26%</span></div>
-                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>3</strong><br/><span className="badge-pill badge-pill-crit">72%</span></div>
-                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>4</strong><br/><span className="badge-pill badge-pill-crit">97%</span></div>
-                  <div style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}><strong>5</strong><br/><span className="badge-pill badge-pill-crit">100%</span></div>
+                  {ICH_HISTORICAL_COHORT.map(({ score, mortality }) => (
+                    <div key={score} style={{background: 'white', borderRadius: '4px', padding: '3px 2px', border: '1px solid var(--rule-soft)'}}>
+                      <strong>{score}</strong><br/><span className={`badge-pill ${score < 2 ? 'badge-pill-ok' : score < 3 ? 'badge-pill-warn' : 'badge-pill-crit'}`}>{mortality}</span>
+                    </div>
+                  ))}
                 </div>
-                <p style={{marginTop: '4px', fontSize: '7.2pt'}}>Historical cohort rates, not individual predictions. No percentage is assigned here to score 6; do not extrapolate a certain fatal outcome.</p>
+                <p style={{marginTop: '4px', fontSize: '7.2pt'}}>{ICH_COHORT_LIMIT} <a href={ICH_COHORT_SOURCE.url} target="_blank" rel="noopener noreferrer">{ICH_COHORT_SOURCE.label}</a></p>
               </div>
 
               {/* Modified Rankin Scale (mRS) Card */}
@@ -4877,7 +4855,7 @@ export function StrokePrognosisCard() {
             <div style={{border: '1.5px solid var(--purple)', borderRadius: '8px', padding: '8px 12px', background: 'var(--purple-soft)', marginTop: 'auto', marginBottom: '8px'}}>
               <strong style={{color: 'var(--purple-deep)', fontSize: '9.0pt', display: 'block', marginBottom: '2px'}}>Prognostication Principles &amp; Limitations</strong>
               <div style={{fontSize: '7.6pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
-                • <strong>Not for Care Limitations</strong>: Historical scores describe severity and cohort outcomes, not individual recovery ceilings. In critically ill adults with ischemic stroke, admission NIHSS or ASTRAL alone is not reliable for poor-outcome counseling. The ICH Score can provide a general framework for communication, but no score should be the sole basis for an individual prognosis or for withholding reperfusion, decompression or life-sustaining treatment.
+                • <strong>Not for Care Limitations</strong>: {getClinicalClaim('prognostic-score-limits').text}
                 <br/>• <strong>Serial Reassessment</strong>: Integrate repeated examinations, imaging, treatment response and reversible confounders such as sedation. Observation and counseling timing are individualized; the first 24–72 hours are not a universal deadline for a reliable prognosis.
                 <br/>• <strong>Acute ICH — BP and Hemostatic Treatment</strong>: The ICH Score is not a treatment target. In mild-to-moderate spontaneous ICH presenting with SBP 150–220 mmHg, targeting 140 and maintaining 130–150 may be reasonable; lowering below 130 can be harmful. Intensive lowering has uncertain safety and benefit in large/severe ICH or surgical candidates, who need individualized management (AHA/ASA 2022). Recombinant factor VIIa (rFVIIa) given within 2h slowed hematoma growth but did <strong>not</strong> improve 180-day function and increased thromboembolic events (FASTEST, 2026; PMID 41653933) — <strong>not</strong> recommended for routine use.
               </div>
@@ -7724,7 +7702,7 @@ export function DmvoMevoManagementCard() {
 
                 <div style={{ border: '1.5px solid var(--purple)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
                   <strong style={{ color: 'var(--purple-deep)', fontSize: '7.6pt' }}>2026 AHA/ASA AIS Guideline Recommendation</strong>
-                  <br />&bull; <strong>IV thrombolysis:</strong> eligible disabling ischemic stroke within the guideline window is a distinct decision from EVT. TNK stroke dosing is 0.25 mg/kg, maximum 25 mg, with full eligibility and contraindication checks. TEMPO-2 enrolled NIHSS 0–5 with intracranial occlusion and included some disabling deficits; it did not establish routine benefit in its minor-stroke population and should not be labeled exclusively nondisabling.
+                  <br />&bull; <strong>IV thrombolysis:</strong> eligible disabling ischemic stroke within the guideline window is a distinct decision from EVT. {getClinicalClaim('tnk-stroke-dose').text}, with full eligibility and contraindication checks. TEMPO-2 enrolled NIHSS 0–5 with intracranial occlusion and included some disabling deficits; it did not establish routine benefit in its minor-stroke population and should not be labeled exclusively nondisabling.
                   <br />&bull; <strong>Endovascular Thrombectomy:</strong> EVT for <strong>nondominant/codominant M2, distal MCA, ACA, or PCA</strong> occlusion is <strong>not recommended</strong> (Class III: No Benefit, LOE A). EVT for a <strong>dominant proximal M2</strong> occlusion within 6h (prestroke mRS 0–1, NIHSS &ge;6, ASPECTS &ge;6) is reasonable, though benefits are uncertain (Class IIa, LOE B-NR). Later 2026 RCTs were mixed (ORIENTAL-MeVO positive in NIHSS &ge;6 within 24h; DISCOUNT stopped for futility with more sICH) and do not by themselves revise these recommendations.
                 </div>
 

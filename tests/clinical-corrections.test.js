@@ -7,6 +7,10 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { ICH_HISTORICAL_COHORT, historicalIchMortality } from '../src/clinical-prognosis-content.js';
+import { StrokePrognosisCard } from '../src/education.jsx';
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (rel) => readFileSync(join(repoRoot, rel), 'utf8');
@@ -23,11 +27,11 @@ describe('clinical corrections (regression lock)', () => {
   });
 
   it('ICH Score 4 mortality is 97% (Hemphill), not 94%, in the education card', () => {
-    const edu = read('src/education.jsx');
-    expect(edu).toContain('case 4: return "97%"');
-    expect(edu).not.toContain('case 4: return "94%"');
-    // display tile
-    expect(edu).not.toMatch(/<strong>4<\/strong><br\/><span[^>]*>94%<\/span>/);
+    expect(ICH_HISTORICAL_COHORT.find((entry) => entry.score === 4)).toEqual({ score: 4, mortality: '97%' });
+    expect(historicalIchMortality(4)).toBe('97%');
+    const html = renderToStaticMarkup(React.createElement(StrokePrognosisCard));
+    expect(html).toMatch(/<strong>4<\/strong><br\/><span[^>]*>97%<\/span>/);
+    expect(html).not.toMatch(/<strong>4<\/strong><br\/><span[^>]*>94%<\/span>/);
   });
 
   it('HINTS peripheral pattern is abnormal HIT + unidirectional nystagmus (not the central signs)', () => {

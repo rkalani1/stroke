@@ -6,6 +6,14 @@ export default function GuidelineProvenance({ guideline }) {
     update.status === 'unresolved' || update.status === 'partially-applied');
   return (
     <div className="space-y-2 text-xs text-ink-2">
+      <p className="rounded-md border border-line p-2" data-guideline-source-review>
+        <strong>Recorded source review:</strong>{' '}
+        {sourceReview?.reviewedAt
+          ? <time dateTime={sourceReview.reviewedAt}>{sourceReview.reviewedAt}</time>
+          : 'Not recorded'}.
+        {' '}This date describes the recorded review scope; it does not establish that all current guidance has been verified.
+        {sourceReview?.currencyNote && <span className="block mt-1">{sourceReview.currencyNote}</span>}
+      </p>
       {guideline.coverageComplete && (
         <p>
           Source inventory: {guideline.coverage.sourceRecommendationCount} recommendations
@@ -29,13 +37,11 @@ export default function GuidelineProvenance({ guideline }) {
         <details className="rounded-md border border-line">
           <summary className="cursor-pointer min-h-[44px] p-3 font-semibold">
             Source review and limits
-            {sourceReview.reviewedAt && <span className="ml-2 font-normal">· <time dateTime={sourceReview.reviewedAt}>{sourceReview.reviewedAt}</time></span>}
           </summary>
           <dl className="space-y-3 px-3 pb-3 leading-relaxed">
             {[
               ['Scope', sourceReview.scope],
               ['Source access', sourceReview.sourceAccess],
-              ['Currentness', sourceReview.currencyNote],
               ['Edition', sourceReview.sourceEditionNote],
             ].filter(([, value]) => value).map(([label, value]) => (
               <div key={label}>
