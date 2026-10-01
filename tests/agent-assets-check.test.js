@@ -48,6 +48,8 @@ describe('agent asset byte synchronization', () => {
         'export const AIS_SOURCE_LINKS = [];',
         'export const AIS_COMMAND_CENTER_CARDS = [];',
       ].join('\n'));
+      fs.mkdirSync(path.join(tempDir, 'src', 'clinical'));
+      for (const name of ['workspace-sources.json', 'claims.json']) fs.writeFileSync(path.join(tempDir, 'src', 'clinical', name), '[]');
       fs.writeFileSync(path.join(tempDir, 'src', 'institutional-protocols.js'), "throw new Error('fixture import failure');\n");
 
       const result = spawnSync(process.execPath, [generatorPath, '--check'], {

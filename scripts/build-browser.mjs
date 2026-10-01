@@ -4,7 +4,6 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { gzipSync } from 'node:zlib';
-import { packGuideline } from './guideline-data-pack.mjs';
 import { atomicWriteFile } from './atomic-write.mjs';
 import { runClinicalClaimCheck } from './check-clinical-claims.mjs';
 
@@ -26,7 +25,6 @@ const relativeOutput = path.relative(root, entryFile);
 if (!publicDemoBuild && !relativeOutput.startsWith(`..${path.sep}`) && !path.isAbsolute(relativeOutput)) {
   throw new Error('Refusing to write a private (non-demo) build inside the deployed tree; set STROKE_BUILD_OUTFILE to a path outside the deployed tree.');
 }
-const codecPath = path.join(root, 'src/guideline-data-codec.js');
 const clinicalReview = runClinicalClaimCheck(root);
 if (!clinicalReview.ok) {
   throw new Error('Clinical claim review must pass before publishing browser modules:\n' + clinicalReview.findings
@@ -46,22 +44,12 @@ const result = await build({
   metafile: true,
   write: false,
   define: { __STROKE_BUILD_PUBLIC_DEMO__: JSON.stringify(publicDemoBuild) },
-  logLevel: 'info',
-  plugins: [{
-    name: 'lossless-guideline-columns',
-    setup(build) {
-      build.onLoad({ filter: /[/\\]src[/\\]guidelines[/\\][^/\\]+\.json$/ }, async ({ path: file }) => {
-        const guideline = JSON.parse(await fs.readFile(file, 'utf8'));
-        if (!Array.isArray(guideline.recommendations)) return;
-        return {
-          loader: 'js',
-          contents: `import { unpackGuideline } from ${JSON.stringify(codecPath)}; export default unpackGuideline(${JSON.stringify(packGuideline(guideline))});`
-        };
-      });
-    }
-  }]
+  logLevel: 'info'
+
 });
 
+const retiredInputs = Object.keys(result.metafile.inputs).filter(file => /(?:education|teaching|simulators|reference-loader|deferred-reference|TrialScreener|EligibilityTables|completedTrials|activeTrials|patient-store)/i.test(file));
+if (retiredInputs.length) throw new Error('Retired production dependencies: ' + retiredInputs.join(', '));
 const packageJson = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
 const outputs = result.metafile.outputs;
 const entryOutput = Object.keys(outputs).find(name => path.resolve(root, name) === entryFile);

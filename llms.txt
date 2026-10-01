@@ -1,35 +1,30 @@
-# Stroke CDS Educational Demo
+# Stroke Encounter Educational Demo
 
-> Synthetic educational stroke decision-support demo (v6.30.7): example acute ischemic & hemorrhagic stroke pathways, 34 calculators, an evidence atlas (264 landmark trials, 9 active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.
+> v7.0.0: deterministic synthetic Encounter workflow with embedded retained tools, protected example protocols and bounded source/limits access.
 
 Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.
 
-## Machine-readable data (static JSON API)
-- [API manifest](https://rkalani1.github.io/stroke/data/index.json): all endpoints + addressable routes
-- [Completed trials](https://rkalani1.github.io/stroke/data/atlas/completed-trials.json)
-- [Active trials](https://rkalani1.github.io/stroke/data/atlas/active-trials.json)
-- [Recommendations](https://rkalani1.github.io/stroke/data/atlas/recommendations.json)
-- [Citations](https://rkalani1.github.io/stroke/data/atlas/citations.json)
-- [Guidelines index](https://rkalani1.github.io/stroke/data/guidelines/index.json)
-- [Management cards](https://rkalani1.github.io/stroke/data/management-cards.json)
-- [Generic BP protocols](https://rkalani1.github.io/stroke/data/generic-protocols.json)
-- [Calculators index](https://rkalani1.github.io/stroke/data/calculators-index.json)
+## Maintained data
+- [data/sources.json](https://rkalani1.github.io/stroke/data/sources.json)
+- [data/calculators-index.json](https://rkalani1.github.io/stroke/data/calculators-index.json)
+- [data/atlas/recommendations.json](https://rkalani1.github.io/stroke/data/atlas/recommendations.json)
+- [data/atlas/claims.json](https://rkalani1.github.io/stroke/data/atlas/claims.json)
+- [data/atlas/citations.json](https://rkalani1.github.io/stroke/data/atlas/citations.json)
+- [data/management-cards.json](https://rkalani1.github.io/stroke/data/management-cards.json)
+- [data/generic-protocols.json](https://rkalani1.github.io/stroke/data/generic-protocols.json)
 
-## Addressable views (hash routes)
-- `#/encounter` — Synthetic encounter demo
-- `#/protocols` — Example protocols (not local policy)
-- `#/protocols/ischemic` — Example acute ischemic stroke pathways
-- `#/protocols/ich` — Intracerebral hemorrhage
-- `#/research/calculators` — Calculators
-- `#/research` — Evidence atlas / guidelines
-- `#/trials` — Trial screener / matrix
-- `#/education` — Education hub
+## Views
+- #/encounter — Synthetic Encounter workspace
+- #/protocols — Protected example protocols
+- #/protocols/ischemic — Example ischemic stroke protocol
+- #/protocols/ich — Example ICH protocol
+- #/tools — Tools & sources
 
-## For AI agents
-- Each JSON endpoint carries `_meta` (schemaVersion, appVersion, checksum, public source label, disclaimer). Agents must propagate the disclaimer with any output.
-- Agents must not process PHI or real encounter details from this public demo.
-- No hospital-specific protocols are published here; do not use this public demo for real encounters or PHI.
+## Scope and limits
+- Propagate the disclaimer and each output’s source-specific limits. Do not process real encounter details.
+- Dose calculations do not establish eligibility or administration; severity scores do not predict an individual outcome.
+- DAWN/DEFUSE-3 are partial historical screens; absence of a modeled criterion does not exclude current EVT.
+- Source review dates and correction/source-access warnings are retained. A build is not clinical review.
+- External references require explicit opening and network access; do not append encounter inputs to URLs.
 
-## Policy
-- Not medical advice. Do not enter PHI or real encounter details. Verify against primary sources (PMIDs/DOIs included in the atlas) and approved local protocol.
-- License: Synthetic educational reference content for qualified review. No warranty.
+The historical Education, Trials and general guideline/reference portal is retired. Archive: [archive/pre-encounter-first-20261001-4f8e99d](https://github.com/rkalani1/stroke/tree/archive/pre-encounter-first-20261001-4f8e99d). Legacy JSON endpoints return explicit retirement metadata with null data.

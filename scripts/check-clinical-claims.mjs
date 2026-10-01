@@ -91,7 +91,23 @@ export function checkClinicalClaims({ inventory, claims, read }) {
   for (const artifact of inventory.artifactInventory || []) {
     if (artifact.disposition === 'historical-archive' && sha256(read(artifact.file)) !== artifact.sha256) add(null, 'changed-historical-artifact', `Historical artifact changed: ${artifact.file}. Recheck the recorded PDF occurrences and preserve its explicit archive disposition.`, [artifact.file]);
   }
-  return { ok: findings.length === 0, groups: inventory.groups.length, occurrences: current.length, artifactOccurrences: (inventory.artifactOccurrences || []).length, exports: (inventory.exports || []).length, findings };
+  // Retired occurrences retain their original fingerprints and exact archival
+  // pointer. Retirement is explicit provenance, never silent guard deletion.
+  for (const field of ['retiredOccurrences', 'retiredExports', 'retiredArtifactInventory', 'retiredArtifactOccurrences', 'retiredSourceRecords']) {
+    for (const retired of inventory[field] || []) {
+      if (!inventory.retirement?.archiveRef || retired.archiveRef !== inventory.retirement.archiveRef || !(retired.retirementReason || retired.reason)) add(null, 'invalid-retirement-trace', `Missing retirement reason/archive pointer: ${retired.id || retired.file}`);
+      if (!/^[a-f0-9]{64}$/.test(retired.sha256 || '')) add(null, 'missing-retirement-fingerprint', `Missing original retirement fingerprint: ${retired.id || retired.file}`);
+      if (retired.excerpt && sha256(retired.excerpt) !== retired.sha256) add(null, 'changed-retired-occurrence', `Retired occurrence no longer matches its original fingerprint: ${retired.id || retired.file}`);
+    }
+  }
+  if (inventory.sourceProjectionReceipt) {
+    const receipt = JSON.parse(read(inventory.sourceProjectionReceipt));
+    for (const projected of receipt.projections || []) {
+      if (projected.archiveRef !== inventory.retirement?.archiveRef || !/^[a-f0-9]{64}$/.test(projected.originalSha256 || '') || !projected.reason) add(null, 'invalid-source-projection', `Missing original source provenance: ${projected.file}`);
+      if (sha256(read(projected.file)) !== projected.maintainedSha256) add(null, 'changed-maintained-projection', `Retained source projection changed: ${projected.file}; compare each selected recommendation and review/correction provenance before updating its receipt.`, [projected.file]);
+    }
+  }
+  return { ok: findings.length === 0, groups: inventory.groups.length, occurrences: current.length, retiredOccurrences: (inventory.retiredOccurrences || []).length, artifactOccurrences: (inventory.artifactOccurrences || []).length, exports: (inventory.exports || []).length, findings };
 }
 
 export function runClinicalClaimCheck(projectRoot = root) {

@@ -921,15 +921,14 @@ describe('2026-08-17 Protocols source-consistency audit', () => {
 // in v6.19.3. Each pin below is the corrective contract.
 // ---------------------------------------------------------------------------
 describe('2026-08-17 audit — second-pass corrections', () => {
-  const app = fs.readFileSync(path.join(ROOT, 'src/app.jsx'), 'utf8');
+  const app = fs.readFileSync(path.join(ROOT, 'src/ProtectedProtocols.jsx'), 'utf8');
   const cards = fs.readFileSync(path.join(ROOT, 'src/pocket-cards.jsx'), 'utf8');
 
   it('treats 185/110 as at-threshold, not cleared, in the contraindication trace', () => {
     // p9 requires BP strictly below 185/110, which getSafePauseIssues already enforced.
     // The trace previously cleared an exactly-185/110 reading as "within threshold".
-    expect(app).toMatch(/bp\.systolic >= 185 \|\| bp\.diastolic >= 110/);
-    expect(app).toMatch(/bp\.systolic < 185 && bp\.diastolic < 110/);
-    expect(app).not.toMatch(/bp\.systolic <= 185 && bp\.diastolic <= 110/);
+    for (const bp of ['185/100', '180/110']) expect(getSafePauseIssues({ consentType: 'informed', bp, contraindications: 'reviewed', providerAgreement: 'confirmed' }).length).toBeGreaterThan(0);
+    expect(getSafePauseIssues({ consentType: 'informed', bp: '184/109', contraindications: 'reviewed', providerAgreement: 'confirmed' })).toEqual([]);
   });
 
   it('renders every IVT and anterior-EVT hold state instead of showing nothing', () => {
@@ -943,14 +942,6 @@ describe('2026-08-17 audit — second-pass corrections', () => {
 
   it('fails closed on a future-dated last-known-well reference time', () => {
     expect(app).toMatch(/if \(timeFromLKW\.futureWarning\) return 'unknown';/);
-  });
-
-  it('never emits an undefined blood-pressure target in generated text', () => {
-    expect(app).toMatch(/const formatBpPhaseTarget = \(phase\) =>/);
-    // No consumer may interpolate .systolic/.diastolic off a phase object directly:
-    // the post-EVT phase carries systolicLow/systolicHigh and would print "undefined".
-    expect(app).not.toMatch(/BP target: <\$\{[A-Za-z]+\.systolic\}\/\$\{[A-Za-z]+\.diastolic\}/);
-    expect(app).not.toMatch(/SBP <\$\{procBp\.systolic\}/);
   });
 
   it('guards the Protocols ABC/2 widget against millimetre-scale unit errors', () => {

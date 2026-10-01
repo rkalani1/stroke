@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 
 const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-const source = html.slice(html.indexOf('// Runtime errors must not erase storage'), html.indexOf('</script>', html.indexOf('// Runtime errors must not erase storage')));
+const source = html.slice(html.indexOf('window.onerror = function'), html.indexOf('</script>', html.indexOf('window.onerror = function')));
 
 function fixture() {
   const nodes = new Map();

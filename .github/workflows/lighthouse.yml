@@ -122,8 +122,10 @@ jobs:
           };
           const apiIndex = JSON.parse(fs.readFileSync('data/index.json', 'utf8'));
           for (const endpoint of apiIndex.endpoints || []) add(toRel(endpoint));
-          const guidelineIndex = JSON.parse(fs.readFileSync('data/guidelines/index.json', 'utf8'));
-          for (const guideline of guidelineIndex.data || []) add(toRel(guideline.url));
+          for (const endpoint of apiIndex.retiredEndpoints || []) add(toRel(endpoint));
+          const appManifest = JSON.parse(fs.readFileSync('app-assets.json', 'utf8'));
+          add('app-assets.json');
+          for (const asset of appManifest.files) add(asset.path);
           if (process.exitCode) process.exit(process.exitCode);
           for (const artifact of [...artifacts].sort()) console.log(artifact);
           NODE

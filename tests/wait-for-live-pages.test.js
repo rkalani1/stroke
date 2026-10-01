@@ -93,13 +93,12 @@ function collectArtifacts() {
     const rel = toRel(endpoint);
     if (rel) artifacts.add(rel);
   }
-  const guidelineIndex = JSON.parse(
-    readFileSync(join(repoRoot, 'data/guidelines/index.json'), 'utf8')
-  );
-  for (const guideline of guidelineIndex.data || []) {
-    const rel = toRel(guideline.url);
-    if (rel) artifacts.add(rel);
+  for (const endpoint of apiIndex.retiredEndpoints || []) {
+    const rel = toRel(endpoint); if (rel) artifacts.add(rel);
   }
+  artifacts.add('app-assets.json');
+  const manifest = JSON.parse(readFileSync(join(repoRoot, 'app-assets.json'), 'utf8'));
+  for (const file of manifest.files) artifacts.add(file.path);
   return [...artifacts];
 }
 
@@ -185,7 +184,7 @@ describe('live Pages deploy-race guard (behaviour)', () => {
     // The count in the success line must reflect the full advertised set, so a
     // silently-shrunk artifact list cannot masquerade as a passing check.
     const expected = collectArtifacts().length;
-    expect(expected).toBeGreaterThan(100);
+    expect(expected).toBeGreaterThan(11);
     expect(res.stdout).toContain(`(${expected} files)`);
   });
 
@@ -204,6 +203,16 @@ describe('live Pages deploy-race guard (behaviour)', () => {
     expect(res.stderr).toContain(
       'Timed out waiting for live Pages artifact to match this commit: data/index.json'
     );
+  });
+
+  it.each([
+    JSON.parse(readFileSync(join(repoRoot, 'app-assets.json'), 'utf8')).files.find(file => file.path.startsWith('chunks/')).path,
+    JSON.parse(readFileSync(join(repoRoot, 'data/index.json'), 'utf8')).retiredEndpoints[0].slice(PUBLIC_BASE.length),
+  ])('fails closed when a content-addressed module or retirement response lags: %s', async artifact => {
+    overrides = new Map([[artifact, 'stale previous deploy']]);
+    const result = await runScript();
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain(`Timed out waiting for live Pages artifact to match this commit: ${artifact}`);
   });
 
   it('treats an unreachable origin as "not deployed yet", not a crash', async () => {

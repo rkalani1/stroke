@@ -1,13 +1,14 @@
 {
   "_meta": {
     "endpoint": "generic-protocols",
-    "schemaVersion": "1.0.0",
-    "appVersion": "6.30.7",
-    "checksum": "sha256:9ef1eb3adc0054158ac211e72be809e6",
-    "count": 3,
-    "source": "Public protocol reference bundle",
+    "schemaVersion": "2.0.0",
+    "appVersion": "7.0.0",
+    "checksum": "sha256:d0c35b33af164dda1597f486ba9f8914",
+    "count": 4,
+    "source": "Protected public protocol reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
-    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.",
+    "status": "maintained"
   },
   "data": {
     "bpProtocols": {
@@ -141,6 +142,7 @@
         "Document the caller, receiving consultant, closed-loop recipient, and agreed next step."
       ]
     },
-    "safePauseAttestation": "[APPROVED LOCAL ATTESTATION REQUIRED]"
+    "safePauseAttestation": "[APPROVED LOCAL ATTESTATION REQUIRED]",
+    "scope": "Protected public reference context. Agents must not promote institutional instructions into universal automated dosing or treatment."
   }
 }

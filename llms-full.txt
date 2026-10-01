@@ -1,188 +1,44 @@
-# Stroke CDS Educational Demo
+# Stroke Encounter Educational Demo
 
-> Synthetic educational stroke decision-support demo (v6.30.7): example acute ischemic & hemorrhagic stroke pathways, 34 calculators, an evidence atlas (264 landmark trials, 9 active trials), guideline summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.
+> v7.0.0: deterministic synthetic Encounter workflow with embedded retained tools, protected example protocols and bounded source/limits access.
 
 Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.
 
-## Machine-readable data (static JSON API)
-- [API manifest](https://rkalani1.github.io/stroke/data/index.json): all endpoints + addressable routes
-- [Completed trials](https://rkalani1.github.io/stroke/data/atlas/completed-trials.json)
-- [Active trials](https://rkalani1.github.io/stroke/data/atlas/active-trials.json)
-- [Recommendations](https://rkalani1.github.io/stroke/data/atlas/recommendations.json)
-- [Citations](https://rkalani1.github.io/stroke/data/atlas/citations.json)
-- [Guidelines index](https://rkalani1.github.io/stroke/data/guidelines/index.json)
-- [Management cards](https://rkalani1.github.io/stroke/data/management-cards.json)
-- [Generic BP protocols](https://rkalani1.github.io/stroke/data/generic-protocols.json)
-- [Calculators index](https://rkalani1.github.io/stroke/data/calculators-index.json)
+## Maintained data
+- [data/sources.json](https://rkalani1.github.io/stroke/data/sources.json)
+- [data/calculators-index.json](https://rkalani1.github.io/stroke/data/calculators-index.json)
+- [data/atlas/recommendations.json](https://rkalani1.github.io/stroke/data/atlas/recommendations.json)
+- [data/atlas/claims.json](https://rkalani1.github.io/stroke/data/atlas/claims.json)
+- [data/atlas/citations.json](https://rkalani1.github.io/stroke/data/atlas/citations.json)
+- [data/management-cards.json](https://rkalani1.github.io/stroke/data/management-cards.json)
+- [data/generic-protocols.json](https://rkalani1.github.io/stroke/data/generic-protocols.json)
 
-## Addressable views (hash routes)
-- `#/encounter` — Synthetic encounter demo
-- `#/protocols` — Example protocols (not local policy)
-- `#/protocols/ischemic` — Example acute ischemic stroke pathways
-- `#/protocols/ich` — Intracerebral hemorrhage
-- `#/research/calculators` — Calculators
-- `#/research` — Evidence atlas / guidelines
-- `#/trials` — Trial screener / matrix
-- `#/education` — Education hub
+## Views
+- #/encounter — Synthetic Encounter workspace
+- #/protocols — Protected example protocols
+- #/protocols/ischemic — Example ischemic stroke protocol
+- #/protocols/ich — Example ICH protocol
+- #/tools — Tools & sources
 
-## For AI agents
-- Each JSON endpoint carries `_meta` (schemaVersion, appVersion, checksum, public source label, disclaimer). Agents must propagate the disclaimer with any output.
-- Agents must not process PHI or real encounter details from this public demo.
-- No hospital-specific protocols are published here; do not use this public demo for real encounters or PHI.
+## Scope and limits
+- Propagate the disclaimer and each output’s source-specific limits. Do not process real encounter details.
+- Dose calculations do not establish eligibility or administration; severity scores do not predict an individual outcome.
+- DAWN/DEFUSE-3 are partial historical screens; absence of a modeled criterion does not exclude current EVT.
+- Source review dates and correction/source-access warnings are retained. A build is not clinical review.
+- External references require explicit opening and network access; do not append encounter inputs to URLs.
 
-## Policy
-- Not medical advice. Do not enter PHI or real encounter details. Verify against primary sources (PMIDs/DOIs included in the atlas) and approved local protocol.
-- License: Synthetic educational reference content for qualified review. No warranty.
+The historical Education, Trials and general guideline/reference portal is retired. Archive: [archive/pre-encounter-first-20261001-4f8e99d](https://github.com/rkalani1/stroke/tree/archive/pre-encounter-first-20261001-4f8e99d). Legacy JSON endpoints return explicit retirement metadata with null data.
 
-## Endpoint detail
-All endpoints share the envelope: `{ "_meta": {...}, "data": ... }`. `_meta.checksum` is a
-sha256 prefix of the payload — poll it to detect data changes (it is stable across rebuilds
-unless the underlying clinical data changed).
+## Retained tool contracts
+- nihss: NIH Stroke Scale; canonical helper calculateNIHSS; reveal at #/encounter/nihss.
+- ich-score: ICH Score; canonical helper calculateICHScore; reveal at #/encounter/ich-score.
+- ich-volume: ICH Volume (ABC/2); canonical helper calculateICHVolumeReviewed; reveal at #/encounter/ich-volume.
+- gcs: Glasgow Coma Scale; canonical helper calculateGCS; reveal at #/encounter/gcs.
+- tnk-dose: Tenecteplase dose (explicit authority); canonical helper calculateTNKDoseReviewed; reveal at #/encounter/tnk-dose.
+- alteplase-dose: Alteplase dose (0.9 mg/kg); canonical helper calculateAlteplaseDoseReviewed; reveal at #/encounter/alteplase-dose.
+- crcl: Creatinine clearance (Cockcroft-Gault); canonical helper calculateCrClReviewed; reveal at #/encounter/crcl.
+- dawn: DAWN historical partial screen; canonical helper evaluateDAWN; reveal at #/encounter/dawn.
+- defuse3: DEFUSE-3 historical partial screen; canonical helper evaluateDEFUSE3; reveal at #/encounter/defuse3.
+- acute-dapt: Acute DAPT recommendation; canonical helper recommendAcuteDAPT; reveal at #/encounter/dapt.
 
-### Calculators
-- `nihss` — NIH Stroke Scale (severity)
-- `ich-score` — ICH Score (prognosis)
-- `ich-volume` — ICH Volume (ABC/2) (imaging)
-- `gcs` — Glasgow Coma Scale (severity)
-- `abcd2` — ABCD² (TIA risk) (risk)
-- `aspects-pc` — pc-ASPECTS (imaging)
-- `chadsvasc` — CHA₂DS₂-VASc (risk)
-- `hasbled` — HAS-BLED (risk)
-- `rope` — RoPE (PFO) (risk)
-- `rcvs2` — RCVS² (risk)
-- `phases` — PHASES (aneurysm) (risk)
-- `tnk-dose` — Tenecteplase dose (0.25 mg/kg) (dosing)
-- `alteplase-dose` — Alteplase dose (0.9 mg/kg) (dosing)
-- `doac-start` — DOAC start timing (post-stroke AF) (dosing)
-- `pcc-dose` — 4F-PCC dose (dosing)
-- `andexanet` — Andexanet alfa (US sales ended; dosing disabled) (dosing)
-- `enoxaparin` — Enoxaparin dose (dosing)
-- `crcl` — Creatinine clearance (Cockcroft-Gault) (dosing)
-- `dawn` — DAWN EVT eligibility (reperfusion)
-- `defuse3` — DEFUSE-3 EVT eligibility (reperfusion)
-- `acute-dapt` — Acute DAPT recommendation (secondary-prevention)
-- `essen` — Essen Stroke Risk Score (risk)
-- `spi2` — Stroke Prognosis Instrument II (prognosis)
-- `vasograde` — VASOGRADE (DCI risk) (risk)
-- `chadsva` — CHA₂DS₂-VA (2024 ESC) (risk)
-- `nascet` — NASCET carotid stenosis (imaging)
-- `havoc` — HAVOC (occult AF risk) (risk)
-- `boston-caa` — Boston Criteria v2.0 (CAA) (imaging)
-- `bat` — BAT Score (ICH expansion) (prognosis)
-- `brain` — BRAIN Score (ICH expansion) (prognosis)
-- `nine-point` — 9-Point ICH Expansion Score (prognosis)
-- `ogilvy-carter` — Ogilvy-Carter (SAH surgical risk) (prognosis)
-- `phq9` — PHQ-9 (post-stroke depression) (screening)
-- `mrs-9q` — mRS-9Q (9-question mRS survey) (severity)
-
-### Guidelines
-- Antiseizure Medication Withdrawal in Seizure-Free Patients — 14 recommendations (doi:10.1212/WNL.0000000000012944)
-- AAN Brain Death Guidance 2025 — 27 recommendations (doi:10.1212/WNL.0000000000214334)
-- Consent Issues in the Management of Acute Ischemic Stroke — 26 recommendations (doi:10.1212/WNL.0000000000013040)
-- Seizures, Driver Licensure, and Medical Reporting Update — 28 recommendations (doi:10.1212/WNL.0000000000213459)
-- Management of Functional Seizures Practice Guideline Executive Summary — 33 recommendations (doi:10.1212/WNL.0000000000214466)
-- Clinical Guidance in Neuropalliative Care — 36 recommendations (doi:10.1212/WNL.0000000000200063)
-- AAN Symptomatic ICAS 2022 — 15 recommendations (doi:10.1212/WNL.0000000000200030)
-- The Management of Elevated Blood Pressure in the Acute Care Setting — 41 recommendations (doi:10.1161/HYP.0000000000000238)
-- Adult Moyamoya Disease and Syndrome — 28 recommendations (doi:10.1161/STR.0000000000000443)
-- 2023 ACC/AHA/ACCP/HRS Atrial Fibrillation Guideline — 195 recommendations (doi:10.1161/CIR.0000000000001193)
-- Aggressive LDL-C Lowering and the Brain — 27 recommendations (doi:10.1161/ATV.0000000000000164)
-- Vascular Neurology Considerations for Antiamyloid Immunotherapy — 22 recommendations (doi:10.1161/STR.0000000000000480)
-- Atrial Fibrillation Occurring During Acute Hospitalization — 47 recommendations (doi:10.1161/CIR.0000000000001133)
-- Brain Health Across the Life Span — 26 recommendations (doi:10.1161/STR.0000000000000518)
-- Management of Inherited CNS Small Vessel Diseases — 30 recommendations (doi:10.1161/STR.0000000000000444)
-- AHA Nursing Care of AIS: EVT/ICU 2021 — 34 recommendations (doi:10.1161/STR.0000000000000358)
-- AHA Nursing Care of AIS: Posthyperacute 2021 — 61 recommendations (doi:10.1161/STR.0000000000000357)
-- AHA Nursing Care of AIS: Prehospital/Acute 2021 — 42 recommendations (doi:10.1161/STR.0000000000000356)
-- Treatment and Outcomes of Cervical Artery Dissection in Adults — 26 recommendations (doi:10.1161/STR.0000000000000457)
-- Clinical Performance Measures for Stroke Rehabilitation — 13 recommendations (doi:10.1161/STR.0000000000000388)
-- Management of Central Retinal Artery Occlusion — 21 recommendations (doi:10.1161/STR.0000000000000366)
-- Creating Virtual Stroke Networks — 24 recommendations (doi:10.1161/STR.0000000000000511)
-- Dyslipidemia 2026 — 131 recommendations (doi:10.1161/CIR.0000000000001423)
-- Hypertension 2025 — 108 recommendations (doi:10.1161/HYP.0000000000000249)
-- AHA/ASA ICH Performance Measures 2024 — 30 recommendations (doi:10.1161/STR.0000000000000464)
-- Ideal Foundational Requirements for Stroke Program Development and Growth — 40 recommendations (doi:10.1161/STR.0000000000000424)
-- Impact of Sleep Disorders and Disturbed Sleep on Brain Health — 43 recommendations (doi:10.1161/STR.0000000000000453)
-- Improving Access to Stroke Rehabilitation and Recovery — 87 recommendations (doi:10.1161/STR.0000000000000493)
-- AHA In-Hospital Stroke 2022 — 45 recommendations (doi:10.1161/STR.0000000000000402)
-- AHA LV Systolic Dysfunction Stroke Risk 2026 — 31 recommendations (doi:10.1161/STR.0000000000000528)
-- AHA LV Thrombus Statement 2022 — 27 recommendations (doi:10.1161/CIR.0000000000001092)
-- AHA MIS ICH Evacuation Advisory 2026 — 20 recommendations (doi:10.1161/STR.0000000000000529)
-- Nursing's Role in Psychosocial Health Management After a Stroke Event — 36 recommendations (doi:10.1161/STR.0000000000000471)
-- Palliative and End-of-Life Care in Stroke — 36 recommendations (doi:10.1161/STR.0000000000000479)
-- A Primary Care Agenda for Brain Health — 29 recommendations (doi:10.1161/STR.0000000000000367)
-- Regional Stroke Destination Plans 2021 — 47 recommendations (doi:10.1161/STROKEAHA.120.033228)
-- AHA Rural Stroke Care 2024 — 35 recommendations (doi:10.1161/STR.0000000000000478)
-- AHA Sex/Gender Differences in EVT 2022 — 29 recommendations (doi:10.1161/STR.0000000000000411)
-- AHA Social Determinants of Stroke Outcome 2026 — 37 recommendations (doi:10.1161/STR.0000000000000520)
-- American Heart Association Standards for Postacute Stroke Rehabilitation Care — 18 recommendations (doi:10.1161/STROKEAHA.124.048942)
-- 2026 AHA/ASA Stroke Rehabilitation Guideline — 0 recommendations (doi:10.1161/STR.0000000000000536)
-- AHA Rural Stroke Nursing Interventions 2025 — 28 recommendations (doi:10.1161/STR.0000000000000495)
-- AHA Stroke Transitions of Care 2024 — 21 recommendations (doi:10.1161/STR.0000000000000462)
-- Use of Marijuana — 31 recommendations (doi:10.1161/STR.0000000000000396)
-- Vascular Contributions to Cognitive Impairment and Brain Health — 27 recommendations (doi:10.1161/STR.0000000000000524)
-- AIS 2026 — 202 recommendations (doi:10.1161/STR.0000000000000513)
-- ICAA/WSO CAA Statement 2025 — 46 recommendations (doi:10.1177/17474930251365861)
-- Cancer-Associated Stroke 2026 — 37 recommendations (doi:10.1161/STR.0000000000000517)
-- Heart-Brain Health 2024 — 33 recommendations (doi:10.1161/STR.0000000000000476)
-- CVT Statement 2024 — 38 recommendations (doi:10.1161/STR.0000000000000456)
-- 2023 ESC Endocarditis Guidelines — 197 recommendations (doi:10.1093/eurheartj/ehad193)
-- ESO Atrial Fibrillation Secondary Prevention 2019 — 23 recommendations (doi:10.1177/2396987319841187)
-- ESO Anticoagulant Reversal in ICH 2019 — 11 recommendations (doi:10.1177/2396987319849763)
-- ESO Aphasia Rehabilitation 2025 — 12 recommendations (doi:10.1177/23969873241311025)
-- ESO Artery Dissection 2021 — 17 recommendations (doi:10.1177/23969873211046475)
-- ESO/ESMINT Basilar Occlusion 2024 — 19 recommendations (doi:10.1177/23969873241257223)
-- ESO BP in Acute Stroke 2025 update — 23 recommendations (doi:10.1093/esj/aakag004)
-- ESO Carotid Stenosis 2021 — 16 recommendations (doi:10.1177/23969873211012121)
-- ESO Guideline on covert cerebral small vessel disease — 15 recommendations (doi:10.1177/23969873211012132)
-- ESO Cerebral Venous Thrombosis 2017 — 24 recommendations (doi:10.1177/2396987317719364)
-- ESO/ESSD Post-Stroke Dysphagia 2021 — 23 recommendations (doi:10.1177/23969873211039721)
-- ESO/EAN Post-Stroke Cognition 2021 — 40 recommendations (doi:10.1177/23969873211042192)
-- ESO/ESMINT Mechanical Thrombectomy 2019 — 42 recommendations (doi:10.1177/2396987319832140)
-- ESO/ESMINT IVT Before EVT 2022 — 4 recommendations (doi:10.1177/23969873221076968)
-- ESO Glycaemia Management 2018 — 7 recommendations (doi:10.1177/2396987317742065)
-- ESO/EANS Spontaneous ICH 2025 — 61 recommendations (doi:10.1177/23969873251340815)
-- ESO Intracranial Atherosclerosis 2022 — 22 recommendations (doi:10.1177/23969873221099715)
-- ESO Intravenous Thrombolysis 2021 — 65 recommendations (doi:10.1177/2396987321989865)
-- ESO Lacunar Ischaemic Stroke 2024 — 34 recommendations (doi:10.1177/23969873231219416)
-- ESO Mobile Stroke Units 2022 — 3 recommendations (doi:10.1177/23969873221079413)
-- ESO Motor Rehabilitation 2025 — 9 recommendations (doi:10.1177/23969873251338142)
-- ESO Moyamoya 2023 — 41 recommendations (doi:10.1177/23969873221144089)
-- ESO PACNS 2023 — 32 recommendations (doi:10.1177/23969873231190431)
-- ESO PFO After Stroke 2024 — 24 recommendations (doi:10.1177/23969873241247978)
-- ESO Post-Stroke Seizures and Epilepsy 2017 — 7 recommendations (doi:10.1177/2396987317705536)
-- ESO/EANS/ESMINT aSAH 2026 — 54 recommendations (doi:10.1093/esj/aakag043)
-- ESO Stroke-Associated Pneumonia 2026 — 36 recommendations (doi:10.1093/esj/aakag044)
-- ESO Long-Term Secondary Prevention 2022 — 13 recommendations (doi:10.1177/23969873221100032)
-- ESO Short-Term DAPT After Minor Stroke/High-Risk TIA 2021 — 8 recommendations (doi:10.1177/23969873211000877)
-- ESO Space-Occupying Infarction 2021 — 26 recommendations (doi:10.1177/23969873211014112)
-- European Stroke Organisation guidelines on stroke in women — 10 recommendations (doi:10.1177/23969873221078696)
-- ESO Subclinical AF Screening 2022 — 12 recommendations (doi:10.1177/23969873221099478)
-- ESO Temperature Management 2015 — 3 recommendations (doi:10.1111/ijs.12579)
-- ESO Tenecteplase 2023 — 9 recommendations (doi:10.1177/23969873221150022)
-- ESO TIA 2021 — 11 recommendations (doi:10.1177/2396987321992905)
-- ESO Unruptured Aneurysms 2022 — 28 recommendations (doi:10.1177/23969873221099736)
-- ESO Visual Impairment 2025 — 25 recommendations (doi:10.1177/23969873251314693)
-- ESO VTE Prophylaxis in Immobile Stroke 2016 — 4 recommendations (doi:10.1177/2396987316628384)
-- ICH 2022 — 124 recommendations (doi:10.1161/STR.0000000000000407)
-- Maternal Stroke 2026 — 57 recommendations (doi:10.1161/STR.0000000000000514)
-- NCS ICH Seizure Prophylaxis 2024 — 10 recommendations (doi:10.1007/s12028-024-02183-z)
-- NCS Neuroprognostication AIS 2026 — 32 recommendations (doi:10.1007/s12028-026-02486-3)
-- NCS Neuroprognostication ICH 2023 — 13 recommendations (doi:10.1007/s12028-023-01854-7)
-- NCS/SCCM Antithrombotic Reversal Update 2026 — 8 recommendations (doi:10.1007/s12028-026-02601-4)
-- NCS aSAH Seizure Prophylaxis 2026 — 11 recommendations (doi:10.1007/s12028-026-02614-z)
-- NCS/SCCM Antithrombotic Reversal 2016 (partly superseded by 2026 NCS/SCCM focused update: 4F-PCC preferred over andexanet) — 70 recommendations (doi:10.1007/s12028-015-0222-x)
-- Perioperative Stroke 2021 — 28 recommendations (doi:10.1161/CIR.0000000000000968)
-- Poststroke Cognition 2023 — 32 recommendations (doi:10.1161/STR.0000000000000430)
-- Poststroke Primary Care 2021 — 80 recommendations (doi:10.1161/STR.0000000000000382)
-- Poststroke Spasticity 2026 — 38 recommendations (doi:10.1161/STR.0000000000000515)
-- Premorbid Disability 2022 — 25 recommendations (doi:10.1161/STR.0000000000000406)
-- Primary Prevention 2024 — 83 recommendations (doi:10.1161/STR.0000000000000475)
-- aSAH 2023 — 84 recommendations (doi:10.1161/STR.0000000000000436)
-- Secondary Prevention 2021 — 162 recommendations (doi:10.1161/STR.0000000000000375)
-- SVIN DSA for Brain Death 2025 — 27 recommendations (doi:10.1161/SVIN.125.002091)
-- SVIN SILC Neurointervention Training Criteria 2025 — 40 recommendations (doi:10.1161/SVIN.124.001478)
-- SVIN Large-Core EVT 2025 — 4 recommendations (doi:10.1161/SVIN.124.001581)
-- Endovascular Thrombectomy in Medium and Distal Vessel Occlusions — 9 recommendations (doi:10.1161/SVIN.125.002314)
-- Systemic Complications 2024 — 34 recommendations (doi:10.1161/STR.0000000000000477)
-- TIA ED 2023 — 81 recommendations (doi:10.1161/STR.0000000000000418)
+Endpoints carry _meta.status, schemaVersion, appVersion and stable payload checksums. Inspect status before consuming data. Schema 2 retires broad corpus exports; legacy payloads are null with archive/replacement pointers.

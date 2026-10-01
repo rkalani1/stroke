@@ -42,6 +42,28 @@ describe('bounded clinical claim trace', () => {
     expect(recommendation.caveats.join(' ')).toContain('0.40 mg/kg');
     expect(recommendation.lastReviewed).toBe('2026-09-26');
   });
+  it('retains explicit archival fingerprints for retired occurrences', () => {
+    const f = fixture();
+    f.inventory.retirement = { archiveRef: 'archive/baseline' };
+    f.inventory.retiredOccurrences = [{ id: 'retired-dose', excerpt: 'Original statement', sha256: sha256('Original statement'), archiveRef: 'archive/baseline', retirementReason: 'Teaching surface retired.' }];
+    expect(checkClinicalClaims(f).ok).toBe(true);
+    f.inventory.retiredOccurrences[0].excerpt = 'Silently rewritten archive statement';
+    expect(checkClinicalClaims(f).findings.some(item => item.code === 'changed-retired-occurrence')).toBe(true);
+  });
+  it('rejects a retirement that drops its archive pointer or reason', () => {
+    const f = fixture();
+    f.inventory.retiredExports = [{ file: 'retired.pdf', sha256: sha256('Old PDF') }];
+    expect(checkClinicalClaims(f).findings.some(item => item.code === 'invalid-retirement-trace')).toBe(true);
+  });
+  it('keeps every maintained source projection fingerprint guarded', () => {
+    const f = fixture();
+    f.inventory.retirement = { archiveRef: 'archive/baseline' };
+    f.inventory.sourceProjectionReceipt = 'projection.json';
+    f.files['projection.json'] = JSON.stringify({ projections: [{ file: 'source.json', originalSha256: sha256('baseline source'), maintainedSha256: sha256('source'), archiveRef: 'archive/baseline', reason: 'Verbatim selected source records.' }] });
+    expect(checkClinicalClaims(f).ok).toBe(true);
+    f.files['source.json'] = 'Changed retained source';
+    expect(checkClinicalClaims(f).findings.some(item => item.code === 'changed-maintained-projection')).toBe(true);
+  });
   it('flags every mapped use when the canonical statement changes', () => {
     const f = fixture();
     f.claims[0].text = 'Changed regimen';

@@ -36,7 +36,8 @@ const args = new Set(process.argv.slice(2));
 const strict = args.has('--strict');
 const checkIdentifiers = args.has('--check-identifiers');
 
-const FILE_PATTERNS = ['src', 'scripts', 'docs', 'tests'];
+// Current authoring sources only; retired historical audits are not maintained content.
+const FILE_PATTERNS = ['src'];
 const FILE_EXTENSIONS = new Set(['.js', '.jsx', '.mjs', '.ts', '.tsx', '.md']);
 const EXCLUDE_DIRS = new Set(['node_modules', '.git', 'dist', 'output', 'android', 'ios']);
 

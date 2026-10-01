@@ -6,9 +6,9 @@
    Old app caches are retired only on activation. Fetch policy is independent.
 */
 
-const APP_VERSION = '6.30.7';
+const APP_VERSION = '7.0.0';
 const CACHE_PREFIX = 'stroke-cache-v';
-const CACHE_NAME  = 'stroke-cache-v6-30-7-utility-refinement-20261001';
+const CACHE_NAME  = 'stroke-cache-v7-0-0-encounter-first-20261001';
 
 // Retired teaching figures must not be served from a stale browser cache or
 // a bookmarked URL after this worker takes control. Paths are scope-relative
@@ -37,18 +37,17 @@ const WITHDRAWN_ASSETS = [
   '/documents/antiplatelet/DAPT After Ischemic Stroke-TIA.jpeg'
 ];
 
+const RETIRED_PREFIXES = ['documents/', 'content/', 'src/', 'output/'];
+const isRetiredPath = url => {
+  const base = new URL(self.registration.scope);
+  if (url.origin !== base.origin || !url.pathname.startsWith(base.pathname)) return false;
+  let relative; try { relative = decodeURIComponent(url.pathname.slice(base.pathname.length)); } catch { return false; }
+  return (relative.startsWith('assets/') && !relative.startsWith('assets/fonts/') && !relative.startsWith('assets/splash/')) || RETIRED_PREFIXES.some(prefix => relative.startsWith(prefix)) || WITHDRAWN_ASSETS.some(path => relative === path.slice(1));
+};
+
 const CORE_ASSETS = [
-  // Install-time precache: the app shell and everything the app itself reads.
-  //
-  // Deliberately NOT here, because the fetch handler below already caches
-  // same-origin assets cache-first on first request:
-  //   - data/*.json — the machine-readable agent/llms.txt API. Nothing in
-  //     src/ ever fetches it (the app compiles its guideline JSON into the
-  //     bundle), so precaching it made every first-time visitor download
-  //     ~929 KB of a second copy of the guideline data they already had.
-  //   - the large infographic PNGs — ~3.6 MB, lazy-loaded at runtime and
-  //     opened by a minority of visitors. They cache on first view instead.
-  // Both stay fully available offline once actually visited.
+  // Install-time complete retained shell/module graph. Agent-only data is
+  // not requested by the core. Teaching assets are explicitly retired.
   './',
   './index.html',
   './manifest.json',
@@ -57,7 +56,6 @@ const CORE_ASSETS = [
   './app.js',
   './tailwind.css',
   './offline.html',
-  './config.example.json',
   './assets/fonts/bricolage-400.woff2',
   './assets/fonts/bricolage-500.woff2',
   './assets/fonts/bricolage-600.woff2',
@@ -92,20 +90,8 @@ const CDN_ASSETS = [];
 // not execute the deferred Education, Guidelines, trial or search modules.
 // BEGIN GENERATED APP CHUNKS
 const APP_CHUNKS = [
-  "./chunks/chunk-C5XJQ7C4.js",
-  "./chunks/chunk-DF3BHIJK.js",
-  "./chunks/chunk-I52U4GRJ.js",
-  "./chunks/chunk-IZUYVIPG.js",
-  "./chunks/chunk-JE3YJTWB.js",
-  "./chunks/chunk-P43AE5U6.js",
-  "./chunks/chunk-RCTS46XC.js",
-  "./chunks/chunk-WUBJWKVG.js",
-  "./chunks/deferred-reference-data-Y5YBGYFC.js",
-  "./chunks/education-BMA5BB32.js",
-  "./chunks/EligibilityTables-X6TRGNWK.js",
-  "./chunks/sw-controller-NJX7VE5V.js",
-  "./chunks/teaching-6YGZPLVU.js",
-  "./chunks/TrialScreener-LJZC6KII.js"
+  "./chunks/chunk-AAACGAWZ.js",
+  "./chunks/ProtectedProtocols-7XC4JVOS.js"
 ];
 // END GENERATED APP CHUNKS
 
@@ -127,7 +113,7 @@ async function purgeWithdrawnCacheEntries() {
         url = new URL(request.url);
         pathname = decodeURIComponent(url.pathname);
       } catch (_) { return; }
-      if (url.origin === self.location.origin && retiredPaths.has(pathname)) return cache.delete(request);
+      if (url.origin === self.location.origin && (retiredPaths.has(pathname) || isRetiredPath(url))) return cache.delete(request);
     }));
   }
 }
@@ -228,7 +214,7 @@ const isVersionedShell = url => {
 };
 
 const offlineUnavailable = () => new Response(
-  'This resource is not available offline. Reconnect and open the current library.',
+  'This resource is not available offline. Reconnect and open the current workspace.',
   { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } }
 );
 
@@ -313,9 +299,9 @@ self.addEventListener('fetch', (event) => {
   if (url.origin === self.location.origin) {
     let pathname = url.pathname;
     try { pathname = decodeURIComponent(pathname); } catch { /* malformed paths are left to the server */ }
-    if (WITHDRAWN_ASSETS.some(path => pathname.endsWith(path))) {
+    if (isRetiredPath(url)) {
       event.respondWith(Promise.resolve(new Response(
-        'This teaching resource has been withdrawn. Open the current Stroke education library for the revised material.',
+        'This teaching resource has been withdrawn. Open the current Encounter workspace.',
         { status: 410, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' } }
       )));
       return;

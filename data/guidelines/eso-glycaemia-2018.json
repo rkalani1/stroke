@@ -1,79 +1,22 @@
 {
-  "id": "eso-glycaemia-2018",
-  "title": "European Stroke Organisation (ESO) guidelines on glycaemia management in acute stroke",
-  "shortTitle": "ESO Glycaemia Management 2018",
-  "society": "ESO",
-  "doi": "10.1177/2396987317742065",
-  "publisherUrl": "https://doi.org/10.1177/2396987317742065",
-  "pdfUrl": null,
-  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/31008333/",
-  "pmid": "31008333",
-  "recommendations": [
-    {
-      "section": "Ischemic stroke (PICO 1-5) - Recommendation",
-      "classOfRec": "Conditional",
-      "classNote": "Against",
-      "levelOfEvidence": "Low certainty",
-      "text": "In patients with acute IS, we suggest against the routine use of IV insulin to achieve a tight glycaemic control as a means to improve functional outcome, survival or infarct growth. (Quality of evidence: Low; Strength of recommendation: Weak.)",
-      "page": null
-    },
-    {
-      "section": "Ischemic stroke - Additional comments for clinical practice",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For",
-      "levelOfEvidence": "Ungraded",
-      "text": "Additional comment for clinical practice (not a GRADE-graded recommendation): taking into account the clear risk of functional dependence and mortality associated with hyperglycaemia, the lack of evidence of any benefit of tight glucose reduction with IV insulin (due to the poor quality of the clinical trials developed to date) does not prevent that ischaemic stroke patients with hyperglycaemia could be treated as any other in-hospitalised patient with hyperglycaemia aiming at standard glycaemic control.",
-      "page": null
-    },
-    {
-      "section": "Ischemic stroke - Additional comments for clinical practice",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For",
-      "levelOfEvidence": "Ungraded",
-      "text": "Additional comment for clinical practice (citing external expert-based recommendations, not GRADE-graded here): expert-based recommendations suggest as the preferable approach for hyperglycaemia management in critically ill patients like acute stroke the use of IV insulin therapy titrated to achieve a target glucose level between 7.8 and 10.0 mmol/L, avoiding more intensive targets that can result in a higher risk of hypoglycaemia.",
-      "page": null
-    },
-    {
-      "section": "Ischemic stroke - Additional comments for clinical practice",
-      "classOfRec": "Expert Consensus",
-      "classNote": "Against",
-      "levelOfEvidence": "Ungraded",
-      "text": "Additional comment for clinical practice (citing external expert-based recommendations, not GRADE-graded here): there is a general recommendation against the use of SC sliding-scale insulin, or the so-called correction insulin based on the use of rapid-acting insulin, in critically ill patients as the sole regimen, as it is not evidence based and ineffective in the majority of patients. Non-insulin agents are also considered inappropriate in most hospitalised patients.",
-      "page": null
-    },
-    {
-      "section": "Ischemic stroke - Additional comments for clinical practice",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For",
-      "levelOfEvidence": "Ungraded",
-      "text": "Additional comment for clinical practice (citing external expert-based recommendations, not GRADE-graded here): after the acute phase of stroke when the patient is considered to be clinically stable, basal insulin or a basal plus bolus correction insulin regimen is the preferred treatment for patients with poor oral intake, whilst basal, nutritional and correction components is the preferred strategy for non critically ill patients with good nutritional intake.",
-      "page": null
-    },
-    {
-      "section": "Haemorrhagic stroke (PICO 6-10) - Recommendation",
-      "classOfRec": "Conditional",
-      "classNote": "Against",
-      "levelOfEvidence": "Very low certainty",
-      "text": "In patients with acute haemorrhagic stroke, we suggest against the routine use of IV insulin to achieve a tight glycaemic control as a means to improve functional outcome or survival. (Quality of evidence: Very low; Strength of recommendation: Weak.)",
-      "page": null
-    },
-    {
-      "section": "Haemorrhagic stroke - Additional comments for clinical practice",
-      "classOfRec": "Expert Consensus",
-      "classNote": "For",
-      "levelOfEvidence": "Ungraded",
-      "text": "Additional comment for clinical practice (not a GRADE-graded recommendation): the lack of evidence of any benefit of tight control IV insulin on functional outcome or survival, and the high risk of hypoglycaemic events that this specific treatment carries, does not prevent that haemorrhagic stroke patients with hyperglycaemia could be treated as any other in-hospitalised patient with hyperglycaemia.",
-      "page": null
-    }
-  ],
-  "documentType": "guideline",
-  "gradingSystem": "GRADE",
-  "sourceReview": {
-    "reviewedAt": "2026-09-30",
-    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-    "sourceAccess": "primary full text retrieved and reviewed",
-    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
-    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
-    "implementationUpdatedAt": "2026-09-30"
+  "_meta": {
+    "endpoint": "data/guidelines/eso-glycaemia-2018.json",
+    "schemaVersion": "2.0.0",
+    "appVersion": "7.0.0",
+    "checksum": "sha256:74234e98afe7498fb5daf1f36ac2d78a",
+    "count": 0,
+    "source": "Retired historical portal endpoint",
+    "license": "Synthetic educational reference content for qualified review. No warranty.",
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.",
+    "status": "retired"
+  },
+  "data": null,
+  "retirement": {
+    "status": "retired",
+    "reason": "The broad reference, trial and teaching portal is retired from the maintained product.",
+    "replacement": "https://rkalani1.github.io/stroke/data/sources.json",
+    "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+    "archiveUrl": "https://github.com/rkalani1/stroke/tree/archive/pre-encounter-first-20261001-4f8e99d",
+    "compatibility": "HTTP transport may return 200 on static Pages; clients must inspect _meta.status. The data payload is null and is not a current clinical corpus."
   }
 }

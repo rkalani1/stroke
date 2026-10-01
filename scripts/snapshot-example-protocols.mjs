@@ -1,9 +1,9 @@
 // Example Protocols content lock.
 //
-// The Protocols tabs plus the relocated Guidelines & References calculators
-// carry a HARD constraint on their clinical text, values, thresholds, algorithms,
+// The retained ICH/ischemic Protocols tabs carry a HARD constraint on their
+// clinical text, values, thresholds, algorithms,
 // and wording must not change during refactoring. This script renders the built
-// app (app.js at repo root — the same artifact GitHub Pages serves), extracts
+// app (app.js at repo root — the candidate artifact for GitHub Pages), extracts
 // every visible text node under #tabpanel-protocols for each subtab, and
 // compares the normalized corpus against checked-in baselines in
 // tests/snapshots/example-protocols/.
@@ -28,7 +28,9 @@ import { chromium } from 'playwright';
 
 const PORT = 4185;
 const BASE_URL = `http://127.0.0.1:${PORT}/`;
-const SUBTABS = ['ich', 'ischemic', 'calculators'];
+// The former general calculator directory is retired. Its unchanged baseline
+// remains in Git history/fixtures; embedded tools have independent regression tests.
+const SUBTABS = ['ich', 'ischemic'];
 const SNAPSHOT_DIR = path.join(process.cwd(), 'tests', 'snapshots', 'example-protocols');
 const update = process.argv.includes('--update');
 

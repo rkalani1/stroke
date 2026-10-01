@@ -20,18 +20,9 @@ const readJson = (rel) => JSON.parse(read(rel));
 
 // Public clinical-content surfaces this guard protects.
 const CONTENT_FILES = [
-  'src/management-guidance.js',
-  'src/institutional-protocols.js',
-  'src/calculators-extended.js',
-  'src/app.jsx',
-  'app.js',
-  'src/evidence/screenerTrials.json',
-  'src/evidence/eligibilityTables.js',
-  'src/evidence/recommendations.js',
-  'src/guidelines/ich-2022.json',
-  'data/atlas/recommendations.json',
-  'data/generic-protocols.json',
-  'data/guidelines/ich-2022.json'
+  'src/management-guidance.js', 'src/institutional-protocols.js', 'src/calculators-extended.js',
+  'src/ProtectedProtocols.jsx', 'src/Encounter.jsx', 'src/app.jsx', 'app.js',
+  'src/evidence/recommendations.js', 'data/generic-protocols.json'
 ];
 const texts = Object.fromEntries(CONTENT_FILES.map((f) => [f, read(f)]));
 const linesOf = Object.fromEntries(CONTENT_FILES.map((f) => [f, texts[f].split('\n')]));
@@ -111,26 +102,26 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
       expect(texts[f]).not.toMatch(/Life-threatening or significant mass effect|pupillometry/i);
     }
 
-    expect(texts['src/app.jsx']).toMatch(/ED clinicians or the stroke service may call Neurosurgery directly; prior approval is not required/i);
-    expect(texts['src/app.jsx']).toMatch(/plan must be closed-looped with the designated on-call stroke attending and other involved service/i);
-    expect(texts['src/app.jsx']).toMatch(/Cerebellar ICH with mass effect/);
+    expect(texts['src/ProtectedProtocols.jsx']).toMatch(/ED clinicians or the stroke service may call Neurosurgery directly; prior approval is not required/i);
+    expect(texts['src/ProtectedProtocols.jsx']).toMatch(/plan must be closed-looped with the designated on-call stroke attending and other involved service/i);
+    expect(texts['src/ProtectedProtocols.jsx']).toMatch(/Cerebellar ICH with mass effect/);
 
     // The accepted institutional source does not state a separate negative policy
     // about attending-of-record notification, so that invented operational claim
     // must not appear anywhere in the source application.
-    expect(texts['src/app.jsx']).not.toMatch(/attending-of-record notification is not default/i);
+    expect(texts['src/ProtectedProtocols.jsx']).not.toMatch(/attending-of-record notification is not default/i);
 
     const obsoleteHits = offendingLines(
       /Neurology\/stroke attending should approve neurosurgery consultations|discusses with stroke attending before consulting neurosurgery|prior approval is required|dual-consult|immediate evacuation \+\/- EVD/i,
-      { files: ['src/app.jsx', 'src/institutional-protocols.js', 'data/generic-protocols.json'] }
+      { files: ['src/ProtectedProtocols.jsx', 'src/institutional-protocols.js', 'data/generic-protocols.json'] }
     );
     expect(obsoleteHits, `Obsolete neurosurgery wording found:\n${obsoleteHits.join('\n')}`).toEqual([]);
   });
 
   it('keeps the institutional MIE screen complete without the old ENRICH-based heading', () => {
-    expect(texts['src/app.jsx']).toMatch(/June 2026 Institutional MIE Screen/);
-    expect(texts['src/app.jsx']).not.toMatch(/June 2026 MIE Screen \(ENRICH-Based\)/);
-    expect(texts['src/app.jsx']).toMatch(/GCS 5-14/);
+    expect(texts['src/ProtectedProtocols.jsx']).toMatch(/June 2026 Institutional MIE Screen/);
+    expect(texts['src/ProtectedProtocols.jsx']).not.toMatch(/June 2026 MIE Screen \(ENRICH-Based\)/);
+    expect(texts['src/ProtectedProtocols.jsx']).toMatch(/GCS 5-14/);
     expect(texts['src/institutional-protocols.js']).toMatch(/GCS 5-14/);
     expect(texts['data/generic-protocols.json']).toMatch(/GCS 5-14/);
 
@@ -141,22 +132,22 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
       ...offendingLines(/MIE[^\n]{0,240}GCS 5-12/i),
       ...offendingLines(/GCS 5-12[^\n]{0,240}MIE/i),
       ...offendingLines(/Surgical Selection[^\n]{0,400}GCS 5-12/i),
-      ...offendingLines(/Pre-morbid mRS 0-1/i, { files: ['src/app.jsx', 'app.js'] }),
-      ...offendingLines(/Premorbid mRS 0-1[^\n]{0,240}(MIE|ENRICH)/i, { files: ['src/app.jsx', 'app.js'] }),
-      ...offendingLines(/(MIE|ENRICH)[^\n]{0,240}Premorbid mRS 0-1/i, { files: ['src/app.jsx', 'app.js'] }),
-      ...offendingLines(/(≤|<=)24 hours of symptom onset/i, { files: ['src/app.jsx', 'app.js'] }),
-      ...offendingLines(/24-72h after onset/i, { files: ['src/app.jsx', 'app.js'] }),
+      ...offendingLines(/Pre-morbid mRS 0-1/i, { files: ['src/ProtectedProtocols.jsx', 'app.js'] }),
+      ...offendingLines(/Premorbid mRS 0-1[^\n]{0,240}(MIE|ENRICH)/i, { files: ['src/ProtectedProtocols.jsx', 'app.js'] }),
+      ...offendingLines(/(MIE|ENRICH)[^\n]{0,240}Premorbid mRS 0-1/i, { files: ['src/ProtectedProtocols.jsx', 'app.js'] }),
+      ...offendingLines(/(≤|<=)24 hours of symptom onset/i, { files: ['src/ProtectedProtocols.jsx', 'app.js'] }),
+      ...offendingLines(/24-72h after onset/i, { files: ['src/ProtectedProtocols.jsx', 'app.js'] }),
       ...offendingLines(/mRS 0-1[^\n]{0,160}ENRICH/i),
       ...offendingLines(/ENRICH[^\n]{0,160}mRS 0-1/i),
-      ...offendingLines(/ENRICH[^\n]{0,240}(≤|<=)\s*24\s*(h|hours?)/i, { files: ['src/app.jsx', 'app.js'] }),
-      ...offendingLines(/ENRICH[^\n]{0,240}20-50\s*mL/i, { files: ['src/app.jsx', 'app.js'] }),
-      ...offendingLines(/20-50\s*mL[^\n]{0,240}ENRICH/i, { files: ['src/app.jsx', 'app.js'] })
+      ...offendingLines(/ENRICH[^\n]{0,240}(≤|<=)\s*24\s*(h|hours?)/i, { files: ['src/ProtectedProtocols.jsx', 'app.js'] }),
+      ...offendingLines(/ENRICH[^\n]{0,240}20-50\s*mL/i, { files: ['src/ProtectedProtocols.jsx', 'app.js'] }),
+      ...offendingLines(/20-50\s*mL[^\n]{0,240}ENRICH/i, { files: ['src/ProtectedProtocols.jsx', 'app.js'] })
     ];
     expect(hits, `Obsolete ENRICH/MIE criterion found:\n${hits.join('\n')}`).toEqual([]);
   });
 
   it('keeps institutional ICH BP branches source-specific and free of literature grades', () => {
-    const app = texts['src/app.jsx'];
+    const app = texts['src/ProtectedProtocols.jsx'];
     expect(app).toMatch(/Presenting SBP 150-219:[\s\S]{0,80}target 140 and maintain 130-150/);
     expect(app).toMatch(/Presenting SBP (?:&ge;|≥)220:[\s\S]{0,120}reduce (?:by )?about 20%[\s\S]{0,100}never more than 25%[\s\S]{0,100}gradually reduce to 140-160/);
     expect(app).toMatch(/Presenting SBP (?:&lt;|<)150:[\s\S]{0,80}do not actively lower to 140/);
@@ -194,33 +185,6 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(JSON.stringify(genericMinute)).not.toMatch(/>=15 mL|or close|Pre-ICH mRS|GCS\s*</i);
   });
 
-  it('preserves verified MIRROR registry criteria without inventing a GCS threshold', () => {
-    // NCT04494295, checked 2026-09-06: >20 mL, NIHSS >5, baseline mRS <=2.
-    // Scope these assertions to the public trial profile; local Protocols criteria remain separate.
-    for (const file of ['src/app.jsx', 'app.js']) {
-      const start = texts[file].indexOf('MIRROR Registry');
-      const end = texts[file].indexOf('MR-PICS Study', start);
-      expect(start, `${file}: MIRROR trial profile exists`).toBeGreaterThanOrEqual(0);
-      expect(end, `${file}: MIRROR trial profile boundary exists`).toBeGreaterThan(start);
-      const profile = texts[file].slice(start, end)
-        .replace(/\\u([0-9a-f]{4})/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
-      expect(profile).toContain('NCT04494295');
-      expect(profile).toContain('Registry checked 2026-09-06');
-      expect(profile).toContain('Age >18');
-      expect(profile).toContain('ICH >20 mL');
-      expect(profile).toContain('NIHSS >5; baseline mRS ≤2');
-      expect(profile).toContain('within 24 hours of last known well');
-      expect(profile).toContain('full protocol and local review required');
-      expect(profile).not.toMatch(/GCS\s*(?:≥|>=|>|:|range)|5-15|9-15/);
-      expect(profile).not.toMatch(/Premorbid mRS 0-1|Volume threshold is version-sensitive/);
-    }
-    expect(texts['src/institutional-protocols.js']).not.toMatch(/Premorbid mRS 0-1/);
-    expect(texts['data/generic-protocols.json']).not.toMatch(/Premorbid mRS 0-1/);
-    expect(texts['app.js']).not.toMatch(/Premorbid mRS 0-1/);
-    expect(texts['src/institutional-protocols.js']).not.toMatch(/Baseline GCS:?\s*5-15/);
-    expect(texts['data/generic-protocols.json']).not.toMatch(/Baseline GCS:?\s*5-15/);
-    expect(texts['app.js']).not.toMatch(/Baseline GCS:?\s*5-15/);
-  });
 
   it('does not publish private service-line sentinels on public surfaces', () => {
     const privateServiceLine = new RegExp(`\\b${sentinel('PRIVATE', 'SERVICE', 'LINE', 'SENTINEL')}\\b`, 'i');
@@ -228,21 +192,19 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(hits, `Private service-line sentinel found:\n${hits.join('\n')}`).toEqual([]);
   });
 
-  it('keeps the visible service-worker update banner on the claim-and-reload path', () => {
-    expect(texts['src/app.jsx']).toMatch(/sw\.acceptUpdate\(pendingWorker\)/);
-    expect(read('src/design/sw-controller.js')).toMatch(/postMessage\(\{ type: 'CLAIM_AND_RELOAD' \}\)/);
-    expect(texts['src/app.jsx']).toMatch(/setPendingUpdateAction\(\(\) => \(\) =>/);
-    expect(texts['src/app.jsx']).toMatch(/setUpdateAvailable\(true\)/);
-    expect(texts['src/app.jsx']).toMatch(/sw\.acceptUpdate\(\)\.catch\(\(\) => addToast/);
-    expect(read('src/design/sw-controller.js')).toContain('if (!updateAccepted || reloading) return;');
-    expect(texts['src/app.jsx']).toMatch(/pendingUpdateAction\(\)/);
-    const staleUpdateHits = offendingLines(/postMessage\(\{ type: 'SKIP_WAITING' \}\)/, { files: ['src/app.jsx', 'app.js'] });
-    expect(staleUpdateHits, `Visible update banner still posts stale service-worker message:\n${staleUpdateHits.join('\n')}`).toEqual([]);
-    const serviceWorker = read('service-worker.js');
-    expect(serviceWorker).toMatch(/includeUncontrolled:\s*true/);
-    expect(serviceWorker).toMatch(/clients\.claim\(\)/);
-    expect(serviceWorker).toMatch(/sw-claimed-reload/);
-    expect(serviceWorker).toMatch(/event\.data\.type === 'CLAIM_AND_RELOAD' \|\| event\.data\.type === 'SKIP_WAITING'/);
+  it('keeps service-worker updates explicit on the claim-and-reload path', () => {
+    const shell = read('src/app.jsx');
+    const controller = read('src/design/sw-controller.js');
+    expect(shell).toMatch(/onClick=\{\(\) => acceptUpdate\(\)/);
+    expect(shell).toContain('Reload to update');
+    expect(shell).toContain('Later');
+    expect(controller).toMatch(/postMessage\(\{ type: 'CLAIM_AND_RELOAD' \}\)/);
+    expect(controller).toContain('if (!updateAccepted || reloading) return;');
+    expect(shell).not.toContain("postMessage({ type: 'SKIP_WAITING' })");
+    const worker = read('service-worker.js');
+    expect(worker).toMatch(/includeUncontrolled:\s*true/);
+    expect(worker).toMatch(/clients\.claim\(\)/);
+    expect(worker).toMatch(/sw-claimed-reload/);
   });
 
   it('keeps MINUTE priority over MIRROR in the reusable ICH algorithm export', () => {
@@ -271,42 +233,7 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     }
   });
 
-  it('locks in the 2026-07-06 evidence refresh (new trials present + PubMed-verified)', () => {
-    const trials = readJson('data/atlas/completed-trials.json').data;
-    const byName = new Map(trials.map((t) => [t.shortName, t]));
-    const cites = readJson('data/atlas/citations.json').data;
-    const citeById = new Map(cites.map((c) => [c.id, c]));
-    const expected = {
-      'BRIDGE-TNK': { pmid: '40396577', doi: '10.1056/NEJMoa2503867', cid: 'cit-bridge-tnk-2025' },
-      HOPE: { pmid: '40773205', doi: '10.1001/jama.2025.12063', cid: 'cit-hope-2025' },
-      EXPECTS: { pmid: '40174223', doi: '10.1056/NEJMoa2413344', cid: 'cit-expects-2025' },
-      MIND: { pmid: '40892424', doi: '10.1001/jamaneurol.2025.3151', cid: 'cit-mind-2025' }
-    };
-    for (const [name, exp] of Object.entries(expected)) {
-      const t = byName.get(name);
-      expect(t, `completed trial ${name} missing from atlas`).toBeTruthy();
-      expect(t.verificationStatus, `${name} not PubMed-verified`).toBe('verified-pubmed');
-      expect(t.citationIds, `${name} missing citation ${exp.cid}`).toContain(exp.cid);
-      const c = citeById.get(exp.cid);
-      expect(c, `citation ${exp.cid} missing`).toBeTruthy();
-      expect(c.pmid, `${name} PMID drifted`).toBe(exp.pmid);
-      expect(c.doi, `${name} DOI drifted`).toBe(exp.doi);
-    }
-    // MIND must stay represented as a NEGATIVE trial — never imply MIS efficacy.
-    expect(byName.get('MIND').primaryEndpoint.result).toMatch(/no significant benefit|negative|did not|no benefit/i);
-    // Extended-window alteplase trials must keep the "emerging / not routine" framing.
-    expect(byName.get('HOPE').applicabilityNotes).toMatch(/emerging|not a standard/i);
-    expect(byName.get('EXPECTS').applicabilityNotes).toMatch(/emerging|not a standard/i);
-  });
 
-  it('keeps the corrected TEMPO-2 DOI (caught by independent PubMed verification)', () => {
-    const cites = readJson('data/atlas/citations.json').data;
-    const tempo2 = cites.find((c) => c.id === 'cit-tempo-2-2024');
-    expect(tempo2, 'TEMPO-2 citation missing').toBeTruthy();
-    expect(tempo2.doi).toBe('10.1016/S0140-6736(24)00921-8');
-    // The wrong DOI copied from the local source doc must never reappear.
-    expect(tempo2.doi).not.toBe('10.1016/S0140-6736(24)00827-2');
-  });
 
   it('keeps adult AIS tenecteplase dose at 0.25 mg/kg (max 25 mg) and forbids the 0.4 mg/kg dose', () => {
     // Positive: correct AIS dose ships in the institutional example algorithm.

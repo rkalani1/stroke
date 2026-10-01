@@ -1,142 +1,22 @@
 {
-  "id": "ncs-reversal-2026",
-  "title": "Treatment of Antithrombotic-Associated Intracranial Hemorrhage in Adults: A Focused Guideline Update from the Neurocritical Care Society and the Society of Critical Care Medicine",
-  "shortTitle": "NCS/SCCM Antithrombotic Reversal Update 2026",
-  "doi": "10.1007/s12028-026-02601-4",
-  "publisherUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4",
-  "pdfUrl": null,
-  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/42786382/",
-  "pmid": "42786382",
-  "society": "NCS/SCCM",
-  "documentType": "guideline",
-  "gradingSystem": "GRADE",
-  "recommendations": [
-    {
-      "id": "ncs-reversal-2026-1-1",
-      "section": "Recommendation 1-1 — Spontaneous FXa ICH: PCC preferred to andexanet",
-      "classOfRec": "Conditional",
-      "classNote": null,
-      "levelOfEvidence": "Moderate certainty",
-      "text": "We suggest using 4-factor prothrombin complex concentrate rather than andexanet alfa in patients with factor Xa inhibitor-associated spontaneous ICH (conditional recommendation; moderate certainty evidence).",
-      "page": null,
-      "sourceStatementType": "recommendation",
-      "sourceStatementId": "Recommendation 1-1",
-      "sourceReference": "Recommendation 1-1",
-      "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
-    },
-    {
-      "id": "ncs-reversal-2026-1-2",
-      "section": "Recommendation 1-2 — Traumatic FXa ICH: PCC preferred to andexanet",
-      "classOfRec": "Conditional",
-      "classNote": null,
-      "levelOfEvidence": "Very low certainty",
-      "text": "We suggest using 4-factor prothrombin complex concentrate rather than andexanet alfa in patients with factor Xa inhibitor-associated traumatic ICH (conditional recommendation; very low certainty evidence).",
-      "page": null,
-      "sourceStatementType": "recommendation",
-      "sourceStatementId": "Recommendation 1-2",
-      "sourceReference": "Recommendation 1-2",
-      "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
-    },
-    {
-      "id": "ncs-reversal-2026-2-1",
-      "section": "Recommendation 2-1 — Spontaneous IPH, antiplatelets, no surgery: avoid platelets",
-      "classOfRec": "Conditional",
-      "classNote": null,
-      "levelOfEvidence": "Low certainty",
-      "text": "we suggest against administering platelet transfusions to patients with spontaneous intraparenchymal hemorrhage taking antiplatelet agents who do not require neurosurgical intervention. (Conditional recommendation, low certainty of evidence).",
-      "page": null,
-      "sourceStatementType": "recommendation",
-      "sourceStatementId": "Recommendation 2-1",
-      "sourceReference": "Recommendation 2-1",
-      "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
-    },
-    {
-      "id": "ncs-reversal-2026-2-2",
-      "section": "Recommendation 2-2 — Spontaneous IPH, aspirin, surgery: give platelets",
-      "classOfRec": "Conditional",
-      "classNote": null,
-      "levelOfEvidence": "Very low certainty",
-      "text": "we suggest administering platelet transfusions to patients with spontaneous intraparenchymal hemorrhage who were on aspirin therapy who require neurosurgical intervention (Conditional recommendation, very low certainty evidence).",
-      "page": null,
-      "sourceStatementType": "recommendation",
-      "sourceStatementId": "Recommendation 2-2",
-      "sourceReference": "Recommendation 2-2",
-      "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
-    },
-    {
-      "id": "ncs-reversal-2026-2-3",
-      "section": "Recommendation 2-3 — Traumatic ICH, antiplatelets: no recommendation",
-      "classOfRec": "No recommendation",
-      "classNote": null,
-      "levelOfEvidence": "Ungraded",
-      "text": "we make no recommendation regarding administration of platelets for patients with traumatic intracranial hemorrhage who were on antiplatelet therapy.",
-      "page": null,
-      "sourceStatementType": "recommendation",
-      "sourceStatementId": "Recommendation 2-3",
-      "sourceReference": "Recommendation 2-3",
-      "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
-    },
-    {
-      "id": "ncs-reversal-2026-3-1",
-      "section": "Recommendation 3-1 — Antiplatelet-associated ICH, DDAVP: no recommendation",
-      "classOfRec": "No recommendation",
-      "classNote": null,
-      "levelOfEvidence": "Ungraded",
-      "text": "we make no recommendation regarding use of desmopressin in patients with intracranial hemorrhage on antiplatelet therapy.",
-      "page": null,
-      "sourceStatementType": "recommendation",
-      "sourceStatementId": "Recommendation 3-1",
-      "sourceReference": "Recommendation 3-1",
-      "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
-    },
-    {
-      "id": "ncs-reversal-2026-4-1",
-      "section": "Recommendation 4-1 — Small IPH, anticoagulant reversal: no recommendation",
-      "classOfRec": "No recommendation",
-      "classNote": null,
-      "levelOfEvidence": "Ungraded",
-      "text": "we cannot make a recommendation regarding treatment of anticoagulant effects in patients with small intraparenchymal hemorrhage due to lack of evidence.",
-      "page": null,
-      "sourceStatementType": "recommendation",
-      "sourceStatementId": "Recommendation 4-1",
-      "sourceReference": "Recommendation 4-1",
-      "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
-    },
-    {
-      "id": "ncs-reversal-2026-5-1",
-      "section": "Recommendation 5-1 — Traumatic ICH: viscoelastic-assay-guided treatment if available",
-      "classOfRec": "Conditional",
-      "classNote": null,
-      "levelOfEvidence": "Very low certainty",
-      "text": "we suggest using VHA-guided management in patients with traumatic intracranial hemorrhage, when VHAs are available (conditional recommendation, very low quality evidence).",
-      "page": null,
-      "sourceStatementType": "recommendation",
-      "sourceStatementId": "Recommendation 5-1",
-      "sourceReference": "Recommendation 5-1",
-      "sourceUrl": "https://link.springer.com/article/10.1007/s12028-026-02601-4"
-    }
-  ],
-  "coverage": {
-    "status": "complete",
-    "scope": "All eight numbered recommendations in the focused update; other 2016 reversal topics are not replaced by this update.",
-    "checkedAt": "2026-09-30",
-    "sourceRecommendationCount": 8,
-    "sourceConsensusCount": 0,
-    "sourceSections": [
-      {
-        "id": "Recommendations 1–5",
-        "rowCount": 8,
-        "sourceRecommendationCount": 8,
-        "sourceConsensusCount": 0
-      }
-    ]
+  "_meta": {
+    "endpoint": "data/guidelines/ncs-reversal-2026.json",
+    "schemaVersion": "2.0.0",
+    "appVersion": "7.0.0",
+    "checksum": "sha256:74234e98afe7498fb5daf1f36ac2d78a",
+    "count": 0,
+    "source": "Retired historical portal endpoint",
+    "license": "Synthetic educational reference content for qualified review. No warranty.",
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.",
+    "status": "retired"
   },
-  "sourceReview": {
-    "reviewedAt": "2026-09-30",
-    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
-    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
-    "implementationUpdatedAt": "2026-09-30",
-    "sourceAccess": "Full primary publisher HTML, including recommendations, native GRADE strength/certainty and remarks; retrieved September 30, 2026. No later indexed notice identified at the review cutoff."
+  "data": null,
+  "retirement": {
+    "status": "retired",
+    "reason": "The broad reference, trial and teaching portal is retired from the maintained product.",
+    "replacement": "https://rkalani1.github.io/stroke/data/sources.json",
+    "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+    "archiveUrl": "https://github.com/rkalani1/stroke/tree/archive/pre-encounter-first-20261001-4f8e99d",
+    "compatibility": "HTTP transport may return 200 on static Pages; clients must inspect _meta.status. The data payload is null and is not a current clinical corpus."
   }
 }

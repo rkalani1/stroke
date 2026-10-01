@@ -1,13 +1,14 @@
 {
   "_meta": {
     "endpoint": "claims",
-    "schemaVersion": "1.0.0",
-    "appVersion": "6.30.7",
-    "checksum": "sha256:8bdec89af06a52ba18184e7d631af494",
-    "count": 13,
-    "source": "Evidence atlas claims bundle",
+    "schemaVersion": "2.0.0",
+    "appVersion": "7.0.0",
+    "checksum": "sha256:840c6c19bc10b9fc1642369640a432bd",
+    "count": 12,
+    "source": "Maintained Encounter/protocol evidence dependency closure",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
-    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.",
+    "status": "maintained"
   },
   "data": [
     {
@@ -125,20 +126,6 @@
         "cit-thales-2020",
         "cit-inspires-2024",
         "cit-chance2-2021"
-      ],
-      "certainty": "high",
-      "conflictNotes": "",
-      "lastReviewed": "2026-09-26"
-    },
-    {
-      "id": "cl-af-early-anticoag",
-      "statement": "Early DOAC initiation within 4 days was non-inferior to delayed (7-14 day) initiation (OPTIMAS) and reduced the 30-day composite of recurrent ischemic stroke, symptomatic intracranial hemorrhage (sICH), or unclassified stroke vs ≥5 days in pooled individual-patient data (CATALYST IPDMA: OR 0.70, 95% CI 0.50-0.98, p=0.039) without excess sICH. TIMING (≤4 vs 5-10 days) was non-inferior for recurrent ischemic stroke, sICH, or death at 90 days; ELAN (estimation design, no formal non-inferiority test) estimated a 30-day risk difference of -1.18 percentage points (95% CI -2.84 to 0.47) with early start for the composite of recurrent ischemic stroke, systemic embolism, major extracranial bleeding, sICH, or vascular death.",
-      "topic": "af-anticoag-timing",
-      "citationIds": [
-        "cit-optimas-2024",
-        "cit-catalyst-2025",
-        "cit-elan-2023",
-        "cit-timing-2022"
       ],
       "certainty": "high",
       "conflictNotes": "",

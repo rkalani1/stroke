@@ -31,16 +31,16 @@ describe('public demo labeling and agent disclaimers', () => {
     const index = readText('index.html');
     const manifest = readJson('manifest.json');
 
-    expect(index).toContain('<title>Stroke CDS Educational Demo</title>');
-    expect(index).toContain('do not enter PHI');
+    expect(index).toContain('<title>Stroke · Encounter workspace</title>');
+    expect(index).toMatch(/do not enter PHI/i);
     expect(index).toContain('not an approved clinical tool');
     expect(index).not.toMatch(syntheticPrivateOrg);
     expect(index).not.toMatch(/Comprehensive clinical decision support tool/i);
 
     expect(manifest.name).toBe('Stroke CDS Educational Demo');
-    expect(manifest.description).toContain('Synthetic educational stroke decision-support demo');
+    expect(manifest.description).toContain('Synthetic Encounter workspace');
     expect(manifest.description).toContain('do not enter PHI');
-    expect(manifest.shortcuts[0].description).toBe('Open synthetic encounter demo');
+    expect(manifest.shortcuts[0].description).toBe('Open synthetic Encounter');
     expect(JSON.stringify(manifest)).not.toMatch(/Clinical decision support toolkit for stroke management/i);
   });
 
@@ -53,12 +53,12 @@ describe('public demo labeling and agent disclaimers', () => {
     expect(dataIndex._meta.disclaimer).toContain('Agents and downstream consumers must display this disclaimer');
     expect(dataIndex._meta.disclaimer).toBe(PUBLIC_DEMO_AGENT_DISCLAIMER);
     expect(dataIndex.routes.find((route) => route.route === '#/protocols')?.label)
-      .toBe('Example protocols (not local policy)');
+      .toBe('Protected example protocols');
 
-    expect(llms).toContain('# Stroke CDS Educational Demo');
-    expect(llms).toContain('Do not enter PHI');
-    expect(llms).toContain('not an approved clinical tool');
-    expect(llms).toContain('Agents must not process PHI or real encounter details');
+    expect(llms).toContain('# Stroke Encounter Educational Demo');
+    expect(llms).toMatch(/Do not enter(?:, transmit, or infer)? PHI/);
+    expect(llms).toMatch(/not an approved clinical tool/i);
+    expect(llms).toMatch(/Do not enter, transmit, or infer PHI or real encounter details/);
     expect(llms).not.toMatch(syntheticPrivateOrg);
   });
 
@@ -88,8 +88,8 @@ describe('public demo labeling and agent disclaimers', () => {
     // Visible tab/palette label decluttered to "Protocols" (owner
     // decision); the machine-readable data route keeps the fuller
     // "not local policy" descriptor for agents.
-    expect(appSource).toContain("name: 'Protocols'");
-    expect(generatedData).toContain('Example protocols (not local policy)');
+    expect(appSource).toContain('>Protocols</a>');
+    expect(generatedData).toContain('Protected example protocols');
   });
 
   it('excludes source, tests, scripts, docs, and local-only folders from GitHub Pages', () => {
@@ -145,7 +145,7 @@ describe('public demo labeling and agent disclaimers', () => {
     const manifest = readJson('data/index.json');
     const protocols = readJson('data/generic-protocols.json');
     expect(manifest.mcpServer).toBeNull();
-    expect(protocols._meta.source).toBe('Public protocol reference bundle');
+    expect(protocols._meta.source).toBe('Protected public protocol reference bundle');
     expect(protocols.data.ichInitialEvaluation.sourceWindow)
       .toBe('Reviewed June 2026 public-safe algorithm translation');
   });

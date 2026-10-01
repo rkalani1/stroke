@@ -118,12 +118,14 @@ const precache = corePrecacheBytes();
 // required next lever before any further raise, and this raise is flagged for
 // owner review in the release report.
 
+// 2026-10-01 Encounter-first: initial 300KB raw/100KB gzip; all JS
+// 600KB raw/180KB gzip; CSS90KB; complete precache2MB. Tightened after measurement.
 const checks = [
   {
     id: 'app-js-gzip',
     label: 'Initial module graph (gzip)',
     actual: sumSizes(manifest.initial, gzipSizeOf),
-    budget: 700 * KB,
+    budget: 100 * KB,
     unit: KB,
     unitLabel: 'KB',
     note: 'route-level code splitting is the lever that moves this',
@@ -132,7 +134,7 @@ const checks = [
     id: 'app-js-raw',
     label: 'Initial module graph (raw)',
     actual: sumSizes(manifest.initial, sizeOf),
-    budget: 3 * MB,
+    budget: 300 * KB,
     unit: MB,
     unitLabel: 'MB',
     note: 'parse/execute cost scales with this, not the gzip figure',
@@ -140,18 +142,18 @@ const checks = [
   {
     id: 'all-js-gzip', label: 'All offline JavaScript (gzip)',
     actual: sumSizes(manifest.files.map(file => file.path), gzipSizeOf),
-    budget: 1600 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
+    budget: 180 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
   },
   {
     id: 'all-js-raw', label: 'All offline JavaScript (raw)',
     actual: sumSizes(manifest.files.map(file => file.path), sizeOf),
-    budget: 6.5 * MB, unit: MB, unitLabel: 'MB', note: '',
+    budget: 600 * KB, unit: MB, unitLabel: 'MB', note: '',
   },
   {
     id: 'tailwind-css',
     label: 'tailwind.css',
     actual: sizeOf('tailwind.css'),
-    budget: 200 * KB,
+    budget: 90 * KB,
     unit: KB,
     unitLabel: 'KB',
     note: '',
@@ -160,7 +162,7 @@ const checks = [
     id: 'sw-precache',
     label: `service-worker precache (${precache.count} entries)`,
     actual: precache.total,
-    budget: 8 * MB,
+    budget: 2 * MB,
     unit: MB,
     unitLabel: 'MB',
     note: 'what a first-time visitor downloads before the app is offline-ready',

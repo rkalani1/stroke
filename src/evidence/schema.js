@@ -1,48 +1,7 @@
-// src/evidence/schema.js
-//
-// JSDoc-typed factory functions and validation helpers for every record type
-// in the Evidence Atlas. The schema is the load-bearing artifact — both the
-// runtime UI and the build-time validator (scripts/evidence-validate.mjs)
-// import from here so a single change propagates.
-//
-// Pure ES module; no third-party dependencies; usable in Node and the browser.
-
-/**
- * @typedef {'high'|'moderate'|'low'|'very-low'} Certainty
- * @typedef {'rct'|'meta-analysis'|'observational'|'guideline'|'consensus'} EvidenceType
- * @typedef {'recruiting'|'active-not-recruiting'|'enrolling-by-invitation'|'completed-pending-results'} ActiveTrialStatus
- * @typedef {'I'|'IIa'|'IIb'|'III-no-benefit'|'III-harm'} ClassOfRecommendation
- * @typedef {'A'|'B-R'|'B-NR'|'C-LD'|'C-EO'} LevelOfEvidence
- * @typedef {'inpatient'|'outpatient'|'pre-facility'|'all'} RecommendationSetting
- *
- * @typedef {(
- *   |'verified-pubmed'
- *   |'verified-doi'
- *   |'verified-clinicaltrials-gov'
- *   |'verified-guideline'
- *   |'verified-rct'
- *   |'unverified-source-limited'
- *   |'todo-verify'
- *   |'disputed'
- * )} VerificationStatus
- */
-
+// Schema/validation for the maintained citation, claim and source recommendation closure.
+// Historical trial factories and recruitment/matcher schemas are retired.
 export const CERTAINTY_VALUES = ['high', 'moderate', 'low', 'very-low'];
 export const EVIDENCE_TYPE_VALUES = ['rct', 'meta-analysis', 'observational', 'guideline', 'consensus'];
-export const ACTIVE_TRIAL_STATUS_VALUES = [
-  'recruiting',
-  'active-not-recruiting',
-  'enrolling-by-invitation',
-  'completed-pending-results',
-  'completed',
-  'withdrawn',
-  'terminated',
-  'suspended'
-];
-// Only trials in these statuses may ever be surfaced by the eligibility
-// matcher or written into clinical notes. A completed/withdrawn/halted trial
-// must never render as "ELIGIBLE" for a live patient.
-export const MATCHABLE_TRIAL_STATUS_VALUES = ['recruiting', 'enrolling-by-invitation'];
 export const CLASS_VALUES = ['I', 'IIa', 'IIb', 'III-no-benefit', 'III-harm'];
 export const LOE_VALUES = ['A', 'B-R', 'B-NR', 'C-LD', 'C-EO'];
 export const SETTING_VALUES = ['inpatient', 'outpatient', 'pre-facility', 'all'];
@@ -62,8 +21,6 @@ export const VERIFICATION_VALUES = [
 // Structural identifier patterns. Live verification is explicitly out of scope.
 export const PMID_PATTERN = /^\d{7,9}$/;
 export const DOI_PATTERN = /^10\.\d{4,9}\/[-._;()/:A-Z0-9]+$/i;
-export const NCT_PATTERN = /^NCT\d{8}$/;
-
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const KEBAB_ID = /^[a-z0-9][a-z0-9-]*$/;
 
@@ -72,126 +29,6 @@ const clone = (v) => (v == null ? v : JSON.parse(JSON.stringify(v)));
 
 const arrOr = (v, fallback = []) => (Array.isArray(v) ? clone(v) : clone(fallback));
 const strOr = (v, fallback = '') => (typeof v === 'string' ? v : fallback);
-
-/**
- * Build a CompletedTrial record. Missing/invalid fields are filled with safe
- * defaults; callers should still pipe records through validateCompletedTrial
- * before publishing.
- *
- * @param {Partial<import('./types').CompletedTrial>} input
- * @returns {import('./types').CompletedTrial}
- */
-export function makeCompletedTrial(input = {}) {
-  return {
-    id: strOr(input.id),
-    shortName: strOr(input.shortName),
-    fullName: strOr(input.fullName),
-    topic: strOr(input.topic),
-    diseaseArea: arrOr(input.diseaseArea),
-    population: {
-      n: Number.isFinite(input.population?.n) ? input.population.n : 0,
-      ageRange: strOr(input.population?.ageRange),
-      nihssRange: strOr(input.population?.nihssRange),
-      timeWindow: strOr(input.population?.timeWindow),
-      keyInclusion: arrOr(input.population?.keyInclusion),
-      keyExclusion: arrOr(input.population?.keyExclusion)
-    },
-    intervention: strOr(input.intervention),
-    comparator: strOr(input.comparator),
-    primaryEndpoint: {
-      definition: strOr(input.primaryEndpoint?.definition),
-      timepoint: strOr(input.primaryEndpoint?.timepoint),
-      result: strOr(input.primaryEndpoint?.result),
-      effectSize: strOr(input.primaryEndpoint?.effectSize),
-      confidenceInterval: strOr(input.primaryEndpoint?.confidenceInterval),
-      pValue: strOr(input.primaryEndpoint?.pValue)
-    },
-    secondaryEndpoints: arrOr(input.secondaryEndpoints).map((e) => ({
-      name: strOr(e?.name),
-      result: strOr(e?.result)
-    })),
-    safetyFindings: {
-      sich: strOr(input.safetyFindings?.sich),
-      mortality: strOr(input.safetyFindings?.mortality),
-      other: strOr(input.safetyFindings?.other)
-    },
-    imagingCriteria: strOr(input.imagingCriteria),
-    applicabilityNotes: strOr(input.applicabilityNotes),
-    limitations: strOr(input.limitations),
-    certainty: CERTAINTY_VALUES.includes(input.certainty) ? input.certainty : 'moderate',
-    evidenceType: EVIDENCE_TYPE_VALUES.includes(input.evidenceType) ? input.evidenceType : 'rct',
-    citationIds: arrOr(input.citationIds),
-    relatedActiveTrialIds: arrOr(input.relatedActiveTrialIds),
-    practiceImpact: strOr(input.practiceImpact),
-    lastReviewed: strOr(input.lastReviewed),
-    // ISO date the record was promoted into the Atlas (e.g. surfaced in the
-    // "What's New" feed). Optional and backward-compatible: when omitted it
-    // defaults to lastReviewed so existing records keep a stable value.
-    promotedDate: strOr(input.promotedDate, strOr(input.lastReviewed)),
-    verificationStatus: VERIFICATION_VALUES.includes(input.verificationStatus)
-      ? input.verificationStatus
-      : TODO_VERIFY_STATUS,
-    verificationNotes: strOr(input.verificationNotes)
-  };
-}
-
-/**
- * @param {Partial<import('./types').ActiveTrial>} input
- * @returns {import('./types').ActiveTrial}
- */
-export function makeActiveTrial(input = {}) {
-  // An unknown status must fail loudly. The previous silent coercion to
-  // 'recruiting' turned MOST's status:'completed' into a recruiting trial
-  // and let the matcher print ELIGIBLE for a closed study.
-  if (!ACTIVE_TRIAL_STATUS_VALUES.includes(input.status)) {
-    throw new Error(
-      `makeActiveTrial: unknown status '${input.status}' for trial '${input.id || '<unset>'}' — must be one of: ${ACTIVE_TRIAL_STATUS_VALUES.join(', ')}`
-    );
-  }
-  return {
-    id: strOr(input.id),
-    shortName: strOr(input.shortName),
-    fullName: strOr(input.fullName),
-    nctId: strOr(input.nctId),
-    phase: strOr(input.phase),
-    status: input.status,
-    topic: strOr(input.topic),
-    briefDescription: strOr(input.briefDescription),
-    rationale: strOr(input.rationale),
-    inclusionCriteria: arrOr(input.inclusionCriteria),
-    exclusionCriteria: arrOr(input.exclusionCriteria),
-    // UI-only display fields; previously in legacy-criteria.js's
-    // TRIAL_ELIGIBILITY_CONFIG. Migrated to the atlas in the
-    // retirement sprint so the legacy module can be deleted.
-    keyTakeaways: arrOr(input.keyTakeaways),
-    lookingFor: arrOr(input.lookingFor),
-    category: strOr(input.category),
-    matcherCriteria: arrOr(input.matcherCriteria).map((c) => ({
-      field: strOr(c?.field),
-      operator: strOr(c?.operator),
-      value: c?.value,
-      label: strOr(c?.label)
-    })),
-    // Declarative exclusion rules. Inverse semantics from inclusion
-    // criteria: an exclusion *triggers* the not_eligible status when its
-    // criterion evaluates to true. Unknown / not_met → not triggered.
-    matcherExclusions: arrOr(input.matcherExclusions).map((c) => ({
-      id: strOr(c?.id),
-      field: strOr(c?.field),
-      operator: strOr(c?.operator, '=='),
-      value: c?.value === undefined ? true : c?.value,
-      label: strOr(c?.label)
-    })),
-    relatedCompletedTrialIds: arrOr(input.relatedCompletedTrialIds),
-    link: strOr(input.link),
-    lastReviewed: strOr(input.lastReviewed),
-    verificationStatus: VERIFICATION_VALUES.includes(input.verificationStatus)
-      ? input.verificationStatus
-      : TODO_VERIFY_STATUS,
-    verificationNotes: strOr(input.verificationNotes),
-    legacyMatcherKey: strOr(input.legacyMatcherKey)
-  };
-}
 
 export function makeCitation(input = {}) {
   return {
@@ -271,21 +108,6 @@ export function makeGuideline(input = {}) {
   };
 }
 
-export function makeTopic(input = {}) {
-  return {
-    id: strOr(input.id),
-    label: strOr(input.label),
-    parentId: strOr(input.parentId, ''),
-    notes: strOr(input.notes)
-  };
-}
-
-// ---------------------------------------------------------------------------
-// Validation. Returns { errors: string[], warnings: string[] } — no throw.
-// Caller decides how to react. The build-time validator turns errors into a
-// nonzero exit; the runtime UI silently degrades on missing references.
-// ---------------------------------------------------------------------------
-
 const within24Months = (iso) => {
   if (!ISO_DATE.test(iso || '')) return false;
   const reviewed = new Date(`${iso}T00:00:00Z`).getTime();
@@ -305,90 +127,6 @@ function checkVerificationNotes(obj, where, errors) {
   if (obj.verificationStatus === TODO_VERIFY_STATUS && !obj.verificationNotes) {
     errors.push(`${where}: verificationStatus=${TODO_VERIFY_STATUS} requires verificationNotes`);
   }
-}
-
-export function validateCompletedTrial(t, ctx = {}) {
-  const errors = [];
-  const warnings = [];
-  const where = `completedTrials/${t.id || '<unset>'}`;
-
-  pushIf(errors, !KEBAB_ID.test(t.id || ''), `${where}: id must be kebab-case`);
-  pushIf(errors, !t.shortName, `${where}: shortName required`);
-  pushIf(errors, !t.fullName, `${where}: fullName required`);
-  pushIf(errors, !t.topic, `${where}: topic required`);
-  pushIf(errors, !CERTAINTY_VALUES.includes(t.certainty), `${where}: certainty invalid`);
-  pushIf(errors, !EVIDENCE_TYPE_VALUES.includes(t.evidenceType), `${where}: evidenceType invalid`);
-  pushIf(errors, !VERIFICATION_VALUES.includes(t.verificationStatus), `${where}: verificationStatus invalid`);
-  pushIf(errors, !t.primaryEndpoint?.result, `${where}: primaryEndpoint.result required`);
-
-  checkVerificationNotes(t, where, errors);
-
-  if (!ISO_DATE.test(t.lastReviewed || '')) {
-    errors.push(`${where}: lastReviewed must be ISO date YYYY-MM-DD`);
-  } else if (!within24Months(t.lastReviewed)) {
-    warnings.push(`${where}: stale-evidence (lastReviewed ${t.lastReviewed} > 24 months ago)`);
-  }
-
-  // promotedDate is optional; when present it must be a valid ISO date.
-  if (t.promotedDate && !ISO_DATE.test(t.promotedDate)) {
-    errors.push(`${where}: promotedDate must be ISO date YYYY-MM-DD`);
-  }
-
-  if (ctx.knownCitationIds) {
-    for (const cid of t.citationIds || []) {
-      if (!ctx.knownCitationIds.has(cid)) {
-        errors.push(`${where}: citationIds references unknown citation '${cid}'`);
-      }
-    }
-  }
-  if (ctx.knownActiveTrialIds) {
-    for (const aid of t.relatedActiveTrialIds || []) {
-      if (!ctx.knownActiveTrialIds.has(aid)) {
-        errors.push(`${where}: relatedActiveTrialIds references unknown active trial '${aid}'`);
-      }
-    }
-  }
-
-  return { errors, warnings };
-}
-
-export function validateActiveTrial(t, ctx = {}) {
-  const errors = [];
-  const warnings = [];
-  const where = `activeTrials/${t.id || '<unset>'}`;
-
-  pushIf(errors, !KEBAB_ID.test(t.id || ''), `${where}: id must be kebab-case`);
-  pushIf(errors, !t.shortName, `${where}: shortName required`);
-  pushIf(errors, !t.fullName, `${where}: fullName required`);
-  pushIf(errors, !t.topic, `${where}: topic required`);
-  pushIf(errors, !ACTIVE_TRIAL_STATUS_VALUES.includes(t.status), `${where}: status invalid`);
-  pushIf(errors, !VERIFICATION_VALUES.includes(t.verificationStatus), `${where}: verificationStatus invalid`);
-
-  if (t.nctId && !NCT_PATTERN.test(t.nctId)) {
-    errors.push(`${where}: nctId '${t.nctId}' fails NCT pattern`);
-  }
-
-  if (!Array.isArray(t.matcherCriteria) || t.matcherCriteria.length === 0) {
-    errors.push(`${where}: at least one matcherCriteria entry required`);
-  }
-
-  checkVerificationNotes(t, where, errors);
-
-  if (!ISO_DATE.test(t.lastReviewed || '')) {
-    errors.push(`${where}: lastReviewed must be ISO date YYYY-MM-DD`);
-  } else if (!within24Months(t.lastReviewed)) {
-    warnings.push(`${where}: stale-evidence (lastReviewed ${t.lastReviewed} > 24 months ago)`);
-  }
-
-  if (ctx.knownCompletedTrialIds) {
-    for (const cid of t.relatedCompletedTrialIds || []) {
-      if (!ctx.knownCompletedTrialIds.has(cid)) {
-        errors.push(`${where}: relatedCompletedTrialIds references unknown completed trial '${cid}'`);
-      }
-    }
-  }
-
-  return { errors, warnings };
 }
 
 export function validateCitation(c) {

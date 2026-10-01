@@ -120,7 +120,7 @@ function AddToHomeScreenSheet({ onClose }) {
               <h2 id="install-sheet-title" className="font-serif text-md font-bold tracking-tight text-ink">
                 Add to Home Screen
               </h2>
-              <p className="mt-0.5 text-xs text-mute">Opens full-screen, works offline</p>
+              <p className="mt-0.5 text-xs text-mute">Offline core after complete installation</p>
             </div>
           </div>
           <button
@@ -149,7 +149,7 @@ function AddToHomeScreenSheet({ onClose }) {
         </ol>
 
         <p className="mt-4 border-t border-paper-2 pt-3 text-xs leading-relaxed text-mute">
-          No app store and no account — the home-screen icon opens this same page, with the trial tables cached for offline use.
+          No app store and no account — the home-screen icon opens this same page, with the retained core cached after a successful complete online installation.
         </p>
 
         <button

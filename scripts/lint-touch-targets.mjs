@@ -37,8 +37,7 @@ if (urlFlag !== -1 && (!args[urlFlag + 1] || args[urlFlag + 1].startsWith('-')))
 }
 const URL = process.env.LINT_URL || (urlFlag === -1 ? args[0] : args[urlFlag + 1]) || 'http://localhost:8080';
 const ROUTES = [
-  '/#/encounter', '/#/protocols', '/#/trials',
-  '/#/research/guidelines', '/#/research/education'
+  '/#/encounter', '/#/protocols/ischemic', '/#/protocols/ich', '/#/tools'
 ];
 const VIEWPORTS = [
   { name: '320', width: 320, height: 568 },
@@ -77,6 +76,16 @@ for (const route of ROUTES) {
       const bad = [];
       document.querySelectorAll(SEL).forEach(el => {
         if (el.hasAttribute('data-skip-tap')) return;
+        // Native wrapped checkbox/radio labels enlarge the same hit target.
+        // Count the effective native label target, while preserving the strict
+        // 44px requirement when no equivalent label target is present.
+        if (el.matches('input[type="checkbox"],input[type="radio"]')) {
+          const label = el.closest('label');
+          if (label && label.control === el) {
+            const target = label.getBoundingClientRect();
+            if (target.width >= min && target.height >= min) return;
+          }
+        }
         // A <label for> directly associated with a full-size control is not an
         // independent tap target (tapping it focuses the control) — exempt it
         // when the control meets the minimum and sits adjacent to the label.

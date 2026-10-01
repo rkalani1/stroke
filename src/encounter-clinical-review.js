@@ -2,6 +2,7 @@
 // Protocols. A partial source screen is never a complete treatment determination.
 // Sources: AHA/ASA AIS2026 doi:10.1161/STR.0000000000000513 §§4.6–4.7;
 // EXTEND doi:10.1056/NEJMoa1813046; WAKE-UP doi:10.1056/NEJMoa1804355.
+import { computeLKWCountdown } from './calculators-extended.js';
 import { hasRecordedTreatmentAdministration, hasRecordedNoTreatment, recordedTreatmentDecision } from './encounter-decision-status.js';
 
 export function numericInput(value, { min = -Infinity, max = Infinity, integer = false } = {}) {
@@ -25,10 +26,8 @@ export function calculatorField(values = {}, key, encounterValue, sync) {
 }
 
 const hoursSince = (value, now) => {
-  if (!value) return null;
-  const time = new Date(value).getTime();
-  const hours = (new Date(now).getTime() - time) / 3600000;
-  return Number.isFinite(hours) && hours >= 0 ? hours : null;
+  const clock = computeLKWCountdown(value, new Date(now).getTime());
+  return clock ? (new Date(now).getTime() - new Date(value).getTime()) / 3600000 : null;
 };
 
 export function evaluateWakeUpScreen(note = {}, now = new Date()) {

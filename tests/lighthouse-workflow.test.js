@@ -10,7 +10,7 @@ const ciWorkflow = readFileSync(join(repoRoot, '.github/workflows/ci.yml'), 'utf
 const liveSmokeWorkflow = readFileSync(join(repoRoot, '.github/workflows/live-smoke.yml'), 'utf8');
 const qaSmokeScript = readFileSync(join(repoRoot, 'scripts/qa-smoke.mjs'), 'utf8');
 const apiIndex = JSON.parse(readFileSync(join(repoRoot, 'data/index.json'), 'utf8'));
-const guidelineIndex = JSON.parse(readFileSync(join(repoRoot, 'data/guidelines/index.json'), 'utf8'));
+const appManifest = JSON.parse(readFileSync(join(repoRoot, 'app-assets.json'), 'utf8'));
 const quoted = (value) => new RegExp(`["']${value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["']`);
 
 function countOccurrences(text, pattern) {
@@ -52,19 +52,24 @@ describe('Lighthouse workflow deployment guard', () => {
       expect(workflow).toMatch(quoted(artifact));
     }
     expect(workflow).toContain("JSON.parse(fs.readFileSync('data/index.json', 'utf8'))");
-    expect(workflow).toContain("JSON.parse(fs.readFileSync('data/guidelines/index.json', 'utf8'))");
+    expect(workflow).toContain("JSON.parse(fs.readFileSync('app-assets.json', 'utf8'))");
     expect(workflow).toContain('for (const endpoint of apiIndex.endpoints || []) add(toRel(endpoint));');
-    expect(workflow).toContain('for (const guideline of guidelineIndex.data || []) add(toRel(guideline.url));');
+    expect(workflow).toContain('for (const endpoint of apiIndex.retiredEndpoints || []) add(toRel(endpoint));');
+    expect(workflow).toContain('for (const asset of appManifest.files) add(asset.path);');
 
     for (const endpoint of apiIndex.endpoints) {
       const rel = endpoint.replace('https://rkalani1.github.io/stroke/', '');
       expect(workflow).toContain('apiIndex.endpoints');
       expect(readFileSync(join(repoRoot, rel), 'utf8'), `${rel} should exist locally`).toBeTruthy();
     }
-    for (const guideline of guidelineIndex.data) {
-      const rel = guideline.url.replace('https://rkalani1.github.io/stroke/', '');
-      expect(workflow).toContain('guideline.url');
-      expect(readFileSync(join(repoRoot, rel), 'utf8'), `${rel} should exist locally`).toBeTruthy();
+    for (const asset of appManifest.files) {
+      expect(readFileSync(join(repoRoot, asset.path)).length).toBe(asset.bytes);
+    }
+    for (const endpoint of apiIndex.retiredEndpoints) {
+      const rel = endpoint.replace('https://rkalani1.github.io/stroke/', '');
+      const response = JSON.parse(readFileSync(join(repoRoot, rel), 'utf8'));
+      expect(response._meta.status).toBe('retired');
+      expect(response.data).toBeNull();
     }
 
     expect(workflow).toMatch(/EXPECTED="\$\(sha256sum app\.js \| awk '\{print \$1\}'\)"/);
@@ -112,17 +117,19 @@ describe('CI leak-guard workflow enforcement', () => {
     expect(liveSmokeWorkflow).toContain('npm run validate:automedbench-lite');
     expect(liveSmokeWorkflow).toContain('Run adaptive QA smoke (local + live)');
     expect(liveSmokeWorkflow).toContain('Verify live Pages artifact parity');
-    expect(liveSmokeWorkflow).toMatch(/Timed out waiting for live Pages artifact to match this commit:[\s\S]{0,160}exit 1/);
-    expect(liveSmokeWorkflow).toMatch(/Live Pages public artifacts match checked-out commit\./);
+    expect(liveSmokeWorkflow).toContain('run: npm run qa:wait-for-live-pages');
+    expect(liveSmokeWorkflow.indexOf('Verify live Pages artifact parity')).toBeLessThan(liveSmokeWorkflow.indexOf('Run adaptive QA smoke (local + live)'));
     expect(liveSmokeWorkflow).toContain('output/diagnostics/qa-smoke-adaptive.log');
     expect(liveSmokeWorkflow).toContain('Run adaptive latency threshold advisory (local + live)');
     expect(liveSmokeWorkflow).toMatch(/Run adaptive latency threshold advisory \(local \+ live\)[\s\S]{0,120}continue-on-error: true/);
     expect(liveSmokeWorkflow).toContain('--enforce-latency-thresholds');
+    expect(countOccurrences(liveSmokeWorkflow, 'node ./scripts/qa-smoke.mjs --live')).toBe(2);
+    for (const required of ['check:clinical-claims', 'check:retirement', 'agent:assets:check', 'content:currency']) expect(liveSmokeWorkflow).toContain('npm run '+required);
     expect(countOccurrences(liveSmokeWorkflow, 'continue-on-error: true')).toBe(1);
     expect(liveSmokeWorkflow).not.toMatch(/continue-on-error: true[\s\S]{0,120}npm run qa:latency-adaptive-strict/);
     expect(liveSmokeWorkflow).toContain('output/diagnostics/qa-latency-threshold-advisory.log');
     expect(liveSmokeWorkflow).not.toContain('qa:latency-adaptive-strict');
-    expect(qaSmokeScript).toContain("type: 'live-deployment-parity'");
-    expect(qaSmokeScript).toContain('Live app version does not match the checked-out local build.');
+    expect(qaSmokeScript).toContain('live deployed version parity and retained smoke');
+    expect(qaSmokeScript).toContain('--live');
   });
 });

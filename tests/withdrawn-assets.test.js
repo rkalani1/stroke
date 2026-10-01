@@ -4,7 +4,7 @@ import vm from 'node:vm';
 
 const worker = readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
 
-function harness({ offline = false, cached = null, cachedHtml = null } = {}) {
+function harness({ offline = false, cached = null, cachedHtml = null, scope = 'https://example.test/stroke/' } = {}) {
   const handlers = new Map();
   const requests = [];
   const removed = [];
@@ -23,7 +23,7 @@ function harness({ offline = false, cached = null, cachedHtml = null } = {}) {
     },
     self: {
       location: { origin: 'https://example.test' },
-      registration: { scope: 'https://example.test/stroke/' },
+      registration: { scope },
       addEventListener: (name, handler) => handlers.set(name, handler),
       clients: { matchAll: async () => [] },
     },
@@ -56,7 +56,7 @@ describe('retired education resource delivery', () => {
     '/stroke/documents/antiplatelet/DAPT%20After%20Ischemic%20Stroke-TIA.jpeg',
   ])
     ('blocks stale cached content at %s without consulting the network', async (path) => {
-      const h = harness({ cached: new Response('withdrawn diagram') });
+      const h = harness({ cached: new Response('withdrawn diagram'), scope: path.startsWith('/stroke/') ? 'https://example.test/stroke/' : 'https://example.test/' });
       const response = await h.fetch(path, { navigate: true });
       expect(response.status).toBe(410);
       expect(response.headers.get('cache-control')).toBe('no-store');
@@ -67,17 +67,18 @@ describe('retired education resource delivery', () => {
   it.each([false, true])('never returns the app HTML as an uncached offline PDF (navigation: %s)', async (navigate) => {
     const response = await harness({ offline: true, cachedHtml: new Response('<html>App shell</html>') })
       .fetch('/stroke/documents/valid.pdf', { navigate });
-    expect(response.status).toBe(503);
+    expect(response.status).toBe(410);
     expect(response.headers.get('content-type')).toContain('text/plain');
   });
 
-  it('returns a previously cached PDF for offline document navigation', async () => {
+  it('blocks previously cached historical PDFs during offline document navigation', async () => {
     const response = await harness({ offline: true,
       cached: new Response('%PDF-current', { headers: { 'Content-Type': 'application/pdf' } }),
       cachedHtml: new Response('<html>App shell</html>'),
     }).fetch('/stroke/documents/valid.pdf', { navigate: true });
-    expect(response.headers.get('content-type')).toBe('application/pdf');
-    expect(await response.text()).toBe('%PDF-current');
+    expect(response.status).toBe(410);
+    expect(response.headers.get('content-type')).toContain('text/plain');
+    expect(await response.text()).not.toContain('%PDF-current');
   });
 
   it('preserves the offline shell for app navigation', async () => {
@@ -86,10 +87,10 @@ describe('retired education resource delivery', () => {
     expect(await response.text()).toContain('App shell');
   });
 
-  it('revalidates retained PDF downloads online', async () => {
+  it('blocks retired PDF downloads online without consulting the network', async () => {
     const h = harness();
-    expect(await (await h.fetch('/stroke/documents/valid.pdf')).text()).toBe('current resource');
-    expect(h.requests[0].options.cache).toBe('no-cache');
+    expect((await h.fetch('/stroke/documents/valid.pdf')).status).toBe(410);
+    expect(h.requests).toEqual([]);
   });
 
   it('retires only this application’s older caches', async () => {

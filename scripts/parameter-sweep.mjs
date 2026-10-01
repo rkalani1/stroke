@@ -1,17 +1,13 @@
 // scripts/parameter-sweep.mjs
 //
-// Analyst harness — sweeps a parameter grid through the calculator and matcher
-// engines and emits CSV of which trial branches / eligibility tiers / risk
-// categories fire. Useful for retrospective audits, registry comparisons, and
-// grant-application figures.
+// Maintained deterministic-helper grid harness. Synthetic inputs only.
+// Source screens are population-limited and never establish treatment eligibility.
 //
 // USAGE:
 //   node scripts/parameter-sweep.mjs --output output/sweep-tnk.csv --domain tnk
 //   node scripts/parameter-sweep.mjs --domain large-core-evt
 //   node scripts/parameter-sweep.mjs --domain dapt
 //   node scripts/parameter-sweep.mjs --domain dawn
-//   node scripts/parameter-sweep.mjs --domain phases
-//   node scripts/parameter-sweep.mjs --domain late-window-lytic
 //
 // DESIGN:
 // — Each domain defines (a) its parameter grid (axes × values) and
@@ -69,10 +65,10 @@ const DOMAINS = {
   // ---- TNK / alteplase dose grid ----
   tnk: {
     description: 'TNK dose by weight, 30-150 kg in 5-kg steps',
-    axes: { weightKg: range(30, 150, 5) },
-    columns: ['weightKg', 'calculatedDose', 'volume', 'isMaxDose'],
+    axes: { weightKg: range(30, 150, 5), authority: ['guideline', 'fda-label'] },
+    columns: ['weightKg', 'authority', 'calculatedDose', 'volume', 'isMaxDose'],
     run: (calc, p) => {
-      const r = calc.calculateTNKDose(p.weightKg);
+      const r = calc.calculateTNKDoseReviewed(p.weightKg, p.authority);
       return r ? { ...p, ...r } : null;
     }
   },
@@ -82,7 +78,7 @@ const DOMAINS = {
     axes: { weightKg: range(30, 130, 5) },
     columns: ['weightKg', 'totalDose', 'bolus', 'infusion', 'capped'],
     run: (calc, p) => {
-      const r = calc.calculateAlteplaseDose(p.weightKg);
+      const r = calc.calculateAlteplaseDoseReviewed(p.weightKg);
       return r ? { ...p, ...r } : null;
     }
   },
@@ -97,7 +93,7 @@ const DOMAINS = {
     },
     columns: ['age', 'weight', 'sex', 'creatinine', 'value', 'renalCategory', 'isLow'],
     run: (calc, p) => {
-      const r = calc.calculateCrCl(p.age, p.weight, p.sex, p.creatinine);
+      const r = calc.calculateCrClReviewed(p.age, p.weight, p.sex, p.creatinine);
       return r ? { ...p, ...r } : null;
     }
   },
@@ -170,48 +166,7 @@ const DOMAINS = {
     }
   },
 
-  // ---- Late-window lytic (TRACE-III) sweep ----
-  'late-window-lytic': {
-    description: 'TRACE-III eligibility across LKW × LVO × EVT-availability × NIHSS × core × mismatch',
-    axes: {
-      timeFromLKWh: [3, 6, 12, 18, 24, 26],
-      lvo: [false, true],
-      evtAvailable: [false, true],
-      nihss: [4, 8, 16, 25, 30],
-      age: [60],
-      coreMl: [30, 60, 80],
-      mismatchRatio: [1.5, 2.0, 3.0],
-      mismatchVolumeMl: [10, 30, 50]
-    },
-    columns: ['timeFromLKWh', 'lvo', 'evtAvailable', 'nihss', 'coreMl', 'mismatchRatio', 'mismatchVolumeMl', 'eligible', 'reason'],
-    run: (calc, p) => {
-      const r = calc.recommendLateWindowLytic(p);
-      return r ? { ...p, ...r } : null;
-    }
-  },
 
-  // ---- PHASES rupture-risk per-score ----
-  phases: {
-    description: 'PHASES 5-yr rupture risk across all scores 0-15',
-    axes: { score: range(0, 15, 1) },
-    columns: ['score', 'risk', 'level', 'fivYearPct'],
-    run: (calc, p) => ({ ...p, ...calc.getPHASESRisk(p.score) })
-  },
-
-  // ---- ROPE × age sweep ----
-  rope: {
-    description: 'ROPE score × age × risk-factor combinations',
-    axes: {
-      age: [25, 35, 45, 55, 65, 75],
-      noHypertension: [false, true],
-      noDiabetes: [false, true],
-      noStrokeTia: [false, true],
-      nonsmoker: [false, true],
-      cortical: [false, true]
-    },
-    columns: ['age', 'noHypertension', 'noDiabetes', 'noStrokeTia', 'nonsmoker', 'cortical', 'score'],
-    run: (calc, p) => ({ ...p, score: calc.calculateROPEScore(p) })
-  }
 };
 
 function range(lo, hi, step) {

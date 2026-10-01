@@ -37,7 +37,6 @@ module.exports = {
        whether or not a view has adopted a given recipe yet. The old ^v6- /
        ^v7- patterns are gone: no class name is built dynamically, so the
        content scan finds every v7-* class still in use. */
-    { pattern: /^ui-/ },
     /* Codemod replaces accent classes; keep cobalt-* available regardless */
     { pattern: /^(bg|text|border|ring)-(cobalt|crit|warn|ok|info|link)-(50|100|200|300|400|500|600|700|800|900|950)$/ }
   ],

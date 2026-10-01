@@ -1,99 +1,40 @@
-# Stroke CDS — MCP server
+# Stroke Encounter MCP client
 
-An [MCP](https://modelcontextprotocol.io) server that exposes the stroke
-clinical-decision-support **calculators** and **evidence atlas** as
-agent-callable tools. It uses reviewed public calculator exports (`../src/calculators*.js`) and
-reads the served data API (`../data`). Protected institutional helpers remain
-unchanged; agent tools withhold their operational instructions.
+The local stdio server wraps the same retained pure helpers as the synthetic
+Encounter workspace. It does not start an AI runtime or contact remote sources.
+Run `npm ci --prefix mcp`, `npm run agent:assets`, then `npm --prefix mcp run smoke`.
+Configure the MCP client to execute `node` with the absolute `mcp/server.mjs` path.
 
-**Institution-neutral. Not medical advice** — decision support for qualified
-clinicians; verify against primary sources and local policy.
+Synthetic educational demo only: no real encounter details or PHI. Every output
+includes the public-demo disclaimer, which downstream clients must display.
+Arithmetic does not establish treatment eligibility or administration.
 
-## Install
+| Retained tool | Scope |
+|---|---|
+| `calc_tnk_dose` | Explicit guideline or US FDA-label authority; kg input; no eligibility inference |
+| `calc_alteplase_dose` | Strict adult AIS arithmetic, 0.9 mg/kg maximum 90 mg, 10% bolus and 90% infusion |
+| `calc_crcl` | Adult Cockcroft–Gault, raw threshold value and rounded display; stable creatinine and weight convention require review |
+| `calc_dawn_eligibility` | Partial historical screen; never complete EVT eligibility |
+| `calc_defuse3_eligibility` | Partial historical screen; `penumbraMl` is legacy total hypoperfused volume including core |
+| `list_calculators` | Ten retained workspace tool contracts and reveal routes |
+| `get_sources` | Bounded source/claim records, original review scopes and unresolved correction limitations |
 
-```bash
-cd mcp
-npm install
-npm run smoke   # optional: verify tools work
-```
+Inputs use strict finite numbers and explicit units. DAWN/DEFUSE-3 preserve their
+legacy tool names but return `eligible: null` when the partial screen is met,
+`partialScreenMet: true`, `actionable: false`, and the omitted clinical domains.
+Failure does not exclude EVT under newer evidence.
 
-## Tools
+Schema 2 deliberately retires `search_trials`, `get_trial`, `list_guidelines`,
+`get_guideline`, `calc_enoxaparin_dose`, `calc_doac_start_timing`, `calc_pcc_dose`,
+`calc_andexanet_dose`, and `generic_bp_protocols`. They are absent from tool
+advertising and produce the MCP unavailable-tool error when called. Retained
+names and input contracts remain available; alteplase now rejects malformed or
+out-of-range input and uses the exact formula split before display rounding.
+Protected institutional instructions are not promoted into universal agent doses.
 
-**Calculators** (call the real functions, return their result objects):
-`calc_tnk_dose`, `calc_alteplase_dose`, `calc_pcc_dose`, `calc_andexanet_dose`,
-`calc_crcl`, `calc_enoxaparin_dose`, `calc_doac_start_timing`,
-`calc_dawn_eligibility`, `calc_defuse3_eligibility`.
-
-- `calc_tnk_dose` accepts `authority: "guideline"` (default: exact 0.25 mg/kg,
-  maximum 25 mg) or `"fda-label"` (US TNKase AIS weight bands). The returned
-  source and authority are explicit; a dose does not establish IVT eligibility.
-- `calc_crcl` accepts `male`/`female` and returns an adult estimate: `rawValue`
-  is used for renal thresholds; `value` is rounded for display. It does not
-  determine dialysis. Drug-specific weight conventions still require review.
-- `calc_enoxaparin_dose` gives separate adult DVT-treatment and medical-illness
-  prophylaxis label references. Missing/null CrCl selects no dose. Use an
-  unrounded clearance; obesity does not automatically double prophylaxis.
-- `calc_doac_start_timing` retains its input contract but returns `days: null`,
-  `startDate: null`, and `actionable: false`. There is no validated combined
-  NIHSS-based ELAN/OPTIMAS/CATALYST start schedule.
-- `calc_pcc_dose` retains compatibility inputs but returns no PCC dose or
-  repeat-dose/plasma instructions. Its protected institutional source cannot
-  be applied as a universal agent dosing rule.
-- `calc_andexanet_dose` returns non-actionable US availability information,
-  with no andexanet or replacement PCC dose. It does not determine availability
-  in other jurisdictions.
-- DAWN/DEFUSE-3 tools return `partialScreenMet` for the modeled criteria. A
-  positive partial screen has `eligible: null`, `actionable: false`, and named
-  missing domains; a failed screen has `eligible: false` and does not exclude
-  EVT under other evidence. DEFUSE-3's compatibility input `penumbraMl` means
-  **total Tmax >6 s hypoperfused volume including core**, not salvageable-only volume.
-
-**Atlas / data**: `list_calculators`, `search_trials`, `get_trial`,
-`list_guidelines`, `get_guideline`, `generic_bp_protocols`.
-
-`get_guideline` accepts only IDs from `list_guidelines` and retains each source
-review note. `generic_bp_protocols` retains its tool name but returns
-`protocols: null` and `actionable: false`; it does not export protected
-institutional BP targets, titrations, surgical or trial-priority instructions.
-
-`npm run smoke` exercises all 15 tools through the real stdio transport,
-including invalid inputs, withheld outputs, renal thresholds and ID traversal.
-
-## Configure your agent
-
-The server speaks MCP over **stdio**. Point your client at `node <repo>/mcp/server.mjs`.
-
-### Claude Code (CLI)
-
-```bash
-claude mcp add stroke-cds -- node /absolute/path/to/stroke/mcp/server.mjs
-```
-
-### Claude Desktop — `claude_desktop_config.json`
-
-```json
-{
-  "mcpServers": {
-    "stroke-cds": {
-      "command": "node",
-      "args": ["/absolute/path/to/stroke/mcp/server.mjs"]
-    }
-  }
-}
-```
-
-### Codex — `~/.codex/config.toml`
-
-```toml
-[mcp_servers.stroke-cds]
-command = "node"
-args = ["/absolute/path/to/stroke/mcp/server.mjs"]
-```
-
-## Notes
-
-- The data tools read `../data/*.json`, which are regenerated by
-  `npm run agent:assets` (part of `npm run build`). Run a build if the atlas
-  changes and you want the server to serve fresh data.
-- To add a calculator: import it in `server.mjs` and `registerTool(...)`; the
-  catalog in `../data/calculators-index.json` lists every calculator the app has.
+Old static atlas/trial/guideline JSON URLs return explicit retirement envelopes
+with `data: null`, `_meta.status: "retired"`, replacement `/data/sources.json`,
+and archive `archive/pre-encounter-first-20261001-4f8e99d`. Pages may still use HTTP
+200 for these static files: inspect the status. Full historical content is at the
+archival Git ref, not a current API. Missing review dates remain missing; builds
+and metadata checks never imply clinical validation.

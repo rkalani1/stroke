@@ -1,46 +1,9 @@
-// scripts/validate-pmids.mjs
-//
-// Citation-metadata guard for the education layer.
-//
-// WHY THIS EXISTS
-// An external evidence audit found eleven PMIDs across the audited card subset
-// that resolved to entirely unrelated papers — a nutrition review, a
-// condensed-matter physics article, a cystic fibrosis drug-interaction study, a
-// food-chemistry paper on selenium in boiled vegetables. That is not a
-// transcription pattern. It is what unchecked generated citations look like, and
-// every one of them rendered as a live, clickable PubMed link on a
-// clinical-facing site.
-//
-// The existing validators cannot catch this class: validate-citations checks
-// PMID *format* and pmid/url consistency, never that the number resolves to the
-// intended paper. This script closes that gap by fetching each PMID's real
-// metadata and comparing it against the citation string the card prints.
-//
-// WHAT IT CHECKS
-//   Sources swept:
-//     • references[] entries in content/education/*.md frontmatter
-//     • `pmid: '...'` literals in src/education.jsx and src/simulators/*.jsx
-//   For each PMID, from NCBI E-utilities esummary:
-//     • first-author surname must appear in the citation string  → ERROR
-//     • title similarity must clear the threshold                → ERROR
-//     • volume / pages disagreement                              → WARNING
-//
-// A first-author or title mismatch fails the build. Bibliographic drift only
-// warns, because PubMed's own volume/page fields are inconsistent (elided page
-// ranges, "discussion" suffixes, truncated NEJM page fields) and because the
-// repo deliberately prints print-volume years where PubMed carries the e-pub
-// stamp.
-//
-// NETWORK
-// Responses are cached to a gitignored file so CI is not rate-limited and reruns
-// are offline. When the cache misses AND the network is unreachable, the script
-// reports the gap and exits 0 — an unreachable endpoint is an environment
-// problem, not a citation defect. A cached-or-fetched MISMATCH always fails.
-//
-// Usage:
-//   node ./scripts/validate-pmids.mjs            # cached + fetch on miss
-//   node ./scripts/validate-pmids.mjs --refresh  # ignore cache, refetch all
-//   node ./scripts/validate-pmids.mjs --quiet
+// Primary metadata guard for the maintained citation registry.
+// Cached or fetched first-author/title mismatches fail. Unreachable metadata
+// remains an explicit environmental gap; builds never imply clinical review.
+// Only supplied bibliographic fields are checked for drift. Empty registry
+// volume/pages are omissions, not fabricated conflicting citation details.
+// --refresh refreshes metadata, never clinical lastReviewed.
 
 import fs from 'node:fs/promises';
 import fsSync from 'node:fs';
@@ -78,51 +41,16 @@ function similarity(a, b) {
 
 async function collectOccurrences() {
   const out = new Map(); // pmid -> [{file, citation}]
-  const add = (pmid, file, citation) => {
+  const add = (pmid, file, citation, volumeProvided = true) => {
     if (!/^\d{6,9}$/.test(pmid)) return;
     if (!out.has(pmid)) out.set(pmid, []);
-    out.get(pmid).push({ file, citation: citation || '' });
+    out.get(pmid).push({ file, citation: citation || '', volumeProvided });
   };
 
-  // content/education/*.md — references: [ {..., "pmid":"..."} ] in frontmatter
-  const eduDir = path.join(repoRoot, 'content/education');
-  for (const f of (await fs.readdir(eduDir)).filter((x) => x.endsWith('.md'))) {
-    const text = await fs.readFile(path.join(eduDir, f), 'utf8');
-    const line = /^references:\s*(\[.*\])\s*$/m.exec(text);
-    if (!line) continue;
-    let refs;
-    try { refs = JSON.parse(line[1]); } catch { continue; }
-    for (const r of refs) if (r && r.pmid) add(String(r.pmid), `content/education/${f}`, `${r.label || ''} ${r.citation || ''}`);
-  }
+  // Maintained citation registry only. Historical teaching sources are archived.
+  const { citations } = await import('../src/evidence/citations.js');
+  for (const c of citations) if (c.pmid) add(String(c.pmid), `src/evidence/citations.js:${c.id}`, `${c.authors} ${c.title} ${c.journal} ${c.year};${c.volume}:${c.pages}`, Boolean(c.volume));
 
-  // src/education.jsx + src/simulators/*.jsx — pmid: '...' literals, paired with
-  // the nearest citation/cite string on the same object.
-  const jsxFiles = [path.join(repoRoot, 'src/education.jsx')];
-  const simDir = path.join(repoRoot, 'src/simulators');
-  if (fsSync.existsSync(simDir)) {
-    for (const f of (await fs.readdir(simDir)).filter((x) => x.endsWith('.jsx'))) jsxFiles.push(path.join(simDir, f));
-  }
-  for (const abs of jsxFiles) {
-    const text = await fs.readFile(abs, 'utf8');
-    const rel = path.relative(repoRoot, abs);
-    const rx = /pmid:\s*'(\d{6,9})'/g;
-    let m;
-    while ((m = rx.exec(text)) !== null) {
-      // The citation for this pmid is the cite/citation on the same literal.
-      const from = Math.max(0, m.index - 700);
-      const around = text.slice(from, m.index);
-      // Citation strings legitimately contain escaped single quotes, e.g.
-      // 'Cerebrovascular \\'moyamoya\\' disease'. A naive [^']* stops at the first
-      // escape and truncates the citation, which then fails every identity check
-      // — a false positive manufactured by the validator itself.
-      const STR = "(?:citation|cite):\\s*'((?:[^'\\\\]|\\\\.)*)'";
-      const unesc = (v) => String(v || '').replace(/\\(['"\\\\])/g, '$1');
-      const tail = around.split('{').pop() || '';
-      const cite = new RegExp(STR + "\\s*,?\\s*$").exec(around) || new RegExp(STR).exec(tail);
-      const label = /label:\s*'((?:[^'\\]|\\.)*)'/.exec(tail);
-      add(m[1], rel, `${label ? unesc(label[1]) : ''} ${cite ? unesc(cite[1]) : ''}`);
-    }
-  }
   return out;
 }
 
@@ -247,7 +175,7 @@ async function main() {
       // Bibliographic drift — warn only. PubMed elides page ranges, appends
       // "discussion", truncates some NEJM page fields, and stamps e-pub years.
       const volInCite = new RegExp(`\\b${rec.volume}\\b`).test(cite);
-      if (rec.volume && !volInCite && /\d{2,4}\s*[;(]/.test(cite)) {
+      if (occ.volumeProvided && rec.volume && !volInCite && /\d{2,4}\s*[;(]/.test(cite)) {
         warnings.push(`${occ.file} — PMID ${pmid}: volume ${rec.volume} not found in "${cite.trim().slice(0, 90)}"`);
       }
     }

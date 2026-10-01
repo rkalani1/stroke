@@ -1,3 +1,4 @@
+// Maintained Encounter arithmetic/source screens only. Full historical helpers are at the archival Git ref.
 // Reviewed helpers accept complete finite numbers, never partial strings or booleans.
 const reviewedNumber = (value) => {
   if (typeof value === 'number') return Number.isFinite(value) ? value : null;
@@ -6,78 +7,7 @@ const reviewedNumber = (value) => {
   return Number.isFinite(number) ? number : null;
 };
 
-// Pure clinical calculator functions extracted from app.jsx.
-// Keeping these as a separate module makes them unit-testable and
-// lets the bundler tree-shake unused helpers.
 
-// DOAC initiation timing protocols for AF-related ischemic stroke.
-// 'elan-optimas' (default): supported by ELAN (Fischer NEJM 2023;388:2411-21, PMID 37222476) and
-//   OPTIMAS (Werring Lancet 2024, PMID 39491870) and the CATALYST IPD meta-analysis
-//   (Dehbi et al., Lancet 2025, PMID 40570866, doi: 10.1016/S0140-6736(25)00439-8; n=5441 pooling
-//   ELAN, OPTIMAS, TIMING, START). Implemented schedule is a hybrid, not a single trial protocol: NIHSS <8 → day 1, 8-15 → day 3, ≥16 → day 6-7. ELAN early arm: within 48 h for minor/moderate and day 6-7 for major stroke, severity graded by infarct size on imaging; OPTIMAS early arm: ≤4 days from onset regardless of severity. The NIHSS cut-points (<8, 8-15, ≥16) come from the 1-3-6-12 rule, not from ELAN/OPTIMAS. CATALYST pooled early (≤4 d) vs later (≥5 d) starts.
-//   Symptomatic ICH 0.4% in both arms.
-// 'expert-consensus': earlier institutional NIHSS-stratified scheme — predates CATALYST and is
-//   sometimes informally called "CATALYST" in older notes; kept under a distinct ID for
-//   compatibility but renamed here to disambiguate from the formal IPDMA.
-// '1-3-6-12': legacy rule (Heidbuchel 2017 EHRA practical guide) — preserved for institutions
-//   still using this default.
-// Early DOAC initiation (≤4 days) for minor/moderate AF strokes is supported by ELAN (2023),
-// OPTIMAS (2024) and the CATALYST IPD meta-analysis (2025) — not by any AHA/ASA 2024 guideline update.
-export const DOAC_PROTOCOLS = {
-  'elan-optimas': {
-    label: 'ELAN/OPTIMAS — early start (default)',
-    days: { minor: 1, moderate: 3, severe: 6, verySevere: 7 },
-    source: 'Fischer NEJM 2023 (ELAN, PMID 37222476); Werring Lancet 2024 (OPTIMAS, PMID 39491870); Dehbi Lancet 2025 (CATALYST IPDMA, PMID 40570866, doi: 10.1016/S0140-6736(25)00439-8)'
-  },
-  // Legacy alias retained for backwards-compatibility with persisted localStorage values.
-  // Points to the same protocol as 'expert-consensus'.
-  catalyst: {
-    label: 'Expert-consensus NIHSS-stratified (legacy)',
-    days: { minor: 1, moderate: 3, severe: 6 },
-    source: 'Institutional expert-consensus protocol (legacy default; predates the CATALYST IPDMA)'
-  },
-  'expert-consensus': {
-    label: 'Expert-consensus NIHSS-stratified (legacy)',
-    days: { minor: 1, moderate: 3, severe: 6 },
-    source: 'Institutional expert-consensus protocol (legacy default; predates the CATALYST IPDMA)'
-  },
-  '1-3-6-12': {
-    label: '1-3-6-12 rule',
-    // Day 1 is the rule's TIA tier; this calculator scores infarcts by NIHSS,
-    // so the earliest emitted tier is day 3 (mild, NIHSS <8), then day 6
-    // (moderate, NIHSS 8-15) and day 12 (severe, NIHSS >=16).
-    days: { minor: 3, moderate: 6, severe: 12, verySevere: 12 },
-    source: 'Heidbuchel 2017 EHRA practical guide'
-  }
-};
-
-export const calculateDOACStart = (nihss, onsetDate, protocol = 'elan-optimas', imagingSize = null) => {
-  const nihssVal = parseFloat(nihss);
-  if (!onsetDate) return null;
-  const onset = new Date(onsetDate);
-  if (Number.isNaN(onset.getTime())) return null;
-  const rule = DOAC_PROTOCOLS[protocol] || DOAC_PROTOCOLS['elan-optimas'] || DOAC_PROTOCOLS.catalyst;
-  const nihssSeverity = Number.isNaN(nihssVal)
-    ? 'moderate'
-    : nihssVal < 8
-      ? 'minor'
-      : nihssVal <= 15
-        ? 'moderate'
-        : nihssVal >= 21 && rule.days.verySevere
-          ? 'verySevere'
-          : 'severe';
-  const imagingSeverityMap = { small: 'minor', moderate: 'moderate', large: 'severe' };
-  const imagingSeverity = imagingSize ? (imagingSeverityMap[imagingSize] || null) : null;
-  const severityOrder = ['minor', 'moderate', 'severe', 'verySevere'];
-  const severity = imagingSeverity && severityOrder.indexOf(imagingSeverity) > severityOrder.indexOf(nihssSeverity)
-    ? imagingSeverity
-    : nihssSeverity;
-  const imagingOverride = imagingSeverity && severity !== nihssSeverity;
-  const days = rule.days[severity] ?? rule.days.severe ?? rule.days.moderate;
-  const startDate = new Date(onset);
-  startDate.setDate(startDate.getDate() + days);
-  return { severity, days, startDate, protocol, source: rule.source, imagingOverride };
-};
 
 export const calculateNIHSS = (responses) => {
   if (!responses || typeof responses !== 'object') return 0;
@@ -89,14 +19,6 @@ export const calculateNIHSS = (responses) => {
     return sum + (isNaN(score) ? 0 : score);
   }, 0);
   return Math.min(total, 42);
-};
-
-export const calculatePCAspects = (regions) => {
-  if (!Array.isArray(regions)) return 0;
-  return regions.reduce((total, region) => {
-    if (!region || typeof region !== 'object') return total;
-    return total + (region.checked ? (region.points || 0) : 0);
-  }, 0);
 };
 
 export const calculateGCS = (items) => {
@@ -125,159 +47,6 @@ export const calculateICHScore = (items) => {
   return score;
 };
 
-// ABCD² (Johnston Lancet 2007;369:283-92). Range 0-7.
-// CLINICAL FEATURES: weakness scores 2 points; speech without weakness scores 1; both
-// together still scores 2 (weakness only — they are mutually exclusive in the score).
-// The UI surfaces this via the `mutuallyExclusiveNote` field below so a user
-// who toggles speech-disturbance while weakness is already checked sees why
-// the score doesn't change.
-export function calculateABCD2Score(items) {
-  if (!items || typeof items !== 'object') return 0;
-  let score = 0;
-  if (items.age60) score += 1;
-  if (items.bp) score += 1;
-  if (items.unilateralWeakness) score += 2;
-  if (items.speechDisturbance && !items.unilateralWeakness) score += 1;
-  if (items.duration === 'duration10') score += 1;
-  else if (items.duration === 'duration60') score += 2;
-  if (items.diabetes) score += 1;
-  return score;
-}
-
-// Returns a structured ABCD² breakdown including the speech-vs-weakness mutual-exclusion
-// status, suitable for surfacing in a UI tooltip or expanded score detail.
-export const calculateABCD2WithDetail = (items) => {
-  const score = calculateABCD2Score(items);
-  if (!items || typeof items !== 'object') return { score, components: {}, mutuallyExclusiveNote: null };
-  const components = {
-    age60: items.age60 ? 1 : 0,
-    bp: items.bp ? 1 : 0,
-    weakness: items.unilateralWeakness ? 2 : 0,
-    speechWithoutWeakness: (items.speechDisturbance && !items.unilateralWeakness) ? 1 : 0,
-    duration: items.duration === 'duration60' ? 2 : items.duration === 'duration10' ? 1 : 0,
-    diabetes: items.diabetes ? 1 : 0
-  };
-  const mutuallyExclusiveNote = (items.speechDisturbance && items.unilateralWeakness)
-    ? 'Note: per Johnston 2007, the clinical-features item scores either weakness (2 pts) OR speech disturbance (1 pt) — when both are present the score takes the weakness value only (no double-count).'
-    : null;
-  return { score, components, mutuallyExclusiveNote, source: 'Johnston Lancet 2007;369:283-92' };
-};
-
-// CHA₂DS₂-VASc — Lip 2010 Chest 137:263-72. Max score 9 (sex contributes +1 for female).
-// This is the LEGACY score; ESC 2024 dropped sex and replaced this with CHA₂DS₂-VA.
-// Both functions are exported so callers can choose; the UI labels each by name.
-// `calculateCHADS2VA` (in calculators-extended.js) is the 2024 ESC update.
-export const calculateCHADS2VascScore = (items) => {
-  if (!items || typeof items !== 'object') return 0;
-  let score = 0;
-  if (items.chf) score += 1;
-  if (items.hypertension) score += 1;
-  if (items.age75) score += 2;
-  else if (items.age65) score += 1;
-  if (items.diabetes) score += 1;
-  if (items.strokeTia) score += 2;
-  if (items.vascular) score += 1;
-  if (items.female) score += 1;
-  return score;
-};
-
-export const calculateROPEScore = (items) => {
-  if (!items || typeof items !== 'object') return 0;
-  let score = 0;
-  if (items.noHypertension) score += 1;
-  if (items.noDiabetes) score += 1;
-  if (items.noStrokeTia) score += 1;
-  if (items.nonsmoker) score += 1;
-  if (items.cortical) score += 1;
-  const age = parseInt(items.age, 10) || 0;
-  if (age >= 18 && age <= 29) score += 5;
-  else if (age >= 30 && age <= 39) score += 4;
-  else if (age >= 40 && age <= 49) score += 3;
-  else if (age >= 50 && age <= 59) score += 2;
-  else if (age >= 60 && age <= 69) score += 1;
-  return score;
-};
-
-export const calculateHASBLEDScore = (items) => {
-  if (!items || typeof items !== 'object') return 0;
-  let score = 0;
-  if (items.hypertension) score += 1;
-  if (items.renalDisease) score += 1;
-  if (items.liverDisease) score += 1;
-  if (items.stroke) score += 1;
-  if (items.bleeding) score += 1;
-  if (items.labileINR) score += 1;
-  if (items.elderly) score += 1;
-  if (items.drugs) score += 1;
-  if (items.alcohol) score += 1;
-  return score;
-};
-
-// RCVS² (Rocha Neurology 2019;92:e639-e647 (PMID 30635475)). Range -2 to +10.
-// Score ≥5: high specificity (~99%) for RCVS vs primary CNS angiitis / other vasculopathies.
-// Score ≤2: 100% specificity and 85% sensitivity for excluding RCVS (derivation cohort). Negative scores are valid output and
-// preserved here (legacy clamp to 0 suppressed signal).
-export const calculateRCVS2Score = (items) => {
-  if (!items || typeof items !== 'object') return 0;
-  let score = 0;
-  if (items.recurrentTCH) score += 5;
-  if (items.carotidInvolvement) score -= 2;
-  if (items.vasoconstrictiveTrigger) score += 3;
-  if (items.female) score += 1;
-  if (items.sah) score += 1;
-  return score;
-};
-
-export const calculatePHASESScore = (items) => {
-  if (!items || typeof items !== 'object') return 0;
-  let score = 0;
-  if (items.population === 'japanese') score += 3;
-  else if (items.population === 'finnish') score += 5;
-  if (items.hypertension) score += 1;
-  if (items.age70) score += 1;
-  const size = parseFloat(items.size) || 0;
-  if (size >= 20) score += 10;
-  else if (size >= 10) score += 6;
-  else if (size >= 7) score += 3;
-  if (items.earlierSAH) score += 1;
-  if (items.site === 'mca') score += 2;
-  else if (items.site === 'aca_pcomm_posterior') score += 4;
-  return score;
-};
-
-// Per-score 5-year rupture risk per Greving Lancet Neurol 2014 Table 3.
-// Bucketed risk-tier label kept for at-a-glance reading; numeric risk is per-score for accuracy.
-const PHASES_RISK_PER_SCORE = {
-  0: 0.4, 1: 0.4, 2: 0.4,
-  3: 0.7,
-  4: 0.9,
-  5: 1.3,
-  6: 1.7,
-  7: 2.4,
-  8: 3.2,
-  9: 4.3,
-  10: 5.3,
-  11: 7.2
-  // ≥12 → 17.8% (handled below)
-};
-export const getPHASESRisk = (score) => {
-  const s = Math.max(0, Math.floor(Number(score) || 0));
-  const numeric = s >= 12 ? 17.8 : PHASES_RISK_PER_SCORE[s] ?? 17.8;
-  const level = s <= 2 ? 'Very low'
-    : s <= 4 ? 'Low'
-    : s <= 6 ? 'Low-Moderate'
-    : s <= 8 ? 'Moderate'
-    : s <= 10 ? 'Moderate-High'
-    : 'High';
-  return { risk: `${numeric}%`, level, fivYearPct: numeric };
-};
-
-// ABC/2 (Kothari Stroke 1996). Inputs MUST be in centimeters; if any dimension
-// is suspiciously large (>15 cm) or computed volume exceeds 500 mL, surface a
-// likely-unit-confusion warning so a mm-vs-cm typo doesn't silently 1000× the
-// estimate. In the June 2026 algorithm, confirmed non-traumatic IPH >=15 mL
-// is the early Neurosurgery + stroke-service evaluation trigger; >=30 mL
-// remains the prognostic / MIE-screen volume tier when other criteria fit.
 export const calculateICHVolume = (items) => {
   if (!items || typeof items !== 'object') return null;
   const a = parseFloat(items.lengthCm) || 0;
@@ -302,66 +71,6 @@ export const calculateICHVolume = (items) => {
 
 const JUNE_2026_MIE_LOBAR_PATTERN = /\b(lobar|frontal|temporal|parietal|occipital|cortical)\b/;
 const JUNE_2026_MIE_DEEP_LOCATION_PATTERN = /\b(subcortical|deep|basal[-\s]?ganglia|thalamic|thalamus|brainstem|pons|midbrain|cerebellar|cerebellum|caudate|putamen|globus\s+pallidus|internal\s+capsule)\b/;
-
-export const isJune2026MieLobarLocationText = (text = '') => {
-  const normalized = String(text || '').toLowerCase();
-  return JUNE_2026_MIE_LOBAR_PATTERN.test(normalized)
-    && !JUNE_2026_MIE_DEEP_LOCATION_PATTERN.test(normalized);
-};
-
-export const calculateEnoxaparinDose = (weightKg, crCl) => {
-  const weight = reviewedNumber(weightKg);
-  const renalClearance = reviewedNumber(crCl);
-  if (weight === null || weight <= 0 || weight > 350) return null;
-  const sourceUrl = 'https://products.sanofi.us/lovenox/lovenox.pdf';
-  if (renalClearance === null || renalClearance <= 0) return {
-    status: 'incomplete', dose: null, dailyDose: null, frequency: null,
-    isRenalAdjusted: null, crClUnknown: true,
-    note: 'CrCl unknown or invalid — confirm renal function before selecting a dose.',
-    dailyTreatmentNote: 'No treatment regimen selected while renal function is unresolved.',
-    prophylaxisNote: 'No prophylaxis dose selected while renal function is unresolved.', sourceUrl
-  };
-  const isRenalAdjusted = renalClearance < 30;
-  const dailyDose = isRenalAdjusted ? weight : Number((weight * 1.5).toPrecision(12));
-  return {
-    status: 'reference', dose: weight, dailyDose,
-    frequency: isRenalAdjusted ? 'daily' : 'BID', isRenalAdjusted, crClUnknown: false,
-    note: `Adult acute DVT treatment reference: ${weight} mg SC ${isRenalAdjusted ? 'daily (CrCl <30)' : 'every 12 hours'} (1 mg/kg). Confirm the indication, bleeding risk, and product preparation before prescribing.`,
-    dailyTreatmentNote: isRenalAdjusted
-      ? `Renal-adjusted DVT treatment: ${weight} mg SC daily. The 1.5 mg/kg daily alternative does not apply with CrCl <30.`
-      : `For inpatient acute DVT with or without PE, a labeled alternative is ${dailyDose} mg SC daily (1.5 mg/kg). This is not a general acute-stroke treatment recommendation.`,
-    prophylaxisNote: `Medical-illness VTE prophylaxis reference: ${isRenalAdjusted ? 30 : 40} mg SC daily${isRenalAdjusted ? ' (CrCl <30)' : ''}. Obesity does not automatically change this to twice daily; the label reports no consensus for prophylactic dose adjustment in obesity. Individualize with pharmacy.`,
-    sourceUrl
-  };
-};
-
-// Andexanet is not available through the institution, so Protocols must not emit
-// a low- or high-dose regimen from these inputs. Keep the export and legacy result
-// keys stable for API consumers while returning a non-actionable result. The local
-// factor-Xa pathway is screen-gated and uses a fixed PCC dose; it is not weight-based.
-export const calculateAndexanetDose = (doacType, lastDoseHours, doacDoseMg, thrombosisRisk = 'moderate') => {
-  const unavailableNotice = 'Andexanet alfa (Andexxa) is not available in the US: US sales ended December 22, 2025 after the FDA concluded that its risks, including thromboembolic events, outweigh its benefits. No andexanet dose is provided.';
-  const institutionalPathway = 'For rivaroxaban, apixaban, or edoxaban-associated ICH, obtain a Direct Xa Inhibitor screen. If the screen is elevated and there is no PCC contraindication, the institutional pathway uses 4F-PCC 2000 units IV.';
-
-  return {
-    regimen: 'unavailable',
-    bolus: '',
-    infusion: '',
-    total: '',
-    doseWarning: unavailableNotice,
-    annexaINote: unavailableNotice,
-    pccAlternative: institutionalPathway,
-    unavailable: true,
-    actionable: false,
-    requiresElevatedDirectXaScreen: true,
-    inputsRetainedForDocumentation: {
-      doacType: doacType || '',
-      lastDoseHours: lastDoseHours ?? '',
-      doacDoseMg: doacDoseMg ?? '',
-      thrombosisRisk
-    }
-  };
-};
 
 export const calculateCrCl = (age, weight, sex, creatinine, heightCm) => {
   const a = parseFloat(age);
@@ -395,137 +104,6 @@ export const calculateCrCl = (age, weight, sex, creatinine, heightCm) => {
   };
 };
 
-export const calculateTNKDose = (weightKg) => {
-  const weight = parseFloat(weightKg);
-  if (isNaN(weight) || weight <= 0 || weight > 350) return null;
-  const rawDose = weight * 0.25;
-  const finalDose = Math.min(Math.round(rawDose * 2) / 2, 25);
-  const doseTable = [
-    { minWeight: 0, maxWeight: 59.9, dose: 'Variable (0.25 mg/kg)', vial: 'Calculate' },
-    { minWeight: 60, maxWeight: 69.9, dose: '15-17.5 mg', vial: '3-3.5 mL' },
-    { minWeight: 70, maxWeight: 79.9, dose: '17.5-20 mg', vial: '3.5-4 mL' },
-    { minWeight: 80, maxWeight: 89.9, dose: '20-22.5 mg', vial: '4-4.5 mL' },
-    { minWeight: 90, maxWeight: 99.9, dose: '22.5-25 mg', vial: '4.5-5 mL' },
-    { minWeight: 100, maxWeight: Infinity, dose: '25 mg (MAX)', vial: '5 mL' }
-  ];
-  return {
-    weightKg: weight,
-    calculatedDose: finalDose.toFixed(1),
-    volume: `${(finalDose / 5).toFixed(1)} mL`,
-    isMaxDose: rawDose >= 25,
-    doseTable
-  };
-};
-
-// Institutional 4F-PCC pathways use a fixed 2000-unit dose. `weightKg` remains in
-// the signature and returned object for compatibility, but never changes the dose.
-// For factor-Xa inhibitors, this result is conditional on an elevated Direct Xa
-// Inhibitor screen and absence of PCC contraindications. This helper intentionally
-// makes no statement about factor-Xa dialysis because accepted sources conflict.
-export const calculatePCCDose = (weightKg, inrVal, indication = 'warfarin', gate = {}) => {
-  const parsedWeight = parseFloat(weightKg);
-  const weight = Number.isFinite(parsedWeight) && parsedWeight > 0 && parsedWeight <= 350
-    ? parsedWeight
-    : null;
-  const inr = parseFloat(inrVal);
-  const fixedDose = 2000;
-  const hasInrInput = inrVal !== undefined
-    && inrVal !== null
-    && !(typeof inrVal === 'string' && inrVal.trim() === '');
-
-  if (hasInrInput && (!Number.isFinite(inr) || inr <= 0)) {
-    return {
-      ahaDose: null,
-      iuPerKg: null,
-      weight,
-      inrTierNote: 'Enter a finite INR greater than 0 before applying an institutional PCC pathway.',
-      indication,
-      fixedDose: false,
-      recommendation: 'invalid-inr',
-      vitaminK: null,
-      monitoring: null,
-      rescue: null
-    };
-  }
-
-  // Factor-Xa inhibitor ICH pathway — fixed dose, contingent on an elevated screen.
-  if (indication === 'fxa-ich' || indication === 'fxa-no-andexanet') {
-    const gateComplete = gate.directXaElevated === true && gate.pccContraindicated === false;
-    return {
-      ahaDose: gateComplete ? fixedDose : null,
-      iuPerKg: null,
-      weight,
-      inrTierNote: 'If the Direct Xa Inhibitor screen is elevated and there is no PCC contraindication, give 4F-PCC 2000 units IV. Andexanet alfa is no longer available in the US (withdrawn from the US market in 2025 for safety concerns).',
-      indication,
-      fixedDose: gateComplete,
-      recommendation: gateComplete ? 'give-fixed-dose' : 'pending-required-gates',
-      requiresElevatedDirectXaScreen: true,
-      requiresPccContraindicationReview: true,
-      missing: [
-        ...(gate.directXaElevated === true ? [] : ['elevated Direct Xa Inhibitor screen']),
-        ...(gate.pccContraindicated === false ? [] : ['explicit confirmation that PCC is not contraindicated'])
-      ],
-      andexanetAvailable: false
-    };
-  }
-
-  // Dabigatran fallback is supported only when idarucizumab is unavailable.
-  if (indication === 'dabigatran-fallback') {
-    const gateComplete = gate.idarucizumabAvailable === false && gate.pccContraindicated === false;
-    return {
-      ahaDose: gateComplete ? fixedDose : null,
-      iuPerKg: null,
-      weight,
-      inrTierNote: gateComplete
-        ? 'Idarucizumab is unavailable and PCC is not contraindicated; give 4F-PCC 2000 units IV.'
-        : 'No PCC dose is returned until idarucizumab is confirmed unavailable and PCC is explicitly confirmed not contraindicated.',
-      indication,
-      fixedDose: gateComplete,
-      recommendation: gateComplete ? 'give-fixed-dose-fallback' : 'pending-required-gates',
-      missing: [
-        ...(gate.idarucizumabAvailable === false ? [] : ['confirmation that idarucizumab is unavailable']),
-        ...(gate.pccContraindicated === false ? [] : ['explicit confirmation that PCC is not contraindicated'])
-      ]
-    };
-  }
-
-  // Warfarin pathway — INR determines recommendation strength, never the dose.
-  let ahaDose = null;
-  let inrTierNote = 'Enter or verify INR before applying the institutional warfarin PCC tier.';
-  let recommendation = 'needs-inr';
-  if (!Number.isNaN(inr)) {
-    if (inr < 1.3) {
-      inrTierNote = 'INR <1.3 — no institutional PCC recommendation is printed for this tier; give vitamin K 10 mg IV.';
-      recommendation = 'no-institutional-pcc-recommendation';
-    } else if (inr < 1.6) {
-      ahaDose = fixedDose;
-      inrTierNote = 'INR 1.3-1.5 — consider 4F-PCC case-by-case (2022 AHA/ASA ICH guideline COR 2b, LOE C-LD: may be reasonable). If selected, give 2000 units IV immediately.';
-      recommendation = 'consider-case-by-case';
-    } else if (inr < 2) {
-      ahaDose = fixedDose;
-      inrTierNote = 'INR 1.6-1.9 — 4F-PCC may be reasonable (2022 AHA/ASA ICH guideline COR 2b, LOE C-LD); institutional pathway: give 2000 units IV immediately.';
-      recommendation = 'recommended';
-    } else {
-      ahaDose = fixedDose;
-      inrTierNote = 'INR ≥2.0 — 4F-PCC recommended (COR 1/B); give 2000 units IV immediately.';
-      recommendation = 'recommended';
-    }
-  }
-
-  return {
-    ahaDose,
-    iuPerKg: null,
-    weight,
-    inrTierNote,
-    indication: 'warfarin',
-    fixedDose: true,
-    recommendation,
-    vitaminK: 'Give vitamin K 10 mg IV immediately.',
-    monitoring: 'Repeat PT/INR at 30 minutes and every 6 hours for 24 hours after PCC infusion.',
-    rescue: 'If PT/INR is >1.5 after infusion, page hematology and consider 500 additional units of PCC or 2-4 units of plasma (FFP).'
-  };
-};
-
 export const calculateAlteplaseDose = (weightKg) => {
   const weight = parseFloat(weightKg);
   if (isNaN(weight) || weight <= 0 || weight > 350) return null;
@@ -535,31 +113,17 @@ export const calculateAlteplaseDose = (weightKg) => {
   return { totalDose, bolus, infusion, weightKg: weight, capped: weight * 0.9 > 90 };
 };
 
-// CHOICE-2 Trial (Renú et al., JAMA 2026;335:1859-69, PMID 42096239): Adjunctive IA alteplase for eTICI 2b50-3
-// 0.225 mg/kg (max 20 mg) infused over 15 minutes post-thrombectomy (CHOICE 2022 used max 22.5 mg over 15-30 min).
-export const calculateAdjunctiveIAAlteplase = (weightKg, eTICI) => {
-  const weight = parseFloat(weightKg);
-  if (isNaN(weight) || weight <= 0 || weight > 350) return null;
-  
-  // Eligible if eTICI is 2b50, 2b67, 2c, or 3
-  const isEligibleTICI = ['2b50', '2b67', '2c', '3'].includes(String(eTICI).toLowerCase());
-  
-  const rawDose = weight * 0.225;
-  const finalDose = Math.min(+(rawDose).toFixed(2), 20);
-  
-  return {
-    weightKg: weight,
-    eTICI: eTICI,
-    isEligible: isEligibleTICI,
-    dose: finalDose,
-    maxDoseReached: rawDose >= 20,
-    note: isEligibleTICI
-      ? `CHOICE-2 (JAMA 2026): Adjunctive IA alteplase 0.225 mg/kg (max 20 mg) infused over 15 min after successful thrombectomy (eTICI 2b50-3); investigational. 90-day mortality was higher with IA alteplase (12.1% vs 6.4%).`
-      : `CHOICE-2 criteria generally require successful reperfusion (eTICI 2b50-3) before adjunctive IA alteplase.`
-  };
+export const calculateAlteplaseDoseReviewed = (weightKg) => {
+  const weight = reviewedNumber(weightKg);
+  if (weight === null || weight <= 0 || weight > 350) return null;
+  const totalDose = Math.min(Number((weight * 0.9).toPrecision(12)), 90);
+  const bolus = Number((totalDose * 0.1).toPrecision(12));
+  const infusion = Number((totalDose - bolus).toPrecision(12));
+  return { totalDose, bolus, infusion, weightKg: weight, capped: weight * 0.9 > 90,
+    roundingNote: 'Formula values shown without syringe rounding; independently verify preparation and administration. Bolus plus remaining infusion equals total dose.',
+    sourceUrl: 'https://www.gene.com/download/pdf/activase_prescribing.pdf' };
 };
 
-// Separate reviewed exports keep institutional/legacy calculator semantics intact.
 export const calculateCrClReviewed = (age, weight, sex, creatinine, heightCm) => {
   const [a, w, cr] = [age, weight, creatinine].map(reviewedNumber);
   const heightProvided = heightCm !== undefined && heightCm !== null && heightCm !== '';

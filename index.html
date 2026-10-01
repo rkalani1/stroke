@@ -1,262 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="description" content="Synthetic educational stroke decision-support demo with calculators, example protocols, evidence summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.">
-    <meta name="theme-color" content="#0A6571">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <!-- Disable iOS Safari auto-detection of decimal numbers (NIHSS scores, INRs)
-         as telephone links. Critical for a clinical app where 1.5 ≠ a phone number. -->
-    <meta name="format-detection" content="telephone=no">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="icon-192.png" type="image/png">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png">
-    <meta name="apple-mobile-web-app-title" content="Stroke CDS Demo">
-
-    <!-- Open Graph / Twitter Card for link previews (messaging, Slack, social) -->
-    <link rel="canonical" href="https://rkalani1.github.io/stroke/">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Stroke CDS Educational Demo">
-    <meta property="og:title" content="Stroke CDS Educational Demo">
-    <meta property="og:description" content="Synthetic educational stroke decision-support demo with calculators, example protocols, evidence summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.">
-    <meta property="og:url" content="https://rkalani1.github.io/stroke/">
-    <meta property="og:image" content="https://rkalani1.github.io/stroke/icon-192.png">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Stroke CDS Educational Demo">
-    <meta name="twitter:description" content="Synthetic educational stroke decision-support demo. Not medical advice; do not enter PHI; not an approved clinical tool.">
-    <meta name="twitter:image" content="https://rkalani1.github.io/stroke/icon-192.png">
-
-    <!-- Crawler/agent discovery -->
-    <link rel="sitemap" type="application/xml" href="sitemap.xml">
-    <!-- Structured data (schema.org). Institution-neutral by design; mirrors /llms.txt + /data/index.json. -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": ["WebApplication", "MedicalWebPage"],
-          "@id": "https://rkalani1.github.io/stroke/#app",
-          "name": "Stroke CDS Educational Demo",
-          "description": "Synthetic educational stroke decision-support demo with calculators, example protocols, evidence summaries, and trial-screening references. Not medical advice; do not enter PHI; not an approved clinical tool.",
-          "applicationCategory": "EducationalApplication",
-          "operatingSystem": "Web (Progressive Web App, offline-capable)",
-          "url": "https://rkalani1.github.io/stroke/",
-          "isAccessibleForFree": true,
-          "browserRequirements": "Requires JavaScript. Works offline after first load.",
-          "about": { "@type": "MedicalCondition", "name": "Stroke" },
-          "audience": { "@type": "MedicalAudience", "audienceType": "Clinician" },
-          "disclaimer": "Synthetic educational demo only - not medical advice, not an approved clinical tool, and not local clinical policy. Do not enter PHI or real encounter details; verify against primary sources and approved local protocol."
-        },
-        {
-          "@type": "Dataset",
-          "@id": "https://rkalani1.github.io/stroke/#api",
-          "name": "Stroke evidence atlas & guideline API",
-          "description": "Machine-readable JSON API: landmark/active trials, recommendations, citations, guideline metadata, management cards, and a calculator catalog. Each endpoint carries _meta (schemaVersion, appVersion, payload checksum).",
-          "url": "https://rkalani1.github.io/stroke/data/index.json",
-          "isAccessibleForFree": true,
-          "creativeWorkStatus": "Published",
-          "encodingFormat": "application/json"
-        }
-      ]
-    }
-    </script>
-
-    <!-- Apple touch startup images (PWA splash screens). iOS Safari needs
-         exact pixel-dimension matches via media queries. Without these, iOS
-         shows a white blank screen during PWA cold-start. -->
-    <link rel="apple-touch-startup-image" href="assets/splash/splash-iphone-16-pro-max.png"
-          media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="assets/splash/splash-iphone-16-pro.png"
-          media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="assets/splash/splash-iphone-16.png"
-          media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="assets/splash/splash-iphone-15-plus.png"
-          media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="assets/splash/splash-iphone-15-14-13-12.png"
-          media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="assets/splash/splash-iphone-13-mini-12-mini-x-xs.png"
-          media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="assets/splash/splash-iphone-8-7-6.png"
-          media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="assets/splash/splash-ipad-pro-129.png"
-          media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="assets/splash/splash-ipad-pro-11.png"
-          media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="assets/splash/splash-ipad-mini.png"
-          media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <title>Stroke CDS Educational Demo</title>
-
-    <link rel="modulepreload" href="app.js?v=6.30.7">
-    <link rel="stylesheet" href="tailwind.css?v=6.30.7">
-    <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/publicsans-normal-400.woff2">
-    <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/bricolage-700.woff2">
-    <!-- Every style rule, including the shell styles that used to be inlined
-         here, ships in tailwind.css. It is a render-blocking <link>, so
-         nothing paints unstyled; the pre-paint script below only has to pick
-         the theme. -->
-    <script>
-        // CRITICAL: Version management and automatic data cleanup
-        // This runs BEFORE React loads to prevent crashes from incompatible data
-        (function() {
-            const APP_VERSION = '6.30.7'; // Keep in sync with service-worker.js APP_VERSION/CACHE_NAME, the ?v= asset queries, and package.json version
-            const STORAGE_PREFIX = 'strokeApp:';
-            const APP_DATA_KEY = 'stroke.appData.v2';
-            const IS_PUBLIC_PAGES = /(^|\.)github\.io$/i.test(window.location.hostname || '');
-            const LEGACY_KEYS = [
-                'app_version',
-                'darkMode',
-                'activeTab',
-                'patientData',
-                'nihssScore',
-                'aspectsScore',
-                'gcsItems',
-                'mrsScore',
-                'ichScoreItems',
-                'abcd2Items',
-                'chads2vascItems',
-                'ropeItems',
-                'huntHessGrade',
-                'wfnsGrade',
-                'hasbledItems',
-                'rcvs2Items',
-                'strokeCodeForm',
-                'lkwTime',
-                'currentStep',
-                'completedSteps',
-                'aspectsRegionState',
-                'pcAspectsRegions',
-                'telestrokeNote',
-                'telestrokeTemplate',
-                'thrombolysisAlertsMuted',
-                'timerSidebarCollapsed',
-                'shiftPatients',
-                'currentPatientId',
-                'consultationType',
-                'ttlHoursOverride',
-                'lastUpdated',
-                'legacyMigrated'
-            ];
-            const LEGACY_SESSION_KEYS = ['error_reload_attempted'];
-
-            const parseStoredValue = (raw) => {
-                if (raw === null || raw === undefined) return null;
-                try {
-                    return JSON.parse(raw);
-                } catch {
-                    return raw;
-                }
-            };
-
-            const getStoredValue = (key) => {
-                try {
-                    const namespaced = localStorage.getItem(STORAGE_PREFIX + key);
-                    if (namespaced !== null) {
-                        return parseStoredValue(namespaced);
-                    }
-                    return parseStoredValue(localStorage.getItem(key));
-                } catch (_) { return null; }
-            };
-
-            const setStoredValue = (key, value) => {
-                try {
-                    localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(value));
-                } catch (e) {
-                    console.warn('Failed to write storage key:', key, e);
-                }
-            };
-
-            const clearAppStorage = (options = {}) => {
-                const includeLegacy = options.includeLegacy !== false;
-                try {
-                    Object.keys(localStorage).forEach((key) => {
-                        if (key.startsWith(STORAGE_PREFIX)) {
-                            localStorage.removeItem(key);
-                        }
-                    });
-                    localStorage.removeItem(APP_DATA_KEY);
-                    if (includeLegacy) {
-                        LEGACY_KEYS.forEach((key) => localStorage.removeItem(key));
-                    }
-                    Object.keys(sessionStorage).forEach((key) => {
-                        if (key.startsWith(STORAGE_PREFIX)) {
-                            sessionStorage.removeItem(key);
-                        }
-                    });
-                    LEGACY_SESSION_KEYS.forEach((key) => sessionStorage.removeItem(key));
-                } catch (e) {
-                    console.warn('Storage clear failed:', e);
-                }
-            };
-
-            window.strokeAppStorage = {
-                prefix: STORAGE_PREFIX,
-                appDataKey: APP_DATA_KEY,
-                legacyKeys: LEGACY_KEYS,
-                legacySessionKeys: LEGACY_SESSION_KEYS,
-                getStoredValue,
-                setStoredValue,
-                clearAppStorage,
-                appVersion: APP_VERSION
-            };
-
-            const storedVersion = getStoredValue('app_version');
-            const storedDarkMode = getStoredValue('darkMode') === true;
-
-            // If version doesn't match, clear app storage to prevent crashes
-            if (storedVersion && storedVersion !== APP_VERSION) {
-                console.log('Version change detected (' + storedVersion + ' -> ' + APP_VERSION + '). Clearing app storage for compatibility.');
-                clearAppStorage({ includeLegacy: false });
-                if (!IS_PUBLIC_PAGES && storedDarkMode) {
-                    setStoredValue('darkMode', true);
-                }
-            }
-
-            setStoredValue('app_version', APP_VERSION);
-
-            // Theme initialization — pre-paint, BEFORE app.js loads, so the first
-            // paint is already in the right theme on every host (GitHub Pages, a
-            // self-hosted copy, the native wrapper). Same rule as the app's
-            // theme controller (resolveTheme) and offline.html:
-            //   explicit 'dark' | 'light' → that; 'auto' → the OS preference;
-            //   unset → light on public Pages, the OS preference elsewhere.
-            // [data-theme] on <html> is the only dark-mode hook the CSS reads.
-            let storedThemePref = null;
-            try { storedThemePref = localStorage.getItem('stroke.v7.theme'); } catch (e) { /* ignore */ }
-            let themePref = (storedThemePref === 'light' || storedThemePref === 'dark' || storedThemePref === 'auto')
-                ? storedThemePref : null;
-            if (IS_PUBLIC_PAGES) {
-                // Legacy v5 'darkMode' key is superseded by stroke.v7.theme — clean
-                // it up, but never the v7 pref (that bug made Dark unreachable on
-                // public).
-                try { localStorage.removeItem('darkMode'); } catch (e) { /* ignore */ }
-            } else if (storedThemePref === null && storedDarkMode) {
-                // Non-public: honour a legacy v5 Dark choice until app.js's
-                // runV7Migration() carries it into stroke.v7.theme.
-                themePref = 'dark';
-            }
-            const prefersDark = !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            const themeMode = themePref || (IS_PUBLIC_PAGES ? 'light' : 'auto');
-            const isDarkTheme = themeMode === 'dark' || (themeMode === 'auto' && prefersDark);
-            document.documentElement.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
-        })();
-    </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0A6571">
+  <meta name="description" content="Synthetic Encounter workspace with deterministic calculations and protected example protocols. Do not enter PHI or real encounter data. This is not an approved clinical tool.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.json?v=7.0.0">
+  <link rel="icon" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>Stroke · Encounter workspace</title>
+  <link rel="modulepreload" href="app.js?v=7.0.0">
+  <link rel="stylesheet" href="tailwind.css?v=7.0.0">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/publicsans-normal-400.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/bricolage-700.woff2">
+  <script>
+    (function () {
+      const APP_VERSION = '7.0.0';
+      let pref = null;
+      try { pref = localStorage.getItem('stroke.v7.theme'); } catch (_) {}
+      const isPublicPages = /(^|\.)github\.io$/i.test(location.hostname || '');
+      const prefersDark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+      const mode = ['light','dark','auto'].includes(pref) ? pref : (isPublicPages ? 'light' : 'auto');
+      document.documentElement.setAttribute('data-theme', mode === 'dark' || mode === 'auto' && prefersDark ? 'dark' : 'light');
+      // Remove only this application's retired clinical storage; no encounter values are read or migrated.
+      const legacy = ['patientData','nihssScore','aspectsScore','gcsItems','mrsScore','ichScoreItems','strokeCodeForm','lkwTime','telestrokeNote','census','activePatients','apiKey','stroke.appData.v2'];
+      try { for (const key of Object.keys(localStorage)) if (key.startsWith('strokeApp:') || legacy.includes(key)) localStorage.removeItem(key); } catch (_) {}
+      try { for (const key of Object.keys(sessionStorage)) if (key.startsWith('strokeApp:') || legacy.includes(key)) sessionStorage.removeItem(key); } catch (_) {}
+    })();
+  </script>
 </head>
 <body>
-    <noscript>
-        <div style="padding: 40px; font-family: Arial; max-width: 600px; margin: 0 auto; text-align: center;">
-            <h1>Stroke CDS Educational Demo</h1>
-            <p>This application requires JavaScript to run. Please enable JavaScript in your browser settings.</p>
-        </div>
-    </noscript>
-    <div id="root"></div>
-
-    <script>
-        // Runtime errors must not erase storage or reload an active encounter.
-        // Recovery is an explicit user action; keep existing inputs in place.
+  <div id="root"></div>
+  <noscript>Enable JavaScript to use the synthetic Encounter workspace.</noscript>
+  <script>
         window.onerror = function(msg, url, lineNo, columnNo, error) {
             console.error('Application error:', msg, 'at line', lineNo);
             if (document.getElementById('runtime-error-notice')) return false;
@@ -277,7 +54,8 @@
             document.body.appendChild(notice);
             return false;
         };
-    </script>
-    <script type="module" src="app.js?v=6.30.7"></script>
+
+  </script>
+  <script type="module" src="app.js?v=7.0.0"></script>
 </body>
 </html>

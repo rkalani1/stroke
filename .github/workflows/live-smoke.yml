@@ -57,12 +57,6 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps chromium
 
-      - name: Validate churn profile schema
-        run: |
-          mkdir -p output/diagnostics
-          set -o pipefail
-          npm run validate:evidence-churn-profiles 2>&1 | tee output/diagnostics/churn-profile-validation.log
-
       - name: Validate QA latency profile schema
         run: |
           mkdir -p output/diagnostics
@@ -75,15 +69,6 @@ jobs:
       - name: Validate citation identifier endpoints
         run: npm run validate:citations:ids
 
-      - name: Generate evidence promotion checklist
-        run: npm run evidence:promote
-
-      - name: Generate evidence promotion templates
-        run: npm run evidence:template && npm run evidence:template:p0
-
-      - name: Generate evidence ops index
-        run: npm run evidence:index
-
       - name: Run hard structural QA validators
         run: |
           mkdir -p output/diagnostics
@@ -92,76 +77,23 @@ jobs:
             npm run validate:citations
             npm run validate:inline-citations
             npm run evidence:validate
-            npm run validate:evidence-churn-profiles
+            npm run agent:assets:check
+            npm run check:clinical-claims
+            npm run content:validate
+            npm run content:currency
+            npm run check:retirement
             npm run validate:qa-latency-profiles
-            npm run validate:evidence-promotion
             npm run validate:automedbench-lite
           } 2>&1 | tee output/diagnostics/qa-structural-validation.log
 
       - name: Verify live Pages artifact parity
-        run: |
-          node <<'NODE' > live-artifacts.txt
-          const fs = require('fs');
-          const base = 'https://rkalani1.github.io/stroke/';
-          const artifacts = new Set([
-            'index.html',
-            'tailwind.css',
-            'offline.html',
-            'app.js',
-            'data/index.json',
-            'llms.txt',
-            'llms-full.txt',
-            'manifest.json',
-            'service-worker.js',
-            'robots.txt',
-            'sitemap.xml'
-          ]);
-          const toRel = (url) => typeof url === 'string' && url.startsWith(base) ? url.slice(base.length) : null;
-          const add = (rel) => {
-            if (!rel) return;
-            if (!fs.existsSync(rel)) {
-              console.error(`Advertised public artifact missing locally: ${rel}`);
-              process.exitCode = 1;
-              return;
-            }
-            artifacts.add(rel);
-          };
-          const apiIndex = JSON.parse(fs.readFileSync('data/index.json', 'utf8'));
-          for (const endpoint of apiIndex.endpoints || []) add(toRel(endpoint));
-          const guidelineIndex = JSON.parse(fs.readFileSync('data/guidelines/index.json', 'utf8'));
-          for (const guideline of guidelineIndex.data || []) add(toRel(guideline.url));
-          if (process.exitCode) process.exit(process.exitCode);
-          for (const artifact of [...artifacts].sort()) console.log(artifact);
-          NODE
-          mapfile -t artifacts < live-artifacts.txt
-          mkdir -p live-artifacts
-          for artifact in "${artifacts[@]}"; do
-            expected="$(sha256sum "$artifact" | awk '{print $1}')"
-            ok=0
-            for i in $(seq 1 12); do
-              mkdir -p "live-artifacts/$(dirname "$artifact")"
-              curl -fsS "https://rkalani1.github.io/stroke/${artifact}?sha=${GITHUB_SHA}&artifact_try=${i}" -o "live-artifacts/${artifact}" || true
-              if [ -f "live-artifacts/${artifact}" ]; then
-                actual="$(sha256sum "live-artifacts/${artifact}" | awk '{print $1}')"
-                if [ "$actual" = "$expected" ]; then
-                  ok=1
-                  break
-                fi
-              fi
-              sleep 5
-            done
-            if [ "$ok" != "1" ]; then
-              echo "Timed out waiting for live Pages artifact to match this commit: ${artifact}"
-              exit 1
-            fi
-          done
-          echo "Live Pages public artifacts match checked-out commit."
+        run: npm run qa:wait-for-live-pages
 
       - name: Run adaptive QA smoke (local + live)
         run: |
           mkdir -p output/diagnostics
           set -o pipefail
-          node ./scripts/qa-smoke.mjs \
+          node ./scripts/qa-smoke.mjs --live \
             --latency-profile adaptive \
             --latency-profiles-file docs/qa-latency-profiles.json \
             2>&1 | tee output/diagnostics/qa-smoke-adaptive.log
@@ -174,7 +106,7 @@ jobs:
         run: |
           mkdir -p output/diagnostics
           set -o pipefail
-          node ./scripts/qa-smoke.mjs \
+          node ./scripts/qa-smoke.mjs --live \
             --latency-profile adaptive \
             --latency-profiles-file docs/qa-latency-profiles.json \
             --enforce-latency-thresholds \
@@ -299,14 +231,9 @@ jobs:
           name: live-smoke-artifacts
           path: |
             output/playwright
-            output/diagnostics/churn-profile-validation.log
             output/diagnostics/qa-latency-profile-validation.log
             output/diagnostics/qa-structural-validation.log
             output/diagnostics/qa-smoke-adaptive.log
             output/diagnostics/qa-latency-threshold-advisory.log
-            docs/evidence-churn-profiles.json
             docs/qa-latency-profiles.json
-            docs/evidence-watchlist.md
-            docs/evidence-watch-history.json
-            docs/evidence-ops-index.md
           if-no-files-found: ignore

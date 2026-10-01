@@ -1,0 +1,69 @@
+{
+  "reason": "Broad reference corpus, search, download registry, trial recruitment and deferred portal surfaces are explicitly retired. Their historical source-coverage tests are preserved at archive/pre-encounter-first-20261001-4f8e99d; maintained evidence closure and retirement envelopes are tested in evidence-encounter.test.js, clinical-claim-trace.test.js, public-build-gate.test.js and the check:retirement release gate.",
+  "files": [
+    "complete-additional-eso-guidelines.test.js",
+    "complete-eso-guidelines.test.js",
+    "deferred-resource.test.js",
+    "esc-endocarditis-completeness.test.js",
+    "guideline-coverage.test.js",
+    "guideline-data-codec.test.js",
+    "guideline-library-search.test.js",
+    "guideline-native-aan.test.js",
+    "guideline-publication-integrity.test.js",
+    "guideline-review-repairs.test.js",
+    "guideline-source-scope-recheck.test.js",
+    "reference-registry.test.js",
+    "guidelines-cardiometabolic-completeness.test.js",
+    "guidelines-major-aha-completeness.test.js",
+    "trial-registry-reconciliation.test.js"
+  ],
+  "orphanFixtures": [
+    "fixtures/cardiometabolic-source-rows-20260906.json",
+    "fixtures/major-aha-source-inventory-20260906.json"
+  ],
+  "replacementGroups": [
+    {
+      "reason": "Former monolithic Encounter callers and automatic prose replaced by canonical session state, explicit actions, summary freshness, dose gates and rendered workflow tests",
+      "files": [
+        "encounter-action-plan-copy.test.js",
+        "encounter-comprehensive-recheck.test.js",
+        "encounter-context-recheck.test.js",
+        "encounter-enoxaparin-caller.test.js",
+        "encounter-header-scroll.test.js",
+        "encounter-large-core-caller.test.js",
+        "encounter-nihss-output-integrity.test.js",
+        "encounter-post-tnk-gates.test.js",
+        "encounter-treatment-condition-provenance.test.js",
+        "encounter-treatment-documentation.test.js"
+      ]
+    },
+    {
+      "reason": "Clinical persistence and historical census features retired in both builds; session-only workspace and legacy cleanup regression coverage replace persisted controls",
+      "files": [
+        "patient-store.test.js",
+        "private-persistence.test.js",
+        "fixtures/private-persistence-calculator-controls.json",
+        "fixtures/private-persistence-note-controls.json"
+      ]
+    },
+    {
+      "reason": "Search, general references, old navigation and educational lightbox are explicitly retired; replacement routing, retired-alias, deferred protected protocol and actual browser checks apply",
+      "files": [
+        "navigation-intent.test.js",
+        "search-navigation-intent.test.js",
+        "on-call-search-decisions.test.js",
+        "interactive-lightbox-m3.test.js",
+        "interactive-lightbox-stress.test.js",
+        "deferred-recovery.test.jsx",
+        "reference-loader.test.js"
+      ]
+    },
+    {
+      "reason": "General tool directory and withdrawn CRAO/SeLECT/EDEMA exports retired; retained helper vectors and registry/route/rendered anchor plus unavailable-tool contracts replace them",
+      "files": [
+        "components.test.jsx",
+        "stress-calculators-m3.test.js"
+      ]
+    }
+  ]
+}

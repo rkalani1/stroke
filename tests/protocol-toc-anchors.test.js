@@ -9,7 +9,7 @@ import path from 'node:path';
 // isch-cad, isch-seizure) shipped after their sections were removed; this test
 // keeps every TOC id tied to exactly one element in the ischemic panel.
 
-const appJsx = fs.readFileSync(path.join(process.cwd(), 'src', 'app.jsx'), 'utf8');
+const appJsx = fs.readFileSync(path.join(process.cwd(), 'src', 'ProtectedProtocols.jsx'), 'utf8');
 
 function extractTocEntries(source) {
   const marker = '{/* Section TOC */}';
@@ -41,9 +41,9 @@ describe('Protocols ischemic Section TOC anchors', () => {
   const panel = extractIschemicPanel(appJsx);
 
   it('finds the Section TOC array and the ischemic panel', () => {
-    expect(entries, 'Section TOC array not found in src/app.jsx').not.toBeNull();
+    expect(entries, 'Section TOC array not found in src/ProtectedProtocols.jsx').not.toBeNull();
     expect(entries.length).toBeGreaterThan(0);
-    expect(panel, 'id="mgmt-tabpanel-ischemic" not found in src/app.jsx').not.toBeNull();
+    expect(panel, 'id="mgmt-tabpanel-ischemic" not found in src/ProtectedProtocols.jsx').not.toBeNull();
   });
 
   it('has no duplicate TOC ids', () => {

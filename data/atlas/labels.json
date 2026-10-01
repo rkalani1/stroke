@@ -1,106 +1,22 @@
 {
   "_meta": {
-    "endpoint": "labels",
-    "schemaVersion": "1.0.0",
-    "appVersion": "6.30.7",
-    "checksum": "sha256:7add003e86927f0fb0f62b75b0945ab4",
-    "count": 4,
-    "source": "Evidence atlas labels bundle",
+    "endpoint": "data/atlas/labels.json",
+    "schemaVersion": "2.0.0",
+    "appVersion": "7.0.0",
+    "checksum": "sha256:74234e98afe7498fb5daf1f36ac2d78a",
+    "count": 0,
+    "source": "Retired historical portal endpoint",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
-    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action."
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.",
+    "status": "retired"
   },
-  "data": {
-    "verificationStatus": {
-      "verified-pubmed": {
-        "label": "Verified · PubMed",
-        "tone": "emerald"
-      },
-      "verified-doi": {
-        "label": "Verified · DOI",
-        "tone": "emerald"
-      },
-      "verified-clinicaltrials-gov": {
-        "label": "Verified · CT.gov",
-        "tone": "emerald"
-      },
-      "verified-guideline": {
-        "label": "Verified · Guideline",
-        "tone": "emerald"
-      },
-      "verified-rct": {
-        "label": "Verified · RCT",
-        "tone": "emerald"
-      },
-      "unverified-source-limited": {
-        "label": "Source-limited",
-        "tone": "amber"
-      },
-      "todo-verify": {
-        "label": "Verify",
-        "tone": "amber"
-      },
-      "disputed": {
-        "label": "Disputed",
-        "tone": "rose"
-      }
-    },
-    "certainty": {
-      "high": {
-        "label": "High certainty",
-        "tone": "emerald"
-      },
-      "moderate": {
-        "label": "Moderate certainty",
-        "tone": "sky"
-      },
-      "low": {
-        "label": "Low certainty",
-        "tone": "amber"
-      },
-      "very-low": {
-        "label": "Very low certainty",
-        "tone": "rose"
-      }
-    },
-    "evidenceType": {
-      "rct": {
-        "label": "RCT",
-        "tone": "sky"
-      },
-      "meta-analysis": {
-        "label": "Meta-analysis",
-        "tone": "sky"
-      },
-      "observational": {
-        "label": "Observational",
-        "tone": "slate"
-      },
-      "guideline": {
-        "label": "Guideline",
-        "tone": "indigo"
-      },
-      "consensus": {
-        "label": "Consensus",
-        "tone": "slate"
-      }
-    },
-    "activeStatus": {
-      "recruiting": {
-        "label": "Recruiting",
-        "tone": "emerald"
-      },
-      "active-not-recruiting": {
-        "label": "Active · not recruiting",
-        "tone": "sky"
-      },
-      "enrolling-by-invitation": {
-        "label": "Enrolling by invitation",
-        "tone": "sky"
-      },
-      "completed-pending-results": {
-        "label": "Completed · pending results",
-        "tone": "slate"
-      }
-    }
+  "data": null,
+  "retirement": {
+    "status": "retired",
+    "reason": "The broad reference, trial and teaching portal is retired from the maintained product.",
+    "replacement": "https://rkalani1.github.io/stroke/data/sources.json",
+    "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+    "archiveUrl": "https://github.com/rkalani1/stroke/tree/archive/pre-encounter-first-20261001-4f8e99d",
+    "compatibility": "HTTP transport may return 200 on static Pages; clients must inspect _meta.status. The data payload is null and is not a current clinical corpus."
   }
 }

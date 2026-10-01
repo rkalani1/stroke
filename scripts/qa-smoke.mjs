@@ -1,1243 +1,189 @@
+// Render the published artifact, with synthetic fixtures and explicit outcomes.
 import fs from 'node:fs/promises';
 import fsSync from 'node:fs';
 import http from 'node:http';
-import https from 'node:https';
 import path from 'node:path';
-import { spawn } from 'node:child_process';
-import process from 'node:process';
+import os from 'node:os';
+import assert from 'node:assert/strict';
+import { pathToFileURL } from 'node:url';
 import { chromium } from 'playwright';
 
-const PORT = 4173;
-const LOCAL_URL = `http://127.0.0.1:${PORT}/`;
-const PUBLIC_DEMO_LOCAL_URL = `${LOCAL_URL}?publicDemo=1`;
-const LIVE_URL = process.env.STROKE_LIVE_URL || 'https://rkalani1.github.io/stroke/';
-const VIEWPORTS = [
-  { name: 'desktop', width: 1440, height: 900 },
-  { name: 'tablet', width: 768, height: 1024 },
-  { name: 'mobile', width: 390, height: 844 }
-];
-const REQUIRED_TABS = ['Encounter', 'Trials', 'Guidelines'];
-const REQUIRED_DIAGNOSIS = [
-  /Ischemic Stroke or TIA/i,
-  /Intracranial Hemorrhage/i,
-  /SAH/i,
-  /CVT/i,
-  /Stroke Mimic\/Other/i
-];
-const DIAGNOSIS_SWITCH_ASSERTIONS = [
-  { label: 'Ischemic Stroke or TIA', activeClass: 'bg-blue-500', expectTNK: true },
-  { label: 'Intracranial Hemorrhage', activeClass: 'bg-red-500', expectTNK: false },
-  { label: 'SAH', activeClass: 'bg-purple-500', expectTNK: false },
-  { label: 'CVT', activeClass: 'bg-indigo-500', expectTNK: false },
-  { label: 'Stroke Mimic/Other', activeClass: 'bg-amber-500', expectTNK: false }
-];
-
-const DEFAULT_RUN_DURATION_THRESHOLD_MS = 45000;
-const DEFAULT_SECTION_DURATION_THRESHOLD_MS = 15000;
-const DEFAULT_LATENCY_PROFILES = {
-  flat: {},
-  adaptive: {
-    runThresholdByTargetViewport: {
-      'local/desktop': 40000,
-      'local/tablet': 43000,
-      'local/mobile': 46000,
-      'live/desktop': 42000,
-      'live/tablet': 45000,
-      'live/mobile': 50000
-    },
-    sectionThresholdBySection: {
-      'encounter-workflow': 22000,
-      'library-workflow': 18000,
-      'pediatric-workflow': 20000
-    }
-  }
-};
-const rawArgs = process.argv.slice(2);
-const args = new Set(rawArgs);
-const localOnly = args.has('--local-only');
-const enforceLatencyThresholds = args.has('--enforce-latency-thresholds');
-const outDir = path.join(process.cwd(), 'output', 'playwright');
-const reportFile = path.join(outDir, 'qa-smoke-report.json');
-const latencyHistoryFile = path.join(process.cwd(), 'docs', 'qa-latency-history.json');
-
-function parsePositiveIntArg(flag, fallback) {
-  const index = rawArgs.indexOf(flag);
-  if (index === -1) return fallback;
-  const value = Number.parseInt(rawArgs[index + 1] || '', 10);
-  if (!Number.isFinite(value) || value <= 0) {
-    throw new Error(`Invalid value for ${flag}. Provide a positive integer in milliseconds.`);
-  }
-  return value;
+const args = process.argv.slice(2);
+export const arg = (name, fallback) => { if (!args.includes(name)) return fallback; const value=args[args.indexOf(name)+1]; if (!value || value.startsWith('--')) throw new Error(`Missing value for ${name}`); return value; };
+export const outDir = path.resolve('output/playwright');
+const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.css': 'text/css', '.png': 'image/png', '.woff2': 'font/woff2', '.txt': 'text/plain' };
+export async function launchChromium() {
+  const options = [...(process.env.STROKE_CHROMIUM_PATH ? [{ executablePath: process.env.STROKE_CHROMIUM_PATH }] : []), { channel: 'chromium' }, {}];
+  const cache = path.join(os.homedir(), 'Library/Caches/ms-playwright');
+  try { for (const dir of fsSync.readdirSync(cache)) {
+    const exe = path.join(cache, dir, 'chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing');
+    if (dir.startsWith('chromium-') && fsSync.existsSync(path.join(cache, dir, 'INSTALLATION_COMPLETE')) && fsSync.existsSync(exe)) options.push({ executablePath: exe });
+  } } catch {}
+  let last; for (const option of options) { try { return await chromium.launch(option); } catch (error) { last = error; } } throw last;
 }
-
-function parseStringArg(flag, fallback) {
-  const index = rawArgs.indexOf(flag);
-  if (index === -1) return fallback;
-  const value = String(rawArgs[index + 1] || '').trim();
-  if (!value) throw new Error(`Invalid value for ${flag}. Provide a non-empty string value.`);
-  return value;
-}
-
-function parseOptionalStringArg(flag) {
-  const index = rawArgs.indexOf(flag);
-  if (index === -1) return null;
-  const value = String(rawArgs[index + 1] || '').trim();
-  if (!value) throw new Error(`Invalid value for ${flag}. Provide a non-empty string value.`);
-  return value;
-}
-
-function normalizeThresholdMap(rawMap, fieldLabel) {
-  if (rawMap == null) return {};
-  if (typeof rawMap !== 'object' || Array.isArray(rawMap)) {
-    throw new Error(`${fieldLabel} must be an object mapping keys to positive millisecond values.`);
-  }
-  const normalized = {};
-  for (const [key, value] of Object.entries(rawMap)) {
-    const trimmedKey = String(key || '').trim();
-    if (!trimmedKey) {
-      throw new Error(`${fieldLabel} contains an empty key.`);
-    }
-    const numeric = Number(value);
-    if (!Number.isFinite(numeric) || numeric <= 0) {
-      throw new Error(`${fieldLabel}.${trimmedKey} must be a positive numeric millisecond value.`);
-    }
-    normalized[trimmedKey] = Math.round(numeric);
-  }
-  return normalized;
-}
-
-function normalizeLatencyProfile(profileName, rawProfile) {
-  if (rawProfile == null) rawProfile = {};
-  if (typeof rawProfile !== 'object' || Array.isArray(rawProfile)) {
-    throw new Error(`Latency profile "${profileName}" must be an object.`);
-  }
-  return {
-    runThresholdByTargetViewport: normalizeThresholdMap(
-      rawProfile.runThresholdByTargetViewport,
-      `profiles.${profileName}.runThresholdByTargetViewport`
-    ),
-    sectionThresholdBySection: normalizeThresholdMap(
-      rawProfile.sectionThresholdBySection,
-      `profiles.${profileName}.sectionThresholdBySection`
-    ),
-    sectionThresholdByTargetViewportSection: normalizeThresholdMap(
-      rawProfile.sectionThresholdByTargetViewportSection,
-      `profiles.${profileName}.sectionThresholdByTargetViewportSection`
-    )
-  };
-}
-
-function loadLatencyProfiles(fileArg) {
-  const defaults = Object.fromEntries(
-    Object.entries(DEFAULT_LATENCY_PROFILES).map(([name, profile]) => [name, normalizeLatencyProfile(name, profile)])
-  );
-  if (!fileArg) {
-    return { profiles: defaults, sourcePath: null };
-  }
-
-  const resolvedPath = path.isAbsolute(fileArg) ? fileArg : path.join(process.cwd(), fileArg);
-  let parsed;
-  try {
-    const raw = fsSync.readFileSync(resolvedPath, 'utf8');
-    parsed = JSON.parse(raw);
-  } catch (error) {
-    throw new Error(`Failed to read latency profile file "${resolvedPath}": ${error?.message || String(error)}`);
-  }
-
-  const profileObject =
-    parsed && typeof parsed === 'object' && !Array.isArray(parsed) && parsed.profiles && typeof parsed.profiles === 'object'
-      ? parsed.profiles
-      : parsed;
-  if (!profileObject || typeof profileObject !== 'object' || Array.isArray(profileObject)) {
-    throw new Error(`Latency profile file "${resolvedPath}" must contain an object or { "profiles": { ... } }.`);
-  }
-
-  const merged = { ...defaults };
-  for (const [name, rawProfile] of Object.entries(profileObject)) {
-    const profileName = String(name || '').trim();
-    if (!profileName) throw new Error(`Latency profile file "${resolvedPath}" contains an empty profile name.`);
-    merged[profileName] = normalizeLatencyProfile(profileName, rawProfile);
-  }
-  return { profiles: merged, sourcePath: resolvedPath };
-}
-
-const runDurationThresholdMs = parsePositiveIntArg('--run-duration-threshold-ms', DEFAULT_RUN_DURATION_THRESHOLD_MS);
-const sectionDurationThresholdMs = parsePositiveIntArg(
-  '--section-duration-threshold-ms',
-  DEFAULT_SECTION_DURATION_THRESHOLD_MS
-);
-const latencyProfilesFileArg = parseOptionalStringArg('--latency-profiles-file');
-const latencyProfileBundle = loadLatencyProfiles(latencyProfilesFileArg);
-const latencyProfiles = latencyProfileBundle.profiles;
-const latencyProfilesSourcePath = latencyProfileBundle.sourcePath;
-const latencyProfile = parseStringArg('--latency-profile', 'flat');
-if (!Object.prototype.hasOwnProperty.call(latencyProfiles, latencyProfile)) {
-  throw new Error(
-    `Invalid --latency-profile value "${latencyProfile}". Supported: ${Object.keys(latencyProfiles).join(', ')}.`
-  );
-}
-const activeLatencyProfile = latencyProfiles[latencyProfile];
-
-function resolveRunThresholdMs(targetName, viewportName) {
-  const key = `${targetName}/${viewportName}`;
-  const profileThreshold = activeLatencyProfile?.runThresholdByTargetViewport?.[key];
-  if (Number.isFinite(profileThreshold)) {
-    return profileThreshold;
-  }
-  return runDurationThresholdMs;
-}
-
-function resolveSectionThresholdMs(targetName, viewportName, sectionName) {
-  const scopedKey = `${targetName}/${viewportName}:${sectionName}`;
-  const scopedThreshold = activeLatencyProfile?.sectionThresholdByTargetViewportSection?.[scopedKey];
-  if (Number.isFinite(scopedThreshold)) {
-    return scopedThreshold;
-  }
-  const sectionThreshold = activeLatencyProfile?.sectionThresholdBySection?.[sectionName];
-  if (Number.isFinite(sectionThreshold)) {
-    return sectionThreshold;
-  }
-  return sectionDurationThresholdMs;
-}
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function httpGet(urlStr) {
-  return new Promise((resolve, reject) => {
-    try {
-      const urlObj = new URL(urlStr);
-      const client = urlObj.protocol === 'https:' ? https : http;
-      const req = client.get(urlStr, { headers: { Connection: 'close' } }, (res) => {
-        let data = '';
-        res.on('data', (chunk) => { data += chunk; });
-        res.on('end', () => {
-          resolve({ ok: res.statusCode >= 200 && res.statusCode < 400, status: res.statusCode, text: () => Promise.resolve(data) });
-        });
-      });
-      req.on('error', reject);
-      req.setTimeout(5000, () => {
-        req.destroy();
-        reject(new Error('timeout'));
-      });
-    } catch (e) {
-      reject(e);
-    }
+export async function servePublished(getRoot, port = 4177, override = () => null) {
+  const requests = [];
+  const server = http.createServer(async (request, response) => {
+    const url = new URL(request.url, 'http://localhost'); requests.push(url.pathname);
+    const blocked = override(url, request);
+    if (blocked?.disconnect) { response.destroy(); return; }
+    if (blocked) { response.writeHead(blocked.status || 503, { 'Content-Type': blocked.type || 'text/plain', 'Cache-Control': 'no-store' }); response.end(blocked.body || 'Injected unavailable asset'); return; }
+    if (!url.pathname.startsWith('/stroke/')) { response.writeHead(404); response.end('Not found'); return; }
+    let relative; try { relative = decodeURIComponent(url.pathname.slice('/stroke/'.length)); } catch { response.writeHead(400); response.end(); return; }
+    const root = path.resolve(getRoot()); const file = path.resolve(root, relative || 'index.html');
+    if (!file.startsWith(`${root}${path.sep}`)) { response.writeHead(403); response.end(); return; }
+    try { const body = await fs.readFile(file); response.writeHead(200, { 'Content-Type': `${MIME[path.extname(file)] || 'application/octet-stream'}; charset=utf-8`, 'Cache-Control': 'no-store' }); response.end(body); }
+    catch { response.writeHead(404, { 'Content-Type': 'text/plain' }); response.end('Not found'); }
   });
+  await new Promise((resolve, reject) => { server.once('error', reject); server.listen(port, '127.0.0.1', resolve); });
+  return { url: `http://127.0.0.1:${port}/stroke/`, requests, close: () => new Promise(resolve => server.close(resolve)) };
 }
-
-async function waitForHttp(url, timeoutMs = 20000) {
-  const deadline = Date.now() + timeoutMs;
-  while (Date.now() < deadline) {
-    try {
-      const response = await httpGet(url);
-      if (response.ok) return;
-    } catch {
-      // Server may still be booting.
-    }
-    await sleep(250);
-  }
-  throw new Error(`Timed out waiting for ${url}`);
+export async function waitForBrowserState(page, predicate, argument = null, timeout = 45000) {
+  const deadline=Date.now()+timeout;
+  while(Date.now()<deadline) { if(await page.evaluate(predicate,argument)) return; await new Promise(resolve=>setTimeout(resolve,100)); }
+  throw new Error(`Browser state did not become ready within ${timeout} ms`);
 }
-
-async function canReach(url) {
-  try {
-    const response = await httpGet(url);
-    return response.ok;
-  } catch {
-    return false;
-  }
+export async function waitForInstalled(page, timeout = 45000) {
+  await waitForBrowserState(page, async () => { const reg = await navigator.serviceWorker.getRegistration(); return reg?.active?.state === 'activated'; }, null, timeout);
 }
-
-async function updateLatencyHistory(summary, runs) {
-  let history = [];
-  try {
-    const raw = await fs.readFile(latencyHistoryFile, 'utf8');
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed)) history = parsed;
-  } catch {
-    history = [];
-  }
-
-  history.push({
-    finishedAt: summary.finishedAt,
-    localOnly: summary.localOnly,
-    latencyProfile: summary.latencyProfile,
-    averageRunDurationMs: summary.averageRunDurationMs,
-    slowestRun: summary.slowestRun,
-    slowRunCount: summary.slowRunCount,
-    slowSectionCount: summary.slowSectionCount,
-    runDurations: Array.isArray(runs)
-      ? runs
-          .map((run) => ({
-            target: run?.target || null,
-            viewport: run?.viewport || null,
-            durationMs: Number.isFinite(run?.notes?.runDurationMs) ? run.notes.runDurationMs : null
-          }))
-          .filter((run) => Number.isFinite(run.durationMs) && run.target && run.viewport)
-      : []
-  });
-  const trimmedHistory = history.slice(-60);
-  await fs.mkdir(path.dirname(latencyHistoryFile), { recursive: true });
-  await fs.writeFile(latencyHistoryFile, `${JSON.stringify(trimmedHistory, null, 2)}\n`, 'utf8');
-  return {
-    path: path.relative(process.cwd(), latencyHistoryFile),
-    count: trimmedHistory.length
-  };
+export async function localStamp(page, minutesAgo = 30) {
+  return page.evaluate(minutes => { const d = new Date(Date.now() - minutes * 60000), p = x => String(x).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }, minutesAgo);
 }
-
-async function fetchAppVersion(url) {
-  try {
-    const response = await httpGet(url);
-    if (!response.ok) return null;
-    const html = await response.text();
-    const match = html.match(/APP_VERSION\s*=\s*['"]([^'"]+)['"]/i);
-    return match ? match[1] : null;
-  } catch {
-    return null;
-  }
+export async function reset(page) {
+  await page.getByRole('link', { name: 'Stroke', exact: true }).click();
+  await page.getByRole('button', { name: 'New encounter', exact: true, includeHidden: true }).evaluate(button => { button.closest('details').open = true; });
+  page.once('dialog', dialog => dialog.accept()); await page.getByRole('button', { name: 'New encounter', exact: true, includeHidden: true }).click();
+  await page.getByLabel('Age (years)', { exact: true }).waitFor();
 }
-
-function startLocalServer() {
-  const pythonCmd = process.platform === 'win32' ? 'python' : 'python3';
-  const server = spawn(pythonCmd, ['-m', 'http.server', String(PORT)], {
-    cwd: process.cwd(),
-    stdio: 'ignore'
-  });
-
-  let closed = false;
-  const stop = () => {
-    if (closed) return;
-    closed = true;
-    if (!server.killed) server.kill('SIGTERM');
-  };
-
-  return { stop, process: server };
+export async function setupIschemic(page) {
+  await page.getByLabel('Working diagnosis', { exact: true }).selectOption('ischemic');
+  await page.getByLabel('Age (years)', { exact: true }).fill('65'); await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)', { exact: true }).fill('83');
+  const stamp = await localStamp(page); await page.getByLabel('LKW date (local)', { exact: true }).fill(stamp.split('T')[0]); await page.getByLabel('LKW time (local)', { exact: true }).fill(stamp.split('T')[1]);
+  await page.getByLabel('Selected IV thrombolytic', { exact: true }).selectOption('TNK');
 }
-
-function addIssue(issues, type, details = {}) {
-  issues.push({ type, ...details });
+export async function generate(page) {
+  await page.getByRole('button', { name: 'Generate synthetic summary', exact: true }).click();
+  return page.getByLabel('Generated synthetic summary', { exact: true });
 }
+export async function openDetails(control) { await control.evaluate(element => { for(let e=element;e;e=e.parentElement) if(e.tagName==='DETAILS') e.open=true; }); }
 
-async function getActiveTabLabel(page) {
-  const active = page.locator('button.tab-pill.active').first();
-  if ((await active.count()) === 0) return null;
-  return (await active.innerText()).trim();
+function latencyConfiguration() {
+  const defaults={flat:{},adaptive:{runThresholdByTargetViewport:{'local/desktop':40000,'local/tablet':43000,'local/mobile':46000,'live/desktop':42000,'live/tablet':45000,'live/mobile':50000},sectionThresholdBySection:{'encounter-workflow':22000,'library-workflow':18000,'pediatric-workflow':20000}}};
+  const file=arg('--latency-profiles-file',null);let profiles=defaults;
+  if(file){const parsed=JSON.parse(fsSync.readFileSync(path.resolve(file),'utf8'));profiles={...defaults,...(parsed.profiles||parsed)};}
+  const name=arg('--latency-profile','flat');if(!profiles[name])throw new Error(`Unknown latency profile: ${name}`);
+  for(const [profile,config] of Object.entries(profiles)) {
+    if(!config||typeof config!=='object'||Array.isArray(config))throw new Error(`Invalid latency profile ${profile}`);
+    for(const key of ['runThresholdByTargetViewport','sectionThresholdBySection','sectionThresholdByTargetViewportSection'])for(const [scope,value] of Object.entries(config[key]||{}))if(!Number.isFinite(value)||value<=0)throw new Error(`Invalid latency ceiling ${profile}.${key}.${scope}`);
+  }
+  const integer=(flag,fallback)=>{const raw=arg(flag,String(fallback));const value=Number(raw);if(!Number.isInteger(value)||value<=0)throw new Error(`Invalid or missing positive integer for ${flag}`);return value;};
+  const run=integer('--run-duration-threshold-ms',45000), section=integer('--section-duration-threshold-ms',15000), profile=profiles[name];
+  return {name,file,enforce:args.includes('--enforce-latency-thresholds'),run:(target,viewport)=>{const ceiling=profile.runThresholdByTargetViewport?.[`${target}/${viewport}`]||run;return args.includes('--run-duration-threshold-ms')?Math.min(run,ceiling):ceiling;},section:(target,viewport,key)=>{const ceiling=profile.sectionThresholdByTargetViewportSection?.[`${target}/${viewport}:${key}`]||profile.sectionThresholdBySection?.[key]||section;return args.includes('--section-duration-threshold-ms')?Math.min(section,ceiling):ceiling;}};
 }
-
-async function navigateToTab(page, tabName) {
-  try {
-    const tab = page.locator(`button.tab-pill:has-text("${tabName}")`).first();
-    if ((await tab.count()) === 0) return false;
-    try {
-      await tab.click({ timeout: 1000 });
-    } catch {
-      await tab.dispatchEvent('click');
-    }
-    await page.waitForTimeout(200);
-    return true;
-  } catch { return false; }
-}
-
-async function clickElementRobust(locator) {
-  try {
-    await locator.click({ timeout: 1000 });
-  } catch {
-    await locator.dispatchEvent('click');
-  }
-}
-
-async function auditPublicDemoSurface(page, context, target, issues, notes) {
-  const shouldCheckPublicDemo =
-    target.isPublicDemo ||
-    (target.name === 'live' && target.enforceLiveParityChecks && /(^|\.)github\.io$/i.test(new URL(target.url).hostname));
-  if (!shouldCheckPublicDemo) return;
-
-  notes.publicDemoChecked = true;
-
-  // The on-page demo notice and disclaimer footer were removed by owner
-  // decision (v6.29.2). The build-time public-demo gate stays: the app shell
-  // must carry the public build marker (tests/public-build-gate.test.js guards
-  // the bundle side).
-  const shellBuild = await page.locator('.app-shell').first().getAttribute('data-build');
-  if (shellBuild !== 'stroke-public-demo-build') {
-    addIssue(issues, 'public-build-marker-missing', { found: shellBuild });
-  }
-  // We still assert no named-institution label leaks visibly.
-  let bodyText = await page.locator('body').innerText();
-  if (/Institutional Protocols & Algorithms/i.test(bodyText)) {
-    addIssue(issues, 'public-demo-institutional-label-visible');
-  }
-
-  await context.setOffline(true);
-  await page.evaluate(() => window.dispatchEvent(new Event('offline')));
-  await page.waitForTimeout(250);
-  bodyText = await page.locator('body').innerText();
-  if (!/Offline - public demo mode: changes are not saved and may be cleared on reload/i.test(bodyText)) {
-    addIssue(issues, 'public-demo-offline-copy-missing');
-  }
-  await context.setOffline(false);
-  await page.evaluate(() => window.dispatchEvent(new Event('online')));
-  await page.waitForTimeout(150);
-}
-
-async function auditView(browser, target, viewport) {
-  const context = await browser.newContext({
-    viewport: { width: viewport.width, height: viewport.height },
-    permissions: ['clipboard-read', 'clipboard-write']
-  });
-  const page = await context.newPage();
-  page.setDefaultTimeout(10000);
-  page.setDefaultNavigationTimeout(60000);
-  const issues = [];
-  const notes = {};
-  const sectionTimings = [];
-  const markSectionStart = (name) => ({ name, startedAtMs: Date.now() });
-  const markSectionEnd = (section) => {
-    sectionTimings.push({
-      section: section.name,
-      durationMs: Date.now() - section.startedAtMs
-    });
-  };
-  const runStartedAtMs = Date.now();
-  notes.sectionTimings = sectionTimings;
-  let postEvtPlanConfigured = false;
-
-  page.on('pageerror', (err) => addIssue(issues, 'pageerror', { message: err.message }));
-  page.on('console', (msg) => {
-    if (msg.type() === 'error') {
-      const txt = msg.text();
-      if (txt.includes('institutional.js') || txt.includes('Failed to load resource')) return;
-      addIssue(issues, 'console-error', { message: txt });
-    }
-  });
-  page.on('requestfailed', (req) => {
-    const url = req.url();
-    if (url.includes('institutional.js')) return;
-    // Skip external requests (like github.io or CDNs) that might fail or be blocked locally/offline
-    if (!url.startsWith(target.url) && !url.includes('127.0.0.1') && !url.includes('localhost')) return;
-    addIssue(issues, 'requestfailed', {
-      url,
-      message: req.failure()?.errorText || 'unknown'
-    });
-  });
-
-  let section = markSectionStart('bootstrap-render');
-  const response = await page.goto(target.url, { waitUntil: 'domcontentloaded', timeout: 60000 });
-  if (!response || response.status() >= 400) {
-    addIssue(issues, 'http', { status: response?.status() ?? null });
-  }
-
-  await page.waitForTimeout(1000);
-
-  const rootInfo = await page.evaluate(() => {
-    const root = document.querySelector('#root');
-    const bodyText = (document.body?.innerText || '').trim();
-    return {
-      rootExists: !!root,
-      rootChildren: root ? root.childElementCount : 0,
-      textLength: bodyText.length
-    };
-  });
-  notes.rootInfo = rootInfo;
-
-  if (!rootInfo.rootExists || rootInfo.rootChildren < 1 || rootInfo.textLength < 300) {
-    addIssue(issues, 'render-risk', { rootInfo });
-  }
-
-  await auditPublicDemoSurface(page, context, target, issues, notes);
-
-  const tabButtons = page.locator('button.tab-pill');
-  const tabCount = await tabButtons.count();
-  const tabLabels = [];
-  for (let i = 0; i < tabCount; i += 1) {
-    tabLabels.push((await tabButtons.nth(i).innerText()).trim());
-  }
-  notes.tabLabels = tabLabels;
-
-  for (const requiredTab of REQUIRED_TABS) {
-    if (!tabLabels.some(l => l.includes(requiredTab))) {
-      addIssue(issues, 'missing-tab', { tab: requiredTab });
-    }
-  }
-  const hasProtocolsTab = tabLabels.some(l => /Management|Protocols|Algorithms/i.test(l));
-  if (!hasProtocolsTab) {
-    addIssue(issues, 'missing-tab', { tab: 'Protocols' });
-  }
-  markSectionEnd(section);
-
-  // Quick-contacts FAB was retired; check skipped.
-
-  section = markSectionStart('encounter-workflow');
-  if (!(await navigateToTab(page, 'Encounter'))) {
-    addIssue(issues, 'tab-nav', { tab: 'Encounter' });
-  }
-
-  const encounterTab = page.locator('button.tab-pill:has-text("Encounter")').first();
-  if ((await encounterTab.count()) === 0) {
-    addIssue(issues, 'missing-tab', { tab: 'Encounter' });
-  } else {
-    // Tab was already activated by navigateToTab() above; clicking again is
-    // redundant and breaks on mobile (off-screen in horizontal scroll strip).
-    // Only click if not already the active tab.
-    const isActive = (await encounterTab.getAttribute('aria-selected')) === 'true';
-    if (!isActive) {
-      try {
-        await encounterTab.scrollIntoViewIfNeeded({ timeout: 1000 });
-      } catch { /* fine */ }
-      try {
-        await encounterTab.click({ timeout: 3000 });
-      } catch {
-        await encounterTab.click({ force: true });
-      }
-    }
-    await page.waitForTimeout(250);
-
-    // Feature-gate: diagnosis selector + TNK/EVT/Trial-matcher sections
-    // live in an inner editor not exposed by default in the current
-    // encounter shell. Silent skip when not visible.
-    const diagnosisSelectorPresent =
-      (await page.getByRole('button', { name: /^Ischemic Stroke or TIA$/ }).count()) > 0;
-    notes.diagnosisSelectorVisible = diagnosisSelectorPresent;
-
-    if (diagnosisSelectorPresent) {
-      for (const label of REQUIRED_DIAGNOSIS) {
-        if ((await page.getByText(label).count()) === 0) {
-          addIssue(issues, 'missing-diagnosis-option', { label: String(label) });
-        }
-      }
-      if ((await page.getByText(/Trial Eligibility Auto-Matcher/i).count()) === 0) {
-        addIssue(issues, 'missing-trial-matcher');
-      }
-      if ((await page.getByText(/TNK Eligibility Criteria/i).count()) === 0) {
-        addIssue(issues, 'missing-thrombolysis-section');
-      }
-      if ((await page.getByText(/EVT Eligibility Criteria/i).count()) === 0) {
-        addIssue(issues, 'missing-evt-section');
-      }
-    }
-
-    const videoModeButton = page.getByRole('button', { name: /Video Telestroke/i }).first();
-    if ((await videoModeButton.count()) > 0) {
-      await videoModeButton.click();
-      await page.waitForTimeout(150);
-    }
-
-    const evtRecommendedCheckbox = page.getByRole('combobox', { name: 'EVT treatment decision' }).first();
-    if ((await evtRecommendedCheckbox.count()) > 0) {
-      await evtRecommendedCheckbox.selectOption('yes');
-      await page.waitForTimeout(100);
-    }
-
-    await page.keyboard.press('Control+K');
-    await page.waitForTimeout(200);
-    const activePlaceholder = await page.evaluate(() => document.activeElement?.getAttribute('placeholder') || null);
-    if (!activePlaceholder || !/(search|jump|calculator|simulator|tool)/i.test(activePlaceholder)) {
-      addIssue(issues, 'keyboard-search', { activePlaceholder });
-    }
-    await page.keyboard.press('Escape');
-    await page.waitForTimeout(100);
-
-    // Wake-up/extended-window perfusion scenario:
-    // support both standard and compact encounter layouts while preserving EXTEND safety checks.
-    const ischemicPrimaryButton = page.getByRole('button', { name: /^Ischemic Stroke or TIA$/ }).first();
-    if ((await ischemicPrimaryButton.count()) === 0) {
-      // Silent skip — selector not exposed in current encounter shell.
-    } else {
-      await ischemicPrimaryButton.click();
-      await page.waitForTimeout(150);
-
-      const wakeUpCheckbox = page.getByRole('checkbox', { name: /Wake-up Stroke \/ Unknown LKW/i }).first();
-      if ((await wakeUpCheckbox.count()) === 0) {
-        addIssue(issues, 'missing-wakeup-workflow');
-      } else {
-        await wakeUpCheckbox.click();
-        await page.waitForTimeout(150);
-
-        // In senior-rapid mode, wake-up selection auto-collapses LKW. Re-open if needed.
-        let useCtpButton = page.getByRole('button', { name: /No - Use CTP/i }).first();
-        if ((await useCtpButton.count()) === 0) {
-          const lkwSection = page.locator('#lkw-section').first();
-          if ((await lkwSection.count()) > 0) {
-            const lkwEditButton = lkwSection.getByRole('button', { name: /^Edit$/ }).first();
-            if ((await lkwEditButton.count()) > 0) {
-              await lkwEditButton.click();
-              await page.waitForTimeout(150);
-            }
-          }
-          useCtpButton = page.getByRole('button', { name: /No - Use CTP/i }).first();
-        }
-
-        if ((await useCtpButton.count()) === 0) {
-          addIssue(issues, 'missing-wakeup-ctp-path');
-        } else {
-          await useCtpButton.click();
-          await page.waitForTimeout(150);
-
-          const setScenarioField = async (selectors, value, valueType = 'fill') => {
-            for (const selector of selectors) {
-              const locator = page.locator(selector).first();
-              if ((await locator.count()) === 0) continue;
-              if (valueType === 'select') {
-                await locator.selectOption(value);
-              } else {
-                await locator.fill(value);
-              }
-              return true;
-            }
-            return false;
-          };
-
-          const nihssSet = await setScenarioField(['#input-nihss', '#phone-input-nihss'], '8');
-          const premorbidSet = await setScenarioField(
-            ['#input-premorbid-mrs', '#phone-input-premorbid-mrs'],
-            '1',
-            'select'
-          );
-          const ctpCoreSet = await setScenarioField(['#input-ctp-core'], '30');
-          const ctpPenumbraSet = await setScenarioField(['#input-ctp-penumbra'], '90');
-          const hasDirectPerfusionInputs = ctpCoreSet && ctpPenumbraSet;
-          // Populate key thrombolysis safety fields so note trace includes explicit supportive negatives.
-          await setScenarioField(['#input-bp'], '170/90');
-          await setScenarioField(['#input-inr'], '1.1');
-          await setScenarioField(['#input-platelets'], '180');
-          await setScenarioField(['#input-glucose'], '120');
-          await setScenarioField(['#input-ct-results', '#phone-input-ct-results'], 'No acute hemorrhage.');
-
-          if (!nihssSet) addIssue(issues, 'missing-wakeup-scenario-input', { field: 'nihss' });
-          if (!premorbidSet) addIssue(issues, 'missing-wakeup-scenario-input', { field: 'premorbid-mrs' });
-
-          // Validate note-output traceability before manual EXTEND criteria toggles.
-          const copyFullNoteButton = page.getByRole('button', { name: /Copy Full Note/i }).first();
-          if ((await copyFullNoteButton.count()) === 0) {
-            addIssue(issues, 'missing-copy-full-note-button');
-          } else {
-            await copyFullNoteButton.scrollIntoViewIfNeeded();
-            await copyFullNoteButton.click();
-            await page.waitForTimeout(200);
-            let clipboardText = '';
-            try {
-              clipboardText = await page.evaluate(async () => {
-                try {
-                  return await navigator.clipboard.readText();
-                } catch {
-                  return '';
-                }
-              });
-            } catch (error) {
-              addIssue(issues, 'clipboard-read-failed', { message: error?.message || String(error) });
-            }
-
-            if (hasDirectPerfusionInputs) {
-              if (!/MEETS EXTEND CRITERIA|Met EXTEND criteria|EXTEND criteria 5\/5.*ELIGIBLE/i.test(clipboardText || '')) {
-                addIssue(issues, 'wakeup-note-trace-missing', { expected: 'eligible-trace' });
-              }
-            } else if (!/WAKE-UP criteria not|EXTEND criteria not|not yet eligible/i.test(clipboardText || '')) {
-              addIssue(issues, 'wakeup-note-trace-missing', { expected: 'not-eligible-trace' });
-            }
-            if (!/Supportive negatives:/i.test(clipboardText || '')) {
-              addIssue(issues, 'contraindication-supportive-negatives-missing');
-            }
-          }
-
-          // Ensure manual EXTEND path remains testable even when compact layout hides direct CTP inputs.
-          const extendCriteriaLabels = [
-            /NIHSS 4-26/i,
-            /Pre-morbid mRS <2/i,
-            /Ischemic core ≤70mL/i,
-            /Mismatch ratio ≥1.2/i,
-            /Time 4.5-9 hours OR wake-up stroke/i
-          ];
-          let manualCriteriaFound = 0;
-          for (const label of extendCriteriaLabels) {
-            const criterion = page.getByRole('checkbox', { name: label }).first();
-            if ((await criterion.count()) === 0) continue;
-            manualCriteriaFound += 1;
-            try {
-              await criterion.scrollIntoViewIfNeeded();
-              const alreadyChecked = await criterion.evaluate((el) => Boolean(el.checked));
-              if (!alreadyChecked) {
-                await criterion.click({ timeout: 5000 });
-              }
-            } catch (error) {
-              addIssue(issues, 'wakeup-manual-extend-toggle-failed', {
-                criterion: String(label),
-                message: error?.message || String(error)
-              });
-            }
-          }
-          if (manualCriteriaFound < extendCriteriaLabels.length) {
-            addIssue(issues, 'missing-wakeup-manual-extend-inputs', {
-              expected: extendCriteriaLabels.length,
-              found: manualCriteriaFound
-            });
-          }
-
-          await page.waitForTimeout(250);
-          const autoCriteriaAny = (await page.getByText(/Auto criteria (met|not fully met)/i).count()) > 0;
-          if (!autoCriteriaAny) {
-            addIssue(issues, 'wakeup-auto-extend-state-missing');
-          }
-
-          // If direct CTP inputs are available, require auto-perfusion to reach the "met" state.
-          if (hasDirectPerfusionInputs) {
-            if ((await page.getByText(/Auto criteria met for EXTEND-style perfusion selection/i).count()) === 0) {
-              addIssue(issues, 'wakeup-auto-extend-state-missing');
-            }
-          }
-
-          if ((await page.getByText(/Meets EXTEND criteria - Consider IV thrombolysis/i).count()) === 0) {
-            addIssue(issues, 'wakeup-extend-eligibility-missing');
-          }
-        }
-      }
-    }
-
-    for (const assertion of DIAGNOSIS_SWITCH_ASSERTIONS) {
-      const diagnosisButton = page.getByRole('button', { name: new RegExp(`^${assertion.label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`) });
-      if ((await diagnosisButton.count()) === 0) {
-        // Silent skip — selector not exposed in current encounter shell.
-        continue;
-      }
-      await diagnosisButton.first().click();
-      await page.waitForTimeout(150);
-
-      const className = (await diagnosisButton.first().getAttribute('class')) || '';
-      const tnkVisible = await page.evaluate(() =>
-        [...document.querySelectorAll('label')].some((label) => /TNK Recommended/i.test((label.textContent || '').trim()))
-      );
-      if (!className.includes(assertion.activeClass)) {
-        addIssue(issues, 'diagnosis-style-mismatch', {
-          label: assertion.label,
-          expectedClass: assertion.activeClass,
-          className
-        });
-      }
-      if (tnkVisible !== assertion.expectTNK) {
-        addIssue(issues, 'diagnosis-tnk-visibility', {
-          label: assertion.label,
-          expected: assertion.expectTNK,
-          actual: tnkVisible
-        });
-      }
-    }
-
-  }
-  markSectionEnd(section);
-
-  section = markSectionStart('management-workflow');
-  // Library tab retired; content folded into Management/Protocols sub-tabs.
-  let navigatedToManagement = await navigateToTab(page, 'Management');
-  if (!navigatedToManagement) navigatedToManagement = await navigateToTab(page, 'Protocols');
-  if (!navigatedToManagement) navigatedToManagement = await navigateToTab(page, 'Example Protocols');
-
-  if (!navigatedToManagement) {
-    addIssue(issues, 'tab-nav', { tab: 'Management' });
-  } else {
-    const protocolsButton = page.getByRole('tab', { name: /Protocols & Tools/i }).first();
-    if ((await protocolsButton.count()) > 0) {
-      await clickElementRobust(protocolsButton);
-      await page.waitForTimeout(200);
-    }
-
-    const ischemicButton = page.getByRole('tab', { name: /Ischemic\/TIA protocol tab/i }).first();
-    if ((await ischemicButton.count()) === 0) {
-      addIssue(issues, 'missing-library-subtab', { subtab: 'Ischemic/TIA' });
-    } else {
-      await clickElementRobust(ischemicButton);
-      await page.waitForTimeout(200);
-      await page.evaluate(() => {
-        document.querySelectorAll('details').forEach((details) => {
-          details.open = true;
-        });
-      }).catch(() => {});
-      if ((await page.getByText(/Codominant M2: no recommendation is supplied/i).count()) === 0) {
-        addIssue(issues, 'missing-mevo-updated-wording');
-      }
-    }
-
-    const ichButton = page.locator('#mgmt-tab-ich').first();
-    if ((await ichButton.count()) === 0) {
-      addIssue(issues, 'missing-library-subtab', { subtab: 'ICH' });
-    } else {
-      await clickElementRobust(ichButton);
-      await page.waitForTimeout(200);
-      await page.evaluate(() => {
-        document.querySelectorAll('#mgmt-tabpanel-ich details').forEach((details) => {
-          details.open = true;
-        });
-      }).catch(() => {});
-
-      const ichPanel = page.locator('#mgmt-tabpanel-ich').first();
-      if ((await ichPanel.count()) === 0) {
-        addIssue(issues, 'missing-ich-tabpanel');
-      } else {
-        const ichText = await ichPanel.innerText().catch(() => '');
-        const requiredIchText = [
-          { label: 'initial-eval-heading', re: /Initial Non-Traumatic IPH Evaluation/i },
-          { label: 'abc2-trigger', re: /Non-traumatic IPH (?:>=|≥)15 mL by ABC\/2/i },
-          { label: 'direct-neurosurgery-call', re: /ED clinicians or the stroke service may call Neurosurgery directly/i },
-          { label: 'prior-approval-not-required', re: /prior approval is not required/i },
-          { label: 'closed-loop-stroke-attending', re: /designated on-call stroke attending/i },
-          { label: 'ivh-hydrocephalus', re: /IVH(?:\/|, )hydrocephalus/i },
-          { label: 'cerebellar-hemorrhage-trigger', re: /cerebellar hemorrhage/i },
-          { label: 'mass-effect-trigger', re: /mass effect/i },
-          { label: 'vascular-lesion-trigger', re: /vascular lesion concern/i },
-          { label: 'neurologic-decline-trigger', re: /neurologic decline/i },
-          { label: 'multicompartmental-trigger', re: /multicompartmental hemorrhage/i },
-          { label: 'ed-attending-discretion-trigger', re: /ED attending discretion/i },
-          { label: 'clinician-concern-trigger', re: /clinician concern/i },
-          {
-            label: 'scoped-early-neurosurgery-stroke-service-trigger-list',
-            re: /Screen for early Neurosurgery \+ stroke-service evaluation triggers:[\s\S]{0,360}clinician concern/i
-          },
-          { label: 'minute-priority', re: /MINUTE has operational priority over MIRROR/i },
-          { label: 'minute-volume-20ml', re: /Basal-ganglia IPH volume (?:>=|≥)20 mL by ABC\/2/i },
-          { label: 'minute-nihss-6', re: /NIHSS (?:>=|≥)6/i },
-          { label: 'minute-window-15h', re: /(?:<=|≤)15h|(?:<=|≤)15 hours|15 hours from last known well/i },
-          {
-            label: 'mirror-thresholds-version-sensitive',
-            re: /Volume, NIHSS, premorbid mRS, and GCS thresholds are version-sensitive and must be checked against the active registry protocol/i
-          },
-          { label: 'mie-range', re: /June 2026 operational MIE screen: lobar IPH 30-80 mL/i },
-          { label: 'mie-gcs-5-14', re: /GCS 5-14/i }
-        ];
-        for (const assertion of requiredIchText) {
-          if (!assertion.re.test(ichText)) {
-            addIssue(issues, 'missing-ich-algorithm-text', { label: assertion.label });
-          }
-        }
-        const forbiddenIchText = [
-          { label: 'rapid-bp-class-i', re: /Rapid BP reduction to SBP ~140 within 1 hour/i },
-          { label: 'sbp-class-i-loe-a', re: /Class I, LOE A for SBP reduction to 140/i },
-          { label: 'uncaveated-functional-outcome', re: /Functional outcome benefit remains uncertain\./i },
-          { label: 'settled-mirror-mrs', re: /Baseline mRS ≤2|Premorbid mRS 0-1/i },
-          { label: 'settled-mirror-gcs', re: /GCS ≥5|Baseline GCS:?\s*5-15/i },
-          { label: 'stale-dual-consult-label', re: /early dual-consult/i }
-        ];
-        for (const assertion of forbiddenIchText) {
-          if (assertion.re.test(ichText)) {
-            addIssue(issues, 'forbidden-ich-algorithm-text', { label: assertion.label });
-          }
-        }
-      }
-    }
-
-  }
-  markSectionEnd(section);
-
-  section = markSectionStart('settings-workflow');
-  await page.keyboard.press('Control+4');
-  await page.waitForTimeout(150);
-  const activeAfterCtrl4 = await getActiveTabLabel(page);
-  if (!activeAfterCtrl4 || !/Settings/i.test(activeAfterCtrl4)) {
-    // Silent skip — Settings is now exposed via a dropdown menu, not a top-level tab.
-    // Ctrl+4 keyboard shortcut no longer applies (only 3 tabs exist).
-  } else {
-    if ((await page.getByText(/Contact Directory/i).count()) === 0) {
-      addIssue(issues, 'missing-contact-directory-settings');
-    }
-    if ((await page.getByRole('button', { name: /Reset Defaults/i }).count()) === 0) {
-      addIssue(issues, 'missing-contact-directory-reset');
-    }
-
-    const requiredContacts = [];
-    for (const contact of requiredContacts) {
-      const labelPresent = await page.locator(`input[value=\"${contact.label}\"]`).count();
-      if (labelPresent === 0) {
-        addIssue(issues, 'missing-required-contact-label', { contact: contact.label });
-      }
-      const phonePresent = await page.locator(`input[value=\"${contact.phone}\"]`).count();
-      if (phonePresent === 0) {
-        addIssue(issues, 'missing-required-contact-phone', { contact: contact.label, phone: contact.phone });
-      }
-    }
-  }
-  markSectionEnd(section);
-
-  section = markSectionStart('post-evt-note-trace');
-  if (postEvtPlanConfigured) {
-    if (!(await navigateToTab(page, 'Encounter'))) {
-      addIssue(issues, 'tab-nav', { tab: 'Encounter (post-EVT)' });
-    } else {
-      const ischemicButton = page.getByRole('button', { name: /^Ischemic Stroke or TIA$/ }).first();
-      if ((await ischemicButton.count()) > 0) {
-        await ischemicButton.click();
-        await page.waitForTimeout(100);
-      }
-
-      const evtRecommendedCheckbox = page.getByRole('combobox', { name: 'EVT treatment decision' }).first();
-      if ((await evtRecommendedCheckbox.count()) > 0) {
-        await evtRecommendedCheckbox.selectOption('yes');
-        await page.waitForTimeout(100);
-      }
-
-      const templateSelect = page.locator('select:has(option[value="signout"])').first();
-      if ((await templateSelect.count()) > 0) {
-        await templateSelect.selectOption('signout');
-        await page.waitForTimeout(100);
-      } else {
-        addIssue(issues, 'missing-note-template-select-post-evt');
-      }
-
-      const copyFullNoteButton = page.getByRole('button', { name: /Copy Full Note/i }).first();
-      if ((await copyFullNoteButton.count()) === 0) {
-        // Silent skip — Copy Full Note button is downstream of diagnosis
-        // selector flow that is gated in current encounter shell.
-      } else {
-        await copyFullNoteButton.scrollIntoViewIfNeeded();
-        await copyFullNoteButton.click();
-        await page.waitForTimeout(200);
-        let clipboardText = '';
-        try {
-          clipboardText = await page.evaluate(async () => {
-            try {
-              return await navigator.clipboard.readText();
-            } catch {
-              return '';
-            }
-          });
-        } catch (error) {
-          addIssue(issues, 'clipboard-read-failed-post-evt', { message: error?.message || String(error) });
-        }
-
-        if (!/BP plan: .*Agent: Nicardipine drip|Plan: .*Agent: Nicardipine drip/i.test(clipboardText || '')) {
-          addIssue(issues, 'post-evt-bp-note-plan-missing');
-        }
-      }
-    }
-  }
-  markSectionEnd(section);
-
-  section = markSectionStart('pediatric-workflow');
-  // Pediatric pathway scenario (age <18): ensure safety workflow is visible and note-traceable.
-  await navigateToTab(page, 'Encounter');
-  await page.waitForTimeout(200);
-  const pediatricDxButton = page.getByRole('button', { name: /^Ischemic Stroke or TIA$/ }).first();
-  if ((await pediatricDxButton.count()) === 0) {
-    // Silent skip — pediatric diagnosis selector not exposed in current shell.
-  } else {
-    await pediatricDxButton.click();
-    await page.waitForTimeout(150);
-
-    let ageFieldSet = false;
-    for (const selector of ['#input-age', '#phone-input-age']) {
-      const ageInput = page.locator(selector).first();
-      if ((await ageInput.count()) === 0) continue;
-      await ageInput.fill('12');
-      ageFieldSet = true;
-      break;
-    }
-    if (!ageFieldSet) {
-      addIssue(issues, 'missing-pediatric-age-input');
-    }
-    await page.waitForTimeout(200);
-
-    const specialPopSummary = page.locator('summary:has-text("Special Populations & Rehab")').first();
-    if ((await specialPopSummary.count()) === 0) {
-      addIssue(issues, 'missing-special-populations-section');
-    } else {
-      await specialPopSummary.scrollIntoViewIfNeeded();
-      await specialPopSummary.click();
-      await page.waitForTimeout(200);
-    }
-
-    if ((await page.getByText(/Pediatric Stroke Rapid Pathway/i).count()) === 0) {
-      addIssue(issues, 'missing-pediatric-pathway-card');
-    }
-    if ((await page.getByText(/PEDIATRIC patient/i).count()) === 0) {
-      addIssue(issues, 'missing-pediatric-age-warning');
-    }
-    if ((await page.getByText(/without documented pediatric neurology consultation/i).count()) === 0) {
-      addIssue(issues, 'missing-pediatric-neuro-warning');
-    }
-
-    const pediatricChecklistSelectors = [
-      /Pediatric neurology consulted/i,
-      /Pediatric-capable center contacted/i,
-      /Arterial \+ venous imaging completed/i
-    ];
-    for (const label of pediatricChecklistSelectors) {
-      const checkbox = page.getByRole('checkbox', { name: label }).first();
-      if ((await checkbox.count()) === 0) {
-        addIssue(issues, 'missing-pediatric-checklist-input', { label: String(label) });
-        continue;
-      }
-      await checkbox.check();
-    }
-    await page.waitForTimeout(150);
-
-    if ((await page.getByText(/Pediatric pathway summary:/i).count()) === 0) {
-      addIssue(issues, 'missing-pediatric-pathway-summary');
-    }
-
-    const copyFullNoteButton = page.getByRole('button', { name: /Copy Full Note/i }).first();
-    if ((await copyFullNoteButton.count()) === 0) {
-      addIssue(issues, 'missing-copy-full-note-button-pediatric');
-    } else {
-      await copyFullNoteButton.scrollIntoViewIfNeeded();
-      await copyFullNoteButton.click();
-      await page.waitForTimeout(200);
-      let clipboardText = '';
-      try {
-        clipboardText = await page.evaluate(async () => {
-          try {
-            return await navigator.clipboard.readText();
-          } catch {
-            return '';
-          }
-        });
-      } catch (error) {
-        addIssue(issues, 'clipboard-read-failed-pediatric', { message: error?.message || String(error) });
-      }
-      if (!/PEDIATRIC STROKE|Pediatric stroke/i.test(clipboardText || '')) {
-        addIssue(issues, 'pediatric-note-trace-missing');
-      }
-    }
-  }
-  markSectionEnd(section);
-
-  section = markSectionStart('screenshot');
-  const screenshotPath = path.join(outDir, `qa-${target.name}-${viewport.name}.png`);
-  await page.screenshot({ path: screenshotPath, fullPage: true });
-  markSectionEnd(section);
-  notes.runDurationMs = Date.now() - runStartedAtMs;
-
-  await context.close();
-  return {
-    target: target.name,
-    url: target.url,
-    viewport: viewport.name,
-    issues,
-    issueCount: issues.length,
-    notes,
-    screenshot: path.relative(process.cwd(), screenshotPath)
-  };
-}
-
-
-// Protocols carries institutional content only. A topic with no Stroke Center source document
-// renders just its header plus a "no institutional protocol document is on file" notice, and has
-// no clinical widgets to check. Detect that state so these assertions describe reality instead of
-// flagging an intentional absence as a defect.
-async function institutionalNoticeShown(page) {
-  return (await page.locator('text=/No institutional protocol document is on file/i').count()) > 0;
-}
-
 async function main() {
+  const latency=latencyConfiguration();
   await fs.mkdir(outDir, { recursive: true });
-
-  const targets = [
-    { name: 'local', url: LOCAL_URL },
-    { name: 'local-public-demo', url: PUBLIC_DEMO_LOCAL_URL, isPublicDemo: true, viewports: [VIEWPORTS[0]] }
-  ];
-  if (!localOnly) targets.push({ name: 'live', url: LIVE_URL });
-
-  let server = null;
-  const startedAt = new Date().toISOString();
-
+  const site = path.resolve(arg('--site-dir', fsSync.existsSync('output/site') ? 'output/site' : '.'));
+  const server = await servePublished(() => site, Number(arg('--port', '4177')));
+  const browser = await launchChromium();
+  const report = { scope: 'Rendered production artifact; Chromium simulations, not physical devices', site, checks: [], screenshots: [], metrics: {}, runs: [], latency: {profile:latency.name,profilesFile:latency.file,enforced:latency.enforce}, live: { status: 'not run', reason: '--local-only or no --live; no implied deployed verification' } };
+  const check = async (name, fn) => { const started = performance.now(); try { const details = await fn(); report.checks.push({ name, status: 'passed', durationMs: Math.round(performance.now()-started), ...(details || {}) }); } catch(error) { report.checks.push({ name, status: 'failed', error: error.stack || String(error) }); console.error(`FAIL ${name}: ${error.message}`); } };
   try {
-    if (!(await canReach(LOCAL_URL))) {
-      server = startLocalServer();
-      await waitForHttp(LOCAL_URL);
-    }
-
-    const localVersion = await fetchAppVersion(LOCAL_URL);
-    const liveVersion = localOnly ? null : await fetchAppVersion(LIVE_URL);
-    const liveVersionMatchesLocal = !localOnly && Boolean(localVersion) && Boolean(liveVersion) && localVersion === liveVersion;
-    const liveParityIssues = [];
-    if (!localOnly && !liveVersionMatchesLocal) {
-      liveParityIssues.push({
-        type: 'live-deployment-parity',
-        message: 'Live app version does not match the checked-out local build.',
-        localAppVersion: localVersion || null,
-        liveAppVersion: liveVersion || null
-      });
-    }
-
-    const effectiveTargets = targets.map((target) => {
-      if (target.name === 'live') {
-        return {
-          ...target,
-          appVersion: liveVersion,
-          enforceLiveParityChecks: liveVersionMatchesLocal
-        };
-      }
-      return {
-        ...target,
-        appVersion: localVersion,
-        enforceLiveParityChecks: true
-      };
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, timezoneId: 'America/Los_Angeles' });
+    await context.addInitScript(() => {
+      window.__qaClipboard = []; window.__qaDenyClipboard = false; window.__qaStorageWrites = []; window.__qaIndexedDB = [];
+      Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async text => { if(window.__qaDenyClipboard) throw new DOMException('Denied', 'NotAllowedError'); window.__qaClipboard.push(text); } } });
+      const write = Storage.prototype.setItem; Storage.prototype.setItem = function(key,value) { window.__qaStorageWrites.push([key,value]); return write.call(this,key,value); };
+      const open = indexedDB.open.bind(indexedDB); indexedDB.open = function(...values) {window.__qaIndexedDB.push(values);return open(...values);};
     });
-
-  // STROKE_CHROMIUM_PATH override (mirrors scripts/snapshot-example-protocols.mjs)
-  // lets CI/local envs point at an already-installed Chromium instead of the
-  // Playwright-pinned build. No override → default resolution, unchanged.
-  const browser = await chromium.launch({
-    headless: true,
-    ...(process.env.STROKE_CHROMIUM_PATH ? { executablePath: process.env.STROKE_CHROMIUM_PATH } : {})
-  });
-  const runs = [];
-
-  for (const target of effectiveTargets) {
-    for (const viewport of target.viewports || VIEWPORTS) {
-      try {
-        runs.push(await auditView(browser, target, viewport));
-      } catch (error) {
-        runs.push({
-          target: target.name,
-          url: target.url,
-          viewport: viewport.name,
-          issues: [{ type: 'audit-runtime-error', message: error?.message || String(error) }],
-          issueCount: 1,
-          notes: { fatalStack: error?.stack || String(error) },
-          screenshot: null
+    const page = await context.newPage(); page.setDefaultTimeout(10000);
+    const errors=[], failedResources=[], requestUrls=[], consoleMessages=[];
+    page.on('pageerror', error => errors.push(error.message)); page.on('requestfailed', req => failedResources.push({url:req.url(),error:req.failure()?.errorText})); page.on('request', req => requestUrls.push(req.url())); page.on('console',message=>consoleMessages.push({type:message.type(),text:message.text()}));
+    await check('default Encounter, public build on localhost, retired primary portal absent', async () => {
+      const started=performance.now(); await page.goto(server.url); await page.getByRole('heading',{name:'Encounter',exact:true}).waitFor(); report.metrics.usableEncounterMs=Math.round(performance.now()-started);report.metrics.initialJsTransferBytes=await page.evaluate(()=>performance.getEntriesByType('resource').filter(x=>new URL(x.name).pathname.endsWith('.js')).reduce((sum,x)=>sum+x.transferSize,0));
+      assert.equal(await page.locator('.app-shell').getAttribute('data-demo'),'synthetic'); assert.equal(new URL(page.url()).hash,'#/encounter');
+      for(const name of ['Education','Trials','Guidelines & References','Bedside','Teaching']) assert.equal(await page.getByRole('tab',{name,exact:true}).count(),0);
+      assert.equal(await page.getByRole('link',{name:'Protocols',exact:true}).count(),1);
+    });
+    await check('all viewport/theme rendering, focus, numeric semantics and primary touch controls', async () => {
+      const results=[];
+      for(const width of [360,390,768,1440]) for(const theme of ['light','dark']) {
+        const viewport=width>=1000?'desktop':width>=768?'tablet':'mobile';const started=performance.now();const sections=[];
+        const timed=async(name,thresholdKey,fn)=>{const began=performance.now();await fn();const durationMs=Math.round(performance.now()-began),thresholdMs=latency.section('local',viewport,thresholdKey);sections.push({name,thresholdKey,durationMs,thresholdMs});if(latency.enforce)assert(durationMs<=thresholdMs,`${width}/${theme} ${name}: ${durationMs} exceeds ${thresholdMs}ms`);};
+        await page.setViewportSize({width,height:900});const picker=page.getByLabel('Theme',{exact:true});await openDetails(picker);await picker.selectOption(theme);await picker.evaluate(el=>el.closest('details').open=false);await page.reload();await page.getByRole('heading',{name:'Encounter',exact:true}).waitFor();
+        assert.equal(await page.locator('html').getAttribute('data-theme'),theme);const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);assert.equal(overflow,false,`overflow ${width}/${theme}`);
+        await timed('encounter-workflow','encounter-workflow',async()=>{
+          await setupIschemic(page);const weight=page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true});assert.equal(await weight.getAttribute('type'),'number');await weight.focus();await page.keyboard.press('Tab');await page.keyboard.press('Shift+Tab');assert(await weight.evaluate(el=>document.activeElement===el));assert(await weight.evaluate(el=>getComputedStyle(el).outlineStyle!=='none'),'visible keyboard focus missing');
+          const primary=await page.locator('.workspace-primary').evaluateAll(els=>els.filter(e=>e.offsetParent!==null).map(e=>({width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height})));assert(primary.every(x=>x.width>=44&&x.height>=44));
+          await page.getByRole('button',{name:'Generate synthetic summary',exact:true}).click();assert((await page.getByLabel('Generated synthetic summary',{exact:true}).inputValue()).includes('NIHSS incomplete'));const shot=path.join(outDir,`encounter-${width}-${theme}.png`);await page.screenshot({path:shot,fullPage:true});report.screenshots.push(shot);
         });
+        await timed('navigation-tools','library-workflow',async()=>{await page.getByRole('link',{name:'Tools & sources',exact:true}).click();await page.getByRole('heading',{name:'Tools & sources',exact:true}).waitFor();await page.evaluate(()=>location.hash='#/education');await page.getByRole('heading',{name:'Retired destination',exact:true}).waitFor();await page.getByRole('link',{name:'Stroke',exact:true}).click();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');});
+        await timed('retained-protocols-pediatric','pediatric-workflow',async()=>{await page.getByRole('link',{name:'Protocols',exact:true}).click();await page.locator('#mgmt-tabpanel-ischemic').waitFor();const age=page.locator('#evt-age');await openDetails(age);await age.fill('17');assert((await page.locator('#mgmt-tabpanel-ischemic').innerText()).includes('Adult EVT algorithm does not apply'));await page.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();const trigger=page.getByRole('button',{name:'Vitamin K 10 mg IV',exact:true,includeHidden:true}).first();await openDetails(trigger);await trigger.click();await page.getByRole('dialog').waitFor();await page.keyboard.press('Escape');assert.equal(await page.getByRole('dialog').count(),0);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,`protocol overflow ${width}/${theme}`);});
+        const durationMs=Math.round(performance.now()-started),thresholdMs=latency.run('local',viewport);report.runs.push({target:'local',viewport,width,theme,durationMs,thresholdMs,sections});if(latency.enforce)assert(durationMs<=thresholdMs,`${width}/${theme}: ${durationMs} exceeds ${thresholdMs}ms`);results.push({width,theme,overflow});await page.getByRole('link',{name:'Stroke',exact:true}).click();
       }
-    }
-  }
-
-    await browser.close();
-
-    if (liveParityIssues.length > 0) {
-      runs.push({
-        target: 'live',
-        url: LIVE_URL,
-        viewport: 'deployment-parity',
-        issues: liveParityIssues,
-        issueCount: liveParityIssues.length,
-        notes: {
-          localAppVersion: localVersion || null,
-          liveAppVersion: liveVersion || null,
-          liveParityChecksEnabled: false
-        },
-        screenshot: null
-      });
-    }
-
-    const totalIssues = runs.reduce((sum, run) => sum + run.issueCount, 0);
-    const timedRuns = runs.filter((run) => Number.isFinite(run?.notes?.runDurationMs));
-    const totalRunDurationMs = timedRuns.reduce((sum, run) => sum + run.notes.runDurationMs, 0);
-    const averageRunDurationMs = timedRuns.length > 0 ? Math.round(totalRunDurationMs / timedRuns.length) : null;
-    const slowestRun = timedRuns.reduce((slowest, run) => {
-      if (!slowest) {
-        return {
-          target: run.target,
-          viewport: run.viewport,
-          durationMs: run.notes.runDurationMs
-        };
+      await page.setViewportSize({width:1440,height:900});await page.locator('#workspace-main').evaluate(el=>el.style.fontSize='200%');assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'200% text zoom overflow');await page.locator('#workspace-main').evaluate(el=>el.style.fontSize='');await page.reload();return{viewports:results,zoom:'200% text-size simulation',latencyScope:'Independent local runs per viewport and theme; former library ceiling applies to navigation/tools retirement contract'};
+    });
+    await check('canonical state survives Protocols, Tools and browser back/forward', async () => {
+      await setupIschemic(page); await page.getByLabel('Manual rationale / recommendations (synthetic only)',{exact:true}).fill('Synthetic QA marker zeta: clinician review pending.');
+      await page.getByRole('link',{name:'Protocols',exact:true}).click();await page.locator('#mgmt-tabpanel-ischemic').waitFor();
+      await page.getByRole('link',{name:'Tools & sources',exact:true}).click();await page.getByRole('heading',{name:'Tools & sources',exact:true}).waitFor();await page.goBack();await page.locator('#mgmt-tabpanel-ischemic').waitFor();await page.goBack();await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');await page.goForward();await page.locator('#mgmt-tabpanel-ischemic').waitFor();await page.getByRole('link',{name:'Stroke',exact:true}).click();assert((await page.getByLabel('Manual rationale / recommendations (synthetic only)',{exact:true}).inputValue()).includes('marker zeta'));
+    });
+    await check('legacy tool links reveal and focus retained tools; unavailable and retired routes explicit', async () => {
+      for(const [route,id] of [['#/calculators/nihss','calc-nihss'],['#/research/calculators/crcl','calc-crcl'],['#/encounter/aspects','calc-aspects'],['#/calculators/tnk-dose','calc-tnk']]) {
+        await page.evaluate(hash=>location.hash=hash,route);await page.waitForFunction(target=>{const el=document.getElementById(target);return el&&(el===document.activeElement||el.contains(document.activeElement));},id);
       }
-      if (run.notes.runDurationMs > slowest.durationMs) {
-        return {
-          target: run.target,
-          viewport: run.viewport,
-          durationMs: run.notes.runDurationMs
-        };
-      }
-      return slowest;
-    }, null);
-    const slowRuns = timedRuns
-      .map((run) => {
-        const thresholdMs = resolveRunThresholdMs(run.target, run.viewport);
-        return {
-          target: run.target,
-          viewport: run.viewport,
-          durationMs: run.notes.runDurationMs,
-          thresholdMs
-        };
-      })
-      .filter((run) => run.durationMs > run.thresholdMs)
-      .sort((left, right) => right.durationMs - left.durationMs);
-    const slowSections = timedRuns
-      .flatMap((run) => {
-        const timings = Array.isArray(run?.notes?.sectionTimings) ? run.notes.sectionTimings : [];
-        return timings
-          .filter((timing) => Number.isFinite(timing.durationMs))
-          .map((timing) => {
-            const thresholdMs = resolveSectionThresholdMs(run.target, run.viewport, timing.section);
-            return {
-              target: run.target,
-              viewport: run.viewport,
-              section: timing.section,
-              durationMs: timing.durationMs,
-              thresholdMs
-            };
-          })
-          .filter((timing) => timing.durationMs > timing.thresholdMs);
-      })
-      .sort((left, right) => right.durationMs - left.durationMs);
-    const latencyProfilesSource = latencyProfilesSourcePath ? path.relative(process.cwd(), latencyProfilesSourcePath) : 'built-in';
-    const availableLatencyProfiles = Object.keys(latencyProfiles);
-    const summary = {
-      startedAt,
-      finishedAt: new Date().toISOString(),
-      localOnly,
-      targetCount: targets.length,
-      viewportCount: VIEWPORTS.length,
-      runCount: runs.length,
-      totalIssues,
-      localAppVersion: localVersion,
-      liveAppVersion: liveVersion,
-      liveParityChecksEnabled: liveVersionMatchesLocal,
-      averageRunDurationMs,
-      slowestRun,
-      latencyProfile,
-      latencyProfilesSource,
-      availableLatencyProfiles,
-      runDurationThresholdMs,
-      sectionDurationThresholdMs,
-      enforceLatencyThresholds,
-      slowRunCount: slowRuns.length,
-      slowSectionCount: slowSections.length,
-      slowRuns,
-      slowSections
-    };
-    try {
-      const historyInfo = await updateLatencyHistory(summary, runs);
-      summary.latencyHistoryPath = historyInfo.path;
-      summary.latencyHistoryCount = historyInfo.count;
-    } catch (error) {
-      summary.latencyHistoryPath = path.relative(process.cwd(), latencyHistoryFile);
-      summary.latencyHistoryError = error?.message || String(error);
-    }
-
-    const report = { summary, runs };
-    await fs.writeFile(reportFile, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
-
-    console.log(`QA smoke report: ${path.relative(process.cwd(), reportFile)}`);
-    console.log(`Runs: ${summary.runCount} | Issues: ${summary.totalIssues}`);
-    console.log(`Latency profile: ${summary.latencyProfile} (${summary.latencyProfilesSource})`);
-    if (summary.slowestRun) {
-      console.log(
-        `Slowest run: ${summary.slowestRun.target}/${summary.slowestRun.viewport} (${summary.slowestRun.durationMs} ms)`
-      );
-    }
-    if (summary.slowRunCount > 0) {
-      console.warn(
-        `Slow-run alert: ${summary.slowRunCount} run(s) exceeded configured run threshold(s) (profile: ${summary.latencyProfile}).`
-      );
-    }
-    if (summary.slowSectionCount > 0) {
-      console.warn(
-        `Slow-section alert: ${summary.slowSectionCount} section(s) exceeded configured section threshold(s) (profile: ${summary.latencyProfile}).`
-      );
-    }
-    if (summary.enforceLatencyThresholds && (summary.slowRunCount > 0 || summary.slowSectionCount > 0)) {
-      console.error('Latency threshold enforcement enabled and one or more thresholds were exceeded.');
-      process.exit(1);
-    }
-
-    if (totalIssues > 0) {
-      console.error('Smoke audit detected issues. See report for details.');
-      process.exit(1);
-    }
-  } finally {
-    if (server) server.stop();
-  }
+      for(const route of ['#/education','#/trials','#/research/guidelines','#/calculators/rcvs2','#/encounter/unknown-calc']) {await page.evaluate(hash=>location.hash=hash,route);await page.getByRole('heading',{name:/Retired/}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).isVisible(),false);}
+      await page.evaluate(()=>location.hash='#/encounter/ich-score');await page.getByText('This tool is inactive in the current context.',{exact:false}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');await page.getByRole('link',{name:'Stroke',exact:true}).click();
+    });
+    await check('complete vs partial NIHSS, explicit zero, valid dose and clearing weight', async () => {
+      const items=page.locator('#calc-nihss select');await openDetails(items.first());assert.equal(await items.count(),15);
+      await items.first().selectOption({label:'Alert (0)'});assert((await page.locator('#calc-nihss').innerText()).includes('1/15 items documented · partial sum 0'));
+      for(let i=0;i<15;i++){const value=await items.nth(i).locator('option').evaluateAll(els=>els.find(e=>e.textContent.includes('(0)')).value);await items.nth(i).selectOption(value);}
+      assert((await page.locator('#calc-nihss').innerText()).includes('Complete NIHSS: 0/42'));const interactionStarted=performance.now();await items.first().selectOption('Drowsy (1)');await page.getByText('Complete NIHSS: 1/42',{exact:true}).waitFor();report.metrics.representativeInteractionMs=Math.round(performance.now()-interactionStarted);report.metrics.interactionMeasurement='Playwright select action through visible NIHSS update; driver overhead included';await items.first().selectOption('Alert (0)');await items.first().selectOption('');assert((await page.locator('#calc-nihss').innerText()).includes('14/15 items documented'));await items.first().selectOption('Alert (0)');
+      assert((await page.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).fill('');assert(!(await page.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).fill('83');
+    });
+    await check('summary explicit generation/copy, clipboard denial fallback, stale-input invalidation and no recursion', async () => {
+      assert.equal(await page.evaluate(()=>window.__qaClipboard.length),0);let draft=await generate(page);const first=await draft.inputValue();assert(first.includes('Synthetic')||first.includes('SYNTHETIC'));assert(first.includes('marker zeta'));assert(first.includes('Consent status: not documented'));assert(first.includes('IVT administration: not documented'));
+      await page.getByRole('button',{name:'Copy reviewed summary',exact:true}).click();assert.equal(await page.evaluate(()=>window.__qaClipboard.length),1);assert.equal(await page.evaluate(()=>window.__qaClipboard[0]),first);
+      await page.evaluate(()=>window.__qaDenyClipboard=true);await page.getByRole('button',{name:'Copy reviewed summary',exact:true}).click();await page.getByText('Clipboard unavailable. Select the read-only summary and copy it manually.',{exact:true}).waitFor();assert(await draft.evaluate(el=>el.selectionStart===0&&el.selectionEnd===el.value.length));
+      await page.getByLabel('Age (years)',{exact:true}).fill('66');await page.getByText('Encounter inputs changed. Generate again before reviewing or copying.',{exact:true}).waitFor();assert.equal(await page.getByRole('button',{name:'Copy reviewed summary',exact:true}).count(),0);draft=await generate(page);const second=await draft.inputValue();assert.equal(second.split('Clinician rationale / recommendations:').length-1,1);assert(!second.includes(first));
+      await page.getByLabel('Context',{exact:true}).selectOption('follow-up');assert.equal(await page.locator('#calc-tnk').count(),0);assert.equal(await page.getByRole('button',{name:'Copy reviewed summary',exact:true}).count(),0);draft=await generate(page);assert(!(await draft.inputValue()).includes('IVT administration:'));assert((await draft.inputValue()).includes('marker zeta'));await page.getByLabel('Context',{exact:true}).selectOption('acute');assert.equal(await page.getByLabel('Selected IV thrombolytic',{exact:true}).inputValue(),'TNK');
+    });
+    await check('unentered discovery, future timestamps, explicit administration timer and context invalidation', async () => {
+      await page.getByLabel('Last known well is unknown',{exact:true}).check();await page.getByText('Discovery timestamp not documented',{exact:true}).waitFor();const discovery=page.getByLabel('Discovery time (local)',{exact:true});await openDetails(discovery);assert.equal(await discovery.inputValue(),'');await page.getByLabel('Last known well is unknown',{exact:true}).uncheck();
+      const admin=page.getByLabel('IVT administration timestamp (local)',{exact:true});await admin.fill(await localStamp(page,5));await page.getByText(/Monitoring timer inactive:/).waitFor();await page.getByLabel('IV thrombolytic administration explicitly recorded',{exact:true}).check();await page.getByText(/Recorded TNK administration · next scheduled check/).waitFor();await admin.fill(await localStamp(page,-60));await page.getByText(/Monitoring timer inactive:/).waitFor();await admin.fill('');await page.getByLabel('IV thrombolytic administration explicitly recorded',{exact:true}).uncheck();
+    });
+    await check('ICH ABC/2, complete GCS, reviewed zero ICH score, clearing and retained protocol shared dimensions', async () => {
+      await page.getByLabel('Working diagnosis',{exact:true}).selectOption('ich');for(const [label,value] of [['GCS Eye','4'],['GCS Verbal','5'],['GCS Motor','6']])await page.locator('#tabpanel-encounter').getByLabel(label,{exact:true}).selectOption(value);await page.getByText('GCS 15/15',{exact:true}).waitFor();
+      for(const [label,value] of [['A: largest diameter (cm)','4'],['B: perpendicular diameter (cm)','3'],['Slice thickness (mm)','5'],['Number of hematoma slices','4']])await page.locator('#tabpanel-encounter').getByLabel(label,{exact:true}).fill(value);
+      assert((await page.locator('#calc-ich-volume').innerText()).includes('12 mL'));for(const label of ['Intraventricular hemorrhage','Infratentorial origin'])await page.locator('#tabpanel-encounter').getByLabel(label,{exact:true}).selectOption('false');await page.getByText('ICH score 0/6 · severity framework; no individual prognosis',{exact:true}).waitFor();
+      await page.getByRole('link',{name:'Protocols',exact:true}).click();await page.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();await page.locator('#mgmt-tabpanel-ich').waitFor();const dim=page.locator('#mgmt-tabpanel-ich input[placeholder="e.g. 4.2"]');await openDetails(dim);assert.equal(await dim.inputValue(),'4');await dim.fill('');await page.getByRole('link',{name:'Stroke',exact:true}).click();assert.equal(await page.getByLabel('A: largest diameter (cm)',{exact:true}).inputValue(),'');assert((await page.locator('#calc-ich-score').innerText()).includes('Complete age, GCS, volume'));
+    });
+    await check('public-demo privacy: no clinical storage, IndexedDB, URL/context transfer, console or cached response values', async () => {
+      const marker='Synthetic QA marker zeta';assert(!requestUrls.some(url=>decodeURIComponent(url).includes(marker)));assert(!page.url().includes('marker'));assert(!consoleMessages.some(message=>message.text.includes(marker)));
+      const writes=await page.evaluate(()=>window.__qaStorageWrites);assert(writes.every(([key])=>['stroke.v7.theme','stroke.v7.migrated'].includes(key)),JSON.stringify(writes));assert.deepEqual(await page.evaluate(()=>window.__qaIndexedDB),[]);
+      assert.equal(await page.evaluate(async sentinel=>{for(const name of await caches.keys()){const cache=await caches.open(name);for(const req of await cache.keys()){const response=await cache.match(req);if((response.headers.get('content-type')||'').match(/text|json|javascript/)&&(await response.text()).includes(sentinel))return true;}}return false;},marker),false);
+      assert(requestUrls.filter(url=>/^https?:/.test(url)).every(url=>new URL(url).origin===new URL(server.url).origin),'core required external request');
+    });
+    await check('deliberate reset cancel/accept clears full encounter, derived outputs, draft and timers', async () => {
+      const button=page.getByRole('button',{name:'New encounter',exact:true,includeHidden:true});await openDetails(button);page.once('dialog',dialog=>dialog.dismiss());await button.click();assert.equal(await page.getByLabel('Age (years)',{exact:true}).inputValue(),'66');await reset(page);for(const label of ['Age (years)','Weight (kg)','Manual rationale / recommendations (synthetic only)','Entered examination / imaging assessment (synthetic only)'])assert.equal(await page.locator('#tabpanel-encounter').getByLabel(label,{exact:true}).inputValue(),'');assert.equal(await page.getByLabel('Working diagnosis',{exact:true}).inputValue(),'');assert((await page.locator('#calc-nihss').innerText()).includes('0/15 items documented'));assert.equal(await page.getByLabel('Generated synthetic summary',{exact:true}).count(),0);
+    });
+    await check('console and resource errors', async () => {assert.deepEqual(errors,[]);assert.deepEqual(failedResources,[]);assert.deepEqual(consoleMessages.filter(x=>x.type==='error'),[]);});
+    report.metrics.totalPageJsTransferBytes=await page.evaluate(()=>performance.getEntriesByType('resource').filter(x=>x.initiatorType==='script'||new URL(x.name).pathname.endsWith('.js')).reduce((sum,x)=>sum+x.transferSize,0));
+    await context.close();
+    await check('fresh complete installation, offline reload, full synthetic encounter and protected drug modal', async () => {
+      const offline=await browser.newContext({viewport:{width:390,height:844},timezoneId:'America/Los_Angeles'});const p=await offline.newPage();const offlineErrors=[];p.on('pageerror',e=>offlineErrors.push(e.message));try{
+        await p.goto(server.url);await p.getByRole('heading',{name:'Encounter',exact:true}).waitFor();await waitForInstalled(p);await p.reload();await p.waitForFunction(()=>Boolean(navigator.serviceWorker.controller));
+        const cache=await p.evaluate(async()=>{const names=await caches.keys();const active=names.filter(name=>name.startsWith('stroke-cache-v'));let totalBytes=0,entries=0,urls=[];for(const name of active){const c=await caches.open(name);for(const req of await c.keys()){entries++;urls.push(req.url);totalBytes+=(await(await c.match(req)).arrayBuffer()).byteLength;}}return{names:active,totalBytes,entries,urls};});assert(!cache.urls.some(url=>/education|teaching|TrialScreener|deferred-reference/.test(url)));report.metrics.offlineCacheBytes=cache.totalBytes;
+        await offline.setOffline(true);await p.reload({waitUntil:'domcontentloaded'});await setupIschemic(p);await p.getByLabel('Manual rationale / recommendations (synthetic only)',{exact:true}).fill('Synthetic offline encounter; specialist review pending.');const items=p.locator('#calc-nihss select');await openDetails(items.first());for(let i=0;i<15;i++){const value=await items.nth(i).locator('option').evaluateAll(els=>els.find(e=>e.textContent.includes('(0)')).value);await items.nth(i).selectOption(value);}assert((await p.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));assert((await(await generate(p)).inputValue()).includes('NIHSS: 0/42'));
+        await p.getByRole('link',{name:'Protocols',exact:true}).click();await p.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();const trigger=p.getByRole('button',{name:'Vitamin K 10 mg IV',exact:true,includeHidden:true}).first();await openDetails(trigger);await trigger.click();await p.getByRole('dialog').waitFor();assert((await p.getByRole('dialog').innerText()).includes('Vitamin K'));await p.keyboard.press('Escape');assert.equal(await p.getByRole('dialog').count(),0);assert.deepEqual(offlineErrors,[]);await p.screenshot({path:path.join(outDir,'offline-protocol-mobile.png'),fullPage:true});return{cache,simulation:true};
+      }finally{await offline.close();}
+    });
+    await check('published retired raw URLs unavailable and old JSON endpoints return retirement metadata', async () => {
+      for(const relative of ['src/app.jsx','documents/references/External Ventricular Drain.pdf','content/bundle.json','assets/select_score_chart.png']){const response=await fetch(new URL(relative,server.url));assert([404,410].includes(response.status),`${relative}: ${response.status}`);}
+      for(const relative of ['data/atlas/completed-trials.json','data/atlas/active-trials.json','data/guidelines/index.json']){const response=await fetch(new URL(relative,server.url));if(response.status===404||response.status===410)continue;assert((response.headers.get('content-type')||'').includes('json'));const data=await response.json();assert(data.retired||data.status==='retired'||data.status==='deprecated'||data._meta?.status==='retired',relative);}
+    });
+    if(args.includes('--live')&&!args.includes('--local-only'))await check('live deployed version parity and retained smoke',async()=>{const p=await browser.newPage();try{await p.goto(process.env.STROKE_LIVE_URL||'https://rkalani1.github.io/stroke/');await p.getByRole('heading',{name:'Encounter',exact:true}).waitFor();assert.equal(await p.locator('.app-shell').getAttribute('data-version'),JSON.parse(await fs.readFile('package.json','utf8')).version);report.live={status:'passed',url:p.url()};}finally{await p.close();}});
+  } finally {await browser.close();await server.close();report.passed=report.checks.every(c=>c.status==='passed');await fs.writeFile(path.join(outDir,'qa-smoke-report.json'),JSON.stringify(report,null,2)+'\n');console.log(`Browser QA ${report.passed?'PASS':'FAIL'}: ${report.checks.filter(c=>c.status==='passed').length}/${report.checks.length}; output/playwright/qa-smoke-report.json`);if(!report.passed)process.exitCode=1;}
 }
-
-main().catch((error) => {
-  console.error(error?.stack || String(error));
-  process.exit(1);
-});
+if(import.meta.url===pathToFileURL(process.argv[1]).href)main().catch(error=>{console.error(error);process.exitCode=1;});

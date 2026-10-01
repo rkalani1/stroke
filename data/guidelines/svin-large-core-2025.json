@@ -1,54 +1,22 @@
 {
-  "id": "svin-large-core-2025",
-  "title": "SVIN 2025 Guideline: EVT for Large Infarct",
-  "shortTitle": "SVIN Large-Core EVT 2025",
-  "doi": "10.1161/SVIN.124.001581",
-  "publisherUrl": "https://www.ahajournals.org/doi/10.1161/SVIN.124.001581",
-  "pdfUrl": "https://www.ahajournals.org/doi/pdf/10.1161/SVIN.124.001581",
-  "pubmedUrl": "https://pubmed.ncbi.nlm.nih.gov/41573174/",
-  "pmid": "41573174",
-  "recommendations": [
-    {
-      "section": "EVT within 0-6 hours",
-      "classOfRec": "I",
-      "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "In patients with anterior circulation stroke presenting within 0-6 h from symptom onset, baseline mRS score 0-1, age 18-80 years, occlusion of the ICA or MCA M1 segment, and ASPECTS of 0-5 on noncontrast CT or MRI, EVT is recommended. (Evidence: LASTE trial; meta-analyses AlMajali et al, Roman et al, Winkelmeier et al)",
-      "page": 10
-    },
-    {
-      "section": "EVT within 6-24 hours",
-      "classOfRec": "I",
-      "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "In patients with anterior circulation LVO presenting within 6-24 h from symptom onset, baseline mRS score 0-1, age 18-80 years, occlusion of the ICA or MCA M1 segment, and ASPECTS of 3-5 on noncontrast CT or MRI, EVT is recommended. (Evidence: ANGEL-ASPECT, RESCUE-Japan LIMIT; meta-analyses Palaiodimou et al, Wei et al, Li et al)",
-      "page": 10
-    },
-    {
-      "section": "EVT within 6-24 hours",
-      "classOfRec": "I",
-      "classNote": null,
-      "levelOfEvidence": "A",
-      "text": "In patients with anterior circulation LVO presenting within 6-24 h from symptom onset, baseline mRS score 0-1, age 18-80 years, occlusion of the ICA or MCA M1 segment with CTP imaging according to the SELECT2 and ANGEL-ASPECT eligibility criteria, EVT is recommended. (Evidence: ANGEL-ASPECT, SELECT2)",
-      "page": 10
-    },
-    {
-      "section": "EVT within 6-24 hours",
-      "classOfRec": "IIb",
-      "classNote": null,
-      "levelOfEvidence": "B-R",
-      "text": "In patients with anterior circulation LVO presenting within 6-24 h from symptom onset, baseline mRS score 0-1, age 18-80 years, occlusion of the ICA or MCA M1 segment, and ASPECTS of 0-2 on noncontrast CT or MRI, the benefit of EVT is uncertain.",
-      "page": 10
-    }
-  ],
-  "documentType": "guideline",
-  "gradingSystem": "ACC/AHA",
-  "sourceReview": {
-    "reviewedAt": "2026-09-30",
-    "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-    "sourceAccess": "primary full text retrieved and reviewed",
-    "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
-    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
-    "implementationUpdatedAt": "2026-09-30"
+  "_meta": {
+    "endpoint": "data/guidelines/svin-large-core-2025.json",
+    "schemaVersion": "2.0.0",
+    "appVersion": "7.0.0",
+    "checksum": "sha256:74234e98afe7498fb5daf1f36ac2d78a",
+    "count": 0,
+    "source": "Retired historical portal endpoint",
+    "license": "Synthetic educational reference content for qualified review. No warranty.",
+    "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.",
+    "status": "retired"
+  },
+  "data": null,
+  "retirement": {
+    "status": "retired",
+    "reason": "The broad reference, trial and teaching portal is retired from the maintained product.",
+    "replacement": "https://rkalani1.github.io/stroke/data/sources.json",
+    "archiveRef": "archive/pre-encounter-first-20261001-4f8e99d",
+    "archiveUrl": "https://github.com/rkalani1/stroke/tree/archive/pre-encounter-first-20261001-4f8e99d",
+    "compatibility": "HTTP transport may return 200 on static Pages; clients must inspect _meta.status. The data payload is null and is not a current clinical corpus."
   }
 }

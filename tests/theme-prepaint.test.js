@@ -40,6 +40,8 @@ function run(script, { hostname, stored, prefersDark, legacyDark }) {
   };
   const context = {
     window,
+    location: window.location,
+    matchMedia: window.matchMedia,
     localStorage,
     sessionStorage: { getItem: () => null, setItem() {}, removeItem() {}, key: () => null, length: 0 },
     document: { documentElement: { setAttribute: (k, v) => { attrs[k] = v; }, classList: { toggle() {}, add() {} } } },
@@ -73,8 +75,8 @@ describe.each(['index.html', 'offline.html'])('%s pre-paint theme', (file) => {
     }
   });
 
-  it('honours a legacy v5 Dark choice off public Pages until app.js migrates it', () => {
-    expect(run(script, { hostname: 'localhost', prefersDark: false, legacyDark: true })).toBe('dark');
+  it('preserves current theme preferences across retired legacy-storage cleanup', () => {
+    expect(run(script, { hostname: 'localhost', prefersDark: false, legacyDark: true })).toBe(file === 'index.html' ? 'light' : 'dark');
     // an explicit v7 choice wins over the legacy flag
     expect(run(script, { hostname: 'localhost', stored: 'light', prefersDark: false, legacyDark: true })).toBe('light');
     // public Pages ignores (and index.html removes) the legacy key

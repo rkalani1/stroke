@@ -1,138 +1,18 @@
-// scripts/validate-content.mjs
-//
-// Build-time validation for the /content data layer. Fails the build on:
-//   - malformed entries (missing/mistyped required fields, bad enums)
-//   - missing citations (PMID/DOI/citationId not resolvable in the registry)
-//   - stale lastReviewed beyond a configurable threshold
-//
-// Citation registry = src/evidence/citations.js (the single citations module).
-// Calculator id set = content/calculators/registry.json.
-//
-// Config:
-//   STROKE_CONTENT_MAX_AGE_MONTHS   currency threshold (default 18)
-//   STROKE_CONTENT_NOW              ISO date to treat as "now" (default: today)
-//   --lenient-currency              treat stale as a warning, not an error
-//   --json                          machine-readable report to stdout
-//
-// Usage: node scripts/validate-content.mjs
-
+// Maintained registry/source schema, source linkage and genuine review-date currency.
 import fs from 'node:fs';
-import path from 'node:path';
-import process from 'node:process';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-import {
-  VALIDATORS, parseFrontmatter, PMID_PATTERN, DOI_PATTERN,
-} from '../content/schema.mjs';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const REPO = path.join(__dirname, '..');
-const CONTENT = path.join(REPO, 'content');
-const args = new Set(process.argv.slice(2));
-const asJson = args.has('--json');
-const lenientCurrency = args.has('--lenient-currency');
-
-const MAX_AGE_MONTHS = Number(process.env.STROKE_CONTENT_MAX_AGE_MONTHS || 18);
-const NOW = process.env.STROKE_CONTENT_NOW
-  ? new Date(`${process.env.STROKE_CONTENT_NOW}T00:00:00Z`)
-  : new Date();
-
-function walk(dir) {
-  const out = [];
-  if (!fs.existsSync(dir)) return out;
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    const p = path.join(dir, entry.name);
-    if (entry.isDirectory()) out.push(...walk(p));
-    else out.push(p);
-  }
-  return out;
-}
-
-async function loadCtx() {
-  const { citations } = await import(pathToFileURL(path.join(REPO, 'src/evidence/citations.js')).href);
-  const citationIds = new Set(citations.map((c) => c.id));
-  const pmids = new Set(citations.map((c) => c.pmid).filter(Boolean));
-  const dois = new Set(citations.map((c) => c.doi).filter(Boolean));
-  let calculatorIds = new Set();
-  const regPath = path.join(CONTENT, 'calculators', 'registry.json');
-  if (fs.existsSync(regPath)) {
-    calculatorIds = new Set(JSON.parse(fs.readFileSync(regPath, 'utf8')).map((c) => c.id));
-  }
-  return {
-    citationIds, pmids, dois, calculatorIds,
-    now: NOW, maxAgeMonths: MAX_AGE_MONTHS, staleIsError: !lenientCurrency,
-  };
-}
-
-function readRecords(file) {
-  const rel = path.relative(REPO, file);
-  if (file.endsWith('.json')) {
-    const data = JSON.parse(fs.readFileSync(file, 'utf8'));
-    const arr = Array.isArray(data) ? data : [data];
-    return arr.map((rec, i) => ({ rec, label: `${rel}[${i}]` }));
-  }
-  if (file.endsWith('.md')) {
-    const { data } = parseFrontmatter(fs.readFileSync(file, 'utf8'));
-    return [{ rec: data, label: rel }];
-  }
-  return [];
-}
-
-function domainOf(file) {
-  const rel = path.relative(CONTENT, file);
-  return rel.split(path.sep)[0]; // guidelines | trials | education | calculators | references
-}
-
-async function main() {
-  const ctx = await loadCtx();
-  const report = { errors: [], warnings: [], counts: {} };
-
-  // Sanity: the citation registry itself must be well-formed.
-  for (const pmid of ctx.pmids) {
-    if (!PMID_PATTERN.test(pmid)) report.errors.push(`citations registry: malformed PMID "${pmid}"`);
-  }
-  for (const doi of ctx.dois) {
-    if (!DOI_PATTERN.test(doi)) report.warnings.push(`citations registry: malformed DOI "${doi}"`);
-  }
-
-  const files = walk(CONTENT).filter((f) => f.endsWith('.json') || f.endsWith('.md'));
-  for (const file of files) {
-    const domain = domainOf(file);
-    const validate = VALIDATORS[domain];
-    // Only files inside a known domain directory are records. Top-level files
-    // (bundle.json, CHANGELOG.md, schema.mjs) and _-prefixed draft dirs are not
-    // validated — silently skipped, not warnings.
-    if (!validate || path.relative(CONTENT, file).split(path.sep).length < 2) continue;
-    report.counts[domain] = report.counts[domain] || 0;
-    let records;
-    try {
-      records = readRecords(file);
-    } catch (err) {
-      report.errors.push(`${path.relative(REPO, file)}: parse error — ${err.message}`);
-      continue;
-    }
-    for (const { rec, label } of records) {
-      report.counts[domain] += 1;
-      const { errors, warnings } = validate(rec, ctx);
-      for (const e of errors) report.errors.push(`${label}: ${e}`);
-      for (const w of warnings) report.warnings.push(`${label}: ${w}`);
-    }
-  }
-
-  if (asJson) {
-    console.log(JSON.stringify(report, null, 2));
-  } else {
-    const total = Object.values(report.counts).reduce((a, b) => a + b, 0);
-    console.log(`Validated ${total} content records: ${Object.entries(report.counts).map(([k, v]) => `${k}=${v}`).join(', ')}`);
-    console.log(`Currency threshold: ${MAX_AGE_MONTHS} months (as of ${NOW.toISOString().slice(0, 10)})${lenientCurrency ? ' [lenient]' : ''}`);
-    for (const w of report.warnings) console.warn(`  ⚠ ${w}`);
-    for (const e of report.errors) console.error(`  ✗ ${e}`);
-  }
-
-  if (report.errors.length) {
-    if (!asJson) console.error(`\nContent validation FAILED with ${report.errors.length} error(s).`);
-    process.exit(1);
-  }
-  if (!asJson) console.log(`\nContent validation PASSED${report.warnings.length ? ` (${report.warnings.length} warning(s))` : ''}.`);
-}
-
-main().catch((err) => { console.error(err); process.exit(1); });
+import { citations } from '../src/evidence/citations.js';
+import { CLINICAL_CLAIMS } from '../src/clinical/claim-registry.js';
+import * as calculators from '../src/calculators.js';
+import * as extended from '../src/calculators-extended.js';
+const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
+const errors=[],warnings=[],registry=read('content/calculators/registry.json'),sources=read('src/clinical/workspace-sources.json');
+const now=new Date(process.env.STROKE_CONTENT_NOW||Date.now()),maxMonths=Number(process.env.STROKE_CONTENT_MAX_AGE_MONTHS||18);
+const seen=new Set(),citationIds=new Set(citations.map(c=>c.id));
+const knownSourceIds = new Set([...sources.map(s=>s.id), ...Object.keys(CLINICAL_CLAIMS)]);
+function review(id,date,scope){if(!scope)errors.push(`${id}: review scope required`);if(date===null){warnings.push(`${id}: no genuine clinical review date recorded`);return;}if(!/^\d{4}-\d{2}-\d{2}$/.test(date||'')||Number.isNaN(Date.parse(date)))errors.push(`${id}: invalid review date`);else{const d=new Date(date);const months=(now.getUTCFullYear()-d.getUTCFullYear())*12+now.getUTCMonth()-d.getUTCMonth();if(months>maxMonths)errors.push(`${id}: stale genuine review date ${date}`);if(d>now)errors.push(`${id}: future clinical review date`);}}
+for(const r of registry){if(seen.has(r.id))errors.push(`duplicate tool ${r.id}`);seen.add(r.id);if(!r.name||!r.category||!r.fn||!/^#\/encounter\/[a-z0-9-]+$/.test(r.route||''))errors.push(`${r.id}: incomplete tool contract`);if(typeof (r.module==='calculators'?calculators:extended)[r.fn]!=='function')errors.push(`${r.id}: unknown canonical helper ${r.fn}`);if(!r.scope||!r.limits||r.sourceEndpoint!=='data/sources.json'||!r.sourceIds?.length||r.sourceIds.some(id=>!knownSourceIds.has(id)))errors.push(`${r.id}: missing source/limits contract`);}
+for(const s of sources){if(!s.id||!s.label||!/^https:\/\//.test(s.url||'')||!s.population||!s.limits)errors.push(`${s.id}: incomplete source/limits record`);if(s.citationId&&!citationIds.has(s.citationId))errors.push(`${s.id}: unknown citation ${s.citationId}`);review(s.id,s.reviewedAt,s.reviewScope);}
+for(const claim of Object.values(CLINICAL_CLAIMS)){review(claim.id,claim.reviewedAt,claim.reviewScope);for(const file of new Set([claim.sourceFile,...(claim.sources||[]).map(s=>s.file)].filter(Boolean))){const source=read(file);if(source.sourceReview?.reviewedAt!==claim.reviewedAt)errors.push(`${claim.id}: review date disagrees with ${file}`);if(claim.sourceRecommendationId&&!source.recommendations.some(r=>r.id===claim.sourceRecommendationId)&&file===claim.sourceFile)errors.push(`${claim.id}: required recommendation removed`);}}
+for(const file of fs.readdirSync('src/guidelines').filter(f=>f.endsWith('.json'))){const g=read('src/guidelines/'+file);review(g.id,g.sourceReview?.reviewedAt,g.sourceReview?.scope);if(!g.recommendations?.length||!g.maintainedProjection?.clinicalReviewUnchanged)errors.push(`${g.id}: missing maintained projection`);if(g.coverage)errors.push(`${g.id}: archived full-transcription coverage advertised for subset`);}
+const result={ok:!errors.length,scope:'Maintained Encounter tools and source dependencies',tools:registry.length,sources:sources.length,errors,warnings};
+if(process.argv.includes('--json'))console.log(JSON.stringify(result,null,2));else{console.log(`content-validate: ${result.ok?'PASS':'FAIL'} (${registry.length} retained tools, ${sources.length} source/limits records)`);errors.forEach(x=>console.error(x));warnings.forEach(x=>console.warn(x));}process.exitCode=result.ok?0:1;

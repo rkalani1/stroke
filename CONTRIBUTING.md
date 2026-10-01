@@ -1,89 +1,32 @@
-# Contributing to Stroke CDS
+# Contributing to Stroke
 
-Thanks for considering a contribution. The public GitHub Pages deployment is
-a synthetic educational demo, not an official any organization clinical system.
-Clinical-content correctness still matters because the code may be adapted
-into approved environments.
+The public workspace is a synthetic demo, not an approved clinical system. Use synthetic fixtures only. Never put PHI, real encounters, credentials, private contacts or confidential institutional content in this repository.
 
-## Quick start
+## Development
 
-```bash
-git clone https://github.com/example/stroke.git
+```sh
+git clone https://github.com/rkalani1/stroke.git
 cd stroke
-npm install
-npm run test:unit   # 1,630 vitest tests, ~25s
-npm run build       # CSS + JS bundle
+npm ci
+npm run build:prod
+npm run publish:stage
+npm run test:unit
+npm test
+npm run test:mcp
+npm run test:protocol-snapshot
 ```
 
-## Workflows
+Read [content maintenance](CONTRIBUTING-content.md), [clinical trace](docs/clinical-claim-maintenance.md), [source limits](docs/source-limits.md), [regressions](docs/regression-checklist.md), and [PWA behavior](docs/pwa-and-app.md). Broad portal seed/generator/matcher workflows are retired; historic implementation/reports remain in Git history and the archival ref.
 
-| You're doing... | Read |
-|---|---|
-| Adding a new clinical trial to the matcher / Atlas | [`docs/evidence-atlas-extension-guide.md`](docs/evidence-atlas-extension-guide.md) |
-| Adding a new matcher operator or field resolver | [`docs/evidence-atlas-matcher-engine.md`](docs/evidence-atlas-matcher-engine.md) |
-| Understanding the Atlas data shapes | [`docs/evidence-atlas-schema.md`](docs/evidence-atlas-schema.md) |
-| Verifying a `todo-verify` evidence record | [`docs/evidence-verification-worklist.md`](docs/evidence-verification-worklist.md) |
-| Doing a multi-step refactor | [`docs/sprint-protocol.md`](docs/sprint-protocol.md) (the StrokeOps v6 stacked-sprint pattern) |
-| Reporting a security issue | [`SECURITY.md`](SECURITY.md) |
+## Required checks and boundaries
 
-## Required for every PR
+- Preserve exact protected ICH/ischemic protocol and Telestroke-map locks. Do not regenerate their baselines for a navigation/refactor change. New clinical-source conflicts require owner adjudication before release.
+- Verify changed arithmetic independently against authoritative applicable primary sources. Preserve units, input validation, exact caps, rounding and total/bolus/infusion consistency. Recommendation logic additionally requires population, missing-data, safety and correction review; tests do not certify clinical validity.
+- Keep unknown, invalid, negative, positive and reviewed states distinct. Context changes invalidate incompatible outputs while retaining entered values for reconciliation. Explicit decisions, consent, administration and procedure timestamps cannot attest one another.
+- Keep one explicit generated synthetic summary with source-change invalidation and guarded explicit copy. No clinical persistence, context-bearing URL handoff, logs/telemetry, automatic clipboard writes, AI runtime or external core dependency.
+- Run production/unit/controller/MCP/snapshot, source/citation/evidence/content/retirement/leak and asset guards. Browser tests exercise actual published candidates offline, privacy, routes, viewports/themes and opt-in update recovery. Clinical review dates change only after actual clinical review.
+- Review `_config.yml` and `output/site` together: Pages currently publishes branch-root via Jekyll. New source/download roots must remain excluded; all generated modules count toward payload/offline budgets.
+- Do not track node_modules, output, native build trees or generated native embedded web assets. Existing native source remains supported; `.github/workflows/main-pathguard.yml` enforces generated-output exclusions.
+- Use a feature branch and ordinary PR/CI release. Never bypass the private leak-guard secret, source gate, required review or protected clinical adjudication. The 7.0 redesign is gated on the documented protected ICH factor-Xa dialysis conflict.
 
-1. **Tests pass**: `npm run test:unit` (1,630 specs across calculators,
-   atlas, matcher engine, e2e tiers, scenario snapshots; one tier-2 e2e
-   spec needs outbound network access and fails in sandboxes without it).
-2. **Validators clean**: `npm run validate:citations` and
-   `npm run evidence:validate` (the latter reports matcher-engine
-   coverage; should remain 100%).
-3. **Build succeeds**: `npm run build`.
-4. **Path guard satisfied**: no `android/app/build/`,
-   `android/app/src/main/assets/public/`, `ios/App/Pods/`,
-   `node_modules/`, or other build outputs in the diff. Source files
-   under `android/` or `ios/` are fine. CI enforces this via
-   `.github/workflows/main-pathguard.yml`.
-
-## Clinical-correctness expectations
-
-- **Cite primary sources** for any new evidence claim. Add to
-  `src/evidence/citations.js` with a structurally valid PMID
-  (`^\d{7,9}$`), DOI (`^10\.\d{4,9}/...`), or NCT (`^NCT\d{8}$`).
-  Live identifier verification is a manual step — see
-  `docs/evidence-verification-worklist.md`.
-- **No mock identifiers**. If a real PMID/DOI isn't available, mark
-  `verificationStatus: 'todo-verify'` with a `verificationNotes` field
-  describing what needs verification.
-- **Synthetic test data only**. No PHI in tests, scenarios, or fixtures.
-- **Tri-state criterion semantics**: a matcher criterion returns
-  `met` / `not_met` / `unknown`. Empty / undefined source data should
-  be `unknown`, not `not_met`. See
-  `src/evidence/matcher-helpers.js` (`pickEncounterField`,
-  `boolEq`, `numInRange`, etc.).
-- **Class I recommendations require supporting claims** (the
-  validator emits a non-fatal warning otherwise — auditability check).
-
-## Hard constraints (from the original sprint guidance, still in force)
-
-- No app rewrite. Refactor and extend only.
-- Preserve existing routes, calculators, public-demo guards that disable
-  ward census/patient persistence on GitHub Pages, post-tPA timer, LKW countdown, quick-link bar, note generators,
-  telestroke-expansion-map link, the non-medical-advice and
-  institutional-non-endorsement disclaimers.
-- Hash-routing under `/stroke/` for GitHub Pages.
-- No new heavy dependencies.
-- No PHI; synthetic data only.
-- No live network calls for evidence verification — validators do
-  structural checks only.
-- No browser automation against authenticated sites.
-- Existing aria-labels, keyboard navigation, focus management
-  preserved.
-
-## Pull-request checklist
-
-PRs use the template at `.github/PULL_REQUEST_TEMPLATE.md`. The
-short version:
-
-- [ ] `npm run test:unit` is green
-- [ ] `npm run evidence:validate` is clean (42/42 + 14/14 = 100% if you touched the matcher)
-- [ ] `npm run build` succeeds
-- [ ] No PHI in tests / scenarios / commit messages
-- [ ] No mobile-wrapper build artifacts on main (CI guards this)
-- [ ] If clinical content changed, primary sources cited in the PR description
+The exact rollback ref is `archive/pre-encounter-first-20261001-4f8e99d`. Restore through a reviewed forward commit and a new coherent app/cache version; do not force-push or reuse an old service-worker identity.
