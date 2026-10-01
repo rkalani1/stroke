@@ -13,4 +13,4 @@ provenance: src/education.jsx
 High-resolution black-blood vessel wall MRI differential matrix for intracranial arteriopathies — distinguishing ICAD, Primary CNS Vasculitis (PACNS), RCVS, Arterial Dissection, and Moyamoya disease via wall morphology, enhancement patterns, and remodeling.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

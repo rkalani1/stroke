@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Deciding where the ambulance goes and how patients move between hospitals — mothership vs drip-and-ship and how to compute a local crossover, the neutral RACECAT result with its intracerebral hemorrhage harm signal, TRIAGE-STROKE, mobile stroke units (BEST-MSU, B_PROUD), why INTERACT4 does not support undifferentiated prehospital blood-pressure lowering, prehospital LVO scales (RACE, LAMS, C-STAT, FAST-ED), and door-in-door-out as the governing interfacility transfer metric.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

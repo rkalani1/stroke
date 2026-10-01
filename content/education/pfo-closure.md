@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Who benefits from patent foramen ovale closure after a nonlacunar stroke of undetermined cause — the four randomized trials that showed benefit (CLOSE, RESPECT long-term, REDUCE, DEFENSE-PFO; the earlier CLOSURE I and PC trials were neutral), candidate selection with the RoPE score and PASCAL classification, the closure-vs-antiplatelet-vs-anticoagulation decision per the 2021 AHA/ASA and 2024 ESO guidelines, and the device-associated atrial fibrillation trade-off.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

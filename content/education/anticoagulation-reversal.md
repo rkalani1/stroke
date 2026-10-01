@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Agent-specific reversal for intracranial hemorrhage, the FDA andexanet safety update and US sales cessation, PCC-based factor Xa reversal, and the distinct thrombolysis-associated hemorrhage pathway, with parallel BP and neurosurgical assessment.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

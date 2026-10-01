@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Randomized evidence on DOAC initiation after AF-related ischemic stroke, with trial-specific eligibility, hemorrhagic transformation and current-label dosing context.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

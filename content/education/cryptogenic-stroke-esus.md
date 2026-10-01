@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Embolic Stroke of Undetermined Source (ESUS) definition, empirical DOAC failure in unselected ESUS (NAVIGATE ESUS, RE-SPECT ESUS), biomarker-defined atrial cardiopathy trial analysis (ARCADIA), insertable cardiac monitor (ICM) yields (CRYSTAL AF, STROKE-AF), and stepwise diagnostic algorithm.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

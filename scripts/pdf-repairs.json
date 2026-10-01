@@ -72,7 +72,7 @@
           ],
           "text": "Observational complication comparisons do not establish universal endovascular superiority. Treatment depends on anatomy, patient risk and multidisciplinary judgment. The reproduced surgical forest plot contains a source-level diabetes/HTN row inconsistency; that row is withheld. The article text reports diabetes OR 2.38 (95% CI 1.54-3.67), while 1.45 (1.03-2.03) belongs to hypertension.",
           "remove_text": [
-            "↓ morbidity/mortality"
+            "\u2193 morbidity/mortality"
           ],
           "remove_regions": [
             [
@@ -91,7 +91,7 @@
             "https://trialsjournal.biomedcentral.com/articles/10.1186/1745-6215-12-64"
           ],
           "inline_replacements": {
-            "↓ morbidity/mortality": "Individualize choice"
+            "\u2193 morbidity/mortality": "Individualize choice"
           }
         }
       ]
@@ -166,7 +166,7 @@
           "ids": [
             "LAC-F11"
           ],
-          "text": "Distinguish observed associations from causality. The displayed HDL genetic association (nominal P=.031) did not meet the study’s multiple-testing threshold; LDL was not associated in that analysis. This does not establish that LDL-lowering treatment lacks clinical benefit.",
+          "text": "Distinguish observed associations from causality. The displayed HDL genetic association (nominal P=.031) did not meet the study\u2019s multiple-testing threshold; LDL was not associated in that analysis. This does not establish that LDL-lowering treatment lacks clinical benefit.",
           "remove_text": [],
           "remove_regions": [],
           "sources": [
@@ -356,7 +356,7 @@
           "ids": [
             "LAC-F14"
           ],
-          "text": "Lipid treatment should follow the patient’s atherosclerotic/ASCVD risk and current guidance. The 2021 LDL-C <70 mg/dL recommendation specifically concerns stroke/TIA with atherosclerotic disease; SPARCL tested atorvastatin 80 mg, not randomized LDL targets. This is not a reason to withhold indicated statin treatment.",
+          "text": "Lipid treatment should follow the patient\u2019s atherosclerotic/ASCVD risk and current guidance. The 2021 LDL-C <70 mg/dL recommendation specifically concerns stroke/TIA with atherosclerotic disease; SPARCL tested atorvastatin 80 mg, not randomized LDL targets. This is not a reason to withhold indicated statin treatment.",
           "remove_text": [],
           "remove_regions": [
             [
@@ -403,7 +403,7 @@
             "D08d",
             "PDF20"
           ],
-          "text": "HOMA-IR = fasting glucose (mmol/L) × fasting insulin (microU/mL) / 22.5; with glucose in mg/dL, the denominator is 405. IRIS used >3 as a study-selection cutoff, not a universal diagnosis; assay calibration and fasting timing matter. Prediabetes associations vary by definition: fasting glucose 100-125 mg/dL alone had RR 1.08 (95% CI 0.94-1.23) in the cited meta-analysis.",
+          "text": "HOMA-IR = fasting glucose (mmol/L) \u00d7 fasting insulin (microU/mL) / 22.5; with glucose in mg/dL, the denominator is 405. IRIS used >3 as a study-selection cutoff, not a universal diagnosis; assay calibration and fasting timing matter. Prediabetes associations vary by definition: fasting glucose 100-125 mg/dL alone had RR 1.08 (95% CI 0.94-1.23) in the cited meta-analysis.",
           "remove_text": [],
           "remove_regions": [
             [
@@ -858,7 +858,7 @@
           "ids": [
             "L31a"
           ],
-          "text": "Statins reduce recurrent vascular risk in appropriate atherosclerotic/ASCVD populations. This should not be generalized to an identical indication after every cerebral-ischemia mechanism; apply the patient’s current risk and indication.",
+          "text": "Statins reduce recurrent vascular risk in appropriate atherosclerotic/ASCVD populations. This should not be generalized to an identical indication after every cerebral-ischemia mechanism; apply the patient\u2019s current risk and indication.",
           "remove_text": [],
           "remove_regions": [
             [
@@ -1078,9 +1078,10 @@
         {
           "page": 13,
           "ids": [
-            "CAR05"
+            "CAR05",
+            "CR6303-PDF-CREST24"
           ],
-          "text": "The misleading MRI-infarction row is withheld pending exact secondary-composite/appendix reconciliation. The main report’s tissue-based composites include specified death and cerebral infarction/hemorrhage components and cannot be labeled routine MRI lesions.",
+          "text": "The WHO clinical symptom-duration boundary is at least 24 hours (>=24h), not more than 24 hours. The misleading MRI-infarction row is withheld pending exact secondary-composite/appendix reconciliation. The main report\u2019s tissue-based composites include specified death and cerebral infarction/hemorrhage components and cannot be labeled routine MRI lesions.",
           "remove_text": [],
           "remove_regions": [
             [
@@ -1088,13 +1089,33 @@
               289,
               471,
               328
+            ],
+            [
+              75,
+              268,
+              143,
+              279
             ]
           ],
           "sources": [
             "https://pubmed.ncbi.nlm.nih.gov/41269206/",
-            "https://doi.org/10.1056/NEJMoa2508800"
+            "https://doi.org/10.1056/NEJMoa2508800",
+            "https://pmc.ncbi.nlm.nih.gov/articles/PMC13148431/"
           ],
-          "inline_replacements": {}
+          "inline_replacements": {},
+          "region_replacements": [
+            {
+              "rect": [
+                75,
+                268,
+                168,
+                288
+              ],
+              "text": "Clinical sx >=24h",
+              "size": 10,
+              "min_size": 9
+            }
+          ]
         },
         {
           "page": 14,
@@ -1250,7 +1271,7 @@
           ],
           "text": "The vascular evidence here is pioglitazone-specific, not a thiazolidinedione class effect; selected poststroke insulin-resistant patients require heart-failure/bladder-cancer risk assessment and adverse-effect monitoring. Individualize glycemic goals and avoid hypoglycemia; tighter HbA1c targets have not been established as recurrent-stroke treatment.",
           "remove_text": [
-            "≤6.5% (hypoglycemia)",
+            "\u22646.5% (hypoglycemia)",
             "thaizolidinediones"
           ],
           "remove_regions": [],
@@ -1260,7 +1281,7 @@
             "https://pubmed.ncbi.nlm.nih.gov/28157748/"
           ],
           "inline_replacements": {
-            "≤6.5% (hypoglycemia)": "avoid hypoglycemia",
+            "\u22646.5% (hypoglycemia)": "avoid hypoglycemia",
             "thaizolidinediones": "pioglitazone"
           }
         },
@@ -1322,7 +1343,7 @@
           ],
           "text": "Observational comparisons found lower in-hospital stroke/death with TCAR than transfemoral CAS, with more access complications requiring intervention. These are not randomized proof of equivalence to CEA or universally lower TCAR risk.",
           "remove_text": [
-            "TCAR vs CEA à no difference in stroke/death/MI"
+            "TCAR vs CEA \u00e0 no difference in stroke/death/MI"
           ],
           "remove_regions": [],
           "sources": [
@@ -1335,7 +1356,7 @@
             "https://pmc.ncbi.nlm.nih.gov/articles/PMC6990823/"
           ],
           "inline_replacements": {
-            "TCAR vs CEA à no difference in stroke/death/MI": "TCAR versus CEA: observational comparisons"
+            "TCAR vs CEA \u00e0 no difference in stroke/death/MI": "TCAR versus CEA: observational comparisons"
           }
         },
         {
@@ -1600,6 +1621,24 @@
             "https://dspace.library.uu.nl/server/api/core/bitstreams/bf7f2173-184f-4af6-8e45-be6d8277a547/content"
           ],
           "inline_replacements": {}
+        },
+        {
+          "page": 1,
+          "ids": [
+            "CR6303-PDF-ATTENTION"
+          ],
+          "text": "ATTENTION historical trial selection: age <80 years required pc-ASPECTS >=6 and prestroke mRS 0-2; age >=80 years required pc-ASPECTS >=8 and prestroke mRS 0. The trial also required NIHSS >=10 and randomization within 12 hours of estimated basilar-artery occlusion. These historical entry criteria are not current stand-alone EVT eligibility rules.",
+          "remove_text": [
+            "PC-ASPECTS \u22656,"
+          ],
+          "remove_regions": [],
+          "sources": [
+            "https://doi.org/10.1056/NEJMoa2206317",
+            "https://www.binasss.sa.cr/oct22/53.pdf"
+          ],
+          "inline_replacements": {
+            "PC-ASPECTS \u22656,": "see note*,"
+          }
         }
       ]
     },

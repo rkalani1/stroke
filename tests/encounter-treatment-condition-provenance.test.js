@@ -39,7 +39,7 @@ function actualRecommendationEnvelope(entered, hasExamInput) {
     patientData: hasExamInput ? { loc: 'Alert (0)' } : {},
     reviewedGcs, numericInput,
     isNIHSSComplete: () => hasExamInput, detectContraindications: () => [],
-    documentedNihssValue,
+    documentedNihssValue, documentedExamScore,
     aspectsScore: null,
     isValidAspectsScore: () => false,
     gcsItems: {}, calculateGCS: () => null,

@@ -273,6 +273,23 @@ describe('runV7Migration', () => {
       globalThis.localStorage.setItem = originalSetItem;
     });
 
+    it('applies a theme choice for this page when storage is blocked, then resumes persistence', () => {
+      const originalSetItem = globalThis.localStorage.setItem;
+      globalThis.localStorage.setItem = () => { throw new DOMException('Blocked', 'SecurityError'); };
+      try {
+        themeController.setThemePref('dark');
+        expect(themeController.getThemePref()).toBe('dark');
+        expect(documentMock.documentElement.setAttribute).toHaveBeenLastCalledWith('data-theme', 'dark');
+        themeController.setThemePref('light');
+        expect(themeController.effectiveTheme()).toBe('light');
+      } finally {
+        globalThis.localStorage.setItem = originalSetItem;
+      }
+      themeController.setThemePref('auto');
+      expect(globalThis.localStorage.getItem('stroke.v7.theme')).toBe('auto');
+      expect(themeController.getThemePref()).toBe('auto');
+    });
+
   describe('resolveTheme (the single theme rule)', () => {
     it('honours an explicit light or dark choice on every host and OS setting', () => {
       for (const isPublic of [true, false]) {

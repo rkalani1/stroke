@@ -223,10 +223,23 @@ export const GUIDELINE_LIBRARY = [
   ncsSccmAntithromboticReversal2016
 ];
 
+// AAN recommendation levels express the source's recommendation obligation;
+// they are not ACC/AHA classes or separately assigned evidence-certainty grades.
+export function guidelineGradeLabel(rec, guideline) {
+  if (guideline.gradingSystem === 'AAN') {
+    if (['A', 'B', 'C'].includes(rec.nativeRecommendationLevel)) {
+      return `AAN Level ${rec.nativeRecommendationLevel}`;
+    }
+    if (rec.nativeRecommendationStatus === 'No consensus') return 'AAN: no consensus';
+  }
+  return `${rec.classOfRec || 'Statement'}/${rec.levelOfEvidence || 'Ungraded'}`;
+}
+
 export const guidelineSearchFields = (rec, guideline) => [
   rec.text, rec.section, guideline.title, guideline.shortTitle || '',
   rec.sourceStatementId || '', rec.classNote || '', rec.currentEvidenceNote || '',
   rec.nativeStrength || '', rec.sourceConflictNote || '', rec.sourceGradeNote || '',
+  guidelineGradeLabel(rec, guideline),
   ...(rec.currentEvidenceSources || []).map(source => source.title)
 ];
 

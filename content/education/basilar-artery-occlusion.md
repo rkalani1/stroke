@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Protean brainstem presentation, the ATTENTION/BAOCHE evidence arc for endovascular therapy, imaging selection (pc-ASPECTS, perfusion/collaterals), and pitfalls for basilar artery occlusion.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

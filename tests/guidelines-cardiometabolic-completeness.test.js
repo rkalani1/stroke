@@ -86,12 +86,21 @@ describe('complete cardiometabolic guideline source accounting', () => {
     expect(row(hypertension, '5.3.9.2', 6).text).toMatch(/below 140.*24–72 hours/);
   });
 
-  it('separates unresolved hypertension notice bodies from independently reviewed lipid corrections', () => {
+  it('bounds recovered hypertension correction applicability separately from applied lipid corrections', () => {
     const reviewed = hypertension.publicationUpdates.find(u => u.pmid === '41984986');
-    expect(reviewed.status).toBe('unresolved');
+    expect(reviewed.status).toBe('not-applicable');
     expect(reviewed.previousReviewNote).toMatch(/Table 16.*lithium.*wrong column/);
-    expect(reviewed.independentReviewScope).toBe('incomplete/unresolved');
+    expect(reviewed.note).toMatch(/Complete substantive notice read in indexed primary publisher text/);
+    expect(reviewed.note).toMatch(/Elimination.*columns|Table 16/);
+    expect(reviewed.independentReviewScope).toContain('all 108 retained recommendation rows');
+    expect(reviewed.independentReviewScope).toContain('Direct publisher PDF remains inaccessible');
+    expect(reviewed.independentReviewScope).toContain('no whole-guideline currentness certification');
+    expect(reviewed.previousIndependentReviewNote).toContain('complete primary body was not independently recovered');
     expect(reviewed.affectedRecommendationIds).toEqual([]);
+    expect(hypertension.publicationUpdates.map(u => u.doi)).toEqual([
+      '10.1161/HYP.0000000000000257', '10.1161/HYP.0000000000000262', '10.1161/HYP.0000000000000264'
+    ]);
+    expect(hypertension.publicationUpdates.every(u => u.status === 'not-applicable' && u.affectedRecommendationIds.length === 0)).toBe(true);
     expect(hypertension.publicationUpdates.find(u => u.pmid === '42160500').previousReviewNote).toContain('10-minute intervals');
     const lipidCorrection = dyslipidemia.publicationUpdates.find(u => u.pmid === '42330109');
     expect(lipidCorrection.status).toBe('applied');

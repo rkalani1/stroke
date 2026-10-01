@@ -4302,13 +4302,13 @@ export const completedTrials = [
     ],
     safetyFindings: { sich: '', mortality: '3-year mortality 4.4% vs 1.3% (HR 3.75, 95% CI 0.77-18.13; P=0.08) — numerically higher with stenting, not significant', other: '' },
     imagingCriteria: 'Angiographic stenosis 70-99% of a major intracranial artery',
-    applicabilityNotes: 'Designed to give stenting its best chance after SAMMPRIS — experienced operators, refined selection, and a deliberate 3-week cooling-off period excluding the hyperacute phase where SAMMPRIS saw most periprocedural harm. Even so, stenting added nothing. 8 Chinese centres.',
+    applicabilityNotes: 'Of 380 randomized patients, 358 were confirmed eligible. The trial used experienced operators, excluded qualifying perforator-territory stroke, and enrolled more than 3 weeks after the latest event. The imprecise primary estimate did not demonstrate benefit; it does not establish a zero treatment effect.',
     limitations: 'Smaller than SAMMPRIS and underpowered for modest differences; excluded perforator-territory events, so results do not apply to that common phenotype; single-country.',
     certainty: 'high',
     evidenceType: 'rct',
     citationIds: ['cit-cassiss-2022'],
     relatedActiveTrialIds: ['captiva'],
-    practiceImpact: 'Intracranial stenting added no benefit over medical therapy for symptomatic 70-99% stenosis, even with refined selection and experienced operators.',
+    practiceImpact: 'Does not support routine added stenting in the selected symptomatic 70-99% stenosis population. Other specifically selected rescue scenarios were not settled by this trial.',
     lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed',
     verificationNotes: "Review scope: selected original main-report fields compared; no exhaustive protocol, supplement or whole-card clinical certification.",
@@ -4940,7 +4940,7 @@ export const completedTrials = [
     evidenceType: 'meta-analysis',
     citationIds: ['cit-hermes-2016'],
     relatedActiveTrialIds: [],
-    practiceImpact: 'Cemented EVT as standard of care for proximal anterior-circulation LVO, irrespective of patient characteristics.',
+    practiceImpact: "Supports EVT for proximal anterior-circulation LVO in the populations represented by the five trials. No detected subgroup interaction does not establish benefit in every unrepresented clinical, imaging, or time-window profile.",
     lastReviewed: '2026-08-22',
     verificationStatus: 'verified-pubmed',
     verificationNotes: "Review scope: indexed primary outcome/abstract only; full original report, detailed eligibility, supplements and application claims are not comprehensively verified.",
@@ -5549,34 +5549,24 @@ export const completedTrials = [
     primaryEndpoint: {
       definition: 'Functional independence, defined as modified Rankin Scale score 0-2, at 90 days; superiority design',
       timepoint: '90 d',
-      result: 'DID NOT meet superiority — flatly neutral and numerically favoring control: 41.9% (52/124) with IA alteplase vs 46.7% (57/122) control',
+      result: "Superiority was not demonstrated: mRS 0-2 in 41.9% (52/124) with IA alteplase versus 46.7% (57/122) with control.",
       effectSize: 'Adjusted RR 0.93',
       confidenceInterval: '95% CI 0.73 to 1.18',
       pValue: 'P=.55'
     },
-    secondaryEndpoints: [
-      {
-        name: 'All-cause mortality at 90 days (co-primary safety outcome)',
-        result: '29.6% vs 27.0%; adjusted HR 1.07 (95% CI 0.71-1.61), P=.75 — no difference'
-      },
-      {
-        name: 'Symptomatic intracranial hemorrhage within 48 h (co-primary safety outcome)',
-        result: '2.4% vs 2.5%; unadjusted RR 0.98 (95% CI 0.20-4.74), P=.97 — no difference'
-      }
-    ],
+    secondaryEndpoints: [{"name": "All-cause mortality at 90 days (co-primary safety outcome)", "result": "29.6% versus 27.0%; adjusted HR 1.07 (95% CI 0.71-1.61), P=.75; no statistically significant difference detected."}, {"name": "Symptomatic intracranial hemorrhage within 48 h (co-primary safety outcome)", "result": "2.4% versus 2.5%; unadjusted RR 0.98 (95% CI 0.20-4.74), P=.97; wide uncertainty."}],
     safetyFindings: {
-      sich: '2.4% vs 2.5% within 48 h; RR 0.98 (95% CI 0.20-4.74), P=.97 — low and equal in both arms',
+      sich: "2.4% versus 2.5% within 48 h; RR 0.98 (95% CI 0.20-4.74), P=.97. The sparse events do not establish equivalent safety.",
       mortality: '90-day mortality 29.6% vs 27.0%; adjusted HR 1.07 (95% CI 0.71-1.61), P=.75',
-      other: 'Investigators concluded the intervention appeared safe; it simply did not improve function'
-    },
+      other: "No statistically significant safety difference detected; the confidence intervals permit clinically important differences."},
     imagingCriteria: 'Baseline PC-ASPECTS 6-10 on CT/CTA source images or DWI; randomization after thrombectomy achieved eTICI ≥2b50 with no more than 3 device passes',
-    applicabilityNotes: 'This is the counterweight record for the IA-adjunct category and it must not be softened: in the posterior circulation the result was NEUTRAL, with the point estimate numerically favoring no intra-arterial lytic (41.9% vs 46.7%, adjusted RR 0.93). The result is consistent with, but cannot by itself establish, a territory-specific effect (IAT-TOP used mRS 0-2 rather than mRS 0-1) — the same 0.225 mg/kg alteplase dose that improved excellent outcome in the anterior circulation (CHOICE, CHOICE-2, PEARL) produced no functional benefit after successful basilar recanalization. Basilar occlusion also carries a much higher baseline mortality (about 27-30% in both arms here) than the anterior-circulation trials, which changes both the outcome distribution and the plausible mechanism of benefit.',
+    applicabilityNotes: "In the enrolled Chinese basilar-occlusion population after successful thrombectomy, adjunctive IA alteplase did not demonstrate superiority for mRS 0-2. Comparisons with anterior-circulation studies differ in population, endpoint and regimen: this trial used 0.225 mg/kg with a 22.5-mg maximum. A neutral result here cannot establish a treatment-by-territory interaction.",
     limitations: 'PROBE (open-label, blinded-endpoint) design; single-country (China); powered for a difference larger than any that was observed, so a small benefit or small harm cannot be excluded; used mRS 0-2 rather than the mRS 0-1 endpoint used by the anterior-circulation trials, which limits head-to-head comparison of effect sizes.',
     certainty: 'high',
     evidenceType: 'rct',
     citationIds: ['cit-iat-top-2026'],
     relatedActiveTrialIds: [],
-    practiceImpact: 'Argues against extrapolating adjunctive intra-arterial alteplase from the anterior circulation to basilar occlusion — after successful basilar recanalization it was safe but produced no functional gain.',
+    practiceImpact: "Does not support routine extrapolation of adjunctive IA alteplase to basilar occlusion. Functional benefit was not demonstrated, and the safety estimates remain imprecise.",
     lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed',
     verificationNotes: "Review scope: indexed primary outcome/abstract only; full original report, detailed eligibility, supplements and application claims are not comprehensively verified.",
@@ -7223,8 +7213,7 @@ export const completedTrials = [
       },
       {
         name: 'Distribution of modified Rankin Scale change from 3 months to 1 year',
-        result: 'Did not differ between groups - the divergence was established by 3 months and did not widen afterwards'
-      },
+        result: "No statistically significant between-group difference in the distribution of mRS change from 3 months to 1 year; this does not mean individual trajectories were flat."},
       {
         name: 'Follow-up completeness',
         result: '294 of 306 randomized patients (96.1%) completed 1-year follow-up'
@@ -7236,13 +7225,13 @@ export const completedTrials = [
       other: 'The mRS trajectory from 3 months to 1 year was similar in both arms'
     },
     imagingCriteria: 'Successful reperfusion of the occluded artery after endovascular thrombectomy',
-    applicabilityNotes: 'This is the long-term follow-up of OPTIMAL-BP, not a second trial - it must never be counted as independent evidence alongside the parent record. Its contribution is durability: the functional gap opened by just 24 hours of intensive BP lowering was still visible a year later, and the mRS trajectory from 3 months to 1 year was flat in both arms, meaning the divergence happened early and then persisted rather than accumulating. The precision caveat is essential: the intention-to-treat adjusted OR was 0.59 (95% CI 0.34 to 1.00, P=0.051), which just misses conventional significance; only the per-protocol analysis crossed it. The comparator here is 140-180 mm Hg, which together with ENCHANTED2/MT is what makes 140-180 - not 140-160 - the range with trial support. Successful reperfusion was required, so none of this transfers to mTICI 0-2a.',
+    applicabilityNotes: "Follow-up of the parent OPTIMAL-BP trial, not an independent randomization. It enrolled successfully reperfused patients with SBP ≥140 mm Hg on two measurements within 2 hours. The one-year ITT estimate was imprecise (adjusted OR 0.59, 95% CI 0.34-1.00; P=.051); the per-protocol result is susceptible to selection after randomization. The tested 140-180 comparator does not establish a universal target or invalidate the distinct reperfusion-guided strategy tested in HOPE. These data do not establish targets after unsuccessful reperfusion.",
     limitations: 'Extension analysis of a completed trial rather than a new randomisation, so it inherits the parent trial\'s open-label design and its 19-centre South Korean population. The intention-to-treat primary estimate did not reach conventional significance (P=0.051) and the upper confidence bound touches 1.00; the per-protocol analysis is not an intention-to-treat result and is susceptible to post-randomisation selection. Adjusted rather than unadjusted estimates are reported for the primary comparison.',
     certainty: 'moderate',
     evidenceType: 'rct',
     citationIds: ['cit-optimal-bp-1y-2026'],
     relatedActiveTrialIds: [],
-    practiceImpact: 'Shows the functional cost of 24 hours of intensive post-thrombectomy BP lowering is still measurable at one year, reinforcing existing recommendations against intensive lowering after successful reperfusion.',
+    practiceImpact: "The one-year estimates remain concerning in the selected OPTIMAL-BP population, but the ITT analysis did not reach conventional statistical significance. Preserve the parent-trial population, tested targets, and distinction from newer individualized strategies.",
     lastReviewed: '2026-08-28',
     verificationStatus: 'verified-pubmed',
     verificationNotes: "Review scope: indexed primary outcome/abstract only; full original report, detailed eligibility, supplements and application claims are not comprehensively verified.",
@@ -7315,13 +7304,13 @@ export const completedTrials = [
       other: 'Other adverse events RR 1.21 (95% CI 0.86 to 1.72), very low-certainty evidence. Certainty across all outcomes ranged from high to very low, downgraded mainly for risk of bias, imprecision and inconsistency.'
     },
     imagingCriteria: 'Reperfusion by systemic thrombolysis or endovascular thrombectomy in the component trials',
-    applicabilityNotes: 'This is the GRADE-assessed synthesis for the post-reperfusion BP category and it is the record that should anchor the teaching. Two things must travel with it. First, the pool MIXES seven thrombectomy trials with two thrombolysis trials, so it is not a pure post-EVT synthesis and its estimates should not be quoted as if they were. Second, the mortality result is the headline a clinician needs: intensive lowering probably increases all-cause mortality (RR 1.19, 95% CI 1.08 to 1.32, moderate certainty) while producing no clinically meaningful functional gain. The review\'s own recommendation for future work - subgroup analyses by age, baseline BP and stroke severity, plus imaging and physiological markers for individualized targets - is exactly the gap that the absence of any trial in mTICI 0-2a patients leaves open. No randomised trial has enrolled patients with unsuccessful reperfusion, so no blood-pressure target is established for them.',
+    applicabilityNotes: "Nine trials combine seven EVT and two systemic-thrombolysis studies with different BP targets. The search ended 20 March 2025, so this synthesis predates HOPE and does not evaluate its reperfusion-guided treatment bundle. The pooled mortality signal applies to the strategies studied; it is not proof that every target below 160 mm Hg is harmful. The review does not establish an optimal target for unsuccessful reperfusion.",
     limitations: 'Nine trials with substantial clinical heterogeneity: intensive targets ranged from <120 to <160 mm Hg and the conventional comparator was <160 mm Hg in one study rather than <180. Statistical heterogeneity was high for the functional outcome (I-squared 51%) and for quality of life (I-squared 75%). Two of the nine trials studied thrombolysis rather than thrombectomy. Certainty was lowest for symptomatic neurologic adverse events and other adverse events. Participants came primarily from upper-middle and high-income countries; the review explicitly calls for trials in low- and middle-income settings. The dichotomous mRS outcome is functional independence (favourable outcome prespecified as mRS 0-2 in the review protocol; described as \'living independently\' in the plain-language summary), so RR 0.89 (95% CI 0.80 to 0.98) indicates fewer independent patients with intensive lowering, although the authors judged the difference not clinically meaningful.',
     certainty: 'high',
     evidenceType: 'meta-analysis',
     citationIds: ['cit-cochrane-bp-reperfused-2026'],
     relatedActiveTrialIds: [],
-    practiceImpact: 'Supplies the GRADE-graded bottom line for post-reperfusion BP: intensive systolic lowering below 160 mm Hg buys no clinically meaningful functional benefit and probably increases all-cause mortality.',
+    practiceImpact: "Supports caution with the intensive strategies studied through March 2025. Interpret the pooled mortality increase alongside heterogeneous targets, mixed reperfusion modalities, and subsequent selected-population trials such as HOPE.",
     lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed',
     verificationNotes: "Review scope: indexed primary outcome/abstract only; full original report, detailed eligibility, supplements and application claims are not comprehensively verified.",
@@ -10399,13 +10388,13 @@ export const completedTrials = [
       other: 'No evidence of a between-group difference in the incidence of safety events'
     },
     imagingCriteria: '',
-    applicabilityNotes: 'This is the PCSK9 trial that sits UPSTREAM of the stroke clinic, not inside it: everyone with a previous stroke or myocardial infarction was excluded by design, so it cannot be quoted at the bedside of a stroke survivor. Its relevance is that it extends the FOURIER/ODYSSEY OUTCOMES story — PCSK9 inhibition in established atherosclerotic disease, including patients with a previous ischaemic stroke in FOURIER — into a population with atherosclerosis or diabetes but no prior event, and ischemic stroke is one of the three components of the primary composite. For secondary prevention after ischemic stroke the governing trials remain SPARCL (atorvastatin 80 mg) and Treat Stroke to Target (LDL <70 vs 90-110 mg/dL).',
-    limitations: 'By construction it excludes the very patients a stroke service treats; 93% White, limiting generalizability; the primary composite is driven by coronary as well as cerebrovascular events, and no stroke-specific effect estimate is given in the abstract; industry-funded (Amgen).',
+    applicabilityNotes: "Evolocumab reduced the composite cardiovascular outcomes in patients with atherosclerosis or diabetes, LDL ≥90 mg/dL, and no previous myocardial infarction or stroke. This is not a trial of recurrent-stroke prevention. The eligibility phrase does not mean that all prior vascular disease or events were excluded.",
+    limitations: "Patients with previous stroke or myocardial infarction were excluded; 93% were White. The primary composite includes coronary and cerebrovascular events, with no stroke-specific effect estimate in the abstract. Industry-funded (Amgen).",
     certainty: 'high',
     evidenceType: 'rct',
     citationIds: ['cit-vesalius-cv-2026'],
     relatedActiveTrialIds: [],
-    practiceImpact: 'Teaches that the PCSK9 evidence base now reaches patients with atherosclerosis or diabetes and no prior event — but explicitly not stroke survivors, for whom SPARCL and Treat Stroke to Target remain the anchors.',
+    practiceImpact: "Extends randomized PCSK9 evidence to the enrolled high-risk population without prior MI or stroke. Do not use it as direct evidence of recurrent-stroke prevention.",
     lastReviewed: '2026-09-26',
     verificationStatus: 'verified-pubmed',
     verificationNotes: "Review scope: indexed primary outcome/abstract only; full original report, detailed eligibility, supplements and application claims are not comprehensively verified.",
@@ -10516,44 +10505,37 @@ export const completedTrials = [
     diseaseArea: ['secondary-prevention', 'glp1-metabolic-prevention'],
     population: {
       n: 13165,
-      ageRange: 'mean 64.1 ± 8.8 years; 29.0% women',
+      ageRange: "Age ≥40 years; mean 64.1 years (SD 8.8)",
       nihssRange: 'not applicable — enrolment by diabetes and atherosclerotic disease status',
-      timeWindow: 'event-driven; follow-up duration not stated in the abstract',
-      keyInclusion: ['Type 2 diabetes', 'Atherosclerotic cardiovascular disease', 'Mean body-mass index 32.6 ± 5.5; mean glycated hemoglobin 8.4 ± 0.9%; mean diabetes duration 14.7 ± 8.8 years'],
-      keyExclusion: ['134 of 13,299 randomized patients were excluded post-randomization for not meeting inclusion criteria, leaving a modified intention-to-treat population of 13,165']
-    },
+      timeWindow: "Median follow-up 4.0 years",
+      keyInclusion: ["Type 2 diabetes, HbA1c 7.0-10.5%, BMI ≥25, and established atherosclerotic cardiovascular disease"],
+      keyExclusion: ["Selected main-report exclusions: cardiovascular event within 60 days; GLP-1 agonist or pramlintide within 3 months; eGFR <15 mL/min/1.73 m² or long-term dialysis; additional exclusions and protocol details require the original report and appendix"]},
     intervention: 'Tirzepatide (dual GIP/GLP-1 receptor agonist) up to 15 mg weekly subcutaneously (n=6586)',
     comparator: 'ACTIVE comparator — dulaglutide 1.5 mg weekly subcutaneously, an agent already shown to reduce cardiovascular events (n=6579)',
     primaryEndpoint: {
       definition: 'Composite of death from cardiovascular causes, myocardial infarction, or stroke, tested for NON-INFERIORITY of tirzepatide to dulaglutide with a margin of 1.05 for the upper limit of the 95.3% confidence interval of the hazard ratio; an upper limit below 1.00 would indicate superiority',
-      timepoint: 'event-driven; timepoint not stated in the abstract',
+      timepoint: "Median follow-up 4.0 years",
       result: 'MET non-inferiority but DID NOT meet superiority: 801 events (12.2%) with tirzepatide vs 862 (13.1%) with dulaglutide',
       effectSize: 'Hazard ratio 0.92',
       confidenceInterval: '95.3% CI 0.83 to 1.01',
       pValue: 'P=0.003 for non-inferiority; P=0.09 for superiority'
     },
-    secondaryEndpoints: [
-      {
-        name: 'Adverse events',
-        result: 'Appeared similar between the two groups, although more gastrointestinal adverse events occurred with tirzepatide'
-      }
-    ],
+    secondaryEndpoints: [{"name": "Stroke (secondary outcome)", "result": "229/6586 (3.5%) versus 249/6579 (3.8%); HR 0.91 (95% CI 0.76-1.09). Secondary confidence intervals were not adjusted for multiplicity."}],
     safetyFindings: {
       sich: 'Not reported in the abstract',
-      mortality: 'Not reported separately; cardiovascular death was a component of the primary composite',
-      other: 'More gastrointestinal adverse events with tirzepatide; overall adverse-event incidence appeared similar'
-    },
+      mortality: "566/6586 (8.6%) versus 669/6579 (10.2%); HR 0.84 (95% CI 0.75-0.94). Authors classify this secondary mortality finding as exploratory.",
+      other: "GI events 42.5% versus 35.9%; treatment discontinuation due to adverse events 13.2% versus 10.1% (Table 3 safety population: 6647 per group)."},
     imagingCriteria: '',
-    applicabilityNotes: 'The counterweight to the positive incretin story. Every GLP-1 cardiovascular trial the app carries — SELECT, FLOW, SUSTAIN-6 and now SOUL — is placebo-controlled and positive; SURPASS-CVOT is the head-to-head, and a more potent dual incretin agonist with larger weight and HbA1c effects was NOT superior to dulaglutide for the composite of cardiovascular death, myocardial infarction or stroke. The honest reading is that incretin cardioprotection appears to be a class effect with a ceiling, not a dose- or potency-graded one. Stroke sits inside the composite with no separate estimate reported.',
-    limitations: 'Active-comparator non-inferiority design, so it cannot quantify benefit versus no treatment; superiority was formally tested and NOT met (P=0.09); no stroke-specific effect estimate in the abstract; 134 randomized patients were excluded post-randomization from the modified ITT population; industry-funded (Eli Lilly).',
+    applicabilityNotes: "Noninferiority to dulaglutide was demonstrated; superiority was not. This comparison cannot establish a class-wide ceiling, equivalence, or a causal relationship between metabolic potency and cardiovascular benefit.",
+    limitations: "Active comparator; no placebo. Modified ITT excluded 134 randomized patients. Only dulaglutide was compared; secondary mortality findings are exploratory.",
     certainty: 'high',
     evidenceType: 'rct',
     citationIds: ['cit-surpass-cvot-2025'],
     relatedActiveTrialIds: [],
-    practiceImpact: 'Caps expectations for incretin therapy: tirzepatide matched but did not beat dulaglutide on cardiovascular events, so agent choice within the class should turn on glycemic, weight, tolerability and access considerations rather than on an assumed cardiovascular advantage.',
-    lastReviewed: '2026-08-28',
+    practiceImpact: "Interpret as noninferiority in the studied diabetes/ASCVD population, with uncertain superiority and no demonstrated stroke-specific advantage.",
+    lastReviewed: "2026-09-30",
     verificationStatus: 'verified-pubmed',
-    verificationNotes: "Review scope: indexed primary outcome/abstract only; full original report, detailed eligibility, supplements and application claims are not comprehensively verified.",
+    verificationNotes: "Selected original main-report fields and Tables 1-3 compared via the public author-institution copy (DOI 10.1056/NEJMoa2505928). Full-card clinical verification is not claimed; detailed appendix/protocol and subsequent analyses remain outside this comparison.",
   }),
   t({
     id: 'save-cpap',
@@ -10634,36 +10616,15 @@ export const completedTrials = [
       confidenceInterval: '95% CI 0.28 to 0.78',
       pValue: 'p < 0.01'
     },
-    secondaryEndpoints: [
-      {
-        name: 'Functional independence',
-        result: 'NOT improved — 0.25 (95% CI -0.11 to 0.60; p = 0.17). The abstract labels this an OR, but a negative lower bound indicates a standardised mean difference'
-      },
-      {
-        name: 'Neurological deficit',
-        result: 'Improved — -0.30 (95% CI -0.47 to -0.14; p < 0.01), reported in the abstract as an \'OR\' but on a continuous (SMD) scale'
-      },
-      {
-        name: 'Daytime sleepiness',
-        result: 'Reduced — -0.96 (95% CI -1.47 to -0.45; p < 0.01), again on a continuous scale despite the \'OR\' label'
-      },
-      {
-        name: 'Depression',
-        result: 'Improved — -0.58 (95% CI -1.05 to -0.11; p = 0.02), continuous scale'
-      },
-      {
-        name: 'Cognitive function',
-        result: 'Improved — 1.10 (95% CI 0.35 to 1.86; p = 0.02), continuous scale'
-      }
-    ],
+    secondaryEndpoints: [{"name": "Functional independence", "result": "No statistically significant improvement reported in the abstract (P=.17); numerical estimate withheld because its effect-measure label is inconsistent."}, {"name": "Neurological deficit, sleepiness, depression and cognition", "result": "Abstract reports improvement, but labels negative estimates as odds ratios. The correct effect measure and full tables remain unverified; do not infer a standardized mean difference from the sign alone."}],
     safetyFindings: {
       sich: 'Not applicable — not an outcome of this review',
       mortality: 'Not reported as a separate pooled outcome in the abstract',
       other: 'Adherence, the dominant problem in the individual trials, is not quantified in the abstract'
     },
     imagingCriteria: '',
-    applicabilityNotes: 'Read this as a PAIR with SAVE, never on its own. This pooled analysis of 21 post-stroke trials reports a large reduction in recurrent vascular events (OR 0.45), while SAVE — a single trial larger than the entire meta-analysis at n=2717 versus n=1457 — found no reduction at all (HR 1.10, 95% CI 0.91 to 1.32). The tension is real and unresolved: the meta-analysis pools many small, mostly open-label, stroke-specific trials whose event counts are low, whereas SAVE is a large adequately powered trial in mixed coronary and cerebrovascular disease with poor adherence and minimal sleepiness. Where they overlap they agree on symptoms rather than events: SAVE found CPAP reduced daytime sleepiness and improved mood, and the meta-analysis found PAP reduced sleepiness and depression. SAVE did not measure functional independence, which the meta-analysis found was not improved.',
-    limitations: 'Only 1457 patients across 21 trials, so the pooled event count is small and vulnerable to small-study effects and publication bias; the constituent trials are heterogeneous in PAP modality, timing after stroke and adherence; the abstract mislabels continuous outcomes (neurological deficit, sleepiness, depression, cognition) as odds ratios when the negative bounds identify them as standardised mean differences; no adherence-stratified estimate is reported; directly contradicted on its headline outcome by the larger SAVE trial.',
+    applicabilityNotes: "The pooled post-stroke vascular-event signal (OR 0.45) and the neutral mixed coronary/cerebrovascular SAVE trial concern different populations, interventions, adherence and follow-up. Their estimates are not a direct randomized comparison and do not establish a contradiction. Symptom outcomes should be separated from vascular-event and functional-recovery claims.",
+    limitations: "Small, heterogeneous trial pool. The abstract labels several negative estimates as odds ratios, which is internally inconsistent; the correct effect measure is unresolved without the full tables. The abstract does not quantify adherence. Differences from SAVE limit direct comparison.",
     certainty: 'low',
     evidenceType: 'meta-analysis',
     citationIds: ['cit-poststroke-pap-2026'],

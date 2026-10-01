@@ -7,7 +7,7 @@ A client-side educational/demo toolkit for stroke management. Runs entirely in t
 ## Features
 - Acute encounter workflow (IVT, EVT, extended-window imaging selection).
 - Protocol cards (example institutional patterns based on published evidence).
-- Calculators: NIHSS, ASPECTS, ICH score, ABCD², HAS-BLED, PHASES, RoPE, CrCl, TNK/alteplase dose, DAWN, DEFUSE-3, CHANCE/POINT/THALES DAPT duration, ESSEN, SPI-II, BAT/BRAIN/9-point ICH expansion, VASOGRADE, Ogilvy-Carter, PHQ-9, NASCET, CHA₂DS₂-VA, HEADS².
+- Encounter and educational calculations include stroke scales, renal function and reperfusion-dose support. The source also contains exported scoring helpers that are not mounted as interactive panels; helper availability does not imply a visible or clinically validated calculator. Published model populations, missing-input limits and withheld outputs are described at the relevant surface.
 - Reviewed education offers 40 modules. PLAN/ASTRAL probability outputs, the RCVS² diagnostic output, and the EVD/NPi/bedside-neuro-exam simulations are withheld; source-linked concepts and qualified evidence remain.
 - Public build disables ward census, imports/exports, encounter persistence, and patient-context URL handoff. Private/approved deployments can re-enable operational modules after governance review.
 - Clinic and wards workflows.
@@ -16,7 +16,7 @@ A client-side educational/demo toolkit for stroke management. Runs entirely in t
 - **Completed evidence** under `#/research/references` with 264 completed/landmark trials, search, topic / certainty / evidence-type filters, source-depth limits, and citation drilldown to PMID / DOI.
 - **Context Bridge** in active-trial matcher cards: related completed trials surface as background evidence (never as eligibility criteria).
 - **"Why this recommendation?" drawer** in Management sections, walking guideline → claim → primary citation chain.
-- **Pure-function matcher engine** (`src/evidence/matcher-engine.js`) with executable coverage of 42 modeled inclusion criteria + 14 exclusions. These partial models support candidate screening, not definitive eligibility.
+- **Pure-function matcher engine** (`src/evidence/matcher-engine.js`) with executable coverage of 47 modeled inclusion criteria + 14 exclusions. These partial models support candidate screening, not definitive eligibility.
 - **412 citation records**, including primary reports, education sources and pre-2021 landmarks.
 
 

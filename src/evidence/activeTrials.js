@@ -45,6 +45,7 @@ export const activeTrials = [
       'Significant mass effect with midline shift >5 mm; intracranial tumor; acute intracranial hemorrhage'
     ],
     matcherCriteria: [
+      { field: 'acuteIschemicStroke', operator: '==', value: true, label: 'Documented suspected acute ischemic stroke' },
       { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
       { field: 'hoursFromLKW', operator: '<=', value: 24, label: 'Within 24 h from LKW' },
       { field: 'premorbidMRS', operator: '<=', value: 2, label: 'Pre-stroke mRS ≤2' },
@@ -57,8 +58,8 @@ export const activeTrials = [
       { id: 'seizureAtOnset', field: 'seizures', operator: '==', value: true, label: 'Seizure at stroke onset' },
       { id: 'lowAspects', field: 'aspectsScore', operator: '<', value: 6, label: 'CT ASPECTS <6' },
       // Registry wording: 'CT ASPECT score <6 (MRI ASPECT score <7)'. The MRI
-      // threshold applies only when the encounter documents MRI as the imaging
-      // pathway (wake-up workflow); mriAspectsScore resolves null otherwise.
+      // threshold requires an explicitly documented MRI-derived ASPECTS score;
+      // MRI availability or a generic CT score does not supply that value.
       { id: 'lowAspectsMri', field: 'mriAspectsScore', operator: '<', value: 7, label: 'MRI ASPECTS <7 (MRI pathway)' },
     ],
     relatedCompletedTrialIds: ['dawn', 'defuse-3', 'escape-mevo', 'distal'],
@@ -103,6 +104,7 @@ export const activeTrials = [
       'Beyond 16 h window'
     ],
     matcherCriteria: [
+      { field: 'acuteIschemicStroke', operator: '==', value: true, label: 'Symptoms assessed as consistent with acute ischemic stroke' },
       { field: 'age', operator: 'between', value: [18, 79], label: 'Age 18-79' },
       { field: 'hoursFromLKW', operator: '<=', value: 16, label: 'Within 16 h from LKW' },
       { field: 'nihss', operator: '>=', value: 4, label: 'NIHSS ≥4' },
@@ -159,12 +161,13 @@ export const activeTrials = [
       'Pre-stroke function cannot be assessed during hospitalization, or disability is temporary'
     ],
     matcherCriteria: [
+      { field: 'acuteIschemicStroke', operator: '==', value: true, label: 'Documented qualifying acute ischemic stroke' },
       { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
       { field: 'premorbidMRS', operator: 'between', value: [3, 4], label: 'Pre-stroke mRS 3-4' },
       { field: 'nihss', operator: '>=', value: 6, label: 'NIHSS ≥6' },
       { field: 'presentedWithin24h', operator: '==', value: true, label: 'Presented to study hospital within 24 h of LKW' },
       { field: 'aspectsScore', operator: '>=', value: 3, label: 'ASPECTS ≥3' },
-      { field: 'vesselOcclusion', operator: 'in', value: ['ICA', 'M1', 'M2'], label: 'ICA, M1, or dominant M2 occlusion (confirm M2 dominance)' }
+      { field: 'testedVessel', operator: '==', value: true, label: 'ICA, M1, or documented dominant M2 occlusion' }
     ],
     matcherExclusions: [],
     relatedCompletedTrialIds: ['select2', 'angel-aspect', 'rescue-japan-limit', 'tension'],
@@ -206,8 +209,9 @@ export const activeTrials = [
       'Contraindications to MRI'
     ],
     matcherCriteria: [
+      { field: 'acuteIschemicStroke', operator: '==', value: true, label: 'Documented qualifying acute ischemic stroke' },
       { field: 'age', operator: '>=', value: 18, label: 'Age ≥18' },
-      { field: 'symptoms', operator: 'present', value: ['arm', 'upper', 'hand', 'weakness'], label: 'Upper-extremity weakness' },
+      { field: 'upperExtremityWeakness', operator: '==', value: true, label: 'Documented upper-extremity weakness' },
       { field: 'hoursFromLKW', operator: 'between', value: [24, 96], label: 'Consent window 24-96 h from onset/LKW' }
     ],
     matcherExclusions: [
@@ -409,8 +413,9 @@ export const activeTrials = [
       'Familial hypercholesterolemia or PCSK9-inhibitor use'
     ],
     matcherCriteria: [
+      { field: 'diagnosisCategory', operator: '==', value: 'ich', label: 'Intracerebral hemorrhage' },
       { field: 'age', operator: '>=', value: 50, label: 'Age ≥50' },
-      { field: 'ichLocation', operator: 'present', value: ['lobar', 'cortical'], label: 'Lobar ICH location' },
+      { field: 'ichLocation', operator: 'in', value: ['lobar', 'cortical'], label: 'Lobar ICH location' },
       { field: 'onStatin', operator: '==', value: true, label: 'On statin at ICH onset' },
       { field: 'hoursFromLKW', operator: '<=', value: 168, label: 'Randomization within 7 days of ICH onset' },
       { field: 'premorbidMRS', operator: '<=', value: 3, label: 'Pre-morbid mRS ≤3' }

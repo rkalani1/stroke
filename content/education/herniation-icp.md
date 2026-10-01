@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Concept reference on cerebral edema, herniation and escalation assessment. Drug recipes, the osmotherapy calculator and device simulation are unavailable.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

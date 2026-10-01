@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Population-specific ICH blood-pressure evidence, INTERACT3 bundle limitations, expansion-mitigation trials and surgical assessment. Infusion titration requires a complete monitored prescription.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

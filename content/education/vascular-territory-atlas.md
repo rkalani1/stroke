@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Anterior (ACA/MCA/lenticulostriate/anterior-choroidal) and posterior (PCA/PICA/AICA/SCA/basilar-perforator) territories with their clinical signatures, plus cortical and internal watershed patterns and mechanisms.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

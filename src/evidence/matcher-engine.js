@@ -26,6 +26,33 @@ import {
 import { MATCHABLE_TRIAL_STATUS_VALUES } from './schema.js';
 import { recordedTreatmentDecision } from '../encounter-decision-status.js';
 
+// Validate clinical domains before a comparison. A parseable but impossible
+// score is missing information, not evidence that a study criterion is met.
+const numericDomains = {
+  age: [0, Infinity, false], hoursFromLKW: [0, Infinity, false],
+  nihss: [0, 42, true], premorbidMRS: [0, 6, true],
+  mrsAtConsent: [0, 6, true], mrsScore: [0, 6, true],
+  aspectsScore: [0, 10, true], mriAspectsScore: [0, 10, true]
+};
+function validNumericField(field, value) {
+  const [lo, hi, integer] = numericDomains[field];
+  const n = tryInt(value);
+  return n !== null && n >= lo && n <= hi && (!integer || Number.isInteger(n));
+}
+function recordedVessels(data) {
+  const vessels = data?.telestrokeNote?.vesselOcclusion;
+  const allowed = ['ICA', 'M1', 'M2', 'M3', 'M4', 'A1', 'A2', 'A3', 'P1', 'P2', 'P3', 'Basilar', 'None'];
+  if (!Array.isArray(vessels) || !vessels.length ||
+      vessels.some(v => !allowed.includes(v)) ||
+      (vessels.includes('None') && vessels.length > 1)) return null;
+  return vessels;
+}
+function consistentRecordedValue(top, note, numericValue = false) {
+  const normalize = numericValue ? tryInt : value => value;
+  if (top != null && note != null && normalize(top) !== normalize(note)) return null;
+  return top ?? note ?? null;
+}
+
 // ---------- Field resolver ----------
 //
 // Each criterion's `field` string is mapped to a function that pulls a
@@ -42,13 +69,28 @@ const fieldResolvers = {
   presentedWithin24h: (d) => d?.presentedWithin24h,
   mrsAtConsent: (d) => d?.mrsAtConsent ?? d?.mRSAtConsent,
   mostAnticoagulantExclusion: (d) => d?.mostAnticoagulantExclusion,
-  vesselOcclusion: (d) => d?.telestrokeNote?.vesselOcclusion || [],
+  vesselOcclusion: recordedVessels,
   ctaResults: (d) => d?.telestrokeNote?.ctaResults || d?.strokeCodeForm?.cta || '',
   ctpResults: (d) => d?.telestrokeNote?.ctpResults || '',
-  diagnosisCategory: (d) => d?.telestrokeNote?.diagnosisCategory,
+  diagnosisCategory: (d) => ['ischemic', 'tia', 'ich', 'sah', 'cvt', 'mimic'].includes(d?.telestrokeNote?.diagnosisCategory) ? d.telestrokeNote.diagnosisCategory : null,
+  acuteIschemicStroke: (d) => {
+    // Encounter's "ischemic" category also includes TIA. It cannot by itself
+    // establish the qualifying acute ischemic presentation for a trial.
+    const category = d?.telestrokeNote?.diagnosisCategory;
+    const top = d?.acuteIschemicStroke;
+    const note = d?.telestrokeNote?.acuteIschemicStroke;
+    if (top != null && note != null && top !== note) return null;
+    const documented = consistentRecordedValue(top, note);
+    if (['tia', 'ich', 'sah', 'cvt', 'mimic'].includes(category)) return documented === true ? null : false;
+    return typeof documented === 'boolean' ? documented : null;
+  },
   symptoms: (d) => d?.telestrokeNote?.symptoms || '',
+  upperExtremityWeakness: (d) => consistentRecordedValue(d?.upperExtremityWeakness, d?.telestrokeNote?.upperExtremityWeakness),
   pmh: (d) => d?.telestrokeNote?.pmh || '',
-  ichLocation: (d) => d?.ichLocation || '',
+  ichLocation: (d) => {
+    const value = typeof d?.ichLocation === 'string' ? d.ichLocation.trim().toLowerCase() : '';
+    return ['lobar', 'cortical', 'deep', 'nonlobar', 'non-lobar', 'bg', 'thalamic', 'cerebellar', 'brainstem', 'infratentorial'].includes(value) ? value : null;
+  },
   onStatin: (d) => d?.onStatin,
   mrsScore: (d) => d?.mrsScore,
   tnkRecommended: (d) => recordedTreatmentDecision(d?.telestrokeNote || {}, 'tnk'),
@@ -66,9 +108,12 @@ const fieldResolvers = {
   cardioembolic: (d) => d?.cardioembolic,
   onAnticoag: (d) => d?.onAnticoag,
   recentMI: (d) => d?.recentMI,
-  // Supports anticoagulation exclusions expressed as a `truthy` check on
-  // !!data.telestrokeNote?.lastDOACType (truthy on a non-empty string).
-  lastDOACType: (d) => d?.telestrokeNote?.lastDOACType,
+  // Only a recognized medication or explicit "none" establishes this fact.
+  lastDOACType: (d) => {
+    const value = d?.telestrokeNote?.lastDOACType;
+    if (value === 'none') return false;
+    return ['apixaban', 'rivaroxaban', 'dabigatran', 'edoxaban', 'warfarin', 'heparin', 'lmwh', 'fondaparinux'].includes(value) ? true : null;
+  },
   // 'reperfusion' is a derived predicate: true if the encounter notes
   // recorded EITHER tnkRecommended OR evtRecommended. Derived fields are
   // legitimate extensions of the field vocabulary and are documented in
@@ -88,6 +133,7 @@ const fieldResolvers = {
   // NIHSS nor the disabling flag is recorded so trials surface as needs_info on
   // a fresh form rather than silently not_eligible.
   nihssDisabling: (d) => {
+    if (!validNumericField('nihss', nihssOf(d))) return null;
     const n = tryInt(nihssOf(d));
     const disabling = d?.telestrokeNote?.disablingDeficit;
     if (n === null && disabling === undefined) return null;
@@ -101,14 +147,17 @@ const fieldResolvers = {
   // and vessel-occlusion. The engine resolves it to one of the labeled
   // domains so the criterion's `in` operator can match.
   domainMatch: (d) => {
+    if (!validNumericField('nihss', nihssOf(d))) return null;
     const nihss = tryInt(nihssOf(d));
-    const occlusion = d?.telestrokeNote?.vesselOcclusion || [];
+    const occlusion = recordedVessels(d);
     // Needs-info when EITHER input is un-entered: a fresh form must surface
     // as needs_info, not flip to a definite 'none'/not-eligible.
-    if (nihss === null || occlusion.length === 0) return null;
+    if (nihss === null || !occlusion) return null;
     // Dominance belongs to the culprit M2, not arbitrary CTA prose.
     if (nihss >= 8 && occlusion.includes('M3')) return 'mevo';
     if (nihss >= 8 && occlusion.includes('M2')) {
+      if (d?.culpritM2Dominance != null && d?.telestrokeNote?.culpritM2Dominance != null &&
+          d.culpritM2Dominance !== d.telestrokeNote.culpritM2Dominance) return null;
       const dominance = d?.culpritM2Dominance ?? d?.telestrokeNote?.culpritM2Dominance;
       if (['non-dominant', 'co-dominant'].includes(dominance)) return 'mevo';
       if (dominance !== 'dominant') return null;
@@ -118,22 +167,29 @@ const fieldResolvers = {
     }
     return 'none';
   },
-  // MRI-based ASPECTS: only resolves when the encounter documents that MRI was
-  // the imaging pathway (wake-up workflow, mriAvailable === true). Otherwise
-  // null so MRI-specific thresholds (e.g. STEP's MRI ASPECTS <7) never fire on
-  // a CT-derived score.
-  mriAspectsScore: (d) => {
-    if (d?.telestrokeNote?.wakeUpStrokeWorkflow?.mriAvailable === true) {
-      return d?.aspectsScore;
-    }
+  testedVessel: (d) => {
+    const vessels = recordedVessels(d);
+    if (!vessels) return null;
+    if (vessels.includes('ICA') || vessels.includes('M1')) return true;
+    if (!vessels.includes('M2')) return false;
+    const top = d?.culpritM2Dominance;
+    const note = d?.telestrokeNote?.culpritM2Dominance;
+    if (top != null && note != null && top !== note) return null;
+    const dominance = top ?? note;
+    if (dominance === 'dominant') return true;
+    if (['non-dominant', 'co-dominant'].includes(dominance)) return false;
     return null;
-  }
+  },
+  // MRI availability is not an MRI-derived ASPECTS measurement. Never reuse
+  // the generic/CT score for an MRI-specific exclusion.
+  mriAspectsScore: (d) => consistentRecordedValue(d?.mriAspectsScore, d?.telestrokeNote?.mriAspectsScore, true)
 };
 
 export function resolveField(field, data) {
   const fn = fieldResolvers[field];
   if (!fn) return undefined;
-  return fn(data);
+  const value = fn(data);
+  return numericDomains[field] && !validNumericField(field, value) ? null : value;
 }
 
 const KNOWN_FIELDS = new Set(Object.keys(fieldResolvers));
@@ -148,7 +204,6 @@ export function knownFields() {
 // The criterion is met when true, not_met when false, unknown when null.
 // This matches the legacy evaluator's tri-state output.
 
-const isMissing = (v) => v === undefined || v === null || v === '' || v === 'unselected';
 const numeric = (v) => {
   if (typeof v === 'number') return Number.isFinite(v) ? v : null;
   if (typeof v !== 'string' || !/^[+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?$/i.test(v.trim())) return null;
@@ -209,7 +264,7 @@ const operators = {
     return value.includes(resolved);
   },
   // An unrecorded medication/exclusion is unknown, never documented absence.
-  'truthy': (resolved) => isMissing(resolved) ? null : Boolean(resolved),
+  'truthy': (resolved) => typeof resolved === 'boolean' ? resolved : null,
   'present': (resolved, value) => {
     // 'present' checks whether the resolved value contains any of the
     // listed needles. Used for free-text fields like ctpResults
@@ -218,7 +273,7 @@ const operators = {
     // NEGATION-AWARE for free text: "No intracranial stenosis" must not
     // satisfy a stenosis criterion. A needle whose every occurrence is
     // negated counts as a documented ABSENCE (false), not a match.
-    if (!Array.isArray(value)) return null;
+    if (!Array.isArray(value) || !value.length || value.some(v => typeof v !== 'string' || !v.trim())) return null;
     if (resolved === undefined || resolved === null) return null;
     if (Array.isArray(resolved)) {
       if (resolved.length === 0) return null;
@@ -226,25 +281,33 @@ const operators = {
     }
     if (!isPresentString(resolved)) return null;
     const hay = String(resolved).toLowerCase();
-    let sawNegatedOnly = false;
+    let sawNegative = false;
+    let sawPositive = false;
+    let sawUncertain = false;
     for (const needle of value) {
       const n = String(needle).toLowerCase();
       let idx = hay.indexOf(n);
-      let anyHit = false;
-      let anyAffirmative = false;
       while (idx !== -1) {
-        anyHit = true;
         // Look back within the same clause for a negation cue.
-        const clauseStart = Math.max(0, Math.max(hay.lastIndexOf('.', idx), hay.lastIndexOf(';', idx), hay.lastIndexOf(',', idx)) + 1);
+        const before = hay.slice(0, idx);
+        const contrast = [...before.matchAll(/\b(?:but|however|although)\b/g)].at(-1);
+        const clauseStart = Math.max(0, Math.max(hay.lastIndexOf('.', idx), hay.lastIndexOf(';', idx), hay.lastIndexOf(',', idx)) + 1,
+          contrast ? contrast.index + contrast[0].length : 0);
         const prefix = hay.slice(Math.max(clauseStart, idx - 40), idx);
-        const negated = /(\bno\b|\bwithout\b|\bnegative for\b|\bdenies\b|\bnot?\s+(?:seen|present|identified|visualized)\b|\bnon-?occlusive\b|\bruled out\b|\babsent\b)\s*[^.;,]*$/.test(prefix);
-        if (!negated) { anyAffirmative = true; break; }
+        const suffix = hay.slice(idx + n.length).split(/[.;,]/, 1)[0].slice(0, 45);
+        const uncertain = /\b(?:possible|probable|suspected|uncertain|questionable|query|rule out|cannot exclude|family history|mother|father)\b/.test(prefix) || /\?|\b(?:uncertain|unlikely|unconfirmed|not confirmed|cannot be excluded|not excluded)\b/.test(suffix);
+        const negated = /(\bno\b|\bnot\b|\bwithout\b|\bnegative for\b|\bdenies\b|\bnon-?occlusive\b|\bruled out\b|\babsent\b)\s*[^.;,]*$/.test(prefix) || /^\s*(?:is\s+|was\s+)?(?:ruled out|absent|not\s+(?:seen|present|identified|visualized))\b/.test(suffix);
+        if (uncertain) sawUncertain = true;
+        else if (negated) sawNegative = true;
+        else sawPositive = true;
         idx = hay.indexOf(n, idx + n.length);
       }
-      if (anyAffirmative) return true;
-      if (anyHit) sawNegatedOnly = true;
     }
-    return sawNegatedOnly ? false : false;
+    if (sawUncertain || (sawNegative && sawPositive)) return null;
+    if (sawPositive) return true;
+    if (sawNegative) return false;
+    // An unrelated history or report does not document absence.
+    return null;
   }
 };
 
@@ -267,7 +330,9 @@ export function evaluateCriterion(criterion, data) {
   }
   try {
     const resolved = resolveField(criterion.field, data);
-    const result = operators[criterion.operator](resolved, criterion.value);
+    const operand = criterion.operator === 'present' && criterion.field === 'ichLocation' && typeof resolved === 'string' && resolved.trim()
+      ? [resolved] : resolved;
+    const result = operators[criterion.operator](operand, criterion.value);
     if (result === true) return 'met';
     if (result === false) return 'not_met';
     return 'unknown';

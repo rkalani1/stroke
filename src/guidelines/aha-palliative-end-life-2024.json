@@ -222,7 +222,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "In a National Hospital Care Survey study of 36 519 patients hospitalized with stroke, 22.5% died either in the hospital or by the end of the following year (approximately 6.8% in hospital and 15.7% after discharge, about half of those deaths occurring >90 days after discharge). Across 2 US-based studies, approximately 34% to 45% of patients were discharged home without additional services, 10% to 11% home with home care or home health services, 30% to 42% to inpatient postacute facilities, 6% to 8% died in the hospital, 2% to 3% were discharged to an inpatient hospice facility, and 1% with home hospice.",
+      "text": "In a National Hospital Care Survey study of 36 519 patients hospitalized with stroke in 2014 and followed through the end of 2015, 22.5% died either in the hospital or during follow-up (approximately 6.8% in hospital and 15.7% after discharge, about half of those deaths occurring >90 days after discharge). Across 2 US-based studies, approximately 34% to 45% of patients were discharged home without additional services, 10% to 11% home with home care or home health services, 30% to 42% to inpatient postacute facilities, 6% to 8% died in the hospital, 2% to 3% were discharged to an inpatient hospice facility, and 1% with home hospice.",
       "page": null
     },
     {
@@ -230,7 +230,7 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "There are no randomized controlled trials evaluating poststroke palliative care interventions, and most studies focused on the final days of life; there is limited evidence to guide how to integrate palliative care into routine stroke care, especially if prognosis is uncertain. For stroke, interdisciplinary models that include specially trained nurses and social workers may be the most effective approach, given the multidimensional needs of patients with stroke and their families.",
+      "text": "A systematic review of quantitative studies published from 1990 through 2021 found no randomized controlled trials of poststroke palliative care interventions among its seven included studies; most addressed the final days of life. The review found limited evidence on integrating palliative care into routine stroke care, especially when prognosis was uncertain. This describes that review period, not the current absence of all such trials. For stroke, interdisciplinary models that include specially trained nurses and social workers may be the most effective approach, given the multidimensional needs of patients with stroke and their families.",
       "page": null
     },
     {
@@ -286,8 +286,20 @@
       "classOfRec": "Statement",
       "classNote": null,
       "levelOfEvidence": "Ungraded",
-      "text": "The hospice team includes nurses, physicians, social workers, spiritual advisors, aides, and often volunteers to support patients and families, and hospice care can be provided in various locations, including inpatient hospice when care cannot be provided at home because of refractory symptoms or patient preference. In the United States, hospice services are covered under the Medicare benefit, but Medicare does not pay for custodial care (eg, bathing, feeding, toileting), rehabilitation therapies, or room and board if a patient is receiving hospice care in a nursing home or a hospice inpatient facility.",
-      "page": null
+      "text": "The hospice team includes nurses, physicians, social workers, spiritual advisors, aides, and often volunteers to support patients and families, and hospice care can be provided in various locations, including inpatient hospice when care cannot be provided at home because of refractory symptoms or patient preference.",
+      "page": null,
+      "currentEvidenceNote": "Medicare coverage clarification (checked September 30, 2026): the statement's blanket noncoverage wording is not retained. CMS includes hospice aide services and physical, occupational, and speech-language therapy when part of the individualized hospice plan for palliation or management of the terminal illness and related conditions. Routine room and board is generally excluded; hospice-arranged short-term inpatient or respite stays can be covered. Confirm the individual plan and benefits with the hospice team.",
+      "currentEvidenceSources": [
+        {
+          "title": "CMS: hospice benefit and included services (updated September 8, 2026)",
+          "url": "https://www.cms.gov/medicare/payment/fee-for-service-providers/hospice"
+        },
+        {
+          "title": "Medicare: hospice coverage and room-and-board exceptions",
+          "url": "https://www.medicare.gov/coverage/hospice-care"
+        }
+      ],
+      "sourceConflictNote": "The recovered original AHA statement p. 8 contains a blanket exclusion of rehabilitation therapies and custodial care and omits the inpatient/respite room-and-board exception. Current CMS benefit guidance is separately attributed rather than presented as an AHA correction."
     },
     {
       "section": "Conclusions and Future Directions",
@@ -303,9 +315,9 @@
   "sourceReview": {
     "reviewedAt": "2026-09-30",
     "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-    "sourceAccess": "Publisher/DOI and bounded primary public alternatives assessed; incomplete indexed fragments only, no complete body acquired",
+    "sourceAccess": "Complete original publisher-formatted 12-page statement recovered from a public task-force mirror and all 36 imported rows paired; physical PDF pages 1–8 contain the clinical body. This pre-pagination copy does not establish the text of all later corrections or current guidance.",
     "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
-    "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+    "sourceEditionNote": "Recovered copy carries DOI 10.1161/STR.0000000000000479, December 17, 2024 download stamp, and e00/TBD pagination. Original-source fidelity is distinct from present-day clinical currency. The Medicare benefit conflict is explicitly updated from CMS; the review-period and dated-cohort scopes are restored.",
     "implementationUpdatedAt": "2026-09-30"
   }
 }

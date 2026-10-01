@@ -669,9 +669,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(completedTrials.length).toBe(264);
     });
 
-    it('F14-T1.3: Matcher engine coverage achieves 100% (42/42 criteria and 14/14 exclusions)', () => {
+    it('F14-T1.3: Matcher engine coverage achieves 100% (47/47 criteria and 14/14 exclusions)', () => {
       const result = spawnSync('node', [path.join(ROOT, 'scripts/evidence-validate.mjs')], { cwd: ROOT, encoding: 'utf8' });
-      expect(result.stdout).toContain('42/42 criteria (100%)');
+      expect(result.stdout).toContain('47/47 criteria (100%)');
       expect(result.stdout).toContain('14/14 exclusions (100%)');
     });
 
@@ -904,9 +904,9 @@ describe('Tier 1: Feature Coverage (Features 1-19)', () => {
       expect(gitignore).toContain('leak-guard-denylist.local.json');
     });
 
-    it('F19-T1.5: package.json version matches latest release v6.30.3', () => {
+    it('F19-T1.5: package.json version matches latest release v6.30.4', () => {
       const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-      expect(pkg.version).toBe('6.30.3');
+      expect(pkg.version).toBe('6.30.4');
     });
 
     it('F19-T1.6: Runtime config loader declares the local-override fetch it awaits', () => {

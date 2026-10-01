@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## v6.30.4 — 2026-10-01 — clinical input and evidence consistency
+
+- Preserve unknown, invalid and contradictory clinical inputs in helpers, trial
+  screening, NIHSS summaries and copied handoffs, including explicit zero and
+  separately assessed discharge scores.
+- Correct scoped Encounter guidance, TOAST/SeLECT teaching, trial interpretations,
+  native AAN grades, guideline provenance and separately attributed hospice
+  coverage. Retain unresolved source and applicability limits.
+- Repair the archived BAO and CREST-2 excerpts; regenerate TOAST and Prognosis
+  handouts from their canonical cards with corrected reading order and layout.
+- Support blocked-storage startup and explicit, non-destructive error recovery.
+  Enforce the private-build free-text opt-out across reviewed persistence sinks.
+- Reconcile search and reference labels with retained resources and synchronize
+  search accessibility state with visible suggestions.
+- Protocols and the Telestroke map remain excluded and unchanged.
+
 ## v6.30.3 — 2026-09-30 — reconcile duplicate clinical screens and source limits
 
 - Make Encounter context cards respect reviewed population, imaging, treatment

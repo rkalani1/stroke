@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "guidelines-index",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.30.3",
-    "checksum": "sha256:63987d22774223010a92fd3b745e02a9",
+    "appVersion": "6.30.4",
+    "checksum": "sha256:eec1948c4448b5ceffc3eebb0503cdee",
     "count": 110,
     "source": "Guideline metadata bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -31,7 +31,7 @@
         "implementationUpdatedAt": "2026-09-30"
       },
       "documentType": "advisory",
-      "gradingSystem": "ungraded",
+      "gradingSystem": "AAN",
       "publicationUpdates": [],
       "hasUnresolvedUpdates": false,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aan-asm-withdrawal-2021.json"
@@ -135,7 +135,7 @@
         "implementationUpdatedAt": "2026-09-30"
       },
       "documentType": "guideline",
-      "gradingSystem": "ungraded",
+      "gradingSystem": "AAN",
       "publicationUpdates": [],
       "hasUnresolvedUpdates": false,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aan-functional-seizures-2025.json"
@@ -155,9 +155,9 @@
       "sourceReview": {
         "reviewedAt": "2026-09-30",
         "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-        "sourceAccess": "Discontinuous indexed original publisher fragments; zero complete bodies; exact public route outcomes retained in aan-ethics89-review",
+        "sourceAccess": "Complete original publisher PDF recovered from an ABN society mirror; all 36 stored statements compared with source passages, including two repaired study-scope qualifiers.",
         "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
-        "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+        "sourceEditionNote": "Original Neurology 2022;98:409–416 statement, DOI 10.1212/WNL.0000000000200063. Full-body source fidelity is distinct from an exhaustive review of subsequent clinical evidence.",
         "implementationUpdatedAt": "2026-09-30"
       },
       "documentType": "scientific-statement",
@@ -187,7 +187,7 @@
         "implementationUpdatedAt": "2026-09-30"
       },
       "documentType": "advisory",
-      "gradingSystem": "ungraded",
+      "gradingSystem": "AAN",
       "publicationUpdates": [],
       "hasUnresolvedUpdates": false,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aan-sicas-2022.json"
@@ -1255,9 +1255,9 @@
       "sourceReview": {
         "reviewedAt": "2026-09-30",
         "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-        "sourceAccess": "Publisher/DOI and bounded primary public alternatives assessed; incomplete indexed fragments only, no complete body acquired",
+        "sourceAccess": "Full original publisher-formatted advance PDF recovered from the SFMV mirror; all 27 stored summaries compared to their source passages. The later correction notice was read separately.",
         "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
-        "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+        "sourceEditionNote": "September 14, 2023 downloaded advance edition (e1–e38) used for original wording. The October correction changes an ASCOT-LLA Table 2 value not reproduced in these summaries. Historical trial and target statements are not a replacement for current risk-specific lipid guidance.",
         "implementationUpdatedAt": "2026-09-30"
       },
       "documentType": "scientific-statement",
@@ -1269,7 +1269,7 @@
           "doi": "10.1161/ATV.0000000000000165",
           "publisherUrl": "https://doi.org/10.1161/ATV.0000000000000165",
           "status": "not-applicable",
-          "note": "The complete notice corrects mean treatment LDL-C in ASCOT-LLA from 3.34 to 2.28 mmol/L in Table 2. This numeric cell is not reproduced in the library. Complete parent-body fidelity remains unresolved.",
+          "note": "The complete notice corrects mean treatment LDL-C in ASCOT-LLA from 3.34 to 2.28 mmol/L in Table 2. This numeric cell is not reproduced in the library. All 27 retained summaries have now been compared with the original advance PDF; the corrected numeric cell is not reproduced.",
           "checkedAt": "2026-09-30",
           "affectedRecommendationIds": [],
           "previousReviewNote": "Corrects the ASCOT-LLA LDL value in a supporting evidence table; the affected value is not reproduced in the library.",
@@ -2786,9 +2786,9 @@
       "sourceReview": {
         "reviewedAt": "2026-09-30",
         "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-        "sourceAccess": "Full105-page original Circulation co-publication PDF; three Hypertension correction bodies only partially accessible",
-        "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency. 3 publication-update records remain partly reviewed or unresolved; see the individual notices.",
-        "sourceEditionNote": "August 14 advance Circulation co-publication was used for original joint-guideline text and grades. Complete bodies of all three later Hypertension correction notices remain independently unresolved.",
+        "sourceAccess": "Full 105-page original Circulation co-publication PDF. Complete substantive bodies of all three Hypertension correction notices recovered in indexed primary publisher text; direct correction PDFs remain inaccessible.",
+        "currencyNote": "Identified extraction defects have been repaired. All three indexed correction notices have been checked for applicability to the retained rows. Selected later evidence remains separately labeled; this does not certify exhaustive clinical currency.",
+        "sourceEditionNote": "August 14 advance Circulation co-publication used for original joint-guideline wording and grades. Three later Hypertension corrections were compared with all 108 retained recommendation rows and do not require changes to those rows; corrected reference-table content outside these rows is not imported.",
         "implementationUpdatedAt": "2026-09-30"
       },
       "documentType": "guideline",
@@ -2799,40 +2799,45 @@
           "pmid": "41259465",
           "doi": "10.1161/HYP.0000000000000257",
           "publisherUrl": "https://doi.org/10.1161/HYP.0000000000000257",
-          "status": "unresolved",
-          "note": "The correction was identified, but its complete primary body was not independently recovered. Earlier review notes are preserved separately; this review does not certify that the correction is inapplicable or that the entire current edition has been checked.",
+          "status": "not-applicable",
+          "note": "Complete substantive notice read in indexed primary publisher text. Corrects comparison/grading-table presentation, dose-specific aprocitentan edema rates and the Figure 8 drug-class proviso. These details are not reproduced in the 108 retained recommendation rows.",
           "checkedAt": "2026-09-30",
           "affectedRecommendationIds": [],
           "previousReviewNote": "Corrects comparison/grading-table presentation and aprocitentan supporting text and figure notes. The affected clinical material is not reproduced in the extracted entries.",
-          "independentReviewScope": "incomplete/unresolved"
+          "independentReviewScope": "Complete indexed primary notice; applicability checked against all 108 retained recommendation rows. Direct publisher PDF remains inaccessible; no whole-guideline currentness certification.",
+          "previousIndependentReviewNote": "The correction was identified, but its complete primary body was not independently recovered. Earlier review notes are preserved separately; this review does not certify that the correction is inapplicable or that the entire current edition has been checked.",
+          "verificationSourceUrl": "https://www.ahajournals.org/doi/pdf/10.1161/HYP.0000000000000257"
         },
         {
           "type": "correction",
           "pmid": "41984986",
           "doi": "10.1161/HYP.0000000000000262",
           "publisherUrl": "https://doi.org/10.1161/HYP.0000000000000262",
-          "status": "unresolved",
-          "note": "The correction was identified, but its complete primary body was not independently recovered. Earlier review notes are preserved separately; this review does not certify that the correction is inapplicable or that the entire current edition has been checked.",
+          "status": "not-applicable",
+          "note": "Complete substantive notice read in indexed primary publisher text. Corrects reversed Table 16 interaction columns: the blood-pressure drugs are thiazide-type diuretics/RAS blockers; lithium is the interacting drug. This grid is not reproduced in the 108 retained recommendation rows.",
           "checkedAt": "2026-09-30",
           "affectedRecommendationIds": [],
           "verificationSourceUrl": "https://www.ahajournals.org/doi/pdf/10.1161/HYP.0000000000000262",
           "previousReviewNote": "Full primary notice reviewed: Table 16 had lithium and thiazide-type diuretics/RAS blockers in the wrong column. The correction identifies the antihypertensive drugs as thiazides/RAS blockers and lithium as the interacting drug. This drug-interaction reference table is not reproduced among the 108 formal recommendations; none requires alteration.",
-          "independentReviewScope": "incomplete/unresolved"
+          "independentReviewScope": "Complete indexed primary notice; applicability checked against all 108 retained recommendation rows. Direct publisher PDF remains inaccessible; no whole-guideline currentness certification.",
+          "previousIndependentReviewNote": "The correction was identified, but its complete primary body was not independently recovered. Earlier review notes are preserved separately; this review does not certify that the correction is inapplicable or that the entire current edition has been checked."
         },
         {
           "type": "correction",
           "pmid": "42160500",
           "doi": "10.1161/HYP.0000000000000264",
           "publisherUrl": "https://doi.org/10.1161/HYP.0000000000000264",
-          "status": "unresolved",
-          "note": "The correction was identified, but its complete primary body was not independently recovered. Earlier review notes are preserved separately; this review does not certify that the correction is inapplicable or that the entire current edition has been checked.",
+          "status": "not-applicable",
+          "note": "Complete substantive notice read in indexed primary publisher text. Corrects Table 26 slow IV labetalol repeat dosing from every 2 minutes to 10-minute intervals. This dosing table is not reproduced in the 108 retained recommendation rows.",
           "checkedAt": "2026-09-30",
           "affectedRecommendationIds": [],
           "previousReviewNote": "Table 26 corrects the interval between slow IV labetalol injections from every 2 minutes to 10-minute intervals. This dosing reference table is not reproduced among the 108 formal recommendations; none requires alteration.",
-          "independentReviewScope": "incomplete/unresolved"
+          "independentReviewScope": "Complete indexed primary notice; applicability checked against all 108 retained recommendation rows. Direct publisher PDF remains inaccessible; no whole-guideline currentness certification.",
+          "previousIndependentReviewNote": "The correction was identified, but its complete primary body was not independently recovered. Earlier review notes are preserved separately; this review does not certify that the correction is inapplicable or that the entire current edition has been checked.",
+          "verificationSourceUrl": "https://www.ahajournals.org/doi/pdf/10.1161/HYP.0000000000000264?download=true"
         }
       ],
-      "hasUnresolvedUpdates": true,
+      "hasUnresolvedUpdates": false,
       "url": "https://rkalani1.github.io/stroke/data/guidelines/aha-hypertension-guideline-2025.json"
     },
     {
@@ -2954,9 +2959,9 @@
       "sourceReview": {
         "reviewedAt": "2026-09-30",
         "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-        "sourceAccess": "Publisher/DOI and bounded primary public alternatives assessed; incomplete indexed fragments only, no complete body acquired",
+        "sourceAccess": "Full original publisher-formatted advance PDF recovered from a public mirror; all 45 stored statements, referenced Table 1/2 passages and figure descriptions compared.",
         "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
-        "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+        "sourceEditionNote": "March 9, 2022 downloaded advance edition (e1–e12). Source fidelity is historical: acute treatment selections still require current AIS/ICH eligibility and contraindications; this systems-of-care statement does not provide a complete current treatment algorithm.",
         "implementationUpdatedAt": "2026-09-30"
       },
       "documentType": "scientific-statement",
@@ -3084,9 +3089,9 @@
       "sourceReview": {
         "reviewedAt": "2026-09-30",
         "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-        "sourceAccess": "Publisher/DOI and bounded primary public alternatives assessed; incomplete indexed fragments only, no complete body acquired",
+        "sourceAccess": "Complete original publisher-formatted 12-page statement recovered from a public task-force mirror and all 36 imported rows paired; physical PDF pages 1–8 contain the clinical body. This pre-pagination copy does not establish the text of all later corrections or current guidance.",
         "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
-        "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
+        "sourceEditionNote": "Recovered copy carries DOI 10.1161/STR.0000000000000479, December 17, 2024 download stamp, and e00/TBD pagination. Original-source fidelity is distinct from present-day clinical currency. The Medicare benefit conflict is explicitly updated from CMS; the review-period and dated-cohort scopes are restored.",
         "implementationUpdatedAt": "2026-09-30"
       },
       "documentType": "scientific-statement",
@@ -7762,10 +7767,11 @@
       "sourceReview": {
         "reviewedAt": "2026-09-30",
         "scope": "Source wording, grading and publication updates were compared at the available source depth. This is not certification of comprehensive current clinical guidance.",
-        "sourceAccess": "Primaryabstract accessible; publisher fulltext subscriptionpreview; linkedPDF redirects; society link same; mirror search no fullbody.",
+        "sourceAccess": "Published abstract and subscription preview accessible. All 10 rows also compared with the complete December 17, 2024 author preprint; the published full body has not been recovered.",
         "currencyNote": "Identified extraction defects have been repaired. Selected later evidence is labeled separately in dated current-evidence notes; absence of an update note does not establish comprehensive clinical currency.",
-        "sourceEditionNote": "Attributions retain the original publication identity. The source-access description and individual correction notices define the edition limits.",
-        "implementationUpdatedAt": "2026-09-30"
+        "sourceEditionNote": "Author preprint DOI 10.21203/rs.3.rs-5375341/v1 was posted four days before the version of record. Its three formal recommendations agree with the published abstract. Its seven In Our Practice statements remain version-limited expert practice, not independently verified published-body recommendations.",
+        "implementationUpdatedAt": "2026-09-30",
+        "supportingManuscriptUrl": "https://assets-eu.researchsquare.com/files/rs-5375341/v1/4257c676-4495-44b8-9115-4e8148e3f359.pdf?c=1734970555"
       },
       "documentType": "guideline",
       "gradingSystem": "GRADE",

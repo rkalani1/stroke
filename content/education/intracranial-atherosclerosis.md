@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Mechanism-first diagnosis and treatment of symptomatic intracranial atherosclerotic stenosis — artery-to-artery embolism, branch atheromatous perforator occlusion and hemodynamic borderzone failure; the SAMMPRIS aggressive medical bundle; and why stenting (SAMMPRIS, CASSISS), bypass for symptomatic atherosclerotic ICA/MCA occlusive disease (CMOSS, COSS, EC/IC 1985) and bailout angioplasty (ANGEL-REBOOT) all failed their primary endpoints.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

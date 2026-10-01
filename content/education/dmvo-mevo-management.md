@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Evaluation, anatomical classification (M2/M3, A2/A3, P2/P3), trial evidence (DISTAL, ESCAPE-MeVO), disabling deficit thresholds, microcatheter techniques, and perforation risk management.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

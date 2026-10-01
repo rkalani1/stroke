@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generatedFrom": "content/{guidelines,trials,education,calculators,references}",
-    "checksum": "sha256:ff300d7565d53da8f583ed8586380f34",
+    "checksum": "sha256:4d43cb86bfc5af9a42cd646fa376334c",
     "counts": {
       "guidelines": 11,
       "trials": 264,
@@ -1176,7 +1176,7 @@
       "category": "bp-post-evt",
       "population": "n=306, adults (age range not stated in the extension report; age was an adjustment covariate), NIHSS baseline NIHSS used as an adjustment covariate; distribution not reported in the extension, randomisation within 2 h after recanalization; BP targets applied for 24 h after enrolment; follow-up extended to 1 year",
       "finding": "Functional independence at 1 year was NUMERICALLY LOWER with intensive management (40.5% vs 52.7%), but the INTENTION-TO-TREAT estimate did NOT cross conventional significance (P=0.051). Only the per-protocol analysis did (41.1% vs 54.7%, P=0.040). State this as persistence of the early signal, not as newly proven long-term harm, and never quote the per-protocol figure as if it were the intention-to-treat result.",
-      "teachingPoint": "Shows the functional cost of 24 hours of intensive post-thrombectomy BP lowering is still measurable at one year, reinforcing existing recommendations against intensive lowering after successful reperfusion.",
+      "teachingPoint": "The one-year estimates remain concerning in the selected OPTIMAL-BP population, but the ITT analysis did not reach conventional statistical significance. Preserve the parent-trial population, tested targets, and distinction from newer individualized strategies.",
       "PMID": "42212393",
       "year": 2026,
       "citationIds": [
@@ -1193,7 +1193,7 @@
       "category": "bp-post-evt",
       "population": "n=4381, adults enrolled in the included randomized trials, NIHSS pooled as an outcome, not an inclusion criterion, blood-pressure management during and after reperfusion by systemic thrombolysis or endovascular thrombectomy",
       "finding": "Intensive management results in LITTLE TO NO clinically meaningful difference in clinical function (high-certainty evidence). The review protocol defines the dichotomous clinical-function outcome on the mRS (0 to 2 favourable, 3 to 6 poor), and the plain-language summary reports it as the chance of living independently at about 3 months; read that way, RR 0.89 (95% CI 0.80 to 0.98) means slightly fewer patients were functionally independent with intensive lowering, a difference the authors judged not clinically meaningful.",
-      "teachingPoint": "Supplies the GRADE-graded bottom line for post-reperfusion BP: intensive systolic lowering below 160 mm Hg buys no clinically meaningful functional benefit and probably increases all-cause mortality.",
+      "teachingPoint": "Supports caution with the intensive strategies studied through March 2025. Interpret the pooled mortality increase alongside heterogeneous targets, mixed reperfusion modalities, and subsequent selected-population trials such as HOPE.",
       "PMID": "42445947",
       "year": 2026,
       "citationIds": [
@@ -2301,7 +2301,7 @@
       "category": "evt-early-window",
       "population": "n=1287, all ages (incl. ≥80), NIHSS all enrolled, randomized ≤12 h",
       "finding": "Strongly favored EVT; NNT 2.6 to reduce disability by ≥1 mRS level",
-      "teachingPoint": "Cemented EVT as standard of care for proximal anterior-circulation LVO, irrespective of patient characteristics.",
+      "teachingPoint": "Supports EVT for proximal anterior-circulation LVO in the populations represented by the five trials. No detected subgroup interaction does not establish benefit in every unrepresented clinical, imaging, or time-window profile.",
       "PMID": "26898852",
       "year": 2016,
       "citationIds": [
@@ -2964,16 +2964,16 @@
       "name": "SURPASS-CVOT",
       "fullName": "Cardiovascular Outcomes with Tirzepatide versus Dulaglutide in Type 2 Diabetes (SURPASS-CVOT)",
       "category": "glp1-metabolic-prevention",
-      "population": "n=13165, mean 64.1 ± 8.8 years; 29.0% women, NIHSS not applicable — enrolment by diabetes and atherosclerotic disease status, event-driven; follow-up duration not stated in the abstract",
+      "population": "n=13165, Age ≥40 years; mean 64.1 years (SD 8.8), NIHSS not applicable — enrolment by diabetes and atherosclerotic disease status, Median follow-up 4.0 years",
       "finding": "MET non-inferiority but DID NOT meet superiority: 801 events (12.2%) with tirzepatide vs 862 (13.1%) with dulaglutide",
-      "teachingPoint": "Caps expectations for incretin therapy: tirzepatide matched but did not beat dulaglutide on cardiovascular events, so agent choice within the class should turn on glycemic, weight, tolerability and access considerations rather than on an assumed cardiovascular advantage.",
+      "teachingPoint": "Interpret as noninferiority in the studied diabetes/ASCVD population, with uncertain superiority and no demonstrated stroke-specific advantage.",
       "PMID": "41406444",
       "year": 2025,
       "citationIds": [
         "cit-surpass-cvot-2025"
       ],
       "certainty": "high",
-      "lastReviewed": "2026-08-28",
+      "lastReviewed": "2026-09-30",
       "provenance": "src/evidence/completedTrials.js"
     },
     {
@@ -3084,8 +3084,8 @@
       "fullName": "Intra-arterial Alteplase Thrombolysis After Successful Thrombectomy for Acute Ischemic Stroke in the Posterior Circulation",
       "category": "ia-adjunct-after-evt",
       "population": "n=246, median 65.0 y (IQR 56.0-72.0); 176 male (71.5%), NIHSS ≥6 at admission (registered inclusion criterion, NCT05897554; also age 18-80 and PC-ASPECTS 6-10), ≤24 h from time last known well",
-      "finding": "DID NOT meet superiority — flatly neutral and numerically favoring control: 41.9% (52/124) with IA alteplase vs 46.7% (57/122) control",
-      "teachingPoint": "Argues against extrapolating adjunctive intra-arterial alteplase from the anterior circulation to basilar occlusion — after successful basilar recanalization it was safe but produced no functional gain.",
+      "finding": "Superiority was not demonstrated: mRS 0-2 in 41.9% (52/124) with IA alteplase versus 46.7% (57/122) with control.",
+      "teachingPoint": "Does not support routine extrapolation of adjunctive IA alteplase to basilar occlusion. Functional benefit was not demonstrated, and the safety estimates remain imprecise.",
       "PMID": "42026933",
       "year": 2026,
       "citationIds": [
@@ -3187,7 +3187,7 @@
       "category": "icas-prevention",
       "population": "n=358, mean 56.3; 73.5% male, NIHSS TIA or non-disabling, non-perforator-territory stroke, enrolled beyond 3 weeks from the latest ischemic event; followed 3 years",
       "finding": "No significant difference: 8.0% vs 7.2%",
-      "teachingPoint": "Intracranial stenting added no benefit over medical therapy for symptomatic 70-99% stenosis, even with refined selection and experienced operators.",
+      "teachingPoint": "Does not support routine added stenting in the selected symptomatic 70-99% stenosis population. Other specifically selected rescue scenarios were not settled by this trial.",
       "PMID": "35943472",
       "year": 2022,
       "citationIds": [
@@ -3750,7 +3750,7 @@
       "category": "lipid-lowering-prevention",
       "population": "n=12257, median 66 years; 43% women, 93% White, NIHSS not applicable — no prior stroke permitted, median follow-up 4.6 years",
       "finding": "MET both primary end points. 3-point MACE in 336 patients (5-year KM 6.2%) with evolocumab vs 443 (8.0%) with placebo; 4-point MACE in 747 (13.4%) vs 907 (16.2%)",
-      "teachingPoint": "Teaches that the PCSK9 evidence base now reaches patients with atherosclerosis or diabetes and no prior event — but explicitly not stroke survivors, for whom SPARCL and Treat Stroke to Target remain the anchors.",
+      "teachingPoint": "Extends randomized PCSK9 evidence to the enrolled high-risk population without prior MI or stroke. Do not use it as direct evidence of recurrent-stroke prevention.",
       "PMID": "41211925",
       "year": 2026,
       "citationIds": [
@@ -4941,7 +4941,7 @@
       ],
       "lastReviewed": "2026-05-30",
       "provenance": "src/education.jsx",
-      "body": "Randomized evidence on DOAC initiation after AF-related ischemic stroke, with trial-specific eligibility, hemorrhagic transformation and current-label dosing context.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Randomized evidence on DOAC initiation after AF-related ischemic stroke, with trial-specific eligibility, hemorrhagic transformation and current-label dosing context.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "anticoagulation-reversal",
@@ -4991,7 +4991,7 @@
       ],
       "lastReviewed": "2026-09-06",
       "provenance": "src/education.jsx",
-      "body": "Agent-specific reversal for intracranial hemorrhage, the FDA andexanet safety update and US sales cessation, PCC-based factor Xa reversal, and the distinct thrombolysis-associated hemorrhage pathway, with parallel BP and neurosurgical assessment.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Agent-specific reversal for intracranial hemorrhage, the FDA andexanet safety update and US sales cessation, PCC-based factor Xa reversal, and the distinct thrombolysis-associated hemorrhage pathway, with parallel BP and neurosurgical assessment.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "antiepileptic-drugs",
@@ -5032,7 +5032,7 @@
       ],
       "lastReviewed": "2026-07-13",
       "provenance": "src/education.jsx",
-      "body": "Clinical classification of post-stroke seizures, guideline-directed management, comparison of first-line and second-line antiseizure medications (ASMs), and post-stroke epilepsy risk stratification with the SeLECT score.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Clinical classification of post-stroke seizures, guideline-directed management, comparison of first-line and second-line antiseizure medications (ASMs), and post-stroke epilepsy risk stratification with the SeLECT score.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "basilar-artery-occlusion",
@@ -5072,7 +5072,7 @@
       ],
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
-      "body": "Protean brainstem presentation, the ATTENTION/BAOCHE evidence arc for endovascular therapy, imaging selection (pc-ASPECTS, perfusion/collaterals), and pitfalls for basilar artery occlusion.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Protean brainstem presentation, the ATTENTION/BAOCHE evidence arc for endovascular therapy, imaging selection (pc-ASPECTS, perfusion/collaterals), and pitfalls for basilar artery occlusion.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "brain-death",
@@ -5103,7 +5103,7 @@
       ],
       "lastReviewed": "2026-06-09",
       "provenance": "src/education.jsx",
-      "body": "Consensus guidelines for the determination of Brain Death / Death by Neurologic Criteria (BD/DNC) in adult and pediatric patients.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Consensus guidelines for the determination of Brain Death / Death by Neurologic Criteria (BD/DNC) in adult and pediatric patients.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "brainstem-stroke-syndromes",
@@ -5133,7 +5133,7 @@
       ],
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
-      "body": "The crossed-deficit localization rule and the classic brainstem stroke syndromes (Wallenberg, Dejerine, Millard-Gubler, Foville, one-and-a-half, Weber, Benedikt, Claude) by level, vessel, and deficit.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "The crossed-deficit localization rule and the classic brainstem stroke syndromes (Wallenberg, Dejerine, Millard-Gubler, Foville, one-and-a-half, Weber, Benedikt, Claude) by level, vessel, and deficit.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "cadasil-carasil",
@@ -5183,7 +5183,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Molecular genetics, neuroimaging hallmarks (anterior temporal pole & external capsule hyperintensities, pulvinar sign), clinical phenotypes, and management pitfalls for monogenic stroke syndromes.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Molecular genetics, neuroimaging hallmarks (anterior temporal pole & external capsule hyperintensities, pulvinar sign), clinical phenotypes, and management pitfalls for monogenic stroke syndromes.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "cancer-associated-stroke",
@@ -5228,7 +5228,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Pathophysiology of cancer-mediated hypercoagulability, 3-territory sign on DWI, markedly elevated D-dimer (no single validated cutoff; e.g., >3 µg/mL in the Schwarzbach DWI-phenotype cohort), non-bacterial thrombotic endocarditis (NBTE), and LMWH vs DOAC management.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Pathophysiology of cancer-mediated hypercoagulability, 3-territory sign on DWI, markedly elevated D-dimer (no single validated cutoff; e.g., >3 µg/mL in the Schwarzbach DWI-phenotype cohort), non-bacterial thrombotic endocarditis (NBTE), and LMWH vs DOAC management.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "carotid-stenosis-management",
@@ -5268,7 +5268,7 @@
       ],
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
-      "body": "Symptomatic vs asymptomatic carotid stenosis, NASCET measurement, CEA vs CAS (CREST), the CREST-2 asymptomatic results, and intensive medical therapy as the common foundation.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Symptomatic vs asymptomatic carotid stenosis, NASCET measurement, CEA vs CAS (CREST), the CREST-2 asymptomatic results, and intensive medical therapy as the common foundation.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "cerebral-venous-sinus-thrombosis",
@@ -5318,7 +5318,7 @@
       ],
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
-      "body": "Presentation, risk factors, venography-based diagnosis, anticoagulation despite venous hemorrhage, DOAC transition, and prognosis for cerebral venous and dural sinus thrombosis.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Presentation, risk factors, venography-based diagnosis, anticoagulation despite venous hemorrhage, DOAC transition, and prognosis for cerebral venous and dural sinus thrombosis.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "cervical-dissection",
@@ -5373,7 +5373,7 @@
       ],
       "lastReviewed": "2026-06-09",
       "provenance": "src/education.jsx",
-      "body": "Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence (CADISS, TREAT-CAD, STOP-CAD, and 2024 IPD meta-analysis) for cervical artery dissection.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Clinical presentation, diagnostic workup, medical management (extracranial vs. intracranial), and landmark trial evidence (CADISS, TREAT-CAD, STOP-CAD, and 2024 IPD meta-analysis) for cervical artery dissection.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "cryptogenic-stroke-esus",
@@ -5433,7 +5433,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Embolic Stroke of Undetermined Source (ESUS) definition, empirical DOAC failure in unselected ESUS (NAVIGATE ESUS, RE-SPECT ESUS), biomarker-defined atrial cardiopathy trial analysis (ARCADIA), insertable cardiac monitor (ICM) yields (CRYSTAL AF, STROKE-AF), and stepwise diagnostic algorithm.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Embolic Stroke of Undetermined Source (ESUS) definition, empirical DOAC failure in unselected ESUS (NAVIGATE ESUS, RE-SPECT ESUS), biomarker-defined atrial cardiopathy trial analysis (ARCADIA), insertable cardiac monitor (ICM) yields (CRYSTAL AF, STROKE-AF), and stepwise diagnostic algorithm.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "dapt-regimens",
@@ -5483,7 +5483,7 @@
       ],
       "lastReviewed": "2026-07-13",
       "provenance": "src/education.jsx",
-      "body": "Guideline-directed Dual Antiplatelet Therapy (DAPT) for secondary non-cardioembolic stroke prevention.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Guideline-directed Dual Antiplatelet Therapy (DAPT) for secondary non-cardioembolic stroke prevention.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "device-detected-subclinical-af",
@@ -5538,7 +5538,7 @@
       ],
       "lastReviewed": "2026-08-15",
       "provenance": "src/education.jsx",
-      "body": "Whether to anticoagulate an atrial high-rate episode found on a pacemaker, ICD, CRT device or insertable cardiac monitor: duration bands, mandatory electrogram adjudication, NOAH-AFNET 6 vs ARTESiA, the pooled meta-analysis, and absolute-risk framing.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Whether to anticoagulate an atrial high-rate episode found on a pacemaker, ICD, CRT device or insertable cardiac monitor: duration bands, mandatory electrogram adjudication, NOAH-AFNET 6 vs ARTESiA, the pooled meta-analysis, and absolute-risk framing.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "dmvo-mevo-management",
@@ -5593,7 +5593,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Evaluation, anatomical classification (M2/M3, A2/A3, P2/P3), trial evidence (DISTAL, ESCAPE-MeVO), disabling deficit thresholds, microcatheter techniques, and perforation risk management.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Evaluation, anatomical classification (M2/M3, A2/A3, P2/P3), trial evidence (DISTAL, ESCAPE-MeVO), disabling deficit thresholds, microcatheter techniques, and perforation risk management.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "evd-maintenance",
@@ -5617,7 +5617,7 @@
       ],
       "lastReviewed": "2026-06-03",
       "provenance": "src/education.jsx",
-      "body": "Concept reference on EVD measurement context, device-specific safety and individualized management. Operational steps, downloadable procedural sheet and simulation are unavailable.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Concept reference on EVD measurement context, device-specific safety and individualized management. Operational steps, downloadable procedural sheet and simulation are unavailable.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "evt-periprocedural-care",
@@ -5672,7 +5672,7 @@
       ],
       "lastReviewed": "2026-08-15",
       "provenance": "src/education.jsx",
-      "body": "Anesthesia, procedural evidence and individualized post-EVT care, including the distinction between an active BP target, spontaneous pressure and newer selected-strategy evidence.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Anesthesia, procedural evidence and individualized post-EVT care, including the distinction between an active BP target, spontaneous pressure and newer selected-strategy evidence.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "fibromuscular-dysplasia",
@@ -5722,7 +5722,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Pathophysiology, angiographic classification (multifocal string-of-beads vs. focal), brain-to-pelvis vascular screening, and cervical artery dissection trials (CADISS, TREAT-CAD, STOP-CAD, Kaufmann IPD).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Pathophysiology, angiographic classification (multifocal string-of-beads vs. focal), brain-to-pelvis vascular screening, and cervical artery dissection trials (CADISS, TREAT-CAD, STOP-CAD, Kaufmann IPD).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "herniation-icp",
@@ -5756,12 +5756,12 @@
       ],
       "lastReviewed": "2026-05-31",
       "provenance": "src/education.jsx",
-      "body": "Concept reference on cerebral edema, herniation and escalation assessment. Drug recipes, the osmotherapy calculator and device simulation are unavailable.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Concept reference on cerebral edema, herniation and escalation assessment. Drug recipes, the osmotherapy calculator and device simulation are unavailable.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "hints-simulator",
       "title": "HINTS+ Vestibular Simulator",
-      "summary": "Selected HINTS+ eye-movement demonstrations for trained examiners assessing an appropriate acute vestibular syndrome. The inaccurate positive-skew animation is unavailable.",
+      "summary": "Selected HINTS+ eye-movement demonstrations for trained examiners assessing an appropriate acute vestibular syndrome. Both skew animations are unavailable; the retained motions are teaching schematics, not validated examination recordings.",
       "tags": [
         "simulators"
       ],
@@ -5785,7 +5785,7 @@
       ],
       "lastReviewed": "2026-05-30",
       "provenance": "src/education.jsx",
-      "body": "Selected HINTS+ eye-movement demonstrations for trained examiners assessing an appropriate acute vestibular syndrome. The inaccurate positive-skew animation is unavailable.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Selected HINTS+ eye-movement demonstrations for trained examiners assessing an appropriate acute vestibular syndrome. Both skew animations are unavailable; the retained motions are teaching schematics, not validated examination recordings.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "ich-blood-pressure",
@@ -5856,7 +5856,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Population-specific ICH blood-pressure evidence, INTERACT3 bundle limitations, expansion-mitigation trials and surgical assessment. Infusion titration requires a complete monitored prescription.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Population-specific ICH blood-pressure evidence, INTERACT3 bundle limitations, expansion-mitigation trials and surgical assessment. Infusion titration requires a complete monitored prescription.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "ich-surgical-decision-making",
@@ -5911,7 +5911,7 @@
       ],
       "lastReviewed": "2026-08-15",
       "provenance": "src/education.jsx",
-      "body": "Trial-specific evidence for hematoma evacuation, selected minimally invasive surgery, decompression and urgent cerebellar-ICH assessment; observational associations and prognosis limits are explicit.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Trial-specific evidence for hematoma evacuation, selected minimally invasive surgery, decompression and urgent cerebellar-ICH assessment; observational associations and prognosis limits are explicit.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "intracranial-atherosclerosis",
@@ -5966,7 +5966,7 @@
       ],
       "lastReviewed": "2026-08-15",
       "provenance": "src/education.jsx",
-      "body": "Mechanism-first diagnosis and treatment of symptomatic intracranial atherosclerotic stenosis — artery-to-artery embolism, branch atheromatous perforator occlusion and hemodynamic borderzone failure; the SAMMPRIS aggressive medical bundle; and why stenting (SAMMPRIS, CASSISS), bypass for symptomatic atherosclerotic ICA/MCA occlusive disease (CMOSS, COSS, EC/IC 1985) and bailout angioplasty (ANGEL-REBOOT) all failed their primary endpoints.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Mechanism-first diagnosis and treatment of symptomatic intracranial atherosclerotic stenosis — artery-to-artery embolism, branch atheromatous perforator occlusion and hemodynamic borderzone failure; the SAMMPRIS aggressive medical bundle; and why stenting (SAMMPRIS, CASSISS), bypass for symptomatic atherosclerotic ICA/MCA occlusive disease (CMOSS, COSS, EC/IC 1985) and bailout angioplasty (ANGEL-REBOOT) all failed their primary endpoints.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "large-core-thrombectomy",
@@ -6026,7 +6026,7 @@
       ],
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
-      "body": "Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the hemorrhage trade-off (more any intracranial hemorrhage and numerically higher sICH in most individual trials, but no significant sICH difference in the 2026 ATLAS IPD meta-analysis).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Endovascular thrombectomy for large ischemic core (low ASPECTS or large core volume) — the six 2022–2024 RCTs, functional-outcome benefit, and the hemorrhage trade-off (more any intracranial hemorrhage and numerically higher sICH in most individual trials, but no significant sICH difference in the 2026 ATLAS IPD meta-analysis).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "malignant-infarction",
@@ -6072,7 +6072,7 @@
       ],
       "lastReviewed": "2026-05-30",
       "provenance": "src/education.jsx",
-      "body": "Decompressive hemicraniectomy selection criteria, evidence, and supportive ICU care for malignant MCA syndrome.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Decompressive hemicraniectomy selection criteria, evidence, and supportive ICU care for malignant MCA syndrome.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "metabolic-stroke-prevention",
@@ -6127,7 +6127,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Comprehensive metabolic and vascular risk modulation in stroke prevention — GLP-1 receptor agonists (SELECT, FLOW, SUSTAIN-6), SGLT2 inhibitors, blood pressure lowering (SPRINT and RESPECT intensive targets; TRIDENT low-dose triple pill after ICH), MASH/obesity management, and the secondary prevention ABCDE bundle.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Comprehensive metabolic and vascular risk modulation in stroke prevention — GLP-1 receptor agonists (SELECT, FLOW, SUSTAIN-6), SGLT2 inhibitors, blood pressure lowering (SPRINT and RESPECT intensive targets; TRIDENT low-dose triple pill after ICH), MASH/obesity management, and the secondary prevention ABCDE bundle.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "moyamoya-disease",
@@ -6173,7 +6173,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "Suzuki angiographic staging (1–6), direct STA-MCA bypass vs indirect EDAS/EMS, landmark JAM randomized trial for hemorrhagic Moyamoya, and strict perioperative hemodynamic/normocarbia protocols.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Suzuki angiographic staging (1–6), direct STA-MCA bypass vs indirect EDAS/EMS, landmark JAM randomized trial for hemorrhagic Moyamoya, and strict perioperative hemodynamic/normocarbia protocols.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "pfo-closure",
@@ -6233,7 +6233,7 @@
       ],
       "lastReviewed": "2026-08-22",
       "provenance": "src/education.jsx",
-      "body": "Who benefits from patent foramen ovale closure after a nonlacunar stroke of undetermined cause — the four randomized trials that showed benefit (CLOSE, RESPECT long-term, REDUCE, DEFENSE-PFO; the earlier CLOSURE I and PC trials were neutral), candidate selection with the RoPE score and PASCAL classification, the closure-vs-antiplatelet-vs-anticoagulation decision per the 2021 AHA/ASA and 2024 ESO guidelines, and the device-associated atrial fibrillation trade-off.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Who benefits from patent foramen ovale closure after a nonlacunar stroke of undetermined cause — the four randomized trials that showed benefit (CLOSE, RESPECT long-term, REDUCE, DEFENSE-PFO; the earlier CLOSURE I and PC trials were neutral), candidate selection with the RoPE score and PASCAL classification, the closure-vs-antiplatelet-vs-anticoagulation decision per the 2021 AHA/ASA and 2024 ESO guidelines, and the device-associated atrial fibrillation trade-off.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "post-stroke-recovery",
@@ -6288,7 +6288,7 @@
       ],
       "lastReviewed": "2026-08-15",
       "provenance": "src/education.jsx",
-      "body": "Owns the recovery phase — prognosis and the sensitive window (CPASS, PREP2, AVERT), the rehabilitation setting and dose decision (LEAPS, ICARE, EXCITE), the settled negative fluoxetine question (FOCUS, AFFINITY, EFFECTS) versus the positive paired vagus nerve stimulation trial (VNS-REHAB), aphasia therapy intensity, and screening for post-stroke cognitive impairment, depression, fatigue and spasticity.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Owns the recovery phase — prognosis and the sensitive window (CPASS, PREP2, AVERT), the rehabilitation setting and dose decision (LEAPS, ICARE, EXCITE), the settled negative fluoxetine question (FOCUS, AFFINITY, EFFECTS) versus the positive paired vagus nerve stimulation trial (VNS-REHAB), aphasia therapy intensity, and screening for post-stroke cognitive impairment, depression, fatigue and spasticity.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "prehospital-triage-systems",
@@ -6343,7 +6343,7 @@
       ],
       "lastReviewed": "2026-08-15",
       "provenance": "src/education.jsx",
-      "body": "Deciding where the ambulance goes and how patients move between hospitals — mothership vs drip-and-ship and how to compute a local crossover, the neutral RACECAT result with its intracerebral hemorrhage harm signal, TRIAGE-STROKE, mobile stroke units (BEST-MSU, B_PROUD), why INTERACT4 does not support undifferentiated prehospital blood-pressure lowering, prehospital LVO scales (RACE, LAMS, C-STAT, FAST-ED), and door-in-door-out as the governing interfacility transfer metric.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Deciding where the ambulance goes and how patients move between hospitals — mothership vs drip-and-ship and how to compute a local crossover, the neutral RACECAT result with its intracerebral hemorrhage harm signal, TRIAGE-STROKE, mobile stroke units (BEST-MSU, B_PROUD), why INTERACT4 does not support undifferentiated prehospital blood-pressure lowering, prehospital LVO scales (RACE, LAMS, C-STAT, FAST-ED), and door-in-door-out as the governing interfacility transfer metric.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "pupillometry",
@@ -6377,7 +6377,7 @@
       ],
       "lastReviewed": "2026-09-06",
       "provenance": "src/education.jsx",
-      "body": "Observational pupillometry evidence and its limits, including ORANGE and ischemic-stroke cohorts. Simulation and automatic patient-specific interpretation are unavailable.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Observational pupillometry evidence and its limits, including ORANGE and ischemic-stroke cohorts. Simulation and automatic patient-specific interpretation are unavailable.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "rcvs",
@@ -6412,7 +6412,7 @@
       ],
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
-      "body": "Recurrent thunderclap headache, triggers, reversible segmental vasoconstriction, the RCVS² score to distinguish RCVS from PACNS, and management (calcium-channel blockers, avoid steroids).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Recurrent thunderclap headache, triggers, reversible segmental vasoconstriction, the RCVS² score to distinguish RCVS from PACNS, and management (calcium-channel blockers, avoid steroids).\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "select-seizure-risk",
@@ -6437,7 +6437,7 @@
       ],
       "lastReviewed": "2026-07-24",
       "provenance": "src/education.jsx",
-      "body": "SeLECT score for predicting 1-year and 5-year risk of late post-stroke seizures and epilepsy after ischemic stroke.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "SeLECT score for predicting 1-year and 5-year risk of late post-stroke seizures and epilepsy after ischemic stroke.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "severe-stroke-critical-care",
@@ -6492,7 +6492,7 @@
       ],
       "lastReviewed": "2026-08-15",
       "provenance": "src/education.jsx",
-      "body": "Supportive and systemic levers in severe stroke: fever and targeted normothermia, airway and tracheostomy timing, edema pharmacotherapy, glucose, dysphagia and nutrition, VTE prophylaxis, and mobilization dose.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Supportive and systemic levers in severe stroke: fever and targeted normothermia, airway and tracheostomy timing, edema pharmacotherapy, glucose, dysphagia and nutrition, VTE prophylaxis, and mobilization dose.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "stk-core-measures",
@@ -6523,7 +6523,7 @@
       ],
       "lastReviewed": "2026-07-13",
       "provenance": "src/education.jsx",
-      "body": "Reference guide for Joint Commission / GWTG stroke core measures and Comprehensive Stroke Center (CSC) quality metrics.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Reference guide for Joint Commission / GWTG stroke core measures and Comprehensive Stroke Center (CSC) quality metrics.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "stroke-prognosis",
@@ -6578,7 +6578,7 @@
       ],
       "lastReviewed": "2026-07-13",
       "provenance": "src/education.jsx",
-      "body": "Clinical prognostic models for acute stroke: ASTRAL and PLAN scores for ischemic stroke, and the ICH Score for spontaneous intracerebral hemorrhage.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Clinical prognostic models for acute stroke: ASTRAL and PLAN scores for ischemic stroke, and the ICH Score for spontaneous intracerebral hemorrhage.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "toast-classification",
@@ -6623,7 +6623,7 @@
       ],
       "lastReviewed": "2026-08-22",
       "provenance": "src/education.jsx",
-      "body": "Trial of Org 10172 in Acute Stroke Treatment (TOAST) diagnostic criteria for ischemic stroke etiology.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Trial of Org 10172 in Acute Stroke Treatment (TOAST) diagnostic criteria for ischemic stroke etiology.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "unruptured-intracranial-aneurysm",
@@ -6678,7 +6678,7 @@
       ],
       "lastReviewed": "2026-08-15",
       "provenance": "src/education.jsx",
-      "body": "Counseling an incidental unruptured intracranial aneurysm: separating symptomatic from truly incidental presentations, quantifying 5-year rupture risk with PHASES (and its limits), the ISUIA and UCAS Japan natural-history data, ELAPSS growth prediction, the procedural-risk side of the ledger (endovascular vs neurosurgical), and a surveillance protocol with scripts for the two hard conversations.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Counseling an incidental unruptured intracranial aneurysm: separating symptomatic from truly incidental presentations, quantifying 5-year rupture risk with PHASES (and its limits), the ISUIA and UCAS Japan natural-history data, ELAPSS growth prediction, the procedural-risk side of the ledger (endovascular vs neurosurgical), and a surveillance protocol with scripts for the two hard conversations.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "vascular-territory-atlas",
@@ -6708,7 +6708,7 @@
       ],
       "lastReviewed": "2026-07-18",
       "provenance": "src/education.jsx",
-      "body": "Anterior (ACA/MCA/lenticulostriate/anterior-choroidal) and posterior (PCA/PICA/AICA/SCA/basilar-perforator) territories with their clinical signatures, plus cortical and internal watershed patterns and mechanisms.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "Anterior (ACA/MCA/lenticulostriate/anterior-choroidal) and posterior (PCA/PICA/AICA/SCA/basilar-perforator) territories with their clinical signatures, plus cortical and internal watershed patterns and mechanisms.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     },
     {
       "id": "vessel-wall-mri",
@@ -6748,7 +6748,7 @@
       ],
       "lastReviewed": "2026-08-14",
       "provenance": "src/education.jsx",
-      "body": "High-resolution black-blood vessel wall MRI differential matrix for intracranial arteriopathies — distinguishing ICAD, Primary CNS Vasculitis (PACNS), RCVS, Arterial Dissection, and Moyamoya disease via wall morphology, enhancement patterns, and remodeling.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This file owns the module metadata (title, summary, tags, contexts, references)."
+      "body": "High-resolution black-blood vessel wall MRI differential matrix for intracranial arteriopathies — distinguishing ICAD, Primary CNS Vasculitis (PACNS), RCVS, Arterial Dissection, and Moyamoya disease via wall morphology, enhancement patterns, and remodeling.\n\n> The interactive teaching card for this module renders from `src/education.jsx`.\n> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate."
     }
   ],
   "calculators": [

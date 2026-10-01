@@ -11,8 +11,12 @@ export function numericInput(value, { min = -Infinity, max = Infinity, integer =
 }
 
 export function documentedExamScore(note = {}, calculatedScore, examComplete = false) {
-  return numericInput(note.nihss, { min: 0, max: 42, integer: true }) ??
-    (examComplete ? numericInput(calculatedScore, { min: 0, max: 42, integer: true }) : null);
+  // An explicit invalid entry requires correction; it cannot revive a prior exam.
+  if (note.nihss !== null && note.nihss !== undefined && !['number', 'string'].includes(typeof note.nihss)) return null;
+  if (note.nihss !== null && note.nihss !== undefined && String(note.nihss).trim() !== '') {
+    return numericInput(note.nihss, { min: 0, max: 42, integer: true });
+  }
+  return examComplete ? numericInput(calculatedScore, { min: 0, max: 42, integer: true }) : null;
 }
 
 export function calculatorField(values = {}, key, encounterValue, sync) {

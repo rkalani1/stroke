@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Owns the recovery phase — prognosis and the sensitive window (CPASS, PREP2, AVERT), the rehabilitation setting and dose decision (LEAPS, ICARE, EXCITE), the settled negative fluoxetine question (FOCUS, AFFINITY, EFFECTS) versus the positive paired vagus nerve stimulation trial (VNS-REHAB), aphasia therapy intensity, and screening for post-stroke cognitive impairment, depression, fatigue and spasticity.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.

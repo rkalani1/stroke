@@ -1,3 +1,4 @@
+import { completeCases } from './fixtures/clinical-complete-cases.js';
 // QA probes — edge case validation against published references.
 // Authored 2026-05-09 for site-wide accuracy audit.
 import { describe, it, expect } from 'vitest';
@@ -93,7 +94,7 @@ describe('CRITICAL — clinical correctness probes', () => {
   });
 
   it('CHA₂DS₂-VA (2024) — drops sex; max 8', () => {
-    const r = calculateCHADS2VA({
+    const r = calculateCHADS2VA({ ...completeCases.calculateCHADS2VA,
       chf: true, hypertension: true, age: 80, diabetes: true,
       strokeTia: true, vascular: true
     });
@@ -298,7 +299,7 @@ describe('TRACE-III late-window IVT (4.5-24h LVO, EVT unavailable)', () => {
 
 describe('CHANCE/POINT/INSPIRES/THALES branching', () => {
   it('NIHSS 4 within 60h with atherosclerosis → INSPIRES (clopi+ASA × 21 d)', () => {
-    const r = recommendAcuteDAPT({
+    const r = recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT,
       nihss: 4, strokeType: 'ischemic', atherosclerotic: true, lvdSymptomatic: true, timeFromOnsetH: 60
     });
     expect(r.regimen).toContain('clopidogrel+ASA');
@@ -306,7 +307,7 @@ describe('CHANCE/POINT/INSPIRES/THALES branching', () => {
   });
 
   it('NIHSS 4 within 12h with atherosclerosis → clopi+ASA × 21 d (2026 Class 2a covers NIHSS 4-5 <24h)', () => {
-    const r = recommendAcuteDAPT({
+    const r = recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT,
       nihss: 4, strokeType: 'ischemic', atherosclerotic: true, timeFromOnsetH: 12
     });
     expect(r.regimen).toContain('clopidogrel+ASA');
@@ -314,7 +315,7 @@ describe('CHANCE/POINT/INSPIRES/THALES branching', () => {
   });
 
   it('NIHSS 4 within 12h without atherosclerosis → THALES (ticagrelor+ASA × 30 d)', () => {
-    const r = recommendAcuteDAPT({
+    const r = recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT,
       nihss: 4, strokeType: 'ischemic', atherosclerotic: false, timeFromOnsetH: 12
     });
     expect(r.regimen).toContain('ticagrelor+ASA');
@@ -408,9 +409,9 @@ describe('Boston 2.0 CAA criteria', () => {
 });
 
 describe('AF detection strategy & ARCADIA neutrality', () => {
-  it('HAVOC 4 → recommends ICM', () => {
+  it('HAVOC alone without a documented mechanism remains incomplete', () => {
     const r = afDetectionStrategy({ havocScore: 4 });
-    expect(r.strategy).toContain('ICM');
+    expect(r.status).toBe('incomplete');
   });
   it('ARCADIA: cardiopathy markers do NOT trigger empiric DOAC', () => {
     const r = arcadiaAdvisory({ ntProBNP: 500, laVolumeIndex: 38, cryptogenicStroke: true, hasAF: false, otherAnticoagulationIndication: false });
@@ -430,30 +431,30 @@ describe('NASCET stenosis quantification', () => {
 
 describe('interpretMRS9Q (Bruno Stroke 2010 — fixed in v5.33.0)', () => {
   it('mRS 0 — no symptoms', () => {
-    expect(interpretMRS9Q({}).mrs).toBe(0);
+    expect(interpretMRS9Q({ ...completeCases.interpretMRS9Q,}).mrs).toBe(0);
   });
   it('mRS 1 — symptoms but functions normally', () => {
-    expect(interpretMRS9Q({ q1Symptoms: true }).mrs).toBe(1);
+    expect(interpretMRS9Q({ ...completeCases.interpretMRS9Q, q1Symptoms: true }).mrs).toBe(1);
   });
   it('mRS 2 — symptomatic + cannot resume work but independent', () => {
-    expect(interpretMRS9Q({ q1Symptoms: true, q6Work: false }).mrs).toBe(2);
+    expect(interpretMRS9Q({ ...completeCases.interpretMRS9Q, q1Symptoms: true, q6Work: false }).mrs).toBe(2);
   });
   it('mRS 3 — walks unaided but needs help with bowel/bladder OR dressing', () => {
-    expect(interpretMRS9Q({ q5WalkingUnaided: true, q2BowelBladder: true }).mrs).toBe(3);
-    expect(interpretMRS9Q({ q5WalkingUnaided: true, q3Dressing: true }).mrs).toBe(3);
+    expect(interpretMRS9Q({ ...completeCases.interpretMRS9Q, q5WalkingUnaided: true, q2BowelBladder: true }).mrs).toBe(3);
+    expect(interpretMRS9Q({ ...completeCases.interpretMRS9Q, q5WalkingUnaided: true, q3Dressing: true }).mrs).toBe(3);
   });
   it('mRS 4 — cannot walk unaided (q5=false) — historically misclassified as mRS 3 before v5.33.0', () => {
-    expect(interpretMRS9Q({ q5WalkingUnaided: false }).mrs).toBe(4);
+    expect(interpretMRS9Q({ ...completeCases.interpretMRS9Q, q5WalkingUnaided: false }).mrs).toBe(4);
   });
   it('mRS 4 — cannot walk at all (q4=false)', () => {
-    expect(interpretMRS9Q({ q4Walking: false }).mrs).toBe(4);
+    expect(interpretMRS9Q({ ...completeCases.interpretMRS9Q, q4Walking: false }).mrs).toBe(4);
   });
   // mRS 5 = "requires constant nursing care and attention" (standard mRS definitions).
   it('mRS 5 via constant care', () => {
-    expect(interpretMRS9Q({ q9NeedsHelp: 'constant' }).mrs).toBe(5);
+    expect(interpretMRS9Q({ ...completeCases.interpretMRS9Q, q9NeedsHelp: 'constant' }).mrs).toBe(5);
   });
   it('mRS 5 — bedridden', () => {
-    expect(interpretMRS9Q({ q9NeedsHelp: 'bedridden' }).mrs).toBe(5);
+    expect(interpretMRS9Q({ ...completeCases.interpretMRS9Q, q9NeedsHelp: 'bedridden' }).mrs).toBe(5);
   });
 });
 

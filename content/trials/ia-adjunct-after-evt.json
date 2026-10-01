@@ -73,8 +73,8 @@
     "fullName": "Intra-arterial Alteplase Thrombolysis After Successful Thrombectomy for Acute Ischemic Stroke in the Posterior Circulation",
     "category": "ia-adjunct-after-evt",
     "population": "n=246, median 65.0 y (IQR 56.0-72.0); 176 male (71.5%), NIHSS ≥6 at admission (registered inclusion criterion, NCT05897554; also age 18-80 and PC-ASPECTS 6-10), ≤24 h from time last known well",
-    "finding": "DID NOT meet superiority — flatly neutral and numerically favoring control: 41.9% (52/124) with IA alteplase vs 46.7% (57/122) control",
-    "teachingPoint": "Argues against extrapolating adjunctive intra-arterial alteplase from the anterior circulation to basilar occlusion — after successful basilar recanalization it was safe but produced no functional gain.",
+    "finding": "Superiority was not demonstrated: mRS 0-2 in 41.9% (52/124) with IA alteplase versus 46.7% (57/122) with control.",
+    "teachingPoint": "Does not support routine extrapolation of adjunctive IA alteplase to basilar occlusion. Functional benefit was not demonstrated, and the safety estimates remain imprecise.",
     "PMID": "42026933",
     "year": 2026,
     "citationIds": [

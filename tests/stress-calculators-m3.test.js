@@ -1,3 +1,4 @@
+import { completeCases } from './fixtures/clinical-complete-cases.js';
 import { describe, test, expect } from 'vitest';
 import {
   evaluateCRAOTreatment,
@@ -103,7 +104,7 @@ describe('Empirical Stress Testing — evaluateCRAOTreatment', () => {
 describe('Empirical Stress Testing — calculateSeLECTScore', () => {
   test('Baseline minimum and maximum SeLECT score', () => {
     // Min score = 0
-    const resMin = calculateSeLECTScore({
+    const resMin = calculateSeLECTScore({ ...completeCases.calculateSeLECTScore,
       nihss: 0,
       corticalInvolvement: false,
       earlySeizure: false,
@@ -113,10 +114,10 @@ describe('Empirical Stress Testing — calculateSeLECTScore', () => {
     expect(resMin.score).toBe(0);
     expect(resMin.oneYearRisk).toBe('0.7%');
     expect(resMin.fiveYearRisk).toBe('1.3%');
-    expect(resMin.riskTier).toBe('Low');
+    expect(resMin.riskTier).toBeNull();
 
     // Max score = 9 — published risks 63% at 1 y / 83% at 5 y (Galovic 2018)
-    const resMax = calculateSeLECTScore({
+    const resMax = calculateSeLECTScore({ ...completeCases.calculateSeLECTScore,
       nihss: 15, // 2 pts
       corticalInvolvement: true, // 2 pts
       earlySeizure: true, // 3 pts
@@ -126,56 +127,37 @@ describe('Empirical Stress Testing — calculateSeLECTScore', () => {
     expect(resMax.score).toBe(9);
     expect(resMax.oneYearRisk).toBe('63%');
     expect(resMax.fiveYearRisk).toBe('83%');
-    expect(resMax.riskTier).toBe('Very High');
+    expect(resMax.riskTier).toBeNull();
   });
 
   test('NIHSS boundary conditions and invalid values', () => {
-    expect(calculateSeLECTScore({ nihss: 3 }).breakdown.nihssPoints).toBe(0);
-    expect(calculateSeLECTScore({ nihss: 4 }).breakdown.nihssPoints).toBe(1);
-    expect(calculateSeLECTScore({ nihss: 10 }).breakdown.nihssPoints).toBe(1);
-    expect(calculateSeLECTScore({ nihss: 11 }).breakdown.nihssPoints).toBe(2);
-    expect(calculateSeLECTScore({ nihss: 42 }).breakdown.nihssPoints).toBe(2);
+    expect(calculateSeLECTScore({ ...completeCases.calculateSeLECTScore, nihss: 3 }).breakdown.nihssPoints).toBe(0);
+    expect(calculateSeLECTScore({ ...completeCases.calculateSeLECTScore, nihss: 4 }).breakdown.nihssPoints).toBe(1);
+    expect(calculateSeLECTScore({ ...completeCases.calculateSeLECTScore, nihss: 10 }).breakdown.nihssPoints).toBe(1);
+    expect(calculateSeLECTScore({ ...completeCases.calculateSeLECTScore, nihss: 11 }).breakdown.nihssPoints).toBe(2);
+    expect(calculateSeLECTScore({ ...completeCases.calculateSeLECTScore, nihss: 42 }).breakdown.nihssPoints).toBe(2);
 
     // Negative NIHSS
-    const resNeg = calculateSeLECTScore({ nihss: -10 });
-    expect(resNeg).not.toBeNull();
-    expect(resNeg.breakdown.nihssPoints).toBe(0);
+    const resNeg = calculateSeLECTScore({ ...completeCases.calculateSeLECTScore, nihss: -10 });
+    expect(resNeg).toBeNull();
 
     // Invalid NIHSS
-    expect(calculateSeLECTScore({ nihss: 'abc' })).toBeNull();
-    expect(calculateSeLECTScore({ nihss: null })).toBeNull();
-    expect(calculateSeLECTScore({})).toBeNull();
+    expect(calculateSeLECTScore({ ...completeCases.calculateSeLECTScore, nihss: 'abc' })).toBeNull();
+    expect(calculateSeLECTScore({ ...completeCases.calculateSeLECTScore, nihss: null })).toBeNull();
+    expect(calculateSeLECTScore({ ...completeCases.calculateSeLECTScore,})).toBeNull();
     expect(calculateSeLECTScore()).toBeNull();
   });
 
-  test('Remediated: Breakdown vs total score consistency on boolean-coerced inputs', () => {
-    // Passing string "true" or 1 instead of boolean true
-    const resStringTrue = calculateSeLECTScore({
-      nihss: 5, // 1 pt
-      corticalInvolvement: "true", // 2 pts
-      earlySeizure: "true" // 3 pts
-    });
-
-    // Total score is 6 (1 + 2 + 3)
-    expect(resStringTrue.score).toBe(6);
-    expect(resStringTrue.breakdown.corticalPoints).toBe(2);
-    expect(resStringTrue.breakdown.earlySeizurePoints).toBe(3);
-
-    const breakdownSum = resStringTrue.breakdown.nihssPoints +
-      resStringTrue.breakdown.corticalPoints +
-      resStringTrue.breakdown.earlySeizurePoints +
-      resStringTrue.breakdown.largeArteryAtherosclerosisPoints +
-      resStringTrue.breakdown.mcaPoints;
-
-    expect(breakdownSum).toBe(6);
-    expect(resStringTrue.score).toBe(breakdownSum);
+  test('unknown and non-boolean observations cannot become a complete SeLECT score', () => {
+    expect(calculateSeLECTScore({ nihss: 5, corticalInvolvement: 'true', earlySeizure: 1 })).toBeNull();
+    expect(calculateSeLECTScore({ nihss: 5 })).toBeNull();
   });
 });
 
 describe('Empirical Stress Testing — calculateEDEMAScore (Ong Stroke 2017)', () => {
   test('Baseline minimum and maximum EDEMA score', () => {
     // Min score = 0
-    const resMin = calculateEDEMAScore({
+    const resMin = calculateEDEMAScore({ ...completeCases.calculateEDEMAScore,
       basalCisternEffacement: false,
       glucoseMgDl: 100,
       noReperfusionTherapy: false,
@@ -188,7 +170,7 @@ describe('Empirical Stress Testing — calculateEDEMAScore (Ong Stroke 2017)', (
     expect(resMin.highRiskForMalignantEdema).toBe(false);
 
     // Max score = 14 (cistern 3 + glucose 2 + no-reperfusion 1 + shift>9 7 + no-prior 1)
-    const resMax = calculateEDEMAScore({
+    const resMax = calculateEDEMAScore({ ...completeCases.calculateEDEMAScore,
       basalCisternEffacement: true,
       glucoseMgDl: 200,
       noReperfusionTherapy: true,
@@ -201,32 +183,32 @@ describe('Empirical Stress Testing — calculateEDEMAScore (Ong Stroke 2017)', (
   });
 
   test('Midline shift tier boundaries (published: 0 / >0-3 / 3-6 / 6-9 / >9)', () => {
-    expect(calculateEDEMAScore({ midlineShiftMm: 0 }).breakdown.midlineShiftPoints).toBe(0);
-    expect(calculateEDEMAScore({ midlineShiftMm: 0.5 }).breakdown.midlineShiftPoints).toBe(1);
-    expect(calculateEDEMAScore({ midlineShiftMm: 3 }).breakdown.midlineShiftPoints).toBe(2);
-    expect(calculateEDEMAScore({ midlineShiftMm: 6 }).breakdown.midlineShiftPoints).toBe(4);
-    expect(calculateEDEMAScore({ midlineShiftMm: 9 }).breakdown.midlineShiftPoints).toBe(4);
-    expect(calculateEDEMAScore({ midlineShiftMm: 9.1 }).breakdown.midlineShiftPoints).toBe(7);
+    expect(calculateEDEMAScore({ ...completeCases.calculateEDEMAScore, midlineShiftMm: 0 }).breakdown.midlineShiftPoints).toBe(0);
+    expect(calculateEDEMAScore({ ...completeCases.calculateEDEMAScore, midlineShiftMm: 0.5 }).breakdown.midlineShiftPoints).toBe(1);
+    expect(calculateEDEMAScore({ ...completeCases.calculateEDEMAScore, midlineShiftMm: 3 }).breakdown.midlineShiftPoints).toBe(2);
+    expect(calculateEDEMAScore({ ...completeCases.calculateEDEMAScore, midlineShiftMm: 6 }).breakdown.midlineShiftPoints).toBe(4);
+    expect(calculateEDEMAScore({ ...completeCases.calculateEDEMAScore, midlineShiftMm: 9 }).breakdown.midlineShiftPoints).toBe(4);
+    expect(calculateEDEMAScore({ ...completeCases.calculateEDEMAScore, midlineShiftMm: 9.1 }).breakdown.midlineShiftPoints).toBe(7);
   });
 
   test('Glucose boundary conditions: >=150 mg/dL (>=8.3 mmol/L) scores 2', () => {
-    expect(calculateEDEMAScore({ midlineShiftMm: 0, glucoseMgDl: 149.9 }).breakdown.glucosePoints).toBe(0);
-    expect(calculateEDEMAScore({ midlineShiftMm: 0, glucoseMgDl: 150 }).breakdown.glucosePoints).toBe(2);
-    expect(calculateEDEMAScore({ midlineShiftMm: 0, glucoseMmolL: 8.2 }).breakdown.glucosePoints).toBe(0);
-    expect(calculateEDEMAScore({ midlineShiftMm: 0, glucoseMmolL: 8.3 }).breakdown.glucosePoints).toBe(2);
+    expect(calculateEDEMAScore({ ...completeCases.calculateEDEMAScore, midlineShiftMm: 0, glucoseMgDl: 149.9 }).breakdown.glucosePoints).toBe(0);
+    expect(calculateEDEMAScore({ ...completeCases.calculateEDEMAScore, midlineShiftMm: 0, glucoseMgDl: 150 }).breakdown.glucosePoints).toBe(2);
+    expect(calculateEDEMAScore({ ...completeCases.calculateEDEMAScore, midlineShiftMm: 0, glucoseMgDl: undefined, glucoseMmolL: 8.2 }).breakdown.glucosePoints).toBe(0);
+    expect(calculateEDEMAScore({ ...completeCases.calculateEDEMAScore, midlineShiftMm: 0, glucoseMgDl: undefined, glucoseMmolL: 8.3 }).breakdown.glucosePoints).toBe(2);
   });
 
   test('High-risk threshold is score >=7 (PPV 93%, specificity 99%)', () => {
-    const at7 = calculateEDEMAScore({ basalCisternEffacement: true, glucoseMgDl: 155, midlineShiftMm: 4 });
+    const at7 = calculateEDEMAScore({ ...completeCases.calculateEDEMAScore, basalCisternEffacement: true, glucoseMgDl: 155, midlineShiftMm: 4 });
     expect(at7.score).toBe(7);
     expect(at7.highRiskForMalignantEdema).toBe(true);
-    const at6 = calculateEDEMAScore({ basalCisternEffacement: true, glucoseMgDl: 155, midlineShiftMm: 2 });
+    const at6 = calculateEDEMAScore({ ...completeCases.calculateEDEMAScore, basalCisternEffacement: true, glucoseMgDl: 155, midlineShiftMm: 2 });
     expect(at6.score).toBe(6);
     expect(at6.highRiskForMalignantEdema).toBe(false);
   });
 
   test('Returns null when midline shift is not assessed', () => {
-    expect(calculateEDEMAScore({})).toBeNull();
-    expect(calculateEDEMAScore({ basalCisternEffacement: true })).toBeNull();
+    expect(calculateEDEMAScore({ ...completeCases.calculateEDEMAScore,})).toBeNull();
+    expect(calculateEDEMAScore({ ...completeCases.calculateEDEMAScore, basalCisternEffacement: true })).toBeNull();
   });
 });

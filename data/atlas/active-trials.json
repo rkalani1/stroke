@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "active-trials",
     "schemaVersion": "1.0.0",
-    "appVersion": "6.30.3",
-    "checksum": "sha256:65daba52f1178f1c9f82dfcf866b3571",
+    "appVersion": "6.30.4",
+    "checksum": "sha256:5b4fedbc0260dca558208743c263c83d",
     "count": 9,
     "source": "Evidence atlas active-trials bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -52,6 +52,12 @@
       ],
       "category": "ischemic",
       "matcherCriteria": [
+        {
+          "field": "acuteIschemicStroke",
+          "operator": "==",
+          "value": true,
+          "label": "Documented suspected acute ischemic stroke"
+        },
         {
           "field": "age",
           "operator": ">=",
@@ -176,6 +182,12 @@
       "category": "ischemic",
       "matcherCriteria": [
         {
+          "field": "acuteIschemicStroke",
+          "operator": "==",
+          "value": true,
+          "label": "Symptoms assessed as consistent with acute ischemic stroke"
+        },
+        {
           "field": "age",
           "operator": "between",
           "value": [
@@ -261,6 +273,12 @@
       "category": "ischemic",
       "matcherCriteria": [
         {
+          "field": "acuteIschemicStroke",
+          "operator": "==",
+          "value": true,
+          "label": "Documented qualifying acute ischemic stroke"
+        },
+        {
           "field": "age",
           "operator": ">=",
           "value": 18,
@@ -294,14 +312,10 @@
           "label": "ASPECTS ≥3"
         },
         {
-          "field": "vesselOcclusion",
-          "operator": "in",
-          "value": [
-            "ICA",
-            "M1",
-            "M2"
-          ],
-          "label": "ICA, M1, or dominant M2 occlusion (confirm M2 dominance)"
+          "field": "testedVessel",
+          "operator": "==",
+          "value": true,
+          "label": "ICA, M1, or documented dominant M2 occlusion"
         }
       ],
       "matcherExclusions": [],
@@ -350,21 +364,22 @@
       "category": "ischemic",
       "matcherCriteria": [
         {
+          "field": "acuteIschemicStroke",
+          "operator": "==",
+          "value": true,
+          "label": "Documented qualifying acute ischemic stroke"
+        },
+        {
           "field": "age",
           "operator": ">=",
           "value": 18,
           "label": "Age ≥18"
         },
         {
-          "field": "symptoms",
-          "operator": "present",
-          "value": [
-            "arm",
-            "upper",
-            "hand",
-            "weakness"
-          ],
-          "label": "Upper-extremity weakness"
+          "field": "upperExtremityWeakness",
+          "operator": "==",
+          "value": true,
+          "label": "Documented upper-extremity weakness"
         },
         {
           "field": "hoursFromLKW",
@@ -685,6 +700,12 @@
       "category": "ich",
       "matcherCriteria": [
         {
+          "field": "diagnosisCategory",
+          "operator": "==",
+          "value": "ich",
+          "label": "Intracerebral hemorrhage"
+        },
+        {
           "field": "age",
           "operator": ">=",
           "value": 50,
@@ -692,7 +713,7 @@
         },
         {
           "field": "ichLocation",
-          "operator": "present",
+          "operator": "in",
           "value": [
             "lobar",
             "cortical"

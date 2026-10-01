@@ -1,0 +1,1823 @@
+{
+  "source": "src/app.jsx; input/select controls sampled 2026-09-30",
+  "controls": [
+    {
+      "path": "discoveryDate",
+      "controlType": "date",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "discoveryTime",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "wakeUpStrokeWorkflow.sleepMidpoint",
+      "controlType": "datetime-local",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "consultStartTime",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "discoveryDate",
+      "controlType": "date",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "discoveryTime",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "wakeUpStrokeWorkflow.sleepMidpoint",
+      "controlType": "datetime-local",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "age",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "weight",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": true
+    },
+    {
+      "path": "creatinine",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "height",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "lastDOACDose",
+      "controlType": "datetime-local",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "nihss",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "glucose",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "inr",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "pt",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "plateletCount",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ctpStructured.coreVolume",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ctpStructured.penumbraVolume",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ichReversalStartTime",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ichTransferDecisionTime",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "tnkAdminTime",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "age",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "weight",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "height",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "lastDOACDose",
+      "controlType": "datetime-local",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "nihss",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "bpPreTNKTime",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "glucose",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "inr",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "plateletCount",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ptt",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ctDate",
+      "controlType": "date",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ctTime",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ctaDate",
+      "controlType": "date",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ctaTime",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ctpStructured.coreVolume",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ctpStructured.penumbraVolume",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "weight",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "tnkConsentTime",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "tnkAdminTime",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "consentKit.evtConsentTime",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "evtNumberOfPasses",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "reperfusionTime",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "sahAneurysmSize",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "sahOutcomeSet.followUpDate",
+      "controlType": "date",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "mRSAtConsent",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "screeningTools.mocaScore",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.ldlCurrent",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.daptStartDate",
+      "controlType": "date",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.daptPlannedStopDate",
+      "controlType": "date",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.daptMissedDoses7d",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.exerciseMinPerWeek",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "anticoagBridging.crCl",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "angioedema.onsetTime",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ichAnticoagResumption.chadsVascScore",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ichAnticoagResumption.hasbledScore",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "osmoticTherapy.baselineNa",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "osmoticTherapy.baselineNaTime",
+      "controlType": "datetime-local",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "osmoticTherapy.repeatNa",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "osmoticTherapy.repeatNaTime",
+      "controlType": "datetime-local",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "osmoticTherapy.sodiumTarget",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "osmoticTherapy.serumOsmolality",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "osmoticTherapy.serumOsmolality",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "osmoticTherapy.mannitolOsmGap",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "substanceScreening.alcoholAuditC",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "maternalStrokePathway.postpartumDays",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "cancerStrokePathway.dDimerMultipleUln",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "dischargeNIHSS",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "familyCommunication.time",
+      "controlType": "time",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "transportEta",
+      "controlType": "datetime-local",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ichVolumeCalc.lengthCm",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ichVolumeCalc.widthCm",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ichVolumeCalc.slicesCm",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "crclCalc.age",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "crclCalc.weight",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "crclCalc.cr",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "crclCalc.height",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "enoxCalc.weightKg",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "enoxCalc.crCl",
+      "controlType": "number",
+      "exactOptions": [],
+      "transformedControlValue": false
+    },
+    {
+      "path": "callerRole",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "ED Physician",
+        "ED NP/PA",
+        "Inpatient Clinician",
+        "Neurology Resident",
+        "RN",
+        "Other"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "sex",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "M",
+        "F"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "premorbidMRS",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "lastDOACType",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "none",
+        "apixaban",
+        "rivaroxaban",
+        "dabigatran",
+        "edoxaban",
+        "warfarin",
+        "heparin",
+        "lmwh",
+        "fondaparinux"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "collateralGrade",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "good",
+        "moderate",
+        "poor"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "diagnosis",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "Acute Ischemic Stroke",
+        "Acute Ischemic Stroke - LVO",
+        "Minor Ischemic Stroke",
+        "TIA",
+        "Intracerebral Hemorrhage (ICH)",
+        "Subarachnoid Hemorrhage (SAH)",
+        "Cerebral Venous Thrombosis (CVT)",
+        "Cervical Artery Dissection",
+        "Stroke Mimic",
+        "Other"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "strokeTerritory",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "MCA",
+        "ACA",
+        "PCA",
+        "basilar",
+        "vertebral",
+        "cerebellar",
+        "lacunar",
+        "watershed",
+        "multi"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "strokePhenotype",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "cortical-lvo",
+        "cortical-embolic",
+        "lacunar",
+        "posterior",
+        "dissection",
+        "watershed",
+        "cardioembolic"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ichSurgicalCriteria.surgeryDecision",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "evacuate",
+        "evd",
+        "mie",
+        "observe",
+        "comfort",
+        "not-candidate"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "disposition",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "Admit to Neuro ICU",
+        "Admit to Stroke Unit",
+        "Admit to Floor",
+        "Transfer to CSC",
+        "Transfer to PSC",
+        "Observation",
+        "Discharge"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "codeStatus",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "Full Code",
+        "DNR/DNI",
+        "DNR/Full treatment",
+        "Comfort care",
+        "Not yet discussed"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "transportMode",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "Ground ambulance",
+        "Air transport",
+        "Critical care transport"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.antiplateletRegimen",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "dapt-21",
+        "asa-mono",
+        "clopidogrel-mono",
+        "asa-er-dipyridamole",
+        "doac-af",
+        "anticoag-other"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.daptDuration",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "21 days",
+        "30 days",
+        "90 days"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.statinDose",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "atorvastatin-80",
+        "rosuvastatin-20",
+        "atorvastatin-40",
+        "already-on-statin",
+        "statin-deferred"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.bpTarget",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "<130/80",
+        "<140/90",
+        "permissive"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "sex",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "M",
+        "F"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "premorbidMRS",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "lastDOACType",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "none",
+        "apixaban",
+        "rivaroxaban",
+        "dabigatran",
+        "edoxaban",
+        "warfarin",
+        "heparin",
+        "lmwh",
+        "fondaparinux"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "anticoagulantDoseIntent",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "prophylactic",
+        "therapeutic"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "disablingDeficit",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "yes",
+        "no"
+      ],
+      "transformedControlValue": true
+    },
+    {
+      "path": "ctHemorrhageStatus",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "absent",
+        "present",
+        "uncertain"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "tnkConsentType",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "informed",
+        "surrogate",
+        "presumed",
+        "declined"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "consentKit.evtConsentType",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "informed-consent",
+        "presumed",
+        "surrogate",
+        "declined"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ticiScore",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "0",
+        "1",
+        "2a",
+        "2b",
+        "2c",
+        "3"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "evtAccessSite",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "R femoral",
+        "L femoral",
+        "R radial",
+        "L radial"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "evtTechnique",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "aspiration",
+        "stent retriever",
+        "combined"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "sahGradeScale",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "huntHess",
+        "wfns",
+        "modifiedFisher"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "sahGrade",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "0"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "sahAneurysmLocation",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "AComm",
+        "PComm",
+        "MCA",
+        "ICA",
+        "basilar-tip",
+        "PICA",
+        "SCA",
+        "pericallosal",
+        "ophthalmic",
+        "other",
+        "unknown"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "sahSecuringMethod",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "coiling",
+        "clipping",
+        "flow-diverter",
+        "hybrid",
+        "conservative",
+        "pending"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "sahOutcomeSet.dischargeMRS",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "sahOutcomeSet.dischargeDisposition",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "home",
+        "home-health",
+        "acute-rehab",
+        "snf",
+        "ltach",
+        "hospice",
+        "deceased"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "sahOutcomeSet.ninetyDayMRS",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "sahOutcomeSet.ninetyDayMortality",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "alive",
+        "deceased",
+        "unknown"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "cvtAnticoagType",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "enoxaparin",
+        "enoxaparin-daily",
+        "ufh",
+        "other"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ichEmergencyNeurosurgery",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "planned",
+        "not-planned"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "culpritM2Dominance",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "dominant",
+        "co-dominant",
+        "non-dominant"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "presentedWithin24h",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "true",
+        "false"
+      ],
+      "transformedControlValue": true
+    },
+    {
+      "path": "cardiacWorkup.extendedMonitoringType",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "30-day-monitor",
+        "14-day-patch",
+        "ilr",
+        "none-af-known",
+        "none-other"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "cardiacWorkup.pfoEvaluation",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "no-pfo",
+        "pfo-no-closure",
+        "pfo-closure-candidate",
+        "pfo-further-eval"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "cardiacWorkup.pascalClassification",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "probable",
+        "possible",
+        "unlikely"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "dissectionPathway.antithromboticType",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "antiplatelet-asa",
+        "antiplatelet-dapt",
+        "anticoag-heparin",
+        "anticoag-doac"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "dissectionPathway.imagingFollowUp",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "3-month",
+        "6-month",
+        "3-and-6-month"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "screeningTools.phq2_q1",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "screeningTools.phq2_q2",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "screeningTools.seizureRisk",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "no-seizure",
+        "acute-seizure",
+        "late-seizure",
+        "status-epilepticus"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.bpTarget",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "<130/80",
+        "<120/80",
+        "<140/90"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.statinDose",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "atorvastatin-80",
+        "atorvastatin-40",
+        "rosuvastatin-20",
+        "rosuvastatin-40"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.antiplateletRegimen",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "dapt-21",
+        "dapt-ticagrelor-30",
+        "dapt-cyp2c19",
+        "asa-mono",
+        "clopidogrel-mono",
+        "asa-er-dipyridamole",
+        "factor-xia-asundexian",
+        "doac-af",
+        "anticoag-other"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.daptDuration",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "21 days",
+        "30 days",
+        "90 days"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.daptAdherenceStatus",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "on-track",
+        "at-risk",
+        "nonadherent",
+        "completed"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.daptTransitionAgent",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "asa-mono",
+        "clopidogrel-mono",
+        "ticagrelor",
+        "doac-af"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.diabetesManagement",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "no-diabetes",
+        "well-controlled",
+        "needs-optimization",
+        "new-diagnosis"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.smokingStatus",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "never",
+        "former",
+        "current",
+        "current-rx"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.exercisePlan",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "active",
+        "counseled",
+        "limited"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.dietPlan",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "mediterranean",
+        "dash",
+        "sodium-restriction",
+        "dietitian"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.dietAdherence",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "good",
+        "partial",
+        "poor"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.glp1ra",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "semaglutide-2.4",
+        "semaglutide-1.0",
+        "liraglutide",
+        "dulaglutide",
+        "not-indicated"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.glp1raIndication",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "overweight-ascvd",
+        "t2dm",
+        "both"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.sglt2i",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "empagliflozin",
+        "dapagliflozin",
+        "sotagliflozin",
+        "not-indicated"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.sglt2iIndication",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "hf",
+        "ckd",
+        "t2dm-ascvd",
+        "sotagliflozin-af-hf-dm"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.colchicineIndication",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "atherosclerotic-stroke",
+        "recurrent-ascvd",
+        "not-indicated"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.cyp2c19Result",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "normal-metabolizer",
+        "intermediate",
+        "poor-metabolizer",
+        "rapid-metabolizer",
+        "pending"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "drugInteractions.aedType",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "levetiracetam",
+        "lacosamide",
+        "valproate",
+        "phenytoin",
+        "carbamazepine",
+        "phenobarbital",
+        "oxcarbazepine"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "drugInteractions.statinInteractionDrug",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "diltiazem",
+        "verapamil",
+        "amiodarone",
+        "cyclosporine",
+        "clarithromycin",
+        "fluconazole"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "anticoagBridging.doacType",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "apixaban",
+        "rivaroxaban",
+        "dabigatran",
+        "edoxaban",
+        "warfarin"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "anticoagBridging.procedureRisk",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "low",
+        "high"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "secondaryPrevention.followUpTimeline",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "24-72h",
+        "1-2wk",
+        "3mo",
+        "6mo",
+        "12mo",
+        "custom"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "hemorrhagicTransformation.classification",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "HI-1",
+        "HI-2",
+        "PH-1",
+        "PH-2"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "angioedema.severity",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "mild",
+        "moderate",
+        "severe"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "dysphagiaScreening.bedsideScreenResult",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "pass",
+        "fail",
+        "modified"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "dysphagiaScreening.instrumentalAssessment",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "vfss",
+        "fees",
+        "not-needed"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "earlyMobilization.timingDecision",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "24-48h",
+        "deferred",
+        "contraindicated"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "earlyMobilization.sessionFrequency",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "short-frequent",
+        "standard-pt",
+        "intensive"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "doacTiming.strokeSeverity",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "minor",
+        "moderate",
+        "severe"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "doacTiming.doacAgent",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "apixaban",
+        "apixaban-reduced",
+        "rivaroxaban",
+        "rivaroxaban-reduced",
+        "dabigatran",
+        "edoxaban"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "carotidManagement.stenosisSide",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "left",
+        "right",
+        "bilateral"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "carotidManagement.stenosisDegree",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "<50",
+        "50-69",
+        "70-99",
+        "occlusion"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "carotidManagement.symptomStatusReviewed",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "symptomatic",
+        "asymptomatic"
+      ],
+      "transformedControlValue": true
+    },
+    {
+      "path": "carotidManagement.intervention",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "cea",
+        "cas",
+        "tcar",
+        "medical-only"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "esusWorkup.cardiacMonitoringType",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "30-day-monitor",
+        "14-day-patch",
+        "ilr",
+        "telemetry-only"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "esusWorkup.esusAntiplatelet",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "antiplatelet",
+        "doac-af-found"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ichAnticoagResumption.ichLocation",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "deep",
+        "lobar",
+        "cerebellar",
+        "brainstem"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "ichAnticoagResumption.decision",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "resume-doac",
+        "resume-doac-early",
+        "laao",
+        "no-anticoag",
+        "defer"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "vteProphylaxis.pharmacoProphylaxis",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "enoxaparin-40",
+        "enoxaparin-30",
+        "ufh-5000",
+        "held-post-tpa",
+        "held-post-ich",
+        "contraindicated"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "feverManagement.escalationLevel",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "acetaminophen",
+        "surface-cooling",
+        "iv-mag",
+        "buspirone",
+        "meperidine",
+        "sedation"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "feverManagement.bsasScore",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "osmoticTherapy.agentUsed",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "mannitol-20",
+        "hts-3",
+        "hts-23.4",
+        "none"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "osmoticTherapy.indication",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "cerebral-edema",
+        "herniation",
+        "icp-elevation"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "nutritionalSupport.feedingRoute",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "oral-regular",
+        "oral-modified",
+        "ngt",
+        "npo-pending",
+        "peg"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "palliativeCare.goalsOfCareOutcome",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "full-code",
+        "limited-intervention",
+        "comfort-focused"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "mrsAssessment",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "drivingRestrictions.restrictionDuration",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "1-month",
+        "3-months",
+        "6-months",
+        "1-year",
+        "indefinite"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "returnToWork.expectedTimeline",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "2-4-weeks",
+        "2-6-months",
+        "6-12-months",
+        "unable"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "spasticity.treatment",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "none",
+        "stretching",
+        "botox",
+        "oral-meds",
+        "itb"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "centralPain.treatment",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "amitriptyline",
+        "lamotrigine",
+        "gabapentin",
+        "duloxetine"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "fatigue.management",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "energy-conservation",
+        "graded-exercise",
+        "sleep-hygiene",
+        "treat-comorbid"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "airTravelRestrictions.restrictionDuration",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "1-2-weeks",
+        "2-weeks",
+        "1-3-months",
+        "6-8-weeks",
+        "1-week-post-crani"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "cancerStrokePathway.mechanism",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "probable",
+        "possible",
+        "conventional"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "cancerStrokePathway.preventionPlan",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "lmwh",
+        "antiplatelet",
+        "doac",
+        "individualized"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "decompressiveCraniectomy.timing",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "proceeding-supra",
+        "proceeding-posterior",
+        "monitoring",
+        "not-candidate"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "cvtAnticoag.acutePhase",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "ufh-infusion",
+        "lmwh"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "cvtAnticoag.transitionAgent",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "warfarin",
+        "doac"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "cvtAnticoag.duration",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "3-6mo",
+        "6-12mo",
+        "indefinite"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "disposition",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "Admit to Neuro ICU",
+        "Admit to Stroke Unit",
+        "Admit to Floor",
+        "Transfer to CSC",
+        "Transfer to PSC",
+        "Observation",
+        "Discharge"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "transportMode",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "Ground",
+        "Air",
+        "Private",
+        "Pending"
+      ],
+      "transformedControlValue": false
+    },
+    {
+      "path": "crclCalc.sex",
+      "controlType": "select",
+      "exactOptions": [
+        "",
+        "M",
+        "F"
+      ],
+      "transformedControlValue": false
+    }
+  ]
+}

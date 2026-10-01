@@ -256,7 +256,7 @@ const EDUCATION_MODULES = [
   {
     id: 'hints-simulator',
     title: 'HINTS+ Vestibular Simulator',
-    purpose: 'Selected HINTS+ eye-movement demonstrations for trained examiners assessing an appropriate acute vestibular syndrome. The inaccurate positive-skew animation is unavailable.',
+    purpose: 'Selected HINTS+ eye-movement demonstrations for trained examiners assessing an appropriate acute vestibular syndrome. Both skew animations are unavailable; the retained motions are teaching schematics, not validated examination recordings.',
     actions: 'hints vestibular nystagmus skew eye movement vertigo hearing loss avs nystagmus simulator interactive',
     categories: ['simulators'],
     lastReviewed: '2026-05-30',
@@ -1485,7 +1485,7 @@ export function DeviceDetectedSubclinicalAfCard() {
                   <strong style={{ color: 'var(--red-deep)', fontSize: '7.6pt' }}>Adjudicate the Electrogram Before You Act</strong>
                   <br />&bull; A counter alone is <strong>not</strong> a diagnosis. Pull the stored EGM and read it with electrophysiology before any anticoagulation decision.
                   <br />&bull; <strong>Common false positives:</strong> far-field R-wave oversensing &bull; lead noise, fracture or loose set-screw &bull; myopotential/EMI artifact &bull; repetitive non-sustained atrial runs or frequent PACs &bull; sinus tachycardia crossing the rate cut-off. Atrial undersensing can instead undercount true burden.
-                  <br />&bull; Insertable cardiac monitors are the most artifact-prone; a rejected episode should be documented as rejected.
+                  <br />&bull; Insertable cardiac monitors can also generate false-positive detections; accuracy depends on the device, algorithm and monitoring population. Confirm the stored tracing and document rejected episodes (Afzal et al., 2019; PMID: 31323348).
                 </div>
               </div>
             </CardSection>
@@ -2261,7 +2261,7 @@ export function UnrupturedIntracranialAneurysmCard() {
                   <tr>
                     <td><strong>P</strong> &mdash; Population</td>
                     <td>North America / Europe other than Finland (reference), Japan, or Finland.</td>
-                    <td>Finnish patients carried a <strong>3.6-fold</strong> and Japanese patients a <strong>2.8-fold</strong> higher rupture risk than the reference population. Because UIA prevalence is comparable across these countries (PMID: 21641282), the geographic term is a rupture-propensity multiplier, not a detection artifact.</td>
+                    <td>Finnish and Japanese cohorts had adjusted rupture-risk hazard ratios of <strong>3.6</strong> and <strong>2.8</strong> relative to the reference populations. Geography is a predictor in this pooled observational model; these associations do not establish why the cohorts differed.</td>
                   </tr>
                   <tr>
                     <td><strong>H</strong> &mdash; Hypertension<br /><strong>A</strong> &mdash; Age</td>
@@ -2341,7 +2341,7 @@ export function UnrupturedIntracranialAneurysmCard() {
                   <br />&bull; <strong>Flow diversion (PREMIER; PMID: 31308197):</strong> single-arm, 141 patients with unruptured wide-necked ICA/VA aneurysms &le;12 mm (mean 5.0 &plusmn; 1.92 mm; 84.4% &lt;7 mm). Complete occlusion without significant stenosis or retreatment at 1 year in <strong>106/138 (76.8%)</strong>; major morbidity and mortality <strong>2.1%</strong>.
                   <br />&bull; <strong>Read that population carefully</strong> &mdash; most target lesions were &lt;7 mm, exactly the band ISUIA and PHASES place at the lowest natural-history risk. Single-arm, no comparator.
                   <br />&bull; <strong>A flow diverter commits the patient to dual antiplatelet therapy</strong> before and for months after implantation, with platelet-function testing where available. That obligation is itself a reason to decline treatment in a faller, a patient needing near-term surgery, or one who cannot adhere.
-                  <br />&bull; <strong>Intrasaccular device (WEB-IT; PMID: 30992395):</strong> 150 patients with wide-neck bifurcation aneurysms; one primary safety event (0.7%). <strong>Complete occlusion at 12 months only 53.8% (77/143)</strong>, adequate occlusion 84.6% &mdash; safe, but state the occlusion rate honestly.
+                  <br />&bull; <strong>Intrasaccular device (WEB-IT; PMID: 30992395):</strong> 150 patients with wide-neck bifurcation aneurysms; one primary safety event (0.7%). <strong>Complete occlusion at 12 months was 53.8% (77/143)</strong>, adequate occlusion 84.6%. These single-arm results describe the selected study population; they do not establish comparative safety or guarantee an individual outcome.
                 </div>
                 <div style={{ border: '1.5px solid var(--amber)', borderRadius: '5px', padding: '5px 7px', background: '#ffffff' }}>
                   <strong style={{ color: 'var(--amber-deep)', fontSize: '7.5pt' }}>Durability &mdash; and Where the Data Come From</strong>
@@ -3480,16 +3480,17 @@ export function ToastClassificationCard() {
       <div style={{display: 'flex', flexDirection: 'column', gap: '8px'}}>
         <div className="toast-card alert-red" style={{paddingBottom: '6px'}}>
           <h3>3. Cardioembolism (CE)</h3>
+          <p style={{fontSize: '7.5pt', margin: '2px 0'}}>Illustrative historical TOAST categories (1993), not a current anticoagulation checklist.</p>
           <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '8.2pt', lineHeight: '1.3', color: 'var(--ink-soft)', marginTop: '2px'}}>
             <div>
               <strong style={{color: 'var(--red-deep)', display: 'block', fontSize: '7.5pt', marginBottom: '2px'}}>HIGH-RISK SOURCES:</strong>
               • Mechanical prosthetic valve<br/>
               • Mitral stenosis w/ AFib<br/>
-              • Atrial fibrillation<br/>
+              • Atrial fibrillation (other than lone AF)<br/>
               • Left atrial / LAA thrombus<br/>
               • Sick sinus syndrome<br/>
               • Recent MI (&lt; 4 weeks)<br/>
-              • LVEF &lt; 28% or LV thrombus<br/>
+              • Dilated cardiomyopathy or LV thrombus<br/>
               • Infective endocarditis
             </div>
             <div>
@@ -3498,7 +3499,8 @@ export function ToastClassificationCard() {
               • Mitral ring calcification<br/>
               • Mitral stenosis w/o AFib<br/>
               • Left atrial turbulence/smoke<br/>
-              • PFO w/ atrial septal aneurysm<br/>
+              • PFO or atrial septal aneurysm<br/>
+              • Lone atrial fibrillation (historical term)<br/>
               • Atrial flutter (isolated)<br/>
               • Bioprosthetic heart valve<br/>
               • Nonbacterial endocarditis
@@ -4741,8 +4743,8 @@ export function StrokePrognosisCard() {
               Clinical prediction scales for ischemic and hemorrhagic stroke outcomes.
             </p>
 
-            <svg viewBox="0 0 735 80" role="img" focusable="false" aria-label="Stroke prognosis score comparison: ASTRAL, PLAN, ICH Score and modified Rankin Scale outcome bands" style={{width: '100%', height: '80px', marginBottom: '8px'}}>
-              <rect x="0" y="0" width="735" height="80" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
+            <svg viewBox="0 0 735 88" role="img" focusable="false" aria-label="Stroke prognosis scales: ASTRAL and PLAN for ischemic stroke; ICH Score for hemorrhagic stroke" style={{width: '100%', height: '88px', marginBottom: '8px'}}>
+              <rect x="0" y="0" width="735" height="88" rx="8" fill="var(--fill-soft)" stroke="var(--rule-soft)" strokeWidth="1"/>
 
               <rect x="267" y="10" width="200" height="25" rx="12.5" fill="var(--purple-deep)" />
               <text x="367" y="22.5" fill="white" fontSize="8.5pt" fontFamily="Outfit" fontWeight="700" textAnchor="middle" dominantBaseline="central">STROKE PROGNOSIS SCALES</text>
@@ -4868,9 +4870,9 @@ export function StrokePrognosisCard() {
             <div style={{border: '1.5px solid var(--purple)', borderRadius: '8px', padding: '8px 12px', background: 'var(--purple-soft)', marginTop: 'auto', marginBottom: '8px'}}>
               <strong style={{color: 'var(--purple-deep)', fontSize: '9.0pt', display: 'block', marginBottom: '2px'}}>Prognostication Principles &amp; Limitations</strong>
               <div style={{fontSize: '7.6pt', lineHeight: '1.35', color: 'var(--ink-soft)'}}>
-                • <strong>Not for Care Limitations</strong>: These clinical scores serve to quantify severity, improve inter-provider communication, and assist in counseling. They <strong>MUST NOT</strong> be used in isolation as the sole basis for withholding reperfusion therapies, surgical decompression, or withdrawing life-sustaining treatment (avoiding the self-fulfilling prophecy of poor outcome).
-                <br/>• <strong>Dynamic Evaluation</strong>: Clinical trajectory over the first 24–72 hours is often more predictive of final recovery than any single point-in-time calculation upon hospital admission.
-                <br/>• <strong>Acute ICH — Hemostatic Therapy</strong>: The ICH Score is prognostic, not a treatment target. Early intensive blood-pressure lowering and hematoma-directed care remain the evidence-based acute levers (2022 AHA/ASA ICH guideline). Recombinant factor VIIa (rFVIIa) given within 2h slowed hematoma growth but did <strong>not</strong> improve 180-day function and increased thromboembolic events (FASTEST, 2026; PMID 41653933) — <strong>not</strong> recommended for routine use.
+                • <strong>Not for Care Limitations</strong>: Historical scores describe severity and cohort outcomes, not individual recovery ceilings. In critically ill adults with ischemic stroke, admission NIHSS or ASTRAL alone is not reliable for poor-outcome counseling. The ICH Score can provide a general framework for communication, but no score should be the sole basis for an individual prognosis or for withholding reperfusion, decompression or life-sustaining treatment.
+                <br/>• <strong>Serial Reassessment</strong>: Integrate repeated examinations, imaging, treatment response and reversible confounders such as sedation. Observation and counseling timing are individualized; the first 24–72 hours are not a universal deadline for a reliable prognosis.
+                <br/>• <strong>Acute ICH — BP and Hemostatic Treatment</strong>: The ICH Score is not a treatment target. In mild-to-moderate spontaneous ICH presenting with SBP 150–220 mmHg, targeting 140 and maintaining 130–150 may be reasonable; lowering below 130 can be harmful. Intensive lowering has uncertain safety and benefit in large/severe ICH or surgical candidates, who need individualized management (AHA/ASA 2022). Recombinant factor VIIa (rFVIIa) given within 2h slowed hematoma growth but did <strong>not</strong> improve 180-day function and increased thromboembolic events (FASTEST, 2026; PMID 41653933) — <strong>not</strong> recommended for routine use.
               </div>
             </div>
 
@@ -4880,6 +4882,7 @@ export function StrokePrognosisCard() {
               <strong>ASTRAL Score:</strong> Ntaios G, et al. <em>Neurology</em>. 2012;78(24):1916-22. <a href="https://pubmed.ncbi.nlm.nih.gov/22649218/" target="_blank" rel="noopener noreferrer">PMID: 22649218</a><br/>
               <strong>PLAN Score:</strong> O'Donnell MJ, et al. <em>Arch Intern Med</em>. 2012;172(20):1548-56. <a href="https://pubmed.ncbi.nlm.nih.gov/23147454/" target="_blank" rel="noopener noreferrer">PMID: 23147454</a><br/>
               <strong>ICH Score:</strong> Hemphill JC 3rd, et al. <em>Stroke</em>. 2001;32:891-7. <a href="https://pubmed.ncbi.nlm.nih.gov/11283388/" target="_blank" rel="noopener noreferrer">PMID: 11283388</a><br/>
+              <strong>ICH Management:</strong> AHA/ASA 2022 guideline, sections 5.1 and 7.1. <a href="https://pubmed.ncbi.nlm.nih.gov/35579034/" target="_blank" rel="noopener noreferrer">PMID: 35579034</a><br/>
               <strong>mRS Scale:</strong> van Swieten JC, et al. <em>Stroke</em>. 1988;19:604-7. <a href="https://pubmed.ncbi.nlm.nih.gov/3363593/" target="_blank" rel="noopener noreferrer">PMID: 3363593</a>
             </div>
           </div>
@@ -5653,7 +5656,7 @@ export function AntiepilepticDrugsCard() {
                     </tbody>
                   </table></div>
                   <div style={{fontSize: '7.2pt', borderTop: '1px dashed rgba(74,90,109,0.3)', paddingTop: '4px', lineHeight: '1.2'}}>
-                    <strong>Interpretation:</strong> Score 0 (1.3% risk at 5yr), intermediate scores carry progressively higher risk, Score 9 (83% risk at 5yr).
+                    <strong>Historical cohort estimates:</strong> Five-year late-seizure risk was 1.3% (95% CI 0.7–1.8) for score 0 and 83% (62–93) for score 9 (Galovic et al., 2018). These estimates are not individual guarantees or an indication for preventive ASM; intermediate percentages are not displayed.
                   </div>
                 </div>
               </div>

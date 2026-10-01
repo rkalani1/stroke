@@ -21,6 +21,7 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
+import { guidelineGradeLabel } from '../src/guideline-library.js';
 
 const ROOT = process.cwd();
 const appJsxContent = fs.readFileSync(path.join(ROOT, 'src', 'app.jsx'), 'utf8');
@@ -134,8 +135,11 @@ describe('Guideline Library relocation and References TOC (P4-2a / P4-4c)', () =
   it('per-recommendation anchor ids and classNote footnote are wired (P4-2b/c)', () => {
     expect(appJsxContent).toContain('id={`gl-rec-${rec.id}`}');
     expect(appJsxContent).toContain('Note: {rec.classNote}');
-    // Badge carries only the short class token + LOE, never the long classNote.
-    expect(appJsxContent).toContain('{recClass}/{recLevel}');
+    // The library uses source-native grades; long classNote remains a separate footnote.
+    expect(appJsxContent).toContain('{guidelineGradeLabel(rec, guideline)}');
+    expect(guidelineGradeLabel({ classOfRec: 'III', classNote: 'Harm', levelOfEvidence: 'B-R' }, { gradingSystem: 'AHA' })).toBe('III/B-R');
+    expect(guidelineGradeLabel({ classOfRec: 'Statement', levelOfEvidence: 'Ungraded', nativeRecommendationLevel: 'B' }, { gradingSystem: 'AAN' })).toBe('AAN Level B');
+    expect(guidelineGradeLabel({ classOfRec: 'Statement', levelOfEvidence: 'Ungraded', nativeRecommendationStatus: 'No consensus' }, { gradingSystem: 'AAN' })).toBe('AAN: no consensus');
     expect(appJsxContent).not.toContain('${recClass} (${rec.classNote})');
   });
 });

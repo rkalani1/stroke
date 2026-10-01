@@ -13,4 +13,4 @@ provenance: src/education.jsx
 Decompressive hemicraniectomy selection criteria, evidence, and supportive ICU care for malignant MCA syndrome.
 
 > The interactive teaching card for this module renders from `src/education.jsx`.
-> This file owns the module metadata (title, summary, tags, contexts, references).
+> This generated file projects module metadata from `EDUCATION_MODULES`; edit the canonical source and regenerate.
