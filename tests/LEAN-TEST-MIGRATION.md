@@ -1,6 +1,6 @@
 # Maintained test contracts after portal retirement
 
-Historical implementation and tests remain at `archive/pre-encounter-first-20261001-4f8e99d`. No Vitest exclusions were added to make failures disappear. Retired surfaces were removed rather than leaving skipped assertions or unreachable fixtures. Frozen ischemic and ICH snapshots and the retained arithmetic function hashes are unchanged.
+Historical implementation and tests remain at `archive/pre-encounter-first-20261001-4f8e99d`. No Vitest exclusions were added to make failures disappear. Retired surfaces were removed rather than leaving skipped assertions or unreachable fixtures. The ischemic snapshot and retained arithmetic function hashes are unchanged. Only four ICH snapshot lines changed for the owner's explicitly approved correction to the two drug-removal passages; the remainder of that lock is unchanged.
 
 | Retired test group | Reason and replacement |
 | --- | --- |
