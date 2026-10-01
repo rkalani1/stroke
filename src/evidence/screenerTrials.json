@@ -8,14 +8,14 @@
     "sourceGaps": [
       "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires presentation to the enrolling hospital within 24 hours and arterial puncture within 2 hours of qualifying imaging; this screening summary does not encode every STEP domain exclusion.",
-      "Registry status checked 2026-09-30: RECRUITING (record updated 2025-12-04). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status checked 2026-10-01: RECRUITING (record updated 2025-12-04). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "hyperacute",
     "enrollmentWindowText": "EVT window (≤ 24 hours)",
     "externalMetadata": {
       "nct": "NCT06289985",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06289985",
-      "verificationDate": "2026-09-30",
+      "verificationDate": "2026-10-01",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2025-12-04",
       "localActivationStatus": "not_assessed"
@@ -151,14 +151,14 @@
     "sourceGaps": [
       "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "Assessment of pre-stroke disability during hospitalization and investigator determination that disability is not temporary are not encoded in this screening summary.",
-      "Registry status checked 2026-09-30: RECRUITING (record updated 2026-09-02). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status checked 2026-10-01: RECRUITING (record updated 2026-09-02). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "acute_subacute",
     "enrollmentWindowText": "Presentation ≤ 24 hours",
     "externalMetadata": {
       "nct": "NCT05911568",
       "registryUrl": "https://clinicaltrials.gov/study/NCT05911568",
-      "verificationDate": "2026-09-30",
+      "verificationDate": "2026-10-01",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-09-02",
       "localActivationStatus": "not_assessed"
@@ -274,14 +274,14 @@
       "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires spontaneous non-traumatic basal ganglia ICH >=20 mL by ABC/2, pre-ICH mRS 0-2, randomization <=16 hours from LKW, and surgery initiated <120 min from randomization.",
       "CTA/MRA without underlying vascular lesion and goals of care to pursue life-saving therapies (no early withdrawal of care <7 days); detailed registry criteria, coagulation labs (INR <=1.4, aPTT <=40s, platelets >=100k), and consent requirements must be verified through the active protocol.",
-      "Registry status checked 2026-09-30: RECRUITING (record updated 2026-09-15). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status checked 2026-10-01: RECRUITING (record updated 2026-09-15). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "hyperacute",
     "enrollmentWindowText": "≤ 16 hours",
     "externalMetadata": {
       "nct": "NCT07260916",
       "registryUrl": "https://clinicaltrials.gov/study/NCT07260916",
-      "verificationDate": "2026-09-30",
+      "verificationDate": "2026-10-01",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-09-15",
       "localActivationStatus": "not_assessed"
@@ -404,14 +404,14 @@
     "sourceGaps": [
       "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "Public CT.gov eligibility text for NCT07174414 does not state the older draft's stroke-subtype or TIA risk-score thresholds; those criteria are not used in this screening summary.",
-      "Registry status checked 2026-09-30: NOT_YET_RECRUITING (record updated 2025-09-16). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status checked 2026-10-01: NOT_YET_RECRUITING (record updated 2025-09-16). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "≤ 180 days",
     "externalMetadata": {
       "nct": "NCT07174414",
       "registryUrl": "https://clinicaltrials.gov/study/NCT07174414",
-      "verificationDate": "2026-09-30",
+      "verificationDate": "2026-10-01",
       "registryStatus": "NOT_YET_RECRUITING",
       "registryLastUpdatePosted": "2025-09-16",
       "localActivationStatus": "not_assessed"
@@ -495,14 +495,14 @@
     "sourceGaps": [
       "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires one of three OAC-at-index timing groups, planned VKA/DOAC use for the trial duration, SAPT plus OAC tolerability, and detailed bilateral carotid anatomy criteria not fully encoded here.",
-      "Registry status checked 2026-09-30: RECRUITING (record updated 2026-08-19). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status checked 2026-10-01: RECRUITING (record updated 2026-08-19). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "≤ 52 weeks (364 days; OAC-dependent groups)",
     "externalMetadata": {
       "nct": "NCT05723926",
       "registryUrl": "https://clinicaltrials.gov/study/NCT05723926",
-      "verificationDate": "2026-09-30",
+      "verificationDate": "2026-10-01",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-08-19",
       "localActivationStatus": "not_assessed"
@@ -519,7 +519,7 @@
       "Bilateral ultrasound or angiogram demonstrating protocol-defined carotid anatomy"
     ],
     "exactExclusionCriteria": [
-      "history of ICH",
+      "History of intracranial hemorrhage or another contraindication to oral anticoagulation",
       "Contraindication to additional single antiplatelet therapy for 6 months from randomization",
       "≥50% stenosis, or high-risk plaque of the common carotid, internal carotid, subclavian, vertebral, or intracranial arteries that has not been treated with a revascularization procedure"
     ],
@@ -560,11 +560,11 @@
       ],
       "exclusions": [
         {
-          "field": "exPriorIchHistory",
+          "field": "exIntracranialHemorrhage",
           "operator": "==",
           "value": true,
-          "error": "Excludes history of ICH",
-          "pendingLabel": "Confirm no history of spontaneous ICH"
+          "error": "Excludes a history of intracranial hemorrhage",
+          "pendingLabel": "Confirm no history of intracranial hemorrhage; this registry criterion is not limited to spontaneous intraparenchymal hemorrhage"
         },
         {
           "field": "exSaptContraindication",
@@ -574,11 +574,11 @@
           "pendingLabel": "Confirm patient can tolerate 6 months of add-on single antiplatelet"
         },
         {
-          "field": "exCarotidStenosis50",
+          "field": "exUntreatedStenosisPlaque",
           "operator": "==",
           "value": true,
-          "error": "Excludes carotid/vertebral/subclavian/intracranial stenosis ≥50%",
-          "pendingLabel": "Confirm no untreated carotid/vertebral/intracranial stenosis ≥50%"
+          "error": "Untreated ≥50% stenosis or investigator-defined high-risk plaque in a specified vascular territory",
+          "pendingLabel": "Review untreated ≥50% stenosis or high-risk plaque in carotid, subclavian, vertebral or intracranial arteries and prior revascularization"
         },
         {
           "field": "exPregnancy",
@@ -589,7 +589,8 @@
       ],
       "manualPending": [
         "Confirm CT.gov OAC timing group, planned VKA/DOAC duration, and bilateral carotid anatomy requirements",
-        "Confirm <6-week group regardless of OAC at index stroke, or 6–52-week group only if on OAC at the index stroke; investigator assesses conditions affecting safety or trial completion"
+        "Confirm <6-week group regardless of OAC at index stroke, or 6–52-week group only if on OAC at the index stroke; investigator assesses conditions affecting safety or trial completion",
+        "Confirm bilateral protocol-specified carotid measurements and absence of current ≥50% ICA stenosis, independently of the prior untreated vascular-disease exclusion"
       ]
     }
   },
@@ -784,25 +785,25 @@
     "sourceGaps": [
       "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov includes renal, hepatic, hematologic, pregnancy, blood pressure, allergy, competing-trial, and AVM-security exclusions not fully encoded here.",
-      "Registry status checked 2026-09-30: RECRUITING (record updated 2026-05-08). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status checked 2026-10-01: RECRUITING (record updated 2026-05-08). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "14 – 180 days",
     "externalMetadata": {
       "nct": "NCT03907046",
       "registryUrl": "https://clinicaltrials.gov/study/NCT03907046",
-      "verificationDate": "2026-09-30",
+      "verificationDate": "2026-10-01",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-05-08",
       "localActivationStatus": "not_assessed"
     },
-    "conciseBedsideSummary": "Apixaban vs Aspirin in patients with recent ICH (randomized 14-180 days post-onset) and non-valvular AFib.",
+    "conciseBedsideSummary": "Apixaban vs Aspirin in patients with recent ICH (randomized 14-180 days post-onset) and non-valvular atrial fibrillation or flutter.",
     "pathway": "Consult Stroke Research Coordinator / Stroke Neurology Service",
     "noContactInfo": true,
     "exactInclusionCriteria": [
       "Age ≥ 18 years",
       "Intracerebral hemorrhage (ICH), including primary intraventricular hemorrhage, confirmed by brain CT or MRI",
-      "non-valvular Afib",
+      "Non-valvular atrial fibrillation or atrial flutter",
       "can be randomized within 14-180 days of stroke onset"
     ],
     "exactExclusionCriteria": [
@@ -830,11 +831,12 @@
           "matchedLabel": "ICH classification selected"
         },
         {
-          "field": "afibHistory",
+          "field": "afOrFlutterHistory",
           "operator": "==",
           "value": true,
-          "error": "Requires clinical atrial fibrillation history",
-          "matchedLabel": "AFib history confirmed"
+          "error": "Requires documented non-valvular atrial fibrillation or flutter",
+          "matchedLabel": "Atrial fibrillation or flutter history recorded; confirm non-valvular source definition",
+          "pendingLabel": "Confirm non-valvular atrial fibrillation or atrial flutter by ECG or physician-confirmed history"
         },
         {
           "field": "onsetDays",
@@ -885,14 +887,14 @@
     "sourceGaps": [
       "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov includes statin-prescriber consultation/randomization agreement, PCSK9/familial hypercholesterolemia, severe dementia, statin safety, and withdrawal-of-care exclusions not fully encoded here.",
-      "Registry status checked 2026-09-30: RECRUITING (record updated 2026-04-21). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status checked 2026-10-01: RECRUITING (record updated 2026-04-21). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "acute_subacute",
     "enrollmentWindowText": "≤ 7 days",
     "externalMetadata": {
       "nct": "NCT03936361",
       "registryUrl": "https://clinicaltrials.gov/study/NCT03936361",
-      "verificationDate": "2026-09-30",
+      "verificationDate": "2026-10-01",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-04-21",
       "localActivationStatus": "not_assessed"
@@ -910,9 +912,9 @@
     "exactExclusionCriteria": [
       "Suspected secondary cause for the ICH",
       "ICH score > 3",
-      "MI within past 3 months",
+      "CAD-related MI or unstable angina within the previous 3 months",
       "Pre-stroke mRS > 3",
-      "Life expectancy < 2 years"
+      "Life expectancy <24 months due to comorbid terminal conditions"
     ],
     "optimisticDefaults": {
       "ichLocation": "lobar",
@@ -979,19 +981,22 @@
           "pendingLabel": "Confirm clinical ICH score is ≤ 3"
         },
         {
-          "field": "exRecentMi3m",
+          "field": "exRecentCoronarySyndrome",
           "operator": "==",
           "value": true,
-          "error": "Excludes MI within past 3 months",
-          "pendingLabel": "Confirm no Myocardial Infarction in the past 3 months"
+          "error": "CAD-related MI or unstable angina within the previous 3 months",
+          "pendingLabel": "Confirm no CAD-related MI or unstable angina within the previous 3 months"
         },
         {
-          "field": "exLifeExpectancy2y",
+          "field": "exTerminalComorbidity2y",
           "operator": "==",
           "value": true,
-          "error": "Excludes life expectancy < 2 years",
-          "pendingLabel": "Confirm life expectancy is ≥ 2 years"
+          "error": "Life expectancy under 24 months due to comorbid terminal conditions",
+          "pendingLabel": "Assess whether comorbid terminal conditions limit life expectancy to under 24 months"
         }
+      ],
+      "manualPending": [
+        "Review diabetes with prior MI or coronary revascularization as a separate registry exclusion"
       ]
     }
   },
@@ -1004,19 +1009,19 @@
     "sourceGaps": [
       "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "This screening summary cannot distinguish sporadic CAA age >=50 from Dutch-type CAA age >=30 with E693Q APP mutation, and it does not encode ALT/AST, recent investigational agent, or amyloid-antibody exclusions.",
-      "Registry status checked 2026-09-30: ACTIVE_NOT_RECRUITING (record updated 2026-09-18). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status checked 2026-10-01: ACTIVE_NOT_RECRUITING (record updated 2026-09-18). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "Chronic",
     "externalMetadata": {
       "nct": "NCT06393712",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06393712",
-      "verificationDate": "2026-09-30",
+      "verificationDate": "2026-10-01",
       "registryStatus": "ACTIVE_NOT_RECRUITING",
       "registryLastUpdatePosted": "2026-09-18",
       "localActivationStatus": "not_assessed"
     },
-    "conciseBedsideSummary": "ALN-APP study in sporadic or Dutch-type CAA. Active, not recruiting as of the registry update on 2026-09-03; no new enrollment.",
+    "conciseBedsideSummary": "ALN-APP study in sporadic or Dutch-type CAA. Active, not recruiting as of the registry update on 2026-09-18; no new enrollment.",
     "pathway": "Consult Stroke Research Coordinator / Stroke Neurology",
     "noContactInfo": true,
     "exactInclusionCriteria": [
@@ -1069,11 +1074,11 @@
       ],
       "exclusions": [
         {
-          "field": "exSevereAphasiaCognitive",
+          "field": "exCaaCognitiveImpairment",
           "operator": "==",
           "value": true,
-          "error": "Excludes moderate-to-severe cognitive impairment / Alzheimer's",
-          "pendingLabel": "Confirm no moderate/severe cognitive impairment or Alzheimer's"
+          "error": "Excludes moderate/severe Alzheimer disease or significant cognitive impairment",
+          "pendingLabel": "Confirm no moderate/severe Alzheimer disease or significant cognitive impairment"
         },
         {
           "field": "exEgfr30",
@@ -1098,14 +1103,14 @@
     "sourceGaps": [
       "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires CT/MRI proof of acute ischemic infarction or intraparenchymal hemorrhage within 30 days and includes oxygen, aspiration-risk, sedative, surgery, and anticipated rehab length-of-stay exclusions not fully encoded here.",
-      "Registry status checked 2026-09-30: RECRUITING (record updated 2026-08-13). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status checked 2026-10-01: RECRUITING (record updated 2026-08-13). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "acute_subacute",
     "enrollmentWindowText": "≤ 30 days",
     "externalMetadata": {
       "nct": "NCT06722755",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06722755",
-      "verificationDate": "2026-09-30",
+      "verificationDate": "2026-10-01",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-08-13",
       "localActivationStatus": "not_assessed"
@@ -1221,14 +1226,14 @@
     "sourceGaps": [
       "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires SAFE score <=8 within 48-96 hours, Day 90 in-person availability, and MRI/TMS contraindication screening not fully encoded here.",
-      "Registry status checked 2026-09-30: RECRUITING (record updated 2026-08-20). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status checked 2026-10-01: RECRUITING (record updated 2026-08-20). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "acute_subacute",
     "enrollmentWindowText": "24 – 96 hours",
     "externalMetadata": {
       "nct": "NCT05338697",
       "registryUrl": "https://clinicaltrials.gov/study/NCT05338697",
-      "verificationDate": "2026-09-30",
+      "verificationDate": "2026-10-01",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-08-20",
       "localActivationStatus": "not_assessed"
@@ -1361,19 +1366,19 @@
     "sourceGaps": [
       "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires UEFM 25-45, at least 30% corticospinal pathway preservation on MRI, observable motor output to TMS, and additional surgical/device safety screening not fully encoded here.",
-      "Registry status checked 2026-09-30: RECRUITING (record updated 2026-04-13). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status checked 2026-10-01: RECRUITING (record updated 2026-04-13). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "≥ 6 months",
     "externalMetadata": {
       "nct": "NCT06506279",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06506279",
-      "verificationDate": "2026-09-30",
+      "verificationDate": "2026-10-01",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-04-13",
       "localActivationStatus": "not_assessed"
     },
-    "conciseBedsideSummary": "Invasive cortical stimulation in chronic stroke patients (stroke > 6 months prior, post-stroke mRS 3-4, available for 54 weeks).",
+    "conciseBedsideSummary": "Invasive cortical stimulation in chronic stroke patients (stroke ≥6 months prior, post-stroke mRS 3-4, available for 54 weeks).",
     "pathway": "Consult Rehab Research Coordinator",
     "noContactInfo": true,
     "exactInclusionCriteria": [
@@ -1385,10 +1390,11 @@
       "available for duration of study period (54 weeks) for in person visits"
     ],
     "exactExclusionCriteria": [
-      "On anticoagulation",
+      "Therapeutic anticoagulation",
       "History of unprovoked DVT or any pulmonary embolus",
       "history of seizure",
-      "history of spontaneous ICH"
+      "History of spontaneous hemorrhagic stroke",
+      "Aphasia or cognitive deficits preventing communication of pain/discomfort or understanding motor testing and rehabilitation tasks"
     ],
     "optimisticDefaults": {
       "age": 45,
@@ -1448,11 +1454,11 @@
       ],
       "exclusions": [
         {
-          "field": "exAnticoagulation",
+          "field": "exTherapeuticAnticoagulation",
           "operator": "==",
           "value": true,
-          "error": "Excludes patients taking anticoagulants",
-          "pendingLabel": "Confirm not on anticoagulants (DOAC/warfarin/heparin)"
+          "error": "Excludes therapeutic anticoagulation",
+          "pendingLabel": "Confirm whether therapeutic anticoagulation is being taken; prophylactic dosing is not this criterion"
         },
         {
           "field": "exHistoryDvtPe",
@@ -1469,11 +1475,11 @@
           "pendingLabel": "Confirm no history of seizures or epilepsy"
         },
         {
-          "field": "exPriorIchHistory",
+          "field": "exSpontaneousHemorrhagicStroke",
           "operator": "==",
           "value": true,
-          "error": "Excludes history of spontaneous ICH",
-          "pendingLabel": "Confirm no history of spontaneous ICH"
+          "error": "Excludes history of spontaneous hemorrhagic stroke",
+          "pendingLabel": "Confirm no prior spontaneous hemorrhagic stroke; not limited to intraparenchymal ICH"
         },
         {
           "field": "exPregnancy",
@@ -1482,16 +1488,18 @@
           "error": "Excludes pregnancy"
         },
         {
-          "field": "exSevereAphasiaCognitive",
+          "field": "exMrPicsCommunication",
           "operator": "==",
           "value": true,
-          "error": "Excludes severe aphasia or cognitive impairment"
+          "error": "Aphasia/cognitive deficits prevent required communication or understanding of study tasks",
+          "pendingLabel": "Assess communication of pain/discomfort and understanding motor testing/rehabilitation; aphasia alone is not this exclusion"
         }
       ],
       "manualPending": [
         "Confirm UEFM 25-45, corticospinal pathway preservation, and TMS motor output requirements",
         "Confirm current post-stroke mRS 3–4 separately from pre-stroke function; consent and surgical/device suitability require study-team review",
-        "Shoulder subluxation, adhesive capsulitis or contracture requires pain/range-of-motion screening and enrolling-clinician approval, not automatic exclusion"
+        "Shoulder subluxation, adhesive capsulitis or contracture requires pain/range-of-motion screening and enrolling-clinician approval, not automatic exclusion",
+        "Review antiplatelet interruption for surgery, cognitive testing with the protocol aphasia exception, and all additional device/surgical exclusions"
       ]
     }
   },
@@ -1504,14 +1512,14 @@
     "sourceGaps": [
       "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires ARAT 18-44, Box & Block affected arm >=1 block/60 seconds, ability to perform 3 exercise examples, and self-signed consent/behavioral contract; not all are encoded here.",
-      "Registry status checked 2026-09-30: RECRUITING (record updated 2026-09-09). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status checked 2026-10-01: RECRUITING (record updated 2026-09-09). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "90 – 150 days",
     "externalMetadata": {
       "nct": "NCT06682429",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06682429",
-      "verificationDate": "2026-09-30",
+      "verificationDate": "2026-10-01",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-09-09",
       "localActivationStatus": "not_assessed"

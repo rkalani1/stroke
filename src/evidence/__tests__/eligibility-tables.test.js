@@ -60,7 +60,7 @@ describe('eligibilityTables — structure & integrity', () => {
   it('projects every shared profile using its complete canonical criteria and original registry-check date', () => {
     for (const table of eligibilityTables) for (const reference of table.trials) {
       const source = screenerTrials.find(trial => trial.acronym === (reference.acronym === 'ESUS-MRI' ? 'ESUS' : reference.acronym));
-      if (!source) { expect(['PICASSO', 'CAPTIVA']).toContain(reference.acronym); expect(reference.sourceDate).toBeNull(); continue; }
+      if (!source) { expect(['PICASSO', 'CAPTIVA']).toContain(reference.acronym); expect(reference.sourceDate).toBe('2026-10-01'); expect(reference.sourceGaps.join(' ')).toMatch(/Registry status/); continue; }
       expect(reference.eligibility).toBe(source.exactInclusionCriteria);
       expect(reference.exclusions).toBe(source.exactExclusionCriteria);
       expect(reference.nct).toBe(source.externalMetadata.nct || '');

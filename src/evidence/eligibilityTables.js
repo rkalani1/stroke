@@ -9,11 +9,13 @@ const tableOnly = {
     "nct": "NCT05611242",
     "status": "enrolling",
     "href": "https://clinicaltrials.gov/study/NCT05611242",
+    "sourceDate": "2026-10-01",
+    "sourceGaps": ["Registry status and selected criteria checked 2026-10-01; record updated 2025-12-17. The registry inclusion criteria conflict on whether an intracranial occlusion is required. Resolve this with the approved protocol and study team; this table does not adjudicate the conflict or local activation."],
     "summary": "Acute carotid stenting versus non-stenting carotid angioplasty/aspiration, with intracranial treatment as applicable; confirm conflicting registry intracranial-occlusion wording.",
     "eligibility": [
       "Age 18–79, AIS within 16 h of LKW, NIHSS ≥ 4, pre-stroke mRS ≤ 2",
       "ASPECTS ≥ 7; if EVT starts >6–16 h from onset, also CTP core < 50 mL (rCBF < 30%) or DWI core < 25 mL",
-      "Tandem lesion on CTA: extracranial ICA stenosis 70–100% + intracranial ICA-T / M1 / proximal M2",
+      "Extracranial ICA stenosis 70–100% on CTA; the registry conflicts on whether an associated intracranial ICA-T / M1 / proximal M2 occlusion is required. Confirm with the approved protocol and study team.",
       "Ineligible for IV thrombolysis or failed IV thrombolysis"
     ],
     "exclusions": [
@@ -27,6 +29,8 @@ const tableOnly = {
     "nct": "NCT05047172",
     "status": "closed",
     "href": "https://clinicaltrials.gov/study/NCT05047172",
+    "sourceDate": "2026-10-01",
+    "sourceGaps": ["Registry status checked 2026-10-01: active, not recruiting; record updated 2026-09-25. The study sponsor overview and NIH notice confirm termination of the low-dose rivaroxaban arm. This table is a partial profile, not a treatment recommendation or local activation record."],
     "summary": "Ticagrelor+ASA vs clopidogrel+ASA in symptomatic 70–99% intracranial atherosclerosis. Closed to new enrollment (active-not-recruiting); the low-dose rivaroxaban (2.5 mg BID) arm was terminated in January 2026 (DSMB: safety events plus futility).",
     "eligibility": [
       "Age ≥ 30 (30–49 needs additional atherosclerotic risk criteria), ischemic stroke (infarct on imaging or symptoms ≥ 24 h) attributed to ICAS (70–99% stenosis or MRA flow gap)",
@@ -115,7 +119,7 @@ const groups = [
 
 const profileByAcronym = new Map(screenerTrials.map(trial => [trial.acronym, trial]));
 const referenceTrial = acronym => {
-  if (tableOnly[acronym]) return { ...tableOnly[acronym], sourceDate: null };
+  if (tableOnly[acronym]) return { ...tableOnly[acronym] };
   const profile = profileByAcronym.get(acronym === 'ESUS-MRI' ? 'ESUS' : acronym);
   if (!profile) throw new Error(`Missing trial reference profile: ${acronym}`);
   return {

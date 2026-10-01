@@ -6,7 +6,7 @@ import { NIHSS_ITEMS } from './clinical/nihss-items.js';
 import { calculateNIHSS, calculateICHVolumeReviewed } from './calculators.js';
 import { formatPerfusionForExport } from './clinical/perfusion-documentation.js';
 import { formatWakeUpScreenForExport } from './clinical/wake-up-documentation.js';
-import { numericInput, reviewedGcs, evaluateVideoTreatment, reviewedTiaDisposition } from './encounter-clinical-review.js';
+import { numericInput, gcsDocumentation, evaluateVideoTreatment, reviewedTiaDisposition } from './encounter-clinical-review.js';
 import { computeLKWCountdown } from './calculators-extended.js';
 import { getPublicDemoPhiWarnings } from './public-demo-guardrails.js';
 
@@ -142,7 +142,7 @@ export function outputWarnings(state) {
   ].filter(([value, pattern]) => typeof value === 'string' && !pattern.test(value)).map(([value]) => value);
   const actionTimes = ['administrationTime', 'punctureTime', 'reperfusionTime', 'consentTime', 'evtConsentTime'];
   const actionTexts = Object.entries(state.actions).filter(([key, value]) => typeof value === 'string' && !(actionTimes.includes(key) && timestampPattern.test(value))).map(([, value]) => value);
-  const texts = [state.rationale, state.assessment, ...noteFields.map(key => state.note[key]), state.note.lastDOACType, ...malformedDates, ...actionTexts];
+  const texts = [state.rationale, state.assessment, state.gcs.notTestableReason, ...noteFields.map(key => state.note[key]), state.note.lastDOACType, ...malformedDates, ...actionTexts];
   return [...new Set([...texts.flatMap(getPublicDemoPhiWarnings), ...encounterDetailWarnings(state, getPublicDemoPhiWarnings), ...Object.values(state.timeline || {}).filter(value => value && !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d{3})?)?(?:Z|[+-]\d{2}:\d{2})?$/.test(value)).flatMap(getPublicDemoPhiWarnings)])];
 }
 // A delayed clipboard result must never attest or select a newer draft.
@@ -194,10 +194,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   const examDetails = hasValue(n.nihssDetails) ? ` — ${n.nihssDetails}` : '';
   const extraExam = [];
   if (hasValue(n.premorbidMRS)) extraExam.push(`Pre-mRS: ${n.premorbidMRS}`);
-  if (['ich', 'sah', 'cvt'].includes(n.diagnosisCategory)) {
-    const gcs = reviewedGcs(state.gcs);
-    extraExam.push(`GCS: ${gcs === null ? 'incomplete / not testable' : `${gcs}/15`}`);
-  }
+  if (['eye', 'verbal', 'motor'].some(key => hasValue(state.gcs[key]))) extraExam.push(gcsDocumentation(state.gcs));
   const aspects = acuteIschemic ? numericInput(state.aspects, { min: 0, max: 10, integer: true }) : null;
   const pcAspects = acuteIschemic ? numericInput(state.pcAspects, { min: 0, max: 10, integer: true }) : null;
   const ctTimestamp = hasValue(n.ctDate) ? documentedDateTime(n.ctDate, n.ctTime, nowMs) : documentedCtTime(n.ctTime);

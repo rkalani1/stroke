@@ -14,15 +14,21 @@
       "perfusion mismatch",
       "EXTEND",
       "WAKE-UP",
-      "late window"
+      "late window",
+      "TRACE-III",
+      "TIMELESS",
+      "OPTION",
+      "TNK-PLUS",
+      "tenecteplase"
     ],
-    "summary": "Unknown onset and late presentation require a treatment-specific imaging and time framework. The older ESO guidance distinguishes MRI mismatch selection from ordinary clock-based eligibility.",
+    "summary": "Wake-up and extended-window IVT require trial-specific imaging and time criteria. Newer tenecteplase trials give different answers for LVO without access to EVT, non-LVO, and planned EVT.",
     "consider": [
-      "Confirm last known well, symptom discovery and the exact imaging selection method.",
-      "Review whether thrombectomy is planned and which lytic evidence applies to that pathway.",
-      "Check remaining exclusions and the current guideline before extrapolating a trial profile."
+      "Confirm last known well, symptom discovery and whether selection uses MRI DWI–FLAIR mismatch or perfusion imaging.",
+      "TRACE-III (LVO without EVT access) and OPTION (non-LVO) found better 90-day functional outcomes in perfusion-selected Chinese cohorts; both reported more symptomatic intracranial hemorrhage.",
+      "TIMELESS (77% received EVT) and TNK-PLUS (planned EVT) did not demonstrate functional benefit from late-window tenecteplase.",
+      "Review the complete trial criteria, remaining exclusions, current guidance and EVT plan before generalizing."
     ],
-    "caution": "A tissue mismatch does not establish the true onset time or remove other eligibility requirements. The 2021 document predates subsequent lytic trials and the 2026 AHA/ASA guideline.",
+    "caution": "These results do not establish routine late-window IVT for every stroke or make MRI mismatch and perfusion selection interchangeable. The 2021 ESO document predates these tenecteplase trials.",
     "sources": [
       {
         "title": "European Stroke Organisation (ESO) guidelines on intravenous thrombolysis for acute ischaemic stroke",
@@ -39,6 +45,38 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
         "access": "Primary publication identity checked live to restore the archived trial link; this link check does not claim a complete trial or supplement review."
+      },
+      {
+        "title": "TRACE-III: Tenecteplase for Ischemic Stroke at 4.5 to 24 Hours without Thrombectomy",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38884324/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; population, comparison, primary outcome and safety findings checked. Full report and supplements not reviewed."
+      },
+      {
+        "title": "TIMELESS: Tenecteplase for Stroke at 4.5 to 24 Hours with Perfusion-Imaging Selection",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38329148/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; population, comparison, primary outcome and safety findings checked. Full report and supplements not reviewed."
+      },
+      {
+        "title": "OPTION: Tenecteplase for Acute Non-Large Vessel Occlusion 4.5 to 24 Hours After Ischemic Stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41642827/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; population, comparison, primary outcome and safety findings checked. Full report and supplements not reviewed."
+      },
+      {
+        "title": "TNK-PLUS: Intravenous Tenecteplase Prior to Endovascular Treatment for Ischemic Stroke at 4.5 to 24 Hours",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42099212/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; population, comparison, primary outcome and safety findings checked. Full report and supplements not reviewed."
       }
     ],
     "related": [
@@ -317,15 +355,18 @@
       "dominant M2",
       "ESCAPE-MeVO",
       "DISTAL",
-      "DISCOUNT"
+      "DISCOUNT",
+      "DISTAL",
+      "ESCAPE-MeVO",
+      "ORIENTAL-MeVO"
     ],
-    "summary": "The 2026 SVIN focused guideline does not support routine EVT for the broad distal/medium-vessel population. It distinguishes selected disabling dominant-M2 occlusion from that general conclusion.",
+    "summary": "Randomized results differ: DISTAL and ESCAPE-MeVO were neutral, while ORIENTAL-MeVO found more functional independence, with more symptomatic intracranial hemorrhage, in selected Chinese patients with moderate-to-severe deficits. The SVIN guideline searched evidence through February 2026, before ORIENTAL-MeVO publication.",
     "consider": [
-      "Confirm the vessel segment, dominance, disabling deficit and viable tissue context.",
-      "Compare the case with neutral randomized populations and any relevant subgroup evidence.",
-      "Discuss procedural risk and remaining reperfusion options with the intervention team."
+      "Confirm vessel segment, dominance, disabling deficit, imaging and time window; the trial populations are not interchangeable.",
+      "Compare ORIENTAL-MeVO’s NIHSS eligibility of at least 6 and 24-hour window with the neutral trials and their procedural risks.",
+      "Discuss the complete evidence and remaining reperfusion options with the intervention team."
     ],
-    "caution": "Neither the broad neutral result nor a selected subgroup should be generalized to every M2 or distal lesion.",
+    "caution": "SVIN did not support routine DMVO EVT and considered selected disabling dominant-M2 treatment reasonable. A newer positive trial does not establish benefit for every M2 or distal lesion; neutral trials do not establish equivalence.",
     "sources": [
       {
         "title": "Endovascular Thrombectomy in Medium and Distal Vessel Occlusions: A Focused Guideline From the Society of Vascular and Interventional Neurology Guidelines and Practice Standards Committee",
@@ -334,6 +375,30 @@
         "type": "Guideline",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card."
+      },
+      {
+        "title": "DISTAL: Endovascular Treatment for Stroke Due to Occlusion of Medium or Distal Vessels",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39908430/",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; population, comparison, primary outcome and safety findings checked. Full report and supplements not reviewed."
+      },
+      {
+        "title": "ESCAPE-MeVO: Endovascular Treatment of Stroke Due to Medium-Vessel Occlusion",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39908448/",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; population, comparison, primary outcome and safety findings checked. Full report and supplements not reviewed."
+      },
+      {
+        "title": "ORIENTAL-MeVO: Endovascular Treatment of Medium-Vessel-Occlusion Strokes",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42127389/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; population, comparison, primary outcome and safety findings checked. Full report and supplements not reviewed."
       }
     ],
     "related": [
@@ -362,15 +427,20 @@
       "monocular vision",
       "amaurosis",
       "retinal stroke",
-      "ophthalmology"
+      "ophthalmology",
+      "THEIA",
+      "TenCRAOS",
+      "nonarteritic",
+      "alteplase",
+      "tenecteplase"
     ],
-    "summary": "The AHA statement treats acute central retinal artery occlusion as an emergency requiring rapid assessment and vascular risk evaluation; acute-treatment evidence in that document was limited.",
+    "summary": "CRAO remains an emergency. In nonarteritic CRAO treated within 4.5 hours, THEIA did not demonstrate improved one-month visual acuity with alteplase versus aspirin and was likely underpowered. TenCRAOS found no significant 30-day vision-recovery benefit with tenecteplase and reported one fatal intracranial hemorrhage.",
     "consider": [
-      "Clarify onset, visual symptoms and the ophthalmologic diagnosis urgently.",
-      "Coordinate stroke and ophthalmology evaluation and assess the underlying vascular mechanism.",
-      "Check newer randomized evidence and the local pathway before considering acute treatment."
+      "Confirm the ophthalmologic diagnosis and onset; coordinate urgent stroke and ophthalmology assessment.",
+      "Assess the vascular mechanism and whether an arteritic cause is suspected; these trials studied nonarteritic CRAO.",
+      "Distinguish improvement in visual acuity in THEIA from the vision-recovery threshold in TenCRAOS, and review safety alongside benefit."
     ],
-    "caution": "The 2021 statement is a dated evidence framework, not proof of benefit for a specific reperfusion treatment. A retinal diagnosis does not replace evaluation for systemic vascular disease.",
+    "caution": "Small neutral trials do not prove equivalence or establish routine IVT benefit. The 2021 AHA statement predates these randomized results; review the current local pathway and systemic vascular risk.",
     "sources": [
       {
         "title": "Management of Central Retinal Artery Occlusion: A Scientific Statement From the American Heart Association",
@@ -379,6 +449,22 @@
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card. Indexed correction/notice PMID(s): 34029154; correction bodies not reconciled by this identity check."
+      },
+      {
+        "title": "THEIA: Intravenous alteplase versus oral aspirin for acute central retinal artery occlusion within 4.5 hours of severe vision loss",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41109232/",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; population, comparison, primary outcome and safety findings checked. Full report and supplements not reviewed."
+      },
+      {
+        "title": "TenCRAOS: A Randomized Trial of Tenecteplase in Acute Central Retinal Artery Occlusion",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41604638/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; population, comparison, primary outcome and safety findings checked. Full report and supplements not reviewed."
       }
     ],
     "related": []

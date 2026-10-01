@@ -118,7 +118,7 @@ describe('restored telephone Pulsara and video Epic documentation', () => {
     expect(text).toContain('ABC/2 volume: 20 mL (approximate)');
     expect(text).toContain('Intraventricular hemorrhage: absent (reviewed)');
     expect(text).toContain('Infratentorial origin: not assessed');
-    expect(text).toContain('GCS: 15/15');
+    expect(text).toContain('GCS E4 V5 M6 = 15/15');
     expect(text).not.toContain('IVT administration');
     expect(text).not.toContain('Vessel imaging: M1');
     expect(text).not.toContain('Core: 20 mL');

@@ -76,7 +76,7 @@ describe('restored independent Trials workspace', () => {
     await page.getByRole('searchbox').fill('NCT06289985');
     expect(await page.locator('#trials-database-panel article').count()).toBe(1);
     const card = await page.locator('#trials-database-panel article').innerText();
-    expect(card).toContain('Recorded registry check: 2026-09-30');
+    expect(card).toContain('Recorded registry check: 2026-10-01');
     expect(card).toContain('Local activation: not confirmed');
     await page.getByRole('button', { name: 'Full criteria & details', exact: true }).click();
     const text = await page.getByRole('dialog').innerText();
@@ -173,7 +173,7 @@ describe('restored independent Trials workspace', () => {
     const table = page.getByRole('table', { name: title, exact: true });
     expect(await table.isVisible()).toBe(true);
     expect(await table.getByRole('columnheader').allTextContents()).toEqual(['Study', 'Summary', 'Inclusion criteria', 'Exclusion criteria']);
-    expect(await table.innerText()).toContain('Recorded registry check: 2026-09-30');
+    expect(await table.innerText()).toContain('Recorded registry check: 2026-10-01');
     expect(await table.innerText()).toContain('Local activation is not confirmed');
     await page.setViewportSize({ width: 390, height: 844 });
     const cards = page.locator(`[aria-label="${title} study cards"]`);
@@ -182,7 +182,7 @@ describe('restored independent Trials workspace', () => {
     expect(await cards.locator('article').count()).toBe(2);
     expect(await cards.innerText()).toContain('STEP');
     expect(await cards.innerText()).toContain('PICASSO');
-    expect(await cards.innerText()).toContain('Recorded registry check: 2026-09-30');
+    expect(await cards.innerText()).toContain('Recorded registry check: 2026-10-01');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   });
 

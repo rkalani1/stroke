@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v7.5.0 — 2026-10-01 — Clinical utility and precision review
+
+- Remove the header Quick protocols row while retaining protocol content and deep links.
+- Expand completed evidence from 16 to 29 studies and update retinal ischemia, extended-window thrombolysis and distal-vessel evidence with source-specific population and outcome limits.
+- Separate ABCD² first-TIA BP from current BP, label GCS responses and document untestable components, clarify HAS-BLED criteria and simplified ABC/2, and expose renal arithmetic before rounding.
+- Align selected trial criteria with live registry definitions, preserve unknowns and distinguish AF/flutter, therapeutic anticoagulation, terminal comorbidity and protocol-specific exclusions.
+- Preserve session privacy, source limits, protocol locks, responsive controls and opt-in atomic offline updates.
+
 ## v7.4.0 — 2026-10-01 — Comprehensive Evidence and calculator access
 
 - Organize Evidence into nine clinical sections with search, care-setting filters and source-bound questions; account for every archived guideline/statement document and prior clinical topic area.

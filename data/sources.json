@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "sources",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.4.0",
-    "checksum": "sha256:8ac5e72ae7fb0ff6680e51e81ea142c9",
+    "appVersion": "7.5.0",
+    "checksum": "sha256:36e4abe10762248685f200ca3af7ffbf",
     "count": 4,
     "source": "Canonical clinical claims, source identities and retained primary-source projections",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -111,10 +111,11 @@
         "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/17258668/",
         "sourceLabel": "Johnston et al., Lancet 2007",
         "url": "https://pubmed.ncbi.nlm.nih.gov/17258668/",
-        "population": "For a clinically diagnosed TIA. Historical symptoms and duration need explicit review; the score does not diagnose TIA or determine disposition.",
-        "limits": "For a clinically diagnosed TIA. Historical symptoms and duration need explicit review; the score does not diagnose TIA or determine disposition.",
+        "population": "For a clinically diagnosed TIA. Use the first recorded BP after the TIA, with the event symptoms and duration. Later treatment BP is separate. The score does not diagnose TIA or determine disposition.",
+        "limits": "For a clinically diagnosed TIA. Use the first recorded BP after the TIA, with the event symptoms and duration. Later treatment BP is separate. The score does not diagnose TIA or determine disposition.",
         "reviewedAt": "2026-10-01",
-        "reviewScope": "Point assignments and score completeness only; no absolute risk, outcome prediction or treatment-selection review."
+        "reviewScope": "Point assignments and score completeness only; no absolute risk, outcome prediction or treatment-selection review.",
+        "verificationUrl": "https://www.ahajournals.org/doi/10.1161/STROKEAHA.109.571844"
       },
       {
         "id": "chadsvasc-instrument",
@@ -141,7 +142,7 @@
         "population": "Original AF bleeding instrument. Review its definitions, including renal/liver impairment and labile INR. A score does not justify withholding anticoagulation; no bleeding probability is generated.",
         "limits": "Original AF bleeding instrument. Review its definitions, including renal/liver impairment and labile INR. A score does not justify withholding anticoagulation; no bleeding probability is generated.",
         "reviewedAt": "2026-10-01",
-        "reviewScope": "Point assignments and score completeness only; no absolute risk, outcome prediction or treatment-selection review.",
+        "reviewScope": "Input definitions and points checked in Methods/Table 2; no absolute bleeding risk or treatment recommendation.",
         "verificationUrl": "https://www.acforum-excellence.org/sites/default/files/Pisters.HAS-BLED.pdf"
       },
       {
