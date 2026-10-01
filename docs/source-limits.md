@@ -7,21 +7,26 @@ dates null. Retained AIS correction updates remain partially applied. The
 neuroprognostication source retains its original body/table discrepancy for
 ASTRAL even though individualized prognosis outputs are retired.
 
-The protected ICH factor-Xa reversal surface preserves an unresolved local
-source conflict: its reversal section suggests dialysis in renal failure while
-its pharmacokinetic table describes those drugs as not dialyzable. Both
-protected locations already show the conflict and select no dialysis action.
-No protected wording or baseline was altered to resolve this redesign.
+The two protected ICH factor-Xa drug-removal passages were corrected with
+explicit owner authorization on 2026-10-01: "Yes, apply that correction, then
+finish the checks, merge, and deploy." The accepted wording is:
 
-The current primary [Xarelto prescribing information](https://www.jnjlabels.com/package-insert/product-monograph/prescribing-information/XARELTO-pi.pdf)
-states that high protein binding prevents dialysis removal. The
-[FDA Eliquis label](https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/202155Orig1s039%2Cs040lbl.pdf)
-states that hemodialysis does not substantially affect apixaban exposure.
-Those specific label statements were located during this implementation;
-they do not certify the entire reversal pathway or resolve the protected local
-source. Owner adjudication of that protected conflict remains a clinical
-release gate. No automatic PCC or dialysis action is exposed through the MCP
-interface or the new Encounter surface.
+> Rivaroxaban is not dialyzable. Hemodialysis does not appear to substantially
+> affect apixaban exposure and does not significantly contribute to edoxaban
+> clearance. Follow the approved agent-specific reversal pathway and specialist
+> assessment.
+
+Primary label evidence was rechecked for this scoped correction:
+- [Xarelto prescribing information, revised March 2026](https://www.jnjlabels.com/package-insert/product-monograph/prescribing-information/XARELTO-pi.pdf), §§5.2/10: high protein binding prevents dialysis removal.
+- [FDA Eliquis label, 2025](https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/202155Orig1s039%2Cs040lbl.pdf), §5.2: hemodialysis does not appear to substantially affect exposure.
+- [Savaysa prescribing information on DailyMed](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e77d3400-56ad-11e3-949a-0800200c9a66), §§5.3/8.6/10/12.3: hemodialysis does not significantly contribute to edoxaban clearance.
+
+Only the two approved passages and their four affected snapshot lines change.
+The remaining protected protocol wording, rules, modals and Telestroke lock
+are preserved. Dabigatran is a separate branch and is unchanged. This resolves
+the named release gate; it does not certify the entire reversal pathway or
+refresh unrelated clinical review dates. No automatic PCC or dialysis action
+is exposed through the MCP interface or Encounter.
 
 The maintained source projections retain exactly selected recommendation
 records and original review/correction provenance. AIS 2026, ICH 2022,

@@ -91,7 +91,7 @@ const CDN_ASSETS = [];
 // BEGIN GENERATED APP CHUNKS
 const APP_CHUNKS = [
   "./chunks/chunk-AAACGAWZ.js",
-  "./chunks/ProtectedProtocols-JVGTPXRX.js"
+  "./chunks/ProtectedProtocols-CBE46N2G.js"
 ];
 // END GENERATED APP CHUNKS
 

@@ -13,4 +13,4 @@ Before merge/deployment, run the required commands in CONTRIBUTING.md and review
 - Fresh complete online installation permits the retained synthetic core/protocols offline. Upgrade defer/accept, interrupted/corrupt download, second-client activation, scoped cleanup and current-version recovery preserve the working version and unrelated origin state.
 - Check 360/390/768/1440 widths, light/dark, focus/labels/44px primary or equivalent native label targets and simulated200%zoom. Chromium simulations do not establish physical-device behavior or accessibility certification.
 
-The protected ICH dialysis source conflict is a release blocker even when all engineering checks pass. Deployment parity and live smoke must follow successful publication; an open PR is not a live release.
+The owner authorized the two ICH drug-removal corrections on 2026-10-01; verify their four affected lock lines and preserve all other protected content. New unresolved material protected-source conflicts still block release. Deployment parity and live smoke must follow successful publication; an open PR is not a live release.

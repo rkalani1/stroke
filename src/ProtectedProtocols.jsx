@@ -952,7 +952,7 @@ export default function ProtectedProtocols({
                                     <span>Andexanet alfa is not available on the local formulary; give <button onClick={() => setProtocolModal(protocolDetailMap.PCC_DOAC)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">4F-PCC 2000 units IV</button></span>
                                   </li>
                                 </ul>
-                                <p className="text-xs text-cobalt-600 mt-2 dark:text-cobalt-300"><strong>Unresolved institutional conflict:</strong> the reversal section says to consider emergent dialysis in renal failure, while the same document's pharmacokinetic table labels these agents not dialyzable. No dialysis action is selected pending owner adjudication.</p>
+                                <p className="text-xs text-cobalt-600 mt-2 dark:text-cobalt-300"><strong>Drug-removal limits:</strong> Rivaroxaban is not dialyzable. Hemodialysis does not appear to substantially affect apixaban exposure and does not significantly contribute to edoxaban clearance. Follow the approved agent-specific reversal pathway and specialist assessment.</p>
                               </div>
 
                               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 dark:bg-yellow-950 dark:border-yellow-800">
@@ -1298,7 +1298,7 @@ export default function ProtectedProtocols({
                               <li><strong>Andexanet alfa:</strong> not available on the local formulary.</li>
                               <li><strong>4F-PCC:</strong> 2000 units IV — give if Direct Xa Inhibitor screen elevated and no contraindications.</li>
                               <li><strong>Activated charcoal:</strong> if ingestion &lt;2 hours.</li>
-                              <li><strong>Unresolved dialysis conflict:</strong> the reversal section says to consider emergent dialysis in renal failure, while the same document's pharmacokinetic table labels these agents not dialyzable. No dialysis action is selected pending owner adjudication.</li>
+                              <li><strong>Drug-removal limits:</strong> Rivaroxaban is not dialyzable. Hemodialysis does not appear to substantially affect apixaban exposure and does not significantly contribute to edoxaban clearance. Follow the approved agent-specific reversal pathway and specialist assessment.</li>
                             </ul>
                           </div>
                         </div>

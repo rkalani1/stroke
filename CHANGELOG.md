@@ -7,7 +7,7 @@
 - Keep a bounded evidence/API/MCP closure with explicit retirement envelopes and original clinical review provenance. Allowlist published assets and reduce/tighten initial, deferred and offline budgets.
 - Preserve session-only state, public/private build separation and atomic opt-in PWA updates; add focused state/arithmetic/navigation/privacy/browser/update regressions.
 - Use unrounded ICH threshold flags, make fresh-TIA reperfusion review explicit, and synchronize protocol measurements with Encounter while invalidating dependent reviews after edits. Preserve entered treatment conflicts and incomplete/zero distinctions.
-- Release remains blocked pending owner adjudication of the protected ICH factor-Xa dialysis source conflict. Local tests and locks do not establish clinical validation. See IMPLEMENTATION.md for exact verification and publication status.
+- Apply the owner-authorized primary-label correction to two protected ICH factor-Xa drug-removal passages; update only their four snapshot lines. Preserve all other protected content and review dates. See docs/source-limits.md for accepted wording and IMPLEMENTATION.md for verification/release status.
 
 ## v6.30.7 — 2026-10-01 — consistent documentation and reliable navigation
 
