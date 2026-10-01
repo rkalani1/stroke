@@ -46,7 +46,7 @@ afterAll(async () => { await browser?.close(); });
 describe('restored independent Trials workspace', () => {
   it('moves the selected tab and focus with arrows, Home and End', async () => {
     await page.getByRole('tab', { name: 'Screener', exact: true }).focus();
-    for (const [key, label] of [['ArrowRight', 'Tables'], ['End', 'Database'], ['ArrowLeft', 'Tables'], ['Home', 'Screener'], ['ArrowLeft', 'Database']]) {
+    for (const [key, label] of [['ArrowRight', 'Tables'], ['End', 'Completed evidence'], ['ArrowLeft', 'Database'], ['Home', 'Screener'], ['ArrowLeft', 'Completed evidence']]) {
       await page.keyboard.press(key);
       const selected = page.getByRole('tab', { name: label, exact: true });
       expect(await selected.getAttribute('aria-selected')).toBe('true');

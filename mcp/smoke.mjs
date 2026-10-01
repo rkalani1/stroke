@@ -9,7 +9,7 @@ async function call(name,args={}) { const r=await client.callTool({name,argument
 async function rejects(name,args){count++;let r;try{r=await client.callTool({name,arguments:args});}catch(error){assert.equal(error.code,-32602);return;}assert.equal(r.isError,true);}
 try {
  const {tools}=await client.listTools();
- assert.deepEqual(new Set(tools.map(t=>t.name)),new Set(['calc_tnk_dose','calc_alteplase_dose','calc_crcl','calc_dawn_eligibility','calc_defuse3_eligibility','list_calculators','get_sources']));
+ assert.deepEqual(new Set(tools.map(t=>t.name)),new Set(['calc_tnk_dose','calc_alteplase_dose','calc_crcl','calc_dawn_eligibility','calc_defuse3_eligibility','list_calculators','get_sources','search_reference']));
  for(const weightKg of [40,80,83,99.99,100,100.01,140]) {
   const tnk=(await call('calc_tnk_dose',{weightKg})).result;assert.equal(Number(tnk.calculatedDose),Math.min(weightKg/4,25));assert.equal(tnk.authority,'guideline');
   const a=(await call('calc_alteplase_dose',{weightKg})).result;const total=Math.min(weightKg*0.9,90);assert(Math.abs(Number(a.totalDose)-total)<1e-9);assert(Math.abs(Number(a.bolus)+Number(a.infusion)-total)<1e-9);
@@ -21,6 +21,11 @@ try {
  for(const [name,args] of [['calc_dawn_eligibility',{age:70,nihss:15,coreMl:10,timeFromLKWh:10}],['calc_defuse3_eligibility',{age:70,nihss:15,coreMl:10,penumbraMl:30,timeFromLKWh:10}]]){const r=(await call(name,args)).result;assert.equal(r.eligible,null);assert.equal(r.partialScreenMet,true);assert.equal(r.actionable,false);assert.equal(r.missingDomains.length,3);await rejects(name,{...args,nihss:15.5});}
  const registry=await call('list_calculators');assert.equal(registry.count,23);assert(registry.calculators.every(x=>/^#\/(encounter|tools)\//.test(x.route)));assert.equal(registry.calculators.filter(x=>x.module==='supplementary-calculators').length,13);assert(!registry.calculators.some(x=>['rcvs2','pcc-dose','doac-start','enoxaparin'].includes(x.id)));
  const sources=await call('get_sources');assert.equal(sources.metadata.status,'maintained');assert.equal(sources.sources.guidelines.length,6);assert(sources.sources.guidelines.find(g=>g.id==='ais-2026').publicationUpdates.some(u=>u.status==='partially-applied'));
+ const reference=await call('search_reference');assert.equal(reference.count,10);assert.equal(reference.totalMatched,33);assert.equal(reference.truncated,true);assert.equal(reference.metadata.topicCount,17);assert.equal(reference.metadata.studyCount,16);
+ const elan=await call('search_reference',{query:'ELAN',type:'study',setting:'hospital'});assert.deepEqual(elan.records.map(record=>record.id),['elan','catalyst']);assert(elan.records[0].limits);assert(elan.records[0].sources.every(source=>source.access&&source.checkedAt&&source.url.startsWith('https://')));
+ const topics=await call('search_reference',{type:'topic',setting:'clinic',limit:25});assert(topics.count>0);assert(topics.records.every(record=>record.type==='topic'&&record.settings.includes('clinic')&&record.caution));assert.equal(topics.truncated,false);
+ const empty=await call('search_reference',{query:'no-such-reference-xyz'});assert.equal(empty.count,0);assert.equal(empty.totalMatched,0);assert.equal(empty.truncated,false);
+ for(const args of [{query:'x'.repeat(201)},{query:12},{type:'enrolling'},{setting:'emergency'},{limit:0},{limit:26},{limit:1.5},{limit:'10'}])await rejects('search_reference',args);
  await rejects('search_trials',{query:'stroke'});await rejects('get_guideline',{id:'ais-2026'});
  assert.equal(called.size,tools.length);
  console.log(`SMOKE OK: ${count} calls across all ${tools.length} maintained tools; retired tool names unavailable.`);

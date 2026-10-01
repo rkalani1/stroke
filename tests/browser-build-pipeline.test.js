@@ -14,6 +14,7 @@ describe('generated browser module pipeline', () => {
       fs.mkdirSync(path.join(fixture, 'src'));
       fs.symlinkSync(path.join(root, 'node_modules'), path.join(fixture, 'node_modules'), 'dir');
       for (const file of ['build-browser.mjs', 'atomic-write.mjs']) fs.copyFileSync(path.join(root, 'scripts', file), path.join(fixture, 'scripts', file));
+      fs.copyFileSync(path.join(root, 'src/jsx-factory.js'), path.join(fixture, 'src/jsx-factory.js'));
       const gate = path.join(fixture, 'scripts/check-clinical-claims.mjs');
       fs.writeFileSync(gate, 'export const runClinicalClaimCheck = () => ({ok:true});');
       fs.writeFileSync(path.join(fixture, 'package.json'), '{"version":"0.0.0"}');

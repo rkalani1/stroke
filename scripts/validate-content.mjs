@@ -7,6 +7,7 @@ import * as extended from '../src/calculators-extended.js';
 import * as supplementary from '../src/supplementary-calculators.js';
 import { sourceRecords } from '../src/supplementary-calculator-definitions.js';
 import { parseWorkspaceRoute } from '../src/workspace-routing.js';
+import { validateClinicalReference } from './validate-reference.mjs';
 const modules = { calculators, 'calculators-extended': extended, 'supplementary-calculators': supplementary };
 const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
 const errors=[],warnings=[],registry=read('content/calculators/registry.json'),sources=[...read('src/clinical/workspace-sources.json'), ...sourceRecords];
@@ -30,5 +31,7 @@ for(const trial of trials){
   review(`trial ${trial.acronym}`,metadata.verificationDate||null,'Dated first-pass registry status and partial criteria only; current recruitment/local activation require confirmation');
  }
 }
-const result={ok:!errors.length,scope:'Maintained Encounter tools, source dependencies and restored trial profiles',trialProfiles:trials.length,tools:registry.length,sources:sources.length,errors,warnings};
-if(process.argv.includes('--json'))console.log(JSON.stringify(result,null,2));else{console.log(`content-validate: ${result.ok?'PASS':'FAIL'} (${registry.length} retained tools, ${sources.length} source/limits records, ${trials.length} trial profiles)`);errors.forEach(x=>console.error(x));warnings.forEach(x=>console.warn(x));}process.exitCode=result.ok?0:1;
+const reference={topics:[...read('src/reference/acute-topics.json'),...read('src/reference/clinic-topics.json')],studies:read('src/reference/studies.json')};
+errors.push(...validateClinicalReference(reference,{now}));
+const result={ok:!errors.length,scope:'Maintained Encounter tools, source dependencies, trial profiles and bounded clinical references',trialProfiles:trials.length,referenceTopics:reference.topics.length,completedStudies:reference.studies.length,tools:registry.length,sources:sources.length,errors,warnings};
+if(process.argv.includes('--json'))console.log(JSON.stringify(result,null,2));else{console.log(`content-validate: ${result.ok?'PASS':'FAIL'} (${registry.length} retained tools, ${sources.length} source/limits records, ${trials.length} trial profiles, ${reference.topics.length} reference topics, ${reference.studies.length} completed studies)`);errors.forEach(x=>console.error(x));warnings.forEach(x=>console.warn(x));}process.exitCode=result.ok?0:1;

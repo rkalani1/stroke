@@ -27,6 +27,15 @@ const mrsOptions = [
   ['5', '5 — Bedbound; requires constant nursing care'], ['6', '6 — Death']
 ];
 
+// The form and readiness projection share these canonical observations.
+export const TIA_RISK_FIELDS = [
+  ['tiaDwiPositive', 'dwiPositive', 'TIA presentation with DWI lesion'],
+  ['tiaRecurrent', 'crescendoOrRecurrent', 'Crescendo or recurrent episodes'],
+  ['tiaPersistentDeficit', 'persistentDeficit', 'Persistent deficit at reassessment'],
+  ['tiaSevereCarotid', 'symptomaticCarotidSevere', 'Severe symptomatic carotid stenosis'],
+  ['tiaCardioembolic', 'suspectedCardioembolism', 'Suspected cardioembolic source']
+];
+
 export const ENCOUNTER_DETAIL_GROUPS = [
   { id: 'context-details', section: 'context', title: 'Consultation & symptom course', fields: [
     choice('consultRole', 'Consultation requested by', ['Emergency clinician', 'Hospitalist', 'Neurologist', 'Intensivist', 'Advanced practice clinician', 'Other clinician']),
@@ -82,9 +91,7 @@ export const ENCOUNTER_DETAIL_GROUPS = [
     status('tiaMri', 'TIA MRI / DWI workup', { when: diagnosis('tia') }),
     status('tiaVascularImaging', 'TIA head / neck vascular imaging workup', { when: diagnosis('tia') }),
     status('tiaCardiacWorkup', 'TIA ECG / rhythm workup', { when: diagnosis('tia') }),
-    yesNo('tiaDwiPositive', 'TIA presentation with DWI lesion', { when: diagnosis('tia') }),
-    yesNo('tiaRecurrent', 'Crescendo or recurrent episodes', { when: diagnosis('tia') }),
-    yesNo('tiaPersistentDeficit', 'Persistent deficit at reassessment', { when: diagnosis('tia') }),
+    ...TIA_RISK_FIELDS.map(([key, , label]) => yesNo(key, label, { when: diagnosis('tia') })),
     yesNo('tiaWorkupComplete', 'Same-day TIA workup complete', { when: diagnosis('tia') }),
     yesNo('tiaFollowupAccess', 'Prompt outpatient follow-up confirmed', { when: diagnosis('tia') }),
     text('tiaDispositionAssessment', 'TIA workup gaps / disposition assessment', { when: diagnosis('tia') }),

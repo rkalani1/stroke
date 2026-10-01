@@ -4,6 +4,8 @@ import vm from 'node:vm';
 
 const source = readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
 const currentName = source.match(/const CACHE_NAME\s*=\s*'([^']+)'/)[1];
+const version = source.match(/const APP_VERSION\s*=\s*'([^']+)'/)[1];
+const referenceFixture = { _meta: { appVersion: version, schemaVersion: '2.0.0' }, data: { topics: [{ id: 'topic' }], studies: [{ id: 'study' }] } };
 
 function harness(scope, { offline = true, body = 'fresh network', contentType = 'text/javascript', writeFailure = false, beforePut } = {}) {
   const handlers = new Map();
@@ -21,7 +23,14 @@ function harness(scope, { offline = true, body = 'fresh network', contentType = 
       if (writeFailure) throw Error('QuotaExceededError');
       entries.set(href(key), value.clone());
     },
-    addAll: async requests => { installs.push(...requests); },
+    addAll: async requests => {
+      installs.push(...requests);
+      for (const request of requests) {
+        if (request.url === href('data/clinical-reference.json')) {
+          entries.set(request.url, new Response(JSON.stringify(referenceFixture), { headers: { 'Content-Type': 'application/json' } }));
+        }
+      }
+    },
     add: async () => {},
     keys: async () => [...entries.keys()].map(url => new Request(url)),
     delete: async key => entries.delete(href(key)),
@@ -44,6 +53,7 @@ function harness(scope, { offline = true, body = 'fresh network', contentType = 
   return {
     entries, oldEntries, opens, network, installs,
     get globalMatches() { return globalMatches; },
+    setNetworkBody(next) { body = next; },
     seed(key, body, type = 'text/javascript') { entries.set(href(key), new Response(body, { headers: { 'Content-Type': type } })); },
     async install() { let done; handlers.get('install')({ waitUntil: p => { done = p; } }); await done; },
     async fetch(key, navigate = false) {
@@ -165,6 +175,29 @@ for (const scope of ['https://example.test/', 'https://example.test/stroke/']) {
       expect(await (await h.fetch('chunks/reference-OLDHASH.js')).text()).toBe('installed reference records');
       expect(h.network).toEqual([]);
       expect(h.globalMatches).toBe(0);
+    });
+
+    it.each(['data/clinical-reference.json', 'data/clinical-reference.json?v=current'])('keeps %s paired with the installed app while a newer reference is online', async key => {
+      const h = harness(scope, { offline: false, body: JSON.stringify({ ...referenceFixture, _meta: { ...referenceFixture._meta, appVersion: 'new-release' } }), contentType: 'application/json' });
+      h.seed('data/clinical-reference.json', JSON.stringify(referenceFixture), 'application/json');
+      expect(await (await h.fetch(key)).json()).toEqual(referenceFixture);
+      expect(h.network).toEqual([]);
+      expect(h.globalMatches).toBe(0);
+    });
+
+    it.each([
+      ['malformed JSON', '{'],
+      ['another release', JSON.stringify({ ...referenceFixture, _meta: { ...referenceFixture._meta, appVersion: 'new-release' } })],
+      ['malformed data', JSON.stringify({ ...referenceFixture, data: null })],
+    ])('does not cache %s after a reference cache miss and permits a corrected retry', async (_label, body) => {
+      const h = harness(scope, { offline: false, body, contentType: 'application/json' });
+      const key = 'data/clinical-reference.json';
+      expect(await (await h.fetch(key)).text()).toBe(body);
+      expect(h.entries.has(new URL(key, scope).href)).toBe(false);
+      h.setNetworkBody(JSON.stringify(referenceFixture));
+      expect(await (await h.fetch(key)).json()).toEqual(referenceFixture);
+      expect(h.entries.has(new URL(key, scope).href)).toBe(true);
+      expect(h.network).toHaveLength(2);
     });
 
     it('does not substitute the HTML shell or another release for a missing offline chunk', async () => {

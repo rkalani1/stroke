@@ -1,13 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { TrialScreener, StudyDatabase } from './components/TrialScreener.jsx';
 import { EligibilityTables } from './components/EligibilityTables.jsx';
 import { screenerTrials, CTGOV_FIRST_PASS_NOTE } from './evidence/screenerTrials.js';
 
-const VIEWS = [['screener', 'Screener'], ['tables', 'Tables'], ['database', 'Database']];
+const Reference = lazy(() => import('./Reference.jsx'));
+const VIEWS = [['screener', 'Screener'], ['tables', 'Tables'], ['database', 'Database'], ['completed', 'Completed evidence']];
 
-export default function Trials({ sub = 'screener', onNavigate, active = true }) {
+export default function Trials({ sub = 'screener', onNavigate, active = true, version, focusId }) {
   const [localView, setLocalView] = useState('screener');
   const view = VIEWS.some(([id]) => id === (onNavigate ? sub : localView)) ? (onNavigate ? sub : localView) : 'screener';
+  const [completedVisited, setCompletedVisited] = useState(sub === 'completed');
+  useEffect(() => { if (view === 'completed') setCompletedVisited(true); }, [view]);
   const [copyState, setCopyState] = useState(null);
   const copyEpoch = useRef(0), fallback = useRef(null);
   const clearCopy = useCallback(() => { copyEpoch.current += 1; setCopyState(null); }, []);
@@ -33,14 +36,15 @@ export default function Trials({ sub = 'screener', onNavigate, active = true }) 
     }
   }, []);
   return <section className="trials-surface space-y-5" aria-labelledby="trials-title">
-    <header className="workspace-heading"><h1 id="trials-title">Trials</h1><span className="text-sm text-mute">{screenerTrials.length} study profiles</span></header>
-    <p className="workspace-help">{CTGOV_FIRST_PASS_NOTE} Registry checks are dated source records; current recruitment and local activation require confirmation. Screening does not determine treatment eligibility.</p>
-    <div role="tablist" aria-label="Trials sub-view" onKeyDown={moveTab} className="grid grid-cols-3 gap-1 rounded-lg border border-line bg-paper-2 p-1">
+    <header className="workspace-heading"><h1 id="trials-title">Trials</h1>{view !== 'completed' && <span className="text-sm text-mute">{screenerTrials.length} study profiles</span>}</header>
+    {view !== 'completed' && <p className="workspace-help">{CTGOV_FIRST_PASS_NOTE} Registry checks are dated source records; current recruitment and local activation require confirmation. Screening does not determine treatment eligibility.</p>}
+    <div role="tablist" aria-label="Trials sub-view" onKeyDown={moveTab} className="grid grid-cols-2 sm:grid-cols-4 gap-1 rounded-lg border border-line bg-paper-2 p-1">
       {VIEWS.map(([id, label]) => <button key={id} type="button" id={`trials-${id}-tab`} role="tab" tabIndex={view === id ? 0 : -1} aria-selected={view === id} aria-controls={`trials-${id}-panel`} className={`min-h-[44px] rounded-md px-4 text-sm font-semibold ${view === id ? 'bg-card text-ink shadow-card' : 'text-mute hover:text-ink-2'}`} onClick={() => navigate(id)}>{label}</button>)}
     </div>
     <div id="trials-screener-panel" role="tabpanel" aria-labelledby="trials-screener-tab" hidden={view !== 'screener'}><TrialScreener copyToClipboard={copyToClipboard} onStateChange={clearCopy} active={active && view === 'screener'} /></div>
     <div id="trials-tables-panel" role="tabpanel" aria-labelledby="trials-tables-tab" hidden={view !== 'tables'}><EligibilityTables copyToClipboard={copyToClipboard} onStateChange={clearCopy} /></div>
     <div id="trials-database-panel" role="tabpanel" aria-labelledby="trials-database-tab" hidden={view !== 'database'}><StudyDatabase active={active && view === 'database'} /></div>
+    <div id="trials-completed-panel" role="tabpanel" aria-labelledby="trials-completed-tab" hidden={view !== 'completed'}>{completedVisited && <Suspense fallback={<p role="status">Loading completed evidence…</p>}><Reference version={version} mode="studies" focusId={focusId} active={active && view === 'completed'} /></Suspense>}</div>
     {copyState && <div role="status" className="workspace-result">{copyState.failed ? <><p>Clipboard unavailable. Select this {copyState.label.toLowerCase()} and copy it manually.</p><textarea ref={fallback} aria-label="Trial copy fallback" readOnly rows={8} value={copyState.text} /></> : `${copyState.label} copied.`}</div>}
   </section>;
 }

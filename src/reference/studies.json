@@ -1,0 +1,505 @@
+[
+  {
+    "id": "elan",
+    "title": "ELAN — timing of anticoagulation after AF-associated stroke",
+    "year": 2023,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "DOAC",
+      "atrial fibrillation",
+      "early anticoagulation"
+    ],
+    "question": "How did earlier DOAC initiation compare with a later schedule?",
+    "population": "2,013 people with acute ischemic stroke and atrial fibrillation.",
+    "comparison": "Earlier: within 48 hours for minor/moderate stroke or days 6–7 for major stroke. Later: days 3–4, 6–7 or 12–14, respectively.",
+    "result": "The 30-day composite of recurrent ischemic stroke, systemic embolism, major extracranial bleeding, symptomatic intracranial hemorrhage or vascular death was 2.9% versus 4.1% (risk difference −1.18 percentage points; 95% CI −2.84 to 0.47). Symptomatic intracranial hemorrhage was 0.2% in both groups.",
+    "limits": "The confidence interval includes no difference. Trial severity categories and exclusions require review; this is not an automatic start-date rule.",
+    "sources": [
+      {
+        "title": "ELAN primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37222476/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "af-timing"
+  },
+  {
+    "id": "optimas",
+    "title": "OPTIMAS — early versus delayed DOAC initiation",
+    "year": 2024,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "DOAC",
+      "atrial fibrillation",
+      "early anticoagulation"
+    ],
+    "question": "Was initiation within four days noninferior to starting at 7–14 days?",
+    "population": "3,621 analyzed adults with AF-associated ischemic stroke at 100 UK hospitals; clinicians were uncertain about timing.",
+    "comparison": "DOAC initiation within four days versus days 7–14.",
+    "result": "At 90 days, recurrent ischemic stroke, symptomatic intracranial hemorrhage, unclassifiable stroke or systemic embolism occurred in 3.3% of each group. Noninferiority met the two-percentage-point margin; superiority was not demonstrated. Symptomatic intracranial hemorrhage was 0.6% versus 0.7%.",
+    "limits": "Open-label treatment with masked adjudication. Apply the trial selection criteria; identical observed rates do not prove identical individual risk.",
+    "sources": [
+      {
+        "title": "OPTIMAS primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39491870/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM. January 2025 publisher correction checked: wording and figure-at-risk count corrected; no endpoint change stated."
+      }
+    ],
+    "relatedTopic": "af-timing"
+  },
+  {
+    "id": "catalyst",
+    "title": "CATALYST — pooled randomized evidence on DOAC timing",
+    "year": 2025,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "IPD",
+      "meta-analysis",
+      "ELAN",
+      "OPTIMAS",
+      "TIMING",
+      "START",
+      "atrial fibrillation"
+    ],
+    "question": "What does pooled participant-level evidence show about earlier initiation?",
+    "population": "5,441 participants from TIMING, ELAN, OPTIMAS and START; median NIHSS 5. Primary outcome data were available for 5,429.",
+    "comparison": "DOAC initiation within four days versus day five or later; individual participant data meta-analysis.",
+    "result": "At 30 days, recurrent ischemic stroke, symptomatic intracerebral hemorrhage or unclassified stroke occurred in 2.1% versus 3.0% (OR 0.70; 95% CI 0.50–0.98). Symptomatic intracerebral hemorrhage was 0.4% in each group.",
+    "limits": "This synthesis includes ELAN and OPTIMAS participants; it is not an independent additional randomized trial. Results retain the component trials’ selection limits.",
+    "sources": [
+      {
+        "title": "CATALYST primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40570866/",
+        "year": 2025,
+        "type": "Meta-analysis",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "af-timing"
+  },
+  {
+    "id": "point",
+    "title": "POINT — acute dual antiplatelet benefit and bleeding",
+    "year": 2018,
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "DAPT",
+      "clopidogrel",
+      "aspirin",
+      "minor stroke",
+      "TIA"
+    ],
+    "question": "What was the benefit–bleeding tradeoff of adding clopidogrel?",
+    "population": "4,881 patients with minor ischemic stroke or high-risk TIA at international sites.",
+    "comparison": "Clopidogrel plus aspirin versus aspirin alone for the 90-day trial period.",
+    "result": "Major ischemic events (ischemic stroke, myocardial infarction or ischemic vascular death) occurred in 5.0% versus 6.5% at 90 days (HR 0.75; 95% CI 0.59–0.95). Major hemorrhage occurred in 0.9% versus 0.4% (HR 2.32; 95% CI 1.10–4.87).",
+    "limits": "Stopped early. Most ischemic events occurred in the first week; the 90-day design alone does not establish the optimal DAPT duration or eligibility for other stroke populations.",
+    "sources": [
+      {
+        "title": "POINT primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29766750/",
+        "year": 2018,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "secondary-prevention"
+  },
+  {
+    "id": "sammpris",
+    "title": "SAMMPRIS — medical management versus intracranial stenting",
+    "year": 2011,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "sICAS",
+      "intracranial stenosis",
+      "Wingspan",
+      "stent"
+    ],
+    "question": "Did adding Wingspan stenting improve outcomes in severe symptomatic intracranial stenosis?",
+    "population": "451 patients with recent TIA or stroke attributed to 70–99% stenosis of a major intracranial artery.",
+    "comparison": "Aggressive medical management plus angioplasty/Wingspan stenting versus aggressive medical management alone.",
+    "result": "Stroke or death by 30 days was 14.7% with stenting versus 5.8% with medical management. Estimated one-year primary-event rates were 20.0% versus 12.2%; that endpoint included early stroke/death and later qualifying-territory stroke.",
+    "limits": "Enrollment stopped for safety concerns. This tested a specified stent strategy; it does not directly test balloon angioplasty alone or every later device and selection strategy.",
+    "sources": [
+      {
+        "title": "SAMMPRIS primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21899409/",
+        "year": 2011,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and corrected NEJM report read; source updated July 2012. Protocol and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "sicas"
+  },
+  {
+    "id": "close",
+    "title": "CLOSE — PFO closure in selected cryptogenic stroke",
+    "year": 2017,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "patent foramen ovale",
+      "PFO",
+      "atrial septal aneurysm",
+      "large shunt"
+    ],
+    "question": "Does PFO closure reduce recurrent stroke in patients with high-risk PFO features?",
+    "population": "663 patients aged 16–60 with recent stroke attributed to PFO and an atrial septal aneurysm or large shunt.",
+    "comparison": "Closure plus antiplatelet therapy versus antiplatelets alone; the study also included a separate anticoagulation comparison.",
+    "result": "Over mean follow-up of 5.3 years, stroke occurred in 0/238 closure patients versus 14/235 antiplatelet-only patients (HR 0.03; 95% CI 0–0.26). Procedural complications occurred in 5.9%; AF occurred in 4.6% versus 0.9%.",
+    "limits": "Selected younger population with an attributed PFO mechanism. These findings do not make an incidental PFO an indication for closure or establish closure superiority to anticoagulation.",
+    "sources": [
+      {
+        "title": "CLOSE primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/28902593/",
+        "year": 2017,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "pfo"
+  },
+  {
+    "id": "treat-cad",
+    "title": "TREAT-CAD — aspirin versus anticoagulation for dissection",
+    "year": 2021,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "cervical artery dissection",
+      "carotid",
+      "vertebral",
+      "aspirin",
+      "VKA"
+    ],
+    "question": "Was aspirin noninferior to a vitamin K antagonist after cervical dissection?",
+    "population": "194 adults with symptomatic, MRI-confirmed cervical artery dissection within two weeks; 173 were analyzed per protocol.",
+    "comparison": "Aspirin versus a vitamin K antagonist for 90 days.",
+    "result": "The clinical/MRI composite occurred in 23% versus 15% (absolute difference 8 percentage points; 95% CI −4 to 21). Aspirin noninferiority was not established. Seven ischemic strokes occurred with aspirin and none with anticoagulation.",
+    "limits": "Small open-label trial; the primary composite included MRI lesions at 14 days and clinical outcomes through 90 days. Failure of noninferiority does not establish universal anticoagulant superiority; DOACs were not tested.",
+    "sources": [
+      {
+        "title": "TREAT-CAD primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/33765420/",
+        "year": 2021,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "dissection"
+  },
+  {
+    "id": "select2",
+    "title": "SELECT2 — thrombectomy in selected large-core stroke",
+    "year": 2023,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "EVT",
+      "large core",
+      "ASPECTS",
+      "ICA",
+      "M1"
+    ],
+    "question": "Does thrombectomy improve outcome in selected large-core anterior-circulation stroke?",
+    "population": "352 patients with ICA/M1 occlusion within 24 hours and ASPECTS 3–5 or imaging core ≥50 mL.",
+    "comparison": "Thrombectomy plus medical care versus medical care alone.",
+    "result": "The 90-day mRS distribution favored thrombectomy (generalized OR 1.51; 95% CI 1.20–1.89). Functional independence, a secondary outcome, was 20% versus 7%.",
+    "limits": "Stopped early for efficacy; vascular complications occurred. Review complete selection criteria. The 2024 correction clarified core-volume measurement substitutions and stated that outcome direction and significance were unchanged.",
+    "sources": [
+      {
+        "title": "SELECT2 primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36762865/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and January 2024 publisher correction read; full trial report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "acute-reperfusion"
+  },
+  {
+    "id": "baoche",
+    "title": "BAOCHE — basilar thrombectomy at 6–24 hours",
+    "year": 2022,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "EVT",
+      "basilar artery occlusion",
+      "posterior circulation"
+    ],
+    "question": "Does late-window basilar thrombectomy improve functional outcome?",
+    "population": "217 analyzed patients in China with basilar-artery stroke presenting 6–24 hours after symptom onset.",
+    "comparison": "Thrombectomy plus medical treatment versus medical treatment alone.",
+    "result": "At 90 days, mRS 0–3 occurred in 46% versus 24% (adjusted rate ratio 1.81; 95% CI 1.26–2.60). Symptomatic intracranial hemorrhage was 6% versus 1%; procedural complications occurred in 11% of thrombectomy recipients.",
+    "limits": "Stopped at an interim analysis. The primary endpoint changed from mRS 0–4 to 0–3; the original endpoint did not show a conclusive difference. Review the trial’s full clinical/imaging selection rather than applying its time window alone.",
+    "sources": [
+      {
+        "title": "BAOCHE primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36239645/",
+        "year": 2022,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "acute-reperfusion"
+  },
+  {
+    "id": "distal",
+    "title": "DISTAL — medium and distal vessel thrombectomy",
+    "year": 2025,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "EVT",
+      "MeVO",
+      "DMVO",
+      "M2",
+      "M3",
+      "ACA",
+      "PCA"
+    ],
+    "question": "Does EVT improve disability after selected medium/distal vessel occlusion?",
+    "population": "543 participants within 24 hours; nondominant/codominant M2 or selected more distal MCA, ACA or PCA occlusions. Median NIHSS was 6.",
+    "comparison": "EVT plus best medical treatment versus best medical treatment alone.",
+    "result": "The 90-day mRS distribution did not improve significantly (common OR 0.90; 95% CI 0.67–1.22). Symptomatic intracranial hemorrhage was 5.9% versus 2.6%; mortality was 15.5% versus 14.0%.",
+    "limits": "A neutral trial in its selected vessel/severity population; it does not establish equivalence or settle every medium-vessel treatment question. Dominant M2 was outside the stated M2 population.",
+    "sources": [
+      {
+        "title": "DISTAL primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39908430/",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "acute-reperfusion"
+  },
+  {
+    "id": "escape-mevo",
+    "title": "ESCAPE-MeVO — thrombectomy benefit and safety",
+    "year": 2025,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "EVT",
+      "MeVO",
+      "medium vessel",
+      "MCA"
+    ],
+    "question": "Does EVT improve excellent functional outcome after medium-vessel occlusion?",
+    "population": "530 patients in five countries within 12 hours of last known well, with favorable baseline imaging; most occlusions were MCA branches.",
+    "comparison": "EVT plus usual care versus usual care alone.",
+    "result": "At 90 days, mRS 0–1 occurred in 41.6% versus 43.1% (adjusted rate ratio 0.95; 95% CI 0.79–1.15). Mortality was 13.3% versus 8.4% (adjusted HR 1.82; 95% CI 1.06–3.12); symptomatic intracranial hemorrhage was 5.4% versus 2.2%.",
+    "limits": "No primary-outcome benefit in this population. Vessel definition, imaging and time window matter; do not extrapolate large-vessel benefit automatically or infer a universal rule from one trial.",
+    "sources": [
+      {
+        "title": "ESCAPE-MeVO primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39908448/",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "acute-reperfusion"
+  },
+  {
+    "id": "enrich",
+    "title": "ENRICH — early minimally invasive ICH evacuation",
+    "year": 2024,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "lobar hemorrhage",
+      "ICH surgery",
+      "minimally invasive"
+    ],
+    "question": "Does early minimally invasive evacuation improve recovery after selected ICH?",
+    "population": "300 patients with lobar or anterior basal ganglia ICH of 30–80 mL; treatment assignment within 24 hours.",
+    "comparison": "Minimally invasive evacuation plus guideline-based medical management versus medical management alone.",
+    "result": "Mean utility-weighted mRS (0–1; higher is better) at 180 days was 0.458 versus 0.374 (difference 0.084; 95% Bayesian credible interval 0.005–0.163). The benefit appeared attributable to lobar hemorrhage; 30-day mortality was 9.3% versus 18.0%.",
+    "limits": "Adaptive enrollment later restricted inclusion to lobar ICH. Findings concern the tested technique, timing and selected population, not all ICH surgery. Postoperative rebleeding with deterioration occurred in 3.3%.",
+    "sources": [
+      {
+        "title": "ENRICH primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38598795/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "ich-surgery"
+  },
+  {
+    "id": "annexa-i",
+    "title": "ANNEXA-I — hemostatic efficacy and thrombotic harm",
+    "year": 2024,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "andexanet",
+      "factor Xa",
+      "PCC",
+      "anticoagulant reversal",
+      "ICH"
+    ],
+    "question": "What were andexanet’s efficacy and safety tradeoffs in factor Xa inhibitor-associated ICH?",
+    "population": "530 patients with acute ICH after factor Xa inhibitor use within 15 hours; the interim efficacy analysis included 452.",
+    "comparison": "Andexanet versus usual care; 85.5% of usual-care patients received PCC.",
+    "result": "Composite hemostatic efficacy was 67.0% versus 53.1% (adjusted difference 13.4 percentage points; 95% CI 4.6–22.2). Thrombotic events occurred in 10.3% versus 5.6%, including ischemic stroke in 6.5% versus 1.5%. No appreciable difference in 30-day mRS or mortality was reported.",
+    "limits": "Hemostatic efficacy is not functional benefit. This historical trial does not establish current drug availability or the preferred reversal pathway.",
+    "sources": [
+      {
+        "title": "ANNEXA-I primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38749032/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "ich-management"
+  },
+  {
+    "id": "prestige-af",
+    "title": "PRESTIGE-AF — anticoagulation after ICH with AF",
+    "year": 2025,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "DOAC",
+      "ICH survivor",
+      "atrial fibrillation",
+      "anticoagulation resumption"
+    ],
+    "question": "How did DOACs change ischemic and hemorrhagic stroke risk after ICH?",
+    "population": "319 survivors of spontaneous ICH with AF, an anticoagulation indication and mRS ≤4; median follow-up 1.4 years.",
+    "comparison": "A DOAC versus no anticoagulation.",
+    "result": "First ischemic stroke favored DOACs (HR 0.05; 95% CI 0.01–0.36), while recurrent ICH noninferiority was not established (HR 10.89; 90% CI 1.95–60.72). All-event rates per 100 patient-years were 0.83 versus 8.60 for ischemic stroke and 5.00 versus 0.82 for ICH.",
+    "limits": "The ischemic benefit and hemorrhagic harm require individualized assessment; this trial does not establish a universal restart date. Two indexed corrections could not be fully accessed.",
+    "sources": [
+      {
+        "title": "PRESTIGE-AF primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40023176/",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM. March and June 2025 corrections identified; publisher correction bodies inaccessible (403). No full corrected-report review."
+      }
+    ],
+    "relatedTopic": "ich-management"
+  },
+  {
+    "id": "mind",
+    "title": "MIND — minimally invasive evacuation at up to 72 hours",
+    "year": 2025,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "ICH surgery",
+      "Artemis",
+      "deep hemorrhage",
+      "minimally invasive"
+    ],
+    "question": "Did the Artemis evacuation strategy improve disability or survival?",
+    "population": "236 adults aged 18–80 with 20–80 mL supratentorial ICH, NIHSS ≥6 and GCS 5–15; 69.5% had primarily deep hemorrhage.",
+    "comparison": "Minimally invasive surgery within 72 hours plus medical management versus medical management alone.",
+    "result": "There was no demonstrated improvement in 180-day ordinal mRS (OR 1.03; 96% CI 0.62–1.72). Thirty-day mortality was 7.2% versus 9.8% (difference −2.5 percentage points; 95% CI −11.7 to 4.8).",
+    "limits": "Enrollment stopped early after a feasibility analysis. Imprecision limits conclusions; do not treat the result as proof of equivalence or interchange its technique and timing with ENRICH.",
+    "sources": [
+      {
+        "title": "MIND primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40892424/",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "ich-surgery"
+  },
+  {
+    "id": "switch",
+    "title": "SWITCH — decompression for severe deep ICH",
+    "year": 2024,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "hemicraniectomy",
+      "decompressive craniectomy",
+      "basal ganglia",
+      "thalamic hemorrhage"
+    ],
+    "question": "Does decompressive craniectomy improve outcome in severe deep ICH?",
+    "population": "Adults aged 18–75 with severe basal ganglia or thalamic ICH; 197 randomized participants gave delayed consent.",
+    "comparison": "Decompressive craniectomy plus best medical treatment versus best medical treatment alone.",
+    "result": "At 180 days, mRS 5–6 occurred in 44% versus 58% (adjusted risk ratio 0.77; 95% CI 0.59–1.01; p=0.057). The report characterized the evidence as weak.",
+    "limits": "Stopped early for funding; survival often involved severe disability. This is a decompression study in deep ICH, not evidence for every hemorrhage location or evacuation technique. Two indexed correction bodies were inaccessible.",
+    "sources": [
+      {
+        "title": "SWITCH primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38761811/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract read via PubMed/NLM. June and July 2024 corrections identified; publisher correction bodies inaccessible (403). No full corrected-report review."
+      }
+    ],
+    "relatedTopic": "ich-surgery"
+  }
+]

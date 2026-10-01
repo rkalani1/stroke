@@ -39,6 +39,9 @@ const result = await build({
   splitting: true,
   target: 'es2018',
   minify: true,
+  jsxFactory: 'createElement',
+  inject: [path.join(root, 'src/jsx-factory.js')],
+  charset: 'utf8', // Preserve native clinical symbols without redundant ASCII escapes.
   outdir,
   chunkNames: 'chunks/[name]-[hash]',
   metafile: true,

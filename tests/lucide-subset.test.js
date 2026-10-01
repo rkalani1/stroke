@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { readFileSync } from 'node:fs';
 import { icons, createIcons } from '../src/lucide-subset.js';
 
 describe('lucide-subset', () => {
@@ -77,15 +78,20 @@ describe('lucide-subset', () => {
   });
 
   describe('icons object', () => {
+    it('covers every protected protocol icon without shipping unused vectors', () => {
+      const source = readFileSync(new URL('../src/ProtectedProtocols.jsx', import.meta.url), 'utf8');
+      const used = [...new Set([...source.matchAll(/data-lucide="([a-z-]+)"/g)].map(match => match[1].split('-').map(word => word[0].toUpperCase()+word.slice(1)).join('')))];
+      expect(Object.keys(icons).sort()).toEqual(used.sort());
+    });
     it('exports a populated icons object', () => {
       expect(icons).toBeTypeOf('object');
       expect(Object.keys(icons).length).toBeGreaterThan(0);
 
       // Verify structure of one well known icon
-      expect(icons.Activity).toBeDefined();
-      expect(Array.isArray(icons.Activity)).toBe(true);
-      expect(icons.Activity[0][0]).toBe('path');
-      expect(icons.Activity[0][1].d).toBeDefined();
+      expect(icons.ArrowRight).toBeDefined();
+      expect(Array.isArray(icons.ArrowRight)).toBe(true);
+      expect(icons.ArrowRight[0][0]).toBe('path');
+      expect(icons.ArrowRight[0][1].d).toBeDefined();
     });
   });
 
@@ -97,7 +103,7 @@ describe('lucide-subset', () => {
     });
 
     it('creates an SVG and replaces the node when a valid icon name is provided', () => {
-      const el = globalThis.createMockLucideElement('activity');
+      const el = globalThis.createMockLucideElement('arrow-right');
       createIcons();
 
       expect(el.replaceWith).toHaveBeenCalledTimes(1);
@@ -119,9 +125,9 @@ describe('lucide-subset', () => {
       expect(newSvg._attributes['focusable']).toBe('false');
 
       // Verify children (paths)
-      expect(newSvg._children.length).toBe(icons.Activity.length);
+      expect(newSvg._children.length).toBe(icons.ArrowRight.length);
       expect(newSvg._children[0].tagName).toBe('PATH');
-      expect(newSvg._children[0]._attributes['d']).toBe(icons.Activity[0][1].d);
+      expect(newSvg._children[0]._attributes['d']).toBe(icons.ArrowRight[0][1].d);
     });
 
     it('ignores elements if the icon name is not found in the map', () => {
@@ -133,7 +139,7 @@ describe('lucide-subset', () => {
     });
 
     it('preserves existing class attribute on the target node', () => {
-      const el = globalThis.createMockLucideElement('heart', { class: 'icon-large text-red-500' });
+      const el = globalThis.createMockLucideElement('sparkles', { class: 'icon-large text-red-500' });
       createIcons();
 
       const newSvg = el._replacedWith;
@@ -149,12 +155,12 @@ describe('lucide-subset', () => {
     });
 
     it('handles multiple elements and pascal-cases the input correctly', () => {
-      const el1 = globalThis.createMockLucideElement('alert-circle');
+      const el1 = globalThis.createMockLucideElement('shield-alert');
       const el2 = globalThis.createMockLucideElement('alert-triangle');
 
       createIcons();
 
-      expect(el1._replacedWith._children.length).toBe(icons.AlertCircle.length);
+      expect(el1._replacedWith._children.length).toBe(icons.ShieldAlert.length);
       expect(el2._replacedWith._children.length).toBe(icons.AlertTriangle.length);
     });
 
@@ -175,7 +181,7 @@ describe('lucide-subset', () => {
     });
 
     it('transfers aria-label, role, aria-labelledby, and title attributes from placeholder to svg', () => {
-      const el = globalThis.createMockLucideElement('activity', {
+      const el = globalThis.createMockLucideElement('arrow-right', {
         'aria-label': 'Activity indicator',
         'role': 'img',
         'aria-labelledby': 'act-title',
@@ -191,7 +197,7 @@ describe('lucide-subset', () => {
     });
 
     it('sets aria-hidden to "false" when an accessible label or title is present', () => {
-      const el = globalThis.createMockLucideElement('activity', {
+      const el = globalThis.createMockLucideElement('arrow-right', {
         'aria-label': 'System status active'
       });
       createIcons();
@@ -202,7 +208,7 @@ describe('lucide-subset', () => {
     });
 
     it('preserves explicit aria-hidden="true" even when accessible label is present', () => {
-      const el = globalThis.createMockLucideElement('activity', {
+      const el = globalThis.createMockLucideElement('arrow-right', {
         'aria-label': 'Decorative graphic',
         'aria-hidden': 'true'
       });

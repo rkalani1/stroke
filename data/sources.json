@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "sources",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.2.0",
-    "checksum": "sha256:7ebbd3a9a8f34ae9d8c7f16b12e59856",
+    "appVersion": "7.3.0",
+    "checksum": "sha256:233aa201e97c62b3b1ef3288b9820061",
     "count": 4,
     "source": "Canonical clinical claims, source identities and retained primary-source projections",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -4066,6 +4066,6 @@
         }
       }
     ],
-    "scope": "Retained source/limits access only; no general guideline browser or completed-trial encyclopedia. Existing review scopes, correction warnings and source-access gaps remain applicable."
+    "scope": "Retained source/limits access; curated Evidence topics and completed studies are in data/clinical-reference.json. Existing review scopes, correction warnings and source-access gaps remain applicable; this is not the archived full corpus."
   }
 }
