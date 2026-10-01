@@ -273,6 +273,9 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps chromium
 
+      - name: Stage allowlisted public artifact for local QA
+        run: npm run publish:stage
+
       # This job probes the LIVE site, but it starts the moment main is pushed
       # -- concurrently with the `pages build and deployment` run it measures.
       # Without this gate it read a half-swapped deploy and failed on every main

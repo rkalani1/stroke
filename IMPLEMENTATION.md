@@ -68,3 +68,9 @@ External links: Telestroke map HTTP 200, 18,735 B, exact baseline SHA-256 `53dd8
 Owner-authorized correction is applied and local checks pass. This is the pre-merge verification checkpoint; normal PR/Pages checks and live verification determine the final release state. Exact release commits and endpoints are reported in the final handoff. An open PR is not deployed.
 
 Rollback ref: **`archive/pre-encounter-first-20261001-4f8e99d`**. Restore through a reviewed forward commit, assign a *new* coherent app/cache version, build/validate and release normally. Reusing an old worker identity is insufficient for existing 7.x clients. Deployment rollback was not executed; baseline upgrade/failure/retry was tested. Already-open old pages and permanently offline devices cannot be remotely forced to update.
+
+## Post-merge verification repair
+
+PR #228 merged as `cc2b53f789d9d4f12e5a5e5f88d88d72422ca16c`. Pages published version 7.0.0 and all 137 declared shell/module/API artifacts match the checked bytes. The full actual-live smoke passes 16/16; 50 direct retired/support URLs, including all 24 teaching downloads, return 404/410.
+
+Main CI's separate adaptive job failed its local retired-URL assertion because it lacked `output/site` and the harness implicitly served the repository root. Actual live retirement was verified separately. Standalone main/scheduled jobs now stage the same public allowlist before local QA; the default harness fails fast when that stage is missing. No test assertion, latency ceiling or public exclusion is weakened. Final repair PR/main check results are recorded in the release handoff.

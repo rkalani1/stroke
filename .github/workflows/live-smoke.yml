@@ -86,6 +86,9 @@ jobs:
             npm run validate:automedbench-lite
           } 2>&1 | tee output/diagnostics/qa-structural-validation.log
 
+      - name: Stage allowlisted public artifact for local QA
+        run: npm run publish:stage
+
       - name: Verify live Pages artifact parity
         run: npm run qa:wait-for-live-pages
 
