@@ -19,7 +19,7 @@ try {
  for(const [sex,factor] of [['male',1],['female',0.85]]) { const r=(await call('calc_crcl',{age:70,weight:80,sex,creatinine:1})).result;assert(Math.abs(r.rawValue-70*80*factor/72)<1e-10); }
  for(const patch of [{sex:'M'},{age:10},{creatinine:''},{weight:[80]}])await rejects('calc_crcl',{age:70,weight:80,sex:'male',creatinine:1,...patch});
  for(const [name,args] of [['calc_dawn_eligibility',{age:70,nihss:15,coreMl:10,timeFromLKWh:10}],['calc_defuse3_eligibility',{age:70,nihss:15,coreMl:10,penumbraMl:30,timeFromLKWh:10}]]){const r=(await call(name,args)).result;assert.equal(r.eligible,null);assert.equal(r.partialScreenMet,true);assert.equal(r.actionable,false);assert.equal(r.missingDomains.length,3);await rejects(name,{...args,nihss:15.5});}
- const registry=await call('list_calculators');assert.equal(registry.count,10);assert(registry.calculators.every(x=>x.route.startsWith('#/encounter/')));assert(!registry.calculators.some(x=>['rcvs2','pcc-dose','doac-start','enoxaparin'].includes(x.id)));
+ const registry=await call('list_calculators');assert.equal(registry.count,23);assert(registry.calculators.every(x=>/^#\/(encounter|tools)\//.test(x.route)));assert.equal(registry.calculators.filter(x=>x.module==='supplementary-calculators').length,13);assert(!registry.calculators.some(x=>['rcvs2','pcc-dose','doac-start','enoxaparin'].includes(x.id)));
  const sources=await call('get_sources');assert.equal(sources.metadata.status,'maintained');assert.equal(sources.sources.guidelines.length,6);assert(sources.sources.guidelines.find(g=>g.id==='ais-2026').publicationUpdates.some(u=>u.status==='partially-applied'));
  await rejects('search_trials',{query:'stroke'});await rejects('get_guideline',{id:'ais-2026'});
  assert.equal(called.size,tools.length);

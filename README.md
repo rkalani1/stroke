@@ -14,7 +14,9 @@ Version 7.0.1 is a lean, deterministic browser workspace. Encounter opens immedi
 - Session state survives navigation. New encounter requires deliberate confirmation and clears entries/drafts/timers. Reload clears clinical state; no encounter persistence, census, imports, patient-context URLs, AI submission, analytics or backend integration.
 - Compact theme/install/update controls, local runtime dependencies, and atomic opt-in PWA updates. External references require internet and receive no encounter context.
 
-The Education/general Guidelines/References portal, general calculator directory, teaching PDFs/graphics, simulators and broad content-generation machinery are retired. Legacy hash routes explain retirement; supported calculator deep links reveal their embedded tool. No hidden archive library is shipped.
+Thirteen source-linked worksheets and descriptor aids are available in Calculators & Links: ABCD², CHA₂DS₂-VASc, HAS-BLED, RoPE, PASCAL, PHASES, mRS, Hunt–Hess, WFNS, regional ASPECTS/pc-ASPECTS, PHQ-2 and STOP-BANG. Shared measurements come from Encounter; reviewed applications and screening exports invalidate after source edits. Optional Encounter sections support follow-up, progress, discharge, transfer and procedure documentation through one generation pipeline.
+
+The Education/general Guidelines/References portal, withdrawn prediction tools, teaching PDFs/graphics, simulators and broad content-generation machinery are retired. Legacy hash routes explain retirement; supported calculator deep links reveal their embedded tool. No hidden archive library is shipped.
 
 ## Maintained evidence and interfaces
 

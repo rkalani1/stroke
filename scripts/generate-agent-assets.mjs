@@ -27,7 +27,8 @@ async function main() {
  const load = rel => import(pathToFileURL(path.join(ROOT,rel)).href);
  const atlas = await load('src/evidence/index.js');
  for(const key of ['recommendations','claims','citations'])put(`data/atlas/${key}.json`,envelope(key,'Maintained Encounter/protocol evidence dependency closure',atlas[key]));
- const sourceRecords = JSON.parse(await fs.readFile(path.join(ROOT,'src/clinical/workspace-sources.json'),'utf8'));
+ const supplementary = await load('src/supplementary-calculator-definitions.js');
+ const sourceRecords = [...JSON.parse(await fs.readFile(path.join(ROOT,'src/clinical/workspace-sources.json'),'utf8')), ...supplementary.sourceRecords];
  const clinicalClaims = JSON.parse(await fs.readFile(path.join(ROOT,'src/clinical/claims.json'),'utf8'));
  const guidelineFiles=(await fs.readdir(path.join(ROOT,'src/guidelines'))).filter(x=>x.endsWith('.json')).sort();
  const guidelines=[];

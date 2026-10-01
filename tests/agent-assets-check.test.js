@@ -50,6 +50,7 @@ describe('agent asset byte synchronization', () => {
       ].join('\n'));
       fs.mkdirSync(path.join(tempDir, 'src', 'clinical'));
       for (const name of ['workspace-sources.json', 'claims.json']) fs.writeFileSync(path.join(tempDir, 'src', 'clinical', name), '[]');
+      fs.writeFileSync(path.join(tempDir, 'src', 'supplementary-calculator-definitions.js'), 'export const sourceRecords = [];\n');
       fs.writeFileSync(path.join(tempDir, 'src', 'institutional-protocols.js'), "throw new Error('fixture import failure');\n");
 
       const result = spawnSync(process.execPath, [generatorPath, '--check'], {

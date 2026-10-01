@@ -150,6 +150,74 @@ describe('restored telephone Pulsara and video Epic documentation', () => {
     expect(outputWarnings(state)).toContain('Possible email address');
   });
 
+  it('initializes restored CT date, CTP narrative and discussion details as empty canonical fields', () => {
+    const state = newEncounter();
+    expect(state.note.ctDate).toBe('');
+    expect(state.note.ctpResults).toBe('');
+    expect(state.actions.discussionDetails).toBe('');
+    const text = buildSummary(state, NOW);
+    expect(text).not.toContain('Discussion details:');
+    expect(text).toContain('CTP: not documented');
+  });
+
+  it.each(['phone', 'video'])('exports exact entered CT date and local time without inventing a date in %s', format => {
+    const state = make(format, { note: { ctDate: '2026-10-01', ctTime: '10:30' } });
+    if (format === 'video') expect(buildSummary(state, NOW)).toContain('NCCT Head (2026-10-01 10:30)');
+    else expect(buildSummary(state, NOW)).toContain('Head CT (2026-10-01 10:30)');
+    const timeOnly = make(format, { note: { ctDate: '', ctTime: '10:30' } });
+    expect(buildSummary(timeOnly, NOW)).toContain('10:30; date not documented');
+    const dateOnly = make(format, { note: { ctDate: '2026-10-01', ctTime: '' } });
+    expect(buildSummary(dateOnly, NOW)).toContain('2026-10-01 [time not documented] (incomplete date/time; correct before interpretation)');
+    expect(buildSummary(dateOnly, NOW)).not.toContain('2026-10-01 00:00');
+    for (const [ctDate, ctTime] of [['2026-02-30', '10:30'], ['2026-10-01', '13:00']]) {
+      expect(buildSummary(make(format, { note: { ctDate, ctTime } }), NOW)).toContain(`${ctDate} ${ctTime} (invalid or future; correct before interpretation)`);
+    }
+  });
+
+  it.each(['phone', 'video'])('exports explicit discussion details separately from event status and CTP findings in %s', format => {
+    const state = make(format, { note: { ctpResults: 'Perfusion findings entered by the reviewing clinician.' } });
+    state.actions.discussionDetails = 'Questions remain about the available options.';
+    const text = buildSummary(state, NOW);
+    expect(text).toContain('Discussion details: Questions remain about the available options.');
+    expect(text).toContain('Discussion: not documented');
+    expect(text).toContain('Consent status: not documented');
+    expect(text).toContain('IVT administration: not documented');
+    expect(text).toContain(state.note.ctpResults);
+    expect(state.actions.discussion).toBe('');
+    expect(state.actions.consent).toBe('');
+    expect(state.actions.administered).toBe(false);
+    state.actions.discussion = 'Completed';
+    expect(buildSummary(state, NOW)).toContain('Discussion: Completed');
+    state.actions.discussionDetails = '';
+    expect(buildSummary(state, NOW)).not.toContain('Discussion details:');
+    expect(buildSummary(state, NOW)).toContain('Discussion: Completed');
+  });
+
+  it('invalidates drafts after restoring, editing or clearing the CT date, CTP narrative or discussion details', () => {
+    const state = newEncounter(); state.draft = { text: 'Old generated document', stale: false };
+    for (const patch of [
+      { note: { ...state.note, ctDate: '2026-10-01' } },
+      { note: { ...state.note, ctDate: '' } },
+      { note: { ...state.note, ctpResults: 'Clinician-entered findings.' } },
+      { note: { ...state.note, ctpResults: '' } },
+      { actions: { ...state.actions, discussionDetails: 'Clinician-entered discussion details.' } },
+      { actions: { ...state.actions, discussionDetails: '' } }
+    ]) expect(updateEncounter(state, patch).draft.stale).toBe(true);
+  });
+
+  it('scans restored narrative sinks and malformed CT dates while allowing structured clinical dates', () => {
+    const state = make('video', { note: { ctDate: '2026-10-01' } });
+    expect(outputWarnings(state)).toEqual([]);
+    state.note.ctDate = 'user@example.invalid';
+    expect(outputWarnings(state)).toContain('Possible email address');
+    state.note.ctDate = '2026-10-01';
+    state.note.ctpResults = 'user@example.invalid';
+    expect(outputWarnings(state)).toContain('Possible email address');
+    state.note.ctpResults = '';
+    state.actions.discussionDetails = '2026-10-01T10:30 user@example.invalid';
+    expect(outputWarnings(state)).toContain('Possible email address');
+  });
+
   it.each(['chiefComplaint', 'symptoms', 'pmh', 'heartRate', 'spO2', 'temperature', 'plateletCount', 'pt', 'ctTime', 'ctResults', 'ctaResults', 'ekgResults', 'nihssDetails', 'clinicianName'])('checks the newly exported %s field before copying', async field => {
     const state = make('video', { note: { [field]: 'user@example.invalid' } });
     expect(outputWarnings(state)).toContain('Possible email address');
@@ -173,4 +241,17 @@ it('preserves an explicitly entered chief complaint in the Pulsara paragraph', (
   expect(buildSummary(state, NOW)).toContain('Chief complaint: Unresolved dizziness.');
   state.note.chiefComplaint = '';
   expect(buildSummary(state, NOW)).not.toContain('Chief complaint:');
+});
+
+
+describe('perfusion narrative across supported contexts', () => {
+  it.each(['phone', 'video'])('retains entered narrative without activating selection arithmetic for %s', consultationType => {
+    for (const context of ['acute', 'follow-up']) {
+      const state = newEncounter(); state.context = context; state.consultationType = consultationType;
+      Object.assign(state.note, { diagnosisCategory: 'tia', ctpResults: 'Reviewed prior perfusion findings.', coreVolume: '20', penumbraVolume: '60' });
+      const result = buildSummary(state, NOW);
+      expect(result).toContain('CTP: Reviewed prior perfusion findings.');
+      expect(result).not.toContain('Calculated mismatch volume');
+    }
+  });
 });

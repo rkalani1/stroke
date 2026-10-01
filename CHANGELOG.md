@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v7.1.0 — 2026-10-01 — Encounter, Trials and calculator restoration
+
+- Restore optional consultation, phenotype, diagnosis, prevention, follow-up, rehabilitation, transfer, procedure and discharge documentation within the four Encounter sections. Restore consultation/event timing, weight units, NIHSS keyboard scoring and separate IVT/EVT consent records.
+- Add follow-up, progress, discharge, transfer and procedure formats through the existing Pulsara/Epic generation and copy pipeline. Keep explicit facts, unknown values, date validation and stale-draft protection.
+- Restore the Trials sidebar, future-study groups, live briefing preview, database filters and responsive inclusion/exclusion tables.
+- Restore 13 reviewed scoring worksheets/descriptor aids with shared Encounter inputs, explicit review and source limits. Applied ABCD²/ASPECTS scores invalidate when their sources change; follow-up notes use current PHQ-2/STOP-BANG worksheets.
+- Keep the restored visual system, four destinations and session-only state; add visible Encounter navigation and reset, section shortcuts and a compact core-entry readout.
+
 ## v7.0.2 — 2026-10-01 — Original visual style restored
 
 - Restore the original pearl/mineral app sheet, teal activity mark, Bricolage wordmark, navigation pills, section cards, rounded controls and monospaced readouts.

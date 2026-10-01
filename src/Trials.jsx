@@ -39,7 +39,7 @@ export default function Trials({ sub = 'screener', onNavigate, active = true }) 
       {VIEWS.map(([id, label]) => <button key={id} type="button" id={`trials-${id}-tab`} role="tab" tabIndex={view === id ? 0 : -1} aria-selected={view === id} aria-controls={`trials-${id}-panel`} className={`min-h-[44px] rounded-md px-4 text-sm font-semibold ${view === id ? 'bg-card text-ink shadow-card' : 'text-mute hover:text-ink-2'}`} onClick={() => navigate(id)}>{label}</button>)}
     </div>
     <div id="trials-screener-panel" role="tabpanel" aria-labelledby="trials-screener-tab" hidden={view !== 'screener'}><TrialScreener copyToClipboard={copyToClipboard} onStateChange={clearCopy} active={active && view === 'screener'} /></div>
-    <div id="trials-tables-panel" role="tabpanel" aria-labelledby="trials-tables-tab" hidden={view !== 'tables'}><EligibilityTables copyToClipboard={copyToClipboard} /></div>
+    <div id="trials-tables-panel" role="tabpanel" aria-labelledby="trials-tables-tab" hidden={view !== 'tables'}><EligibilityTables copyToClipboard={copyToClipboard} onStateChange={clearCopy} /></div>
     <div id="trials-database-panel" role="tabpanel" aria-labelledby="trials-database-tab" hidden={view !== 'database'}><StudyDatabase active={active && view === 'database'} /></div>
     {copyState && <div role="status" className="workspace-result">{copyState.failed ? <><p>Clipboard unavailable. Select this {copyState.label.toLowerCase()} and copy it manually.</p><textarea ref={fallback} aria-label="Trial copy fallback" readOnly rows={8} value={copyState.text} /></> : `${copyState.label} copied.`}</div>}
   </section>;
