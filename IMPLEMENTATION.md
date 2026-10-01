@@ -100,3 +100,12 @@ Local leak checks use the public denylist; the authoritative private list is hel
 ### PR 230 CI synchronization repair
 
 The first PR run passed both private identifier scans, unit tests and MCP smoke, but the rendered browser smoke checked the newly selected Trials Tables panel before the hash route rendered. Its immediate visibility assertion failed and left the next check on Trials. Replaced that assertion with the existing Playwright visible-state wait and added unconditional encounter reset for this check; no production behavior or test expectations were relaxed. The exact updated candidate must pass normal CI before merge.
+
+
+## Original aesthetics restoration — 7.0.2
+
+Starting production commit: b86fc38d5ee5eafc8139441ed08a9773235bee17 (7.0.1). The owner requested the original aesthetics with the trimmed content. The original archival design tokens are byte-identical to current tokens, so the change restores the sheet/masthead/navigation/card/control recipes in a compact shell stylesheet. A decorative inline activity SVG avoids restoring the old icon runtime. The current top destinations, all clinical content, notes, state, routes and retirement boundaries remain intact; only the section-number presentation changes. The old desktop sidebar and mobile bottom navigation are not needed for the retained top-level navigation.
+
+First production build and browser pass: 20/20; 72 token contrast pairs pass and current asset ceilings pass. Desktop/mobile light/dark views were inspected against archived screenshots. A small mobile menu placement adjustment keeps the popover anchored to its actual More control after wrapping. Final versioned build, touch controls, required release checks and live verification follow; the final receipt is written in the task outputs after deployment.
+
+Final local verification: production build; 968 Vitest tests and 8 controller tests; full npm test with 20/20 rendered workflows; ICH524/ischemic754 locks; 72 contrast pairs; 21 touch viewport/route combinations; 320/390/768px menu bounds; generated-asset checks all pass. All 125 changed data exports were compared structurally and differ only in appVersion. No clinical-source record or protocol baseline changed. The decorative SVG is hidden/nonfocusable; cache tests retain exact identity assertions for the new coherent 7.0.2 cache name.
