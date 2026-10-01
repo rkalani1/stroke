@@ -1,6 +1,6 @@
 # Stroke Encounter workspace
 
-Version 7.0.1 is a lean, deterministic browser workspace. Encounter opens immediately; the secondary tabs are **Protocols**, **Trials** and **Calculators & Links**.
+Stroke is a lean, deterministic browser workspace. Encounter opens immediately; the secondary tabs are **Protocols**, **Trials** and **Calculators & Links**.
 
 **The public build is a synthetic demo. Do not enter PHI, identifiers, real encounter details or confidential information. It is not an approved clinical tool, medical advice, or an institutional system.**
 
