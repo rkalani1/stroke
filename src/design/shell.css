@@ -7,7 +7,7 @@ button, input, select, textarea { font: inherit; }
 button, summary, select { cursor: pointer; }
 input:not([type="checkbox"]):not([type="radio"]), select, textarea { min-height: 44px; min-width: 0; max-width: 100%; }
 button, summary { min-height: 44px; }
-a { color: rgb(var(--c-link)); text-decoration: underline; text-underline-offset: 3px; }
+a { color: rgb(var(--link-600)); text-decoration: underline; text-underline-offset: 3px; }
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 2px solid rgb(var(--cobalt-600)); outline-offset: 3px; }
 button:disabled { opacity: .55; cursor: not-allowed; }
 .workspace-shell { max-width: 1120px; margin: 0 auto; padding: 0 24px 48px; }
@@ -81,3 +81,6 @@ h3 { font-weight: 650; margin: 12px 0; }
 
 .source-limits a, .source-list > li > a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
 #tabpanel-protocols label:has(input[type="checkbox"]), #tabpanel-protocols label:has(input[type="radio"]) { min-height: 44px; min-width: 44px; }
+
+html[data-theme="dark"] a { color: rgb(var(--link-400)); }
+html[data-theme="dark"] .workspace-brand { color: var(--ink); }

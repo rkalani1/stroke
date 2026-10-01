@@ -83,3 +83,9 @@ describe.each(['index.html', 'offline.html'])('%s pre-paint theme', (file) => {
     expect(run(script, { hostname: 'rkalani1.github.io', prefersDark: false, legacyDark: true })).toBe('light');
   });
 });
+
+it('uses declared retained tokens for every workspace theme variable', () => {
+  const tokens=fs.readFileSync(path.join(ROOT,'src/design/tokens.css'),'utf8');
+  const shell=fs.readFileSync(path.join(ROOT,'src/design/shell.css'),'utf8');
+  for(const [,name] of shell.matchAll(/var\((--[a-zA-Z0-9-]+)/g)) expect(tokens.includes(name+':'),name).toBe(true);
+});
