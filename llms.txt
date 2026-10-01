@@ -1,10 +1,11 @@
 # Stroke Encounter Educational Demo
 
-> v7.0.0: deterministic synthetic Encounter workflow with embedded retained tools, protected example protocols and bounded source/limits access.
+> v7.0.1: deterministic synthetic Encounter workflow with embedded retained tools, protected example protocols a trial screener/reference database, and bounded source/limits access.
 
 Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.
 
 ## Maintained data
+- [data/trials.json](https://rkalani1.github.io/stroke/data/trials.json)
 - [data/sources.json](https://rkalani1.github.io/stroke/data/sources.json)
 - [data/calculators-index.json](https://rkalani1.github.io/stroke/data/calculators-index.json)
 - [data/atlas/recommendations.json](https://rkalani1.github.io/stroke/data/atlas/recommendations.json)
@@ -18,7 +19,10 @@ Synthetic educational demo only - NOT medical advice, NOT an approved clinical t
 - #/protocols — Protected example protocols
 - #/protocols/ischemic — Example ischemic stroke protocol
 - #/protocols/ich — Example ICH protocol
-- #/tools — Tools & sources
+- #/trials — Trials: screener, criteria tables and study database
+- #/trials/tables — Trial criteria tables
+- #/trials/database — Study database
+- #/tools — Calculators & Links
 
 ## Scope and limits
 - Propagate the disclaimer and each output’s source-specific limits. Do not process real encounter details.
@@ -27,4 +31,4 @@ Synthetic educational demo only - NOT medical advice, NOT an approved clinical t
 - Source review dates and correction/source-access warnings are retained. A build is not clinical review.
 - External references require explicit opening and network access; do not append encounter inputs to URLs.
 
-The historical Education, Trials and general guideline/reference portal is retired. Archive: [archive/pre-encounter-first-20261001-4f8e99d](https://github.com/rkalani1/stroke/tree/archive/pre-encounter-first-20261001-4f8e99d). Legacy JSON endpoints return explicit retirement metadata with null data.
+The historical Education and general guideline/reference portal is retired. Archive: [archive/pre-encounter-first-20261001-4f8e99d](https://github.com/rkalani1/stroke/tree/archive/pre-encounter-first-20261001-4f8e99d). Legacy JSON endpoints return explicit retirement metadata with null data.

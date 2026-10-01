@@ -54,6 +54,7 @@ export async function reset(page) {
   await page.getByRole('button', { name: 'New encounter', exact: true, includeHidden: true }).evaluate(button => { button.closest('details').open = true; });
   page.once('dialog', dialog => dialog.accept()); await page.getByRole('button', { name: 'New encounter', exact: true, includeHidden: true }).click();
   await page.getByLabel('Age (years)', { exact: true }).waitFor();
+  assert.equal(await page.locator('.workspace-utilities').evaluate(element => element.open), false);
 }
 export async function setupIschemic(page) {
   await page.getByLabel('Working diagnosis', { exact: true }).selectOption('ischemic');
@@ -62,8 +63,9 @@ export async function setupIschemic(page) {
   await page.getByLabel('Selected IV thrombolytic', { exact: true }).selectOption('TNK');
 }
 export async function generate(page) {
-  await page.getByRole('button', { name: 'Generate synthetic summary', exact: true }).click();
-  return page.getByLabel('Generated synthetic summary', { exact: true });
+  const label = await page.getByLabel('Consultation', { exact: true }).inputValue() === 'video' ? 'Epic note' : 'Pulsara summary';
+  await page.getByRole('button', { name: `Generate ${label}`, exact: true }).click();
+  return page.getByLabel(`Generated ${label}`, { exact: true });
 }
 export async function openDetails(control) { await control.evaluate(element => { for(let e=element;e;e=e.parentElement) if(e.tagName==='DETAILS') e.open=true; }); }
 
@@ -106,6 +108,108 @@ async function main() {
       for(const name of ['Education','Trials','Guidelines & References','Bedside','Teaching']) assert.equal(await page.getByRole('tab',{name,exact:true}).count(),0);
       assert.equal(await page.getByRole('link',{name:'Protocols',exact:true}).count(),1);
     });
+    await check('keyboard skip preserves Encounter and Protocols routes, focus and session entries', async () => {
+      await page.getByLabel('Age (years)', { exact: true }).fill('65');
+      try {
+        for (const hash of ['#/encounter', '#/protocols/ischemic']) {
+          await page.evaluate(hash => { location.hash = hash; }, hash);
+          if (hash.includes('protocols')) await page.locator('#mgmt-tabpanel-ischemic').waitFor();
+          const skip = page.getByRole('link', { name: 'Skip to content', exact: true });
+          await skip.focus(); await page.keyboard.press('Enter');
+          assert.equal(new URL(page.url()).hash, hash);
+          assert.equal(await page.evaluate(() => document.activeElement.id), 'workspace-main');
+        }
+      } finally {
+        await page.getByRole('link', { name: 'Stroke', exact: true }).click();
+      }
+      assert.equal(await page.getByLabel('Age (years)', { exact: true }).inputValue(), '65');
+    });
+    await check('telephone Pulsara and video Epic templates reuse entries and invalidate after switching', async () => {
+      await setupIschemic(page);
+      await openDetails(page.getByLabel('Chief complaint', { exact: true }));
+      await page.getByLabel('Chief complaint', { exact: true }).fill('Focal weakness');
+      await page.getByLabel('Presenting symptoms / HPI', { exact: true }).fill('QA symptoms entered for documentation.');
+      await page.getByLabel('Manual rationale / recommendations', { exact: true }).fill('QA specialist review pending.');
+      const phone = await (await generate(page)).inputValue();
+      assert(phone.includes('Focal weakness') || phone.includes('QA symptoms'));
+      assert(phone.includes('NIHSS score: incomplete'));
+      assert(!/SYNTHETIC|EDUCATIONAL DEMO|NO PHI|NOT A REAL CLINICAL NOTE|Acute telephone consultation/i.test(phone));
+      await page.getByLabel('Consultation', { exact: true }).selectOption('video');
+      assert.equal(await page.locator('[data-generated-note]').count(), 0);
+      const video = await (await generate(page)).inputValue();
+      for (const section of ['Reason for Consultation:', 'Chief complaint:', 'HPI:', 'Objective:', 'Imaging findings:', 'Assessment and Plan:', 'Recommendations:', 'Clinician Name']) assert(video.includes(section));
+      assert(video.includes('QA specialist review pending.'));
+      assert(!/SYNTHETIC|EDUCATIONAL DEMO|NO PHI|NOT A REAL CLINICAL NOTE|Acute video consultation/i.test(video));
+      await page.getByRole('link', { name: 'Calculators & Links', exact: true }).click();
+      assert.equal(await page.getByRole('heading', { name: 'Retained primary sources', exact: true }).count(), 0);
+      assert(!(await page.locator('main').innerText()).includes('archival Git ref'));
+      await reset(page);
+    });
+    await check('restored Trials navigation, three views and unchanged Encounter session', async () => {
+      try {
+      await page.getByLabel('Age (years)', { exact: true }).fill('67');
+      await page.getByRole('link', { name: 'Trials', exact: true }).click();
+      await page.getByRole('heading', { name: 'Trials', exact: true }).waitFor();
+      const screen = page.getByRole('tabpanel', { name: 'Screener', exact: true });
+      await screen.getByText('Choose a classification to see possible study profiles.', { exact: true }).waitFor({ state: 'visible' });
+      await screen.getByRole('button', { name: 'Ischemic stroke', exact: true }).click();
+      await screen.getByRole('button', { name: /4.5 – 24h/ }).click();
+      await screen.getByRole('heading', { name: /^Possible candidates/ }).waitFor({ state: 'visible' });
+      await page.getByRole('tab', { name: 'Tables', exact: true }).click();
+      const tables = page.getByRole('tabpanel', { name: 'Tables', exact: true });
+      await tables.getByRole('button', { name: 'Ischemic Stroke', exact: true }).waitFor({ state: 'visible' });
+      await page.getByRole('tab', { name: 'Database', exact: true }).click();
+      const database = page.getByRole('tabpanel', { name: 'Database', exact: true });
+      await database.getByRole('searchbox', { name: 'Search the study database by acronym, name or NCT number', exact: true }).fill('STEP');
+      assert((await database.innerText()).includes('STEP'));
+      assert(!(await database.innerText()).includes('PICASSO'));
+      await page.screenshot({ path: path.join(outDir, 'trials-desktop.png'), fullPage: true });
+      await page.getByRole('link', { name: 'Stroke', exact: true }).click();
+      assert.equal(await page.getByLabel('Age (years)', { exact: true }).inputValue(), '67');
+      await page.getByRole('link', { name: 'Trials', exact: true }).click();
+      await page.getByRole('tab', { name: 'Screener', exact: true }).click();
+      assert.equal(await screen.getByRole('button', { name: 'Ischemic stroke', exact: true }).getAttribute('aria-pressed'), 'true');
+      await reset(page);
+      await page.getByRole('link', { name: 'Trials', exact: true }).click();
+      await screen.getByText('Choose a classification to see possible study profiles.', { exact: true }).waitFor({ state: 'visible' });
+      const visibleText = await page.locator('main').innerText();
+      assert(!/synthetic|public demo|educational demo|no PHI|not a real clinical note/i.test(visibleText));
+      } finally { await reset(page); }
+    });
+    await check('protocol clocks show validated LKW and Discovery components', async () => {
+      try {
+      await setupIschemic(page);
+      await page.getByRole('link', { name: 'Protocols', exact: true }).click();
+      await openDetails(page.getByText(/Auto time: LKW: 0h 3\dm/));
+      await page.getByText(/Auto time: LKW: 0h 3\dm/).waitFor();
+      assert(!(await page.locator('main').innerText()).includes('undefinedh'));
+      await page.getByRole('link', { name: 'Stroke', exact: true }).click();
+      const stamp = await localStamp(page, 45);
+      await openDetails(page.getByLabel('Discovery date (local)', { exact: true }));
+      await page.getByLabel('Discovery date (local)', { exact: true }).fill(stamp.split('T')[0]);
+      await page.getByLabel('Discovery time (local)', { exact: true }).fill(stamp.split('T')[1]);
+      await page.getByLabel('Last known well is unknown', { exact: true }).check();
+      await page.getByRole('link', { name: 'Protocols', exact: true }).click();
+      await openDetails(page.getByText(/Auto time: Discovery: 0h 4\dm/));
+      await page.getByText(/Auto time: Discovery: 0h 4\dm/).waitFor();
+      assert(!(await page.locator('main').innerText()).includes('undefinedh'));
+      } finally { await reset(page); }
+    });
+    await check('protocol reference inputs never attest unrecorded safety-pause events', async () => {
+      try {
+      await page.getByRole('link', { name: 'Protocols', exact: true }).click();
+      const cards = page.getByRole('region', { name: 'Protocol cards', exact: true });
+      await openDetails(cards);
+      await cards.getByLabel(/^Consent type/).selectOption('informed');
+      await cards.getByLabel('BP at attestation', { exact: true }).fill('178/96');
+      await cards.getByLabel(/^Contraindications/).selectOption('reviewed');
+      await cards.getByLabel(/^Provider agreement/).selectOption('confirmed');
+      assert(await cards.getByRole('button', { name: 'Copy completed safety pause', exact: true }).isDisabled());
+      const text = await cards.getByLabel('Safe Pause reference checklist (read-only)', { exact: true }).inputValue();
+      assert(text.includes('Completed attestation unavailable'));
+      assert(!/Dose confirmed|Pause performed|Pause confirmed|Safety pause documented/.test(text));
+      } finally { await reset(page); }
+    });
     await check('all viewport/theme rendering, focus, numeric semantics and primary touch controls', async () => {
       const results=[];
       for(const width of [360,390,768,1440]) for(const theme of ['light','dark']) {
@@ -116,24 +220,24 @@ async function main() {
         await timed('encounter-workflow','encounter-workflow',async()=>{
           await setupIschemic(page);const weight=page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true});assert.equal(await weight.getAttribute('type'),'number');await weight.focus();await page.keyboard.press('Tab');await page.keyboard.press('Shift+Tab');assert(await weight.evaluate(el=>document.activeElement===el));assert(await weight.evaluate(el=>getComputedStyle(el).outlineStyle!=='none'),'visible keyboard focus missing');
           const primary=await page.locator('.workspace-primary').evaluateAll(els=>els.filter(e=>e.offsetParent!==null).map(e=>({width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height})));assert(primary.every(x=>x.width>=44&&x.height>=44));
-          await page.getByRole('button',{name:'Generate synthetic summary',exact:true}).click();assert((await page.getByLabel('Generated synthetic summary',{exact:true}).inputValue()).includes('NIHSS incomplete'));const shot=path.join(outDir,`encounter-${width}-${theme}.png`);await page.screenshot({path:shot,fullPage:true});report.screenshots.push(shot);
+          await page.getByRole('button',{name:'Generate Pulsara summary',exact:true}).click();assert((await page.getByLabel('Generated Pulsara summary',{exact:true}).inputValue()).includes('NIHSS score: incomplete'));const shot=path.join(outDir,`encounter-${width}-${theme}.png`);await page.screenshot({path:shot,fullPage:true});report.screenshots.push(shot);
         });
-        await timed('navigation-tools','library-workflow',async()=>{await page.getByRole('link',{name:'Tools & sources',exact:true}).click();await page.getByRole('heading',{name:'Tools & sources',exact:true}).waitFor();await page.evaluate(()=>location.hash='#/education');await page.getByRole('heading',{name:'Retired destination',exact:true}).waitFor();await page.getByRole('link',{name:'Stroke',exact:true}).click();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');});
+        await timed('navigation-tools','library-workflow',async()=>{await page.getByRole('link',{name:'Calculators & Links',exact:true}).click();await page.getByRole('heading',{name:'Calculators & Links',exact:true}).waitFor();await page.evaluate(()=>location.hash='#/education');await page.getByRole('heading',{name:'Retired destination',exact:true}).waitFor();await page.getByRole('link',{name:'Stroke',exact:true}).click();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');});
         await timed('retained-protocols-pediatric','pediatric-workflow',async()=>{await page.getByRole('link',{name:'Protocols',exact:true}).click();await page.locator('#mgmt-tabpanel-ischemic').waitFor();const age=page.locator('#evt-age');await openDetails(age);await age.fill('17');assert((await page.locator('#mgmt-tabpanel-ischemic').innerText()).includes('Adult EVT algorithm does not apply'));await page.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();const trigger=page.getByRole('button',{name:'Vitamin K 10 mg IV',exact:true,includeHidden:true}).first();await openDetails(trigger);await trigger.click();await page.getByRole('dialog').waitFor();await page.keyboard.press('Escape');assert.equal(await page.getByRole('dialog').count(),0);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,`protocol overflow ${width}/${theme}`);});
         const durationMs=Math.round(performance.now()-started),thresholdMs=latency.run('local',viewport);report.runs.push({target:'local',viewport,width,theme,durationMs,thresholdMs,sections});if(latency.enforce)assert(durationMs<=thresholdMs,`${width}/${theme}: ${durationMs} exceeds ${thresholdMs}ms`);results.push({width,theme,overflow});await page.getByRole('link',{name:'Stroke',exact:true}).click();
       }
       await page.setViewportSize({width:1440,height:900});await page.evaluate(()=>document.documentElement.style.zoom='2');assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'200% CSS layout scale overflow');await page.getByLabel('Age (years)',{exact:true}).fill('66');assert.equal(await page.getByLabel('Age (years)',{exact:true}).inputValue(),'66');await page.evaluate(()=>document.documentElement.style.zoom='');await page.setViewportSize({width:720,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'desktop half-width reflow overflow');await page.setViewportSize({width:1440,height:900});await page.reload();return{viewports:results,zoom:'200% CSS layout-scale and 720px desktop-reflow simulations; not a physical-device or native browser-zoom certification',latencyScope:'Independent local runs per viewport and theme; former library ceiling applies to navigation/tools retirement contract'};
     });
     await check('canonical state survives Protocols, Tools and browser back/forward', async () => {
-      await setupIschemic(page); await page.getByLabel('Manual rationale / recommendations (synthetic only)',{exact:true}).fill('Synthetic QA marker zeta: clinician review pending.');
+      await setupIschemic(page); await page.getByLabel('Manual rationale / recommendations',{exact:true}).fill('Synthetic QA marker zeta: clinician review pending.');
       await page.getByRole('link',{name:'Protocols',exact:true}).click();await page.locator('#mgmt-tabpanel-ischemic').waitFor();
-      await page.getByRole('link',{name:'Tools & sources',exact:true}).click();await page.getByRole('heading',{name:'Tools & sources',exact:true}).waitFor();await page.goBack();await page.locator('#mgmt-tabpanel-ischemic').waitFor();await page.goBack();await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');await page.goForward();await page.locator('#mgmt-tabpanel-ischemic').waitFor();await page.getByRole('link',{name:'Stroke',exact:true}).click();assert((await page.getByLabel('Manual rationale / recommendations (synthetic only)',{exact:true}).inputValue()).includes('marker zeta'));
+      await page.getByRole('link',{name:'Calculators & Links',exact:true}).click();await page.getByRole('heading',{name:'Calculators & Links',exact:true}).waitFor();await page.goBack();await page.locator('#mgmt-tabpanel-ischemic').waitFor();await page.goBack();await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');await page.goForward();await page.locator('#mgmt-tabpanel-ischemic').waitFor();await page.getByRole('link',{name:'Stroke',exact:true}).click();assert((await page.getByLabel('Manual rationale / recommendations',{exact:true}).inputValue()).includes('marker zeta'));
     });
     await check('legacy tool links reveal and focus retained tools; unavailable and retired routes explicit', async () => {
       for(const [route,id] of [['#/calculators/nihss','calc-nihss'],['#/research/calculators/crcl','calc-crcl'],['#/encounter/aspects','calc-aspects'],['#/calculators/tnk-dose','calc-tnk']]) {
         await page.evaluate(hash=>location.hash=hash,route);await page.waitForFunction(target=>{const el=document.getElementById(target);return el&&(el===document.activeElement||el.contains(document.activeElement));},id);
       }
-      for(const route of ['#/education','#/trials','#/research/guidelines','#/calculators/rcvs2','#/encounter/unknown-calc']) {await page.evaluate(hash=>location.hash=hash,route);await page.getByRole('heading',{name:/Retired/}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).isVisible(),false);}
+      for(const route of ['#/education','#/research/guidelines','#/calculators/rcvs2','#/encounter/unknown-calc']) {await page.evaluate(hash=>location.hash=hash,route);await page.getByRole('heading',{name:/Retired/}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).isVisible(),false);}
       await page.evaluate(()=>location.hash='#/encounter/ich-score');await page.getByText('This tool is inactive in the current context.',{exact:false}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');await page.getByRole('link',{name:'Stroke',exact:true}).click();
     });
     await check('complete vs partial NIHSS, explicit zero, valid dose and clearing weight', async () => {
@@ -145,10 +249,10 @@ async function main() {
     });
     await check('summary explicit generation/copy, clipboard denial fallback, stale-input invalidation and no recursion', async () => {
       assert.equal(await page.evaluate(()=>window.__qaClipboard.length),0);let draft=await generate(page);const first=await draft.inputValue();assert(first.includes('Synthetic')||first.includes('SYNTHETIC'));assert(first.includes('marker zeta'));assert(first.includes('Consent status: not documented'));assert(first.includes('IVT administration: not documented'));
-      await page.getByRole('button',{name:'Copy reviewed summary',exact:true}).click();assert.equal(await page.evaluate(()=>window.__qaClipboard.length),1);assert.equal(await page.evaluate(()=>window.__qaClipboard[0]),first);
-      await page.evaluate(()=>window.__qaDenyClipboard=true);await page.getByRole('button',{name:'Copy reviewed summary',exact:true}).click();await page.getByText('Clipboard unavailable. Select the read-only summary and copy it manually.',{exact:true}).waitFor();assert(await draft.evaluate(el=>el.selectionStart===0&&el.selectionEnd===el.value.length));
-      await page.getByLabel('Age (years)',{exact:true}).fill('66');await page.getByText('Encounter inputs changed. Generate again before reviewing or copying.',{exact:true}).waitFor();assert.equal(await page.getByRole('button',{name:'Copy reviewed summary',exact:true}).count(),0);draft=await generate(page);const second=await draft.inputValue();assert.equal(second.split('Clinician rationale / recommendations:').length-1,1);assert(!second.includes(first));
-      await page.getByLabel('Context',{exact:true}).selectOption('follow-up');assert.equal(await page.locator('#calc-tnk').count(),0);assert.equal(await page.getByRole('button',{name:'Copy reviewed summary',exact:true}).count(),0);draft=await generate(page);assert(!(await draft.inputValue()).includes('IVT administration:'));assert((await draft.inputValue()).includes('marker zeta'));await page.getByLabel('Context',{exact:true}).selectOption('acute');assert.equal(await page.getByLabel('Selected IV thrombolytic',{exact:true}).inputValue(),'TNK');
+      await page.getByRole('button',{name:'Copy Pulsara summary',exact:true}).click();assert.equal(await page.evaluate(()=>window.__qaClipboard.length),1);assert.equal(await page.evaluate(()=>window.__qaClipboard[0]),first);
+      await page.evaluate(()=>window.__qaDenyClipboard=true);await page.getByRole('button',{name:'Copy Pulsara summary',exact:true}).click();await page.getByText('Clipboard unavailable. Select the read-only summary and copy it manually.',{exact:true}).waitFor();assert(await draft.evaluate(el=>el.selectionStart===0&&el.selectionEnd===el.value.length));
+      await page.getByLabel('Age (years)',{exact:true}).fill('66');await page.getByText('Encounter inputs changed. Generate again before reviewing or copying.',{exact:true}).waitFor();assert.equal(await page.getByRole('button',{name:'Copy Pulsara summary',exact:true}).count(),0);draft=await generate(page);const second=await draft.inputValue();assert.equal(second.split('Clinician rationale / recommendations:').length-1,1);assert(!second.includes(first));
+      await page.getByLabel('Context',{exact:true}).selectOption('follow-up');assert.equal(await page.locator('#calc-tnk').count(),0);assert.equal(await page.getByRole('button',{name:'Copy Pulsara summary',exact:true}).count(),0);draft=await generate(page);assert(!(await draft.inputValue()).includes('IVT administration:'));assert((await draft.inputValue()).includes('marker zeta'));await page.getByLabel('Context',{exact:true}).selectOption('acute');assert.equal(await page.getByLabel('Selected IV thrombolytic',{exact:true}).inputValue(),'TNK');
     });
     await check('unentered discovery, future timestamps, explicit administration timer and context invalidation', async () => {
       await page.getByLabel('Last known well is unknown',{exact:true}).check();await page.getByText('Discovery timestamp not documented',{exact:true}).waitFor();const discovery=page.getByLabel('Discovery time (local)',{exact:true});await openDetails(discovery);assert.equal(await discovery.inputValue(),'');await page.getByLabel('Last known well is unknown',{exact:true}).uncheck();
@@ -167,7 +271,7 @@ async function main() {
       assert(requestUrls.filter(url=>/^https?:/.test(url)).every(url=>new URL(url).origin===new URL(server.url).origin),'core required external request');
     });
     await check('deliberate reset cancel/accept clears full encounter, derived outputs, draft and timers', async () => {
-      const button=page.getByRole('button',{name:'New encounter',exact:true,includeHidden:true});await openDetails(button);page.once('dialog',dialog=>dialog.dismiss());await button.click();assert.equal(await page.getByLabel('Age (years)',{exact:true}).inputValue(),'66');await reset(page);for(const label of ['Age (years)','Weight (kg)','Manual rationale / recommendations (synthetic only)','Entered examination / imaging assessment (synthetic only)'])assert.equal(await page.locator('#tabpanel-encounter').getByLabel(label,{exact:true}).inputValue(),'');assert.equal(await page.getByLabel('Working diagnosis',{exact:true}).inputValue(),'');assert((await page.locator('#calc-nihss').innerText()).includes('0/15 items documented'));assert.equal(await page.getByLabel('Generated synthetic summary',{exact:true}).count(),0);
+      const button=page.getByRole('button',{name:'New encounter',exact:true,includeHidden:true});await openDetails(button);page.once('dialog',dialog=>dialog.dismiss());await button.click();assert.equal(await page.getByLabel('Age (years)',{exact:true}).inputValue(),'66');await reset(page);for(const label of ['Age (years)','Weight (kg)','Manual rationale / recommendations','Entered examination / imaging assessment'])assert.equal(await page.locator('#tabpanel-encounter').getByLabel(label,{exact:true}).inputValue(),'');assert.equal(await page.getByLabel('Working diagnosis',{exact:true}).inputValue(),'');assert((await page.locator('#calc-nihss').innerText()).includes('0/15 items documented'));assert.equal(await page.getByLabel('Generated Pulsara summary',{exact:true}).count(),0);
     });
     await check('canonical protocol measurements, clears and source-review invalidation after repeated navigation', async () => {
       await setupIschemic(page);await page.getByLabel('Glucose (mg/dL)',{exact:true}).fill('100');await page.getByLabel('Reviewed ASPECTS (0–10)',{exact:true}).fill('3');await page.getByLabel('Baseline mRS',{exact:true}).selectOption('0');
@@ -193,8 +297,8 @@ async function main() {
       const offline=await browser.newContext({viewport:{width:390,height:844},timezoneId:'America/Los_Angeles'});const p=await offline.newPage();const offlineErrors=[];p.on('pageerror',e=>offlineErrors.push(e.message));try{
         await p.goto(server.url);await p.getByRole('heading',{name:'Encounter',exact:true}).waitFor();await waitForInstalled(p);await p.reload();await p.waitForFunction(()=>Boolean(navigator.serviceWorker.controller));
         const cache=await p.evaluate(async()=>{const names=await caches.keys();const active=names.filter(name=>name.startsWith('stroke-cache-v'));let totalBytes=0,entries=0,urls=[];for(const name of active){const c=await caches.open(name);for(const req of await c.keys()){entries++;urls.push(req.url);totalBytes+=(await(await c.match(req)).arrayBuffer()).byteLength;}}return{names:active,totalBytes,entries,urls};});assert(!cache.urls.some(url=>/education|teaching|TrialScreener|deferred-reference/.test(url)));report.metrics.offlineCacheBytes=cache.totalBytes;
-        await offline.setOffline(true);await p.reload({waitUntil:'domcontentloaded'});await setupIschemic(p);await p.getByLabel('Manual rationale / recommendations (synthetic only)',{exact:true}).fill('Synthetic offline encounter; specialist review pending.');const items=p.locator('#calc-nihss select');await openDetails(items.first());for(let i=0;i<15;i++){const value=await items.nth(i).locator('option').evaluateAll(els=>els.find(e=>e.textContent.includes('(0)')).value);await items.nth(i).selectOption(value);}assert((await p.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));assert((await(await generate(p)).inputValue()).includes('NIHSS: 0/42'));
-        await p.getByRole('link',{name:'Protocols',exact:true}).click();await p.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();const trigger=p.getByRole('button',{name:'Vitamin K 10 mg IV',exact:true,includeHidden:true}).first();await openDetails(trigger);await trigger.click();await p.getByRole('dialog').waitFor();assert((await p.getByRole('dialog').innerText()).includes('Vitamin K'));await p.keyboard.press('Escape');assert.equal(await p.getByRole('dialog').count(),0);assert.deepEqual(offlineErrors,[]);await p.screenshot({path:path.join(outDir,'offline-protocol-mobile.png'),fullPage:true});return{cache,simulation:true};
+        await offline.setOffline(true);await p.reload({waitUntil:'domcontentloaded'});await setupIschemic(p);await p.getByLabel('Manual rationale / recommendations',{exact:true}).fill('Synthetic offline encounter; specialist review pending.');const items=p.locator('#calc-nihss select');await openDetails(items.first());for(let i=0;i<15;i++){const value=await items.nth(i).locator('option').evaluateAll(els=>els.find(e=>e.textContent.includes('(0)')).value);await items.nth(i).selectOption(value);}assert((await p.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));assert((await(await generate(p)).inputValue()).includes('NIHSS score: 0/42'));
+        await p.getByRole('link',{name:'Trials',exact:true}).click();await p.getByRole('heading',{name:'Trials',exact:true}).waitFor();await p.getByRole('tab',{name:'Database',exact:true}).click();await p.getByRole('searchbox',{name:'Search the study database by acronym, name or NCT number',exact:true}).fill('STEP');assert((await p.getByRole('tabpanel',{name:'Database',exact:true}).innerText()).includes('STEP'));await p.screenshot({path:path.join(outDir,'trials-offline-mobile.png'),fullPage:true});await p.getByRole('link',{name:'Protocols',exact:true}).click();await p.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();const trigger=p.getByRole('button',{name:'Vitamin K 10 mg IV',exact:true,includeHidden:true}).first();await openDetails(trigger);await trigger.click();await p.getByRole('dialog').waitFor();assert((await p.getByRole('dialog').innerText()).includes('Vitamin K'));await p.keyboard.press('Escape');assert.equal(await p.getByRole('dialog').count(),0);assert.deepEqual(offlineErrors,[]);await p.screenshot({path:path.join(outDir,'offline-protocol-mobile.png'),fullPage:true});return{cache,simulation:true};
       }finally{await offline.close();}
     });
     await check('published retired raw URLs unavailable and old JSON endpoints return retirement metadata', async () => {

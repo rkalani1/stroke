@@ -120,6 +120,9 @@ const precache = corePrecacheBytes();
 
 // 2026-10-01 Encounter-first: initial 300KB raw/100KB gzip; all JS
 // 600KB raw/180KB gzip; CSS90KB; complete precache2MB. Tightened after measurement.
+// v7.0.1 owner-requested Trials restoration adds 89.8KB of deferred UI/data.
+// Reuse canonical table criteria and keep the initial/gzip/CSS/cache ceilings;
+// reviewed whole-JS raw ceiling is now640KB (~627KB measured, no packed-data layer).
 const checks = [
   {
     id: 'app-js-gzip',
@@ -147,7 +150,7 @@ const checks = [
   {
     id: 'all-js-raw', label: 'All offline JavaScript (raw)',
     actual: sumSizes(manifest.files.map(file => file.path), sizeOf),
-    budget: 600 * KB, unit: MB, unitLabel: 'MB', note: '',
+    budget: 640 * KB, unit: MB, unitLabel: 'MB', note: '',
   },
   {
     id: 'tailwind-css',

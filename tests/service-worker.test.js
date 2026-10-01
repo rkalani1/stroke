@@ -7,7 +7,7 @@ import vm from 'node:vm';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
 const version = JSON.parse(readFileSync(join(repoRoot, 'package.json'), 'utf8')).version;
-const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-') + '-encounter-first-20261001';
+const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-') + '-documentation-20261001';
 const workerSource = readFileSync(join(repoRoot, 'service-worker.js'), 'utf8');
 
 function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-cache-v6-22-0', currentCache], options = {}) {

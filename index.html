@@ -4,19 +4,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0A6571">
-  <meta name="description" content="Synthetic Encounter workspace with deterministic calculations and protected example protocols. Do not enter PHI or real encounter data. This is not an approved clinical tool.">
+  <meta name="description" content="Encounter workspace with embedded calculations, protocols, Pulsara summaries and Epic note templates.">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="manifest" href="manifest.json?v=7.0.0">
+  <link rel="manifest" href="manifest.json?v=7.0.1">
   <link rel="icon" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
   <title>Stroke · Encounter workspace</title>
-  <link rel="modulepreload" href="app.js?v=7.0.0">
-  <link rel="stylesheet" href="tailwind.css?v=7.0.0">
+  <link rel="modulepreload" href="app.js?v=7.0.1">
+  <link rel="stylesheet" href="tailwind.css?v=7.0.1">
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/publicsans-normal-400.woff2">
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/bricolage-700.woff2">
   <script>
     (function () {
-      const APP_VERSION = '7.0.0';
+      const APP_VERSION = '7.0.1';
       let pref = null;
       try { pref = localStorage.getItem('stroke.v7.theme'); } catch (_) {}
       const isPublicPages = /(^|\.)github\.io$/i.test(location.hostname || '');
@@ -32,7 +32,7 @@
 </head>
 <body>
   <div id="root"></div>
-  <noscript>Enable JavaScript to use the synthetic Encounter workspace.</noscript>
+  <noscript>Enable JavaScript to use the Encounter workspace.</noscript>
   <script>
         window.onerror = function(msg, url, lineNo, columnNo, error) {
             console.error('Application error:', msg, 'at line', lineNo);
@@ -56,6 +56,6 @@
         };
 
   </script>
-  <script type="module" src="app.js?v=7.0.0"></script>
+  <script type="module" src="app.js?v=7.0.1"></script>
 </body>
 </html>

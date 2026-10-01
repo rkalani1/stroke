@@ -48,7 +48,7 @@ const result = await build({
 
 });
 
-const retiredInputs = Object.keys(result.metafile.inputs).filter(file => /(?:education|teaching|simulators|reference-loader|deferred-reference|TrialScreener|EligibilityTables|completedTrials|activeTrials|patient-store)/i.test(file));
+const retiredInputs = Object.keys(result.metafile.inputs).filter(file => /(?:education|teaching|simulators|reference-loader|deferred-reference|completedTrials|activeTrials|patient-store)/i.test(file));
 if (retiredInputs.length) throw new Error('Retired production dependencies: ' + retiredInputs.join(', '));
 const packageJson = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
 const outputs = result.metafile.outputs;

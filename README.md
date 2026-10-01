@@ -1,6 +1,6 @@
 # Stroke Encounter workspace
 
-Version 7.0.0 is a lean, deterministic browser workspace. Encounter opens immediately; the two secondary actions are **Protocols** and **Tools & sources**.
+Version 7.0.1 is a lean, deterministic browser workspace. Encounter opens immediately; the secondary tabs are **Protocols**, **Trials** and **Calculators & Links**.
 
 **The public build is a synthetic demo. Do not enter PHI, identifiers, real encounter details or confidential information. It is not an approved clinical tool, medical advice, or an institutional system.**
 
@@ -9,17 +9,18 @@ Version 7.0.0 is a lean, deterministic browser workspace. Encounter opens immedi
 - Four Encounter steps: context/baseline/timing, examination/imaging, safety and decision review, documented actions/monitoring/handoff. Relevant branches support video/telephone, ischemic/hemorrhagic and follow-up contexts without inventing unsupported pathways.
 - Embedded NIHSS, GCS, ICH severity/ABC2 volume, renal and lytic-dose calculations. Unknown and invalid inputs remain unresolved; arithmetic does not establish treatment eligibility. Historical DAWN/DEFUSE-3 and acute DAPT screens retain their population and source limitations.
 - Protected ischemic and ICH example protocols, interactive drug modals/PocketCards, and the external Telestroke Map. Their clinical locks are preserved except for the two explicitly authorized ICH drug-removal corrections documented below. Interactive cards share Encounter measurements; edits invalidate dependent card reviews, while navigation and elapsed-time updates preserve them. Completed NIHSS and elapsed hours are derived rather than separately entered.
-- One explicitly generated synthetic summary; any source change invalidates its copy control. Decisions, review, discussion/consent, administration and procedure timestamps remain separate.
+- Explicitly generated telephone Pulsara summaries and full video Epic note templates; any source change invalidates its copy control. Decisions, review, discussion/consent, administration and procedure timestamps remain separate.
+- Trials restores the bedside screener, criteria tables and searchable study database. Registry summaries and dated review status do not establish enrollment or local activation.
 - Session state survives navigation. New encounter requires deliberate confirmation and clears entries/drafts/timers. Reload clears clinical state; no encounter persistence, census, imports, patient-context URLs, AI submission, analytics or backend integration.
 - Compact theme/install/update controls, local runtime dependencies, and atomic opt-in PWA updates. External references require internet and receive no encounter context.
 
-The Education/Trials/general Guidelines/References portal, general calculator directory, teaching PDFs/graphics, simulators, matcher and broad content-generation machinery are retired. Legacy hash routes explain retirement; supported calculator deep links reveal their embedded tool. No hidden archive library is shipped.
+The Education/general Guidelines/References portal, general calculator directory, teaching PDFs/graphics, simulators and broad content-generation machinery are retired. Legacy hash routes explain retirement; supported calculator deep links reveal their embedded tool. No hidden archive library is shipped.
 
 ## Maintained evidence and interfaces
 
 The active evidence closure has 10 recommendation records, 12 evidence claims and 43 citations, plus canonical shared clinical statements and the protected literal exceptions. Six selected source projections preserve original review/correction provenance. Missing review dates remain missing; builds and retirement dates are not clinical reviews.
 
-`data/index.json`, `data/sources.json`, `data/calculators-index.json`, `llms.txt` and the bounded MCP tools describe the maintained scope. Former corpus endpoints return explicit schema-2 retirement envelopes with null data, replacement and archival pointers. This is an intentional compatibility change; consumers must inspect `_meta.status`. See [content maintenance](CONTRIBUTING-content.md), [clinical trace](docs/clinical-claim-maintenance.md), [MCP](mcp/README.md) and [source limitations](docs/source-limits.md).
+`data/index.json`, `data/trials.json`, `data/sources.json`, `data/calculators-index.json`, `llms.txt` and the bounded MCP tools describe the maintained scope. Former corpus endpoints return explicit schema-2 retirement envelopes with null data, replacement and archival pointers. This is an intentional compatibility change; consumers must inspect `_meta.status`. See [content maintenance](CONTRIBUTING-content.md), [clinical trace](docs/clinical-claim-maintenance.md), [MCP](mcp/README.md) and [source limitations](docs/source-limits.md).
 
 **Scoped clinical correction:** the owner authorized correcting the two protected ICH factor-Xa drug-removal passages on 2026-10-01 using primary drug-label evidence. Only the affected four snapshot lines were updated. See [source limitations](docs/source-limits.md) for accepted wording and provenance; other protected content and review dates are preserved. This resolves the named release gate without claiming clinical certification.
 

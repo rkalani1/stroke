@@ -26,9 +26,13 @@ describe('Encounter-first browser module graph', () => {
     expect(initialInputs.has('src/Encounter.jsx')).toBe(true);
     expect(initialInputs.has('src/workspace-state.js')).toBe(true);
     expect(initialInputs.has('src/clinical/claims.json')).toBe(true);
-    for (const deferred of ['src/education.jsx', 'src/evidence/completedTrials.js', 'src/guideline-library.js', 'content/search-index.json', 'src/components/TrialScreener.jsx', 'src/components/EligibilityTables.jsx']) {
+    for (const deferred of ['src/education.jsx', 'src/evidence/completedTrials.js', 'src/guideline-library.js', 'content/search-index.json']) {
       expect(initialInputs.has(deferred), `${deferred} must load only on request`).toBe(false);
       expect(Object.keys(result.metafile.inputs), `${deferred} must be absent from the entire shipped graph`).not.toContain(deferred);
+    }
+    for (const deferred of ['src/Trials.jsx','src/components/TrialScreener.jsx','src/components/EligibilityTables.jsx','src/evidence/screenerTrials.json']) {
+      expect(initialInputs.has(deferred)).toBe(false);
+      expect(Object.keys(result.metafile.inputs)).toContain(deferred);
     }
     expect([...initialInputs].filter(name => name.startsWith('src/guidelines/'))).toEqual([]);
     const reactCopies = Object.values(outputs).filter(output => Object.keys(output.inputs).some(input => /node_modules\/react\/cjs\/react\.production\.min\.js$/.test(input)));

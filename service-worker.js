@@ -6,9 +6,9 @@
    Old app caches are retired only on activation. Fetch policy is independent.
 */
 
-const APP_VERSION = '7.0.0';
+const APP_VERSION = '7.0.1';
 const CACHE_PREFIX = 'stroke-cache-v';
-const CACHE_NAME  = 'stroke-cache-v7-0-0-encounter-first-20261001';
+const CACHE_NAME  = 'stroke-cache-v7-0-1-documentation-20261001';
 
 // Retired teaching figures must not be served from a stale browser cache or
 // a bookmarked URL after this worker takes control. Paths are scope-relative
@@ -90,8 +90,11 @@ const CDN_ASSETS = [];
 // not execute the deferred Education, Guidelines, trial or search modules.
 // BEGIN GENERATED APP CHUNKS
 const APP_CHUNKS = [
-  "./chunks/chunk-AAACGAWZ.js",
-  "./chunks/ProtectedProtocols-CBE46N2G.js"
+  "./chunks/chunk-AXN7GAUD.js",
+  "./chunks/chunk-FGN2KSO6.js",
+  "./chunks/chunk-YWB2RKRB.js",
+  "./chunks/ProtectedProtocols-6LA4ZCCH.js",
+  "./chunks/Trials-3MFEYFOI.js"
 ];
 // END GENERATED APP CHUNKS
 

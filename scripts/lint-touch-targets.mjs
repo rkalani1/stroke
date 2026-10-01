@@ -36,7 +36,7 @@ if (urlFlag !== -1 && (!args[urlFlag + 1] || args[urlFlag + 1].startsWith('-')))
 }
 const URL = process.env.LINT_URL || (urlFlag === -1 ? args[0] : args[urlFlag + 1]) || 'http://localhost:8080';
 const ROUTES = [
-  '/#/encounter', '/#/protocols/ischemic', '/#/protocols/ich', '/#/tools'
+  '/#/encounter', '/#/protocols/ischemic', '/#/protocols/ich', '/#/tools', '/#/trials', '/#/trials/tables', '/#/trials/database'
 ];
 const VIEWPORTS = [
   { name: '320', width: 320, height: 568 },

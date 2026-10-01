@@ -98,8 +98,8 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
       const manifestRaw = fs.readFileSync(MANIFEST_PATH, 'utf8');
       const manifest = JSON.parse(manifestRaw);
 
-      expect(manifest.name).toBe('Stroke CDS Educational Demo');
-      expect(manifest.short_name).toBe('Stroke Demo');
+      expect(manifest.name).toBe('Stroke workspace');
+      expect(manifest.short_name).toBe('Stroke');
       expect(manifest.start_url).toBe('./#/encounter');
       expect(manifest.display).toBe('standalone');
       expect(manifest.background_color).toMatch(/^#[0-9A-Fa-f]{6}$/);
@@ -107,7 +107,7 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
       expect(Array.isArray(manifest.icons)).toBe(true);
       expect(manifest.icons.length).toBeGreaterThanOrEqual(2);
       expect(manifest.categories).toContain('medical');
-      expect(manifest.categories).toContain('education');
+      expect(manifest.categories).toContain('healthcare');
     });
 
     it('verifies all PWA icons exist on disk and contain valid PNG magic bytes', () => {
@@ -136,7 +136,7 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
 
       const cacheMatch = swContent.match(/CACHE_NAME\s*=\s*['"]([^'"]+)['"]/);
       expect(cacheMatch, 'CACHE_NAME constant found in SW').not.toBeNull();
-      const expectedCacheName = `stroke-cache-v${pkg.version.replace(/\./g, '-')}-encounter-first-20261001`;
+      const expectedCacheName = `stroke-cache-v${pkg.version.replace(/\./g, '-')}-documentation-20261001`;
       expect(cacheMatch[1]).toBe(expectedCacheName);
     });
 

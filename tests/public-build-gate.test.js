@@ -31,8 +31,10 @@ describe('on-page notice and footer (removed by owner decision)', () => {
     expect(appSource).not.toMatch(/<SiteFooter\b/);
   });
 
-  it('still ships the synthetic-note prefix used by generated notes', () => {
-    expect(bundle).toContain(PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX);
+  it('keeps the owner-requested note labels while preserving the separate build gate', () => {
+    expect(bundle).not.toContain(PUBLIC_DEMO_SYNTHETIC_NOTE_PREFIX);
+    expect(bundle).toContain('Pulsara summary');
+    expect(bundle).toContain('Epic note');
   });
 });
 

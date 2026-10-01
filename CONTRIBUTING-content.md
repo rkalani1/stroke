@@ -1,10 +1,12 @@
 # Maintaining Encounter evidence
 
 The maintained product contains an in-memory synthetic Encounter workflow,
-embedded tools, protected example protocols, and bounded source/limits access.
-Education, trial recruitment/matching, the general guideline/reference portal,
+embedded tools, protected example protocols, restored Trials, and bounded source/limits access.
+Education, the general guideline/reference portal,
 and teaching PDFs are retired. Their full committed history is at
 `archive/pre-encounter-first-20261001-4f8e99d`.
+
+Trials uses `src/evidence/screenerTrials.json`, its pure evaluator, and canonical reference-table projections. Original dated verification records and missing criteria remain visible; restoring a study does not verify present recruitment or local activation. `data/trials.json` is the maintained machine-readable projection.
 
 Edit canonical records: `src/clinical/claims.json` for shared wording,
 `src/clinical/workspace-sources.json` for tool identities/limits, retained

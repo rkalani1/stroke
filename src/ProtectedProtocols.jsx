@@ -1,6 +1,7 @@
 // Preserved protocol surface extracted from the committed application.
 // Clinical literals, source-defined rules, and modal wording are unchanged.
 import React, { useEffect, useMemo, useState } from 'react';
+import { useCurrentTime } from './use-current-time.js';
 import { PocketCards, useProtocolCaseState } from './pocket-cards.jsx';
 import { getLocalInstitutionalContent, GENERALIZABILITY_LIMITATIONS, ICH_INITIAL_EVALUATION_ALGORITHM, isSuccessfulEvtReperfusion } from './institutional-protocols.js';
 import { AIS_COMMAND_CENTER_CARDS, AIS_SOURCE_LINKS, AIS_COMMAND_CENTER_LAST_REVIEWED } from './management-guidance.js';
@@ -109,18 +110,7 @@ export default function ProtectedProtocols({
     }
   };
   const [protocolModal, setProtocolModal] = useState(null);
-  const [currentTime, setCurrentTime] = useState(() => new Date());
-  useEffect(() => {
-    const update = () => setCurrentTime(new Date());
-    const timer = window.setInterval(update, 1000);
-    document.addEventListener('visibilitychange', update);
-    window.addEventListener('pageshow', update);
-    return () => {
-      window.clearInterval(timer);
-      document.removeEventListener('visibilitychange', update);
-      window.removeEventListener('pageshow', update);
-    };
-  }, []);
+  const [currentTime] = useCurrentTime(active && timeFromLKW === undefined);
   useEffect(() => {
     if (!encounter) setEvtDecisionInputs({ ...DEFAULT_EVT });
     setLocalVolumeParams({ ...DEFAULT_VOLUME });
@@ -132,7 +122,7 @@ export default function ProtectedProtocols({
     const date = telestrokeNote[`${prefix}Date`];
     const clock = telestrokeNote[`${prefix}Time`];
     if (!date || !clock) return null;
-    return elapsedEncounterTime({ time: new Date(`${date}T${clock}`), label: telestrokeNote.lkwUnknown ? 'Discovery' : 'LKW' }, currentTime);
+    return elapsedEncounterTime({ time: new Date(`${date}T${clock}`), label: telestrokeNote.lkwUnknown ? 'Discovery' : 'LKW' }, new Date(currentTime));
   };
   const bpPhaseTargets = {
     'pre-tnk': { label: 'Pre-lysis', systolic: 185, diastolic: 110 },
@@ -1833,7 +1823,7 @@ export default function ProtectedProtocols({
                               <p className="text-xs text-slate-500 font-normal dark:text-mute">Institutional adult EVT flowchart. Pediatric criteria remain separate and unchanged.</p>
                             </div>
                             <span className="text-xs text-slate-500 font-normal dark:text-mute">
-                              Auto time: {calculateTimeFromLKW() ? `${calculateTimeFromLKW().hours}h ${calculateTimeFromLKW().minutes}m` : 'Set LKW'}
+                              Auto time: {calculateTimeFromLKW() ? `${calculateTimeFromLKW().label}: ${calculateTimeFromLKW().hours}h ${calculateTimeFromLKW().minutes}m` : 'Set LKW'}
                             </span>
                           </summary>
                           <div className="p-4 pt-0">
