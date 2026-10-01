@@ -2,9 +2,9 @@
   "_meta": {
     "endpoint": "calculators",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.3.0",
-    "checksum": "sha256:0af316a2882cefc3bb46cfcf9f959955",
-    "count": 23,
+    "appVersion": "7.4.0",
+    "checksum": "sha256:18c2c637dca7ddaf0503a25fb2b14911",
+    "count": 26,
     "source": "Canonical retained tool registry",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.",
@@ -333,6 +333,48 @@
       ],
       "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
       "limits": "Original eight-item sleep-apnea screening instrument, initially studied in surgical patients. Age, sex and BMI use Encounter values. Screening score only; no diagnosis, severity prediction or management plan."
+    },
+    {
+      "id": "modified-fisher",
+      "name": "Modified Fisher grade",
+      "category": "Aneurysm & SAH",
+      "fn": "calculateReviewedModifiedFisher",
+      "module": "supplementary-calculators",
+      "route": "#/tools/modified-fisher",
+      "sourceEndpoint": "data/sources.json",
+      "sourceIds": [
+        "modified-fisher-instrument"
+      ],
+      "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+      "limits": "For aneurysmal SAH: select SAH and its aneurysmal cause in Encounter. Grade the admission CT using clinician-reviewed blood thickness and IVH. No numerical thickness cutoff, vasospasm probability or prognosis is assigned."
+    },
+    {
+      "id": "mtici",
+      "name": "mTICI reperfusion grade",
+      "category": "Imaging",
+      "fn": "describeReviewedMTICI",
+      "module": "supplementary-calculators",
+      "route": "#/tools/mtici",
+      "sourceEndpoint": "data/sources.json",
+      "sourceIds": [
+        "mtici-instrument"
+      ],
+      "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+      "limits": "Describes the recorded mTICI grade in an acute ischemic Encounter. Uses the revision including 2c; this is not eTICI. Confirm the angiographic report and grading system. No grade is inferred from imaging text or used to predict recovery."
+    },
+    {
+      "id": "nascet",
+      "name": "NASCET carotid stenosis",
+      "category": "Imaging",
+      "fn": "calculateReviewedNASCET",
+      "module": "supplementary-calculators",
+      "route": "#/tools/nascet",
+      "sourceEndpoint": "data/sources.json",
+      "sourceIds": [
+        "nascet-instrument"
+      ],
+      "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+      "limits": "Patent extracranial ICA only. Use minimum residual lumen and normal distal ICA diameters from the same side, measured perpendicular to the vessel; the distal reference must be beyond bulb tapering. Excludes occlusion and suspected near-occlusion. Formula: 100 × (1 − minimum/distal). Rounded to 0.1%; values above 99.9% remain below complete occlusion. No revascularization recommendation."
     }
   ]
 }

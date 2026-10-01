@@ -5,7 +5,8 @@ import vm from 'node:vm';
 const source = readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
 const currentName = source.match(/const CACHE_NAME\s*=\s*'([^']+)'/)[1];
 const version = source.match(/const APP_VERSION\s*=\s*'([^']+)'/)[1];
-const referenceFixture = { _meta: { appVersion: version, schemaVersion: '2.0.0' }, data: { topics: [{ id: 'topic' }], studies: [{ id: 'study' }] } };
+const referenceFixture = JSON.parse(readFileSync(new URL('../data/clinical-reference.json', import.meta.url), 'utf8'));
+referenceFixture._meta.appVersion = version;
 
 function harness(scope, { offline = true, body = 'fresh network', contentType = 'text/javascript', writeFailure = false, beforePut } = {}) {
   const handlers = new Map();

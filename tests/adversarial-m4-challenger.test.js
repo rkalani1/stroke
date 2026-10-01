@@ -136,7 +136,7 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
 
       const cacheMatch = swContent.match(/CACHE_NAME\s*=\s*['"]([^'"]+)['"]/);
       expect(cacheMatch, 'CACHE_NAME constant found in SW').not.toBeNull();
-      const expectedCacheName = `stroke-cache-v${pkg.version.replace(/\./g, '-')}-reference-20261001`;
+      const expectedCacheName = `stroke-cache-v${pkg.version.replace(/\./g, '-')}-comprehensive-20261001`;
       expect(cacheMatch[1]).toBe(expectedCacheName);
     });
 

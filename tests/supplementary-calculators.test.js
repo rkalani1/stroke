@@ -141,9 +141,10 @@ describe('mounted calculator controls', () => {
     const bundled=await build({bundle:true,write:false,format:'iife',platform:'browser',stdin:{resolveDir:fileURLToPath(new URL('../',import.meta.url)),loader:'jsx',contents:`
       import React from 'react';import {createRoot} from 'react-dom/client';import {flushSync} from 'react-dom';
       import SupplementaryCalculators from './src/components/SupplementaryCalculators.jsx';
+      import {calculatorDefinitions} from './src/supplementary-calculator-definitions.js';
       import {reconcileSupplementaryAppliedScores} from './src/supplementary-calculators.js';
       const root=createRoot(document.getElementById('root'));window.calls=0;
-      const draw=()=>root.render(<SupplementaryCalculators state={window.model} tool={window.tool} update={update=>{window.calls++;const prev=window.model;window.model=reconcileSupplementaryAppliedScores(prev,typeof update==='function'?update(prev):update);draw();}}/>);
+      const draw=()=>root.render(<SupplementaryCalculators definitions={calculatorDefinitions} state={window.model} tool={window.tool} update={update=>{window.calls++;const prev=window.model;window.model=reconcileSupplementaryAppliedScores(prev,typeof update==='function'?update(prev):update);draw();}}/>);
       window.renderTools=(state,tool)=>{window.model=state;window.tool=tool;flushSync(draw)};
       window.editShared=(key,value)=>{const previous=window.model;window.model=reconcileSupplementaryAppliedScores(previous,{...previous,note:{...previous.note,[key]:value}});flushSync(draw)};
     `}});script=bundled.outputFiles[0].text;browser=await chromium.launch({headless:true});
@@ -170,5 +171,33 @@ describe('mounted calculator controls', () => {
   });
   it('handles an unknown malformed route safely',async()=>{
     await page.evaluate(state=>window.renderTools(state,'bad]route'),caseState());expect(await page.getByRole('status').textContent()).toBe('Calculator unavailable.');
+  });
+  it('renders grade zero from the canonical mTICI entry and withdraws review after a shared edit',async()=>{
+    const state=caseState();state.note.diagnosisCategory='ischemic';state.note.ticiScore='0';
+    await page.evaluate(state=>window.renderTools(state,'mtici'),state);
+    expect(await page.locator('#calc-mtici select').count()).toBe(0);
+    await page.getByRole('checkbox').check();
+    expect(await page.getByRole('status').textContent()).toContain('mTICI reperfusion grade: 0 — No forward flow');
+    await page.evaluate(()=>window.editShared('ticiScore','2c'));
+    expect(await page.getByRole('checkbox').isChecked()).toBe(false);
+    expect(await page.getByRole('button',{name:'Copy reviewed result'}).isDisabled()).toBe(true);
+  });
+  it('renders modified Fisher zero and NASCET percent without treating zero as missing',async()=>{
+    const state=caseState();state.note.diagnosisCategory='sah';state.details={sahCause:'Aneurysmal'};
+    await page.evaluate(state=>window.renderTools(state,'modified-fisher'),state);
+    await page.getByLabel('Admission CT subarachnoid blood').selectOption('absent');
+    await page.getByLabel('Admission CT intraventricular blood present').selectOption('false');
+    await page.getByRole('checkbox').check();
+    expect(await page.getByRole('status').textContent()).toContain('Modified Fisher grade: 0');
+    await page.evaluate(state=>window.renderTools(state,'nascet'),caseState());
+    await page.getByLabel('Measured ICA side').selectOption('left');
+    await page.getByLabel('Minimum residual lumen diameter (mm)').fill('1.5');
+    await page.getByLabel('Normal distal ICA diameter (mm)').fill('5');
+    await page.getByLabel('Patent extracranial ICA and suitable distal reference confirmed').selectOption('true');
+    await page.getByLabel('Near-occlusion suspected or present').selectOption('false');
+    await page.getByRole('checkbox').check();
+    expect(await page.getByRole('status').textContent()).toContain('NASCET carotid stenosis: 70%');
+    await page.getByLabel('Near-occlusion suspected or present').selectOption('true');
+    expect(await page.getByRole('status').textContent()).toContain('no score');
   });
 });

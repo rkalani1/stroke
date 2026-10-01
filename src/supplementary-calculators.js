@@ -99,6 +99,38 @@ export function calculateReviewedWFNS(input = {}) {
   return { grade: gcs === 15 ? 1 : gcs >= 13 ? input.motorDeficit ? 3 : 2 : gcs >= 7 ? 4 : 5, gcs };
 }
 
+export function calculateReviewedModifiedFisher(input = {}) {
+  input = inputObject(input);
+  if (input.aneurysmalSah !== true || !complete(input, ['ivh']) || !['absent','thin','thick'].includes(input.bloodThickness)) return null;
+  // Frontera 2006 Table 1 also assigns no visible SAH with IVH to grade 2.
+  const grade = input.bloodThickness === 'thick' ? input.ivh ? 4 : 3 : input.ivh ? 2 : input.bloodThickness === 'thin' ? 1 : 0;
+  return { grade:String(grade), description:`${{ absent:'No subarachnoid blood visible', thin:'Thin subarachnoid blood', thick:'Thick subarachnoid blood' }[input.bloodThickness]}; IVH ${input.ivh ? 'present' : 'absent'}.` };
+}
+
+export const MTICI_DESCRIPTORS = {
+  '0':'No forward flow past the occlusion.',
+  '1':'Contrast crosses the obstruction with minimal downstream filling.',
+  '2a':'Downstream branches fill less than half of the affected territory.',
+  '2b':'Downstream branches fill at least half of the affected territory, short of near-complete reperfusion.',
+  '2c':'Almost complete reperfusion; a few distal cortical branches have delayed flow or small emboli.',
+  '3':'All downstream branches fill normally with complete reperfusion.'
+};
+export function describeReviewedMTICI(input = {}) {
+  input = inputObject(input);
+  return input.reviewed === true && input.ischemic === true && typeof input.grade === 'string' && Object.hasOwn(MTICI_DESCRIPTORS,input.grade)
+    ? { grade:input.grade, description:MTICI_DESCRIPTORS[input.grade] } : null;
+}
+
+export function calculateReviewedNASCET(input = {}) {
+  input = inputObject(input);
+  const narrow = numericInput(input.minimumDiameterMm, { min:Number.MIN_VALUE }), distal = numericInput(input.distalDiameterMm, { min:Number.MIN_VALUE });
+  if (!complete(input,['patentExtracranialICA','nearOcclusion']) || input.patentExtracranialICA !== true || input.nearOcclusion !== false ||
+    !['left','right'].includes(input.side) || narrow === null || distal === null || narrow > distal) return null;
+  const percent = 100 * (1 - narrow / distal);
+  // A positive residual lumen must never be displayed as complete occlusion.
+  return { score:percent > 99.9 ? '>99.9' : Number(percent.toFixed(1)), max:100, unit:'%' };
+}
+
 export const ASPECTS_REGIONS = [['C', 'Caudate'], ['L', 'Lentiform nucleus'], ['IC', 'Internal capsule'], ['I', 'Insular ribbon'], ...['M1','M2','M3','M4','M5','M6'].map(key => [key, key])].map(([key, label]) => ({ key, label, weight: 1 }));
 export const PC_ASPECTS_REGIONS = [
   ['pons', 'Pons', 2], ['midbrain', 'Midbrain', 2], ['cerebellumLeft', 'Left cerebellum', 1], ['cerebellumRight', 'Right cerebellum', 1],
@@ -130,17 +162,17 @@ export function calculateReviewedSTOPBANG(input = {}) {
   return score === null ? null : { ...result(score,8), bmi, bang:{ bmi:bmi > 35, age:age > 50, neck:neck > 40, male:input.sex === 'M' } };
 }
 
-const engines = { abcd2:calculateReviewedABCD2, chadsvasc:calculateReviewedCHADS2VASc, 'has-bled':calculateReviewedHASBLED, rope:calculateReviewedRoPE, pascal:classifyReviewedPASCAL, phases:calculateReviewedPHASES, 'mrs-descriptors':describeReviewedMRS, 'hunt-hess':describeReviewedHuntHess, wfns:calculateReviewedWFNS, 'aspects-regions':calculateReviewedRegionalASPECTS, 'pc-aspects-regions':calculateReviewedRegionalPCASPECTS, phq2:calculateReviewedPHQ2, 'stop-bang':calculateReviewedSTOPBANG };
+const engines = { abcd2:calculateReviewedABCD2, chadsvasc:calculateReviewedCHADS2VASc, 'has-bled':calculateReviewedHASBLED, rope:calculateReviewedRoPE, pascal:classifyReviewedPASCAL, phases:calculateReviewedPHASES, 'mrs-descriptors':describeReviewedMRS, 'hunt-hess':describeReviewedHuntHess, wfns:calculateReviewedWFNS, 'modified-fisher':calculateReviewedModifiedFisher, mtici:describeReviewedMTICI, nascet:calculateReviewedNASCET, 'aspects-regions':calculateReviewedRegionalASPECTS, 'pc-aspects-regions':calculateReviewedRegionalPCASPECTS, phq2:calculateReviewedPHQ2, 'stop-bang':calculateReviewedSTOPBANG };
 export const SUPPLEMENTARY_IDS = Object.keys(engines);
 // Keep the canonical scoring dependency map independent of presentation/source
 // prose so opening Encounter does not eagerly load the calculator directory.
-const sharedInputs = { abcd2:['age','bp'], chadsvasc:['age','sex'], 'has-bled':['age'], rope:['age'], pascal:['age'], phases:['age'], 'mrs-descriptors':['mrs'], wfns:['gcs'], 'stop-bang':['age','sex','weight','height'] };
+const sharedInputs = { abcd2:['age','bp'], chadsvasc:['age','sex'], 'has-bled':['age'], rope:['age'], pascal:['age'], phases:['age'], 'mrs-descriptors':['mrs'], wfns:['gcs'], 'modified-fisher':['sahCause'], mtici:['mtici'], 'stop-bang':['age','sex','weight','height'] };
 const canonicalValue = value => value === undefined ? null : value;
 export function supplementarySourceKey(state, id) {
   const n = state.note || {};
   const values = { context: state.context ?? null, diagnosis: n.diagnosisCategory ?? null };
-  for (const key of sharedInputs[id] || []) values[key] = canonicalValue(({age:n.age,sex:n.sex,bp:n.presentingBP,mrs:n.premorbidMRS,gcs:state.gcs,weight:n.weight,height:n.heightCm})[key]);
-  if (['aspects-regions','pc-aspects-regions'].includes(id)) values.imaging = [n.ctDate,n.ctTime,n.ctResults,n.ctaDate,n.ctaTime,n.ctaResults].map(canonicalValue);
+  for (const key of sharedInputs[id] || []) values[key] = canonicalValue(({age:n.age,sex:n.sex,bp:n.presentingBP,mrs:n.premorbidMRS,gcs:state.gcs,weight:n.weight,height:n.heightCm,sahCause:state.details?.sahCause,mtici:n.ticiScore})[key]);
+  if (['aspects-regions','pc-aspects-regions','modified-fisher','nascet'].includes(id)) values.imaging = [n.ctDate,n.ctTime,n.ctResults,n.ctaDate,n.ctaTime,n.ctaResults].map(canonicalValue);
   if (id === 'pascal') values.rope = [supplementarySourceKey(state, 'rope'), state.supplementary?.rope || {}];
   return JSON.stringify(values);
 }
@@ -156,6 +188,8 @@ export function supplementaryResult(state, id) {
     const rope = supplementaryResult(state, 'rope');
     return classifyReviewedPASCAL({ ...data, age:n.age, ropeScore:rope?.score, cryptogenicStrokeWithPfo:state.supplementary?.rope?.cryptogenicStrokeWithPfo });
   }
+  if (id === 'mtici') return describeReviewedMTICI({ ...data, grade:n.ticiScore, ischemic:state.context === 'acute' && n.diagnosisCategory === 'ischemic' });
+  if (id === 'modified-fisher') return calculateReviewedModifiedFisher({ ...data, aneurysmalSah:n.diagnosisCategory === 'sah' && state.details?.sahCause === 'Aneurysmal' });
   return engines[id]({ ...data, age:n.age, sex:n.sex, bp:n.presentingBP, gcs:state.gcs, weight:n.weight, heightCm:n.heightCm });
 }
 export function supplementaryReviewed(state, id) { return reviewedGroup(state, id).reviewed; }

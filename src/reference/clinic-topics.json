@@ -52,7 +52,8 @@
         "label": "Renal function worksheet",
         "href": "#/encounter/crcl"
       }
-    ]
+    ],
+    "category": "Prevention and antithrombotics"
   },
   {
     "id": "stroke-workup",
@@ -101,7 +102,8 @@
         "label": "Encounter",
         "href": "#/encounter"
       }
-    ]
+    ],
+    "category": "Stroke mechanisms and vascular disorders"
   },
   {
     "id": "pfo",
@@ -152,7 +154,8 @@
         "label": "PASCAL worksheet",
         "href": "#/tools/pascal"
       }
-    ]
+    ],
+    "category": "Stroke mechanisms and vascular disorders"
   },
   {
     "id": "carotid",
@@ -201,7 +204,8 @@
         "label": "Ischemic protocol",
         "href": "#/protocols/ischemic"
       }
-    ]
+    ],
+    "category": "Stroke mechanisms and vascular disorders"
   },
   {
     "id": "sicas",
@@ -248,7 +252,8 @@
         "label": "DAPT source screen",
         "href": "#/encounter/dapt"
       }
-    ]
+    ],
+    "category": "Stroke mechanisms and vascular disorders"
   },
   {
     "id": "dissection",
@@ -295,7 +300,8 @@
         "label": "Ischemic protocol",
         "href": "#/protocols/ischemic"
       }
-    ]
+    ],
+    "category": "Stroke mechanisms and vascular disorders"
   },
   {
     "id": "secondary-prevention",
@@ -348,7 +354,8 @@
         "label": "Encounter",
         "href": "#/encounter"
       }
-    ]
+    ],
+    "category": "Prevention and antithrombotics"
   },
   {
     "id": "recovery",
@@ -397,6 +404,7 @@
         "label": "Encounter",
         "href": "#/encounter"
       }
-    ]
+    ],
+    "category": "Recovery and rehabilitation"
   }
 ]

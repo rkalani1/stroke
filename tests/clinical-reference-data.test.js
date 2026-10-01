@@ -4,26 +4,35 @@ import crypto from 'node:crypto';
 import { publicSourceUrl, validateClinicalReference } from '../scripts/validate-reference.mjs';
 import { searchReference } from '../src/reference-search.js';
 
+import { readClinicalReference } from '../scripts/reference-data.mjs';
 const read = path => JSON.parse(fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8'));
-const canonical = {
-  topics: [...read('src/reference/acute-topics.json'), ...read('src/reference/clinic-topics.json')],
-  studies: read('src/reference/studies.json'),
-};
+const canonical = readClinicalReference();
 const now = new Date('2026-10-01T23:59:59Z');
 const validate = data => validateClinicalReference(data, { now });
 const changed = change => { const data = structuredClone(canonical); change(data); return data; };
 
 describe('bounded clinical-reference data', () => {
-  it('validates the 17 topics and 16 completed studies against the source/route contract', () => {
-    expect(canonical.topics).toHaveLength(17);
+  it('validates all topics, calculator presentations and completed studies against the source/route contract', () => {
+    expect(canonical.topics).toHaveLength(80);
+    expect(new Set(canonical.topics.map(topic => topic.category)).size).toBe(9);
+    expect(canonical.calculators).toHaveLength(16);
     expect(canonical.studies).toHaveLength(16);
     expect(validate(canonical)).toEqual([]);
+  });
+
+  it('maps every archived guideline identity to a visible topic and retains its source access limits', () => {
+    const coverage=read('src/reference/coverage.json');
+    expect(coverage).toHaveLength(110);expect(new Set(coverage.map(source=>source.id)).size).toBe(110);
+    for(const source of coverage){
+      expect(source.topicIds.length).toBeGreaterThan(0);
+      for(const id of source.topicIds){const topic=canonical.topics.find(topic=>topic.id===id);expect(topic).toBeTruthy();expect(topic.sources.some(record=>record.url===source.url)).toBe(true);}
+    }
   });
 
   it('serves the exact canonical records and source dates with matching version and checksum', () => {
     const endpoint = read('data/clinical-reference.json');
     expect(endpoint.data).toEqual(canonical);
-    expect(endpoint._meta).toMatchObject({ status: 'maintained', schemaVersion: '2.0.0', appVersion: read('package.json').version, count: 33, topicCount: 17, studyCount: 16 });
+    expect(endpoint._meta).toMatchObject({ status: 'maintained', schemaVersion: '2.0.0', appVersion: read('package.json').version, count: canonical.topics.length + canonical.studies.length, topicCount: canonical.topics.length, studyCount: 16 });
     expect(endpoint._meta.checksum).toBe(`sha256:${crypto.createHash('sha256').update(JSON.stringify(canonical)).digest('hex').slice(0, 32)}`);
     expect(endpoint._meta.scope).toContain('not full clinical certification');
   });

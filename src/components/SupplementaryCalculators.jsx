@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { reviewedGcs } from '../encounter-clinical-review.js';
-import { calculatorDefinitions } from '../supplementary-calculator-definitions.js';
 import { supplementaryResult, supplementaryReviewed, supplementarySourceKey, updateSupplementaryField, applySupplementaryScore, canApplySupplementaryScore, MRS_DESCRIPTORS } from '../supplementary-calculators.js';
 import { matchesCalculatorSearch, reviewedCalculatorText } from '../calculator-utilities.js';
 
@@ -13,7 +12,7 @@ function Field({ field, value, onChange }) {
 }
 
 function SharedInputs({ state, definition }) {
-  const n = state.note || {}, values = { age:['Age',n.age,'years'], sex:['Sex',n.sex === 'M' ? 'Male' : n.sex === 'F' ? 'Female' : '', ''], bp:['Presenting BP',n.presentingBP,'mmHg'], mrs:['Baseline mRS',n.premorbidMRS,''], gcs:['Complete GCS',reviewedGcs(state.gcs),''], weight:['Weight',n.weight,'kg'], height:['Height',n.heightCm,'cm'] };
+  const n = state.note || {}, values = { age:['Age',n.age,'years'], sex:['Sex',n.sex === 'M' ? 'Male' : n.sex === 'F' ? 'Female' : '', ''], bp:['Presenting BP',n.presentingBP,'mmHg'], mrs:['Baseline mRS',n.premorbidMRS,''], gcs:['Complete GCS',reviewedGcs(state.gcs),''], weight:['Weight',n.weight,'kg'], height:['Height',n.heightCm,'cm'], mtici:['Recorded mTICI',n.ticiScore,''], sahCause:['SAH cause',state.details?.sahCause,''] };
   return definition.shared?.length ? <div className="workspace-help"><p>{definition.shared.map(key => { const [label,value,unit] = values[key]; return `${label}: ${value === null || value === undefined || String(value).trim() === '' ? 'not documented' : `${value}${unit ? ` ${unit}` : ''}`}`; }).join(' · ')}</p><a href="#/encounter">Review shared inputs in Encounter</a></div> : null;
 }
 
@@ -51,7 +50,7 @@ function Card({ state, update, definition, selected, visible, copyContext }) {
         {definition.regions?.map(region => <Field key={region.key} field={{type:'truth',label:`Early ischemic change: ${region.label}${region.weight === 2 ? ' (2 points)' : ''}`}} value={data.regions?.[region.key]} onChange={next => edit('regions',previous => ({ ...previous, [region.key]:next }))} />)}
       </div>
       <label className="workspace-check"><input type="checkbox" checked={supplementaryReviewed(state,definition.id)} onChange={event => edit('reviewed',event.target.checked)} /> All required inputs and source applicability reviewed</label>
-      <p className="workspace-result" role="status">{value ? value.category ? `PASCAL category: ${value.category} (source classification).` : value.grade ? `${definition.name}: ${value.grade}${value.description ? ` — ${value.description}` : ` · GCS ${value.gcs}`}` : `${definition.name}: ${value.score}/${value.max}${value.bmi === undefined ? '' : ` · BMI ${value.bmi.toFixed(1)} kg/m²`}` : 'Required inputs or source review incomplete; no score.'}</p>
+      <p className="workspace-result" role="status">{value ? value.category ? `PASCAL category: ${value.category} (source classification).` : value.grade ? `${definition.name}: ${value.grade}${value.description ? ` — ${value.description}` : ` · GCS ${value.gcs}`}` : `${definition.name}: ${value.unit ? `${value.score}${value.unit}` : `${value.score}/${value.max}`}${value.bmi === undefined ? '' : ` · BMI ${value.bmi.toFixed(1)} kg/m²`}` : 'Required inputs or source review incomplete; no score.'}</p>
       {value?.bang && <p className="workspace-help">Original BANG criteria: BMI over 35 — {value.bang.bmi ? 'Yes' : 'No'}; age over 50 — {value.bang.age ? 'Yes' : 'No'}; neck over 40 cm — {value.bang.neck ? 'Yes' : 'No'}; male sex — {value.bang.male ? 'Yes' : 'No'}. Thresholds use unrounded measurements.</p>}
       {definition.id === 'wfns' && reviewedGcs(state.gcs) === 15 && data.motorDeficit === true && <p className="workspace-help">GCS 15 with a motor deficit needs clinician grading; the original table has no category for this combination.</p>}
       {['abcd2','aspects-regions','pc-aspects-regions'].includes(definition.id) && <><button type="button" className="workspace-secondary-action" disabled={!canApply} onClick={() => update(previous => applySupplementaryScore(previous,definition.id))}>Use reviewed score in Encounter</button><p className="workspace-help">Applying replaces the corresponding Encounter score. Later worksheet or shared-source edits invalidate an applied score. {definition.id === 'abcd2' ? 'Requires an acute TIA Encounter.' : 'Requires an acute ischemic Encounter.'}</p></>}
@@ -62,7 +61,7 @@ function Card({ state, update, definition, selected, visible, copyContext }) {
   </details>;
 }
 
-export default function SupplementaryCalculators({ state, update, tool, query = '' }) {
+export default function SupplementaryCalculators({ state, update, tool, query = '', definitions: calculatorDefinitions }) {
   const root = useRef(null);
   const visible = item => query.trim() ? matchesCalculatorSearch(item,query) : !tool || item.id === tool;
   useEffect(() => {

@@ -37,7 +37,7 @@ if (clinicalReference._meta?.status !== 'maintained' || clinicalReference._meta?
 }
 const referenceRecords = [
   ...clinicalReference.data.topics.map(record => ({ ...record, type: 'topic' })),
-  ...clinicalReference.data.studies.map(record => ({ ...record, type: 'study' })),
+  ...clinicalReference.data.studies.map(record => ({ ...record, type: 'study', category: clinicalReference.data.topics.find(topic => topic.id === record.relatedTopic)?.category || 'Other studies' })),
 ];
 
 function partialTrialScreen(result, sourceUrl) {
@@ -95,15 +95,16 @@ server.registerTool('get_sources',
  async () => ok({ sources: maintainedSources.data, metadata: maintainedSources._meta }));
 
 server.registerTool('search_reference',
-  { title: 'Search Evidence and completed studies', description: 'Search the bounded local Evidence topics and completed primary-study summaries. Returns source-access scope and limitations. This does not fetch sources, screen enrollment or establish treatment eligibility.', inputSchema: {
+  { title: 'Search Evidence and completed studies', description: 'Search the local Evidence topics and completed primary-study summaries. Returns source-access scope and limitations. This does not fetch sources, screen enrollment or establish treatment eligibility.', inputSchema: {
     query: z.string().max(200).default('').describe('Words matched locally across the card and source titles; no patient details'),
     type: z.enum(['all', 'topic', 'study']).default('all'),
     setting: z.enum(['all', 'on-call', 'hospital', 'clinic']).default('all'),
+    section: z.enum(['all', ...new Set(referenceRecords.map(record => record.category))]).default('all'),
     limit: z.number().int().min(1).max(25).default(10),
   } },
-  async ({ query, type, setting, limit }) => {
-    const matches = searchReference(referenceRecords.filter(record => type === 'all' || record.type === type), query, setting);
-    return ok({ query, type, setting, count: Math.min(matches.length, limit), totalMatched: matches.length, truncated: matches.length > limit, records: matches.slice(0, limit), metadata: clinicalReference._meta });
+  async ({ query, type, setting, section, limit }) => {
+    const matches = searchReference(referenceRecords.filter(record => type === 'all' || record.type === type), query, setting).filter(record => section === 'all' || record.category === section);
+    return ok({ query, type, setting, section, count: Math.min(matches.length, limit), totalMatched: matches.length, truncated: matches.length > limit, records: matches.slice(0, limit), metadata: clinicalReference._meta });
   });
 
 const transport = new StdioServerTransport();

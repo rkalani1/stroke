@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v7.4.0 — 2026-10-01 — Comprehensive Evidence and calculator access
+
+- Organize Evidence into nine clinical sections with search, care-setting filters and source-bound questions; account for every archived guideline/statement document and prior clinical topic area.
+- Restore modified Fisher and mTICI grading aids, add reviewed NASCET measurement arithmetic, and expose GCS and relevant worksheets directly from Encounter.
+- Move Telestroke Map, UpToDate and OpenEvidence to the page header; rename the directory Calculators.
+- Share calculator presentation data through the versioned offline reference endpoint and render card detail only when opened, preserving payload ceilings.
+- Preserve protocol/map locks, source review limits, explicit unknown states and session-only clinical data.
+
+## v7.3.0 — 2026-10-01 — Clinical guidance and completed evidence
+
+- Restore 17 source-bound Evidence topics and 16 completed study cards with applicability and source-access limits.
+- Add direct quick protocol navigation, TIA readiness review and local MCP reference search.
+- Include references in atomic offline installation; preserve dependent state and controlled update behavior.
+
 ## v7.2.0 — 2026-10-01 — Remaining workflow conveniences restored
 
 - Restore explicit reported NIHSS entry alongside the itemized examination, with source provenance, valid zero handling and dependent-review invalidation.

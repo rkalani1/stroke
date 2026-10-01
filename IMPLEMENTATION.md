@@ -187,3 +187,31 @@ Final local candidate verification: 1,104 Vitest cases and 8 service-worker cont
 Final payload: initial JS298,759 raw/97,993 gzip; all offline JS699,868/195,038; CSS82,781; complete precache1,551,462 bytes/40 entries. Source/form metadata loads with Calculators & Links; core scoring/dependency reconciliation stays synchronous. Original initial300KiB/100KiB, CSS90KiB and cache2MiB ceilings remain. The owner-authorized feature restoration raises only full-JS ceilings to700KiB raw/196KiB gzip. No new runtime dependency or encoding layer was added.
 
 Browser verification also repaired explicit accessible names on optional controls, 44px calculator/worksheet links and pounds-to-kilograms floating-point tails that could trigger the identifier scan. Conversion precision is one milligram. Review acknowledgments cannot revive after a source edit/revert; applied values clear on changed sources, while a separately reviewed manual value retains its own provenance. Normal PR checks, merge, Pages build and exact live-byte/browser verification are complete; the current-release receipt above records the authoritative results.
+
+
+## Comprehensive Evidence and calculator access — 7.4.0 (in progress)
+
+Baseline: clean 794f9ef2bdb10e768ff2f08ad9e0a825aba17e6c (7.3.0), branch feat/comprehensive-evidence. Rollback: archive/pre-comprehensive-evidence-20261001-794f9ef. The owner's latest request explicitly expands the prior bounded Evidence scope: account for all archived topics and useful additional guideline/statement areas, restore worthwhile calculators, move external destinations to the top, rename Calculators, and release through normal checks.
+
+Design: preserve the existing typography, sheet, cards and controls. Nine clinical sections, search and care-setting filters make the larger library navigable; details render on expansion. Header references wrap with 44px touch targets. The same canonical Encounter measurements drive optional worksheets.
+
+Implementation: archive source/topic crosswalk and primary-source identity review; source-bound clinical question cards with access limits; modified Fisher, mTICI and NASCET plus context-aware Encounter links and shared GCS. Presentation data moves from bundled JavaScript into the already versioned, offline clinical-reference resource, shared by Evidence and Calculators. This removes duplicate executable data and retains existing payload ceilings. No protocol literal or map-lock change is planned.
+
+Outstanding: finish source/data authoring; validate source crosswalk and calculator boundaries; focused and full tests, offline/version recovery and phone/tablet/desktop browser review; independent combined review; normal PR/private CI checks, merge and verify exact production deployment.
+
+
+### 7.4.0 integrated verification
+
+Final scope: 80 topic cards in nine clinical sections; all 110 archived guideline/statement documents, 70 prior Atlas areas and 28 reference records have a topic crosswalk. Bibliographic PMID/DOI identity is verified separately from source-specific abstract/summary/full-text limits. Independent review corrected endpoint/population wording for OCEANIC evidence and seven publication-type labels. The historic bulk recommendation extraction remains retired; primary-source links are restored in the appropriate cards.
+
+Calculator scope: 26 registry contracts, 16 supplementary worksheets/descriptors. GCS is accessible across contexts; modified Fisher, mTICI and NASCET have focused primary-source scope and unknown/invalidation tests. Clinical definitions prevented an unsafe shortcut from the original CHA2DS2-VASc fields to newer CHA2DS2-VA. The protected protocol/map corpus was not edited.
+
+The UI and service worker now share generated structural validation of the versioned reference/calculator resource. Independent engineering review found and repaired empty-study-association disagreement and malformed numeric-option acceptance. Failed downloads can retry; malformed resources cannot replace the working installed version. No Encounter data enters this static resource.
+
+Checks: production build; 1370 unit cases plus 8 service-worker controller tests pass (3 repository-state cases remain main-only); npm test passes all guards/validators and 30 browser workflows; MCP55calls/8tools; unchanged ICH524/ischemic754 protocol locks;72contrastpairs/tokenlint;144responsive checks at320/390/720/768/1024/1440light/dark, including44pxprimarycontrols, focus, filters, state and new worksheets. Both original6.30.7 and immediate7.3.0 baseline upgrade/failure/recovery suites pass6/6. Device/reflow/offline checks are Chromium simulations, not physical-device or accessibility certification. A transient font error during simultaneous local re-staging was traced to that test overlap; the final stable responsive run is clean.
+
+Payload vs7.3.0: initialJS300666→304197raw /99385→100540gzip; allJS704545→700773raw /200567→199116gzip; CSS84912→85416; completeofflinecache1625791→1752353bytes (44→45entries). All pre-existing ceilings remain unchanged. Calculator metadata extraction removes duplicated executable data; expanded reference coverage increases the installed data footprint. No speedup is claimed.
+
+Local public identifier checks pass. The private denylist is CI-owned and unavailable locally; normal private CI must pass the exact candidate before merge. Prior missing clinical review dates, AIS partial-correction scope, two withheld trial profiles and the named inaccessible correction bodies remain explicit. Source identity checks do not certify every recommendation.
+
+Next: publish branch/tag, pass normal PR checks, merge exact reviewed head, then verify main CI, Pages deployment, live asset parity, actual-live workflows and retired URL availability. Rollback ref remains archive/pre-comprehensive-evidence-20261001-794f9ef.

@@ -95,7 +95,16 @@ if (entryFile === path.join(root, 'app.js')) {
   const marker = /\/\/ BEGIN GENERATED APP CHUNKS[\s\S]*?\/\/ END GENERATED APP CHUNKS/;
   if (!marker.test(worker)) throw new Error('Generated chunk marker is missing from service-worker.js');
   const chunks = manifest.files.filter(file => file.path !== manifest.entry).map(file => `./${file.path}`);
-  await atomicWriteFile(workerPath, worker.replace(marker, '// BEGIN GENERATED APP CHUNKS\nconst APP_CHUNKS = ' + JSON.stringify(chunks, null, 2) + ';\n// END GENERATED APP CHUNKS'));
+  const validationMarker = /\/\/ BEGIN GENERATED REFERENCE VALIDATION[\s\S]*?\/\/ END GENERATED REFERENCE VALIDATION/;
+  if (!validationMarker.test(worker)) throw new Error('Generated reference-validation marker is missing from service-worker.js');
+  const validation = await build({
+    absWorkingDir: root, bundle: true, write: false, minify: true, target: 'es2018',
+    format: 'iife', globalName: 'ReferenceValidation',
+    stdin: { resolveDir: root, contents: "export { validReferenceData } from './src/reference-search.js';" },
+  });
+  const nextWorker = worker.replace(marker, '// BEGIN GENERATED APP CHUNKS\nconst APP_CHUNKS = ' + JSON.stringify(chunks, null, 2) + ';\n// END GENERATED APP CHUNKS')
+    .replace(validationMarker, '// BEGIN GENERATED REFERENCE VALIDATION\n' + validation.outputFiles[0].text.trim() + '\n// END GENERATED REFERENCE VALIDATION');
+  await atomicWriteFile(workerPath, nextWorker);
 }
 // Only previous generated hashed chunks may be removed. No other asset tree
 // is touched, including when building an isolated/private candidate.

@@ -16,14 +16,14 @@ Arithmetic does not establish treatment eligibility or administration.
 | `calc_crcl` | Adult Cockcroft–Gault, raw threshold value and rounded display; stable creatinine and weight convention require review |
 | `calc_dawn_eligibility` | Partial historical screen; never complete EVT eligibility |
 | `calc_defuse3_eligibility` | Partial historical screen; `penumbraMl` is legacy total hypoperfused volume including core |
-| `list_calculators` | 23 workspace tool contracts and reveal routes |
+| `list_calculators` | 26 workspace tool contracts and reveal routes |
 | `get_sources` | Bounded source/claim records, original review scopes and unresolved correction limitations |
 | `search_reference` | Local Evidence topics and completed primary-study summaries, with source-access notes and card limitations |
 
 `search_reference` reads the generated `data/clinical-reference.json` endpoint
 without fetching external sources. `query` is a string of at most 200 characters
 (default empty); `type` is `all`, `topic`, or `study`; `setting` is `all`,
-`on-call`, `hospital`, or `clinic`; and `limit` is an integer from 1 to 25
+`on-call`, `hospital`, or `clinic`; `section` is `all` or a clinical section name advertised in the tool schema; and `limit` is an integer from 1 to 25
 (default 10). All query words must match. Results include `count`,
 `totalMatched`, `truncated`, full source-bound `records`, and endpoint metadata.
 An empty query browses the filtered records. Example arguments:
@@ -34,8 +34,7 @@ endpoint at startup. Run the asset generator after updating canonical records.
 Reference `checkedAt` dates record source access and scope checks, not full
 clinical certification. Preserve each source's `access` note and each topic's
 `caution` or study's `limits`. Completed studies are historical outcome evidence,
-not enrollment data or treatment gates. This bounded endpoint does not restore
-the archived full trial or guideline corpus.
+not enrollment data or treatment gates. The expanded topic/source coverage does not re-publish the archived recommendation extraction or full historical trial encyclopedia.
 
 Inputs use strict finite numbers and explicit units. DAWN/DEFUSE-3 preserve their
 legacy tool names but return `eligible: null` when the partial screen is met,

@@ -5,7 +5,8 @@ import { readFileSync } from 'node:fs';
 import * as calculators from '../src/calculators.js';
 import * as calculatorsExtended from '../src/calculators-extended.js';
 import * as supplementary from '../src/supplementary-calculators.js';
-import Tools from '../src/Tools.jsx';
+import { CalculatorDirectory } from '../src/Tools.jsx';
+import { calculatorDefinitions } from '../src/supplementary-calculator-definitions.js';
 import Encounter from '../src/Encounter.jsx';
 import { newEncounter } from '../src/workspace-state.js';
 import { parseWorkspaceRoute } from '../src/workspace-routing.js';
@@ -18,7 +19,7 @@ const contexts = ['ischemic', 'ich', 'tia'].map(diagnosisCategory => {
   return renderToStaticMarkup(<Encounter state={state} update={() => {}} now={Date.now()} onGenerate={() => {}} onCopy={() => {}} copyStatus="" />);
 });
 
-const toolsHtml = renderToStaticMarkup(<Tools state={newEncounter()} update={() => {}} mapUrl="https://example.com" />);
+const toolsHtml = renderToStaticMarkup(<CalculatorDirectory definitions={calculatorDefinitions} state={newEncounter()} update={() => {}} mapUrl="https://example.com" />);
 
 describe('maintained calculator registry describes mounted tools', () => {
   it.each(registry)('$id advertises an actual exported function and a retained, rendered destination', entry => {

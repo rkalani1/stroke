@@ -7,9 +7,10 @@ import vm from 'node:vm';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = join(__dirname, '..');
 const version = JSON.parse(readFileSync(join(repoRoot, 'package.json'), 'utf8')).version;
-const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-') + '-reference-20261001';
+const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-') + '-comprehensive-20261001';
 const workerSource = readFileSync(join(repoRoot, 'service-worker.js'), 'utf8');
-const referenceFixture = { _meta: { appVersion: version, schemaVersion: '2.0.0' }, data: { topics: [{ id: 'topic' }], studies: [{ id: 'study' }] } };
+const referenceFixture = JSON.parse(readFileSync(new URL('../data/clinical-reference.json', import.meta.url), 'utf8'));
+referenceFixture._meta.appVersion = version;
 
 function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-cache-v6-22-0', currentCache], options = {}) {
   const handlers = new Map();
@@ -168,6 +169,9 @@ describe('service worker update lifecycle', () => {
     ['another app version', JSON.stringify({ ...referenceFixture, _meta: { ...referenceFixture._meta, appVersion: 'old-release' } })],
     ['another schema version', JSON.stringify({ ...referenceFixture, _meta: { ...referenceFixture._meta, schemaVersion: '1.0.0' } })],
     ['missing reference', null],
+    ['malformed calculator fields', JSON.stringify({ ...referenceFixture, data: { ...referenceFixture.data, calculators: [{ ...referenceFixture.data.calculators[0], fields: null }] } })],
+    ['malformed topic source', JSON.stringify({ ...referenceFixture, data: { ...referenceFixture.data, topics: [{ ...referenceFixture.data.topics[0], sources: [] }] } })],
+    ['missing calculator presentation', JSON.stringify({ ...referenceFixture, data: { topics: [{}], studies: [{}] } })],
     ['malformed JSON', '{'],
     ['missing topics', JSON.stringify({ ...referenceFixture, data: { studies: [] } })],
     ['non-array studies', JSON.stringify({ ...referenceFixture, data: { topics: [{}], studies: {} } })],

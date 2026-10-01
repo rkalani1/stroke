@@ -15,6 +15,7 @@ const aliases = {
   'has-bled':'HASBLED bleeding', rope:'risk of paradoxical embolism PFO', pascal:'PFO associated stroke causal likelihood',
   phases:'aneurysm', 'mrs-descriptors':'mRS modified Rankin scale disability', 'hunt-hess':'Hunt Hess subarachnoid hemorrhage SAH',
   wfns:'World Federation of Neurosurgical Societies subarachnoid hemorrhage SAH',
+  'modified-fisher':'modified Fisher CT blood subarachnoid hemorrhage SAH IVH', mtici:'TICI reperfusion thrombectomy angiography', nascet:'carotid stenosis ICA diameter',
   'aspects-regions':'Alberta stroke program early CT score anterior', 'pc-aspects-regions':'posterior circulation ASPECTS',
   phq2:'PHQ2 patient health questionnaire depression', 'stop-bang':'STOPBANG sleep apnea'
 };
@@ -33,6 +34,6 @@ export function reviewedCalculatorText(state, definition) {
   const result = definition.id === 'mrs-descriptors' ? `Baseline mRS descriptor ${value.score}: ${value.description}`
     : value.category ? `${definition.name} category: ${value.category} (source classification; RoPE ${value.ropeScore}/10).`
     : value.grade !== undefined ? `${definition.name}: ${value.grade}${value.description ? ` — ${value.description}` : ` (GCS ${value.gcs}).`}`
-    : `${definition.name}: ${value.score}/${value.max}${definition.id === 'aspects-regions' ? ` (${state.supplementary[definition.id].hemisphere} hemisphere)` : ''}.`;
+    : `${definition.name}: ${value.unit ? `${value.score}${value.unit}` : `${value.score}/${value.max}`}${definition.id === 'aspects-regions' ? ` (${state.supplementary[definition.id].hemisphere} hemisphere)` : definition.id === 'nascet' ? ` (${state.supplementary[definition.id].side} ICA)` : ''}.`;
   return [result, `Limits: ${definition.limits}`, `Source: ${definition.sourceLabel} — ${definition.sourceUrl}`, definition.reviewScope, definition.verificationUrl ? `Verification: ${definition.verificationUrl}` : ''].filter(Boolean).join('\n');
 }
