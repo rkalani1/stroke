@@ -146,17 +146,18 @@ async function main() {
       await reset(page);
     });
     await check('restored Trials navigation, three views and unchanged Encounter session', async () => {
+      try {
       await page.getByLabel('Age (years)', { exact: true }).fill('67');
       await page.getByRole('link', { name: 'Trials', exact: true }).click();
       await page.getByRole('heading', { name: 'Trials', exact: true }).waitFor();
       const screen = page.getByRole('tabpanel', { name: 'Screener', exact: true });
-      assert(await screen.getByText('Choose a classification to see possible study profiles.', { exact: true }).isVisible());
+      await screen.getByText('Choose a classification to see possible study profiles.', { exact: true }).waitFor({ state: 'visible' });
       await screen.getByRole('button', { name: 'Ischemic stroke', exact: true }).click();
       await screen.getByRole('button', { name: /4.5 – 24h/ }).click();
-      assert(await screen.getByRole('heading', { name: /^Possible candidates/ }).isVisible());
+      await screen.getByRole('heading', { name: /^Possible candidates/ }).waitFor({ state: 'visible' });
       await page.getByRole('tab', { name: 'Tables', exact: true }).click();
       const tables = page.getByRole('tabpanel', { name: 'Tables', exact: true });
-      assert(await tables.getByRole('button', { name: 'Ischemic Stroke', exact: true }).isVisible());
+      await tables.getByRole('button', { name: 'Ischemic Stroke', exact: true }).waitFor({ state: 'visible' });
       await page.getByRole('tab', { name: 'Database', exact: true }).click();
       const database = page.getByRole('tabpanel', { name: 'Database', exact: true });
       await database.getByRole('searchbox', { name: 'Search the study database by acronym, name or NCT number', exact: true }).fill('STEP');
@@ -170,10 +171,10 @@ async function main() {
       assert.equal(await screen.getByRole('button', { name: 'Ischemic stroke', exact: true }).getAttribute('aria-pressed'), 'true');
       await reset(page);
       await page.getByRole('link', { name: 'Trials', exact: true }).click();
-      assert(await screen.getByText('Choose a classification to see possible study profiles.', { exact: true }).isVisible());
+      await screen.getByText('Choose a classification to see possible study profiles.', { exact: true }).waitFor({ state: 'visible' });
       const visibleText = await page.locator('main').innerText();
       assert(!/synthetic|public demo|educational demo|no PHI|not a real clinical note/i.test(visibleText));
-      await reset(page);
+      } finally { await reset(page); }
     });
     await check('protocol clocks show validated LKW and Discovery components', async () => {
       try {

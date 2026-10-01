@@ -95,3 +95,8 @@ Additional repairs: protocol timing receives the validated complete elapsed shap
 Next: commit/push this reviewed candidate, normal PR checks and merge, then verify main CI, Pages build, exact live bytes and actual-live browser/retired-URL checks.
 
 Local leak checks use the public denylist; the authoritative private list is held by existing CI. An optional local hook installation was reverted to the original unset configuration after it could not load that private list. No hook file, private scan, CI gate or release protection was changed. The full private CI scans must pass on this exact candidate before merge.
+
+
+### PR 230 CI synchronization repair
+
+The first PR run passed both private identifier scans, unit tests and MCP smoke, but the rendered browser smoke checked the newly selected Trials Tables panel before the hash route rendered. Its immediate visibility assertion failed and left the next check on Trials. Replaced that assertion with the existing Playwright visible-state wait and added unconditional encounter reset for this check; no production behavior or test expectations were relaxed. The exact updated candidate must pass normal CI before merge.
