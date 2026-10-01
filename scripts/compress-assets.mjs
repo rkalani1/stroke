@@ -6,13 +6,15 @@
 // Safe no-op on CI systems without brotli support — gzip is always emitted.
 
 import { promises as fs } from 'node:fs';
-import { createGzip, createBrotliCompress, constants as zlibConstants } from 'node:zlib';
-import { pipeline } from 'node:stream/promises';
-import { createReadStream, createWriteStream } from 'node:fs';
+import { gzip, brotliCompress, constants as zlibConstants } from 'node:zlib';
+import { promisify } from 'node:util';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { atomicWriteFile } from './atomic-write.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const gzipAsync = promisify(gzip);
+const brotliAsync = promisify(brotliCompress);
 
 const TARGETS = [
   'app.js',
@@ -32,17 +34,17 @@ async function fileSize(p) {
   }
 }
 
-async function compressGzip(src, dest) {
-  await pipeline(createReadStream(src), createGzip({ level: 9 }), createWriteStream(dest));
+async function compressGzip(bytes, dest) {
+  await atomicWriteFile(dest, await gzipAsync(bytes, { level: 9 }));
 }
 
-async function compressBrotli(src, dest) {
-  const brotli = createBrotliCompress({
+async function compressBrotli(bytes, dest) {
+  const compressed = await brotliAsync(bytes, {
     params: {
       [zlibConstants.BROTLI_PARAM_QUALITY]: 11
     }
   });
-  await pipeline(createReadStream(src), brotli, createWriteStream(dest));
+  await atomicWriteFile(dest, compressed);
 }
 
 async function main() {
@@ -65,8 +67,12 @@ async function main() {
       skipped += 1;
       continue;
     }
-    await compressGzip(src, `${src}.gz`);
-    await compressBrotli(src, `${src}.br`);
+    // Concurrent build/test readers must see either the previous complete
+    // artifact or its complete replacement, never an opened/truncated stream.
+    // Both encodings use the same source snapshot.
+    const bytes = await fs.readFile(src);
+    await compressGzip(bytes, `${src}.gz`);
+    await compressBrotli(bytes, `${src}.br`);
     const gzSize = await fileSize(`${src}.gz`);
     const brSize = await fileSize(`${src}.br`);
     const pct = (n) => (n != null ? `${((n / size) * 100).toFixed(1)}%` : 'n/a');
