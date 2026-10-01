@@ -123,6 +123,9 @@ const precache = corePrecacheBytes();
 // v7.0.1 owner-requested Trials restoration adds 89.8KB of deferred UI/data.
 // Reuse canonical table criteria and keep the initial/gzip/CSS/cache ceilings;
 // reviewed whole-JS raw ceiling is now640KB (~627KB measured, no packed-data layer).
+// v7.1.0 restores 13 worksheets, optional Encounter documentation and Trials UI.
+// Keep initial300KB/100KB, CSS90KB and cache2MB ceilings; source/UI prose is lazy.
+// Measured complete JS is about700KB raw/195KB gzip; bounded new ceilings below.
 const checks = [
   {
     id: 'app-js-gzip',
@@ -145,12 +148,12 @@ const checks = [
   {
     id: 'all-js-gzip', label: 'All offline JavaScript (gzip)',
     actual: sumSizes(manifest.files.map(file => file.path), gzipSizeOf),
-    budget: 180 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
+    budget: 196 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
   },
   {
     id: 'all-js-raw', label: 'All offline JavaScript (raw)',
     actual: sumSizes(manifest.files.map(file => file.path), sizeOf),
-    budget: 640 * KB, unit: MB, unitLabel: 'MB', note: '',
+    budget: 700 * KB, unit: MB, unitLabel: 'MB', note: '',
   },
   {
     id: 'tailwind-css',

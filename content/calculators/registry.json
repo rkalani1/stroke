@@ -139,5 +139,187 @@
     ],
     "scope": "Treatment-selection source screen; full explicit input review required",
     "limits": "Read each referenced source population, limits and actual review scope before interpreting an output."
+  },
+  {
+    "id": "abcd2",
+    "name": "ABCD²",
+    "category": "TIA & secondary prevention",
+    "fn": "calculateReviewedABCD2",
+    "module": "supplementary-calculators",
+    "route": "#/tools/abcd2",
+    "sourceEndpoint": "data/sources.json",
+    "sourceIds": [
+      "abcd2-instrument"
+    ],
+    "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+    "limits": "For a clinically diagnosed TIA. Historical symptoms and duration need explicit review; the score does not diagnose TIA or determine disposition."
+  },
+  {
+    "id": "chadsvasc",
+    "name": "CHA₂DS₂-VASc",
+    "category": "TIA & secondary prevention",
+    "fn": "calculateReviewedCHADS2VASc",
+    "module": "supplementary-calculators",
+    "route": "#/tools/chadsvasc",
+    "sourceEndpoint": "data/sources.json",
+    "sourceIds": [
+      "chadsvasc-instrument"
+    ],
+    "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+    "limits": "For nonvalvular atrial fibrillation. Sex category follows the original instrument; no annual risk estimate or anticoagulant choice is generated."
+  },
+  {
+    "id": "has-bled",
+    "name": "HAS-BLED",
+    "category": "TIA & secondary prevention",
+    "fn": "calculateReviewedHASBLED",
+    "module": "supplementary-calculators",
+    "route": "#/tools/has-bled",
+    "sourceEndpoint": "data/sources.json",
+    "sourceIds": [
+      "has-bled-instrument"
+    ],
+    "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+    "limits": "Original AF bleeding instrument. Review its definitions, including renal/liver impairment and labile INR. A score does not justify withholding anticoagulation; no bleeding probability is generated."
+  },
+  {
+    "id": "rope",
+    "name": "RoPE",
+    "category": "PFO assessment",
+    "fn": "calculateReviewedRoPE",
+    "module": "supplementary-calculators",
+    "route": "#/tools/rope",
+    "sourceEndpoint": "data/sources.json",
+    "sourceIds": [
+      "rope-instrument"
+    ],
+    "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+    "limits": "For otherwise cryptogenic ischemic stroke with PFO, not undifferentiated symptoms or TIA. The score does not establish causality or recommend closure."
+  },
+  {
+    "id": "pascal",
+    "name": "PASCAL",
+    "category": "PFO assessment",
+    "fn": "classifyReviewedPASCAL",
+    "module": "supplementary-calculators",
+    "route": "#/tools/pascal",
+    "sourceEndpoint": "data/sources.json",
+    "sourceIds": [
+      "pascal-instrument"
+    ],
+    "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+    "limits": "Simplified three-category classification for the source population aged 18–60 with otherwise cryptogenic stroke and PFO. Shunt/ASA definitions require specialist review; category does not establish individual causality or closure benefit."
+  },
+  {
+    "id": "phases",
+    "name": "PHASES",
+    "category": "Aneurysm & SAH",
+    "fn": "calculateReviewedPHASES",
+    "module": "supplementary-calculators",
+    "route": "#/tools/phases",
+    "sourceEndpoint": "data/sources.json",
+    "sourceIds": [
+      "phases-instrument"
+    ],
+    "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+    "limits": "For an unruptured saccular intracranial aneurysm. Geographic groups follow the original cohorts and must be explicitly selected. Score only; no rupture probability or management recommendation."
+  },
+  {
+    "id": "mrs-descriptors",
+    "name": "Modified Rankin scale descriptors",
+    "category": "Disability & grading",
+    "fn": "describeReviewedMRS",
+    "module": "supplementary-calculators",
+    "route": "#/tools/mrs-descriptors",
+    "sourceEndpoint": "data/sources.json",
+    "sourceIds": [
+      "mrs-descriptors-instrument"
+    ],
+    "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+    "limits": "Describes the existing baseline mRS entry; does not assign a grade from an interview or forecast recovery. Original descriptor wording retained in paraphrase; primary full-text review remains limited."
+  },
+  {
+    "id": "hunt-hess",
+    "name": "Hunt–Hess grade",
+    "category": "Aneurysm & SAH",
+    "fn": "describeReviewedHuntHess",
+    "module": "supplementary-calculators",
+    "route": "#/tools/hunt-hess",
+    "sourceEndpoint": "data/sources.json",
+    "sourceIds": [
+      "hunt-hess-instrument"
+    ],
+    "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+    "limits": "Clinician-assigned SAH grade. Descriptions are an aid, not an examination or individualized prognosis; clinical confounders require review."
+  },
+  {
+    "id": "wfns",
+    "name": "WFNS grade",
+    "category": "Aneurysm & SAH",
+    "fn": "calculateReviewedWFNS",
+    "module": "supplementary-calculators",
+    "route": "#/tools/wfns",
+    "sourceEndpoint": "data/sources.json",
+    "sourceIds": [
+      "wfns-instrument"
+    ],
+    "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+    "limits": "SAH grade from complete Encounter GCS and reviewed motor deficit. The original table leaves GCS 15 with motor deficit unclassified here. No mortality or recovery prediction."
+  },
+  {
+    "id": "aspects-regions",
+    "name": "ASPECTS regional worksheet",
+    "category": "Imaging",
+    "fn": "calculateReviewedRegionalASPECTS",
+    "module": "supplementary-calculators",
+    "route": "#/tools/aspects-regions",
+    "sourceEndpoint": "data/sources.json",
+    "sourceIds": [
+      "aspects-regions-instrument"
+    ],
+    "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+    "limits": "One MCA hemisphere on source-appropriate imaging. All ten regions require explicit review. Worksheet arithmetic is separate from image interpretation and EVT eligibility."
+  },
+  {
+    "id": "pc-aspects-regions",
+    "name": "pc-ASPECTS regional worksheet",
+    "category": "Imaging",
+    "fn": "calculateReviewedRegionalPCASPECTS",
+    "module": "supplementary-calculators",
+    "route": "#/tools/pc-aspects-regions",
+    "sourceEndpoint": "data/sources.json",
+    "sourceIds": [
+      "pc-aspects-regions-instrument"
+    ],
+    "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+    "limits": "Original posterior-circulation CT/CTA-source-image instrument. All eight regions require explicit review; pons and midbrain each subtract two points. No universal treatment cutoff or prognosis."
+  },
+  {
+    "id": "phq2",
+    "name": "PHQ-2",
+    "category": "Follow-up screening",
+    "fn": "calculateReviewedPHQ2",
+    "module": "supplementary-calculators",
+    "route": "#/tools/phq2",
+    "sourceEndpoint": "data/sources.json",
+    "sourceIds": [
+      "phq2-instrument"
+    ],
+    "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+    "limits": "Two-week symptom-frequency screening, not a depression diagnosis. Both responses must be entered; no management plan is generated."
+  },
+  {
+    "id": "stop-bang",
+    "name": "STOP-BANG",
+    "category": "Follow-up screening",
+    "fn": "calculateReviewedSTOPBANG",
+    "module": "supplementary-calculators",
+    "route": "#/tools/stop-bang",
+    "sourceEndpoint": "data/sources.json",
+    "sourceIds": [
+      "stop-bang-instrument"
+    ],
+    "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
+    "limits": "Original eight-item sleep-apnea screening instrument, initially studied in surgical patients. Age, sex and BMI use Encounter values. Screening score only; no diagnosis, severity prediction or management plan."
   }
 ]

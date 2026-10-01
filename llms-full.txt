@@ -1,6 +1,6 @@
 # Stroke Encounter Educational Demo
 
-> v7.0.2: deterministic synthetic Encounter workflow with embedded retained tools, protected example protocols a trial screener/reference database, and bounded source/limits access.
+> v7.1.0: deterministic synthetic Encounter workflow with embedded retained tools, protected example protocols a trial screener/reference database, and bounded source/limits access.
 
 Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.
 
@@ -44,5 +44,18 @@ The historical Education and general guideline/reference portal is retired. Arch
 - dawn: DAWN historical partial screen; canonical helper evaluateDAWN; reveal at #/encounter/dawn.
 - defuse3: DEFUSE-3 historical partial screen; canonical helper evaluateDEFUSE3; reveal at #/encounter/defuse3.
 - acute-dapt: Acute DAPT recommendation; canonical helper recommendAcuteDAPT; reveal at #/encounter/dapt.
+- abcd2: ABCD²; canonical helper calculateReviewedABCD2; reveal at #/tools/abcd2.
+- chadsvasc: CHA₂DS₂-VASc; canonical helper calculateReviewedCHADS2VASc; reveal at #/tools/chadsvasc.
+- has-bled: HAS-BLED; canonical helper calculateReviewedHASBLED; reveal at #/tools/has-bled.
+- rope: RoPE; canonical helper calculateReviewedRoPE; reveal at #/tools/rope.
+- pascal: PASCAL; canonical helper classifyReviewedPASCAL; reveal at #/tools/pascal.
+- phases: PHASES; canonical helper calculateReviewedPHASES; reveal at #/tools/phases.
+- mrs-descriptors: Modified Rankin scale descriptors; canonical helper describeReviewedMRS; reveal at #/tools/mrs-descriptors.
+- hunt-hess: Hunt–Hess grade; canonical helper describeReviewedHuntHess; reveal at #/tools/hunt-hess.
+- wfns: WFNS grade; canonical helper calculateReviewedWFNS; reveal at #/tools/wfns.
+- aspects-regions: ASPECTS regional worksheet; canonical helper calculateReviewedRegionalASPECTS; reveal at #/tools/aspects-regions.
+- pc-aspects-regions: pc-ASPECTS regional worksheet; canonical helper calculateReviewedRegionalPCASPECTS; reveal at #/tools/pc-aspects-regions.
+- phq2: PHQ-2; canonical helper calculateReviewedPHQ2; reveal at #/tools/phq2.
+- stop-bang: STOP-BANG; canonical helper calculateReviewedSTOPBANG; reveal at #/tools/stop-bang.
 
 Endpoints carry _meta.status, schemaVersion, appVersion and stable payload checksums. Inspect status before consuming data. Schema 2 retires broad corpus exports; legacy payloads are null with archive/replacement pointers.

@@ -13,6 +13,7 @@ describe('Encounter-first navigation and explicit retirement', () => {
     expect(parseWorkspaceRoute('#/research/calculators/'+tool)).toEqual({ surface: 'encounter', tool });
     expect(parseWorkspaceRoute('#/encounter/'+tool)).toEqual({ surface: 'encounter', tool });
   });
-  it.each(['rcvs2','func','phases','dragon','hasbled','unknown'])('never substitutes an unrelated tool for %s', tool => expect(parseWorkspaceRoute('#/calculators/'+tool).surface).toBe('retired'));
+  it.each(['rcvs2','func','dragon','unknown'])('never substitutes an unrelated tool for %s', tool => expect(parseWorkspaceRoute('#/calculators/'+tool).surface).toBe('retired'));
+  it.each(['abcd2', 'chadsvasc', 'has-bled', 'rope', 'pascal', 'phases', 'hunt-hess', 'wfns', 'aspects-regions', 'pc-aspects-regions'])('restores supported supplemental %s routes', tool => { for (const prefix of ['tools', 'encounter', 'calculators', 'research/calculators']) expect(parseWorkspaceRoute(`#/${prefix}/${tool}`)).toEqual({ surface: 'tools', tool }); });
   it('routing does not read or mutate encounter state', () => {const s=newEncounter();s.rationale='synthetic retained rationale';const before=JSON.stringify(s);for(const hash of ['#/protocols/ich','#/tools','#/encounter','#/trials'])parseWorkspaceRoute(hash);expect(JSON.stringify(s)).toBe(before);});
 });
