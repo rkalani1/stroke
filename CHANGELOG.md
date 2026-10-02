@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v7.6.5 — 2026-10-02 — Timestamp integrity and evidence retrieval
+
+- Require an explicit first/second occurrence for repeated local clock times; preserve chosen instants across supported event, onset, imaging and consent fields. Ambiguous entries remain unresolved in notes, source screens and monitoring.
+- Flag reperfusion before EVT puncture in Encounter and generated documentation; expose the puncture-to-reperfusion interval without inferring unentered events.
+- Find numeric study-name variants and AFib, retain Evidence filters when following matching results and returning, and restore search focus after clearing filters.
+- Add source-linked APS, sudden severe headache/suspected SAH, and fibromuscular dysplasia topics (83 total). Keep selected-section review and correction limits explicit.
+- Consolidate repeated Encounter controls and timestamp inputs; emit compact ES2020 syntax consistent with the existing native-API requirements, keeping every asset ceiling unchanged.
+- Correct the ICH-volume entry instruction to match its cm/mm/slice-count inputs. Preserve protected protocols and the removed Trials Completed evidence subsection.
+
 ## v7.6.4 — 2026-10-02 — Correction review and maintenance clarity
 
 - Record review of six publisher-indexed AHA correction bodies across AF guidance, acute-hospital AF and hypertension guidance; keep the unresolved hypertension correction and full-guideline limits explicit. No treatment rule, dosing output or study result changes.

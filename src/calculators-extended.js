@@ -1,6 +1,7 @@
 // Maintained Encounter arithmetic/source screens only. Full historical helpers are at the archival Git ref.
 // Reviewed helpers accept complete finite numbers, never partial strings or booleans.
 import { reviewedNumber } from './reviewed-number.js';
+import { parseTimestamp } from './clinical/timestamp.js';
 
 // Extended clinical calculators added in the P0/P1 expansion.
 // Each function is pure, fully unit-testable, and carries its primary source
@@ -204,9 +205,8 @@ export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2,
 };
 
 export const computeNeurocheckSchedule = (tpaGivenIsoTime) => {
-  if (!tpaGivenIsoTime) return null;
-  const start = new Date(tpaGivenIsoTime);
-  if (Number.isNaN(start.getTime())) return null;
+  const start = parseTimestamp(tpaGivenIsoTime);
+  if (!start) return null;
   const checks = [];
   for (let i = 1; i <= 8; i += 1) checks.push({ label: `q15 check #${i}`, at: new Date(start.getTime() + i * 15 * 60 * 1000) });
   for (let i = 1; i <= 12; i += 1) checks.push({ label: `q30 check #${i}`, at: new Date(start.getTime() + (2 * 60 + i * 30) * 60 * 1000) });
@@ -215,24 +215,10 @@ export const computeNeurocheckSchedule = (tpaGivenIsoTime) => {
 };
 
 export const computeLKWCountdown = (lkwIso, nowMs = Date.now()) => {
-  // Accept datetime-local values and ISO timestamps, not Date's permissive
-  // numeric/locale coercions. Validate the written calendar before parsing.
-  if (typeof lkwIso !== 'string') return null;
-  const parts = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,3}))?)?(Z|[+-]\d{2}:\d{2})?$/.exec(lkwIso);
-  if (!parts) return null;
-  const [, y, mo, d, h, mi, s = '0', fraction = '', zone] = parts;
-  const [year, month, day, hour, minute, second] = [y, mo, d, h, mi, s].map(Number);
-  const leapYear = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
-  const daysInMonth = [31, leapYear ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  if (year < 1 || month < 1 || month > 12 || day < 1 || day > daysInMonth[month - 1] || hour > 23 || minute > 59 || second > 59) return null;
-  if (zone && zone !== 'Z' && (Number(zone.slice(1, 3)) > 23 || Number(zone.slice(4, 6)) > 59)) return null;
-  const lkw = new Date(lkwIso).getTime();
-  if (!Number.isFinite(lkw) || !Number.isFinite(nowMs) || !Number.isFinite(new Date(nowMs).getTime()) || lkw > nowMs) return null;
-  if (!zone) {
-    // Local times skipped by a daylight-saving transition must remain invalid.
-    const local = new Date(lkw);
-    if (local.getFullYear() !== year || local.getMonth() + 1 !== month || local.getDate() !== day || local.getHours() !== hour || local.getMinutes() !== minute || local.getSeconds() !== second || local.getMilliseconds() !== Number(fraction.padEnd(3, '0'))) return null;
-  }
+  const parsed = parseTimestamp(lkwIso);
+  if (!parsed || !Number.isFinite(nowMs) || !Number.isFinite(new Date(nowMs).getTime())) return null;
+  const lkw = parsed.getTime();
+  if (lkw > nowMs) return null;
   const elapsedMs = nowMs - lkw;
   const toLyticMs = (4.5 * 3600 * 1000) - elapsedMs;
   const toLateEvtMs = (24 * 3600 * 1000) - elapsedMs;

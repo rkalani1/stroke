@@ -1671,5 +1671,175 @@
         "href": "#/evidence/ich-surgery"
       }
     ]
+  },
+  {
+    "id": "antiphospholipid-syndrome",
+    "title": "Antiphospholipid syndrome and stroke",
+    "category": "Stroke mechanisms and vascular disorders",
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "APS",
+      "antiphospholipid",
+      "aPL",
+      "lupus anticoagulant",
+      "anticardiolipin",
+      "beta-2 glycoprotein",
+      "thrombophilia",
+      "warfarin",
+      "DOAC",
+      "recurrent thrombosis"
+    ],
+    "summary": "APS assessment connects the clinical thrombotic history with persistent antiphospholipid antibodies. An isolated positive test does not establish APS; acute illness and anticoagulants can distort lupus-anticoagulant testing.",
+    "consider": [
+      "Does the stroke mechanism, age, vascular-risk profile or prior thrombotic/obstetric history justify targeted testing?",
+      "Review the antibody profile, assay conditions and repeat testing at least 12 weeks apart with hematology and the laboratory.",
+      "For established APS-associated stroke, review its specific antithrombotic evidence; DOAC results from AF should not be transferred to arterial APS."
+    ],
+    "caution": "Research classification criteria are not a standalone diagnostic test. Borderline results and competing stroke mechanisms need individual assessment; this card does not select a drug, INR target or treatment duration.",
+    "sources": [
+      {
+        "title": "BSH 2024 guidelines on the investigation and management of antiphospholipid syndrome",
+        "url": "https://onlinelibrary.wiley.com/doi/10.1111/bjh.19635",
+        "year": 2024,
+        "type": "Guideline",
+        "checkedAt": "2026-10-02",
+        "access": "Selected primary full-text sections read: Introduction; who should be tested; Interferences with LA testing; Reporting and interpretation; Role of DOACs in APS; Management of stroke in APS. Full guideline, laboratory tables and supplements were not comprehensively reviewed. The society page records review on 2025-08-04."
+      }
+    ],
+    "related": [
+      {
+        "label": "Stroke mechanism and workup",
+        "href": "#/evidence/stroke-workup"
+      },
+      {
+        "label": "Anticoagulant label review",
+        "href": "#/evidence/anticoagulant-labels"
+      },
+      {
+        "label": "Cerebral venous thrombosis",
+        "href": "#/evidence/cvt"
+      }
+    ]
+  },
+  {
+    "id": "thunderclap-sah-evaluation",
+    "title": "Sudden severe headache and suspected SAH",
+    "category": "Hemorrhage and neurocritical care",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "thunderclap",
+      "worst headache",
+      "subarachnoid",
+      "SAH diagnosis",
+      "negative CT",
+      "lumbar puncture",
+      "LP",
+      "CTA",
+      "Ottawa SAH",
+      "acute headache"
+    ],
+    "summary": "Sudden severe headache warrants prompt evaluation for SAH and other serious causes. Interpret a negative CT with the onset interval, neurologic findings, scanner quality and reader expertise.",
+    "consider": [
+      "Establish time to peak pain, onset time, examination findings and whether the presentation fits the source population.",
+      "AHA/ASA 2023 recommends LP after a negative CT when presentation is more than 6 hours after onset or there is a new neurologic deficit; early CT-only assessment has specific quality and examination requirements.",
+      "ACEP 2019 allows LP or CTA when SAH risk remains after negative CT, with shared discussion of limitations. Review these differing recommendations with the local diagnostic pathway."
+    ],
+    "caution": "A negative CT is not universal clearance. CTA can reveal an incidental aneurysm and does not replace every purpose of LP; persistent concern or an alternative dangerous diagnosis still requires evaluation.",
+    "sources": [
+      {
+        "title": "AHA/ASA 2023 aneurysmal SAH guideline: Section 4, clinical manifestations and diagnosis",
+        "url": "https://www.ahajournals.org/doi/10.1161/STR.0000000000000436",
+        "year": 2023,
+        "type": "Guideline",
+        "checkedAt": "2026-10-02",
+        "access": "Publisher-indexed Section 4 recommendation table read, including CT timing, examination/reader requirements and LP. Complete guideline and supplements not reviewed. Previously indexed correction PMID 38011240 remains unreconciled; no correction-access retry or full corrected-guideline claim."
+      },
+      {
+        "title": "ACEP 2019 clinical policy: acute headache, diagnostic questions 3 and 4",
+        "url": "https://www.acep.org/siteassets/sites/acep/media/clinical-policies/cp-headache.pdf",
+        "year": 2019,
+        "type": "Guideline",
+        "checkedAt": "2026-10-02",
+        "access": "Official published policy PDF, questions 3 and 4 (pp. e50–e51), recommendations and diagnostic limitations read. Complete policy/evidence tables not reviewed. A 2026 update was listed as a draft for comment; draft recommendations were not used."
+      }
+    ],
+    "related": [
+      {
+        "label": "Aneurysmal SAH care",
+        "href": "#/evidence/sah"
+      },
+      {
+        "label": "Cerebral venous thrombosis",
+        "href": "#/evidence/cvt"
+      },
+      {
+        "label": "Cervical artery dissection",
+        "href": "#/evidence/dissection"
+      }
+    ]
+  },
+  {
+    "id": "fibromuscular-dysplasia",
+    "title": "Fibromuscular dysplasia: vascular assessment and follow-up",
+    "category": "Stroke mechanisms and vascular disorders",
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "FMD",
+      "fibromuscular dysplasia",
+      "beading",
+      "nonatherosclerotic",
+      "renal artery",
+      "multivessel",
+      "aneurysm screening",
+      "cervical dissection"
+    ],
+    "summary": "FMD is a nonatherosclerotic arterial disorder that can involve several vascular beds. The ESH/SVM consensus requires a focal or multifocal arterial lesion; dissection, aneurysm or tortuosity alone does not establish FMD.",
+    "consider": [
+      "Review the vascular imaging diagnosis and any associated dissection, aneurysm or hypertension with an experienced team.",
+      "For established FMD, the 2019 consensus supports at least one brain-to-pelvis CTA or contrast-enhanced MRA assessment for additional disease, aneurysms and dissections.",
+      "Arrange longitudinal clinical review; customize subsequent imaging to the affected vessels, symptoms, prior procedures and aneurysm/dissection findings."
+    ],
+    "caution": "This is consensus guidance with limited treatment evidence. Antiplatelet benefits and bleeding risks need individual review; there is no universal follow-up imaging interval.",
+    "sources": [
+      {
+        "title": "ESH/SVM 2019 first international consensus on the diagnosis and management of fibromuscular dysplasia",
+        "url": "https://journals.sagepub.com/doi/pdf/10.1177/1358863X18821816",
+        "year": 2019,
+        "type": "Consensus statement",
+        "checkedAt": "2026-10-02",
+        "access": "Selected primary PDF passages read: diagnostic consensus points (p. 167), cerebrovascular assessment (p. 175), brain-to-pelvis imaging and antiplatelet evidence limits (p. 177), longitudinal follow-up (pp. 182–183). Full document and supplements not comprehensively reviewed."
+      },
+      {
+        "title": "FMD consensus corrigendum: carotid stenosis wording",
+        "url": "https://journals.sagepub.com/doi/10.1177/1358863X19865703",
+        "year": 2019,
+        "type": "Correction",
+        "checkedAt": "2026-10-02",
+        "access": "Complete publisher-indexed notice text read; it replaces an erroneous reference to severe carotid stenting with severe carotid stenosis in a cervical-dissection procedural sentence. That sentence is not reproduced here. Direct notice-page fetch timed out."
+      }
+    ],
+    "related": [
+      {
+        "label": "Cervical artery dissection",
+        "href": "#/evidence/dissection"
+      },
+      {
+        "label": "Unruptured aneurysm review",
+        "href": "#/evidence/unruptured-aneurysms"
+      },
+      {
+        "label": "Long-term blood pressure prevention",
+        "href": "#/evidence/bp-prevention"
+      }
+    ]
   }
 ]

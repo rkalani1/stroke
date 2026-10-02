@@ -1,13 +1,19 @@
 // Shared deterministic search. Queries stay in memory and never form URLs.
 export const CARE_SETTINGS = [['all', 'All settings'], ['on-call', 'On call'], ['hospital', 'Hospital'], ['clinic', 'Clinic']];
-const normalize = value => String(value).normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+const normalize = value => String(value).normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().replace(/\bafib\b/g, 'atrial fibrillation');
 export function searchReference(records, query = '', setting = 'all') {
-  const phrase = normalize(query), terms = phrase.split(' ').filter(Boolean);
-  const rank = record => [record.id, record.title, ...record.keywords].some(value => normalize(value) === phrase) ? 2
-    : terms.every(term => ` ${normalize(record.title)} `.includes(` ${term} `)) ? 1 : 0;
+  // Join digit boundaries only for known identifiers, not clinical phrases such as "DAPT 21 days".
+  const identifiers = records.filter(record => /\d/.test(record.id)).map(record => {
+    const parts = normalize(record.id).match(/[a-z]+|\d+/g);
+    return new RegExp(`\\b${parts.map(part => /^\d+$/.test(part) ? '\\d+' : part).join(' *')}\\b`, 'g');
+  });
+  const searchableText = value => identifiers.reduce((text, pattern) => text.replace(pattern, name => name.replace(/ /g, '')), normalize(value));
+  const phrase = searchableText(query), terms = phrase.split(' ').filter(Boolean);
+  const rank = record => [record.id, record.title, ...record.keywords].some(value => searchableText(value) === phrase) ? 2
+    : terms.every(term => ` ${searchableText(record.title)} `.includes(` ${term} `)) ? 1 : 0;
   return records.filter(record => {
     if (setting !== 'all' && !record.settings.includes(setting)) return false;
-    const searchable = normalize([record.title, record.category || '', record.question || '', record.summary || '', ...(record.consider || []), record.population || '', record.comparison || '', record.result || '', ...record.keywords, ...record.sources.map(source => source.title)].join(' '));
+    const searchable = searchableText([record.id, record.title, record.category || '', record.question || '', record.summary || '', ...(record.consider || []), record.population || '', record.comparison || '', record.result || '', ...record.keywords, ...record.sources.map(source => source.title)].join(' '));
     return terms.every(term => searchable.includes(term));
   }).sort((a, b) => terms.length ? rank(b) - rank(a) : 0);
 }

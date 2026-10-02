@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "trials",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.6.4",
+    "appVersion": "7.6.5",
     "checksum": "sha256:fb20712c81170200c6455646f1009087",
     "count": 4,
     "source": "Restored canonical trial screener and table summaries with original verification dates",

@@ -446,12 +446,14 @@ async function main() {
         assert.equal(await matches.getByRole('link').first().getAttribute('href'), '#/evidence/elan');
         await matches.getByRole('link').first().click();
         await page.waitForFunction(() => document.querySelector('[data-reference-id="elan"]')?.open && document.activeElement.closest('[data-reference-id]')?.dataset.referenceId === 'elan');
-        assert.equal(await matches.count(), 0);
+        assert.equal(await matches.count(), 1);
+        assert.equal(await evidence.getByRole('searchbox', {name:'Find a clinical question', exact:true}).inputValue(), 'ELAN');
         await evidence.locator('[data-reference-id="af-timing"] > summary').click();
         await evidence.getByRole('searchbox', {name:'Find a clinical question', exact:true}).fill('ELAN');
         await matches.getByRole('link').first().click();
         await page.waitForFunction(() => document.querySelector('[data-reference-id="elan"]')?.open && document.activeElement.closest('[data-reference-id]')?.dataset.referenceId === 'elan');
-        assert.equal(await matches.count(), 0);
+        assert.equal(await matches.count(), 1);
+        assert.equal(await evidence.getByRole('searchbox', {name:'Find a clinical question', exact:true}).inputValue(), 'ELAN');
         await evidence.locator('[data-reference-id="elan"] > summary').click();
         await page.evaluate(() => { location.hash = '#/evidence/af-timing'; });
         const topic = evidence.locator('[data-reference-id="af-timing"]');
@@ -638,6 +640,45 @@ async function main() {
       const writes=await page.evaluate(()=>window.__qaStorageWrites);assert(writes.every(([key])=>['stroke.v7.theme','stroke.v7.migrated'].includes(key)),JSON.stringify(writes));assert.deepEqual(await page.evaluate(()=>window.__qaIndexedDB),[]);
       assert.equal(await page.evaluate(async sentinel=>{for(const name of await caches.keys()){const cache=await caches.open(name);for(const req of await cache.keys()){const response=await cache.match(req);if((response.headers.get('content-type')||'').match(/text|json|javascript/)&&(await response.text()).includes(sentinel))return true;}}return false;},marker),false);
       assert(requestUrls.filter(url=>/^https?:/.test(url)).every(url=>new URL(url).origin===new URL(server.url).origin),'core required external request');
+    });
+    await check('repeated local times require an occurrence and reversed EVT events remain qualified', async () => {
+      const timingContext = await browser.newContext({ timezoneId: 'America/Los_Angeles', viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
+      try {
+        const p = await timingContext.newPage();
+        await p.clock.setFixedTime(new Date('2026-11-01T10:00:00Z'));
+        await p.goto(server.url);
+        await p.getByLabel('Working diagnosis', { exact: true }).selectOption('ischemic');
+        await p.getByLabel('LKW date (local)', { exact: true }).fill('2026-11-01');
+        await p.getByLabel('LKW time (local)', { exact: true }).fill('01:31');
+        const occurrence = p.getByLabel('LKW clock occurrence', { exact: true });
+        assert.equal(await occurrence.inputValue(), '');
+        assert((await p.locator('#context').innerText()).includes('ambiguous local time'));
+        await occurrence.selectOption({ label: 'Second occurrence (UTC−08:00)' });
+        assert((await p.locator('#context').innerText()).includes('LKW: 29 min elapsed'));
+        await p.getByLabel('LKW time (local)', { exact: true }).fill('01:32');
+        assert.equal(await occurrence.inputValue(), '');
+        await p.getByLabel('Selected IV thrombolytic', { exact: true }).selectOption('TNK');
+        await p.getByLabel('IV thrombolytic administration explicitly recorded', { exact: true }).check();
+        await p.getByLabel('IVT administration timestamp (local)', { exact: true }).fill('2026-11-01T01:31');
+        assert((await p.locator('#handoff').innerText()).includes('Monitoring timer inactive'));
+        await p.getByRole('button', { name: 'Generate Pulsara summary', exact: true }).click();
+        assert(!(await p.getByLabel('Generated Pulsara summary', { exact: true }).inputValue()).includes('TNK at'));
+        await p.getByLabel('IVT administration timestamp (local) clock occurrence', { exact: true }).selectOption({ label: 'Second occurrence (UTC−08:00)' });
+        assert.equal(await p.getByRole('button', { name: 'Copy Pulsara summary', exact: true }).count(), 0);
+        assert((await p.locator('#handoff').innerText()).includes('next scheduled check'));
+        await p.getByLabel('EVT puncture timestamp (local)', { exact: true }).fill('2026-11-01T00:45');
+        await p.getByLabel('EVT reperfusion timestamp (local)', { exact: true }).fill('2026-11-01T00:30');
+        assert((await p.locator('#handoff').innerText()).includes('EVT reperfusion precedes puncture'));
+        for (const [consultation, label] of [['Telephone', 'Pulsara summary'], ['Video', 'Epic note']]) {
+          await p.getByRole('radio', { name: consultation, exact: true }).check();
+          await p.getByRole('button', { name: `Generate ${label}`, exact: true }).click();
+          const text = await p.getByLabel(`Generated ${label}`, { exact: true }).inputValue();
+          assert(text.includes('EVT reperfusion precedes puncture'));
+          assert(text.includes('TNK at 2026-11-01T09:31:00.000Z'));
+        }
+        assert.equal(await p.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false);
+        return { repeatedHour: 'explicit first/second occurrence', editedChoice: 'invalidated', monitoring: 'unresolved until selected', chronology: 'qualified in both formats' };
+      } finally { await timingContext.close(); }
     });
     await check('deliberate reset cancel/accept clears full encounter, derived outputs, draft and timers', async () => {
       const button=page.getByRole('button',{name:'New encounter',exact:true,includeHidden:true});await openDetails(button);page.once('dialog',dialog=>dialog.dismiss());await button.click();assert.equal(await page.getByLabel('Age (years)',{exact:true}).inputValue(),'66');await reset(page);for(const label of ['Age (years)','Weight (kg)','Manual rationale / recommendations','Entered examination / imaging assessment'])assert.equal(await page.locator('#tabpanel-encounter').getByLabel(label,{exact:true}).inputValue(),'');assert.equal(await page.getByLabel('Working diagnosis',{exact:true}).inputValue(),'');assert((await page.locator('#calc-nihss').innerText()).includes('0/15 items documented'));assert.equal(await page.getByLabel('Generated Pulsara summary',{exact:true}).count(),0);
