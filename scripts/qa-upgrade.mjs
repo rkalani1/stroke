@@ -30,7 +30,7 @@ async function oldSession(){
   return{context,page,numeric,original};
 }
 async function stage(page){await page.evaluate(async()=>{const reg=await navigator.serviceWorker.getRegistration();await reg.update();});await waitForBrowserState(page,async()=>Boolean((await navigator.serviceWorker.getRegistration())?.waiting),null,60000);}
-async function accept(page){await page.getByRole('button',{name:'Reload to update',exact:true}).click();await page.getByRole('heading',{name:'Encounter',exact:true}).waitFor({timeout:30000});assert.equal(await page.locator('.app-shell').getAttribute('data-version'),currentManifest.appVersion);}
+async function accept(page){await page.getByRole('button',{name:'Reload to update',exact:true}).click();await page.waitForFunction(version=>document.querySelector('.app-shell')?.dataset.version===version,currentManifest.appVersion,{timeout:30000});await page.getByRole('heading',{name:'Encounter',exact:true}).waitFor({timeout:30000});assert.equal(await page.locator('.app-shell').getAttribute('data-version'),currentManifest.appVersion);}
 try{
   await check('archived baseline upgrade waits; Later preserves active entered state and installed graph',async()=>{
     const session=await oldSession();try{const{page,numeric,original}=session;serving=current;await stage(page);await page.getByRole('button',{name:'Reload to update',exact:true}).waitFor();assert.equal(await numeric.inputValue(),'83');assert.equal(await page.locator('.app-shell').getAttribute('data-version'),baselineVersion);

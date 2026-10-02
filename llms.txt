@@ -1,6 +1,6 @@
 # Stroke Encounter Educational Demo
 
-> v7.6.0: deterministic synthetic Encounter workflow with embedded retained tools, protected example protocols, a trial screener/reference database, curated Evidence topics and completed primary-study summaries.
+> v7.6.1: deterministic synthetic Encounter workflow with embedded retained tools, protected example protocols, a trial screener/reference database, curated Evidence topics and completed primary-study summaries.
 
 Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.
 
@@ -20,11 +20,10 @@ Synthetic educational demo only - NOT medical advice, NOT an approved clinical t
 - #/protocols — Protected example protocols
 - #/protocols/ischemic — Example ischemic stroke protocol
 - #/protocols/ich — Example ICH protocol
-- #/evidence — Evidence: source-bound on-call, hospital and clinic topics
-- #/trials — Trials: screener, criteria tables, study database and completed evidence
+- #/evidence — Evidence: guidance, study summaries and sources by clinical topic
+- #/trials — Trials: screener, criteria tables and study database
 - #/trials/tables — Trial criteria tables
 - #/trials/database — Study database
-- #/trials/completed — Completed trials: curated pivotal studies and limits
 - #/tools — Calculators
 
 ## Scope and limits

@@ -289,7 +289,7 @@
       },
       {
         "label": "SELECT2 evidence",
-        "href": "#/trials/completed/select2"
+        "href": "#/evidence/select2"
       }
     ]
   },
@@ -334,7 +334,7 @@
       },
       {
         "label": "BAOCHE evidence",
-        "href": "#/trials/completed/baoche"
+        "href": "#/evidence/baoche"
       }
     ]
   },
@@ -404,11 +404,11 @@
     "related": [
       {
         "label": "DISTAL evidence",
-        "href": "#/trials/completed/distal"
+        "href": "#/evidence/distal"
       },
       {
         "label": "ESCAPE-MeVO evidence",
-        "href": "#/trials/completed/escape-mevo"
+        "href": "#/evidence/escape-mevo"
       }
     ]
   },
@@ -697,7 +697,7 @@
     "related": [
       {
         "label": "PRESTIGE-AF evidence",
-        "href": "#/trials/completed/prestige-af"
+        "href": "#/evidence/prestige-af"
       }
     ]
   },
