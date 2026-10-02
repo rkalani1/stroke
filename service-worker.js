@@ -99,7 +99,7 @@ const APP_CHUNKS = [
   "./chunks/chunk-XGILGY2J.js",
   "./chunks/InstallAppButton-INPP7ERU.js",
   "./chunks/ProtectedProtocols-I4A3S537.js",
-  "./chunks/Reference-CVQOCCJ7.js",
+  "./chunks/Reference-KSCFXNXY.js",
   "./chunks/Tools-DF4ZVOMR.js",
   "./chunks/Trials-LLFZIS7F.js"
 ];

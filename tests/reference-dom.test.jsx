@@ -90,6 +90,7 @@ describe('curated reference integrity and interaction',()=>{
       await page.getByRole('button',{name:'Clear filters'}).click();
       expect(await matches.count()).toBe(0);
       await page.getByLabel('Find a clinical question').fill('ELAN');
+      expect(await page.getByRole('status').innerText()).toBe('1 topic found.');
       expect(await matches.getByRole('link').first().getAttribute('href')).toBe('#/evidence/elan');
       expect(await matches.getByRole('link').count()).toBe(2);
       await page.evaluate(()=>window.renderReference({focusId:'elan'}));
