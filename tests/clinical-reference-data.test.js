@@ -7,7 +7,7 @@ import { searchReference } from '../src/reference-search.js';
 import { readClinicalReference } from '../scripts/reference-data.mjs';
 const read = path => JSON.parse(fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8'));
 const canonical = readClinicalReference();
-const now = new Date('2026-10-01T23:59:59Z');
+const now = new Date('2026-10-02T23:59:59Z');
 const validate = data => validateClinicalReference(data, { now });
 const changed = change => { const data = structuredClone(canonical); change(data); return data; };
 

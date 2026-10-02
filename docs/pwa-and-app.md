@@ -16,8 +16,8 @@ Activation removes obsolete app-owned version caches and retired teaching assets
 
 ## Offline limits
 
-After successful complete online installation, Encounter calculations, synthetic summary and retained protocols work offline. External references require internet. An uncached first visit needs network. Documented post-treatment timing uses explicit administration timestamps and elapsed wall time; browser background scheduling, notifications and alarms are not guaranteed. Resume/visibility events recompute time.
+After successful complete online installation, Encounter calculations, Pulsara/Epic documentation, Evidence, Trials and retained protocols work offline. External references require internet. An uncached first visit needs network. Documented post-treatment timing uses explicit administration timestamps and elapsed wall time; browser background scheduling, notifications and alarms are not guaranteed. Resume/visibility events recompute time.
 
 Run `node scripts/qa-upgrade.mjs` for baseline upgrade, defer/accept, interrupted install, chunk failure, recovery and retired-cache cleanup. `npm test` runs the published-artifact synthetic workflow, offline reload and viewports/themes. These are simulated browser checks, not physical iPhone/Android validation. Use manual physical testing before claiming native device behavior.
 
-Changes to cached assets require a new coherent app/cache version and complete build. Private builds must write outside the published tree. Deploy through the ordinary protected process; the unresolved protected clinical-source conflict must be adjudicated first.
+Changes to cached assets require a new coherent app/cache version and complete build. Private builds must write outside the published tree. Deploy through the ordinary protected process. The owner-authorized factor-Xa wording correction is documented in [source limitations](source-limits.md); any newly identified material protected-source conflict must be resolved before release.

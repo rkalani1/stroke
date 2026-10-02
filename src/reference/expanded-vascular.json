@@ -1258,8 +1258,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/38033089/",
         "year": 2023,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card. Indexed correction/notice PMID(s): 38153996, 38408149, 38857333; correction bodies not reconciled by this identity check."
+        "checkedAt": "2026-10-02",
+        "access": "Primary NLM identity and abstract checked; complete recommendations not reviewed. Publisher-indexed text of corrections 38153996, 38408149 and 38857333 checked on 2026-10-02: trial names/disclosures, ATRIA hypertension entry and a rate-control figure footnote. None changes this overview. Direct correction PDFs unavailable."
       },
       {
         "title": "2024 ESC/EACTS atrial fibrillation guideline",
@@ -1347,8 +1347,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/40811516/",
         "year": 2025,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract and bibliographic identity read via NLM; complete recommendation tables and supporting text were not reviewed for this card. Indexed correction/notice PMID(s): 41259465, 41984986, 42160500; correction bodies not reconciled by this identity check."
+        "checkedAt": "2026-10-02",
+        "access": "Primary NLM identity and abstract checked; complete recommendations not reviewed. Publisher-indexed corrections 41259465 and 42160500 checked on 2026-10-02: resistant-hypertension/table text and labetalol repeat interval, not reproduced by this overview. Correction 41984986 and complete tables remain unreviewed; direct correction PDFs unavailable."
       }
     ],
     "related": [

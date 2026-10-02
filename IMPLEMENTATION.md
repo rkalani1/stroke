@@ -1,3 +1,13 @@
+## Active correction-scope closeout (2026-10-02)
+
+Baseline: 7.6.3, `507fa081901a17a82a5b2d1c222714dbff24303d`, clean checkout, matching origin/main and built Pages release. Previous goal turn: progress. Branch: `codex/correction-scope-20261002`; rollback: `archive/pre-correction-scope-20261002-507fa08`.
+
+Recovered publisher-indexed text for six AHA corrections and independently compared it with the two affected AF/BP overview cards. Only three source access notes/dates change; no clinical rule, summary result, calculator, protocol literal or layout changes. BP correction41984986 and full underlying recommendation tables remain unreviewed. The additional bounded Lancet correction search recovered no previously unread notice body; existing source limits remain. README immediate rollback and PWA documentation now match the delivered state, including the resolved factor-Xa correction.
+
+An independent performance investigation found no justified additional runtime change. The initial graph/DOM and transfer are unchanged; 7.6.3 hosted LCP improved, while TBT includes a different post-paint work window and varies between hosts. Current local profiles place the work in React DOM construction/layout, not a clinical calculation. Deferred mounting could compromise native search/deep-link behavior and was not introduced. This release claims no speedup: initial/all JS307155/687169raw,102099/196676gzip and CSS85738B are unchanged. The45-entry cache grows by148B to1944554B within its unchanged budget.
+
+Final local verification passed 1,529 unit cases and eight controller tests, 33 browser workflows, 30 targeted checks across Chromium/Firefox/WebKit, six immediate-baseline upgrade/recovery scenarios, 55 MCP calls across eight tools, 72 contrast pairs, token checks and unchanged asset ceilings. All 80 topics/58 study summaries/16 calculator records and 273 historical citation links remain; only the af-prevention and bp-prevention topic source fields differ from the baseline. Required PR/private CI, main/Pages and exact production verification remain release gates, recorded in the final report.
+
 ## Active source-precision and startup review (2026-10-01)
 
 Baseline:7.6.2, `1f2d18ffa9b5b5106e5db5e40d572f65a09961c7`, clean checkout and matching Pages build. Previous goal turn: progress. Branch:`codex/source-precision-preload-20261001`; rollback:`archive/pre-source-precision-preload-20261001-1f2d18f`.
