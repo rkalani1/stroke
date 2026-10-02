@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "appVersion": "7.6.2",
+  "appVersion": "7.6.3",
   "buildTarget": "public",
   "entry": "app.js",
   "initial": [
@@ -14,8 +14,8 @@
     {
       "path": "app.js",
       "bytes": 124947,
-      "gzipBytes": 40313,
-      "sha256": "d87fbbf18408280a157e136035284e335818408e267b01c00ff2a208fe888443"
+      "gzipBytes": 40314,
+      "sha256": "9762e76900090c1a7be1b0f00a387ee26930a7306af578a94a3f93085df65fc6"
     },
     {
       "path": "chunks/chunk-7QVMV5MZ.js",

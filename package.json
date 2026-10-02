@@ -1,6 +1,6 @@
 {
   "name": "stroke",
-  "version": "7.6.2",
+  "version": "7.6.3",
   "description": "Encounter workspace with embedded calculations, protocols, Pulsara summaries and Epic note templates.",
   "main": "service-worker.js",
   "scripts": {
