@@ -54,6 +54,6 @@ Required guards cover clinical-source tracing, bounded schemas/citations, leak p
 
 Open the site, then **More → Install App**, or use the browser's installation menu. Shortcuts open Encounter or Protocols. Offline core use requires a successful complete online cache installation; an uncached first visit requires network. Updates never automatically reload an active session. See [PWA behavior](docs/pwa-and-app.md). Existing optional Capacitor distributions remain in the repository; native builds were not changed or certified by this redesign.
 
-The immediate pre-review rollback ref is **`archive/pre-evidence-consolidation-20261001-90d9716`**, commit `90d971656abe506b225b7addcbfb800abb48ab29` (7.6.0).
+The immediate pre-review rollback ref is **`archive/pre-correction-scope-20261002-507fa08`**, commit `507fa081901a17a82a5b2d1c222714dbff24303d` (7.6.3).
 
 The complete committed prior application is preserved at **`archive/pre-encounter-first-20261001-4f8e99d`**, commit `4f8e99de9f605327bb901d0585f279cc7ebcd12e` (6.30.7). Rollback requires a reviewed forward commit restoring that tree, then a *new* coherent app/cache version, production build and normal checks/release. Reusing an old worker version is insufficient for clients already running 7.x. This deployment rollback has not been executed; the baseline-to-new-version update/failure path is tested separately. An already-open old page or permanently offline device cannot be remotely guaranteed to update.

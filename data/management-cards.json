@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "management-cards",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.6.3",
+    "appVersion": "7.6.4",
     "checksum": "sha256:845564aad88f627ff9b39f4223b794af",
     "count": 4,
     "source": "Protected public protocol reference bundle",

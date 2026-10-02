@@ -113,8 +113,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/38033089/",
     "year": 2023,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "Primary NLM title, PMID and DOI identity checked; the full recommendation body was not reviewed in this catalog check. Historical source: interpret alongside newer evidence and the topic limits. Indexed correction/notice PMID(s): 38153996, 38408149, 38857333; correction bodies not reconciled by this identity check.",
+    "checkedAt": "2026-10-02",
+    "access": "Primary NLM identity and abstract checked; complete recommendations not reviewed. Publisher-indexed text of corrections 38153996, 38408149 and 38857333 checked on 2026-10-02: trial names/disclosures, ATRIA hypertension entry and a rate-control figure footnote. None changes this overview. Direct correction PDFs unavailable.",
     "topicIds": [
       "af-prevention"
     ]
@@ -149,8 +149,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/36912134/",
     "year": 2023,
     "type": "Scientific statement",
-    "checkedAt": "2026-10-01",
-    "access": "Primary NLM title, PMID and DOI identity checked; the full recommendation body was not reviewed in this catalog check. Historical source: interpret alongside newer evidence and the topic limits. Indexed correction/notice PMID(s): 37093973; correction bodies not reconciled by this identity check.",
+    "checkedAt": "2026-10-02",
+    "access": "Primary NLM identity and abstract checked; full statement not reviewed. Publisher-indexed correction 37093973 checked on 2026-10-02: supplemental dabigatran renal/interaction conditions and apixaban dose-reduction criteria. This overview supplies no dosing rule. Direct correction PDF unavailable.",
     "topicIds": [
       "af-prevention"
     ]
@@ -281,8 +281,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/40811516/",
     "year": 2025,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "Primary NLM title, PMID and DOI identity checked; the full recommendation body was not reviewed in this catalog check. Historical source: interpret alongside newer evidence and the topic limits. Indexed correction/notice PMID(s): 41259465, 41984986, 42160500; correction bodies not reconciled by this identity check.",
+    "checkedAt": "2026-10-02",
+    "access": "Primary NLM identity and abstract checked; complete recommendations not reviewed. Publisher-indexed corrections 41259465 and 42160500 checked on 2026-10-02: resistant-hypertension/table text and labetalol repeat interval, not reproduced by this overview. Correction 41984986 and complete tables remain unreviewed; direct correction PDFs unavailable.",
     "topicIds": [
       "bp-prevention"
     ]

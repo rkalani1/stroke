@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v7.6.4 — 2026-10-02 — Correction review and maintenance clarity
+
+- Record review of six publisher-indexed AHA correction bodies across AF guidance, acute-hospital AF and hypertension guidance; keep the unresolved hypertension correction and full-guideline limits explicit. No treatment rule, dosing output or study result changes.
+- Update the immediate rollback baseline and offline documentation, and remove the stale statement that the already-resolved factor-Xa correction remains a release blocker.
+
 ## v7.6.3 — 2026-10-01 — Source precision and Encounter startup
 
 - Correct ACTION-CVT’s observational study label and distinguish the AVERT dose-response secondary analysis from a randomized dose comparison.
