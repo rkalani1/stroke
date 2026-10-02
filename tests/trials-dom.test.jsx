@@ -44,9 +44,22 @@ afterEach(async () => { await page?.close(); });
 afterAll(async () => { await browser?.close(); });
 
 describe('restored independent Trials workspace', () => {
+  it('keeps three readable study-screening views in one row on narrow phones', async () => {
+    await page.setViewportSize({ width: 320, height: 700 });
+    expect(await page.getByRole('tab').allTextContents()).toEqual(['Screener', 'Tables', 'Database']);
+    expect(await page.locator('#trials-completed-panel').count()).toBe(0);
+    const geometry = await page.getByRole('tab').evaluateAll(tabs => tabs.map(tab => {
+      const rect = tab.getBoundingClientRect();
+      return { top: rect.top, width: rect.width, height: rect.height, fits: tab.scrollWidth <= tab.clientWidth };
+    }));
+    expect(new Set(geometry.map(tab => tab.top)).size).toBe(1);
+    expect(Math.max(...geometry.map(tab => tab.width)) - Math.min(...geometry.map(tab => tab.width))).toBeLessThan(1);
+    expect(geometry.every(tab => tab.fits && tab.height >= 44)).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  });
   it('moves the selected tab and focus with arrows, Home and End', async () => {
     await page.getByRole('tab', { name: 'Screener', exact: true }).focus();
-    for (const [key, label] of [['ArrowRight', 'Tables'], ['End', 'Completed evidence'], ['ArrowLeft', 'Database'], ['Home', 'Screener'], ['ArrowLeft', 'Completed evidence']]) {
+    for (const [key, label] of [['ArrowRight', 'Tables'], ['End', 'Database'], ['ArrowRight', 'Screener'], ['ArrowLeft', 'Database'], ['ArrowLeft', 'Tables'], ['Home', 'Screener']]) {
       await page.keyboard.press(key);
       const selected = page.getByRole('tab', { name: label, exact: true });
       expect(await selected.getAttribute('aria-selected')).toBe('true');

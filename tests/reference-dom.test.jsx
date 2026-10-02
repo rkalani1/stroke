@@ -29,7 +29,7 @@ async function pageWith(options={}) {
 describe('curated reference integrity and interaction',()=>{
   it('rejects incompatible and malformed records before rendering',()=>{
     expect(validReferenceData(envelope,'test')).toBe(true);
-    for(const mutate of [e=>e._meta.appVersion='old',e=>e.data.topics[0].consider=null,e=>e.data.studies[0].relatedTopic='missing',e=>e.data.topics[0].related=[{label:'bad',href:'javascript:alert(1)'}],e=>e.data.topics[0].keywords=null,e=>e.data.topics.push(e.data.topics[0]),e=>e.data.calculators[0].fields=null,e=>e.data.calculators[0].shared=['missing'],e=>e.data.topics[0].category='',e=>e.data.calculators.find(d=>d.fields.some(f=>f.type==='number')).fields.find(f=>f.type==='number').options={bad:'object'} ]){const next=structuredClone(envelope);mutate(next);expect(validReferenceData(next,'test')).toBe(false);}
+    for(const mutate of [e=>e._meta.appVersion='old',e=>e.data.topics[0].consider=null,e=>e.data.studies[0].relatedTopic='missing',e=>e.data.topics[0].related=[{label:'bad',href:'javascript:alert(1)'}],e=>e.data.topics[0].keywords=null,e=>e.data.topics.push(e.data.topics[0]),e=>e.data.studies[0].id=e.data.topics[0].id,e=>e.data.calculators[0].fields=null,e=>e.data.calculators[0].shared=['missing'],e=>e.data.topics[0].category='',e=>e.data.calculators.find(d=>d.fields.some(f=>f.type==='number')).fields.find(f=>f.type==='number').options={bad:'object'} ]){const next=structuredClone(envelope);mutate(next);expect(validReferenceData(next,'test')).toBe(false);}
     const unrelated=structuredClone(envelope);unrelated.data.studies[0].relatedTopic='';expect(validReferenceData(unrelated,'test')).toBe(true);
     expect(searchReference(data.topics,'PFO','clinic').some(r=>r.id==='pfo')).toBe(true);
     expect(searchReference(data.studies,'ICH','on-call').length).toBeGreaterThan(0);
@@ -55,10 +55,37 @@ describe('curated reference integrity and interaction',()=>{
       await page.waitForFunction(()=>document.querySelector('[data-reference-id="af-timing"]')?.open && document.activeElement.closest('[data-reference-id]')?.dataset.referenceId==='af-timing');
       expect(await page.getByLabel('Find a clinical question').inputValue()).toBe('');expect(await page.getByLabel('Clinical section').inputValue()).toBe('all');
       await session.send('Emulation.setCPUThrottlingRate',{rate:1});
-      await page.evaluate(()=>window.renderReference({mode:'studies',focusId:'topic-af-timing'}));await page.getByText('Show all completed evidence',{exact:true}).waitFor();
-      expect(await page.locator('.reference-card').count()).toBe(3);expect(await page.getByText('Reference not found.',{exact:false}).count()).toBe(0);
-      await page.evaluate(()=>window.renderReference({mode:'studies',focusId:'elan'}));await page.waitForFunction(()=>document.querySelector('[data-reference-id="elan"]').open && document.activeElement.closest('[data-reference-id]')?.dataset.referenceId==='elan');
+      const related=page.locator('[data-reference-id="af-timing"] [data-reference-id]');
+      expect(await related.count()).toBe(3);expect(await page.getByText('Reference not found.',{exact:false}).count()).toBe(0);
+      await page.evaluate(()=>window.renderReference({focusId:'elan'}));await page.waitForFunction(()=>document.querySelector('[data-reference-id="elan"]').open && document.activeElement.closest('[data-reference-id]')?.dataset.referenceId==='elan');
       expect(await page.evaluate(()=>document.activeElement.closest('[data-reference-id]')?.dataset.referenceId)).toBe('elan');expect(await page.evaluate(()=>window.requests)).toBe(1);
+    }finally{await page.close();}
+  });
+  it('preserves every study under its topic, including outcome text and correction-source limits',async()=>{
+    const page=await pageWith();try{
+      await page.getByLabel('Find a clinical question').waitFor();
+      expect(data.studies.every(study=>data.topics.some(topic=>topic.id===study.relatedTopic))).toBe(true);
+      await page.locator('.reference-group > .reference-card').evaluateAll(cards=>cards.forEach(card=>{card.open=true;}));
+      await page.waitForFunction(count=>document.querySelectorAll('[data-reference-id]').length===count,data.topics.length+data.studies.length);
+      await page.locator('[data-reference-id] [data-reference-id]').evaluateAll(cards=>cards.forEach(card=>{card.open=true;}));
+      await page.waitForFunction(count=>document.querySelectorAll('.reference-body').length===count,data.topics.length+data.studies.length);
+      const rendered=await page.locator('[data-reference-id] [data-reference-id]').evaluateAll(cards=>cards.map(card=>({id:card.dataset.referenceId,parent:card.parentElement.closest('[data-reference-id]').dataset.referenceId,text:card.innerText,links:[...card.querySelectorAll('a')].map(a=>a.href)})));
+      expect(rendered).toHaveLength(data.studies.length);
+      for(const study of data.studies){const card=rendered.find(record=>record.id===study.id);expect(card.parent).toBe(study.relatedTopic);for(const field of ['question','population','comparison','result','limits'])expect(card.text).toContain(study[field]);for(const source of study.sources){expect(card.links).toContain(source.url);expect(card.text).toContain(source.access);}}
+    }finally{await page.close();}
+  });
+  it('finds summary-only terms and invalidates delayed study copies when the parent closes',async()=>{
+    const page=await pageWith({deferred:true});try{
+      const study=data.studies.find(record=>record.id==='restart');
+      await page.getByLabel('Find a clinical question').fill('RESTART');
+      const topic=page.locator(`[data-reference-id="${study.relatedTopic}"]`);await topic.locator(':scope > summary').click();
+      const card=topic.locator('[data-reference-id="restart"]');await card.locator(':scope > summary').click();
+      await card.getByRole('button').click();expect(await page.evaluate(()=>window.copied)).toBe(referenceText(study));
+      await card.locator(':scope > summary').click();await page.evaluate(()=>window.rejectCopy(Error('denied')));
+      expect(await topic.evaluate(el=>el.open)).toBe(true);expect(await page.getByLabel('Evidence copy fallback').count()).toBe(0);
+      await card.locator(':scope > summary').click();await card.getByRole('button').click();await topic.locator(':scope > summary').click();
+      await page.evaluate(()=>window.rejectCopy(Error('denied')));await topic.locator(':scope > summary').click();
+      expect(await page.getByLabel('Evidence copy fallback').count()).toBe(0);
     }finally{await page.close();}
   });
   it('shares the validated static download with Calculators and keeps collapsed card bodies out of the DOM',async()=>{
@@ -70,9 +97,9 @@ describe('curated reference integrity and interaction',()=>{
   });
   it('ignores delayed clipboard results after navigation',async()=>{
     const page=await pageWith({deferred:true});try{
-      await page.locator('[data-reference-id="pfo"] summary').click();await page.locator('[data-reference-id="pfo"]').getByRole('button').click();
-      await page.locator('[data-reference-id="pfo"] summary').click();await page.evaluate(()=>window.rejectCopy(Error('denied')));
-      await page.locator('[data-reference-id="pfo"] summary').click();expect(await page.getByLabel('Evidence copy fallback').count()).toBe(0);
+      await page.locator('[data-reference-id="pfo"] > summary').click();await page.locator('[data-reference-id="pfo"]').getByRole('button').click();
+      await page.locator('[data-reference-id="pfo"] > summary').click();await page.evaluate(()=>window.rejectCopy(Error('denied')));
+      await page.locator('[data-reference-id="pfo"] > summary').click();expect(await page.getByLabel('Evidence copy fallback').count()).toBe(0);
       await page.locator('[data-reference-id="pfo"]').getByRole('button').click();
       await page.evaluate(()=>window.renderReference({active:false}));await page.evaluate(()=>window.rejectCopy(Error('denied')));
       expect(await page.getByLabel('Evidence copy fallback').count()).toBe(0);

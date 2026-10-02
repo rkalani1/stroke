@@ -16,9 +16,18 @@ describe('Encounter-first navigation and explicit retirement', () => {
   it.each(['rcvs2','func','dragon','unknown'])('never substitutes an unrelated tool for %s', tool => expect(parseWorkspaceRoute('#/calculators/'+tool).surface).toBe('retired'));
   it.each(['abcd2', 'chadsvasc', 'has-bled', 'rope', 'pascal', 'phases', 'hunt-hess', 'wfns', 'aspects-regions', 'pc-aspects-regions'])('restores supported supplemental %s routes', tool => { for (const prefix of ['tools', 'encounter', 'calculators', 'research/calculators']) expect(parseWorkspaceRoute(`#/${prefix}/${tool}`)).toEqual({ surface: 'tools', tool }); });
   it.each(['evidence', 'guidelines', 'references', 'research/guidelines', 'research/references'])('opens curated evidence for %s', route => expect(parseWorkspaceRoute('#/'+route)).toEqual({surface:'evidence'}));
+  it.each(['trials', 'research/trials'])('redirects legacy completed-study links from %s to their Evidence destination', prefix => {
+    expect(parseWorkspaceRoute(`#/${prefix}/completed`)).toEqual({ surface: 'evidence' });
+    expect(parseWorkspaceRoute(`#/${prefix}/completed/topic-af-timing`)).toEqual({ surface: 'evidence', focusId: 'af-timing' });
+    expect(parseWorkspaceRoute(`#/${prefix}/completed/elan`)).toEqual({ surface: 'evidence', focusId: 'elan' });
+    for (const suffix of ['completed/abc%22', 'completed/topic-', 'completed/-elan', 'completed/elan--trial', 'completed/elan/extra', 'completed/topic-af-timing/extra', 'screener/extra', 'tables/extra', 'database/extra']) {
+      const path = `${prefix}/${suffix}`;
+      expect(parseWorkspaceRoute('#/' + path)).toEqual({ surface: 'retired', path });
+    }
+  });
   it('routes bounded reference and protocol deep links', () => {
     expect(parseWorkspaceRoute('#/evidence/af-timing')).toEqual({surface:'evidence',focusId:'af-timing'});
-    expect(parseWorkspaceRoute('#/trials/completed/topic-af-timing')).toEqual({surface:'trials',sub:'completed',focusId:'topic-af-timing'});
+    expect(parseWorkspaceRoute('#/trials/completed/topic-af-timing')).toEqual({surface:'evidence',focusId:'af-timing'});
     expect(parseWorkspaceRoute('#/protocols/ich/reversal')).toEqual({surface:'protocols',sub:'ich',target:'reversal'});
     expect(parseWorkspaceRoute('#/protocols/ischemic/reversal').surface).toBe('retired');
     expect(parseWorkspaceRoute('#/encounter/section/diagnosis-details')).toEqual({surface:'encounter',section:'diagnosis-details'});

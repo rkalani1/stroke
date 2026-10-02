@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v7.6.1 — 2026-10-01 — One Evidence destination
+
+- Remove the incomplete Completed evidence subsection from Trials; retain Screener, Tables and Database.
+- Preserve all 58 study summaries, outcomes, limitations and correction/source notes inside their relevant Evidence topics. Search includes study content, and old completed-study links open the preserved Evidence content.
+- Keep the canonical data/API/MCP study records, clinical source text and existing payload ceilings intact.
+
 ## v7.6.0 — 2026-10-01 — Historical evidence and Encounter precision
 
 - Restore all 273 distinct source citations from the original 264 study records to searchable Evidence topics; expand independently reviewed completed-study summaries from 29 to 58. Bibliographic recovery is separate from full outcome review, with source-access and correction limits retained.

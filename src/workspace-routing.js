@@ -18,13 +18,15 @@ export function parseWorkspaceRoute(hash = '') {
   }
   if (first === 'trials' || first === 'research' && sub === 'trials') {
     const view = first === 'trials' ? sub : tool;
+    const focusIndex = first === 'trials' ? 2 : 3;
     const normalized = { active: 'screener', eligibility: 'tables', studies: 'database' }[view] || view || 'screener';
     if (normalized === 'completed') {
-      const focusId = parts[first === 'trials' ? 2 : 3];
-      if (focusId && !/^[a-z0-9-]+$/.test(focusId)) return { surface: 'retired', path };
-      return { surface: 'trials', sub: 'completed', ...(focusId ? { focusId } : {}) };
+      const legacyId = parts[focusIndex];
+      const focusId = legacyId?.replace(/^topic-/, '');
+      if (parts.length > focusIndex + 1 || legacyId && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(focusId)) return { surface: 'retired', path };
+      return { surface: 'evidence', ...(focusId ? { focusId } : {}) };
     }
-    return ['screener', 'tables', 'database'].includes(normalized) ? { surface: 'trials', sub: normalized } : { surface: 'retired', path };
+    return parts.length <= focusIndex && ['screener', 'tables', 'database'].includes(normalized) ? { surface: 'trials', sub: normalized } : { surface: 'retired', path };
   }
   if (first === 'evidence' && parts.length <= 2 && (!sub || /^[a-z0-9-]+$/.test(sub))) return { surface: 'evidence', ...(sub ? { focusId: sub } : {}) };
   if (['guidelines', 'references'].includes(first) && !sub || first === 'research' && ['guidelines', 'references'].includes(sub) && !tool) return { surface: 'evidence' };

@@ -59,7 +59,8 @@ describe('bounded clinical-reference data', () => {
   it('advertises bounded views and endpoint while keeping full-corpus endpoints retired', () => {
     const index = read('data/index.json');
     expect(index.endpoints).toContain('https://rkalani1.github.io/stroke/data/clinical-reference.json');
-    expect(index.routes.map(route => route.route)).toEqual(expect.arrayContaining(['#/evidence', '#/trials/completed']));
+    expect(index.routes.map(route => route.route)).toEqual(expect.arrayContaining(['#/evidence', '#/trials']));
+    expect(index.routes.some(route => route.route.includes('/completed'))).toBe(false);
     for (const file of ['llms.txt', 'llms-full.txt', 'sitemap.xml']) expect(fs.readFileSync(new URL(`../${file}`, import.meta.url), 'utf8')).toContain('https://rkalani1.github.io/stroke/data/clinical-reference.json');
     for (const path of read('docs/retired-endpoints.json').endpoints) {
       expect(read(path)).toMatchObject({ _meta: { status: 'retired' }, data: null });
@@ -115,7 +116,7 @@ describe('bounded clinical-reference data', () => {
   it.each([
     'https://example.com/', 'javascript:alert(1)', '#/education', '#/tools/not-a-tool',
     '#/encounter/nihss/ignored', '#/encounter?patient=anything', '#/evidence/not-a-topic',
-    '#/trials/completed/not-a-study', '#/protocols/ich/angioedema',
+    '#/trials/completed/not-a-study', '#/evidence/not-a-study', '#/protocols/ich/angioedema',
   ])('rejects unsafe or unavailable related route %s', href => {
     expect(validate(changed(data => { data.topics[0].related = [{ label: 'Open', href }]; })).length).toBeGreaterThan(0);
   });
@@ -125,7 +126,8 @@ describe('bounded clinical-reference data', () => {
       { label: 'Reversal', href: '#/protocols/ich/reversal' },
       { label: 'Angioedema', href: '#/protocols/ischemic/angioedema' },
       { label: 'AF timing', href: '#/evidence/af-timing' },
-      { label: 'ELAN', href: '#/trials/completed/elan' },
+      { label: 'ELAN', href: '#/evidence/elan' },
+      { label: 'Legacy ELAN', href: '#/trials/completed/elan' },
     ]; }))).toEqual([]);
   });
 

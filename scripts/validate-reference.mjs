@@ -58,7 +58,7 @@ export function validateClinicalReference(data, { now = new Date() } = {}) {
         // Constrain complete paths before parsing; legacy parsers accept some extra segments.
         const shape = typeof href === 'string' && /^#\/(?:encounter(?:\/[a-z0-9-]+|\/section\/[a-z0-9-]+)?|tools(?:\/[a-z0-9-]+)?|protocols(?:\/(?:ischemic|ich)(?:\/[a-z0-9-]+)?)?|evidence(?:\/[a-z0-9-]+)?|trials(?:\/(?:screener|tables|database|completed(?:\/[a-z0-9-]+)?))?)$/.test(href);
         const route = shape ? parseWorkspaceRoute(href) : null;
-        if (!text(link?.label) || !route || route.surface === 'retired' || (route.surface === 'evidence' && route.focusId && !topicIds.has(route.focusId)) || (route.surface === 'trials' && route.focusId && !studyIds.has(route.focusId))) fail(`unknown or unsafe related route ${String(href)}`);
+        if (!text(link?.label) || !route || route.surface === 'retired' || (route.surface === 'evidence' && route.focusId && !topicIds.has(route.focusId) && !studyIds.has(route.focusId)) || (route.surface === 'trials' && route.focusId && !studyIds.has(route.focusId))) fail(`unknown or unsafe related route ${String(href)}`);
       }
     } else {
       if (!['question', 'population', 'comparison', 'result', 'limits'].every(field => text(record[field])) || !validYear(record.year)) fail('study year, population, comparison, result and limits required');
