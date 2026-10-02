@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v7.6.3 — 2026-10-01 — Source precision and Encounter startup
+
+- Correct ACTION-CVT’s observational study label and distinguish the AVERT dose-response secondary analysis from a randomized dose comparison.
+- Link the endocarditis overview to accessible primary guideline sections, with the actual review scope and correction limits retained.
+- Distinguish MIND’s 180-day disability outcome from its 30-day mortality outcome in the ICH surgery overview.
+- Generate preload links for the exact initial JavaScript graph so Encounter dependencies can download together; lazy surfaces, installed content and clinical behavior are preserved.
+- Retain all 80 topics, 58 study summaries and 16 calculator records, with the incomplete Completed evidence subsection remaining removed from Trials.
+
 ## v7.6.2 — 2026-10-01 — Study retrieval and MRI selection precision
 
 - Show direct matching-study links above filtered Evidence topics; prioritize exact study names and abbreviations while retaining broader matches. Repeating a link reopens and focuses its summary even when the route is unchanged.

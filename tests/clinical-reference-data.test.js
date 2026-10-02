@@ -42,6 +42,9 @@ describe('bounded clinical-reference data', () => {
       }
     }
     expect(searchReference(canonical.topics, 'AVERROES').map(topic => topic.id)).toEqual(['af-prevention']);
+    // ACTION-CVT compared treatments retrospectively; adjustment is not randomization.
+    expect(sources.find(source => source.id === 'study-source-action-cvt').type).toBe('Observational study');
+    expect(sources.find(source => source.id === 'study-source-avert-dose-response')).toMatchObject({ type: 'Report', access: expect.stringContaining('observational secondary dose-response analysis') });
     expect(searchReference(canonical.topics, 'BEST-MSU').some(topic => topic.id === 'acute-bp')).toBe(false);
     for (const id of ['hope-bp-2026','tnk-vs-alteplase-rwe','enrich-af','actisave']) {
       expect(sources.find(source => source.id === `study-source-${id}`).access).toContain('withheld');

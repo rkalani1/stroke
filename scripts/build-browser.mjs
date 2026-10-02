@@ -98,6 +98,17 @@ const manifest = {
   })).sort((a, b) => a.path.localeCompare(b.path))
 };
 const manifestPath = path.join(outdir, 'app-assets.json');
+const shellPath = path.join(root, 'index.html');
+let nextShell = null;
+if (entryFile === path.join(root, 'app.js')) {
+  const shell = await fs.readFile(shellPath, 'utf8');
+  const marker = /<!-- BEGIN GENERATED INITIAL MODULE PRELOADS -->[\s\S]*?<!-- END GENERATED INITIAL MODULE PRELOADS -->/;
+  if (!marker.test(shell)) throw new Error('Generated initial-module preload marker is missing from index.html');
+  // Only static dependencies are needed before Encounter can render. Lazy
+  // surfaces stay deferred, and each build replaces obsolete hashed URLs.
+  const links = manifest.initial.filter(file => file !== manifest.entry).map(file => `  <link rel="modulepreload" href="${file}">`);
+  nextShell = shell.replace(marker, ['<!-- BEGIN GENERATED INITIAL MODULE PRELOADS -->', ...links, '  <!-- END GENERATED INITIAL MODULE PRELOADS -->'].join('\n'));
+}
 let previous = null;
 try { previous = JSON.parse(await fs.readFile(manifestPath, 'utf8')); } catch (error) { if (error.code !== 'ENOENT') throw error; }
 // Write dependencies first, then the entry. A failed build never advertises
@@ -106,6 +117,7 @@ for (const file of [...result.outputFiles].sort((a, b) => Number(a.path === entr
   await atomicWriteFile(file.path, file.contents);
 }
 await atomicWriteFile(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
+if (nextShell !== null) await atomicWriteFile(shellPath, nextShell);
 if (entryFile === path.join(root, 'app.js')) {
   const workerPath = path.join(root, 'service-worker.js');
   const worker = await fs.readFile(workerPath, 'utf8');

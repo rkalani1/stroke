@@ -1642,9 +1642,9 @@
     "title": "ACTION-CVT — Direct Oral Anticoagulants Versus Warfarin in the Treatment of Cerebral Venous Thrombosis (ACTION-CVT): A Multicenter International Study.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/35143325/",
     "year": 2022,
-    "type": "Randomized trial",
+    "type": "Observational study",
     "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+    "access": "PubMed bibliographic identity and primary-abstract study design checked: retrospective observational cohort, not random treatment allocation. Outcomes and full text were not re-reviewed for this citation."
   },
   {
     "id": "study-source-basics",
@@ -1890,9 +1890,9 @@
     "title": "AVERT dose-response — Prespecified dose-response analysis for A Very Early Rehabilitation Trial (AVERT).",
     "url": "https://pubmed.ncbi.nlm.nih.gov/26888985/",
     "year": 2016,
-    "type": "Randomized trial",
+    "type": "Report",
     "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+    "access": "PubMed bibliographic identity and primary-abstract design checked: observational secondary dose-response analysis of AVERT, irrespective of randomized treatment assignment. This is not a randomized comparison of mobilization doses; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
   },
   {
     "id": "study-source-dido-gwtg-transfer-2023",
