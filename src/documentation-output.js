@@ -12,8 +12,8 @@ export function formatDocumentation(state, consultation, groups, timeline) {
   if (timeline) extras.push(timeline);
   const format = DOCUMENT_FORMATS.some(([id]) => id === state.documentFormat) ? state.documentFormat : 'consultation';
   if (format === 'handoff') {
-    const transfer = groups.find(group => group.id === 'transfer');
-    return [consultation, transfer && `${transfer.title}:\n${transfer.lines.join('\n')}`].filter(Boolean).join('\n\n');
+    const handoffGroups = groups.filter(group => ['post-reperfusion', 'transfer'].includes(group.id));
+    return [consultation, ...handoffGroups.map(group => `${group.title}:\n${group.lines.join('\n')}`)].filter(Boolean).join('\n\n');
   }
   if (format === 'consultation') {
     if (!extras.length) return consultation;

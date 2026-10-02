@@ -2,13 +2,13 @@
 // Protocols. A partial source screen is never a complete treatment determination.
 // Sources: AHA/ASA AIS2026 doi:10.1161/STR.0000000000000513 §§4.6–4.7;
 // EXTEND doi:10.1056/NEJMoa1813046; WAKE-UP doi:10.1056/NEJMoa1804355.
+import { reviewedNumber } from './reviewed-number.js';
 import { computeLKWCountdown } from './calculators-extended.js';
 import { encounterClockTimestamp } from './encounter-timeline.js';
 import { hasRecordedTreatmentAdministration, hasRecordedNoTreatment, recordedTreatmentDecision } from './encounter-decision-status.js';
 
 export function numericInput(value, { min = -Infinity, max = Infinity, integer = false } = {}) {
-  if (!['number', 'string'].includes(typeof value) || !/^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/.test(String(value).trim())) return null;
-  const n = Number(value);
+  const n = reviewedNumber(value);
   return Number.isFinite(n) && n >= min && n <= max && (!integer || Number.isInteger(n)) ? n : null;
 }
 
@@ -135,6 +135,7 @@ export function evaluateVideoTreatment({ note = {}, clock, aspects, pcAspects, c
   else if (age === null || nihss === null || mrs === null || hours === null) evt = pending('Adult EVT assessment incomplete: age, NIHSS, premorbid mRS and valid LKW-based interval are required. Unknown onset still warrants urgent expert imaging review.');
   else if (hours > 24) evt = review('Beyond the modeled 24-hour window: individualized urgent neurointerventional review; this screen cannot determine benefit.');
   else if (mrs > 1) evt = review(`Premorbid mRS ${mrs}: use the separate baseline-disability recommendation and individualized goals; disability is not an automatic exclusion.`);
+  else if (vessels.length === 1 && vessels[0] === 'None') evt = review('No occlusion explicitly documented on vessel imaging. Reconcile the imaging and clinical assessment; this partial screen has no EVT target.');
   else if (vessels.includes('Basilar')) evt = pcScore === null ? pending('Basilar occlusion: document assessed pc-ASPECTS and brainstem infarct extent.') : nihss >= 10 && pcScore >= 6 ? matched('Basilar occlusion partial guideline screen met: within 24 h, NIHSS ≥10, premorbid mRS 0–1 and pc-ASPECTS ≥6. Confirm full specialist assessment.') : review('Basilar occlusion outside the modeled strong-recommendation tier; individual neurointerventional review.');
   else if (vessels.some(v => ['ICA', 'M1'].includes(v))) {
     if (nihss < 6) evt = review('Low-NIHSS proximal occlusion: benefit is uncertain; assess disability, deterioration and current trial options urgently.');

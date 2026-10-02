@@ -138,7 +138,7 @@
       "acute-dapt"
     ],
     "scope": "Treatment-selection source screen; full explicit input review required",
-    "limits": "Read each referenced source population, limits and actual review scope before interpreting an output."
+    "limits": "Adult source-specific screening requires complete age, timing, mechanism, hemorrhage, reperfusion, anticoagulation and contraindication review. An unmatched trial branch does not select a treatment."
   },
   {
     "id": "abcd2",

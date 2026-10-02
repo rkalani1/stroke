@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "calculators",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.5.0",
-    "checksum": "sha256:18c2c637dca7ddaf0503a25fb2b14911",
+    "appVersion": "7.6.0",
+    "checksum": "sha256:a8fe680ccf70115597cd49cb0618ea3c",
     "count": 26,
     "source": "Canonical retained tool registry",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -150,7 +150,7 @@
         "acute-dapt"
       ],
       "scope": "Treatment-selection source screen; full explicit input review required",
-      "limits": "Read each referenced source population, limits and actual review scope before interpreting an output."
+      "limits": "Adult source-specific screening requires complete age, timing, mechanism, hemorrhage, reperfusion, anticoagulation and contraindication review. An unmatched trial branch does not select a treatment."
     },
     {
       "id": "abcd2",

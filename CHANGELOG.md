@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v7.6.0 — 2026-10-01 — Historical evidence and Encounter precision
+
+- Restore all 273 distinct source citations from the original 264 study records to searchable Evidence topics; expand independently reviewed completed-study summaries from 29 to 58. Bibliographic recovery is separate from full outcome review, with source-access and correction limits retained.
+- Require explicit adult-age and anticoagulation reconciliation for DAPT source screening, apply trial-specific age/time boundaries, and withhold automated regimens for unresolved or conflicting inputs.
+- Preserve anticoagulant exposure across encounter contexts, distinguish an explicitly absent vessel target, and retain entered perfusion and post-reperfusion facts in compact handoffs.
+- Deduplicate form predicates and strict numeric parsing; omit undisplayed provenance fields only from browser bundles while retaining complete canonical/API records. Existing payload ceilings, protocol locks and privacy/release gates are unchanged.
+
 ## v7.5.0 — 2026-10-01 — Clinical utility and precision review
 
 - Remove the header Quick protocols row while retaining protocol content and deep links.

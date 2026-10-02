@@ -150,8 +150,16 @@ const DOMAINS = {
 
   // ---- DAPT branch matrix ----
   dapt: {
-    description: 'CHANCE/POINT/INSPIRES/THALES branching across NIHSS × ABCD2 × time × atherosclerosis',
+    description: 'DAPT source branches across age × NIHSS × ABCD2 × time × atherosclerosis × CYP2C19, with explicit reviewed prerequisites',
     axes: {
+      age: [17, 18, 34, 35, 39, 40, 65, 80, 81],
+      anticoagulationExcluded: [true],
+      noncardioembolicConfirmed: [true],
+      hemorrhageExcluded: [true],
+      reperfusionExcluded: [true],
+      antiplateletContraindicationsReviewed: [true],
+      ichRisk: ['reviewed'],
+      cyp2c19LOF: [false, true],
       strokeType: ['ischemic', 'tia'],
       nihss: [1, 3, 5, 7, 9],
       abcd2: [3, 4, 5, 6, 7],
@@ -159,7 +167,7 @@ const DOMAINS = {
       lvdSymptomatic: [false, true],
       timeFromOnsetH: [12, 24, 48, 72]
     },
-    columns: ['strokeType', 'nihss', 'abcd2', 'atherosclerotic', 'lvdSymptomatic', 'timeFromOnsetH', 'regimen', 'duration', 'class'],
+    columns: ['age', 'anticoagulationExcluded', 'noncardioembolicConfirmed', 'hemorrhageExcluded', 'reperfusionExcluded', 'antiplateletContraindicationsReviewed', 'ichRisk', 'cyp2c19LOF', 'strokeType', 'nihss', 'abcd2', 'atherosclerotic', 'lvdSymptomatic', 'timeFromOnsetH', 'regimen', 'duration', 'class'],
     run: (calc, p) => {
       const r = calc.recommendAcuteDAPT(p);
       return r ? { ...p, ...r } : null;

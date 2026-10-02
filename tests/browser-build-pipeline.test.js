@@ -13,7 +13,7 @@ describe('generated browser module pipeline', () => {
       fs.mkdirSync(path.join(fixture, 'scripts'));
       fs.mkdirSync(path.join(fixture, 'src'));
       fs.symlinkSync(path.join(root, 'node_modules'), path.join(fixture, 'node_modules'), 'dir');
-      for (const file of ['build-browser.mjs', 'atomic-write.mjs']) fs.copyFileSync(path.join(root, 'scripts', file), path.join(fixture, 'scripts', file));
+      for (const file of ['build-browser.mjs', 'atomic-write.mjs', 'browser-evidence-projection.mjs']) fs.copyFileSync(path.join(root, 'scripts', file), path.join(fixture, 'scripts', file));
       fs.copyFileSync(path.join(root, 'src/jsx-factory.js'), path.join(fixture, 'src/jsx-factory.js'));
       fs.copyFileSync(path.join(root, 'src/reference-search.js'), path.join(fixture, 'src/reference-search.js'));
       const gate = path.join(fixture, 'scripts/check-clinical-claims.mjs');
