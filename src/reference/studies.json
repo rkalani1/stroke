@@ -916,5 +916,975 @@
       }
     ],
     "relatedTopic": "inpatient-care"
+  },
+  {
+    "id": "hermes",
+    "title": "HERMES — pooled early thrombectomy evidence",
+    "year": 2016,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "MR CLEAN",
+      "ESCAPE",
+      "REVASCAT",
+      "SWIFT PRIME",
+      "EXTEND-IA",
+      "large vessel occlusion",
+      "meta-analysis"
+    ],
+    "question": "What did the five foundational thrombectomy trials show together?",
+    "population": "1,287 participants from five randomized trials of proximal anterior-circulation occlusion.",
+    "comparison": "Thrombectomy plus standard care versus standard care alone, within the individual trial windows.",
+    "result": "The 90-day mRS distribution favored thrombectomy (adjusted common odds ratio 2.49; 95% CI 1.76–3.53). The reported NNT of 2.6 means one additional person improves by at least one mRS category. Mortality and symptomatic intracranial hemorrhage did not differ significantly.",
+    "limits": "The NNT is not for functional independence. Trial-specific selection varied; this pooled result does not establish benefit for every vessel, infarct size or time window.",
+    "sources": [
+      {
+        "title": "HERMES primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/26898852/",
+        "year": 2016,
+        "type": "Meta-analysis",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "evt-selection"
+  },
+  {
+    "id": "dawn",
+    "title": "DAWN — clinical–core mismatch at 6–24 hours",
+    "year": 2018,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "thrombectomy",
+      "late window",
+      "clinical core mismatch"
+    ],
+    "question": "Did selected patients benefit from thrombectomy up to 24 hours?",
+    "population": "206 participants with intracranial ICA or proximal MCA occlusion, last known well 6–24 hours earlier, and age-dependent mismatch between clinical deficit and infarct volume.",
+    "comparison": "Thrombectomy plus standard care versus standard care alone.",
+    "result": "At 90 days, the coprimary outcomes favored thrombectomy: utility-weighted mRS 5.5 versus 3.4 and mRS 0–2 in 49% versus 13% (adjusted difference 33 percentage points; 95% credible interval 24–44). Symptomatic intracranial hemorrhage was 6% versus 3%; mortality was 19% versus 18%, without significant differences.",
+    "limits": "Stopped early after a prespecified interim analysis. Age, deficit and core criteria matter; clinical–core mismatch is not interchangeable with perfusion mismatch.",
+    "sources": [
+      {
+        "title": "DAWN primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29129157/",
+        "year": 2018,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "evt-selection"
+  },
+  {
+    "id": "defuse-3",
+    "title": "DEFUSE 3 — perfusion selection at 6–16 hours",
+    "year": 2018,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "thrombectomy",
+      "late window",
+      "perfusion mismatch"
+    ],
+    "question": "Did perfusion-selected patients benefit beyond six hours?",
+    "population": "182 participants with ICA or proximal MCA occlusion, last known well 6–16 hours earlier, core <70 mL and perfusion lesion-to-core ratio ≥1.8.",
+    "comparison": "Thrombectomy plus standard medical therapy versus medical therapy alone.",
+    "result": "The primary 90-day mRS shift favored thrombectomy (odds ratio 2.77; P<0.001). Functional independence was 45% versus 17%; mortality 14% versus 26% (P=0.05). Symptomatic intracranial hemorrhage was 7% versus 4% (P=0.75).",
+    "limits": "Stopped early for efficacy. This is a selected mismatch population; the abbreviated criteria here do not replace the complete imaging and eligibility protocol.",
+    "sources": [
+      {
+        "title": "DEFUSE 3 primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29364767/",
+        "year": 2018,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "evt-selection"
+  },
+  {
+    "id": "act",
+    "title": "AcT — tenecteplase versus alteplase",
+    "year": 2022,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "TNK",
+      "tenecteplase",
+      "alteplase",
+      "noninferiority"
+    ],
+    "question": "Was tenecteplase noninferior to alteplase in routine thrombolysis candidates?",
+    "population": "1,600 adults randomized in Canada with disabling ischemic stroke within 4.5 hours and eligibility under Canadian thrombolysis criteria; 1,577 entered the intention-to-treat population.",
+    "comparison": "Tenecteplase 0.25 mg/kg (maximum 25 mg) versus alteplase 0.9 mg/kg (maximum 90 mg).",
+    "result": "mRS 0–1 at 90–120 days occurred in 36.9% versus 34.8% (risk difference 2.1 percentage points; 95% CI −2.6 to 6.9), meeting the prespecified −5-point noninferiority margin. Symptomatic intracerebral hemorrhage within 24 hours was 3.4% versus 3.2%.",
+    "limits": "Noninferiority is not superiority or identical safety. Open-label pragmatic trial; results concern this dose and standard-window eligible population, not every thrombolytic regimen.",
+    "sources": [
+      {
+        "title": "AcT primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/35779553/",
+        "year": 2022,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "thrombolytic-choice"
+  },
+  {
+    "id": "extend",
+    "title": "EXTEND — perfusion-selected alteplase beyond 4.5 hours",
+    "year": 2019,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "alteplase",
+      "perfusion mismatch",
+      "wake-up",
+      "late window"
+    ],
+    "question": "Did alteplase help selected patients beyond the standard window?",
+    "population": "225 participants with salvageable tissue on automated perfusion imaging, 4.5–9 hours after onset or waking with symptoms within nine hours of the sleep midpoint.",
+    "comparison": "Alteplase versus placebo.",
+    "result": "mRS 0–1 at 90 days occurred in 35.4% versus 29.5% (adjusted risk ratio 1.44; 95% CI 1.01–2.06). Symptomatic intracerebral hemorrhage occurred in 6.2% versus 0.9%. The secondary ordinal mRS analysis did not show a significant difference.",
+    "limits": "Stopped before planned enrollment after external evidence changed equipoise. Imaging-selected trial, not a time-only extension. A 2021 correction changes tertiary neurologic-improvement results; those values are not reproduced here.",
+    "sources": [
+      {
+        "title": "EXTEND primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/31067369/",
+        "year": 2019,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed notices read via PubMed/NLM. Publisher correction text reviewed; full trial report and supplements not reviewed."
+      },
+      {
+        "title": "EXTEND correction: tertiary neurologic-improvement calculations",
+        "url": "https://www.nejm.org/doi/full/10.1056/NEJMx200014",
+        "year": 2021,
+        "type": "Report",
+        "checkedAt": "2026-10-01",
+        "access": "Publisher correction text recovered in web search; direct page fetch returned 403. The notice concerns tertiary neurologic-improvement results and associated tables."
+      }
+    ],
+    "relatedTopic": "extended-window-ivt"
+  },
+  {
+    "id": "chance",
+    "title": "CHANCE — short initial dual antiplatelet therapy",
+    "year": 2013,
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "clopidogrel",
+      "aspirin",
+      "DAPT",
+      "minor stroke",
+      "TIA"
+    ],
+    "question": "Did an initial dual-antiplatelet course reduce recurrent stroke?",
+    "population": "5,170 participants in China with minor ischemic stroke or high-risk TIA, randomized within 24 hours.",
+    "comparison": "Clopidogrel for 90 days with aspirin during the first 21 days versus aspirin for 90 days.",
+    "result": "Stroke by 90 days occurred in 8.2% versus 11.7% (hazard ratio 0.68; 95% CI 0.57–0.81). Moderate or severe hemorrhage was 0.3% in each group.",
+    "limits": "The combination lasted 21 days, not 90. Selected minor-stroke/TIA population in China; the low observed bleeding rate is not proof of no bleeding risk or justification for long-term dual therapy.",
+    "sources": [
+      {
+        "title": "CHANCE primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/23803136/",
+        "year": 2013,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "minor-stroke-antiplatelets"
+  },
+  {
+    "id": "thales",
+    "title": "THALES — ticagrelor plus aspirin after mild-to-moderate stroke",
+    "year": 2020,
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "ticagrelor",
+      "aspirin",
+      "DAPT",
+      "NIHSS 5",
+      "TIA"
+    ],
+    "question": "What were the benefits and harms of 30-day ticagrelor–aspirin?",
+    "population": "11,016 participants with noncardioembolic stroke (NIHSS ≤5) or qualifying TIA, treated within 24 hours; thrombolysis and thrombectomy recipients were excluded.",
+    "comparison": "Ticagrelor plus aspirin versus aspirin alone for 30 days.",
+    "result": "Stroke or death at 30 days occurred in 5.5% versus 6.6% (hazard ratio 0.83; 95% CI 0.71–0.96). Severe bleeding occurred in 0.5% versus 0.1%. Disability did not differ significantly.",
+    "limits": "This trial did not compare ticagrelor with clopidogrel. Review the qualifying TIA criteria and bleeding exclusions; do not extrapolate to reperfusion-treated patients or long-term dual therapy.",
+    "sources": [
+      {
+        "title": "THALES primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/32668111/",
+        "year": 2020,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "minor-stroke-antiplatelets"
+  },
+  {
+    "id": "chance-2",
+    "title": "CHANCE-2 — antiplatelet choice in CYP2C19 loss-of-function carriers",
+    "year": 2021,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "CYP2C19",
+      "genotype",
+      "ticagrelor",
+      "clopidogrel",
+      "DAPT"
+    ],
+    "question": "Did ticagrelor improve outcomes in selected clopidogrel-metabolism genotypes?",
+    "population": "6,412 participants in China with minor stroke or TIA and CYP2C19 loss-of-function alleles, randomized within 24 hours; 98% were Han Chinese.",
+    "comparison": "Ticagrelor versus clopidogrel for 90 days; both groups received aspirin for the first 21 days.",
+    "result": "Stroke by 90 days occurred in 6.0% versus 7.6% (hazard ratio 0.77; 95% CI 0.64–0.94). Moderate or severe bleeding was 0.3% in each group, but any bleeding was 5.3% versus 2.5%.",
+    "limits": "Genotype-selected trial with limited population diversity. It does not establish the preferred drug for every patient or the value of universal genotyping.",
+    "sources": [
+      {
+        "title": "CHANCE-2 primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/34708996/",
+        "year": 2021,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "minor-stroke-antiplatelets"
+  },
+  {
+    "id": "inspires",
+    "title": "INSPIRES — dual antiplatelets started within 72 hours",
+    "year": 2023,
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "clopidogrel",
+      "aspirin",
+      "DAPT",
+      "atherosclerosis",
+      "72 hours"
+    ],
+    "question": "Did a selected population benefit when antiplatelet treatment began later?",
+    "population": "6,100 participants in China with mild ischemic stroke or high-risk TIA attributed to presumed atherosclerosis, without thrombolysis or thrombectomy; 87.2% were randomized after 24 through 72 hours.",
+    "comparison": "Clopidogrel for 90 days plus aspirin for 21 days versus aspirin for 90 days.",
+    "result": "New stroke by 90 days occurred in 7.3% versus 9.2% (hazard ratio 0.79; 95% CI 0.66–0.94). Moderate-to-severe bleeding was 0.9% versus 0.4% (hazard ratio 2.08; 95% CI 1.07–4.04).",
+    "limits": "This was an atherosclerosis-selected factorial trial. Results do not extend the treatment window for every stroke mechanism, severity or reperfusion-treated patient.",
+    "sources": [
+      {
+        "title": "INSPIRES primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38157499/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "minor-stroke-antiplatelets"
+  },
+  {
+    "id": "artesia",
+    "title": "ARTESiA — apixaban for device-detected subclinical AF",
+    "year": 2024,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "device detected",
+      "subclinical AF",
+      "apixaban",
+      "aspirin",
+      "atrial fibrillation"
+    ],
+    "question": "How did anticoagulation affect stroke and bleeding in subclinical AF?",
+    "population": "4,012 participants with subclinical AF lasting six minutes to 24 hours; mean CHA₂DS₂-VASc 3.9.",
+    "comparison": "Apixaban versus aspirin; trial therapy stopped and anticoagulation begun if AF exceeded 24 hours or clinical AF developed.",
+    "result": "Over mean follow-up of 3.5 years, stroke or systemic embolism was 0.78% versus 1.24% per patient-year (hazard ratio 0.63; 95% CI 0.45–0.88; intention-to-treat). Major bleeding was 1.71% versus 0.94% per patient-year (hazard ratio 1.80; 95% CI 1.26–2.57; on-treatment).",
+    "limits": "Benefit and harm use different analysis populations. These are annualized rates, not cumulative risks; findings concern selected subclinical AF and require individualized risk assessment.",
+    "sources": [
+      {
+        "title": "ARTESiA primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37952132/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "af-prevention"
+  },
+  {
+    "id": "noah-afnet6",
+    "title": "NOAH-AFNET 6 — edoxaban for atrial high-rate episodes",
+    "year": 2023,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "device detected",
+      "atrial high rate episodes",
+      "AHRE",
+      "edoxaban",
+      "subclinical AF"
+    ],
+    "question": "Did device-detected atrial high-rate episodes justify edoxaban?",
+    "population": "2,536 participants aged ≥65 years with implanted-device episodes ≥6 minutes and another stroke risk factor, without ECG-documented AF.",
+    "comparison": "Edoxaban versus placebo.",
+    "result": "Cardiovascular death, stroke or systemic embolism was 3.2% versus 4.0% per patient-year (hazard ratio 0.81; 95% CI 0.60–1.08). Death or major bleeding was 5.9% versus 4.5% per patient-year (hazard ratio 1.31; 95% CI 1.02–1.67). Stroke was about 1% per year in both groups.",
+    "limits": "Stopped early for safety concerns and futility assessment. Its composite efficacy and safety endpoints differ from ARTESiA; it does not test anticoagulation for established clinical AF.",
+    "sources": [
+      {
+        "title": "NOAH-AFNET 6 primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37622677/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "af-prevention"
+  },
+  {
+    "id": "invictus",
+    "title": "INVICTUS — anticoagulation in rheumatic heart disease with AF",
+    "year": 2022,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "rheumatic",
+      "mitral stenosis",
+      "rivaroxaban",
+      "warfarin",
+      "vitamin K antagonist"
+    ],
+    "question": "Could rivaroxaban replace a vitamin K antagonist in rheumatic AF?",
+    "population": "4,531 analyzed participants with AF, echocardiographic rheumatic heart disease and trial-defined thromboembolic risk features.",
+    "comparison": "Rivaroxaban versus a dose-adjusted vitamin K antagonist.",
+    "result": "The composite of stroke, systemic embolism, myocardial infarction, or vascular/unknown-cause death occurred in 560 versus 446 participants. Restricted mean event-free survival was 76 days shorter with rivaroxaban (95% CI 31–121 days shorter). Death was also more frequent; major bleeding did not differ significantly.",
+    "limits": "Survival curves were nonproportional, and rivaroxaban discontinuation was more frequent. Do not extrapolate routine nonvalvular-AF DOAC evidence to this rheumatic-heart-disease population.",
+    "sources": [
+      {
+        "title": "INVICTUS primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36036525/",
+        "year": 2022,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "af-prevention"
+  },
+  {
+    "id": "re-align",
+    "title": "RE-ALIGN — dabigatran in mechanical heart valves",
+    "year": 2013,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "mechanical valve",
+      "dabigatran",
+      "warfarin",
+      "DOAC"
+    ],
+    "question": "Could dabigatran replace warfarin after mechanical valve replacement?",
+    "population": "252 participants with mechanical aortic or mitral valves, either implanted within seven days or at least three months earlier.",
+    "comparison": "Kidney-function- and concentration-adjusted dabigatran versus warfarin.",
+    "result": "This phase 2 study, whose primary endpoint was dabigatran trough concentration, stopped early for excess thromboembolism and bleeding. In the as-treated analysis, ischemic or unspecified stroke occurred in nine dabigatran recipients versus none with warfarin; major bleeding occurred in seven versus two.",
+    "limits": "A dose-validation study with adverse clinical outcomes, not a successful clinical noninferiority trial. Findings in ordinary AF cannot be transferred to mechanical valves.",
+    "sources": [
+      {
+        "title": "RE-ALIGN primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/23991661/",
+        "year": 2013,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "cardiac-sources"
+  },
+  {
+    "id": "proact-xa",
+    "title": "PROACT Xa — apixaban in an On-X mechanical aortic valve",
+    "year": 2023,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "mechanical valve",
+      "On-X",
+      "apixaban",
+      "warfarin",
+      "DOAC"
+    ],
+    "question": "Was apixaban noninferior to warfarin with this mechanical aortic valve?",
+    "population": "863 participants with an On-X mechanical aortic valve implanted at least three months earlier; 94% also took aspirin.",
+    "comparison": "Apixaban versus warfarin targeting INR 2.0–3.0.",
+    "result": "Stopped early for excess thromboembolic events. Valve thrombosis or valve-related thromboembolism occurred at 4.2% versus 1.3% per patient-year (rate difference 2.9 percentage points per year; 95% CI 0.8–5.0), failing noninferiority. Major bleeding was 3.6% versus 4.5% per patient-year.",
+    "limits": "These are event rates, not percentages of participants: 20 events occurred in 16 apixaban recipients versus six events in six warfarin recipients. Results do not support replacing warfarin with apixaban in this valve population.",
+    "sources": [
+      {
+        "title": "PROACT Xa primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38320162/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+      }
+    ],
+    "relatedTopic": "cardiac-sources"
+  },
+  {
+    "id": "interact2",
+    "title": "INTERACT2 — acute ICH blood-pressure lowering",
+    "year": 2013,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "ICH",
+      "blood pressure",
+      "SBP",
+      "INTERACT"
+    ],
+    "question": "Did early intensive BP lowering improve 90-day function?",
+    "population": "2,839 patients with spontaneous ICH within six hours and elevated systolic BP; 2,794 had primary-outcome data.",
+    "comparison": "SBP target <140 mmHg within one hour versus <180 mmHg, using clinician-selected agents.",
+    "result": "Death or major disability (mRS 3–6) was 52.0% versus 55.6% (OR 0.87; 95% CI 0.75–1.01; P=0.06). The prespecified ordinal analysis favored intensive treatment (OR for greater disability 0.87; 95% CI 0.77–1.00; P=0.04). Mortality was 11.9% versus 12.0%; nonfatal serious adverse events were similar.",
+    "limits": "The dichotomous primary outcome was not statistically significant. Distinguish the tested early ICH strategy from post-EVT BP targets and from more aggressive lowering in ATACH-2.",
+    "sources": [
+      {
+        "title": "INTERACT2 primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/23713578/",
+        "year": 2013,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+      }
+    ],
+    "relatedTopic": "acute-bp"
+  },
+  {
+    "id": "atach-2",
+    "title": "ATACH-2 — intensive BP lowering and renal adverse events",
+    "year": 2016,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "ICH",
+      "blood pressure",
+      "nicardipine",
+      "renal injury"
+    ],
+    "question": "Was an SBP target of 110–139 better than 140–179 mmHg?",
+    "population": "1,000 patients with acute ICH <60 cm³ and GCS ≥5; IV nicardipine began within 4.5 hours of symptom onset.",
+    "comparison": "SBP target 110–139 versus 140–179 mmHg.",
+    "result": "Death or disability (mRS 4–6) at three months was 38.7% versus 37.7% (adjusted RR 1.04; 95% CI 0.85–1.27). Renal adverse events within seven days were more frequent with intensive treatment: 9.0% versus 4.0% (P=0.002).",
+    "limits": "Stopped for futility. The selected volume/GCS population and different BP targets limit comparison with INTERACT2; these results do not support pushing all acute ICH patients to the lower tested range.",
+    "sources": [
+      {
+        "title": "ATACH-2 primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/27276234/",
+        "year": 2016,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+      }
+    ],
+    "relatedTopic": "acute-bp"
+  },
+  {
+    "id": "interact3",
+    "title": "INTERACT3 — coordinated acute ICH care bundle",
+    "year": 2023,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "ICH",
+      "care bundle",
+      "blood pressure",
+      "glucose",
+      "temperature",
+      "warfarin"
+    ],
+    "question": "Did implementing a coordinated physiological-care bundle improve function?",
+    "population": "7,036 adults with spontaneous ICH within six hours at 121 hospitals in ten countries; 6,255 had primary-outcome data.",
+    "comparison": "Hospital implementation of early BP lowering, glucose and temperature management, and warfarin reversal for abnormal values versus usual care; stepped-wedge cluster randomization.",
+    "result": "At six months the bundle improved the ordinal mRS distribution (common OR for worse outcome 0.86; 95% CI 0.76–0.97). Serious adverse events occurred in 16.0% versus 20.1%.",
+    "limits": "A hospital-level implementation trial, predominantly in low- and middle-income settings with inconsistent existing protocols. Benefit cannot be assigned to BP lowering or another single component; missing outcomes and site withdrawals require attention.",
+    "sources": [
+      {
+        "title": "INTERACT3 primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37245517/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed. July 2023 correction body read: investigator-name spellings in the appendix were corrected."
+      },
+      {
+        "title": "INTERACT3 correction",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37453751/",
+        "year": 2023,
+        "type": "Report",
+        "checkedAt": "2026-10-01",
+        "access": "Correction body read: two appendix investigator names corrected; no outcome change stated."
+      }
+    ],
+    "relatedTopic": "ich-management"
+  },
+  {
+    "id": "enchanted2-mt",
+    "title": "ENCHANTED2/MT — avoid extrapolating aggressive post-EVT BP lowering",
+    "year": 2022,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "EVT",
+      "thrombectomy",
+      "reperfusion",
+      "SBP",
+      "blood pressure"
+    ],
+    "question": "What happened with SBP <120 after successful thrombectomy?",
+    "population": "821 randomized adults in China with persistent SBP ≥140 mmHg after successful reperfusion for intracranial large-vessel occlusion; 810 had primary-outcome data.",
+    "comparison": "SBP <120 versus 140–180 mmHg, reached within one hour and maintained for 72 hours.",
+    "result": "Intensive treatment worsened the 90-day ordinal mRS outcome (common OR for worse outcome 1.37; 95% CI 1.07–1.76) and increased early neurological deterioration (common OR 1.53; 95% CI 1.18–1.97). Symptomatic ICH and mortality did not differ significantly.",
+    "limits": "Stopped early for efficacy/safety concerns. These are selected successfully reperfused patients; neither the comparator nor this result establishes one BP target for every reperfusion grade or clinical situation.",
+    "sources": [
+      {
+        "title": "ENCHANTED2/MT primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36341753/",
+        "year": 2022,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed. December 2022 correction is indexed; its body was inaccessible, so the scope of that correction remains unverified."
+      },
+      {
+        "title": "ENCHANTED2/MT indexed correction",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36463906/",
+        "year": 2022,
+        "type": "Report",
+        "checkedAt": "2026-10-01",
+        "access": "Correction identity and link verified in NLM; publisher body inaccessible and correction scope not determined."
+      }
+    ],
+    "relatedTopic": "acute-bp"
+  },
+  {
+    "id": "optimal-bp",
+    "title": "OPTIMAL-BP — functional outcomes after post-EVT BP reduction",
+    "year": 2023,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "EVT",
+      "thrombectomy",
+      "successful reperfusion",
+      "blood pressure"
+    ],
+    "question": "Did SBP <140 improve function after successful EVT?",
+    "population": "306 randomized patients with large-vessel ischemic stroke and mTICI ≥2b reperfusion at 19 South Korean centers; 305 were confirmed eligible.",
+    "comparison": "SBP <140 versus 140–180 mmHg for 24 hours after enrollment.",
+    "result": "Three-month independence (mRS 0–2) was 39.4% versus 54.4% (adjusted OR 0.56; 95% CI 0.33–0.96). Symptomatic ICH was 9.0% versus 8.1%; the difference was not significant. Stroke-related death was 7.7% versus 5.4%, also not significantly different.",
+    "limits": "Stopped early for safety concerns. The result concerns the tested lowering strategy after successful reperfusion; it does not establish a universal target for unsuccessful EVT or individualized reperfusion-guided management.",
+    "sources": [
+      {
+        "title": "OPTIMAL-BP primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37668619/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+      }
+    ],
+    "relatedTopic": "acute-bp"
+  },
+  {
+    "id": "clots-3",
+    "title": "CLOTS 3 — intermittent pneumatic compression after stroke",
+    "year": 2013,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "DVT",
+      "VTE",
+      "IPC",
+      "immobility",
+      "compression"
+    ],
+    "question": "Did intermittent pneumatic compression reduce proximal DVT?",
+    "population": "2,876 acute stroke patients unable to walk to the toilet without another person’s help, enrolled during admission days 0–3 at 94 UK centers.",
+    "comparison": "Intermittent pneumatic compression plus routine care versus no IPC.",
+    "result": "Proximal DVT, detected by screening ultrasound or symptomatic imaging within 30 days, occurred in 8.5% versus 12.1% (absolute reduction 3.6 percentage points; 95% CI 1.4–5.8). Skin breaks were more frequent with IPC: 3% versus 1%. The 30-day mortality difference was not statistically significant.",
+    "limits": "The endpoint includes asymptomatic DVT. This evaluates IPC rather than graduated compression stockings; device suitability and skin monitoring remain important.",
+    "sources": [
+      {
+        "title": "CLOTS 3 primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/23727163/",
+        "year": 2013,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed. Two corrections are indexed (Lancet 2013;382:506 and 1020); their full bodies could not be retrieved, so correction scope is unresolved."
+      }
+    ],
+    "relatedTopic": "vte-prevention"
+  },
+  {
+    "id": "food-feeding-route",
+    "title": "FOOD — PEG versus nasogastric feeding after stroke",
+    "year": 2005,
+    "settings": [
+      "hospital"
+    ],
+    "keywords": [
+      "dysphagia",
+      "nutrition",
+      "enteral feeding",
+      "PEG",
+      "nasogastric"
+    ],
+    "question": "Should PEG routinely replace nasogastric feeding early after stroke?",
+    "population": "321 dysphagic stroke patients in the feeding-route randomization at 47 hospitals in 11 countries.",
+    "comparison": "Percutaneous endoscopic gastrostomy (PEG) versus nasogastric feeding.",
+    "result": "At six months, PEG increased death or poor outcome by 7.8 percentage points (95% CI 0.0–15.5; P=0.05). The mortality difference alone was 1.0 percentage point higher with PEG (95% CI −10.0 to 11.9), without statistical significance.",
+    "limits": "The report contains a separate early-versus-delayed feeding trial; do not mix its population or outcomes with this route comparison. The results do not establish that later PEG for persistent dysphagia is never appropriate.",
+    "sources": [
+      {
+        "title": "FOOD primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/15733717/",
+        "year": 2005,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+      }
+    ],
+    "relatedTopic": "poststroke-dysphagia"
+  },
+  {
+    "id": "shine",
+    "title": "SHINE — intensive glucose control in acute ischemic stroke",
+    "year": 2019,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "glucose",
+      "hyperglycemia",
+      "insulin",
+      "hypoglycemia"
+    ],
+    "question": "Did intensive insulin treatment improve 90-day function?",
+    "population": "1,151 adults with hyperglycemic ischemic stroke enrolled within 12 hours at 63 US sites.",
+    "comparison": "IV insulin targeting glucose 80–130 mg/dL versus subcutaneous sliding-scale insulin targeting 80–179 mg/dL for up to 72 hours.",
+    "result": "Severity-adjusted favorable 90-day mRS outcome occurred in 20.5% versus 21.6% (adjusted RR 0.97; 95% CI 0.87–1.08). Severe hypoglycemia occurred only with intensive treatment: 15 patients (2.6%).",
+    "limits": "Stopped for futility. The outcome threshold depended on baseline stroke severity. Failure of this intensive strategy does not support leaving marked hyperglycemia untreated or attributing QASC’s bundle benefit to tight glucose control.",
+    "sources": [
+      {
+        "title": "SHINE primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/31334795/",
+        "year": 2019,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed. November 2019 correction body read; reversed figure-arm labels and demographic/minor text values were corrected. The card avoids the uncorrected demographic values still present in the indexed abstract."
+      },
+      {
+        "title": "SHINE correction",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/31688865/",
+        "year": 2019,
+        "type": "Report",
+        "checkedAt": "2026-10-01",
+        "access": "Full correction read: figure treatment labels, demographics, missing-data percentage, race/ethnicity values and investigator spelling corrected."
+      }
+    ],
+    "relatedTopic": "inpatient-medical-complications"
+  },
+  {
+    "id": "qasc",
+    "title": "QASC — implementing fever, glucose and swallowing care",
+    "year": 2011,
+    "settings": [
+      "hospital"
+    ],
+    "keywords": [
+      "nursing",
+      "stroke unit",
+      "dysphagia",
+      "fever",
+      "glucose",
+      "care bundle"
+    ],
+    "question": "Did organized implementation improve stroke-unit outcomes?",
+    "population": "19 Australian stroke units, with 687 patients before and 1,009 after implementation; adults with ischemic stroke or ICH presenting within 48 hours.",
+    "comparison": "Nurse-initiated fever, glucose and swallowing protocols plus multidisciplinary implementation workshops versus abridged guideline provision; units were randomized.",
+    "result": "At 90 days, death or dependency (mRS ≥2) was 42% versus 58% in post-intervention cohorts (adjusted absolute difference 15.7 percentage points; 95% CI 5.8–25.4). Mortality alone did not differ significantly.",
+    "limits": "Cluster randomization and pre/post cohorts differ from individual patient randomization. This supports implementation of the package; it cannot isolate which component produced benefit or establish an intensive glucose target.",
+    "sources": [
+      {
+        "title": "QASC primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21996470/",
+        "year": 2011,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+      }
+    ],
+    "relatedTopic": "stroke-unit-nursing"
+  },
+  {
+    "id": "destiny-ii",
+    "title": "DESTINY II — hemicraniectomy in older patients",
+    "year": 2014,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "decompression",
+      "hemicraniectomy",
+      "malignant MCA",
+      "goals of care",
+      "disability"
+    ],
+    "question": "What survival and disability tradeoff accompanied surgery after age 60?",
+    "population": "112 patients aged 61–82 with malignant middle-cerebral-artery infarction, randomized within 48 hours; median age 70.",
+    "comparison": "Hemicraniectomy versus conservative intensive-care treatment.",
+    "result": "At six months, survival with mRS 0–4 was 38% versus 18% (OR 2.91; 95% CI 1.06–7.49). Mortality was 33% versus 70%. No participant achieved mRS 0–2; most survivors needed help with bodily needs. Infections were more frequent after surgery.",
+    "limits": "The primary endpoint included mRS 4 and must not be described as functional independence. Discuss the full disability distribution and the person’s acceptable outcomes; age alone is not a complete selection rule.",
+    "sources": [
+      {
+        "title": "DESTINY II primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/24645942/",
+        "year": 2014,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+      }
+    ],
+    "relatedTopic": "malignant-edema"
+  },
+  {
+    "id": "restart",
+    "title": "RESTART — antiplatelet therapy after antithrombotic-associated ICH",
+    "year": 2019,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "ICH",
+      "antiplatelet",
+      "aspirin",
+      "recurrence",
+      "secondary prevention"
+    ],
+    "question": "Did restarting antiplatelet therapy increase recurrent ICH?",
+    "population": "537 ICH survivors previously taking antithrombotic therapy for occlusive vascular disease; randomized a median of 76 days after ICH.",
+    "comparison": "Start versus avoid antiplatelet therapy.",
+    "result": "Over a median two years, recurrent symptomatic ICH occurred in 12/268 (4%) versus 23/268 (9%) (adjusted HR 0.51; 95% CI 0.25–1.03). Major hemorrhagic events were 7% versus 9%; major occlusive events were 15% versus 14%, without significant differences.",
+    "limits": "The confidence interval does not prove antiplatelets prevent recurrent ICH. This selected survivor cohort does not establish immediate restart timing, safety for every CAA phenotype, or anticoagulant resumption.",
+    "sources": [
+      {
+        "title": "RESTART primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/31128924/",
+        "year": 2019,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+      }
+    ],
+    "relatedTopic": "caa-ich-recurrence"
+  },
+  {
+    "id": "earlydrain",
+    "title": "EARLYDRAIN — lumbar CSF drainage after secured aSAH",
+    "year": 2023,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "SAH",
+      "lumbar drain",
+      "CSF",
+      "delayed ischemia",
+      "infarction"
+    ],
+    "question": "Did early lumbar drainage improve outcome after aneurysm treatment?",
+    "population": "287 analyzable adults with aneurysmal SAH across clinical grades; aneurysms were clipped or coiled within 48 hours.",
+    "comparison": "Additional lumbar drainage at 5 mL/hour, begun within 72 hours, versus standard care.",
+    "result": "Six-month mRS 3–6 occurred in 32.6% versus 44.8% (RR 0.73; 95% CI 0.52–0.98). Secondary infarction at discharge was 28.5% versus 39.9%. Drain complications included a pressure gradient stopping drainage, local infection and a retained torn catheter.",
+    "limits": "Lumbar-drain contraindications included absent/compressed basal cisterns and therapeutic anticoagulation. Use the full neurosurgical drainage and pressure-monitoring protocol; this was not unrestricted drainage for every SAH presentation.",
+    "sources": [
+      {
+        "title": "EARLYDRAIN primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37330974/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract, full-report eligibility and adverse-event passages read via NLM/Europe PMC. August 2023 correction body read: lumbar-drain mRS-5 figure count changed from 24 to 9. Supplementary protocol not comprehensively reviewed."
+      },
+      {
+        "title": "EARLYDRAIN figure correction",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37578477/",
+        "year": 2023,
+        "type": "Report",
+        "checkedAt": "2026-10-01",
+        "access": "Full correction read: the lumbar-drain group’s six-month mRS-5 value in Figure 2 changed from 24 to 9."
+      }
+    ],
+    "relatedTopic": "sah-critical-care"
+  },
+  {
+    "id": "sahara",
+    "title": "SAHaRA — liberal versus restrictive transfusion in aSAH",
+    "year": 2025,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "SAH",
+      "anemia",
+      "hemoglobin",
+      "transfusion",
+      "red cells"
+    ],
+    "question": "Did a more liberal transfusion threshold improve neurological outcome?",
+    "population": "742 critically ill adults with acute aneurysmal SAH and anemia at 23 centers; 725 contributed to the primary analysis.",
+    "comparison": "Mandatory red-cell transfusion at hemoglobin ≤10 g/dL versus optional transfusion at ≤8 g/dL.",
+    "result": "At 12 months, unfavorable outcome (mRS ≥4) occurred in 33.5% versus 37.7% (RR 0.88; 95% CI 0.72–1.09; P=0.22). Functional-independence and quality-of-life measures did not show significant differences; adverse-event incidence was similar.",
+    "limits": "No superiority was demonstrated; the confidence interval does not establish equivalence. The restrictive strategy allowed clinical discretion and must not be recast as mandatory transfusion at 8 g/dL or a universal rule for all acute brain injuries.",
+    "sources": [
+      {
+        "title": "SAHaRA primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39655786/",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+      }
+    ],
+    "relatedTopic": "sah-critical-care"
+  },
+  {
+    "id": "cadiss",
+    "title": "CADISS — antiplatelet versus anticoagulant treatment for dissection",
+    "year": 2015,
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "cervical artery dissection",
+      "carotid",
+      "vertebral",
+      "antiplatelet",
+      "anticoagulation"
+    ],
+    "question": "Did antithrombotic strategy alter early stroke recurrence?",
+    "population": "250 patients with symptomatic extracranial carotid or vertebral dissection within seven days; central imaging review did not confirm dissection in 52.",
+    "comparison": "Clinician-selected antiplatelet versus anticoagulant treatment for three months.",
+    "result": "Ipsilateral stroke or death occurred in 3/126 versus 1/124 patients (P=0.63); there were no deaths. One major bleed, a subarachnoid hemorrhage, occurred with anticoagulation.",
+    "limits": "Very few events and wide uncertainty prevent an equivalence conclusion. This extracranial-dissection study does not settle intracranial dissection management or which individual drug is best; consider it alongside TREAT-CAD.",
+    "sources": [
+      {
+        "title": "CADISS primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/25684164/",
+        "year": 2015,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed. June 2015 correction is indexed; its publisher body was inaccessible and the scope remains unverified."
+      },
+      {
+        "title": "CADISS indexed correction",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/25987273/",
+        "year": 2015,
+        "type": "Report",
+        "checkedAt": "2026-10-01",
+        "access": "Correction identity and link verified in NLM; publisher body inaccessible and correction scope not determined."
+      }
+    ],
+    "relatedTopic": "dissection"
+  },
+  {
+    "id": "to-act",
+    "title": "TO-ACT — endovascular treatment for severe CVT",
+    "year": 2020,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "cerebral venous thrombosis",
+      "EVT",
+      "thrombectomy",
+      "intrasinus thrombolysis"
+    ],
+    "question": "Did adding EVT improve outcome in severe CVT?",
+    "population": "67 adults with CVT and at least one poor-outcome risk feature: mental-status change, coma, ICH or deep cerebral venous thrombosis.",
+    "comparison": "Mechanical thrombectomy and/or local thrombolysis plus medical care versus medical care alone; EVT within 24 hours of randomization.",
+    "result": "At 12 months, mRS 0–1 occurred in 67% versus 68% (RR 0.99; 95% CI 0.71–1.38). Mortality was 12% versus 3% and symptomatic ICH 3% versus 9%; neither difference was significant.",
+    "limits": "Stopped early for futility and too small to exclude important benefit or harm. Mixed endovascular techniques and selected severe CVT limit extrapolation; the trial does not establish routine EVT or resolve every rescue situation.",
+    "sources": [
+      {
+        "title": "TO-ACT primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/32421159/",
+        "year": 2020,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-01",
+        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+      }
+    ],
+    "relatedTopic": "cvt"
   }
 ]

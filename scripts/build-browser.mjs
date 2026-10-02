@@ -6,6 +6,7 @@ import { createHash } from 'node:crypto';
 import { gzipSync } from 'node:zlib';
 import { atomicWriteFile } from './atomic-write.mjs';
 import { runClinicalClaimCheck } from './check-clinical-claims.mjs';
+import { projectClinicalClaims, projectProtocolEvidence } from './browser-evidence-projection.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -32,6 +33,22 @@ if (!clinicalReview.ok) {
 }
 
 const result = await build({
+  plugins: [{ name: 'canonical-browser-evidence', setup(builder) {
+    builder.onLoad({ filter: /[/\\]clinical[/\\]claims\.json$/ }, async ({ path: source }) => ({
+      contents: JSON.stringify(projectClinicalClaims(JSON.parse(await fs.readFile(source, 'utf8')))), loader: 'json'
+    }));
+    builder.onLoad({ filter: /[/\\]evidence-encounter\.js$/ }, async () => {
+      const canonicalEvidence = await import('../src/evidence/index.js');
+      const browserEvidence = projectProtocolEvidence(canonicalEvidence);
+      return { contents: `const data=${JSON.stringify(browserEvidence)};
+        export const recommendations=data.recommendations;
+        const claims=new Map(data.claims.map(record=>[record.id,record]));
+        export const resolveClaimsWithCitations=(ids=[])=> (ids || []).map(id=>claims.get(id)).filter(Boolean);
+        export const citationLink=${canonicalEvidence.citationLink.toString()};`,
+      loader: 'js', resolveDir: path.join(root, 'src')
+      };
+    });
+  } }],
   absWorkingDir: root,
   entryPoints: [{ in: 'src/app.jsx', out: path.basename(entryFile, '.js') }],
   bundle: true,

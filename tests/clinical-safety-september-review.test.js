@@ -19,13 +19,13 @@ describe('September 2026 source and incomplete-input regressions', () => {
     expect(evaluateDEFUSE3(perfusion).reason).toMatch(/not complete EVT eligibility/);
   });
   it('does not give low-risk TIA a minor-stroke DAPT branch or assume onset time', () => {
-    expect(recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, strokeType: 'tia', nihss: 0, abcd2: 2, timeFromOnsetH: 12 }).regimen).toBe('single-antiplatelet');
+    expect(recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, strokeType: 'tia', nihss: 0, abcd2: 2, timeFromOnsetH: 12 }).regimen).toBe('individualized-review');
     expect(recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, strokeType: 'ischemic', nihss: 2 }).regimen).toBe('—');
     expect(recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, strokeType: 'ischemic', nihss: 2, timeFromOnsetH: -1 }).regimen).toBe('—');
   });
   it('requires atherosclerotic features for the INSPIRES extension', () => {
     const patient = { ...completeCases.recommendAcuteDAPT, strokeType: 'ischemic', nihss: 4, timeFromOnsetH: 48 };
-    expect(recommendAcuteDAPT(patient).regimen).toBe('single-antiplatelet');
+    expect(recommendAcuteDAPT(patient).regimen).toBe('individualized-review');
     expect(recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, ...patient, atherosclerotic: true }).rationale).toMatch(/INSPIRES/);
     expect(recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, strokeType: 'ischemic', nihss: 2, timeFromOnsetH: 80 }).regimen).toBe('individualized-review');
   });

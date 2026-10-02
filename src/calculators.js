@@ -1,11 +1,6 @@
 // Maintained Encounter arithmetic/source screens only. Full historical helpers are at the archival Git ref.
 // Reviewed helpers accept complete finite numbers, never partial strings or booleans.
-const reviewedNumber = (value) => {
-  if (typeof value === 'number') return Number.isFinite(value) ? value : null;
-  if (typeof value !== 'string' || !/^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/.test(value.trim())) return null;
-  const number = Number(value);
-  return Number.isFinite(number) ? number : null;
-};
+import { reviewedNumber } from './reviewed-number.js';
 
 
 

@@ -6,7 +6,7 @@ import { NIHSS_ITEMS } from './clinical/nihss-items.js';
 import { calculateNIHSS, calculateICHVolumeReviewed } from './calculators.js';
 import { formatPerfusionForExport } from './clinical/perfusion-documentation.js';
 import { formatWakeUpScreenForExport } from './clinical/wake-up-documentation.js';
-import { numericInput, gcsDocumentation, evaluateVideoTreatment, reviewedTiaDisposition } from './encounter-clinical-review.js';
+import { numericInput, gcsDocumentation, evaluateVideoTreatment, reviewedTiaDisposition, documentedIvtContext } from './encounter-clinical-review.js';
 import { computeLKWCountdown } from './calculators-extended.js';
 import { getPublicDemoPhiWarnings } from './public-demo-guardrails.js';
 
@@ -33,6 +33,22 @@ export function daptReperfusionReview(state) {
   const decisionsReviewed = state.note.diagnosisCategory === 'tia' || (state.decisions.ivt === 'Not recommended' && state.decisions.evt === 'Not recommended');
   return { excluded: state.dapt.reperfusionExcluded === true && !recordedTreatment && decisionsReviewed, recordedTreatment: Boolean(recordedTreatment) };
 }
+// POINT excludes a clear anticipated indication for anticoagulation. Prior
+// exposure alone is not that indication; reconcile its current status explicitly.
+const anticoagulantExposureFlags = ['recentDOAC', 'recentHeparin', 'warfarinElevatedINR'];
+export function daptAnticoagulationReview(state) {
+  const n = state.note, review = state.dapt.anticoagulationReview;
+  const plan = state.details?.antithromboticPlanType;
+  if (review === 'ongoing' || ['Anticoagulant', 'Combination under specialist review'].includes(plan)) return { excluded: false, reason: 'Ongoing anticoagulation or an anticoagulant plan/indication requires individualized review.' };
+  if (review === 'prophylaxis') return { excluded: false, reason: 'Prophylactic anticoagulation needs separate review of agent, dose and applicable source before selecting combined treatment.' };
+  if (!['none', 'stopped'].includes(review)) return { excluded: undefined, reason: 'Review current anticoagulation and any continuing indication before interpreting a DAPT source screen.' };
+  if (!['none', 'apixaban', 'rivaroxaban', 'dabigatran', 'edoxaban', 'warfarin', 'heparin', 'lmwh'].includes(n.lastDOACType)) return { excluded: undefined, reason: 'Anticoagulant exposure remains unassessed; reconcile it with the current anticoagulation review.' };
+  if (review === 'none' && (n.lastDOACType !== 'none' || documentedIvtContext(n).medicationReconciliation || anticoagulantExposureFlags.some(key => n.tnkContraindicationChecklist?.[key] === true))) return { excluded: false, reason: 'Exposure, medication or checklist entries conflict with no anticoagulant use. Reconcile actual use and indication; text cannot establish drug activity.' };
+  if (review === 'stopped' && n.lastDOACType === 'none') return { excluded: false, reason: 'Document the prior anticoagulant exposure or reconcile the stopped-exposure selection with no exposure.' };
+  return { excluded: true, reason: review === 'stopped' ? 'Prior exposure reviewed as stopped with no ongoing indication; this does not establish drug clearance.' : 'No ongoing anticoagulant use or indication reviewed; confirm remaining source criteria.' };
+}
+const anticoagulationSources = state => [state.note.lastDOACType, state.note.lastDOACDose, state.note.anticoagulantDoseIntent, state.note.medications, state.details?.antithromboticPlanType, state.details?.antithromboticPlan, state.details?.afDetected, ...anticoagulantExposureFlags.map(key => state.note.tnkContraindicationChecklist?.[key])];
+
 export function encounterTiaReadiness(state) {
   if (state.context !== 'acute' || state.note?.diagnosisCategory !== 'tia') return null;
   const details = state.details || {};
@@ -79,7 +95,9 @@ export function updateEncounter(state, updater) {
     const edited = note[`${prefix}Date`] !== state.note[`${prefix}Date`] || note[`${prefix}Time`] !== state.note[`${prefix}Time`];
     if (clock && (clock.value !== `${note[`${prefix}Date`]}T${note[`${prefix}Time`]}` || edited && clock === state.note[key])) note = { ...note, [key]: null };
   }
-  return { ...next, note, dapt: contextChanged || nihssChanged ? { ...next.dapt, reperfusionExcluded: undefined } : next.dapt, revision: state.revision + 1, draft: state.draft ? { ...state.draft, stale: true } : null };
+  const anticoagulationChanged = contextChanged || JSON.stringify(anticoagulationSources(next)) !== JSON.stringify(anticoagulationSources(state));
+  const dapt = { ...next.dapt, ...(contextChanged || nihssChanged ? { reperfusionExcluded: undefined } : {}), ...(anticoagulationChanged ? { anticoagulationReview: undefined } : {}) };
+  return { ...next, note, dapt, revision: state.revision + 1, draft: state.draft ? { ...state.draft, stale: true } : null };
 }
 // A manually reviewed score has its own provenance, even when its value is
 // numerically identical to a previously applied worksheet result.
@@ -204,10 +222,11 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   const perfusion = acuteIschemic ? formatPerfusionForExport({ ctpStructured: { coreVolume: n.coreVolume, penumbraVolume: n.penumbraVolume }, ctpResults: n.ctpResults }) : documented(n.ctpResults, '');
   const recommendations = [];
   const entry = (label, value) => { if (hasValue(value)) recommendations.push(`${label}: ${value}`); };
+  if (acuteIschemic || hasValue(n.lastDOACType)) entry('Anticoagulant exposure', n.lastDOACType || 'not assessed');
+  if (n.lastDOACType && n.lastDOACType !== 'none' && n.lastDOACDose) entry('Last anticoagulant dose', validTimestamp(n.lastDOACDose, nowMs) ? n.lastDOACDose : `${n.lastDOACDose} (invalid or future; correct before interpretation)`);
+  if (n.lastDOACType === 'lmwh') entry('LMWH dose intent', n.anticoagulantDoseIntent);
   if (acuteIschemic) {
     if (n.lkwUnknown || n.wakeUpStrokeWorkflow.mriAvailable !== undefined) recommendations.push(formatWakeUpScreenForExport(n, new Date(nowMs)));
-    entry('Anticoagulant exposure', n.lastDOACType || 'not assessed');
-    if (n.lastDOACType && n.lastDOACDose) entry('Last anticoagulant dose', validTimestamp(n.lastDOACDose, nowMs) ? n.lastDOACDose : `${n.lastDOACDose} (invalid or future; correct before interpretation)`);
     const concerns = Object.keys(n.tnkContraindicationChecklist || {}).filter(key => n.tnkContraindicationChecklist[key] === true);
     entry('Recorded safety concerns', concerns.join(', ') || 'none recorded (unchecked does not mean reviewed)');
     entry('IVT safety review', n.ivtContraindicationsReviewed ? 'explicitly recorded; concerns remain' : 'not documented');
@@ -236,10 +255,10 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   entry('Handoff', state.actions.handoff);
 
   if (state.documentFormat === 'handoff') {
-    const labels = new Set(['Anticoagulant exposure', 'Last anticoagulant dose', 'Recorded safety concerns', 'IVT clinician decision', 'EVT clinician decision', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
+    const labels = new Set(['Anticoagulant exposure', 'Last anticoagulant dose', 'LMWH dose intent', 'Recorded safety concerns', 'IVT clinician decision', 'EVT clinician decision', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
     return ['Team handoff', `${demographics} · ${diagnosis}${state.context === 'follow-up' ? ' · follow-up' : ''}`,
       lkw, `NIHSS: ${examText}${examDetails}${extraExam.length ? `; ${extraExam.join('; ')}` : ''}`,
-      `CT (${ctTimestamp}): ${ct}`, `CTA: ${cta}`,
+      `CT (${ctTimestamp}): ${ct}`, `CTA: ${cta}`, hasValue(perfusion) ? `CTP: ${perfusion}` : '',
       hasValue(n.presentingBP) ? `BP: ${n.presentingBP} mmHg` : '', hasValue(state.assessment) ? `Assessment: ${state.assessment}` : '',
       ...recommendations.filter(line => labels.has(line.slice(0, line.indexOf(':'))))].filter(Boolean).join('\n');
   }

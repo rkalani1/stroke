@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "sources",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.5.0",
-    "checksum": "sha256:36e4abe10762248685f200ca3af7ffbf",
+    "appVersion": "7.6.0",
+    "checksum": "sha256:6e5bce5d59303c7d1f3bf230cee37e8b",
     "count": 4,
     "source": "Canonical clinical claims, source identities and retained primary-source projections",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -98,10 +98,10 @@
         "label": "Acute DAPT source context",
         "url": "https://doi.org/10.1161/STR.0000000000000513",
         "claimId": "cl-dapt-minor-stroke",
-        "reviewedAt": "2026-09-26",
-        "reviewScope": "Existing DAPT evidence-claim date retained; AIS recommendation transcription retains its own review/correction limitations.",
-        "population": "Source-specific noncardioembolic minor stroke or high-risk TIA populations.",
-        "limits": "Retain trial-specific time, severity, mechanism, hemorrhage, reperfusion and contraindication review. Treatment selection is not arithmetic."
+        "reviewedAt": "2026-10-01",
+        "reviewScope": "Scoped review of adult and trial-specific age/time bounds, explicit current anticoagulation/indication reconciliation, unknown/conflict handling and neutral unmatched results. POINT registry eligibility and primary trial methods/protocols reviewed; AHA secondary-prevention summary accessible, while direct AIS publisher full text was blocked. Existing DAPT evidence-claim review remains dated 2026-09-26; protected AIS recommendation transcription retains its separate review/correction limitations.",
+        "population": "Noncardioembolic minor stroke or high-risk TIA: POINT age ≥18 within 12h; CHANCE age ≥40 within 24h; THALES and CHANCE-2 age ≥40; INSPIRES age 35–80, each with separate source criteria.",
+        "limits": "Partial source screen only. Reconcile current anticoagulant use and any continuing indication; unresolved or ongoing/indicated anticoagulation cannot select a regimen. A reviewed stopped exposure is not a permanent exclusion or proof of drug clearance. Confirm all trial-specific mechanism, severity, timing, bleeding, reperfusion and other exclusions. Outside a modeled population does not establish a DAPT contraindication or select another treatment."
       },
       {
         "id": "abcd2-instrument",

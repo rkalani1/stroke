@@ -1,11 +1,6 @@
 // Maintained Encounter arithmetic/source screens only. Full historical helpers are at the archival Git ref.
 // Reviewed helpers accept complete finite numbers, never partial strings or booleans.
-const reviewedNumber = (value) => {
-  if (typeof value === 'number') return Number.isFinite(value) ? value : null;
-  if (typeof value !== 'string' || !/^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/.test(value.trim())) return null;
-  const number = Number(value);
-  return Number.isFinite(number) ? number : null;
-};
+import { reviewedNumber } from './reviewed-number.js';
 
 // Extended clinical calculators added in the P0/P1 expansion.
 // Each function is pure, fully unit-testable, and carries its primary source
@@ -85,7 +80,8 @@ export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, hypoperfusedMl, timeFromLK
   };
 };
 
-export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, lvdSymptomatic, cyp2c19LOF, ichRisk, timeFromOnsetH, noncardioembolicConfirmed, hemorrhageExcluded, reperfusionExcluded, antiplateletContraindicationsReviewed } = {}) => {
+export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2, strokeType, atherosclerotic, lvdSymptomatic, cyp2c19LOF, ichRisk, timeFromOnsetH, noncardioembolicConfirmed, hemorrhageExcluded, reperfusionExcluded, antiplateletContraindicationsReviewed } = {}) => {
+  const a = reviewedNumber(age);
   const n = reviewedNumber(nihss);
   const ab = reviewedNumber(abcd2);
   const tH = reviewedNumber(timeFromOnsetH);
@@ -95,12 +91,28 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
   const inInspiresWindow = tH <= 72;
   const inLegacyWindow = tH <= 24;
   const highRisk = Number.isFinite(ab) && ab >= 4;
-  const veryHighRisk = Number.isFinite(ab) && ab >= 6;
   const isAtherosclerotic = atherosclerotic === true || lvdSymptomatic === true;
 
   if (ichRisk === 'high') {
     return { regimen: 'individualized-review', rationale: 'High hemorrhagic risk requires an individualized antithrombotic plan. This does not establish that even single antiplatelet therapy is safe.', duration: null, dosing: null, source: null };
   }
+
+  // These modeled DAPT sources enrolled adults (POINT: age >=18; other
+  // source populations are narrower). Missing age cannot imply applicability.
+  // POINT primary manuscript: https://pmc.ncbi.nlm.nih.gov/articles/PMC6193486/
+  if (a === null || a < 18 || a > 120) return {
+    regimen: '—', duration: null, dosing: null,
+    rationale: a !== null && a >= 0 && a < 18
+      ? 'Pediatric stroke/TIA: use specialist antithrombotic assessment; these adult DAPT source screens do not apply.'
+      : 'Document a valid adult age before applying these DAPT source screens.',
+    source: 'POINT (PMID 29766750); AHA/ASA 2026 AIS §4.7'
+  };
+
+  if (anticoagulationExcluded !== true) return {
+    regimen: anticoagulationExcluded === false ? 'individualized-review' : '—', duration: null, dosing: null,
+    rationale: 'Review current anticoagulation and any continuing indication. Unresolved or ongoing/indicated anticoagulation cannot select a regimen here; prior exposure alone is not a permanent exclusion.',
+    source: 'POINT (NCT00991029 anticoagulation exclusion); AHA/ASA 2021 secondary prevention'
+  };
 
   // V3 — empty/invalid input guard. With no usable severity input (NIHSS for
   // ischemic stroke, or ABCD² for a TIA), the recommendation is undefined; do
@@ -119,9 +131,16 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
 
   if (![noncardioembolicConfirmed, hemorrhageExcluded, reperfusionExcluded, antiplateletContraindicationsReviewed].every(v => v === true)) return { regimen: '—', duration: null, dosing: null, rationale: 'Confirm noncardioembolic mechanism, hemorrhage exclusion, no reperfusion treatment, and antiplatelet contraindication review before selecting a modeled DAPT regimen.', source: 'AHA/ASA 2026 AIS §4.7' };
 
+  const outsideSourceAge = (source, population) => ({
+    regimen: 'individualized-review', duration: null, dosing: null,
+    rationale: `${source} enrolled ${population}; age ${a} is outside this source population. Review current guidance: this mismatch does not establish that DAPT is contraindicated or select another regimen.`,
+    source, class: 'Source population mismatch; individualized clinical review'
+  });
+
   // THALES: ticagrelor+ASA x 30d (Class 2b, 2021) for NIHSS 4-5 noncardioembolic stroke without a presumed atherosclerotic cause, within 24h.
   // NIHSS 0-3 and high-risk TIA fall through to CHANCE/POINT (Class 1 clopidogrel+ASA); atherosclerotic NIHSS 4-5 falls through to the INSPIRES branch (clopidogrel+ASA).
   if (isUpToModerate && n >= 4 && !isAtherosclerotic && inLegacyWindow) {
+    if (a < 40) return outsideSourceAge('THALES', 'patients age ≥40');
     return {
       regimen: 'ticagrelor+ASA',
       duration: '30 days',
@@ -134,6 +153,7 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
 
   // INSPIRES branch: NIHSS 4-5 within 72h (extended window beyond CHANCE/POINT), or atherosclerotic LVD ≥50%.
   if (isAtherosclerotic && inInspiresWindow && ((isUpToModerate && n >= 4) || (tH > 24 && (isMinor || (isTIA && highRisk))))) {
+    if (a < 35 || a > 80) return outsideSourceAge('INSPIRES', 'patients age 35–80');
     return {
       regimen: 'clopidogrel+ASA', duration: '21 days',
       dosing: 'Clopidogrel 300 mg load then 75 mg daily; aspirin 100–300 mg on day 1 then 100 mg daily for 21 days (INSPIRES trial regimen)',
@@ -146,6 +166,8 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
   // CHANCE/POINT classic branch: high-risk TIA or NIHSS ≤3, within 24h (POINT was 12h; CHANCE was 24h).
   if (((isTIA && highRisk) || isMinor) && inLegacyWindow) {
     const useTicagrelor = cyp2c19LOF === true;
+    if (useTicagrelor && a < 40) return outsideSourceAge('CHANCE-2', 'patients age ≥40');
+    if (!useTicagrelor && a < 40 && tH > 12) return outsideSourceAge('CHANCE / POINT', 'patients age ≥40 within 24h (CHANCE), or age ≥18 within 12h (POINT)');
     return {
       regimen: useTicagrelor ? 'ticagrelor+ASA (CHANCE-2)' : 'clopidogrel+ASA',
       duration: '21 days',
@@ -154,7 +176,7 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
         : 'Clopidogrel 300-600 mg load then 75 mg daily + ASA 75-100 mg daily',
       rationale: useTicagrelor
         ? 'Known CYP2C19 LOF carrier — CHANCE-2 showed ticagrelor+ASA superior to clopidogrel+ASA.'
-        : `${isTIA ? `High-risk TIA (ABCD² ${ab} ≥4)` : `Minor stroke (NIHSS ${n} ≤3)`} within ${tH}h: CHANCE/POINT showed reduced 90-d stroke risk. Truncate DAPT at 21 d to minimize bleeding.`,
+        : `${isTIA ? `High-risk TIA (ABCD² ${ab} ≥4)` : `Minor stroke (NIHSS ${n} ≤3)`} within ${tH}h: ${a < 40 ? 'POINT enrolled adults ≥18 within 12h; CHANCE enrolled age ≥40 within 24h.' : 'CHANCE/POINT showed reduced 90-d stroke risk.'} Short-course guidance favors 21 d of DAPT to limit bleeding; confirm the full applicable source.`,
       source: useTicagrelor ? 'Wang NEJM 2021;385:2520-30 (CHANCE-2)' : 'Wang NEJM 2013;369:11-19 (CHANCE); Johnston NEJM 2018;379:215-25 (POINT)',
       class: useTicagrelor ? 'Class 2b/B-R, 2026 AHA/ASA AIS §4.7; CHANCE-2 postdates the 2021 secondary-prevention guideline' : 'Class 1 (AHA/ASA 2021 secondary prevention)'
     };
@@ -172,12 +194,12 @@ export const recommendAcuteDAPT = ({ nihss, abcd2, strokeType, atherosclerotic, 
   }
 
   return {
-    regimen: 'single-antiplatelet',
-    duration: 'long-term',
-    dosing: 'ASA 81 mg daily OR clopidogrel 75 mg daily',
-    rationale: `No DAPT trial branch modeled here is met (${isTIA ? `TIA ABCD² ${ab}` : `NIHSS ${n}`}, ${tH}h). Use mechanism-appropriate prevention; this partial screen does not establish a contraindication to DAPT.`,
+    regimen: 'individualized-review',
+    duration: null,
+    dosing: null,
+    rationale: `No DAPT trial branch modeled here is met (${isTIA ? `TIA ABCD² ${ab}` : `NIHSS ${n}`}, ${tH}h). Review the complete mechanism-specific guidance, timing and bleeding risk; failure to match these branches does not select single antiplatelet therapy or establish a DAPT contraindication.`,
     source: 'Kleindorfer AHA/ASA Stroke 2021',
-    class: 'Class 1'
+    class: 'Modeled screen not met; individualized clinical review'
   };
 };
 

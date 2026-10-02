@@ -16,7 +16,7 @@ describe('bounded clinical-reference data', () => {
     expect(canonical.topics).toHaveLength(80);
     expect(new Set(canonical.topics.map(topic => topic.category)).size).toBe(9);
     expect(canonical.calculators).toHaveLength(16);
-    expect(canonical.studies).toHaveLength(29);
+    expect(canonical.studies).toHaveLength(58);
     expect(validate(canonical)).toEqual([]);
   });
 
@@ -26,6 +26,25 @@ describe('bounded clinical-reference data', () => {
     for(const source of coverage){
       expect(source.topicIds.length).toBeGreaterThan(0);
       for(const id of source.topicIds){const topic=canonical.topics.find(topic=>topic.id===id);expect(topic).toBeTruthy();expect(topic.sources.some(record=>record.url===source.url)).toBe(true);}
+    }
+  });
+
+  it('restores historical study source access without importing archived outcome claims', () => {
+    const sources = read('src/reference/study-sources.json');
+    expect(sources).toHaveLength(273);
+    expect(new Set(sources.map(source => source.url)).size).toBe(273);
+    expect(new Set(sources.map(source => source.id)).size).toBe(273);
+    for (const source of sources) {
+      expect(source.topicIds.length).toBeGreaterThan(0);
+      expect(source.access).toContain('bibliographic');
+      for (const id of source.topicIds) {
+        expect(canonical.topics.find(topic => topic.id === id)?.sources.some(item => item.url === source.url)).toBe(true);
+      }
+    }
+    expect(searchReference(canonical.topics, 'AVERROES').map(topic => topic.id)).toEqual(['af-prevention']);
+    expect(searchReference(canonical.topics, 'BEST-MSU').some(topic => topic.id === 'acute-bp')).toBe(false);
+    for (const id of ['hope-bp-2026','tnk-vs-alteplase-rwe','enrich-af','actisave']) {
+      expect(sources.find(source => source.id === `study-source-${id}`).access).toContain('withheld');
     }
   });
 

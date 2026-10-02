@@ -609,10 +609,47 @@ async function main() {
       await reset(page);return{sourceEditsInvalidateReviews:true,derivedScoresNeverImputed:true,navigationPreservesReviews:true};
     });
     await check('fresh TIA DAPT review is visible, completable and invalidated by diagnosis changes', async () => {
-      await page.getByLabel('Working diagnosis',{exact:true}).selectOption('tia');const stamp=await localStamp(page,120);await page.getByLabel('LKW date (local)',{exact:true}).fill(stamp.split('T')[0]);await page.getByLabel('LKW time (local)',{exact:true}).fill(stamp.split('T')[1]);await page.getByLabel('CT hemorrhage review',{exact:true}).selectOption('absent');const dapt=page.locator('#calc-dapt');await openDetails(dapt.getByLabel('Reviewed ABCD² (0–7)',{exact:true}));await dapt.getByLabel('Reviewed ABCD² (0–7)',{exact:true}).fill('4');
-      for(const[label,value]of[['Noncardioembolic mechanism confirmed','true'],['Antiplatelet contraindications reviewed','true'],['Presumed atherosclerotic mechanism','false'],['Symptomatic stenosis ≥50%','false'],['Known CYP2C19 loss-of-function carrier','false']])await dapt.getByLabel(label,{exact:true}).selectOption(value);await dapt.getByLabel('Hemorrhagic risk assessment',{exact:true}).selectOption('reviewed');assert(!(await dapt.innerText()).includes('clopidogrel+ASA:'));await dapt.getByLabel('No reperfusion treatment after review',{exact:true}).selectOption('true');assert((await dapt.innerText()).includes('clopidogrel+ASA:'));
-      await page.getByLabel('Working diagnosis',{exact:true}).selectOption('ischemic');for(const label of ['IVT clinician decision','EVT clinician decision'])await page.getByLabel(label,{exact:true}).selectOption('Not recommended');await page.getByLabel('Working diagnosis',{exact:true}).selectOption('tia');assert.equal(await dapt.getByLabel('No reperfusion treatment after review',{exact:true}).inputValue(),'');assert(!(await dapt.innerText()).includes('clopidogrel+ASA:'));await dapt.getByLabel('No reperfusion treatment after review',{exact:true}).selectOption('true');assert((await dapt.innerText()).includes('clopidogrel+ASA:'));
+      await page.getByLabel('Working diagnosis',{exact:true}).selectOption('tia');await page.getByLabel('Age (years)',{exact:true}).fill('65');await page.getByLabel('Anticoagulant exposure',{exact:true}).selectOption('none');const stamp=await localStamp(page,120);await page.getByLabel('LKW date (local)',{exact:true}).fill(stamp.split('T')[0]);await page.getByLabel('LKW time (local)',{exact:true}).fill(stamp.split('T')[1]);await page.getByLabel('CT hemorrhage review',{exact:true}).selectOption('absent');const dapt=page.locator('#calc-dapt');await openDetails(dapt.getByLabel('Reviewed ABCD² (0–7)',{exact:true}));await dapt.getByLabel('Reviewed ABCD² (0–7)',{exact:true}).fill('4');
+      for(const[label,value]of[['Noncardioembolic mechanism confirmed','true'],['Antiplatelet contraindications reviewed','true'],['Presumed atherosclerotic mechanism','false'],['Symptomatic stenosis ≥50%','false'],['Known CYP2C19 loss-of-function carrier','false']])await dapt.getByLabel(label,{exact:true}).selectOption(value);await dapt.getByLabel('Hemorrhagic risk assessment',{exact:true}).selectOption('reviewed');assert(!(await dapt.innerText()).includes('clopidogrel+ASA:'));await dapt.getByLabel('Current anticoagulation / indication review',{exact:true}).selectOption('none');await dapt.getByLabel('No reperfusion treatment after review',{exact:true}).selectOption('true');assert((await dapt.innerText()).includes('clopidogrel+ASA:'));
+      await page.getByLabel('Working diagnosis',{exact:true}).selectOption('ischemic');for(const label of ['IVT clinician decision','EVT clinician decision'])await page.getByLabel(label,{exact:true}).selectOption('Not recommended');await page.getByLabel('Working diagnosis',{exact:true}).selectOption('tia');assert.equal(await dapt.getByLabel('No reperfusion treatment after review',{exact:true}).inputValue(),'');assert(!(await dapt.innerText()).includes('clopidogrel+ASA:'));await dapt.getByLabel('Current anticoagulation / indication review',{exact:true}).selectOption('none');await dapt.getByLabel('No reperfusion treatment after review',{exact:true}).selectOption('true');assert((await dapt.innerText()).includes('clopidogrel+ASA:'));
       await page.getByLabel('Working diagnosis',{exact:true}).selectOption('ischemic');await page.getByLabel('EVT puncture timestamp (local)',{exact:true}).fill(await localStamp(page,30));await page.getByLabel('Working diagnosis',{exact:true}).selectOption('tia');await dapt.getByLabel('No reperfusion treatment after review',{exact:true}).selectOption('true');assert(!(await dapt.innerText()).includes('clopidogrel+ASA:'));assert((await dapt.innerText()).includes('Recorded reperfusion'));await reset(page);return{explicitTiaReview:true,hiddenDecisionsDoNotCompleteReview:true,recordedTreatmentCannotBeOverridden:true};
+    });
+    await check('anticoagulant history survives diagnosis changes and compact handoff retains CTP', async () => {
+      try {
+        await page.getByLabel('Working diagnosis', {exact:true}).selectOption('ischemic');
+        await page.getByLabel('Anticoagulant exposure', {exact:true}).selectOption('apixaban');
+        const lastDose = await localStamp(page, 90);
+        await page.getByLabel('Last anticoagulant dose (local)', {exact:true}).fill(lastDose);
+        await page.getByLabel('Working diagnosis', {exact:true}).selectOption('ich');
+        assert.equal(await page.getByLabel('Anticoagulant exposure', {exact:true}).inputValue(), 'apixaban');
+        assert.equal(await page.getByLabel('Last anticoagulant dose (local)', {exact:true}).inputValue(), lastDose);
+        const ctp = page.getByLabel('CT perfusion findings', {exact:true}); await openDetails(ctp); await ctp.fill('Synthetic perfusion observation');
+        await page.getByLabel('Documentation format', {exact:true}).selectOption('handoff');
+        await page.getByRole('button', {name:'Generate Team handoff',exact:true}).click();
+        const draft = await page.getByLabel('Generated Team handoff', {exact:true}).inputValue();
+        assert(draft.includes('Anticoagulant exposure: apixaban'));
+        assert(draft.includes(`Last anticoagulant dose: ${lastDose}`));
+        assert(draft.includes('CTP: Synthetic perfusion observation'));
+        await page.getByLabel('Anticoagulant exposure', {exact:true}).selectOption('none');
+        assert.equal(await page.getByRole('button', {name:'Copy Team handoff',exact:true}).count(), 0);
+      } finally { await reset(page); }
+    });
+    await check('historical study citations are searchable and new summaries preserve outcome limits', async () => {
+      await page.getByRole('link', {name:'Evidence',exact:true}).click();
+      const evidence = page.getByRole('region', {name:'Evidence',exact:true});
+      await evidence.getByLabel('Find a clinical question', {exact:true}).fill('AVERROES');
+      assert.equal(await evidence.locator('[data-reference-id]').count(), 1);
+      const af = evidence.locator('[data-reference-id="af-prevention"]'); await af.locator('summary').click();
+      await af.getByRole('link', {name:/AVERROES/}).waitFor();
+      assert((await af.innerText()).includes('bibliographic identity checked'));
+      await page.getByRole('link', {name:'Trials',exact:true}).click();
+      await page.getByRole('tab', {name:'Completed evidence',exact:true}).click();
+      const completed = page.getByRole('region', {name:'Completed evidence',exact:true});
+      await completed.getByLabel('Find completed evidence', {exact:true}).fill('HERMES');
+      const hermes = completed.locator('[data-reference-id="hermes"]'); await hermes.locator('summary').click();
+      await hermes.getByText(/The NNT is not for functional independence/).waitFor();
+      await completed.getByRole('link', {name:'Find more study sources in Evidence',exact:true}).waitFor();
+      await reset(page);
     });
     await check('console and resource errors', async () => {assert.deepEqual(errors,[]);assert.deepEqual(failedResources,[]);assert.deepEqual(consoleMessages.filter(x=>x.type==='error'),[]);});
     report.metrics.totalPageJsTransferBytes=await page.evaluate(()=>performance.getEntriesByType('resource').filter(x=>x.initiatorType==='script'||new URL(x.name).pathname.endsWith('.js')).reduce((sum,x)=>sum+x.transferSize,0));

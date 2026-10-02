@@ -1,0 +1,3348 @@
+[
+  {
+    "id": "study-source-hope-bp-2026",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "HOPE (reperfusion-guided BP) — Personalized Blood Pressure Targeting After Endovascular Therapy for Acute Ischemic Stroke: A Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42258192/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Historical outcome summary remains withheld because its source interpretation is unresolved."
+  },
+  {
+    "id": "study-source-lais-2026",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "LAIS — Loberamisal for Acute Ischemic Stroke: The LAIS Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42721021/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-erase-stroke-2026",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "ERASE-STROKE — Early and prolonged oral edaravone for neuroprotection in acute ischemic stroke: the ERASE-STROKE randomized controlled phase 3 trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42705987/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-atis-nvaf-2025",
+    "topicIds": [
+      "secondary-prevention"
+    ],
+    "title": "ATIS-NVAF — Optimal Antithrombotics for Ischemic Stroke and Concurrent Atrial Fibrillation and Atherosclerosis: A Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41051787/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-act",
+    "topicIds": [
+      "thrombolytic-choice"
+    ],
+    "title": "AcT — Intravenous tenecteplase compared with alteplase for acute ischaemic stroke in Canada (AcT): a pragmatic, multicentre, open-label, registry-linked, randomised, controlled, non-inferiority trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35779553/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-trace-2",
+    "topicIds": [
+      "thrombolytic-choice"
+    ],
+    "title": "TRACE-2 — Tenecteplase versus alteplase in acute ischaemic cerebrovascular events (TRACE-2): a phase 3, multicentre, open-label, randomised controlled, non-inferiority trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36774935/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-original",
+    "topicIds": [
+      "thrombolytic-choice"
+    ],
+    "title": "ORIGINAL — Tenecteplase vs Alteplase for Patients With Acute Ischemic Stroke: The ORIGINAL Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39264623/",
+    "year": 2024,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-wake-up",
+    "topicIds": [
+      "extended-window-ivt"
+    ],
+    "title": "WAKE-UP — MRI-Guided Thrombolysis for Stroke with Unknown Time of Onset.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29766770/",
+    "year": 2018,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-extend",
+    "topicIds": [
+      "extended-window-ivt"
+    ],
+    "title": "EXTEND — Thrombolysis Guided by Perfusion Imaging up to 9 Hours after Onset of Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31067369/",
+    "year": 2019,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-epithet",
+    "topicIds": [
+      "extended-window-ivt"
+    ],
+    "title": "EPITHET — Effects of alteplase beyond 3 h after stroke in the Echoplanar Imaging Thrombolytic Evaluation Trial (EPITHET): a placebo-controlled randomised trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/18296121/",
+    "year": 2008,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ecass4-extend",
+    "topicIds": [
+      "extended-window-ivt"
+    ],
+    "title": "ECASS4-EXTEND — Extending the time window for intravenous thrombolysis in acute ischemic stroke using magnetic resonance imaging-based patient selection.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/30947642/",
+    "year": 2019,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-timeless",
+    "topicIds": [
+      "extended-window-ivt"
+    ],
+    "title": "TIMELESS — Tenecteplase for Stroke at 4.5 to 24 Hours with Perfusion-Imaging Selection.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38329148/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-twist",
+    "topicIds": [
+      "extended-window-ivt"
+    ],
+    "title": "TWIST — Safety and efficacy of tenecteplase in patients with wake-up stroke assessed by non-contrast CT (TWIST): a multicentre, open-label, randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36549308/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-trace-iii",
+    "topicIds": [
+      "extended-window-ivt"
+    ],
+    "title": "TRACE-III — Tenecteplase for Ischemic Stroke at 4.5 to 24 Hours without Thrombectomy.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38884324/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-select2",
+    "topicIds": [
+      "large-core-evt",
+      "acute-reperfusion"
+    ],
+    "title": "SELECT2 — Trial of Endovascular Thrombectomy for Large Ischemic Strokes.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36762865/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-angel-aspect",
+    "topicIds": [
+      "large-core-evt",
+      "acute-reperfusion"
+    ],
+    "title": "ANGEL-ASPECT — Trial of Endovascular Therapy for Acute Ischemic Stroke with Large Infarct.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36762852/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-rescue-japan-limit",
+    "topicIds": [
+      "large-core-evt",
+      "acute-reperfusion"
+    ],
+    "title": "RESCUE-Japan LIMIT — Endovascular Therapy for Acute Stroke with a Large Ischemic Region.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35138767/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-tension",
+    "topicIds": [
+      "large-core-evt",
+      "acute-reperfusion"
+    ],
+    "title": "TENSION — Endovascular thrombectomy for acute ischaemic stroke with established large infarct: multicentre, open-label, randomised trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37837989/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-attention",
+    "topicIds": [
+      "basilar-occlusion"
+    ],
+    "title": "ATTENTION — Trial of Endovascular Treatment of Acute Basilar-Artery Occlusion.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36239644/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-baoche",
+    "topicIds": [
+      "basilar-occlusion"
+    ],
+    "title": "BAOCHE — Trial of Thrombectomy 6 to 24 Hours after Stroke Due to Basilar-Artery Occlusion.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36239645/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-dawn",
+    "topicIds": [
+      "evt-selection"
+    ],
+    "title": "DAWN — Thrombectomy 6 to 24 Hours after Stroke with a Mismatch between Deficit and Infarct.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29129157/",
+    "year": 2018,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-defuse-3",
+    "topicIds": [
+      "evt-selection"
+    ],
+    "title": "DEFUSE-3 — Thrombectomy for Stroke at 6 to 16 Hours with Selection by Perfusion Imaging.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29364767/",
+    "year": 2018,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-choice",
+    "topicIds": [
+      "neurointerventional-care",
+      "research-adjuncts"
+    ],
+    "title": "CHOICE — Effect of Intra-arterial Alteplase vs Placebo Following Successful Thrombectomy on Functional Outcomes in Patients With Large Vessel Occlusion Acute Ischemic Stroke: The CHOICE Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35143603/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-theia",
+    "topicIds": [
+      "retinal-ischemia"
+    ],
+    "title": "THEIA — Intravenous alteplase versus oral aspirin for acute central retinal artery occlusion within 4·5 h of severe vision loss (THEIA): a multicentre, double-dummy, patient-blinded and assessor-blinded, randomised, controlled, phase 3 trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41109232/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-tencraos",
+    "topicIds": [
+      "retinal-ischemia"
+    ],
+    "title": "TenCRAOS — A Randomized Trial of Tenecteplase in Acute Central Retinal Artery Occlusion.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41604638/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-interact3",
+    "topicIds": [
+      "ich-management",
+      "acute-bp"
+    ],
+    "title": "INTERACT3 — The third Intensive Care Bundle with Blood Pressure Reduction in Acute Cerebral Haemorrhage Trial (INTERACT3): an international, stepped wedge cluster randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37245517/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-annexa-i",
+    "topicIds": [
+      "antithrombotic-reversal",
+      "ich-management"
+    ],
+    "title": "ANNEXA-I — Andexanet for Factor Xa Inhibitor-Associated Acute Intracerebral Hemorrhage.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38749032/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-enrich",
+    "topicIds": [
+      "ich-surgery"
+    ],
+    "title": "ENRICH — Trial of Early Minimally Invasive Removal of Intracerebral Hemorrhage.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38598795/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-chance",
+    "topicIds": [
+      "minor-stroke-antiplatelets",
+      "secondary-prevention"
+    ],
+    "title": "CHANCE — Clopidogrel with aspirin in acute minor stroke or transient ischemic attack.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23803136/",
+    "year": 2013,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-point",
+    "topicIds": [
+      "minor-stroke-antiplatelets",
+      "secondary-prevention"
+    ],
+    "title": "POINT — Clopidogrel and Aspirin in Acute Ischemic Stroke and High-Risk TIA.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29766750/",
+    "year": 2018,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-thales",
+    "topicIds": [
+      "minor-stroke-antiplatelets",
+      "secondary-prevention"
+    ],
+    "title": "THALES — Ticagrelor and Aspirin or Aspirin Alone in Acute Ischemic Stroke or TIA.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32668111/",
+    "year": 2020,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-inspires",
+    "topicIds": [
+      "minor-stroke-antiplatelets",
+      "secondary-prevention"
+    ],
+    "title": "INSPIRES — Dual Antiplatelet Treatment up to 72 Hours after Ischemic Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38157499/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-chance-2",
+    "topicIds": [
+      "minor-stroke-antiplatelets",
+      "secondary-prevention"
+    ],
+    "title": "CHANCE-2 — Ticagrelor versus Clopidogrel in CYP2C19 Loss-of-Function Carriers with Stroke or TIA.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34708996/",
+    "year": 2021,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-elan",
+    "topicIds": [
+      "af-timing"
+    ],
+    "title": "ELAN — Early versus Later Anticoagulation for Stroke with Atrial Fibrillation.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37222476/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-timing",
+    "topicIds": [
+      "af-timing"
+    ],
+    "title": "TIMING — Early Versus Delayed Non-Vitamin K Antagonist Oral Anticoagulant Therapy After Acute Ischemic Stroke in Atrial Fibrillation (TIMING): A Registry-Based Randomized Controlled Noninferiority Study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36065821/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-averroes",
+    "topicIds": [
+      "af-prevention"
+    ],
+    "title": "AVERROES — Apixaban in patients with atrial fibrillation.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/21309657/",
+    "year": 2011,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-artesia",
+    "topicIds": [
+      "af-prevention"
+    ],
+    "title": "ARTESiA — Apixaban for Stroke Prevention in Subclinical Atrial Fibrillation.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37952132/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-enchanted2-mt",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "ENCHANTED2/MT — Intensive blood pressure control after endovascular thrombectomy for acute ischaemic stroke (ENCHANTED2/MT): a multicentre, open-label, blinded-endpoint, randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36341753/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-optimas",
+    "topicIds": [
+      "af-timing"
+    ],
+    "title": "OPTIMAS — Optimal timing of anticoagulation after acute ischaemic stroke with atrial fibrillation (OPTIMAS): a multicentre, blinded-endpoint, phase 4, randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39491870/",
+    "year": 2024,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-catalyst",
+    "topicIds": [
+      "af-timing"
+    ],
+    "title": "CATALYST — Collaboration on the optimal timing of anticoagulation after ischaemic stroke and atrial fibrillation: a systematic review and prospective individual participant data meta-analysis of randomised controlled trials (CATALYST).",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40570866/",
+    "year": 2025,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-navigate-esus",
+    "topicIds": [
+      "stroke-workup"
+    ],
+    "title": "NAVIGATE ESUS — Rivaroxaban for Stroke Prevention after Embolic Stroke of Undetermined Source.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29766772/",
+    "year": 2018,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-respect-esus",
+    "topicIds": [
+      "stroke-workup"
+    ],
+    "title": "RE-SPECT ESUS — Dabigatran for Prevention of Stroke after Embolic Stroke of Undetermined Source.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31091372/",
+    "year": 2019,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-arcadia",
+    "topicIds": [
+      "stroke-workup"
+    ],
+    "title": "ARCADIA — Apixaban to Prevent Recurrence After Cryptogenic Stroke in Patients With Atrial Cardiopathy: The ARCADIA Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38324415/",
+    "year": 2024,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-laste",
+    "topicIds": [
+      "large-core-evt",
+      "acute-reperfusion"
+    ],
+    "title": "LASTE — Trial of Thrombectomy for Stroke with a Large Infarct of Unrestricted Size.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38718358/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-respect-pfo",
+    "topicIds": [
+      "pfo"
+    ],
+    "title": "RESPECT — Long-Term Outcomes of Patent Foramen Ovale Closure or Medical Therapy after Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28902590/",
+    "year": 2017,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-close",
+    "topicIds": [
+      "pfo"
+    ],
+    "title": "CLOSE — Patent Foramen Ovale Closure or Anticoagulation vs. Antiplatelets after Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28902593/",
+    "year": 2017,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-reduce",
+    "topicIds": [
+      "pfo"
+    ],
+    "title": "REDUCE — Patent Foramen Ovale Closure or Antiplatelet Therapy for Cryptogenic Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28902580/",
+    "year": 2017,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-interact2",
+    "topicIds": [
+      "ich-management",
+      "acute-bp"
+    ],
+    "title": "INTERACT2 — Rapid blood-pressure lowering in patients with acute intracerebral hemorrhage.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23713578/",
+    "year": 2013,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-atach-2",
+    "topicIds": [
+      "ich-management",
+      "acute-bp"
+    ],
+    "title": "ATACH-2 — Intensive Blood-Pressure Lowering in Patients with Acute Cerebral Hemorrhage.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27276234/",
+    "year": 2016,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-mistie-iii",
+    "topicIds": [
+      "ich-surgery"
+    ],
+    "title": "MISTIE III — Efficacy and safety of minimally invasive surgery with thrombolysis in intracerebral haemorrhage evacuation (MISTIE III): a randomised, controlled, open-label, blinded endpoint phase 3 trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/30739747/",
+    "year": 2019,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-crest",
+    "topicIds": [
+      "carotid"
+    ],
+    "title": "CREST — Stenting versus endarterectomy for treatment of carotid-artery stenosis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/20505173/",
+    "year": 2010,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 2 correction or notice records; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-oceanic-stroke",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "OCEANIC-STROKE — Asundexian for Secondary Stroke Prevention.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41985132/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-trident",
+    "topicIds": [
+      "ich-management",
+      "bp-prevention"
+    ],
+    "title": "TRIDENT — Three Low-Dose Antihypertensive Agents in a Single Pill after Intracerebral Hemorrhage.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42019018/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-atlas",
+    "topicIds": [
+      "large-core-evt",
+      "acute-reperfusion"
+    ],
+    "title": "ATLAS — Endovascular thrombectomy for patients with large-core ischaemic stroke presenting up to 24 h after onset (ATLAS): a systematic review and individual patient data meta-analysis with central imaging adjudication.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42107392/",
+    "year": 2026,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-tapis",
+    "topicIds": [
+      "minor-stroke-antiplatelets",
+      "secondary-prevention"
+    ],
+    "title": "TAPIS — Ticagrelor with aspirin dual antiplatelet therapy combined with intravenous thrombolysis in patients with ischaemic stroke in China (TAPIS): a multicentre, double-blind, randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42114550/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-choice-2",
+    "topicIds": [
+      "neurointerventional-care",
+      "research-adjuncts"
+    ],
+    "title": "CHOICE-2 — Adjunctive Intra-Arterial Alteplase After Successful Thrombectomy for Acute Ischemic Stroke: The CHOICE-2 Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42096239/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-distal",
+    "topicIds": [
+      "medium-distal-evt"
+    ],
+    "title": "DISTAL — Endovascular Treatment for Stroke Due to Occlusion of Medium or Distal Vessels.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39908430/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-escape-mevo",
+    "topicIds": [
+      "medium-distal-evt"
+    ],
+    "title": "ESCAPE-MeVO — Endovascular Treatment of Stroke Due to Medium-Vessel Occlusion.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39908448/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-oriental-mevo",
+    "topicIds": [
+      "medium-distal-evt"
+    ],
+    "title": "ORIENTAL-MeVO — Endovascular Treatment of Medium-Vessel-Occlusion Strokes.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42127389/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-direct-angio",
+    "topicIds": [
+      "acute-reperfusion",
+      "stroke-program-quality"
+    ],
+    "title": "DIRECT ANGIO — Safety and efficacy of direct versus conventional transfer to angiography suite in patients with severe acute stroke treated with thrombectomy (DIRECT ANGIO) in France: a multicentre, open-label, blinded-endpoint, randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41864232/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-stabled",
+    "topicIds": [
+      "af-timing"
+    ],
+    "title": "STABLED — Catheter Ablation and Oral Anticoagulation for Secondary Stroke Prevention in Atrial Fibrillation: The STABLED Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41770549/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-suicide-after-stroke",
+    "topicIds": [
+      "psychosocial-recovery"
+    ],
+    "title": "Suicide after stroke — Increased risk of suicide after stroke: A population-based matched cohort study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40913243/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-hyponatremia-ich",
+    "topicIds": [
+      "ich-management",
+      "inpatient-medical-complications"
+    ],
+    "title": "Hyponatremia & ICH — Severity-Stratified Hyponatremia Is Associated with Increased Mortality and Complications in Nontraumatic Intracerebral Hemorrhage.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42194925/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-tnk-vs-alteplase-rwe",
+    "topicIds": [
+      "thrombolytic-choice"
+    ],
+    "title": "TNK vs alteplase · RWE — Real-world efficacy and safety of Tenecteplase versus Alteplase in acute ischemic stroke: a propensity score-matched analysis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42206304/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Historical outcome summary remains withheld because its source interpretation is unresolved."
+  },
+  {
+    "id": "study-source-bridge-tnk",
+    "topicIds": [
+      "evt-selection"
+    ],
+    "title": "BRIDGE-TNK — Intravenous Tenecteplase before Thrombectomy in Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40396577/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-hope-2025",
+    "topicIds": [
+      "extended-window-ivt"
+    ],
+    "title": "HOPE — Alteplase for Acute Ischemic Stroke at 4.5 to 24 Hours: The HOPE Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40773205/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-expects-2025",
+    "topicIds": [
+      "extended-window-ivt"
+    ],
+    "title": "EXPECTS — Alteplase for Posterior Circulation Ischemic Stroke at 4.5 to 24 Hours.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40174223/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-mind-2025",
+    "topicIds": [
+      "ich-surgery"
+    ],
+    "title": "MIND — Minimally Invasive Surgery vs Medical Management Alone for Intracerebral Hemorrhage: The MIND Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40892424/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-chablis-t2",
+    "topicIds": [
+      "extended-window-ivt"
+    ],
+    "title": "CHABLIS-T II — Tenecteplase Thrombolysis for Stroke up to 24 Hours After Onset With Perfusion Imaging Selection: The CHABLIS-T II Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39744861/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-tempo-2",
+    "topicIds": [
+      "minor-stroke-antiplatelets",
+      "acute-reperfusion"
+    ],
+    "title": "TEMPO-2 — Tenecteplase versus standard of care for minor ischaemic stroke with proven occlusion (TEMPO-2): a randomised, open label, phase 3 superiority trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38768626/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-prestige-af",
+    "topicIds": [
+      "ich-management",
+      "af-prevention"
+    ],
+    "title": "PRESTIGE-AF — Direct oral anticoagulants versus no anticoagulation for the prevention of stroke in survivors of intracerebral haemorrhage with atrial fibrillation (PRESTIGE-AF): a multicentre, open-label, randomised, phase 3 trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40023176/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 2 correction or notice records; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-enrich-af",
+    "topicIds": [
+      "ich-management",
+      "af-prevention"
+    ],
+    "title": "ENRICH-AF — Anticoagulation in patients with cerebral amyloid angiopathy.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37839419/",
+    "year": 2023,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Historical outcome summary remains withheld because its source interpretation is unresolved."
+  },
+  {
+    "id": "study-source-sostart",
+    "topicIds": [
+      "ich-management",
+      "af-prevention"
+    ],
+    "title": "SoSTART — Effects of oral anticoagulation for atrial fibrillation after spontaneous intracranial haemorrhage in the UK: a randomised, open-label, assessor-masked, pilot-phase, non-inferiority trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34487722/",
+    "year": 2021,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-apache-af",
+    "topicIds": [
+      "ich-management",
+      "af-prevention"
+    ],
+    "title": "APACHE-AF — Apixaban versus no anticoagulation after anticoagulation-associated intracerebral haemorrhage in patients with atrial fibrillation in the Netherlands (APACHE-AF): a randomised, open-label, phase 2 trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34687635/",
+    "year": 2021,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-cocroach",
+    "topicIds": [
+      "ich-management",
+      "af-prevention"
+    ],
+    "title": "COCROACH — Effects of oral anticoagulation in people with atrial fibrillation after spontaneous intracranial haemorrhage (COCROACH): prospective, individual participant data meta-analysis of randomised trials.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37839434/",
+    "year": 2023,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-switch",
+    "topicIds": [
+      "ich-surgery"
+    ],
+    "title": "SWITCH — Decompressive craniectomy plus best medical treatment versus best medical treatment alone for spontaneous severe deep supratentorial intracerebral haemorrhage: a randomised controlled clinical trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38761811/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 2 correction or notice records; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-optimal-bp",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "OPTIMAL-BP — Intensive vs Conventional Blood Pressure Lowering After Endovascular Thrombectomy in Acute Ischemic Stroke: The OPTIMAL-BP Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37668619/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-interact4",
+    "topicIds": [
+      "rural-telestroke",
+      "acute-bp"
+    ],
+    "title": "INTERACT4 — Intensive Ambulance-Delivered Blood-Pressure Reduction in Hyperacute Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38752650/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-tich-2",
+    "topicIds": [
+      "ich-expansion-ivh"
+    ],
+    "title": "TICH-2 — Tranexamic acid for hyperacute primary IntraCerebral Haemorrhage (TICH-2): an international randomised, placebo-controlled, phase 3 superiority trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29778325/",
+    "year": 2018,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-clear-3",
+    "topicIds": [
+      "ich-expansion-ivh"
+    ],
+    "title": "CLEAR III — Thrombolytic removal of intraventricular haemorrhage in treatment of severe stroke: results of the randomised, multicentre, multiregion, placebo-controlled CLEAR III trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28081952/",
+    "year": 2017,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-stich",
+    "topicIds": [
+      "ich-surgery"
+    ],
+    "title": "STICH — Early surgery versus initial conservative treatment in patients with spontaneous supratentorial intracerebral haematomas in the International Surgical Trial in Intracerebral Haemorrhage (STICH): a randomised trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/15680453/",
+    "year": 2005,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-stich-2",
+    "topicIds": [
+      "ich-surgery"
+    ],
+    "title": "STICH II — Early surgery versus initial conservative treatment in patients with spontaneous supratentorial lobar intracerebral haematomas (STICH II): a randomised trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23726393/",
+    "year": 2013,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 2 correction or notice records; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-sahara",
+    "topicIds": [
+      "sah-critical-care"
+    ],
+    "title": "SAHaRA — Liberal or Restrictive Transfusion Strategy in Aneurysmal Subarachnoid Hemorrhage.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39655786/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ultra-sah",
+    "topicIds": [
+      "sah-critical-care"
+    ],
+    "title": "ULTRA — Ultra-early tranexamic acid after subarachnoid haemorrhage (ULTRA): a randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/33357465/",
+    "year": 2021,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-earlydrain",
+    "topicIds": [
+      "sah-critical-care"
+    ],
+    "title": "EARLYDRAIN — Effectiveness of Lumbar Cerebrospinal Fluid Drain Among Patients With Aneurysmal Subarachnoid Hemorrhage: A Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37330974/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-isat-18yr",
+    "topicIds": [
+      "sah"
+    ],
+    "title": "ISAT (18-year) — The durability of endovascular coiling versus neurosurgical clipping of ruptured cerebral aneurysms: 18 year follow-up of the UK cohort of the International Subarachnoid Aneurysm Trial (ISAT).",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/25465111/",
+    "year": 2015,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results. Long-term follow-up of a randomized trial cohort."
+  },
+  {
+    "id": "study-source-phases",
+    "topicIds": [
+      "unruptured-aneurysms"
+    ],
+    "title": "PHASES — Development of the PHASES score for prediction of risk of rupture of intracranial aneurysms: a pooled analysis of six prospective cohort studies.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/24290159/",
+    "year": 2014,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-raise",
+    "topicIds": [
+      "thrombolytic-choice"
+    ],
+    "title": "RAISE — Reteplase versus Alteplase for Acute Ischemic Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38884332/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-aramis",
+    "topicIds": [
+      "minor-stroke-antiplatelets",
+      "acute-reperfusion"
+    ],
+    "title": "ARAMIS — Dual Antiplatelet Therapy vs Alteplase for Patients With Minor Nondisabling Acute Ischemic Stroke: The ARAMIS Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37367978/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-taste",
+    "topicIds": [
+      "thrombolytic-choice"
+    ],
+    "title": "TASTE — Tenecteplase versus alteplase for thrombolysis in patients selected by use of perfusion imaging within 4·5 h of onset of ischaemic stroke (TASTE): a multicentre, randomised, controlled, phase 3 non-inferiority trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38880118/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-best-msu",
+    "topicIds": [
+      "rural-telestroke"
+    ],
+    "title": "BEST-MSU — Prospective, Multicenter, Controlled Trial of Mobile Stroke Units.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34496173/",
+    "year": 2021,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-racecat",
+    "topicIds": [
+      "rural-telestroke"
+    ],
+    "title": "RACECAT — Effect of Direct Transportation to Thrombectomy-Capable Center vs Local Stroke Center on Neurological Outcomes in Patients With Suspected Large-Vessel Occlusion Stroke in Nonurban Areas: The RACECAT Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35510397/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-mr-clean-late",
+    "topicIds": [
+      "evt-selection"
+    ],
+    "title": "MR CLEAN-LATE — Endovascular treatment versus no endovascular treatment after 6-24 h in patients with ischaemic stroke and collateral flow on CT angiography (MR CLEAN-LATE) in the Netherlands: a multicentre, open-label, blinded-endpoint, randomised, controlled, phase 3 trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37003289/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-angel-reboot",
+    "topicIds": [
+      "neurointerventional-care"
+    ],
+    "title": "ANGEL-REBOOT — Bailout intracranial angioplasty or stenting following thrombectomy for acute large vessel occlusion in China (ANGEL-REBOOT): a multicentre, open-label, blinded-endpoint, randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38914085/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-protect-mt",
+    "topicIds": [
+      "neurointerventional-care"
+    ],
+    "title": "PROTECT-MT — Balloon guide catheters for endovascular thrombectomy in patients with acute ischaemic stroke due to large-vessel occlusion in China (PROTECT-MT): a multicentre, open-label, blinded-endpoint, randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39579782/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-sps3",
+    "topicIds": [
+      "lacunar-small-vessel"
+    ],
+    "title": "SPS3 — Effects of clopidogrel added to aspirin in patients with recent lacunar stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/22931315/",
+    "year": 2012,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-match",
+    "topicIds": [
+      "secondary-prevention"
+    ],
+    "title": "MATCH — Aspirin and clopidogrel compared with clopidogrel alone after recent ischaemic stroke or transient ischaemic attack in high-risk patients (MATCH): randomised, double-blind, placebo-controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/15276392/",
+    "year": 2004,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-restart",
+    "topicIds": [
+      "ich-management",
+      "secondary-prevention"
+    ],
+    "title": "RESTART — Effects of antiplatelet therapy after stroke due to intracerebral haemorrhage (RESTART): a randomised, open-label trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31128924/",
+    "year": 2019,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-laaos-3",
+    "topicIds": [
+      "af-prevention"
+    ],
+    "title": "LAAOS III — Left Atrial Appendage Occlusion during Cardiac Surgery to Prevent Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/33999547/",
+    "year": 2021,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-noah-afnet6",
+    "topicIds": [
+      "af-prevention"
+    ],
+    "title": "NOAH-AFNET 6 — Anticoagulation with Edoxaban in Patients with Atrial High-Rate Episodes.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37622677/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-invictus",
+    "topicIds": [
+      "af-prevention",
+      "cardiac-sources"
+    ],
+    "title": "INVICTUS — Rivaroxaban in Rheumatic Heart Disease-Associated Atrial Fibrillation.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36036525/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-convince",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "CONVINCE — Long-term colchicine for the prevention of vascular recurrent events in non-cardioembolic stroke (CONVINCE): a randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38857611/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-chance-3",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "CHANCE-3 — Colchicine in patients with acute ischaemic stroke or transient ischaemic attack (CHANCE-3): multicentre, double blind, randomised, placebo controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38925803/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-rescue-bt2",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "RESCUE BT2 — Tirofiban for Stroke without Large or Medium-Sized Vessel Occlusion.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37256974/",
+    "year": 2023,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-option-laao",
+    "topicIds": [
+      "af-prevention"
+    ],
+    "title": "OPTION — Left Atrial Appendage Closure after Ablation for Atrial Fibrillation.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39555822/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-loop-study",
+    "topicIds": [
+      "af-prevention"
+    ],
+    "title": "LOOP — Implantable loop recorder detection of atrial fibrillation to prevent stroke (The LOOP Study): a randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34469766/",
+    "year": 2021,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-oceanic-af",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "OCEANIC-AF — Asundexian versus Apixaban in Patients with Atrial Fibrillation.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39225267/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-crest-2",
+    "topicIds": [
+      "carotid"
+    ],
+    "title": "CREST-2 — Medical Management and Revascularization for Asymptomatic Carotid Stenosis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41269206/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ecst-2",
+    "topicIds": [
+      "carotid"
+    ],
+    "title": "ECST-2 — Optimised medical therapy alone versus optimised medical therapy plus revascularisation for asymptomatic or low-to-intermediate risk symptomatic carotid stenosis (ECST-2): 2-year interim results of a multicentre randomised trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40252662/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-cassiss",
+    "topicIds": [
+      "sicas"
+    ],
+    "title": "CASSISS — Effect of Stenting Plus Medical Therapy vs Medical Therapy Alone on Risk of Stroke and Death in Patients With Symptomatic Intracranial Stenosis: The CASSISS Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35943472/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-cmoss",
+    "topicIds": [
+      "secondary-prevention"
+    ],
+    "title": "CMOSS — Extracranial-Intracranial Bypass and Risk of Stroke and Death in Patients With Symptomatic Artery Occlusion: The CMOSS Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37606672/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. This report concerns bypass for symptomatic artery occlusion, not intracranial stenting."
+  },
+  {
+    "id": "study-source-esprit-bp",
+    "topicIds": [
+      "bp-prevention"
+    ],
+    "title": "ESPRIT (BP) — Lowering systolic blood pressure to less than 120 mm Hg versus less than 140 mm Hg in patients with high cardiovascular risk with and without diabetes or previous stroke: an open-label, blinded-outcome, randomised trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38945140/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-bproad",
+    "topicIds": [
+      "bp-prevention"
+    ],
+    "title": "BPROAD — Intensive Blood-Pressure Control in Patients with Type 2 Diabetes.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39555827/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-clear-synergy-colchicine",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "CLEAR SYNERGY (colchicine) — Colchicine in Acute Myocardial Infarction.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39555823/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-charm",
+    "topicIds": [
+      "malignant-edema"
+    ],
+    "title": "CHARM — Intravenous glibenclamide for cerebral oedema after large hemispheric stroke (CHARM): a phase 3, double-blind, placebo-controlled, randomised trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39577921/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-intrepid",
+    "topicIds": [
+      "inpatient-medical-complications"
+    ],
+    "title": "INTREPID — Fever Prevention in Patients With Acute Vascular Brain Injury: The INTREPID Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39320879/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-setpoint2",
+    "topicIds": [
+      "inpatient-medical-complications"
+    ],
+    "title": "SETPOINT2 — Effect of Early vs Standard Approach to Tracheostomy on Functional Outcome at 6 Months Among Patients With Severe Stroke Receiving Mechanical Ventilation: The SETPOINT2 Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35506515/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-vns-rehab",
+    "topicIds": [
+      "motor-recovery"
+    ],
+    "title": "VNS-REHAB — Vagus nerve stimulation paired with rehabilitation for upper limb motor function after ischaemic stroke (VNS-REHAB): a randomised, blinded, pivotal, device trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/33894832/",
+    "year": 2021,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-to-act",
+    "topicIds": [
+      "cvt"
+    ],
+    "title": "TO-ACT — Effect of Endovascular Treatment With Medical Management vs Standard Care on Severe Cerebral Venous Thrombosis: The TO-ACT Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32421159/",
+    "year": 2020,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-mr-clean",
+    "topicIds": [
+      "evt-selection",
+      "acute-reperfusion"
+    ],
+    "title": "MR CLEAN — A randomized trial of intraarterial treatment for acute ischemic stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/25517348/",
+    "year": 2015,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-escape",
+    "topicIds": [
+      "evt-selection",
+      "acute-reperfusion"
+    ],
+    "title": "ESCAPE — Randomized assessment of rapid endovascular treatment of ischemic stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/25671798/",
+    "year": 2015,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-extend-ia",
+    "topicIds": [
+      "evt-selection",
+      "acute-reperfusion"
+    ],
+    "title": "EXTEND-IA — Endovascular therapy for ischemic stroke with perfusion-imaging selection.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/25671797/",
+    "year": 2015,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-swift-prime",
+    "topicIds": [
+      "evt-selection",
+      "acute-reperfusion"
+    ],
+    "title": "SWIFT PRIME — Stent-retriever thrombectomy after intravenous t-PA vs. t-PA alone in stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/25882376/",
+    "year": 2015,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-revascat",
+    "topicIds": [
+      "evt-selection",
+      "acute-reperfusion"
+    ],
+    "title": "REVASCAT — Thrombectomy within 8 hours after symptom onset in ischemic stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/25882510/",
+    "year": 2015,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-hermes",
+    "topicIds": [
+      "evt-selection",
+      "acute-reperfusion"
+    ],
+    "title": "HERMES — Endovascular thrombectomy after large-vessel ischaemic stroke: a meta-analysis of individual patient data from five randomised trials.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/26898852/",
+    "year": 2016,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-sammpris",
+    "topicIds": [
+      "sicas"
+    ],
+    "title": "SAMMPRIS — Stenting versus aggressive medical therapy for intracranial arterial stenosis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/21899409/",
+    "year": 2011,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-tesla",
+    "topicIds": [
+      "large-core-evt",
+      "acute-reperfusion"
+    ],
+    "title": "TESLA — Thrombectomy for Stroke With Large Infarct on Noncontrast CT: The TESLA Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39374319/",
+    "year": 2024,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-fastest",
+    "topicIds": [
+      "ich-expansion-ivh"
+    ],
+    "title": "FASTEST — Recombinant factor VIIa versus placebo for spontaneous intracerebral haemorrhage within 2 h of symptom onset (FASTEST): a multicentre, double-blind, randomised, placebo-controlled, phase 3 trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41653933/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-decimal",
+    "topicIds": [
+      "malignant-edema"
+    ],
+    "title": "DECIMAL — Sequential-design, multicenter, randomized, controlled trial of early decompressive craniectomy in malignant middle cerebral artery infarction (DECIMAL Trial).",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/17690311/",
+    "year": 2007,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-destiny",
+    "topicIds": [
+      "malignant-edema"
+    ],
+    "title": "DESTINY — Decompressive Surgery for the Treatment of Malignant Infarction of the Middle Cerebral Artery (DESTINY): a randomized, controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/17690310/",
+    "year": 2007,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-hamlet",
+    "topicIds": [
+      "malignant-edema"
+    ],
+    "title": "HAMLET — Surgical decompression for space-occupying cerebral infarction (the Hemicraniectomy After Middle Cerebral Artery infarction with Life-threatening Edema Trial [HAMLET]): a multicentre, open, randomised trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/19269254/",
+    "year": 2009,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-destiny-2",
+    "topicIds": [
+      "malignant-edema"
+    ],
+    "title": "DESTINY II — Hemicraniectomy in older patients with extensive middle-cerebral-artery stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/24645942/",
+    "year": 2014,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-annexa-4",
+    "topicIds": [
+      "antithrombotic-reversal",
+      "ich-management"
+    ],
+    "title": "ANNEXA-4 — Full Study Report of Andexanet Alfa for Bleeding Associated with Factor Xa Inhibitors.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/30730782/",
+    "year": 2019,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-action-cvt",
+    "topicIds": [
+      "cvt"
+    ],
+    "title": "ACTION-CVT — Direct Oral Anticoagulants Versus Warfarin in the Treatment of Cerebral Venous Thrombosis (ACTION-CVT): A Multicenter International Study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35143325/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-basics",
+    "topicIds": [
+      "basilar-occlusion"
+    ],
+    "title": "BASICS — Endovascular Therapy for Stroke Due to Basilar-Artery Occlusion.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34010530/",
+    "year": 2021,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-axiomatic-ssp",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "AXIOMATIC-SSP — Safety and efficacy of factor XIa inhibition with milvexian for secondary stroke prevention (AXIOMATIC-SSP): a phase 2, international, randomised, double-blind, placebo-controlled, dose-finding trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38101902/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-pearl",
+    "topicIds": [
+      "neurointerventional-care",
+      "research-adjuncts"
+    ],
+    "title": "PEARL — Intra-Arterial Alteplase After Successful Endovascular Reperfusion in Acute Stroke: The PEARL Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42262770/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-angel-tnk",
+    "topicIds": [
+      "neurointerventional-care",
+      "research-adjuncts"
+    ],
+    "title": "ANGEL-TNK — Intra-arterial Tenecteplase for Acute Stroke After Successful Endovascular Therapy: The ANGEL-TNK Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40616323/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-iat-top",
+    "topicIds": [
+      "neurointerventional-care",
+      "research-adjuncts"
+    ],
+    "title": "IAT-TOP — Intra-arterial Alteplase Thrombolysis After Successful Thrombectomy for AIS in the Posterior Circulation: The IAT-TOP Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42026933/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ia-tenecteplase-dose-escalation",
+    "topicIds": [
+      "neurointerventional-care",
+      "research-adjuncts"
+    ],
+    "title": "DATE (IA tenecteplase dose-escalation) — Intra-Arterial Tenecteplase After Successful Reperfusion in Large Vessel Occlusion Stroke: A Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40616333/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ia-thrombolysis-dose-network-meta-analysis",
+    "topicIds": [
+      "neurointerventional-care",
+      "research-adjuncts"
+    ],
+    "title": "IA Thrombolysis Dose Network Meta-analysis — Dose-Specific Intra-Arterial Thrombolysis After Endovascular Thrombectomy for Large-Vessel Occlusion Stroke: A Network Meta-Analysis of Randomized Trials.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42088338/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-attraction",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "ATTRACTION — Efficacy and safety of tirofiban after successful endovascular reperfusion in acute ischaemic stroke (ATTRACTION) in China: a multicentre, double-blind, randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42341797/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-rescue-bt",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "RESCUE BT — Effect of Intravenous Tirofiban vs Placebo Before Endovascular Thrombectomy on Functional Outcomes in Large Vessel Occlusion Stroke: The RESCUE BT Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35943471/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-most",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "MOST — Adjunctive Intravenous Argatroban or Eptifibatide for Ischemic Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39231343/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-qasc",
+    "topicIds": [
+      "stroke-unit-nursing"
+    ],
+    "title": "QASC — Implementation of evidence-based treatment protocols to manage fever, hyperglycaemia, and swallowing dysfunction in acute stroke (QASC): a cluster randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/21996470/",
+    "year": 2011,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-clots-3",
+    "topicIds": [
+      "vte-prevention"
+    ],
+    "title": "CLOTS 3 — Effectiveness of intermittent pneumatic compression in reduction of risk of deep vein thrombosis in patients who have had a stroke (CLOTS 3): a multicentre randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23727163/",
+    "year": 2013,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 2 correction or notice records; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-clots-1",
+    "topicIds": [
+      "vte-prevention"
+    ],
+    "title": "CLOTS 1 — Effectiveness of thigh-length graduated compression stockings to reduce the risk of deep vein thrombosis after stroke (CLOTS trial 1): a multicentre, randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/19477503/",
+    "year": 2009,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-prevail",
+    "topicIds": [
+      "vte-prevention"
+    ],
+    "title": "PREVAIL — The efficacy and safety of enoxaparin versus unfractionated heparin for the prevention of venous thromboembolism after acute ischaemic stroke (PREVAIL Study): an open-label randomised comparison.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/17448820/",
+    "year": 2007,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-food-tube-feeding",
+    "topicIds": [
+      "poststroke-dysphagia"
+    ],
+    "title": "FOOD (Trials 2 and 3) — Effect of timing and method of enteral tube feeding for dysphagic stroke patients (FOOD): a multicentre randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/15733717/",
+    "year": 2005,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-so2s",
+    "topicIds": [
+      "inpatient-care"
+    ],
+    "title": "SO2S — Effect of Routine Low-Dose Oxygen Supplementation on Death and Disability in Adults With Acute Stroke: The Stroke Oxygen Study Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28973619/",
+    "year": 2017,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-headpost",
+    "topicIds": [
+      "inpatient-care",
+      "stroke-unit-nursing"
+    ],
+    "title": "HeadPoST — Cluster-Randomized, Crossover Trial of Head Positioning in Acute Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28636854/",
+    "year": 2017,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-pass-preventive-antibiotics",
+    "topicIds": [
+      "stroke-pneumonia"
+    ],
+    "title": "PASS — The Preventive Antibiotics in Stroke Study (PASS): a pragmatic randomised open-label masked endpoint clinical trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/25612858/",
+    "year": 2015,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-shine-glucose",
+    "topicIds": [
+      "stroke-unit-nursing",
+      "inpatient-care"
+    ],
+    "title": "SHINE — Intensive vs Standard Treatment of Hyperglycemia and Functional Outcome in Patients With Acute Ischemic Stroke: The SHINE Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31334795/",
+    "year": 2019,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-avert-dose-response",
+    "topicIds": [
+      "inpatient-care",
+      "motor-recovery"
+    ],
+    "title": "AVERT dose-response — Prespecified dose-response analysis for A Very Early Rehabilitation Trial (AVERT).",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/26888985/",
+    "year": 2016,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-dido-gwtg-transfer-2023",
+    "topicIds": [
+      "stroke-program-quality",
+      "rural-telestroke"
+    ],
+    "title": "GWTG-Stroke door-in-door-out — Door-in-Door-out Times for Interhospital Transfer of Patients With Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37581671/",
+    "year": 2023,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-target-stroke-phase-3-strategies",
+    "topicIds": [
+      "stroke-program-quality",
+      "rural-telestroke"
+    ],
+    "title": "Target Stroke Phase III — Association of Component Strategies of the Target Stroke Phase 3 Nationwide Quality Improvement Program With Accelerated Door-to-Puncture and Door-In-Door-Out Times for Ischemic Stroke Endovascular Thrombectomy in the United States.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41111412/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ai-lvo-detection-accuracy-meta",
+    "topicIds": [
+      "stroke-program-quality",
+      "rural-telestroke"
+    ],
+    "title": "AI LVO-detection accuracy meta-analysis — Diagnostic Test Accuracy of Artificial Intelligence in Large Vessel Occlusion: A Systematic Review and Meta-Analysis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42028301/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-catis",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "CATIS — Effects of immediate blood pressure reduction on death and major disability in patients with acute ischemic stroke: the CATIS randomized clinical trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/24240777/",
+    "year": 2014,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-catis-2",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "CATIS-2 — Early versus delayed antihypertensive treatment in patients with acute ischaemic stroke: multicentre, open label, randomised, controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37813418/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-enos",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "ENOS — Efficacy of nitric oxide, with or without continuing antihypertensive treatment, for management of high blood pressure in acute stroke (ENOS): a partial-factorial randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/25465108/",
+    "year": 2015,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-cossacs",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "COSSACS — Effects of antihypertensive treatment after acute stroke in the Continue or Stop Post-Stroke Antihypertensives Collaborative Study (COSSACS): a prospective, randomised, open, blinded-endpoint trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/20621562/",
+    "year": 2010,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-scast",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "SCAST — The angiotensin-receptor blocker candesartan for treatment of acute stroke (SCAST): a randomised, placebo-controlled, double-blind trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/21316752/",
+    "year": 2011,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-chase",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "CHASE — Controlling Hypertension After Severe Cerebrovascular Event (CHASE): A randomized, multicenter, controlled study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32525464/",
+    "year": 2021,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-early-antihypertensive-ais-meta-2026",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "Early AHT in AIS meta-analysis — Early antihypertensive therapy in acute ischemic stroke: A Meta-analysis of randomized controlled trials.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42546365/",
+    "year": 2026,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-bp-target",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "BP-TARGET — Safety and efficacy of intensive blood pressure lowering after successful endovascular therapy in acute ischaemic stroke (BP-TARGET): a multicentre, open-label, randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/33647246/",
+    "year": 2021,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-best-ii",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "BEST-II — Blood Pressure Management After Endovascular Therapy for Acute Ischemic Stroke: The BEST-II Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37668620/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-identify-post-evt-bp",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "IDENTIFY — Early intensive blood pressure management after endovascular treatment in ischaemic stroke (IDENTIFY): a multicentre, open-label, blinded-endpoint, randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40538518/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-optimal-bp-1-year",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "OPTIMAL-BP 1-year — Intensive Versus Conventional Blood Pressure Lowering After Successful Endovascular Thrombectomy: OPTIMAL-BP 1-Year Outcomes.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42212393/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Follow-up report of the original randomized population."
+  },
+  {
+    "id": "study-source-cochrane-bp-reperfused-2026",
+    "topicIds": [
+      "acute-bp"
+    ],
+    "title": "Cochrane review: BP after reperfusion — Blood pressure management in reperfused ischemic stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42445947/",
+    "year": 2026,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-iris-ipd-meta-analysis",
+    "topicIds": [
+      "evt-selection"
+    ],
+    "title": "IRIS IPD meta-analysis — Value of intravenous thrombolysis in endovascular treatment for large-vessel anterior circulation stroke: individual participant data meta-analysis of six randomised trials.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37640037/",
+    "year": 2023,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-iris-time-dependency",
+    "topicIds": [
+      "evt-selection"
+    ],
+    "title": "IRIS time-dependency analysis — Time to Treatment With Intravenous Thrombolysis Before Thrombectomy and Functional Outcomes in Acute Ischemic Stroke: A Meta-Analysis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38324409/",
+    "year": 2024,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-direct-mt",
+    "topicIds": [
+      "evt-selection"
+    ],
+    "title": "DIRECT-MT — Endovascular Thrombectomy with or without Intravenous Alteplase in Acute Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32374959/",
+    "year": 2020,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-skip-trial",
+    "topicIds": [
+      "evt-selection"
+    ],
+    "title": "SKIP — Effect of Mechanical Thrombectomy Without vs With Intravenous Thrombolysis on Functional Outcome Among Patients With Acute Ischemic Stroke: The SKIP Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/33464334/",
+    "year": 2021,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-devt",
+    "topicIds": [
+      "evt-selection"
+    ],
+    "title": "DEVT — Effect of Endovascular Treatment Alone vs Intravenous Alteplase Plus Endovascular Treatment on Functional Independence in Patients With Acute Ischemic Stroke: The DEVT Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/33464335/",
+    "year": 2021,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-mr-clean-no-iv",
+    "topicIds": [
+      "evt-selection"
+    ],
+    "title": "MR CLEAN-NO IV — A Randomized Trial of Intravenous Alteplase before Endovascular Treatment for Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34758251/",
+    "year": 2021,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-swift-direct",
+    "topicIds": [
+      "evt-selection"
+    ],
+    "title": "SWIFT DIRECT — Thrombectomy alone versus intravenous alteplase plus thrombectomy in patients with stroke: an open-label, blinded-outcome, randomised non-inferiority trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35810756/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-direct-safe",
+    "topicIds": [
+      "evt-selection"
+    ],
+    "title": "DIRECT-SAFE — Endovascular thrombectomy versus standard bridging thrombolytic with endovascular thrombectomy within 4·5 h of stroke onset: an open-label, blinded-endpoint, randomised non-inferiority trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35810757/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-tnk-plus",
+    "topicIds": [
+      "evt-selection",
+      "extended-window-ivt"
+    ],
+    "title": "TNK-PLUS — Intravenous Tenecteplase Prior to Endovascular Treatment for Ischemic Stroke at 4.5 to 24 Hours: The TNK-PLUS Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42099212/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-re-align",
+    "topicIds": [
+      "cardiac-sources"
+    ],
+    "title": "RE-ALIGN — Dabigatran versus warfarin in patients with mechanical heart valves.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23991661/",
+    "year": 2013,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-proact-xa",
+    "topicIds": [
+      "cardiac-sources"
+    ],
+    "title": "PROACT Xa — Apixaban or Warfarin in Patients with an On-X Mechanical Aortic Valve.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38320162/",
+    "year": 2023,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-bhf-protect-tavi",
+    "topicIds": [
+      "cardiac-sources"
+    ],
+    "title": "BHF PROTECT-TAVI — Routine Cerebral Embolic Protection during Transcatheter Aortic-Valve Implantation.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40162661/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-protected-tavr",
+    "topicIds": [
+      "cardiac-sources"
+    ],
+    "title": "PROTECTED TAVR — Cerebral Embolic Protection during Transcatheter Aortic-Valve Replacement.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36121045/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-warfarin-resumption-ich-mechanical-valve",
+    "topicIds": [
+      "cardiac-sources"
+    ],
+    "title": "Warfarin resumption after ICH with a mechanical valve (meta-analysis) — Resumption of Warfarin After Intracranial Hemorrhage in Patients With Mechanical Heart Valves: A Systematic Review and Meta-Analysis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41823243/",
+    "year": 2026,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-lv-thrombus-doac-rct-meta",
+    "topicIds": [
+      "cardiac-sources"
+    ],
+    "title": "DOACs vs warfarin for LV thrombus (RCT meta-analysis) — Direct oral anticoagulants or warfarin in left ventricular thrombus: an updated systematic review and meta-analysis of randomized trials.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41359218/",
+    "year": 2026,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-rivawar",
+    "topicIds": [
+      "cardiac-sources"
+    ],
+    "title": "RIVAWAR — Rivaroxaban vs Warfarin in Acute Left Ventricular Thrombus Following Myocardial Infarction: RIVAWAR, An Open-Label RCT.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40706143/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-aries-hm3",
+    "topicIds": [
+      "cardiac-sources"
+    ],
+    "title": "ARIES-HM3 — Aspirin and Hemocompatibility Events With a Left Ventricular Assist Device in Advanced Heart Failure: The ARIES-HM3 Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37950897/",
+    "year": 2023,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ecmo-lv-venting-brain-injury",
+    "topicIds": [
+      "cardiac-sources",
+      "inpatient-medical-complications"
+    ],
+    "title": "ELSO LV venting and acute brain injury — Impact of Left Ventricular Venting on Acute Brain Injury in Patients With Cardiogenic Shock: An Extracorporeal Life Support Organization Registry Analysis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41104911/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ie-baseline-antithrombotic-ich",
+    "topicIds": [
+      "endocarditis"
+    ],
+    "title": "IE baseline antithrombotic therapy and ICH — Baseline Antithrombotic Therapy and Intracranial Hemorrhage Risk in Infective Endocarditis: A Multicenter Prospective Cohort Study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41643743/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ie-lvo-thrombectomy-meta",
+    "topicIds": [
+      "endocarditis"
+    ],
+    "title": "Thrombectomy for IE-related LVO (meta-analysis) — Efficacy and Safety of Mechanical Thrombectomy for Patients with Infective Endocarditis-Related Large Vessel Occlusion: a Systematic Review and Meta-Analysis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40830541/",
+    "year": 2025,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-cooper",
+    "topicIds": [
+      "endocarditis"
+    ],
+    "title": "COOPER — Characteristics and Outcomes of Operated Versus Nonoperated Patients With Infective Endocarditis and Cerebral Complications: the COOPER Study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41864422/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ie-vs-af-stroke-imaging-phenotype",
+    "topicIds": [
+      "endocarditis"
+    ],
+    "title": "IE-associated vs AF-associated stroke imaging phenotype — Clinical and Imaging Characteristics of Infective Endocarditis-Associated Versus Atrial Fibrillation-Associated Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41168944/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-aster",
+    "topicIds": [
+      "neurointerventional-care"
+    ],
+    "title": "ASTER — Effect of Endovascular Contact Aspiration vs Stent Retriever on Revascularization in Patients With Acute Ischemic Stroke and Large Vessel Occlusion: The ASTER Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28763550/",
+    "year": 2017,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-compass-thrombectomy",
+    "topicIds": [
+      "neurointerventional-care"
+    ],
+    "title": "COMPASS (thrombectomy) — Aspiration thrombectomy versus stent retriever thrombectomy as first-line approach for large vessel occlusion (COMPASS): a multicentre, randomised, open label, blinded outcome, non-inferiority trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/30860055/",
+    "year": 2019,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-aster2",
+    "topicIds": [
+      "neurointerventional-care"
+    ],
+    "title": "ASTER2 — Effect of Thrombectomy With Combined Contact Aspiration and Stent Retriever vs Stent Retriever Alone on Revascularization in Patients With Acute Ischemic Stroke and Large Vessel Occlusion: The ASTER2 Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34581737/",
+    "year": 2021,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-vector",
+    "topicIds": [
+      "neurointerventional-care"
+    ],
+    "title": "VECTOR — Safety and efficacy of stent retrievers plus contact aspiration in patients with acute ischaemic anterior circulation stroke and positive susceptibility vessel sign in France (VECTOR): a randomised, single-blind trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38876748/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-siesta",
+    "topicIds": [
+      "neurointerventional-care"
+    ],
+    "title": "SIESTA — Effect of Conscious Sedation vs General Anesthesia on Early Neurological Improvement Among Patients With Ischemic Stroke Undergoing Endovascular Thrombectomy: A Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27785516/",
+    "year": 2016,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-goliath",
+    "topicIds": [
+      "neurointerventional-care"
+    ],
+    "title": "GOLIATH — Effect of General Anesthesia and Conscious Sedation During Endovascular Therapy on Infarct Growth and Clinical Outcomes in Acute Ischemic Stroke: A Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29340574/",
+    "year": 2018,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-anstroke",
+    "topicIds": [
+      "neurointerventional-care"
+    ],
+    "title": "AnStroke — General Anesthesia Versus Conscious Sedation for Endovascular Treatment of Acute Ischemic Stroke: The AnStroke Trial (Anesthesia During Stroke).",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/28522637/",
+    "year": 2017,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-canvas-ii",
+    "topicIds": [
+      "neurointerventional-care"
+    ],
+    "title": "CANVAS II — General Anesthesia vs Conscious Sedation for Endovascular Treatment in Patients With Posterior Circulation Acute Ischemic Stroke: An Exploratory Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/36156704/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ga-vs-nonga-bayesian-meta-2026",
+    "topicIds": [
+      "neurointerventional-care"
+    ],
+    "title": "GA vs non-GA Bayesian meta-analysis — General Anesthesia Versus Non-GA in Endovascular Therapy for Acute Ischemic Stroke: A Systematic Review and Bayesian Meta-Analysis of RCTs.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42462185/",
+    "year": 2026,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ceres-tandem",
+    "topicIds": [
+      "neurointerventional-care"
+    ],
+    "title": "CERES-TANDEM — Emergent Carotid Stenting for Acute Anterior Circulation Ischemic Stroke With Tandem Lesions: The Multicenter CERES-TANDEM Study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41453121/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-iris-tandem-stenting",
+    "topicIds": [
+      "neurointerventional-care"
+    ],
+    "title": "IRIS tandem-lesion carotid-stenting analysis — Acute Carotid Stenting for Tandem Lesions in Patients Randomized to Endovascular Treatment With or Without Thrombolysis: Results From the IRIS Individual Participant Data Meta-Analysis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41104449/",
+    "year": 2026,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-discount",
+    "topicIds": [
+      "medium-distal-evt"
+    ],
+    "title": "DISCOUNT — Mechanical Thrombectomy in Ischemic Stroke With a Medium or Distal Arterial Occlusion: The DISCOUNT Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42485024/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-veritas",
+    "topicIds": [
+      "basilar-occlusion"
+    ],
+    "title": "VERITAS — Endovascular therapy for acute vertebrobasilar occlusion (VERITAS): a systematic review and individual patient data meta-analysis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39674187/",
+    "year": 2025,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-interact-pooled",
+    "topicIds": [
+      "ich-management",
+      "acute-bp"
+    ],
+    "title": "INTERACT1-4 pooled — Effects of blood pressure lowering in relation to time in acute intracerebral haemorrhage: a pooled analysis of the four INTERACT trials.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40541207/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Pooled analysis of four randomized trials, not a new trial."
+  },
+  {
+    "id": "study-source-ich-bp-deep-vs-lobar-meta",
+    "topicIds": [
+      "ich-management",
+      "acute-bp"
+    ],
+    "title": "Deep vs lobar ICH BP meta-analysis — Functional Outcomes After Intensive Blood Pressure Reduction in Deep and Lobar Intracerebral Hemorrhage.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41962119/",
+    "year": 2026,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-andexanet-vs-4fpcc-meta",
+    "topicIds": [
+      "antithrombotic-reversal",
+      "ich-management"
+    ],
+    "title": "Andexanet vs 4F-PCC meta-analysis — Efficacy and Safety of Andexanet Alfa Versus Four Factor Prothrombin Complex Concentrate for Emergent Reversal of Factor Xa Inhibitor Associated Intracranial Hemorrhage: A Systematic Review and Meta-Analysis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39379749/",
+    "year": 2025,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-peach",
+    "topicIds": [
+      "poststroke-seizures"
+    ],
+    "title": "PEACH — Safety and efficacy of prophylactic levetiracetam for prevention of epileptic seizures in the acute phase of intracerebral haemorrhage (PEACH): a randomised, double-blind, placebo-controlled, phase 3 trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35963261/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-stop-msu",
+    "topicIds": [
+      "ich-expansion-ivh"
+    ],
+    "title": "STOP-MSU — Tranexamic acid versus placebo in individuals with intracerebral haemorrhage treated within 2 h of symptom onset (STOP-MSU): an international, double-blind, randomised, phase 2 trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38648814/",
+    "year": 2024,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-edinburgh-ct-caa-criteria",
+    "topicIds": [
+      "caa-ich-recurrence"
+    ],
+    "title": "Edinburgh CT criteria — The Edinburgh CT and genetic diagnostic criteria for lobar intracerebral haemorrhage associated with cerebral amyloid angiopathy: model development and diagnostic test accuracy study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/29331631/",
+    "year": 2018,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-edinburgh-ct-caa-recurrence-ipd",
+    "topicIds": [
+      "caa-ich-recurrence"
+    ],
+    "title": "Edinburgh criteria & ICH recurrence (IPD) — Association between the Edinburgh CT and genetic diagnostic criteria for cerebral amyloid angiopathy-associated lobar intracerebral haemorrhage and recurrent intracerebral haemorrhage: an individual patient data meta-analysis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40975099/",
+    "year": 2025,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-escape-na1",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "ESCAPE-NA1 — Efficacy and safety of nerinetide for the treatment of acute ischaemic stroke (ESCAPE-NA1): a multicentre, double-blind, randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/32087818/",
+    "year": 2020,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-escape-next",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "ESCAPE-NEXT — Efficacy and safety of nerinetide in acute ischaemic stroke in patients undergoing endovascular thrombectomy without previous thrombolysis (ESCAPE-NEXT): a multicentre, double-blind, randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39955119/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-actisave",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "ACTISAVE — Glenzocimab Efficacy and Safety Added to Intravenous Thrombolysis With or Without Mechanical Thrombectomy in Patients With Acute Ischemic Stroke-ACTISAVE: A Prospective, Randomized, Double-Blind Study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42044230/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Historical outcome summary remains withheld because its source interpretation is unresolved."
+  },
+  {
+    "id": "study-source-taste-edaravone-dexborneol",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "TASTE (edaravone dexborneol) — Edaravone Dexborneol Versus Edaravone Alone for the Treatment of Acute Ischemic Stroke: A Phase III, Randomized, Double-Blind, Comparative Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/33588596/",
+    "year": 2021,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-taste-2-edaravone",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "TASTE-2 — Edaravone dexborneol versus placebo on functional outcomes in patients with acute ischaemic stroke undergoing endovascular thrombectomy (TASTE-2): randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41500725/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-emphasis-minocycline",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "EMPHASIS — Efficacy and safety of minocycline in patients with acute ischaemic stroke (EMPHASIS): a multicentre, double-blind, randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41628627/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-mist-a",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "MIST-A — Efficacy and safety of minocycline on patients with acute anterior circulation ischaemic stroke undergoing mechanical thrombectomy (MIST-A): a multicentre, prospective, randomised, open-label, blinded-endpoint, phase 2 trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42305108/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-resist-ric",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "RESIST — Remote Ischemic Conditioning for Acute Stroke: The RESIST Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37787796/",
+    "year": 2023,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ricamis",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "RICAMIS — Effect of Remote Ischemic Conditioning vs Usual Care on Neurologic Function in Patients With Acute Moderate Ischemic Stroke: The RICAMIS Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/35972485/",
+    "year": 2022,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-seric-evt",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "SERIC-EVT — Remote ischaemic conditioning improves outcomes of ischaemic stroke treated by endovascular thrombectomy: the SERIC-EVT trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40796242/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-entrips",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "EnTRIPS — Remote Ischemic Postconditioning in Endovascular Thrombectomy for Stroke: The EnTRIPS Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42267436/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-vesalius-cv",
+    "topicIds": [
+      "lipid-management"
+    ],
+    "title": "VESALIUS-CV — Evolocumab in Patients without a Previous Myocardial Infarction or Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41211925/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ez-pave",
+    "topicIds": [
+      "lipid-management"
+    ],
+    "title": "Ez-PAVE — Intensive LDL Cholesterol Targeting in Atherosclerotic Cardiovascular Disease.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41910315/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-soul",
+    "topicIds": [
+      "primary-prevention"
+    ],
+    "title": "SOUL — Oral Semaglutide and Cardiovascular Outcomes in High-Risk Type 2 Diabetes.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40162642/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-surpass-cvot",
+    "topicIds": [
+      "primary-prevention"
+    ],
+    "title": "SURPASS-CVOT — Cardiovascular Outcomes with Tirzepatide versus Dulaglutide in Type 2 Diabetes.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41406444/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-save-cpap",
+    "topicIds": [
+      "sleep-brain-health"
+    ],
+    "title": "SAVE — CPAP for Prevention of Cardiovascular Events in Obstructive Sleep Apnea.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/27571048/",
+    "year": 2016,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-poststroke-pap-meta-2026",
+    "topicIds": [
+      "sleep-brain-health"
+    ],
+    "title": "Post-stroke PAP meta-analysis — Post-stroke sleep disordered breathing and the effect of positive airway pressure treatment: An updated systematic review and meta-analysis of randomized control trials.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41297370/",
+    "year": 2026,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-anti-inflammatory-cv-meta-2026",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "Anti-inflammatory CV meta-analysis — Effects of anti-inflammatory agents on cardiovascular outcomes: A systematic review and meta-analysis of randomised controlled trials.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42291081/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ssi-antiplatelet-nma-2025",
+    "topicIds": [
+      "lacunar-small-vessel"
+    ],
+    "title": "SSI antiplatelet network meta-analysis — Efficacy and safety of antiplatelet therapy for secondary prevention of small subcortical infarction: A systematic review and network meta-analysis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40215388/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-cadiss",
+    "topicIds": [
+      "dissection"
+    ],
+    "title": "CADISS — Antiplatelet treatment compared with anticoagulation treatment for cervical artery dissection (CADISS): a randomised trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/25684164/",
+    "year": 2015,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-treat-cad",
+    "topicIds": [
+      "dissection"
+    ],
+    "title": "TREAT-CAD — Aspirin versus anticoagulation in cervical artery dissection (TREAT-CAD): an open-label, randomised, non-inferiority trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/33765420/",
+    "year": 2021,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-cad-antithrombotic-ipd-meta",
+    "topicIds": [
+      "dissection"
+    ],
+    "title": "CAD antithrombotic IPD meta-analysis — Antithrombotic Treatment for Cervical Artery Dissection: A Systematic Review and Individual Patient Data Meta-Analysis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38739383/",
+    "year": 2024,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-stop-cad",
+    "topicIds": [
+      "dissection"
+    ],
+    "title": "STOP-CAD — Antithrombotic Treatment for Stroke Prevention in Cervical Artery Dissection: The STOP-CAD Study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/38335240/",
+    "year": 2024,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-danish-hormonal-contraception-cohort",
+    "topicIds": [
+      "sex-gender-stroke",
+      "primary-prevention"
+    ],
+    "title": "Danish Hormonal Contraception Cohort — Stroke and myocardial infarction with contemporary hormonal contraception: real-world, nationwide, prospective cohort study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39938934/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-danish-progestogen-only-contraception-stroke",
+    "topicIds": [
+      "sex-gender-stroke",
+      "primary-prevention"
+    ],
+    "title": "Danish Progestogen-Only Contraceptive Cohort — Risk of ischemic and hemorrhagic stroke in users of progestogen-only contraceptives: A Danish registry study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42624314/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-finnish-subsequent-pregnancy-after-maternal-stroke",
+    "topicIds": [
+      "maternal-stroke"
+    ],
+    "title": "Finnish Subsequent-Pregnancy Cohort — Stroke Recurrence and Pregnancy Outcomes in the Subsequent Pregnancies After Maternal Ischemic Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40970275/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-jefferson-inherited-thrombophilia-audit",
+    "topicIds": [
+      "stroke-workup"
+    ],
+    "title": "Jefferson Inherited Thrombophilia Audit — Low value of inherited thrombophilia testing among patients with stroke or transient ischemic attack: A three-year retrospective study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/37633204/",
+    "year": 2023,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-sifap",
+    "topicIds": [
+      "stroke-workup"
+    ],
+    "title": "sifap — Acute cerebrovascular disease in the young: the Stroke in Young Fabry Patients study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/23306324/",
+    "year": 2013,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-ukyss",
+    "topicIds": [
+      "stroke-workup"
+    ],
+    "title": "UKYSS — Demographics, risk factor profiles and etiologies in young ischemic and hemorrhagic stroke - the United Kingdom Young Stroke Study (UKYSS).",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42640350/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-illicit-drug-use-stroke-mr",
+    "topicIds": [
+      "stroke-workup"
+    ],
+    "title": "Illicit Drug Use and Stroke (meta-analysis + Mendelian randomization) — Does illicit drug use increase stroke risk? A systematic review, meta-analyses, and Mendelian randomization analysis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41566428/",
+    "year": 2026,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-save-childs",
+    "topicIds": [
+      "pediatric-stroke"
+    ],
+    "title": "Save ChildS — Feasibility, Safety, and Outcome of Endovascular Recanalization in Childhood Stroke: The Save ChildS Study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/31609380/",
+    "year": 2020,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-strategy",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "STRATEGY — Tirofiban for Branch Atheromatous Disease-Related Stroke: The STRATEGY Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42671865/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-rocatis-1",
+    "topicIds": [
+      "lipid-management"
+    ],
+    "title": "ROCATIS-1 — The impact of concomitant use of rosuvastatin or atorvastatin plus clopidogrel on the platelet inhibition and clinical outcomes in acute large-vessel minor stroke or TIA: A randomized controlled multi-center trial, the ROCATIS-1 trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42662137/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-y6-phase2",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "Y-6 phase 2 — Efficacy and safety of sublingual cilostazol and dexborneol for the treatment of acute ischaemic stroke: a randomised phase 2 trial in China.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42621146/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-crhcp-seven-year",
+    "topicIds": [
+      "bp-prevention"
+    ],
+    "title": "CRHCP 7-year follow-up — Long-Term Effectiveness of Intensive Blood Pressure Management Led by Nonphysician Community Healthcare Providers on Cardiovascular Events: 7-Year Follow-Up of a Cluster Randomized Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42666029/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-oriental-mevo-acao-registry",
+    "topicIds": [
+      "medium-distal-evt"
+    ],
+    "title": "ORIENTAL-MeVO ACAo Registry — Endovascular Thrombectomy Versus Standard Medical Management in Acute Anterior Cerebral Artery Occlusion Stroke: The ORIENTAL-MeVO Registry Study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42017224/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-tension-prior-antithrombotic",
+    "topicIds": [
+      "large-core-evt",
+      "acute-reperfusion"
+    ],
+    "title": "TENSION antithrombotic analysis — Large Core Stroke Thrombectomy Is Safe and Effective Regardless of Prior Antithrombotic or Thrombolytic Treatment: A Secondary Analysis of the Randomized TENSION Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42261979/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Secondary analysis; prior antithrombotic treatment was not the randomized intervention."
+  },
+  {
+    "id": "study-source-laste-aspects-0-2",
+    "topicIds": [
+      "large-core-evt",
+      "acute-reperfusion"
+    ],
+    "title": "LASTE ASPECTS 0-2 — Endovascular Thrombectomy in Patients With Largest Baseline Infarcts (ASPECTS 0-2): An Ancillary Analysis of the LASTE Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41979451/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Ancillary analysis of the randomized trial population."
+  },
+  {
+    "id": "study-source-angel-aspect-hmcas",
+    "topicIds": [
+      "large-core-evt",
+      "acute-reperfusion"
+    ],
+    "title": "ANGEL-ASPECT HMCAS analysis — Effects of Computed Tomography Hyperdense Middle Cerebral Artery Sign on the Efficacy of Endovascular Therapy in Acute Ischemic Stroke With Large Infarcts: A Subgroup Analysis of the ANGEL-ASPECT Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41914357/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Subgroup analysis; the imaging sign was not a randomized exposure."
+  },
+  {
+    "id": "study-source-eva-trisp-prior-apt",
+    "topicIds": [
+      "acute-reperfusion"
+    ],
+    "title": "EVA-TRISP prior-APT analysis — Previous Antiplatelet Therapy and Outcomes of Acute Ischemic Stroke With Large Vessel Occlusion Treated With Direct Endovascular Therapy.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41671526/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-recap-ich",
+    "topicIds": [
+      "ich-management",
+      "bp-prevention"
+    ],
+    "title": "RECAP-ICH — Intensive blood pressure lowering after spontaneous intracerebral haemorrhage for secondary stroke prevention (RECAP-ICH): a systematic review and individual participant data meta-analysis.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42586098/",
+    "year": 2026,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-trace-5",
+    "topicIds": [
+      "extended-window-ivt",
+      "basilar-occlusion"
+    ],
+    "title": "TRACE-5 — Tenecteplase versus standard medical treatment for basilar artery occlusion within 24 h (TRACE-5): a multicentre, prospective, randomised, open-label, blinded-endpoint, superiority, phase 3 trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41655588/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-option-tnk",
+    "topicIds": [
+      "extended-window-ivt"
+    ],
+    "title": "OPTION (TNK) — Tenecteplase for Acute Non-Large Vessel Occlusion 4.5 to 24 Hours After Ischemic Stroke: The OPTION Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41642827/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-t-flavor",
+    "topicIds": [
+      "thrombolytic-choice"
+    ],
+    "title": "T-FLAVOR — Standard-Dose Tenecteplase vs Low-Dose Alteplase for Acute Ischemic Stroke From Large-Vessel Occlusion: A Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42223935/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-attention-late",
+    "topicIds": [
+      "evt-selection",
+      "extended-window-ivt",
+      "basilar-occlusion"
+    ],
+    "title": "ATTENTION LATE — Tenecteplase Before Thrombectomy at 4.5 to 24 Hours for Basilar Artery Occlusion: The ATTENTION LATE Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42776543/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-asset-it",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "ASSET-IT — Early Tirofiban Infusion after Intravenous Thrombolysis for Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40616232/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-instant",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "INSTANT — Intravenous Tirofiban After Tenecteplase in Acute Ischemic Stroke: The INSTANT Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42100960/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-opens-2",
+    "topicIds": [
+      "research-adjuncts"
+    ],
+    "title": "OPENS-2 — Normobaric hyperoxia combined with endovascular treatment for acute ischaemic stroke in China (OPENS-2 trial): a multicentre, randomised, single-blind, sham-controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39922675/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-post-tnk",
+    "topicIds": [
+      "neurointerventional-care",
+      "research-adjuncts"
+    ],
+    "title": "POST-TNK — Intra-Arterial Tenecteplase Following Endovascular Reperfusion for Large Vessel Occlusion Acute Ischemic Stroke: The POST-TNK Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39804681/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-post-uk",
+    "topicIds": [
+      "neurointerventional-care",
+      "research-adjuncts"
+    ],
+    "title": "POST-UK — Intra-Arterial Urokinase After Endovascular Reperfusion for Acute Ischemic Stroke: The POST-UK Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39804674/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-attention-ia",
+    "topicIds": [
+      "neurointerventional-care",
+      "research-adjuncts"
+    ],
+    "title": "ATTENTION-IA — Intra-arterial tenecteplase after successful endovascular recanalisation in patients with acute posterior circulation arterial occlusion (ATTENTION-IA): multicentre randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39809509/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-optimistmain",
+    "topicIds": [
+      "inpatient-care",
+      "stroke-unit-nursing"
+    ],
+    "title": "OPTIMISTmain — Safety and efficacy of low-intensity versus standard monitoring following intravenous thrombolytic treatment in patients with acute ischaemic stroke (OPTIMISTmain): an international, pragmatic, stepped-wedge, cluster-randomised, controlled non-inferiority trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40412428/",
+    "year": 2025,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-headsoar",
+    "topicIds": [
+      "inpatient-care",
+      "stroke-unit-nursing"
+    ],
+    "title": "HeadSOAR — Head positioning after endovascular therapy for acute stroke due to large vessel occlusion (HeadSOAR): multicentre randomised controlled trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42624516/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity checked. This link restores source access; outcomes and full text were not re-reviewed for this citation."
+  },
+  {
+    "id": "study-source-attention-1y-2024",
+    "topicIds": [
+      "basilar-occlusion"
+    ],
+    "title": "ATTENTION 1-year secondary analysis — Endovascular vs Medical Management of Acute Basilar Artery Occlusion: A Secondary Analysis of a Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39186280/",
+    "year": 2024,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity and indexed notices checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Secondary follow-up analysis, not a new randomized trial. PubMed indexes 1 correction or notice record; review the linked record and notices before applying results."
+  },
+  {
+    "id": "study-source-attention-3y-2026",
+    "topicIds": [
+      "basilar-occlusion"
+    ],
+    "title": "ATTENTION 3-year follow-up — Endovascular vs Medical Treatment of Basilar Artery Occlusion: 3-Year Outcomes of the ATTENTION Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41460644/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity and indexed notices checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Long-term follow-up of the original randomized population."
+  },
+  {
+    "id": "study-source-distal-12m-2026",
+    "topicIds": [
+      "medium-distal-evt"
+    ],
+    "title": "DISTAL 12-month follow-up — Endovascular treatment for medium or distal vessel occlusion stroke (DISTAL): 12-month outcomes of a multicentre, open-label, randomised trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42105785/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity and indexed notices checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Long-term follow-up of the original randomized population."
+  },
+  {
+    "id": "study-source-restart-extended-2021",
+    "topicIds": [
+      "ich-management",
+      "secondary-prevention"
+    ],
+    "title": "RESTART extended follow-up — Effects of Antiplatelet Therapy After Stroke Caused by Intracerebral Hemorrhage: Extended Follow-up of the RESTART Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/34477823/",
+    "year": 2021,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity and indexed notices checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Extended follow-up of the original randomized population."
+  },
+  {
+    "id": "study-source-bhf-protect-tavi-cognition-2025",
+    "topicIds": [
+      "cardiac-sources"
+    ],
+    "title": "BHF PROTECT-TAVI cognitive analysis — Impact of Cerebral Embolic Protection on Cognitive Function After Transcatheter Aortic Valve Implantation: Data From the BHF PROTECT-TAVI Randomized Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40884786/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity and indexed notices checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Secondary cognitive-outcome analysis, not a new randomized trial."
+  },
+  {
+    "id": "study-source-peach-eeg-2026",
+    "topicIds": [
+      "poststroke-seizures"
+    ],
+    "title": "PEACH EEG analysis — Dynamics of early electroencephalographic patterns and epileptic seizures in acute intracerebral hemorrhage: A prospective controlled study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41250972/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity and indexed notices checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Secondary EEG-pattern analysis of trial participants."
+  },
+  {
+    "id": "study-source-tips-design-2009",
+    "topicIds": [
+      "pediatric-stroke"
+    ],
+    "title": "TIPS design — Thrombolysis in acute childhood stroke: design and challenges of the thrombolysis in pediatric stroke clinical trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/19223687/",
+    "year": 2009,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity and indexed notices checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Trial design report; this citation does not supply completed treatment outcomes."
+  },
+  {
+    "id": "study-source-save-childs-pro-2024",
+    "topicIds": [
+      "pediatric-stroke"
+    ],
+    "title": "Save ChildS Pro — Endovascular thrombectomy for childhood stroke (Save ChildS Pro): an international, multicentre, prospective registry study.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39401507/",
+    "year": 2024,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity and indexed notices checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Prospective observational registry, not a randomized treatment comparison."
+  },
+  {
+    "id": "study-source-option-protocol-2025",
+    "topicIds": [
+      "extended-window-ivt"
+    ],
+    "title": "OPTION rationale and design — A multicenter, prospective, randomized, open-label, blinded endpoint trial of intravenous thrombolysis with tenecteplase for acute non-large vessel occlusion in extended time window (OPTION): Rationale and design.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41169527/",
+    "year": 2025,
+    "type": "Report",
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic identity and indexed notices checked. This link restores source access; outcomes and full text were not re-reviewed for this citation. Trial design report; this citation does not supply completed treatment outcomes."
+  }
+]

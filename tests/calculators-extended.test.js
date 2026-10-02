@@ -70,9 +70,9 @@ describe('recommendAcuteDAPT', () => {
     const r = recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, nihss: 2, ichRisk: 'high' });
     expect(r.regimen).toBe('individualized-review');
   });
-  it('NIHSS >5 falls back to single antiplatelet', () => {
+  it('NIHSS >5 leaves treatment selection to individualized review', () => {
     const r = recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, nihss: 10, strokeType: 'ischemic', timeFromOnsetH: 12 });
-    expect(r.regimen).toBe('single-antiplatelet');
+    expect(r.regimen).toBe('individualized-review');
   });
 });
 
