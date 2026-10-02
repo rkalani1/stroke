@@ -49,6 +49,13 @@ describe('retained Encounter behavior replacing monolith output and duplicate-to
     expect(html).not.toContain('Dose calculation');
     expect(html).not.toContain('next scheduled check');
   });
+  it('asks for MRI lesion extent and its qualifying finding separately without preselecting a finding', () => {
+    const html = render(make({ note: { diagnosisCategory: 'ischemic', wakeUpStrokeWorkflow: { mriLesionExtentReviewed: true } } }));
+    expect(html).toContain('aria-label="MRI lesion extent reviewed"');
+    expect(html).toContain('aria-label="DWI lesion smaller than one-third MCA territory"');
+    const extentSelect = html.match(/<select aria-label="DWI lesion smaller than one-third MCA territory"[^>]*>(.*?)<\/select>/)?.[1];
+    expect(extentSelect).toContain('<option value="" selected="">Not assessed</option>');
+  });
   it('manual rationale is retained once while generated text stays separate', () => {
     const state = make({ rationale: 'Synthetic specialist review pending.', draft: { text: 'OLD GENERATED DRAFT', stale: false, revision: 0 } });
     const output = buildSummary(state, now);

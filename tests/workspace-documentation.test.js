@@ -130,11 +130,20 @@ describe('restored telephone Pulsara and video Epic documentation', () => {
   });
 
   it.each(['phone', 'video'])('preserves the imaging-selected partial-source qualifier in %s', format => {
-    const state = make(format, { note: { lkwUnknown: true, discoveryDate: '2026-10-01', discoveryTime: '11:00', wakeUpStrokeWorkflow: { mriAvailable: true, dwi: { positiveForLesion: true }, flair: { noMarkedHyperintensity: true }, mriLesionExtentReviewed: true } } });
+    const state = make(format, { note: { lkwUnknown: true, discoveryDate: '2026-10-01', discoveryTime: '11:00', wakeUpStrokeWorkflow: { mriAvailable: true, dwi: { positiveForLesion: true }, flair: { noMarkedHyperintensity: true }, mriLesionExtentReviewed: true, dwiLesionUnderOneThirdMCA: true } } });
     const text = buildSummary(state, NOW);
     expect(text).toContain('MRI (WAKE-UP)');
     expect(text).toContain('complete eligibility and drug-specific treatment decision require review');
     expect(text).not.toContain('TNK was administered');
+  });
+
+  it.each(['phone', 'video'])('preserves a reviewed but nonqualifying MRI extent in %s', format => {
+    const state = make(format, { note: { lkwUnknown: true, discoveryDate: '2026-10-01', discoveryTime: '11:00', wakeUpStrokeWorkflow: { mriAvailable: true, dwi: { positiveForLesion: true }, flair: { noMarkedHyperintensity: true }, mriLesionExtentReviewed: true, dwiLesionUnderOneThirdMCA: false } } });
+    const text = buildSummary(state, NOW);
+    expect(text).toContain('MRI (WAKE-UP): incomplete or not met;');
+    expect(text).toContain('MRI lesion extent reviewed: documented.');
+    expect(text).toContain('DWI lesion smaller than one-third MCA territory: no.');
+    expect(text).not.toContain('partial source screen met');
   });
 
   it('allows structured clinical dates while scanning malformed dates and narratives that start with a timestamp', () => {

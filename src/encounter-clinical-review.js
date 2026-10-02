@@ -51,7 +51,9 @@ export function evaluateWakeUpScreen(note = {}, now = new Date()) {
   const perfusionMismatchVolOk = mismatchVolume !== null && mismatchVolume > 10;
   const common = age !== null && nihss !== null && note.ctHemorrhageStatus === 'absent';
   const autoExtend = common && nihss >= 4 && nihss <= 26 && mrs !== null && mrs < 2 && withinExtendTime && perfusionCoreOk && ratioMet && perfusionMismatchVolOk;
-  const autoWakeUp = common && age <= 80 && nihss <= 25 && note.lkwUnknown === true && discoveryHours !== null && discoveryHours <= 4.5 && workflow.dwi?.positiveForLesion === true && workflow.flair?.noMarkedHyperintensity === true && workflow.mriLesionExtentReviewed === true;
+  // Reviewing extent is distinct from documenting a qualifying extent. Legacy
+  // review attestations must not imply the AHA/ASA MRI lesion-size criterion.
+  const autoWakeUp = common && age <= 80 && nihss <= 25 && note.lkwUnknown === true && discoveryHours !== null && discoveryHours <= 4.5 && workflow.dwi?.positiveForLesion === true && workflow.flair?.noMarkedHyperintensity === true && workflow.mriLesionExtentReviewed === true && workflow.dwiLesionUnderOneThirdMCA === true;
   return { wakeUpEligible: autoWakeUp, extendEligible: autoExtend, manualWakeUp: false, manualExtend: false, autoWakeUp, autoExtend, withinExtendTime, discoveryHours, midpointHours, perfusionCoreOk, perfusionRatioOk: ratioMet, perfusionMismatchVolOk, perfusion: { coreVolume: core, penumbraVolume: hypoperfusion, mismatchVolume, mismatchRatio: ratio }, status: autoWakeUp || autoExtend ? 'partial-source-screen-met' : 'incomplete-or-not-met' };
 }
 

@@ -9,7 +9,7 @@ const mri = {
   wakeUpStrokeWorkflow: {
     isWakeUpStroke: true, mriAvailable: true,
     dwi: { positiveForLesion: true }, flair: { noMarkedHyperintensity: true },
-    mriLesionExtentReviewed: true, ageEligible: false, nihssEligible: false
+    mriLesionExtentReviewed: true, dwiLesionUnderOneThirdMCA: true, ageEligible: false, nihssEligible: false
   }
 };
 const ctp = {
@@ -25,8 +25,21 @@ describe('canonical wake-up screen documentation', () => {
     expect(text).toContain('Documented age: 60; NIHSS: 10.');
     expect(text).toContain('DWI-positive lesion: documented.');
     expect(text).toContain('No marked corresponding FLAIR hyperintensity: documented.');
+    expect(text).toContain('DWI lesion smaller than one-third MCA territory: yes.');
     expect(text).toContain('Symptom discovery (date/time): 2026-10-01 / 10:00.');
     expect(text).not.toMatch(/WAKE-UP eligible|IV thrombolysis eligible|Age: Eligible|Meets WAKE-UP criteria/);
+  });
+
+  it.each([undefined, false, null, 'true', 1])('requires a qualifying MRI extent finding separately from legacy review (%j)', finding => {
+    const note = { ...mri, wakeUpStrokeWorkflow: {
+      ...mri.wakeUpStrokeWorkflow, mriLesionExtentReviewed: true,
+      dwiLesionUnderOneThirdMCA: finding
+    } };
+    expect(evaluateWakeUpScreen(note, now).wakeUpEligible).toBe(false);
+    const text = formatWakeUpScreenForExport(note, now);
+    expect(text).toContain('MRI (WAKE-UP): incomplete or not met;');
+    expect(text).toContain('MRI lesion extent reviewed: documented.');
+    expect(text).toContain(`DWI lesion smaller than one-third MCA territory: ${finding === false ? 'no' : 'not documented'}.`);
   });
 
   it('never promotes the legacy four checked criteria to eligibility', () => {
@@ -47,7 +60,7 @@ describe('canonical wake-up screen documentation', () => {
     const text = formatWakeUpScreenForExport(note, now);
     expect(text).toContain(`Recorded MRI lesion volume: ${lesionVolume} mL.`);
     expect(text).toContain('incomplete or not met;');
-    expect(text).toContain('MRI lesion extent and imaging-selection exclusions reviewed: not documented.');
+    expect(text).toContain('MRI lesion extent reviewed: not documented.');
   });
 
   it.each([
@@ -72,7 +85,7 @@ describe('canonical wake-up screen documentation', () => {
     expect(text).toContain('incomplete or not met;');
     expect(text).toContain('DWI-positive lesion: not documented.');
     expect(text).toContain('No marked corresponding FLAIR hyperintensity: not documented.');
-    expect(text).toContain('MRI lesion extent and imaging-selection exclusions reviewed: not documented.');
+    expect(text).toContain('MRI lesion extent reviewed: not documented.');
     expect(text).not.toMatch(/DWI: Negative|FLAIR: Hyperintense|DWI negative|FLAIR positive/);
   });
 
