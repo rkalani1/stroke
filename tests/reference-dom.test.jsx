@@ -18,13 +18,19 @@ beforeAll(async () => {
 afterAll(async()=>browser?.close());
 async function pageWith(options={}) {
   const page=await browser.newPage();
+  if(options.viewport)await page.setViewportSize(options.viewport);
   await page.setContent('<div id="root"></div>');
   await page.evaluate(({envelope,options})=>{
     window.envelope=envelope;window.requests=0;
     window.fetch=async()=>{window.requests++;if(options.fail && window.requests===1) throw Error('offline');return {ok:true,json:async()=>options.mismatch && window.requests===1?{...envelope,_meta:{...envelope._meta,appVersion:'old'}}:window.envelope};};
     Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:text=>{window.copied=text;if(options.deferred)return new Promise((resolve,reject)=>{window.resolveCopy=resolve;window.rejectCopy=reject;});if(options.denied)return Promise.reject(Error('denied'));return Promise.resolve();}}});
   },{envelope,options});
-  await page.addScriptTag({content:script});return page;
+  await page.addScriptTag({content:script});
+  if(options.routing)await page.evaluate(()=>{
+    history.replaceState(null,'','#/evidence');
+    window.addEventListener('hashchange',()=>window.renderReference({focusId:location.hash.split('/')[2]}));
+  });
+  return page;
 }
 describe('curated reference integrity and interaction',()=>{
   it('rejects incompatible and malformed records before rendering',()=>{
@@ -89,6 +95,7 @@ describe('curated reference integrity and interaction',()=>{
       expect(await page.locator('.reference-study-results a[href="#/evidence/point"]').count()).toBe(0);
       await page.getByRole('button',{name:'Clear filters'}).click();
       expect(await matches.count()).toBe(0);
+      expect(await page.getByLabel('Find a clinical question').evaluate(input=>document.activeElement===input)).toBe(true);
       await page.getByLabel('Find a clinical question').fill('ELAN');
       expect(await page.getByRole('status').innerText()).toBe('1 topic found.');
       expect(await matches.getByRole('link').first().getAttribute('href')).toBe('#/evidence/elan');
@@ -99,7 +106,33 @@ describe('curated reference integrity and interaction',()=>{
       await page.getByLabel('Find a clinical question').fill('ELAN');
       await matches.getByRole('link').first().click();
       await page.waitForFunction(()=>document.querySelector('[data-reference-id="elan"]')?.open && document.activeElement.closest('[data-reference-id]')?.dataset.referenceId==='elan');
-      expect(await page.getByLabel('Find a clinical question').inputValue()).toBe('');
+      expect(await page.getByLabel('Find a clinical question').inputValue()).toBe('ELAN');
+    }finally{await page.close();}
+  });
+  it.each([{width:390,height:844},{width:1440,height:900}])('preserves filtered result navigation and Back at $width px, with incoming deep links still revealed',async(viewport)=>{
+    const page=await pageWith({routing:true,viewport});try{
+      const search=page.getByLabel('Find a clinical question'), setting=page.getByLabel('Care setting'), category=page.getByLabel('Clinical section');
+      await search.fill('ELAN');await setting.selectOption('hospital');await category.selectOption('Prevention and antithrombotics');
+      const filters=async()=>[await search.inputValue(),await setting.inputValue(),await category.inputValue()];
+      const expected=['ELAN','hospital','Prevention and antithrombotics'];
+      const waitForStudy=async id=>page.waitForFunction(id=>location.hash===`#/evidence/${id}` && document.querySelector(`[data-reference-id="${id}"]`)?.open && document.activeElement.closest('[data-reference-id]')?.dataset.referenceId===id,id);
+      await page.locator('.reference-study-results a[href="#/evidence/elan"]').click();await waitForStudy('elan');
+      expect(await filters()).toEqual(expected);expect(await page.locator('.reference-group > .reference-card').count()).toBe(1);
+      await page.locator('.reference-study-results a[href="#/evidence/catalyst"]').click();await waitForStudy('catalyst');
+      expect(await filters()).toEqual(expected);
+      await page.goBack();await waitForStudy('elan');expect(await filters()).toEqual(expected);
+      await page.goBack();await page.waitForFunction(()=>location.hash==='#/evidence');expect(await filters()).toEqual(expected);
+      expect(await page.locator('.reference-study-results a').count()).toBe(2);
+      await page.goForward();await waitForStudy('elan');expect(await filters()).toEqual(expected);
+      await page.locator('[data-reference-id="af-timing"] > summary').click();
+      await page.locator('.reference-study-results a[href="#/evidence/elan"]').click();await waitForStudy('elan');expect(await filters()).toEqual(expected);
+      await search.fill('PFO');await setting.selectOption('clinic');await category.selectOption('Stroke mechanisms and vascular disorders');
+      await page.evaluate(()=>location.hash='#/evidence/defuse-3');await waitForStudy('defuse-3');
+      expect(await filters()).toEqual(['','all','all']);
+      await search.fill('no matches xyz');
+      const clear=page.getByRole('button',{name:'Clear filters'});await clear.focus();await page.keyboard.press('Enter');
+      expect(await filters()).toEqual(['','all','all']);expect(await search.evaluate(input=>document.activeElement===input)).toBe(true);
+      await page.keyboard.press('Tab');expect(await setting.evaluate(select=>document.activeElement===select)).toBe(true);
     }finally{await page.close();}
   });
   it('finds summary-only terms and invalidates delayed study copies when the parent closes',async()=>{

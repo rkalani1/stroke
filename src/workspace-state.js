@@ -1,5 +1,5 @@
 import { formatEncounterDetails, encounterDetailWarnings, TIA_RISK_FIELDS } from './encounter-details.js';
-import { formatTimeline, encounterClockTimestamp } from './encounter-timeline.js';
+import { formatTimeline, encounterClockTimestamp, evtReperfusionIssue } from './encounter-timeline.js';
 import { formatDocumentation } from './documentation-output.js';
 import { reconcileSupplementaryAppliedScores } from './supplementary-calculators.js';
 import { NIHSS_ITEMS } from './clinical/nihss-items.js';
@@ -8,12 +8,13 @@ import { formatPerfusionForExport } from './clinical/perfusion-documentation.js'
 import { formatWakeUpScreenForExport } from './clinical/wake-up-documentation.js';
 import { numericInput, gcsDocumentation, evaluateVideoTreatment, reviewedTiaDisposition, documentedIvtContext } from './encounter-clinical-review.js';
 import { computeLKWCountdown } from './calculators-extended.js';
+import { timestampCandidates } from './clinical/timestamp.js';
 import { getPublicDemoPhiWarnings } from './public-demo-guardrails.js';
 
 export const DIAGNOSES = { ischemic: 'Ischemic stroke', ich: 'Intracerebral hemorrhage', sah: 'Subarachnoid hemorrhage', tia: 'TIA', cvt: 'Cerebral venous thrombosis', mimic: 'Stroke mimic', other: 'Other / uncertain' };
 export function newEncounter() {
   return {
-    context: 'acute', consultationType: 'phone', documentFormat: 'consultation', weightUnit: 'kg', details: {}, timeline: {}, supplementary: {}, note: { diagnosisCategory: '', age: '', weight: '', sex: '', creatinine: '', heightCm: '', premorbidMRS: '', lkwDate: '', lkwTime: '', lkwClock: null, lkwUnknown: false, discoveryDate: '', discoveryTime: '', discoveryClock: null, presentingBP: '', glucose: '', ctHemorrhageStatus: '', disablingDeficit: '', vesselOcclusion: [], lastDOACType: '', lastDOACDose: '', inr: '', ptt: '', anticoagulantDoseIntent: '', medications: '', tnkContraindicationChecklist: {}, ivtContraindicationsReviewed: false, wakeUpStrokeWorkflow: {}, coreVolume: '', penumbraVolume: '', mismatchRatio: '', pregnancyStroke: false, chiefComplaint: '', symptoms: '', pmh: '', heartRate: '', spO2: '', temperature: '', plateletCount: '', pt: '', ctDate: '', ctTime: '', ctResults: '', ctpResults: '', ctaDate: '', ctaTime: '', ctaResults: '', ekgResults: '', nihssDetails: '', clinicianName: '', ticiScore: '' },
+    context: 'acute', consultationType: 'phone', documentFormat: 'consultation', weightUnit: 'kg', details: {}, timeline: {}, supplementary: {}, note: { diagnosisCategory: '', age: '', weight: '', sex: '', creatinine: '', heightCm: '', premorbidMRS: '', lkwDate: '', lkwTime: '', lkwClock: null, lkwUnknown: false, discoveryDate: '', discoveryTime: '', discoveryClock: null, presentingBP: '', glucose: '', ctHemorrhageStatus: '', disablingDeficit: '', vesselOcclusion: [], lastDOACType: '', lastDOACDose: '', inr: '', ptt: '', anticoagulantDoseIntent: '', medications: '', tnkContraindicationChecklist: {}, ivtContraindicationsReviewed: false, wakeUpStrokeWorkflow: {}, coreVolume: '', penumbraVolume: '', mismatchRatio: '', pregnancyStroke: false, chiefComplaint: '', symptoms: '', pmh: '', heartRate: '', spO2: '', temperature: '', plateletCount: '', pt: '', ctDate: '', ctTime: '', ctClock: null, ctResults: '', ctpResults: '', ctaDate: '', ctaTime: '', ctaClock: null, ctaResults: '', ekgResults: '', nihssDetails: '', clinicianName: '', ticiScore: '' },
     nihssSource: 'itemized', reportedNihss: '', nihss: {}, gcs: {}, aspects: '', pcAspects: '', volume: { a: '', b: '', thicknessMm: '', numSlices: '' }, ich: { ivh: '', infratentorial: '' },
     drug: '', doseAuthority: 'guideline', decisions: { ivt: '', evt: '' }, actions: { administered: false, administrationTime: '', punctureTime: '', reperfusionTime: '', discussion: '', discussionDetails: '', consent: '', consentTime: '', evtDiscussion: '', evtConsent: '', evtConsentTime: '', monitoring: '', disposition: '', handoff: '' },
     rationale: '', assessment: '', dapt: {}, evtMassEffect: '', draft: null, revision: 0
@@ -90,7 +91,7 @@ export function updateEncounter(state, updater) {
   const contextChanged = next.context !== state.context || next.note.diagnosisCategory !== state.note.diagnosisCategory;
   const nihssChanged = JSON.stringify(nihssSourceInput(next)) !== JSON.stringify(nihssSourceInput(state));
   let note = nihssChanged ? { ...next.note, ivtContraindicationsReviewed: false } : next.note;
-  for (const prefix of ['lkw', 'discovery']) {
+  for (const prefix of ['lkw', 'discovery', 'ct', 'cta']) {
     const key = `${prefix}Clock`, clock = note[key];
     const edited = note[`${prefix}Date`] !== state.note[`${prefix}Date`] || note[`${prefix}Time`] !== state.note[`${prefix}Time`];
     if (clock && (clock.value !== `${note[`${prefix}Date`]}T${note[`${prefix}Time`]}` || edited && clock === state.note[key])) note = { ...note, [key]: null };
@@ -156,7 +157,7 @@ export function outputWarnings(state) {
     ...['lkwDate', 'discoveryDate', 'ctDate', 'ctaDate'].map(key => [state.note[key], datePattern]),
     ...['lkwTime', 'discoveryTime', 'ctaTime'].map(key => [state.note[key], timePattern]),
     [state.note.lastDOACDose, timestampPattern],
-    ...['lkwClock', 'discoveryClock'].flatMap(key => [[state.note[key]?.value, timestampPattern], [state.note[key]?.instant, timestampPattern]])
+    ...['lkwClock', 'discoveryClock', 'ctClock', 'ctaClock'].flatMap(key => [[state.note[key]?.value, timestampPattern], [state.note[key]?.instant, timestampPattern]])
   ].filter(([value, pattern]) => typeof value === 'string' && !pattern.test(value)).map(([value]) => value);
   const actionTimes = ['administrationTime', 'punctureTime', 'reperfusionTime', 'consentTime', 'evtConsentTime'];
   const actionTexts = Object.entries(state.actions).filter(([key, value]) => typeof value === 'string' && !(actionTimes.includes(key) && timestampPattern.test(value))).map(([, value]) => value);
@@ -176,12 +177,13 @@ export async function copySummary(stateRef, text, writeText) {
 const hasValue = value => value !== '' && value !== null && value !== undefined && String(value).trim() !== '';
 const documented = (value, fallback = 'not documented') => hasValue(value) ? String(value).trim() : fallback;
 const measurement = (value, unit) => hasValue(value) ? `${value}${unit}` : 'not documented';
+const timestampReview = value => timestampCandidates(value).length > 1 ? 'ambiguous local time; choose the recorded clock occurrence before interpretation' : 'invalid or future; correct before interpretation';
 function documentedDateTime(date, time, nowMs, recordedTimestamp) {
   if (!hasValue(date) && !hasValue(time)) return 'not documented';
   if (!hasValue(date) || !hasValue(time)) return `${documented(date, '[date not documented]')} ${documented(time, '[time not documented]')} (incomplete date/time; correct before interpretation)`;
   const local = `${date}T${time}`, timestamp = recordedTimestamp === undefined ? local : recordedTimestamp;
   const instant = timestamp !== local ? ` (recorded instant ${timestamp || 'unavailable'})` : '';
-  return `${date} ${time}${instant}${validTimestamp(timestamp, nowMs) ? '' : ' (invalid or future; correct before interpretation)'}`;
+  return `${date} ${time}${instant}${validTimestamp(timestamp, nowMs) ? '' : ` (${timestampReview(timestamp)})`}`;
 }
 function documentedCtTime(value) {
   if (!hasValue(value)) return 'not documented';
@@ -215,7 +217,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   if (['eye', 'verbal', 'motor'].some(key => hasValue(state.gcs[key]))) extraExam.push(gcsDocumentation(state.gcs));
   const aspects = acuteIschemic ? numericInput(state.aspects, { min: 0, max: 10, integer: true }) : null;
   const pcAspects = acuteIschemic ? numericInput(state.pcAspects, { min: 0, max: 10, integer: true }) : null;
-  const ctTimestamp = hasValue(n.ctDate) ? documentedDateTime(n.ctDate, n.ctTime, nowMs) : documentedCtTime(n.ctTime);
+  const ctTimestamp = hasValue(n.ctDate) ? documentedDateTime(n.ctDate, n.ctTime, nowMs, encounterClockTimestamp(n, 'ct')) : documentedCtTime(n.ctTime);
   const ct = `${documented(n.ctResults)}; CT hemorrhage review: ${documented(n.ctHemorrhageStatus)}${aspects === null ? '' : `; ASPECTS: ${aspects}`}${pcAspects === null ? '' : `; pc-ASPECTS: ${pcAspects}`}`;
   const vessels = acuteIschemic ? n.vesselOcclusion.join(', ') : '';
   const cta = `${documented(n.ctaResults)}${vessels ? `; Vessel imaging: ${vessels}` : acuteIschemic ? '; Vessel imaging: not documented' : ''}`;
@@ -223,7 +225,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   const recommendations = [];
   const entry = (label, value) => { if (hasValue(value)) recommendations.push(`${label}: ${value}`); };
   if (acuteIschemic || hasValue(n.lastDOACType)) entry('Anticoagulant exposure', n.lastDOACType || 'not assessed');
-  if (n.lastDOACType && n.lastDOACType !== 'none' && n.lastDOACDose) entry('Last anticoagulant dose', validTimestamp(n.lastDOACDose, nowMs) ? n.lastDOACDose : `${n.lastDOACDose} (invalid or future; correct before interpretation)`);
+  if (n.lastDOACType && n.lastDOACType !== 'none' && n.lastDOACDose) entry('Last anticoagulant dose', validTimestamp(n.lastDOACDose, nowMs) ? n.lastDOACDose : `${n.lastDOACDose} (${timestampReview(n.lastDOACDose)})`);
   if (n.lastDOACType === 'lmwh') entry('LMWH dose intent', n.anticoagulantDoseIntent);
   if (acuteIschemic) {
     if (n.lkwUnknown || n.wakeUpStrokeWorkflow.mriAvailable !== undefined) recommendations.push(formatWakeUpScreenForExport(n, new Date(nowMs)));
@@ -232,15 +234,15 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     entry('IVT safety review', n.ivtContraindicationsReviewed ? 'explicitly recorded; concerns remain' : 'not documented');
     for (const type of ['ivt', 'evt']) entry(`${type.toUpperCase()} clinician decision`, state.decisions[type] || 'not documented');
     const administration = state.actions.administered && state.drug && validTimestamp(state.actions.administrationTime, nowMs);
-    entry('IVT administration', administration ? `${state.drug} at ${state.actions.administrationTime}` : `not documented with a valid drug and timestamp${state.actions.administrationTime && !validTimestamp(state.actions.administrationTime, nowMs) ? '; entered time is invalid or future; correct before interpretation' : ''}`);
-    for (const [key, label] of [['punctureTime', 'EVT puncture'], ['reperfusionTime', 'EVT reperfusion']]) if (state.actions[key]) entry(label, validTimestamp(state.actions[key], nowMs) ? state.actions[key] : 'invalid or future; correct before interpretation');
+    entry('IVT administration', administration ? `${state.drug} at ${state.actions.administrationTime}` : `not documented with a valid drug and timestamp${state.actions.administrationTime && !validTimestamp(state.actions.administrationTime, nowMs) ? `; entered time is ${timestampReview(state.actions.administrationTime)}` : ''}`);
+    for (const [key, label] of [['punctureTime', 'EVT puncture'], ['reperfusionTime', 'EVT reperfusion']]) if (state.actions[key]) entry(label, validTimestamp(state.actions[key], nowMs) ? `${state.actions[key]}${key === 'reperfusionTime' && evtReperfusionIssue(state, nowMs) ? ` (${evtReperfusionIssue(state, nowMs)})` : ''}` : timestampReview(state.actions[key]));
     entry('Recorded mTICI grade', state.note.ticiScore);
     entry('IVT Discussion', state.actions.discussion || 'not documented');
     entry('IVT Consent status', state.actions.consent || 'not documented');
     entry('EVT discussion', state.actions.evtDiscussion || 'not documented');
     entry('EVT consent status', state.actions.evtConsent || 'not documented');
-    if (state.actions.evtConsent && state.actions.evtConsentTime) entry('EVT consent time', validTimestamp(state.actions.evtConsentTime, nowMs) ? state.actions.evtConsentTime : 'invalid or future; correct before interpretation');
-    if (state.actions.consent && state.actions.consentTime) entry('Consent time', validTimestamp(state.actions.consentTime, nowMs) ? state.actions.consentTime : 'invalid or future; correct before interpretation');
+    if (state.actions.evtConsent && state.actions.evtConsentTime) entry('EVT consent time', validTimestamp(state.actions.evtConsentTime, nowMs) ? state.actions.evtConsentTime : timestampReview(state.actions.evtConsentTime));
+    if (state.actions.consent && state.actions.consentTime) entry('Consent time', validTimestamp(state.actions.consentTime, nowMs) ? state.actions.consentTime : timestampReview(state.actions.consentTime));
   }
   if (n.diagnosisCategory === 'ich') {
     const volume = encounterVolume(state.volume);
@@ -266,7 +268,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   if (state.consultationType === 'phone') {
     const weight = hasValue(n.weight) ? ` (Wt: ${n.weight}kg)` : '';
     const vitals = [hasValue(n.presentingBP) ? `BP (mmHg): ${n.presentingBP}` : '', hasValue(n.glucose) ? `Glucose (mg/dL): ${n.glucose}` : ''].filter(Boolean).join('; ');
-    return `${demographics}${weight} with ${pmh} ${state.context === 'follow-up' ? 'seen in follow-up for' : 'who presents with'} ${symptoms}.${hasValue(n.chiefComplaint) ? ` Chief complaint: ${n.chiefComplaint}.` : ''} ${lkw}. ${extraExam.length ? `${extraExam.join('. ')}. ` : ''}NIHSS score: ${examText}${examDetails}. Working diagnosis: ${diagnosis}. Head CT (${ctTimestamp}): ${ct}. CTA Head/Neck (${documentedDateTime(n.ctaDate, n.ctaTime, nowMs)}): ${cta}. CTP: ${documented(perfusion)}.${vitals ? ` ${vitals}.` : ''}${hasValue(n.medications) ? ` Medications: ${n.medications}.` : ''}${hasValue(state.assessment) ? ` Assessment: ${state.assessment}.` : ''} ${recommendations.join('. ')}.`.replace(/\s*\n\s*/g, ' ');
+    return `${demographics}${weight} with ${pmh} ${state.context === 'follow-up' ? 'seen in follow-up for' : 'who presents with'} ${symptoms}.${hasValue(n.chiefComplaint) ? ` Chief complaint: ${n.chiefComplaint}.` : ''} ${lkw}. ${extraExam.length ? `${extraExam.join('. ')}. ` : ''}NIHSS score: ${examText}${examDetails}. Working diagnosis: ${diagnosis}. Head CT (${ctTimestamp}): ${ct}. CTA Head/Neck (${documentedDateTime(n.ctaDate, n.ctaTime, nowMs, encounterClockTimestamp(n, 'cta'))}): ${cta}. CTP: ${documented(perfusion)}.${vitals ? ` ${vitals}.` : ''}${hasValue(n.medications) ? ` Medications: ${n.medications}.` : ''}${hasValue(state.assessment) ? ` Assessment: ${state.assessment}.` : ''} ${recommendations.join('. ')}.`.replace(/\s*\n\s*/g, ' ');
   }
   return `Reason for Consultation: ${state.context === 'acute' ? 'Acute stroke evaluation' : 'Stroke follow-up'} — ${chiefComplaint}
 
@@ -283,7 +285,7 @@ Exam: NIHSS ${examText}${examDetails}${extraExam.length ? `; ${extraExam.join(';
 
 Imaging findings:
 NCCT Head (${ctTimestamp}): ${ct}
-CTA Head/Neck (${documentedDateTime(n.ctaDate, n.ctaTime, nowMs)}): ${cta}
+CTA Head/Neck (${documentedDateTime(n.ctaDate, n.ctaTime, nowMs, encounterClockTimestamp(n, 'cta'))}): ${cta}
 CTP: ${documented(perfusion)}
 Telemetry/EKG: ${documented(n.ekgResults)}
 

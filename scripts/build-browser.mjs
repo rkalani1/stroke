@@ -54,7 +54,10 @@ const result = await build({
   bundle: true,
   format: 'esm',
   splitting: true,
-  target: 'es2018',
+  // Native Object.hasOwn and other current browser APIs already set a newer
+  // runtime floor. Preserve compact optional chaining/nullish syntax instead
+  // of expanding it to ES2018 shims; this does not polyfill browser APIs.
+  target: 'es2020',
   minify: true,
   jsxFactory: 'createElement',
   inject: [path.join(root, 'src/jsx-factory.js')],
@@ -127,7 +130,7 @@ if (entryFile === path.join(root, 'app.js')) {
   const validationMarker = /\/\/ BEGIN GENERATED REFERENCE VALIDATION[\s\S]*?\/\/ END GENERATED REFERENCE VALIDATION/;
   if (!validationMarker.test(worker)) throw new Error('Generated reference-validation marker is missing from service-worker.js');
   const validation = await build({
-    absWorkingDir: root, bundle: true, write: false, minify: true, target: 'es2018',
+    absWorkingDir: root, bundle: true, write: false, minify: true, target: 'es2020',
     format: 'iife', globalName: 'ReferenceValidation',
     stdin: { resolveDir: root, contents: "export { validReferenceData } from './src/reference-search.js';" },
   });

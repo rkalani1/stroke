@@ -1,12 +1,6 @@
 import { computeLKWCountdown } from './calculators-extended.js';
 const validTimestamp = (value, now) => computeLKWCountdown(value, now) ? new Date(value) : null;
-function unambiguousTimestamp(value, now) {
-  const date = validTimestamp(value, now);
-  if (!date || /(?:Z|[+-]\d{2}:\d{2})$/.test(value)) return date;
-  // A repeated local hour has two possible instants. Never choose one silently.
-  const local = localTimestamp(date.getTime());
-  return [30, 60, 120].some(minutes => localTimestamp(date.getTime() + minutes * 60000) === local) ? null : date;
-}
+const unambiguousTimestamp = validTimestamp;
 
 export const TIMELINE_FIELDS = [
   ['consultStart', 'Consultation start'], ['consultEnd', 'Consultation end'],
@@ -30,11 +24,12 @@ export function timelineIntervals(state, now) {
   const t = state.timeline || {}, acute = state.context === 'acute';
   const ivt = acute && state.note.diagnosisCategory === 'ischemic' && state.actions.administered && state.drug ? state.actions.administrationTime : '';
   const puncture = acute && state.note.diagnosisCategory === 'ischemic' ? state.actions.punctureTime : '';
+  const reperfusion = acute && state.note.diagnosisCategory === 'ischemic' ? state.actions.reperfusionTime : '';
   const pairs = [
     ['Consultation elapsed', t.consultStart, t.consultEnd || now],
     ...(acute ? [['Door to CT', t.arrival, t.ctStart], ['CT to interpretation', t.ctStart, t.ctRead], ['Door to transfer decision', t.arrival, t.transferDecision]] : []),
     ...(ivt ? [['Door to IVT', t.arrival, ivt], ['CT to IVT', t.ctStart, ivt], ['Order to IVT', t.ivtOrder, ivt]] : []),
-    ...(puncture ? [['Door to puncture', t.arrival, puncture]] : []),
+    ...(puncture ? [['Door to puncture', t.arrival, puncture], ['Puncture to reperfusion', puncture, reperfusion]] : []),
     ...(acute && state.note.diagnosisCategory === 'ich' ? [['Door to reversal', t.arrival, t.reversal]] : [])
   ];
   return pairs.filter(([, start, end]) => start && end).map(([label, start, end]) => {
@@ -43,6 +38,12 @@ export function timelineIntervals(state, now) {
     return { label, minutes, text: minutes === null ? 'Invalid, future, reversed or ambiguous local timestamps' : `${minutes} min` };
   });
 }
+export function evtReperfusionIssue(state, now) {
+  if (state.context !== 'acute' || state.note.diagnosisCategory !== 'ischemic') return '';
+  const puncture = validTimestamp(state.actions.punctureTime, now);
+  const reperfusion = validTimestamp(state.actions.reperfusionTime, now);
+  return puncture && reperfusion && reperfusion < puncture ? 'EVT reperfusion precedes puncture; review the recorded dates and times.' : '';
+}
 export function activeTimelineFields(state) {
   return TIMELINE_FIELDS.filter(([key]) => state.context === 'acute' || ['consultStart', 'consultEnd'].includes(key))
     .filter(([key]) => key !== 'reversal' || state.note.diagnosisCategory === 'ich')
@@ -50,6 +51,7 @@ export function activeTimelineFields(state) {
 }
 export function formatTimeline(state, now) {
   const entered = activeTimelineFields(state).filter(([key]) => state.timeline?.[key]);
-  if (!entered.length) return '';
-  return ['Timeline:', ...entered.map(([key, label]) => `${label}: ${state.timeline[key]}${unambiguousTimestamp(state.timeline[key], now) ? '' : ' (invalid or future, or ambiguous local time; review)'}`), ...timelineIntervals(state, now).map(interval => `${interval.label}: ${interval.text}`)].join('\n');
+  const intervals = timelineIntervals(state, now);
+  if (!entered.length && !intervals.length) return '';
+  return ['Timeline:', ...entered.map(([key, label]) => `${label}: ${state.timeline[key]}${unambiguousTimestamp(state.timeline[key], now) ? '' : ' (invalid or future, or ambiguous local time; review)'}`), ...intervals.map(interval => `${interval.label}: ${interval.text}`)].join('\n');
 }

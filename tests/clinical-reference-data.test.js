@@ -13,7 +13,7 @@ const changed = change => { const data = structuredClone(canonical); change(data
 
 describe('bounded clinical-reference data', () => {
   it('validates all topics, calculator presentations and completed studies against the source/route contract', () => {
-    expect(canonical.topics).toHaveLength(80);
+    expect(canonical.topics).toHaveLength(83);
     expect(new Set(canonical.topics.map(topic => topic.category)).size).toBe(9);
     expect(canonical.calculators).toHaveLength(16);
     expect(canonical.studies).toHaveLength(58);

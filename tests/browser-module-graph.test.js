@@ -10,7 +10,7 @@ describe('Encounter-first browser module graph', () => {
       absWorkingDir: root,
       entryPoints: ['src/app.jsx'],
       outdir: 'unused-module-graph-test',
-      bundle: true, splitting: true, format: 'esm', target: 'es2018',
+      bundle: true, splitting: true, format: 'esm', target: 'es2020',
       write: false, metafile: true, minify: true, charset: 'utf8',
       jsxFactory: 'createElement', inject: ['src/jsx-factory.js'],
       define: { __STROKE_BUILD_PUBLIC_DEMO__: 'true' }

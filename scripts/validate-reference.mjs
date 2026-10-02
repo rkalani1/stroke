@@ -3,7 +3,7 @@ import { validCalculatorDefinitions } from '../src/reference-search.js';
 import { parseWorkspaceRoute } from '../src/workspace-routing.js';
 
 const SETTINGS = new Set(['on-call', 'hospital', 'clinic']);
-const SOURCE_TYPES = new Set(['Guideline', 'Scientific statement', 'Science advisory', 'Clinical policy', 'Randomized trial', 'Observational study', 'Meta-analysis', 'Drug label', 'Practice advisory', 'Consensus statement', 'Report', 'Educational resource', 'Policy statement', 'Position statement', 'Performance measures', 'Practice update']);
+const SOURCE_TYPES = new Set(['Guideline', 'Scientific statement', 'Science advisory', 'Clinical policy', 'Randomized trial', 'Observational study', 'Meta-analysis', 'Drug label', 'Practice advisory', 'Consensus statement', 'Report', 'Educational resource', 'Policy statement', 'Position statement', 'Performance measures', 'Practice update', 'Correction']);
 const text = value => typeof value === 'string' && value.trim().length > 0;
 const slug = value => text(value) && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value);
 const strings = value => Array.isArray(value) && value.every(text);

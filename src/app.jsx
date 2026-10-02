@@ -14,7 +14,7 @@ const ProtectedProtocols = lazy(() => import('./ProtectedProtocols.jsx'));
 const Trials = lazy(() => import('./Trials.jsx'));
 const Reference = lazy(() => import('./Reference.jsx'));
 const Tools = lazy(() => import('./Tools.jsx'));
-const APP_VERSION = '7.6.4';
+const APP_VERSION = '7.6.5';
 const getPublicDemoMode = () => {
   if (BUILD_PUBLIC_DEMO) return true;
   return /(^|\.)github\.io$/i.test(window.location.hostname || '');
