@@ -137,6 +137,10 @@ describe('bounded clinical-reference data', () => {
     expect(matches.map(record => record.id)).toEqual(['elan', 'catalyst']);
     expect(matches[0].limits).toBeTruthy();
     expect(matches[0].sources[0].access).toBeTruthy();
+    const point = searchReference(canonical.studies, 'POINT');
+    expect(point[0].id).toBe('point');
+    // Broad matches such as "endpoint" remain available after the named trial.
+    expect(point.length).toBeGreaterThan(1);
     expect(searchReference(canonical.topics, '', 'clinic').every(record => record.settings.includes('clinic'))).toBe(true);
     expect(searchReference(canonical.studies, 'no-such-reference-xyz')).toEqual([]);
   });

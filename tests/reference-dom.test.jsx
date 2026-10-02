@@ -74,6 +74,33 @@ describe('curated reference integrity and interaction',()=>{
       for(const study of data.studies){const card=rendered.find(record=>record.id===study.id);expect(card.parent).toBe(study.relatedTopic);for(const field of ['question','population','comparison','result','limits'])expect(card.text).toContain(study[field]);for(const source of study.sources){expect(card.links).toContain(source.url);expect(card.text).toContain(source.access);}}
     }finally{await page.close();}
   });
+  it('surfaces matching study links before topics, respects filters and prioritizes named studies',async()=>{
+    const page=await pageWith();try{
+      await page.getByLabel('Find a clinical question').waitFor();
+      expect(await page.getByRole('navigation',{name:'Matching study summaries'}).count()).toBe(0);
+      await page.getByLabel('Find a clinical question').fill('POINT');
+      const matches=page.getByRole('navigation',{name:'Matching study summaries'});
+      expect(await matches.getByRole('link').first().getAttribute('href')).toBe('#/evidence/point');
+      expect(await page.locator('.reference-body').count()).toBe(0);
+      await page.getByLabel('Care setting').selectOption('on-call');
+      await page.getByLabel('Clinical section').selectOption('Prevention and antithrombotics');
+      expect(await matches.getByRole('link',{name:/POINT/}).count()).toBe(1);
+      await page.getByLabel('Clinical section').selectOption('Recovery and rehabilitation');
+      expect(await page.locator('.reference-study-results a[href="#/evidence/point"]').count()).toBe(0);
+      await page.getByRole('button',{name:'Clear filters'}).click();
+      expect(await matches.count()).toBe(0);
+      await page.getByLabel('Find a clinical question').fill('ELAN');
+      expect(await matches.getByRole('link').first().getAttribute('href')).toBe('#/evidence/elan');
+      expect(await matches.getByRole('link').count()).toBe(2);
+      await page.evaluate(()=>window.renderReference({focusId:'elan'}));
+      await page.waitForFunction(()=>document.querySelector('[data-reference-id="elan"]')?.open);
+      await page.locator('[data-reference-id="af-timing"] > summary').click();
+      await page.getByLabel('Find a clinical question').fill('ELAN');
+      await matches.getByRole('link').first().click();
+      await page.waitForFunction(()=>document.querySelector('[data-reference-id="elan"]')?.open && document.activeElement.closest('[data-reference-id]')?.dataset.referenceId==='elan');
+      expect(await page.getByLabel('Find a clinical question').inputValue()).toBe('');
+    }finally{await page.close();}
+  });
   it('finds summary-only terms and invalidates delayed study copies when the parent closes',async()=>{
     const page=await pageWith({deferred:true});try{
       const study=data.studies.find(record=>record.id==='restart');

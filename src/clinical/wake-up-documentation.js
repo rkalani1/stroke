@@ -4,6 +4,7 @@ const reviewLimit = 'complete eligibility and drug-specific treatment decision r
 const recordedText = value => typeof value === 'string' && value.trim() ? value.trim() : 'not documented';
 const recordedNumber = value => Number.isFinite(value) ? String(value) : 'not documented or invalid';
 const recordedCheck = value => value === true ? 'documented' : 'not documented';
+const recordedFinding = value => value === true ? 'yes' : value === false ? 'no' : 'not documented';
 
 // Export the selected source screen, using the same assessment as the Encounter
 // UI. Checkbox state is an attestation, not proof of a negative imaging finding.
@@ -24,7 +25,8 @@ export function formatWakeUpScreenForExport(note = {}, now = new Date()) {
     lines.push(
       `DWI-positive lesion: ${recordedCheck(workflow.dwi?.positiveForLesion)}.`,
       `No marked corresponding FLAIR hyperintensity: ${recordedCheck(workflow.flair?.noMarkedHyperintensity)}.`,
-      `MRI lesion extent and imaging-selection exclusions reviewed: ${recordedCheck(workflow.mriLesionExtentReviewed)}.`,
+      `MRI lesion extent reviewed: ${recordedCheck(workflow.mriLesionExtentReviewed)}.`,
+      `DWI lesion smaller than one-third MCA territory: ${recordedFinding(workflow.dwiLesionUnderOneThirdMCA)}.`,
       `Symptom discovery (date/time): ${recordedText(note.discoveryDate)} / ${recordedText(note.discoveryTime)}.`
     );
     if (workflow.dwi?.lesionVolume !== undefined && workflow.dwi?.lesionVolume !== null && String(workflow.dwi.lesionVolume).trim() !== '') {

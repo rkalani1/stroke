@@ -55,7 +55,7 @@ describe('canonical state and honest documentation', () => {
     expect(buildSummary(s,NOW)).toContain('GCS E4 V5 M6 = 15/15');expect(buildSummary(s,NOW)).toContain('Consent time: invalid or future');
   });
   it('uses the same strict calendar validator for partial imaging-selected screens', () => {
-    const n={age:'65',nihss:'0',ctHemorrhageStatus:'absent',lkwUnknown:true,discoveryDate:'2026-02-30',discoveryTime:'02:30',wakeUpStrokeWorkflow:{dwi:{positiveForLesion:true},flair:{noMarkedHyperintensity:true},mriLesionExtentReviewed:true}};
+    const n={age:'65',nihss:'0',ctHemorrhageStatus:'absent',lkwUnknown:true,discoveryDate:'2026-02-30',discoveryTime:'02:30',wakeUpStrokeWorkflow:{dwi:{positiveForLesion:true},flair:{noMarkedHyperintensity:true},mriLesionExtentReviewed:true,dwiLesionUnderOneThirdMCA:true}};
     expect(evaluateWakeUpScreen(n,new Date('2026-03-02T05:00')).autoWakeUp).toBe(false);
     expect(evaluateWakeUpScreen({...n,discoveryDate:'2026-03-02'},new Date('2026-03-02T05:00')).autoWakeUp).toBe(true);
   });
@@ -75,7 +75,7 @@ describe('canonical state and honest documentation', () => {
     s.note.presentingBP='synthetic user@example.invalid';expect(await copySummary(ref,s.draft.text,async()=>writes++)).toBe('blocked');expect(writes).toBe(1);
   });
   it('preserves subminute precision at source-screen boundaries', () => {
-    const n={age:'65',nihss:'0',ctHemorrhageStatus:'absent',lkwUnknown:true,discoveryDate:'2026-10-01',discoveryTime:'00:00',wakeUpStrokeWorkflow:{dwi:{positiveForLesion:true},flair:{noMarkedHyperintensity:true},mriLesionExtentReviewed:true}};
+    const n={age:'65',nihss:'0',ctHemorrhageStatus:'absent',lkwUnknown:true,discoveryDate:'2026-10-01',discoveryTime:'00:00',wakeUpStrokeWorkflow:{dwi:{positiveForLesion:true},flair:{noMarkedHyperintensity:true},mriLesionExtentReviewed:true,dwiLesionUnderOneThirdMCA:true}};
     const boundary=new Date('2026-10-01T04:30').getTime();
     expect(evaluateWakeUpScreen(n,new Date(boundary)).autoWakeUp).toBe(true);
     for(const delta of [1,30000,59999]) expect(evaluateWakeUpScreen(n,new Date(boundary+delta)).autoWakeUp).toBe(false);

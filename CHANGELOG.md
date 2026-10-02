@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v7.6.2 — 2026-10-01 — Study retrieval and MRI selection precision
+
+- Show direct matching-study links above filtered Evidence topics; prioritize exact study names and abbreviations while retaining broader matches. Repeating a link reopens and focuses its summary even when the route is unchanged.
+- Separate MRI lesion-extent review from an explicitly qualifying DWI territorial extent. Missing or negative findings cannot satisfy the partial MRI screen; Pulsara/Epic exports preserve the distinction and invalidate after edits.
+- Compact phone navigation to two rows when labels fit, allow large-text wrapping in Evidence and Trials, and switch Encounter section navigation to its compact selector when text needs more room.
+- Preserve all Evidence/study/calculator content, protected protocol locks, clinical-state safeguards and existing payload ceilings.
+
 ## v7.6.1 — 2026-10-01 — One Evidence destination
 
 - Remove the incomplete Completed evidence subsection from Trials; retain Screener, Tables and Database.

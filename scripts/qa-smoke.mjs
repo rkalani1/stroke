@@ -145,6 +145,39 @@ async function main() {
       assert(!(await page.locator('main').innerText()).includes('archival Git ref'));
       await reset(page);
     });
+    await check('MRI source screen requires a qualifying extent and invalidates both documentation formats after edits', async () => {
+      try {
+        await reset(page); await setupIschemic(page);
+        await page.getByLabel('Current NIHSS source', {exact:true}).selectOption('reported');
+        await page.getByLabel('Reported NIHSS total (0–42)', {exact:true}).fill('8');
+        await page.getByLabel('Last known well is unknown', {exact:true}).check();
+        const stamp = await localStamp(page, 60);
+        await openDetails(page.getByLabel('Discovery date (local)', {exact:true}));
+        await page.getByLabel('Discovery date (local)', {exact:true}).fill(stamp.split('T')[0]);
+        await page.getByLabel('Discovery time (local)', {exact:true}).fill(stamp.split('T')[1]);
+        await page.getByLabel('CT hemorrhage review', {exact:true}).selectOption('absent');
+        await openDetails(page.getByLabel('MRI pathway selected (No = CTP / EXTEND)', {exact:true}));
+        for (const label of ['MRI pathway selected (No = CTP / EXTEND)', 'DWI positive lesion', 'FLAIR without marked hyperintensity', 'MRI lesion extent reviewed']) await page.getByLabel(label, {exact:true}).selectOption('true');
+        const extent = page.getByLabel('DWI lesion smaller than one-third MCA territory', {exact:true});
+        assert.equal(await extent.inputValue(), '');
+        assert((await (await generate(page)).inputValue()).includes('MRI (WAKE-UP): incomplete or not met;'));
+        for (const consultation of ['Telephone', 'Video']) {
+          await page.getByRole('radio', {name:consultation, exact:true}).check();
+          await extent.selectOption('true');
+          assert.equal(await page.locator('[data-generated-note]').count(), 0);
+          let text = await (await generate(page)).inputValue();
+          assert(text.includes('MRI (WAKE-UP): partial source screen met;'));
+          assert(text.includes('DWI lesion smaller than one-third MCA territory: yes.'));
+          await extent.selectOption('false');
+          assert.equal(await page.locator('[data-generated-note]').count(), 0);
+          text = await (await generate(page)).inputValue();
+          assert(text.includes('MRI (WAKE-UP): incomplete or not met;'));
+          assert(text.includes('DWI lesion smaller than one-third MCA territory: no.'));
+          await extent.selectOption('');
+          assert.equal(await page.locator('[data-generated-note]').count(), 0);
+        }
+      } finally { await reset(page); }
+    });
     await check('encounter shortcuts reveal and focus missing fields without changing route or state', async () => {
       await reset(page);
       await page.getByRole('button', { name: 'Next: Working diagnosis' }).click();
@@ -407,6 +440,19 @@ async function main() {
         assert(filteredIds.every(id => reference.data.topics.find(topic => topic.id === id).settings.includes('clinic')));
         await evidence.getByRole('searchbox', { name: 'Find a clinical question', exact: true }).fill('unmatchableqareference');
         await evidence.getByText('0 topics found.', { exact: true }).waitFor();
+        await evidence.getByRole('button', {name:'Clear filters', exact:true}).click();
+        await evidence.getByRole('searchbox', {name:'Find a clinical question', exact:true}).fill('ELAN');
+        const matches = evidence.getByRole('navigation', {name:'Matching study summaries', exact:true});
+        assert.equal(await matches.getByRole('link').first().getAttribute('href'), '#/evidence/elan');
+        await matches.getByRole('link').first().click();
+        await page.waitForFunction(() => document.querySelector('[data-reference-id="elan"]')?.open && document.activeElement.closest('[data-reference-id]')?.dataset.referenceId === 'elan');
+        assert.equal(await matches.count(), 0);
+        await evidence.locator('[data-reference-id="af-timing"] > summary').click();
+        await evidence.getByRole('searchbox', {name:'Find a clinical question', exact:true}).fill('ELAN');
+        await matches.getByRole('link').first().click();
+        await page.waitForFunction(() => document.querySelector('[data-reference-id="elan"]')?.open && document.activeElement.closest('[data-reference-id]')?.dataset.referenceId === 'elan');
+        assert.equal(await matches.count(), 0);
+        await evidence.locator('[data-reference-id="elan"] > summary').click();
         await page.evaluate(() => { location.hash = '#/evidence/af-timing'; });
         const topic = evidence.locator('[data-reference-id="af-timing"]');
         await page.waitForFunction(() => { const card = document.querySelector('[aria-label="Evidence"] [data-reference-id="af-timing"]'); return card?.open && card.contains(document.activeElement); });

@@ -2,12 +2,14 @@
 export const CARE_SETTINGS = [['all', 'All settings'], ['on-call', 'On call'], ['hospital', 'Hospital'], ['clinic', 'Clinic']];
 const normalize = value => String(value).normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 export function searchReference(records, query = '', setting = 'all') {
-  const terms = normalize(query).split(' ').filter(Boolean);
+  const phrase = normalize(query), terms = phrase.split(' ').filter(Boolean);
+  const rank = record => [record.id, record.title, ...record.keywords].some(value => normalize(value) === phrase) ? 2
+    : terms.every(term => ` ${normalize(record.title)} `.includes(` ${term} `)) ? 1 : 0;
   return records.filter(record => {
     if (setting !== 'all' && !record.settings.includes(setting)) return false;
     const searchable = normalize([record.title, record.category || '', record.question || '', record.summary || '', ...(record.consider || []), record.population || '', record.comparison || '', record.result || '', ...record.keywords, ...record.sources.map(source => source.title)].join(' '));
     return terms.every(term => searchable.includes(term));
-  });
+  }).sort((a, b) => terms.length ? rank(b) - rank(a) : 0);
 }
 export function referenceText(record) {
   const body = record.summary ? [record.summary, ...record.consider.map(item => `• ${item}`), `Limits: ${record.caution}`] : [`Question: ${record.question}`, `Population: ${record.population}`, `Comparison: ${record.comparison}`, `Result: ${record.result}`, `Limits: ${record.limits}`];
