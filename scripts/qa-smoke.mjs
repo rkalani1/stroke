@@ -631,7 +631,7 @@ async function main() {
       await page.getByRole('button',{name:'Copy Pulsara summary',exact:true}).click();assert.equal(await page.evaluate(()=>window.__qaClipboard.length),1);assert.equal(await page.evaluate(()=>window.__qaClipboard[0]),first);
       await page.evaluate(()=>window.__qaDenyClipboard=true);await page.getByRole('button',{name:'Copy Pulsara summary',exact:true}).click();await page.getByText('Clipboard unavailable. Select the read-only summary and copy it manually.',{exact:true}).waitFor();assert(await draft.evaluate(el=>el.selectionStart===0&&el.selectionEnd===el.value.length));
       await page.getByLabel('Age (years)',{exact:true}).fill('66');await page.getByText('Inputs changed since the preview. Copy regenerates the note automatically.',{exact:true}).waitFor();assert.equal(await page.getByRole('button',{name:'Copy this preview',exact:true}).count(),0);draft=await generate(page);const second=await draft.inputValue();assert.equal(second.split('Clinician rationale / recommendations:').length-1,1);assert(!second.includes(first));
-      await page.getByLabel('Context',{exact:true}).selectOption('follow-up');assert.equal(await page.locator('#calc-tnk').count(),0);assert.equal(await page.getByRole('button',{name:'Copy Pulsara summary',exact:true}).count(),0);draft=await generate(page);assert(!(await draft.inputValue()).includes('IVT administration:'));assert((await draft.inputValue()).includes('marker zeta'));await page.getByLabel('Context',{exact:true}).selectOption('acute');assert.equal(await page.getByLabel('Selected IV thrombolytic',{exact:true}).inputValue(),'TNK');
+      await page.getByLabel('Context',{exact:true}).selectOption('follow-up');assert.equal(await page.locator('#calc-tnk').count(),0);assert.equal(await page.getByRole('button',{name:'Copy this preview',exact:true}).count(),0);draft=await generate(page);assert(!(await draft.inputValue()).includes('IVT administration:'));assert((await draft.inputValue()).includes('marker zeta'));await page.getByLabel('Context',{exact:true}).selectOption('acute');assert.equal(await page.getByLabel('Selected IV thrombolytic',{exact:true}).inputValue(),'TNK');
     });
     await check('unentered discovery, future timestamps, explicit administration timer and context invalidation', async () => {
       await page.getByLabel('Last known well is unknown',{exact:true}).check();await page.getByText('Discovery timestamp not documented',{exact:true}).waitFor();const discovery=page.getByLabel('Discovery time (local)',{exact:true});await openDetails(discovery);assert.equal(await discovery.inputValue(),'');await page.getByLabel('Last known well is unknown',{exact:true}).uncheck();
@@ -640,7 +640,7 @@ async function main() {
     await check('ICH ABC/2, complete GCS, reviewed zero ICH score, clearing and retained protocol shared dimensions', async () => {
       await page.getByLabel('Working diagnosis',{exact:true}).selectOption('ich');for(const [label,value] of [['GCS Eye','4'],['GCS Verbal','5'],['GCS Motor','6']])await page.locator('#tabpanel-encounter').getByLabel(label,{exact:true}).selectOption(value);await page.getByText('GCS 15/15',{exact:true}).waitFor();
       for(const [label,value] of [['A: largest diameter (cm)','4'],['B: perpendicular diameter (cm)','3'],['Slice thickness (mm)','5'],['Number of hematoma slices','4']])await page.locator('#tabpanel-encounter').getByLabel(label,{exact:true}).fill(value);
-      assert((await page.locator('#calc-ich-volume').innerText()).includes('12 mL'));for(const label of ['Intraventricular hemorrhage','Infratentorial origin'])await page.locator('#tabpanel-encounter').getByLabel(label,{exact:true}).selectOption('false');await page.getByText('ICH score 0/6 · severity framework; no individual prognosis',{exact:true}).waitFor();
+      assert((await page.locator('#calc-ich-volume').innerText()).includes('12 mL'));for(const label of ['Intraventricular hemorrhage','Infratentorial origin'])await page.locator('#tabpanel-encounter').getByLabel(label,{exact:true}).selectOption('false');await page.getByText('ICH score 0/6 · severity grade, not an individual prognosis',{exact:true}).waitFor();
       await page.getByRole('link',{name:'Protocols',exact:true}).click();await page.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();await page.locator('#mgmt-tabpanel-ich').waitFor();const dim=page.locator('#mgmt-tabpanel-ich input[placeholder="e.g. 4.2"]');await openDetails(dim);assert.equal(await dim.inputValue(),'4');await dim.fill('');await page.getByRole('link',{name:'Stroke',exact:true}).click();assert.equal(await page.getByLabel('A: largest diameter (cm)',{exact:true}).inputValue(),'');assert((await page.locator('#calc-ich-score').innerText()).includes('Complete age, GCS, volume'));
     });
     await check('public-demo privacy: no clinical storage, IndexedDB, URL/context transfer, console or cached response values', async () => {
@@ -672,7 +672,7 @@ async function main() {
         await p.getByRole('button', { name: 'Generate Pulsara summary', exact: true }).click();
         assert(!(await p.getByLabel('Generated Pulsara summary', { exact: true }).inputValue()).includes('TNK at'));
         await p.getByLabel('IVT administration timestamp (local) clock occurrence', { exact: true }).selectOption({ label: 'Second occurrence (UTC−08:00)' });
-        assert.equal(await p.getByRole('button', { name: 'Copy Pulsara summary', exact: true }).count(), 0);
+        assert.equal(await p.getByRole('button', { name: 'Copy this preview', exact: true }).count(), 0);
         assert((await p.locator('#handoff').innerText()).includes('next scheduled check'));
         await p.getByLabel('EVT puncture timestamp (local)', { exact: true }).fill('2026-11-01T00:45');
         await p.getByLabel('EVT reperfusion timestamp (local)', { exact: true }).fill('2026-11-01T00:30');
@@ -682,7 +682,7 @@ async function main() {
           await p.getByRole('button', { name: `Generate ${label}`, exact: true }).click();
           const text = await p.getByLabel(`Generated ${label}`, { exact: true }).inputValue();
           assert(text.includes('EVT reperfusion precedes puncture'));
-          assert(text.includes('TNK at 2026-11-01T09:31:00.000Z'));
+          assert(text.includes('TNK at 2026-11-01 01:31:00 (UTC−08:00)'));
         }
         assert.equal(await p.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false);
         return { repeatedHour: 'explicit first/second occurrence', editedChoice: 'invalidated', monitoring: 'unresolved until selected', chronology: 'qualified in both formats' };
@@ -698,7 +698,7 @@ async function main() {
       assert.equal(await cards.getByLabel('NIHSS',{exact:true}).inputValue(),'0');assert(await cards.getByLabel('NIHSS',{exact:true}).evaluate(el=>el.readOnly));assert.equal(await cards.getByLabel('ASPECTS',{exact:true}).inputValue(),'3');assert.equal(await cards.getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');assert.equal(await page.locator('#evt-aspects').inputValue(),'3-5');assert(await page.locator('#evt-aspects').isDisabled());
       const ivtAge=cards.getByLabel('Age',{exact:true}).first();await ivtAge.fill('70');assert(await ivtAge.evaluate(el=>document.activeElement===el));const review=cards.getByLabel('Absolute and relative contraindications reviewed',{exact:true});await review.check();assert(await review.isChecked());
       await page.getByRole('link',{name:'Stroke',exact:true}).click();assert.equal(await page.getByLabel('Age (years)',{exact:true}).inputValue(),'70');await page.getByRole('link',{name:'Protocols',exact:true}).click();assert(await review.isChecked());
-      await page.getByRole('link',{name:'Stroke',exact:true}).click();await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).fill('90');await page.getByLabel('Glucose (mg/dL)',{exact:true}).fill('130');await page.getByLabel('Last known well is unknown',{exact:true}).check();await items.first().selectOption('');await page.getByLabel('Reviewed ASPECTS (0–10)',{exact:true}).fill('');
+      await page.getByRole('link',{name:'Stroke',exact:true}).click();await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).fill('90');await page.getByLabel('Glucose (mg/dL)',{exact:true}).fill('130');await page.getByLabel('Last known well is unknown',{exact:true}).check();await items.first().focus();await items.first().press('Delete');await page.getByLabel('Reviewed ASPECTS (0–10)',{exact:true}).fill('');
       await page.getByRole('link',{name:'Protocols',exact:true}).click();assert.equal(await cards.getByLabel('Weight (kg)',{exact:true}).inputValue(),'90');assert.equal(await cards.getByLabel('Glucose',{exact:true}).inputValue(),'130');assert.equal(await cards.getByLabel('NIHSS',{exact:true}).inputValue(),'');assert.equal(await cards.getByLabel('ASPECTS',{exact:true}).inputValue(),'');assert.equal(await cards.getByLabel('LKW (h)',{exact:true}).first().inputValue(),'');assert(await cards.getByLabel('Wake-up or unknown LKW (leave LKW hours blank)',{exact:true}).isChecked());assert.equal(await review.isChecked(),false);
       await reset(page);return{sourceEditsInvalidateReviews:true,derivedScoresNeverImputed:true,navigationPreservesReviews:true};
     });
@@ -722,10 +722,10 @@ async function main() {
         await page.getByRole('button', {name:'Generate Team handoff',exact:true}).click();
         const draft = await page.getByLabel('Generated Team handoff', {exact:true}).inputValue();
         assert(draft.includes('Anticoagulant exposure: apixaban'));
-        assert(draft.includes(`Last anticoagulant dose: ${lastDose}`));
+        assert(draft.includes(`Last anticoagulant dose: ${lastDose.replace('T', ' ')}`));
         assert(draft.includes('CTP: Synthetic perfusion observation'));
         await page.getByLabel('Anticoagulant exposure', {exact:true}).selectOption('none');
-        assert.equal(await page.getByRole('button', {name:'Copy Team handoff',exact:true}).count(), 0);
+        assert.equal(await page.getByRole('button', {name:'Copy this preview',exact:true}).count(), 0);
       } finally { await reset(page); }
     });
     await check('historical study citations are searchable and new summaries preserve outcome limits', async () => {
@@ -734,6 +734,7 @@ async function main() {
       await evidence.getByLabel('Find a clinical question', {exact:true}).fill('AVERROES');
       assert.equal(await evidence.locator('[data-reference-id]').count(), 1);
       const af = evidence.locator('[data-reference-id="af-prevention"]'); await af.locator('summary').click();
+      await af.locator(':scope > .reference-body > details.reference-sources > summary').click();
       await af.getByRole('link', {name:/AVERROES/}).waitFor();
       assert((await af.locator(':scope > .reference-body > .reference-sources > .reference-provenance').textContent()).includes('bibliographic record checked'));
       await page.getByRole('link', {name:'Trials',exact:true}).click();
@@ -787,10 +788,11 @@ async function main() {
         assert.equal(await evidence.locator('[data-reference-id]').count(), reference.data.topics.length);
         const topic = evidence.locator('[data-reference-id="af-timing"]');
         await topic.locator('summary').click();
-        await topic.getByRole('heading', { name: 'Sources', exact: true }).waitFor();
+        await topic.locator(':scope > .reference-body > details.reference-sources > summary').waitFor();
         await p.evaluate(() => { location.hash = '#/evidence/elan'; });
         const study = evidence.locator('[data-reference-id="elan"]');
         await p.waitForFunction(() => document.querySelector('[data-reference-id="elan"]')?.open);
+        await study.locator(':scope > .reference-body > details.reference-sources > summary').click();
         await study.getByRole('link', { name: 'ELAN primary report', exact: true }).waitFor();
         assert.equal(await p.evaluate(() => navigator.onLine), false);
         await p.screenshot({ path: path.join(outDir, 'evidence-offline-mobile.png'), fullPage: true });

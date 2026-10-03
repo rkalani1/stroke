@@ -20,7 +20,7 @@ const Reference = lazy(() => import('./Reference.jsx'));
 const Tools = lazy(() => import('./Tools.jsx'));
 const QuickSearch = lazy(() => import('./components/QuickSearch.jsx'));
 const QuickReference = lazy(() => import('./components/QuickReference.jsx'));
-const APP_VERSION = '7.6.5';
+const APP_VERSION = '7.7.0';
 const getPublicDemoMode = () => {
   if (BUILD_PUBLIC_DEMO) return true;
   return /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -146,7 +146,7 @@ function App() {
     setState(prev => prev.revision === current.revision ? { ...prev, draft } : prev);
     const result = await copySummary(stateRef, text, value => navigator.clipboard.writeText(value));
     if (result === 'copied') setCopyStatus(`${documentationLabel(current)} copied.`);
-    if (result === 'denied') { setCopyStatus('Clipboard unavailable. Select the summary and copy it manually.'); location.hash = '#/encounter'; requestAnimationFrame(() => { focusEncounterTarget('handoff-title'); document.querySelector('[data-generated-note]')?.select(); }); }
+    if (result === 'denied') { setCopyStatus('Clipboard unavailable. Select the read-only summary and copy it manually.'); location.hash = '#/encounter'; requestAnimationFrame(() => { focusEncounterTarget('handoff-title'); document.querySelector('[data-generated-note]')?.select(); }); }
   };
   const timing = encounterTiming(state.note, now);
   const volume = encounterVolume(state.volume);

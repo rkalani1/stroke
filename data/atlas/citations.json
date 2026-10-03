@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "citations",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.6.5",
+    "appVersion": "7.7.0",
     "checksum": "sha256:7df7539161214e503ebdb9e3b3ab04af",
     "count": 43,
     "source": "Maintained Encounter/protocol evidence dependency closure",

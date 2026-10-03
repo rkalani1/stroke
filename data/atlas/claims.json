@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "claims",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.6.5",
+    "appVersion": "7.7.0",
     "checksum": "sha256:d67377827a118a59b001f9203d9ad58d",
     "count": 12,
     "source": "Maintained Encounter/protocol evidence dependency closure",
