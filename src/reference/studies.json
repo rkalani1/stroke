@@ -2,6 +2,7 @@
   {
     "id": "elan",
     "title": "ELAN — timing of anticoagulation after AF-associated stroke",
+    "headline": "Early DOAC: composite 2.9 vs 4.1% (difference not significant)",
     "year": 2023,
     "settings": [
       "hospital",
@@ -24,7 +25,7 @@
         "year": 2023,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
     "relatedTopic": "af-timing"
@@ -32,6 +33,7 @@
   {
     "id": "optimas",
     "title": "OPTIMAS — early versus delayed DOAC initiation",
+    "headline": "DOAC ≤4 days noninferior to days 7–14 (3.3% each)",
     "year": 2024,
     "settings": [
       "hospital",
@@ -62,6 +64,7 @@
   {
     "id": "catalyst",
     "title": "CATALYST — pooled randomized evidence on DOAC timing",
+    "headline": "DOAC ≤4 days: 2.1 vs 3.0% (OR 0.70); sICH 0.4% each",
     "year": 2025,
     "settings": [
       "hospital",
@@ -88,7 +91,7 @@
         "year": 2025,
         "type": "Meta-analysis",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
     "relatedTopic": "af-timing"
@@ -96,6 +99,7 @@
   {
     "id": "point",
     "title": "POINT — acute dual antiplatelet benefit and bleeding",
+    "headline": "DAPT: major ischemic events 5.0 vs 6.5%; major bleeding 0.9 vs 0.4%",
     "year": 2018,
     "settings": [
       "on-call",
@@ -121,14 +125,15 @@
         "year": 2018,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
-    "relatedTopic": "secondary-prevention"
+    "relatedTopic": "minor-stroke-antiplatelets"
   },
   {
     "id": "sammpris",
     "title": "SAMMPRIS — medical management versus intracranial stenting",
+    "headline": "Stenting worse: 30-day stroke/death 14.7 vs 5.8%",
     "year": 2011,
     "settings": [
       "hospital",
@@ -160,6 +165,7 @@
   {
     "id": "close",
     "title": "CLOSE — PFO closure in selected cryptogenic stroke",
+    "headline": "PFO closure: stroke 0/238 vs 14/235; AF 4.6 vs 0.9%",
     "year": 2017,
     "settings": [
       "hospital",
@@ -183,7 +189,7 @@
         "year": 2017,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
     "relatedTopic": "pfo"
@@ -191,6 +197,7 @@
   {
     "id": "treat-cad",
     "title": "TREAT-CAD — aspirin versus anticoagulation for dissection",
+    "headline": "Aspirin not shown noninferior to VKA (23 vs 15%)",
     "year": 2021,
     "settings": [
       "hospital",
@@ -215,7 +222,7 @@
         "year": 2021,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
     "relatedTopic": "dissection"
@@ -223,6 +230,7 @@
   {
     "id": "select2",
     "title": "SELECT2 — thrombectomy in selected large-core stroke",
+    "headline": "Large core: generalized OR 1.51; mRS 0–2 20 vs 7%",
     "year": 2023,
     "settings": [
       "on-call",
@@ -250,11 +258,208 @@
         "access": "Primary abstract and January 2024 publisher correction read; full trial report and supplements not reviewed."
       }
     ],
+    "relatedTopic": "large-core-evt"
+  },
+  {
+    "id": "angel-aspect",
+    "title": "ANGEL-ASPECT — thrombectomy for large infarct in China",
+    "headline": "Large core: GOR 1.37; sICH 6.1 vs 2.7%",
+    "year": 2023,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "large core",
+      "ASPECTS",
+      "thrombectomy",
+      "EVT"
+    ],
+    "question": "Does EVT help anterior LVO with ASPECTS 3–5 or core 70–100 mL within 24 hours?",
+    "population": "456 patients in China; about 28% received IVT.",
+    "comparison": "EVT plus medical management versus medical management alone.",
+    "result": "The 90-day mRS shifted toward better outcomes with EVT (generalized OR 1.37; 95% CI 1.11–1.69). Symptomatic ICH 6.1% vs 2.7%; any ICH 49.1% vs 17.3%.",
+    "limits": "Stopped early for efficacy; open-label, single-country trial.",
+    "sources": [
+      {
+        "title": "ANGEL-ASPECT primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36762852/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "large-core-evt"
+  },
+  {
+    "id": "rescue-japan-limit",
+    "title": "RESCUE-Japan LIMIT — thrombectomy for ASPECTS 3–5",
+    "headline": "ASPECTS 3–5: mRS 0–3 31.0 vs 12.7%",
+    "year": 2022,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "large core",
+      "ASPECTS",
+      "thrombectomy",
+      "EVT",
+      "Japan"
+    ],
+    "question": "Does EVT help LVO with ASPECTS 3–5?",
+    "population": "203 patients in Japan within 6 hours, or within 24 hours without early FLAIR change; about 27% received alteplase (0.6 mg/kg).",
+    "comparison": "EVT plus medical care versus medical care alone.",
+    "result": "mRS 0–3 at 90 days occurred in 31.0% vs 12.7% (RR 2.43; 95% CI 1.35–4.37). Any ICH occurred in 58.0% vs 31.4%.",
+    "limits": "Small open-label trial; used the Japanese alteplase dose.",
+    "sources": [
+      {
+        "title": "RESCUE-Japan LIMIT primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/35138767/",
+        "year": 2022,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "large-core-evt"
+  },
+  {
+    "id": "tension",
+    "title": "TENSION — thrombectomy for established large infarct",
+    "headline": "ASPECTS 3–5 ≤12 h: cOR 2.58; lower mortality",
+    "year": 2023,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "large core",
+      "ASPECTS",
+      "thrombectomy",
+      "EVT",
+      "non-contrast CT"
+    ],
+    "question": "Does EVT help anterior LVO with ASPECTS 3–5 selected mainly by non-contrast CT?",
+    "population": "253 patients in Europe and Canada within 12 hours of onset.",
+    "comparison": "EVT plus medical treatment versus medical treatment alone.",
+    "result": "The 90-day mRS shifted toward better outcomes (adjusted cOR 2.58; 95% CI 1.60–4.15) with lower mortality (HR 0.67; 95% CI 0.46–0.98). Symptomatic ICH 6% vs 5%.",
+    "limits": "Stopped early for efficacy after the first interim analysis; open-label.",
+    "sources": [
+      {
+        "title": "TENSION primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37837989/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "large-core-evt"
+  },
+  {
+    "id": "laste",
+    "title": "LASTE — thrombectomy for large infarct of unrestricted size",
+    "headline": "ASPECTS ≤5 ≤6.5 h: median mRS 4 vs 6; mortality 36.1 vs 55.5%",
+    "year": 2024,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "large core",
+      "ASPECTS 0-2",
+      "thrombectomy",
+      "EVT"
+    ],
+    "question": "Does EVT help anterior LVO with ASPECTS ≤5, without a lower limit, within 6.5 hours?",
+    "population": "333 randomized patients (324 analyzed); about 35% received thrombolysis.",
+    "comparison": "EVT plus medical care versus medical care alone.",
+    "result": "Median 90-day mRS was 4 vs 6 (generalized OR 1.63; 95% CI 1.29–2.06). Mortality 36.1% vs 55.5% (adjusted RR 0.65; 95% CI 0.50–0.84). Symptomatic ICH 9.6% vs 5.7%.",
+    "limits": "Stopped early because similar trials favored EVT; benefit was mainly less severe disability and death.",
+    "sources": [
+      {
+        "title": "LASTE primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38718358/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "large-core-evt"
+  },
+  {
+    "id": "ninds-tpa",
+    "title": "NINDS rt-PA — alteplase within 3 hours",
+    "headline": "Alteplase ≤3 h: favorable outcome OR 1.7; sICH 6.4 vs 0.6%",
+    "year": 1995,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "alteplase",
+      "tPA",
+      "thrombolysis",
+      "3 hours",
+      "NINDS"
+    ],
+    "question": "Does IV alteplase started within 3 hours improve outcome after ischemic stroke?",
+    "population": "624 patients in two parts (291 and 333) treated within 3 hours of onset.",
+    "comparison": "IV alteplase versus placebo, double-blind.",
+    "result": "Part 2 confirmed 3-month benefit (global OR for favorable outcome 1.7; 95% CI 1.2–2.6); alteplase patients were at least 30% more likely to have minimal or no disability. Symptomatic ICH within 36 hours was 6.4% vs 0.6%; 3-month mortality 17% vs 21% (P=0.30). Part 1 showed no difference in 24-hour neurological improvement.",
+    "limits": "Treatment within 3 hours only; the 24-hour primary outcome of part 1 was neutral. Higher sICH requires the full eligibility and BP protocol.",
+    "sources": [
+      {
+        "title": "NINDS rt-PA primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/7477192/",
+        "year": 1995,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "acute-reperfusion"
+  },
+  {
+    "id": "ecass-3",
+    "title": "ECASS III — alteplase at 3 to 4.5 hours",
+    "headline": "Alteplase 3–4.5 h: mRS 0–1 52.4 vs 45.2%; sICH 2.4 vs 0.2%",
+    "year": 2008,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "alteplase",
+      "tPA",
+      "thrombolysis",
+      "4.5 hours",
+      "ECASS"
+    ],
+    "question": "Does IV alteplase 3 to 4.5 hours after onset improve outcome?",
+    "population": "821 patients without brain hemorrhage or major infarction on CT; median treatment time 3 h 59 min.",
+    "comparison": "Alteplase 0.9 mg/kg versus placebo, double-blind.",
+    "result": "mRS 0–1 at 90 days occurred in 52.4% vs 45.2% (OR 1.34; 95% CI 1.02–1.76). Symptomatic ICH 2.4% vs 0.2%; any ICH 27.0% vs 17.6%. Mortality 7.7% vs 8.4%.",
+    "limits": "Excluded major infarction on CT; the trial population and exclusions shape applicability beyond 3 hours.",
+    "sources": [
+      {
+        "title": "ECASS III primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/18815396/",
+        "year": 2008,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
     "relatedTopic": "acute-reperfusion"
   },
   {
     "id": "baoche",
     "title": "BAOCHE — basilar thrombectomy at 6–24 hours",
+    "headline": "Basilar 6–24 h: mRS 0–3 46 vs 24%",
     "year": 2022,
     "settings": [
       "on-call",
@@ -277,14 +482,112 @@
         "year": 2022,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
-    "relatedTopic": "acute-reperfusion"
+    "relatedTopic": "basilar-occlusion"
+  },
+  {
+    "id": "attention",
+    "title": "ATTENTION — thrombectomy for basilar occlusion within 12 hours",
+    "headline": "Basilar ≤12 h: mRS 0–3 46 vs 23%; mortality 37 vs 55%",
+    "year": 2022,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "basilar",
+      "posterior circulation",
+      "thrombectomy",
+      "EVT"
+    ],
+    "question": "Does EVT within 12 hours improve outcome in basilar artery occlusion?",
+    "population": "340 patients at 36 Chinese centers; about one third received IVT.",
+    "comparison": "EVT versus best medical care (2:1 randomization).",
+    "result": "mRS 0–3 at 90 days occurred in 46% vs 23% (adjusted rate ratio 2.06; 95% CI 1.46–2.91). Mortality 37% vs 55%; symptomatic ICH 5% vs 0%; procedural complications 14%.",
+    "limits": "Single-country trial; most patients had severe deficits.",
+    "sources": [
+      {
+        "title": "ATTENTION primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36239644/",
+        "year": 2022,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "basilar-occlusion"
+  },
+  {
+    "id": "trace-5",
+    "title": "TRACE-5 — tenecteplase for basilar occlusion within 24 hours",
+    "headline": "Basilar ≤24 h: mRS 0–1/baseline 38 vs 29%",
+    "year": 2026,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "basilar",
+      "tenecteplase",
+      "late window",
+      "thrombolysis"
+    ],
+    "question": "Does tenecteplase within 24 hours improve outcome in basilar artery occlusion?",
+    "population": "452 Chinese adults with basilar occlusion and prestroke mRS ≤3; 49% went on to EVT and 35% of controls received alteplase.",
+    "comparison": "Tenecteplase 0.25 mg/kg (max 25 mg) versus standard medical treatment, with or without EVT.",
+    "result": "mRS 0–1 or return to baseline at 90 days occurred in 38% vs 29% (adjusted rate ratio 1.50; 95% CI 1.09–2.08). Symptomatic ICH 2% vs 3%; mortality 29% vs 31%.",
+    "limits": "Open-label, single-country trial; the control arm mixed alteplase and no thrombolysis.",
+    "sources": [
+      {
+        "title": "TRACE-5 primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41655588/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "basilar-occlusion"
+  },
+  {
+    "id": "attention-late",
+    "title": "ATTENTION LATE — tenecteplase before EVT for basilar occlusion at 4.5–24 hours",
+    "headline": "Tenecteplase before EVT: no gain (mRS 0–2 30 vs 30%)",
+    "year": 2026,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "basilar",
+      "tenecteplase",
+      "thrombectomy",
+      "bridging",
+      "late window"
+    ],
+    "question": "Does tenecteplase before EVT help basilar occlusion presenting 4.5–24 hours after onset?",
+    "population": "330 patients with NIHSS ≥10 admitted directly to 40 EVT-capable Chinese centers.",
+    "comparison": "Tenecteplase 0.25 mg/kg followed by EVT versus EVT alone.",
+    "result": "mRS 0–2 at 90 days occurred in 30% vs 30% (adjusted rate ratio 0.92; 95% CI 0.67–1.25). Symptomatic ICH 5% vs 4%; mortality 40% vs 43%.",
+    "limits": "Open-label; applies to direct admission to EVT centers, not drip-and-ship.",
+    "sources": [
+      {
+        "title": "ATTENTION LATE primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42776543/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "basilar-occlusion"
   },
   {
     "id": "distal",
     "title": "DISTAL — medium and distal vessel thrombectomy",
+    "headline": "MeVO EVT: no benefit (cOR 0.90); sICH 5.9 vs 2.6%",
     "year": 2025,
     "settings": [
       "on-call",
@@ -311,7 +614,7 @@
         "year": 2025,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
     "relatedTopic": "medium-distal-evt"
@@ -319,6 +622,7 @@
   {
     "id": "escape-mevo",
     "title": "ESCAPE-MeVO — thrombectomy benefit and safety",
+    "headline": "MeVO EVT: no benefit; mortality 13.3 vs 8.4%",
     "year": 2025,
     "settings": [
       "on-call",
@@ -342,7 +646,40 @@
         "year": 2025,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
+      }
+    ],
+    "relatedTopic": "medium-distal-evt"
+  },
+  {
+    "id": "discount",
+    "title": "DISCOUNT — thrombectomy for medium or distal occlusion",
+    "headline": "MeVO EVT: no benefit (mRS 0–2 62 vs 68%); sICH 11 vs 3% if treated",
+    "year": 2026,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "MeVO",
+      "DMVO",
+      "distal",
+      "thrombectomy",
+      "EVT"
+    ],
+    "question": "Does thrombectomy improve outcome after a primary isolated medium or distal occlusion?",
+    "population": "244 adults at 22 French centers (median age 75, NIHSS 8) within 8 hours, or within 24 hours if FLAIR-negative; 488 planned.",
+    "comparison": "Thrombectomy plus medical treatment versus medical treatment alone.",
+    "result": "mRS 0–2 at 3 months occurred in 62% vs 68% (OR 0.73; 95% CI 0.40–1.31). Among those actually treated, symptomatic ICH 11% vs 3%, SAH 13% vs 2% and embolus migration 5% vs 1%. Mortality 6% vs 8%.",
+    "limits": "Stopped at interim analysis for futility and excess sICH; open-label; 81% of the EVT arm received thrombectomy. The third neutral MeVO trial after DISTAL and ESCAPE-MeVO.",
+    "sources": [
+      {
+        "title": "DISCOUNT primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42485024/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
       }
     ],
     "relatedTopic": "medium-distal-evt"
@@ -350,6 +687,7 @@
   {
     "id": "enrich",
     "title": "ENRICH — early minimally invasive ICH evacuation",
+    "headline": "Early MIS (mainly lobar): utility-weighted mRS 0.458 vs 0.374",
     "year": 2024,
     "settings": [
       "on-call",
@@ -372,7 +710,7 @@
         "year": 2024,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
     "relatedTopic": "ich-surgery"
@@ -380,6 +718,7 @@
   {
     "id": "annexa-i",
     "title": "ANNEXA-I — hemostatic efficacy and thrombotic harm",
+    "headline": "Andexanet: hemostasis 67.0 vs 53.1%; thrombotic events 10.3 vs 5.6%",
     "year": 2024,
     "settings": [
       "on-call",
@@ -396,7 +735,7 @@
     "population": "530 patients with acute ICH after factor Xa inhibitor use within 15 hours; the interim efficacy analysis included 452.",
     "comparison": "Andexanet versus usual care; 85.5% of usual-care patients received PCC.",
     "result": "Composite hemostatic efficacy was 67.0% versus 53.1% (adjusted difference 13.4 percentage points; 95% CI 4.6–22.2). Thrombotic events occurred in 10.3% versus 5.6%, including ischemic stroke in 6.5% versus 1.5%. No appreciable difference in 30-day mRS or mortality was reported.",
-    "limits": "Hemostatic efficacy is not functional benefit. This historical trial does not establish current drug availability or the preferred reversal pathway.",
+    "limits": "Hemostatic efficacy is not functional benefit. NCS/SCCM 2026 conditionally recommends 4F-PCC rather than andexanet, and andexanet was withdrawn from the US market effective 22 December 2025.",
     "sources": [
       {
         "title": "ANNEXA-I primary report",
@@ -404,14 +743,15 @@
         "year": 2024,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
-    "relatedTopic": "ich-management"
+    "relatedTopic": "antithrombotic-reversal"
   },
   {
     "id": "prestige-af",
     "title": "PRESTIGE-AF — anticoagulation after ICH with AF",
+    "headline": "DOAC after ICH: fewer ischemic strokes, more recurrent ICH",
     "year": 2025,
     "settings": [
       "hospital",
@@ -443,6 +783,7 @@
   {
     "id": "mind",
     "title": "MIND — minimally invasive evacuation at up to 72 hours",
+    "headline": "MIS ≤72 h: no 180-day mRS benefit (OR 1.03)",
     "year": 2025,
     "settings": [
       "on-call",
@@ -466,7 +807,7 @@
         "year": 2025,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
     "relatedTopic": "ich-surgery"
@@ -474,6 +815,7 @@
   {
     "id": "switch",
     "title": "SWITCH — decompression for severe deep ICH",
+    "headline": "Decompression in deep ICH: mRS 5–6 44 vs 58% (p=0.057)",
     "year": 2024,
     "settings": [
       "on-call",
@@ -505,6 +847,7 @@
   {
     "id": "oriental-mevo",
     "title": "ORIENTAL-MeVO — thrombectomy in selected medium-vessel stroke",
+    "headline": "MeVO EVT (China): mRS 0–2 58.6 vs 46.6%; sICH 4.7 vs 2.2%",
     "year": 2026,
     "settings": [
       "on-call",
@@ -528,7 +871,7 @@
         "year": 2026,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
     "relatedTopic": "medium-distal-evt"
@@ -536,6 +879,7 @@
   {
     "id": "sparcl",
     "title": "SPARCL — atorvastatin after stroke or TIA",
+    "headline": "Atorvastatin 80: stroke 11.2 vs 13.1%; more hemorrhagic strokes",
     "year": 2006,
     "settings": [
       "hospital",
@@ -568,6 +912,7 @@
   {
     "id": "treat-stroke-to-target",
     "title": "Treat Stroke to Target — LDL goals after atherosclerotic stroke",
+    "headline": "LDL <70: events 8.5 vs 10.9% (HR 0.78)",
     "year": 2020,
     "settings": [
       "hospital",
@@ -601,6 +946,7 @@
   {
     "id": "sps3-bp",
     "title": "SPS3 — blood-pressure targets after lacunar stroke",
+    "headline": "SBP <130: all stroke HR 0.81 (NS); ICH HR 0.37",
     "year": 2013,
     "settings": [
       "hospital",
@@ -633,6 +979,7 @@
   {
     "id": "progress",
     "title": "PROGRESS — blood-pressure lowering after stroke or TIA",
+    "headline": "Perindopril ± indapamide: stroke 10 vs 14%",
     "year": 2001,
     "settings": [
       "hospital",
@@ -647,7 +994,7 @@
     "question": "Did a perindopril-based regimen reduce recurrent stroke?",
     "population": "6,105 people with previous stroke/TIA, including hypertensive and non-hypertensive participants.",
     "comparison": "Perindopril-based treatment, with indapamide at clinician discretion, versus matching placebo.",
-    "result": "Over four years, fatal/nonfatal stroke occurred in 307/3,051 (10%) versus 420/3,054 (14%): relative risk reduction 28% (95% CI 17–38). Mean BP fell by 9/4 mmHg relative to placebo.",
+    "result": "Over four years, fatal/nonfatal stroke occurred in 307/3,051 (10%) versus 420/3,054 (14%): relative risk reduction 28% (95% CI 17–38). Mean BP fell by 9/4 mmHg relative to placebo. Perindopril plus indapamide lowered BP by 12/5 mmHg and stroke by 43% (30–54); perindopril alone (5/3 mmHg) produced no discernible stroke reduction.",
     "limits": "A long-term regimen trial, not an acute BP target. Combination and single-drug strata were not a randomized comparison with each other. The abstract does not quantify detailed harms; indexed correction bodies were not fully accessible.",
     "sources": [
       {
@@ -662,8 +1009,44 @@
     "relatedTopic": "bp-prevention"
   },
   {
+    "id": "trident",
+    "title": "TRIDENT — low-dose triple antihypertensive pill after ICH",
+    "headline": "Triple pill after ICH: recurrent stroke 4.6 vs 7.4%",
+    "year": 2026,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "blood pressure",
+      "ICH",
+      "polypill",
+      "secondary prevention",
+      "telmisartan",
+      "amlodipine",
+      "indapamide"
+    ],
+    "question": "Does a low-dose triple antihypertensive pill added to usual care reduce recurrent stroke after ICH?",
+    "population": "1,670 patients with prior ICH and SBP 130–160 who completed a 2-week active run-in (mean age 58).",
+    "comparison": "Telmisartan 20 mg, amlodipine 2.5 mg and indapamide 1.25 mg in one pill versus placebo.",
+    "result": "Recurrent stroke over a median 2.5 years: 4.6% vs 7.4% (HR 0.61; 95% CI 0.41–0.92). Mean SBP 127 vs 138; major cardiovascular events 6.6% vs 9.8%. Discontinuation for adverse events 13.6% vs 6.0%, mostly creatinine rises.",
+    "limits": "Run-in design selects tolerant patients; renal monitoring is needed.",
+    "sources": [
+      {
+        "title": "TRIDENT primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42019018/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "bp-prevention"
+  },
+  {
     "id": "navigate-esus",
     "title": "NAVIGATE ESUS — rivaroxaban versus aspirin",
+    "headline": "ESUS rivaroxaban: no benefit, more major bleeding",
     "year": 2018,
     "settings": [
       "hospital",
@@ -688,7 +1071,7 @@
         "year": 2018,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
     "relatedTopic": "stroke-workup"
@@ -696,6 +1079,7 @@
   {
     "id": "respect-esus",
     "title": "RE-SPECT ESUS — dabigatran versus aspirin",
+    "headline": "ESUS dabigatran: no significant benefit (HR 0.85)",
     "year": 2019,
     "settings": [
       "hospital",
@@ -720,7 +1104,7 @@
         "year": 2019,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
     "relatedTopic": "stroke-workup"
@@ -728,6 +1112,7 @@
   {
     "id": "arcadia",
     "title": "ARCADIA — atrial cardiopathy without AF",
+    "headline": "Atrial cardiopathy apixaban: no benefit (4.4%/yr each)",
     "year": 2024,
     "settings": [
       "hospital",
@@ -752,7 +1137,7 @@
         "year": 2024,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
     "relatedTopic": "stroke-workup"
@@ -760,6 +1145,7 @@
   {
     "id": "crystal-af",
     "title": "CRYSTAL AF — prolonged monitoring after cryptogenic stroke",
+    "headline": "Implantable monitor: AF 12.4 vs 2.0% at 12 months",
     "year": 2014,
     "settings": [
       "hospital",
@@ -784,7 +1170,7 @@
         "year": 2014,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
     "relatedTopic": "stroke-workup"
@@ -792,6 +1178,7 @@
   {
     "id": "crest-2",
     "title": "CREST-2 — revascularization for asymptomatic carotid stenosis",
+    "headline": "Asymptomatic: stenting 2.8 vs 6.0%; CEA 3.7 vs 5.3% (NS)",
     "year": 2026,
     "settings": [
       "clinic",
@@ -824,6 +1211,7 @@
   {
     "id": "ecst-2",
     "title": "ECST-2 — two-year interim carotid revascularization evidence",
+    "headline": "Lower-risk carotid stenosis: no difference at 2 years",
     "year": 2025,
     "settings": [
       "clinic",
@@ -857,6 +1245,7 @@
   {
     "id": "vns-rehab",
     "title": "VNS-REHAB — paired stimulation for chronic arm weakness",
+    "headline": "Paired VNS: Fugl-Meyer +5.0 vs +2.4",
     "year": 2021,
     "settings": [
       "clinic"
@@ -881,7 +1270,7 @@
         "year": 2021,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract checked."
       }
     ],
     "relatedTopic": "motor-recovery"
@@ -889,6 +1278,7 @@
   {
     "id": "avert",
     "title": "AVERT — dose and timing of early mobilization",
+    "headline": "Very early high-dose mobilization: mRS 0–2 46 vs 50% (harm)",
     "year": 2015,
     "settings": [
       "hospital"
@@ -920,6 +1310,7 @@
   {
     "id": "hermes",
     "title": "HERMES — pooled early thrombectomy evidence",
+    "headline": "EVT ≤6 h: mRS shift cOR 2.49; NNT 2.6",
     "year": 2016,
     "settings": [
       "on-call",
@@ -946,7 +1337,7 @@
         "year": 2016,
         "type": "Meta-analysis",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "evt-selection"
@@ -954,6 +1345,7 @@
   {
     "id": "dawn",
     "title": "DAWN — clinical–core mismatch at 6–24 hours",
+    "headline": "6–24 h clinical–core mismatch: mRS 0–2 49 vs 13%",
     "year": 2018,
     "settings": [
       "on-call",
@@ -967,7 +1359,7 @@
     "question": "Did selected patients benefit from thrombectomy up to 24 hours?",
     "population": "206 participants with intracranial ICA or proximal MCA occlusion, last known well 6–24 hours earlier, and age-dependent mismatch between clinical deficit and infarct volume.",
     "comparison": "Thrombectomy plus standard care versus standard care alone.",
-    "result": "At 90 days, the coprimary outcomes favored thrombectomy: utility-weighted mRS 5.5 versus 3.4 and mRS 0–2 in 49% versus 13% (adjusted difference 33 percentage points; 95% credible interval 24–44). Symptomatic intracranial hemorrhage was 6% versus 3%; mortality was 19% versus 18%, without significant differences.",
+    "result": "At 90 days, the coprimary outcomes favored thrombectomy: utility-weighted mRS (0–10 scale) 5.5 versus 3.4 and mRS 0–2 in 49% versus 13% (adjusted difference 33 percentage points; 95% credible interval 24–44). Symptomatic intracranial hemorrhage was 6% versus 3%; mortality was 19% versus 18%, without significant differences.",
     "limits": "Stopped early after a prespecified interim analysis. Age, deficit and core criteria matter; clinical–core mismatch is not interchangeable with perfusion mismatch.",
     "sources": [
       {
@@ -976,7 +1368,7 @@
         "year": 2018,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "evt-selection"
@@ -984,6 +1376,7 @@
   {
     "id": "defuse-3",
     "title": "DEFUSE 3 — perfusion selection at 6–16 hours",
+    "headline": "6–16 h perfusion mismatch: mRS 0–2 45 vs 17%",
     "year": 2018,
     "settings": [
       "on-call",
@@ -1006,7 +1399,136 @@
         "year": 2018,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract and indexed notices checked."
+      }
+    ],
+    "relatedTopic": "evt-selection"
+  },
+  {
+    "id": "swift-direct",
+    "title": "SWIFT DIRECT — thrombectomy alone versus alteplase plus thrombectomy",
+    "headline": "EVT alone not noninferior: mRS 0–2 57 vs 65%",
+    "year": 2022,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "bridging",
+      "direct thrombectomy",
+      "alteplase",
+      "EVT"
+    ],
+    "question": "Is thrombectomy alone noninferior to alteplase plus thrombectomy?",
+    "population": "408 analyzed patients with LVO admitted to endovascular centers in Europe and Canada.",
+    "comparison": "Stent-retriever thrombectomy alone versus IV alteplase plus thrombectomy.",
+    "result": "mRS 0–2 at 90 days occurred in 57% vs 65% (adjusted risk difference −7.3%), crossing the 12% noninferiority margin. Symptomatic ICH 2% vs 3%; successful reperfusion 91% vs 96%.",
+    "limits": "Open-label; tested one stent-retriever device and alteplase.",
+    "sources": [
+      {
+        "title": "SWIFT DIRECT primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/35810756/",
+        "year": 2022,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "evt-selection"
+  },
+  {
+    "id": "mr-clean-no-iv",
+    "title": "MR CLEAN-NO IV — thrombectomy with or without alteplase",
+    "headline": "EVT alone neither superior nor noninferior (cOR 0.84)",
+    "year": 2021,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "bridging",
+      "direct thrombectomy",
+      "alteplase",
+      "EVT"
+    ],
+    "question": "Is EVT alone superior or noninferior to alteplase followed by EVT?",
+    "population": "539 European patients presenting directly to EVT-capable hospitals.",
+    "comparison": "EVT alone versus IV alteplase plus EVT.",
+    "result": "Median mRS was 3 vs 2 (adjusted cOR 0.84; 95% CI 0.62–1.15): neither superiority nor noninferiority. Mortality 20.5% vs 15.8%; symptomatic ICH 5.9% vs 5.3%.",
+    "limits": "Open-label; direct admissions only.",
+    "sources": [
+      {
+        "title": "MR CLEAN-NO IV primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/34758251/",
+        "year": 2021,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "evt-selection"
+  },
+  {
+    "id": "direct-mt",
+    "title": "DIRECT-MT — thrombectomy with or without alteplase in China",
+    "headline": "EVT alone noninferior (cOR 1.07), less reperfusion",
+    "year": 2020,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "bridging",
+      "direct thrombectomy",
+      "alteplase",
+      "EVT"
+    ],
+    "question": "Is EVT alone noninferior to alteplase plus EVT?",
+    "population": "656 Chinese patients with anterior-circulation LVO at 41 academic centers.",
+    "comparison": "EVT alone versus IV alteplase within 4.5 hours followed by EVT.",
+    "result": "EVT alone was noninferior for the mRS distribution (adjusted cOR 1.07; 95% CI 0.81–1.40) with a 20% margin, but successful reperfusion was lower before EVT (2.4% vs 7.0%) and overall (79.4% vs 84.5%). Mortality 17.7% vs 18.8%.",
+    "limits": "Wide noninferiority margin; European and Canadian trials (SWIFT DIRECT, MR CLEAN-NO IV) did not confirm noninferiority.",
+    "sources": [
+      {
+        "title": "DIRECT-MT primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/32374959/",
+        "year": 2020,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "evt-selection"
+  },
+  {
+    "id": "bridge-tnk",
+    "title": "BRIDGE-TNK — tenecteplase before thrombectomy",
+    "headline": "Tenecteplase before EVT: mRS 0–2 52.9 vs 44.1%",
+    "year": 2025,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "bridging",
+      "tenecteplase",
+      "thrombectomy",
+      "EVT",
+      "TNK"
+    ],
+    "question": "Does tenecteplase before EVT improve outcome in LVO within 4.5 hours?",
+    "population": "550 Chinese patients with LVO eligible for thrombolysis within 4.5 hours.",
+    "comparison": "IV tenecteplase followed by EVT versus EVT alone.",
+    "result": "mRS 0–2 at 90 days occurred in 52.9% vs 44.1% (RR 1.20; 95% CI 1.01–1.43). Symptomatic ICH within 48 hours 8.5% vs 6.7%; mortality 22.3% vs 19.9%.",
+    "limits": "Open-label, single-country trial; the margin of benefit was modest.",
+    "sources": [
+      {
+        "title": "BRIDGE-TNK primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40396577/",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
       }
     ],
     "relatedTopic": "evt-selection"
@@ -1014,6 +1536,7 @@
   {
     "id": "act",
     "title": "AcT — tenecteplase versus alteplase",
+    "headline": "Tenecteplase noninferior: mRS 0–1 36.9 vs 34.8%",
     "year": 2022,
     "settings": [
       "on-call",
@@ -1037,7 +1560,71 @@
         "year": 2022,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract and indexed notices checked."
+      }
+    ],
+    "relatedTopic": "thrombolytic-choice"
+  },
+  {
+    "id": "trace-2",
+    "title": "TRACE-2 — tenecteplase versus alteplase in China",
+    "headline": "Tenecteplase noninferior: mRS 0–1 62 vs 58%",
+    "year": 2023,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "tenecteplase",
+      "alteplase",
+      "noninferiority",
+      "TNK"
+    ],
+    "question": "Is tenecteplase noninferior to alteplase within 4.5 hours in patients not having EVT?",
+    "population": "1,430 Chinese adults, NIHSS 5–25, prestroke mRS ≤1, ineligible for or declining EVT.",
+    "comparison": "Tenecteplase 0.25 mg/kg (max 25 mg) versus alteplase 0.9 mg/kg (max 90 mg).",
+    "result": "mRS 0–1 at 90 days occurred in 62% vs 58% (RR 1.07; 95% CI 0.98–1.16), meeting noninferiority. Symptomatic ICH 2% in each group; mortality 7% vs 5%.",
+    "limits": "Open-label with blinded outcome; excluded EVT candidates.",
+    "sources": [
+      {
+        "title": "TRACE-2 primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36774935/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "thrombolytic-choice"
+  },
+  {
+    "id": "original",
+    "title": "ORIGINAL — tenecteplase versus alteplase within 4.5 hours",
+    "headline": "Tenecteplase noninferior: mRS 0–1 72.7 vs 70.3%",
+    "year": 2024,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "tenecteplase",
+      "alteplase",
+      "noninferiority",
+      "TNK"
+    ],
+    "question": "Is tenecteplase 0.25 mg/kg noninferior to alteplase within 4.5 hours?",
+    "population": "1,489 randomized Chinese patients with NIHSS 1–25 (1,465 analyzed).",
+    "comparison": "Tenecteplase 0.25 mg/kg versus alteplase 0.9 mg/kg.",
+    "result": "mRS 0–1 at 90 days occurred in 72.7% vs 70.3% (RR 1.03; 95% CI 0.97–1.09), meeting noninferiority. Symptomatic ICH 1.2% in each group; mortality 4.6% vs 5.8%.",
+    "limits": "Open-label, single-country trial including mild strokes.",
+    "sources": [
+      {
+        "title": "ORIGINAL primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39264623/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
       }
     ],
     "relatedTopic": "thrombolytic-choice"
@@ -1045,6 +1632,7 @@
   {
     "id": "extend",
     "title": "EXTEND — perfusion-selected alteplase beyond 4.5 hours",
+    "headline": "Perfusion-selected 4.5–9 h: mRS 0–1 35.4 vs 29.5%; sICH 6.2 vs 0.9%",
     "year": 2019,
     "settings": [
       "on-call",
@@ -1082,8 +1670,108 @@
     "relatedTopic": "extended-window-ivt"
   },
   {
+    "id": "wake-up",
+    "title": "WAKE-UP — MRI-guided alteplase for unknown onset",
+    "headline": "DWI–FLAIR mismatch: mRS 0–1 53.3 vs 41.8%",
+    "year": 2018,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "wake-up",
+      "unknown onset",
+      "DWI-FLAIR mismatch",
+      "alteplase",
+      "MRI"
+    ],
+    "question": "Does alteplase help unknown-onset stroke with DWI–FLAIR mismatch?",
+    "population": "503 patients with unknown onset, a DWI lesion and no marked FLAIR change; thrombectomy candidates excluded.",
+    "comparison": "IV alteplase versus placebo.",
+    "result": "mRS 0–1 at 90 days occurred in 53.3% vs 41.8% (adjusted OR 1.61; 95% CI 1.09–2.36). Deaths 4.1% vs 1.2% and symptomatic ICH 2.0% vs 0.4% (both not significant).",
+    "limits": "Stopped early for lack of funding (503 of 800 planned). Applies to MRI mismatch selection, not perfusion or CT-only selection.",
+    "sources": [
+      {
+        "title": "WAKE-UP primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29766770/",
+        "year": 2018,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "extended-window-ivt"
+  },
+  {
+    "id": "trace-iii",
+    "title": "TRACE-III — tenecteplase at 4.5–24 hours without thrombectomy",
+    "headline": "LVO 4.5–24 h, no EVT: mRS 0–1 33.0 vs 24.2%; sICH 3.0 vs 0.8%",
+    "year": 2024,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "tenecteplase",
+      "late window",
+      "LVO",
+      "perfusion",
+      "no EVT access"
+    ],
+    "question": "Does tenecteplase help LVO with salvageable tissue at 4.5–24 hours when EVT is not available?",
+    "population": "516 Chinese patients with MCA or ICA occlusion and perfusion mismatch, 4.5–24 hours from last known well; under 2% had rescue EVT.",
+    "comparison": "Tenecteplase 0.25 mg/kg (max 25 mg) versus standard medical treatment.",
+    "result": "mRS 0–1 at 90 days occurred in 33.0% vs 24.2% (relative rate 1.37; 95% CI 1.04–1.81). Mortality 13.3% vs 13.1%; symptomatic ICH within 36 hours 3.0% vs 0.8%.",
+    "limits": "Single-country trial without EVT access; it does not apply when EVT is available (see TIMELESS).",
+    "sources": [
+      {
+        "title": "TRACE-III primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38884324/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "extended-window-ivt"
+  },
+  {
+    "id": "timeless",
+    "title": "TIMELESS — tenecteplase at 4.5–24 hours before planned EVT",
+    "headline": "Late tenecteplase with EVT: no benefit (cOR 1.13)",
+    "year": 2024,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "tenecteplase",
+      "late window",
+      "LVO",
+      "perfusion",
+      "thrombectomy"
+    ],
+    "question": "Does tenecteplase at 4.5–24 hours improve outcome in perfusion-selected MCA or ICA occlusion?",
+    "population": "458 patients; 77.3% went on to thrombectomy; median time to randomization about 12–13 hours.",
+    "comparison": "Tenecteplase 0.25 mg/kg versus placebo, double-blind.",
+    "result": "Median 90-day mRS was 3 in both groups (adjusted cOR 1.13; 95% CI 0.82–1.57). Mortality 19.7% vs 18.2%; symptomatic ICH 3.2% vs 2.3%.",
+    "limits": "Most patients received EVT, which may have masked any thrombolytic effect.",
+    "sources": [
+      {
+        "title": "TIMELESS primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38329148/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "extended-window-ivt"
+  },
+  {
     "id": "chance",
     "title": "CHANCE — short initial dual antiplatelet therapy",
+    "headline": "DAPT 21 days: stroke 8.2 vs 11.7%",
     "year": 2013,
     "settings": [
       "on-call",
@@ -1109,7 +1797,7 @@
         "year": 2013,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "minor-stroke-antiplatelets"
@@ -1117,6 +1805,7 @@
   {
     "id": "thales",
     "title": "THALES — ticagrelor plus aspirin after mild-to-moderate stroke",
+    "headline": "Ticagrelor + aspirin: stroke/death 5.5 vs 6.6%; severe bleeding 0.5 vs 0.1%",
     "year": 2020,
     "settings": [
       "on-call",
@@ -1142,7 +1831,7 @@
         "year": 2020,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "minor-stroke-antiplatelets"
@@ -1150,6 +1839,7 @@
   {
     "id": "chance-2",
     "title": "CHANCE-2 — antiplatelet choice in CYP2C19 loss-of-function carriers",
+    "headline": "CYP2C19 LOF: ticagrelor 6.0 vs clopidogrel 7.6%",
     "year": 2021,
     "settings": [
       "hospital",
@@ -1174,14 +1864,80 @@
         "year": 2021,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "minor-stroke-antiplatelets"
   },
   {
+    "id": "oceanic-stroke",
+    "title": "OCEANIC-STROKE — asundexian added to antiplatelets",
+    "headline": "Asundexian: ischemic stroke 6.2 vs 8.4%; major bleeding 1.9 vs 1.7%",
+    "year": 2026,
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "factor XI",
+      "asundexian",
+      "secondary prevention",
+      "noncardioembolic"
+    ],
+    "question": "Does asundexian added to antiplatelet therapy prevent recurrent ischemic stroke?",
+    "population": "12,327 patients within 72 hours of noncardioembolic ischemic stroke or high-risk TIA with atherosclerosis or nonlacunar infarct.",
+    "comparison": "Asundexian 50 mg daily versus placebo, on top of single or dual antiplatelet therapy.",
+    "result": "Ischemic stroke 6.2% vs 8.4% (cause-specific HR 0.74; 95% CI 0.65–0.84). Major bleeding 1.9% vs 1.7% (HR 1.10; 95% CI 0.85–1.44).",
+    "limits": "Industry-funded; regulatory status and availability are separate questions. Asundexian was inferior to apixaban in AF (OCEANIC-AF).",
+    "sources": [
+      {
+        "title": "OCEANIC-STROKE primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41985132/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "research-adjuncts"
+  },
+  {
+    "id": "most",
+    "title": "MOST — adjunctive argatroban or eptifibatide after IV thrombolysis",
+    "headline": "Adjunct argatroban/eptifibatide: no benefit; mortality 24% and 12% vs 8%",
+    "year": 2024,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "argatroban",
+      "eptifibatide",
+      "thrombolysis",
+      "adjunct"
+    ],
+    "question": "Does adding IV argatroban or eptifibatide to thrombolysis reduce disability?",
+    "population": "514 patients given IVT within 3 hours at 57 US sites; 44% had EVT.",
+    "comparison": "Argatroban or eptifibatide versus placebo, within 75 minutes of thrombolysis.",
+    "result": "Neither improved utility-weighted mRS (0–10): 5.2 with argatroban, 6.3 with eptifibatide, 6.8 with placebo. Symptomatic ICH 4%, 3% and 2%; mortality 24%, 12% and 8%.",
+    "limits": "Adaptive design with a small argatroban arm; results do not support routine adjunctive antithrombotics.",
+    "sources": [
+      {
+        "title": "MOST primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39231343/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "research-adjuncts"
+  },
+  {
     "id": "inspires",
     "title": "INSPIRES — dual antiplatelets started within 72 hours",
+    "headline": "DAPT up to 72 h: stroke 7.3 vs 9.2%; bleeding 0.9 vs 0.4%",
     "year": 2023,
     "settings": [
       "on-call",
@@ -1207,7 +1963,105 @@
         "year": 2023,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract and indexed notices checked."
+      }
+    ],
+    "relatedTopic": "minor-stroke-antiplatelets"
+  },
+  {
+    "id": "aramis",
+    "title": "ARAMIS — DAPT versus alteplase for minor non-disabling stroke",
+    "headline": "Non-disabling minor stroke: DAPT noninferior (mRS 0–1 93.8 vs 91.4%)",
+    "year": 2023,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "minor stroke",
+      "nondisabling",
+      "DAPT",
+      "alteplase",
+      "clopidogrel"
+    ],
+    "question": "Is DAPT noninferior to alteplase for minor non-disabling stroke within 4.5 hours?",
+    "population": "760 Chinese patients with NIHSS ≤5 and ≤1 point on key items (median NIHSS 2).",
+    "comparison": "Clopidogrel plus aspirin for 12 days then guideline antiplatelets, versus alteplase followed by antiplatelets after 24 hours.",
+    "result": "mRS 0–1 at 90 days occurred in 93.8% vs 91.4% (risk difference 2.3%; 95% CI −1.5 to 6.2), meeting noninferiority. Symptomatic ICH 0.3% vs 0.9%.",
+    "limits": "Open-label, single-country trial with a −4.5% margin; applies only to non-disabling deficits.",
+    "sources": [
+      {
+        "title": "ARAMIS primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37367978/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "minor-stroke-antiplatelets"
+  },
+  {
+    "id": "tempo-2",
+    "title": "TEMPO-2 — tenecteplase for minor stroke with occlusion",
+    "headline": "Minor stroke with occlusion: no benefit; deaths 5 vs 1%",
+    "year": 2024,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "minor stroke",
+      "tenecteplase",
+      "occlusion",
+      "thrombolysis"
+    ],
+    "question": "Does tenecteplase help minor stroke (NIHSS 0–5) with intracranial occlusion?",
+    "population": "886 patients at 48 hospitals in 10 countries, enrolled within 12 hours.",
+    "comparison": "Tenecteplase 0.25 mg/kg versus non-thrombolytic standard care.",
+    "result": "Return to baseline mRS at 90 days occurred in 72% vs 75% (RR 0.96; 95% CI 0.88–1.04). Deaths 5% vs 1% (adjusted HR 3.8; 1.4–10.2); symptomatic ICH 2% vs <1%.",
+    "limits": "Stopped early for futility; open-label.",
+    "sources": [
+      {
+        "title": "TEMPO-2 primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38768626/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "minor-stroke-antiplatelets"
+  },
+  {
+    "id": "tapis",
+    "title": "TAPIS — aspirin plus ticagrelor started with IV thrombolysis",
+    "headline": "DAPT within 6 h of IVT: mRS 0–1 68.7 vs 62.0%",
+    "year": 2026,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "DAPT",
+      "ticagrelor",
+      "thrombolysis",
+      "early antiplatelet",
+      "moderate stroke"
+    ],
+    "question": "Does oral aspirin plus ticagrelor within 6 hours improve outcome in IVT-treated stroke?",
+    "population": "1,382 Chinese patients treated with IVT, NIHSS 4–10.",
+    "comparison": "Aspirin plus ticagrelor started before, during or after IVT (ticagrelor through day 7) versus placebo; open-label aspirin from day 2.",
+    "result": "mRS 0–1 at 90 days occurred in 68.7% vs 62.0% (RR 1.11; 95% CI 1.03–1.20). Symptomatic ICH within 36 hours 0.9% vs 0.7% (RR 1.20; 95% CI 0.37–3.93).",
+    "limits": "Single-country trial; the wide sICH confidence interval cannot exclude harm, and it challenges the usual 24-hour wait after IVT.",
+    "sources": [
+      {
+        "title": "TAPIS primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42114550/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
       }
     ],
     "relatedTopic": "minor-stroke-antiplatelets"
@@ -1215,6 +2069,7 @@
   {
     "id": "artesia",
     "title": "ARTESiA — apixaban for device-detected subclinical AF",
+    "headline": "Subclinical AF apixaban: stroke 0.78 vs 1.24%/yr; more bleeding",
     "year": 2024,
     "settings": [
       "hospital",
@@ -1239,7 +2094,7 @@
         "year": 2024,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "af-prevention"
@@ -1247,6 +2102,7 @@
   {
     "id": "noah-afnet6",
     "title": "NOAH-AFNET 6 — edoxaban for atrial high-rate episodes",
+    "headline": "Device-detected AHRE edoxaban: no benefit, more harm",
     "year": 2023,
     "settings": [
       "hospital",
@@ -1271,7 +2127,7 @@
         "year": 2023,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "af-prevention"
@@ -1279,6 +2135,7 @@
   {
     "id": "invictus",
     "title": "INVICTUS — anticoagulation in rheumatic heart disease with AF",
+    "headline": "Rheumatic AF: rivaroxaban worse than VKA",
     "year": 2022,
     "settings": [
       "hospital",
@@ -1303,7 +2160,7 @@
         "year": 2022,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "af-prevention"
@@ -1311,6 +2168,7 @@
   {
     "id": "re-align",
     "title": "RE-ALIGN — dabigatran in mechanical heart valves",
+    "headline": "Mechanical valves: dabigatran worse than warfarin",
     "year": 2013,
     "settings": [
       "hospital",
@@ -1334,7 +2192,7 @@
         "year": 2013,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "cardiac-sources"
@@ -1342,6 +2200,7 @@
   {
     "id": "proact-xa",
     "title": "PROACT Xa — apixaban in an On-X mechanical aortic valve",
+    "headline": "On-X valve: apixaban worse than warfarin",
     "year": 2023,
     "settings": [
       "hospital",
@@ -1366,7 +2225,7 @@
         "year": 2023,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction links read via PubMed/NLM; full report and supplements not reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "cardiac-sources"
@@ -1374,6 +2233,7 @@
   {
     "id": "interact2",
     "title": "INTERACT2 — acute ICH blood-pressure lowering",
+    "headline": "ICH SBP <140: primary outcome NS (OR 0.87); ordinal shift favored",
     "year": 2013,
     "settings": [
       "on-call",
@@ -1397,7 +2257,7 @@
         "year": 2013,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "acute-bp"
@@ -1405,6 +2265,7 @@
   {
     "id": "atach-2",
     "title": "ATACH-2 — intensive BP lowering and renal adverse events",
+    "headline": "ICH SBP 110–139: no benefit; renal events 9.0 vs 4.0%",
     "year": 2016,
     "settings": [
       "on-call",
@@ -1428,7 +2289,7 @@
         "year": 2016,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "acute-bp"
@@ -1436,6 +2297,7 @@
   {
     "id": "interact3",
     "title": "INTERACT3 — coordinated acute ICH care bundle",
+    "headline": "ICH care bundle: better mRS (cOR 0.86)",
     "year": 2023,
     "settings": [
       "on-call",
@@ -1461,7 +2323,7 @@
         "year": 2023,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed. July 2023 correction body read: investigator-name spellings in the appendix were corrected."
+        "access": "Primary abstract and indexed notices checked. July 2023 correction body read: investigator-name spellings in the appendix were corrected."
       },
       {
         "title": "INTERACT3 correction",
@@ -1475,8 +2337,41 @@
     "relatedTopic": "ich-management"
   },
   {
+    "id": "fastest",
+    "title": "FASTEST — recombinant factor VIIa within 2 hours of ICH",
+    "headline": "rFVIIa: less growth (−3.7 mL), no functional benefit; more thromboembolism",
+    "year": 2026,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "factor VIIa",
+      "hemostatic",
+      "hematoma expansion",
+      "ICH"
+    ],
+    "question": "Does recombinant factor VIIa within 2 hours improve outcome after spontaneous ICH?",
+    "population": "626 adults aged 18–80 with ICH 2–60 mL, limited IVH, GCS ≥8, treated within 2 hours.",
+    "comparison": "Recombinant factor VIIa 80 µg/kg versus placebo.",
+    "result": "No difference in 180-day mRS (adjusted cOR 1.09; 95% CI 0.79–1.51); stopped for futility. Life-threatening thromboembolism within 4 days: RR 3.41 (1.14–10.15). ICH growth was 3.7 mL less at 24 hours.",
+    "limits": "Excluded recent anticoagulation and large hematomas; slowed growth did not translate into function.",
+    "sources": [
+      {
+        "title": "FASTEST primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41653933/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "ich-expansion-ivh"
+  },
+  {
     "id": "enchanted2-mt",
     "title": "ENCHANTED2/MT — avoid extrapolating aggressive post-EVT BP lowering",
+    "headline": "Post-EVT SBP <120: worse outcome (OR 1.37)",
     "year": 2022,
     "settings": [
       "on-call",
@@ -1501,7 +2396,7 @@
         "year": 2022,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed. December 2022 correction is indexed; its body was inaccessible, so the scope of that correction remains unverified."
+        "access": "Primary abstract and indexed notices checked. December 2022 correction is indexed; its body was inaccessible, so the scope of that correction remains unverified."
       },
       {
         "title": "ENCHANTED2/MT indexed correction",
@@ -1517,6 +2412,7 @@
   {
     "id": "optimal-bp",
     "title": "OPTIMAL-BP — functional outcomes after post-EVT BP reduction",
+    "headline": "Post-EVT SBP <140: mRS 0–2 39.4 vs 54.4%",
     "year": 2023,
     "settings": [
       "on-call",
@@ -1540,7 +2436,71 @@
         "year": 2023,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+        "access": "Primary abstract and indexed notices checked."
+      }
+    ],
+    "relatedTopic": "acute-bp"
+  },
+  {
+    "id": "hope-post-evt-bp",
+    "title": "HOPE (post-EVT BP) — reperfusion-guided blood pressure targets",
+    "headline": "Reperfusion-guided SBP: mRS 0–2 60.0 vs 47.1%",
+    "year": 2026,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "blood pressure",
+      "post EVT",
+      "mTICI",
+      "reperfusion-guided"
+    ],
+    "question": "Do reperfusion-guided SBP targets after successful EVT improve outcome?",
+    "population": "440 patients with anterior LVO and mTICI ≥2b after EVT at 11 Spanish centers (mean age 75).",
+    "comparison": "SBP 140–160 for mTICI 2b or 100–140 for 2c/3 for 72 hours versus SBP <180.",
+    "result": "mRS 0–2 at 90 days occurred in 60.0% vs 47.1% (difference 13.3 points; 95% CI 4.1–22.6). Hemorrhagic transformation 22.3% vs 31.6%; symptomatic ICH 3.5% vs 3.9%; mortality 15.4% vs 15.6% (abstract figures).",
+    "limits": "Open-label single-country trial (446 enrolled, 440 analyzed); it tests the combined strategy rather than each target. Mortality figures are from the abstract narrative.",
+    "sources": [
+      {
+        "title": "HOPE (post-EVT BP) primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42258192/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "acute-bp"
+  },
+  {
+    "id": "interact4",
+    "title": "INTERACT4 — ambulance BP lowering in undifferentiated stroke",
+    "headline": "Prehospital SBP lowering: overall neutral; harm in ischemic stroke (cOR 1.30)",
+    "year": 2024,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "prehospital",
+      "blood pressure",
+      "ambulance",
+      "undifferentiated stroke"
+    ],
+    "question": "Does ambulance-delivered BP lowering improve outcome in suspected acute stroke?",
+    "population": "2,404 Chinese patients with a motor deficit and SBP ≥150 within 2 hours; 46.5% of confirmed strokes were hemorrhagic.",
+    "comparison": "Immediate lowering to SBP 130–140 versus usual care.",
+    "result": "No overall difference in 90-day mRS (cOR 1.00; 95% CI 0.87–1.15). Hemorrhagic stroke: cOR 0.75 (0.60–0.92); ischemic stroke: cOR 1.30 (1.06–1.60), i.e., worse outcome.",
+    "limits": "Subgroup effects by stroke type; a very high hemorrhage proportion limits transfer to other regions.",
+    "sources": [
+      {
+        "title": "INTERACT4 primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38752650/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
       }
     ],
     "relatedTopic": "acute-bp"
@@ -1548,6 +2508,7 @@
   {
     "id": "clots-3",
     "title": "CLOTS 3 — intermittent pneumatic compression after stroke",
+    "headline": "IPC: proximal DVT 8.5 vs 12.1%",
     "year": 2013,
     "settings": [
       "on-call",
@@ -1572,7 +2533,7 @@
         "year": 2013,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed. Two corrections are indexed (Lancet 2013;382:506 and 1020); their full bodies could not be retrieved, so correction scope is unresolved."
+        "access": "Primary abstract and indexed notices checked. Two corrections are indexed (Lancet 2013;382:506 and 1020); their full bodies could not be retrieved, so correction scope is unresolved."
       }
     ],
     "relatedTopic": "vte-prevention"
@@ -1580,6 +2541,7 @@
   {
     "id": "food-feeding-route",
     "title": "FOOD — PEG versus nasogastric feeding after stroke",
+    "headline": "PEG vs nasogastric: more death or poor outcome (+7.8 points)",
     "year": 2005,
     "settings": [
       "hospital"
@@ -1603,7 +2565,7 @@
         "year": 2005,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "poststroke-dysphagia"
@@ -1611,6 +2573,7 @@
   {
     "id": "shine",
     "title": "SHINE — intensive glucose control in acute ischemic stroke",
+    "headline": "Intensive insulin: no benefit; severe hypoglycemia 2.6%",
     "year": 2019,
     "settings": [
       "on-call",
@@ -1634,7 +2597,7 @@
         "year": 2019,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed. November 2019 correction body read; reversed figure-arm labels and demographic/minor text values were corrected. The card avoids the uncorrected demographic values still present in the indexed abstract."
+        "access": "Primary abstract and indexed notices checked. November 2019 correction body read; reversed figure-arm labels and demographic/minor text values were corrected. The card avoids the uncorrected demographic values still present in the indexed abstract."
       },
       {
         "title": "SHINE correction",
@@ -1650,6 +2613,7 @@
   {
     "id": "qasc",
     "title": "QASC — implementing fever, glucose and swallowing care",
+    "headline": "Nurse fever/glucose/swallow protocols: death or dependency 42 vs 58%",
     "year": 2011,
     "settings": [
       "hospital"
@@ -1674,7 +2638,7 @@
         "year": 2011,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "stroke-unit-nursing"
@@ -1682,6 +2646,7 @@
   {
     "id": "destiny-ii",
     "title": "DESTINY II — hemicraniectomy in older patients",
+    "headline": "Hemicraniectomy 61–82 y: survival with mRS 0–4 38 vs 18%",
     "year": 2014,
     "settings": [
       "on-call",
@@ -1706,7 +2671,7 @@
         "year": 2014,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "malignant-edema"
@@ -1714,6 +2679,7 @@
   {
     "id": "restart",
     "title": "RESTART — antiplatelet therapy after antithrombotic-associated ICH",
+    "headline": "Antiplatelet restart after ICH: recurrent ICH 4 vs 9% (NS)",
     "year": 2019,
     "settings": [
       "hospital",
@@ -1738,7 +2704,7 @@
         "year": 2019,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "caa-ich-recurrence"
@@ -1746,6 +2712,7 @@
   {
     "id": "earlydrain",
     "title": "EARLYDRAIN — lumbar CSF drainage after secured aSAH",
+    "headline": "Lumbar drain after aSAH: mRS 3–6 32.6 vs 44.8%",
     "year": 2023,
     "settings": [
       "on-call",
@@ -1786,6 +2753,7 @@
   {
     "id": "sahara",
     "title": "SAHaRA — liberal versus restrictive transfusion in aSAH",
+    "headline": "Liberal transfusion in aSAH: no benefit (33.5 vs 37.7%)",
     "year": 2025,
     "settings": [
       "on-call",
@@ -1810,7 +2778,7 @@
         "year": 2025,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+        "access": "Primary abstract and indexed notices checked."
       }
     ],
     "relatedTopic": "sah-critical-care"
@@ -1818,6 +2786,7 @@
   {
     "id": "cadiss",
     "title": "CADISS — antiplatelet versus anticoagulant treatment for dissection",
+    "headline": "Dissection: antiplatelet vs anticoagulant, few events (3 vs 1)",
     "year": 2015,
     "settings": [
       "on-call",
@@ -1843,7 +2812,7 @@
         "year": 2015,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed. June 2015 correction is indexed; its publisher body was inaccessible and the scope remains unverified."
+        "access": "Primary abstract and indexed notices checked. June 2015 correction is indexed; its publisher body was inaccessible and the scope remains unverified."
       },
       {
         "title": "CADISS indexed correction",
@@ -1857,8 +2826,40 @@
     "relatedTopic": "dissection"
   },
   {
+    "id": "respect",
+    "title": "RESPECT — PFO closure, extended follow-up",
+    "headline": "PFO closure: recurrent stroke HR 0.55 over 5.9 years",
+    "year": 2017,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "PFO",
+      "closure",
+      "cryptogenic stroke"
+    ],
+    "question": "Does PFO closure reduce recurrent stroke after cryptogenic stroke over long-term follow-up?",
+    "population": "980 patients aged 18–60 with PFO and cryptogenic ischemic stroke (mean age 45.9), followed a median 5.9 years.",
+    "comparison": "PFO closure versus medical therapy (antiplatelet or warfarin).",
+    "result": "Recurrent ischemic stroke 0.58 vs 1.07 per 100 patient-years (HR 0.55; 95% CI 0.31–0.999); stroke of undetermined cause HR 0.38 (0.18–0.79). Venous thromboembolism was more common with closure.",
+    "limits": "Extended follow-up analysis was exploratory; unequal dropout between groups.",
+    "sources": [
+      {
+        "title": "RESPECT extended follow-up primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/28902590/",
+        "year": 2017,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "pfo"
+  },
+  {
     "id": "to-act",
     "title": "TO-ACT — endovascular treatment for severe CVT",
+    "headline": "Severe CVT EVT: no benefit (mRS 0–1 67 vs 68%)",
     "year": 2020,
     "settings": [
       "on-call",
@@ -1882,7 +2883,40 @@
         "year": 2020,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed correction/retraction relationships read via PubMed/NLM on 2026-10-01; full report and supplements not comprehensively reviewed."
+        "access": "Primary abstract and indexed notices checked."
+      }
+    ],
+    "relatedTopic": "cvt"
+  },
+  {
+    "id": "respect-cvt",
+    "title": "RE-SPECT CVT — dabigatran versus warfarin for cerebral venous thrombosis",
+    "headline": "CVT: no recurrent VTE; major bleeding 1.7 vs 3.3%",
+    "year": 2019,
+    "settings": [
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "CVT",
+      "dabigatran",
+      "DOAC",
+      "warfarin",
+      "anticoagulation"
+    ],
+    "question": "Is dabigatran as safe and effective as warfarin after CVT?",
+    "population": "120 adults with acute CVT, stable after 5–15 days of parenteral heparin; ICH from the CVT was allowed.",
+    "comparison": "Dabigatran 150 mg twice daily versus dose-adjusted warfarin for 24 weeks.",
+    "result": "No recurrent venous thromboembolism in either group. Major bleeding 1.7% (1, intestinal) vs 3.3% (2, intracranial); recanalization 60.0% vs 67.3%.",
+    "limits": "Small exploratory open-label trial with blinded adjudication.",
+    "sources": [
+      {
+        "title": "RE-SPECT CVT primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/31479105/",
+        "year": 2019,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
       }
     ],
     "relatedTopic": "cvt"

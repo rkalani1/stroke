@@ -75,9 +75,10 @@ describe('curated reference integrity and interaction',()=>{
       await page.waitForFunction(count=>document.querySelectorAll('[data-reference-id]').length===count,data.topics.length+data.studies.length);
       await page.locator('[data-reference-id] [data-reference-id]').evaluateAll(cards=>cards.forEach(card=>{card.open=true;}));
       await page.waitForFunction(count=>document.querySelectorAll('.reference-body').length===count,data.topics.length+data.studies.length);
-      const rendered=await page.locator('[data-reference-id] [data-reference-id]').evaluateAll(cards=>cards.map(card=>({id:card.dataset.referenceId,parent:card.parentElement.closest('[data-reference-id]').dataset.referenceId,text:card.innerText,links:[...card.querySelectorAll('a')].map(a=>a.href)})));
+      const rendered=await page.locator('[data-reference-id] [data-reference-id]').evaluateAll(cards=>cards.map(card=>({id:card.dataset.referenceId,parent:card.parentElement.closest('[data-reference-id]').dataset.referenceId,text:card.innerText,provenance:card.querySelector(':scope > .reference-body > .reference-sources .reference-provenance').textContent,sourcesOpen:card.querySelector(':scope > .reference-body > .reference-sources').open,links:[...card.querySelectorAll('a')].map(a=>a.href)})));
       expect(rendered).toHaveLength(data.studies.length);
-      for(const study of data.studies){const card=rendered.find(record=>record.id===study.id);expect(card.parent).toBe(study.relatedTopic);for(const field of ['question','population','comparison','result','limits'])expect(card.text).toContain(study[field]);for(const source of study.sources){expect(card.links).toContain(source.url);expect(card.text).toContain(source.access);}}
+      // Sources stay collapsed; provenance remains in the DOM behind its own disclosure.
+      for(const study of data.studies){const card=rendered.find(record=>record.id===study.id);expect(card.parent).toBe(study.relatedTopic);expect(card.sourcesOpen).toBe(false);expect(card.text).toContain(study.headline);for(const field of ['question','population','comparison','result','limits'])expect(card.text).toContain(study[field]);for(const source of study.sources){expect(card.links).toContain(source.url);expect(card.provenance).toContain(source.access);}}
     }finally{await page.close();}
   });
   it('surfaces matching study links before topics, respects filters and prioritizes named studies',async()=>{
@@ -89,7 +90,7 @@ describe('curated reference integrity and interaction',()=>{
       expect(await matches.getByRole('link').first().getAttribute('href')).toBe('#/evidence/point');
       expect(await page.locator('.reference-body').count()).toBe(0);
       await page.getByLabel('Care setting').selectOption('on-call');
-      await page.getByLabel('Clinical section').selectOption('Prevention and antithrombotics');
+      await page.getByLabel('Clinical section').selectOption('Acute ischemic stroke');
       expect(await matches.getByRole('link',{name:/POINT/}).count()).toBe(1);
       await page.getByLabel('Clinical section').selectOption('Recovery and rehabilitation');
       expect(await page.locator('.reference-study-results a[href="#/evidence/point"]').count()).toBe(0);
@@ -165,6 +166,38 @@ describe('curated reference integrity and interaction',()=>{
       await page.evaluate(()=>window.renderReference({active:false}));await page.evaluate(()=>window.rejectCopy(Error('denied')));
       expect(await page.getByLabel('Evidence copy fallback').count()).toBe(0);
       await page.evaluate(()=>window.renderReference({active:true}));expect(await page.getByText('Copied with sources and limits.').count()).toBe(0);
+    }finally{await page.close();}
+  });
+
+  it('leads with the bottom line, then graded recommendation chips, review points, studies and collapsed sources',async()=>{
+    const page=await pageWith({viewport:{width:390,height:844}});try{
+      await page.getByLabel('Find a clinical question').waitFor();
+      expect(await page.getByText('Guidelines, scientific statements and study summaries',{exact:false}).count()).toBe(0);
+      const card=page.locator('[data-reference-id="acute-bp"]');await card.locator(':scope > summary').click();
+      const body=card.locator(':scope > .reference-body');
+      const order=await body.evaluate(node=>[...node.children].map(child=>child.className||child.tagName));
+      expect(order.indexOf('reference-summary')).toBeLessThan(order.indexOf('reference-recs'));
+      expect(order.indexOf('reference-recs')).toBeLessThan(order.indexOf('UL'));
+      expect(order.indexOf('UL')).toBeLessThan(order.indexOf('SECTION'));
+      expect(order.indexOf('SECTION')).toBeLessThan(order.indexOf('reference-sources'));
+      const topic=data.topics.find(record=>record.id==='acute-bp');
+      const chips=await body.locator('.reference-recs .reference-chip:not(.reference-chip-loe)').evaluateAll(nodes=>nodes.map(node=>[node.textContent,node.className]));
+      expect(chips).toHaveLength(topic.recommendations.length);
+      expect(chips).toContainEqual(['COR 3: Harm','reference-chip cor-3']);
+      expect(chips).toContainEqual(['COR 1','reference-chip cor-1']);
+      expect(chips).toContainEqual(['COR 2a','reference-chip cor-2a']);
+      expect(await body.locator('.reference-recs').innerText()).toContain('ais-2026-77 · p. 35');
+      const sources=body.locator(':scope > .reference-sources');
+      expect(await sources.evaluate(node=>node.open)).toBe(false);
+      expect(await sources.locator(':scope > summary').innerText()).toBe(`Sources (${topic.sources.length})`);
+      await sources.locator(':scope > summary').click();
+      expect(await sources.locator(':scope > .reference-provenance').evaluate(node=>node.open)).toBe(false);
+      expect(await sources.innerText()).not.toContain(topic.sources[0].access);
+      await sources.locator(':scope > .reference-provenance > summary').click();
+      expect(await sources.innerText()).toContain(topic.sources[0].access);
+      const study=body.locator('[data-reference-id="optimal-bp"] > summary');
+      expect(await study.innerText()).toContain(data.studies.find(record=>record.id==='optimal-bp').headline);
+      expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
     }finally{await page.close();}
   });
 });

@@ -7,16 +7,16 @@ import { searchReference } from '../src/reference-search.js';
 import { readClinicalReference } from '../scripts/reference-data.mjs';
 const read = path => JSON.parse(fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8'));
 const canonical = readClinicalReference();
-const now = new Date('2026-10-02T23:59:59Z');
+const now = new Date('2026-10-03T23:59:59Z');
 const validate = data => validateClinicalReference(data, { now });
 const changed = change => { const data = structuredClone(canonical); change(data); return data; };
 
 describe('bounded clinical-reference data', () => {
   it('validates all topics, calculator presentations and completed studies against the source/route contract', () => {
-    expect(canonical.topics).toHaveLength(83);
+    expect(canonical.topics).toHaveLength(92);
     expect(new Set(canonical.topics.map(topic => topic.category)).size).toBe(9);
     expect(canonical.calculators).toHaveLength(16);
-    expect(canonical.studies).toHaveLength(58);
+    expect(canonical.studies).toHaveLength(88);
     expect(validate(canonical)).toEqual([]);
   });
 
@@ -31,9 +31,9 @@ describe('bounded clinical-reference data', () => {
 
   it('restores historical study source access without importing archived outcome claims', () => {
     const sources = read('src/reference/study-sources.json');
-    expect(sources).toHaveLength(273);
-    expect(new Set(sources.map(source => source.url)).size).toBe(273);
-    expect(new Set(sources.map(source => source.id)).size).toBe(273);
+    expect(sources).toHaveLength(282);
+    expect(new Set(sources.map(source => source.url)).size).toBe(282);
+    expect(new Set(sources.map(source => source.id)).size).toBe(282);
     for (const source of sources) {
       expect(source.topicIds.length).toBeGreaterThan(0);
       expect(source.access).toContain('bibliographic');
@@ -46,9 +46,12 @@ describe('bounded clinical-reference data', () => {
     expect(sources.find(source => source.id === 'study-source-action-cvt').type).toBe('Observational study');
     expect(sources.find(source => source.id === 'study-source-avert-dose-response')).toMatchObject({ type: 'Report', access: expect.stringContaining('observational secondary dose-response analysis') });
     expect(searchReference(canonical.topics, 'BEST-MSU').some(topic => topic.id === 'acute-bp')).toBe(false);
-    for (const id of ['hope-bp-2026','tnk-vs-alteplase-rwe','enrich-af','actisave']) {
-      expect(sources.find(source => source.id === `study-source-${id}`).access).toContain('withheld');
+    // Unresolved historical interpretations stay summary-free; HOPE is now abstract-verified.
+    for (const id of ['tnk-vs-alteplase-rwe','enrich-af','actisave']) {
+      expect(sources.find(source => source.id === `study-source-${id}`).access).toContain('unresolved');
     }
+    expect(sources.find(source => source.id === 'study-source-hope-bp-2026').access).toContain('verified');
+    for (const id of ['original','attention-late','lais-2026']) expect(sources.find(source => source.id === `study-source-${id}`).type).toBe('Randomized trial');
   });
 
   it('serves the exact canonical records and source dates with matching version and checksum', () => {
@@ -84,6 +87,11 @@ describe('bounded clinical-reference data', () => {
     ['missing caution', data => { delete data.topics[0].caution; }],
     ['missing review questions', data => { data.topics[0].consider = []; }],
     ['too many review questions', data => { data.topics[0].consider = Array(5).fill('Review'); }],
+    ['recommendation without level', data => { delete data.topics[0].recommendations[0].loe; }],
+    ['unknown recommendation class', data => { data.topics[0].recommendations[0].cor = 'I'; }],
+    ['duplicate recommendation id', data => { data.topics[0].recommendations.push({ ...data.topics[0].recommendations[0] }); }],
+    ['empty recommendation list', data => { data.topics[0].recommendations = []; }],
+    ['empty study headline', data => { data.studies[0].headline = ''; }],
     ['missing study result', data => { delete data.studies[0].result; }],
     ['missing study limits', data => { delete data.studies[0].limits; }],
     ['invalid study year', data => { data.studies[0].year = '2023'; }],
@@ -146,5 +154,37 @@ describe('bounded clinical-reference data', () => {
     expect(point.length).toBeGreaterThan(1);
     expect(searchReference(canonical.topics, '', 'clinic').every(record => record.settings.includes('clinic'))).toBe(true);
     expect(searchReference(canonical.studies, 'no-such-reference-xyz')).toEqual([]);
+  });
+
+  it('keeps provenance in data but no maintainer phrasing in any source access note', () => {
+    const all = [...canonical.topics.flatMap(topic => topic.sources), ...canonical.studies.flatMap(study => study.sources)];
+    expect(all.every(source => source.access.length > 0)).toBe(true);
+    for (const source of all) expect(source.access).not.toMatch(/restores source access|withheld|not re-reviewed for this citation|catalog check/);
+  });
+
+  it('quotes a curated set of graded guideline recommendations on high-yield topics', () => {
+    const recs = canonical.topics.flatMap(topic => (topic.recommendations || []).map(rec => ({ ...rec, topic: topic.id })));
+    expect(recs).toHaveLength(80);
+    for (const rec of recs) expect(rec.source).toMatch(/AHA|NCS|SVIN/);
+    const tnk = recs.find(rec => rec.id === 'ais-2026-98' && rec.topic === 'acute-reperfusion');
+    expect(tnk).toMatchObject({ cor: '1', loe: 'A' });
+    expect(tnk.text).toContain('tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg)');
+    expect(tnk.source).toBe('AHA/ASA AIS 2026 · ais-2026-98 · p. 42');
+    expect(recs.find(rec => rec.id === 'ais-2026-77')).toMatchObject({ cor: '3: Harm', topic: 'acute-bp' });
+    expect(recs.find(rec => rec.id === 'ncs-reversal-2026-1-1')).toMatchObject({ cor: 'Conditional', loe: 'Moderate', topic: 'antithrombotic-reversal' });
+    // Archive annotations ("Current-evidence note") are never presented as guideline text.
+    expect(recs.some(rec => /Current-evidence|ORIENTAL/.test(rec.text))).toBe(false);
+    expect(canonical.topics.find(topic => topic.id === 'antithrombotic-reversal').summary).toMatch(/4F-PCC rather than andexanet.*withdrawn from the US market effective 22 December 2025/);
+  });
+
+  it('files each study under its clinical topic with a key-result headline', () => {
+    const parent = id => canonical.studies.find(study => study.id === id).relatedTopic;
+    expect(parent('select2')).toBe('large-core-evt');
+    expect(parent('baoche')).toBe('basilar-occlusion');
+    expect(parent('point')).toBe('minor-stroke-antiplatelets');
+    expect(parent('annexa-i')).toBe('antithrombotic-reversal');
+    expect(parent('discount')).toBe('medium-distal-evt');
+    expect(canonical.studies.every(study => typeof study.headline === 'string' && study.headline.length > 0)).toBe(true);
+    expect(canonical.studies.find(study => study.id === 'discount').sources[0].url).toBe('https://pubmed.ncbi.nlm.nih.gov/42485024/');
   });
 });
