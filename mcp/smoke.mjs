@@ -14,8 +14,8 @@ try {
  const {tools}=await client.listTools();
  assert.deepEqual(new Set(tools.map(t=>t.name)),new Set(['calc_tnk_dose','calc_alteplase_dose','calc_crcl','calc_dawn_eligibility','calc_defuse3_eligibility','list_calculators','get_sources','search_reference']));
  for(const weightKg of [40,80,83,99.99,100,100.01,140]) {
-  const tnk=(await call('calc_tnk_dose',{weightKg})).result;assert.equal(Number(tnk.calculatedDose),Math.min(weightKg/4,25));assert.equal(tnk.authority,'guideline');
-  const a=(await call('calc_alteplase_dose',{weightKg})).result;const total=Math.min(weightKg*0.9,90);assert(Math.abs(Number(a.totalDose)-total)<1e-9);assert(Math.abs(Number(a.bolus)+Number(a.infusion)-total)<1e-9);
+  const tnk=(await call('calc_tnk_dose',{weightKg})).result;assert.equal(Number(tnk.calculatedDose),Math.round(Math.min(weightKg/4,25)*100)/100);assert.equal(tnk.authority,'guideline');
+  const a=(await call('calc_alteplase_dose',{weightKg})).result;const total=Math.round(Math.min(weightKg*0.9,90)*10)/10;assert(Math.abs(Number(a.totalDose)-total)<1e-9);assert(Math.abs(Number(a.bolus)+Number(a.infusion)-Number(a.totalDose))<1e-9);
  }
  assert.equal((await call('calc_tnk_dose',{weightKg:69,authority:'fda-label'})).result.calculatedDose,'17.5');
  for(const weightKg of [0,-1,351,'83abc',true,null])for(const name of ['calc_tnk_dose','calc_alteplase_dose'])await rejects(name,{weightKg});

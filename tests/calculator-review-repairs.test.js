@@ -50,7 +50,7 @@ describe('TNK dose authority and boundaries', () => {
     expect(Number(result.calculatedDose)).toBe(17.6);
     expect(parseFloat(result.volume)).toBe(3.52);
     expect(result.authorityLabel).toContain('0.25 mg/kg');
-    expect(result.roundingNote).toContain('No additional syringe rounding');
+    expect(result.roundingNote).toMatch(/no additional syringe rounding/i);
     expect(calculateTNKDoseReviewed(100).calculatedDose).toBe('25');
     expect(calculateTNKDoseReviewed(150).calculatedDose).toBe('25');
   });

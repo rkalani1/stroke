@@ -54,12 +54,12 @@ describe('recommendAcuteDAPT', () => {
     const r = recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, nihss: 4, strokeType: 'ischemic', atherosclerotic: true, timeFromOnsetH: 12 });
     expect(r.regimen).toBe('clopidogrel+ASA');
     expect(r.duration).toBe('21 days');
-    expect(r.class).toMatch(/Class 2a/);
+    expect(r.class).toMatch(/COR 2a, LOE B-R/);
   });
   it('ABCD2 ≥6 TIA within 24h → Class 1 clopidogrel+ASA (THALES does not preempt)', () => {
     const r = recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, nihss: 0, abcd2: 6, strokeType: 'tia', timeFromOnsetH: 12 });
     expect(r.regimen).toBe('clopidogrel+ASA');
-    expect(r.class).toMatch(/Class 1/);
+    expect(r.class).toMatch(/COR 1, LOE A/);
   });
   it('CHANCE-2 (ticagrelor+ASA) for CYP2C19 LOF minor stroke', () => {
     const r = recommendAcuteDAPT({ ...completeCases.recommendAcuteDAPT, nihss: 2, strokeType: 'ischemic', cyp2c19LOF: true, timeFromOnsetH: 12 });

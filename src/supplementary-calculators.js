@@ -2,7 +2,9 @@ import { numericInput, reviewedGcs, reviewedPhq2, reviewedStopBang } from './enc
 
 const ageValue = value => numericInput(value, { min: 18, max: 120, integer: true });
 const inputObject = input => input && typeof input === 'object' && !Array.isArray(input) ? input : {};
-const complete = (input, keys) => input.reviewed === true && keys.every(key => typeof input[key] === 'boolean');
+// Scores are live once every item has an explicit answer. The separate
+// attestation (`reviewed`) gates only writes into the Encounter.
+const complete = (input, keys) => keys.every(key => typeof input[key] === 'boolean');
 const sum = (input, keys) => keys.reduce((total, key) => total + Number(input[key]), 0);
 const result = (score, max) => ({ score, max });
 
@@ -88,7 +90,7 @@ export const HUNT_HESS_DESCRIPTORS = [
 export function describeReviewedHuntHess(input = {}) {
   input = inputObject(input);
   const grade = numericInput(input.grade, { min: 1, max: 5, integer: true });
-  return input.reviewed === true && input.sahConfirmed === true && grade !== null ? { grade, description: HUNT_HESS_DESCRIPTORS[grade] } : null;
+  return input.sahConfirmed === true && grade !== null ? { grade, description: HUNT_HESS_DESCRIPTORS[grade] } : null;
 }
 export function calculateReviewedWFNS(input = {}) {
   input = inputObject(input);
@@ -117,7 +119,7 @@ export const MTICI_DESCRIPTORS = {
 };
 export function describeReviewedMTICI(input = {}) {
   input = inputObject(input);
-  return input.reviewed === true && input.ischemic === true && typeof input.grade === 'string' && Object.hasOwn(MTICI_DESCRIPTORS,input.grade)
+  return input.ischemic === true && typeof input.grade === 'string' && Object.hasOwn(MTICI_DESCRIPTORS,input.grade)
     ? { grade:input.grade, description:MTICI_DESCRIPTORS[input.grade] } : null;
 }
 
@@ -137,7 +139,7 @@ export const PC_ASPECTS_REGIONS = [
   ['pcaLeft', 'Left PCA territory', 1], ['pcaRight', 'Right PCA territory', 1], ['thalamusLeft', 'Left thalamus', 1], ['thalamusRight', 'Right thalamus', 1]
 ].map(([key, label, weight]) => ({ key, label, weight }));
 function reviewedRegions(input, regions) {
-  if (input.reviewed !== true || !input.regions || !regions.every(region => typeof input.regions[region.key] === 'boolean')) return null;
+  if (!input.regions || typeof input.regions !== 'object' || !regions.every(region => typeof input.regions[region.key] === 'boolean')) return null;
   return result(10 - regions.reduce((total, region) => total + (input.regions[region.key] ? region.weight : 0), 0), 10);
 }
 export function calculateReviewedRegionalASPECTS(input = {}) {
@@ -148,7 +150,6 @@ export function calculateReviewedRegionalPCASPECTS(input = {}) { return reviewed
 
 export function calculateReviewedPHQ2(input = {}) {
   input = inputObject(input);
-  if (input.reviewed !== true) return null;
   const score = reviewedPhq2(input);
   return score === null ? null : result(score, 6);
 }
@@ -176,12 +177,14 @@ export function supplementarySourceKey(state, id) {
   if (id === 'pascal') values.rope = [supplementarySourceKey(state, 'rope'), state.supplementary?.rope || {}];
   return JSON.stringify(values);
 }
-function reviewedGroup(state, id) {
+function attestedGroup(state, id) {
   const group = state.supplementary?.[id] || {};
   return { ...group, reviewed: group.reviewed === true && group.reviewSourceKey === supplementarySourceKey(state, id) };
 }
+// Live result from explicit worksheet answers and current shared Encounter
+// inputs. Unknown or unanswered items keep it null; no attestation is needed.
 export function supplementaryResult(state, id) {
-  const n = state.note || {}, data = reviewedGroup(state, id);
+  const n = state.note || {}, data = state.supplementary?.[id] || {};
   if (!Object.hasOwn(engines, id)) return null;
   if (id === 'mrs-descriptors') return describeReviewedMRS(n.premorbidMRS);
   if (id === 'pascal') {
@@ -194,7 +197,9 @@ export function supplementaryResult(state, id) {
   if (id === 'abcd2') return calculateReviewedABCD2({ ...data, age:n.age, bp:`${data.initialSystolic ?? ''}/${data.initialDiastolic ?? ''}` });
   return engines[id]({ ...data, age:n.age, sex:n.sex, bp:n.presentingBP, gcs:state.gcs, weight:n.weight, heightCm:n.heightCm });
 }
-export function supplementaryReviewed(state, id) { return reviewedGroup(state, id).reviewed; }
+// Attestation for Encounter writes only (apply buttons, follow-up screening
+// projection). Any worksheet or shared-source edit withdraws it.
+export function supplementaryReviewed(state, id) { return attestedGroup(state, id).reviewed; }
 
 const applications = { abcd2: ['dapt','abcd2'], 'aspects-regions': [null,'aspects'], 'pc-aspects-regions': [null,'pcAspects'] };
 function applicationKey(state, id) {
@@ -225,9 +230,10 @@ export function updateSupplementaryField(state, id, key, value) {
   const edited = key === 'reviewed' ? { ...group, reviewed:value === true, reviewSourceKey:value === true ? supplementarySourceKey(state,id) : null } : { ...group, [key]:value, reviewed:false, reviewSourceKey:null };
   return reconcileSupplementaryAppliedScores(state, { ...state, supplementary:{ ...state.supplementary, [id]:edited } });
 }
+export const SUPPLEMENTARY_APPLY_IDS = Object.keys(applications);
 export function canApplySupplementaryScore(state, id) {
   return Object.hasOwn(applications,id) && state.context === 'acute' &&
-    state.note?.diagnosisCategory === (id === 'abcd2' ? 'tia' : 'ischemic') && supplementaryResult(state,id) !== null;
+    state.note?.diagnosisCategory === (id === 'abcd2' ? 'tia' : 'ischemic') && supplementaryReviewed(state,id) && supplementaryResult(state,id) !== null;
 }
 export function applySupplementaryScore(state, id) {
   if (!canApplySupplementaryScore(state,id)) return state;

@@ -30,3 +30,19 @@ export function parseTimestamp(value) {
   const candidates = timestampCandidates(value);
   return candidates.length === 1 ? candidates[0] : null;
 }
+
+const pad2 = number => String(number).padStart(2, '0');
+// Exported clinical times are written as local wall time. A UTC offset is added
+// only when that local clock time repeats (daylight-saving fall-back), so the
+// recorded instant stays unambiguous. Invalid or ambiguous inputs are returned
+// unchanged; callers flag them separately.
+export function formatRecordedInstant(value) {
+  const candidates = timestampCandidates(value);
+  if (candidates.length !== 1) return value;
+  const date = candidates[0];
+  const seconds = /T\d{2}:\d{2}:\d{2}/.test(value) ? `:${pad2(date.getSeconds())}` : '';
+  const local = `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}T${pad2(date.getHours())}:${pad2(date.getMinutes())}${seconds}`;
+  if (timestampCandidates(local).length < 2) return local.replace('T', ' ');
+  const offset = -date.getTimezoneOffset(), absolute = Math.abs(offset);
+  return `${local.replace('T', ' ')} (UTC${offset < 0 ? '−' : '+'}${pad2(Math.floor(absolute / 60))}:${pad2(absolute % 60)})`;
+}

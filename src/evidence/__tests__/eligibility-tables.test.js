@@ -36,12 +36,12 @@ describe('eligibilityTables — structure & integrity', () => {
   it('has the expected trial count per table', () => {
     const counts = Object.fromEntries(eligibilityTables.map((t) => [`${t.category}-${t.phase}`, t.trials.length]));
     expect(counts).toEqual({
-      'ischemic-acute': 2,
-      'ischemic-inpatient': 8,
-      'ischemic-outpatient': 6,
-      'ich-acute': 2,
+      'ischemic-acute': 3,
+      'ischemic-inpatient': 5,
+      'ischemic-outpatient': 4,
+      'ich-acute': 3,
       'ich-inpatient': 3,
-      'ich-outpatient': 3
+      'ich-outpatient': 2
     });
   });
 
@@ -52,20 +52,22 @@ describe('eligibilityTables — structure & integrity', () => {
         expect(t.summary, `${table.id}/${t.acronym}`).toBeTruthy();
         expect(Array.isArray(t.eligibility) && t.eligibility.length > 0).toBe(true);
         expect(Array.isArray(t.exclusions) && t.exclusions.length > 0).toBe(true);
-        expect(['enrolling', 'soon', 'closed', 'unverified']).toContain(t.status);
+        expect(['enrolling', 'soon']).toContain(t.status);
       }
     }
   });
 
   it('projects every shared profile using its complete canonical criteria and original registry-check date', () => {
     for (const table of eligibilityTables) for (const reference of table.trials) {
-      const source = screenerTrials.find(trial => trial.acronym === (reference.acronym === 'ESUS-MRI' ? 'ESUS' : reference.acronym));
-      if (!source) { expect(['PICASSO', 'CAPTIVA']).toContain(reference.acronym); expect(reference.sourceDate).toBe('2026-10-01'); expect(reference.sourceGaps.join(' ')).toMatch(/Registry status/); continue; }
+      const source = screenerTrials.find(trial => trial.acronym === reference.acronym);
+      expect(source, reference.acronym).toBeTruthy();
       expect(reference.eligibility).toBe(source.exactInclusionCriteria);
       expect(reference.exclusions).toBe(source.exactExclusionCriteria);
       expect(reference.nct).toBe(source.externalMetadata.nct || '');
       expect(reference.sourceDate).toBe(source.externalMetadata.verificationDate || null);
       expect(reference.sourceGaps).toBe(source.sourceGaps);
+      expect(reference.phase).toBe(source.externalMetadata.phase);
+      expect(reference.referenceOnly).toBe(Boolean(source.referenceOnly));
     }
   });
 
@@ -84,30 +86,19 @@ describe('eligibilityTables — structure & integrity', () => {
   });
 });
 
-describe('eligibilityTables — unverified flags (ESUS-MRI / MOCHA)', () => {
+describe('eligibilityTables — recruitment status (2026-10-03 registry audit)', () => {
   const allTrials = eligibilityTables.flatMap((t) => t.trials);
+  const acronyms = new Set(allTrials.map(t => t.acronym));
 
-  it('ESUS-MRI is flagged unverified everywhere it appears', () => {
-    const esus = allTrials.filter((t) => t.acronym === 'ESUS-MRI');
-    expect(esus.length).toBeGreaterThan(0);
-    for (const t of esus) {
-      expect(t.unverified).toBe(true);
-      expect(t.status).toBe('unverified');
-    }
+  it('omits not-enrolling profiles and removed placeholders from the phase tables', () => {
+    for (const acronym of ['CAPPRICORN-1', 'CAPTIVA', 'ESUS-MRI', 'ESUS', 'MOCHA']) expect(acronyms.has(acronym), acronym).toBe(false);
   });
 
-  it('MOCHA is flagged unverified everywhere it appears', () => {
-    const mocha = allTrials.filter((t) => t.acronym === 'MOCHA');
-    expect(mocha.length).toBeGreaterThan(0);
-    for (const t of mocha) {
-      expect(t.unverified).toBe(true);
-      expect(t.status).toBe('unverified');
-    }
-  });
-
-  it('only ESUS-MRI and MOCHA are unverified', () => {
-    const unverifiedAcronyms = [...new Set(allTrials.filter((t) => t.unverified).map((t) => t.acronym))].sort();
-    expect(unverifiedAcronyms).toEqual(['ESUS-MRI', 'MOCHA']);
+  it('adds the verified StrokeNet profiles and keeps PICASSO as a flagged criteria reference', () => {
+    expect(eligibilityTables.find(t => t.id === 'ich-acute').trials.map(t => t.acronym)).toContain('FASTEST-2');
+    expect(eligibilityTables.find(t => t.id === 'ischemic-acute').trials.map(t => t.acronym)).toEqual(['STEP', 'SISTER', 'PICASSO']);
+    expect(allTrials.filter(t => t.referenceOnly).map(t => t.acronym)).toEqual(['PICASSO']);
+    expect(allTrials.some(t => t.unverified)).toBe(false);
   });
 });
 

@@ -65,10 +65,15 @@ describe('trial-specific DAPT age and timing bounds', () => {
     [{ age: 90, strokeType: 'tia', abcd2: 4, atherosclerotic: true, timeFromOnsetH: 48 }, 'INSPIRES'],
     [{ age: 20, timeFromOnsetH: 12.01 }, 'CHANCE / POINT'],
     [{ age: 39, strokeType: 'tia', abcd2: 4, timeFromOnsetH: 24 }, 'CHANCE / POINT']
-  ])('withholds the known out-of-population source branch: %o', (patch, source) => {
+  ])('labels an out-of-trial-population age as the AHA/ASA 2026 guideline tier: %o', (patch, trial) => {
     const result = recommendAcuteDAPT({ ...dapt, ...patch });
-    expect(result).toMatchObject({ regimen: 'individualized-review', duration: null, dosing: null, source });
-    expect(result.rationale).toContain('does not establish that DAPT is contraindicated');
+    // AHA/ASA 2026 DAPT recommendations carry no age limit; the trial gap is disclosed.
+    expect(result.regimen).not.toBe('individualized-review');
+    expect(result.duration).toBeTruthy();
+    expect(result.dosing).toBeTruthy();
+    expect(result.class).toContain(`guideline tier; age outside the ${trial} trial population`);
+    expect(result.rationale).toContain(`${trial} enrolled`);
+    expect(result.rationale).toContain('AHA/ASA 2026 recommendation is not age-restricted');
   });
   it.each([
     [{ age: 40, nihss: 4 }, 'ticagrelor+ASA'],
@@ -173,7 +178,7 @@ describe('shared anticoagulant history and compact handoff continuity', () => {
       Object.assign(state, { consultationType, documentFormat });
       const text = buildSummary(state, now);
       expect(text).toContain('Anticoagulant exposure: warfarin');
-      expect(text).toContain('Last anticoagulant dose: 2026-09-30T20:00');
+      expect(text).toContain('Last anticoagulant dose: 2026-09-30 20:00');
       expect(text).not.toContain('IVT clinician decision:');
       expect(text).not.toContain('INR alone does not establish');
     }

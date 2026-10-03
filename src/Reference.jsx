@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { CARE_SETTINGS, searchReference, referenceText } from './reference-search.js';
+import { CARE_SETTINGS, searchReference, referenceText, recommendationLabels } from './reference-search.js';
 import { useReferenceData } from './reference-resource.js';
 
 export default function Reference({ version, focusId, active = true }) {
@@ -40,20 +40,26 @@ export default function Reference({ version, focusId, active = true }) {
   const ungrouped = category === 'all' ? matchingStudies.filter(record => !record.relatedTopic) : [];
   const studyResults = query.trim() ? matchingStudies.filter(record => category === 'all' || results.some(topic => topic.id === record.relatedTopic)) : [];
   if (ungrouped.length) groups.push(['Other study summaries', ungrouped]);
+  const renderRecommendations = record => <section className="reference-recs" aria-label={`Guideline recommendations for ${record.title}`}><h3>Guideline recommendations</h3><ul>{record.recommendations.map(rec => {
+    const label = recommendationLabels(rec);
+    return <li key={rec.id}><span className="reference-chips"><span className={`reference-chip ${label.tone}`}>{label.cor}</span>{label.loe && <span className="reference-chip reference-chip-loe">{label.loe}</span>}</span><span className="reference-rec-text">{rec.text}</span><span className="reference-rec-source">{rec.source}</span></li>;
+  })}</ul></section>;
+  const renderSources = record => <details className="reference-sources"><summary>Sources ({record.sources.length})</summary><ul>{record.sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a> <span>· {source.year} · {source.type}</span></li>)}</ul>
+    <details className="reference-provenance"><summary>Source provenance</summary><ul>{record.sources.map(source => <li key={source.url}><span>{source.title}</span> — checked {source.checkedAt}. {source.access}</li>)}</ul></details></details>;
   const renderCard = record => {
-    const study = !record.summary, SourceHeading = study ? 'h4' : 'h3';
+    const study = !record.summary;
     const relatedStudies = study ? [] : data.studies.filter(item => item.relatedTopic === record.id);
     return <details className="reference-card" data-reference-id={record.id} key={record.id} open={Boolean(opened[record.id])} onToggle={event => {
       if (event.target !== event.currentTarget) return;
       const open = event.currentTarget.open; if (!open) clearCopy();
       setOpened(previous => previous[record.id] === open ? previous : { ...previous, [record.id]: open });
     }}>
-      <summary><span>{record.title}</span>{study && <span className="reference-year">{record.year}</span>}</summary>
-      {opened[record.id] && <div className="reference-body">{study ? <><p>{record.question}</p><dl>{[['Population', record.population], ['Comparison', record.comparison], ['Result', record.result]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></> : <><p>{record.summary}</p><ul>{record.consider.map(item => <li key={item}>{item}</li>)}</ul></>}
-        <p className="reference-limits"><strong>Applicability / limits:</strong> {record.caution || record.limits}</p>
+      <summary><span>{record.title}</span>{study && <span className="reference-year">{record.year}</span>}{study && record.headline && <span className="reference-headline">{record.headline}</span>}</summary>
+      {opened[record.id] && <div className="reference-body">{study ? <><p>{record.question}</p><dl>{[['Population', record.population], ['Comparison', record.comparison], ['Result', record.result]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></> : <><p className="reference-summary">{record.summary}</p>{record.recommendations?.length > 0 && renderRecommendations(record)}<ul>{record.consider.map(item => <li key={item}>{item}</li>)}</ul></>}
+        <p className="reference-limits"><strong>Limits:</strong> {record.caution || record.limits}</p>
         {(record.related || []).length > 0 && <div className="reference-links">{record.related.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</div>}
         {relatedStudies.length > 0 && <section aria-label={`Study summaries for ${record.title}`}><h3>Study summaries</h3>{relatedStudies.map(renderCard)}</section>}
-        <div className="reference-sources"><SourceHeading>Sources</SourceHeading>{record.sources.map(source => <div key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a><p>{source.type} · {source.year} · Source checked {source.checkedAt}</p><p>{source.access}</p></div>)}</div>
+        {renderSources(record)}
         <button className="workspace-secondary-action" onClick={() => copyRecord(record)}>{`Copy ${record.title} evidence`}</button>
         {copy?.id === record.id && <div role="status">{copy.failed ? <><p>Clipboard unavailable. Select and copy the text below.</p><textarea ref={fallback} aria-label="Evidence copy fallback" readOnly rows={8} value={copy.text} /></> : 'Copied with sources and limits.'}</div>}
       </div>}
@@ -61,13 +67,12 @@ export default function Reference({ version, focusId, active = true }) {
   };
   return <section ref={container} className="reference-surface" aria-label="Evidence">
     <h1>Evidence</h1>
-    <p className="workspace-help">Guidelines, scientific statements and study summaries across stroke care. Search by topic, study or clinical question.</p>
     <div className="reference-filters"><label className="workspace-field"><span>Find a clinical question</span><input ref={searchInput} type="search" value={query} onChange={event => { changeFilters(); setQuery(event.target.value); }} placeholder="e.g. anticoagulation timing, ELAN, PFO" /></label><label className="workspace-field"><span>Care setting</span><select aria-label="Care setting" value={setting} onChange={event => { changeFilters(); setSetting(event.target.value); }}>{CARE_SETTINGS.map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label><label className="workspace-field"><span>Clinical section</span><select aria-label="Clinical section" value={category} onChange={event => { changeFilters(); setCategory(event.target.value); }}>{[['all', 'All sections'], ...categories.map(name => [name, name])].map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label>{(query || setting !== 'all' || category !== 'all') && <button className="workspace-secondary-action" onClick={() => { changeFilters(); setQuery(''); setSetting('all'); setCategory('all'); searchInput.current?.focus(); }}>Clear filters</button>}</div>
     <p role="status" className="workspace-help">{results.length} {results.length === 1 ? 'topic' : 'topics'} found.{ungrouped.length > 0 && ` ${ungrouped.length} additional study summaries.`}</p>
-    {studyResults.length > 0 && <nav className="reference-study-results" aria-label="Matching study summaries"><h2>Matching study summaries <span>({studyResults.length})</span></h2><ul>{studyResults.map(record => <li key={record.id}><a href={`#/evidence/${record.id}`} onClick={event => { if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) { resultTargets.current.add(record.id); if (focusId === record.id) requestFocus(value => value + 1); } }}>{record.title}<span className="reference-year">{record.year}</span></a></li>)}</ul></nav>}
+    {studyResults.length > 0 && <nav className="reference-study-results" aria-label="Matching study summaries"><h2>Matching study summaries <span>({studyResults.length})</span></h2><ul>{studyResults.map(record => <li key={record.id}><a href={`#/evidence/${record.id}`} onClick={event => { if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) { resultTargets.current.add(record.id); if (focusId === record.id) requestFocus(value => value + 1); } }}>{record.title}<span className="reference-year">{record.year}</span>{record.headline && <span className="reference-headline">{record.headline}</span>}</a></li>)}</ul></nav>}
     {focusId && ![...data.topics, ...data.studies].some(record => record.id === focusId) && <p role="status">Reference not found. Browse below.</p>}
     {groups.map(([name, entries]) => <section key={name} className="reference-group" aria-label={name}><h2>{name}<span>{entries.length}</span></h2>{entries.map(renderCard)}</section>)}
-    <p className="workspace-help">External sources require internet; installed summaries are available offline.</p>
+    <p className="workspace-help">Summaries work offline; source links need internet.</p>
     <div className="reference-links"><a href="https://professional.heart.org/en/guidelines-statements" target="_blank" rel="noopener noreferrer">AHA guidelines and statements</a><a href="https://eso-stroke.org/guidelines/eso-guideline-directory/" target="_blank" rel="noopener noreferrer">ESO guideline directory</a></div>
   </section>;
 }

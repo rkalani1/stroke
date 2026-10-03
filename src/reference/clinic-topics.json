@@ -2,6 +2,7 @@
   {
     "id": "af-timing",
     "title": "AF after ischemic stroke: anticoagulation timing",
+    "category": "Prevention and antithrombotics",
     "settings": [
       "hospital",
       "clinic"
@@ -14,13 +15,29 @@
       "CATALYST",
       "restart anticoagulation"
     ],
-    "summary": "Timing requires an established AF indication and review of brain imaging. ELAN used imaging-defined infarct severity; OPTIMAS compared initiation within 4 days with days 7–14. CATALYST pooled initiation within 4 days versus day 5 or later.",
-    "consider": [
-      "Which trial population and imaging definition fit this infarct, rather than using NIHSS as a substitute for infarct size?",
-      "Have hemorrhagic transformation, clinical stability and other contraindications been reconciled?",
-      "Is the selected drug and dose appropriate after medication, interaction and organ-function review?"
+    "summary": "Start the DOAC early once AF-associated ischemic stroke is confirmed and hemorrhage excluded. CATALYST (5,441 patients from 4 trials): starting within 4 days vs day 5 or later reduced 30-day recurrent ischemic stroke, sICH or unclassified stroke (2.1 vs 3.0%; OR 0.70), with identical sICH (0.4%). ELAN schedule: within 48 h for minor or moderate and day 6–7 for major imaging-defined infarcts. OPTIMAS: within 4 days was noninferior to days 7–14 (3.3% each).",
+    "recommendations": [
+      {
+        "text": "In carefully selected (e.g., milder severity) AIS patients with atrial fibrillation, a strategy of early oral anticoagulation post-stroke is low risk and is reasonable compared with delayed anticoagulation, although the efficacy of early anticoagulation for preventing early recurrent stroke is not established.",
+        "cor": "2a",
+        "loe": "A",
+        "source": "AHA/ASA AIS 2026 · ais-2026-154 · p. 68",
+        "id": "ais-2026-154"
+      },
+      {
+        "text": "In stroke or TIA patients with AF who do not have moderate-to-severe mitral stenosis or a mechanical heart valve, a DOAC (apixaban, dabigatran, edoxaban, or rivaroxaban) is recommended over warfarin to reduce recurrent stroke risk.",
+        "cor": "1",
+        "loe": "B-R",
+        "source": "AHA/ASA Secondary Prevention 2021 · secondary-prevention-2021-82 · p. 38",
+        "id": "secondary-prevention-2021-82"
+      }
     ],
-    "caution": "Trial schedules do not generate an individual start date. Major infarcts and hemorrhagic transformation need their own source-specific assessment; an early-treatment result is not blanket clearance.",
+    "consider": [
+      "Size the infarct on imaging (ELAN categories), not by NIHSS alone; brain imaging before starting may be considered (AHA 2021, 2b).",
+      "Hemorrhagic transformation: starting or continuing anticoagulation may be considered case by case (AHA 2026, 2b).",
+      "TIA with AF: anticoagulate immediately (AHA 2021, 2a); use a DOAC over warfarin unless there is a mechanical valve or moderate-to-severe mitral stenosis."
+    ],
+    "caution": "Trial schedules guide but do not set an individual start date for very large infarcts or significant hemorrhagic transformation.",
     "sources": [
       {
         "title": "ELAN: imaging-based analysis of the randomized trial",
@@ -28,7 +45,7 @@
         "year": 2024,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed primary methods section checked for imaging definitions; full trial exclusions not re-reviewed."
+        "access": "Primary abstract verified via PubMed (post hoc imaging analysis of ELAN)."
       },
       {
         "title": "OPTIMAS randomized trial",
@@ -36,7 +53,7 @@
         "year": 2024,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked for population and timing arms; linked correction noticed, full correction text not reviewed here."
+        "access": "Primary abstract verified via PubMed."
       },
       {
         "title": "CATALYST individual-participant meta-analysis",
@@ -44,7 +61,7 @@
         "year": 2025,
         "type": "Meta-analysis",
         "checkedAt": "2026-10-01",
-        "access": "Indexed primary abstract checked for pooled timing groups; full text and individual trial exclusions not re-reviewed."
+        "access": "Primary abstract verified via PubMed."
       }
     ],
     "related": [
@@ -52,12 +69,12 @@
         "label": "Renal function worksheet",
         "href": "#/encounter/crcl"
       }
-    ],
-    "category": "Prevention and antithrombotics"
+    ]
   },
   {
     "id": "stroke-workup",
     "title": "Stroke mechanism, ESUS and rhythm monitoring",
+    "category": "Stroke mechanisms and vascular disorders",
     "settings": [
       "hospital",
       "clinic"
@@ -72,13 +89,13 @@
       "loop recorder",
       "echocardiography"
     ],
-    "summary": "Define the mechanism before selecting prevention. For cryptogenic stroke, ACC recommends at least 14 days of rhythm monitoring when AF detection could change treatment; selected high-risk patients may start with an implanted monitor.",
+    "summary": "Define the mechanism before choosing prevention, with testing started within 48 h: brain CT or MRI, ECG, and CBC, coagulation, glucose, HbA1c, creatinine and lipids (AHA 2021, COR 1), plus carotid and intracranial vessel imaging. Cryptogenic stroke: echocardiography and prolonged rhythm monitoring are reasonable (2a) — CRYSTAL AF found AF in 12.4 vs 2.0% at 12 months with an implantable monitor. ESUS: antiplatelet, not empiric anticoagulation — NAVIGATE ESUS (rivaroxaban), RE-SPECT ESUS (dabigatran) and ARCADIA (apixaban for atrial cardiopathy) were neutral.",
     "consider": [
-      "Are arterial imaging, cardiac evaluation and relevant laboratory results complete, with competing causes assessed?",
-      "Which monitoring strategy fits the mechanism, feasibility and treatment implications?",
-      "Who will review pending results and communicate the plan?"
+      "Classify the mechanism (TOAST); an incomplete workup leaves it undetermined and does not establish ESUS.",
+      "ESUS: TEE, cardiac CT or cardiac MRI might be reasonable to find cardioaortic sources (2b).",
+      "Who reviews the monitor and acts on AF?"
     ],
-    "caution": "A negative brief ECG does not exclude intermittent AF. Incomplete testing does not establish ESUS; empirical anticoagulation for ESUS requires a separate indication.",
+    "caution": "A brief negative ECG does not exclude paroxysmal AF.",
     "sources": [
       {
         "title": "AHA/ASA secondary prevention: diagnostic and mechanism-based approach",
@@ -86,28 +103,84 @@
         "year": 2021,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Official summary checked; indexed primary guideline definition of ESUS also consulted. Full recommendation tables not re-reviewed."
-      },
-      {
-        "title": "ACC post-stroke arrhythmia monitoring pathway",
-        "url": "https://www.acc.org/Latest-in-Cardiology/ten-points-to-remember/2024/12/17/03/23/2024-acc-ecdp-on-practical",
-        "year": 2024,
-        "type": "Clinical policy",
-        "checkedAt": "2026-10-01",
-        "access": "Official expert-consensus summary checked; full JACC pathway was access-restricted."
+        "access": "Official AHA summary page."
       }
     ],
     "related": [
       {
+        "label": "TOAST classification",
+        "href": "#/evidence/stroke-classification"
+      },
+      {
+        "label": "PFO",
+        "href": "#/evidence/pfo"
+      },
+      {
         "label": "Encounter",
         "href": "#/encounter"
       }
+    ]
+  },
+  {
+    "id": "stroke-classification",
+    "title": "TOAST classification and stroke mechanism",
+    "category": "Stroke mechanisms and vascular disorders",
+    "settings": [
+      "hospital",
+      "clinic"
     ],
-    "category": "Stroke mechanisms and vascular disorders"
+    "keywords": [
+      "TOAST",
+      "stroke subtype",
+      "etiology",
+      "large artery atherosclerosis",
+      "cardioembolism",
+      "small vessel occlusion",
+      "lacunar",
+      "undetermined",
+      "lateral medullary",
+      "Wallenberg"
+    ],
+    "summary": "TOAST sorts ischemic stroke into five subtypes: large-artery atherosclerosis, cardioembolism, small-vessel occlusion, other determined etiology and undetermined etiology, each labeled possible or probable by the clinician's certainty; interrater agreement was high. Assign the subtype after brain imaging, vessel imaging and cardiac evaluation, because the mechanism decides prevention (antiplatelet or anticoagulant, revascularization, PFO closure).",
+    "consider": [
+      "An incomplete workup leaves the mechanism undetermined; it does not establish ESUS.",
+      "DWI pattern helps: a single deep lacune suggests small-vessel disease, scattered emboli in several territories a cardiac source, and a watershed pattern large-artery disease (AHA TIA statement).",
+      "Lateral medullary infarction (n=130): vertebral artery disease in 67% and PICA disease in 10%; mechanisms were large-vessel 50%, dissection 15%, small-vessel 13% and cardioembolic 5%."
+    ],
+    "caution": "TOAST was built to classify trial participants; it does not replace an individual mechanism review.",
+    "sources": [
+      {
+        "title": "TOAST: classification of subtype of acute ischemic stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/7678184/",
+        "year": 1993,
+        "type": "Report",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "Pure lateral medullary infarction: clinical-radiological correlation of 130 patients",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/12805095/",
+        "year": 2003,
+        "type": "Observational study",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "related": [
+      {
+        "label": "Stroke mechanism workup",
+        "href": "#/evidence/stroke-workup"
+      },
+      {
+        "label": "Lacunar stroke",
+        "href": "#/evidence/lacunar-small-vessel"
+      }
+    ]
   },
   {
     "id": "pfo",
     "title": "PFO: attribution and closure discussion",
+    "category": "Stroke mechanisms and vascular disorders",
     "settings": [
       "hospital",
       "clinic"
@@ -120,13 +193,13 @@
       "shunt",
       "cryptogenic stroke"
     ],
-    "summary": "Closure evidence is strongest for selected adults aged 18–60 with PFO-associated ischemic stroke after a competing-cause evaluation. Use PASCAL and the complete clinical assessment to support shared selection, including review of shunt and septal anatomy.",
+    "summary": "PFO closure is reasonable for ages 18–60 with nonlacunar stroke of undetermined cause after a full evaluation and a PFO with high-risk features (AHA 2021, 2a); without high-risk features the benefit is uncertain (2b). RESPECT: recurrent ischemic stroke 0.58 vs 1.07 per 100 patient-years (HR 0.55) over a median 5.9 years; CLOSE: 0/238 vs 14/235 strokes over a mean 5.3 years. Closure adds AF (CLOSE 4.6 vs 0.9%) and venous thromboembolism (RESPECT).",
     "consider": [
-      "Does the infarct and diagnostic evaluation support a causal PFO rather than an incidental finding?",
-      "Have alternative arterial and cardiac causes, including AF, been assessed?",
-      "Have the expected recurrence benefit, procedural complications and AF risk been discussed with the patient and closure team?"
+      "Exclude competing causes first: vessel imaging, prolonged rhythm monitoring and echocardiography with a bubble study.",
+      "Use RoPE and PASCAL to judge whether the PFO is likely causal.",
+      "Discuss procedural risk, AF and the long-term antiplatelet plan with the closure team."
     ],
-    "caution": "Neither PFO presence nor RoPE alone determines closure eligibility. Evidence beyond age 60 is limited; post-device medication and follow-up plans require the treating team's review.",
+    "caution": "Evidence over age 60 and for an incidental PFO is limited.",
     "sources": [
       {
         "title": "ESO PFO guideline: official presentation",
@@ -134,7 +207,7 @@
         "year": 2024,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Official guideline presentation checked for patient selection, anatomy and age-related evidence gaps; full guideline not comprehensively reviewed."
+        "access": "ESO guideline presentation (selected slides)."
       },
       {
         "title": "AAN PFO advisory: patient and family summary",
@@ -142,7 +215,7 @@
         "year": 2020,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Official two-page summary read for competing-cause assessment and benefit-risk counseling; full advisory not re-reviewed."
+        "access": "AAN patient and family summary."
       }
     ],
     "related": [
@@ -154,12 +227,12 @@
         "label": "PASCAL worksheet",
         "href": "#/tools/pascal"
       }
-    ],
-    "category": "Stroke mechanisms and vascular disorders"
+    ]
   },
   {
     "id": "carotid",
     "title": "Carotid stenosis: symptoms, severity and referral",
+    "category": "Stroke mechanisms and vascular disorders",
     "settings": [
       "on-call",
       "hospital",
@@ -174,13 +247,29 @@
       "CREST-2",
       "revascularization"
     ],
-    "summary": "For symptomatic disease, ESO recommends endarterectomy for 70–99% stenosis and suggests it for selected 50–69% stenosis. When surgery is appropriate, benefit favors early treatment, ideally within two weeks of the last retinal or cerebral ischemic event.",
-    "consider": [
-      "Are recent ipsilateral retinal or cerebral symptoms attributable to this lesion, and how was stenosis measured?",
-      "Do infarct burden, hemorrhage, disability, anatomy and procedural risk support intervention and its timing?",
-      "If asymptomatic, has the separate contemporary evidence, including CREST-2, been reviewed with intensive medical management?"
+    "summary": "Symptomatic 70–99% stenosis: endarterectomy if perioperative stroke or death risk is <6% (AHA 2021, COR 1); 50–69%: endarterectomy depending on patient factors (COR 1); <50%: no revascularization (COR 3). Operate within 2 weeks of a nondisabling event (2a); at age ≥70 or within the first week, endarterectomy is preferred over stenting (2a). Asymptomatic ≥70%: CREST-2 found fewer 4-year events with stenting plus intensive medical management (2.8 vs 6.0%) but no significant benefit from endarterectomy (3.7 vs 5.3%); ACST-2 found stenting and endarterectomy similar (5-year non-procedural stroke 5.3 vs 4.5%).",
+    "recommendations": [
+      {
+        "text": "CEA is recommended for patients with TIA or nondisabling ischemic stroke within the past 6 months and ipsilateral severe (70-99%) carotid stenosis to reduce future stroke risk, provided the estimated perioperative morbidity and mortality is below 6%.",
+        "cor": "1",
+        "loe": "A",
+        "source": "AHA/ASA Secondary Prevention 2021 · secondary-prevention-2021-60 · p. 32",
+        "id": "secondary-prevention-2021-60"
+      },
+      {
+        "text": "When carotid revascularization is indicated for TIA or nondisabling stroke, it is reasonable to perform the procedure within 2 weeks of the index event rather than delaying surgery, to increase the likelihood of a stroke-free outcome.",
+        "cor": "2a",
+        "loe": "C-LD",
+        "source": "AHA/ASA Secondary Prevention 2021 · secondary-prevention-2021-66 · p. 32",
+        "id": "secondary-prevention-2021-66"
+      }
     ],
-    "caution": "Do not apply symptomatic thresholds or timing automatically to asymptomatic disease, near-occlusion or a large disabling infarct. CREST-2 used two parallel trials; it was not a direct stenting-versus-endarterectomy comparison.",
+    "consider": [
+      "How was the stenosis measured (NASCET), and does the lesion explain the event?",
+      "Large or disabling infarct, hemorrhage or near-occlusion: individualize timing with vascular surgery.",
+      "Everyone gets intensive medical therapy: antiplatelet, statin and BP control (COR 1)."
+    ],
+    "caution": "CREST-2 ran two separate trials, so it does not compare stenting directly with endarterectomy.",
     "sources": [
       {
         "title": "ESO carotid endarterectomy and stenting guideline",
@@ -188,7 +277,7 @@
         "year": 2021,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract and indexed recommendation table checked for symptomatic severity and timing; full guideline access was challenged."
+        "access": "Primary NLM record checked."
       },
       {
         "title": "CREST-2: medical management and revascularization for asymptomatic stenosis",
@@ -196,20 +285,24 @@
         "year": 2025,
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
-        "access": "Indexed primary abstract checked for asymptomatic population and parallel-trial design; no effect estimate reproduced here."
+        "access": "Publisher page; see the CREST-2 study summary."
       }
     ],
     "related": [
       {
-        "label": "Ischemic protocol",
+        "label": "NASCET",
+        "href": "#/tools/nascet"
+      },
+      {
+        "label": "Ischemic stroke protocol",
         "href": "#/protocols/ischemic"
       }
-    ],
-    "category": "Stroke mechanisms and vascular disorders"
+    ]
   },
   {
     "id": "sicas",
     "title": "Symptomatic intracranial atherosclerosis",
+    "category": "Stroke mechanisms and vascular disorders",
     "settings": [
       "hospital",
       "clinic"
@@ -222,13 +315,13 @@
       "angioplasty",
       "DAPT"
     ],
-    "summary": "AAN's 2022 advisory prioritizes medical management: for severe 70–99% sICAS with low hemorrhagic-transformation risk, aspirin plus clopidogrel for up to 90 days; high-intensity lipid treatment; and a long-term BP target below 140/90 in clinically stable patients.",
+    "summary": "Severe (70–99%) symptomatic intracranial stenosis within 30 days: aspirin plus clopidogrel for up to 90 days (AHA 2021, 2a; AAN 2022), high-intensity statin with LDL <70 mg/dL, long-term SBP <140 and exercise (COR 1). No angioplasty or stenting as first treatment (COR 3: Harm) — SAMMPRIS: 30-day stroke or death 14.7 vs 5.8% with stenting. BASIS (China) tested submaximal balloon angioplasty in selected patients; it does not establish routine intervention.",
     "consider": [
-      "Is atherosclerotic stenosis the cause of the event, with severity and territory confirmed?",
-      "Are bleeding risk, antiplatelet duration and the transition plan documented?",
-      "If events recur, have mechanism, medication adherence and specialist options been reassessed?"
+      "Confirm the stenosis is symptomatic and in the right territory; 50–69% stenosis gets medical therapy (stenting is harmful).",
+      "Write the DAPT stop date and the single agent to continue.",
+      "Recurrent events despite therapy: recheck adherence and mechanism; the usefulness of angioplasty or stenting is unknown (2b)."
     ],
-    "caution": "The advisory discourages stenting as initial therapy. BASIS later studied submaximal balloon angioplasty in a selected Chinese population; its findings do not establish routine acute intervention or make balloon angioplasty and stenting interchangeable. Long-term BP targets are not acute perfusion targets.",
+    "caution": "Long-term BP targets do not apply in the acute, perfusion-dependent phase.",
     "sources": [
       {
         "title": "AAN symptomatic intracranial atherosclerosis advisory",
@@ -236,7 +329,7 @@
         "year": 2022,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Official seven-page clinician summary read; relevant antithrombotic, stable-BP and stenting recommendations checked, not a new whole-guideline review."
+        "access": "AAN practice advisory."
       },
       {
         "title": "BASIS randomized trial",
@@ -252,12 +345,12 @@
         "label": "DAPT source screen",
         "href": "#/encounter/dapt"
       }
-    ],
-    "category": "Stroke mechanisms and vascular disorders"
+    ]
   },
   {
     "id": "dissection",
     "title": "Cervical artery dissection",
+    "category": "Stroke mechanisms and vascular disorders",
     "settings": [
       "on-call",
       "hospital",
@@ -270,13 +363,22 @@
       "arteriopathy",
       "antithrombotic"
     ],
-    "summary": "Confirm the vascular diagnosis and distinguish cervical from intracranial or aortic disease. The AHA statement supports individualized antithrombotic selection, generally continued for at least 3–6 months, with reassessment informed by clinical and imaging findings.",
-    "consider": [
-      "What do CTA, MRA or other reviewed studies show about the lesion and associated ischemia?",
-      "Which antithrombotic strategy fits the ischemic and bleeding risks, and when will it be reassessed?",
-      "Who will coordinate imaging follow-up and any targeted evaluation for an underlying arteriopathy?"
+    "summary": "Give antithrombotic therapy for at least 3 months (AHA 2021, COR 1); aspirin or anticoagulation are both reasonable (AHA 2026, 2a). CADISS found no difference (stroke or death 3/126 vs 1/124); TREAT-CAD did not show aspirin noninferior to a vitamin K antagonist (composite 23 vs 15%; 7 ischemic strokes vs none). Reassess the regimen with symptoms and follow-up imaging.",
+    "recommendations": [
+      {
+        "text": "In AIS patients with extracranial carotid or vertebral arterial dissection, treatment with either antiplatelet or anticoagulant therapy for at least 3 months is reasonable to prevent recurrent stroke.",
+        "cor": "2a",
+        "loe": "B-R",
+        "source": "AHA/ASA AIS 2026 · ais-2026-142 · p. 62",
+        "id": "ais-2026-142"
+      }
     ],
-    "caution": "The statement does not turn dissection into a uniform drug choice, imaging calendar or activity restriction. Recurrent neurologic symptoms require reassessment; isolated cervical dissection is not equivalent to aortic dissection.",
+    "consider": [
+      "Confirm on CTA or MRI/MRA and separate cervical from intracranial or aortic dissection.",
+      "Recurrent events despite antithrombotics: endovascular therapy may be considered (AHA 2021, 2b).",
+      "Look for an underlying arteriopathy such as FMD when the history suggests it."
+    ],
+    "caution": "Neither trial was powered to prove equivalence, and DOACs were not tested.",
     "sources": [
       {
         "title": "AHA cervical artery dissection statement: overview",
@@ -284,7 +386,7 @@
         "year": 2024,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Official summary read for diagnostic modalities and individualized management."
+        "access": "Official AHA summary page."
       },
       {
         "title": "AHA cervical artery dissection statement: primary article",
@@ -292,7 +394,7 @@
         "year": 2024,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Indexed primary abstract checked for the individualized 3–6-month antithrombotic statement; full publisher text was access-restricted."
+        "access": "Publisher record of the statement."
       }
     ],
     "related": [
@@ -300,12 +402,12 @@
         "label": "Ischemic protocol",
         "href": "#/protocols/ischemic"
       }
-    ],
-    "category": "Stroke mechanisms and vascular disorders"
+    ]
   },
   {
     "id": "secondary-prevention",
     "title": "Secondary prevention and medication review",
+    "category": "Prevention and antithrombotics",
     "settings": [
       "hospital",
       "clinic"
@@ -320,13 +422,36 @@
       "smoking",
       "DAPT transition"
     ],
-    "summary": "Match prevention to mechanism and review adherence. Antiplatelet plus anticoagulant treatment is usually unnecessary; DAPT has specific indications. The 2026 lipid guideline uses risk-specific LDL and non-HDL goals, with lower goals for very-high-risk ASCVD.",
-    "consider": [
-      "Are antithrombotic indication, duration and planned DAPT transition explicit?",
-      "Are BP, lipid and diabetes goals individualized, with follow-up measurements and tolerance reviewed?",
-      "Do affordability, missed doses, tobacco, diet, activity or support needs require action?"
+    "summary": "Noncardioembolic stroke: antiplatelet rather than anticoagulant (COR 1); DAPT only short term (minor stroke/TIA 21–30 days; severe intracranial stenosis up to 90 days). BP <130/80 for most (AHA 2021, COR 1). Atherosclerotic stroke: statin ± ezetimibe to LDL <70 mg/dL (COR 1; Treat Stroke to Target events 8.5 vs 10.9%); no known coronary disease and LDL >100: atorvastatin 80 mg (SPARCL). Recheck lipids 4–12 weeks after a change, then every 3–12 months.",
+    "recommendations": [
+      {
+        "text": "Antiplatelet therapy is recommended over oral anticoagulation for patients with noncardioembolic ischemic stroke or TIA to reduce recurrent ischemic stroke and other cardiovascular events while minimizing bleeding risk.",
+        "cor": "1",
+        "loe": "A",
+        "source": "AHA/ASA Secondary Prevention 2021 · secondary-prevention-2021-144 · p. 64",
+        "id": "secondary-prevention-2021-144"
+      },
+      {
+        "text": "An office BP goal of less than 130/80 mmHg is recommended for most hypertensive stroke or TIA patients to reduce recurrent stroke and vascular events.",
+        "cor": "1",
+        "loe": "B-R",
+        "source": "AHA/ASA Secondary Prevention 2021 · secondary-prevention-2021-28 · p. 20",
+        "id": "secondary-prevention-2021-28"
+      },
+      {
+        "text": "For ischemic stroke or TIA patients with atherosclerotic disease (intracranial, carotid, aortic, or coronary), lipid-lowering therapy with a statin (plus ezetimibe if needed) to achieve an LDL-C goal below 70 mg/dL is recommended to reduce major cardiovascular events.",
+        "cor": "1",
+        "loe": "A",
+        "source": "AHA/ASA Secondary Prevention 2021 · secondary-prevention-2021-32 · p. 21",
+        "id": "secondary-prevention-2021-32"
+      }
     ],
-    "caution": "Review the mechanism, comorbidities and current lipid-risk definition. Avoid indefinite DAPT or combination therapy without a separate reviewed indication.",
+    "consider": [
+      "Is the mechanism settled, and does it change the drug (AF, PFO, dissection, intracranial stenosis)?",
+      "Very high risk with LDL >70 despite statin plus ezetimibe: a PCSK9 inhibitor is reasonable (2a).",
+      "Check adherence, cost, smoking, diet and activity at every visit."
+    ],
+    "caution": "Avoid indefinite DAPT or antiplatelet-plus-anticoagulant combinations without a separate indication.",
     "sources": [
       {
         "title": "AHA/ASA secondary stroke prevention guideline: overview",
@@ -334,7 +459,7 @@
         "year": 2021,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Official summary checked for mechanism-based prevention, antithrombotic limits and risk-factor care; full tables not re-reviewed."
+        "access": "Official AHA summary page."
       },
       {
         "title": "2026 multisociety dyslipidemia guideline: overview",
@@ -342,7 +467,7 @@
         "year": 2026,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Official summary read for contemporary risk-specific lipid goals; no complete treatment algorithm or risk classification reproduced."
+        "access": "Official AHA summary page."
       }
     ],
     "related": [
@@ -354,12 +479,12 @@
         "label": "Encounter",
         "href": "#/encounter"
       }
-    ],
-    "category": "Prevention and antithrombotics"
+    ]
   },
   {
     "id": "recovery",
     "title": "Recovery, rehabilitation and follow-up",
+    "category": "Recovery and rehabilitation",
     "settings": [
       "hospital",
       "clinic"
@@ -374,13 +499,13 @@
       "participation",
       "telehealth"
     ],
-    "summary": "The 2026 rehabilitation guideline emphasizes coordinated multidisciplinary care, repeated functional assessment and re-engagement in therapy when needs change. Screen for depression and anxiety early and again during recovery, with an evaluation and treatment pathway for identified concerns.",
+    "summary": "Start formal interdisciplinary rehabilitation assessment in hospital (AHA 2026, COR 1) and avoid high-dose mobilization within 24 h (COR 3: Harm). Screen for depression with a structured inventory and treat it (COR 1); SSRIs do not improve motor recovery (COR 3). Reassess function, mood and goals at follow-up and re-engage therapy when needs change.",
     "consider": [
       "Which impairments, daily activities and participation goals need assessment or renewed therapy?",
-      "Have the patient and care partner received appropriate education, training and support?",
-      "Is follow-up feasible, including transport, access barriers or telehealth, and who will reassess progress?"
+      "Have the patient and care partner received education, training and support?",
+      "Is follow-up feasible (transport, access, telehealth), and who reassesses progress?"
     ],
-    "caution": "A screening score does not establish a diagnosis or replace clinical assessment. Recovery plans and therapy intensity need individual review; this card supplies no universal driving, work or travel clearance interval.",
+    "caution": "A screening score is not a diagnosis, and this card gives no driving, work or travel clearance.",
     "sources": [
       {
         "title": "2026 AHA/ASA adult stroke rehabilitation and recovery guideline: overview",
@@ -388,7 +513,7 @@
         "year": 2026,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Official summary read, published August 27, 2026; full guideline and therapy-specific recommendations not re-reviewed."
+        "access": "Official AHA summary page."
       }
     ],
     "related": [
@@ -404,7 +529,6 @@
         "label": "Encounter",
         "href": "#/encounter"
       }
-    ],
-    "category": "Recovery and rehabilitation"
+    ]
   }
 ]

@@ -6,9 +6,9 @@
    Old app caches are retired only on activation. Fetch policy is independent.
 */
 
-const APP_VERSION = '7.6.5';
+const APP_VERSION = '7.7.0';
 const CACHE_PREFIX = 'stroke-cache-v';
-const CACHE_NAME  = 'stroke-cache-v7-6-5-utility-review-20261001';
+const CACHE_NAME  = 'stroke-cache-v7-7-0-utility-review-20261001';
 
 // Retired teaching figures must not be served from a stale browser cache or
 // a bookmarked URL after this worker takes control. Paths are scope-relative
@@ -91,22 +91,30 @@ const CDN_ASSETS = [];
 // not execute deferred protocols, trials, calculators or reference modules.
 // BEGIN GENERATED APP CHUNKS
 const APP_CHUNKS = [
-  "./chunks/chunk-3RHMHLG3.js",
-  "./chunks/chunk-CCC5QWPU.js",
-  "./chunks/chunk-CM2WT52P.js",
-  "./chunks/chunk-DXV6LRZM.js",
-  "./chunks/chunk-HOFJI2PN.js",
-  "./chunks/chunk-YMRG3MKV.js",
-  "./chunks/InstallAppButton-JLW3PHBK.js",
-  "./chunks/ProtectedProtocols-JXJ4HSV7.js",
-  "./chunks/Reference-KF3OXFZ7.js",
-  "./chunks/Tools-C3SMYWSC.js",
-  "./chunks/Trials-L5ZU464V.js"
+  "./chunks/chunk-33K2AV7Q.js",
+  "./chunks/chunk-5RLOP6YY.js",
+  "./chunks/chunk-6JDYOQUJ.js",
+  "./chunks/chunk-FYQYH365.js",
+  "./chunks/chunk-G2K2XPUY.js",
+  "./chunks/chunk-IAJNPHXC.js",
+  "./chunks/chunk-J54UCCXE.js",
+  "./chunks/chunk-MHDN3HTY.js",
+  "./chunks/chunk-SBUD4YUE.js",
+  "./chunks/chunk-T7WWQYBT.js",
+  "./chunks/chunk-TVDPKXUF.js",
+  "./chunks/chunk-WGBONGII.js",
+  "./chunks/InstallAppButton-MWJ4XHSI.js",
+  "./chunks/ProtectedProtocols-7N7JQ2DF.js",
+  "./chunks/QuickReference-4SOWVMSB.js",
+  "./chunks/QuickSearch-7KF32OLJ.js",
+  "./chunks/Reference-FEWWD5BI.js",
+  "./chunks/Tools-I6MV6DLI.js",
+  "./chunks/Trials-UTVKHLAL.js"
 ];
 // END GENERATED APP CHUNKS
 
 // BEGIN GENERATED REFERENCE VALIDATION
-var ReferenceValidation=(()=>{var p=Object.defineProperty;var g=Object.getOwnPropertyDescriptor;var h=Object.getOwnPropertyNames;var c=Object.prototype.hasOwnProperty;var A=(s,i)=>{for(var t in i)p(s,t,{get:i[t],enumerable:!0})},v=(s,i,t,a)=>{if(i&&typeof i=="object"||typeof i=="function")for(let e of h(i))!c.call(s,e)&&e!==t&&p(s,e,{get:()=>i[e],enumerable:!(a=g(i,e))||a.enumerable});return s};var $=s=>v(p({},"__esModule",{value:!0}),s);var f={};A(f,{validReferenceData:()=>m});var l=s=>typeof s=="string"&&s.trim().length>0,r=s=>Array.isArray(s)&&s.every(l),y=s=>l(s)&&/^[a-z0-9-]+$/.test(s),u=s=>typeof s=="string"&&/^https:\/\/[^\s]+$/.test(s);function b(s){return Array.isArray(s)&&s.length>0&&new Set(s.map(i=>i?.id)).size===s.length&&s.every(i=>i&&y(i.id)&&["name","category","limits","sourceLabel","reviewScope"].every(t=>l(i[t]))&&u(i.sourceUrl)&&(!i.verificationUrl||u(i.verificationUrl))&&Array.isArray(i.fields)&&i.fields.every(t=>t&&l(t.key)&&l(t.label)&&["truth","select","number"].includes(t.type)&&(t.type!=="select"?t.options===void 0:Array.isArray(t.options)&&t.options.length>0&&t.options.every(a=>Array.isArray(a)&&a.length===2&&a.every(l))))&&(!i.shared||Array.isArray(i.shared)&&i.shared.every(t=>["age","sex","bp","mrs","gcs","weight","height","mtici","sahCause"].includes(t)))&&(!i.regions||Array.isArray(i.regions)&&i.regions.every(t=>t&&l(t.key)&&l(t.label)&&[1,2].includes(t.weight))))}function m(s,i){let t=s?.data;return s?._meta?.appVersion===i&&s?._meta?.schemaVersion==="2.0.0"&&b(t?.calculators)&&["topics","studies"].every(a=>Array.isArray(t?.[a])&&t[a].length>0&&new Set(t[a].map(e=>e?.id)).size===t[a].length&&t[a].every(e=>e&&y(e.id)&&l(e.title)&&r(e.keywords)&&r(e.settings)&&e.settings.length&&e.settings.every(n=>["on-call","hospital","clinic"].includes(n))&&Array.isArray(e.sources)&&e.sources.length&&e.sources.every(n=>n&&["title","type","checkedAt","access"].every(o=>l(n[o]))&&Number.isInteger(n.year)&&typeof n.url=="string"&&/^https:\/\/[^\s]+$/.test(n.url))&&(a==="topics"?l(e.category)&&["summary","caution"].every(n=>l(e[n]))&&r(e.consider)&&e.consider.length&&Array.isArray(e.related)&&e.related.every(n=>l(n.label)&&/^#\/(?:encounter|tools|protocols|evidence|trials)(?:\/[a-z0-9-]+){0,2}$/.test(n.href)):["question","population","comparison","result","limits"].every(n=>l(e[n]))&&Number.isInteger(e.year)&&(e.relatedTopic===""||y(e.relatedTopic)))))&&t.studies.every(a=>!t.topics.some(e=>e.id===a.id))&&t.studies.every(a=>a.relatedTopic===""||t.topics.some(e=>e.id===a.relatedTopic))}return $(f);})();
+var ReferenceValidation=(()=>{var o=Object.defineProperty;var c=Object.getOwnPropertyDescriptor;var g=Object.getOwnPropertyNames;var h=Object.prototype.hasOwnProperty;var b=(t,n)=>{for(var e in n)o(t,e,{get:n[e],enumerable:!0})},$=(t,n,e,i)=>{if(n&&typeof n=="object"||typeof n=="function")for(let s of g(n))!h.call(t,s)&&s!==e&&o(t,s,{get:()=>n[s],enumerable:!(i=c(n,s))||i.enumerable});return t};var A=t=>$(o({},"__esModule",{value:!0}),t);var x={};b(x,{validReferenceData:()=>y});var a=t=>typeof t=="string"&&t.trim().length>0,r=t=>Array.isArray(t)&&t.every(a),m=t=>a(t)&&/^[a-z0-9-]+$/.test(t),p=t=>typeof t=="string"&&/^https:\/\/[^\s]+$/.test(t),v=t=>t===void 0||Array.isArray(t)&&t.length>0&&t.every(n=>n&&["text","cor","loe","source","id"].every(e=>a(n[e])))&&new Set(t.map(n=>n.id)).size===t.length;function f(t){return Array.isArray(t)&&t.length>0&&new Set(t.map(n=>n?.id)).size===t.length&&t.every(n=>n&&m(n.id)&&["name","category","limits","sourceLabel","reviewScope"].every(e=>a(n[e]))&&p(n.sourceUrl)&&(!n.verificationUrl||p(n.verificationUrl))&&Array.isArray(n.fields)&&n.fields.every(e=>e&&a(e.key)&&a(e.label)&&["truth","select","number"].includes(e.type)&&(e.type!=="select"?e.options===void 0:Array.isArray(e.options)&&e.options.length>0&&e.options.every(i=>Array.isArray(i)&&i.length===2&&i.every(a))))&&(!n.shared||Array.isArray(n.shared)&&n.shared.every(e=>["age","sex","bp","mrs","gcs","weight","height","mtici","sahCause"].includes(e)))&&(!n.regions||Array.isArray(n.regions)&&n.regions.every(e=>e&&a(e.key)&&a(e.label)&&[1,2].includes(e.weight))))}function y(t,n){let e=t?.data;return t?._meta?.appVersion===n&&t?._meta?.schemaVersion==="2.0.0"&&f(e?.calculators)&&["topics","studies"].every(i=>Array.isArray(e?.[i])&&e[i].length>0&&new Set(e[i].map(s=>s?.id)).size===e[i].length&&e[i].every(s=>s&&m(s.id)&&a(s.title)&&r(s.keywords)&&r(s.settings)&&s.settings.length&&s.settings.every(l=>["on-call","hospital","clinic"].includes(l))&&Array.isArray(s.sources)&&s.sources.length&&s.sources.every(l=>l&&["title","type","checkedAt","access"].every(u=>a(l[u]))&&Number.isInteger(l.year)&&typeof l.url=="string"&&/^https:\/\/[^\s]+$/.test(l.url))&&(i==="topics"?a(s.category)&&["summary","caution"].every(l=>a(s[l]))&&r(s.consider)&&s.consider.length&&v(s.recommendations)&&Array.isArray(s.related)&&s.related.every(l=>a(l.label)&&/^#\/(?:encounter|tools|protocols|evidence|trials)(?:\/[a-z0-9-]+){0,2}$/.test(l.href)):["question","population","comparison","result","limits"].every(l=>a(s[l]))&&(s.headline===void 0||a(s.headline))&&Number.isInteger(s.year)&&(s.relatedTopic===""||m(s.relatedTopic)))))&&e.studies.every(i=>!e.topics.some(s=>s.id===i.id))&&e.studies.every(i=>i.relatedTopic===""||e.topics.some(s=>s.id===i.relatedTopic))}return A(x);})();
 // END GENERATED REFERENCE VALIDATION
 const validReferenceEnvelope = reference => ReferenceValidation.validReferenceData(reference, APP_VERSION);
 

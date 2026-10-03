@@ -126,12 +126,32 @@ const precache = corePrecacheBytes();
 // v7.1.0 restores 13 worksheets, optional Encounter documentation and Trials UI.
 // Keep initial300KB/100KB, CSS90KB and cache2MB ceilings; source/UI prose is lazy.
 // Measured complete JS is about700KB raw/195KB gzip; bounded new ceilings below.
+// 2026-10-03 clinical audit: IVT lab/anticoagulant safety holds, NIHSS UN totals,
+// DAPT guideline tiers and dose-display rounding add ~1.5KB gzip to the initial
+// graph (measured 101.2KB); the deferred bedside QuickReference adds ~5KB gzip
+// once Protocols renders it. Reviewed ceilings: initial 102KB, whole-JS 208KB gzip.
+// 2026-10-03 Trials registry audit (flagged for owner review): the explicit
+// Encounter-to-Trials import reuses the canonical workspace-state/GCS helpers,
+// so esbuild moves them out of app.js into a shared initial chunk. Initial raw
+// bytes are unchanged (~0.3 MB); gzip rises ~1 KB from the chunk boundary
+// (99.7% -> 100.7% of the old 100 KB). FASTEST Part 2, SISTER, PICASSO and
+// CAPTIVA profiles plus the compact screener add ~8.5 KB gzip of deferred
+// Trials data/UI. Ceilings: initial gzip 100 -> 101 KB; all JS gzip 196 -> 202 KB.
+// 2026-10-03 deep review (integrated): pinned case bar, global quick search
+// (lazy), tap-to-score NIHSS and vessel chips, bedside QuickReference (lazy),
+// verified clinical-audit corrections, live calculator scoring, the Trials
+// registry audit with Encounter import, and the Evidence overhaul (92 topics,
+// 88 study summaries, 80 verbatim guideline recommendations). Measured after
+// integration: initial 107 KB gzip / 0.31 MB raw, all JS 221 KB gzip /
+// 0.74 MB raw, CSS 104 KB raw (17.6 KB gzip), precache 2.05 MB. Reviewed
+// ceilings leave ~5% headroom: initial 112 KB gzip / 330 KB raw, all JS
+// 232 KB gzip / 780 KB raw, CSS 110 KB, precache 2.2 MB.
 const checks = [
   {
     id: 'app-js-gzip',
     label: 'Initial module graph (gzip)',
     actual: sumSizes(manifest.initial, gzipSizeOf),
-    budget: 100 * KB,
+    budget: 112 * KB,
     unit: KB,
     unitLabel: 'KB',
     note: 'route-level code splitting is the lever that moves this',
@@ -140,7 +160,7 @@ const checks = [
     id: 'app-js-raw',
     label: 'Initial module graph (raw)',
     actual: sumSizes(manifest.initial, sizeOf),
-    budget: 300 * KB,
+    budget: 330 * KB,
     unit: MB,
     unitLabel: 'MB',
     note: 'parse/execute cost scales with this, not the gzip figure',
@@ -148,18 +168,18 @@ const checks = [
   {
     id: 'all-js-gzip', label: 'All offline JavaScript (gzip)',
     actual: sumSizes(manifest.files.map(file => file.path), gzipSizeOf),
-    budget: 196 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
+    budget: 232 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
   },
   {
     id: 'all-js-raw', label: 'All offline JavaScript (raw)',
     actual: sumSizes(manifest.files.map(file => file.path), sizeOf),
-    budget: 700 * KB, unit: MB, unitLabel: 'MB', note: '',
+    budget: 780 * KB, unit: MB, unitLabel: 'MB', note: '',
   },
   {
     id: 'tailwind-css',
     label: 'tailwind.css',
     actual: sizeOf('tailwind.css'),
-    budget: 90 * KB,
+    budget: 110 * KB,
     unit: KB,
     unitLabel: 'KB',
     note: '',
@@ -168,7 +188,7 @@ const checks = [
     id: 'sw-precache',
     label: `service-worker precache (${precache.count} entries)`,
     actual: precache.total,
-    budget: 2 * MB,
+    budget: 2.2 * MB,
     unit: MB,
     unitLabel: 'MB',
     note: 'what a first-time visitor downloads before the app is offline-ready',

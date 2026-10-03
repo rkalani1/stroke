@@ -380,7 +380,8 @@ describe('service worker update lifecycle', () => {
     // and app.jsx guarantees the Guidelines tab works fully offline, so that
     // payload has to be precached. See the budget history in
     // scripts/check-asset-budget.mjs for why splitting does not avoid this.
-    expect(total).toBeLessThan(2 * 1024 * 1024);
+    // 2.2 MB after the 2026-10-03 integrated review (see check-asset-budget.mjs).
+    expect(total).toBeLessThan(2.2 * 1024 * 1024);
   });
 
   it('includes iOS splash screens in precache list', () => {

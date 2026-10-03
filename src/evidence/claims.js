@@ -158,7 +158,7 @@ export const claims = [
       "cit-inch-2016"
     ],
     "certainty": "high",
-    "conflictNotes": "Vitamin K is required for sustained reversal; PCC alone is short-acting. FFP remains an alternative when PCC is unavailable.",
+    "conflictNotes": "Vitamin K is required for sustained reversal; PCC alone is short-acting. FFP remains an alternative when PCC is unavailable. A fixed 4F-PCC dose (for example an institutional 2000 units) may underdose heavier or high-INR patients; Kcentra label dosing is INR 2 to <4: 25 units/kg (max 2500), INR 4-6: 35 units/kg (max 3500), INR >6: 50 units/kg (max 5000).",
     "lastReviewed": "2026-09-26"
   }
 ];

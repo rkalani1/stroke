@@ -80,9 +80,9 @@
       "id": "prognostic-score-limits:src/Encounter.jsx:1",
       "groupId": "prognostic-score-limits",
       "file": "src/Encounter.jsx",
-      "line": 157,
-      "excerpt": "{n.diagnosisCategory === 'ich' && <><div id=\"calc-ich-volume\" className=\"tool-target\" tabIndex={-1}><h3>ICH volume \u00b7 simplified ABC/2</h3><FieldGrid>{[['a', 'A: largest diameter (cm)'], ['b', 'B: perpendicular diameter (cm)'], ['thicknessMm', 'Slice thickness (mm)'], ['numSlices', 'Number of hematoma slices']].map(([key, label]) => <NumberField key={key} label={label} value={s.volume[key]} min=\"0\" onChange={v => group('volume', key, v)} />)}</FieldGrid><Result>{volume ? `${volume.volume} mL${volume.unitWarning ? ` \u00b7 ${volume.unitWarning}` : ''}` : 'Enter A and B in cm, slice thickness in mm, and a positive whole number of involved slices.'}</Result><SourceLimits url=\"https://pubmed.ncbi.nlm.nih.gov/8711791/\" label=\"Kothari et al. \u00b7 ABC/2\">Simplified unweighted ABC/2: measure A and perpendicular B on the same largest cross-section. C uses the whole count of involved slices with uniform thickness. This differs from area-weighted slice counting; irregular hematomas can be less accurately estimated. Confirm measurements and units. <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC2697964/\" target=\"_blank\" rel=\"noopener noreferrer\">Primary comparison of ABC/2 methods</a>.</SourceLimits></div><div id=\"calc-ich-score\" tabIndex={-1} className=\"tool-target\"><h3>ICH severity score</h3><FieldGrid>{groupControl('ich', Truth, 'ivh', \"Intraventricular hemorrhage\")}{groupControl('ich', Truth, 'infratentorial', \"Infratentorial origin\")}</FieldGrid><Result>{ich === null ? 'Complete age, GCS, volume and both imaging criteria before scoring.' : `ICH score ${ich}/6 \u00b7 severity framework; no individual prognosis`}</Result><SourceLimits claim=\"prognostic-score-limits\" /></div></>}",
-      "sha256": "9ca6da1496462992e88a35c79b2ad034b1b51456e248ebd60badbf7817725b3b",
+      "line": 180,
+      "excerpt": "{n.diagnosisCategory === 'ich' && <><div id=\"calc-ich-volume\" className=\"tool-target\" tabIndex={-1}><h3>ICH volume \u00b7 simplified ABC/2</h3><FieldGrid>{[['a', 'A: largest diameter (cm)'], ['b', 'B: perpendicular diameter (cm)'], ['thicknessMm', 'Slice thickness (mm)'], ['numSlices', 'Number of hematoma slices']].map(([key, label]) => <NumberField key={key} label={label} value={s.volume[key]} min=\"0\" onChange={v => group('volume', key, v)} />)}</FieldGrid><Result tone={volume ? 'value' : 'neutral'}>{volume ? `${volume.volume} mL${volume.unitWarning ? ` \u00b7 ${volume.unitWarning}` : ''}` : 'Enter A and B in cm, slice thickness in mm, and a positive whole number of involved slices.'}</Result><SourceLimits url=\"https://pubmed.ncbi.nlm.nih.gov/8711791/\" label=\"Kothari et al. \u00b7 ABC/2\">Simplified unweighted ABC/2: measure A and perpendicular B on the same largest cross-section. C uses the whole count of involved slices with uniform thickness. This differs from area-weighted slice counting; irregular hematomas can be less accurately estimated. Confirm measurements and units. <a href=\"https://pmc.ncbi.nlm.nih.gov/articles/PMC2697964/\" target=\"_blank\" rel=\"noopener noreferrer\">Primary comparison of ABC/2 methods</a>.</SourceLimits></div><div id=\"calc-ich-score\" tabIndex={-1} className=\"tool-target\"><h3>ICH severity score</h3><FieldGrid>{groupControl('ich', Truth, 'ivh', \"Intraventricular hemorrhage\")}{groupControl('ich', Truth, 'infratentorial', \"Infratentorial origin\")}</FieldGrid><Result tone={ich === null ? 'neutral' : 'value'}>{ich === null ? 'Complete age, GCS, volume and both imaging criteria to score.' : `ICH score ${ich}/6 \u00b7 severity grade, not an individual prognosis`}</Result><SourceLimits claim=\"prognostic-score-limits\" /></div></>}",
+      "sha256": "6eab6c694123a781420ba5bf280b8f10b8343dbe7c8fb6eb02441c449afa2dc5",
       "disposition": "canonical",
       "claimIds": [
         "prognostic-score-limits"
@@ -93,9 +93,9 @@
       "id": "tnk-stroke-dose:src/Encounter.jsx:1",
       "groupId": "tnk-stroke-dose",
       "file": "src/Encounter.jsx",
-      "line": 177,
-      "excerpt": "<div id=\"calc-tnk\" className=\"tool-target\" tabIndex={-1}><h3>Dose calculation</h3><FieldGrid><Field label=\"Selected IV thrombolytic\" value={s.drug} options={[[ '', 'Not selected' ], ['TNK', 'Tenecteplase (TNK)'], ['Alteplase', 'Alteplase']]} onChange={v => update({ ...s, drug: v })} />{s.drug === 'TNK' && <Field label=\"TNK dose authority\" value={s.doseAuthority} options={[[ 'guideline', 'AHA/ASA guideline arithmetic' ], ['fda-label', 'US TNKase label weight bands']]} onChange={v => update({ ...s, doseAuthority: v })} />}</FieldGrid><div id=\"calc-alteplase\"><Result>{!dose ? 'Select a drug and enter valid weight in kg (greater than 0, at most 350).' : s.drug === 'TNK' ? `TNK ${dose.calculatedDose} mg \u00b7 ${dose.volume} at labeled 5 mg/mL \u00b7 ${dose.authorityLabel}` : `Alteplase ${dose.totalDose} mg total \u00b7 ${dose.bolus} mg bolus over 1 min \u00b7 ${dose.infusion} mg remaining over 60 min`}</Result></div>{dose && <Help>{dose.roundingNote}</Help>}<SourceLimits claim={s.drug === 'Alteplase' ? 'alteplase-stroke-dose' : 'tnk-stroke-dose'} />{s.drug === 'TNK' && <SourceLimits url=\"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e647640d-c395-4b4b-a0be-1162f9c21d84\" label=\"US TNKase AIS label\">The weight-band dose and labeled time window differ from guideline arithmetic and scope. A dose result does not establish eligibility or administration.</SourceLimits>}</div>",
-      "sha256": "06a6ede4bf1567128c320729a7be299909549e18044a9d00849aaf9d6e0d66b2",
+      "line": 199,
+      "excerpt": "<div id=\"calc-tnk\" className=\"tool-target\" tabIndex={-1}><h3>Dose calculation</h3><FieldGrid><Field label=\"Selected IV thrombolytic\" value={s.drug} options={[[ '', 'Not selected' ], ['TNK', 'Tenecteplase (TNK)'], ['Alteplase', 'Alteplase']]} onChange={v => update({ ...s, drug: v })} />{s.drug === 'TNK' && <Field label=\"TNK dosing\" value={s.doseAuthority} options={[[ 'guideline', '0.25 mg/kg, max 25 mg (guideline)' ], ['fda-label', 'US label weight bands']]} onChange={v => update({ ...s, doseAuthority: v })} />}</FieldGrid><div id=\"calc-alteplase\"><Result tone={dose ? 'value' : 'neutral'}>{!dose ? 'Select a drug and enter weight.' : s.drug === 'TNK' ? `TNK ${dose.calculatedDose} mg \u00b7 ${dose.volume} at labeled 5 mg/mL \u00b7 ${dose.authorityLabel}` : `Alteplase ${dose.totalDose} mg total \u00b7 ${dose.bolus} mg bolus over 1 min \u00b7 ${dose.infusion} mg remaining over 60 min`}</Result></div>{dose && <Help>{dose.roundingNote}</Help>}<SourceLimits claim={s.drug === 'Alteplase' ? 'alteplase-stroke-dose' : 'tnk-stroke-dose'} />{s.drug === 'TNK' && <SourceLimits url=\"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e647640d-c395-4b4b-a0be-1162f9c21d84\" label=\"US TNKase AIS label\">The weight-band dose and labeled time window differ from guideline arithmetic and scope. A dose result does not establish eligibility or administration.</SourceLimits>}</div>",
+      "sha256": "fc789304f8305962b936bb26bd4b0ad8c38f04effe17dc6a1f458b1e521109be",
       "disposition": "canonical",
       "claimIds": [
         "tnk-stroke-dose"
@@ -106,9 +106,9 @@
       "id": "alteplase-stroke-dose:src/Encounter.jsx:1",
       "groupId": "alteplase-stroke-dose",
       "file": "src/Encounter.jsx",
-      "line": 177,
-      "excerpt": "<div id=\"calc-tnk\" className=\"tool-target\" tabIndex={-1}><h3>Dose calculation</h3><FieldGrid><Field label=\"Selected IV thrombolytic\" value={s.drug} options={[[ '', 'Not selected' ], ['TNK', 'Tenecteplase (TNK)'], ['Alteplase', 'Alteplase']]} onChange={v => update({ ...s, drug: v })} />{s.drug === 'TNK' && <Field label=\"TNK dose authority\" value={s.doseAuthority} options={[[ 'guideline', 'AHA/ASA guideline arithmetic' ], ['fda-label', 'US TNKase label weight bands']]} onChange={v => update({ ...s, doseAuthority: v })} />}</FieldGrid><div id=\"calc-alteplase\"><Result>{!dose ? 'Select a drug and enter valid weight in kg (greater than 0, at most 350).' : s.drug === 'TNK' ? `TNK ${dose.calculatedDose} mg \u00b7 ${dose.volume} at labeled 5 mg/mL \u00b7 ${dose.authorityLabel}` : `Alteplase ${dose.totalDose} mg total \u00b7 ${dose.bolus} mg bolus over 1 min \u00b7 ${dose.infusion} mg remaining over 60 min`}</Result></div>{dose && <Help>{dose.roundingNote}</Help>}<SourceLimits claim={s.drug === 'Alteplase' ? 'alteplase-stroke-dose' : 'tnk-stroke-dose'} />{s.drug === 'TNK' && <SourceLimits url=\"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e647640d-c395-4b4b-a0be-1162f9c21d84\" label=\"US TNKase AIS label\">The weight-band dose and labeled time window differ from guideline arithmetic and scope. A dose result does not establish eligibility or administration.</SourceLimits>}</div>",
-      "sha256": "06a6ede4bf1567128c320729a7be299909549e18044a9d00849aaf9d6e0d66b2",
+      "line": 199,
+      "excerpt": "<div id=\"calc-tnk\" className=\"tool-target\" tabIndex={-1}><h3>Dose calculation</h3><FieldGrid><Field label=\"Selected IV thrombolytic\" value={s.drug} options={[[ '', 'Not selected' ], ['TNK', 'Tenecteplase (TNK)'], ['Alteplase', 'Alteplase']]} onChange={v => update({ ...s, drug: v })} />{s.drug === 'TNK' && <Field label=\"TNK dosing\" value={s.doseAuthority} options={[[ 'guideline', '0.25 mg/kg, max 25 mg (guideline)' ], ['fda-label', 'US label weight bands']]} onChange={v => update({ ...s, doseAuthority: v })} />}</FieldGrid><div id=\"calc-alteplase\"><Result tone={dose ? 'value' : 'neutral'}>{!dose ? 'Select a drug and enter weight.' : s.drug === 'TNK' ? `TNK ${dose.calculatedDose} mg \u00b7 ${dose.volume} at labeled 5 mg/mL \u00b7 ${dose.authorityLabel}` : `Alteplase ${dose.totalDose} mg total \u00b7 ${dose.bolus} mg bolus over 1 min \u00b7 ${dose.infusion} mg remaining over 60 min`}</Result></div>{dose && <Help>{dose.roundingNote}</Help>}<SourceLimits claim={s.drug === 'Alteplase' ? 'alteplase-stroke-dose' : 'tnk-stroke-dose'} />{s.drug === 'TNK' && <SourceLimits url=\"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e647640d-c395-4b4b-a0be-1162f9c21d84\" label=\"US TNKase AIS label\">The weight-band dose and labeled time window differ from guideline arithmetic and scope. A dose result does not establish eligibility or administration.</SourceLimits>}</div>",
+      "sha256": "fc789304f8305962b936bb26bd4b0ad8c38f04effe17dc6a1f458b1e521109be",
       "disposition": "canonical",
       "claimIds": [
         "alteplase-stroke-dose"
@@ -139,15 +139,15 @@
       "id": "alteplase-stroke-dose:src/calculators.js:3",
       "groupId": "alteplase-stroke-dose",
       "file": "src/calculators.js",
-      "line": 119,
-      "excerpt": "const totalDose = Math.min(Number((weight * 0.9).toPrecision(12)), 90);",
-      "sha256": "e900103628da059b7f16a41945347c69653b31a9b8b03c875913313cac2f85b0",
+      "line": 111,
+      "excerpt": "const totalTenths = Math.round(Math.min(Number((weight * 0.9).toPrecision(12)), 90) * 10);",
+      "sha256": "4298f14b22941173f8f454b415c61c94a3d9051d0a80244deae225580847978e",
       "disposition": "excluded",
       "canonicalSources": [
         "US Activase prescribing information \u00a72.1",
         "src/guidelines/ais-2026.json"
       ],
-      "reason": "Arithmetic kept separate from interpretation. Reviewed Encounter helper uses Activase \u00a72.1 exact 0.9 mg/kg maximum 90 mg and 10%/remaining infusion; legacy protected rounded helper remains separately locked. Source label checked during implementation; guideline review date unchanged. Exact excerpt retained after deletion of orphan helper/comment sections; retained function bodies verified identical to baseline (reviewed alteplase separately source-checked).",
+      "reason": "2026-10-03 clinical audit: display rounding (TNK dose/volume to 0.01; alteplase total/bolus to 0.1 mg with infusion = rounded total - rounded bolus) and US-label delivered mg/kg disclosure; arithmetic re-verified against independent expected-value tests (tests/workspace-doses.test.js, tests/quick-reference.test.jsx). Prior disposition basis: Arithmetic kept separate from interpretation. Reviewed Encounter helper uses Activase \u00a72.1 exact 0.9 mg/kg maximum 90 mg and 10%/remaining infusion; legacy protected rounded helper remains separately locked. Source label checked during implementation; guideline review date unchanged. Exact excerpt retained after deletion of orphan helper/comment sections; retained function bodies verified identical to baseline (reviewed alteplase separately source-checked).",
       "movedFrom": {
         "id": "alteplase-stroke-dose:src/calculators.js:4",
         "file": "src/calculators.js",
@@ -178,10 +178,10 @@
       "groupId": "tnk-stroke-dose",
       "file": "src/calculators.js",
       "line": 168,
-      "excerpt": ": Math.min(Number((weight * 0.25).toPrecision(12)), 25);",
-      "sha256": "f3b9ebfe744108301fe5ac42de75c73479cc149ca0db9e081b47db28481ce625",
+      "excerpt": ": round2(Math.min(weight * 0.25, 25));",
+      "sha256": "e5b5fe52c900bc322596b23ff6e5ddec339c02ce9d51a749b1e81caf010348a3",
       "disposition": "excluded",
-      "reason": "Calculator arithmetic or labeled/guideline authority data retained independently; changing a narrative does not approve a dose-calculation change. Exact excerpt retained after deletion of orphan helper/comment sections; retained function bodies verified identical to baseline (reviewed alteplase separately source-checked).",
+      "reason": "2026-10-03 clinical audit: display rounding (TNK dose/volume to 0.01; alteplase total/bolus to 0.1 mg with infusion = rounded total - rounded bolus) and US-label delivered mg/kg disclosure; arithmetic re-verified against independent expected-value tests (tests/workspace-doses.test.js, tests/quick-reference.test.jsx). Prior disposition basis: Calculator arithmetic or labeled/guideline authority data retained independently; changing a narrative does not approve a dose-calculation change. Exact excerpt retained after deletion of orphan helper/comment sections; retained function bodies verified identical to baseline (reviewed alteplase separately source-checked).",
       "movedFrom": {
         "id": "tnk-stroke-dose:src/calculators.js:3",
         "file": "src/calculators.js",
@@ -192,11 +192,11 @@
       "id": "tnk-stroke-dose:src/calculators.js:2",
       "groupId": "tnk-stroke-dose",
       "file": "src/calculators.js",
-      "line": 171,
-      "excerpt": "authority, authorityLabel: authority === 'fda-label' ? 'US TNKase AIS prescribing information: weight bands' : 'AHA/ASA 2026 AIS guideline: 0.25 mg/kg, maximum 25 mg',",
-      "sha256": "65bc71958e803ce5b625936417948ed42b4c2a6fd5b9a7d734c3a1fbd51cde66",
+      "line": 173,
+      "excerpt": "? ` Label band delivers ${deliveredMgPerKg.toFixed(3)} mg/kg (guideline arithmetic 0.25 mg/kg).${deliveredMgPerKg > 0.3 ? ' WARNING: above 0.30 mg/kg; confirm the weight and consider guideline weight-based dosing.' : ''} US TNKase AIS labeling covers treatment within 3 hours of symptom onset; guideline use extends to 4.5 hours.`",
+      "sha256": "20e9d37c01dd1a8bd9a9562aadd22272336597bb955f74537c0dc6f058f2d38e",
       "disposition": "excluded",
-      "reason": "Calculator arithmetic or labeled/guideline authority data retained independently; changing a narrative does not approve a dose-calculation change. Exact excerpt retained after deletion of orphan helper/comment sections; retained function bodies verified identical to baseline (reviewed alteplase separately source-checked).",
+      "reason": "2026-10-03 clinical audit: display rounding (TNK dose/volume to 0.01; alteplase total/bolus to 0.1 mg with infusion = rounded total - rounded bolus) and US-label delivered mg/kg disclosure; arithmetic re-verified against independent expected-value tests (tests/workspace-doses.test.js, tests/quick-reference.test.jsx). Prior disposition basis: Calculator arithmetic or labeled/guideline authority data retained independently; changing a narrative does not approve a dose-calculation change. Exact excerpt retained after deletion of orphan helper/comment sections; retained function bodies verified identical to baseline (reviewed alteplase separately source-checked).",
       "movedFrom": {
         "id": "tnk-stroke-dose:src/calculators.js:4",
         "file": "src/calculators.js",
@@ -207,16 +207,46 @@
       "id": "tnk-stroke-dose:src/calculators.js:3",
       "groupId": "tnk-stroke-dose",
       "file": "src/calculators.js",
-      "line": 174,
-      "excerpt": "doseTable: authority === 'fda-label' ? labeledBands : [{ minWeight: 0, maxWeight: null, dose: '0.25 mg/kg, maximum 25 mg', vial: 'Dose \u00f7 5 mg/mL' }]",
-      "sha256": "9b5533d5c0ae07d9d7ec25e48deec7255fd9d17af967fe5f7b11ce78c5616af8",
+      "line": 176,
+      "excerpt": "weightKg: weight, calculatedDose: String(dose), volume: `${round2(dose / 5)} mL`, isMaxDose: authority === 'fda-label' ? dose === 25 : weight * 0.25 >= 25, deliveredMgPerKg,",
+      "sha256": "135fc096477fe35a1b4804470c6495f2127a33ecd5b0cef52c746e6b3a8acd61",
       "disposition": "excluded",
-      "reason": "Calculator arithmetic or labeled/guideline authority data retained independently; changing a narrative does not approve a dose-calculation change. Exact excerpt retained after deletion of orphan helper/comment sections; retained function bodies verified identical to baseline (reviewed alteplase separately source-checked).",
+      "reason": "2026-10-03 clinical audit: display rounding (TNK dose/volume to 0.01; alteplase total/bolus to 0.1 mg with infusion = rounded total - rounded bolus) and US-label delivered mg/kg disclosure; arithmetic re-verified against independent expected-value tests (tests/workspace-doses.test.js, tests/quick-reference.test.jsx). Prior disposition basis: Calculator arithmetic or labeled/guideline authority data retained independently; changing a narrative does not approve a dose-calculation change. Exact excerpt retained after deletion of orphan helper/comment sections; retained function bodies verified identical to baseline (reviewed alteplase separately source-checked).",
       "movedFrom": {
         "id": "tnk-stroke-dose:src/calculators.js:5",
         "file": "src/calculators.js",
         "line": 625
       }
+    },
+    {
+      "disposition": "excluded",
+      "canonicalSources": [
+        "US Activase prescribing information \u00a72.1",
+        "US TNKase prescribing information",
+        "src/guidelines/ais-2026.json"
+      ],
+      "id": "tnk-stroke-dose:src/calculators.js:4",
+      "groupId": "tnk-stroke-dose",
+      "file": "src/calculators.js",
+      "line": 177,
+      "excerpt": "authority, authorityLabel: authority === 'fda-label' ? 'US TNKase AIS prescribing information: weight bands' : 'AHA/ASA 2026 AIS guideline: 0.25 mg/kg, maximum 25 mg',",
+      "sha256": "65bc71958e803ce5b625936417948ed42b4c2a6fd5b9a7d734c3a1fbd51cde66",
+      "reason": "2026-10-03 clinical audit: display rounding (TNK dose/volume to 0.01; alteplase total/bolus to 0.1 mg with infusion = rounded total - rounded bolus) and US-label delivered mg/kg disclosure; arithmetic re-verified against independent expected-value tests (tests/workspace-doses.test.js, tests/quick-reference.test.jsx)."
+    },
+    {
+      "disposition": "excluded",
+      "canonicalSources": [
+        "US Activase prescribing information \u00a72.1",
+        "US TNKase prescribing information",
+        "src/guidelines/ais-2026.json"
+      ],
+      "id": "tnk-stroke-dose:src/calculators.js:5",
+      "groupId": "tnk-stroke-dose",
+      "file": "src/calculators.js",
+      "line": 180,
+      "excerpt": "doseTable: authority === 'fda-label' ? labeledBands : [{ minWeight: 0, maxWeight: null, dose: '0.25 mg/kg, maximum 25 mg', vial: 'Dose \u00f7 5 mg/mL' }]",
+      "sha256": "9b5533d5c0ae07d9d7ec25e48deec7255fd9d17af967fe5f7b11ce78c5616af8",
+      "reason": "2026-10-03 clinical audit: display rounding (TNK dose/volume to 0.01; alteplase total/bolus to 0.1 mg with infusion = rounded total - rounded bolus) and US-label delivered mg/kg disclosure; arithmetic re-verified against independent expected-value tests (tests/workspace-doses.test.js, tests/quick-reference.test.jsx)."
     },
     {
       "id": "dapt-duration-population:src/calculators-extended.js:1",
@@ -277,6 +307,21 @@
         "file": "src/calculators-extended.js",
         "line": 181
       }
+    },
+    {
+      "disposition": "requires-manual-verification",
+      "canonicalSources": [
+        "src/guidelines/ais-2026.json",
+        "src/guidelines/secondary-prevention-2021.json",
+        "src/evidence/claims.js"
+      ],
+      "id": "dapt-duration-population:src/calculators-extended.js:4",
+      "groupId": "dapt-duration-population",
+      "file": "src/calculators-extended.js",
+      "line": 185,
+      "excerpt": "class: useTicagrelor ? 'Class 2b/B-R, 2026 AHA/ASA AIS \u00a74.7; CHANCE-2 postdates the 2021 secondary-prevention guideline' : 'COR 1, LOE A (AHA/ASA 2026 AIS): DAPT with loading dose within 24 h for 21 days, then single antiplatelet therapy'",
+      "sha256": "9d930461fd1fa9bf0151fab4ff42af81dc87f97d16e9c5199acc0606db3e20a3",
+      "reason": "2026-10-03 clinical audit: AHA/ASA 2026 guideline-tier fallback (ais-2026-147/148/149/150 grades verified in the archived recommendation records) before trial-population mismatch; trial loading doses added."
     },
     {
       "id": "tnk-stroke-dose:src/evidence/recommendations.js:1",

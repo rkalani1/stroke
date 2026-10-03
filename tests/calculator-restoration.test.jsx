@@ -26,8 +26,12 @@ describe('restored source-bound grades and diameter arithmetic', () => {
   it.each([['absent',false,'0'],['thin',false,'1'],['absent',true,'2'],['thin',true,'2'],['thick',false,'3'],['thick',true,'4']])('matches modified Fisher Table 1 for %s / IVH %s', (bloodThickness,ivh,grade) => {
     expect(fisher({ ...FISHER,bloodThickness,ivh })).toMatchObject({grade});
   });
-  it.each([{reviewed:false},{aneurysmalSah:false},{bloodThickness:''},{bloodThickness:'1mm'},{ivh:undefined},{ivh:'false'}])('does not assign a modified Fisher grade for %j', change => {
+  it.each([{aneurysmalSah:false},{bloodThickness:''},{bloodThickness:'1mm'},{ivh:undefined},{ivh:'false'}])('does not assign a modified Fisher grade for %j', change => {
     expect(fisher({ ...FISHER,...change })).toBeNull();
+  });
+  it('grades live without an attestation', () => {
+    expect(fisher({ ...FISHER,reviewed:false })).toEqual(fisher(FISHER));
+    expect(nascet({ ...NASCET,reviewed:false })).toEqual(nascet(NASCET));
   });
   it.each(['0','1','2a','2b','2c','3'])('describes an explicitly reviewed mTICI %s', grade => {
     expect(mtici({reviewed:true,ischemic:true,grade})).toMatchObject({grade,description:expect.any(String)});
@@ -40,8 +44,8 @@ describe('restored source-bound grades and diameter arithmetic', () => {
   it.each(['',undefined,null,0,'2','2b50','2B','3x','constructor'])('rejects a missing or non-mTICI grade %j', grade => {
     expect(mtici({reviewed:true,ischemic:true,grade})).toBeNull();
   });
-  it('withholds mTICI without source review or ischemic context', () => {
-    expect(mtici({reviewed:false,ischemic:true,grade:'3'})).toBeNull();
+  it('describes mTICI live but only in an ischemic context', () => {
+    expect(mtici({ischemic:true,grade:'3'})).toMatchObject({grade:'3'});
     expect(mtici({reviewed:true,ischemic:false,grade:'3'})).toBeNull();
   });
   it.each([[5,5,0],[2.5,5,50],[1.5,5,70],[0.9,3,70],[1,3,66.7],[0.001,5,'>99.9']])('calculates NASCET from %s / %s mm as %s%%', (minimumDiameterMm,distalDiameterMm,score) => {
@@ -51,12 +55,12 @@ describe('restored source-bound grades and diameter arithmetic', () => {
     expect(nascet({ ...NASCET,minimumDiameterMm:value })).toBeNull();
     expect(nascet({ ...NASCET,distalDiameterMm:value })).toBeNull();
   });
-  it.each([{reviewed:false},{side:''},{side:'bilateral'},{patentExtracranialICA:false},{patentExtracranialICA:undefined},{nearOcclusion:true},{nearOcclusion:undefined},{nearOcclusion:'false'},{minimumDiameterMm:6}])('does not calculate outside reviewed NASCET measurement conditions %j', change => {
+  it.each([{side:''},{side:'bilateral'},{patentExtracranialICA:false},{patentExtracranialICA:undefined},{nearOcclusion:true},{nearOcclusion:undefined},{nearOcclusion:'false'},{minimumDiameterMm:6}])('does not calculate outside reviewed NASCET measurement conditions %j', change => {
     expect(nascet({ ...NASCET,...change })).toBeNull();
   });
 });
 
-describe('canonical inputs, invalidation and focused result copies', () => {
+describe('canonical inputs, attestation withdrawal and focused result copies', () => {
   it('requires the existing aneurysmal SAH diagnosis and cause, not a worksheet duplicate', () => {
     let value = state('sah');
     value.details.sahCause = 'Aneurysmal';
@@ -65,10 +69,13 @@ describe('canonical inputs, invalidation and focused result copies', () => {
     for (const cause of ['','Uncertain','Traumatic','Non-aneurysmal']) {
       const changed = updateEncounter(value,previous => ({ ...previous,details:{...previous.details,sahCause:cause} }));
       expect(supplementaryReviewed(changed,'modified-fisher')).toBe(false);
+      expect(supplementaryResult(changed,'modified-fisher')).toBeNull();
       expect(supplementaryResult(review(changed,'modified-fisher'),'modified-fisher')).toBeNull();
     }
+    // Explicit worksheet answers keep scoring live; the attestation is withdrawn.
     const changed = updateEncounter(value,previous => ({ ...previous,note:{...previous.note,ctResults:'New CT report'} }));
-    expect(supplementaryResult(changed,'modified-fisher')).toBeNull();
+    expect(supplementaryResult(changed,'modified-fisher')).toMatchObject({grade:'2'});
+    expect(supplementaryReviewed(changed,'modified-fisher')).toBe(false);
     expect(supplementaryResult(review(state('ich'),'modified-fisher',{...FISHER}),'modified-fisher')).toBeNull();
   });
   it('uses and invalidates the one recorded mTICI entry instead of storing a second grade', () => {
@@ -77,11 +84,12 @@ describe('canonical inputs, invalidation and focused result copies', () => {
     expect(supplementaryResult(value,'mtici')).toMatchObject({grade:'0'});
     expect(definition('mtici').fields).toEqual([]);
     expect(reviewedCalculatorText(value,definition('mtici'))).toContain('mTICI reperfusion grade: 0');
-    for (const nextGrade of ['', '2c']) {
-      const changed = updateEncounter(value,previous => ({ ...previous,note:{...previous.note,ticiScore:nextGrade} }));
-      expect(supplementaryResult(changed,'mtici')).toBeNull();
-      expect(reviewedCalculatorText(changed,definition('mtici'))).toBe('');
-    }
+    const cleared = updateEncounter(value,previous => ({ ...previous,note:{...previous.note,ticiScore:''} }));
+    expect(supplementaryResult(cleared,'mtici')).toBeNull();
+    expect(reviewedCalculatorText(cleared,definition('mtici'))).toBe('');
+    const revised = updateEncounter(value,previous => ({ ...previous,note:{...previous.note,ticiScore:'2c'} }));
+    expect(supplementaryResult(revised,'mtici')).toMatchObject({grade:'2c'});
+    expect(reviewedCalculatorText(revised,definition('mtici'))).toContain('mTICI reperfusion grade: 2c — Almost complete reperfusion');
     expect(supplementaryResult(review({...value,context:'follow-up'},'mtici'),'mtici')).toBeNull();
     expect(supplementaryResult(review({...value,note:{...value.note,diagnosisCategory:'ich'}},'mtici'),'mtici')).toBeNull();
   });
@@ -92,9 +100,11 @@ describe('canonical inputs, invalidation and focused result copies', () => {
     expect(text).toContain('NASCET carotid stenosis: 70% (left ICA).');
     expect(text).toContain('https://pubmed.ncbi.nlm.nih.gov/16418349/');
     expect(text).not.toContain('70/100'); expect(text).not.toContain('UNRELATED NOTE MARKER');
-    expect(supplementaryResult(edit(value,'nascet','side','right'),'nascet')).toBeNull();
+    expect(reviewedCalculatorText(edit(value,'nascet','side','right'),definition('nascet'))).toContain('NASCET carotid stenosis: 70% (right ICA).');
+    expect(reviewedCalculatorText(edit(value,'nascet','side',''),definition('nascet'))).toBe('');
     const changed = updateEncounter(value,previous => ({ ...previous,note:{...previous.note,ctaDate:'2026-10-02'} }));
-    expect(supplementaryResult(changed,'nascet')).toBeNull();
+    expect(supplementaryResult(changed,'nascet')).toEqual({score:70,max:100,unit:'%'});
+    expect(supplementaryReviewed(changed,'nascet')).toBe(false);
     for (const id of ['nascet','mtici','modified-fisher']) expect(canApplySupplementaryScore(value,id)).toBe(false);
   });
   it('exposes searchable routes and actual scoped source checks', () => {

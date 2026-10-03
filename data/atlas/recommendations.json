@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "recommendations",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.6.5",
-    "checksum": "sha256:370f1d827e9e5006fac9d4947e9809fa",
+    "appVersion": "7.7.0",
+    "checksum": "sha256:258116bc24a6a974bb669414525be05f",
     "count": 10,
     "source": "Maintained Encounter/protocol evidence dependency closure",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -127,6 +127,7 @@
       ],
       "caveats": [
         "The Class I/B-R badge applies to 4F-PCC over FFP when INR is ≥2.0. IV vitamin K after factor replacement is a separate Class I/C-LD recommendation.",
+        "Fixed-dose caveat: a fixed 4F-PCC dose (for example an institutional 2000 units) may underdose heavier or high-INR patients. Kcentra label dosing: INR 2 to <4, 25 units/kg (max 2500 units); INR 4-6, 35 units/kg (max 3500 units); INR >6, 50 units/kg (max 5000 units). Recheck INR after the infusion; an institutional fixed dose remains a local protocol choice.",
         "Vitamin K is required for sustained reversal; PCC alone is short-acting.",
         "FFP carries volume-overload risk and slower correction."
       ],

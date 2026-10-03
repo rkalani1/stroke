@@ -1,29 +1,65 @@
 [
   {
     "id": "acute-reperfusion",
-    "title": "Acute ischemic stroke: reperfusion review",
+    "title": "Acute ischemic stroke: reperfusion overview",
+    "category": "Acute ischemic stroke",
     "settings": [
       "on-call",
       "hospital"
     ],
     "keywords": [
       "AIS",
+      "IVT",
+      "EVT",
       "thrombolysis",
       "thrombectomy",
       "tenecteplase",
+      "TNK",
       "alteplase",
-      "large core",
-      "basilar",
-      "wake-up",
-      "disabling deficit"
+      "tPA",
+      "disabling deficit",
+      "PRISMS",
+      "NINDS",
+      "ECASS III"
     ],
-    "summary": "The 2026 AHA/ASA guideline expands reperfusion evaluation, including selected large-core and basilar occlusions. Disability matters beyond the NIHSS total. Late or unknown-onset thrombolysis requires appropriate imaging selection; use the ischemic protocol for the full eligibility review.",
+    "summary": "Disabling deficit within 4.5 h: give IVT as fast as possible — tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg) (AHA 2026, COR 1); tenecteplase was noninferior in AcT, ATTEST-2, TRACE-2 and ORIGINAL. Do not thrombolyse mild non-disabling deficits: PRISMS showed no benefit (sICH 3.2 vs 0%) and ARAMIS found DAPT noninferior. LVO: give IVT if eligible and start EVT without waiting for a response; EVT is indicated within 24 h for anterior LVO, including selected large cores, and for basilar occlusion with NIHSS ≥10.",
+    "recommendations": [
+      {
+        "text": "In adult AIS patients with disabling deficits (regardless of NIHSS score) who are eligible for IVT, faster treatment is recommended as it improves functional outcomes.",
+        "cor": "1",
+        "loe": "A",
+        "source": "AHA/ASA AIS 2026 · ais-2026-84 · p. 38",
+        "id": "ais-2026-84"
+      },
+      {
+        "text": "In adult AIS patients presenting within 4.5 hours of symptom onset or last known well who are eligible for IVT, tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg) is recommended to improve functional outcomes.",
+        "cor": "1",
+        "loe": "A",
+        "source": "AHA/ASA AIS 2026 · ais-2026-98 · p. 42",
+        "id": "ais-2026-98"
+      },
+      {
+        "text": "In eligible adult AIS patients presenting with mild, non-disabling stroke deficits (e.g., isolated sensory syndrome) within 4.5 hours of symptom onset or last known well, IVT is not recommended as it has not shown superiority over dual antiplatelet treatment for improving functional outcomes.",
+        "cor": "3: No Benefit",
+        "loe": "B-R",
+        "source": "AHA/ASA AIS 2026 · ais-2026-91 · p. 38",
+        "id": "ais-2026-91"
+      },
+      {
+        "text": "In AIS patients eligible for both IVT and EVT, IVT is recommended to be administered as rapidly as possible without waiting to observe clinical response or delaying EVT initiation, to improve treatment times and clinical outcomes.",
+        "cor": "1",
+        "loe": "A",
+        "source": "AHA/ASA AIS 2026 · ais-2026-113 · p. 48",
+        "id": "ais-2026-113"
+      }
+    ],
     "consider": [
-      "Is the deficit disabling despite a low NIHSS score?",
-      "Are onset certainty, vascular imaging and any required tissue imaging established?",
-      "Does the occlusion and imaging profile warrant prompt review by an EVT-capable team?"
+      "Is the deficit disabling regardless of the NIHSS total? If not (e.g., isolated sensory symptoms), give DAPT instead of IVT.",
+      "Do not wait for coagulation results unless an abnormality is suspected, or for MRI to count microbleeds (AHA 2026).",
+      "Minor stroke with a visible occlusion: TEMPO-2 found no benefit from tenecteplase and more deaths (5 vs 1%).",
+      "Wake-up stroke, large core, basilar, MeVO and the late window have dedicated cards."
     ],
-    "caution": "Expanded eligibility does not establish treatment clearance. A numeric NIHSS alone cannot resolve whether a deficit is disabling.",
+    "caution": "Use the ischemic protocol for contraindications and dosing; this overview is not an eligibility checklist.",
     "sources": [
       {
         "title": "AHA/ASA 2026 acute ischemic stroke guideline — official summary",
@@ -31,7 +67,15 @@
         "year": 2026,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Official summary read; full guideline recommendations and eligibility tables were not reviewed for this card."
+        "access": "Official AHA summary page."
+      },
+      {
+        "title": "PRISMS: alteplase vs aspirin for minor non-disabling stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29998337/",
+        "year": 2018,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
       }
     ],
     "related": [
@@ -42,13 +86,371 @@
       {
         "label": "Current NIHSS",
         "href": "#/encounter/nihss"
+      },
+      {
+        "label": "Thrombectomy selection",
+        "href": "#/evidence/evt-selection"
+      },
+      {
+        "label": "Wake-up and late-window IVT",
+        "href": "#/evidence/extended-window-ivt"
+      }
+    ]
+  },
+  {
+    "id": "code-stroke-activation",
+    "title": "Code stroke activation and prehospital LVO scales",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "code stroke",
+      "stroke alert",
+      "RACE",
+      "LVO scale",
+      "prehospital",
+      "EMS",
+      "mobile stroke unit",
+      "RACECAT",
+      "triage",
+      "transfer",
+      "door to needle"
+    ],
+    "summary": "Activate the stroke team for any acute focal deficit — EVT can be offered up to 24 h from last known well. Check glucose, and do not wait for creatinine before CTA. EMS should use a validated scale, pre-notify, and go to the closest stroke-capable hospital (AHA 2026, COR 1). RACE (face 0–2, arm 0–2, leg 0–2, gaze 0–1, aphasia or agnosia 0–2): a score ≥5 had 85% sensitivity and 68% specificity for LVO (PPV 42%, NPV 94%). Bypassing a local stroke center for a thrombectomy center did not improve outcome in RACECAT (cOR 1.03): fewer received IVT (47.5 vs 60.4%) and more had EVT (48.8 vs 39.4%).",
+    "recommendations": [
+      {
+        "text": "For patients with suspected stroke transported by ambulance, use of a brief validated stroke assessment tool by prefacility personnel is recommended to improve early stroke identification, including detection of large vessel occlusion.",
+        "cor": "1",
+        "loe": "A",
+        "source": "AHA/ASA AIS 2026 · ais-2026-9 · p. 12",
+        "id": "ais-2026-9"
+      },
+      {
+        "text": "For patients with suspected acute stroke, EMS transport is recommended to the closest appropriate stroke-capable facility (ASRH, PSC, TSC, or CSC) to minimize time to treatment, rather than to a non-stroke-capable facility.",
+        "cor": "1",
+        "loe": "B-NR",
+        "source": "AHA/ASA AIS 2026 · ais-2026-15 · p. 14",
+        "id": "ais-2026-15"
       }
     ],
-    "category": "Acute ischemic stroke"
+    "consider": [
+      "Aim to image as fast as possible (for example within 25 minutes); do not delay CTA/CTP for a serum creatinine.",
+      "Children: suspect stroke with any sudden focal deficit, including a first seizure.",
+      "Mobile stroke units shorten onset-to-treatment and improve outcome where available (COR 1).",
+      "A seizure, hypoglycemia or apparent mimic can coexist with stroke; keep the stroke pathway open until a clinician has reassessed."
+    ],
+    "caution": "Prehospital scales triage; they neither exclude LVO nor decide treatment.",
+    "sources": [
+      {
+        "title": "RACE scale: design and prospective validation to predict large arterial occlusion",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/24281224/",
+        "year": 2013,
+        "type": "Observational study",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "RACECAT: direct transport to a thrombectomy center vs local stroke center",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/35510397/",
+        "year": 2022,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "related": [
+      {
+        "label": "Current NIHSS",
+        "href": "#/encounter/nihss"
+      },
+      {
+        "label": "Stroke mimics",
+        "href": "#/evidence/stroke-mimics-ivt"
+      },
+      {
+        "label": "Ischemic stroke protocol",
+        "href": "#/protocols/ischemic"
+      }
+    ]
+  },
+  {
+    "id": "stroke-mimics-ivt",
+    "title": "Suspected stroke mimics and thrombolysis",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "mimic",
+      "FABS",
+      "seizure",
+      "Todd paralysis",
+      "migraine",
+      "functional",
+      "hypoglycemia",
+      "conversion"
+    ],
+    "summary": "Do not delay IVT for a disabling, otherwise eligible deficit to exclude every mimic: in 9 series (392 mimics among 8,942 IVT-treated patients), sICH was 0.5% and orolingual edema 0.3% in mimics, a lower sICH risk than in true stroke (RR 0.33). Check glucose first; if a disabling deficit persists after correcting hypo- or hyperglycemia, IVT is recommended (AHA 2026, COR 1). FABS ≥3 (no facial droop, no AF history, age <50, SBP <150, seizure history, isolated sensory symptoms) identified mimics with 90% sensitivity and 91% specificity after a negative CT.",
+    "recommendations": [
+      {
+        "text": "In suspected ischemic stroke patients with severe hypoglycemia or hyperglycemia, if disabling stroke symptoms persist despite correction to normoglycemia, IVT administration is recommended to improve functional outcomes.",
+        "cor": "1",
+        "loe": "C-LD",
+        "source": "AHA/ASA AIS 2026 · ais-2026-89 · p. 38",
+        "id": "ais-2026-89"
+      }
+    ],
+    "consider": [
+      "Look for seizure onset, prior identical episodes, migraine aura, functional signs and toxic-metabolic causes.",
+      "If the diagnosis stays uncertain and the deficit is disabling, the low harm in mimics favors treatment within standard eligibility.",
+      "Obtain MRI DWI afterwards and record whether stroke was confirmed."
+    ],
+    "caution": "Mimic data are observational and mostly alteplase-era; they do not override contraindications or a structural lesion on imaging.",
+    "sources": [
+      {
+        "title": "Safety of IVT in stroke mimics: prospective study and meta-analysis",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/25791717/",
+        "year": 2015,
+        "type": "Meta-analysis",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "FABS: screening tool for stroke mimics in the emergency department",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/27491733/",
+        "year": 2016,
+        "type": "Observational study",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "related": [
+      {
+        "label": "Functional seizures",
+        "href": "#/evidence/functional-seizures"
+      },
+      {
+        "label": "Stroke chameleons",
+        "href": "#/evidence/stroke-chameleons"
+      },
+      {
+        "label": "Ischemic stroke protocol",
+        "href": "#/protocols/ischemic"
+      }
+    ]
+  },
+  {
+    "id": "stroke-chameleons",
+    "title": "Stroke chameleons: commonly missed presentations",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "chameleon",
+      "missed stroke",
+      "misdiagnosis",
+      "cerebellar",
+      "decreased consciousness",
+      "coma",
+      "dizziness"
+    ],
+    "summary": "About 2% of ischemic strokes were missed in the emergency department (47 of 2,200 in Lausanne). Missed patients were younger, had fewer vascular risk factors, less eye deviation and more cerebellar strokes, and were often very mild or very severe. They were labeled as another neurological illness (43%), a non-neurological illness (17%), unexplained decreased consciousness (21%) or a coexisting disease (19%), and had worse 12-month outcomes and higher mortality.",
+    "consider": [
+      "Acute dizziness or imbalance: examine gait and eye movements; cerebellar strokes are over-represented among misses.",
+      "Unexplained decreased consciousness was a common label — image the brain and vessels, including the posterior circulation.",
+      "A coexisting illness masked about one in five misses: a persistent deficit still needs a stroke review."
+    ],
+    "caution": "These are single-center retrospective data; the absence of these features does not exclude stroke.",
+    "sources": [
+      {
+        "title": "Acute stroke chameleons in a university hospital: risk factors, circumstances and outcomes",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/26180146/",
+        "year": 2015,
+        "type": "Observational study",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "related": [
+      {
+        "label": "Acute dizziness",
+        "href": "#/evidence/dizziness"
+      },
+      {
+        "label": "Code stroke activation",
+        "href": "#/evidence/code-stroke-activation"
+      },
+      {
+        "label": "Stroke mimics",
+        "href": "#/evidence/stroke-mimics-ivt"
+      }
+    ]
+  },
+  {
+    "id": "post-ivt-complications",
+    "title": "Post-thrombolysis hemorrhage and angioedema",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "sICH",
+      "hemorrhagic transformation",
+      "post-lytic",
+      "cryoprecipitate",
+      "fibrinogen",
+      "angioedema",
+      "orolingual"
+    ],
+    "summary": "Any neurological worsening after IVT needs an emergent CT. If hemorrhage is suspected or seen, follow the post-lytic ICH protocol: stop a running thrombolytic, send urgent labs including fibrinogen, and correct the fibrinolytic coagulopathy early — the mainstay of treatment, though based on expert opinion (AHA 2017). Orolingual angioedema occurred in about 1% with tenecteplase or alteplase (ATTEST-2); assess the airway first. Teams must be ready to treat bleeding and angioedema (AHA 2026, COR 1).",
+    "recommendations": [
+      {
+        "text": "Healthcare professionals are recommended to be prepared to treat potential emergent adverse effects of IVT, including bleeding complications and angioedema (which may cause partial airway obstruction), to reduce poor clinical outcomes.",
+        "cor": "1",
+        "loe": "B-NR",
+        "source": "AHA/ASA AIS 2026 · ais-2026-86 · p. 38",
+        "id": "ais-2026-86"
+      }
+    ],
+    "consider": [
+      "Take cryoprecipitate, antifibrinolytic and angioedema drug doses from the protected protocol; this card adds no doses.",
+      "Angioedema: protect the airway early, hold ACE inhibitors and follow the angioedema protocol.",
+      "Involve neurosurgery and hematology early; manage BP, glucose and temperature as for ICH."
+    ],
+    "caution": "No randomized evidence supports a specific sICH reversal regimen.",
+    "sources": [
+      {
+        "title": "AHA/ASA statement: treatment and outcome of hemorrhagic transformation after IV alteplase",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29097489/",
+        "year": 2017,
+        "type": "Scientific statement",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed; dosing tables not reproduced."
+      },
+      {
+        "title": "ATTEST-2: tenecteplase vs alteplase within 4.5 h",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39424558/",
+        "year": 2024,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "related": [
+      {
+        "label": "Post-lytic ICH protocol",
+        "href": "#/protocols/ischemic/post-lytic"
+      },
+      {
+        "label": "Angioedema protocol",
+        "href": "#/protocols/ischemic/angioedema"
+      },
+      {
+        "label": "Reversal",
+        "href": "#/evidence/antithrombotic-reversal"
+      }
+    ]
+  },
+  {
+    "id": "ct-perfusion",
+    "title": "CT perfusion and collateral imaging for late-window selection",
+    "category": "Acute ischemic stroke",
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "CT perfusion",
+      "CTP",
+      "Tmax",
+      "rCBF",
+      "core",
+      "penumbra",
+      "mismatch",
+      "RAPID",
+      "collaterals",
+      "MR CLEAN-LATE",
+      "DAWN",
+      "DEFUSE 3"
+    ],
+    "summary": "Perfusion maps estimate hypoperfused tissue (Tmax >6 s) and core (markedly reduced relative CBF; below about 31% of the contralateral side best matched DWI in the derivation study). DEFUSE 3 target mismatch at 6–16 h: core <70 mL, hypoperfused-to-core ratio ≥1.8 and mismatch volume ≥15 mL. DAWN used clinical–core mismatch instead: core <21 mL at age ≥80 with NIHSS ≥10; <31 mL under 80 with NIHSS ≥10; <51 mL under 80 with NIHSS ≥20. Within 4.5 h, do not delay IVT for perfusion imaging. Collateral flow on CTA alone selected patients who still benefited from EVT at 6–24 h in MR CLEAN-LATE (cOR 1.67; sICH 7 vs 2%).",
+    "recommendations": [
+      {
+        "text": "In adult AIS patients eligible for IVT within 4.5 hours of symptom onset, treatment is recommended to be initiated as quickly as possible while ensuring safe administration, avoiding potential delays from additional multimodal neuroimaging (CTA/MRA, CT/MR perfusion).",
+        "cor": "1",
+        "loe": "B-NR",
+        "source": "AHA/ASA AIS 2026 · ais-2026-85 · p. 38",
+        "id": "ais-2026-85"
+      },
+      {
+        "text": "In patients with suspected AIS who awaken with symptoms or have unknown time of onset 4.5 to 24 hours from last known well, CTP or MR DWI-PWI selection with automated postprocessing software can be useful to determine eligibility for extended-window IVT.",
+        "cor": "2a",
+        "loe": "B-R",
+        "source": "AHA/ASA AIS 2026 · ais-2026-53 · p. 27",
+        "id": "ais-2026-53"
+      }
+    ],
+    "consider": [
+      "Check for artifact: a poor contrast bolus or leukoaraiosis can make non-infarcted white matter look like core.",
+      "EVT at 6–24 h can be selected on NCCT ASPECTS (AHA 2026, COR 1); perfusion is adjunctive when immediately available (2a).",
+      "Perfusion selection supports IVT at 4.5–24 h (2a); large-core trials also accepted CTP cores (e.g., SELECT2 ≥50 mL)."
+    ],
+    "caution": "Software thresholds estimate tissue fate; they are not exact infarct volumes or stand-alone exclusions.",
+    "sources": [
+      {
+        "title": "DEFUSE 3: perfusion-selected thrombectomy at 6–16 h (methods: Tmax >6 s, mismatch criteria)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29364767/",
+        "year": 2018,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Full text (PMC) read for imaging definitions."
+      },
+      {
+        "title": "Cerebral blood flow is the optimal CT perfusion parameter for infarct core",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/21980202/",
+        "year": 2011,
+        "type": "Observational study",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "MR CLEAN-LATE: collateral-selected EVT at 6–24 h",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37003289/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "related": [
+      {
+        "label": "DAWN screen",
+        "href": "#/encounter/dawn"
+      },
+      {
+        "label": "DEFUSE 3 screen",
+        "href": "#/encounter/defuse3"
+      },
+      {
+        "label": "Thrombectomy selection",
+        "href": "#/evidence/evt-selection"
+      },
+      {
+        "label": "Large core",
+        "href": "#/evidence/large-core-evt"
+      }
+    ]
   },
   {
     "id": "tia-evaluation",
     "title": "TIA: evaluation and disposition",
+    "category": "Acute ischemic stroke",
     "settings": [
       "on-call",
       "hospital",
@@ -62,13 +464,36 @@
       "vascular imaging",
       "rapid follow-up"
     ],
-    "summary": "Resolved symptoms still require prompt evaluation. The AHA statement prioritizes diagnostic certainty, brain and vascular imaging, cardiac evaluation and a reliable prevention and follow-up plan. MRI with DWI is preferred for detecting tissue injury; CT with CTA can address hemorrhage and relevant arterial disease when appropriate.",
-    "consider": [
-      "Does the history fit focal ischemia, and what competing diagnosis remains?",
-      "Have brain imaging, vascular imaging and relevant cardiac testing been completed or explicitly arranged?",
-      "Who owns outstanding results, prevention treatment and rapid neurology follow-up?"
+    "summary": "Treat TIA as a stroke warning: MRI with DWI ideally within 24 h (about 40% show infarction, which makes it a stroke), head-and-neck vessel imaging in the ED regardless of ABCD2, and ECG, telemetry and troponin for all. Admit presumed symptomatic >50% extracranial or intracranial stenosis. High-risk TIA (ABCD2 ≥4) or minor stroke within 24 h: aspirin plus clopidogrel with a loading dose for 21 days, then one agent. Discharge only with the workup arranged and TIA-clinic review, preferably within 48 h.",
+    "recommendations": [
+      {
+        "text": "Multimodal brain MRI is the preferred method to evaluate for acute ischemic infarct and ideally should be obtained within 24 hours of symptom onset. In cases where MRI with DWI can be obtained without delay, NCCT can be safely avoided in a stable patient with completely resolved symptoms.",
+        "cor": "Statement",
+        "loe": "Ungraded",
+        "source": "AHA TIA Statement 2023 · tia-ed-2023-12",
+        "id": "tia-ed-2023-12"
+      },
+      {
+        "text": "Vessel imaging in the emergency department is warranted regardless of ABCD2 score or likelihood of admission.",
+        "cor": "Statement",
+        "loe": "Ungraded",
+        "source": "AHA TIA Statement 2023 · tia-ed-2023-44",
+        "id": "tia-ed-2023-44"
+      },
+      {
+        "text": "Presumed symptomatic (>50%) extracranial or intracranial stenosis warrants hospital admission.",
+        "cor": "Statement",
+        "loe": "Ungraded",
+        "source": "AHA TIA Statement 2023 · tia-ed-2023-50",
+        "id": "tia-ed-2023-50"
+      }
     ],
-    "caution": "A risk score complements the evaluation; it does not establish the diagnosis or independently justify discharge. Recurrent or persistent deficits require acute stroke reassessment.",
+    "consider": [
+      "Does the story fit focal ischemia (abrupt, maximal at onset, usually <60 min) or a mimic (marching symptoms, positive visual phenomena, migraine, seizure)?",
+      "ABCD2 omits posterior-circulation signs and stenosis; dual or crescendo TIA is high risk and may warrant admission whatever the score.",
+      "Suspected cardioembolism: arrange prolonged rhythm monitoring (30 days) within 6 months."
+    ],
+    "caution": "A normal CT does not exclude infarction; persisting or recurrent deficits need acute stroke reassessment.",
     "sources": [
       {
         "title": "AHA 2023 TIA diagnosis, workup and risk reduction statement — official summary",
@@ -76,24 +501,32 @@
         "year": 2023,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Official summary read; full statement and disposition tables were not reviewed for this card."
+        "access": "Official AHA summary page."
       }
     ],
     "related": [
       {
-        "label": "DAPT review",
+        "label": "DAPT calculator",
         "href": "#/encounter/dapt"
+      },
+      {
+        "label": "ABCD2",
+        "href": "#/tools/abcd2"
+      },
+      {
+        "label": "Minor stroke DAPT",
+        "href": "#/evidence/minor-stroke-antiplatelets"
       },
       {
         "label": "Ischemic stroke protocol",
         "href": "#/protocols/ischemic"
       }
-    ],
-    "category": "Acute ischemic stroke"
+    ]
   },
   {
     "id": "ich-management",
-    "title": "Spontaneous ICH: immediate priorities",
+    "title": "Spontaneous ICH: first-hour targets",
+    "category": "Hemorrhage and neurocritical care",
     "settings": [
       "on-call",
       "hospital"
@@ -106,13 +539,44 @@
       "neurocritical care",
       "DNAR"
     ],
-    "summary": "Early ICH care combines assessment for expansion, smooth blood-pressure control, prompt review of anticoagulant exposure and access to neurocritical and neurosurgical care. The ICH protocol contains the local management and reversal instructions; also investigate the underlying vascular cause.",
-    "consider": [
-      "Do examination and imaging suggest expansion or a need for escalation?",
-      "Is antithrombotic exposure verified, and has the reversal protocol been reviewed?",
-      "Is transfer or neurosurgical assessment needed, and what hemorrhage mechanism requires further imaging?"
+    "summary": "Run the care bundle in the first hours (INTERACT3: better 6-month mRS, cOR 0.86): SBP <140 started early and reached within 1 h; glucose 6.1–7.8 mmol/L (7.8–10.0 with diabetes); temperature ≤37.5 °C; INR <1.5 after warfarin. Do not drop SBP below 130 in mild-to-moderate ICH (AHA 2022, harm; ATACH-2 at 110–139 gave no benefit and more renal adverse events, 9.0 vs 4.0%). Reverse anticoagulation immediately (see the reversal card). Severity scores frame discussion but must not alone limit care; defer new DNAR orders until at least the second full day.",
+    "recommendations": [
+      {
+        "text": "Initiating acute BP treatment within 2 hours of ICH onset and reaching the target within 1 hour can be beneficial to reduce hemorrhage expansion risk and improve functional outcome.",
+        "cor": "2a",
+        "loe": "C-LD",
+        "source": "AHA/ASA ICH 2022 · ich-2022-22 · p. 16",
+        "id": "ich-2022-22"
+      },
+      {
+        "text": "For patients with mild to moderate spontaneous ICH presenting with SBP 150-220 mm Hg, acutely lowering SBP to a target of 140 mm Hg (maintaining 130-150 mm Hg range) is safe and may be reasonable for improving functional outcomes.",
+        "cor": "2b",
+        "loe": "B-R",
+        "source": "AHA/ASA ICH 2022 · ich-2022-23 · p. 17",
+        "id": "ich-2022-23"
+      },
+      {
+        "text": "Acute lowering of SBP to <130 mm Hg is potentially harmful in patients with mild to moderate spontaneous ICH presenting with SBP >150 mm Hg.",
+        "cor": "3: Harm",
+        "loe": "B-R",
+        "source": "AHA/ASA ICH 2022 · ich-2022-25 · p. 17",
+        "id": "ich-2022-25"
+      },
+      {
+        "text": "For patients with spontaneous ICH who lack preexisting documented wishes to limit life-sustaining therapy, aggressive care with postponement of new DNAR orders or withdrawal of support until at least the second full day of inpatient stay is reasonable to decrease mortality and improve functional outcome.",
+        "cor": "2a",
+        "loe": "B-NR",
+        "source": "AHA/ASA ICH 2022 · ich-2022-95 · p. 45",
+        "id": "ich-2022-95"
+      }
     ],
-    "caution": "ICH severity scores must not be the sole basis for limiting life-sustaining treatment. A resuscitation decision does not itself limit other medical or surgical care.",
+    "consider": [
+      "Repeat CT within 24 h, sooner if the GCS falls, for expansion, hydrocephalus or swelling; early CTA can flag expansion risk.",
+      "Vascular imaging (CTA ± venography) for lobar ICH <70 y, deep/posterior fossa ICH <45 y, or 45–70 y without hypertension (AHA 2022, COR 1).",
+      "Cerebellar ICH, hydrocephalus or a large hematoma: call neurosurgery now (see the ICH surgery card).",
+      "No prophylactic antiseizure drugs; continuous EEG for unexplained or fluctuating mental status."
+    ],
+    "caution": "Intensive targets are less certain for large or surgical hematomas; avoid SBP drops >70 mm Hg or below 110 (ESO 2026 consensus).",
     "sources": [
       {
         "title": "AHA/ASA 2022 spontaneous ICH guideline — official summary",
@@ -120,7 +584,7 @@
         "year": 2022,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Official summary read; no drug-reversal instructions or prognostic probabilities reproduced."
+        "access": "Official AHA summary page."
       }
     ],
     "related": [
@@ -129,19 +593,23 @@
         "href": "#/protocols/ich"
       },
       {
+        "label": "Reversal",
+        "href": "#/evidence/antithrombotic-reversal"
+      },
+      {
         "label": "ICH volume",
         "href": "#/encounter/ich-volume"
       },
       {
-        "label": "Glasgow Coma Scale",
+        "label": "GCS",
         "href": "#/encounter/gcs"
       }
-    ],
-    "category": "Hemorrhage and neurocritical care"
+    ]
   },
   {
     "id": "ich-surgery",
     "title": "ICH: when to revisit surgical options",
+    "category": "Hemorrhage and neurocritical care",
     "settings": [
       "on-call",
       "hospital"
@@ -156,13 +624,36 @@
       "cerebellar",
       "hydrocephalus"
     ],
-    "summary": "The 2026 AHA advisory updates minimally invasive surgery evidence. ENRICH found functional benefit principally in lobar ICH; MIND did not demonstrate improved 180-day function or reduced 30-day mortality. Technique, patient selection and timing matter, so these findings are not interchangeable.",
-    "consider": [
-      "How do location, volume, premorbid function and time from onset compare with the studied population?",
-      "Can an experienced surgical team assess the applicable procedure and realistic goals promptly?",
-      "Is cerebellar hemorrhage accompanied by deterioration, brainstem compression or hydrocephalus requiring urgent surgical review?"
+    "summary": "Cerebellar ICH with deterioration, brainstem compression, hydrocephalus or volume ≥15 mL: immediate evacuation with or without EVD (AHA 2022, COR 1). Supratentorial ICH >20–30 mL with GCS 5–12: minimally invasive evacuation can reduce mortality (2a). ENRICH (lobar or anterior basal ganglia, 30–80 mL, within 24 h) improved 180-day utility-weighted mRS, mainly in lobar ICH; MIND (mostly deep, within 72 h) and SWITCH (decompression for severe deep ICH) were not conclusive. Large IVH with reduced consciousness: EVD (COR 1).",
+    "recommendations": [
+      {
+        "text": "For patients with cerebellar ICH who are deteriorating neurologically, have brainstem compression and/or hydrocephalus from ventricular obstruction, or have cerebellar ICH volume ≥15 mL, immediate surgical removal of the hemorrhage with or without EVD is recommended in preference to medical management alone to reduce mortality.",
+        "cor": "1",
+        "loe": "B-NR",
+        "source": "AHA/ASA ICH 2022 · ich-2022-89 · p. 42",
+        "id": "ich-2022-89"
+      },
+      {
+        "text": "Minimally invasive hematoma evacuation (endoscopic or stereotactic aspiration, with or without thrombolytic use) can be useful to reduce mortality compared with medical management alone for patients with supratentorial ICH >20-30 mL and GCS 5-12.",
+        "cor": "2a",
+        "loe": "B-R",
+        "source": "AHA/ASA ICH 2022 · ich-2022-79 · p. 37",
+        "id": "ich-2022-79"
+      },
+      {
+        "text": "EVD is recommended over medical management alone for patients with spontaneous ICH, large IVH, and impaired level of consciousness to reduce mortality.",
+        "cor": "1",
+        "loe": "B-NR",
+        "source": "AHA/ASA ICH 2022 · ich-2022-82 · p. 39",
+        "id": "ich-2022-82"
+      }
     ],
-    "caution": "Technical evacuation success is not the same as proven functional benefit. Do not extrapolate selected lobar-ICH results to every deep or infratentorial hemorrhage.",
+    "consider": [
+      "Location, volume, GCS, premorbid function and hours from onset decide which trial applies.",
+      "Craniotomy is a lifesaving option for deteriorating supratentorial ICH (2b); decompressive craniectomy may reduce mortality in comatose patients with large hematomas or refractory ICP (2b).",
+      "Agree on realistic goals with the family before surgery."
+    ],
+    "caution": "Lower mortality is not the same as better function; do not extend lobar-ICH results to deep or infratentorial bleeds.",
     "sources": [
       {
         "title": "AHA 2026 minimally invasive ICH evacuation advisory — official summary",
@@ -170,7 +661,7 @@
         "year": 2026,
         "type": "Science advisory",
         "checkedAt": "2026-10-01",
-        "access": "Official summary read, including ENRICH/MIND distinctions; full advisory and surgical selection algorithm not reviewed."
+        "access": "Official AHA summary page."
       },
       {
         "title": "AHA/ASA 2022 spontaneous ICH guideline — official summary",
@@ -178,7 +669,7 @@
         "year": 2022,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Official summary read for cerebellar hemorrhage and urgent surgical assessment; newer supratentorial MIS evidence is linked separately."
+        "access": "Official AHA summary page."
       }
     ],
     "related": [
@@ -190,12 +681,12 @@
         "label": "ICH volume",
         "href": "#/encounter/ich-volume"
       }
-    ],
-    "category": "Hemorrhage and neurocritical care"
+    ]
   },
   {
     "id": "sah",
     "title": "Aneurysmal SAH: coordinated specialist care",
+    "category": "Hemorrhage and neurocritical care",
     "settings": [
       "on-call",
       "hospital",
@@ -210,14 +701,43 @@
       "nimodipine",
       "hydrocephalus"
     ],
-    "summary": "Aneurysmal SAH calls for timely access to a team experienced in aneurysm treatment and neurocritical care. Priorities include securing the ruptured aneurysm, monitoring for delayed cerebral ischemia and other complications, and arranging subsequent vascular imaging and rehabilitation.",
-    "consider": [
-      "Has the aneurysmal source and a plan to secure it been established with the specialist team?",
-      "Are nimodipine, volume status and surveillance for neurological deterioration being reviewed?",
-      "Could a changing examination reflect delayed cerebral ischemia, hydrocephalus or seizures?",
-      "Who owns follow-up vascular imaging and cognitive, mood and functional recovery needs?"
+    "summary": "Secure the aneurysm as early as feasible, preferably within 24 h (AHA 2023, COR 1; ESO 2026 consensus), at a high-volume center. Start enteral nimodipine early (COR 1). Until it is secured: frequent BP checks with short-acting agents, avoiding hypotension, hypertension and swings; ESO suggests targeting about 160 if SBP stays >160–180 after analgesia and nimodipine. Good grade and equally suitable for both: coil rather than clip. No routine antifibrinolytics, statins, magnesium or prophylactic hypervolemia. EVD for acute symptomatic hydrocephalus.",
+    "recommendations": [
+      {
+        "text": "Surgical or endovascular treatment of the ruptured aneurysm is recommended as early as feasible after presentation, preferably within 24 hours of onset, to improve outcome.",
+        "cor": "1",
+        "loe": "B-NR",
+        "source": "AHA/ASA aSAH 2023 · sah-2023-16 · p. 14",
+        "id": "sah-2023-16"
+      },
+      {
+        "text": "Early initiation of enteral nimodipine is recommended in aSAH patients to prevent DCI and improve functional outcomes.",
+        "cor": "1",
+        "loe": "A",
+        "source": "AHA/ASA aSAH 2023 · sah-2023-54 · p. 26",
+        "id": "sah-2023-54"
+      },
+      {
+        "text": "Frequent blood pressure monitoring and management with short-acting agents is recommended in aSAH patients with an unsecured aneurysm, targeting avoidance of severe hypotension, hypertension, and BP variability.",
+        "cor": "1",
+        "loe": "C-EO",
+        "source": "AHA/ASA aSAH 2023 · sah-2023-13 · p. 13",
+        "id": "sah-2023-13"
+      },
+      {
+        "text": "For good-grade aSAH from anterior circulation aneurysms equally suitable for primary coiling and clipping, primary coiling is recommended over clipping to improve 1-year functional outcome.",
+        "cor": "1",
+        "loe": "A",
+        "source": "AHA/ASA aSAH 2023 · sah-2023-24 · p. 14",
+        "id": "sah-2023-24"
+      }
     ],
-    "caution": "This is an aneurysmal SAH reference, not a thunderclap-headache rule-out pathway. Prophylactic hypervolemia or hemodynamic augmentation is not recommended.",
+    "consider": [
+      "New decline: think rebleeding, hydrocephalus, DCI/vasospasm or seizures — urgent CT ± CTA/CTP.",
+      "Seizure prophylaxis only with high-risk features (MCA aneurysm, high grade, ICH, hydrocephalus, cortical infarct); avoid phenytoin; stop by 7 days after an onset seizure.",
+      "Keep euvolemia; liberal transfusion (Hb ≤10 g/dL) did not improve 12-month outcome (SAHaRA)."
+    ],
+    "caution": "Prophylactic hemodynamic augmentation and induced hypervolemia are harmful.",
     "sources": [
       {
         "title": "AHA/ASA 2023 aneurysmal SAH guideline — official summary",
@@ -225,20 +745,32 @@
         "year": 2023,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Official summary read; full guideline and diagnostic exclusion pathways were not reviewed for this card."
+        "access": "Official AHA summary page."
       }
     ],
     "related": [
       {
-        "label": "Glasgow Coma Scale",
+        "label": "GCS",
         "href": "#/encounter/gcs"
+      },
+      {
+        "label": "Hunt and Hess",
+        "href": "#/tools/hunt-hess"
+      },
+      {
+        "label": "WFNS",
+        "href": "#/tools/wfns"
+      },
+      {
+        "label": "aSAH critical care",
+        "href": "#/evidence/sah-critical-care"
       }
-    ],
-    "category": "Hemorrhage and neurocritical care"
+    ]
   },
   {
     "id": "cvt",
     "title": "Cerebral venous thrombosis",
+    "category": "Stroke mechanisms and vascular disorders",
     "settings": [
       "on-call",
       "hospital",
@@ -253,13 +785,36 @@
       "papilledema",
       "venography"
     ],
-    "summary": "CVT can present with headache, visual symptoms, seizures or encephalopathy, reflecting raised intracranial pressure or parenchymal injury. CT venography or MR venography can establish the diagnosis. The AHA statement addresses anticoagulation and escalation options for severe presentations.",
-    "consider": [
-      "Does the presentation and imaging warrant dedicated venous imaging?",
-      "Have pregnancy/postpartum status, hormonal exposure, infection and prothrombotic conditions been reviewed?",
-      "Are visual symptoms, seizures, consciousness changes or mass effect prompting specialist escalation?"
+    "summary": "Anticoagulate on diagnosis, even with venous hemorrhage: parenteral heparin (LMWH favored), then oral anticoagulation for 3–12 months, or indefinitely with chronic major risk factors or recurrent VTE (AHA 2024). DOACs are a reasonable alternative to warfarin after the lead-in: RE-SPECT CVT (dabigatran) had no recurrent VTE and major bleeding 1.7 vs 3.3%; ACTION-CVT (observational) found similar recurrence and less major hemorrhage (aHR 0.35). Endovascular therapy is rescue only (TO-ACT: no benefit); decompressive craniectomy is lifesaving with impending herniation.",
+    "recommendations": [
+      {
+        "text": "The mainstream initial treatment of cerebral venous thrombosis includes parenteral heparin followed by transition to oral vitamin K antagonists for 3 to 12 months, depending on the underlying cause, or indefinitely in the presence of chronic major risk factors or recurrent venous thromboembolism.",
+        "cor": "Statement",
+        "loe": "Ungraded",
+        "source": "AHA CVT Statement 2024 · cvt-2024-5",
+        "id": "cvt-2024-5"
+      },
+      {
+        "text": "The presence of venous hemorrhage does not constitute a contraindication for anticoagulation. Whether degree of venous recanalization should inform duration of anticoagulation remains an area of uncertainty.",
+        "cor": "Statement",
+        "loe": "Ungraded",
+        "source": "AHA CVT Statement 2024 · cvt-2024-25",
+        "id": "cvt-2024-25"
+      },
+      {
+        "text": "Given the lack of controlled studies (and poorer outcomes in meta-analyses), endovascular therapies are reserved for patients with evidence of thrombus propagation, for individuals with neurological deterioration despite medical therapy, or for those with contraindications to anticoagulation.",
+        "cor": "Statement",
+        "loe": "Ungraded",
+        "source": "AHA CVT Statement 2024 · cvt-2024-8",
+        "id": "cvt-2024-8"
+      }
     ],
-    "caution": "Anticoagulant selection and rescue procedures depend on the clinical context. This card does not establish an individualized regimen or procedural eligibility.",
+    "consider": [
+      "Confirm with MRI/MRV (CT/CTV is a reasonable alternative); add GRE/SWI or contrast MRV for cortical vein thrombosis.",
+      "Look for pregnancy/puerperium, estrogen, obesity, APS, myeloproliferative disease, malignancy and infection; headache with thrombocytopenia after an adenoviral vaccine suggests VITT — avoid heparin and involve hematology.",
+      "Watch vision, seizures and consciousness; escalate for deterioration or propagation despite anticoagulation."
+    ],
+    "caution": "Use LMWH in pregnancy; DOACs are contraindicated in pregnancy and breastfeeding and carry more thrombotic events in APS.",
     "sources": [
       {
         "title": "AHA 2024 CVT diagnosis and management statement — official summary",
@@ -267,15 +822,28 @@
         "year": 2024,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Official summary read; full statement and treatment pathways were not reviewed for this card."
+        "access": "Official AHA summary page."
       }
     ],
-    "related": [],
-    "category": "Stroke mechanisms and vascular disorders"
+    "related": [
+      {
+        "label": "Maternal stroke",
+        "href": "#/evidence/maternal-stroke"
+      },
+      {
+        "label": "Antiphospholipid syndrome",
+        "href": "#/evidence/antiphospholipid-syndrome"
+      },
+      {
+        "label": "Follow-up imaging",
+        "href": "#/evidence/imaging-follow-up"
+      }
+    ]
   },
   {
     "id": "dizziness",
-    "title": "Acute dizziness: timing, triggers and examination",
+    "title": "Acute dizziness: HINTS and when to image",
+    "category": "Acute ischemic stroke",
     "settings": [
       "on-call",
       "hospital"
@@ -283,21 +851,24 @@
     "keywords": [
       "vertigo",
       "HINTS",
-      "HINTS+",
+      "HINTS plus",
       "GRACE-3",
       "posterior circulation",
       "acute vestibular syndrome",
+      "skew deviation",
+      "head impulse",
+      "nystagmus",
       "BPPV",
       "Dix-Hallpike"
     ],
-    "summary": "GRACE-3 organizes acute dizziness by timing and triggers. In acute vestibular syndrome with nystagmus, HINTS is intended for trained clinicians; without nystagmus, gait assessment matters. Central or equivocal HINTS findings warrant MRI/MRA evaluation.",
+    "summary": "Sort dizziness by timing and triggers (GRACE-3). In acute vestibular syndrome (continuous vertigo with nystagmus, nausea, head-motion intolerance, unsteady gait) and vascular risk, a trained examiner's HINTS beats early MRI: any central sign — normal head impulse, direction-changing nystagmus or skew deviation — was 100% sensitive and 96% specific for stroke; adding new hearing loss (HINTS plus) reached 99.2% sensitivity for central causes. Early DWI missed 12–14% of infarcts within 48 h. Central or equivocal findings: MRI/MRA. ABCD2 is not a dizziness screen (sensitivity 61%).",
     "consider": [
-      "Is this persistent acute vestibular syndrome, spontaneous episodic dizziness or triggered episodic dizziness?",
-      "Is the examiner trained, and are the syndrome and nystagmus appropriate for HINTS interpretation?",
-      "Have hearing, gait and other focal neurological findings been assessed?",
-      "Does concern for TIA in spontaneous episodic symptoms warrant vascular imaging?"
+      "Head impulse: a corrective saccade suggests a peripheral lesion; a normal head impulse in continuous vertigo is a central sign.",
+      "Nystagmus: direction-changing nystagmus on eccentric gaze is central.",
+      "Test of skew (cross-cover): any vertical misalignment is central and points to the brainstem.",
+      "Hearing: new hearing loss is the \"plus\" that raises sensitivity for central causes; triggered positional episodes are not a HINTS situation."
     ],
-    "caution": "HINTS is not a universal dizziness screen. Routine noncontrast CT is not the GRACE-3 approach to distinguish central from peripheral dizziness.",
+    "caution": "HINTS needs continuous vertigo with nystagmus and a trained examiner; routine CT is not the GRACE-3 way to exclude a central cause.",
     "sources": [
       {
         "title": "SAEM GRACE-3 acute dizziness and vertigo — official recommendations",
@@ -305,20 +876,44 @@
         "year": 2023,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Official recommendation summary read; full journal methods and evidence profiles were not reviewed. Applies to adult ED presentations with acute dizziness."
+        "access": "Official SAEM recommendations page."
+      },
+      {
+        "title": "HINTS to diagnose stroke in the acute vestibular syndrome (Kattah 2009)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/19762709/",
+        "year": 2009,
+        "type": "Observational study",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "HINTS outperforms ABCD2 in acute continuous vertigo (HINTS plus)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/24127701/",
+        "year": 2013,
+        "type": "Observational study",
+        "checkedAt": "2026-10-03",
+        "access": "Primary abstract verified via PubMed."
       }
     ],
     "related": [
       {
+        "label": "Stroke chameleons",
+        "href": "#/evidence/stroke-chameleons"
+      },
+      {
+        "label": "Basilar occlusion",
+        "href": "#/evidence/basilar-occlusion"
+      },
+      {
         "label": "Ischemic stroke protocol",
         "href": "#/protocols/ischemic"
       }
-    ],
-    "category": "Acute ischemic stroke"
+    ]
   },
   {
     "id": "inpatient-care",
     "title": "Inpatient stroke: complication review",
+    "category": "Inpatient care and complications",
     "settings": [
       "hospital"
     ],
@@ -334,14 +929,50 @@
       "urinary retention",
       "post-thrombectomy"
     ],
-    "summary": "Organized stroke-unit care and systematic complication surveillance are central to recovery. Review swallowing, fever, glucose, respiratory and urinary problems alongside the neurological course. Nursing, medical and rehabilitation teams need a shared plan for prevention and escalation.",
-    "consider": [
-      "Are swallowing safety and the feeding/medication route established?",
-      "Are fever, glucose, infection, urinary retention and bowel problems being addressed?",
-      "Are VTE prevention, mobility, falls and skin integrity covered by an individualized plan?",
-      "After reperfusion, are examination, access-site concerns and blood-pressure goals handed over clearly?"
+    "summary": "Stroke-unit care with protocols: bedside swallow screen before any oral intake; treat fever to normothermia and look for its source; treat glucose <60 mg/dL and keep persistent hyperglycemia at 140–180 mg/dL (not 80–130); oxygen only for hypoxia, to keep SpO2 >94%; intermittent pneumatic compression for immobile patients and no elastic stockings; no routine bladder catheters or prophylactic antibiotics; no high-dose very early mobilization within 24 h (AHA 2026).",
+    "recommendations": [
+      {
+        "text": "In AIS patients, a bedside swallow screening prior to any oral intake is recommended to identify patients at increased aspiration risk.",
+        "cor": "1",
+        "loe": "C-EO",
+        "source": "AHA/ASA AIS 2026 · ais-2026-160 · p. 74",
+        "id": "ais-2026-160"
+      },
+      {
+        "text": "In AIS patients, it is reasonable to treat persistent hyperglycemia to achieve blood glucose levels of 140-180 mg/dL with close monitoring to prevent worse functional outcomes.",
+        "cor": "2a",
+        "loe": "C-LD",
+        "source": "AHA/ASA AIS 2026 · ais-2026-82 · p. 37",
+        "id": "ais-2026-82"
+      },
+      {
+        "text": "In inpatient AIS patients with hyperglycemia, IV insulin targeting blood glucose of 80-130 mg/dL is not recommended as it does not improve 3-month functional outcomes.",
+        "cor": "3: No Benefit",
+        "loe": "A",
+        "source": "AHA/ASA AIS 2026 · ais-2026-83 · p. 37",
+        "id": "ais-2026-83"
+      },
+      {
+        "text": "In AIS patients with hyperthermia, targeting normothermia (including nurse-initiated fever management protocols) is recommended to improve functional outcomes and reduce mortality.",
+        "cor": "1",
+        "loe": "B-R",
+        "source": "AHA/ASA AIS 2026 · ais-2026-78 · p. 37",
+        "id": "ais-2026-78"
+      },
+      {
+        "text": "In AIS patients with impaired mobility and no contraindications, intermittent pneumatic compression (IPC) in addition to routine care is recommended over routine care alone to reduce DVT risk.",
+        "cor": "1",
+        "loe": "B-R",
+        "source": "AHA/ASA AIS 2026 · ais-2026-169 · p. 76",
+        "id": "ais-2026-169"
+      }
     ],
-    "caution": "The 2026 AIS guideline advises against intensive glucose control and intensive systolic BP lowering below 140 mm Hg after IVT/EVT. Apply the treatment-specific protocol and clinical context.",
+    "consider": [
+      "After IVT: BP <180/105 for at least 24 h; antiplatelets in the first 24 h only when a strong indication outweighs the uncertain risk.",
+      "Screen nutrition within 48 h and depression with a structured tool; start enteral feeding within 7 days if the patient cannot swallow.",
+      "After EVT: neurological checks, access site, the BP plan and urgent imaging for any decline."
+    ],
+    "caution": "Intensive targets backfire here: SBP <140 after successful EVT is harmful, and IV insulin to 80–130 mg/dL adds hypoglycemia without benefit.",
     "sources": [
       {
         "title": "AHA 2024 systemic complications of acute stroke statement — official summary",
@@ -349,7 +980,7 @@
         "year": 2024,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Official summary read; full statement and complication-specific recommendations were not reviewed."
+        "access": "Official AHA summary page."
       },
       {
         "title": "AHA 2021 acute stroke nursing care statements — official summary",
@@ -357,7 +988,7 @@
         "year": 2021,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Official summary read for nursing assessments and complications; full statements were not reviewed."
+        "access": "Official AHA summary page."
       },
       {
         "title": "AHA/ASA 2026 acute ischemic stroke guideline — official summary",
@@ -365,7 +996,7 @@
         "year": 2026,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Official summary read for glucose and post-reperfusion blood-pressure cautions; full guideline not reviewed."
+        "access": "Official AHA summary page."
       }
     ],
     "related": [
@@ -376,13 +1007,70 @@
       {
         "label": "ICH protocol",
         "href": "#/protocols/ich"
+      },
+      {
+        "label": "Follow-up imaging",
+        "href": "#/evidence/imaging-follow-up"
+      }
+    ]
+  },
+  {
+    "id": "imaging-follow-up",
+    "title": "Follow-up imaging by diagnosis",
+    "category": "Inpatient care and complications",
+    "settings": [
+      "on-call",
+      "hospital",
+      "clinic"
+    ],
+    "keywords": [
+      "follow-up imaging",
+      "repeat CT",
+      "DSA",
+      "CTA",
+      "MRI",
+      "vasospasm",
+      "TCD",
+      "coil follow-up",
+      "MRV",
+      "recanalization"
+    ],
+    "summary": "TIA or minor stroke: MRI DWI within 24 h and head-and-neck vessel imaging in the ED. ICH: repeat CT within 24 h (sooner with decline) for expansion; CTA ± venography for lobar ICH <70 y, deep or posterior fossa ICH <45 y, or 45–70 y without hypertension; DSA if CTA suggests a macrovascular cause or for primary IVH; MRI/MRA if CTA is negative; repeat DSA at 3–6 months may be reasonable after a negative first study. aSAH: CTA/CTP and TCD for vasospasm; after adequately occluded coiling, image again at ≥12 months (ESO). CVT: MRI/MRV (CT/CTV acceptable); whether recanalization should guide anticoagulation duration is uncertain.",
+    "consider": [
+      "Any neurological decline: urgent CT first (hemorrhage, swelling, hydrocephalus), then CTA if reocclusion or vasospasm is possible.",
+      "Ischemic stroke: noninvasive intracranial and vertebrobasilar imaging (CTA or MRA) identifies atherosclerosis, dissection and moyamoya (AHA 2021, 2a).",
+      "Established FMD: at least one brain-to-pelvis CTA or MRA (consensus)."
+    ],
+    "caution": "Schedules are examples; image sooner whenever the examination changes.",
+    "sources": [
+      {
+        "title": "ESH/SVM 2019 first international consensus on fibromuscular dysplasia",
+        "url": "https://journals.sagepub.com/doi/pdf/10.1177/1358863X18821816",
+        "year": 2019,
+        "type": "Consensus statement",
+        "checkedAt": "2026-10-02",
+        "access": "Selected primary PDF passages read (brain-to-pelvis imaging)."
       }
     ],
-    "category": "Inpatient care and complications"
+    "related": [
+      {
+        "label": "ICH first-hour targets",
+        "href": "#/evidence/ich-management"
+      },
+      {
+        "label": "aSAH critical care",
+        "href": "#/evidence/sah-critical-care"
+      },
+      {
+        "label": "CVT",
+        "href": "#/evidence/cvt"
+      }
+    ]
   },
   {
     "id": "anticoagulant-labels",
     "title": "Anticoagulants: label and interaction review",
+    "category": "Prevention and antithrombotics",
     "settings": [
       "on-call",
       "hospital",
@@ -403,14 +1091,14 @@
       "P-gp",
       "CYP3A4"
     ],
-    "summary": "Use the exact drug's U.S. label for the indication, formulation, renal considerations, interactions and administration requirements. AF and VTE instructions differ. Apixaban's AF adjustment incorporates age, weight and serum creatinine; edoxaban has an upper-creatinine-clearance restriction for AF. Warfarin requires individualized INR monitoring.",
+    "summary": "Before reversal, procedures or switching, confirm the exact drug, dose, indication, last intake and current renal function against the U.S. label. AF and VTE dosing differ. Apixaban's AF dose adjustment combines age, weight and serum creatinine; edoxaban carries an upper creatinine-clearance restriction for AF; warfarin needs INR monitoring. Check P-gp/CYP3A4 interactions and feeding-tube or swallowing constraints.",
     "consider": [
       "Are the indication, current formulation, last dose, adherence and any planned procedure established?",
       "Are current renal function, weight, age and hepatic status appropriate for the specific label?",
       "Have P-gp/CYP interactions, other antithrombotics and nonprescription products been checked?",
       "Do food, swallowing or feeding-tube requirements affect reliable administration?"
     ],
-    "caution": "A creatinine-clearance result alone does not select a dose. Review the complete current label and pharmacist input for the individual case; use the ICH protocol for urgent reversal.",
+    "caution": "Creatinine clearance alone does not select a dose; check the full label with a pharmacist and use the ICH protocol for urgent reversal.",
     "sources": [
       {
         "title": "Eliquis (apixaban) U.S. prescribing information",
@@ -459,10 +1147,13 @@
         "href": "#/encounter/crcl"
       },
       {
+        "label": "Reversal",
+        "href": "#/evidence/antithrombotic-reversal"
+      },
+      {
         "label": "ICH protocol",
         "href": "#/protocols/ich"
       }
-    ],
-    "category": "Prevention and antithrombotics"
+    ]
   }
 ]

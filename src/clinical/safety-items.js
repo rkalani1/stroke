@@ -12,7 +12,8 @@ const absoluteContraindications = [
                                   { id: 'severeUncontrolledHTN', label: 'SBP >185 or DBP >110 mmHg', note: 'unresponsive to treatment' },
                                   { id: 'lowPlatelets', label: 'Platelet count <100,000', note: null },
                                   { id: 'warfarinElevatedINR', label: 'Warfarin use with PT >15s, INR >1.7, or aPTT >40s', note: null },
-                                  { id: 'knownBleedingDiathesis', label: 'Severe coagulopathy or bleeding diathesis', note: null }
+                                  { id: 'knownBleedingDiathesis', label: 'Severe coagulopathy or bleeding diathesis', note: null },
+                                  { id: 'recentDOAC', label: 'DOAC exposure: factor Xa inhibitor or dabigatran within 48 h, or timing unknown', note: 'IVT is not recommended unless drug-specific assays are normal or the approved local pathway permits it (AHA/ASA 2019); estimated clearance does not certify eligibility. Evaluate EVT independently.' }
                                 ];
 const relativeContraindications = [
                                   // ORANGE: Relative — careful risk-benefit assessment (AHA/ASA 2026)
@@ -20,14 +21,13 @@ const relativeContraindications = [
                                   { id: 'vascularMalformation', label: 'Intracranial vascular malformation', note: 'unless severe neuro sx' },
                                   { id: 'pregnancy', label: 'Pregnancy', note: 'consult OB/GYN; alteplase/TNK do not cross placenta' },
                                   { id: 'recentStroke', label: 'Ischemic stroke within 3 months', note: null },
-                                  { id: 'recentHeadTrauma', label: 'Moderate-severe head trauma', note: 'Drug-specific review required: TNKase label contraindicates intracranial/intraspinal trauma within2 months.' },
-                                  { id: 'recentIntracranialSurgery', label: 'Recent intracranial/intraspinal surgery', note: 'Guideline framework only; TNKase label contraindicates intracranial/intraspinal surgery or trauma within2 months. Complete drug-specific review.' },
+                                  { id: 'recentHeadTrauma', label: 'Moderate-severe head trauma', note: 'Drug-specific review required: TNKase label contraindicates intracranial/intraspinal trauma within 2 months.' },
+                                  { id: 'recentIntracranialSurgery', label: 'Recent intracranial/intraspinal surgery', note: 'Guideline framework only; TNKase label contraindicates intracranial/intraspinal surgery or trauma within 2 months. Complete drug-specific review.' },
                                   { id: 'recentMajorSurgery', label: 'Non-CNS major surgery or trauma', note: '14 days–3 months — warning only (careful risk-benefit); does not auto-block' },
                                   { id: 'recentGIGUBleeding', label: 'Recent GI/urinary tract hemorrhage', note: '<21 days' },
                                   { id: 'recentArterialPuncture', label: 'Recent arterial puncture at non-compressible site', note: '<7 days' },
                                   { id: 'recentLumbarPuncture', label: 'Recent dural puncture', note: '<7 days' },
                                   { id: 'recentHeparin', label: 'Treatment-dose heparin/LMWH', note: 'UFH requires aPTT/dose/time review; aPTT does not exclude LMWH effect. Assess LMWH dose intent and timing separately.' },
-                                  { id: 'recentDOAC', label: 'Recent DOAC exposure', note: 'Review timing, renal function and drug-specific assays; estimated clearance does not certify IVT eligibility.' },
                                   { id: 'medicationReconciliation', label: 'Anticoagulant medication record requires reconciliation', note: 'Verify actual use, agent, dose and timing. A medication-name match does not establish recent ingestion or anticoagulant activity.' },
                                   { id: 'abnormalCoagUnknown', label: 'Abnormal aPTT, TT, or anti-Xa with unknown anticoagulant use', note: null },
                                   { id: 'preexistingDisability', label: 'Pre-existing disability', note: 'individualize — weigh goals of care' },
@@ -39,7 +39,7 @@ const relativeContraindications = [
                                   { id: 'lecanemab', label: 'Lecanemab or other anti-amyloid therapy', note: 'ARIA risk' },
                                   { id: 'lowGlucose', label: 'Blood glucose <50 mg/dL', note: 'correct and reassess — auto-blocks TNK until corrected' },
                                   { id: 'elevatedAPTT', label: 'aPTT >40 seconds', note: 'auto-blocks TNK until anticoagulant effect excluded (conservative hard block)' },
-                                  { id: 'severeRenalFailure', label: 'Severe renal failure (Cr >3 or CrCl <25)', note: 'increased bleeding risk — item and cutoffs not confirmed in AHA/ASA 2026 Table 8 (needs confirmation)' }
+                                  { id: 'severeRenalFailure', label: 'Severe renal impairment', note: 'Not a guideline IVT contraindication; individualize (bleeding risk, anticoagulant clearance). No validated creatinine or CrCl cutoff applies.' }
                                 ];
 const cautionaryConditions = [
                                   // BLUE: Benefits of IVT generally outweigh increased risk (AHA/ASA 2026 Table 8)

@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import * as calculators from '../src/supplementary-calculators.js';
 import { calculatorDefinitions, sourceRecords } from '../src/supplementary-calculator-definitions.js';
 
-const { calculateReviewedABCD2:abcd, calculateReviewedCHADS2VASc:chads, calculateReviewedHASBLED:hasBled, calculateReviewedRoPE:rope, classifyReviewedPASCAL:pascal, calculateReviewedPHASES:phases, calculateReviewedWFNS:wfns, calculateReviewedPHQ2:phq2, calculateReviewedSTOPBANG:stopBang, supplementaryResult, updateSupplementaryField:edit, applySupplementaryScore:apply, reconcileSupplementaryAppliedScores:reconcile } = calculators;
+const { calculateReviewedABCD2:abcd, calculateReviewedCHADS2VASc:chads, calculateReviewedHASBLED:hasBled, calculateReviewedRoPE:rope, classifyReviewedPASCAL:pascal, calculateReviewedPHASES:phases, calculateReviewedWFNS:wfns, calculateReviewedPHQ2:phq2, calculateReviewedSTOPBANG:stopBang, supplementaryResult, supplementaryReviewed, updateSupplementaryField:edit, applySupplementaryScore:apply, reconcileSupplementaryAppliedScores:reconcile } = calculators;
 const ABCD = { reviewed:true, tiaConfirmed:true, age:59, bp:'139/89', initialSystolic:'139', initialDiastolic:'89', clinicalFeatures:'other', duration:'under10', diabetes:false };
 const CHADS = { reviewed:true, afConfirmed:true, age:64, sex:'M', chf:false, hypertension:false, diabetes:false, strokeTia:false, vascular:false };
 const HAS = { reviewed:true, afConfirmed:true, age:65, uncontrolledHypertension:false, renal:false, liver:false, stroke:false, bleeding:false, labileINR:false, drugs:false, alcohol:false };
@@ -26,10 +26,25 @@ describe('reviewed point assignments without outcome or treatment inference', ()
   it.each(['',' ','60years','0x3c','NaN','Infinity',true,NaN,17,121,59.5])('does not coerce invalid age %j', age => {
     for(const [fn,input] of [[abcd,ABCD],[chads,CHADS],[hasBled,HAS],[rope,ROPE],[phases,PHASES],[stopBang,STOP]]) expect(fn({...input,age})).toBeNull();
   });
-  it('does not treat unreviewed or missing booleans as explicitly negative', () => {
+  it('scores live without an attestation but never treats missing booleans as explicitly negative', () => {
     for(const [fn,input,key] of [[abcd,ABCD,'diabetes'],[chads,CHADS,'chf'],[hasBled,HAS,'renal'],[rope,ROPE,'smoker'],[phases,PHASES,'earlierSAH'],[stopBang,STOP,'sb_pressure']]) {
-      expect(fn({...input,reviewed:false})).toBeNull();expect(fn({...input,[key]:undefined})).toBeNull();expect(fn({...input,[key]:'false'})).toBeNull();
+      const { reviewed, ...unattested } = input;
+      expect(fn(unattested)).not.toBeNull();expect(fn({...input,reviewed:false})).toEqual(fn(input));
+      expect(fn({...input,[key]:undefined})).toBeNull();expect(fn({...input,[key]:'false'})).toBeNull();
     }
+    expect(calculators.describeReviewedHuntHess({sahConfirmed:true,grade:2})).toMatchObject({grade:2});
+    expect(calculators.calculateReviewedRegionalPCASPECTS({regions:Object.fromEntries(calculators.PC_ASPECTS_REGIONS.map(region => [region.key,false]))})).toEqual({score:10,max:10});
+  });
+  it('hand-checks ABCD², CHA₂DS₂-VASc and HAS-BLED point totals', () => {
+    // ABCD²: age ≥60 1, BP ≥140/90 1, weakness 2 / speech 1, ≥60 min 2 / 10–59 min 1, diabetes 1.
+    expect(abcd({...ABCD,age:72,bp:'150/80',clinicalFeatures:'speech',duration:'10to59',diabetes:true})).toEqual({score:5,max:7});
+    expect(abcd({...ABCD,age:45,bp:'120/95',clinicalFeatures:'weakness',duration:'60plus'})).toEqual({score:5,max:7});
+    expect(abcd({...ABCD,age:60,clinicalFeatures:'weakness',duration:'10to59',diabetes:true})).toEqual({score:5,max:7});
+    // CHA₂DS₂-VASc: female 1, age 65–74 1, hypertension 1, prior stroke 2.
+    expect(chads({...CHADS,age:70,sex:'F',hypertension:true,strokeTia:true})).toEqual({score:5,max:9});
+    expect(chads({...CHADS,age:80,chf:true,diabetes:true,vascular:true})).toEqual({score:5,max:9});
+    // HAS-BLED: age >65 1, stroke 1, labile INR 1, drugs 1.
+    expect(hasBled({...HAS,age:70,stroke:true,labileINR:true,drugs:true})).toEqual({score:4,max:9});
   });
   it('calculates ABCD² boundaries and mutually exclusive symptom points', () => {
     expect(abcd(ABCD)).toEqual({score:0,max:7});
@@ -101,12 +116,23 @@ describe('canonical source review and explicit application', () => {
     for(const item of calculatorDefinitions) { expect(typeof calculators[item.fn]).toBe('function');expect(sourceRecords.some(source=>source.id===item.sourceIds[0])).toBe(true); }
     for(const output of [abcd(ABCD),chads(CHADS),hasBled(HAS),rope(ROPE),phases(PHASES)]) expect(Object.keys(output).sort()).toEqual(['max','score']);
   });
-  it('never initializes callbacks/attestations from absence, and requires current shared-source review', () => {
+  it('scores live from explicit answers; attestation is never initialized and follows the current shared source', () => {
     const empty=caseState();expect(supplementaryResult(empty,'abcd2')).toBeNull();expect(empty.supplementary).toEqual({});
-    const reviewed=prepared(empty,'abcd2',ABCD);expect(supplementaryResult(reviewed,'abcd2').score).toBe(0);
-    expect(supplementaryResult({...reviewed,note:{...reviewed.note,age:'60'}},'abcd2')).toBeNull();
-    expect(supplementaryResult({...reviewed,note:{...reviewed.note,presentingBP:''}},'abcd2').score).toBe(0);
-    expect(supplementaryResult({...reviewed,context:'follow-up'},'abcd2')).toBeNull();
+    let live=empty;for(const [key,value] of Object.entries(ABCD)) if(key !== 'reviewed') live=edit(live,'abcd2',key,value);
+    expect(supplementaryResult(live,'abcd2')).toEqual({score:0,max:7});expect(supplementaryReviewed(live,'abcd2')).toBe(false);
+    expect(supplementaryResult(edit(live,'abcd2','diabetes',undefined),'abcd2')).toBeNull();
+    expect(supplementaryResult({...live,note:{...live.note,age:'60'}},'abcd2')).toEqual({score:1,max:7});
+    expect(supplementaryResult({...live,note:{...live.note,age:''}},'abcd2')).toBeNull();
+    const attested=edit(live,'abcd2','reviewed',true);expect(supplementaryReviewed(attested,'abcd2')).toBe(true);
+    for(const changed of [{...attested,note:{...attested.note,age:'60'}},{...attested,context:'follow-up'},edit(attested,'abcd2','diabetes',false)]) expect(supplementaryReviewed(changed,'abcd2')).toBe(false);
+    expect(supplementaryReviewed({...attested,note:{...attested.note,presentingBP:''}},'abcd2')).toBe(true);
+  });
+  it('requires the attestation to apply, and never applies an incomplete score', () => {
+    let live=caseState();for(const [key,value] of Object.entries(ABCD)) if(key !== 'reviewed') live=edit(live,'abcd2',key,value);
+    expect(calculators.canApplySupplementaryScore(live,'abcd2')).toBe(false);expect(apply(live,'abcd2')).toBe(live);
+    const attested=edit(live,'abcd2','reviewed',true);expect(calculators.canApplySupplementaryScore(attested,'abcd2')).toBe(true);
+    const incomplete=edit(edit(attested,'abcd2','duration',''),'abcd2','reviewed',true);
+    expect(supplementaryResult(incomplete,'abcd2')).toBeNull();expect(apply(incomplete,'abcd2')).toBe(incomplete);
   });
   it('invalidates an applied zero before the next evaluation, including source clearing', () => {
     const reviewed=prepared(caseState(),'abcd2',ABCD), applied=apply(reviewed,'abcd2');expect(applied.dapt.abcd2).toBe(0);
@@ -124,15 +150,17 @@ describe('canonical source review and explicit application', () => {
     const state={...caseState(),note:{...caseState().note,diagnosisCategory:'ischemic',ctResults:'Reviewed image'},aspects:'7'};
     const reviewed=prepared(state,'aspects-regions',regionInput(calculators.ASPECTS_REGIONS));expect(reviewed.aspects).toBe('7');
     const applied=apply(reviewed,'aspects-regions');expect(applied.aspects).toBe(10);
-    const changed={...applied,note:{...applied.note,ctResults:'New image'}};expect(supplementaryResult(changed,'aspects-regions')).toBeNull();expect(reconcile(applied,changed).aspects).toBe('');
+    const changed={...applied,note:{...applied.note,ctResults:'New image'}};
+    expect(supplementaryResult(changed,'aspects-regions')).toEqual({score:10,max:10});expect(supplementaryReviewed(changed,'aspects-regions')).toBe(false);
+    const reconciled=reconcile(applied,changed);expect(reconciled.aspects).toBe('');expect(apply(reconciled,'aspects-regions').aspects).toBe('');
     expect(apply({...reviewed,context:'follow-up'},'aspects-regions').aspects).toBe('7');
   });
-  it('PASCAL cannot substitute an unreviewed or manually entered RoPE total', () => {
+  it('PASCAL uses only the live RoPE worksheet total, never a manually entered RoPE', () => {
     const state={...caseState(),note:{...caseState().note,age:'29'}};
     const morph=prepared(state,'pascal',{largeShunt:true,atrialSeptalAneurysm:false,ropeScore:10});expect(supplementaryResult(morph,'pascal')).toBeNull();
-    const ropeComplete=prepared(morph,'rope',ROPE);expect(supplementaryResult(ropeComplete,'pascal')).toBeNull();
-    const full=edit(ropeComplete,'pascal','reviewed',true);expect(supplementaryResult(full,'pascal')).toMatchObject({category:'Probable'});
-    expect(supplementaryResult(edit(full,'rope','smoker',undefined),'pascal')).toBeNull();
+    const ropeComplete=prepared(morph,'rope',ROPE);expect(supplementaryResult(ropeComplete,'pascal')).toEqual({category:'Probable',ropeScore:10});
+    expect(supplementaryResult(edit(ropeComplete,'rope','corticalInfarct',false),'pascal')).toEqual({category:'Probable',ropeScore:9});
+    expect(supplementaryResult(edit(ropeComplete,'rope','smoker',undefined),'pascal')).toBeNull();
   });
 });
 
@@ -158,6 +186,10 @@ describe('mounted calculator controls', () => {
     expect(await page.evaluate(()=>window.calls)).toBe(0);
     expect(await page.locator('input[type="checkbox"]:checked').count()).toBe(0);
     expect(await page.locator('input[aria-label="Age"],input[aria-label="Sex"]').count()).toBe(0);
+    expect(await page.locator('#calc-chadsvasc [role="status"]').textContent()).toBe('CHA₂DS₂-VASc: Pending — 6 items unanswered');
+    expect(await page.locator('#calc-aspects-regions [role="status"]').textContent()).toContain('11 items unanswered');
+    expect(await page.locator('#calc-mrs-descriptors [role="status"]').textContent()).toBe('Modified Rankin scale descriptors: mRS 0 — No symptoms.');
+    expect(await page.locator('#calc-chadsvasc .calc-summary-score').count()).toBe(0);
   });
   it('opens/focuses a lazy-mounted target, preserves input focus, and synchronously withdraws an applied result on shared clearing',async()=>{
     await page.evaluate(state=>window.renderTools(state,'abcd2'),caseState());
@@ -167,11 +199,18 @@ describe('mounted calculator controls', () => {
     const initialSystolic=page.getByLabel('First BP after TIA: systolic (mmHg)'),initialDiastolic=page.getByLabel('First BP after TIA: diastolic (mmHg)');
     expect(await initialSystolic.inputValue()).toBe('');expect(await initialDiastolic.inputValue()).toBe('');
     await initialSystolic.fill('139');await initialDiastolic.fill('89');
-    await page.getByLabel('TIA clinical features').selectOption('other');await page.getByLabel('TIA symptom duration').selectOption('under10');await page.locator('#calc-abcd2').getByLabel('History of diabetes',{exact:true}).selectOption('false');
-    await page.getByRole('checkbox').check();expect(await page.getByRole('status').textContent()).toContain('ABCD²: 0/7');
-    await page.getByRole('button',{name:'Use reviewed score in Encounter'}).click();expect(await page.evaluate(()=>window.model.dapt.abcd2)).toBe(0);
-    await page.evaluate(()=>window.editShared('age',''));expect(await page.getByRole('status').textContent()).toContain('no score');expect(await page.evaluate(()=>window.model.dapt.abcd2)).toBe('');expect(await page.getByRole('checkbox').isChecked()).toBe(false);
-    expect(await page.getByRole('link',{name:'Review shared inputs in Encounter'}).getAttribute('href')).toBe('#/encounter');
+    await page.getByLabel('TIA clinical features').selectOption('other');await page.getByLabel('TIA symptom duration').selectOption('under10');
+    expect(await page.getByRole('status').textContent()).toBe('ABCD²: Pending — 1 item unanswered');
+    const apply=page.getByRole('button',{name:'Use in Encounter'}),attest=page.getByRole('checkbox',{name:'Inputs and source limits reviewed'});
+    expect(await apply.isDisabled()).toBe(true);expect(await attest.isDisabled()).toBe(true);
+    await page.locator('#calc-abcd2').getByLabel('History of diabetes',{exact:true}).selectOption('false');
+    expect(await page.getByRole('status').textContent()).toContain('ABCD²: 0/7');expect(await page.locator('#calc-abcd2 .calc-summary-score').textContent()).toBe('0/7');
+    expect(await page.evaluate(()=>window.model.supplementary.abcd2.reviewed)).toBe(false);
+    expect(await apply.isDisabled()).toBe(true);await attest.check();expect(await apply.isEnabled()).toBe(true);
+    await apply.click();expect(await page.evaluate(()=>window.model.dapt.abcd2)).toBe(0);expect(await page.locator('#calc-abcd2').getByText('In Encounter: 0').count()).toBe(1);
+    await page.evaluate(()=>window.editShared('age',''));expect(await page.getByRole('status').textContent()).toBe('ABCD²: Pending — Encounter age missing');expect(await page.evaluate(()=>window.model.dapt.abcd2)).toBe('');expect(await attest.isChecked()).toBe(false);expect(await apply.isDisabled()).toBe(true);
+    await page.evaluate(()=>window.editShared('age','59'));expect(await page.getByRole('status').textContent()).toContain('ABCD²: 0/7');expect(await attest.isChecked()).toBe(false);expect(await apply.isDisabled()).toBe(true);
+    expect(await page.getByRole('link',{name:'Edit in Encounter'}).getAttribute('href')).toBe('#/encounter');
   });
   it('handles an unknown malformed route safely',async()=>{
     await page.evaluate(state=>window.renderTools(state,'bad]route'),caseState());expect(await page.getByRole('status').textContent()).toBe('Calculator unavailable.');
@@ -179,29 +218,45 @@ describe('mounted calculator controls', () => {
   it('renders grade zero from the canonical mTICI entry and withdraws review after a shared edit',async()=>{
     const state=caseState();state.note.diagnosisCategory='ischemic';state.note.ticiScore='0';
     await page.evaluate(state=>window.renderTools(state,'mtici'),state);
-    expect(await page.locator('#calc-mtici select').count()).toBe(0);
-    await page.getByRole('checkbox').check();
+    expect(await page.locator('#calc-mtici select').count()).toBe(0);expect(await page.locator('#calc-mtici input[type="checkbox"]').count()).toBe(0);
     expect(await page.getByRole('status').textContent()).toContain('mTICI reperfusion grade: 0 — No forward flow');
+    expect(await page.getByRole('button',{name:'Copy result'}).isEnabled()).toBe(true);
     await page.evaluate(()=>window.editShared('ticiScore','2c'));
-    expect(await page.getByRole('checkbox').isChecked()).toBe(false);
-    expect(await page.getByRole('button',{name:'Copy reviewed result'}).isDisabled()).toBe(true);
+    expect(await page.getByRole('status').textContent()).toContain('mTICI reperfusion grade: 2c — Almost complete reperfusion');
+    await page.evaluate(()=>window.editShared('ticiScore',''));
+    expect(await page.getByRole('status').textContent()).toContain('Encounter mTICI grade missing');
+    expect(await page.getByRole('button',{name:'Copy result'}).isDisabled()).toBe(true);
   });
   it('renders modified Fisher zero and NASCET percent without treating zero as missing',async()=>{
     const state=caseState();state.note.diagnosisCategory='sah';state.details={sahCause:'Aneurysmal'};
     await page.evaluate(state=>window.renderTools(state,'modified-fisher'),state);
     await page.getByLabel('Admission CT subarachnoid blood').selectOption('absent');
     await page.getByLabel('Admission CT intraventricular blood present').selectOption('false');
-    await page.getByRole('checkbox').check();
-    expect(await page.getByRole('status').textContent()).toContain('Modified Fisher grade: 0');
+    expect(await page.getByRole('status').textContent()).toContain('Modified Fisher grade: 0 — No subarachnoid blood visible');
     await page.evaluate(state=>window.renderTools(state,'nascet'),caseState());
     await page.getByLabel('Measured ICA side').selectOption('left');
     await page.getByLabel('Minimum residual lumen diameter (mm)').fill('1.5');
     await page.getByLabel('Normal distal ICA diameter (mm)').fill('5');
     await page.getByLabel('Patent extracranial ICA and suitable distal reference confirmed').selectOption('true');
     await page.getByLabel('Near-occlusion suspected or present').selectOption('false');
-    await page.getByRole('checkbox').check();
-    expect(await page.getByRole('status').textContent()).toContain('NASCET carotid stenosis: 70%');
+    expect(await page.getByRole('status').textContent()).toBe('NASCET carotid stenosis: 70% — Left ICA');
     await page.getByLabel('Near-occlusion suspected or present').selectOption('true');
-    expect(await page.getByRole('status').textContent()).toContain('no score');
+    expect(await page.getByRole('status').textContent()).toBe('NASCET carotid stenosis: Pending — Not scored: Near-occlusion suspected or present — Yes.');
+  });
+  it('hand-checks live CHA₂DS₂-VASc and HAS-BLED totals in the mounted worksheets',async()=>{
+    const state=caseState();Object.assign(state.note,{age:'70',sex:'F'});
+    await page.evaluate(state=>window.renderTools(state,'chadsvasc'),state);
+    const chads=page.locator('#calc-chadsvasc');
+    for(const [label,value] of [['Nonvalvular atrial fibrillation confirmed','true'],['Heart failure / LV dysfunction','false'],['History of hypertension','true'],['History of diabetes','false'],['History of stroke / TIA / systemic thromboembolism','true']]) await chads.getByLabel(label,{exact:true}).selectOption(value);
+    expect(await chads.getByRole('status').textContent()).toBe('CHA₂DS₂-VASc: Pending — 1 item unanswered');
+    await chads.getByLabel('Vascular disease: prior MI, peripheral arterial disease or aortic plaque',{exact:true}).selectOption('false');
+    expect(await chads.getByRole('status').textContent()).toBe('CHA₂DS₂-VASc: 5/9');
+    expect(await chads.locator('input[type="checkbox"]').count()).toBe(0);
+    await page.evaluate(state=>window.renderTools(state,'has-bled'),state);
+    const bled=page.locator('#calc-has-bled');
+    for(const select of await bled.locator('select').all()) await select.selectOption('false');
+    expect(await bled.getByRole('status').textContent()).toBe('HAS-BLED: Pending — Not scored: Atrial fibrillation confirmed — No.');
+    for(const label of ['Atrial fibrillation confirmed','History of stroke','Labile INR / time in therapeutic range below 60%','Concomitant antiplatelet or NSAID use']) await bled.getByLabel(label,{exact:true}).selectOption('true');
+    expect(await bled.getByRole('status').textContent()).toBe('HAS-BLED: 4/9');
   });
 });

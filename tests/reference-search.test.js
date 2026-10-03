@@ -39,4 +39,26 @@ describe('evidence retrieval aliases', () => {
     expect(ids(data.studies, 'POINT')[0]).toBe('point');
     expect(ids(data.studies, 'POINT').length).toBeGreaterThan(1);
   });
+
+  it('maps common drug and procedure abbreviations to the terms the cards use', () => {
+    for (const query of ['tPA', 't-PA', 'rt-PA', 'rtPA']) {
+      const matches = ids(data.studies, query);
+      expect(matches).toEqual(expect.arrayContaining(['ninds-tpa', 'ecass-3', 'extend', 'wake-up']));
+      expect(matches).toEqual(ids(data.studies, 'alteplase'));
+    }
+    expect(ids(data.topics, 'TNK')).toEqual(expect.arrayContaining(['thrombolytic-choice', 'acute-reperfusion']));
+    expect(ids(data.topics, 'TNKase')).toEqual(ids(data.topics, 'tenecteplase'));
+    expect(ids(data.topics, 'DOAC')).toEqual(expect.arrayContaining(['af-timing', 'antithrombotic-reversal', 'cvt']));
+    expect(ids(data.topics, 'NOAC')).toEqual(ids(data.topics, 'DOAC'));
+    expect(ids(data.topics, 'LVO')).toEqual(ids(data.topics, 'large vessel occlusion'));
+    expect(ids(data.topics, 'MeVO')).toContain('medium-distal-evt');
+    expect(ids(data.topics, 'EVT')).toEqual(ids(data.topics, 'thrombectomy'));
+    expect(ids(data.topics, 'MT')).toEqual(ids(data.topics, 'thrombectomy'));
+    expect(ids(data.topics, 'IVT')).toEqual(ids(data.topics, 'thrombolysis'));
+    // Abbreviations kept as written still match themselves.
+    for (const query of ['ICH', 'SAH', 'CVT', 'PFO']) expect(ids(data.topics, query).length).toBeGreaterThan(0);
+    // Whole words only: "tpas" or "mtici" are not rewritten.
+    expect(ids(data.topics, 'tpas')).toEqual([]);
+    expect(ids(data.topics, 'mTICI').length).toBeGreaterThan(0);
+  });
 });

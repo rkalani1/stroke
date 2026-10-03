@@ -64,9 +64,10 @@ describe('retained Encounter behavior replacing monolith output and duplicate-to
   });
   it('a stale generated draft exposes neither the text nor its copy action', () => {
     const html = render(make({ draft: { text: 'OBSOLETE GENERATED TEXT', stale: true } }));
-    expect(html).toContain('Encounter inputs changed');
+    expect(html).toContain('Inputs changed since the preview');
     expect(html).not.toContain('OBSOLETE GENERATED TEXT');
-    expect(html).not.toContain('Copy Pulsara summary');
+    // The primary action regenerates from current inputs; no stale-text copy action exists.
+    expect(html).not.toContain('Copy this preview');
   });
   it('a recommendation and a timestamp alone do not attest administration', () => {
     const state = make({ note: { diagnosisCategory: 'ischemic' }, decisions: { ivt: 'Recommended', evt: '' }, drug: 'TNK', actions: { administrationTime: '2026-10-01T11:00', administered: false } });
@@ -87,7 +88,7 @@ describe('retained Encounter behavior replacing monolith output and duplicate-to
   });
   it('severity scoring has no individualized prognosis output', () => {
     const html = render(make({ note: { diagnosisCategory: 'ich', age: '80' }, gcs: { eye: '4', verbal: '5', motor: '6' }, volume: { a: '4', b: '4', thicknessMm: '10', numSlices: '4' }, ich: { ivh: false, infratentorial: false } }));
-    expect(html).toContain('severity framework; no individual prognosis');
+    expect(html).toContain('severity grade, not an individual prognosis');
     expect(html).not.toMatch(/mortality:|97%|survival probability/i);
   });
   it.each([['5.99', 0], ['6', 1], ['6.01', 1]])('uses unrounded 30 mL severity threshold at diameter %s', (a, score) => {

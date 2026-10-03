@@ -132,55 +132,61 @@ export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2,
 
   if (![noncardioembolicConfirmed, hemorrhageExcluded, reperfusionExcluded, antiplateletContraindicationsReviewed].every(v => v === true)) return { regimen: '—', duration: null, dosing: null, rationale: 'Confirm noncardioembolic mechanism, hemorrhage exclusion, no reperfusion treatment, and antiplatelet contraindication review before selecting a modeled DAPT regimen.', source: 'AHA/ASA 2026 AIS §4.7' };
 
-  const outsideSourceAge = (source, population) => ({
-    regimen: 'individualized-review', duration: null, dosing: null,
-    rationale: `${source} enrolled ${population}; age ${a} is outside this source population. Review current guidance: this mismatch does not establish that DAPT is contraindicated or select another regimen.`,
-    source, class: 'Source population mismatch; individualized clinical review'
+  // AHA/ASA 2026 AIS recommendations carry no age limit for these DAPT tiers. When
+  // age falls outside a source trial's enrollment, report the guideline tier and
+  // disclose the trial-population gap instead of withholding the regimen.
+  const guidelineTier = (result, trial, population, grade) => ({
+    ...result,
+    rationale: `${result.rationale} Guideline tier: ${trial} enrolled ${population}; age ${a} is outside that trial population, but the AHA/ASA 2026 recommendation is not age-restricted. Weigh bleeding risk individually.`,
+    class: `${grade} (guideline tier; age outside the ${trial} trial population)`
   });
 
   // THALES: ticagrelor+ASA x 30d (Class 2b, 2021) for NIHSS 4-5 noncardioembolic stroke without a presumed atherosclerotic cause, within 24h.
   // NIHSS 0-3 and high-risk TIA fall through to CHANCE/POINT (Class 1 clopidogrel+ASA); atherosclerotic NIHSS 4-5 falls through to the INSPIRES branch (clopidogrel+ASA).
   if (isUpToModerate && n >= 4 && !isAtherosclerotic && inLegacyWindow) {
-    if (a < 40) return outsideSourceAge('THALES', 'patients age ≥40');
-    return {
+    const thales = {
       regimen: 'ticagrelor+ASA',
       duration: '30 days',
-      dosing: 'Ticagrelor 180 mg load, then 90 mg BID + ASA 325 mg load then 75-100 mg daily',
+      dosing: 'Ticagrelor 180 mg load, then 90 mg BID + ASA 300-325 mg load then 75-100 mg daily',
       rationale: `Minor-to-moderate noncardioembolic stroke (NIHSS ${n}) within 24h: THALES (NIHSS ≤5 or high-risk TIA; patients treated with thrombolysis or thrombectomy excluded) reported stroke or death at 30 d in 5.5% vs 6.6% (HR 0.83) with more severe bleeding (0.5% vs 0.1%).`,
-      source: 'Johnston NEJM 2020;383:207-17 (THALES); INSPIRES NEJM 2023;389:2413-24 alternative for atherosclerotic LVD',
-      class: 'Class 2b (AHA/ASA 2021 secondary prevention) for selected ticagrelor-aspirin patients; discuss bleeding risk and alternatives'
+      source: 'Johnston NEJM 2020;383:207-17 (THALES); AHA/ASA 2026 AIS §4.7; INSPIRES NEJM 2023;389:2413-24 alternative for atherosclerotic LVD',
+      class: 'COR 2b, LOE B-R (AHA/ASA 2026 AIS) for selected ticagrelor-aspirin patients; discuss bleeding risk and alternatives'
     };
+    if (a < 40) return guidelineTier(thales, 'THALES', 'patients age ≥40', 'COR 2b, LOE B-R (AHA/ASA 2026 AIS)');
+    return thales;
   }
 
   // INSPIRES branch: NIHSS 4-5 within 72h (extended window beyond CHANCE/POINT), or atherosclerotic LVD ≥50%.
   if (isAtherosclerotic && inInspiresWindow && ((isUpToModerate && n >= 4) || (tH > 24 && (isMinor || (isTIA && highRisk))))) {
-    if (a < 35 || a > 80) return outsideSourceAge('INSPIRES', 'patients age 35–80');
-    return {
+    const inspires = {
       regimen: 'clopidogrel+ASA', duration: '21 days',
       dosing: 'Clopidogrel 300 mg load then 75 mg daily; aspirin 100–300 mg on day 1 then 100 mg daily for 21 days (INSPIRES trial regimen)',
       rationale: `INSPIRES-style screen: ${isTIA ? `high-risk TIA (ABCD² ${ab})` : `NIHSS ${n}`} within ${tH}h and presumed atherosclerotic cause. Verify qualifying stenosis/multiple infarcts, age 35–80, and all exclusions. Clopidogrel continued through day 90; bleeding increased. A CYP2C19 result does not validate substituting the CHANCE-2 regimen in this extended population.`,
       source: 'Gao NEJM 2023;389:2413–24 (INSPIRES, PMID 38157499); AHA/ASA 2026 AIS §4.7',
-      class: 'Class 2a/B-R for selected noncardioembolic minor stroke or high-risk TIA with presumed atherosclerotic cause; a partial screen, not complete treatment eligibility'
+      class: 'COR 2a, LOE B-R (AHA/ASA 2026 AIS) for selected noncardioembolic minor stroke or high-risk TIA with presumed atherosclerotic cause; a partial screen, not complete treatment eligibility'
     };
+    if (a < 35 || a > 80) return guidelineTier(inspires, 'INSPIRES', 'patients age 35–80', 'COR 2a, LOE B-R (AHA/ASA 2026 AIS)');
+    return inspires;
   }
 
   // CHANCE/POINT classic branch: high-risk TIA or NIHSS ≤3, within 24h (POINT was 12h; CHANCE was 24h).
   if (((isTIA && highRisk) || isMinor) && inLegacyWindow) {
     const useTicagrelor = cyp2c19LOF === true;
-    if (useTicagrelor && a < 40) return outsideSourceAge('CHANCE-2', 'patients age ≥40');
-    if (!useTicagrelor && a < 40 && tH > 12) return outsideSourceAge('CHANCE / POINT', 'patients age ≥40 within 24h (CHANCE), or age ≥18 within 12h (POINT)');
-    return {
+    const classic = {
       regimen: useTicagrelor ? 'ticagrelor+ASA (CHANCE-2)' : 'clopidogrel+ASA',
       duration: '21 days',
       dosing: useTicagrelor
         ? 'Ticagrelor 180 mg load, then 90 mg BID through day 90 + ASA 75-100 mg daily for the first 21 days only (CHANCE-2: ASA 75-300 mg on day 1, then 75 mg daily on days 2-21)'
-        : 'Clopidogrel 300-600 mg load then 75 mg daily + ASA 75-100 mg daily',
+        : 'Clopidogrel load (300 mg in CHANCE; 600 mg in POINT) then 75 mg daily + aspirin load (CHANCE 75-300 mg on day 1; POINT 50-325 mg on day 1) then 75-100 mg daily',
       rationale: useTicagrelor
         ? 'Known CYP2C19 LOF carrier — CHANCE-2 showed ticagrelor+ASA superior to clopidogrel+ASA.'
         : `${isTIA ? `High-risk TIA (ABCD² ${ab} ≥4)` : `Minor stroke (NIHSS ${n} ≤3)`} within ${tH}h: ${a < 40 ? 'POINT enrolled adults ≥18 within 12h; CHANCE enrolled age ≥40 within 24h.' : 'CHANCE/POINT showed reduced 90-d stroke risk.'} Short-course guidance favors 21 d of DAPT to limit bleeding; confirm the full applicable source.`,
-      source: useTicagrelor ? 'Wang NEJM 2021;385:2520-30 (CHANCE-2)' : 'Wang NEJM 2013;369:11-19 (CHANCE); Johnston NEJM 2018;379:215-25 (POINT)',
-      class: useTicagrelor ? 'Class 2b/B-R, 2026 AHA/ASA AIS §4.7; CHANCE-2 postdates the 2021 secondary-prevention guideline' : 'Class 1 (AHA/ASA 2021 secondary prevention)'
+      source: useTicagrelor ? 'Wang NEJM 2021;385:2520-30 (CHANCE-2); AHA/ASA 2026 AIS §4.7' : 'Wang NEJM 2013;369:11-19 (CHANCE); Johnston NEJM 2018;379:215-25 (POINT); AHA/ASA 2026 AIS §4.7',
+      class: useTicagrelor ? 'Class 2b/B-R, 2026 AHA/ASA AIS §4.7; CHANCE-2 postdates the 2021 secondary-prevention guideline' : 'COR 1, LOE A (AHA/ASA 2026 AIS): DAPT with loading dose within 24 h for 21 days, then single antiplatelet therapy'
     };
+    if (useTicagrelor && a < 40) return guidelineTier(classic, 'CHANCE-2', 'patients age ≥40', 'COR 2b, LOE B-R (AHA/ASA 2026 AIS)');
+    if (!useTicagrelor && a < 40 && tH > 12) return guidelineTier(classic, 'CHANCE / POINT', 'patients age ≥40 within 24h (CHANCE), or age ≥18 within 12h (POINT)', 'COR 1, LOE A (AHA/ASA 2026 AIS)');
+    return classic;
   }
 
   // Fall-throughs that signal "missed-window" or "above-threshold"

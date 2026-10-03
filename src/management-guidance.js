@@ -35,7 +35,7 @@ export const AIS_COMMAND_CENTER_CARDS = [
     pathway: [
       { label: 'Disabling deficit, <=4.5h, no exclusion', decision: 'TNK recommended', cor: 'I', loe: 'A' },
       { label: 'Non-disabling deficit', decision: 'IV thrombolysis not recommended; consider early DAPT', cor: 'III: No Benefit', loe: 'B-R' },
-      { label: 'Glucose <50 or >400 mg/dL', decision: 'Correct first; reassess the deficit before an eligibility verdict', cor: 'I', loe: '' }
+      { label: 'Glucose <50 or >400 mg/dL', decision: 'Correct first; reassess the deficit before an eligibility verdict', cor: 'I', loe: 'C-LD' }
     ],
     calculators: [
       { label: 'TNK dose from weight', tab: 'encounter', anchor: 'treatment-decision' },
@@ -56,19 +56,21 @@ export const AIS_COMMAND_CENTER_CARDS = [
     lastReviewed: AIS_COMMAND_CENTER_LAST_REVIEWED,
     anchor: 'isch-evt',
     sourceNote: 'IVT eligibility decision algorithm.',
-    summary: 'For a known 4.5-9-hour interval, the institutional pathway accepts MRI DWI-FLAIR mismatch or the full numeric CTP mismatch criteria. Wake-up or unknown-onset treatment requires MRI DWI-FLAIR mismatch. Every extended branch also requires baseline mRS <=1 and a determination that the patient is not an EVT candidate, subject to the pathway’s narrow EVT-infeasibility exception.',
+    summary: 'For a known 4.5-9-hour interval, the institutional pathway accepts MRI DWI-FLAIR mismatch or the full numeric CTP mismatch criteria. Wake-up or unknown-onset treatment requires MRI DWI-FLAIR mismatch. The 9-24-hour branch requires large-vessel occlusion on CTA. Every extended branch also requires baseline mRS <=1 and a determination that the patient is not an EVT candidate, subject to the pathway’s narrow EVT-infeasibility exception.',
     actions: [
-      'For a known 4.5-9-hour interval, require either an explicit MRI DWI-FLAIR mismatch or CTP core <50 mL, mismatch ratio >=1.2, and mismatch volume >=10 mL.',
+      'For a known 4.5-9-hour interval, require either an explicit MRI DWI-FLAIR mismatch or the institutional CTP thresholds: core <50 mL, mismatch ratio >=1.2, and mismatch volume >=10 mL (EXTEND used core <70 mL, ratio >1.2, mismatch >10 mL).',
       'For wake-up or unknown onset, require explicit MRI DWI-FLAIR mismatch; do not substitute the CTP branch.',
       'Prefer MRI when the presentation is small-vessel, posterior circulation, or complicated by contrast allergy.',
       'Confirm baseline mRS <=1.',
       'Confirm the patient is not an EVT candidate; IVT may be considered for selected LVO only when EVT within 24 hours is not feasible.',
+      'For 9-24 hours, require LVO (ICA or MCA occlusion) on CTA when EVT cannot be performed, plus the institutional CTP thresholds. AHA/ASA 2026 grades this COR 2b, LOE B-R; TRACE-III enrolled ICA/MCA occlusion with core <70 mL, mismatch ratio >=1.8 and mismatch volume >=15 mL.',
       'Obtain consent for the 9-24-hour time window.'
     ],
     pathway: [
       { label: 'Known 4.5-9h with qualifying MRI or CTP selection', decision: 'Consider TNK', cor: 'IIa', loe: 'B-R' },
       { label: 'Wake-up or unknown onset with qualifying MRI DWI-FLAIR mismatch', decision: 'Consider TNK', cor: 'IIa', loe: 'B-R' },
-      { label: '9-24h with qualifying CTP selection', decision: 'Consider TNK; consent required', cor: '', loe: '' },
+      { label: '9-24h with qualifying CTP selection (institutional thresholds), LVO on CTA, and EVT not feasible', decision: 'Consider TNK; consent required', cor: 'IIb', loe: 'B-R' },
+      { label: '9-24h without LVO', decision: 'No AHA/ASA 2026 grade; not supported by this pathway', cor: '', loe: '' },
       { label: 'Missing imaging, mRS, or EVT-candidacy gate', decision: 'Do not return an affirmative extended-window result', cor: '', loe: '' }
     ],
     calculators: [
@@ -131,12 +133,14 @@ export const AIS_COMMAND_CENTER_CARDS = [
     actions: [
       'Before IVT, lower blood pressure to below 185/110 mmHg.',
       'After IVT, maintain blood pressure below 180/105 mmHg for 24 hours.',
-      'After documented successful EVT recanalization (mTICI >=2b), use an SBP guardrail of 140-180 mmHg.'
+      'After documented successful EVT recanalization (mTICI >=2b), use an SBP guardrail of 140-180 mmHg.',
+      'For every EVT, maintain BP <=180/105 mmHg during and for 24 hours after the procedure.'
     ],
     pathway: [
       { label: 'Pre-IVT BP >=185/110', decision: 'Lower below 185/110 before treatment', cor: '', loe: '' },
       { label: 'Post-IVT', decision: 'Maintain <180/105 for 24 hours', cor: '', loe: '' },
-      { label: 'Post-EVT with documented mTICI >=2b', decision: 'Maintain SBP 140-180', cor: '', loe: '' }
+      { label: 'Post-EVT with documented mTICI >=2b', decision: 'Maintain SBP 140-180', cor: '', loe: '' },
+      { label: 'Any EVT, during and 24 h after', decision: 'Maintain BP <=180/105', cor: 'IIa', loe: 'B-NR' }
     ],
     calculators: [
       { label: 'Post-EVT BP', tab: 'management', subTab: 'ischemic', anchor: 'isch-bp' }
@@ -155,17 +159,16 @@ export const AIS_COMMAND_CENTER_CARDS = [
     lastReviewed: AIS_COMMAND_CENTER_LAST_REVIEWED,
     anchor: 'isch-mevo',
     sourceNote: 'EVT eligibility flowchart.',
-    summary: 'A dominant proximal M2 has separate early and late EVT tiers. The no-benefit branch applies to nondominant M2, ACA, and PCA. The accepted flowchart supplies no recommendation for codominant M2.',
+    summary: 'A dominant proximal M2 has a guideline-graded early tier (within 6 hours) and a separate institutional late tier. AHA/ASA 2026 grades EVT for nondominant or codominant M2, distal MCA, ACA, and PCA occlusion as no benefit.',
     actions: [
       'Define dominant proximal M2 as an M2 branch <=1 cm from the MCA bifurcation that supplies >=50% of MCA territory. The flowchart also grades dominance by tissue at risk: dominant >100 mL, codominant 90-100 mL, nondominant <90 mL.',
       'For 6-24 hours, require the flowchart’s CTP hypoperfusion-hypodensity mismatch in addition to ASPECTS and NIHSS. Mismatch means noncontrast CT shows no established hypodensity in >=90% of the CTP hypoperfused lesion.',
-      'Do not infer a codominant-M2 recommendation from the nondominant branch.'
+      'Codominant M2 shares the AHA/ASA 2026 no-benefit grade with nondominant M2 (ESCAPE-MeVO, DISTAL). ORIENTAL-MeVO (2026, after the guideline) reported benefit with NIHSS >=6; individualize only with the neurointerventional team.'
     ],
     pathway: [
       { label: 'Dominant proximal M2, 0-6h, ASPECTS >=6, NIHSS >=6', decision: 'EVT', cor: 'IIa', loe: 'B-NR' },
-      { label: 'Dominant proximal M2, 6-24h, ASPECTS >=6, NIHSS >=6, CTP mismatch present', decision: 'EVT', cor: 'IIa', loe: 'B-NR' },
-      { label: 'Nondominant M2, ACA, or PCA', decision: 'No EVT', cor: 'III: No Benefit', loe: 'A' },
-      { label: 'Codominant M2', decision: 'No institutional recommendation is supplied', cor: '', loe: '' }
+      { label: 'Dominant proximal M2, 6-24h, ASPECTS >=6, NIHSS >=6, CTP mismatch present', decision: 'EVT (institutional tier; no AHA/ASA 2026 grade for 6-24 h)', cor: '', loe: '' },
+      { label: 'Nondominant or codominant M2, distal MCA, ACA, or PCA', decision: 'No EVT', cor: 'III: No Benefit', loe: 'A' }
     ],
     calculators: [
       { label: 'EVT builder', tab: 'management', subTab: 'ischemic', anchor: 'isch-evt' }
@@ -187,15 +190,15 @@ export const AIS_COMMAND_CENTER_CARDS = [
     summary: 'The institutional algorithm separates the initial suspected-hemorrhage actions, the delayed-CT cryoprecipitate branch, CT-confirmed tranexamic acid, and subsequent laboratory and consultation steps.',
     actions: [
       'Suspect intracranial hemorrhage with sudden neurologic deterioration, new headache, acute hypertension, nausea, or vomiting; stop the thrombolytic if still running and begin the STAT CT, laboratory, and reversal workflow.',
-      'Order 2 units of cryoprecipitate immediately (1 unit = 5 prepooled cryoprecipitates). If CT results are expected to take more than 30 minutes, empirically administer 2 units only when fibrinogen is below 200 mg/dL.',
+      'Order 2 pre-pooled units of cryoprecipitate immediately (each pool ≈5 single-donor units; total ≈10 units). If CT results are expected to take more than 30 minutes, empirically administer them IV over 10-30 minutes only when fibrinogen is below 200 mg/dL.',
       'Confirm intracranial blood on CT with the ordering provider, then confirm post-CT cryoprecipitate administration with the RN before tranexamic acid; after both confirmations, give tranexamic acid 1,000 mg IV over 10 minutes.',
       'Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal; call the Stroke/Neurology attending, consult Neurosurgery if needed, update the family, and obtain Hematology-attending input if abnormalities persist or bleeding remains uncontrolled.',
       'Avoid anticoagulants and antiplatelet agents for 24 hours after TNK.'
     ],
     pathway: [
       { label: 'CT not delayed', decision: 'Wait for CT result before the treatment branch', cor: '', loe: '' },
-      { label: 'CT delayed >30 min and fibrinogen <200 mg/dL', decision: 'Empirically administer 2 units cryoprecipitate over 10-30 min', cor: '', loe: '' },
-      { label: 'Intracranial blood confirmed on CT', decision: 'Confirm CT with the ordering provider. If cryoprecipitate was not already given, give 2 units over 10-30 min; if given empirically, verbally confirm post-CT administration with the RN. Then give TXA 1,000 mg IV over 10 min', cor: '', loe: '' },
+      { label: 'CT delayed >30 min and fibrinogen <200 mg/dL', decision: 'Empirically administer 2 pre-pooled units of cryoprecipitate (≈10 units) IV over 10-30 min', cor: '', loe: '' },
+      { label: 'Intracranial blood confirmed on CT', decision: 'Confirm CT with the ordering provider. If cryoprecipitate was not already given, give 2 pre-pooled units (≈10 units) IV over 10-30 min; if given empirically, verbally confirm post-CT administration with the RN. Then give TXA 1,000 mg IV over 10 min', cor: '', loe: '' },
       { label: 'Empiric cryoprecipitate running and CT shows no ICH', decision: 'Stop the cryoprecipitate infusion; do not restart the lytic', cor: '', loe: '' },
       { label: 'Orolingual angioedema', decision: 'Airway-first sequence; methylprednisolone, diphenhydramine, and famotidine; epinephrine if worsening; then icatibant', cor: 'IIb', loe: 'C-EO' }
     ],
@@ -254,7 +257,7 @@ export const AIS_COMMAND_CENTER_CARDS = [
       'IVT with alteplase may be considered for a disabling, imaging-supported AIS treatable within 4.5h of LKW (the 2026 AHA/ASA guideline names alteplase for ages 28 days-18 years, COR IIb); thrombolysis is NOT FDA-approved in children and requires pediatric stroke expertise and family shared decision-making.',
       'If a weight-based dose is used, verify it against local pediatric pharmacy/ICU protocol: alteplase 0.9 mg/kg (max 90 mg) is the guideline-referenced agent; tenecteplase 0.25 mg/kg (max 25 mg) is adult-derived extrapolation only and is not specifically endorsed for children.',
       'EVT may be considered for LVO with a measurable deficit and salvageable tissue, generally within 24h: age >=6y is reasonable (COR IIa) and age 28 days-<6y may be reasonable in selected cases (COR IIb) — pediatric EVT is not categorically excluded in young children. Adapt adult criteria cautiously with the neurointerventionalist.',
-      'Moyamoya and focal cerebral arteriopathy are generally not thrombolysis or thrombectomy targets (non-thromboembolic, vessel-fragility risk); in sickle cell disease, acute pediatric management centers on exchange transfusion (STOP-era protocols) rather than lysis.',
+      'Moyamoya and focal cerebral arteriopathy are not thromboembolic and are generally not thrombectomy targets; any thrombolysis decision requires pediatric stroke expertise (the adult institutional IVT list does not treat moyamoya as a contraindication). In sickle cell disease, acute pediatric management centers on exchange transfusion (STOP-era protocols) rather than lysis.',
       'Screen for pediatric-specific risk factors: congenital/acquired heart disease, sickle cell disease, arteriopathy/moyamoya, inflammatory/autoimmune disease, thrombophilia/prior thrombosis, malignancy/chemotherapy, infection, trauma, and OCPs in adolescents.',
       'Manage blood pressure using age-specific percentile thresholds and local pediatric protocol rather than adult numeric targets. Data below ~age 2 are especially sparse — treat any lower age boundary as expert-consensus caution, not a formal guideline exclusion.'
     ],
@@ -262,7 +265,7 @@ export const AIS_COMMAND_CENTER_CARDS = [
       { label: 'Disabling AIS, imaging-supported, <=4.5h (age 28d-18y)', decision: 'IVT (alteplase) may be considered — off-label, expert-guided, family shared decision', cor: 'IIb', loe: 'C-LD' },
       { label: 'LVO + salvageable tissue, <=24h, age >=6y', decision: 'EVT is reasonable in selected cases', cor: 'IIa', loe: 'B-NR' },
       { label: 'LVO + salvageable tissue, <=24h, age 28d-<6y', decision: 'EVT may be reasonable in selected cases', cor: 'IIb', loe: 'B-NR' },
-      { label: 'Moyamoya / focal cerebral arteriopathy / mineralizing lenticulostriate vasculopathy', decision: 'Generally not reperfusion targets (non-thromboembolic) — high caution', cor: 'III', loe: 'C-LD' }
+      { label: 'Moyamoya / focal cerebral arteriopathy / mineralizing lenticulostriate vasculopathy', decision: 'Ungraded — generally not thrombectomy targets (non-thromboembolic); individualize any reperfusion decision with pediatric stroke expertise', cor: '', loe: '' }
     ],
     calculators: [
       { label: 'NIHSS / PedNIHSS', tab: 'research', subTab: 'calculators', anchor: 'calc-nihss' },

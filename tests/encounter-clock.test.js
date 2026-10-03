@@ -22,7 +22,7 @@ describe('explicit clock instant provenance', () => {
     expect(encounterClockTimestamp(state.note, prefix)).toBe(instant);
     expect(encounterTiming(state.note, now)).toMatchObject({ timestamp: instant, clock: { elapsedMinutes: 0 }, hours: prefix === 'lkw' ? 0 : null });
     expect(protocolEncounter(state, now).ivt.hoursFromLKW).toBe(prefix === 'lkw' ? 0 : '');
-    expect(buildSummary(state, now)).toContain(`01:30:00 (recorded instant ${instant})`);
+    expect(buildSummary(state, now)).toContain(`01:30:00 (UTC−08:00)`);
     if (prefix === 'discovery') expect(evaluateWakeUpScreen(activeNote(state), new Date(now)).discoveryHours).toBe(0);
     expect(outputWarnings(state)).toEqual([]);
   });
@@ -73,7 +73,7 @@ describe('explicit clock instant provenance', () => {
     state.actions.administered = true;
     state.timeline.arrival = '2026-11-01T09:00:00.000Z';
     expect(timelineIntervals(state, now)).toContainEqual({ label: 'Door to IVT', minutes: 30, text: '30 min' });
-    expect(buildSummary(state, now)).toContain('TNK at 2026-11-01T01:30:00-08:00');
+    expect(buildSummary(state, now)).toContain('TNK at 2026-11-01 01:30:00 (UTC−08:00)');
   });
 
   it('withholds future or malformed recorded clocks and scans malformed timestamp text', () => {

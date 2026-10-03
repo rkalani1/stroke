@@ -18,7 +18,7 @@ describe('reconciled event timing in every documentation projection', () => {
     const state = acute(format);
     Object.assign(state.actions, { punctureTime: '2026-11-01T08:30:00Z', reperfusionTime: '2026-11-01T08:00:00Z' });
     expect(evtReperfusionIssue(state, now)).toContain('reperfusion precedes puncture');
-    expect(buildSummary(state, now)).toContain('EVT reperfusion: 2026-11-01T08:00:00Z (EVT reperfusion precedes puncture');
+    expect(buildSummary(state, now)).toContain('EVT reperfusion: 2026-11-01 01:00:00 (UTC−07:00) (EVT reperfusion precedes puncture');
     expect(formatTimeline(state, now)).toContain('Puncture to reperfusion: Invalid');
     state.actions.reperfusionTime = state.actions.punctureTime;
     expect(evtReperfusionIssue(state, now)).toBe('');
@@ -38,7 +38,7 @@ describe('reconciled event timing in every documentation projection', () => {
     expect(text).not.toContain('TNK at');
     for (const label of ['EVT puncture', 'EVT reperfusion', 'Consent time', 'EVT consent time']) expect(text).toContain(`${label}: ambiguous local time`);
     state.actions.administrationTime = '2026-11-01T01:31:00-08:00';
-    expect(buildSummary(state, now)).toContain('TNK at 2026-11-01T01:31:00-08:00');
+    expect(buildSummary(state, now)).toContain('TNK at 2026-11-01 01:31:00 (UTC−08:00)');
     expect(computeNeurocheckSchedule(state.actions.administrationTime).checks[0].at.toISOString()).toBe('2026-11-01T09:46:00.000Z');
   });
 
@@ -58,12 +58,12 @@ describe('reconciled event timing in every documentation projection', () => {
   it.each(['ct', 'cta'])('preserves selected %s instant until its date/time changes or clears', prefix => {
     const state = acute('video');
     Object.assign(state.note, { [`${prefix}Date`]: '2026-11-01', [`${prefix}Time`]: '01:31', [`${prefix}Clock`]: { value: '2026-11-01T01:31', instant: '2026-11-01T09:31:00.000Z' } });
-    expect(buildSummary(state, now)).toContain('recorded instant 2026-11-01T09:31:00.000Z');
+    expect(buildSummary(state, now)).toContain('2026-11-01 01:31 (UTC−08:00)');
     expect(encounterClockTimestamp(updateEncounter(state, { rationale: 'Reviewed' }).note, prefix)).toBe('2026-11-01T09:31:00.000Z');
     for (const time of ['01:32', '']) {
       const edited = updateEncounter(state, previous => ({ ...previous, note: { ...previous.note, [`${prefix}Time`]: time } }));
       expect(edited.note[`${prefix}Clock`]).toBeNull();
-      expect(buildSummary(edited, now)).not.toContain('recorded instant 2026-11-01T09:31:00.000Z');
+      expect(buildSummary(edited, now)).not.toContain('01:31 (UTC−08:00)');
     }
   });
 

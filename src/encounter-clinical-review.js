@@ -31,6 +31,10 @@ const hoursSince = (value, now) => {
   return clock ? (new Date(now).getTime() - new Date(value).getTime()) / 3600000 : null;
 };
 
+// The Encounter perfusion screen uses the EXTEND trial thresholds. These differ
+// from the institutional Protocols CTP thresholds (core <50 mL, ratio >=1.2,
+// mismatch >=10 mL) and from TRACE-III (core <70 mL, ratio >=1.8, mismatch >=15 mL).
+export const EXTEND_PERFUSION_SOURCE = 'EXTEND thresholds: core <70 mL, mismatch ratio >1.2, mismatch volume >10 mL, NIHSS 4-26, premorbid mRS <2, 4.5-9 h from last known well or within 9 h of the sleep midpoint';
 export function evaluateWakeUpScreen(note = {}, now = new Date()) {
   const workflow = note.wakeUpStrokeWorkflow || {};
   const core = numericInput(note.coreVolume ?? note.ctpStructured?.coreVolume, { min: 0 });
@@ -54,7 +58,7 @@ export function evaluateWakeUpScreen(note = {}, now = new Date()) {
   // Reviewing extent is distinct from documenting a qualifying extent. Legacy
   // review attestations must not imply the AHA/ASA MRI lesion-size criterion.
   const autoWakeUp = common && age <= 80 && nihss <= 25 && note.lkwUnknown === true && discoveryHours !== null && discoveryHours <= 4.5 && workflow.dwi?.positiveForLesion === true && workflow.flair?.noMarkedHyperintensity === true && workflow.mriLesionExtentReviewed === true && workflow.dwiLesionUnderOneThirdMCA === true;
-  return { wakeUpEligible: autoWakeUp, extendEligible: autoExtend, manualWakeUp: false, manualExtend: false, autoWakeUp, autoExtend, withinExtendTime, discoveryHours, midpointHours, perfusionCoreOk, perfusionRatioOk: ratioMet, perfusionMismatchVolOk, perfusion: { coreVolume: core, penumbraVolume: hypoperfusion, mismatchVolume, mismatchRatio: ratio }, status: autoWakeUp || autoExtend ? 'partial-source-screen-met' : 'incomplete-or-not-met' };
+  return { perfusionSource: EXTEND_PERFUSION_SOURCE, wakeUpEligible: autoWakeUp, extendEligible: autoExtend, manualWakeUp: false, manualExtend: false, autoWakeUp, autoExtend, withinExtendTime, discoveryHours, midpointHours, perfusionCoreOk, perfusionRatioOk: ratioMet, perfusionMismatchVolOk, perfusion: { coreVolume: core, penumbraVolume: hypoperfusion, mismatchVolume, mismatchRatio: ratio }, status: autoWakeUp || autoExtend ? 'partial-source-screen-met' : 'incomplete-or-not-met' };
 }
 
 // Drug-class review, not a pharmacokinetic estimate of thrombolysis eligibility.
@@ -93,6 +97,26 @@ export function assessAnticoagulantExposure(note = {}, now = new Date()) {
   return result('review', 'Use an agent-specific anticoagulant and coagulation assessment');
 }
 
+// Entered coagulation values above the IVT thresholds (platelets <100 K/µL,
+// INR >1.7, aPTT >40 s, PT >15 s; AHA/ASA AIS guideline / institutional list)
+// require review even when no anticoagulant or checklist item is recorded.
+// A platelet entry of 2000 or more is read as per-µL and converted to K/µL.
+export function ivtLabConcerns(note = {}) {
+  const concerns = [];
+  const platelets = numericInput(note.plateletCount, { min: 0 });
+  if (platelets !== null) {
+    const thousands = platelets >= 2000 ? platelets / 1000 : platelets;
+    if (thousands < 100) concerns.push(`platelets ${Number(thousands.toPrecision(6))} K/µL (<100)`);
+  }
+  const inr = numericInput(note.inr, { min: 0.1 });
+  if (inr !== null && inr > 1.7) concerns.push(`INR ${inr} (>1.7)`);
+  const ptt = numericInput(note.ptt, { min: 1 });
+  if (ptt !== null && ptt > 40) concerns.push(`aPTT ${ptt} s (>40)`);
+  const pt = numericInput(note.pt, { min: 1 });
+  if (pt !== null && pt > 15) concerns.push(`PT ${pt} s (>15)`);
+  return concerns;
+}
+
 export function evaluateVideoTreatment({ note = {}, clock, aspects, pcAspects, critical = [], now = new Date() } = {}) {
   const pending = reason => ({ eligible: false, confidence: 'low', reason });
   const review = reason => ({ eligible: false, confidence: 'medium', reviewRequired: true, reason });
@@ -115,8 +139,10 @@ export function evaluateVideoTreatment({ note = {}, clock, aspects, pcAspects, c
   const concernKeys = ['currentICH', 'intracranialTumor', 'aorticDissection', 'activeInternalBleeding', 'giMalignancy', 'sahPresentation', 'infectiveEndocarditis', 'acuteSevereTBI', 'severeUncontrolledHTN', 'lowPlatelets', 'warfarinElevatedINR', 'knownBleedingDiathesis', 'priorICH', 'vascularMalformation', 'pregnancy', 'recentStroke', 'recentHeadTrauma', 'recentIntracranialSurgery', 'recentMajorSurgery', 'recentGIGUBleeding', 'recentArterialPuncture', 'recentLumbarPuncture', 'recentHeparin', 'recentDOAC', 'abnormalCoagUnknown', 'preexistingDisability', 'acutePericarditis', 'unrupturedAneurysm10mm', 'largeInfarct', 'extensiveHypoattenuation', 'cerebralMicrobleeds', 'lecanemab', 'lowGlucose', 'highGlucose', 'elevatedAPTT', 'severeRenalFailure'];
   const recordedConcern = concernKeys.some(key => checklist[key] === true) || context.pregnancy || context.medicationReconciliation || checklist.medicationReconciliation === true;
   const malformedConcern = concernKeys.some(key => checklist[key] !== undefined && typeof checklist[key] !== 'boolean');
+  const labs = ivtLabConcerns(note);
   let tnk = pending('Complete onset, examination, imaging and contraindication assessment.');
-  if (critical.length || exposure.status === 'block' || ['ich', 'sah'].includes(note.diagnosisCategory) || note.tnkAutoBlocked === true || note.infectiveEndocarditis === true || recordedConcern || malformedConcern) tnk = review('A recorded contraindication, relative risk factor or contradictory checklist entry requires clinician review; do not proceed from this partial screen. Relative/correctable factors are not permanent exclusions, and the review attestation does not override them.');
+  if (labs.length) tnk = review(`Entered laboratory value${labs.length > 1 ? 's exceed' : ' exceeds'} the IVT coagulation thresholds: ${labs.join('; ')}. Clinician review is required before any IVT decision; do not proceed from this partial screen.`);
+  else if (critical.length || exposure.status === 'block' || ['ich', 'sah'].includes(note.diagnosisCategory) || note.tnkAutoBlocked === true || note.infectiveEndocarditis === true || recordedConcern || malformedConcern) tnk = review('A recorded contraindication, relative risk factor or contradictory checklist entry requires clinician review; do not proceed from this partial screen. Relative/correctable factors are not permanent exclusions, and the review attestation does not override them.');
   else if (note.diagnosisCategory !== 'ischemic') tnk = pending('Confirm the working ischemic-stroke diagnosis and reconcile any alternative diagnosis before applying this partial screen. Diagnostic uncertainty alone is not a permanent IVT contraindication.');
   else if (age === null || age < 18) tnk = pending(age === null ? 'Document age.' : 'Pediatric stroke: use the pediatric specialist pathway; adult IVT criteria do not apply.');
   else if (nihss === null || typeof note.disablingDeficit !== 'boolean') tnk = pending('Document a complete NIHSS and whether the residual deficit is disabling.');

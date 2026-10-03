@@ -4,17 +4,34 @@ export const PROTOCOL_TARGETS = {
   'post-lytic': { sub: 'ischemic', id: 'isch-postlytic', label: 'Post-lytic hemorrhage' },
   angioedema: { sub: 'ischemic', id: 'isch-angioedema', label: 'Angioedema' },
   bp: { sub: 'ischemic', id: 'isch-bp' },
-  'post-evt': { sub: 'ischemic', id: 'isch-postevt' }
+  'post-evt': { sub: 'ischemic', id: 'isch-postevt' },
+  // Bedside quick-reference cards render above both protocol tabs.
+  'qr-dose': { sub: 'ischemic', id: 'qr-dose', label: 'Thrombolytic dose by weight', quick: true },
+  'qr-bp': { sub: 'ischemic', id: 'qr-bp', label: 'BP targets by phase', quick: true },
+  'qr-reversal': { sub: 'ischemic', id: 'qr-reversal', label: 'Anticoagulant reversal table', quick: true },
+  'qr-sich': { sub: 'ischemic', id: 'qr-sich', label: 'Post-thrombolysis symptomatic ICH', quick: true },
+  'qr-angioedema': { sub: 'ischemic', id: 'qr-angioedema', label: 'Orolingual angioedema', quick: true },
+  'qr-edema': { sub: 'ischemic', id: 'qr-edema', label: 'Malignant edema and decompression', quick: true },
+  'qr-supportive': { sub: 'ischemic', id: 'qr-supportive', label: 'AIS supportive care', quick: true }
 };
+// Open every collapsed <details> ancestor (and the target itself when it is a
+// <details>), then scroll to and focus it. Sticky offsets are applied through the
+// target's scroll-margin; this helper never computes pixel offsets.
+export function revealProtocolElement(element, { boundary = null, behavior = 'auto' } = {}) {
+  if (!element) return false;
+  for (let node = element; node && node !== boundary; node = node.parentElement) if (node.tagName === 'DETAILS') node.open = true;
+  const focus = element.tagName === 'DETAILS' ? element.querySelector('summary') || element : element;
+  if (!focus.hasAttribute('tabindex') && focus.tagName !== 'SUMMARY') focus.tabIndex = -1;
+  focus.focus({ preventScroll: true });
+  element.scrollIntoView({ block: 'start', behavior });
+  return true;
+}
 export function revealProtocolTarget(key, root = document) {
   const target = PROTOCOL_TARGETS[key];
   if (!target) return false;
+  if (target.quick) return revealProtocolElement(root.querySelector(`#${target.id}`));
   const panel = root.querySelector(`#mgmt-tabpanel-${target.sub}`);
   const element = target.id ? panel?.querySelector(`#${target.id}`) : [...(panel?.querySelectorAll('h3') || [])].find(node => node.textContent.trim() === target.heading);
   if (!element) return false;
-  for (let node = element; node && node !== panel?.parentElement; node = node.parentElement) if (node.tagName === 'DETAILS') node.open = true;
-  const focus = element.tagName === 'DETAILS' ? element.querySelector('summary') : element;
-  if (!focus.hasAttribute('tabindex') && focus.tagName !== 'SUMMARY') focus.tabIndex = -1;
-  focus.focus({ preventScroll: true }); element.scrollIntoView({ block: 'start' });
-  return true;
+  return revealProtocolElement(element, { boundary: panel?.parentElement || null });
 }

@@ -14,8 +14,24 @@ import {
   EXTENDED_WINDOW_IVT_DISCUSSION,
   IVT_ABSOLUTE_CONTRAINDICATIONS,
   IVT_RELATIVE_CONTRAINDICATIONS,
-  IVT_BENEFIT_GREATER_CONSIDER
+  IVT_BENEFIT_GREATER_CONSIDER,
+  IVT_UNRESOLVED_SOURCE_CONFLICTS
 } from './institutional-protocols.js';
+
+// Display-only rounding for Encounter-derived values (e.g. 79.832257 kg from a
+// pound entry or 2.5061980555 h elapsed). Evaluators keep the full precision.
+export const displayHours = (value) => {
+  const n = typeof value === 'number' ? value : (typeof value === 'string' && value.trim() !== '' ? Number(value) : Number.NaN);
+  return Number.isFinite(n) ? String(Number(n.toFixed(1))) : (value ?? '');
+};
+export const displayMeasuredValue = (value) => {
+  const text = value === null || value === undefined ? '' : String(value);
+  return /^-?\d+\.\d{3,}$/.test(text.trim()) ? String(Number(Number(text).toFixed(1))) : text;
+};
+const bpOrderInvalid = (sbp, dbp) => {
+  const s = parseFloat(sbp), d = parseFloat(dbp);
+  return Number.isFinite(s) && Number.isFinite(d) && s > 0 && d > 0 && s <= d;
+};
 
 
 const CorChip = ({ cor }) => {
@@ -79,8 +95,10 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
     mriDwiFlairMismatch: false,
     ctpCoreMl: '', ctpRatio: '', ctpMismatchVolMl: '',
     smallVessel: false, posteriorCirc: false, contrastAllergy: false,
-    crao: false
-  }, encounter, encounter?.ivt, ['hoursFromLKW']);
+    crao: false,
+    lvoOnCta: null
+  }, encounter, encounter?.ivt, ['hoursFromLKW', 'lvoOnCta']);
+  const lvoFromEncounter = Boolean(encounter?.ivt) && Object.prototype.hasOwnProperty.call(encounter.ivt, 'lvoOnCta');
   const result = useMemo(() => evaluateIVT({
     ichOnCT: state.ichOnCT,
     disablingDeficit: state.disablingDeficit,
@@ -91,6 +109,8 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
     bpSystolic: state.bpSystolic,
     bpDiastolic: state.bpDiastolic,
     contraindicationsReviewed: state.contraindicationsReviewed && !encounter?.safetyReviewRequired,
+    safetyReviewReason: encounter?.safetyReviewRequired ? (encounter.safetyReviewReason || 'Encounter records a safety concern requiring clinician review') : '',
+    lvoOnCta: state.lvoOnCta,
     preMRS: state.preMRS,
     evtStatus: state.evtStatus,
     consentObtained: state.consentObtained,
@@ -106,7 +126,7 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
       contrastAllergy: state.contrastAllergy
     },
     crao: state.crao
-  }), [state, encounter?.safetyReviewRequired]);
+  }), [state, encounter?.safetyReviewRequired, encounter?.safetyReviewReason]);
 
   const colorByEligible = (e) => e === true ? 'border-ok-400 bg-ok-50 dark:bg-ok-950' : e === 'consider' ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-950' : e === 'pending' ? 'border-warn-400 bg-warn-50 dark:bg-warn-950' : e === false ? 'border-rose-400 bg-rose-50 dark:bg-rose-950' : 'border-slate-300 bg-slate-50 dark:border-strong dark:bg-paper-2';
 
@@ -131,10 +151,10 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
             <option value="non-disabling">Non-disabling deficit</option>
           </select>
         </label>
-        <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={state.hoursFromLKW} readOnly={!!encounter} onChange={(e) => set('hoursFromLKW', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+        <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={encounter ? displayHours(state.hoursFromLKW) : state.hoursFromLKW} readOnly={!!encounter} onChange={(e) => set('hoursFromLKW', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
         <label className="flex items-center gap-1"><input type="checkbox" checked={state.wakeUpOrUnknownOnset} disabled={encounter?.compatible === false} onChange={(e) => set('wakeUpOrUnknownOnset', e.target.checked)} />Wake-up or unknown LKW (leave LKW hours blank)</label>
         <label><span className="block text-slate-600 dark:text-ink-2">Glucose</span><input type="number" value={state.glucose} onChange={(e) => set('glucose', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
-        <label><span className="block text-slate-600 dark:text-ink-2">Weight (kg)</span><input type="number" value={state.weight} onChange={(e) => set('weight', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+        <label><span className="block text-slate-600 dark:text-ink-2">Weight (kg)</span><input type="number" step="0.1" value={displayMeasuredValue(state.weight)} onChange={(e) => set('weight', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
         <label><span className="block text-slate-600 dark:text-ink-2">Age</span><input type="number" value={state.age} onChange={(e) => set('age', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
         <label><span className="block text-slate-600 dark:text-ink-2">Current SBP</span><input type="number" value={state.bpSystolic} onChange={(e) => set('bpSystolic', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
         <label><span className="block text-slate-600 dark:text-ink-2">Current DBP</span><input type="number" value={state.bpDiastolic} onChange={(e) => set('bpDiastolic', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
@@ -155,6 +175,9 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
         </label>
         <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={state.crao} onChange={(e) => set('crao', e.target.checked)} />CRAO (central retinal artery occlusion)</label>
         <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={state.contraindicationsReviewed} onChange={(e) => set('contraindicationsReviewed', e.target.checked)} />Absolute and relative contraindications reviewed</label>
+        {bpOrderInvalid(state.bpSystolic, state.bpDiastolic) && (
+          <p role="alert" className="sm:col-span-2 md:col-span-4 text-xs font-semibold text-crit-800 dark:text-crit-300">Check BP order: systolic must exceed diastolic before any IVT evaluation.</p>
+        )}
         {(parseFloat(state.glucose) < 50 || parseFloat(state.glucose) > 400) && (
           <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={state.glucoseCorrectedDeficitPersists} onChange={(e) => set('glucoseCorrectedDeficitPersists', e.target.checked)} />Glucose corrected and disabling deficit persists on reassessment</label>
         )}
@@ -172,7 +195,16 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
             <label className="flex items-center gap-1"><input type="checkbox" checked={state.posteriorCirc} onChange={(e) => set('posteriorCirc', e.target.checked)} />Posterior circulation</label>
             <label className="flex items-center gap-1"><input type="checkbox" checked={state.contrastAllergy} onChange={(e) => set('contrastAllergy', e.target.checked)} />Contrast allergy</label>
             {parseFloat(state.hoursFromLKW) >= 9 && parseFloat(state.hoursFromLKW) <= 24 && (
-              <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={state.consentObtained} onChange={(e) => set('consentObtained', e.target.checked)} />Consent obtained for the 9-24-hour window</label>
+              <>
+                <label className="sm:col-span-2"><span className="block text-slate-600 dark:text-ink-2">LVO on CTA (ICA or MCA occlusion) — required 9-24h</span>
+                  <select value={state.lvoOnCta === true ? 'yes' : state.lvoOnCta === false ? 'no' : ''} disabled={lvoFromEncounter} onChange={(e) => set('lvoOnCta', e.target.value === '' ? null : e.target.value === 'yes')} className="w-full px-2 py-1 border rounded text-sm">
+                    <option value="">Not assessed</option>
+                    <option value="yes">LVO present (ICA / M1 / M2)</option>
+                    <option value="no">No LVO</option>
+                  </select>
+                </label>
+                <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={state.consentObtained} onChange={(e) => set('consentObtained', e.target.checked)} />Consent obtained for the 9-24-hour window</label>
+              </>
             )}
           </div>
         </div>
@@ -184,6 +216,7 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
           {result.dose && <span className="inline-block text-xs font-bold px-2 py-0.5 rounded bg-cobalt-100 text-cobalt-900 border border-cobalt-300 dark:bg-cobalt-900 dark:text-cobalt-300 dark:border-cobalt-700">TNK {result.dose} mg</span>}
         </div>
         {result.reason && <p className="text-xs text-slate-700 dark:text-ink-2">{result.reason}</p>}
+        {result.selectionSource && <p className="text-xs text-slate-700 mt-1 dark:text-ink-2">{result.selectionSource}</p>}
         {result.nextStep && <p className="text-xs text-cobalt-800 mt-1 dark:text-cobalt-300"><strong>Next:</strong> {result.nextStep}</p>}
         {result.alternativeAgent && <p className="text-xs text-slate-600 mt-1 dark:text-ink-2">{result.alternativeAgent}</p>}
         {result.imagingGuidance && <p className="text-xs text-cobalt-800 mt-1 dark:text-cobalt-300">{result.imagingGuidance}</p>}
@@ -247,7 +280,7 @@ const EVTEligibilityCard = ({ defaults = {}, encounter }) => {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs mb-3">
             <label><span className="block text-slate-600 dark:text-ink-2">ASPECTS</span><input type="number" value={ant.aspectsScore} disabled={encounter?.compatible === false} onChange={(e) => setAnt('aspectsScore', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={ant.timeFromLKWh} readOnly={!!encounter} onChange={(e) => setAnt('timeFromLKWh', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={encounter ? displayHours(ant.timeFromLKWh) : ant.timeFromLKWh} readOnly={!!encounter} onChange={(e) => setAnt('timeFromLKWh', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">NIHSS</span><input type="number" value={ant.nihss} readOnly={!!encounter} onChange={(e) => setAnt('nihss', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">Pre-stroke mRS</span>
               <select value={ant.preMRS} onChange={(e) => setAnt('preMRS', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
@@ -290,7 +323,7 @@ const EVTEligibilityCard = ({ defaults = {}, encounter }) => {
                 <option value="PCA">PCA</option>
               </select>
             </label>
-            <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={m2.hoursFromLKWh} readOnly={!!encounter} onChange={(e) => setM2('hoursFromLKWh', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={encounter ? displayHours(m2.hoursFromLKWh) : m2.hoursFromLKWh} readOnly={!!encounter} onChange={(e) => setM2('hoursFromLKWh', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">NIHSS</span><input type="number" value={m2.nihss} readOnly={!!encounter} onChange={(e) => setM2('nihss', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">Pre-mRS</span>
               <select value={m2.preMRS} onChange={(e) => setM2('preMRS', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
@@ -308,6 +341,7 @@ const EVTEligibilityCard = ({ defaults = {}, encounter }) => {
               <CorChip cor={rM2.cor} /><LoeChip loe={rM2.loe} />
             </div>
             <p className="text-xs mt-1">{rM2.reason}</p>
+            {rM2.gradeNote && <p className="text-xs text-slate-700 mt-1 dark:text-ink-2"><strong>Grade:</strong> {rM2.gradeNote}</p>}
             {rM2.requirement && <p className="text-xs text-cobalt-900 mt-1 dark:text-cobalt-300"><strong>Requirement:</strong> {rM2.requirement}</p>}
           </div>}
         </>
@@ -317,7 +351,7 @@ const EVTEligibilityCard = ({ defaults = {}, encounter }) => {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 text-xs mb-3">
             <label><span className="block text-slate-600 dark:text-ink-2">NIHSS</span><input type="number" value={bas.nihss} readOnly={!!encounter} onChange={(e) => setBas('nihss', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
-            <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={bas.hoursFromLKWh} readOnly={!!encounter} onChange={(e) => setBas('hoursFromLKWh', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">LKW (h)</span><input type="number" step="0.1" value={encounter ? displayHours(bas.hoursFromLKWh) : bas.hoursFromLKWh} readOnly={!!encounter} onChange={(e) => setBas('hoursFromLKWh', e.target.value)} className="w-full px-2 py-1 border rounded text-sm" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">Pre-mRS</span>
               <select value={bas.preMRS} onChange={(e) => setBas('preMRS', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
                 <option value="">Not assessed</option>
@@ -411,6 +445,14 @@ const ContraindicationsCard = () => (
         </ul>
       </section>
     </div>
+    <section className="mt-3 border-t border-warn-200 pt-2 text-xs dark:border-warn-800">
+      <h5 className="font-bold text-warn-900 mb-1 dark:text-warn-300">Unresolved local source conflicts (pending protocol-owner adjudication)</h5>
+      <ul className="space-y-1">
+        {IVT_UNRESOLVED_SOURCE_CONFLICTS.map((c) => (
+          <li key={c.key}><strong>{c.label}</strong><div className="text-slate-600 text-[11px] dark:text-ink-2">{c.detail}</div></li>
+        ))}
+      </ul>
+    </section>
   </div>
 );
 
@@ -418,12 +460,13 @@ const ContraindicationsCard = () => (
 // Safe Pause card
 // ----------------------------------------------------------------------
 const SafePauseCard = ({ defaults = {}, encounter }) => {
-  const [st, setSt] = useProtocolCaseState({ consentType: encounter ? '' : defaults.consentType || '', bp: encounter ? '' : defaults.bp || '', contraindications: 'not reviewed', providerAgreement: 'not confirmed' }, encounter);
+  const [st, setSt] = useProtocolCaseState({ consentType: encounter ? '' : defaults.consentType || '', bp: encounter ? '' : defaults.bp || '', contraindications: 'not reviewed', providerAgreement: 'not confirmed', drug: '' }, encounter);
+  const drug = st.drug || (/alteplase/i.test(encounter?.drug || '') ? 'alteplase' : 'tnk');
   const issues = getSafePauseIssues(st);
   const complete = !encounter && issues.length === 0;
   const text = encounter && issues.length === 0
     ? 'Completed attestation unavailable: dose confirmation, pause performance, required-role confirmation and documentation are not recorded in this workspace.'
-    : getSafePauseText(st);
+    : getSafePauseText({ ...st, drug });
   return (
     <div className="p-3 rounded-lg border border-ok-300 bg-white dark:border-ok-800 dark:bg-card">
       <h4 className="font-bold text-ok-900 mb-2 flex items-center gap-2 dark:text-ok-300">
@@ -450,6 +493,13 @@ const SafePauseCard = ({ defaults = {}, encounter }) => {
           </select>
         </label>
         <label>
+          <span className="block text-slate-600 dark:text-ink-2">Thrombolytic agent</span>
+          <select value={drug} onChange={(e) => setSt('drug', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
+            <option value="tnk">Tenecteplase</option>
+            <option value="alteplase">Alteplase</option>
+          </select>
+        </label>
+        <label>
           <span className="block text-slate-600 dark:text-ink-2">Provider agreement</span>
           <select value={st.providerAgreement} onChange={(e) => setSt('providerAgreement', e.target.value)} className="w-full px-2 py-1 border rounded text-sm">
             <option value="not confirmed">Not confirmed</option>
@@ -460,7 +510,7 @@ const SafePauseCard = ({ defaults = {}, encounter }) => {
       {encounter && issues.length === 0 && <p className="text-xs mb-2">Reference checklist only. These fields do not record a completed safety pause. Document actual actions in Encounter; completed attestation and copy are unavailable here.</p>}
       <textarea readOnly aria-label={encounter ? 'Safe Pause reference checklist (read-only)' : 'Safe Pause attestation text (read-only, copyable)'} value={text} rows={7} className="w-full px-2 py-1 border rounded text-[11px] font-mono bg-slate-50 dark:bg-paper-2" />
       <div className="flex gap-2 mt-1">
-        <button type="button" disabled={!complete} onClick={() => { try { navigator.clipboard.writeText(text); } catch (_) {} }} className="px-2 py-1 bg-ok-600 hover:bg-ok-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white text-xs rounded">Copy completed safety pause</button>
+        <button type="button" disabled={!complete} onClick={() => { try { navigator.clipboard.writeText(text); } catch (_) {} }} className="px-2 py-1 bg-ok-600 hover:bg-ok-700 disabled:bg-slate-200 disabled:text-slate-700 dark:disabled:bg-paper-2 dark:disabled:text-ink-2 disabled:cursor-not-allowed text-white text-xs rounded">Copy completed safety pause</button>
         <span className="text-[10px] text-slate-500 self-center dark:text-mute">Attestation placeholder: <strong>{SAFE_PAUSE_ATTESTATION}</strong></span>
       </div>
     </div>
@@ -477,7 +527,7 @@ export const PocketCards = ({ defaults = {}, encounter }) => {
         <div>
           <h3 className="font-bold text-sm">Protocol Cards — Institutional Adult Pathways</h3>
         </div>
-        <span className="text-[10px] bg-white/20 dark:bg-slate-900/20 rounded px-2 py-0.5">v2</span>
+        <span className="text-[10px] bg-white/20 dark:bg-paper-2/20 rounded px-2 py-0.5">v2</span>
       </div>
       <IVTEligibilityCard defaults={defaults} encounter={encounter} />
       <ContraindicationsCard />

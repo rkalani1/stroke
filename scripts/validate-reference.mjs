@@ -1,10 +1,11 @@
 // Structural/source-access validation only; this does not certify clinical currency.
-import { validCalculatorDefinitions } from '../src/reference-search.js';
+import { validCalculatorDefinitions, validRecommendations } from '../src/reference-search.js';
 import { parseWorkspaceRoute } from '../src/workspace-routing.js';
 
 const SETTINGS = new Set(['on-call', 'hospital', 'clinic']);
 const SOURCE_TYPES = new Set(['Guideline', 'Scientific statement', 'Science advisory', 'Clinical policy', 'Randomized trial', 'Observational study', 'Meta-analysis', 'Drug label', 'Practice advisory', 'Consensus statement', 'Report', 'Educational resource', 'Policy statement', 'Position statement', 'Performance measures', 'Practice update', 'Correction']);
 const text = value => typeof value === 'string' && value.trim().length > 0;
+const COR_VALUES = /^(?:1|2a|2b|3: (?:No Benefit|Harm)|Strong|Conditional|Statement)$/;
 const slug = value => text(value) && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value);
 const strings = value => Array.isArray(value) && value.every(text);
 
@@ -52,6 +53,8 @@ export function validateClinicalReference(data, { now = new Date() } = {}) {
     }
     if (kind === 'topics') {
       if (!['summary', 'caution'].every(field => text(record[field])) || !strings(record.consider) || record.consider.length < 2 || record.consider.length > 4) fail('summary, caution and 2–4 review questions required');
+      if (!validRecommendations(record.recommendations)) fail('recommendations must be a nonempty list of {text, cor, loe, source, id} with unique ids');
+      if (record.recommendations?.some(rec => !COR_VALUES.test(rec.cor))) fail('recommendation class must be ACC/AHA 1/2a/2b/3, GRADE Strong/Conditional or Statement');
       if (!Array.isArray(record.related)) fail('related routes must be an array');
       else for (const link of record.related) {
         const href = link?.href;
@@ -62,6 +65,7 @@ export function validateClinicalReference(data, { now = new Date() } = {}) {
       }
     } else {
       if (!['question', 'population', 'comparison', 'result', 'limits'].every(field => text(record[field])) || !validYear(record.year)) fail('study year, population, comparison, result and limits required');
+      if (record.headline !== undefined && !text(record.headline)) fail('study headline must be text when present');
       if (typeof record.relatedTopic !== 'string' || (record.relatedTopic !== '' && !topicIds.has(record.relatedTopic))) fail('relatedTopic must identify a topic or be empty');
     }
   }

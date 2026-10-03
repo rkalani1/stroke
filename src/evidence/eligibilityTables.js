@@ -1,47 +1,9 @@
-// Six former phase groups, projected from the canonical screening profiles.
-// Full stored criteria are shared with Database; only table-only studies are separate.
+// Six phase groups, projected from the canonical study profiles. Full stored
+// criteria are shared with Database; reference-only profiles (not screened)
+// appear here when recruiting. Profiles that are not enrolling are Database-only.
 import { screenerTrials } from './screenerTrials.js';
 export const PHASE_LABELS = {"acute": "Acute (Onset ≤ 24 Hours)", "inpatient": "Inpatient (Admission to Day 30)", "outpatient": "Outpatient (Day 14 Onward)"};
 export const CATEGORY_LABELS = {"ischemic": "Ischemic Stroke", "ich": "Intracerebral Hemorrhage (ICH)"};
-const tableOnly = {
-  "PICASSO": {
-    "acronym": "PICASSO",
-    "nct": "NCT05611242",
-    "status": "enrolling",
-    "href": "https://clinicaltrials.gov/study/NCT05611242",
-    "sourceDate": "2026-10-01",
-    "sourceGaps": ["Registry status and selected criteria checked 2026-10-01; record updated 2025-12-17. The registry inclusion criteria conflict on whether an intracranial occlusion is required. Resolve this with the approved protocol and study team; this table does not adjudicate the conflict or local activation."],
-    "summary": "Acute carotid stenting versus non-stenting carotid angioplasty/aspiration, with intracranial treatment as applicable; confirm conflicting registry intracranial-occlusion wording.",
-    "eligibility": [
-      "Age 18–79, AIS within 16 h of LKW, NIHSS ≥ 4, pre-stroke mRS ≤ 2",
-      "ASPECTS ≥ 7; if EVT starts >6–16 h from onset, also CTP core < 50 mL (rCBF < 30%) or DWI core < 25 mL",
-      "Extracranial ICA stenosis 70–100% on CTA; the registry conflicts on whether an associated intracranial ICA-T / M1 / proximal M2 occlusion is required. Confirm with the approved protocol and study team.",
-      "Ineligible for IV thrombolysis or failed IV thrombolysis"
-    ],
-    "exclusions": [
-      "Contraindication to antiplatelets, thrombolytics, or contrast; refractory BP > 185/110 mm Hg despite medication",
-      "INR > 1.7, PTT > 3× normal, or platelets < 100,000/µL",
-      "Intracranial hemorrhage, midline shift or mass effect on CT; acute bilateral strokes; carotid stenosis from dissection or vasculitis"
-    ]
-  },
-  "CAPTIVA": {
-    "acronym": "CAPTIVA",
-    "nct": "NCT05047172",
-    "status": "closed",
-    "href": "https://clinicaltrials.gov/study/NCT05047172",
-    "sourceDate": "2026-10-01",
-    "sourceGaps": ["Registry status checked 2026-10-01: active, not recruiting; record updated 2026-09-25. The study sponsor overview and NIH notice confirm termination of the low-dose rivaroxaban arm. This table is a partial profile, not a treatment recommendation or local activation record."],
-    "summary": "Ticagrelor+ASA vs clopidogrel+ASA in symptomatic 70–99% intracranial atherosclerosis. Closed to new enrollment (active-not-recruiting); the low-dose rivaroxaban (2.5 mg BID) arm was terminated in January 2026 (DSMB: safety events plus futility).",
-    "eligibility": [
-      "Age ≥ 30 (30–49 needs additional atherosclerotic risk criteria), ischemic stroke (infarct on imaging or symptoms ≥ 24 h) attributed to ICAS (70–99% stenosis or MRA flow gap)",
-      "Within 30 days of qualifying event, mRS ≤ 4 at consent"
-    ],
-    "exclusions": [
-      "Cardioembolic source (AF, valve)",
-      "On full-dose anticoagulation"
-    ]
-  }
-};
 const groups = [
   {
     "id": "ischemic-acute",
@@ -50,6 +12,7 @@ const groups = [
     "title": "Ischemic Stroke — Acute (Onset ≤ 24 Hours)",
     "trials": [
       "STEP",
+      "SISTER",
       "PICASSO"
     ]
   },
@@ -63,10 +26,7 @@ const groups = [
       "TESTED",
       "SCOUTS-3",
       "CLARITY",
-      "ESUS-MRI",
-      "MOCHA",
-      "INTERCEPT",
-      "CAPTIVA"
+      "INTERCEPT"
     ]
   },
   {
@@ -76,8 +36,6 @@ const groups = [
     "title": "Ischemic Stroke — Outpatient (Day 14 to Month 6)",
     "trials": [
       "CLARITY",
-      "ESUS-MRI",
-      "MOCHA",
       "TELE-REHAB-2",
       "MR-PICS",
       "INTERCEPT"
@@ -89,6 +47,7 @@ const groups = [
     "phase": "acute",
     "title": "Intracranial Hemorrhage (ICH) — Acute (Onset ≤ 24 Hours)",
     "trials": [
+      "FASTEST-2",
       "MINUTE",
       "SATURN"
     ]
@@ -111,23 +70,22 @@ const groups = [
     "title": "Intracranial Hemorrhage (ICH) — Outpatient (Day 14 to Month 6)",
     "trials": [
       "ASPIRE",
-      "TELE-REHAB-2",
-      "CAPPRICORN-1"
+      "TELE-REHAB-2"
     ]
   }
 ];
 
 const profileByAcronym = new Map(screenerTrials.map(trial => [trial.acronym, trial]));
 const referenceTrial = acronym => {
-  if (tableOnly[acronym]) return { ...tableOnly[acronym] };
-  const profile = profileByAcronym.get(acronym === 'ESUS-MRI' ? 'ESUS' : acronym);
+  const profile = profileByAcronym.get(acronym);
   if (!profile) throw new Error(`Missing trial reference profile: ${acronym}`);
+  if (!['enrolling', 'soon'].includes(profile.status)) throw new Error(`Criteria tables list enrolling profiles only: ${acronym}`);
   return {
     acronym, nct: profile.externalMetadata.nct || '', href: profile.externalMetadata.registryUrl || '',
-    status: profile.status === 'placeholder' ? 'unverified' : profile.status,
-    unverified: profile.status === 'placeholder', summary: profile.conciseBedsideSummary,
+    status: profile.status, referenceOnly: Boolean(profile.referenceOnly), summary: profile.conciseBedsideSummary,
     eligibility: profile.exactInclusionCriteria, exclusions: profile.exactExclusionCriteria,
     sourceDate: profile.externalMetadata.verificationDate || null,
+    phase: profile.externalMetadata.phase || null, studyType: profile.externalMetadata.studyType || null,
     sourceGaps: profile.sourceGaps
   };
 };
