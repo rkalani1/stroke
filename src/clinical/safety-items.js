@@ -23,7 +23,7 @@ const relativeContraindications = [
                                   { id: 'recentStroke', label: 'Ischemic stroke within 3 months', note: null },
                                   { id: 'recentHeadTrauma', label: 'Moderate-severe head trauma', note: 'Drug-specific review required: TNKase label contraindicates intracranial/intraspinal trauma within 2 months.' },
                                   { id: 'recentIntracranialSurgery', label: 'Recent intracranial/intraspinal surgery', note: 'Guideline framework only; TNKase label contraindicates intracranial/intraspinal surgery or trauma within 2 months. Complete drug-specific review.' },
-                                  { id: 'recentMajorSurgery', label: 'Non-CNS major surgery or trauma', note: '14 days–3 months — warning only (careful risk-benefit); does not auto-block' },
+                                  { id: 'recentMajorSurgery', label: 'Recent major non-CNS surgery or trauma', note: 'Local list: major extracranial surgery or trauma <14 days. AHA/ASA also lists major non-CNS trauma up to 3 months as relative. Weigh the surgical or trauma-site bleeding risk; warning only (careful risk-benefit), does not auto-block.' },
                                   { id: 'recentGIGUBleeding', label: 'Recent GI/urinary tract hemorrhage', note: '<21 days' },
                                   { id: 'recentArterialPuncture', label: 'Recent arterial puncture at non-compressible site', note: '<7 days' },
                                   { id: 'recentLumbarPuncture', label: 'Recent dural puncture', note: '<7 days' },

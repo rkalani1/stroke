@@ -1,5 +1,45 @@
 # CHANGELOG
 
+## v7.7.5 — 2026-10-03 — Evidence, calculators, on-call gaps and accessibility
+
+Round-5 reviewers swept Evidence and Trials accuracy, calculator correctness, six timed on-call scenarios, and accessibility, offline use and performance. Skeptic agents verified the medium findings.
+
+- **Evidence currency:**
+  - The MeVO card credits AHA 2026 only for dominant proximal M2 (2a, with the NIHSS, ASPECTS and mRS conditions); codominant or nondominant M2 is COR 3: No Benefit.
+  - The lipid cards follow the ACC/AHA 2026 goals: very-high-risk ASCVD LDL-C <55 mg/dL with ezetimibe or a PCSK9 antibody as needed (COR 1).
+  - LAAO for a nonreversible anticoagulation contraindication is 2a (ACC/AHA 2023). The AHA 2021 2b is kept with its own population, which requires at least 45 days of tolerable anticoagulation.
+  - The LV-thrombus card adds the 2022 AHA view that a DOAC is a reasonable alternative.
+  - Outpatient trial tables read "Day 14 Onward"; ICH tables say intracerebral hemorrhage.
+- **ICH:**
+  - The shown ABC/2 volume never rounds up across a threshold.
+  - A likely cm/mm unit error withholds the ICH score and the ≥15 mL prompt, and flags the note.
+  - Neurosurgery prompts also fire from recorded hydrocephalus, neurologic decline, mass effect or cerebellar location. They now read as a list with the immediate-evacuation trigger first, and a pointer appears beside the Section 3 fields.
+  - A cerebellar or brainstem location that contradicts "Infratentorial origin: No" withholds the ICH score and is flagged in the note.
+  - The team handoff carries reversal, neurosurgery, hydrocephalus, the ICH score and the reversal time (inside the diagnosis block).
+- **Bedside guidance:**
+  - Encounter shows the BP target and glucose flag where they are entered; touch screens never show the case-bar tooltip. Flagged case-bar values carry a glyph.
+  - The post-op checklist item states the local <14 day window.
+  - While the diagnosis is TIA, a suspected cardioembolic source in the TIA review blocks a DAPT regimen, and contradictory stenosis entries are flagged.
+  - Basilar NIHSS 6–9 shows its own COR 2b statement.
+  - The sICH card states its 24 h guideline scope.
+  - UFH dose intent is recorded.
+  - The note says when every checklist item was answered No.
+- **Calculators and search:**
+  - NIHSS limb ataxia uses the official "one limb / two limbs" wording.
+  - DAWN and DEFUSE-3 show elapsed time as floored h:mm. DEFUSE-3 explains a hypoperfused volume below the core.
+  - Calculator search finds large-core and basilar screens.
+  - Symptom phrasing ("headache after tnk") finds the post-lytic bleed card. "ICH deterioration" leads with the ICH surgery card, and "hypertension" finds BP targets.
+- **Accessibility, offline and performance:**
+  - The LKW countdown no longer floods screen readers. Threshold crossings are announced instead, for acute ischemic stroke only.
+  - Accessible names now include the visible labels, and copy results are announced on every surface.
+  - The window title names the current surface, including retired links.
+  - An open or resumed app re-checks for updates. The update notice floats instead of shifting the form, reserves scroll room above the note buttons, and sits below dialogs.
+  - The reference download is versioned.
+  - iOS launch screens are restored, adding the 393×852 (iPhone 14 Pro/15/16) and 420×912 sizes.
+  - The installed app can rotate.
+  - The hidden Evidence surface no longer re-renders on every keystroke.
+- IVT card fields reach four columns only at extra-large widths.
+
 ## v7.7.4 — 2026-10-03 — Implementation review of 7.7.3
 
 Reviewers re-read the 7.7.3 code for clinical accuracy, logic, phone UX and note output. Skeptic agents verified each finding.

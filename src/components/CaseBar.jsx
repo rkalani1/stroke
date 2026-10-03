@@ -75,14 +75,15 @@ export function caseSummary(state, nowMs) {
 function Item({ label, short, value, detail, flag, title, pill }) {
   return <div className="case-bar__item" data-empty={value ? undefined : ''} data-flag={flag || undefined} title={title}>
     <span className="case-bar__label">{short ? <><span className="case-bar__label-long">{label}</span><span className="case-bar__label-short" aria-hidden="true">{short}</span></> : label}</span>
-    <span className="case-bar__value">{value || '—'}{detail && <small>{detail}</small>}{pill && <span className="case-bar__window" data-tone={pill.tone}>{pill.short ? <><span className="case-bar__label-long">{pill.text}</span><span className="case-bar__label-short" aria-hidden="true">{pill.short}</span></> : pill.text}</span>}</span>
+    <span className="case-bar__value">{value || '—'}{flag === 'caution' && <span className="case-bar__flag" aria-hidden="true">!</span>}{title && flag && <span className="sr-only">, {title}</span>}{detail && <small>{detail}</small>}{pill && <span className="case-bar__window" data-tone={pill.tone}>{pill.short ? <><span className="case-bar__label-long">{pill.text}</span><span className="case-bar__label-short" aria-hidden="true">{pill.short}</span></> : pill.text}</span>}</span>
   </div>;
 }
 
 // A link to the current route fires no hashchange; reveal its target directly.
 const revealIfCurrent = (href, target) => event => { if (location.hash === href) { event.preventDefault(); revealProtocolTarget(target); } };
 
-export default function CaseBar({ state, documentLabel, blocked, onCopy, copyStatus }) {
+// announceCopy: off on Encounter, whose own status region already announces the copy result.
+export default function CaseBar({ state, documentLabel, blocked, onCopy, copyStatus, announceCopy = false }) {
   const [now] = useCurrentTime(true);
   const bar = useRef(null);
   // A timestamp set to "now" can be newer than the last one-second tick.
@@ -112,7 +113,7 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
       {c.gcs ? <Item label="GCS" value={c.gcs} /> : null}
       <Item label="NIHSS" value={c.nihss} flag={c.nihssPartial ? 'partial' : undefined} title={c.nihssPartial ? 'Partial itemized sum' : undefined} />
       <Item label="BP" value={c.bp} flag={c.bpHigh ? 'caution' : undefined} title={c.bpTitle} />
-      <Item label="Glucose" short="Glu" value={c.glucose} flag={c.glucoseFlag ? 'caution' : undefined} />
+      <Item label="Glucose" short="Glu" value={c.glucose} flag={c.glucoseFlag ? 'caution' : undefined} title={c.glucoseFlag ? 'Glucose outside 50–400 mg/dL' : undefined} />
       <Item label="Weight" short="Wt" value={c.weight && `${c.weight} kg`} />
       {acuteIschemic && <Item label={c.dose?.label || 'Dose'} value={c.dose?.value} detail={c.dose?.detail} title={c.administered ? 'Recorded administration time' : 'Dose arithmetic only; not an eligibility decision'} />}
     </div>
@@ -121,7 +122,8 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
       {c.administered && <a className="case-bar__link" href="#/protocols/ischemic/qr-sich" onClick={revealIfCurrent('#/protocols/ischemic/qr-sich', 'qr-sich')}>Post-lytic bleed</a>}
       {c.administered && c.aceInhibitor && <a className="case-bar__link" href="#/protocols/ischemic/qr-angioedema" onClick={revealIfCurrent('#/protocols/ischemic/qr-angioedema', 'qr-angioedema')}>Angioedema</a>}
       {(['ich', 'sah'].includes(state.note.diagnosisCategory) || (c.anticoagulant && !acuteIschemic)) && <a className="case-bar__link" href={reversalHref} onClick={revealIfCurrent(reversalHref, 'qr-reversal')}>Reversal</a>}
-      <button type="button" className="case-bar__copy" onClick={onCopy} aria-label={blocked ? undefined : `Copy ${documentLabel} (case bar)`}>{blocked ? `Review ${blocked} flag${blocked === 1 ? '' : 's'}` : /copied\.$/.test(copyStatus || '') ? 'Copied ✓' : <><span className="case-bar__copy-long">Copy {documentLabel}</span><span className="case-bar__copy-short" aria-hidden="true">Copy note</span></>}</button>
+      <button type="button" className="case-bar__copy" onClick={onCopy}>{blocked ? `Review ${blocked} flag${blocked === 1 ? '' : 's'}` : /copied\.$/.test(copyStatus || '') ? 'Copied ✓' : <><span className="case-bar__copy-long">Copy {documentLabel}</span><span className="case-bar__copy-short">Copy note<span className="sr-only"> ({documentLabel})</span></span><span className="sr-only"> (case bar)</span></>}</button>
+      {announceCopy && <span className="sr-only" role="status">{copyStatus}</span>}
     </div>
   </section>;
 }

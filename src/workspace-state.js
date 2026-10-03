@@ -46,6 +46,7 @@ export function daptAnticoagulationReview(state) {
   // indication; other cardioembolic sources (endocarditis, PFO) need source-specific therapy.
   if (state.details?.afDetected === 'yes') return { excluded: false, afTiming: true, reason: 'AF is documented in Etiology: an anticoagulation indication that the DAPT source trials excluded. See anticoagulation timing.' };
   if (state.details?.toastClassification === 'Cardioembolism') return { excluded: false, reason: 'A cardioembolic mechanism is documented in Etiology; the DAPT source trials excluded it. Choose antithrombotic therapy by the specific source.' };
+  if (state.note?.diagnosisCategory === 'tia' && state.details?.tiaCardioembolic === 'yes') return { excluded: false, reason: 'A suspected cardioembolic source is recorded in the TIA review; the DAPT source trials excluded cardioembolic mechanisms. Reconcile it with "Noncardioembolic mechanism confirmed" and choose therapy by the specific source.' };
   if (review === 'prophylaxis') return { excluded: false, reason: 'Prophylactic anticoagulation needs separate review of agent, dose and applicable source before selecting combined treatment.' };
   if (!['none', 'stopped'].includes(review)) return { excluded: undefined, reason: 'Review current anticoagulation and any continuing indication before interpreting a DAPT source screen.' };
   if (!['none', 'apixaban', 'rivaroxaban', 'dabigatran', 'edoxaban', 'warfarin', 'heparin', 'lmwh'].includes(n.lastDOACType)) return { excluded: undefined, reason: 'Anticoagulant exposure remains unassessed; reconcile it with the current anticoagulation review.' };
@@ -128,6 +129,9 @@ export function updateEncounter(state, updater) {
     const edited = note[`${prefix}Date`] !== state.note[`${prefix}Date`] || note[`${prefix}Time`] !== state.note[`${prefix}Time`];
     if (clock && (clock.value !== `${note[`${prefix}Date`]}T${note[`${prefix}Time`]}` || edited && clock === state.note[key])) note = { ...note, [key]: null };
   }
+  // LMWH and UFH share the dose-intent field; a different agent starts with no recorded intent,
+  // so a UFH 'prophylactic' entry can never carry over to relax the LMWH hold.
+  if (note.lastDOACType !== state.note.lastDOACType && note.anticoagulantDoseIntent) note = { ...note, anticoagulantDoseIntent: '' };
   const anticoagulationChanged = contextChanged || JSON.stringify(anticoagulationSources(next)) !== JSON.stringify(anticoagulationSources(state));
   const dapt = { ...next.dapt, ...(contextChanged || nihssChanged ? { reperfusionExcluded: undefined } : {}), ...(anticoagulationChanged ? { anticoagulationReview: undefined } : {}) };
   return { ...next, note, dapt, revision: state.revision + 1, draft: state.draft ? { ...state.draft, stale: true } : null };
@@ -288,6 +292,8 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   if (acuteIschemic || hasValue(n.lastDOACType)) entry('Anticoagulant exposure', n.lastDOACType || 'not assessed');
   if (n.lastDOACType && n.lastDOACType !== 'none' && n.lastDOACDose) entry('Last anticoagulant dose', validTimestamp(n.lastDOACDose, nowMs) ? formatRecordedInstant(n.lastDOACDose) : `${n.lastDOACDose} (${timestampReview(n.lastDOACDose)})`);
   if (n.lastDOACType === 'lmwh') entry('LMWH dose intent', n.anticoagulantDoseIntent);
+  // Documentation only: prophylactic SC heparin is standard care, unlike treatment-dose UFH.
+  if (n.lastDOACType === 'heparin') entry('UFH dose intent', n.anticoagulantDoseIntent === 'prophylactic' ? 'prophylactic SC' : n.anticoagulantDoseIntent === 'therapeutic' ? 'treatment dose' : '');
   if (acuteIschemic) {
     if (n.lkwUnknown || n.wakeUpStrokeWorkflow.mriAvailable !== undefined) recommendations.push(formatWakeUpScreenForExport(n, new Date(nowMs)));
     const checklist = n.tnkContraindicationChecklist || {};
@@ -296,7 +302,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     const signals = safetyChecklistSignals(n, nowMs);
     const conflicts = SAFETY_ITEMS.filter(item => signals[item.id]?.conflict && checklist[item.id] === false);
     const unansweredText = unanswered ? `; ${unanswered} checklist item${unanswered === 1 ? '' : 's'} unanswered (checklist incomplete)` : '';
-    entry('Recorded safety concerns', concerns.join('; ') || 'none recorded (unchecked does not mean reviewed)');
+    entry('Recorded safety concerns', concerns.join('; ') || (unanswered ? 'none recorded (unchecked does not mean reviewed)' : 'none; every checklist item answered No'));
     if (conflicts.length) entry('Entered values conflicting with a "No" answer', conflicts.map(item => `${item.label} (${signals[item.id].reason})`).join('; '));
     entry('IVT safety review', n.ivtContraindicationsReviewed ? `marked complete by clinician${concerns.length ? '; recorded concerns remain' : ''}${unansweredText}` : 'not documented');
     for (const type of ['ivt', 'evt']) entry(`${type.toUpperCase()} clinician decision`, state.decisions[type] || 'not documented');
@@ -321,11 +327,12 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   }
   if (n.diagnosisCategory === 'ich') {
     const volume = encounterVolume(state.volume);
-    entry('ABC/2 volume', volume ? `${volume.volume} mL (approximate)` : 'incomplete or invalid');
+    entry('ABC/2 volume', volume ? volume.unitWarning ? `[ABC/2 volume ${volume.volume} mL implausible; confirm centimeter units before interpretation]` : `${volume.volume} mL (approximate)` : 'incomplete or invalid');
     entry('Intraventricular hemorrhage', typeof state.ich.ivh === 'boolean' ? state.ich.ivh ? 'present' : 'absent (reviewed)' : 'not assessed');
-    entry('Infratentorial origin', typeof state.ich.infratentorial === 'boolean' ? state.ich.infratentorial ? 'present' : 'absent (reviewed)' : 'not assessed');
+    const ichLocationConflict = ['Cerebellar', 'Brainstem'].includes(state.details?.ichLocation) && state.ich.infratentorial === false;
+    entry('Infratentorial origin', typeof state.ich.infratentorial === 'boolean' ? state.ich.infratentorial ? 'present' : `absent (reviewed)${ichLocationConflict ? ` [conflicts with ICH location ${state.details.ichLocation}; reconcile before interpretation]` : ''}` : 'not assessed');
     const gcs = reviewedGcs(state.gcs);
-    if (ageValue !== null && gcs !== null && volume && typeof state.ich.ivh === 'boolean' && typeof state.ich.infratentorial === 'boolean') entry('ICH score', `${calculateICHScore({ gcs: gcs <= 4 ? 'gcs34' : gcs <= 12 ? 'gcs512' : 'gcs1315', age80: ageValue >= 80, volume30: volume.isLarge, ivh: state.ich.ivh, infratentorial: state.ich.infratentorial, criteriaReviewed: true })}/6 (severity grade; not an individual prognosis)`);
+    if (ageValue !== null && gcs !== null && volume && !volume.unitWarning && !ichLocationConflict && typeof state.ich.ivh === 'boolean' && typeof state.ich.infratentorial === 'boolean') entry('ICH score', `${calculateICHScore({ gcs: gcs <= 4 ? 'gcs34' : gcs <= 12 ? 'gcs512' : 'gcs1315', age80: ageValue >= 80, volume30: volume.isLarge, ivh: state.ich.ivh, infratentorial: state.ich.infratentorial, criteriaReviewed: true })}/6 (severity grade; not an individual prognosis)`);
   }
   // ABCD² is entered in the acute DAPT screen; follow-up notes carry it only when one was recorded.
   if (n.diagnosisCategory === 'tia' && (state.context === 'acute' || hasValue(state.dapt?.abcd2))) {
@@ -339,7 +346,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   entry('Handoff', state.actions.handoff);
 
   if (state.documentFormat === 'handoff') {
-    const labels = new Set(['ABCD²', 'Anticoagulant exposure', 'Last anticoagulant dose', 'LMWH dose intent', 'Recorded safety concerns', 'Entered values conflicting with a "No" answer', 'IVT safety review', 'IVT clinician decision', 'EVT clinician decision', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
+    const labels = new Set(['ABCD²', 'ICH score', 'UFH dose intent', 'Anticoagulant exposure', 'Last anticoagulant dose', 'LMWH dose intent', 'Recorded safety concerns', 'Entered values conflicting with a "No" answer', 'IVT safety review', 'IVT clinician decision', 'EVT clinician decision', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
     return ['Team handoff', `${demographics} · ${diagnosis}${state.context === 'follow-up' ? ' · follow-up' : ''}`,
       lkw, `NIHSS: ${examText}${examDetails}${extraExam.length ? `; ${extraExam.join('; ')}` : ''}`,
       `CT (${ctTimestamp}): ${ct}`, `CTA: ${cta}`, hasValue(perfusion) ? `CTP: ${perfusion}` : '',

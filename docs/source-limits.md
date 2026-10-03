@@ -147,3 +147,19 @@ Reviewers re-read the 7.7.3 code across four areas: clinical accuracy, logic, on
   - "COR 3: No Benefit" chips return to the 7.7.2 neutral tone.
   - The contraindications deep link opens the IVT Contraindications card.
   - In acute ischemic stroke the anticoagulant badge opens IVT contraindications rather than reversal.
+
+## Evidence, calculator and on-call sweep — 7.7.5 (2026-10-03)
+
+Protected protocol text is unchanged. Source-checked corrections:
+
+- **MeVO:** AHA/ASA 2026 ais-2026-120 (2a, B-NR) covers only the dominant proximal M2 division within 6 h, with NIHSS ≥6, ASPECTS ≥6 and prestroke mRS 0–1. ais-2026-121 (COR 3: No Benefit, A) covers nondominant or codominant M2, distal MCA, ACA and PCA. The broader "proximal and/or dominant M2" 2a is SVIN 2026 only.
+- **Lipids:** ACC/AHA 2026 dyslipidemia section 4.2.6 was checked against the archived full-text transcription.
+  - 4-2-6-4 and -5 (COR 1, A): very-high-risk ASCVD (ischemic stroke plus another major ASCVD event, or plus ≥2 high-risk conditions) has an LDL-C goal <55 and non-HDL-C <85 mg/dL, adding ezetimibe and/or a PCSK9 antibody as needed.
+  - Other ASCVD: 4-2-6-1 sets LDL-C <70 (COR 1), and 4-2-6-3 makes adding a nonstatin toward <55 reasonable (2a).
+  - The AHA 2021 <70 statement is kept and labelled 2021.
+- **LAAO:** ACC/AHA 2023 AF guideline rec 38 (2a, B-NR) makes percutaneous LAAO reasonable for CHA₂DS₂-VASc ≥2 with a nonreversible contraindication to long-term anticoagulation. Rec 39 (2b) covers high bleeding risk on anticoagulation.
+- **LV thrombus:** the 2022 AHA scientific statement (ungraded) considers a DOAC a reasonable alternative to warfarin. The AHA 2021 2b label is kept.
+- **Basilar:** ais-2026-123 (2b, B-R) covers NIHSS 6–9 with pc-ASPECTS ≥6 within 24 h.
+- **ICH:** neurosurgery prompts use the local any-size triggers (hydrocephalus, decline, mass effect, cerebellar), ich-2022-74 (EVD for hydrocephalus lowering consciousness, COR 1, B-NR) and ich-2022-11 (serial CT after deterioration, 2a, C-LD). The shown ABC/2 volume is truncated, not rounded, within 0.05 mL below the 2, 15, 20, 30 and 60 mL thresholds.
+- **Checklist:** the surgery/trauma item now states the local list (<14 days) and notes that AHA/ASA also lists major non-CNS trauma up to 3 months as relative.
+- **NIHSS:** limb-ataxia options use the NINDS wording (present in one limb / two limbs).

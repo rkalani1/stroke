@@ -138,7 +138,7 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
         <span className="inline-block px-2 py-0.5 bg-cobalt-900 text-white text-xs rounded">INST</span>
         IVT Eligibility Decision Algorithm
       </h4>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs mb-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2 text-xs mb-3">
         <label><span className="block text-slate-600 dark:text-ink-2">CT hemorrhage assessment</span>
           <select value={state.ichOnCT === null ? '' : state.ichOnCT ? 'present' : 'absent'} disabled={encounter?.compatible === false} onChange={(e) => set('ichOnCT', e.target.value === '' ? null : e.target.value === 'present')} className="w-full px-2 py-1 border rounded text-sm">
             <option value="">Not confirmed</option>
@@ -178,7 +178,7 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
         <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={state.crao} onChange={(e) => set('crao', e.target.checked)} />CRAO (central retinal artery occlusion)</label>
         <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={state.contraindicationsReviewed} onChange={(e) => set('contraindicationsReviewed', e.target.checked)} />Absolute and relative contraindications reviewed</label>
         {bpOrderInvalid(state.bpSystolic, state.bpDiastolic) && (
-          <p role="alert" className="sm:col-span-2 md:col-span-4 text-xs font-semibold text-crit-800 dark:text-crit-300">Check BP order: systolic must exceed diastolic before any IVT evaluation.</p>
+          <p role="alert" className="col-span-full text-xs font-semibold text-crit-800 dark:text-crit-300">Check BP order: systolic must exceed diastolic before any IVT evaluation.</p>
         )}
         {(parseFloat(state.glucose) < 50 || parseFloat(state.glucose) > 400) && (
           <label className="flex items-center gap-1 sm:col-span-2"><input type="checkbox" checked={state.glucoseCorrectedDeficitPersists} onChange={(e) => set('glucoseCorrectedDeficitPersists', e.target.checked)} />Glucose corrected and disabling deficit persists on reassessment</label>

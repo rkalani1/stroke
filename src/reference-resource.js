@@ -5,7 +5,9 @@ let cached;
 function loadReference(version) {
   if (!cached || cached.version !== version) {
     const entry = { version };
-    entry.promise = fetch('./data/clinical-reference.json').then(async response => {
+    // Versioned URL: without a controlling service worker, a post-deploy reload must not reuse the
+    // previous release's HTTP-cached JSON (the service worker maps the query to its precached copy).
+    entry.promise = fetch(`./data/clinical-reference.json?v=${encodeURIComponent(version)}`).then(async response => {
       if (!response.ok) throw Error('Reference download unavailable');
       const envelope = await response.json();
       if (!validReferenceData(envelope, version)) throw Error('Reference version or content mismatch');

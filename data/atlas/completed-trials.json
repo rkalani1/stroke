@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "data/atlas/completed-trials.json",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.7.4",
+    "appVersion": "7.7.5",
     "checksum": "sha256:74234e98afe7498fb5daf1f36ac2d78a",
     "count": 0,
     "source": "Retired historical portal endpoint",

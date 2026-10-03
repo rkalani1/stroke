@@ -16,11 +16,12 @@ import { elapsedEncounterTime } from './clinical/encounter-time.js';
 import { useCurrentTime } from './use-current-time.js';
 const ProtectedProtocols = lazy(() => import('./ProtectedProtocols.jsx'));
 const Trials = lazy(() => import('./Trials.jsx'));
-const Reference = lazy(() => import('./Reference.jsx'));
+// Evidence props are stable, so memo keeps the hidden surface from re-running its search on every keystroke and clock tick.
+const Reference = lazy(() => import('./Reference.jsx').then(module => ({ default: React.memo(module.default) })));
 const Tools = lazy(() => import('./Tools.jsx'));
 const QuickSearch = lazy(() => import('./components/QuickSearch.jsx'));
 const QuickReference = lazy(() => import('./components/QuickReference.jsx'));
-const APP_VERSION = '7.7.4';
+const APP_VERSION = '7.7.5';
 const getPublicDemoMode = () => {
   if (BUILD_PUBLIC_DEMO) return true;
   return /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -123,6 +124,11 @@ function App() {
     const frame = requestAnimationFrame(() => { focusEncounterTarget(id); then?.(); });
     return () => cancelAnimationFrame(frame);
   }, [route]);
+  // The window title names the current surface, so screen readers and tab switchers confirm a route change.
+  useEffect(() => {
+    const label = { encounter: 'Encounter workspace', protocols: route.sub === 'ich' ? 'ICH protocols' : 'Ischemic protocols', trials: 'Trials', evidence: 'Evidence', tools: 'Calculators', retired: 'Retired link' }[route.surface];
+    document.title = label ? `Stroke · ${label}` : 'Stroke';
+  }, [route.surface, route.sub]);
   // Tool deep links reveal their target on navigation, and again when a diagnosis change first
   // renders a gated tool; other diagnosis edits never move scroll or focus.
   const toolReveal = useRef({ route: null, missing: false });
@@ -158,8 +164,18 @@ function App() {
     const beforeInstall = event => { event.preventDefault(); setInstallPrompt(event); };
     const installed = () => { setInstalled(true); setInstallPrompt(null); };
     window.addEventListener('beforeinstallprompt', beforeInstall); window.addEventListener('appinstalled', installed);
+    // An installed app can stay open or be resumed for days; re-check for a new version when it
+    // becomes visible again (at most every 30 min) and hourly while open. Activation stays behind Reload.
+    let registration = null, lastCheck = Date.now();
+    const recheck = () => {
+      if (!registration || document.visibilityState !== 'visible' || Date.now() - lastCheck < 30 * 60000) return;
+      lastCheck = Date.now(); registration.update().catch(() => {});
+    };
+    document.addEventListener('visibilitychange', recheck); window.addEventListener('pageshow', recheck);
+    const recheckTimer = setInterval(recheck, 60 * 60000);
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./service-worker.js', { updateViaCache: 'none' }).then(reg => {
+        registration = reg;
         if (reg.waiting) setUpdateReady({});
         const watch = worker => worker?.addEventListener('statechange', () => {
           if (worker.state === 'installed') { setOfflineStatus('Available offline'); if (navigator.serviceWorker.controller) setUpdateReady({}); }
@@ -170,7 +186,7 @@ function App() {
         reg.update().catch(() => {});
       }).catch(() => setOfflineStatus('Offline mode unavailable in this browser'));
     } else setOfflineStatus('Offline mode unavailable in this browser');
-    return () => { unsubscribe(); window.removeEventListener('beforeinstallprompt', beforeInstall); window.removeEventListener('appinstalled', installed); };
+    return () => { unsubscribe(); window.removeEventListener('beforeinstallprompt', beforeInstall); window.removeEventListener('appinstalled', installed); document.removeEventListener('visibilitychange', recheck); window.removeEventListener('pageshow', recheck); clearInterval(recheckTimer); };
   }, []);
   const reset = () => {
     if (!window.confirm('Start a new encounter? All current entries, drafts and timers will be cleared.')) return;
@@ -224,11 +240,11 @@ function App() {
     <header className="workspace-header"><a className="workspace-brand" href="#/encounter"><span className="workspace-mark" aria-hidden="true"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg></span>Stroke</a>
       <button type="button" className="workspace-search" onClick={openSearch} aria-label="Search protocols, calculators, evidence and trials" aria-keyshortcuts="Control+K Meta+K /"><SearchIcon /><span className="workspace-search__text">Search</span><kbd>{/Mac|iPhone|iPad/.test(navigator.platform || '') ? '⌘K' : 'Ctrl K'}</kbd></button>
       <nav className="workspace-secondary" aria-label="Primary navigation">{[['encounter', '#/encounter', 'Encounter'], ['protocols', state.note.diagnosisCategory === 'ich' ? '#/protocols/ich' : '#/protocols/ischemic', 'Protocols'], ['trials', '#/trials', 'Trials'], ['evidence', '#/evidence', 'Evidence'], ['tools', '#/tools', 'Calculators']].map(([surface, href, label]) => { const Icon = NAV_ICONS[surface]; return <a key={surface} href={href} aria-current={route.surface === surface ? 'page' : undefined}><Icon /><span>{label}</span></a>; })}</nav>
-      <details ref={utilitiesRef} className="workspace-utilities" onToggle={event => { if (event.currentTarget.open) setUtilitiesVisited(true); }}><summary aria-label="Utilities">More</summary><div className="utility-panel"><label>Theme<select aria-label="Theme" value={theme} onChange={e => { setThemePref(e.target.value); setTheme(e.target.value); }}>{[['auto', 'System'], ['light', 'Light'], ['dark', 'Dark']].map(([v, t]) => <option key={v} value={v}>{t}</option>)}</select></label><button type="button" className="utility-action" onClick={() => { if (utilitiesRef.current) utilitiesRef.current.open = false; reset(); }}>Start new encounter</button>{utilitiesVisited && <Suspense fallback={<p role="status">Loading install options…</p>}><InstallAppButton installPrompt={installPrompt} isInstalled={isInstalled} onInstall={async () => { if (!installPrompt) return; try { await installPrompt.prompt(); const choice = await installPrompt.userChoice; if (choice.outcome === 'accepted') setInstalled(true); setInstallPrompt(null); } catch { setInstallPrompt(null); } }} /></Suspense>}<p className="utility-shortcuts"><kbd>Ctrl</kbd>/<kbd>⌘</kbd> <kbd>K</kbd> or <kbd>/</kbd> search</p><p>Version {APP_VERSION}</p><p role="status">{offlineStatus}</p></div></details></header>
+      <details ref={utilitiesRef} className="workspace-utilities" onToggle={event => { if (event.currentTarget.open) setUtilitiesVisited(true); }}><summary aria-label="More utilities">More</summary><div className="utility-panel"><label>Theme<select aria-label="Theme" value={theme} onChange={e => { setThemePref(e.target.value); setTheme(e.target.value); }}>{[['auto', 'System'], ['light', 'Light'], ['dark', 'Dark']].map(([v, t]) => <option key={v} value={v}>{t}</option>)}</select></label><button type="button" className="utility-action" onClick={() => { if (utilitiesRef.current) utilitiesRef.current.open = false; reset(); }}>Start new encounter</button>{utilitiesVisited && <Suspense fallback={<p role="status">Loading install options…</p>}><InstallAppButton installPrompt={installPrompt} isInstalled={isInstalled} onInstall={async () => { if (!installPrompt) return; try { await installPrompt.prompt(); const choice = await installPrompt.userChoice; if (choice.outcome === 'accepted') setInstalled(true); setInstallPrompt(null); } catch { setInstallPrompt(null); } }} /></Suspense>}<p className="utility-shortcuts"><kbd>Ctrl</kbd>/<kbd>⌘</kbd> <kbd>K</kbd> or <kbd>/</kbd> search</p><p>Version {APP_VERSION}</p><p role="status">{offlineStatus}</p></div></details></header>
     <nav className="workspace-external" aria-label="External references"><a href={MAP_URL} target="_blank" rel="noopener noreferrer">Telestroke Map</a><a href="https://www.uptodate.com/" target="_blank" rel="noopener noreferrer">UpToDate</a><a href="https://www.openevidence.com/" target="_blank" rel="noopener noreferrer">OpenEvidence</a></nav>
-    <CaseBar state={state} documentLabel={documentationLabel(state)} blocked={outputWarnings(state).length} onCopy={generateAndCopy} copyStatus={copyStatus} />
+    <CaseBar state={state} documentLabel={documentationLabel(state)} blocked={outputWarnings(state).length} onCopy={generateAndCopy} copyStatus={copyStatus} announceCopy={route.surface !== 'encounter'} />
     {searchVisited && <Suspense fallback={null}><QuickSearch open={searchOpen} onClose={() => setSearchOpen(false)} onFocusEncounter={goToEncounter} version={APP_VERSION} protocolSub={route.surface === 'protocols' && route.sub ? route.sub : state.note.diagnosisCategory === 'ich' ? 'ich' : 'ischemic'} /></Suspense>}
-    {updateReady && <aside className="workspace-update" aria-label="App update"><p>{updateReady.message || 'A new version is ready. Updating reloads this page and clears its session; finish or copy your note first.'}</p><button type="button" onClick={() => acceptUpdate().catch(() => setUpdateReady({ message: 'Update failed. Current encounter remains open; try again when connected.' }))}>Reload to update</button><button type="button" onClick={() => setUpdateReady(null)}>Later</button></aside>}
+    {updateReady && <aside className="workspace-update" aria-label="App update"><p role="status">{updateReady.message || 'A new version is ready. Updating reloads this page and clears its session; finish or copy your note first.'}</p><button type="button" onClick={() => acceptUpdate().catch(() => setUpdateReady({ message: 'Update failed. Current encounter remains open; try again when connected.' }))}>Reload to update</button><button type="button" onClick={() => setUpdateReady(null)}>Later</button></aside>}
     <main id="workspace-main" tabIndex={-1}>
       <div hidden={route.surface !== 'encounter'}>{targetUnavailable && <div role="status" className="workspace-result workspace-inline-action" data-tone="caution"><span>{['ich-volume', 'ich-score'].includes(route.tool) ? 'This calculator needs an ICH encounter.' : route.tool === 'gcs' ? 'GCS opens with ICH, SAH or CVT.' : 'This tool needs an acute ischemic stroke encounter.'}</span><button type="button" className="workspace-secondary-action" onClick={() => update(prev => ({ ...prev, context: 'acute', note: { ...prev.note, diagnosisCategory: ['ich-volume', 'ich-score', 'gcs'].includes(route.tool) ? 'ich' : route.tool === 'dapt' && prev.note.diagnosisCategory === 'tia' ? 'tia' : 'ischemic' } }))}>{['ich-volume', 'ich-score', 'gcs'].includes(route.tool) ? 'Set ICH' : 'Set acute ischemic stroke'}</button></div>}<Encounter onReset={reset} state={state} update={update} now={now} copyStatus={copyStatus} onCopy={copy} onGenerateAndCopy={generateAndCopy} onGenerate={text => { setState(prev => ({ ...prev, draft: { text, revision: prev.revision, stale: false } })); setCopyStatus(''); }} /></div>
       {protocolVisited && <div hidden={route.surface !== 'protocols'}>{sharedProtocol.safetyReviewRequired && <p role="status" className="workspace-result workspace-inline-action" data-tone={sharedProtocol.safetyReviewSeverity || 'critical'}><span><strong>IVT card held.</strong> {sharedProtocol.safetyReviewReason || 'Unresolved safety or anticoagulant concern in Encounter.'}</span><a href="#/encounter" onClick={event => { event.preventDefault(); goToEncounter('safety-title'); }}>Review in Encounter</a></p>}<Suspense fallback={null}><QuickReference sub={route.sub || 'ischemic'} weightKg={Number(state.note.weight) > 0 && Number(state.note.weight) <= 350 ? Number(state.note.weight) : undefined} reversal={state.context === 'acute' && ['ich', 'sah'].includes(state.note.diagnosisCategory) ? { agent: state.note.lastDOACType, inr: state.note.inr, lastDoseHours: state.note.lastDOACDose && Number.isFinite(Date.parse(state.note.lastDOACDose)) && Date.parse(state.note.lastDOACDose) <= now ? (now - Date.parse(state.note.lastDOACDose)) / 3600000 : null } : undefined} /></Suspense><p className="workspace-linked">Linked to Encounter: NIHSS, elapsed time and shared measurements update these cards.</p><SurfaceBoundary key={epoch}><Suspense fallback={<p role="status">Loading protocols…</p>}><ProtectedProtocols encounter={sharedProtocol} key={epoch} active={route.surface === 'protocols'} telestrokeNote={state.note} setTelestrokeNote={change => update(prev => ({ ...prev, note: typeof change === 'function' ? change(prev.note) : change }))} nihssScore={encounterNihss(state).total ?? 0} consultationType={state.consultationType === 'phone' ? 'telephone' : 'video'} pocketCardsCaseEpoch={epoch} managementSubTab={route.sub || 'ischemic'} setManagementSubTab={sub => { location.hash = `#/protocols/${sub}`; }} navigateTo={tab => { location.hash = tab === 'encounter' ? '#/encounter' : '#/tools'; }} timeFromLKW={timing.clock ? elapsedEncounterTime({ time: new Date(timing.timestamp), label: timing.label }, new Date(now)) : null} ichVolumeParams={state.volume} setIchVolumeParams={change => update(prev => ({ ...prev, volume: typeof change === 'function' ? change(prev.volume) : change }))} ichVolumeEstimate={protocolVolumeEstimate(volume)} /></Suspense></SurfaceBoundary></div>}

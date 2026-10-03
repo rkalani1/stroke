@@ -62,6 +62,11 @@ html { scroll-padding-top: calc(var(--case-bar-h) + 8px); }
 .case-bar__window[data-tone="neutral"] { background: var(--paper-2); color: var(--ink-2); }
 /* Solid so the exposure flag stays distinct beside every diagnosis colour (≈6.5:1 both themes). */
 .case-bar__badge { flex-shrink: 0; display: inline-flex; align-items: center; min-height: 26px; padding: 2px 10px; border-radius: var(--radius-pill); background: var(--caution); color: var(--surface); font: 650 .75rem/1.2 var(--font-sans); white-space: nowrap; }
+/* Multi-trigger prompts (ICH neurosurgery) read as a list, one trigger per line. */
+.workspace-trigger-list { margin: 4px 0 0; padding-left: 18px; list-style: disc; }
+.workspace-trigger-list li + li { margin-top: 3px; }
+/* Flagged values carry a glyph as well as colour; the value is a flex row, so the glyph pulls in and rides high. */
+.case-bar__flag { margin-left: -4px; align-self: flex-start; font: 800 .75em/1 var(--font-sans); color: var(--caution); }
 a.case-bar__badge { text-decoration: none; }
 a.case-bar__badge:hover { filter: brightness(1.08); }
 .case-bar__item[data-empty] .case-bar__value { color: var(--faint); font-weight: 500; }
@@ -265,7 +270,11 @@ h3 { font-family: var(--font-sans); font-weight: 650; margin: 12px 0; }
 .workspace-primary:hover:not(:disabled) { background: rgb(var(--cobalt-700)); box-shadow: var(--elev-2); }
 .generated-summary { margin-top: 16px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-2); }
 .generated-summary textarea { font-family: var(--mono-font); font-size: .8125rem; line-height: 1.65; display: block; margin-bottom: 12px; resize: vertical; }
-.workspace-update { padding: 16px; border: 1px solid var(--line); border-radius: var(--radius-lg); margin-top: 16px; background: var(--card); box-shadow: var(--elev-1); font-size: .875rem; }
+/* The update notice floats above the content so it never pushes the form while someone is tapping. */
+.workspace-update { position: fixed; z-index: 55; right: 16px; bottom: 16px; max-width: 420px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--card); box-shadow: var(--elev-2, var(--elev-1)); font-size: .875rem; }
+@media (max-width: 768px) { .workspace-update { left: 12px; right: 12px; margin: 0 auto; bottom: calc(76px + env(safe-area-inset-bottom)); } }
+/* While the notice shows, reserve scroll room so it never covers the note's Copy and Generate buttons. */
+.workspace-update + #workspace-main { padding-bottom: 176px; }
 .workspace-update button { padding: 8px 12px; margin: 8px 8px 0 0; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--paper-2); }
 .tools-surface { margin: 0 0 24px; }
 /* Every surface starts the same distance below the case bar. */

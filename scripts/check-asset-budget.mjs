@@ -160,6 +160,8 @@ const precache = corePrecacheBytes();
 // initial 115.4 KB gzip / 339 KB raw, all JS 234 KB gzip / 0.77 MB raw. Reviewed
 // ceilings restore ~3% headroom: initial 120 KB gzip / 352 KB raw, all JS 248 KB
 // gzip / 820 KB raw.
+// 2026-10-03 v7.7.5: iOS launch screens are referenced again (12 images, ~370 KB, two new
+// sizes for current iPhones), taking the precache to 2.18 MB; ceiling 2.2 -> 2.3 MB.
 const checks = [
   {
     id: 'app-js-gzip',
@@ -202,7 +204,7 @@ const checks = [
     id: 'sw-precache',
     label: `service-worker precache (${precache.count} entries)`,
     actual: precache.total,
-    budget: 2.2 * MB,
+    budget: 2.3 * MB,
     unit: MB,
     unitLabel: 'MB',
     note: 'what a first-time visitor downloads before the app is offline-ready',
