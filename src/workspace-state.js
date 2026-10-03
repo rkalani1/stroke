@@ -1,7 +1,7 @@
 import { formatEncounterDetails, encounterDetailWarnings, TIA_RISK_FIELDS } from './encounter-details.js';
 import { formatTimeline, encounterClockTimestamp, evtReperfusionIssue } from './encounter-timeline.js';
 import { formatDocumentation } from './documentation-output.js';
-import { reconcileSupplementaryAppliedScores } from './supplementary-calculators.js';
+import { reconcileSupplementaryAppliedScores, supplementaryResult } from './supplementary-calculators.js';
 import { NIHSS_ITEMS } from './clinical/nihss-items.js';
 import { SAFETY_ITEMS } from './clinical/safety-items.js';
 import { calculateNIHSS, calculateICHVolumeReviewed, calculateICHScore, calculateTNKDoseReviewed, calculateAlteplaseDoseReviewed } from './calculators.js';
@@ -335,6 +335,13 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     const gcs = reviewedGcs(state.gcs);
     if (ageValue !== null && gcs !== null && volume && !volume.unitWarning && !ichLocationConflict && typeof state.ich.ivh === 'boolean' && typeof state.ich.infratentorial === 'boolean') entry('ICH score', `${calculateICHScore({ gcs: gcs <= 4 ? 'gcs34' : gcs <= 12 ? 'gcs512' : 'gcs1315', age80: ageValue >= 80, volume30: volume.isLarge, ivh: state.ich.ivh, infratentorial: state.ich.infratentorial, criteriaReviewed: true })}/6 (severity grade; not an individual prognosis)`);
   }
+  // SAH grades from the Encounter worksheets (AHA/ASA aSAH 2023: document a validated clinical grade).
+  if (n.diagnosisCategory === 'sah') {
+    const huntHess = supplementaryResult(state, 'hunt-hess'), wfns = supplementaryResult(state, 'wfns'), fisher = supplementaryResult(state, 'modified-fisher');
+    if (huntHess) entry('Hunt–Hess grade', `${huntHess.grade} (${huntHess.description})`);
+    if (wfns) entry('WFNS grade', `${wfns.grade} (GCS ${wfns.gcs})`);
+    if (fisher) entry('Modified Fisher grade', `${fisher.grade} (${fisher.description.replace(/\.$/, '')})`);
+  }
   // ABCD² is entered in the acute DAPT screen; follow-up notes carry it only when one was recorded.
   if (n.diagnosisCategory === 'tia' && (state.context === 'acute' || hasValue(state.dapt?.abcd2))) {
     const abcd2 = numericInput(state.dapt?.abcd2, { min: 0, max: 7, integer: true });
@@ -347,11 +354,14 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   entry('Handoff', state.actions.handoff);
 
   if (state.documentFormat === 'handoff') {
-    const labels = new Set(['ABCD²', 'ICH score', 'UFH dose intent', 'Anticoagulant exposure', 'Last anticoagulant dose', 'LMWH dose intent', 'Recorded safety concerns', 'Entered values conflicting with a "No" answer', 'IVT safety review', 'IVT clinician decision', 'EVT clinician decision', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
+    const labels = new Set(['ABCD²', 'ICH score', 'Hunt–Hess grade', 'WFNS grade', 'Modified Fisher grade', 'UFH dose intent', 'Anticoagulant exposure', 'Last anticoagulant dose', 'LMWH dose intent', 'Recorded safety concerns', 'Entered values conflicting with a "No" answer', 'IVT safety review', 'IVT clinician decision', 'EVT clinician decision', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
     return ['Team handoff', `${demographics} · ${diagnosis}${state.context === 'follow-up' ? ' · follow-up' : ''}`,
       lkw, `NIHSS: ${examText}${examDetails}${extraExam.length ? `; ${extraExam.join('; ')}` : ''}`,
       `CT (${ctTimestamp}): ${ct}`, `CTA: ${cta}`, hasValue(perfusion) ? `CTP: ${perfusion}` : '',
-      hasValue(n.presentingBP) ? `BP: ${n.presentingBP} mmHg` : '', hasValue(state.assessment) ? `Assessment: ${state.assessment}` : '',
+      hasValue(n.presentingBP) ? `BP: ${n.presentingBP} mmHg` : '',
+      // The receiving team needs the coagulation values behind any reversal or IVT decision.
+      [['Glucose', n.glucose, 'mg/dL'], ['Platelets', n.plateletCount, ''], ['INR', n.inr, ''], ['aPTT', n.ptt, 's']].filter(([, value]) => hasValue(value)).map(([label, value, unit]) => `${label} ${String(value).trim()}${unit ? ` ${unit}` : ''}`).join('; ').replace(/^(.+)$/, 'Labs: $1'),
+      hasValue(state.assessment) ? `Assessment: ${state.assessment}` : '',
       ...recommendations.filter(line => labels.has(line.slice(0, line.indexOf(':'))))].filter(Boolean).join('\n');
   }
 
