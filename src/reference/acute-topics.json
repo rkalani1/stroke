@@ -792,7 +792,7 @@
     "summary": "Anticoagulate on diagnosis, even with venous hemorrhage: parenteral heparin (LMWH favored), then oral anticoagulation for 3–12 months, or indefinitely with chronic major risk factors or recurrent VTE (AHA 2024). DOACs are a reasonable alternative to warfarin after the lead-in: RE-SPECT CVT (dabigatran) had no recurrent VTE and major bleeding 1.7 vs 3.3%; ACTION-CVT (observational) found similar recurrence and less major hemorrhage (aHR 0.35). Endovascular therapy is rescue only (TO-ACT: no benefit); decompressive craniectomy is lifesaving with impending herniation.",
     "recommendations": [
       {
-        "text": "The mainstream initial treatment of cerebral venous thrombosis includes parenteral heparin followed by transition to oral vitamin K antagonists for 3 to 12 months, depending on the underlying cause, or indefinitely in the presence of chronic major risk factors or recurrent venous thromboembolism.",
+        "text": "The mainstream initial treatment of cerebral venous thrombosis includes parenteral heparin followed by transition to oral vitamin K antagonists for 3 to 12 months, depending on the underlying cause, or indefinitely in the presence of chronic major risk factors or recurrent venous thromboembolism. [Editorial note: the statement's abbreviated key point refers broadly to thrombophilia; its treatment section specifies chronic major risk factors. An isolated thrombophilia result is not, by itself, a universal indication for indefinite treatment.]",
         "cor": "Statement",
         "loe": "Ungraded",
         "source": "AHA CVT Statement 2024 · cvt-2024-5",

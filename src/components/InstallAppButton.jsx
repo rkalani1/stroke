@@ -172,7 +172,7 @@ export function InstallAppButton({ installPrompt, isInstalled, onInstall, classN
     return (
       <span
         className={cx(
-          'inline-flex min-h-[40px] items-center gap-2 rounded-pill border border-ok-200 bg-ok-50 px-4 text-xs font-bold text-ok-800 dark:border-ok-800 dark:bg-ok-950 dark:text-ok-200',
+          'inline-flex min-h-[44px] items-center gap-2 rounded-pill border border-ok-200 bg-ok-50 px-4 text-sm font-bold text-ok-800 dark:border-ok-800 dark:bg-ok-950 dark:text-ok-200',
           className
         )}
       >
@@ -193,7 +193,7 @@ export function InstallAppButton({ installPrompt, isInstalled, onInstall, classN
           else setSheetOpen(true);
         }}
         className={cx(
-          'inline-flex min-h-[40px] items-center gap-2 rounded-pill border px-4 text-xs font-bold transition-colors',
+          'inline-flex min-h-[44px] items-center gap-2 rounded-pill border px-4 text-sm font-bold transition-colors',
           'focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2 focus-visible:ring-offset-paper',
           hasNativePrompt
             ? 'border-cobalt-600 bg-cobalt-600 text-white hover:bg-cobalt-700 dark:bg-cobalt-600 dark:hover:bg-cobalt-700'

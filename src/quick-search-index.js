@@ -3,13 +3,13 @@
 // stay in memory; nothing here reads or writes Encounter values.
 import { ENCOUNTER_TOOLS } from './calculator-utilities.js';
 import { PROTOCOL_TARGETS } from './protocol-navigation.js';
+import { STOPWORDS } from './reference-search.js';
 
 const normalize = value => String(value || '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase()
   .replace(/₂/g, '2').replace(/²/g, '2').replace(/[^a-z0-9]+/g, ' ').trim()
   .replace(/\bafib\b/g, 'atrial fibrillation').replace(/\btpa\b/g, 'alteplase');
 const compact = value => normalize(value).replace(/ /g, '');
 
-const STOPWORDS = new Set(['a', 'an', 'the', 'of', 'for', 'to', 'in', 'on', 'and', 'or', 'with', 'when', 'what', 'how', 'is', 'after', 'do', 'i']);
 export const SEARCH_GROUPS = ['Go to', 'Protocols', 'Calculators', 'Evidence', 'Studies', 'Trials', 'External'];
 
 const NAVIGATION = [

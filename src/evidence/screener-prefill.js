@@ -2,7 +2,7 @@
 //
 // Pure mapping from the Encounter workspace state to Trial Screener facts.
 // Prefill is applied only on an explicit user action; every value it does not
-// recognise stays unknown, and the user can still override every field.
+// recognise stays unknown, and every imported fact a modeled study uses has a screener control.
 
 import { encounterTiming, encounterNihss, encounterVolume, validTimestamp } from '../workspace-state.js';
 import { reviewedGcs, numericInput } from '../encounter-clinical-review.js';
@@ -10,8 +10,9 @@ import { reviewedGcs, numericInput } from '../encounter-clinical-review.js';
 const MODELED = { ischemic: 'ischemic', ich: 'ich', tia: 'tia' };
 const DIAGNOSIS_LABEL = { ischemic: 'Ischemic', ich: 'ICH', tia: 'TIA', sah: 'SAH', cvt: 'CVT', mimic: 'Stroke mimic', other: 'Other / uncertain' };
 export const NO_MODELED_STUDIES = 'No modeled studies for this diagnosis';
-// Dominance of an M2 occlusion is not recorded in the Encounter, so M2 stays unknown.
-const VESSEL = { ICA: 'ica_m1', M1: 'ica_m1', None: 'none', Basilar: 'other', Other: 'other' };
+// Dominance of an M2 occlusion is not recorded in the Encounter, so M2 stays unknown;
+// 'M3 / distal' also stays unknown because the screener groups M3 with non-dominant M2.
+const VESSEL = { ICA: 'ica_m1', M1: 'ica_m1', None: 'none', ACA: 'other', PCA: 'other', Vertebral: 'other', Basilar: 'other', Other: 'other' };
 const ANTICOAGULANT_KIND = { apixaban: 'doac', rivaroxaban: 'doac', dabigatran: 'doac', edoxaban: 'doac', warfarin: 'vka', lmwh: 'lmwh', none: 'none' };
 const ANTICOAGULANT_TEXT = { doac: 'on DOAC', vka: 'on warfarin/VKA', lmwh: 'on LMWH', none: 'no anticoagulant' };
 
@@ -80,7 +81,7 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   if (classification === 'ischemic') {
     const vesselLabel = note.vesselOcclusion?.[0] || '';
     if (VESSEL[vesselLabel]) { patch.vessel = VESSEL[vesselLabel]; summary.push(vesselLabel === 'None' ? 'no occlusion' : vesselLabel); }
-    else if (vesselLabel) summary.push(`${vesselLabel} (dominance not recorded)`);
+    else if (vesselLabel) summary.push(vesselLabel === 'M2' ? 'M2 (dominance not recorded)' : `${vesselLabel} (not imported)`);
     const aspects = numericInput(state.aspects, { min: 0, max: 10, integer: true });
     if (aspects !== null) { patch.aspects = aspects; summary.push(`ASPECTS ${aspects}`); }
   }
@@ -101,12 +102,19 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
     for (const [id, value] of Object.entries(facts.exclusions)) if (typeof value === 'boolean') patch.exclusions[id] = value;
     // A valid last-dose time answers the dose-interval exclusions directly.
     const dose = kind !== 'none' && kind !== 'lmwh' ? validTimestamp(note.lastDOACDose, nowMs) : null;
+    const hours = dose ? (nowMs - dose.getTime()) / 3600000 : null;
     if (dose) {
-      const hours = (nowMs - dose.getTime()) / 3600000;
       patch.exclusions.exOacWithin7d = hours <= 168;
       if (kind === 'doac') patch.exclusions.exXaDtiWithin48h = hours <= 48;
     }
-    summary.push(ANTICOAGULANT_TEXT[kind]);
+    if (hours !== null && hours > 168) {
+      // A last dose more than 7 days ago says nothing about use at onset or at the index stroke.
+      // Clear explicitly (not omit) so a reapply also clears what an earlier import set.
+      patch.exclusions.exDoacLmwhAtOnset = undefined;
+      patch.takingOac = 'unselected';
+      patch.anticoagulant = 'unselected';
+      summary.push(`${kind === 'doac' ? 'DOAC' : 'warfarin/VKA'}, last dose >7 d`);
+    } else summary.push(ANTICOAGULANT_TEXT[kind]);
   }
 
   const facts = Object.keys(patch).filter(key => key !== 'exclusions' && key !== 'onsetUnit' && key !== 'onsetRangeHours');

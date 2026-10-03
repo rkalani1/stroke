@@ -42,25 +42,36 @@ const referenceRecords = [
 
 function partialTrialScreen(result, sourceUrl) {
   if (!result) return null;
-  return { ...result, eligible: result.eligible ? null : false, partialScreenMet: result.eligible,
+  // The helpers' sub-criterion flags use outer thresholds and are fixed false outside the
+  // window, so they are not patient facts; the reason text carries the screen.
+  const { meetsImaging, meetsClinical, meetsCore, meetsMismatch, ...rest } = result;
+  if ('mismatchRatio' in rest && !Number.isFinite(rest.mismatchRatio)) rest.mismatchRatio = 'infinite (core 0 mL)';
+  return { ...rest, eligible: result.eligible ? null : false, partialScreenMet: result.eligible,
     status: result.eligible ? 'partial-screen-met' : 'modeled-criteria-not-met',
+    ...(result.eligible ? {} : { nonExclusionNote: 'Not meeting this partial historical screen, including its time window, does not exclude EVT under current evidence.' }),
     actionable: false, eligibilityScope: 'Partial historical trial screen; not complete enrollment or EVT eligibility.',
     missingDomains: ['ICA/proximal MCA occlusion', 'Premorbid functional status', 'Remaining original trial inclusion/exclusion criteria'], sourceUrl };
 }
 
-const ok = (obj) => ({ content: [{ type: 'text', text: JSON.stringify({ ...obj, _disclaimer: DISCLAIMER }, null, 2) }] });
-const text = (t) => ({ content: [{ type: 'text', text: t }] });
+const ok = (obj) => ({ content: [{ type: 'text', text: JSON.stringify({ ...obj, appVersion, _disclaimer: DISCLAIMER }, null, 2) }] });
+const toolError = (t) => ({ isError: true, content: [{ type: 'text', text: `${t} ${DISCLAIMER}` }] });
+// Adult AIS dosing: a weight below 30 kg is far more likely a unit or decimal slip than a patient.
+const weightWarning = weightKg => weightKg < 30 ? { weightWarning: 'Weight below 30 kg is implausible for adult AIS dosing; confirm kilograms and decimal placement.' } : {};
+const MCP_TOOLS = { 'tnk-dose': 'calc_tnk_dose', 'alteplase-dose': 'calc_alteplase_dose', crcl: 'calc_crcl', dawn: 'calc_dawn_eligibility', defuse3: 'calc_defuse3_eligibility' };
 
-const server = new McpServer({ name: 'stroke-cds', version: '1.0.0' });
+const server = new McpServer({ name: 'stroke-cds', version: appVersion });
 
 // ── Calculator tools (wrap the real functions) ───────────────────────────────
 server.registerTool('calc_tnk_dose',
   { title: 'Tenecteplase dose', description: 'Adult AIS tenecteplase dose reference. Explicit authority: guideline 0.25 mg/kg (max 25 mg, default) or US FDA-label weight bands. Neither establishes IVT eligibility.', inputSchema: { weightKg: z.number().finite().positive().max(350).describe('Patient weight in kg'), authority: z.enum(['guideline', 'fda-label']).default('guideline') } },
-  async ({ weightKg, authority }) => ok({ tool: 'calc_tnk_dose', result: calculateTNKDoseReviewed(weightKg, authority) }));
+  async ({ weightKg, authority }) => ok({ tool: 'calc_tnk_dose', result: calculateTNKDoseReviewed(weightKg, authority), ...weightWarning(weightKg) }));
 
 server.registerTool('calc_alteplase_dose',
-  { title: 'Alteplase dose', description: 'IV alteplase dose for AIS (0.9 mg/kg, max 90 mg; 10% bolus). Input: weightKg.', inputSchema: { weightKg: z.number().finite().positive().max(350).describe('Synthetic weight in kg') } },
-  async ({ weightKg }) => ok({ tool: 'calc_alteplase_dose', result: calculateAlteplaseDoseReviewed(weightKg) }));
+  { title: 'Alteplase dose', description: 'Adult AIS IV alteplase dose reference (0.9 mg/kg, max 90 mg; 10% bolus over 1 minute, remainder over 60 minutes). Input: weightKg. Does not establish IVT eligibility.', inputSchema: { weightKg: z.number().finite().positive().max(350).describe('Synthetic weight in kg') } },
+  async ({ weightKg }) => {
+    const result = calculateAlteplaseDoseReviewed(weightKg);
+    return ok({ tool: 'calc_alteplase_dose', result: result && { ...result, administration: 'Bolus over 1 minute; remaining infusion over 60 minutes.', scope: 'This dose reference does not establish IVT eligibility or the treatment time window.' }, ...weightWarning(weightKg) });
+  });
 
 server.registerTool('calc_crcl',
   { title: 'Creatinine clearance', description: 'Adult Cockcroft-Gault estimate with rawValue for renal thresholds and one-decimal value for display. Confirm drug-specific weight convention and stable creatinine; this is not a dialysis indication.', inputSchema: {
@@ -68,7 +79,8 @@ server.registerTool('calc_crcl',
       sex: z.enum(['male', 'female']), creatinine: z.number().finite().min(0.1).describe('Serum creatinine mg/dL'),
       heightCm: z.number().finite().positive().max(300).optional(),
     } },
-  async ({ age, weight, sex, creatinine, heightCm }) => ok({ tool: 'calc_crcl', result: calculateCrClReviewed(age, weight, sex === 'female' ? 'F' : 'M', creatinine, heightCm) }));
+  async ({ age, weight, sex, creatinine, heightCm }) => ok({ tool: 'calc_crcl', result: calculateCrClReviewed(age, weight, sex === 'female' ? 'F' : 'M', creatinine, heightCm),
+    ...(heightCm !== undefined && (heightCm < 120 || heightCm > 230) ? { heightWarning: 'Height outside 120–230 cm is unusual for an adult and drives the obesity weight adjustment; confirm centimeters, not inches.' } : {}) }));
 
 server.registerTool('calc_dawn_eligibility',
   { title: 'DAWN EVT eligibility', description: 'Partial DAWN age/NIHSS/core/time screen (6–24h), not complete EVT eligibility. A positive partial screen returns eligible:null.', inputSchema: {
@@ -83,12 +95,14 @@ server.registerTool('calc_defuse3_eligibility',
       coreMl: z.number().nonnegative(), penumbraMl: z.number().nonnegative(),
       timeFromLKWh: z.number().finite().nonnegative(), nihss: z.number().int().min(0).max(42), age: z.number().finite().positive().max(120),
     } },
-  async (a) => ok({ tool: 'calc_defuse3_eligibility', result: partialTrialScreen(evaluateDEFUSE3(a), 'https://pubmed.ncbi.nlm.nih.gov/29364767/') }));
+  async (a) => a.penumbraMl < a.coreMl
+    ? toolError('penumbraMl is the TOTAL Tmax>6s hypoperfused volume and includes the core, so it cannot be below coreMl. Check whether the mismatch (penumbra-only) volume was entered instead.')
+    : ok({ tool: 'calc_defuse3_eligibility', result: partialTrialScreen(evaluateDEFUSE3(a), 'https://pubmed.ncbi.nlm.nih.gov/29364767/') }));
 
 // ── Maintained tool metadata ───────────────────────────────────────────────────────
 server.registerTool('list_calculators',
-  { title: 'List calculators', description: 'Catalog of available calculators (id, name, category).', inputSchema: {} },
-  async () => ok({ count: calculatorsIndex.length, calculators: calculatorsIndex }));
+  { title: 'List calculators', description: "Catalog of the app's calculators with reveal routes; only entries with an mcpTool are callable through this server.", inputSchema: {} },
+  async () => ok({ count: calculatorsIndex.length, calculators: calculatorsIndex.map(calculator => ({ ...calculator, mcpTool: MCP_TOOLS[calculator.id] || null })) }));
 
 server.registerTool('get_sources',
  { title: 'Maintained sources and limits', description: 'Bounded retained source identities, original review scopes and correction limitations. No full reference corpus or recruitment data.', inputSchema: {} },

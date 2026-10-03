@@ -13,7 +13,8 @@ export function formatPerfusionForExport(note = {}) {
     if (hypoperfusion < core) {
       parts.push('Perfusion volumes conflict: total hypoperfused volume is below core; reconcile measurements');
     } else {
-      parts.push(`Calculated mismatch volume: ${hypoperfusion - core} mL`);
+      const mismatch = hypoperfusion - core;
+      parts.push(`Calculated mismatch volume: ${Number.isFinite(mismatch * 10) ? Math.round(mismatch * 10) / 10 : mismatch} mL`);
       const ratio = core > 0 ? hypoperfusion / core : null;
       const ratioText = !Number.isFinite(ratio) ? 'not calculable; review values' : ratio < 1000 ? ratio.toFixed(2) : '>999';
       parts.push(core === 0

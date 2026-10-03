@@ -317,7 +317,7 @@
       "BRIDGE-TNK",
       "drip and ship"
     ],
-    "summary": "Anterior LVO (ICA or M1), NIHSS ≥6, prestroke mRS 0–1: EVT within 6 h if ASPECTS 3–10, and at 6–24 h if ASPECTS ≥6 (AHA 2026, COR 1). HERMES (≤6 h): mRS shift cOR 2.49; DAWN (6–24 h, clinical–core mismatch): mRS 0–2 49 vs 13%; DEFUSE 3 (6–16 h, perfusion mismatch): 45 vs 17%. Give IVT first when eligible and do not delay EVT: EVT alone was not shown noninferior in SWIFT DIRECT or MR CLEAN-NO IV, and BRIDGE-TNK favored tenecteplase first (mRS 0–2 52.9 vs 44.1%).",
+    "summary": "Anterior LVO (ICA or M1), NIHSS ≥6, prestroke mRS 0–1: EVT within 6 h if ASPECTS 3–10, and at 6–24 h if ASPECTS ≥6 (AHA 2026, COR 1). HERMES (5 RCTs, ≤12 h): mRS shift cOR 2.49; DAWN (6–24 h, clinical–core mismatch): mRS 0–2 49 vs 13%; DEFUSE 3 (6–16 h, perfusion mismatch): 45 vs 17%. Give IVT first when eligible and do not delay EVT: EVT alone was not shown noninferior in SWIFT DIRECT or MR CLEAN-NO IV, and BRIDGE-TNK favored tenecteplase first (mRS 0–2 52.9 vs 44.1%).",
     "recommendations": [
       {
         "text": "In AIS patients with anterior circulation proximal LVO (ICA or M1), presenting within 6 hours of symptom onset, with NIHSS 6 or greater, prestroke mRS 0-1, and ASPECTS 3-10, EVT (endovascular thrombectomy) is recommended to improve functional outcomes and reduce mortality.",
@@ -409,8 +409,15 @@
       "LASTE",
       "TESLA"
     ],
-    "summary": "Large cores still benefit: ASPECTS 3–5 at 6–24 h (age <80, mRS 0–1, no significant mass effect) is COR 1, and ASPECTS 0–2 within 6 h is reasonable (2a) (AHA 2026). SELECT2: generalized OR 1.51 (mRS 0–2 20 vs 7%); ANGEL-ASPECT: GOR 1.37; RESCUE-Japan LIMIT: mRS 0–3 31.0 vs 12.7%; TENSION: cOR 2.58 with lower mortality; LASTE (ASPECTS ≤5 within 6.5 h): mortality 36.1 vs 55.5%. Expect more hemorrhage (ANGEL-ASPECT sICH 6.1 vs 2.7%).",
+    "summary": "Large cores still benefit: within 6 h, ASPECTS 3–5 falls under the COR 1 ASPECTS 3–10 recommendation, which has no age criterion (ais-2026-114), and ASPECTS 0–2 is reasonable (2a) only with age <80, mRS 0–1 and no significant mass effect (ais-2026-117); at 6–24 h, ASPECTS 3–5 (age <80, mRS 0–1, no significant mass effect) is COR 1 (ais-2026-116) (AHA 2026). SELECT2: generalized OR 1.51 (mRS 0–2 20 vs 7%); ANGEL-ASPECT: GOR 1.37; RESCUE-Japan LIMIT: mRS 0–3 31.0 vs 12.7%; TENSION: cOR 2.58 with lower mortality; LASTE (ASPECTS ≤5 within 6.5 h): mortality 36.1 vs 55.5%. Expect more hemorrhage (ANGEL-ASPECT sICH 6.1 vs 2.7%).",
     "recommendations": [
+      {
+        "text": "In AIS patients with anterior circulation proximal LVO (ICA or M1), presenting within 6 hours of symptom onset, with NIHSS 6 or greater, prestroke mRS 0-1, and ASPECTS 3-10, EVT (endovascular thrombectomy) is recommended to improve functional outcomes and reduce mortality.",
+        "cor": "1",
+        "loe": "A",
+        "source": "AHA/ASA AIS 2026 · ais-2026-114 · p. 53",
+        "id": "ais-2026-114"
+      },
       {
         "text": "In selected patients with AIS from anterior circulation proximal LVO (ICA or M1), presenting 6-24 hours from symptom onset, age under 80, NIHSS 6 or greater, prestroke mRS 0-1, ASPECTS 3-5, and without significant mass effect on imaging, EVT is recommended to improve functional outcomes and reduce mortality.",
         "cor": "1",
@@ -429,7 +436,7 @@
     "consider": [
       "Measure the core consistently (NCCT/MRI ASPECTS or CTP core) and confirm age, baseline mRS and mass effect.",
       "Set expectations: the benefit is mostly less disability, not independence (LASTE median mRS 4 vs 6).",
-      "SVIN 2025: ASPECTS 0–2 at 6–24 h — benefit uncertain (2b)."
+      "SVIN 2025: ASPECTS 0–5 within 6 h (age 18–80, mRS 0–1) is Class I (LASTE); ASPECTS 0–2 at 6–24 h — benefit uncertain (2b)."
     ],
     "caution": "Trials mostly enrolled patients aged 80 or younger with prestroke mRS 0–1.",
     "sources": [
@@ -439,7 +446,7 @@
         "year": 2025,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "access": "Primary full text (PMC12671639) checked for the summarized recommendations."
       }
     ],
     "related": [
@@ -542,7 +549,7 @@
       "DISCOUNT",
       "ORIENTAL-MeVO"
     ],
-    "summary": "Routine EVT for medium or distal occlusion is not supported: DISTAL (n=543), ESCAPE-MeVO (n=530) and DISCOUNT (n=244, stopped for futility and excess sICH) showed no functional benefit, with more sICH (DISCOUNT 11 vs 3% among those treated) and higher mortality in ESCAPE-MeVO (13.3 vs 8.4%). ORIENTAL-MeVO (China, NIHSS ≥6, ≤24 h) is the only positive trial (mRS 0–2 58.6 vs 46.6%; sICH 4.7 vs 2.2%). EVT is reasonable for a disabling dominant proximal M2 occlusion within 6 h with NIHSS ≥6, ASPECTS ≥6 and prestroke mRS 0–1 (AHA 2026, 2a). AHA 2026 rates nondominant or codominant M2, distal MCA, ACA and PCA occlusion COR 3: No Benefit, whereas SVIN 2026 rates disabling proximal and/or dominant M2 2a.",
+    "summary": "Routine EVT for medium or distal occlusion is not supported: DISTAL (n=543), ESCAPE-MeVO (n=530) and DISCOUNT (n=244, stopped for futility and excess sICH) showed no functional benefit, with more sICH (DISCOUNT 11 vs 3% among those treated) and higher mortality in ESCAPE-MeVO (13.3 vs 8.4%). ORIENTAL-MeVO (China, NIHSS ≥6, ≤24 h) is the only positive trial (mRS 0–2 58.6 vs 46.6%; sICH 4.7 vs 2.2%). EVT is reasonable for a disabling dominant proximal M2 occlusion within 6 h with NIHSS ≥6, ASPECTS ≥6 and prestroke mRS 0–1 (AHA 2026, 2a). AHA 2026 rates nondominant or codominant M2, distal MCA, ACA and PCA occlusion COR 3: No Benefit, whereas SVIN 2026 says EVT may be considered (2b) for distal, codominant or nondominant M2 with a disabling deficit and NIHSS ≥6, and rates disabling proximal and/or dominant M2 2a.",
     "recommendations": [
       {
         "text": "In AIS patients with occlusion of the dominant proximal M2 division of the MCA presenting within 6 hours, prestroke mRS 0-1, NIHSS 6 or greater, and ASPECTS 6 or greater, EVT is reasonable to improve functional outcomes, though benefits are uncertain.",
@@ -564,6 +571,13 @@
         "loe": "B-NR",
         "source": "SVIN MeVO 2026 · svin-mevo-dvo-evt-2026-r1",
         "id": "svin-mevo-dvo-evt-2026-r1"
+      },
+      {
+        "text": "EVT may be considered in distal, codominant, or nondominant M2 occlusions who present with disabling deficits and an NIHSS score ≥6.",
+        "cor": "2b",
+        "loe": "B-R",
+        "source": "SVIN MeVO 2026 · svin-mevo-dvo-evt-2026-r2",
+        "id": "svin-mevo-dvo-evt-2026-r2"
       }
     ],
     "consider": [
@@ -579,7 +593,7 @@
         "year": 2026,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "access": "Primary full text (PMC13331429) checked for the quoted recommendations."
       },
       {
         "title": "DISTAL: Endovascular Treatment for Stroke Due to Occlusion of Medium or Distal Vessels",

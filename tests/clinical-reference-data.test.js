@@ -164,7 +164,7 @@ describe('bounded clinical-reference data', () => {
 
   it('quotes a curated set of graded guideline recommendations on high-yield topics', () => {
     const recs = canonical.topics.flatMap(topic => (topic.recommendations || []).map(rec => ({ ...rec, topic: topic.id })));
-    expect(recs).toHaveLength(80);
+    expect(recs).toHaveLength(82);
     for (const rec of recs) expect(rec.source).toMatch(/AHA|NCS|SVIN/);
     const tnk = recs.find(rec => rec.id === 'ais-2026-98' && rec.topic === 'acute-reperfusion');
     expect(tnk).toMatchObject({ cor: '1', loe: 'A' });
