@@ -81,16 +81,18 @@ export function protocolEncounter(state, nowMs = Date.now()) {
   const exposure = compatible ? assessAnticoagulantExposure(n, new Date(nowMs)) : null;
   const safetyReasons = [
     ...(treatment?.reviewRequired === true ? [treatment.reason] : []),
-    ...(exposure && exposure.status !== 'none' ? [`anticoagulant exposure: ${exposure.reason}`] : [])
+    ...(exposure && exposure.status !== 'none' ? [n.lastDOACType ? `Anticoagulant exposure — ${exposure.reason}.` : 'Anticoagulant exposure not yet assessed in Encounter.'] : [])
   ];
   const safetyReviewRequired = compatible && safetyReasons.length > 0;
+  // Unassessed exposure is a gap to fill (caution); recorded concerns are critical.
+  const safetyReviewSeverity = treatment?.reviewRequired === true || exposure?.status === 'block' || exposure?.status === 'review' ? 'critical' : 'caution';
   const vessels = Array.isArray(n.vesselOcclusion) ? n.vesselOcclusion : [];
   const lvoOnCta = vessels.some(v => ['ICA', 'M1', 'M2'].includes(v)) ? true : vessels.length === 1 && vessels[0] === 'None' ? false : null;
   // Fixed source values define review validity; wall-clock advancement does not
   // reset local attestations, but elapsed time is recalculated on every render.
   const sourceKey = JSON.stringify([state.context, n, nihssSourceInput(state), state.aspects, state.pcAspects, state.evtMassEffect]);
   return {
-    sourceKey, compatible, safetyReviewRequired, safetyReviewReason: safetyReviewRequired ? safetyReasons.join(' ') : '', drug: state.drug || '',
+    sourceKey, compatible, safetyReviewRequired, safetyReviewReason: safetyReviewRequired ? safetyReasons.join(' ') : '', safetyReviewSeverity: safetyReviewRequired ? safetyReviewSeverity : '', drug: state.drug || '',
     ivt: { age: n.age, weight: n.weight, glucose: n.glucose, hoursFromLKW: hours, wakeUpOrUnknownOnset: n.lkwUnknown, preMRS: n.premorbidMRS, bpSystolic, bpDiastolic, ichOnCT: compatible && ['present', 'absent'].includes(n.ctHemorrhageStatus) ? n.ctHemorrhageStatus === 'present' : null, disablingDeficit: compatible && typeof n.disablingDeficit === 'boolean' ? n.disablingDeficit : null, ...(compatible && lvoOnCta !== null ? { lvoOnCta } : {}) },
     anterior: { ...shared, aspectsScore: compatible ? state.aspects : '', timeFromLKWh: hours, coreVolume: compatible ? n.coreVolume : '', massEffect: compatible && typeof state.evtMassEffect === 'boolean' ? state.evtMassEffect : null },
     m2: { ...shared, aspectsScore: compatible ? state.aspects : '', hoursFromLKWh: hours },
