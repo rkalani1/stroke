@@ -31,7 +31,8 @@ describe('global quick search', () => {
     const groups = groupResults(results);
     expect(groups[0][0]).toBe(results[0].group);
     const mixed = [{ id: 's', group: 'Studies', title: 'S' }, { id: 'e', group: 'Evidence', title: 'E' }, { id: 'p', group: 'Protocols', title: 'P' }];
-    expect(groupResults(mixed).map(([group]) => group)).toEqual(['Studies', 'Protocols', 'Evidence']);
+    expect(groupResults(mixed).map(([group]) => group)).toEqual(['Protocols', 'Evidence', 'Studies']);
+    expect(groupResults(mixed.filter(record => record.group !== 'Protocols')).map(([group]) => group)).toEqual(['Studies', 'Evidence']);
   });
   it('accepts quick-reference deep links under either protocol tab', () => {
     expect(parseWorkspaceRoute('#/protocols/ich/qr-reversal')).toEqual({ surface: 'protocols', sub: 'ich', target: 'qr-reversal' });

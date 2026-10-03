@@ -225,6 +225,12 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   const demographics = `${hasValue(n.age) && ageValue === null ? `[age ${String(n.age).trim()} invalid; correct before interpretation]` : documented(n.age, '[age not documented]')} year old ${sex}`;
   const weightKg = numericInput(n.weight, { min: Number.MIN_VALUE, max: 350 });
   const weightText = weightKg === null ? '' : `${Math.round(weightKg * 10) / 10} kg`;
+  const weightEntry = hasValue(n.weight) && weightKg === null ? '[weight invalid; correct before interpretation]' : weightText;
+  // Platelets entered per µL (>= 2000) are shown in K/µL, as the IVT screen reads them.
+  const platelets = numericInput(n.plateletCount, { min: 0 });
+  const plateletText = platelets === null ? n.plateletCount : `${platelets >= 2000 ? Number((platelets / 1000).toPrecision(6)) : platelets} K/µL`;
+  // PCC reversal is weight-based, so weight is decision-relevant for anticoagulated ICH too.
+  const anticoagulatedIch = n.diagnosisCategory === 'ich' && (n.lastDOACType && n.lastDOACType !== 'none' || documentedIvtContext(n).medicationReconciliation);
   const disabling = acuteIschemic && typeof n.disablingDeficit === 'boolean' ? `Disabling deficit: ${n.disablingDeficit ? 'yes' : 'no'}` : '';
   const chiefComplaint = documented(n.chiefComplaint);
   const symptoms = documented(n.symptoms, '[symptoms not documented]');
@@ -292,7 +298,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   entry('Handoff', state.actions.handoff);
 
   if (state.documentFormat === 'handoff') {
-    const labels = new Set(['Anticoagulant exposure', 'Last anticoagulant dose', 'LMWH dose intent', 'Recorded safety concerns', 'Entered values conflicting with a "No" answer', 'IVT clinician decision', 'EVT clinician decision', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
+    const labels = new Set(['Anticoagulant exposure', 'Last anticoagulant dose', 'LMWH dose intent', 'Recorded safety concerns', 'Entered values conflicting with a "No" answer', 'IVT safety review', 'IVT clinician decision', 'EVT clinician decision', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
     return ['Team handoff', `${demographics} · ${diagnosis}${state.context === 'follow-up' ? ' · follow-up' : ''}`,
       lkw, `NIHSS: ${examText}${examDetails}${extraExam.length ? `; ${extraExam.join('; ')}` : ''}`,
       `CT (${ctTimestamp}): ${ct}`, `CTA: ${cta}`, hasValue(perfusion) ? `CTP: ${perfusion}` : '',
@@ -301,15 +307,16 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   }
 
   if (state.consultationType === 'phone') {
-    const weight = weightText ? ` (Wt: ${weightText.replace(' ', '')})` : '';
-    const vitals = [hasValue(n.presentingBP) ? `BP (mmHg): ${n.presentingBP}` : '', hasValue(n.glucose) ? `Glucose (mg/dL): ${n.glucose}` : ''].filter(Boolean).join('; ');
+    const weight = weightText ? ` (Wt: ${weightText.replace(' ', '')})` : hasValue(n.weight) ? ' (Wt: [invalid; correct before interpretation])' : '';
+    const lab = (label, value, required) => hasValue(value) ? `${label}: ${value}` : required ? `${label}: not documented` : '';
+    const vitals = [hasValue(n.presentingBP) ? `BP (mmHg): ${n.presentingBP}` : '', hasValue(n.glucose) ? `Glucose (mg/dL): ${n.glucose}` : '',
+      lab('Plt', hasValue(n.plateletCount) ? plateletText : '', acuteIschemic), lab('INR', n.inr, acuteIschemic || n.lastDOACType === 'warfarin'), lab('aPTT (s)', n.ptt, ['heparin', 'lmwh'].includes(n.lastDOACType))].filter(Boolean).join('; ');
     return `${demographics}${weight} with ${pmh} ${state.context === 'follow-up' ? 'seen in follow-up for' : 'who presents with'} ${symptoms}.${hasValue(n.chiefComplaint) ? ` Chief complaint: ${n.chiefComplaint}.` : ''} ${lkw}. ${extraExam.length ? `${extraExam.join('. ')}. ` : ''}NIHSS score: ${examText}${examDetails}.${disabling ? ` ${disabling}.` : ''} Working diagnosis: ${diagnosis}. Head CT (${ctTimestamp}): ${ct}. CTA Head/Neck (${documentedDateTime(n.ctaDate, n.ctaTime, nowMs, encounterClockTimestamp(n, 'cta'))}): ${cta}. CTP: ${documented(perfusion)}.${vitals ? ` ${vitals}.` : ''}${hasValue(n.medications) ? ` Medications: ${n.medications}.` : ''}${hasValue(state.assessment) ? ` Assessment: ${state.assessment}.` : ''} ${recommendations.join('. ')}.`.replace(/\s*\n\s*/g, ' ').replace(/([^.])\.\.(?=\s|$)/g, '$1.');
   }
   // Optional measurements appear only when entered; core fields keep an explicit "not documented".
   // Decision-relevant labs stay explicit: platelets, INR and weight for acute ischemic
   // stroke, INR with warfarin and aPTT with heparin/LMWH exposure.
   const optional = (label, value, unit = '', required = false) => hasValue(value) ? `, ${label} ${value}${unit}` : required ? `, ${label} not documented` : '';
-  const weightEntry = hasValue(n.weight) && weightKg === null ? '[weight invalid; correct before interpretation]' : weightText;
   return `Reason for Consultation: ${state.context === 'acute' ? 'Acute stroke evaluation' : 'Stroke follow-up'}${hasValue(n.chiefComplaint) ? ` — ${chiefComplaint}` : ''}
 
 Chief complaint: ${chiefComplaint}
@@ -319,8 +326,8 @@ Relevant PMH: ${pmh}
 Medications: ${documented(n.medications)}
 
 Objective:
-Vitals: BP ${documented(n.presentingBP)}${optional('HR', n.heartRate)}${optional('SpO2', n.spO2, '%')}${optional('Temp', n.temperature, '°F')}${optional('Wt', weightEntry, '', acuteIschemic)}
-Labs: Glucose ${documented(n.glucose)}${optional('Plt', n.plateletCount, 'K/µL', acuteIschemic)}${optional('Cr', n.creatinine)}${optional('INR', n.inr, '', acuteIschemic || n.lastDOACType === 'warfarin')}${optional('aPTT', n.ptt, '', ['heparin', 'lmwh'].includes(n.lastDOACType))}${optional('PT', n.pt)}
+Vitals: BP ${documented(n.presentingBP)}${optional('HR', n.heartRate)}${optional('SpO2', n.spO2, '%')}${optional('Temp', n.temperature, '°F')}${optional('Wt', weightEntry, '', acuteIschemic || anticoagulatedIch)}
+Labs: Glucose ${documented(n.glucose)}${optional('Plt', plateletText, '', acuteIschemic)}${optional('Cr', n.creatinine)}${optional('INR', n.inr, '', acuteIschemic || n.lastDOACType === 'warfarin')}${optional('aPTT', n.ptt, '', ['heparin', 'lmwh'].includes(n.lastDOACType))}${optional('PT', n.pt)}
 Exam: NIHSS ${examText}${examDetails}${disabling ? `; ${disabling}` : ''}${extraExam.length ? `; ${extraExam.join('; ')}` : ''}
 
 Imaging findings:

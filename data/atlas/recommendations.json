@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "recommendations",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.7.1",
+    "appVersion": "7.7.2",
     "checksum": "sha256:258116bc24a6a974bb669414525be05f",
     "count": 10,
     "source": "Maintained Encounter/protocol evidence dependency closure",

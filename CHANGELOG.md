@@ -1,10 +1,40 @@
 # CHANGELOG
 
+## v7.7.2 — 2026-10-03 — Verification follow-ups
+
+- **Checklist tiers follow the local IVT exclusion list:** extensive hypodensity, intracranial/intraspinal surgery, severe head trauma, non-compressible arterial puncture, unsecured aneurysm >10 mm and amyloid immunotherapy are now under *generally contraindicated*. The heparin item reads "within 24 h". The extra-axial neoplasm note matches the benefit-greater listing.
+- **Cross-checks:**
+  - Warfarin without an INR and BP at 185/110 or above are left for an individual answer.
+  - The safety summary turns critical when an entered value contradicts a "No".
+  - The DAPT bleeding alert names the entered value behind it.
+  - After an explicit "None", an anticoagulant named in the medication text prompts reconciliation instead of a critical alert.
+- **Notes:**
+  - The Pulsara summary now carries entered platelets, INR and aPTT and flags an invalid weight; the decision-relevant ones show "not documented" when missing.
+  - Platelets entered per µL print in K/µL.
+  - Weight stays explicit for anticoagulated ICH (weight-based PCC).
+  - Handoffs include the safety-review line.
+- **Case bar:** wraps instead of clipping the dose at desktop widths. It stays two rows on phones, tablets and landscape screens (the section nav is static on short screens). No momentary "Check time" after setting LKW to now.
+- **Navigation and search:**
+  - Search focus targets use the same hand-off as the other jumps.
+  - Back/Forward no longer corrupts scroll memory.
+  - New encounter no longer re-saves the old tab position.
+  - Navigation groups lead search results.
+  - "Show N more" reaches every match.
+  - Dark-theme result rows keep their colours.
+  - The search close button is touch-sized; keyboard hints are hidden on touch screens.
+- **Display:**
+  - "COR 3: No Benefit" chips are neutral; Harm stays red.
+  - Dose table frame fits the table.
+  - Evidence width cap applies to prose only.
+  - NIHSS descriptors get a third line.
+  - Checklist selects align across rows.
+  - Header no longer overlaps at 769–799 px.
+
 ## v7.7.1 — 2026-10-03 — Safety cross-checks, phone case bar, faster jumps
 
 - **Safety cross-checks:** entered values are checked against the IVT checklist using the IVT screen's own thresholds. These are platelets (including per-µL entries), INR/PT with or without warfarin, aPTT, glucose, CT hemorrhage review, DOAC dose time against the 48 h wording, therapeutic LMWH within 24 h, UFH and anticoagulants named in the medication text. A "No" contradicted by an entered value is flagged in Encounter and in the note. "Mark unanswered as No" never answers those items. The checklist is grouped by tier, with coagulopathy (aPTT >40 s), GI/GU bleeding <21 days and treatment-dose heparin/LMWH under *generally contraindicated* and glucose under *correct, then reassess*.
 - **Clinical text:** acute ICH shows a reversal prompt when anticoagulant exposure is documented, named in the medication text, or not yet assessed. The DAPT screen routes entered thrombocytopenia to individualized review and labels regimens in words with trial dosing. POINT aspirin is corrected to 50–325 mg daily (162 mg × 5 days, then 81 mg), not a day-1 load. Elapsed times read h/min.
-- **Notes:** platelets, INR and weight stay explicit for acute ischemic stroke, as do INR with warfarin and aPTT with heparin/LMWH. Other unentered optional values are omitted. Safety concerns use checklist wording. The review line states "marked complete" with the number of unanswered items. Invalid weights are marked.
+- **Epic note:** platelets, INR and weight stay explicit for acute ischemic stroke, as do INR with warfarin and aPTT with heparin/LMWH. Other unentered optional values are omitted. Safety concerns use checklist wording. The review line states "marked complete" with the number of unanswered items. Invalid weights are marked.
 - **Case bar:** wraps instead of clipping on phones and tablets, keeps the 4.5 h countdown visible and publishes its measured height for sticky offsets. The anticoagulant badge is solid. Reversal opens the ICH tab for ICH. Links work when already on their target. The tPA bolus shows its unit.
 - **Navigation:** each tab keeps its own scroll position (per sub-tab). Named targets and "Review in Encounter" / blocked-copy jumps land on and focus their section. Quick-reference cards deep-link from either protocol tab. Starting a new encounter returns to the top.
 - **Search:** the best match's group leads, then a stable order. Long groups show "Show N more". Quick-reference results stay on the ICH tab for ICH. Listbox markup is valid.

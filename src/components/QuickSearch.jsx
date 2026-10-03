@@ -12,12 +12,13 @@ const groupId = group => `qs-group-${group.toLowerCase().replace(/[^a-z]+/g, '-'
 
 // One search across navigation, protocols, calculators, evidence and trials.
 // Results are links; selecting one only changes the route.
-export default function QuickSearch({ open, onClose, version, trials = [], protocolSub = 'ischemic' }) {
+export default function QuickSearch({ open, onClose, version, trials = [], protocolSub = 'ischemic', onFocusEncounter = focusEncounterTarget }) {
   const dialog = useRef(null), input = useRef(null), list = useRef(null);
   const [query, setQuery] = useState(''), [active, setActive] = useState(0), [expanded, setExpanded] = useState([]);
   const { data, failed } = useReferenceData(version);
   const index = useMemo(() => buildSearchIndex({ ...(data || {}), trials }, { protocolSub }), [data, trials, protocolSub]);
-  const results = useMemo(() => searchIndex(index, query), [index, query]);
+  // groupResults caps what renders, so every match stays reachable through "Show N more".
+  const results = useMemo(() => searchIndex(index, query, Infinity), [index, query]);
   const groups = useMemo(() => groupResults(results, { expanded }), [results, expanded]);
   // Keyboard order follows the rendered order, including each group's "more" row.
   const flat = useMemo(() => groups.flatMap(([group, items, hidden]) => hidden ? [...items, { id: `more-${group}`, more: group, title: `Show ${hidden} more`, subtitle: group }] : items), [groups]);
@@ -39,9 +40,11 @@ export default function QuickSearch({ open, onClose, version, trials = [], proto
     onClose();
     if (record.external) { window.open(record.href, '_blank', 'noopener,noreferrer'); return; }
     // Re-selecting the current route fires no hashchange, so reveal the target directly.
+    // Encounter targets go through the app's hand-off so focus runs after the panel is
+    // visible; wait for the dialog to close first, since closing returns focus to its opener.
+    if (record.focus) { requestAnimationFrame(() => requestAnimationFrame(() => onFocusEncounter(record.focus))); return; }
     if (location.hash === record.href) { const target = record.href.match(/^#\/protocols\/[a-z]+\/([a-z-]+)$/)?.[1]; if (target) requestAnimationFrame(() => revealProtocolTarget(target)); }
     else location.hash = record.href;
-    if (record.focus) requestAnimationFrame(() => requestAnimationFrame(() => focusEncounterTarget(record.focus)));
   };
   const onKeyDown = event => {
     if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); onClose(); return; }
@@ -49,7 +52,7 @@ export default function QuickSearch({ open, onClose, version, trials = [], proto
     if (event.key === 'ArrowUp') { event.preventDefault(); setActive(value => Math.max(value - 1, 0)); }
     if (event.key === 'Enter' && flat[active]) { event.preventDefault(); go(flat[active]); }
   };
-  const option = (record, index) => <a key={record.id} id={`qs-${record.id}`} role="option" aria-selected={index === active} data-active={index === active} data-more={record.more ? '' : undefined} href={record.href || '#'} target={record.external ? '_blank' : undefined} rel={record.external ? 'noopener noreferrer' : undefined} onMouseMove={() => setActive(index)} onClick={event => { event.preventDefault(); go(record); }}>
+  const option = (record, index) => <a key={record.id} id={`qs-${record.id}`} className="quick-search__option" role="option" aria-selected={index === active} data-active={index === active} data-more={record.more ? '' : undefined} href={record.href || '#'} target={record.external ? '_blank' : undefined} rel={record.external ? 'noopener noreferrer' : undefined} onMouseMove={() => setActive(index)} onClick={event => { event.preventDefault(); go(record); }}>
     <span className="quick-search__title">{record.title}</span>{record.subtitle && <span className="quick-search__meta">{record.subtitle}</span>}
   </a>;
   let position = -1;
