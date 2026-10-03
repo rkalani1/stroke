@@ -69,14 +69,16 @@ const Sources = ({ ids }) => (
   </p>
 );
 
+// Same class colours as the Evidence recommendation chips.
+const gradeTone = text => /COR 3/.test(text) ? 'cor-3' : /COR 2a/.test(text) ? 'cor-2a' : /COR 2b/.test(text) ? 'cor-2b' : /COR 1\b/.test(text) ? 'cor-1' : 'cor-neutral';
 const Grade = ({ children, harm = false }) => (
-  <span className={`ml-1 inline-block whitespace-nowrap rounded border px-1 text-[10px] font-semibold ${harm ? 'border-crit-300 text-crit-800 dark:border-crit-800 dark:text-crit-300' : 'border-line text-ink-2'}`}>{children}</span>
+  <span className={`reference-chip ${harm ? 'cor-3' : gradeTone(String(children))} ml-1 whitespace-nowrap align-[1px]`}>{children}</span>
 );
 
 const Card = ({ id, title, open = false, children }) => (
   <details id={id} open={open} className="rounded-md border border-line bg-card text-ink">
-    <summary className="flex min-h-[44px] cursor-pointer items-center px-3 py-2 text-sm font-semibold">{title}</summary>
-    <div className="px-3 pb-3 text-xs leading-relaxed">{children}</div>
+    <summary className="flex min-h-[44px] cursor-pointer items-center px-3 py-2 text-[15px] font-semibold">{title}</summary>
+    <div className="px-3 pb-3 text-sm leading-relaxed">{children}</div>
   </details>
 );
 
@@ -91,12 +93,12 @@ const Rows = ({ rows }) => (
   </dl>
 );
 
-function DoseCard({ weightKg }) {
+function DoseCard({ weightKg, open = true }) {
   const exact = weightKg === undefined || weightKg === null || weightKg === '' ? null : thrombolyticDoseRow(weightKg);
   const highlight = exact ? highlightedDoseRowKey(weightKg) : null;
   const rows = thrombolyticDoseTable();
   return (
-    <Card id="qr-dose" title="Thrombolytic dose by weight" open>
+    <Card id="qr-dose" title="Thrombolytic dose by weight" open={open}>
       {exact ? (
         <p className="mb-2 rounded border border-cobalt-300 bg-cobalt-50 p-2 text-ink dark:border-cobalt-700 dark:bg-cobalt-900" data-testid="qr-exact-dose">
           <strong>{Math.round(exact.weightKg * 10) / 10} kg:</strong> TNK {exact.tnkMg} mg ({exact.tnkMl} mL at 5 mg/mL){exact.tnkCapped ? ', capped' : ''} · Alteplase {exact.alteplaseTotal} mg total: {exact.alteplaseBolus} mg bolus over 1 min, {exact.alteplaseInfusion} mg over 60 min{exact.alteplaseCapped ? ', capped' : ''}
@@ -105,7 +107,7 @@ function DoseCard({ weightKg }) {
         <p className="mb-2 text-ink-2">Enter weight in Encounter to see the exact dose.</p>
       )}
       <div className="overflow-x-auto rounded border border-line" role="region" aria-label="Thrombolytic dose table" tabIndex={0}>
-        <table className="w-full min-w-[19rem] border-collapse text-[11px]">
+        <table className="w-full min-w-[19rem] border-collapse text-[13px] tabular-nums md:w-auto md:min-w-[34rem]">
           <thead className="bg-paper-2 text-left">
             <tr>
               <th scope="col" className="px-1 py-1">kg</th>
@@ -138,11 +140,14 @@ function DoseCard({ weightKg }) {
 
 const HARM = 'text-crit-800 dark:text-crit-300';
 
-export default function QuickReference({ weightKg } = {}) {
+export default function QuickReference({ weightKg, sub = 'ischemic' } = {}) {
+  // On the ICH tab the BP and reversal cards lead and the dose table stays closed.
+  const ich = sub === 'ich';
+  const dose = <DoseCard weightKg={weightKg} open={!ich} />;
   return (
-    <section aria-labelledby="quick-reference-heading" className="space-y-2">
+    <section aria-labelledby="quick-reference-heading" className="quick-reference space-y-2">
       <h2 id="quick-reference-heading" className="text-base font-semibold text-ink">Bedside quick reference</h2>
-      <DoseCard weightKg={weightKg} />
+      {!ich && dose}
 
       <Card id="qr-bp" title="BP targets by phase">
         <Rows rows={[
@@ -170,6 +175,7 @@ export default function QuickReference({ weightKg } = {}) {
         ]} />
         <Sources ids={['ich2022', 'ncs2016', 'ncs2026']} />
       </Card>
+      {ich && dose}
 
       <Card id="qr-sich" title="Post-thrombolysis symptomatic ICH">
         <ol className="list-decimal space-y-1 pl-4">

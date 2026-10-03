@@ -51,3 +51,8 @@ const cautionaryConditions = [
                                   { id: 'aceInhibitor', label: 'ACE inhibitor use', note: 'Increased angioedema risk in alteplase cohorts; prepare airway assessment without treating ACE-inhibitor use alone as an absolute exclusion.' }
                                 ];
 export const SAFETY_ITEMS = [...absoluteContraindications, ...relativeContraindications, ...cautionaryConditions];
+// Encounter display groups (AHA/ASA 2026 AIS Table 8 and the local IVT exclusion
+// list). Presentation only: item ids, storage order and screen logic are unchanged.
+const DISPLAY_TIER = { elevatedAPTT: 'absolute', recentGIGUBleeding: 'absolute', recentHeparin: 'absolute', lowGlucose: 'correctable', highGlucose: 'correctable' };
+const sourceTier = item => absoluteContraindications.includes(item) ? 'absolute' : relativeContraindications.includes(item) ? 'relative' : 'benefit';
+export const SAFETY_TIERS = ['absolute', 'correctable', 'relative', 'benefit'].map(tier => [tier, SAFETY_ITEMS.filter(item => (DISPLAY_TIER[item.id] || sourceTier(item)) === tier)]);

@@ -38,11 +38,11 @@ describe('source applicability and negative vessel findings', () => {
     Object.assign(state, { nihssSource: 'reported', reportedNihss: '2', dapt, decisions: { ivt: 'Not recommended', evt: 'Not recommended' } });
     Object.assign(state.note, { diagnosisCategory: 'ischemic', age: '10', lastDOACType: 'none', lkwDate: '2026-10-01', lkwTime: '10:00', ctHemorrhageStatus: 'absent' });
     expect(render(state)).toContain('Pediatric stroke/TIA');
-    expect(render(state)).not.toContain('clopidogrel+ASA:');
+    expect(render(state)).not.toContain('Clopidogrel + aspirin:');
     state.note.age = '';
     expect(render(state)).toContain('Document a valid adult age');
     state.note.age = '65';
-    expect(render(state)).toContain('clopidogrel+ASA:');
+    expect(render(state)).toContain('Clopidogrel + aspirin:');
   });
   it('does not describe an explicitly absent occlusion as a medium/distal target', () => {
     const note = { age: 65, nihss: 12, premorbidMRS: 0, diagnosisCategory: 'ischemic', ctHemorrhageStatus: 'absent', vesselOcclusion: ['None'] };
@@ -98,27 +98,27 @@ describe('current anticoagulation and indication reconciliation for DAPT', () =>
   it.each(['', 'unknown-value', 'other'])('withholds an unassessed or unspecified exposure: %s', lastDOACType => {
     const state = completeState(); state.note.lastDOACType = lastDOACType;
     expect(daptAnticoagulationReview(state).excluded).toBeUndefined();
-    expect(render(state)).not.toContain('clopidogrel+ASA:');
+    expect(render(state)).not.toContain('Clopidogrel + aspirin:');
   });
   it.each(['apixaban', 'rivaroxaban', 'dabigatran', 'edoxaban', 'warfarin', 'heparin', 'lmwh'])('reconciles %s rather than accepting an inconsistent no-use review', drug => {
     const state = completeState(); state.note.lastDOACType = drug;
     state.note.lastDOACDose = '2026-09-30T09:00';
     state.note.anticoagulantDoseIntent = 'therapeutic';
     expect(daptAnticoagulationReview(state)).toMatchObject({ excluded: false });
-    expect(render(state)).not.toContain('clopidogrel+ASA:');
+    expect(render(state)).not.toContain('Clopidogrel + aspirin:');
     state.dapt.anticoagulationReview = 'ongoing';
     expect(daptAnticoagulationReview(state).excluded).toBe(false);
     state.dapt.anticoagulationReview = 'stopped';
     expect(daptAnticoagulationReview(state).excluded).toBe(true);
     expect(daptAnticoagulationReview(state).reason).toContain('does not establish drug clearance');
-    expect(render(state)).toContain('clopidogrel+ASA:');
+    expect(render(state)).toContain('Clopidogrel + aspirin:');
   });
   it.each(['Anticoagulant', 'Combination under specialist review'])('an explicit %s plan overrides a stale no-indication review', antithromboticPlanType => {
     const state = completeState(); state.details.antithromboticPlanType = antithromboticPlanType;
     for (const anticoagulationReview of ['none', 'stopped']) {
       state.dapt.anticoagulationReview = anticoagulationReview;
       expect(daptAnticoagulationReview(state).excluded).toBe(false);
-      expect(render(state)).not.toContain('clopidogrel+ASA:');
+      expect(render(state)).not.toContain('Clopidogrel + aspirin:');
     }
   });
   it('requires reconciliation for medication mentions without inferring active use from text', () => {
@@ -161,7 +161,7 @@ describe('current anticoagulation and indication reconciliation for DAPT', () =>
     expect(updateEncounter(state, previous => ({ ...previous, assessment: 'Entered assessment' })).dapt.anticoagulationReview).toBe('none');
     delete state.dapt.anticoagulationReview;
     expect(state.dapt.anticoagulationExcluded).toBe(true);
-    expect(render(state)).not.toContain('clopidogrel+ASA:');
+    expect(render(state)).not.toContain('Clopidogrel + aspirin:');
     expect(render(state)).toContain('Review current anticoagulation and any continuing indication');
   });
 });

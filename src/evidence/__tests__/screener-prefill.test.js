@@ -12,7 +12,7 @@ describe('screenerPrefillFromEncounter', () => {
     const r = screenerPrefillFromEncounter(s, NOW);
     expect(r).toMatchObject({ available: true, supported: true, classification: 'ischemic', message: null });
     expect(r.patch).toMatchObject({ classification: 'ischemic', onsetVal: 3.1, onsetUnit: 'hours', onsetRangeHours: null, age: 72, nihss: 14, vessel: 'ica_m1', aspects: 8, preMrs: 0 });
-    expect(r.summary).toEqual(['Ischemic', 'LKW 3.1 h', '72 y', 'NIHSS 14', 'M1', 'ASPECTS 8', 'pre-mRS 0']);
+    expect(r.summary).toEqual(['Ischemic', 'LKW 3 h 06 min', '72 y', 'NIHSS 14', 'M1', 'ASPECTS 8', 'pre-mRS 0']);
   });
 
   it('maps diagnoses directly and reports unmodeled ones without a patch', () => {
