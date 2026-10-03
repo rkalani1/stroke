@@ -73,8 +73,8 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
       {c.anticoagulant && <Item label="Anticoag" value={c.anticoagulant} flag="caution" />}
     </div>
     <div className="case-bar__actions">
-      {acuteIschemic && <a className="case-bar__link" href="#/protocols/ischemic/bp">BP targets</a>}
-      {(state.note.diagnosisCategory === 'ich' || c.anticoagulant) && <a className="case-bar__link" href="#/protocols/ich/reversal">Reversal</a>}
+      {acuteIschemic && <a className="case-bar__link" href="#/protocols/ischemic/qr-bp">BP targets</a>}
+      {(state.note.diagnosisCategory === 'ich' || c.anticoagulant) && <a className="case-bar__link" href="#/protocols/ischemic/qr-reversal">Reversal</a>}
       <button type="button" className="case-bar__copy" onClick={onCopy} aria-label={blocked ? undefined : `Copy ${documentLabel} (case bar)`}>{blocked ? `Review ${blocked} flag${blocked === 1 ? '' : 's'}` : /copied\.$/.test(copyStatus || '') ? 'Copied ✓' : <><span className="case-bar__copy-long">Copy {documentLabel}</span><span className="case-bar__copy-short" aria-hidden="true">Copy note</span></>}</button>
     </div>
   </section>;

@@ -178,7 +178,7 @@ describe('shared anticoagulant history and compact handoff continuity', () => {
       Object.assign(state, { consultationType, documentFormat });
       const text = buildSummary(state, now);
       expect(text).toContain('Anticoagulant exposure: warfarin');
-      expect(text).toContain('Last anticoagulant dose: 2026-09-30T20:00');
+      expect(text).toContain('Last anticoagulant dose: 2026-09-30 20:00');
       expect(text).not.toContain('IVT clinician decision:');
       expect(text).not.toContain('INR alone does not establish');
     }

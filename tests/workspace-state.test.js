@@ -45,7 +45,7 @@ describe('canonical state and honest documentation', () => {
   it('requires explicit administration and valid time independently of recommendation or consent', () => {
     const s=newEncounter();s.note.diagnosisCategory='ischemic';s.drug='Alteplase';s.decisions.ivt='Recommended';s.actions.consent='Informed consent';
     expect(buildSummary(s,NOW)).toContain('IVT administration: not documented');s.actions.administrationTime='2026-10-01T11:00';expect(buildSummary(s,NOW)).toContain('IVT administration: not documented');
-    s.actions.administered=true;expect(buildSummary(s,NOW)).toContain('Alteplase at 2026-10-01T11:00');s.actions.administrationTime='2026-10-01T13:00';expect(buildSummary(s,NOW)).toContain('IVT administration: not documented');
+    s.actions.administered=true;expect(buildSummary(s,NOW)).toContain('Alteplase at 2026-10-01 11:00');s.actions.administrationTime='2026-10-01T13:00';expect(buildSummary(s,NOW)).toContain('IVT administration: not documented');
   });
   it('rejects future/invalid times and recomputes elapsed time after suspension and midnight', () => {
     expect(validTimestamp('2026-02-30T11:00',NOW)).toBeNull();expect(validTimestamp('2026-10-01T13:00',NOW)).toBeNull();

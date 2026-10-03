@@ -33,7 +33,13 @@ const EXTERNAL = [
 ];
 
 const PROTOCOL_KEYWORDS = {
-  quick: 'quick reference bedside numbers dose table tenecteplase alteplase TNK tPA blood pressure targets reversal angioedema hemicraniectomy',
+  'qr-dose': 'tenecteplase alteplase TNK tPA thrombolytic dose weight table bolus infusion mL',
+  'qr-bp': 'blood pressure targets 185/110 180/105 labetalol nicardipine clevidipine post-EVT ICH SAH',
+  'qr-reversal': 'anticoagulant reversal 4F-PCC PCC Kcentra idarucizumab Praxbind protamine vitamin K warfarin apixaban rivaroxaban edoxaban dabigatran heparin enoxaparin andexanet antiplatelet',
+  'qr-sich': 'symptomatic hemorrhage after thrombolysis sICH cryoprecipitate tranexamic acid TXA fibrinogen',
+  'qr-angioedema': 'orolingual angioedema icatibant epinephrine methylprednisolone diphenhydramine airway ACE inhibitor',
+  'qr-edema': 'malignant MCA edema hemicraniectomy decompression cerebellar infarct suboccipital EVD osmotherapy',
+  'qr-supportive': 'supportive care oxygen glucose temperature fever dysphagia swallow VTE seizure prophylaxis',
   reversal: 'anticoagulant reversal 4F-PCC PCC Kcentra idarucizumab Praxbind protamine vitamin K warfarin apixaban rivaroxaban dabigatran heparin',
   'post-lytic': 'symptomatic hemorrhage sICH cryoprecipitate tranexamic acid TXA bleeding after thrombolysis',
   angioedema: 'orolingual angioedema airway icatibant',
@@ -46,8 +52,8 @@ export function buildSearchIndex(reference) {
   NAVIGATION.forEach(item => records.push({ ...item, group: 'Go to', id: `nav:${item.title}` }));
   Object.entries(PROTOCOL_TARGETS).forEach(([key, target]) => records.push({
     id: `protocol:${key}`, group: 'Protocols', title: target.label || target.heading || key,
-    subtitle: target.sub === 'ich' ? 'ICH protocol' : target.sub === 'quick' ? 'Bedside quick reference' : 'Ischemic protocol',
-    href: target.sub === 'quick' ? `#/protocols/ischemic/${key}` : `#/protocols/${target.sub}/${key}`, keywords: PROTOCOL_KEYWORDS[key] || ''
+    subtitle: target.quick ? 'Quick reference' : target.sub === 'ich' ? 'ICH protocol' : 'Ischemic protocol',
+    href: `#/protocols/${target.sub}/${key}`, keywords: PROTOCOL_KEYWORDS[key] || ''
   }));
   ENCOUNTER_TOOLS.forEach(tool => records.push({ id: `tool:${tool.id}`, group: 'Calculators', title: tool.name, subtitle: 'Encounter', href: `#/encounter/${tool.id}`, keywords: tool.aliases }));
   (reference?.calculators || []).forEach(calc => records.push({ id: `calc:${calc.id}`, group: 'Calculators', title: calc.name, subtitle: calc.category, href: `#/tools/${calc.id}`, keywords: [calc.id, calc.category, ...(calc.aliases ? [calc.aliases] : [])].join(' ') }));

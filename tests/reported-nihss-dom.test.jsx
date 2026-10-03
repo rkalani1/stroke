@@ -87,7 +87,7 @@ describe('reported NIHSS browser binding', () => {
       expect(await page.locator('#handoff').innerText()).toContain('q15 check #1');
       await page.getByRole('button', { name: 'Generate Pulsara summary', exact: true }).click();
       expect(await page.getByRole('button', { name: 'Copy this preview', exact: true }).count()).toBe(1);
-      expect(await page.evaluate(() => window.state.draft.text)).toContain('recorded instant 2026-11-01T09:30:00.000Z');
+      expect(await page.evaluate(() => window.state.draft.text)).toContain('01:30:00 (UTC−08:00)');
       await administration.fill('2026-11-01T01:31');
       expect(await page.evaluate(() => window.state.actions.administrationTime)).toBe('2026-11-01T01:31');
       await administration.fill('');

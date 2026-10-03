@@ -4,8 +4,8 @@ import { buildSearchIndex, searchIndex, groupResults } from '../quick-search-ind
 import { focusEncounterTarget } from '../encounter-overview.js';
 
 const SUGGESTIONS = [
-  ['Lytic dose', '#/encounter/tnk'], ['BP targets', '#/protocols/ischemic/bp'], ['Anticoagulant reversal', '#/protocols/ich/reversal'],
-  ['Post-lytic hemorrhage', '#/protocols/ischemic/post-lytic'], ['NIHSS', '#/encounter/nihss'], ['ICH score', '#/encounter/ich-score']
+  ['Dose by weight', '#/protocols/ischemic/qr-dose'], ['BP targets', '#/protocols/ischemic/qr-bp'], ['Reversal', '#/protocols/ischemic/qr-reversal'],
+  ['Post-lytic sICH', '#/protocols/ischemic/qr-sich'], ['Angioedema', '#/protocols/ischemic/qr-angioedema'], ['NIHSS', '#/encounter/nihss'], ['ICH score', '#/encounter/ich-score']
 ];
 
 // One search across navigation, protocols, calculators, evidence and trials.

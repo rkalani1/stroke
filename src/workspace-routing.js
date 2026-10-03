@@ -28,7 +28,7 @@ export function parseWorkspaceRoute(hash = '') {
     }
     return parts.length <= focusIndex && ['screener', 'tables', 'database'].includes(normalized) ? { surface: 'trials', sub: normalized } : { surface: 'retired', path };
   }
-  if (first === 'evidence' && parts.length <= 2 && (!sub || /^[a-z0-9-]+$/.test(sub))) return { surface: 'evidence', ...(sub ? { focusId: sub } : {}) };
+  if (first === 'evidence' && parts.length <= 2 && (!sub || /^[a-z0-9-]+$/i.test(sub))) return { surface: 'evidence', ...(sub ? { focusId: sub.toLowerCase() } : {}) };
   if (['guidelines', 'references'].includes(first) && !sub || first === 'research' && ['guidelines', 'references'].includes(sub) && !tool) return { surface: 'evidence' };
   if (first === 'tools') return sub ? toolRoute(ALIASES[sub] || sub, path) : { surface: 'tools' };
   if (['protocols', 'management'].includes(first) && (!sub || ['ich', 'ischemic', 'tia'].includes(sub))) {

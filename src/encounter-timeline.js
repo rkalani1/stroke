@@ -1,3 +1,4 @@
+import { formatRecordedInstant } from './clinical/timestamp.js';
 import { computeLKWCountdown } from './calculators-extended.js';
 const validTimestamp = (value, now) => computeLKWCountdown(value, now) ? new Date(value) : null;
 const unambiguousTimestamp = validTimestamp;
@@ -53,5 +54,5 @@ export function formatTimeline(state, now) {
   const entered = activeTimelineFields(state).filter(([key]) => state.timeline?.[key]);
   const intervals = timelineIntervals(state, now);
   if (!entered.length && !intervals.length) return '';
-  return ['Timeline:', ...entered.map(([key, label]) => `${label}: ${state.timeline[key]}${unambiguousTimestamp(state.timeline[key], now) ? '' : ' (invalid or future, or ambiguous local time; review)'}`), ...intervals.map(interval => `${interval.label}: ${interval.text}`)].join('\n');
+  return ['Timeline:', ...entered.map(([key, label]) => `${label}: ${unambiguousTimestamp(state.timeline[key], now) ? formatRecordedInstant(state.timeline[key]) : state.timeline[key]}${unambiguousTimestamp(state.timeline[key], now) ? '' : ' (invalid or future, or ambiguous local time; review)'}`), ...intervals.map(interval => `${interval.label}: ${interval.text}`)].join('\n');
 }
