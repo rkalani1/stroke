@@ -88,7 +88,7 @@ describe('public demo labeling and agent disclaimers', () => {
     // Visible tab/palette label decluttered to "Protocols" (owner
     // decision); the machine-readable data route keeps the fuller
     // "not local policy" descriptor for agents.
-    expect(appSource).toContain('>Protocols</a>');
+    expect(appSource).toMatch(/\['protocols', [^\]]*'Protocols'\]/);
     expect(generatedData).toContain('Protected example protocols');
   });
 

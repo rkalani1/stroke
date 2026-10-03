@@ -45,11 +45,11 @@ describe('reported NIHSS browser binding', () => {
       page.once('dialog', dialog => dialog.dismiss());
       await page.getByRole('button', { name: 'Set LKW to now', exact: true }).click();
       expect(await lkwTime.inputValue()).toBe('10:00');
-      expect(await page.getByRole('button', { name: 'Copy Pulsara summary', exact: true }).count()).toBe(1);
+      expect(await page.getByRole('button', { name: 'Copy this preview', exact: true }).count()).toBe(1);
       page.once('dialog', dialog => dialog.accept());
       await page.getByRole('button', { name: 'Set LKW to now', exact: true }).click();
       expect(await lkwTime.inputValue()).toBe('11:45:30');
-      expect(await page.getByRole('button', { name: 'Copy Pulsara summary', exact: true }).count()).toBe(0);
+      expect(await page.getByRole('button', { name: 'Copy this preview', exact: true }).count()).toBe(0);
       await page.getByText('Discovery / wake-up details', { exact: true }).click();
       await page.getByRole('button', { name: 'Set Discovery to now', exact: true }).click();
       expect(await page.getByLabel('Discovery time (local)', { exact: true }).inputValue()).toBe('11:45:30');
@@ -86,7 +86,7 @@ describe('reported NIHSS browser binding', () => {
       await page.getByLabel('IV thrombolytic administration explicitly recorded').check();
       expect(await page.locator('#handoff').innerText()).toContain('q15 check #1');
       await page.getByRole('button', { name: 'Generate Pulsara summary', exact: true }).click();
-      expect(await page.getByRole('button', { name: 'Copy Pulsara summary', exact: true }).count()).toBe(1);
+      expect(await page.getByRole('button', { name: 'Copy this preview', exact: true }).count()).toBe(1);
       expect(await page.evaluate(() => window.state.draft.text)).toContain('recorded instant 2026-11-01T09:30:00.000Z');
       await administration.fill('2026-11-01T01:31');
       expect(await page.evaluate(() => window.state.actions.administrationTime)).toBe('2026-11-01T01:31');
@@ -99,14 +99,14 @@ describe('reported NIHSS browser binding', () => {
     try {
       await page.setContent('<div id="root"></div>');
       await page.addScriptTag({ content: script });
-      const source = page.getByLabel('Current NIHSS source', { exact: true });
+      const source = { selectOption: value => page.check(`input[name="nihss-source"][value="${value}"]`), inputValue: () => page.locator('input[name="nihss-source"]:checked').inputValue() };
       const reviewed = page.getByLabel('Absolute and relative contraindications reviewed', { exact: true });
       await reviewed.check();
       await page.getByRole('button', { name: 'Generate Pulsara summary', exact: true }).click();
-      expect(await page.getByRole('button', { name: 'Copy Pulsara summary', exact: true }).count()).toBe(1);
+      expect(await page.getByRole('button', { name: 'Copy this preview', exact: true }).count()).toBe(1);
       await source.selectOption('reported');
       expect(await reviewed.isChecked()).toBe(false);
-      expect(await page.getByRole('button', { name: 'Copy Pulsara summary', exact: true }).count()).toBe(0);
+      expect(await page.getByRole('button', { name: 'Copy this preview', exact: true }).count()).toBe(0);
       const report = page.getByLabel('Reported NIHSS total (0–42)', { exact: true });
       await report.fill('0');
       expect(await page.locator('#calc-nihss').innerText()).toContain('Reported NIHSS: 0/42');

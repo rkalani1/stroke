@@ -317,6 +317,7 @@
 
   /* ─── 6. Motion (zeroed under prefers-reduced-motion below) ─── */
   --motion-scale:  1;
+  --case-bar-h:    0px;    /* height of the pinned case bar; set by shell.css when present */
   --dur:           180ms;
   --ease:          cubic-bezier(.2,.7,.2,1);
 

@@ -10,10 +10,12 @@ export function EncounterNavigation() {
   </nav>;
 }
 
+// The pinned case bar shows the entered values; this row only points to the
+// next missing core entry.
 export default function EncounterOverview({ state, now }) {
   const overview = encounterOverview(state, now), next = overview.missing[0];
-  return <aside className="encounter-overview" aria-label="Encounter at a glance">
-    <dl><div><dt>Working diagnosis</dt><dd>{overview.diagnosis}</dd></div><div><dt>NIHSS</dt><dd>{overview.examination}</dd></div><div><dt>{overview.timingLabel}</dt><dd>{overview.timing}</dd></div></dl>
-    <div className="encounter-next-entry">{next ? <><span>{overview.missing.length} core documentation {overview.missing.length === 1 ? 'entry' : 'entries'} missing</span><button type="button" onClick={() => focusEncounterTarget(next.target)}>Next: {next.label}<span aria-hidden="true"> →</span></button></> : <span>Core documentation entries recorded</span>}</div>
+  const total = overview.missing.length;
+  return <aside className="encounter-overview" aria-label="Encounter at a glance" data-complete={next ? undefined : ''}>
+    <div className="encounter-next-entry">{next ? <><span><b>{total}</b> core {total === 1 ? 'entry' : 'entries'} missing</span><button type="button" onClick={() => focusEncounterTarget(next.target)}>Next: {next.label}<span aria-hidden="true"> →</span></button></> : <span>Core entries recorded</span>}</div>
   </aside>;
 }
