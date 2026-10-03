@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v7.7.9 — 2026-10-03 — Remaining round-9 fixes
+
+- **IVT checklist:** answers where IVT benefit generally outweighs risk (AHA/ASA 2026 Table 8) are no longer counted as safety concerns. These are unruptured aneurysm, prior MI, seizure at onset, antiplatelet therapy and ACE inhibitor. They are listed neutrally on screen and in the note, and no longer produce "recorded concerns remain".
+- **Wake-up stroke:** with an unknown LKW, the case bar and LKW line count down the 4.5 h-from-discovery limit that the WAKE-UP MRI route requires.
+- **Diagnosis-appropriate prompts:**
+  - The IVT 4.5 h and EVT 24 h countdowns show only for acute ischemic stroke.
+  - The "Anticoagulation timing" evidence link shows only for ischemic stroke and TIA.
+  - The case bar drops the lytic dose once IVT is documented as not recommended.
+- **SAH:** reversal status and details can be recorded.
+- **Note accuracy:**
+  - An IVT time before the LKW is flagged for review, and so is an administration that contradicts the documented IVT decision.
+  - Anticoagulant names are readable (for example "heparin (UFH)", "LMWH").
+  - A running consult timer is labelled "so far".
+
 ## v7.7.8 — 2026-10-03 — SAH grades and handoff labs
 
 Two more round-9 note-output fixes:

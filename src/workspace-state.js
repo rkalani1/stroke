@@ -3,7 +3,7 @@ import { formatTimeline, encounterClockTimestamp, evtReperfusionIssue } from './
 import { formatDocumentation } from './documentation-output.js';
 import { reconcileSupplementaryAppliedScores, supplementaryResult } from './supplementary-calculators.js';
 import { NIHSS_ITEMS } from './clinical/nihss-items.js';
-import { SAFETY_ITEMS } from './clinical/safety-items.js';
+import { SAFETY_ITEMS, BENEFIT_ITEM_IDS } from './clinical/safety-items.js';
 import { calculateNIHSS, calculateICHVolumeReviewed, calculateICHScore, calculateTNKDoseReviewed, calculateAlteplaseDoseReviewed } from './calculators.js';
 import { formatPerfusionForExport } from './clinical/perfusion-documentation.js';
 import { formatWakeUpScreenForExport } from './clinical/wake-up-documentation.js';
@@ -290,7 +290,8 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   const perfusion = acuteIschemic ? formatPerfusionForExport({ ctpStructured: { coreVolume: n.coreVolume, penumbraVolume: n.penumbraVolume }, ctpResults: n.ctpResults }) : documented(n.ctpResults, '');
   const recommendations = [];
   const entry = (label, value) => { if (hasValue(value)) recommendations.push(`${label}: ${value}`); };
-  if (acuteIschemic || hasValue(n.lastDOACType)) entry('Anticoagulant exposure', n.lastDOACType || 'not assessed');
+  const ANTICOAGULANT_LABEL = { none: 'none documented', heparin: 'heparin (UFH)', lmwh: 'LMWH', other: 'other agent (see medications)' };
+  if (acuteIschemic || hasValue(n.lastDOACType)) entry('Anticoagulant exposure', n.lastDOACType ? ANTICOAGULANT_LABEL[n.lastDOACType] || n.lastDOACType : 'not assessed');
   if (n.lastDOACType && n.lastDOACType !== 'none' && n.lastDOACDose) entry('Last anticoagulant dose', validTimestamp(n.lastDOACDose, nowMs) ? formatRecordedInstant(n.lastDOACDose) : `${n.lastDOACDose} (${timestampReview(n.lastDOACDose)})`);
   if (n.lastDOACType === 'lmwh') entry('LMWH dose intent', n.anticoagulantDoseIntent);
   // Documentation only: prophylactic SC heparin is standard care, unlike treatment-dose UFH.
@@ -298,12 +299,14 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   if (acuteIschemic) {
     if (n.lkwUnknown || n.wakeUpStrokeWorkflow.mriAvailable !== undefined) recommendations.push(formatWakeUpScreenForExport(n, new Date(nowMs)));
     const checklist = n.tnkContraindicationChecklist || {};
-    const concerns = Object.keys(checklist).filter(key => checklist[key] === true).map(key => SAFETY_ITEMS.find(item => item.id === key)?.label || key);
+    const concerns = Object.keys(checklist).filter(key => checklist[key] === true && !BENEFIT_ITEM_IDS.has(key)).map(key => SAFETY_ITEMS.find(item => item.id === key)?.label || key);
+    const benefitFactors = Object.keys(checklist).filter(key => checklist[key] === true && BENEFIT_ITEM_IDS.has(key)).map(key => SAFETY_ITEMS.find(item => item.id === key)?.label || key);
     const unanswered = SAFETY_ITEMS.filter(item => typeof checklist[item.id] !== 'boolean').length;
     const signals = safetyChecklistSignals(n, nowMs, state.details);
     const conflicts = SAFETY_ITEMS.filter(item => signals[item.id]?.conflict && checklist[item.id] === false);
     const unansweredText = unanswered ? `; ${unanswered} checklist item${unanswered === 1 ? '' : 's'} unanswered (checklist incomplete)` : '';
-    entry('Recorded safety concerns', concerns.join('; ') || (unanswered ? 'none recorded (unchecked does not mean reviewed)' : 'none; every checklist item answered No'));
+    entry('Recorded safety concerns', concerns.join('; ') || (unanswered ? 'none recorded (unchecked does not mean reviewed)' : benefitFactors.length ? 'none among contraindications' : 'none; every checklist item answered No'));
+    if (benefitFactors.length) entry('Recorded factors where IVT benefit generally outweighs risk', benefitFactors.join('; '));
     if (conflicts.length) entry('Entered values conflicting with a "No" answer', conflicts.map(item => `${item.label} (${signals[item.id].reason})`).join('; '));
     entry('IVT safety review', n.ivtContraindicationsReviewed ? `marked complete by clinician${concerns.length ? '; recorded concerns remain' : ''}${unansweredText}` : 'not documented');
     for (const type of ['ivt', 'evt']) entry(`${type.toUpperCase()} clinician decision`, state.decisions[type] || 'not documented');
@@ -316,7 +319,10 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     const administeredText = !doseRaw ? 'administered dose not recorded' : doseValue === null ? `[administered dose ${doseRaw} invalid; correct before interpretation]` : `administered dose recorded as ${doseValue} mg${doseMax !== null && doseValue > doseMax ? ` (above the ${doseMax} mg maximum; review)` : ''}`;
     const calculatedText = administration ? ` (${calculated ? `calculated ${state.drug === 'TNK' ? `${calculated.calculatedDose} mg by ${state.doseAuthority === 'fda-label' ? 'US label weight band' : '0.25 mg/kg'}` : `${calculated.totalDose} mg total: ${calculated.bolus} mg bolus, ${calculated.infusion} mg infusion`} for ${Math.round(calculated.weightKg * 10) / 10} kg` : `calculated dose unavailable: weight ${hasValue(n.weight) ? 'invalid' : 'not documented'}`}; ${administeredText})` : '';
     const preIvtBpText = hasValue(state.details?.preIvtBP) ? `; pre-IVT BP ${String(state.details.preIvtBP).trim()}${hasValue(state.details?.preIvtBPTime) ? ` at ${String(state.details.preIvtBPTime).trim()}` : ''}` : '; pre-IVT BP not documented';
-    entry('IVT administration', administration ? `${state.drug} at ${formatRecordedInstant(state.actions.administrationTime)}${calculatedText}${preIvtBpText}` : `not documented with a valid drug and timestamp${state.actions.administrationTime && !validTimestamp(state.actions.administrationTime, nowMs) ? `; entered time is ${timestampReview(state.actions.administrationTime)}` : ''}`);
+    // Reconcile the record against the LKW and the documented decision (an AM/PM slip or a stale decision).
+    const lkwMs = !n.lkwUnknown && encounterClockTimestamp(n, 'lkw') ? new Date(encounterClockTimestamp(n, 'lkw')).getTime() : NaN;
+    const ivtReview = administration ? [Number.isFinite(lkwMs) && new Date(state.actions.administrationTime).getTime() < lkwMs && '[IVT time precedes LKW; review recorded dates/times]', state.decisions.ivt !== 'Recommended' && `[IVT clinician decision is '${state.decisions.ivt || 'not documented'}'; reconcile]`].filter(Boolean).join(' ') : '';
+    entry('IVT administration', administration ? `${state.drug} at ${formatRecordedInstant(state.actions.administrationTime)}${calculatedText}${preIvtBpText}${ivtReview ? ` ${ivtReview}` : ''}` : `not documented with a valid drug and timestamp${state.actions.administrationTime && !validTimestamp(state.actions.administrationTime, nowMs) ? `; entered time is ${timestampReview(state.actions.administrationTime)}` : ''}`);
     for (const [key, label] of [['punctureTime', 'EVT puncture'], ['reperfusionTime', 'EVT reperfusion']]) if (state.actions[key]) entry(label, validTimestamp(state.actions[key], nowMs) ? `${formatRecordedInstant(state.actions[key])}${key === 'reperfusionTime' && evtReperfusionIssue(state, nowMs) ? ` (${evtReperfusionIssue(state, nowMs)})` : ''}` : timestampReview(state.actions[key]));
     entry('Recorded mTICI grade', state.note.ticiScore);
     entry('IVT Discussion', state.actions.discussion || 'not documented');
