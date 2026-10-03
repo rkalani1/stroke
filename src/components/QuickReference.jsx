@@ -70,7 +70,8 @@ const Sources = ({ ids }) => (
 );
 
 // Same class colours as the Evidence recommendation chips.
-const gradeTone = text => /COR 3/.test(text) ? 'cor-3' : /COR 2a/.test(text) ? 'cor-2a' : /COR 2b/.test(text) ? 'cor-2b' : /COR 1\b/.test(text) ? 'cor-1' : 'cor-neutral';
+// COR 3: No Benefit is neutral and COR 3: Harm is red, as in the protocol cards below.
+const gradeTone = text => /COR 3: No Benefit/.test(text) ? 'cor-neutral' : /COR 3/.test(text) ? 'cor-3' : /COR 2a/.test(text) ? 'cor-2a' : /COR 2b/.test(text) ? 'cor-2b' : /COR 1\b/.test(text) ? 'cor-1' : 'cor-neutral';
 const Grade = ({ children, harm = false }) => (
   <span className={`reference-chip ${harm ? 'cor-3' : gradeTone(String(children))} ml-1 whitespace-nowrap align-[1px]`}>{children}</span>
 );
@@ -106,7 +107,7 @@ function DoseCard({ weightKg, open = true }) {
       ) : (
         <p className="mb-2 text-ink-2">Enter weight in Encounter to see the exact dose.</p>
       )}
-      <div className="overflow-x-auto rounded border border-line" role="region" aria-label="Thrombolytic dose table" tabIndex={0}>
+      <div className="overflow-x-auto rounded border border-line md:w-fit md:max-w-full" role="region" aria-label="Thrombolytic dose table" tabIndex={0}>
         <table className="w-full min-w-[19rem] border-collapse text-[13px] tabular-nums md:w-auto md:min-w-[34rem]">
           <thead className="bg-paper-2 text-left">
             <tr>

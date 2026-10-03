@@ -63,7 +63,8 @@ const revealIfCurrent = (href, target) => event => { if (location.hash === href)
 export default function CaseBar({ state, documentLabel, blocked, onCopy, copyStatus }) {
   const [now] = useCurrentTime(true);
   const bar = useRef(null);
-  const c = caseSummary(state, now);
+  // A timestamp set to "now" can be newer than the last one-second tick.
+  const c = caseSummary(state, Math.max(now, Date.now()));
   // Sticky offsets (section nav, scroll padding) follow the bar's real height as it wraps.
   useLayoutEffect(() => {
     const node = bar.current, root = document.documentElement;

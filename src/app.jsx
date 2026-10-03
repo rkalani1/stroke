@@ -20,7 +20,7 @@ const Reference = lazy(() => import('./Reference.jsx'));
 const Tools = lazy(() => import('./Tools.jsx'));
 const QuickSearch = lazy(() => import('./components/QuickSearch.jsx'));
 const QuickReference = lazy(() => import('./components/QuickReference.jsx'));
-const APP_VERSION = '7.7.1';
+const APP_VERSION = '7.7.2';
 const getPublicDemoMode = () => {
   if (BUILD_PUBLIC_DEMO) return true;
   return /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -84,6 +84,8 @@ function App() {
   const update = updater => { refreshNow(); setState(prev => updateEncounter(prev, updater)); setCopyStatus(''); };
   useEffect(() => {
     if (!location.hash) history.replaceState(null, '', `${location.pathname}${location.search}#/encounter`);
+    // The per-surface memory below is the only scroll restoration on hash routes.
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     // Each surface keeps its own scroll position (per sub-tab) unless the route names a target.
     const changed = () => {
       const next = parseWorkspaceRoute(location.hash), memory = scrollMemory.current, sub = next.sub || '';
@@ -112,7 +114,7 @@ function App() {
     events.forEach(type => window.addEventListener(type, stop, { passive: true }));
     attempt();
     return () => { stop(); events.forEach(type => window.removeEventListener(type, stop)); };
-  }, [route.surface]);
+  }, [route]);
   useEffect(() => {
     const memory = scrollMemory.current;
     if (route.surface !== 'encounter' || !memory.focus) return;
@@ -166,8 +168,10 @@ function App() {
     if (!window.confirm('Start a new encounter? All current entries, drafts and timers will be cleared.')) return;
     if (utilitiesRef.current) utilitiesRef.current.open = false;
     setState(newEncounter()); setEpoch(v => v + 1); setCopyStatus('');
-    Object.assign(scrollMemory.current, { positions: {}, pending: null, focus: null });
-    if (location.hash === '#/encounter') window.scrollTo(0, 0); else location.hash = '#/encounter';
+    // Point the memory at a fresh Encounter first so the outgoing surface's offset is not re-saved.
+    const here = location.hash === '#/encounter';
+    Object.assign(scrollMemory.current, { positions: {}, focus: null, surface: 'encounter', sub: '', pending: here ? null : { surface: 'encounter', y: 0 } });
+    if (here) window.scrollTo(0, 0); else location.hash = '#/encounter';
   };
   // Focus an Encounter target, switching surfaces first when needed; the focus runs
   // after the Encounter panel is visible and replaces any restored scroll offset.
@@ -215,7 +219,7 @@ function App() {
       <details ref={utilitiesRef} className="workspace-utilities" onToggle={event => { if (event.currentTarget.open) setUtilitiesVisited(true); }}><summary aria-label="Utilities">More</summary><div className="utility-panel"><label>Theme<select aria-label="Theme" value={theme} onChange={e => { setThemePref(e.target.value); setTheme(e.target.value); }}>{[['auto', 'System'], ['light', 'Light'], ['dark', 'Dark']].map(([v, t]) => <option key={v} value={v}>{t}</option>)}</select></label><button type="button" className="utility-action" onClick={() => { if (utilitiesRef.current) utilitiesRef.current.open = false; reset(); }}>Start new encounter</button>{utilitiesVisited && <Suspense fallback={<p role="status">Loading install options…</p>}><InstallAppButton installPrompt={installPrompt} isInstalled={isInstalled} onInstall={async () => { if (!installPrompt) return; try { await installPrompt.prompt(); const choice = await installPrompt.userChoice; if (choice.outcome === 'accepted') setInstalled(true); setInstallPrompt(null); } catch { setInstallPrompt(null); } }} /></Suspense>}<p className="utility-shortcuts"><kbd>Ctrl</kbd>/<kbd>⌘</kbd> <kbd>K</kbd> or <kbd>/</kbd> search</p><p>Version {APP_VERSION}</p><p role="status">{offlineStatus}</p></div></details></header>
     <nav className="workspace-external" aria-label="External references"><a href={MAP_URL} target="_blank" rel="noopener noreferrer">Telestroke Map</a><a href="https://www.uptodate.com/" target="_blank" rel="noopener noreferrer">UpToDate</a><a href="https://www.openevidence.com/" target="_blank" rel="noopener noreferrer">OpenEvidence</a></nav>
     <CaseBar state={state} documentLabel={documentationLabel(state)} blocked={outputWarnings(state).length} onCopy={generateAndCopy} copyStatus={copyStatus} />
-    {searchVisited && <Suspense fallback={null}><QuickSearch open={searchOpen} onClose={() => setSearchOpen(false)} version={APP_VERSION} protocolSub={route.surface === 'protocols' && route.sub ? route.sub : state.note.diagnosisCategory === 'ich' ? 'ich' : 'ischemic'} /></Suspense>}
+    {searchVisited && <Suspense fallback={null}><QuickSearch open={searchOpen} onClose={() => setSearchOpen(false)} onFocusEncounter={goToEncounter} version={APP_VERSION} protocolSub={route.surface === 'protocols' && route.sub ? route.sub : state.note.diagnosisCategory === 'ich' ? 'ich' : 'ischemic'} /></Suspense>}
     {updateReady && <aside className="workspace-update" aria-label="App update"><p>{updateReady.message || 'A new version is ready. Updating reloads this page and clears its session; finish or copy your note first.'}</p><button type="button" onClick={() => acceptUpdate().catch(() => setUpdateReady({ message: 'Update failed. Current encounter remains open; try again when connected.' }))}>Reload to update</button><button type="button" onClick={() => setUpdateReady(null)}>Later</button></aside>}
     <main id="workspace-main" tabIndex={-1}>
       <div hidden={route.surface !== 'encounter'}>{targetUnavailable && <div role="status" className="workspace-result workspace-inline-action" data-tone="caution"><span>{['ich-volume', 'ich-score'].includes(route.tool) ? 'This calculator needs an ICH encounter.' : route.tool === 'gcs' ? 'GCS opens with ICH, SAH or CVT.' : 'This tool needs an acute ischemic stroke encounter.'}</span><button type="button" className="workspace-secondary-action" onClick={() => update(prev => ({ ...prev, context: 'acute', note: { ...prev.note, diagnosisCategory: ['ich-volume', 'ich-score', 'gcs'].includes(route.tool) ? 'ich' : route.tool === 'dapt' && prev.note.diagnosisCategory === 'tia' ? 'tia' : 'ischemic' } }))}>{['ich-volume', 'ich-score', 'gcs'].includes(route.tool) ? 'Set ICH' : 'Set acute ischemic stroke'}</button></div>}<Encounter onReset={reset} state={state} update={update} now={now} copyStatus={copyStatus} onCopy={copy} onGenerateAndCopy={generateAndCopy} onGenerate={text => { setState(prev => ({ ...prev, draft: { text, revision: prev.revision, stale: false } })); setCopyStatus(''); }} /></div>

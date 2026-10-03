@@ -126,7 +126,7 @@ export function safetyChecklistSignals(note = {}, now = new Date()) {
   const flag = (id, reason, conflict = true) => { if (!signals[id] || conflict && !signals[id].conflict) signals[id] = { reason, conflict }; };
   if (['present', 'uncertain'].includes(note.ctHemorrhageStatus)) flag('currentICH', `CT hemorrhage review: ${note.ctHemorrhageStatus}`);
   const [sbp, dbp] = String(note.presentingBP || '').split('/').map(value => numericInput(value, { min: 1, max: 400 }));
-  if (sbp !== null && sbp > 185 || dbp !== null && dbp > 110) flag('severeUncontrolledHTN', `BP ${note.presentingBP}; answer after the treatment response`, false);
+  if (sbp !== null && sbp >= 185 || dbp !== null && dbp >= 110) flag('severeUncontrolledHTN', `BP ${note.presentingBP}`, false);
   const platelets = numericInput(note.plateletCount, { min: 0 });
   const plateletsK = platelets === null ? null : platelets >= 2000 ? platelets / 1000 : platelets;
   if (plateletsK !== null && plateletsK < 100) flag('lowPlatelets', `platelets ${Number(plateletsK.toPrecision(6))} K/µL`);
@@ -135,13 +135,14 @@ export function safetyChecklistSignals(note = {}, now = new Date()) {
   const coagulation = [inr !== null && inr > 1.7 && `INR ${inr}`, pt !== null && pt > 15 && `PT ${pt} s`].filter(Boolean);
   if (drug === 'warfarin' && (coagulation.length || ptt !== null && ptt > 40)) flag('warfarinElevatedINR', `warfarin with ${[...coagulation, ptt !== null && ptt > 40 && `aPTT ${ptt} s`].filter(Boolean).join(', ')}`);
   else if (coagulation.length) flag('knownBleedingDiathesis', coagulation.join(', '));
+  if (drug === 'warfarin' && inr === null && pt === null) flag('warfarinElevatedINR', 'warfarin exposure; current INR not documented', false);
   if (ptt !== null && ptt > 40) flag('elevatedAPTT', `aPTT ${ptt} s`);
   const glucose = numericInput(note.glucose, { min: 1 });
   if (glucose !== null && glucose < 50) flag('lowGlucose', `glucose ${glucose} mg/dL`);
   if (glucose !== null && glucose > 400) flag('highGlucose', `glucose ${glucose} mg/dL`);
   const since = hoursSince(note.lastDOACDose, now);
   const elapsed = since !== null && since >= 0 ? since : null;
-  if (['apixaban', 'rivaroxaban', 'dabigatran', 'edoxaban'].includes(drug) && (elapsed === null || elapsed < 48)) flag('recentDOAC', elapsed === null ? `${drug}; valid last-dose time not documented` : `${drug} ${Math.floor(elapsed)} h ago`);
+  if (['apixaban', 'rivaroxaban', 'dabigatran', 'edoxaban'].includes(drug) && (elapsed === null || elapsed < 48)) flag('recentDOAC', elapsed === null ? `${drug} with no valid last-dose time` : `${drug} ${Math.floor(elapsed)} h ago`);
   if (drug === 'lmwh') {
     const intent = note.anticoagulantDoseIntent;
     if (intent === 'therapeutic' && elapsed !== null && elapsed < 24) flag('recentHeparin', `therapeutic LMWH ${Math.floor(elapsed)} h ago`);

@@ -95,11 +95,13 @@ export function searchIndex(index, query, limit = 40) {
   return scored.sort((a, b) => b[0] - a[0] || a[1].title.localeCompare(b[1].title)).slice(0, limit).map(([, record]) => record);
 }
 
-// Groups keep the predictable SEARCH_GROUPS order, except that the group holding
-// the single best match leads so Enter opens it. Long result sets show the top few
-// per group and report how many are hidden ([group, shown, hiddenCount]).
+// Groups keep the predictable SEARCH_GROUPS order. The lead group holds the best
+// navigation match (Go to, Protocols, Calculators) when there is one, otherwise the
+// best match overall, so Enter opens it. Long result sets show the top few per
+// group and report how many are hidden ([group, shown, hiddenCount]).
+const NAVIGATION_GROUPS = ['Go to', 'Protocols', 'Calculators'];
 export function groupResults(results, { perGroup = 5, expanded = [] } = {}) {
-  const lead = results[0]?.group;
+  const lead = (results.find(record => NAVIGATION_GROUPS.includes(record.group)) || results[0])?.group;
   const capped = results.length > 12;
   return SEARCH_GROUPS.map(group => [group, results.filter(record => record.group === group)])
     .filter(([, items]) => items.length)

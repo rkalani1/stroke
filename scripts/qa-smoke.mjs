@@ -605,10 +605,11 @@ async function main() {
     await check('case bar fits every width, surfaces keep scroll, targets take focus and dark links stay legible', async () => {
       const picker=page.getByLabel('Theme',{exact:true});await openDetails(picker);const originalTheme=await picker.inputValue();await picker.evaluate(el=>el.closest('details').open=false);
       try {
-        await setupIschemic(page);await fillBp(page,'172/94');await page.getByLabel('Anticoagulant exposure',{exact:true}).selectOption('apixaban');
+        // Widest realistic bar: sex documented, decimal weight, alteplase bolus detail, anticoagulant badge.
+        await setupIschemic(page);await fillBp(page,'192/104');await page.getByLabel('Sex',{exact:true}).selectOption('F');await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).fill('82.5');await page.getByLabel('Glucose (mg/dL)',{exact:true}).fill('132');await page.getByLabel('Selected IV thrombolytic',{exact:true}).selectOption('Alteplase');await page.getByLabel('Anticoagulant exposure',{exact:true}).selectOption('rivaroxaban');
         // The sticky bar wraps instead of clipping, keeps the 4.5 h pill uncovered and publishes its height.
-        for(const width of [360,390,600,834,1180,1440]) {
-          await page.setViewportSize({width,height:844});await page.evaluate(()=>window.scrollTo(0,0));await page.waitForTimeout(150);
+        for(const [width,height] of [[360,844],[390,844],[667,375],[600,900],[834,900],[1180,900],[1232,900],[1280,900],[1440,900]]) {
+          await page.setViewportSize({width,height});await page.evaluate(()=>window.scrollTo(0,0));await page.waitForTimeout(150);
           const fit=await page.evaluate(()=>{const pill=document.querySelector('.case-bar__window'),r=pill.getBoundingClientRect(),hit=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2),items=document.querySelector('.case-bar__items');return {overflow:document.documentElement.scrollWidth>innerWidth+1,pill:Boolean(hit&&pill.contains(hit)),clipped:items.scrollWidth>items.clientWidth+1,bar:Math.ceil(document.querySelector('.case-bar').getBoundingClientRect().height),published:parseInt(getComputedStyle(document.documentElement).getPropertyValue('--case-bar-h'),10)};});
           assert.equal(fit.overflow,false,`case bar overflows at ${width}px`);assert(fit.pill,`4.5 h pill covered at ${width}px`);assert.equal(fit.clipped,false,`case bar items clipped at ${width}px`);assert(Math.abs(fit.bar-fit.published)<=1,`--case-bar-h ${fit.published} vs bar ${fit.bar} at ${width}px`);
         }
