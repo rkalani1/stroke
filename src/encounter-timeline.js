@@ -27,7 +27,7 @@ export function timelineIntervals(state, now) {
   const puncture = acute && state.note.diagnosisCategory === 'ischemic' ? state.actions.punctureTime : '';
   const reperfusion = acute && state.note.diagnosisCategory === 'ischemic' ? state.actions.reperfusionTime : '';
   const pairs = [
-    ['Consultation elapsed', t.consultStart, t.consultEnd || now],
+    [t.consultEnd ? 'Consultation elapsed' : 'Consultation elapsed so far (end not recorded)', t.consultStart, t.consultEnd || now],
     ...(acute ? [['Door to CT', t.arrival, t.ctStart], ['CT to interpretation', t.ctStart, t.ctRead], ['Door to transfer decision', t.arrival, t.transferDecision]] : []),
     ...(ivt ? [['Door to IVT', t.arrival, ivt], ['CT to IVT', t.ctStart, ivt], ['Order to IVT', t.ivtOrder, ivt]] : []),
     ...(puncture ? [['Door to puncture', t.arrival, puncture], ['Puncture to reperfusion', puncture, reperfusion]] : []),

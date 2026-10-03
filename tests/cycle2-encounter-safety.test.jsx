@@ -187,7 +187,7 @@ describe('shared anticoagulant history and compact handoff continuity', () => {
     const state = newEncounter(); state.context = 'follow-up';
     Object.assign(state.note, { diagnosisCategory: 'ischemic', lastDOACType: 'lmwh', lastDOACDose: '2026-10-01T09:00', anticoagulantDoseIntent: 'therapeutic' });
     const text = buildSummary(state, now);
-    expect(text).toContain('Anticoagulant exposure: lmwh');
+    expect(text).toContain('Anticoagulant exposure: LMWH');
     expect(text).toContain('LMWH dose intent: therapeutic');
     expect(text).not.toContain('IVT clinician decision:');
     state.note.lastDOACType = 'none';

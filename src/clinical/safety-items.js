@@ -61,3 +61,5 @@ const DISPLAY_TIER = {
 };
 const sourceTier = item => absoluteContraindications.includes(item) ? 'absolute' : relativeContraindications.includes(item) ? 'relative' : 'benefit';
 export const SAFETY_TIERS = ['absolute', 'correctable', 'relative', 'benefit'].map(tier => [tier, SAFETY_ITEMS.filter(item => (DISPLAY_TIER[item.id] || sourceTier(item)) === tier)]);
+// Items where IVT benefit generally outweighs risk (AHA/ASA 2026 Table 8): recorded, never counted as concerns.
+export const BENEFIT_ITEM_IDS = new Set(SAFETY_TIERS.find(([tier]) => tier === 'benefit')[1].map(item => item.id));

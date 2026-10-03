@@ -34,12 +34,13 @@ export function caseSummary(state, nowMs) {
   else if (schedule) window = nextCheck ? { text: `Next check ${clockTime(nextCheck.at)}`, short: `Next ${shortClock(nextCheck.at)}`, tone: 'open' } : { text: '24 h checks done', short: 'Checks done', tone: 'neutral' };
   else if (timing.clock) {
     const elapsed = timing.clock.elapsedMinutes * 60000;
-    if (n.lkwUnknown) window = { text: 'since discovery', tone: 'neutral' };
+    // Unknown LKW: the WAKE-UP MRI route requires treatment within 4.5 h of symptom recognition.
+    if (n.lkwUnknown) { const toRecognition = 4.5 * 3600000 - elapsed; window = !acuteIschemic ? { text: 'since discovery', tone: 'neutral' } : toRecognition > 0 ? { text: `4.5 h from discovery in ${hoursMinutes(toRecognition)}`, short: `Disc ${hoursMinutes(toRecognition)}`, tone: toRecognition <= 30 * 60000 ? 'caution' : 'open' } : { text: '4.5 h from discovery passed', short: 'Disc passed', tone: 'neutral' }; }
     else if (acuteIschemic && !timing.clock.toLyticClosed) window = { text: `4.5 h in ${hoursMinutes(timing.clock.toLyticMs)}`, tone: timing.clock.toLyticMs <= 30 * 60000 ? 'caution' : 'open' };
     else if (acuteIschemic && !timing.clock.toLateEvtClosed) window = { text: `24 h in ${hoursMinutes(timing.clock.toLateEvtMs)}`, tone: 'neutral' };
     else if (elapsed >= 24 * 3600000) window = { text: '>24 h', tone: 'neutral' };
   }
-  const dose = acuteIschemic && weight !== null ? (state.drug === 'Alteplase' ? calculateAlteplaseDoseReviewed(n.weight) : calculateTNKDoseReviewed(n.weight, state.drug === 'TNK' ? state.doseAuthority : 'guideline')) : null;
+  const dose = acuteIschemic && weight !== null && state.decisions?.ivt !== 'Not recommended' ? (state.drug === 'Alteplase' ? calculateAlteplaseDoseReviewed(n.weight) : calculateTNKDoseReviewed(n.weight, state.drug === 'TNK' ? state.doseAuthority : 'guideline')) : null;
   const gcs = ['ich', 'sah', 'cvt'].includes(n.diagnosisCategory) ? reviewedGcs(state.gcs) : null;
   // BP flags: AIS before IVT not <185/110 (AHA/ASA 2026 COR 1); after IVT above 180/105 (COR 1);
   // acute ICH SBP >=150, the 2022 range in which lowering toward 140 applies.
