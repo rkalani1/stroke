@@ -57,8 +57,10 @@ export function evaluateWakeUpScreen(note = {}, now = new Date()) {
   const autoExtend = common && nihss >= 4 && nihss <= 26 && mrs !== null && mrs < 2 && withinExtendTime && perfusionCoreOk && ratioMet && perfusionMismatchVolOk;
   // Reviewing extent is distinct from documenting a qualifying extent. Legacy
   // review attestations must not imply the AHA/ASA MRI lesion-size criterion.
-  const autoWakeUp = common && age <= 80 && nihss <= 25 && note.lkwUnknown === true && discoveryHours !== null && discoveryHours <= 4.5 && workflow.dwi?.positiveForLesion === true && workflow.flair?.noMarkedHyperintensity === true && workflow.mriLesionExtentReviewed === true && workflow.dwiLesionUnderOneThirdMCA === true;
-  return { perfusionSource: EXTEND_PERFUSION_SOURCE, wakeUpEligible: autoWakeUp, extendEligible: autoExtend, manualWakeUp: false, manualExtend: false, autoWakeUp, autoExtend, withinExtendTime, discoveryHours, midpointHours, perfusionCoreOk, perfusionRatioOk: ratioMet, perfusionMismatchVolOk, perfusion: { coreVolume: core, penumbraVolume: hypoperfusion, mismatchVolume, mismatchRatio: ratio }, status: autoWakeUp || autoExtend ? 'partial-source-screen-met' : 'incomplete-or-not-met' };
+  // Unknown onset, or a known LKW (e.g. bedtime) beyond 4.5 h with symptoms recognized on waking (AHA/ASA 2026).
+  const unwitnessedOrWakeUp = note.lkwUnknown === true || onsetHours !== null && onsetHours > 4.5;
+  const autoWakeUp = common && age <= 80 && nihss <= 25 && unwitnessedOrWakeUp && discoveryHours !== null && discoveryHours <= 4.5 && workflow.dwi?.positiveForLesion === true && workflow.flair?.noMarkedHyperintensity === true && workflow.mriLesionExtentReviewed === true && workflow.dwiLesionUnderOneThirdMCA === true;
+  return { perfusionSource: EXTEND_PERFUSION_SOURCE, wakeUpApplicable: unwitnessedOrWakeUp ? true : onsetHours !== null ? false : null, wakeUpEligible: autoWakeUp, extendEligible: autoExtend, manualWakeUp: false, manualExtend: false, autoWakeUp, autoExtend, withinExtendTime, discoveryHours, midpointHours, perfusionCoreOk, perfusionRatioOk: ratioMet, perfusionMismatchVolOk, perfusion: { coreVolume: core, penumbraVolume: hypoperfusion, mismatchVolume, mismatchRatio: ratio }, status: autoWakeUp || autoExtend ? 'partial-source-screen-met' : 'incomplete-or-not-met' };
 }
 
 // Drug-class review, not a pharmacokinetic estimate of thrombolysis eligibility.
@@ -183,15 +185,19 @@ export function evaluateVideoTreatment({ note = {}, clock, aspects, pcAspects, c
   else if (note.diagnosisCategory !== 'ischemic') tnk = pending('Confirm the working ischemic-stroke diagnosis and reconcile any alternative diagnosis before applying this partial screen. Diagnostic uncertainty alone is not a permanent IVT contraindication.');
   else if (age === null || age < 18) tnk = pending(age === null ? 'Document age.' : 'Pediatric stroke: use the pediatric specialist pathway; adult IVT criteria do not apply.');
   else if (nihss === null || typeof note.disablingDeficit !== 'boolean') tnk = pending('Document a complete NIHSS and whether the residual deficit is disabling.');
-  else if (note.ctHemorrhageStatus !== 'absent' || note.ivtContraindicationsReviewed !== true) tnk = pending('Confirm reviewed imaging excludes hemorrhage and complete the IVT contraindication review.');
+  // The guideline answer for a non-disabling deficit does not wait for the full checklist.
+  else if (note.disablingDeficit === false) tnk = review('Non-disabling deficit documented: IVT is not recommended for mild non-disabling stroke (AHA/ASA 2026 COR 3: No Benefit, LOE B-R). Reassess disability and use the appropriate antithrombotic pathway.');
+  // Past 4.5 h from a known LKW with no imaging-selected screen met, the window is the deciding fact.
+  else if (note.lkwUnknown !== true && hours !== null && hours > 4.5 && !wake.wakeUpEligible && !wake.extendEligible) tnk = pending('Outside the standard IVT window. A complete imaging-selected, drug-specific pathway is required.');
+  else if (note.ctHemorrhageStatus !== 'absent') tnk = pending('Confirm that reviewed imaging excludes hemorrhage.');
+  else if (note.ivtContraindicationsReviewed !== true) tnk = pending('Complete the IVT contraindication review.');
   else if (systolic === null || diastolic === null || systolic <= diastolic || glucose === null) tnk = pending('Document valid current BP and glucose in mg/dL; an attestation does not fill missing measurements.');
   else if (systolic >= 185 || diastolic >= 110 || glucose < 50 || glucose > 400) tnk = review('Correct the recorded BP or severe glucose derangement and reassess persistent deficits before an IVT decision; no eligibility is inferred from this screen.');
   else if (exposure.status !== 'none') tnk = pending(exposure.reason + '. Resolve the anticoagulant assessment before an IVT decision.');
-  else if (note.disablingDeficit === false) tnk = review('Non-disabling deficit documented: IVT is not recommended for mild non-disabling stroke. Reassess disability and use the appropriate antithrombotic pathway.');
   else if (note.lkwUnknown === true) tnk = pending(wake.wakeUpEligible || wake.extendEligible ? 'Imaging-selected partial screen met. Confirm the complete source pathway, drug-specific evidence and EVT plan with the stroke team; this is not standard-window TNK eligibility.' : 'Onset is unknown. Discovery time is not LKW; complete the MRI/recognition or perfusion/sleep-midpoint pathway.');
   else if (hours === null) tnk = pending('Document a valid known-onset/LKW time; future times require correction.');
   else if (hours <= 4.5) tnk = matched(`Known-onset standard-window screen: ${hours.toFixed(1)} h, documented disabling deficit and NIHSS ${nihss}. Clinician confirmation of complete IVT eligibility is required.`);
-  else tnk = pending(wake.extendEligible ? 'EXTEND partial imaging/time screen met. Review drug-specific IVT evidence, full exclusions and EVT plan; do not infer routine TNK eligibility.' : 'Outside the standard IVT window. A complete imaging-selected, drug-specific pathway is required.');
+  else tnk = pending(wake.wakeUpEligible ? 'WAKE-UP partial MRI screen met (DWI-FLAIR mismatch, DWI lesion <1/3 MCA, within 4.5 h of symptom recognition). Confirm the complete pathway, drug and EVT plan; do not infer routine TNK eligibility.' : wake.extendEligible ? 'EXTEND partial imaging/time screen met. Review drug-specific IVT evidence, full exclusions and EVT plan; do not infer routine TNK eligibility.' : 'Outside the standard IVT window. A complete imaging-selected, drug-specific pathway is required.');
   const vessels = Array.isArray(note.vesselOcclusion) ? note.vesselOcclusion : [];
   let evt = pending('Document vessel imaging, age, complete NIHSS, baseline function and time.');
   if (['ich', 'sah', 'mimic', 'cvt'].includes(note.diagnosisCategory) || note.ctHemorrhageStatus === 'present' || checklist.currentICH === true) evt = review('The recorded diagnosis or hemorrhage finding conflicts with the modeled ischemic EVT pathway; urgent specialist reconciliation is required.');

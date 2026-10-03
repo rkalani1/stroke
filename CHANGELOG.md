@@ -1,5 +1,55 @@
 # CHANGELOG
 
+## v7.7.3 — 2026-10-03 — On-call scenario pass
+
+Agents worked through hyperacute ischemic, hemorrhage, TIA/secondary-prevention and visual scenarios end to end.
+
+- **Wake-up stroke:**
+  - The protocol IVT card's wake-up branch now requires the full WAKE-UP criteria: DWI-FLAIR mismatch, DWI lesion <1/3 MCA, and treatment within 4.5 h of recognition (AHA/ASA 2026, COR 2a).
+  - The card is pre-filled from Encounter MRI and perfusion entries.
+  - A known bedtime LKW keeps the WAKE-UP MRI screen. The note says "not applicable" when the LKW is within 4.5 h, instead of "not met".
+  - Past 4.5 h with no imaging selection, the screen states the window first. A non-disabling deficit shows "not recommended" (COR 3: No Benefit) without waiting for the checklist.
+- **After thrombolysis:**
+  - The case bar shows the next neuro check and the administration time, flags BP above 180/105, and links the post-lytic bleed protocol (plus angioedema when an ACE inhibitor is listed).
+  - When an administration is recorded, Encounter shows the pre-IVT BP fields and cautions if that BP is not below 185/110. It also lists open safety items and records the administered dose. The note's IVT administration line carries the pre-IVT BP.
+  - A recorded PH1/PH2 bleed or angioedema raises a critical prompt.
+  - Before IVT the BP flag uses "not below 185/110".
+- **Hemorrhage:**
+  - Patient-specific 4F-PCC arithmetic appears on the reversal card and in the acute ICH banner: label INR tiers capped at 100 kg; 50 units/kg for factor Xa inhibitors, with the local fixed dose shown.
+  - INR and aPTT sit beside the anticoagulant for ICH.
+  - Neurosurgery prompts fire from volume ≥15 mL, IVH and infratentorial origin.
+  - New ICH surgical-trigger and aSAH first-hour cards (nimodipine 60 mg every 4 h × 21 days).
+  - The ICH BP row adds timing (start ≤2 h, target ≤1 h).
+  - The ICH protocol adds EVD for large IVH with impaired consciousness (COR 1).
+  - ICH BP ≥150 is flagged, and ICH/SAH get a BP-targets link.
+- **TIA and secondary prevention:**
+  - DAPT is blocked when AF or a cardioembolic mechanism is documented.
+  - TIA with symptomatic stenosis ≥50% maps to ticagrelor plus aspirin within 24 h (COR 2b, ais-2026-148), with a carotid revascularization timing hint.
+  - The 7-day DAPT initiation statement now appears at 24–72 h.
+  - The TIA risk item reads "presumed symptomatic stenosis >50%" (AHA TIA ED 2023).
+  - The ABCD² goes into TIA notes.
+  - AF is imported into the trial screener.
+  - AF timing shows under the on-call filter, with ELAN infarct-size definitions.
+- **Find it fast:**
+  - Jump targets and search for EVT eligibility, posterior/basilar, large core, MeVO, swallow screen, IVT card, contraindications, safety pause and IVH.
+  - Brand names and common phrasing are searchable ("coumadin", "tnk bleed", "nimodipine"), and filler words are ignored.
+  - The EVT card opens on the branch that matches the recorded vessel.
+  - The local labetalol ladder is shown inline on the BP card.
+  - Diagnosis-gated tool links land on the "needs a … encounter" action.
+- **Display:**
+  - On phones the LKW date and time stack so the hour and AM/PM never clip.
+  - Protected protocol disclosures get chevrons.
+  - The empty BP grade column is hidden.
+  - Protocol breadcrumb and sub-tabs are joined, and static on phones.
+  - Teal 20 px checkboxes.
+  - Touch sizing follows the pointer, with 44 px chips and toggles.
+  - Dark-theme selected states are consistent.
+  - "No Benefit" chips get a distinct tone.
+  - NIHSS descriptors are 11 px.
+  - Trials table filters match the sibling tabs.
+  - The Pulsara summary separates detail entries.
+  - The dose-table nearest row is shaded, not bolded.
+
 ## v7.7.2 — 2026-10-03 — Verification follow-ups
 
 - **Checklist tiers follow the local IVT exclusion list:** extensive hypodensity, intracranial/intraspinal surgery, severe head trauma, non-compressible arterial puncture, unsecured aneurysm >10 mm and amyloid immunotherapy are now under *generally contraindicated*. The heparin item reads "within 24 h". The extra-axial neoplasm note matches the benefit-greater listing.

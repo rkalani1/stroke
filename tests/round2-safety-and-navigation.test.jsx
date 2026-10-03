@@ -167,8 +167,8 @@ describe('case bar and quick reference on the ICH tab', () => {
 });
 
 describe('recommendation chips', () => {
-  it('shows COR 3: No Benefit as neutral and COR 3: Harm as harm', () => {
-    expect(recommendationLabels({ cor: '3: No Benefit', loe: 'A' }).tone).toBe('cor-neutral');
+  it('gives COR 3: No Benefit its own tone and COR 3: Harm the harm tone', () => {
+    expect(recommendationLabels({ cor: '3: No Benefit', loe: 'A' }).tone).toBe('cor-3nb');
     expect(recommendationLabels({ cor: '3: Harm', loe: 'B-R' }).tone).toBe('cor-3');
     expect(recommendationLabels({ cor: '2a', loe: 'B-NR' }).tone).toBe('cor-2a');
   });

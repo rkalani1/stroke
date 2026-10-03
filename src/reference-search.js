@@ -30,7 +30,7 @@ export function searchReference(records, query = '', setting = 'all') {
 }
 // ACC/AHA class (1, 2a, 2b, 3), GRADE strength or an ungraded statement.
 export function recommendationLabels(rec) {
-  if (/^[123]/.test(rec.cor)) return { cor: `COR ${rec.cor}`, loe: `LOE ${rec.loe}`, tone: rec.cor.startsWith('3') ? /no benefit/i.test(rec.cor) ? 'cor-neutral' : 'cor-3' : `cor-${rec.cor}` };
+  if (/^[123]/.test(rec.cor)) return { cor: `COR ${rec.cor}`, loe: `LOE ${rec.loe}`, tone: rec.cor.startsWith('3') ? /no benefit/i.test(rec.cor) ? 'cor-3nb' : 'cor-3' : `cor-${rec.cor}` };
   if (['Strong', 'Conditional'].includes(rec.cor)) return { cor: rec.cor, loe: `${rec.loe} certainty`, tone: rec.cor === 'Strong' ? 'cor-1' : 'cor-2b' };
   return { cor: rec.cor === 'Statement' ? 'Ungraded statement' : rec.cor, loe: rec.loe === 'Ungraded' ? '' : rec.loe, tone: 'cor-neutral' };
 }

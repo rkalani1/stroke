@@ -1,13 +1,16 @@
 import React, { useLayoutEffect, useRef } from 'react';
-import { encounterTiming, encounterNihss } from '../workspace-state.js';
+import { encounterTiming, encounterNihss, validTimestamp } from '../workspace-state.js';
 import { numericInput, reviewedGcs } from '../encounter-clinical-review.js';
 import { calculateTNKDoseReviewed, calculateAlteplaseDoseReviewed } from '../calculators.js';
+import { computeNeurocheckSchedule } from '../calculators-extended.js';
 import { useCurrentTime } from '../use-current-time.js';
 import { revealProtocolTarget } from '../protocol-navigation.js';
 
 const SHORT_DX = { ischemic: 'Ischemic', ich: 'ICH', sah: 'SAH', tia: 'TIA', cvt: 'CVT', mimic: 'Mimic', other: 'Other' };
 export const ANTICOAGULANT_LABELS = { apixaban: 'Apixaban', rivaroxaban: 'Rivaroxaban', dabigatran: 'Dabigatran', edoxaban: 'Edoxaban', warfarin: 'Warfarin', heparin: 'Heparin', lmwh: 'LMWH', other: 'Anticoagulant' };
 const pad = value => String(value).padStart(2, '0');
+const clockTime = at => new Date(at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+const ACE_INHIBITOR = /\b[a-z]+pril\b/i;
 export const hoursMinutes = ms => { const minutes = Math.max(0, Math.floor(ms / 60000)); return `${Math.floor(minutes / 60)}:${pad(minutes % 60)}`; };
 
 // Read-only projection of the current Encounter for the sticky case bar.
@@ -19,8 +22,13 @@ export function caseSummary(state, nowMs) {
   const weight = numericInput(n.weight, { min: Number.MIN_VALUE, max: 350 });
   const [sbp, dbp] = String(n.presentingBP || '').split('/').map(value => numericInput(value, { min: 1, max: 400 }));
   const glucose = numericInput(n.glucose, { min: 1 });
+  // Once IV thrombolysis is recorded, the next neuro/BP check replaces the lytic countdown.
+  const administered = acuteIschemic && state.actions?.administered && state.drug && validTimestamp(state.actions.administrationTime, nowMs);
+  const schedule = administered ? computeNeurocheckSchedule(state.actions.administrationTime) : null;
+  const nextCheck = schedule?.checks.find(check => check.at.getTime() > nowMs);
   let window = null;
   if (timing.invalid) window = { text: 'Check time', tone: 'critical' };
+  else if (schedule) window = nextCheck ? { text: `Next check ${clockTime(nextCheck.at)}`, tone: 'open' } : { text: '24 h checks done', tone: 'neutral' };
   else if (timing.clock) {
     const elapsed = timing.clock.elapsedMinutes * 60000;
     if (n.lkwUnknown) window = { text: 'since discovery', tone: 'neutral' };
@@ -30,6 +38,12 @@ export function caseSummary(state, nowMs) {
   }
   const dose = acuteIschemic && weight !== null ? (state.drug === 'Alteplase' ? calculateAlteplaseDoseReviewed(n.weight) : calculateTNKDoseReviewed(n.weight, state.drug === 'TNK' ? state.doseAuthority : 'guideline')) : null;
   const gcs = ['ich', 'sah', 'cvt'].includes(n.diagnosisCategory) ? reviewedGcs(state.gcs) : null;
+  // BP flags: AIS before IVT not <185/110 (AHA/ASA 2026 COR 1); after IVT above 180/105 (COR 1);
+  // acute ICH SBP >=150, the 2022 range in which lowering toward 140 applies.
+  const bpKnown = sbp !== null && dbp !== null;
+  const ich = state.context === 'acute' && n.diagnosisCategory === 'ich';
+  const bpFlag = !bpKnown ? null : acuteIschemic ? administered ? sbp > 180 || dbp > 105 ? 'Above the post-IVT limit of 180/105' : null : sbp >= 185 || dbp >= 110 ? 'Not below 185/110 (pre-IVT)' : null
+    : ich && sbp >= 150 ? 'ICH: SBP 150–220 → target 140 (130–150), start ≤2 h, reach ≤1 h; avoid <130' : null;
   return {
     dx: SHORT_DX[n.diagnosisCategory] || '', dxKey: n.diagnosisCategory || '',
     demographics: [age !== null ? String(age) : '', n.sex === 'M' || n.sex === 'F' ? n.sex : ''].filter(Boolean).join(' '),
@@ -40,12 +54,14 @@ export function caseSummary(state, nowMs) {
     nihssPartial: !exam.complete && exam.source === 'itemized' && exam.count > 0,
     gcs: gcs === null ? '' : String(gcs),
     bp: sbp !== null && dbp !== null ? `${sbp}/${dbp}` : '',
-    bpHigh: acuteIschemic && sbp !== null && dbp !== null && (sbp > 185 || dbp > 110),
+    bpHigh: Boolean(bpFlag), bpTitle: bpFlag || undefined,
+    administered: Boolean(administered), administeredAt: administered ? clockTime(state.actions.administrationTime) : '',
     glucose: glucose === null ? '' : String(glucose),
     glucoseFlag: glucose !== null && (glucose < 50 || glucose > 400),
     weight: weight === null ? '' : `${Math.round(weight * 10) / 10}`,
-    dose: dose ? state.drug === 'Alteplase' ? { label: 'tPA', value: `${dose.totalDose} mg`, detail: `${dose.bolus} mg bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
+    dose: administered ? { label: state.drug === 'Alteplase' ? 'tPA given' : 'TNK given', value: clockTime(state.actions.administrationTime), detail: state.actions.administeredDose ? `${state.actions.administeredDose} mg` : '' } : dose ? state.drug === 'Alteplase' ? { label: 'tPA', value: `${dose.totalDose} mg`, detail: `${dose.bolus} mg bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
     anticoagulant: n.lastDOACType && n.lastDOACType !== 'none' ? ANTICOAGULANT_LABELS[n.lastDOACType] || 'Anticoagulant' : '',
+    aceInhibitor: ACE_INHIBITOR.test(n.medications || ''),
     hasData: Boolean(n.diagnosisCategory || age !== null || timing.timestamp || n.lkwUnknown || exam.complete || exam.count || sbp !== null || glucose !== null || weight !== null)
   };
 }
@@ -77,21 +93,25 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
   }, [c.hasData]);
   if (!c.hasData) return null;
   const acuteIschemic = state.context === 'acute' && state.note.diagnosisCategory === 'ischemic';
-  const reversalHref = state.note.diagnosisCategory === 'ich' ? '#/protocols/ich/qr-reversal' : '#/protocols/ischemic/qr-reversal';
+  const sub = ['ich', 'sah'].includes(state.note.diagnosisCategory) ? 'ich' : 'ischemic';
+  const reversalHref = `#/protocols/${sub}/qr-reversal`, bpHref = `#/protocols/${sub}/qr-bp`;
+  const bpLink = acuteIschemic || state.context === 'acute' && ['ich', 'sah'].includes(state.note.diagnosisCategory);
   return <section ref={bar} className="case-bar" aria-label="Current encounter">
     <a className="case-bar__dx" data-dx={c.dxKey || undefined} href="#/encounter" aria-label={`Open Encounter: ${[c.dx || 'No diagnosis', c.demographics].filter(Boolean).join(' · ')}`}>{c.dx || 'No diagnosis'}{c.demographics && <span className="case-bar__demo">· {c.demographics}</span>}</a>
-    {c.anticoagulant && <span className="case-bar__badge" title="Anticoagulant exposure documented"><span className="sr-only">Anticoagulant: </span>{c.anticoagulant}</span>}
+    {c.anticoagulant && <a className="case-bar__badge" href={reversalHref} onClick={revealIfCurrent(reversalHref, 'qr-reversal')} title="Anticoagulant exposure documented · open the reversal table"><span className="sr-only">Anticoagulant: </span>{c.anticoagulant}<span className="sr-only">, open reversal table</span></a>}
     <div className="case-bar__time"><Item label={c.timeLabel} value={c.elapsed} pill={c.window} flag={c.window?.tone === 'critical' ? 'critical' : undefined} title="Elapsed time (h:mm)" /></div>
     <div className="case-bar__items">
       {c.gcs ? <Item label="GCS" value={c.gcs} /> : null}
       <Item label="NIHSS" value={c.nihss} flag={c.nihssPartial ? 'partial' : undefined} title={c.nihssPartial ? 'Partial itemized sum' : undefined} />
-      <Item label="BP" value={c.bp} flag={c.bpHigh ? 'caution' : undefined} title={c.bpHigh ? 'Above 185/110' : undefined} />
+      <Item label="BP" value={c.bp} flag={c.bpHigh ? 'caution' : undefined} title={c.bpTitle} />
       <Item label="Glucose" short="Glu" value={c.glucose} flag={c.glucoseFlag ? 'caution' : undefined} />
       <Item label="Weight" short="Wt" value={c.weight && `${c.weight} kg`} />
-      {acuteIschemic && <Item label={c.dose?.label || 'Dose'} value={c.dose?.value} detail={c.dose?.detail} title="Dose arithmetic only; not an eligibility decision" />}
+      {acuteIschemic && <Item label={c.dose?.label || 'Dose'} value={c.dose?.value} detail={c.dose?.detail} title={c.administered ? 'Recorded administration time' : 'Dose arithmetic only; not an eligibility decision'} />}
     </div>
     <div className="case-bar__actions">
-      {acuteIschemic && <a className="case-bar__link" href="#/protocols/ischemic/qr-bp" onClick={revealIfCurrent('#/protocols/ischemic/qr-bp', 'qr-bp')}>BP targets</a>}
+      {bpLink && <a className="case-bar__link" href={bpHref} onClick={revealIfCurrent(bpHref, 'qr-bp')}>BP targets</a>}
+      {c.administered && <a className="case-bar__link" href="#/protocols/ischemic/qr-sich" onClick={revealIfCurrent('#/protocols/ischemic/qr-sich', 'qr-sich')}>Post-lytic bleed</a>}
+      {c.administered && c.aceInhibitor && <a className="case-bar__link" href="#/protocols/ischemic/qr-angioedema" onClick={revealIfCurrent('#/protocols/ischemic/qr-angioedema', 'qr-angioedema')}>Angioedema</a>}
       {(state.note.diagnosisCategory === 'ich' || c.anticoagulant) && <a className="case-bar__link" href={reversalHref} onClick={revealIfCurrent(reversalHref, 'qr-reversal')}>Reversal</a>}
       <button type="button" className="case-bar__copy" onClick={onCopy} aria-label={blocked ? undefined : `Copy ${documentLabel} (case bar)`}>{blocked ? `Review ${blocked} flag${blocked === 1 ? '' : 's'}` : /copied\.$/.test(copyStatus || '') ? 'Copied ✓' : <><span className="case-bar__copy-long">Copy {documentLabel}</span><span className="case-bar__copy-short" aria-hidden="true">Copy note</span></>}</button>
     </div>

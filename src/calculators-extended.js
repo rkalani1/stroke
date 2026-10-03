@@ -190,6 +190,21 @@ export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2,
     return classic;
   }
 
+  // AHA/ASA 2026 ais-2026-148 counts symptomatic intracranial/extracranial stenosis >=50%
+  // as high-risk TIA for ticagrelor + aspirin within 24 h, whatever the ABCD2 score.
+  if (isTIA && !highRisk && lvdSymptomatic === true && inLegacyWindow) {
+    const stenosisTia = {
+      regimen: 'ticagrelor+ASA',
+      duration: '30 days',
+      dosing: 'Ticagrelor 180 mg load, then 90 mg BID + ASA 300-325 mg load then 75-100 mg daily',
+      rationale: `TIA with symptomatic stenosis >=50% within ${elapsed} (ABCD² ${ab}): AHA/ASA 2026 treats this as high-risk TIA for ticagrelor plus aspirin for 30 days (THALES enrolled TIA with symptomatic >=50% stenosis regardless of ABCD²; more severe bleeding). Discuss carotid revascularization timing separately.`,
+      source: 'Johnston NEJM 2020;383:207-17 (THALES); AHA/ASA 2026 AIS §4.7 (ais-2026-148)',
+      class: 'COR 2b, LOE B-R (AHA/ASA 2026 AIS)'
+    };
+    if (a < 40) return guidelineTier(stenosisTia, 'THALES', 'patients age ≥40', 'COR 2b, LOE B-R (AHA/ASA 2026 AIS)');
+    return stenosisTia;
+  }
+
   // Fall-throughs that signal "missed-window" or "above-threshold"
   if (((isTIA && highRisk) || isUpToModerate) && tH > 72) {
     return {
@@ -205,7 +220,7 @@ export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2,
     regimen: 'individualized-review',
     duration: null,
     dosing: null,
-    rationale: `No DAPT trial branch modeled here is met (${isTIA ? `TIA ABCD² ${ab}` : `NIHSS ${n}`}, ${elapsed}). Review the complete mechanism-specific guidance, timing and bleeding risk; failure to match these branches does not select single antiplatelet therapy or establish a DAPT contraindication.`,
+    rationale: `No DAPT trial branch modeled here is met (${isTIA ? `TIA ABCD² ${ab}` : `NIHSS ${n}`}, ${elapsed}). Review the complete mechanism-specific guidance, timing and bleeding risk; failure to match these branches does not select single antiplatelet therapy or establish a DAPT contraindication.${((isTIA && highRisk) || isMinor) && tH <= 168 ? ' The 2021 secondary-prevention guideline recommends starting aspirin plus clopidogrel early for minor stroke or high-risk TIA, ideally within 12-24 h and at least within 7 days (COR 1, LOE A).' : ''}`,
     source: 'Kleindorfer AHA/ASA Stroke 2021',
     class: 'Modeled screen not met; individualized clinical review'
   };

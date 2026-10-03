@@ -5,6 +5,9 @@
 // AHA/ASA 2026 AIS, 2022 ICH and 2023 aSAH recommendation records.
 import React from 'react';
 import { calculateTNKDoseReviewed, calculateAlteplaseDoseReviewed } from '../calculators.js';
+import { INSTITUTIONAL_BP_PROTOCOLS } from '../institutional-protocols.js';
+import { reversalDoseLine } from '../clinical/reversal-dose.js';
+export { reversalDoseLine };
 
 const SOURCES = {
   ais2026: { label: 'AHA/ASA AIS 2026', url: 'https://doi.org/10.1161/STR.0000000000000513' },
@@ -14,6 +17,7 @@ const SOURCES = {
   ncs2016: { label: 'NCS/SCCM reversal 2016 (PMID 26714677)', url: 'https://pubmed.ncbi.nlm.nih.gov/26714677/' },
   ncs2026: { label: 'NCS/SCCM reversal 2026 (PMID 42786382)', url: 'https://pubmed.ncbi.nlm.nih.gov/42786382/' },
   sich2017: { label: 'AHA/ASA sICH statement 2017 (PMID 29097489)', url: 'https://pubmed.ncbi.nlm.nih.gov/29097489/' },
+  nimodipineLabel: { label: 'US nimodipine label', url: 'https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=nimodipine' },
   tnkLabel: { label: 'US TNKase label', url: 'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e647640d-c395-4b4b-a0be-1162f9c21d84' }
 };
 
@@ -44,7 +48,7 @@ export function thrombolyticDoseTable() {
   ];
 }
 
-// The highlighted table row is the nearest 5-kg row; exact doses are shown separately.
+// The shaded table row is the nearest 5-kg row; exact doses are shown separately.
 export function highlightedDoseRowKey(weightKg) {
   const weight = Number(weightKg);
   if (!Number.isFinite(weight) || weight <= 0 || weight > 350) return null;
@@ -70,8 +74,8 @@ const Sources = ({ ids }) => (
 );
 
 // Same class colours as the Evidence recommendation chips.
-// COR 3: No Benefit is neutral and COR 3: Harm is red, as in the protocol cards below.
-const gradeTone = text => /COR 3: No Benefit/.test(text) ? 'cor-neutral' : /COR 3/.test(text) ? 'cor-3' : /COR 2a/.test(text) ? 'cor-2a' : /COR 2b/.test(text) ? 'cor-2b' : /COR 1\b/.test(text) ? 'cor-1' : 'cor-neutral';
+// COR 3: No Benefit has its own tone; COR 3: Harm is red.
+const gradeTone = text => /COR 3: No Benefit/.test(text) ? 'cor-3nb' : /COR 3/.test(text) ? 'cor-3' : /COR 2a/.test(text) ? 'cor-2a' : /COR 2b/.test(text) ? 'cor-2b' : /COR 1\b/.test(text) ? 'cor-1' : 'cor-neutral';
 const Grade = ({ children, harm = false }) => (
   <span className={`reference-chip ${harm ? 'cor-3' : gradeTone(String(children))} ml-1 whitespace-nowrap align-[1px]`}>{children}</span>
 );
@@ -121,7 +125,7 @@ function DoseCard({ weightKg, open = true }) {
           </thead>
           <tbody>
             {rows.map(row => (
-              <tr key={row.key} data-weight={row.key} aria-current={row.key === highlight ? 'true' : undefined} className={`border-t border-line ${row.key === highlight ? 'bg-cobalt-50 font-semibold dark:bg-cobalt-900' : ''}`}>
+              <tr key={row.key} data-weight={row.key} aria-current={row.key === highlight ? 'true' : undefined} className={`border-t border-line ${row.key === highlight ? 'bg-paper-2' : ''}`}>
                 <th scope="row" className="px-1 py-0.5 text-left">{row.label}</th>
                 <td className="px-1 py-0.5">{row.tnkMg}</td>
                 <td className="px-1 py-0.5">{row.tnkMl}</td>
@@ -133,7 +137,7 @@ function DoseCard({ weightKg, open = true }) {
           </tbody>
         </table>
       </div>
-      <p className="mt-2 text-ink-2">TNK 0.25 mg/kg IV bolus (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg), COR 1, LOE A. Highlighted row is the nearest 5-kg row. The US TNKase label instead uses weight bands ({labelBands()}) and covers treatment within 3 h of onset.</p>
+      <p className="mt-2 text-ink-2">TNK 0.25 mg/kg IV bolus (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg), COR 1, LOE A. The shaded row is the nearest 5-kg row, not this patient's dose; use the exact dose above. The US TNKase label instead uses weight bands ({labelBands()}) and covers treatment within 3 h of onset.</p>
       <Sources ids={['ais2026', 'tnkLabel']} />
     </Card>
   );
@@ -141,7 +145,8 @@ function DoseCard({ weightKg, open = true }) {
 
 const HARM = 'text-crit-800 dark:text-crit-300';
 
-export default function QuickReference({ weightKg, sub = 'ischemic' } = {}) {
+export default function QuickReference({ weightKg, sub = 'ischemic', reversal } = {}) {
+  const reversalLine = reversalDoseLine({ weightKg, ...reversal });
   // On the ICH tab the BP and reversal cards lead and the dose table stays closed.
   const ich = sub === 'ich';
   const dose = <DoseCard weightKg={weightKg} open={!ich} />;
@@ -158,14 +163,16 @@ export default function QuickReference({ weightKg, sub = 'ischemic' } = {}) {
           ['Any EVT (during + 24 h)', <>≤180/105<Grade>COR 2a, B-NR</Grade>. Local protocol: SBP 140–180 during EVT.</>],
           ['After mTICI ≥2b', <>Do not lower SBP to &lt;140 (harm)<Grade harm>COR 3: Harm, A</Grade>. Local protocol: SBP 140–180.</>, HARM],
           ['No reperfusion', <>≥220/120: benefit of starting treatment in the first 48–72 h is uncertain<Grade>COR 2b, C-EO</Grade> (ESO 2025: if lowered, by &lt;15% over 24 h). &lt;220/120: starting antihypertensives in the first 48–72 h is not effective<Grade>COR 3: No Benefit, A</Grade>. Treat earlier if a comorbidity requires it<Grade>COR 1, C-EO</Grade>.</>],
-          ['ICH', <>Mild–moderate ICH presenting with SBP 150–220: target 140, keep 130–150<Grade>COR 2b, B-R</Grade>; avoid SBP &lt;130<Grade harm>COR 3: Harm, B-R</Grade>. Local protocol may differ (SBP ≥220 branch).</>],
+          ['ICH', <>Mild–moderate ICH presenting with SBP 150–220: target 140, keep 130–150<Grade>COR 2b, B-R</Grade>; avoid SBP &lt;130<Grade harm>COR 3: Harm, B-R</Grade>. Start within 2 h of onset and reach target within 1 h<Grade>COR 2a, C-LD</Grade>; smooth, sustained control without peaks or variability<Grade>COR 2a, B-NR</Grade>. Large or severe ICH, or surgical decompression: intensive lowering not established<Grade>COR 2b, C-LD</Grade>. Local protocol may differ (SBP ≥220 branch).</>],
           ['aSAH, unsecured aneurysm', <>Frequent BP monitoring with short-acting agents; avoid hypotension, hypertension and variability<Grade>COR 1, C-EO</Grade>. No numeric target is graded; SBP &lt;160 is a common local target — local protocol may differ.</>]
         ]} />
-        <p className="mt-2"><strong>Agents:</strong> labetalol 10–20 mg IV over 1–2 min, may repeat once; nicardipine 5 mg/h, titrate by 2.5 mg/h every 5–15 min, max 15 mg/h; clevidipine 1–2 mg/h, double every 2–5 min, max 21 mg/h. The local pre-IVT labetalol ladder may differ.</p>
+        <p className="mt-2"><strong>Agents:</strong> labetalol 10–20 mg IV over 1–2 min, may repeat once; nicardipine 5 mg/h, titrate by 2.5 mg/h every 5–15 min, max 15 mg/h; clevidipine 1–2 mg/h, double every 2–5 min, max 21 mg/h.</p>
+        <p className="mt-1"><strong>Local protocol, before IVT:</strong> {INSTITUTIONAL_BP_PROTOCOLS.beforeIVT.protocol} <strong>After IVT:</strong> {INSTITUTIONAL_BP_PROTOCOLS.afterIVT24h.protocol}</p>
         <Sources ids={['ais2026', 'ich2022', 'sah2023']} />
       </Card>
 
-      <Card id="qr-reversal" title="Anticoagulant reversal (ICH)">
+      <Card id="qr-reversal" title="Anticoagulant reversal (ICH)" open={ich && Boolean(reversalLine)}>
+        {reversalLine && <p className="mb-2 rounded border border-crit-300 bg-crit-50 p-2 text-ink dark:border-crit-800 dark:bg-crit-950" data-testid="qr-reversal-dose"><strong>This patient:</strong> {reversalLine}</p>}
         <Rows rows={[
           ['Warfarin', <>4F-PCC by INR and weight: INR 2–&lt;4, 25 units/kg (max 2500); 4–6, 35 units/kg (max 3500); &gt;6, 50 units/kg (max 5000)<Grade>COR 1, B-R</Grade>, plus vitamin K 10 mg IV<Grade>COR 1, C-LD</Grade>. INR 1.3–1.9: PCC may be reasonable<Grade>COR 2b, C-LD</Grade>. Local fixed dose 2000 units — local protocol may differ.</>],
           ['Dabigatran', <>Idarucizumab 5 g IV (2 × 2.5 g)<Grade>COR 2a, B-NR</Grade>; if unavailable, 4F-PCC 50 units/kg. Local fixed dose 2000 units — local protocol may differ.</>],
@@ -176,6 +183,25 @@ export default function QuickReference({ weightKg, sub = 'ischemic' } = {}) {
         ]} />
         <Sources ids={['ich2022', 'ncs2016', 'ncs2026']} />
       </Card>
+      {ich && <Card id="qr-ich-surgery" title="ICH surgical triggers">
+        <Rows rows={[
+          ['Cerebellar ICH', <>Deteriorating, brainstem compression or obstructive hydrocephalus, or volume ≥15 mL: immediate surgical evacuation, with or without EVD<Grade>COR 1, B-NR</Grade>.</>],
+          ['Large IVH', <>Large IVH with impaired consciousness: EVD over medical management alone<Grade>COR 1, B-NR</Grade>.</>],
+          ['Supratentorial', <>&gt;20–30 mL with GCS 5–12: minimally invasive evacuation can reduce mortality<Grade>COR 2a, B-R</Grade>.</>],
+          ['Local protocol', <>ICH ≥15 mL: early neurosurgery and stroke-service evaluation; IVH or hydrocephalus at any size: neurosurgery consult. Local protocol may differ.</>]
+        ]} />
+        <Sources ids={['ich2022']} />
+      </Card>}
+      {ich && <Card id="qr-sah" title="Aneurysmal SAH: first hour">
+        <Rows rows={[
+          ['Workup', <>Non-contrast CT first; if negative and suspicion persists, lumbar puncture for xanthochromia/RBCs; CTA to find the aneurysm. See <a className="underline text-link-700 dark:text-link-400" href="#/evidence/sah">Evidence · aSAH</a>.</>],
+          ['Secure early', <>Coil or clip as early as feasible, preferably within 24 h of onset<Grade>COR 1, B-NR</Grade>.</>],
+          ['Nimodipine', <>Start early, enteral<Grade>COR 1, A</Grade>: 60 mg every 4 h for 21 days; if hypotension, 30 mg every 2 h (label).</>],
+          ['BP, unsecured', <>Short-acting agents with frequent monitoring; avoid hypotension, hypertension and variability<Grade>COR 1, C-EO</Grade>.</>],
+          ['Also', <>Reverse anticoagulation (see table above); urgent CSF diversion for symptomatic hydrocephalus; transfer to a high-volume center.</>]
+        ]} />
+        <Sources ids={['sah2023', 'nimodipineLabel']} />
+      </Card>}
       {ich && dose}
 
       <Card id="qr-sich" title="Post-thrombolysis symptomatic ICH">

@@ -418,6 +418,7 @@ IV nicardipine or IV labetalol; no doses are supplied.
 IVH & Hydrocephalus Management
 EVD Indications
 Symptomatic hydrocephalus: urgent EVD evaluation.
+Large IVH with impaired level of consciousness: EVD over medical management alone to reduce mortality (ICH 2022, COR 1, LOE B-NR).
 Cerebellar ICH ≥15 mL, or with neurological deterioration, brainstem compression and/or hydrocephalus from ventricular obstruction → immediate surgical evacuation with or without EVD (ICH 2022, COR 1, LOE B-NR).
 ICH Disposition & Goals of Care
 Surgical Indications

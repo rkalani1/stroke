@@ -49,7 +49,7 @@ Advanced-imaging selection
 For a known 4.5-9-hour interval, the institutional pathway accepts MRI DWI-FLAIR mismatch or the full numeric CTP mismatch criteria. Wake-up or unknown-onset treatment requires MRI DWI-FLAIR mismatch. The 9-24-hour branch requires large-vessel occlusion on CTA. Every extended branch also requires baseline mRS <=1 and a determination that the patient is not an EVT candidate, subject to the pathway’s narrow EVT-infeasibility exception.
 Do now
 For a known 4.5-9-hour interval, require either an explicit MRI DWI-FLAIR mismatch or the institutional CTP thresholds: core <50 mL, mismatch ratio >=1.2, and mismatch volume >=10 mL (EXTEND used core <70 mL, ratio >1.2, mismatch >10 mL).
-For wake-up or unknown onset, require explicit MRI DWI-FLAIR mismatch; do not substitute the CTP branch.
+For wake-up or unknown onset, require explicit MRI DWI-FLAIR mismatch with a DWI lesion smaller than one-third of the MCA territory, and treat within 4.5 h of symptom recognition; do not substitute the CTP branch.
 Prefer MRI when the presentation is small-vessel, posterior circulation, or complicated by contrast allergy.
 Confirm baseline mRS <=1.
 Confirm the patient is not an EVT candidate; IVT may be considered for selected LVO only when EVT within 24 hours is not feasible.
@@ -723,7 +723,6 @@ INST
 Blood Pressure Management
 Scenario
 Target
-COR / LOE
 Institutional protocol
 Before IVT
 BP <185/110

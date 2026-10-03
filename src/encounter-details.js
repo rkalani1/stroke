@@ -40,7 +40,8 @@ export const TIA_RISK_FIELDS = [
   ['tiaDwiPositive', 'dwiPositive', 'TIA presentation with DWI lesion'],
   ['tiaRecurrent', 'crescendoOrRecurrent', 'Crescendo or recurrent episodes'],
   ['tiaPersistentDeficit', 'persistentDeficit', 'Persistent deficit at reassessment'],
-  ['tiaSevereCarotid', 'symptomaticCarotidSevere', 'Severe symptomatic carotid stenosis'],
+  // AHA TIA ED statement 2023 (tia-ed-2023-50): presumed symptomatic >50% extracranial or intracranial stenosis warrants admission.
+  ['tiaSevereCarotid', 'symptomaticCarotidSevere', 'Presumed symptomatic extracranial or intracranial stenosis >50%'],
   ['tiaCardioembolic', 'suspectedCardioembolism', 'Suspected cardioembolic source']
 ];
 

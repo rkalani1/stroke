@@ -105,3 +105,20 @@ All 16 stored trial records were re-read on ClinicalTrials.gov on 2026-10-03; re
 ## Independent verification follow-up — 2026-10-03
 
 A second reviewer re-checked the 2026-10-03 corrections, the quick reference, all 80 quoted recommendations and the new study summaries against the archived AIS 2026/ICH 2022/aSAH 2023 transcriptions, NCS/SCCM 2016/2026 and PubMed abstracts. No dose, window or grade was reversed. Follow-up edits: the corticosteroid/hypothermia/barbiturate row now shows COR 3: Harm, C-LD (ais-2026-187); the CT perfusion topic separates 4.5–9 h and unknown-onset (2a) from known-onset 9–24 h LVO-only IVT (2b); the factor Xa reversal trigger in the protected ICH protocol and quick reference is labeled institutional beside the NCS/SCCM 2016 rule (reverse within 3–5 half-lives of the last dose; PMID 26714677); the platelet item restores the AHA 2019 instruction to stop an alteplase infusion if platelets return <100,000/mm³; oxygen, temperature and ≥220/120 rows follow ais-2026-62/64, -78/79 and -70 with the ESO 2025 attribution; TAPIS, DISCOUNT and HOPE descriptions match their abstracts; the note's calculated thrombolytic dose names its method and states that the administered dose is not recorded. The protocol snapshot changed only in those three trigger lines and the platelet line.
+
+## On-call simulation review — 7.7.3 (2026-10-03)
+
+Scenario agents walked through hyperacute ischemic, hemorrhage and complication cases end to end, and skeptic agents then tried to refute each finding. Protected protocol text changed in two places, and the content lock was re-baselined deliberately:
+
+- **Ischemic, wake-up / unknown onset:** the IVT card and guidance now require the full AHA/ASA 2026 criteria (ais-2026-100, COR 2a, B-R). These are MRI DWI-FLAIR mismatch with a DWI lesion smaller than one-third of the MCA territory, and treatment within 4.5 h of symptom recognition. The card previously accepted the mismatch checkbox alone. When Encounter holds the MRI attestations and a discovery time, the card's mismatch box is filled from them and is read-only.
+- **ICH, IVH & hydrocephalus:** added "large IVH with impaired level of consciousness: EVD over medical management alone" (AHA/ASA 2022 ICH, COR 1, B-NR). The Evidence ich-surgery topic already lists it.
+- **Ischemic, institutional BP table:** the "COR / LOE" header is no longer rendered while no institutional BP row carries a grade. The column was empty, and the row wording is unchanged.
+
+Bedside additions, which are deferred and do not change protected text:
+
+- **4F-PCC arithmetic:** computed from the doses the reversal card already states. These are the Kcentra label INR tiers with weight capped at 100 kg, and 50 units/kg for factor Xa inhibitors or dabigatran without idarucizumab. The local fixed dose is shown alongside.
+- **ICH BP timing:** AHA/ASA 2022 grades — start ≤2 h, target ≤1 h (COR 2a, C-LD); smooth control (COR 2a, B-NR); large or severe ICH (COR 2b, C-LD).
+- **ICH surgical-trigger card:** cerebellar evacuation (COR 1, B-NR), EVD for large IVH (COR 1, B-NR), minimally invasive evacuation (COR 2a, B-R).
+- **aSAH first-hour card:** early securing (COR 1, B-NR), nimodipine (COR 1, A) with the US label dose (60 mg every 4 h for 21 days), and BP (COR 1, C-EO). The workup sequence is given ungraded because the archived 2023 aSAH records are retired.
+- **Pre-IVT BP at administration:** when an administration is recorded, Section 4 shows the existing pre-IVT BP fields again. It cautions when the documented pre-IVT BP, or failing that the entered BP, is not below 185/110 (AHA/ASA 2026 ais-2026-72). The note's IVT administration line now carries the pre-IVT BP, or states it is not documented.
+- **Case bar and Encounter:** phase-specific BP flags (AHA/ASA 2026 ais-2026-72 and -74; AHA/ASA 2022 ICH ich-2022-23), the next post-IVT neuro check, and links to the post-thrombolysis bleeding and angioedema protocols. ICH neurosurgery prompts reuse the local ≥15 mL and IVH triggers.

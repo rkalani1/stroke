@@ -4,6 +4,7 @@
     "title": "AF after ischemic stroke: anticoagulation timing",
     "category": "Prevention and antithrombotics",
     "settings": [
+      "on-call",
       "hospital",
       "clinic"
     ],
@@ -13,7 +14,15 @@
       "ELAN",
       "OPTIMAS",
       "CATALYST",
-      "restart anticoagulation"
+      "restart anticoagulation",
+      "apixaban",
+      "rivaroxaban",
+      "edoxaban",
+      "dabigatran",
+      "when to start",
+      "start timing",
+      "TIMING",
+      "START"
     ],
     "summary": "Start the DOAC early once AF-associated ischemic stroke is confirmed and hemorrhage excluded. CATALYST (5,441 patients from 4 trials): starting within 4 days vs day 5 or later reduced 30-day recurrent ischemic stroke, sICH or unclassified stroke (2.1 vs 3.0%; OR 0.70), with identical sICH (0.4%). ELAN schedule: within 48 h for minor or moderate and day 6–7 for major imaging-defined infarcts. OPTIMAS: within 4 days was noninferior to days 7–14 (3.3% each).",
     "recommendations": [
@@ -34,6 +43,7 @@
     ],
     "consider": [
       "Size the infarct on imaging (ELAN categories), not by NIHSS alone; brain imaging before starting may be considered (AHA 2021, 2b).",
+      "ELAN infarct size: minor ≤1.5 cm; moderate involves a cortical superficial branch of the MCA, ACA or PCA, a deep MCA branch or the internal border zone; major involves an entire MCA, ACA or PCA territory, two or more MCA cortical branches, cortical plus deep MCA branches, or a brainstem or cerebellar lesion >1.5 cm (ELAN, NEJM 2023).",
       "Hemorrhagic transformation: starting or continuing anticoagulation may be considered case by case (AHA 2026, 2b).",
       "TIA with AF: anticoagulate immediately (AHA 2021, 2a); use a DOAC over warfarin unless there is a mechanical valve or moderate-to-severe mitral stenosis."
     ],
@@ -245,7 +255,10 @@
       "carotid stenting",
       "NASCET",
       "CREST-2",
-      "revascularization"
+      "revascularization",
+      "timing",
+      "within 2 weeks",
+      "symptomatic stenosis"
     ],
     "summary": "Symptomatic 70–99% stenosis: endarterectomy if perioperative stroke or death risk is <6% (AHA 2021, COR 1); 50–69%: endarterectomy depending on patient factors (COR 1); <50%: no revascularization (COR 3). Operate within 2 weeks of a nondisabling event (2a); at age ≥70 or within the first week, endarterectomy is preferred over stenting (2a). Asymptomatic ≥70%: CREST-2 found fewer 4-year events with stenting plus intensive medical management (2.8 vs 6.0%) but no significant benefit from endarterectomy (3.7 vs 5.3%); ACST-2 found stenting and endarterectomy similar (5-year non-procedural stroke 5.3 vs 4.5%).",
     "recommendations": [

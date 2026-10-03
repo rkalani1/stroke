@@ -629,7 +629,7 @@ export default function ProtectedProtocols({
                       const activeLabel = subTabLabels[managementSubTab] || managementSubTab;
                       return (
                         <nav
-                          className="bg-paper-2 border border-line border-b-0 rounded-md rounded-b-none px-3 py-2 sticky top-[var(--case-bar-h,0px)] z-40"
+                          className="protocol-breadcrumb bg-paper-2 border border-line border-b-0 rounded-md rounded-b-none px-3 h-9 flex items-center sticky top-[var(--case-bar-h,0px)] z-40"
                           aria-label="Protocols & Algorithms breadcrumb"
                         >
                           <p className="font-mono uppercase text-eyebrow text-mute">
@@ -638,7 +638,7 @@ export default function ProtectedProtocols({
                         </nav>
                       );
                     })()}
-                    <div className="bg-white border border-line rounded-md rounded-t-none p-2 flex flex-wrap gap-2 sticky top-[calc(var(--case-bar-h,0px)+2.25rem)] z-30 dark:bg-card " role="tablist" aria-label="Protocols & Algorithms sub-sections" onKeyDown={(e) => {
+                    <div className="protocol-subtabs !mt-0 bg-white border border-line rounded-md rounded-t-none p-2 flex flex-wrap gap-2 sticky top-[calc(var(--case-bar-h,0px)+2.25rem)] z-30 dark:bg-card " role="tablist" aria-label="Protocols & Algorithms sub-sections" onKeyDown={(e) => {
                       const subTabs = MANAGEMENT_SUBTABS;
                       const ci = subTabs.indexOf(managementSubTab);
                       let ni;
@@ -1394,6 +1394,7 @@ export default function ProtectedProtocols({
                             <h4 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">EVD Indications</h4>
                             <ul className="text-sm space-y-1">
                               <li>Symptomatic hydrocephalus: urgent EVD evaluation.</li>
+                              <li>Large IVH with impaired level of consciousness: EVD over medical management alone to reduce mortality (ICH 2022, COR 1, LOE B-NR).</li>
                               <li>Cerebellar ICH ≥15 mL, or with neurological deterioration, brainstem compression and/or hydrocephalus from ventricular obstruction → immediate surgical evacuation with or without EVD (ICH 2022, COR 1, LOE B-NR).</li>
                             </ul>
                           </div>
@@ -2131,7 +2132,7 @@ export default function ProtectedProtocols({
                                 <p className="text-xs text-slate-500 mt-1 dark:text-mute">Compared only with the selected ischemic treatment phase. Prefilled from the Encounter BP until edited; not saved to the note.</p>
                               </div>
                               <div className={`rounded-lg p-2 border ${bpWithinTarget === null ? 'bg-slate-50 border-slate-200 dark:bg-paper-2 dark:border-line' : bpWithinTarget ? 'bg-ok-50 border-ok-200 dark:bg-ok-950 dark:border-ok-800' : 'bg-crit-50 border-crit-200 dark:bg-crit-950 dark:border-crit-800'}`}>
-                                <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-mute">Status</p>
+                                <p className="text-xs uppercase tracking-wide text-slate-600 dark:text-mute">Status</p>
                                 <p className="text-sm font-semibold">
                                   {bpOrderInvalid
                                     ? 'Check BP order (systolic must exceed diastolic)'
