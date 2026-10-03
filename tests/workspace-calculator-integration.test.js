@@ -31,16 +31,19 @@ describe('canonical worksheet/Encounter integration',()=>{
     state=reviewed(state,'abcd2',{tiaConfirmed:true,initialSystolic:'140',initialDiastolic:'90',clinicalFeatures:'weakness',duration:'60plus',diabetes:false});
     state=updateEncounter(state,previous=>applySupplementaryScore(previous,'abcd2'));expect(state.dapt.abcd2).toBe(6);
     state=updateEncounter(state,previous=>({...previous,note:{...previous.note,age:'61'}}));expect(state.dapt.abcd2).toBe('');
-    state=updateEncounter(state,previous=>({...previous,note:{...previous.note,age:'60'}}));expect(supplementaryResult(state,'abcd2')).toBeNull();
+    state=updateEncounter(state,previous=>({...previous,note:{...previous.note,age:'60'}}));
+    expect(supplementaryResult(state,'abcd2').score).toBe(6);expect(supplementaryReviewed(state,'abcd2')).toBe(false);
+    expect(updateEncounter(state,previous=>applySupplementaryScore(previous,'abcd2')).dapt.abcd2).toBe('');
     state=change(state,'abcd2','reviewed',true);state=updateEncounter(state,previous=>applySupplementaryScore(previous,'abcd2'));
     state=updateEncounter(state,previous=>({...previous,note:{...previous.note,diagnosisCategory:'ischemic'}}));expect(state.dapt.abcd2).toBe('');
   });
-  it('requires PASCAL re-review after any RoPE worksheet change, even if RoPE is re-reviewed',()=>{
+  it('recomputes PASCAL live from the RoPE worksheet and withdraws its attestation on any RoPE change',()=>{
     let state=newEncounter();state.note.age='45';
     state=reviewed(state,'rope',{cryptogenicStrokeWithPfo:true,hypertension:false,diabetes:false,priorStrokeTia:false,smoker:false,corticalInfarct:true});
-    state=reviewed(state,'pascal',{largeShunt:true,atrialSeptalAneurysm:false});expect(supplementaryResult(state,'pascal').category).toBe('Probable');
-    state=change(state,'rope','hypertension',true);expect(supplementaryResult(state,'pascal')).toBeNull();
-    state=change(state,'rope','reviewed',true);expect(supplementaryResult(state,'rope')).not.toBeNull();expect(supplementaryReviewed(state,'pascal')).toBe(false);expect(supplementaryResult(state,'pascal')).toBeNull();
+    state=reviewed(state,'pascal',{largeShunt:true,atrialSeptalAneurysm:false});expect(supplementaryResult(state,'pascal')).toEqual({category:'Probable',ropeScore:8});
+    state=change(state,'rope','hypertension',true);expect(supplementaryResult(state,'pascal')).toEqual({category:'Probable',ropeScore:7});expect(supplementaryReviewed(state,'pascal')).toBe(false);
+    state=change(state,'rope','smoker',true);expect(supplementaryResult(state,'pascal')).toEqual({category:'Possible',ropeScore:6});
+    state=change(state,'rope','smoker',undefined);expect(supplementaryResult(state,'rope')).toBeNull();expect(supplementaryResult(state,'pascal')).toBeNull();
   });
   it('scores the first TIA BP independently of later treatment measurements',()=>{
     let state=newEncounter();state.note={...state.note,diagnosisCategory:'tia',age:'59',presentingBP:'180/110'};
@@ -55,7 +58,7 @@ describe('canonical worksheet/Encounter integration',()=>{
     expect(supplementaryResult(state,'abcd2').score).toBe(1);
     expect(state.dapt.abcd2).toBe(1);
     state=change(state,'abcd2','initialSystolic','139');
-    expect(state.dapt.abcd2).toBe('');expect(supplementaryResult(state,'abcd2')).toBeNull();
+    expect(state.dapt.abcd2).toBe('');expect(supplementaryReviewed(state,'abcd2')).toBe(false);expect(supplementaryResult(state,'abcd2').score).toBe(1);
     state=change(state,'abcd2','initialDiastolic','89');state=change(state,'abcd2','reviewed',true);
     expect(supplementaryResult(state,'abcd2').score).toBe(0);
     state=change(state,'abcd2','initialDiastolic','');state=change(state,'abcd2','reviewed',true);
