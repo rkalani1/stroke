@@ -97,7 +97,7 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
     smallVessel: false, posteriorCirc: false, contrastAllergy: false,
     crao: false,
     lvoOnCta: null
-  }, encounter, encounter?.ivt, ['hoursFromLKW', 'lvoOnCta']);
+  }, encounter, encounter?.ivt, ['hoursFromLKW', 'lvoOnCta', 'mriDwiFlairMismatch', 'ctpCoreMl', 'ctpRatio', 'ctpMismatchVolMl']);
   const lvoFromEncounter = Boolean(encounter?.ivt) && Object.prototype.hasOwnProperty.call(encounter.ivt, 'lvoOnCta');
   const result = useMemo(() => evaluateIVT({
     ichOnCT: state.ichOnCT,
@@ -131,12 +131,12 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
   const colorByEligible = (e) => e === true ? 'border-ok-400 bg-ok-50 dark:bg-ok-950' : e === 'consider' ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-950' : e === 'pending' ? 'border-warn-400 bg-warn-50 dark:bg-warn-950' : e === false ? 'border-rose-400 bg-rose-50 dark:bg-rose-950' : 'border-slate-300 bg-slate-50 dark:border-strong dark:bg-paper-2';
 
   return (
-    <div className="p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
+    <div id="pc-ivt" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
       <h4 className="font-bold text-cobalt-900 mb-2 flex items-center gap-2 dark:text-cobalt-300">
         <span className="inline-block px-2 py-0.5 bg-cobalt-900 text-white text-xs rounded">INST</span>
         IVT Eligibility Decision Algorithm
       </h4>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-xs mb-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs mb-3">
         <label><span className="block text-slate-600 dark:text-ink-2">CT hemorrhage assessment</span>
           <select value={state.ichOnCT === null ? '' : state.ichOnCT ? 'present' : 'absent'} disabled={encounter?.compatible === false} onChange={(e) => set('ichOnCT', e.target.value === '' ? null : e.target.value === 'present')} className="w-full px-2 py-1 border rounded text-sm">
             <option value="">Not confirmed</option>
@@ -187,7 +187,7 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
           <p className="font-semibold text-cobalt-900 mb-1 dark:text-cobalt-300">Extended-window imaging selection (prefer MRI if small vessel, posterior, or contrast allergy):</p>
           {state.wakeUpOrUnknownOnset && !state.hoursFromLKW && <p className="mb-2 text-cobalt-900 dark:text-cobalt-300">Wake-up/unknown-onset treatment requires MRI DWI-FLAIR mismatch in this institutional branch; the CTP fields apply only when a known interval is entered.</p>}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
-            <label className="flex items-center gap-1"><input type="checkbox" checked={state.mriDwiFlairMismatch} onChange={(e) => set('mriDwiFlairMismatch', e.target.checked)} />MRI DWI-FLAIR mismatch (4.5-9h or wake-up)</label>
+            <label className="flex items-center gap-1"><input type="checkbox" checked={state.mriDwiFlairMismatch} disabled={encounter?.ivt?.mriDwiFlairMismatch !== undefined} onChange={(e) => set('mriDwiFlairMismatch', e.target.checked)} />MRI DWI-FLAIR mismatch, DWI lesion &lt;1/3 MCA, ≤4.5 h from recognition{encounter?.ivt?.mriDwiFlairMismatch !== undefined ? ' (from Encounter)' : ''}</label>
             <label><span className="block text-slate-600 dark:text-ink-2">CTP core (mL)</span><input type="number" disabled={state.wakeUpOrUnknownOnset && !state.hoursFromLKW} value={state.ctpCoreMl} onChange={(e) => set('ctpCoreMl', e.target.value)} className="w-full px-2 py-1 border rounded text-sm disabled:bg-slate-100 disabled:text-slate-400" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">CTP ratio</span><input type="number" step="0.1" disabled={state.wakeUpOrUnknownOnset && !state.hoursFromLKW} value={state.ctpRatio} onChange={(e) => set('ctpRatio', e.target.value)} className="w-full px-2 py-1 border rounded text-sm disabled:bg-slate-100 disabled:text-slate-400" /></label>
             <label><span className="block text-slate-600 dark:text-ink-2">Mismatch vol (mL)</span><input type="number" disabled={state.wakeUpOrUnknownOnset && !state.hoursFromLKW} value={state.ctpMismatchVolMl} onChange={(e) => set('ctpMismatchVolMl', e.target.value)} className="w-full px-2 py-1 border rounded text-sm disabled:bg-slate-100 disabled:text-slate-400" /></label>
@@ -241,7 +241,9 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
 // EVT Eligibility matrix (anterior / M2 / basilar)
 // ----------------------------------------------------------------------
 const EVTEligibilityCard = ({ defaults = {}, encounter }) => {
-  const [branch, setBranch] = useState('anterior');
+  // Open on the branch that matches the recorded occlusion; the clinician can still switch.
+  const [branch, setBranch] = useState(() => encounter?.evtBranch || 'anterior');
+  useEffect(() => { if (encounter?.evtBranch) setBranch(encounter.evtBranch); }, [encounter?.evtBranch]);
   const [ant, setAnt] = useProtocolCaseState({ aspectsScore: defaults.aspects || '', timeFromLKWh: defaults.hoursFromLKWh || '', nihss: defaults.nihss || '', preMRS: defaults.preMRS ?? '', age: defaults.age ?? '', massEffect: null, coreVolume: '' }, encounter, encounter?.anterior, ['nihss', 'timeFromLKWh']);
   const [m2, setM2] = useProtocolCaseState({ segment: '', dominant: true, hoursFromLKWh: '', nihss: '', preMRS: '', aspectsScore: '', ctpMismatch: false, age: defaults.age ?? '' }, encounter, encounter?.m2, ['nihss', 'hoursFromLKWh']);
   const [bas, setBas] = useProtocolCaseState({ nihss: '', hoursFromLKWh: '', preMRS: '', pcAspects: '', age: defaults.age ?? '' }, encounter, encounter?.basilar, ['nihss', 'hoursFromLKWh']);
@@ -261,7 +263,7 @@ const EVTEligibilityCard = ({ defaults = {}, encounter }) => {
   const colorByEligible = (e) => e === true ? 'border-ok-400 bg-ok-50 dark:bg-ok-950' : e === 'consider' ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-950' : e === 'pending' ? 'border-warn-400 bg-warn-50 dark:bg-warn-950' : e === false ? 'border-rose-400 bg-rose-50 dark:bg-rose-950' : 'border-slate-200 dark:border-line';
 
   return (
-    <div className="p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
+    <div id="pc-evt" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
       <div className="flex items-center justify-between mb-2">
         <h4 className="font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
           <span className="inline-block px-2 py-0.5 bg-cobalt-700 text-white text-xs rounded">INST</span>
@@ -372,25 +374,32 @@ const EVTEligibilityCard = ({ defaults = {}, encounter }) => {
             <p className="text-xs mt-1">{rBas.reason}</p>
             {rBas.institutionalRequirement && <p className="text-xs mt-1 text-cobalt-800 dark:text-cobalt-300"><strong>Institutional requirement:</strong> {rBas.institutionalRequirement}</p>}
           </div>}
+          {(rBas.eligible === false || rBas.eligible === 'pending') && rBas.reason && <div className={`p-2 rounded border-2 ${colorByEligible(rBas.eligible)}`}>
+            <strong className="text-sm">{rBas.eligible === false ? 'Basilar EVT criteria not met' : 'Basilar EVT inputs incomplete'}</strong>
+            <p className="text-xs mt-1">{rBas.reason}</p>
+          </div>}
         </>
       )}
     </div>
   );
 };
 
+// Hide the grade column while no institutional BP row carries a grade.
+const SHOW_BP_GRADES = Object.values(INSTITUTIONAL_BP_PROTOCOLS).some(p => p.cor || p.loe);
+
 // ----------------------------------------------------------------------
 // Blood Pressure Management card
 // ----------------------------------------------------------------------
 const BPProtocolCard = () => (
-  <div className="min-w-0 p-3 rounded-lg border border-rose-300 bg-white dark:bg-card dark:border-rose-800">
+  <div id="pc-contraindications" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] min-w-0 p-3 rounded-lg border border-rose-300 bg-white dark:bg-card dark:border-rose-800">
     <h4 className="font-bold text-rose-900 mb-2 flex items-center gap-2 dark:text-rose-300">
       <span className="inline-block px-2 py-0.5 bg-rose-700 text-white text-xs rounded">INST</span>
       Blood Pressure Management
     </h4>
     <div className="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 focus-visible:ring-offset-2" tabIndex={0} role="region" aria-label="Scrollable table: blood pressure management targets">
-      <table className="w-full min-w-[560px] text-xs">
+      <table className={`w-full ${SHOW_BP_GRADES ? 'min-w-[560px]' : 'min-w-[440px]'} text-xs`}>
         <thead className="bg-rose-50 dark:bg-rose-950">
-          <tr><th className="px-2 py-1 text-left whitespace-nowrap">Scenario</th><th className="px-2 py-1 text-left whitespace-nowrap">Target</th><th className="px-2 py-1 text-left whitespace-nowrap">COR / LOE</th><th className="px-2 py-1 text-left whitespace-nowrap">Institutional protocol</th></tr>
+          <tr><th className="px-2 py-1 text-left whitespace-nowrap">Scenario</th><th className="px-2 py-1 text-left whitespace-nowrap">Target</th>{SHOW_BP_GRADES && <th className="px-2 py-1 text-left whitespace-nowrap">COR / LOE</th>}<th className="px-2 py-1 text-left whitespace-nowrap">Institutional protocol</th></tr>
         </thead>
         <tbody>
           {Object.entries(INSTITUTIONAL_BP_PROTOCOLS).map(([key, p]) => {
@@ -399,7 +408,7 @@ const BPProtocolCard = () => (
               <tr key={key} className={`border-b ${isHarm ? 'bg-rose-50 dark:bg-rose-950' : ''}`}>
                 <td className="px-2 py-1 font-semibold">{p.scenario}</td>
                 <td className="px-2 py-1 whitespace-nowrap">{p.target || p.status}</td>
-                <td className="px-2 py-1 whitespace-nowrap"><CorChip cor={p.cor} /> <LoeChip loe={p.loe} /></td>
+                {SHOW_BP_GRADES && <td className="px-2 py-1 whitespace-nowrap"><CorChip cor={p.cor} /> <LoeChip loe={p.loe} /></td>}
                 <td className="px-2 py-1 text-slate-700 dark:text-ink-2">{p.protocol || p.rationale}{p.alternatives ? <><br /><em>{p.alternatives}</em></> : null}</td>
               </tr>
             );
@@ -468,7 +477,7 @@ const SafePauseCard = ({ defaults = {}, encounter }) => {
     ? 'Completed attestation unavailable: dose confirmation, pause performance, required-role confirmation and documentation are not recorded in this workspace.'
     : getSafePauseText({ ...st, drug });
   return (
-    <div className="p-3 rounded-lg border border-ok-300 bg-white dark:border-ok-800 dark:bg-card">
+    <div id="pc-safety-pause" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] p-3 rounded-lg border border-ok-300 bg-white dark:border-ok-800 dark:bg-card">
       <h4 className="font-bold text-ok-900 mb-2 flex items-center gap-2 dark:text-ok-300">
         <span className="inline-block px-2 py-0.5 bg-ok-700 text-white text-xs rounded">INST</span>
         Safety Pause (pre-thrombolytic)

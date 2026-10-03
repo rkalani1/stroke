@@ -353,7 +353,7 @@ async function main() {
       await screen.getByRole('heading', { name: /possible candidates/i }).waitFor({ state: 'visible' });
       await page.getByRole('tab', { name: 'Tables', exact: true }).click();
       const tables = page.getByRole('tabpanel', { name: 'Tables', exact: true });
-      await tables.getByRole('button', { name: 'Ischemic Stroke', exact: true }).waitFor({ state: 'visible' });
+      await tables.getByRole('button', { name: 'Ischemic stroke', exact: true }).waitFor({ state: 'visible' });
       await page.getByRole('tab', { name: 'Database', exact: true }).click();
       const database = page.getByRole('tabpanel', { name: 'Database', exact: true });
       await database.getByRole('searchbox', { name: 'Search the study database by acronym, name or NCT number', exact: true }).fill('STEP');
@@ -527,7 +527,7 @@ async function main() {
         await review.getByRole('link', { name: 'Review TIA findings and workup', exact: true }).click();
         await page.waitForFunction(() => { const details = document.getElementById('encounter-details-diagnosis-details'); return details?.open && details.contains(document.activeElement); });
         assert.equal(new URL(page.url()).hash, '#/encounter/section/diagnosis-details');
-        const riskLabels = ['TIA presentation with DWI lesion', 'Crescendo or recurrent episodes', 'Persistent deficit at reassessment', 'Severe symptomatic carotid stenosis', 'Suspected cardioembolic source'];
+        const riskLabels = ['TIA presentation with DWI lesion', 'Crescendo or recurrent episodes', 'Persistent deficit at reassessment', 'Presumed symptomatic extracranial or intracranial stenosis >50%', 'Suspected cardioembolic source'];
         for (const label of riskLabels) assert.equal(await page.getByLabel(label, { exact: true }).count(), 1);
         await page.getByLabel('Suspected cardioembolic source', { exact: true }).selectOption('yes');
         await review.getByRole('alert').filter({ hasText: 'Urgent stroke-team evaluation' }).waitFor();
@@ -541,7 +541,7 @@ async function main() {
         for (const label of ['TIA MRI / DWI workup', 'TIA head / neck vascular imaging workup', 'TIA ECG / rhythm workup']) await page.getByLabel(label, { exact: true }).selectOption('Completed');
         for (const label of ['Same-day TIA workup complete', 'Prompt outpatient follow-up confirmed']) await page.getByLabel(label, { exact: true }).selectOption('yes');
         await review.getByRole('heading', { name: 'Workup & follow-up gaps', exact: true }).waitFor({ state: 'hidden' });
-        await page.getByLabel('Severe symptomatic carotid stenosis', { exact: true }).selectOption('');
+        await page.getByLabel('Presumed symptomatic extracranial or intracranial stenosis >50%', { exact: true }).selectOption('');
         await review.getByText(/Disposition assessment incomplete/).waitFor();
         assert((await review.innerText()).includes('4/5 high-risk features explicitly reviewed.'));
       } finally { await reset(page); }

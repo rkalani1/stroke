@@ -47,8 +47,10 @@ function PhaseTable({ table, copyToClipboard }) {
   </details>;
 }
 
+// Same wording and size as the Screener and Database filters.
+const DISPLAY_LABELS = { ischemic: 'Ischemic stroke', ich: 'Hemorrhage (ICH)' };
 export function EligibilityTables({ copyToClipboard, onStateChange }) {
   const [category, setCategory] = useState('ischemic');
-  return <div className="space-y-4"><div className="flex flex-wrap gap-2" role="group" aria-label="Stroke category filter">{Object.entries(CATEGORY_LABELS).map(([id, label]) => <button key={id} type="button" aria-pressed={category === id} className="min-h-[44px] rounded-md border border-line bg-card px-4 font-semibold" onClick={() => { onStateChange?.(); setCategory(id); }}>{label}</button>)}</div><p className="text-sm text-mute">Recruiting and not-yet-recruiting profiles, with the same stored criteria as Database. Studies marked “not modeled in the screener” are criteria references only; profiles not enrolling are listed in Database.</p>{eligibilityTables.filter(table => table.category === category).map(table => <PhaseTable key={table.id} table={table} copyToClipboard={copyToClipboard} />)}</div>;
+  return <div className="space-y-4"><div className="flex flex-wrap gap-2" role="group" aria-label="Stroke category filter">{Object.entries(CATEGORY_LABELS).map(([id, label]) => <button key={id} type="button" aria-pressed={category === id} className="min-h-[44px] rounded-md border border-line bg-card px-3 py-2 text-sm font-semibold" onClick={() => { onStateChange?.(); setCategory(id); }}>{DISPLAY_LABELS[id] || label}</button>)}</div><p className="text-sm text-mute">Recruiting and not-yet-recruiting profiles, with the same stored criteria as Database. Studies marked “not modeled in the screener” are criteria references only; profiles not enrolling are listed in Database.</p>{eligibilityTables.filter(table => table.category === category).map(table => <PhaseTable key={table.id} table={table} copyToClipboard={copyToClipboard} />)}</div>;
 }
 export default EligibilityTables;

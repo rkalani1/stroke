@@ -396,7 +396,7 @@ export const evaluateIVT = ({
       return {
         eligible: 'pending',
         recommendation: 'Extended-window IVT gates incomplete',
-        reason: [...(!qualifyingMismatch ? [isWakeUpOrUnknown ? 'Wake-up/unknown-onset treatment requires explicit MRI DWI-FLAIR mismatch in this institutional branch.' : `Requires explicit MRI DWI-FLAIR mismatch or all ${INSTITUTIONAL_CTP_THRESHOLD_TEXT} (EXTEND used core <70 mL, ratio >1.2, mismatch >10 mL).`] : []), ...extendedGates].join(' '),
+        reason: [...(!qualifyingMismatch ? [isWakeUpOrUnknown ? 'Wake-up/unknown-onset treatment requires explicit MRI DWI-FLAIR mismatch with a DWI lesion smaller than one-third of the MCA territory, treated within 4.5 h of symptom recognition, in this institutional branch.' : `Requires explicit MRI DWI-FLAIR mismatch or all ${INSTITUTIONAL_CTP_THRESHOLD_TEXT} (EXTEND used core <70 mL, ratio >1.2, mismatch >10 mL).`] : []), ...extendedGates].join(' '),
         decisions,
         warnings,
         imagingGuidance: isWakeUpOrUnknown ? 'Use the limited hyperacute MRI pathway.' : preferMRI ? 'Prefer MRI if small vessel, posterior circulation, or contrast allergy.' : 'CTP acceptable; MRI alternative.'
@@ -415,7 +415,7 @@ export const evaluateIVT = ({
       cor: '2a',
       loe: 'B-R',
       selectionSource: mriDwiFlairMismatch === true
-        ? 'Selection: MRI DWI-FLAIR mismatch (WAKE-UP; AHA/ASA 2026 COR 2a, LOE B-R).'
+        ? 'Selection: MRI DWI-FLAIR mismatch with DWI lesion <1/3 MCA territory, treated within 4.5 h of symptom recognition (WAKE-UP; AHA/ASA 2026 COR 2a, LOE B-R).'
         : `Selection: ${INSTITUTIONAL_CTP_THRESHOLD_TEXT}; AHA/ASA 2026 COR 2a, LOE B-R for EVT-ineligible patients with salvageable penumbra at 4.5-9 h (EXTEND used core <70 mL, ratio >1.2, mismatch >10 mL).`,
       warnings,
       decisions,

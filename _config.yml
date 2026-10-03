@@ -40,4 +40,3 @@ exclude:
   - tailwind.config.js
   - tests/
   - vitest.config.js
-  - work/

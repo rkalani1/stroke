@@ -17,8 +17,14 @@ export function formatDocumentation(state, consultation, groups, timeline) {
   }
   if (format === 'consultation') {
     if (!extras.length) return consultation;
-    const text = [consultation, ...extras].join('\n\n');
-    return state.consultationType === 'phone' ? text.replace(/\s*\n\s*/g, ' ') : text;
+    // The one-line Pulsara summary separates detail lines with semicolons so entries never run together.
+    if (state.consultationType === 'phone') {
+      const end = line => /[.;:!?]$/.test(line.trim()) ? line.trim() : `${line.trim()};`;
+      const phoneExtras = groups.map(group => `${group.title}: ${group.lines.map(end).join(' ').replace(/;$/, '.')}`);
+      if (timeline) phoneExtras.push(timeline);
+      return [consultation, ...phoneExtras].join(' ').replace(/\s*\n\s*/g, ' ');
+    }
+    return [consultation, ...extras].join('\n\n');
   }
   const focus = {
     'follow-up': ['follow-up-review', 'participation', 'etiology', 'prevention'],

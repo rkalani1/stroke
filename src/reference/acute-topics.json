@@ -514,6 +514,10 @@
         "href": "#/tools/abcd2"
       },
       {
+        "label": "Carotid revascularization timing",
+        "href": "#/evidence/carotid"
+      },
+      {
         "label": "Minor stroke DAPT",
         "href": "#/evidence/minor-stroke-antiplatelets"
       },

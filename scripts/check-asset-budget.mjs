@@ -146,12 +146,20 @@ const precache = corePrecacheBytes();
 // 0.74 MB raw, CSS 104 KB raw (17.6 KB gzip), precache 2.05 MB. Reviewed
 // ceilings leave ~5% headroom: initial 112 KB gzip / 330 KB raw, all JS
 // 232 KB gzip / 780 KB raw, CSS 110 KB, precache 2.2 MB.
+// 2026-10-03 v7.7.3 on-call pass: patient-specific 4F-PCC arithmetic, ICH
+// neurosurgery and post-thrombolysis prompts, open-item checks on recorded IVT,
+// phase-specific case-bar BP flags and next-check display, wake-up handling with
+// a known LKW, protocol-card prefill and new jump targets. Measured: initial
+// 113 KB gzip / 0.32 MB raw, all JS 231 KB gzip / 0.76 MB raw. Reviewed ceilings
+// keep ~3% headroom: initial 116 KB gzip / 340 KB raw, all JS 240 KB gzip / 800 KB raw.
+// The round-3 visual pass (protocol disclosure markers, touch sizing, dark selected
+// states, phone case-bar rules) takes tailwind.css to 111 KB raw; CSS ceiling 110 -> 114 KB.
 const checks = [
   {
     id: 'app-js-gzip',
     label: 'Initial module graph (gzip)',
     actual: sumSizes(manifest.initial, gzipSizeOf),
-    budget: 112 * KB,
+    budget: 116 * KB,
     unit: KB,
     unitLabel: 'KB',
     note: 'route-level code splitting is the lever that moves this',
@@ -160,7 +168,7 @@ const checks = [
     id: 'app-js-raw',
     label: 'Initial module graph (raw)',
     actual: sumSizes(manifest.initial, sizeOf),
-    budget: 330 * KB,
+    budget: 340 * KB,
     unit: MB,
     unitLabel: 'MB',
     note: 'parse/execute cost scales with this, not the gzip figure',
@@ -168,18 +176,18 @@ const checks = [
   {
     id: 'all-js-gzip', label: 'All offline JavaScript (gzip)',
     actual: sumSizes(manifest.files.map(file => file.path), gzipSizeOf),
-    budget: 232 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
+    budget: 240 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
   },
   {
     id: 'all-js-raw', label: 'All offline JavaScript (raw)',
     actual: sumSizes(manifest.files.map(file => file.path), sizeOf),
-    budget: 780 * KB, unit: MB, unitLabel: 'MB', note: '',
+    budget: 800 * KB, unit: MB, unitLabel: 'MB', note: '',
   },
   {
     id: 'tailwind-css',
     label: 'tailwind.css',
     actual: sizeOf('tailwind.css'),
-    budget: 110 * KB,
+    budget: 114 * KB,
     unit: KB,
     unitLabel: 'KB',
     note: '',

@@ -62,6 +62,8 @@ html { scroll-padding-top: calc(var(--case-bar-h) + 8px); }
 .case-bar__window[data-tone="neutral"] { background: var(--paper-2); color: var(--ink-2); }
 /* Solid so the exposure flag stays distinct beside every diagnosis colour (≈6.5:1 both themes). */
 .case-bar__badge { flex-shrink: 0; display: inline-flex; align-items: center; min-height: 26px; padding: 2px 10px; border-radius: var(--radius-pill); background: var(--caution); color: var(--surface); font: 650 .75rem/1.2 var(--font-sans); white-space: nowrap; }
+a.case-bar__badge { text-decoration: none; }
+a.case-bar__badge:hover { filter: brightness(1.08); }
 .case-bar__item[data-empty] .case-bar__value { color: var(--faint); font-weight: 500; }
 .case-bar__item[data-flag="caution"] .case-bar__value, .case-bar__item[data-flag="caution"] .case-bar__value small { color: var(--caution); }
 .case-bar__item[data-flag="critical"] .case-bar__value, .case-bar__item[data-flag="critical"] .case-bar__value small { color: var(--critical); }
@@ -112,14 +114,15 @@ html[data-theme="dark"] .quick-search__results a[data-more] .quick-search__title
 .workspace-result[data-tone="ok"] { background: var(--confirm-soft); border-color: rgb(var(--c-confirm) / .4); color: var(--confirm); }
 html[data-theme="dark"] .workspace-result[data-tone="value"] { color: var(--ink); }
 .workspace-inline-action { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
-.workspace-inline-action > a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 650; }
+.workspace-inline-action > a, .workspace-inline-links > a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 650; }
+.workspace-inline-links { display: inline-flex; flex-wrap: wrap; gap: 0 16px; }
 .workspace-linked { display: inline-flex; align-items: center; gap: 8px; margin: 16px 0 0; padding: 4px 10px; border-radius: var(--radius-pill); background: var(--paper-2); color: var(--ink-2); font-size: .75rem; font-weight: 600; }
 .workspace-linked::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: rgb(var(--c-confirm)); }
 /* ── Encounter quick-entry controls ── */
 .segmented, .unit-toggle { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--paper-2); }
 .segmented label, .unit-toggle label { position: relative; display: block; }
 .segmented input, .unit-toggle input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
-.segmented span, .unit-toggle span { display: flex; align-items: center; justify-content: center; min-height: 38px; padding: 6px 14px; border-radius: 6px; font-size: .8125rem; font-weight: 600; color: var(--ink-2); }
+.segmented span, .unit-toggle span { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 6px 14px; border-radius: 6px; font-size: .8125rem; font-weight: 600; color: var(--ink-2); }
 .segmented input:checked + span, .unit-toggle input:checked + span { background: var(--surface); color: var(--ink); box-shadow: var(--elev-1); }
 .segmented input:focus-visible + span, .unit-toggle input:focus-visible + span { outline: 2px solid rgb(var(--c-focus)); outline-offset: 2px; }
 .weight-field { display: flex; align-items: flex-end; gap: 8px; min-width: 0; }
@@ -140,7 +143,7 @@ html[data-theme="dark"] .workspace-result[data-tone="value"] { color: var(--ink)
 .nihss-option input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
 .nihss-option span { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; min-height: 48px; padding: 4px 2px; border: 1px solid rgb(var(--c-line-control) / .55); border-radius: 6px; background: var(--surface-2); text-align: center; transition: background-color calc(var(--dur) * var(--motion-scale)) var(--ease), border-color calc(var(--dur) * var(--motion-scale)) var(--ease); }
 .nihss-option b { font: 650 .9375rem/1 var(--mono-font); color: var(--ink); }
-.nihss-option small { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-size: .625rem; line-height: 1.2; color: var(--mute); }
+.nihss-option small { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-size: .6875rem; line-height: 1.25; color: var(--mute); }
 .nihss-option:hover span { border-color: rgb(var(--c-line-control)); }
 .nihss-option input:checked + span { background: rgb(var(--cobalt-600)); border-color: rgb(var(--cobalt-600)); }
 .nihss-option input:checked + span b, .nihss-option input:checked + span small { color: #fff; }
@@ -167,13 +170,13 @@ html[data-theme="dark"] .nihss-option input:checked + span b, html[data-theme="d
 .safety-group[data-tier="correctable"] > legend { color: var(--accent-ink); }
 .workspace-secondary-action[aria-disabled="true"] { opacity: .55; cursor: not-allowed; }
 /* Line up checklist selects across a row when some labels wrap. */
-@media (min-width: 769px) { .safety-group .workspace-field > span { display: flex; align-items: flex-end; min-height: 2.6em; } }
+@media (min-width: 769px) { .safety-group .workspace-field > span { display: flex; align-items: flex-end; min-height: 3.2em; } }
 .nihss-option input:focus-visible + span { outline: 2px solid rgb(var(--c-focus)); outline-offset: 2px; }
 .vessel-chips { margin: 12px 0 4px; padding: 0; border: 0; min-width: 0; }
 .vessel-chips legend { margin-bottom: 6px; font-size: .875rem; font-weight: 600; color: var(--ink-2); }
 .vessel-chips legend span { font-weight: 400; color: var(--mute); }
 .vessel-chips > div { display: flex; flex-wrap: wrap; gap: 6px; }
-.vessel-chips button { min-height: 40px !important; padding: 6px 12px; border: 1px solid rgb(var(--c-line-control) / .55); border-radius: var(--radius-pill); background: var(--surface); color: var(--ink-2); font-size: .8125rem; font-weight: 600; }
+.vessel-chips button { min-height: 44px !important; padding: 6px 12px; border: 1px solid rgb(var(--c-line-control) / .55); border-radius: var(--radius-pill); background: var(--surface); color: var(--ink-2); font-size: .8125rem; font-weight: 600; }
 .vessel-chips button:hover { border-color: rgb(var(--c-line-control)); color: var(--ink); }
 .vessel-chips button[aria-pressed="true"] { background: rgb(var(--cobalt-600)); border-color: rgb(var(--cobalt-600)); color: #fff; }
 .field-grid--vitals { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -186,8 +189,9 @@ html[data-theme="dark"] .nihss-option input:checked + span b, html[data-theme="d
 .encounter-overview .encounter-next-entry { border-top: 0; padding: 6px 16px; min-height: 44px; }
 .encounter-overview[data-complete] .encounter-next-entry { color: var(--confirm); font-weight: 600; }
 @media (max-width: 480px) {
-  .lkw-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .lkw-row .timestamp-shortcut { grid-column: 1 / -1; }
+  /* Full-width date and time on phones: a clipped hour or AM/PM misstates LKW. */
+  .field-grid.field-grid--pair.lkw-row { grid-template-columns: minmax(0, 1fr); }
+  .lkw-row .timestamp-shortcut { grid-column: auto; }
   /* Descriptors leave the tap target but stay in each radio's accessible name. */
   .nihss-option small { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .nihss-option span { min-height: 44px; }
@@ -447,6 +451,8 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
 .reference-chip.cor-2b { color: var(--caution); background: var(--caution-soft); }
 .reference-chip.cor-3 { color: var(--critical); background: var(--critical-soft); }
 .reference-chip.cor-neutral, .reference-chip-loe { color: var(--ink-2); background: var(--surface-2); border-color: var(--line); }
+/* COR 3: No Benefit means "not recommended": distinct from Harm (red) and from neutral grey. */
+.reference-chip.cor-3nb { color: var(--reference); background: var(--reference-soft); }
 .reference-rec-text { display: block; }
 .reference-rec-source { display: block; margin-top: 2px; color: var(--ink-2); font-size: .8125rem; }
 .reference-sources > summary, .reference-provenance > summary { display: flex; align-items: center; min-height: 44px; padding: 10px 0; font-weight: 650; cursor: pointer; }
@@ -454,3 +460,35 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
 .reference-sources li > span { color: var(--ink-2); }
 .reference-provenance { margin-top: 4px; }
 .reference-provenance li { color: var(--ink-2); }
+
+/* ── Round 3 polish ── */
+/* Protected protocol disclosures: one chevron marker on every summary (styling only). */
+#tabpanel-protocols summary { list-style: none; }
+#tabpanel-protocols summary::-webkit-details-marker { display: none; }
+#tabpanel-protocols summary::after { content: ''; flex-shrink: 0; align-self: center; width: 7px; height: 7px; margin: 0 4px 0 auto; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; opacity: .7; transform: rotate(45deg) translate(-2px, -2px); transition: transform calc(var(--dur) * var(--motion-scale)) var(--ease); }
+#tabpanel-protocols summary:not([class*="flex"])::after { display: inline-block; margin-left: 10px; vertical-align: middle; }
+#tabpanel-protocols details[open] > summary::after { transform: rotate(-135deg) translate(-2px, -2px); }
+/* Consistent teal checkboxes and radios; protocol attestations match Encounter's 20 px. */
+input[type="checkbox"], input[type="radio"] { accent-color: rgb(var(--cobalt-600)); }
+html[data-theme="dark"] :is(input[type="checkbox"], input[type="radio"]) { accent-color: rgb(var(--cobalt-500)); }
+#tabpanel-protocols input[type="checkbox"] { width: 20px; height: 20px; flex-shrink: 0; }
+/* Larger tap area for the case-bar actions without making the bar taller. */
+.case-bar__copy, .case-bar__link, .case-bar__dx { position: relative; }
+.case-bar__copy::before, .case-bar__link::before, .case-bar__dx::before { content: ''; position: absolute; inset: -5px -2px; }
+/* Touch sizing follows the pointer, not the width (tablets in portrait). */
+@media (pointer: coarse) {
+  .workspace-secondary > a, .workspace-utilities > summary { min-height: 44px; }
+  #tabpanel-protocols :is(button, summary, a[href]) { min-height: 44px; }
+}
+/* Dark theme: one selected treatment with >=3:1 against the surface. */
+html[data-theme="dark"] :is(.vessel-chips button[aria-pressed="true"], .trials-surface button[aria-pressed="true"], .consultation-switch input:checked + span) { background: rgb(var(--cobalt-500)); border-color: rgb(var(--cobalt-500)); color: rgb(var(--cobalt-950)); }
+html[data-theme="dark"] .trials-surface button[aria-pressed="true"] .text-mute { color: rgb(var(--cobalt-950)); }
+html[data-theme="dark"] .trials-surface > [role="tablist"] [aria-selected="true"] { background: rgb(var(--c-accent-soft)); color: rgb(var(--c-accent-ink)); box-shadow: inset 0 0 0 1px rgb(var(--cobalt-500)); }
+/* The CT hemorrhage gate keeps its full selected value on tablets. */
+@media (min-width: 769px) and (max-width: 1100px) { .field-grid--vitals .workspace-field:has(#input-ct-review) { grid-column: span 2; } }
+@media (max-width: 480px) {
+  /* Keep the anticoagulated case bar to two rows: age/sex stay on Encounter. */
+  .case-bar:has(.case-bar__badge) .case-bar__demo { display: none; }
+  /* Protocol breadcrumb and sub-tabs scroll away on phones, like Encounter's section nav. */
+  #tabpanel-protocols :is(.protocol-breadcrumb, .protocol-subtabs) { position: static; }
+}

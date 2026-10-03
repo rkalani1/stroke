@@ -9,6 +9,7 @@ const normalize = value => String(value || '').normalize('NFKD').replace(/[̀-ͯ
   .replace(/\bafib\b/g, 'atrial fibrillation').replace(/\btpa\b/g, 'alteplase');
 const compact = value => normalize(value).replace(/ /g, '');
 
+const STOPWORDS = new Set(['a', 'an', 'the', 'of', 'for', 'to', 'in', 'on', 'and', 'or', 'with', 'when', 'what', 'how', 'is', 'after', 'do', 'i']);
 export const SEARCH_GROUPS = ['Go to', 'Protocols', 'Calculators', 'Evidence', 'Studies', 'Trials', 'External'];
 
 const NAVIGATION = [
@@ -35,9 +36,20 @@ const EXTERNAL = [
 const PROTOCOL_KEYWORDS = {
   'qr-dose': 'tenecteplase alteplase TNK tPA thrombolytic dose weight table bolus infusion mL',
   'qr-bp': 'blood pressure targets 185/110 180/105 labetalol nicardipine clevidipine post-EVT ICH SAH',
-  'qr-reversal': 'anticoagulant reversal 4F-PCC PCC Kcentra idarucizumab Praxbind protamine vitamin K warfarin apixaban rivaroxaban edoxaban dabigatran heparin enoxaparin andexanet antiplatelet',
-  'qr-sich': 'symptomatic hemorrhage after thrombolysis sICH cryoprecipitate tranexamic acid TXA fibrinogen',
-  'qr-angioedema': 'orolingual angioedema icatibant epinephrine methylprednisolone diphenhydramine airway ACE inhibitor',
+  'qr-reversal': 'anticoagulant reversal ICH DOAC NOAC INR 4F-PCC PCC Kcentra idarucizumab Praxbind protamine vitamin K warfarin Coumadin Jantoven apixaban Eliquis rivaroxaban Xarelto edoxaban Savaysa dabigatran Pradaxa heparin enoxaparin Lovenox dalteparin fondaparinux argatroban bivalirudin andexanet antiplatelet',
+  'qr-sich': 'symptomatic hemorrhage after thrombolysis sICH tnk tenecteplase alteplase lytic bleed bleeding cryoprecipitate tranexamic acid TXA aminocaproic Amicar fibrinogen',
+  'qr-angioedema': 'orolingual angioedema tongue lip swelling intubation icatibant epinephrine methylprednisolone diphenhydramine airway ACE inhibitor',
+  'qr-ich-surgery': 'ICH surgery neurosurgery evacuation craniotomy cerebellar hemorrhage EVD ventriculostomy IVH hydrocephalus minimally invasive MIS ENRICH',
+  'qr-sah': 'subarachnoid hemorrhage SAH aneurysm thunderclap headache lumbar puncture xanthochromia nimodipine coil clip EVD',
+  evt: 'thrombectomy EVT eligibility LVO ASPECTS anterior ICA M1 M2 DAWN DEFUSE',
+  posterior: 'basilar vertebral posterior circulation pc-ASPECTS ATTENTION BAOCHE thrombectomy EVT',
+  'large-core': 'large core ASPECTS 3-5 SELECT2 ANGEL-ASPECT TENSION thrombectomy',
+  mevo: 'medium distal vessel occlusion MeVO DISTAL ESCAPE-MeVO M3 ACA PCA',
+  swallow: 'dysphagia swallow screen aspiration NPO',
+  'ivt-card': 'IVT eligibility thrombolysis wake-up extended window decision',
+  contraindications: 'IVT contraindications exclusions thrombolysis absolute relative',
+  'safety-pause': 'safety pause time-out timeout pre-thrombolytic checklist',
+  ivh: 'intraventricular hemorrhage IVH hydrocephalus EVD ventriculostomy',
   'qr-edema': 'malignant MCA edema hemicraniectomy decompression cerebellar infarct suboccipital EVD osmotherapy',
   'qr-supportive': 'supportive care oxygen glucose temperature fever dysphagia swallow VTE seizure prophylaxis',
   reversal: 'anticoagulant reversal 4F-PCC PCC Kcentra idarucizumab Praxbind protamine vitamin K warfarin apixaban rivaroxaban dabigatran heparin',
@@ -55,7 +67,7 @@ export function buildSearchIndex(reference, { protocolSub = 'ischemic' } = {}) {
   Object.entries(PROTOCOL_TARGETS).forEach(([key, target]) => records.push({
     id: `protocol:${key}`, group: 'Protocols', title: target.label || target.heading || key,
     subtitle: target.quick ? 'Quick reference' : target.sub === 'ich' ? 'ICH protocol' : 'Ischemic protocol',
-    href: `#/protocols/${target.quick ? protocolSub : target.sub}/${key}`, keywords: PROTOCOL_KEYWORDS[key] || ''
+    href: `#/protocols/${target.quick ? target.only || protocolSub : target.sub}/${key}`, keywords: PROTOCOL_KEYWORDS[key] || ''
   }));
   ENCOUNTER_TOOLS.forEach(tool => records.push({ id: `tool:${tool.id}`, group: 'Calculators', title: tool.name, subtitle: 'Encounter', href: `#/encounter/${tool.id}`, keywords: tool.aliases }));
   (reference?.calculators || []).forEach(calc => records.push({ id: `calc:${calc.id}`, group: 'Calculators', title: calc.name, subtitle: calc.category, href: `#/tools/${calc.id}`, keywords: [calc.id, calc.category, ...(calc.aliases ? [calc.aliases] : [])].join(' ') }));
@@ -71,7 +83,8 @@ export function buildSearchIndex(reference, { protocolSub = 'ischemic' } = {}) {
 export function searchIndex(index, query, limit = 40) {
   const phrase = normalize(query);
   if (!phrase) return [];
-  const terms = phrase.split(' ');
+  // Filler words never have to match ("when to start anticoagulation").
+  const terms = phrase.split(' ').filter((term, _, all) => all.length === 1 || !STOPWORDS.has(term));
   const phraseCompact = phrase.replace(/ /g, '');
   const scored = [];
   for (const record of index) {

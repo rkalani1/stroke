@@ -97,7 +97,7 @@ describe('TIA readiness from canonical encounter fields', () => {
     const fields = getEncounterDetailGroups(state).flatMap(group => group.fields);
     expect(fields.find(field => field.key === 'tiaSevereCarotid').options).toEqual([['yes', 'Yes'], ['no', 'No']]);
     const output = formatEncounterDetails(state).flatMap(group => group.lines).join('\n');
-    expect(output).toContain('Severe symptomatic carotid stenosis: No');
+    expect(output).toContain('Presumed symptomatic extracranial or intracranial stenosis >50%: No');
     expect(output).toContain('Suspected cardioembolic source: Yes');
     expect(output).not.toContain('DWI lesion:');
     const html = render(state);

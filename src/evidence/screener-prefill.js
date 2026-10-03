@@ -88,6 +88,10 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   const preMrs = numericInput(note.premorbidMRS, { min: 0, max: 5, integer: true });
   if (preMrs !== null) { patch.preMrs = preMrs; summary.push(`pre-mRS ${preMrs}`); }
 
+  // Etiology answer: documented AF (or its explicit absence) feeds AF-dependent profiles.
+  const af = state.details?.afDetected;
+  if (af === 'yes' || af === 'no') { patch.afibHistory = af === 'yes'; summary.push(af === 'yes' ? 'AF documented' : 'no AF documented'); }
+
   const kind = ANTICOAGULANT_KIND[note.lastDOACType];
   if (kind) {
     const facts = anticoagulantFacts(kind);
