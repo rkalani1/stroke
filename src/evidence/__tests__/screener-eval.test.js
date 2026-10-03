@@ -13,30 +13,32 @@ import {
   patientTimeCategory,
   getTimeSortingScore,
   EXCLUSION_ITEMS,
-  ONSET_PRESETS
+  ONSET_PRESETS,
+  GENERIC_CONFIRMATION
 } from '../screener-eval.js';
 
 const sentinel = (...parts) => parts.join('_');
 const trialByAcronym = (acr) => screenerTrials.find((t) => t.acronym === acr);
 
 describe('screenerTrials — data integrity & compliance', () => {
-  // NOTE: the brief described "16 trial objects", but the canonical source
-  // (stroke-trials-screener/index.html) contained exactly 15. One acute
-  // ischemic study has since been withdrawn from the local portfolio (the
-  // site is no longer participating), leaving 14 — every remaining acronym
-  // the brief enumerated (9 net-new + 5 overlap) is present and ported
-  // verbatim. We assert the real source count.
-  it('ports all 14 source trials', () => {
-    expect(screenerTrials.length).toBe(14);
+  // 2026-10-03 registry audit: the two unregistered placeholders (ESUS, MOCHA)
+  // were removed; FASTEST Part 2 and SISTER were added as screenable profiles;
+  // PICASSO (recruiting) and CAPTIVA (active, not recruiting) moved from
+  // table-only rows into reference-only profiles so Database can find them.
+  it('stores 16 study profiles: 14 screenable plus 2 reference-only', () => {
+    expect(screenerTrials.length).toBe(16);
+    expect(screenerTrials.filter(t => t.referenceOnly).map(t => t.acronym).sort()).toEqual(['CAPTIVA', 'PICASSO']);
   });
 
-  it('includes the net-new and overlap acronyms', () => {
+  it('includes the expected acronyms and no unregistered placeholders', () => {
     const acronyms = screenerTrials.map((t) => t.acronym);
     [
-      'STEP', 'TESTED', 'VERIFY', 'ASPIRE', 'SATURN', // overlap
-      'MINUTE', 'CLARITY', 'INTERCEPT', 'ESUS', 'MOCHA',
-      'CAPPRICORN-1', 'SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2' // net-new
+      'STEP', 'TESTED', 'VERIFY', 'ASPIRE', 'SATURN', 'MINUTE', 'CLARITY', 'INTERCEPT',
+      'CAPPRICORN-1', 'SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2', 'FASTEST-2', 'SISTER', 'PICASSO', 'CAPTIVA'
     ].forEach((acr) => expect(acronyms).toContain(acr));
+    expect(acronyms).not.toContain('ESUS');
+    expect(acronyms).not.toContain('MOCHA');
+    expect(screenerTrials.filter(t => t.status === 'placeholder')).toEqual([]);
   });
 
   it('every trial is institution-clean: noContactInfo true + sourceGaps present', () => {
@@ -67,11 +69,13 @@ describe('screenerTrials — data integrity & compliance', () => {
     });
   });
 
-  it('blocks unverified studies (ESUS, MOCHA) as placeholders', () => {
-    ['ESUS', 'MOCHA'].forEach((acr) => {
-      const t = trialByAcronym(acr);
-      expect(t.status).toBe('placeholder');
-      expect(t.sourceCompletenessStatus).toBe('not_registry_verified');
+  it('gives every profile a primary registry identity, phase and study type', () => {
+    screenerTrials.forEach((t) => {
+      expect(t.externalMetadata.nct).toMatch(/^NCT\d{8}$/);
+      expect(t.externalMetadata.registryUrl).toBe(`https://clinicaltrials.gov/study/${t.externalMetadata.nct}`);
+      expect(['NA', 'PHASE2', 'PHASE3']).toContain(t.externalMetadata.phase);
+      expect(['INTERVENTIONAL', 'OBSERVATIONAL']).toContain(t.externalMetadata.studyType);
+      expect(t.externalMetadata.localActivationStatus).toBe('not_assessed');
     });
   });
 
@@ -81,12 +85,11 @@ describe('screenerTrials — data integrity & compliance', () => {
 });
 
 describe('evaluateTrialEligibility — placeholder / soon handling', () => {
-  it('returns placeholder status for unverified ESUS without ever screening', () => {
+  it('still returns placeholder status for an unverified profile without screening it', () => {
     const state = createInitialScreenerState();
     state.classification = 'ischemic';
-    state.etiology = 'esus';
     const p = buildScreenerParams(state);
-    const r = evaluateTrialEligibility(trialByAcronym('ESUS'), p);
+    const r = evaluateTrialEligibility({ acronym: 'UNVERIFIED', status: 'placeholder', eligibility: { criteria: [{ field: 'classification', operator: '==', value: 'ischemic' }] } }, p);
     expect(r.status).toBe('placeholder');
     expect(r.exclusionReasons[0]).toMatch(/Incomplete study profile/);
   });
@@ -189,17 +192,17 @@ describe('evaluateAll — bucketing on representative patients', () => {
     expect(res.briefingNote).toBe('');
   });
 
-  it('routes unverified ESUS/MOCHA into the incomplete bucket', () => {
+  it('never screens reference-only profiles and keeps closed profiles out of candidates', () => {
     const state = createInitialScreenerState();
     state.classification = 'ischemic';
     state.onsetVal = 3;
     state.onsetUnit = 'days';
     const res = evaluateAll(state);
-    const incompleteAcr = res.incomplete.map((i) => i.trial.acronym);
-    expect(incompleteAcr).toContain('ESUS');
-    expect(incompleteAcr).toContain('MOCHA');
-    // Never eligible.
-    expect(res.eligible.map((i) => i.trial.acronym)).not.toContain('ESUS');
+    const all = ['eligible', 'pending', 'soon', 'excluded', 'closed', 'incomplete'].flatMap(k => res[k].map(i => i.trial.acronym));
+    expect(all).not.toContain('PICASSO');
+    expect(all).not.toContain('CAPTIVA');
+    expect(res.closed.map(i => i.trial.acronym)).toEqual(['CAPPRICORN-1']);
+    expect([...res.eligible, ...res.pending].map(i => i.trial.acronym)).not.toContain('CAPPRICORN-1');
   });
 });
 
@@ -239,8 +242,8 @@ describe('time category + onset-window sorting', () => {
   });
 });
 
-describe('briefing note generation', () => {
-  it('lists referral candidates with NCT + pathway', () => {
+describe('screening summary generation', () => {
+  it('lists inputs, act-now candidates with NCT, status, phase and pathway, then not-met reasons', () => {
     const state = createInitialScreenerState();
     state.classification = 'ischemic';
     state.onsetVal = 12;
@@ -251,11 +254,18 @@ describe('briefing note generation', () => {
     state.preMrs = 0;
     state.anteriorCirculation = true;
     const res = evaluateAll(state);
-    expect(res.briefingNote).toMatch(/STROKE SCREENER REFERRAL NOTE/);
-    // Fully-qualified first-pass candidates appear under the 🟡 pending header.
+    const text = res.briefingNote;
+    expect(text).toMatch(/^TRIAL SCREEN — first pass \(registry checked 2026-10-03\)/);
+    expect(text).toContain('Inputs: Ischemic stroke · LKW 12.0 h · age 65 · NIHSS 8 · pre-mRS 0 · ASPECTS 8');
     expect(res.pending.length).toBeGreaterThan(0);
-    expect(res.briefingNote).toMatch(/POSSIBLE CANDIDATES/);
-    expect(res.briefingNote).toMatch(/NCT/);
+    expect(text).toMatch(new RegExp(`ACT NOW — possible candidates \\(${res.pending.length}\\)`));
+    expect(text).toMatch(/- SISTER \(NCT05948566\) · Recruiting · Phase 2 · window 4\.5 – 24 hours/);
+    expect(text).toContain('Pathway: Consult Stroke Research Coordinator');
+    // Studies for another stroke type are omitted; only informative misses remain.
+    expect(text).toContain('NOT MET (1)\n- TESTED: Pre-stroke mRS must be exactly 3 or 4');
+    expect(text).not.toMatch(/Requires ICH/);
+    expect(text).not.toContain(GENERIC_CONFIRMATION);
+    expect(text.trim().split('\n').pop()).toBe('First-pass registry screen — confirm full criteria, local activation and consent. Screening does not determine treatment eligibility.');
   });
 
   it('reports no matches for an empty parameter set with classification only', () => {
@@ -264,8 +274,12 @@ describe('briefing note generation', () => {
     state.onsetVal = 200;
     state.onsetUnit = 'days'; // outside every TIA window
     const res = evaluateAll(state);
-    // CLARITY (TIA-eligible) requires <=180d, so >180d should drop it.
-    expect(res.briefingNote).toMatch(/STROKE SCREENER REFERRAL NOTE/);
+    // CLARITY's window ends at 180 days; INTERCEPT stays possible only if the
+    // patient was on OAC at the index event (6–52-week group), which is unknown.
+    expect(res.briefingNote).toContain('Inputs: TIA · LKW 6.7 mo');
+    expect(res.briefingNote).toMatch(/ACT NOW — possible candidates \(1\)\n- INTERCEPT \(NCT05723926\)/);
+    expect(res.briefingNote).toContain('Confirm timing group: <6 weeks from index stroke (any OAC status) OR 6–52 weeks if on OAC at the index stroke');
+    expect(res.briefingNote).toContain('NOT MET (1)\n- CLARITY: Stroke/TIA occurred > 180 days ago');
   });
 });
 

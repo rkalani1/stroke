@@ -344,7 +344,7 @@ async function main() {
       await screen.getByText('Choose a classification to see possible study profiles.', { exact: true }).waitFor({ state: 'visible' });
       await screen.getByRole('button', { name: 'Ischemic stroke', exact: true }).click();
       await screen.getByRole('button', { name: /4.5 – 24h/ }).click();
-      await screen.getByRole('heading', { name: /^Possible candidates/ }).waitFor({ state: 'visible' });
+      await screen.getByRole('heading', { name: /possible candidates/i }).waitFor({ state: 'visible' });
       await page.getByRole('tab', { name: 'Tables', exact: true }).click();
       const tables = page.getByRole('tabpanel', { name: 'Tables', exact: true });
       await tables.getByRole('button', { name: 'Ischemic Stroke', exact: true }).waitFor({ state: 'visible' });

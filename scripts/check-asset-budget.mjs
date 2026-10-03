@@ -130,6 +130,13 @@ const precache = corePrecacheBytes();
 // DAPT guideline tiers and dose-display rounding add ~1.5KB gzip to the initial
 // graph (measured 101.2KB); the deferred bedside QuickReference adds ~5KB gzip
 // once Protocols renders it. Reviewed ceilings: initial 102KB, whole-JS 208KB gzip.
+// 2026-10-03 Trials registry audit (flagged for owner review): the explicit
+// Encounter-to-Trials import reuses the canonical workspace-state/GCS helpers,
+// so esbuild moves them out of app.js into a shared initial chunk. Initial raw
+// bytes are unchanged (~0.3 MB); gzip rises ~1 KB from the chunk boundary
+// (99.7% -> 100.7% of the old 100 KB). FASTEST Part 2, SISTER, PICASSO and
+// CAPTIVA profiles plus the compact screener add ~8.5 KB gzip of deferred
+// Trials data/UI. Ceilings: initial gzip 100 -> 101 KB; all JS gzip 196 -> 202 KB.
 const checks = [
   {
     id: 'app-js-gzip',

@@ -21,29 +21,35 @@ export const ONSET_PRESETS = [
   { name: '> 6mo', val: 8, unit: 'months', rangeHours: [4320, null], desc: 'Chronic' }
 ];
 
+// Each item lists only screenable profiles that use it. Items used solely by
+// closed or reference-only profiles are omitted, so the refiner never asks
+// about a criterion that cannot change any screening result.
 export const EXCLUSION_ITEMS = [
   { id: 'exMultipleTerritories', label: 'Acute occlusions in multiple vascular territories', classifications: ['ischemic'], trials: ['STEP'] },
   { id: 'exTandem', label: 'Tandem occlusions (cervical + intracranial)', classifications: ['ischemic'], trials: ['STEP'] },
+  { id: 'exSeizureAtOnset', label: 'Seizure at stroke onset or before enrollment', classifications: ['ischemic'], trials: ['STEP'] },
+  { id: 'exSuspectedIcad', label: 'Known or suspected underlying intracranial atherosclerosis at the occlusion', classifications: ['ischemic'], trials: ['STEP'] },
+  { id: 'exIvtGivenOrPlanned', label: 'IV thrombolysis given or planned', classifications: ['ischemic'], trials: ['SISTER'] },
+  { id: 'exXaDtiWithin48h', label: 'Factor Xa inhibitor or direct thrombin inhibitor within 48 h', classifications: ['ischemic'], trials: ['SISTER'] },
   { id: 'exTerminalIllness', label: 'Known terminal cancer or terminal illness at stroke onset', classifications: ['ischemic'], trials: ['TESTED'] },
   { id: 'exTerminalComorbidity2y', label: 'Life expectancy <24 months due to comorbid terminal conditions', classifications: ['ich'], trials: ['SATURN'] },
-  { id: 'exSecondaryIch', label: 'Suspected secondary cause for ICH (AVM, aneurysm, tumor, SAH)', classifications: ['ich'], trials: ['MINUTE', 'SATURN'] },
+  { id: 'exSecondaryIch', label: 'Suspected secondary cause for ICH (AVM, aneurysm, tumor, SAH, trauma, coagulopathy)', classifications: ['ich'], trials: ['MINUTE', 'SATURN', 'FASTEST-2'] },
   { id: 'exMidbrain', label: 'Midbrain extension or infratentorial/thalamic location', classifications: ['ich'], trials: ['MINUTE'] },
+  { id: 'exDoacLmwhAtOnset', label: 'DOAC or LMWH at ICH onset', classifications: ['ich'], trials: ['MINUTE'] },
+  { id: 'exOacWithin7d', label: 'Oral anticoagulant (VKA or DOAC) within 7 days', classifications: ['ich'], trials: ['FASTEST-2'] },
+  { id: 'exBrainstemIch', label: 'Brainstem hemorrhage (cerebellar is not brainstem)', classifications: ['ich'], trials: ['FASTEST-2'] },
   { id: 'exPriorIch12m', label: 'Prior ICH in past 12 months', classifications: ['ich'], trials: ['ASPIRE'] },
   { id: 'exClearAnticoagulationIndication', label: 'Separate mandatory anticoagulation indication (e.g., DVT/PE)', classifications: ['ich'], trials: ['ASPIRE'] },
   { id: 'exClearAntiplateletIndication', label: 'Clear baseline indication for antiplatelet therapy', classifications: ['ich'], trials: ['ASPIRE'] },
   { id: 'exIchScore3', label: 'Clinical ICH Score > 3', classifications: ['ich'], trials: ['SATURN'] },
   { id: 'exRecentCoronarySyndrome', label: 'CAD-related MI or unstable angina within the previous 3 months', classifications: ['ich'], trials: ['SATURN'] },
-  { id: 'exEgfr35', label: 'eGFR < 35 ml/min/1.73m²', classifications: ['ischemic'], trials: ['ESUS', 'MOCHA'] },
-  { id: 'exMriContraindication', label: 'Contraindication to MRI or gadolinium contrast', classifications: ['ischemic'], trials: ['ESUS', 'MOCHA'] },
-  { id: 'exRecentSurgery30d', label: 'Surgery within 30 days prior to stroke onset', classifications: ['ischemic'], trials: ['ESUS'] },
-  { id: 'exBilateralCarotidRevasc', label: 'History of bilateral carotid endarterectomy/stenting', classifications: ['ischemic'], trials: ['MOCHA'] },
   { id: 'exSpontaneousHemorrhagicStroke', label: 'History of spontaneous hemorrhagic stroke', classifications: ['ischemic'], trials: ['MR-PICS'] },
-  { id: 'exIntracranialHemorrhage', label: 'History of intracranial hemorrhage', classifications: ['ischemic'], trials: ['INTERCEPT'] },
+  { id: 'exIntracranialHemorrhage', label: 'History of intracranial hemorrhage', classifications: ['ischemic', 'tia'], trials: ['INTERCEPT'] },
   { id: 'exBrainBleed2y', label: 'Spontaneous brain bleed within past 2 years', classifications: ['ischemic', 'tia'], trials: ['CLARITY'] },
-  { id: 'exSaptContraindication', label: 'Contraindication to additional SAPT for 6 months', classifications: ['ischemic'], trials: ['INTERCEPT'] },
-  { id: 'exUntreatedStenosisPlaque', label: 'Untreated ≥50% stenosis or investigator-defined high-risk plaque: carotid, subclavian, vertebral or intracranial artery', classifications: ['ischemic'], trials: ['INTERCEPT'] },
-  { id: 'exPregnancy', label: 'Pregnancy', classifications: ['ischemic', 'ich'], trials: ['SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2', 'INTERCEPT'] },
-  { id: 'exIncarcerated', label: 'Patient is incarcerated (prisoner)', classifications: ['ischemic', 'ich'], trials: ['SCOUTS-3'] },
+  { id: 'exSaptContraindication', label: 'Contraindication to additional SAPT for 6 months', classifications: ['ischemic', 'tia'], trials: ['INTERCEPT'] },
+  { id: 'exUntreatedStenosisPlaque', label: 'Untreated ≥50% stenosis or investigator-defined high-risk plaque: carotid, subclavian, vertebral or intracranial artery', classifications: ['ischemic', 'tia'], trials: ['INTERCEPT'] },
+  { id: 'exPregnancy', label: 'Pregnancy', classifications: ['ischemic', 'ich', 'tia'], trials: ['STEP', 'SISTER', 'MINUTE', 'FASTEST-2', 'SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2', 'INTERCEPT', 'VERIFY'] },
+  { id: 'exIncarcerated', label: 'Patient is incarcerated (prisoner)', classifications: ['ischemic', 'ich'], trials: ['STEP', 'SCOUTS-3'] },
   { id: 'exTrach', label: 'Mechanical ventilation, tracheostomy, or oxygen > 4 L/min', classifications: ['ischemic', 'ich'], trials: ['SCOUTS-3'] },
   { id: 'exCpapUse14d', label: 'CPAP use within 14 days pre-CVA', classifications: ['ischemic', 'ich'], trials: ['SCOUTS-3'] },
   { id: 'exSecondaryIchOrSah', label: 'Stroke related to tumor, malformation, or SAH', classifications: ['ischemic', 'ich'], trials: ['SCOUTS-3'] },
@@ -59,11 +65,11 @@ export const EXCLUSION_ITEMS = [
   { id: 'exRecurrentStroke', label: 'Recurrent stroke since the index stroke', classifications: ['ischemic', 'ich'], trials: ['TELE-REHAB-2'] },
   { id: 'exLifeExpectancy9m', label: 'Life expectancy < 9 months', classifications: ['ischemic', 'ich'], trials: ['TELE-REHAB-2'] },
   { id: 'exCongestiveHeartFailure', label: 'Congestive Heart Failure (moderate/severe)', classifications: ['ischemic', 'tia'], trials: ['CLARITY'] },
-  { id: 'exMrPicsCommunication', label: 'Aphasia or cognitive deficits prevent communicating pain/discomfort or understanding motor testing/rehabilitation tasks', classifications: ['ischemic'], trials: ['MR-PICS'] },
-  { id: 'exCaaCognitiveImpairment', label: 'Moderate/severe Alzheimer disease or significant cognitive impairment', classifications: ['ich'], trials: ['CAPPRICORN-1'] },
-  { id: 'exEgfr30', label: 'eGFR < 30 ml/min/1.73m²', classifications: ['ich'], trials: ['CAPPRICORN-1'] }
+  { id: 'exMrPicsCommunication', label: 'Aphasia or cognitive deficits prevent communicating pain/discomfort or understanding motor testing/rehabilitation tasks', classifications: ['ischemic'], trials: ['MR-PICS'] }
 ];
 
+// Every exclusion id any stored profile can reference, plus retired generic
+// ids that must remain inert (they never satisfy a source-specific exclusion).
 const ALL_EXCLUSION_IDS = [
   'exTerminalComorbidity2y', 'exRecentCoronarySyndrome', 'exSpontaneousHemorrhagicStroke',
   'exTherapeuticAnticoagulation', 'exMrPicsCommunication', 'exCaaCognitiveImpairment', 'exIntracranialHemorrhage', 'exUntreatedStenosisPlaque',
@@ -71,14 +77,14 @@ const ALL_EXCLUSION_IDS = [
   'exTerminalIllness', 'exSecondaryIch', 'exMidbrain', 'exPriorIch12m',
   'exClearAnticoagulationIndication', 'exClearAntiplateletIndication',
   'exIchScore3', 'exRecentMi3m', 'exLifeExpectancy2y', 'exLifeExpectancy9m',
-  'exEgfr35', 'exMriContraindication', 'exRecentSurgery30d',
-  'exBilateralCarotidRevasc', 'exPriorIchHistory', 'exBrainBleed2y',
+  'exPriorIchHistory', 'exBrainBleed2y',
   'exSaptContraindication', 'exCarotidStenosis50', 'exPregnancy',
   'exIncarcerated', 'exTrach', 'exCpapUse14d', 'exSecondaryIchOrSah',
   'exPriorUeCondition', 'exLegallyBlind', 'exDenseSensoryLoss',
   'exRecentStroke30d', 'exSeizures', 'exVerifySeizure', 'exSevereAphasiaCognitive', 'exBotoxVns3m',
   'exAnticoagulation', 'exHistoryDvtPe', 'exRecurrentStroke',
-  'exCongestiveHeartFailure', 'exEgfr30'
+  'exCongestiveHeartFailure', 'exEgfr30',
+  'exDoacLmwhAtOnset', 'exOacWithin7d', 'exBrainstemIch', 'exIvtGivenOrPlanned', 'exXaDtiWithin48h', 'exSeizureAtOnset', 'exSuspectedIcad'
 ];
 
 /* ── Evaluation Engine ─────────────────────────────────────────────── */
@@ -144,14 +150,46 @@ function evaluateCriterion(c, p) {
     const divisor = c.field === 'onsetDays' ? 24 : c.field === 'onsetMonths' ? 720 : 1;
     const lo = p.onsetRangeHours[0] / divisor;
     const hi = p.onsetRangeHours[1] === null ? Infinity : p.onsetRangeHours[1] / divisor;
+    // Preset bands share endpoints (4.5 h, 24 h, 7 d, 30 d, 180 d). A band
+    // that touches a study limit only at its endpoint does not overlap that
+    // window, so it is a definite miss rather than an unknown.
     if (c.operator === 'between') {
-      if (hi < c.value[0] || lo > c.value[1]) return false;
+      if (hi <= c.value[0] || lo >= c.value[1]) return false;
       return lo >= c.value[0] && hi <= c.value[1] ? true : null;
     }
+    if ((c.operator === '<=' || c.operator === '<') && lo >= c.value && lo > 0) return false;
+    if ((c.operator === '>=' || c.operator === '>') && hi <= c.value) return false;
     const atLo = op(lo,c.value), atHi = op(hi,c.value);
     return atLo === atHi ? atLo : null;
   }
   return op(val, c.value);
+}
+
+const FIELD_TEXT = {
+  age: 'age', nihss: 'NIHSS', aspects: 'ASPECTS', gcs: 'GCS', preMrs: 'pre-stroke mRS', currentMrs: 'current (post-stroke) mRS',
+  vessel: 'occlusion site', ichLocation: 'ICH location', ichVolume: 'ICH volume (mL)', classification: 'event type',
+  onsetHours: 'hours from LKW', onsetDays: 'days from LKW', onsetMonths: 'months from LKW',
+  afibHistory: 'documented clinical atrial fibrillation', afOrFlutterHistory: 'atrial fibrillation or flutter', statin: 'statin use at onset',
+  takingOac: 'oral anticoagulant at the index stroke', exUeWeakness: 'upper-extremity motor deficit', presentedWithin24h: 'presentation within 24 h of LKW'
+};
+const VALUE_TEXT = {
+  ica_m1: 'ICA/M1', dominant_m2: 'dominant M2', m2_m3_nd: 'non-dominant M2/M3', other: 'other', none: 'none',
+  bg: 'basal ganglia', lobar: 'lobar', thalamic: 'thalamic', infratentorial: 'infratentorial',
+  ischemic: 'ischemic stroke', ich: 'ICH', tia: 'TIA', english: 'English', spanish: 'Spanish', yes: 'yes'
+};
+const OP_TEXT = { '>=': '≥', '<=': '≤', '>': '>', '<': '<', '==': '=', '!=': '≠' };
+const valueText = v => VALUE_TEXT[v] ?? String(v);
+
+// Unknown criteria are phrased as questions to answer — never as a matched
+// template with an empty "{value}" or as a failed criterion.
+export function pendingText(c) {
+  if (c.pendingLabel) return c.pendingLabel;
+  if (c.operator === 'or') return 'Confirm one pathway: ' + (c.branches || []).map(b => (b.label || '').replace(/^Meets\s+/, '')).filter(Boolean).join(' OR ');
+  const label = FIELD_TEXT[c.field] || c.field;
+  if (typeof c.value === 'boolean') return `Confirm ${label}${c.value ? '' : ' is absent'}`;
+  if (c.operator === 'between') return `Confirm ${label} ${c.value[0]}–${c.value[1]}`;
+  if (c.operator === 'in') return `Confirm ${label} is ${c.value.map(valueText).join(' or ')}`;
+  return `Confirm ${label} ${OP_TEXT[c.operator] || c.operator} ${valueText(c.value)}`;
 }
 
 function getActiveBranch(c, p) {
@@ -182,6 +220,10 @@ export function createInitialScreenerState() {
     etiology: 'unselected',
     ichLocation: 'unselected',
     volume: 'unselected',
+    ichVolume: 'unselected',
+    // Display value of the "anticoagulant at onset" fact. Selecting it writes
+    // the derived OAC/exclusion facts; the engine never reads this field.
+    anticoagulant: 'unselected',
     statin: 'unselected',
     language: 'unselected',
     rehab: 'unselected',
@@ -231,6 +273,7 @@ export function buildScreenerParams(state) {
     etiology: state.etiology,
     ichLocation: state.ichLocation,
     volume: state.volume,
+    ichVolume: state.ichVolume ?? 'unselected',
     statin: state.statin,
     language: ['english', 'spanish', 'other'].includes(state.language) ? state.language : state.language === true ? 'english' : state.language === false ? 'other' : 'unselected',
     rehab: ['yes', 'none'].includes(state.rehab) ? state.rehab : state.rehab === true ? 'yes' : state.rehab === false ? 'none' : 'unselected',
@@ -275,7 +318,7 @@ export function evaluateTrialEligibility(trial, p) {
     ((c.operator === '>=' && p[c.field] < c.value) || (c.operator === '>' && p[c.field] <= c.value) || (c.operator === 'between' && p[c.field] < c.value[0]));
   const futureWindow = failed.length > 0 && failed.every(tooEarly) && hits.length === 0;
   const pendingCriteria = [
-    ...criteria.filter(c => evaluateCriterion(c,p) === null).map(c => c.pendingLabel || c.matchedLabel || c.error || c.field),
+    ...criteria.filter(c => evaluateCriterion(c,p) === null).map(pendingText),
     ...exclusions.filter(c => evaluateCriterion(c,p) === null).map(c => c.pendingLabel || `Confirm exclusion absent: ${c.error || c.field}`),
     ...(trial.eligibility?.manualPending || [])
   ].filter(Boolean);
@@ -291,8 +334,9 @@ export function evaluateTrialEligibility(trial, p) {
     notYetEnrolling: trial.status === 'soon',
     matchedCriteria: [...new Set(matchedCriteria)],
     pendingCriteria: [...new Set(pendingCriteria)],
-    pendingFields: [...new Set([...criteria.filter(c => evaluateCriterion(c,p) === null).flatMap(c => c.operator === 'or' ? ['Alternative eligibility pathway'] : [{age:'Age',rehab:'Rehab unit placement',language:'Language spoken',currentMrs:'Current post-stroke mRS',preMrs:'Pre-stroke mRS'}[c.field] || c.field]), ...exclusions.filter(c => evaluateCriterion(c,p) === null).map(c => c.pendingLabel || c.error || c.field), 'Full registry/protocol confirmation'])],
+    pendingFields: [...new Set([...criteria.filter(c => evaluateCriterion(c,p) === null).flatMap(c => c.operator === 'or' ? ['Alternative eligibility pathway'] : [{age:'Age',rehab:'Rehab unit placement',language:'Language spoken',currentMrs:'Current post-stroke mRS',preMrs:'Pre-stroke mRS',ichVolume:'ICH volume'}[c.field] || c.field]), ...exclusions.filter(c => evaluateCriterion(c,p) === null).map(c => c.pendingLabel || c.error || c.field), 'Full registry/protocol confirmation'])],
     exclusionReasons: [...failed.filter(c => !futureWindow).map(c => c.error), ...hits.map(c => c.error)].filter(Boolean),
+    failedFields: [...failed.map(c => c.field || 'pathway'), ...hits.map(c => c.field)],
     sourceGaps: trial.sourceGaps || [],
     fullProtocolReviewRequired: true
   };
@@ -338,15 +382,16 @@ function sortListByTime(list, patientCategory) {
   return list;
 }
 
+// Reference-only profiles (criteria tables / Database) are never screened.
 export function evaluateAll(state, trials = screenerTrials) {
   const ready = CLASSIFICATIONS.includes(state.classification);
   const params = buildScreenerParams(state);
   const buckets = { eligible: [], pending: [], soon: [], excluded: [], closed: [], incomplete: [] };
 
   if (ready) {
-    trials.forEach((trial) => {
+    trials.filter(trial => !trial.referenceOnly).forEach((trial) => {
       const r = evaluateTrialEligibility(trial, params);
-      const item = { trial, status: r.status, beforeWindow: r.beforeWindow || false, notYetEnrolling: r.notYetEnrolling || false, matchedCriteria: r.matchedCriteria, pendingCriteria: r.pendingCriteria, pendingFields: r.pendingFields || [], exclusionReasons: r.exclusionReasons || [], sourceGaps: r.sourceGaps || [] };
+      const item = { trial, status: r.status, beforeWindow: r.beforeWindow || false, notYetEnrolling: r.notYetEnrolling || false, matchedCriteria: r.matchedCriteria, pendingCriteria: r.pendingCriteria, pendingFields: r.pendingFields || [], exclusionReasons: r.exclusionReasons || [], failedFields: r.failedFields || [], sourceGaps: r.sourceGaps || [] };
       if (r.status === 'placeholder') buckets.incomplete.push(item);
       else buckets[r.status].push(item);
     });
@@ -357,6 +402,32 @@ export function evaluateAll(state, trials = screenerTrials) {
 
   return { ready, params, timeCategory, ...buckets, briefingNote: ready ? buildBriefingNote(state, buckets) : '' };
 }
+
+/* ── Display helpers shared by the UI and the copied summary ───────── */
+
+export const SCREEN_CAVEAT = 'First-pass registry screen — confirm full criteria, local activation and consent.';
+// The engine appends this to every result; the page states it once instead.
+export const GENERIC_CONFIRMATION = 'Full registry/protocol, local activation and consent confirmation required';
+
+export function phaseLabel(metadata = {}) {
+  if (metadata.studyType === 'OBSERVATIONAL') return 'Observational';
+  const phase = String(metadata.phase || '');
+  if (!phase) return '';
+  if (phase === 'NA') return 'Phase N/A';
+  return 'Phase ' + phase.replace(/PHASE/g, '').split(/[/,\s]+/).filter(Boolean).join('/');
+}
+
+export function enrollmentLabel(trial, result) {
+  if (result?.notYetEnrolling || trial.status === 'soon') return 'Not yet recruiting';
+  if (result?.beforeWindow) return 'Before study window';
+  if (trial.status === 'enrolling') return 'Recruiting';
+  if (trial.status === 'closed') return trial.externalMetadata?.registryStatus === 'ACTIVE_NOT_RECRUITING' ? 'Not enrolling (active, not recruiting)' : 'Not enrolling';
+  return 'Status unverified';
+}
+
+export const toConfirm = result => (result?.pendingCriteria || []).filter(line => line !== GENERIC_CONFIRMATION);
+// A study for a different stroke type is not a useful "not met" entry.
+export const relevantNotMet = excluded => (excluded || []).filter(item => !(item.failedFields || []).includes('classification'));
 
 const CLASSIFICATION_NOTE_LABELS = {
   ischemic: 'Ischemic stroke',
@@ -378,62 +449,71 @@ function onsetNoteLabel(onsetHours) {
   return band ? band.label : '> 6 months from LKW';
 }
 
-function briefingSourceLine(trial) {
-  const metadata = trial.externalMetadata || {};
-  const status = metadata.registryStatus ? metadata.registryStatus.replace(/_/g, ' ').toLowerCase() : 'not verified';
-  return `   Registry: ${status}; recorded check: ${metadata.verificationDate || 'not recorded'}; local activation: not confirmed.\n`;
+export function onsetSummary(state) {
+  const { onsetHours, onsetRangeHours } = buildScreenerParams(state);
+  if (onsetHours === null) return 'LKW unknown';
+  if (Array.isArray(onsetRangeHours)) return onsetNoteLabel(onsetHours) + ' (selected range)';
+  const exact = onsetHours < 48 ? onsetHours.toFixed(1) + ' h' : onsetHours < 24 * 60 ? (onsetHours / 24).toFixed(1) + ' d' : (onsetHours / 24 / 30).toFixed(1) + ' mo';
+  return 'LKW ' + exact;
 }
 
-// Paste-ready referral note. Deliberately carries only what the screener was
-// actually told — classification and onset window — plus the matched studies
-// and their referral pathway. It never asserts bedside facts the user did not
-// enter (the v7.3 screener no longer collects them).
+const INPUT_TEXT = [
+  ['age', v => 'age ' + v],
+  ['nihss', v => 'NIHSS ' + v],
+  ['gcs', v => 'GCS ' + v],
+  ['preMrs', v => 'pre-mRS ' + v],
+  ['aspects', v => 'ASPECTS ' + v],
+  ['vessel', v => 'occlusion ' + valueText(v)],
+  ['ichLocation', v => 'location ' + valueText(v)],
+  ['ichVolume', v => 'volume ' + v + ' mL'],
+  ['anticoagulant', v => 'anticoagulant at onset: ' + ({ none: 'none', doac: 'DOAC', lmwh: 'LMWH', vka: 'warfarin/VKA' }[v] || v)],
+  ['takingOac', v => v ? 'on OAC at index event' : 'not on OAC at index event'],
+  ['afibHistory', v => v ? 'atrial fibrillation' : 'no atrial fibrillation'],
+  ['statin', v => v ? 'statin at onset' : 'no statin at onset']
+];
+
+// Plain-text summary for a note or a research-coordinator message. It carries
+// only what the screener was told plus the resulting groups and reasons.
 export function buildBriefingNote(state, buckets) {
-  const { eligible, pending, soon } = buckets;
+  const { eligible = [], pending = [], soon = [], excluded = [] } = buckets;
   const cls = CLASSIFICATION_NOTE_LABELS[state.classification] || String(state.classification || '').toUpperCase();
-  const { onsetHours, onsetRangeHours } = buildScreenerParams(state);
+  const inputs = [cls, onsetSummary(state), ...INPUT_TEXT.filter(([key]) => !missing(state[key]) && state[key] !== 'unselected').filter(([key]) => !(key === 'takingOac' && state.anticoagulant && state.anticoagulant !== 'unselected')).map(([key, text]) => text(state[key]))];
+  // Only assessments that can affect a study for this stroke type are reported.
+  const itemFor = id => EXCLUSION_ITEMS.find(item => item.id === id && item.classifications.includes(state.classification));
+  const recorded = Object.entries(state.exclusions || {}).filter(([id, v]) => typeof v === 'boolean' && itemFor(id)).map(([id, v]) => `${itemFor(id).label}: ${v ? 'present' : 'absent'}`);
+  const checks = [...new Set([...eligible, ...pending, ...soon].map(item => item.trial.externalMetadata?.verificationDate).filter(Boolean))].sort();
+  const head = item => {
+    const m = item.trial.externalMetadata || {};
+    return `- ${item.trial.acronym} (${m.nct || 'no NCT'}) · ${enrollmentLabel(item.trial, item)}${phaseLabel(m) ? ' · ' + phaseLabel(m) : ''} · window ${item.trial.enrollmentWindowText}`;
+  };
 
-  const screenedAt = onsetHours === null ? 'not recorded' : onsetHours < 48
-    ? onsetHours.toFixed(1) + ' h'
-    : onsetHours < 24 * 60
-    ? (onsetHours / 24).toFixed(1) + ' d'
-    : (onsetHours / 24 / 30).toFixed(1) + ' mo';
-
-  let note = '=== STROKE SCREENER REFERRAL NOTE ===\n';
-  note += 'Classification: ' + cls + '\n';
-  note += 'Onset window: ' + onsetNoteLabel(onsetHours) + (Array.isArray(onsetRangeHours) ? ' (selected range; exact interval not recorded)' : ' (screened at ' + screenedAt + ')') + '\n';
-  note += '--------------------------------------------------\n';
+  const lines = ['TRIAL SCREEN — first pass' + (checks.length ? ` (registry checked ${checks[checks.length - 1]})` : '')];
+  lines.push('Inputs: ' + inputs.join(' · '));
+  if (recorded.length) lines.push('Exclusions recorded: ' + recorded.join('; '));
+  lines.push('Anything not listed was not entered and remains unknown.', '');
 
   const candidates = [...eligible, ...pending];
-  if (candidates.length > 0) {
-    note += 'POSSIBLE CANDIDATES (' + candidates.length + '):\n';
-    candidates.forEach((item) => {
-      note += ' - ' + item.trial.acronym + ' (' + (item.trial.externalMetadata.nct || 'No NCT') + ')\n';
-      note += briefingSourceLine(item.trial);
-      note += '   Pathway: ' + item.trial.pathway + '\n';
-    });
+  lines.push(`ACT NOW — possible candidates (${candidates.length})`);
+  if (!candidates.length) lines.push('- None under the entered facts.');
+  candidates.forEach(item => {
+    const confirm = toConfirm(item);
+    lines.push(head(item));
+    if (confirm.length) lines.push(`  To confirm (${confirm.length}): ${confirm.join('; ')}`);
+    lines.push(`  Pathway: ${item.trial.pathway}`);
+  });
+  if (soon.length) {
+    lines.push('', `LATER (${soon.length})`);
+    soon.forEach(item => lines.push(head(item) + (item.beforeWindow && item.notYetEnrolling ? ' · before study window' : '')));
   }
-  for (const [label, items] of [
-    ['BEFORE STUDY WINDOW', soon.filter(item => !item.notYetEnrolling)],
-    ['NOT YET ENROLLING', soon.filter(item => item.notYetEnrolling)]
-  ]) {
-    if (!items.length) continue;
-    note += label + ' (' + items.length + '):\n';
-    items.forEach((item) => {
-      note += ' - ' + item.trial.acronym + ' (' + (item.trial.externalMetadata.nct || 'No NCT') + ')\n';
-      note += briefingSourceLine(item.trial);
-      if (item.beforeWindow) note += '   Timing: before the modeled study window; eligibility remains unconfirmed.\n';
-      note += '   Pathway: ' + item.trial.pathway + '\n';
-    });
+  const notMet = relevantNotMet(excluded);
+  if (notMet.length) {
+    lines.push('', `NOT MET (${notMet.length})`);
+    notMet.forEach(item => lines.push(`- ${item.trial.acronym}: ${item.exclusionReasons.join('; ') || 'modeled criterion not met'}`));
   }
-  if (candidates.length === 0 && soon.length === 0) {
-    note += 'No active study matches this classification and onset window.\n';
-  }
-  note += '--------------------------------------------------\n';
-  note += 'First-pass ClinicalTrials.gov screen only. Confirm the full registry\n';
-  note += 'record, the approved local protocol, activation status and consent\n';
-  note += 'path before any clinical or recruitment action.\n';
-  return note;
+  lines.push('', SCREEN_CAVEAT + ' Screening does not determine treatment eligibility.');
+  return lines.join('\n') + '\n';
 }
+
+export const buildScreeningSummary = buildBriefingNote;
 
 export default evaluateAll;

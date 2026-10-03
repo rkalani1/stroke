@@ -21,9 +21,9 @@ describe('screenerTrials', () => {
     });
   });
 
-  it('ensures placeholder trials have correct sourceCompletenessStatus', () => {
+  it('carries no placeholder profiles; any future placeholder must be flagged unverified', () => {
     const placeholders = screenerTrials.filter((t) => t.status === 'placeholder');
-    expect(placeholders.length).toBeGreaterThan(0); // ESUS, MOCHA etc.
+    expect(placeholders).toEqual([]);
     placeholders.forEach((trial) => {
       expect(trial.sourceCompletenessStatus).toBe('not_registry_verified');
     });
