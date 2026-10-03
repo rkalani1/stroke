@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v7.7.7 — 2026-10-03 — On-call fixes from a fresh scenario sweep
+
+Round-9 reviewers drove new on-call scenarios (wake-up MRI, ICH and SAH on apixaban, IVT then angioedema, mimics, M2 occlusion) and read every note format. This release ships the fixes for its two high-severity findings and two quick ones.
+
+- **IVT record:** an administration can now be recorded with its agent ("IV thrombolytic given") beside the checkbox. Previously, if the agent was never chosen in the dose calculator, every note read "IVT administration: not documented" and dropped the time and dose.
+- **IVT checklist:** "Mark unanswered as No" no longer overwrites items that other Encounter entries answer. These are infective endocarditis or pregnancy/postpartum as the care context, a seizure observed at onset, and an ACE inhibitor named in the medications. They are flagged for an individual answer.
+- **NIHSS re-examination:** re-scoring the NIHSS after a recorded administration no longer clears the pre-treatment safety review.
+- **SAH:** an anticoagulated SAH now shows the same local-protocol reversal banner as ICH, linking to the reversal table.
+
 ## v7.7.6 — 2026-10-03 — Evidence quotes, trial screener, agent tools and visual polish
 
 Round-7 reviewers checked all 90 quoted guideline recommendations and 88 study cards against their sources, fuzzed the trial screener against the stored registry profiles, drove the MCP server with boundary inputs, and screenshot-audited every surface in light and dark themes. Skeptic agents verified the medium findings.

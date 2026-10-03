@@ -123,7 +123,8 @@ export function ivtLabConcerns(note = {}) {
 // contradicts a "No" answer; a review signal needs an individual answer. Neither
 // answers an item: bulk "No" skips both, and only conflicts raise an alert.
 // Thresholds mirror ivtLabConcerns, the checklist labels and assessAnticoagulantExposure.
-export function safetyChecklistSignals(note = {}, now = new Date()) {
+const ACE_INHIBITOR = /\b(?:benaze|capto|enala|fosino|lisino|moexi|perindo|quina|rami|trandola|zofeno|cilaza|imida)pril(?:at)?\b/i;
+export function safetyChecklistSignals(note = {}, now = new Date(), details = {}) {
   const signals = {};
   const flag = (id, reason, conflict = true) => { if (!signals[id] || conflict && !signals[id].conflict) signals[id] = { reason, conflict }; };
   if (['present', 'uncertain'].includes(note.ctHemorrhageStatus)) flag('currentICH', `CT hemorrhage review: ${note.ctHemorrhageStatus}`);
@@ -153,6 +154,13 @@ export function safetyChecklistSignals(note = {}, now = new Date()) {
   if (drug === 'heparin') flag('recentHeparin', ptt === null ? 'UFH exposure; aPTT not documented' : `UFH exposure; aPTT ${ptt} s`, false);
   if (drug === 'other') flag('medicationReconciliation', 'unspecified anticoagulant', false);
   if ((!drug || drug === 'none') && documentedIvtContext(note).medicationReconciliation) flag('medicationReconciliation', 'medication record names an anticoagulant', false);
+  // Entries elsewhere in the Encounter that answer checklist items (bulk "No" must not overwrite them).
+  const context = details?.specialContext;
+  if (context === 'Infective endocarditis') flag('infectiveEndocarditis', 'additional care context: infective endocarditis');
+  if (context === 'Pregnancy / postpartum') flag('pregnancy', 'additional care context: pregnancy / postpartum', false);
+  if (context === 'Multiple contexts') { flag('infectiveEndocarditis', 'multiple care contexts recorded', false); flag('pregnancy', 'multiple care contexts recorded', false); }
+  if (details?.seizureAtOnset === 'yes') flag('seizureAtOnset', 'seizure observed at onset');
+  if (ACE_INHIBITOR.test(note.medications || '')) flag('aceInhibitor', 'medication record names an ACE inhibitor');
   return signals;
 }
 

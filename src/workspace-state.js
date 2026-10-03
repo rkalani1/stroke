@@ -123,7 +123,8 @@ export function updateEncounter(state, updater) {
   const next = reconcileSupplementaryAppliedScores(state, typeof updater === 'function' ? updater(state) : { ...state, ...updater });
   const contextChanged = next.context !== state.context || next.note.diagnosisCategory !== state.note.diagnosisCategory;
   const nihssChanged = JSON.stringify(nihssSourceInput(next)) !== JSON.stringify(nihssSourceInput(state));
-  let note = nihssChanged ? { ...next.note, ivtContraindicationsReviewed: false } : next.note;
+  // A post-treatment re-examination does not reopen the pre-treatment safety review.
+  let note = nihssChanged && !(next.actions?.administered && next.actions?.administrationTime) ? { ...next.note, ivtContraindicationsReviewed: false } : next.note;
   for (const prefix of ['lkw', 'discovery', 'ct', 'cta']) {
     const key = `${prefix}Clock`, clock = note[key];
     const edited = note[`${prefix}Date`] !== state.note[`${prefix}Date`] || note[`${prefix}Time`] !== state.note[`${prefix}Time`];
@@ -299,7 +300,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     const checklist = n.tnkContraindicationChecklist || {};
     const concerns = Object.keys(checklist).filter(key => checklist[key] === true).map(key => SAFETY_ITEMS.find(item => item.id === key)?.label || key);
     const unanswered = SAFETY_ITEMS.filter(item => typeof checklist[item.id] !== 'boolean').length;
-    const signals = safetyChecklistSignals(n, nowMs);
+    const signals = safetyChecklistSignals(n, nowMs, state.details);
     const conflicts = SAFETY_ITEMS.filter(item => signals[item.id]?.conflict && checklist[item.id] === false);
     const unansweredText = unanswered ? `; ${unanswered} checklist item${unanswered === 1 ? '' : 's'} unanswered (checklist incomplete)` : '';
     entry('Recorded safety concerns', concerns.join('; ') || (unanswered ? 'none recorded (unchecked does not mean reviewed)' : 'none; every checklist item answered No'));
