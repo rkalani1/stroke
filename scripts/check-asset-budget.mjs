@@ -154,12 +154,18 @@ const precache = corePrecacheBytes();
 // keep ~3% headroom: initial 116 KB gzip / 340 KB raw, all JS 240 KB gzip / 800 KB raw.
 // The round-3 visual pass (protocol disclosure markers, touch sizing, dark selected
 // states, phone case-bar rules) takes tailwind.css to 111 KB raw; CSS ceiling 110 -> 114 KB.
+// 2026-10-03 v7.7.4 implementation review: local-first reversal lines, symptom-
+// conditional post-lytic prompts, IVT-card imaging fixes and note validation add
+// 3.6 KB raw / 1.3 KB gzip to the initial graph (React is 134 KB of it). Measured:
+// initial 115.4 KB gzip / 339 KB raw, all JS 234 KB gzip / 0.77 MB raw. Reviewed
+// ceilings restore ~3% headroom: initial 120 KB gzip / 352 KB raw, all JS 248 KB
+// gzip / 820 KB raw.
 const checks = [
   {
     id: 'app-js-gzip',
     label: 'Initial module graph (gzip)',
     actual: sumSizes(manifest.initial, gzipSizeOf),
-    budget: 116 * KB,
+    budget: 120 * KB,
     unit: KB,
     unitLabel: 'KB',
     note: 'route-level code splitting is the lever that moves this',
@@ -168,7 +174,7 @@ const checks = [
     id: 'app-js-raw',
     label: 'Initial module graph (raw)',
     actual: sumSizes(manifest.initial, sizeOf),
-    budget: 340 * KB,
+    budget: 352 * KB,
     unit: MB,
     unitLabel: 'MB',
     note: 'parse/execute cost scales with this, not the gzip figure',
@@ -176,12 +182,12 @@ const checks = [
   {
     id: 'all-js-gzip', label: 'All offline JavaScript (gzip)',
     actual: sumSizes(manifest.files.map(file => file.path), gzipSizeOf),
-    budget: 240 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
+    budget: 248 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
   },
   {
     id: 'all-js-raw', label: 'All offline JavaScript (raw)',
     actual: sumSizes(manifest.files.map(file => file.path), sizeOf),
-    budget: 800 * KB, unit: MB, unitLabel: 'MB', note: '',
+    budget: 820 * KB, unit: MB, unitLabel: 'MB', note: '',
   },
   {
     id: 'tailwind-css',

@@ -106,9 +106,9 @@
       "id": "tnk-stroke-dose:src/workspace-state.js:1",
       "groupId": "tnk-stroke-dose",
       "file": "src/workspace-state.js",
-      "line": 284,
-      "excerpt": "const calculatedText = calculated ? ` (calculated ${state.drug === 'TNK' ? `${calculated.calculatedDose} mg by ${state.doseAuthority === 'fda-label' ? 'US label weight band' : '0.25 mg/kg'}` : `${calculated.totalDose} mg total: ${calculated.bolus} mg bolus, ${calculated.infusion} mg infusion`} for ${Math.round(calculated.weightKg * 10) / 10} kg; ${hasValue(state.actions.administeredDose) ? `administered dose recorded as ${String(state.actions.administeredDose).trim()} mg` : 'administered dose not recorded'})` : '';",
-      "sha256": "3b597c3f2ba31c142c7a99b238dce77791d83263e1d0074c6475c485e65d3f8a",
+      "line": 307,
+      "excerpt": "const calculatedText = administration ? ` (${calculated ? `calculated ${state.drug === 'TNK' ? `${calculated.calculatedDose} mg by ${state.doseAuthority === 'fda-label' ? 'US label weight band' : '0.25 mg/kg'}` : `${calculated.totalDose} mg total: ${calculated.bolus} mg bolus, ${calculated.infusion} mg infusion`} for ${Math.round(calculated.weightKg * 10) / 10} kg` : `calculated dose unavailable: weight ${hasValue(n.weight) ? 'invalid' : 'not documented'}`}; ${administeredText})` : '';",
+      "sha256": "24c6e152e95aedd0332aaf634e066e7e52d5440f472a1b5354e3bfc3877f1a21",
       "disposition": "canonical",
       "claimIds": [
         "tnk-stroke-dose"

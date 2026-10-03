@@ -281,12 +281,12 @@ function formatField(field, value, values, now) {
   return source;
 }
 
-export function formatEncounterDetails(state, now = Date.now()) {
+export function formatEncounterDetails(state, now = Date.now(), { omit = [] } = {}) {
   const values = state.details || {};
   return getEncounterDetailGroups(state).map(group => ({
     id: group.id,
     title: group.title,
-    lines: group.fields.flatMap(field => {
+    lines: group.fields.filter(field => !omit.includes(field.key)).flatMap(field => {
       if (field.type === 'worksheet') return field.result ? [`${field.label}: ${field.result.score}/${field.result.max}`] : [];
       return hasValue(values[field.key]) ? [`${field.label}: ${formatField(field, values[field.key], values, now)}`] : [];
     })

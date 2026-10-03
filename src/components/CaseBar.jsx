@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useRef } from 'react';
-import { encounterTiming, encounterNihss, validTimestamp } from '../workspace-state.js';
+import { encounterTiming, encounterNihss, validTimestamp, parsePreIvtBp } from '../workspace-state.js';
 import { numericInput, reviewedGcs } from '../encounter-clinical-review.js';
 import { calculateTNKDoseReviewed, calculateAlteplaseDoseReviewed } from '../calculators.js';
 import { computeNeurocheckSchedule } from '../calculators-extended.js';
@@ -9,8 +9,11 @@ import { revealProtocolTarget } from '../protocol-navigation.js';
 const SHORT_DX = { ischemic: 'Ischemic', ich: 'ICH', sah: 'SAH', tia: 'TIA', cvt: 'CVT', mimic: 'Mimic', other: 'Other' };
 export const ANTICOAGULANT_LABELS = { apixaban: 'Apixaban', rivaroxaban: 'Rivaroxaban', dabigatran: 'Dabigatran', edoxaban: 'Edoxaban', warfarin: 'Warfarin', heparin: 'Heparin', lmwh: 'LMWH', other: 'Anticoagulant' };
 const pad = value => String(value).padStart(2, '0');
-const clockTime = at => new Date(at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-const ACE_INHIBITOR = /\b[a-z]+pril\b/i;
+const clockTime = at => new Date(at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+// Phone pill: checks are at most an hour apart, so h:mm without AM/PM is unambiguous there.
+const shortClock = at => { const d = new Date(at); return `${d.getHours() % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')}`; };
+// Named ACE inhibitors only (a bare '-pril' suffix also matches 'April').
+const ACE_INHIBITOR = /\b(?:benaze|capto|enala|fosino|lisino|moexi|perindo|quina|rami|trandola|zofeno|cilaza|imida)pril(?:at)?\b/i;
 export const hoursMinutes = ms => { const minutes = Math.max(0, Math.floor(ms / 60000)); return `${Math.floor(minutes / 60)}:${pad(minutes % 60)}`; };
 
 // Read-only projection of the current Encounter for the sticky case bar.
@@ -28,7 +31,7 @@ export function caseSummary(state, nowMs) {
   const nextCheck = schedule?.checks.find(check => check.at.getTime() > nowMs);
   let window = null;
   if (timing.invalid) window = { text: 'Check time', tone: 'critical' };
-  else if (schedule) window = nextCheck ? { text: `Next check ${clockTime(nextCheck.at)}`, tone: 'open' } : { text: '24 h checks done', tone: 'neutral' };
+  else if (schedule) window = nextCheck ? { text: `Next check ${clockTime(nextCheck.at)}`, short: `Next ${shortClock(nextCheck.at)}`, tone: 'open' } : { text: '24 h checks done', short: 'Checks done', tone: 'neutral' };
   else if (timing.clock) {
     const elapsed = timing.clock.elapsedMinutes * 60000;
     if (n.lkwUnknown) window = { text: 'since discovery', tone: 'neutral' };
@@ -42,7 +45,10 @@ export function caseSummary(state, nowMs) {
   // acute ICH SBP >=150, the 2022 range in which lowering toward 140 applies.
   const bpKnown = sbp !== null && dbp !== null;
   const ich = state.context === 'acute' && n.diagnosisCategory === 'ich';
-  const bpFlag = !bpKnown ? null : acuteIschemic ? administered ? sbp > 180 || dbp > 105 ? 'Above the post-IVT limit of 180/105' : null : sbp >= 185 || dbp >= 110 ? 'Not below 185/110 (pre-IVT)' : null
+  // After IVT the entered BP may still be the presenting value; a documented pre-IVT BP shows that.
+  const preIvt = parsePreIvtBp(state.details?.preIvtBP);
+  const bpFlag = !bpKnown ? null : acuteIschemic ? administered ? sbp > 180 || dbp > 105 ? `Above the post-IVT limit of 180/105${preIvt ? `; documented pre-IVT BP ${preIvt.text}. Update the entered BP with the current reading` : ''}` : null : sbp >= 185 || dbp >= 110 ? 'Not below 185/110 (pre-IVT)' : null
+    : ich && sbp >= 220 ? 'ICH: SBP ≥220 is outside the 2022 150–220 range; local protocol: reduce about 20% (never more than 25%) in the first hour, then gradually to 140–160'
     : ich && sbp >= 150 ? 'ICH: SBP 150–220 → target 140 (130–150), start ≤2 h, reach ≤1 h; avoid <130' : null;
   return {
     dx: SHORT_DX[n.diagnosisCategory] || '', dxKey: n.diagnosisCategory || '',
@@ -69,7 +75,7 @@ export function caseSummary(state, nowMs) {
 function Item({ label, short, value, detail, flag, title, pill }) {
   return <div className="case-bar__item" data-empty={value ? undefined : ''} data-flag={flag || undefined} title={title}>
     <span className="case-bar__label">{short ? <><span className="case-bar__label-long">{label}</span><span className="case-bar__label-short" aria-hidden="true">{short}</span></> : label}</span>
-    <span className="case-bar__value">{value || '—'}{detail && <small>{detail}</small>}{pill && <span className="case-bar__window" data-tone={pill.tone}>{pill.text}</span>}</span>
+    <span className="case-bar__value">{value || '—'}{detail && <small>{detail}</small>}{pill && <span className="case-bar__window" data-tone={pill.tone}>{pill.short ? <><span className="case-bar__label-long">{pill.text}</span><span className="case-bar__label-short" aria-hidden="true">{pill.short}</span></> : pill.text}</span>}</span>
   </div>;
 }
 
@@ -95,10 +101,12 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
   const acuteIschemic = state.context === 'acute' && state.note.diagnosisCategory === 'ischemic';
   const sub = ['ich', 'sah'].includes(state.note.diagnosisCategory) ? 'ich' : 'ischemic';
   const reversalHref = `#/protocols/${sub}/qr-reversal`, bpHref = `#/protocols/${sub}/qr-bp`;
+  // In acute ischemic stroke the anticoagulant matters for IVT eligibility, not reversal.
+  const badge = acuteIschemic ? { href: '#/protocols/ischemic/contraindications', target: 'contraindications', title: 'Anticoagulant exposure documented · open IVT contraindications', action: 'open IVT contraindications' } : { href: reversalHref, target: 'qr-reversal', title: 'Anticoagulant exposure documented · open the reversal table', action: 'open reversal table' };
   const bpLink = acuteIschemic || state.context === 'acute' && ['ich', 'sah'].includes(state.note.diagnosisCategory);
   return <section ref={bar} className="case-bar" aria-label="Current encounter">
     <a className="case-bar__dx" data-dx={c.dxKey || undefined} href="#/encounter" aria-label={`Open Encounter: ${[c.dx || 'No diagnosis', c.demographics].filter(Boolean).join(' · ')}`}>{c.dx || 'No diagnosis'}{c.demographics && <span className="case-bar__demo">· {c.demographics}</span>}</a>
-    {c.anticoagulant && <a className="case-bar__badge" href={reversalHref} onClick={revealIfCurrent(reversalHref, 'qr-reversal')} title="Anticoagulant exposure documented · open the reversal table"><span className="sr-only">Anticoagulant: </span>{c.anticoagulant}<span className="sr-only">, open reversal table</span></a>}
+    {c.anticoagulant && <a className="case-bar__badge" href={badge.href} onClick={revealIfCurrent(badge.href, badge.target)} title={badge.title}><span className="sr-only">Anticoagulant: </span>{c.anticoagulant}<span className="sr-only">, {badge.action}</span></a>}
     <div className="case-bar__time"><Item label={c.timeLabel} value={c.elapsed} pill={c.window} flag={c.window?.tone === 'critical' ? 'critical' : undefined} title="Elapsed time (h:mm)" /></div>
     <div className="case-bar__items">
       {c.gcs ? <Item label="GCS" value={c.gcs} /> : null}
@@ -112,7 +120,7 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
       {bpLink && <a className="case-bar__link" href={bpHref} onClick={revealIfCurrent(bpHref, 'qr-bp')}>BP targets</a>}
       {c.administered && <a className="case-bar__link" href="#/protocols/ischemic/qr-sich" onClick={revealIfCurrent('#/protocols/ischemic/qr-sich', 'qr-sich')}>Post-lytic bleed</a>}
       {c.administered && c.aceInhibitor && <a className="case-bar__link" href="#/protocols/ischemic/qr-angioedema" onClick={revealIfCurrent('#/protocols/ischemic/qr-angioedema', 'qr-angioedema')}>Angioedema</a>}
-      {(state.note.diagnosisCategory === 'ich' || c.anticoagulant) && <a className="case-bar__link" href={reversalHref} onClick={revealIfCurrent(reversalHref, 'qr-reversal')}>Reversal</a>}
+      {(['ich', 'sah'].includes(state.note.diagnosisCategory) || (c.anticoagulant && !acuteIschemic)) && <a className="case-bar__link" href={reversalHref} onClick={revealIfCurrent(reversalHref, 'qr-reversal')}>Reversal</a>}
       <button type="button" className="case-bar__copy" onClick={onCopy} aria-label={blocked ? undefined : `Copy ${documentLabel} (case bar)`}>{blocked ? `Review ${blocked} flag${blocked === 1 ? '' : 's'}` : /copied\.$/.test(copyStatus || '') ? 'Copied ✓' : <><span className="case-bar__copy-long">Copy {documentLabel}</span><span className="case-bar__copy-short" aria-hidden="true">Copy note</span></>}</button>
     </div>
   </section>;

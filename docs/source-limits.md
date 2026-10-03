@@ -122,3 +122,28 @@ Bedside additions, which are deferred and do not change protected text:
 - **aSAH first-hour card:** early securing (COR 1, B-NR), nimodipine (COR 1, A) with the US label dose (60 mg every 4 h for 21 days), and BP (COR 1, C-EO). The workup sequence is given ungraded because the archived 2023 aSAH records are retired.
 - **Pre-IVT BP at administration:** when an administration is recorded, Section 4 shows the existing pre-IVT BP fields again. It cautions when the documented pre-IVT BP, or failing that the entered BP, is not below 185/110 (AHA/ASA 2026 ais-2026-72). The note's IVT administration line now carries the pre-IVT BP, or states it is not documented.
 - **Case bar and Encounter:** phase-specific BP flags (AHA/ASA 2026 ais-2026-72 and -74; AHA/ASA 2022 ICH ich-2022-23), the next post-IVT neuro check, and links to the post-thrombolysis bleeding and angioedema protocols. ICH neurosurgery prompts reuse the local ≥15 mL and IVH triggers.
+
+## Implementation review — 7.7.4 (2026-10-03)
+
+Reviewers re-read the 7.7.3 code across four areas: clinical accuracy, logic, on-call UX and note output. Skeptic agents then tried to refute each finding. Protected protocol text is unchanged. Corrections:
+
+- **4F-PCC is local-first.** v6.17.0 made the Protocols tab follow the Stroke Center folder, which uses a fixed 2000-unit dose, not weight- or INR-tiered. The 7.7.3 highlighted weight-based dose competed with that, so the reversal card and the acute ICH banner now lead with the local protocol:
+  - **Warfarin:** 4F-PCC 2000 units with vitamin K 10 mg IV, and recheck INR at 30 min. INR 1.3–1.9 may be reasonable (COR 2b).
+  - **Factor Xa inhibitors:** apply the institutional <24 h trigger to the recorded last dose. Unknown timing is treated as within the trigger. Beyond 24 h, reverse only with renal impairment or an elevated anti-Xa level.
+  - **Dabigatran:** idarucizumab first. Beyond 24 h, reverse only if residual effect is likely (NCS/SCCM 2016: within 3–5 half-lives, renal impairment, or a prolonged thrombin time).
+  - The label (Kcentra INR tiers) or NCS/SCCM 50 units/kg arithmetic stays only as a small "for comparison only" line on the card, mirroring the protocol's own fixed-dose caveat. Above 100 kg the dosing-weight cap is stated. The banner carries no weight-based dose, and the card shows the patient line only for acute ICH or SAH.
+- **Protocol IVT card imaging:**
+  - A 0 mL CTP core with a mismatch volume ≥10 mL meets the ratio, matching the Encounter EXTEND screen.
+  - The ratio is no longer pre-filled blank and locked, and Encounter-filled CTP inputs are marked and disabled.
+  - The WAKE-UP MRI rule (ais-2026-100) is pre-filled only where MRI is the route: unknown onset, or a known LKW of ≥9 h, with a recorded discovery time.
+  - A known 4.5–9 h interval accepts MRI mismatch on the LKW clock, so its checkbox stays editable.
+  - A known bedtime LKW ≥9 h with the attested WAKE-UP pattern now reaches the wake-up branch instead of "not supported".
+- **Post-thrombolysis hemorrhage:** a recorded PH1, PH2 or other hemorrhage is often an asymptomatic 24 h imaging finding. The hemostatic protocol is therefore stated as conditional on symptoms or neurological worsening; PH2 keeps a critical tone. Recorded angioedema stays critical. The prompt now also appears beside the field that triggers it.
+- **Smaller corrections:**
+  - Nimodipine: the label text (60 mg every 4 h for 21 days; cirrhosis 30 mg every 4 h) is separated from the local split dose for hypotension.
+  - DAPT exclusion: AF reads as an anticoagulation indication with the AF-timing link. Other cardioembolic sources ask for source-specific therapy.
+  - ICH case-bar BP: SBP ≥220 gives the local first-hour rule (reduce about 20%, never more than 25%) instead of the 150–220 target.
+  - Documented CT hemorrhage is stated before the time-window message. Past 4.5 h from a known LKW with no imaging-selected screen met, the hemorrhage and contraindication prompts keep their place (extended-window IVT needs them too) and add the window note.
+  - "COR 3: No Benefit" chips return to the 7.7.2 neutral tone.
+  - The contraindications deep link opens the IVT Contraindications card.
+  - In acute ischemic stroke the anticoagulant badge opens IVT contraindications rather than reversal.

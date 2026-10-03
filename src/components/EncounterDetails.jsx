@@ -19,12 +19,14 @@ function DetailField({ field, value, onChange }) {
   </label>;
 }
 
-export default function EncounterDetails({ state, update, section }) {
+// `notices` renders a group-specific prompt directly after that group's fields.
+export default function EncounterDetails({ state, update, section, notices }) {
   const groups = getEncounterDetailGroups(state, section);
   const updateField = (key, value) => update(previous => ({ ...previous, details: { ...previous.details, [key]: value } }));
   return groups.map(group => <details className="workspace-details encounter-details" key={group.id} id={`encounter-details-${group.id}`}>
     <summary>{group.title}</summary>
     <div className="field-grid">{group.fields.map(field => <DetailField key={field.key} field={field}
       value={state.details?.[field.key]} onChange={value => updateField(field.key, value)} />)}</div>
+    {notices?.[group.id] || null}
   </details>);
 }

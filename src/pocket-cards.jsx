@@ -99,6 +99,7 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
     lvoOnCta: null
   }, encounter, encounter?.ivt, ['hoursFromLKW', 'lvoOnCta', 'mriDwiFlairMismatch', 'ctpCoreMl', 'ctpRatio', 'ctpMismatchVolMl']);
   const lvoFromEncounter = Boolean(encounter?.ivt) && Object.prototype.hasOwnProperty.call(encounter.ivt, 'lvoOnCta');
+  const fromEncounter = key => Boolean(encounter?.ivt) && Object.prototype.hasOwnProperty.call(encounter.ivt, key);
   const result = useMemo(() => evaluateIVT({
     ichOnCT: state.ichOnCT,
     disablingDeficit: state.disablingDeficit,
@@ -115,6 +116,7 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
     evtStatus: state.evtStatus,
     consentObtained: state.consentObtained,
     wakeUpOrUnknownOnset: state.wakeUpOrUnknownOnset,
+    wakeUpRecognition: encounter?.ivt?.wakeUpRecognition === true,
     glucoseCorrectedDeficitPersists: state.glucoseCorrectedDeficitPersists,
     imagingPathway: {
       mriDwiFlairMismatch: state.mriDwiFlairMismatch,
@@ -126,7 +128,7 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
       contrastAllergy: state.contrastAllergy
     },
     crao: state.crao
-  }), [state, encounter?.safetyReviewRequired, encounter?.safetyReviewReason]);
+  }), [state, encounter?.safetyReviewRequired, encounter?.safetyReviewReason, encounter?.ivt?.wakeUpRecognition]);
 
   const colorByEligible = (e) => e === true ? 'border-ok-400 bg-ok-50 dark:bg-ok-950' : e === 'consider' ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-950' : e === 'pending' ? 'border-warn-400 bg-warn-50 dark:bg-warn-950' : e === false ? 'border-rose-400 bg-rose-50 dark:bg-rose-950' : 'border-slate-300 bg-slate-50 dark:border-strong dark:bg-paper-2';
 
@@ -187,10 +189,10 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
           <p className="font-semibold text-cobalt-900 mb-1 dark:text-cobalt-300">Extended-window imaging selection (prefer MRI if small vessel, posterior, or contrast allergy):</p>
           {state.wakeUpOrUnknownOnset && !state.hoursFromLKW && <p className="mb-2 text-cobalt-900 dark:text-cobalt-300">Wake-up/unknown-onset treatment requires MRI DWI-FLAIR mismatch in this institutional branch; the CTP fields apply only when a known interval is entered.</p>}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
-            <label className="flex items-center gap-1"><input type="checkbox" checked={state.mriDwiFlairMismatch} disabled={encounter?.ivt?.mriDwiFlairMismatch !== undefined} onChange={(e) => set('mriDwiFlairMismatch', e.target.checked)} />MRI DWI-FLAIR mismatch, DWI lesion &lt;1/3 MCA, ≤4.5 h from recognition{encounter?.ivt?.mriDwiFlairMismatch !== undefined ? ' (from Encounter)' : ''}</label>
-            <label><span className="block text-slate-600 dark:text-ink-2">CTP core (mL)</span><input type="number" disabled={state.wakeUpOrUnknownOnset && !state.hoursFromLKW} value={state.ctpCoreMl} onChange={(e) => set('ctpCoreMl', e.target.value)} className="w-full px-2 py-1 border rounded text-sm disabled:bg-slate-100 disabled:text-slate-400" /></label>
-            <label><span className="block text-slate-600 dark:text-ink-2">CTP ratio</span><input type="number" step="0.1" disabled={state.wakeUpOrUnknownOnset && !state.hoursFromLKW} value={state.ctpRatio} onChange={(e) => set('ctpRatio', e.target.value)} className="w-full px-2 py-1 border rounded text-sm disabled:bg-slate-100 disabled:text-slate-400" /></label>
-            <label><span className="block text-slate-600 dark:text-ink-2">Mismatch vol (mL)</span><input type="number" disabled={state.wakeUpOrUnknownOnset && !state.hoursFromLKW} value={state.ctpMismatchVolMl} onChange={(e) => set('ctpMismatchVolMl', e.target.value)} className="w-full px-2 py-1 border rounded text-sm disabled:bg-slate-100 disabled:text-slate-400" /></label>
+            <label className="flex items-center gap-1"><input type="checkbox" checked={state.mriDwiFlairMismatch} disabled={fromEncounter('mriDwiFlairMismatch')} onChange={(e) => set('mriDwiFlairMismatch', e.target.checked)} />{state.wakeUpOrUnknownOnset || encounter?.ivt?.mriDwiFlairMismatch !== undefined ? <>MRI DWI-FLAIR mismatch, DWI lesion &lt;1/3 MCA, ≤4.5 h from recognition</> : 'MRI DWI-FLAIR mismatch (4.5-9h or wake-up)'}{fromEncounter('mriDwiFlairMismatch') ? ' (from Encounter)' : ''}</label>
+            <label><span className="block text-slate-600 dark:text-ink-2">CTP core (mL){fromEncounter('ctpCoreMl') ? ' (from Encounter)' : ''}</span><input type="number" disabled={(state.wakeUpOrUnknownOnset && !state.hoursFromLKW) || fromEncounter('ctpCoreMl')} value={state.ctpCoreMl} onChange={(e) => set('ctpCoreMl', e.target.value)} className="w-full px-2 py-1 border rounded text-sm disabled:bg-slate-100 disabled:text-slate-400" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">CTP ratio{fromEncounter('ctpRatio') ? ' (from Encounter)' : ''}</span><input type="number" step="0.1" disabled={(state.wakeUpOrUnknownOnset && !state.hoursFromLKW) || fromEncounter('ctpRatio')} value={state.ctpRatio} onChange={(e) => set('ctpRatio', e.target.value)} className="w-full px-2 py-1 border rounded text-sm disabled:bg-slate-100 disabled:text-slate-400" /></label>
+            <label><span className="block text-slate-600 dark:text-ink-2">Mismatch vol (mL){fromEncounter('ctpMismatchVolMl') ? ' (from Encounter)' : ''}</span><input type="number" disabled={(state.wakeUpOrUnknownOnset && !state.hoursFromLKW) || fromEncounter('ctpMismatchVolMl')} value={state.ctpMismatchVolMl} onChange={(e) => set('ctpMismatchVolMl', e.target.value)} className="w-full px-2 py-1 border rounded text-sm disabled:bg-slate-100 disabled:text-slate-400" /></label>
             <label className="flex items-center gap-1"><input type="checkbox" checked={state.smallVessel} onChange={(e) => set('smallVessel', e.target.checked)} />Small vessel</label>
             <label className="flex items-center gap-1"><input type="checkbox" checked={state.posteriorCirc} onChange={(e) => set('posteriorCirc', e.target.checked)} />Posterior circulation</label>
             <label className="flex items-center gap-1"><input type="checkbox" checked={state.contrastAllergy} onChange={(e) => set('contrastAllergy', e.target.checked)} />Contrast allergy</label>
@@ -391,7 +393,7 @@ const SHOW_BP_GRADES = Object.values(INSTITUTIONAL_BP_PROTOCOLS).some(p => p.cor
 // Blood Pressure Management card
 // ----------------------------------------------------------------------
 const BPProtocolCard = () => (
-  <div id="pc-contraindications" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] min-w-0 p-3 rounded-lg border border-rose-300 bg-white dark:bg-card dark:border-rose-800">
+  <div className="min-w-0 p-3 rounded-lg border border-rose-300 bg-white dark:bg-card dark:border-rose-800">
     <h4 className="font-bold text-rose-900 mb-2 flex items-center gap-2 dark:text-rose-300">
       <span className="inline-block px-2 py-0.5 bg-rose-700 text-white text-xs rounded">INST</span>
       Blood Pressure Management
@@ -423,7 +425,7 @@ const BPProtocolCard = () => (
 // Contraindications card (3 columns)
 // ----------------------------------------------------------------------
 const ContraindicationsCard = () => (
-  <div className="p-3 rounded-lg border border-crit-300 bg-white dark:border-crit-800 dark:bg-card">
+  <div id="pc-contraindications" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] p-3 rounded-lg border border-crit-300 bg-white dark:border-crit-800 dark:bg-card">
     <h4 className="font-bold text-crit-900 mb-2 flex items-center gap-2 dark:text-crit-300">
       <span className="inline-block px-2 py-0.5 bg-crit-700 text-white text-xs rounded">INST</span>
       IVT Contraindications

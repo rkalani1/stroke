@@ -1,5 +1,44 @@
 # CHANGELOG
 
+## v7.7.4 — 2026-10-03 — Implementation review of 7.7.3
+
+Reviewers re-read the 7.7.3 code for clinical accuracy, logic, phone UX and note output. Skeptic agents verified each finding.
+
+- **Reversal follows the local protocol:**
+  - The reversal card and ICH banner lead with the institutional fixed 4F-PCC dose (2000 units) and its triggers: warfarin INR bands, vitamin K and INR at 30 min; factor Xa last dose <24 h; idarucizumab first for dabigatran.
+  - The weight-based label or NCS/SCCM arithmetic is now a small comparison line on the card only.
+  - The patient line appears only for acute ICH or SAH.
+- **Protocol IVT card:**
+  - A 0 mL CTP core with mismatch ≥10 mL counts as meeting the ratio.
+  - Encounter-filled CTP fields are marked and locked, and the ratio is no longer locked blank.
+  - The WAKE-UP MRI rule applies only to unknown onset or a known LKW ≥9 h with a discovery time.
+  - A known bedtime LKW past 9 h with the WAKE-UP MRI pattern reaches the wake-up branch.
+  - The known 4.5–9 h MRI box stays editable.
+- **After thrombolysis:**
+  - A recorded PH1/PH2 now says to start the bleed protocol if the patient is symptomatic or worsening. The prompt also shows beside the field that triggers it.
+  - Angioedema stays critical.
+  - IVT dose and pre-IVT BP sit right after the IVT time.
+  - The note keeps the administered dose without a weight and flags implausible doses.
+  - The post-IVT BP flag points to the documented pre-IVT BP.
+  - The phone case bar stays at two rows after TNK.
+- **Accuracy:**
+  - Nimodipine label text is separated from the local split dose.
+  - AF and other cardioembolic sources get distinct DAPT wording.
+  - ICH SBP ≥220 shows the local first-hour rule.
+  - CT hemorrhage is stated before the window message. Past 4.5 h, the hemorrhage and contraindication prompts now also state the window instead of being skipped.
+  - "COR 3: No Benefit" chips are neutral again, as in 7.7.2; the 7.7.3 blue tone sat too close to COR 2a teal in dark mode.
+  - NIHSS anchors keep 11 px text with a 4-line clamp, so motor anchors are no longer cut off at 1024 px.
+  - The CTP screen reads "not applicable" within 4.5 h.
+  - INR shows beside warfarin and aPTT beside heparin for every diagnosis.
+- **Navigation and notes:**
+  - The contraindications link opens the right card.
+  - The anticoagulant badge opens IVT contraindications in acute ischemic stroke, and its tap target is larger.
+  - Named ACE inhibitors only ("April" no longer matches).
+  - A diagnosis change no longer steals focus.
+  - Pulsara timeline entries are separated, and the pre-IVT BP is printed once.
+  - An invalid ABCD² is flagged, and ABCD² is included in the team handoff.
+  - Grade-chip punctuation stays on the chip's line.
+
 ## v7.7.3 — 2026-10-03 — On-call scenario pass
 
 Agents worked through hyperacute ischemic, hemorrhage, TIA/secondary-prevention and visual scenarios end to end.

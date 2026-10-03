@@ -143,7 +143,8 @@ html[data-theme="dark"] .workspace-result[data-tone="value"] { color: var(--ink)
 .nihss-option input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
 .nihss-option span { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; min-height: 48px; padding: 4px 2px; border: 1px solid rgb(var(--c-line-control) / .55); border-radius: 6px; background: var(--surface-2); text-align: center; transition: background-color calc(var(--dur) * var(--motion-scale)) var(--ease), border-color calc(var(--dur) * var(--motion-scale)) var(--ease); }
 .nihss-option b { font: 650 .9375rem/1 var(--mono-font); color: var(--ink); }
-.nihss-option small { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-size: .6875rem; line-height: 1.25; color: var(--mute); }
+/* 11px anchors need a 4-line clamp so motor anchors ('Some effort against gravity') are not cut at 1024px. */
+.nihss-option small { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; font-size: .6875rem; line-height: 1.2; color: var(--mute); }
 .nihss-option:hover span { border-color: rgb(var(--c-line-control)); }
 .nihss-option input:checked + span { background: rgb(var(--cobalt-600)); border-color: rgb(var(--cobalt-600)); }
 .nihss-option input:checked + span b, .nihss-option input:checked + span small { color: #fff; }
@@ -452,7 +453,6 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
 .reference-chip.cor-3 { color: var(--critical); background: var(--critical-soft); }
 .reference-chip.cor-neutral, .reference-chip-loe { color: var(--ink-2); background: var(--surface-2); border-color: var(--line); }
 /* COR 3: No Benefit means "not recommended": distinct from Harm (red) and from neutral grey. */
-.reference-chip.cor-3nb { color: var(--reference); background: var(--reference-soft); }
 .reference-rec-text { display: block; }
 .reference-rec-source { display: block; margin-top: 2px; color: var(--ink-2); font-size: .8125rem; }
 .reference-sources > summary, .reference-provenance > summary { display: flex; align-items: center; min-height: 44px; padding: 10px 0; font-weight: 650; cursor: pointer; }
@@ -473,8 +473,9 @@ input[type="checkbox"], input[type="radio"] { accent-color: rgb(var(--cobalt-600
 html[data-theme="dark"] :is(input[type="checkbox"], input[type="radio"]) { accent-color: rgb(var(--cobalt-500)); }
 #tabpanel-protocols input[type="checkbox"] { width: 20px; height: 20px; flex-shrink: 0; }
 /* Larger tap area for the case-bar actions without making the bar taller. */
-.case-bar__copy, .case-bar__link, .case-bar__dx { position: relative; }
+.case-bar__copy, .case-bar__link, .case-bar__dx, a.case-bar__badge { position: relative; }
 .case-bar__copy::before, .case-bar__link::before, .case-bar__dx::before { content: ''; position: absolute; inset: -5px -2px; }
+a.case-bar__badge::before { content: ''; position: absolute; inset: -8px -3px; }
 /* Touch sizing follows the pointer, not the width (tablets in portrait). */
 @media (pointer: coarse) {
   .workspace-secondary > a, .workspace-utilities > summary { min-height: 44px; }
@@ -491,4 +492,13 @@ html[data-theme="dark"] .trials-surface > [role="tablist"] [aria-selected="true"
   .case-bar:has(.case-bar__badge) .case-bar__demo { display: none; }
   /* Protocol breadcrumb and sub-tabs scroll away on phones, like Encounter's section nav. */
   #tabpanel-protocols :is(.protocol-breadcrumb, .protocol-subtabs) { position: static; }
+}
+/* Small phones (≤380px) with an anticoagulant badge after IVT: tighter spacing keeps the
+   case bar to two rows; 6px gaps still separate the dx and badge hit areas. */
+@media (max-width: 380px) {
+  .case-bar { column-gap: 6px; }
+  .case-bar__dx { padding-inline: 8px; }
+  .case-bar__badge { padding-inline: 5px; }
+  .case-bar__window { padding-inline: 4px; }
+  .case-bar__copy { padding-inline: 8px; }
 }

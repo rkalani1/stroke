@@ -157,7 +157,11 @@ describe('case bar and quick reference on the ICH tab', () => {
     expect(html).toContain('href="#/protocols/ich/qr-reversal"');
     expect(html).toContain('aria-label="Open Encounter: ICH · 72 F"');
     expect(html).toMatch(/class="case-bar__badge"[^>]*><span class="sr-only">Anticoagulant: <\/span>Apixaban/);
-    expect(bar(make({ note: { diagnosisCategory: 'ischemic', age: '72', lastDOACType: 'apixaban' } }))).toContain('href="#/protocols/ischemic/qr-reversal"');
+    // Acute ischemic: the anticoagulant bears on IVT eligibility, so the badge opens IVT contraindications.
+    const acuteIschemic = bar(make({ note: { diagnosisCategory: 'ischemic', age: '72', lastDOACType: 'apixaban' } }));
+    expect(acuteIschemic).toMatch(/class="case-bar__badge" href="#\/protocols\/ischemic\/contraindications"/);
+    expect(acuteIschemic).not.toContain('qr-reversal');
+    expect(bar(make({ context: 'follow-up', note: { diagnosisCategory: 'ischemic', age: '72', lastDOACType: 'apixaban' } }))).toContain('href="#/protocols/ischemic/qr-reversal"');
   });
   it('orders reversal before dosing on the ICH tab', () => {
     const ich = renderToStaticMarkup(<QuickReference sub="ich" />), ischemic = renderToStaticMarkup(<QuickReference />);
@@ -167,8 +171,8 @@ describe('case bar and quick reference on the ICH tab', () => {
 });
 
 describe('recommendation chips', () => {
-  it('gives COR 3: No Benefit its own tone and COR 3: Harm the harm tone', () => {
-    expect(recommendationLabels({ cor: '3: No Benefit', loe: 'A' }).tone).toBe('cor-3nb');
+  it('shows COR 3: No Benefit as neutral and COR 3: Harm as harm', () => {
+    expect(recommendationLabels({ cor: '3: No Benefit', loe: 'A' }).tone).toBe('cor-neutral');
     expect(recommendationLabels({ cor: '3: Harm', loe: 'B-R' }).tone).toBe('cor-3');
     expect(recommendationLabels({ cor: '2a', loe: 'B-NR' }).tone).toBe('cor-2a');
   });

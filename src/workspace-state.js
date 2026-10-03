@@ -42,8 +42,10 @@ export function daptAnticoagulationReview(state) {
   const n = state.note, review = state.dapt.anticoagulationReview;
   const plan = state.details?.antithromboticPlanType;
   if (review === 'ongoing' || ['Anticoagulant', 'Combination under specialist review'].includes(plan)) return { excluded: false, reason: 'Ongoing anticoagulation or an anticoagulant plan/indication requires individualized review.' };
-  // AF or a cardioembolic mechanism is an anticoagulation indication; the DAPT source trials excluded it.
-  if (state.details?.afDetected === 'yes' || state.details?.toastClassification === 'Cardioembolism') return { excluded: false, reason: 'AF or a cardioembolic mechanism is documented in Etiology: an anticoagulation indication that the DAPT source trials excluded. See anticoagulation timing.' };
+  // The DAPT source trials excluded AF and other cardioembolic sources. AF is an anticoagulation
+  // indication; other cardioembolic sources (endocarditis, PFO) need source-specific therapy.
+  if (state.details?.afDetected === 'yes') return { excluded: false, afTiming: true, reason: 'AF is documented in Etiology: an anticoagulation indication that the DAPT source trials excluded. See anticoagulation timing.' };
+  if (state.details?.toastClassification === 'Cardioembolism') return { excluded: false, reason: 'A cardioembolic mechanism is documented in Etiology; the DAPT source trials excluded it. Choose antithrombotic therapy by the specific source.' };
   if (review === 'prophylaxis') return { excluded: false, reason: 'Prophylactic anticoagulation needs separate review of agent, dose and applicable source before selecting combined treatment.' };
   if (!['none', 'stopped'].includes(review)) return { excluded: undefined, reason: 'Review current anticoagulation and any continuing indication before interpreting a DAPT source screen.' };
   if (!['none', 'apixaban', 'rivaroxaban', 'dabigatran', 'edoxaban', 'warfarin', 'heparin', 'lmwh'].includes(n.lastDOACType)) return { excluded: undefined, reason: 'Anticoagulant exposure remains unassessed; reconcile it with the current anticoagulation review.' };
@@ -96,16 +98,21 @@ export function protocolEncounter(state, nowMs = Date.now()) {
   const discovery = encounterClockTimestamp(n, 'discovery');
   const recognitionHours = validTimestamp(discovery, nowMs) ? (nowMs - new Date(discovery).getTime()) / 3600000 : null;
   const imaging = {};
-  if (compatible && workflow.mriAvailable === true) imaging.mriDwiFlairMismatch = workflow.dwi?.positiveForLesion === true && workflow.flair?.noMarkedHyperintensity === true && workflow.dwiLesionUnderOneThirdMCA === true && recognitionHours !== null && recognitionHours <= 4.5;
+  // The WAKE-UP MRI rule (recognition within 4.5 h) is pre-filled only where it is the MRI route:
+  // unknown onset, or a known LKW of 9 h or more, with a recorded discovery time. A known 4.5-9 h
+  // interval accepts MRI mismatch on the LKW clock, so the card's checkbox stays editable there.
+  const wakeUpContext = recognitionHours !== null && (n.lkwUnknown === true || (hours !== '' && Number(hours) >= 9));
+  if (compatible && workflow.mriAvailable === true && wakeUpContext) imaging.mriDwiFlairMismatch = workflow.dwi?.positiveForLesion === true && workflow.flair?.noMarkedHyperintensity === true && workflow.dwiLesionUnderOneThirdMCA === true && recognitionHours <= 4.5;
+  const wakeUpRecognition = imaging.mriDwiFlairMismatch === true && n.lkwUnknown !== true;
   const core = numericInput(n.coreVolume, { min: 0 }), total = numericInput(n.penumbraVolume, { min: 0 });
-  if (compatible && core !== null && total !== null && total >= core) Object.assign(imaging, { ctpCoreMl: core, ctpRatio: core > 0 ? Math.round(total / core * 100) / 100 : '', ctpMismatchVolMl: total - core });
+  if (compatible && core !== null && total !== null && total >= core) Object.assign(imaging, { ctpCoreMl: core, ...(core > 0 ? { ctpRatio: Math.round(total / core * 100) / 100 } : {}), ctpMismatchVolMl: Math.round((total - core) * 10) / 10 });
   const lvoOnCta = vessels.some(v => ['ICA', 'M1', 'M2'].includes(v)) ? true : vessels.length === 1 && vessels[0] === 'None' ? false : null;
   // Fixed source values define review validity; wall-clock advancement does not
   // reset local attestations, but elapsed time is recalculated on every render.
   const sourceKey = JSON.stringify([state.context, n, nihssSourceInput(state), state.aspects, state.pcAspects, state.evtMassEffect]);
   return {
     sourceKey, compatible, evtBranch, safetyReviewRequired, safetyReviewReason: safetyReviewRequired ? safetyReasons.join(' ') : '', safetyReviewSeverity: safetyReviewRequired ? safetyReviewSeverity : '', drug: state.drug || '',
-    ivt: { ...imaging, age: n.age, weight: n.weight, glucose: n.glucose, hoursFromLKW: hours, wakeUpOrUnknownOnset: n.lkwUnknown, preMRS: n.premorbidMRS, bpSystolic, bpDiastolic, ichOnCT: compatible && ['present', 'absent'].includes(n.ctHemorrhageStatus) ? n.ctHemorrhageStatus === 'present' : null, disablingDeficit: compatible && typeof n.disablingDeficit === 'boolean' ? n.disablingDeficit : null, ...(compatible && lvoOnCta !== null ? { lvoOnCta } : {}) },
+    ivt: { ...imaging, age: n.age, weight: n.weight, glucose: n.glucose, hoursFromLKW: hours, wakeUpOrUnknownOnset: n.lkwUnknown, wakeUpRecognition, preMRS: n.premorbidMRS, bpSystolic, bpDiastolic, ichOnCT: compatible && ['present', 'absent'].includes(n.ctHemorrhageStatus) ? n.ctHemorrhageStatus === 'present' : null, disablingDeficit: compatible && typeof n.disablingDeficit === 'boolean' ? n.disablingDeficit : null, ...(compatible && lvoOnCta !== null ? { lvoOnCta } : {}) },
     anterior: { ...shared, aspectsScore: compatible ? state.aspects : '', timeFromLKWh: hours, coreVolume: compatible ? n.coreVolume : '', massEffect: compatible && typeof state.evtMassEffect === 'boolean' ? state.evtMassEffect : null },
     m2: { ...shared, aspectsScore: compatible ? state.aspects : '', hoursFromLKWh: hours },
     basilar: { ...shared, pcAspects: compatible ? state.pcAspects : '', hoursFromLKWh: hours }
@@ -206,12 +213,14 @@ export async function copySummary(stateRef, text, writeText) {
 // Documentation is generated only from the current canonical sources. The
 // templates format recorded facts and clinician text; they never attest care.
 const hasValue = value => value !== '' && value !== null && value !== undefined && String(value).trim() !== '';
-// First "SBP/DBP" pair in the free-text pre-IVT BP field, or null.
+// Last plausible "SBP/DBP" pair in the free-text pre-IVT BP field (a trajectory such as
+// "200/110 then 175/95" ends on the pre-treatment value; dates such as 10/03 are skipped), or null.
 export function parsePreIvtBp(value) {
-  const match = String(value ?? '').match(/(\d{2,3})\s*\/\s*(\d{2,3})/);
-  if (!match) return null;
-  const [sbp, dbp] = [Number(match[1]), Number(match[2])];
-  return sbp > dbp ? { sbp, dbp, text: `${sbp}/${dbp}` } : null;
+  const pairs = [...String(value ?? '').matchAll(/(\d{2,3})\s*\/\s*(\d{2,3})/g)]
+    .map(match => ({ sbp: Number(match[1]), dbp: Number(match[2]) }))
+    .filter(({ sbp, dbp }) => sbp >= 50 && sbp <= 300 && dbp >= 20 && dbp <= 200 && sbp > dbp);
+  const last = pairs[pairs.length - 1];
+  return last ? { ...last, text: `${last.sbp}/${last.dbp}` } : null;
 }
 const documented = (value, fallback = 'not documented') => hasValue(value) ? String(value).trim() : fallback;
 const timestampReview = value => timestampCandidates(value).length > 1 ? 'ambiguous local time; choose the recorded clock occurrence before interpretation' : 'invalid or future; correct before interpretation';
@@ -232,7 +241,10 @@ function documentedCtTime(value) {
 }
 export function buildSummary(state, nowMs = Date.now()) {
   const consultation = buildConsultationSummary(state, nowMs);
-  return formatDocumentation(state, consultation, formatEncounterDetails(state, nowMs), formatTimeline(state, nowMs));
+  // A recorded administration carries the pre-IVT BP on its own line; do not repeat it in the details.
+  const n = activeNote(state);
+  const administrationLine = state.context === 'acute' && n.diagnosisCategory === 'ischemic' && state.actions?.administered && state.drug && validTimestamp(state.actions.administrationTime, nowMs);
+  return formatDocumentation(state, consultation, formatEncounterDetails(state, nowMs, { omit: administrationLine ? ['preIvtBP', 'preIvtBPTime'] : [] }), formatTimeline(state, nowMs));
 }
 function buildConsultationSummary(state, nowMs = Date.now()) {
   const n = activeNote(state), exam = encounterNihss(state);
@@ -290,7 +302,12 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     for (const type of ['ivt', 'evt']) entry(`${type.toUpperCase()} clinician decision`, state.decisions[type] || 'not documented');
     const administration = state.actions.administered && state.drug && validTimestamp(state.actions.administrationTime, nowMs);
     const calculated = administration ? state.drug === 'TNK' ? calculateTNKDoseReviewed(n.weight, state.doseAuthority) : calculateAlteplaseDoseReviewed(n.weight) : null;
-    const calculatedText = calculated ? ` (calculated ${state.drug === 'TNK' ? `${calculated.calculatedDose} mg by ${state.doseAuthority === 'fda-label' ? 'US label weight band' : '0.25 mg/kg'}` : `${calculated.totalDose} mg total: ${calculated.bolus} mg bolus, ${calculated.infusion} mg infusion`} for ${Math.round(calculated.weightKg * 10) / 10} kg; ${hasValue(state.actions.administeredDose) ? `administered dose recorded as ${String(state.actions.administeredDose).trim()} mg` : 'administered dose not recorded'})` : '';
+    // The recorded administered dose is reported whether or not the calculated dose is available.
+    const doseMax = state.drug === 'TNK' ? 25 : state.drug === 'Alteplase' ? 90 : null;
+    const doseRaw = hasValue(state.actions.administeredDose) ? String(state.actions.administeredDose).trim() : '';
+    const doseValue = doseRaw ? numericInput(doseRaw, { min: Number.MIN_VALUE, max: 100 }) : null;
+    const administeredText = !doseRaw ? 'administered dose not recorded' : doseValue === null ? `[administered dose ${doseRaw} invalid; correct before interpretation]` : `administered dose recorded as ${doseValue} mg${doseMax !== null && doseValue > doseMax ? ` (above the ${doseMax} mg maximum; review)` : ''}`;
+    const calculatedText = administration ? ` (${calculated ? `calculated ${state.drug === 'TNK' ? `${calculated.calculatedDose} mg by ${state.doseAuthority === 'fda-label' ? 'US label weight band' : '0.25 mg/kg'}` : `${calculated.totalDose} mg total: ${calculated.bolus} mg bolus, ${calculated.infusion} mg infusion`} for ${Math.round(calculated.weightKg * 10) / 10} kg` : `calculated dose unavailable: weight ${hasValue(n.weight) ? 'invalid' : 'not documented'}`}; ${administeredText})` : '';
     const preIvtBpText = hasValue(state.details?.preIvtBP) ? `; pre-IVT BP ${String(state.details.preIvtBP).trim()}${hasValue(state.details?.preIvtBPTime) ? ` at ${String(state.details.preIvtBPTime).trim()}` : ''}` : '; pre-IVT BP not documented';
     entry('IVT administration', administration ? `${state.drug} at ${formatRecordedInstant(state.actions.administrationTime)}${calculatedText}${preIvtBpText}` : `not documented with a valid drug and timestamp${state.actions.administrationTime && !validTimestamp(state.actions.administrationTime, nowMs) ? `; entered time is ${timestampReview(state.actions.administrationTime)}` : ''}`);
     for (const [key, label] of [['punctureTime', 'EVT puncture'], ['reperfusionTime', 'EVT reperfusion']]) if (state.actions[key]) entry(label, validTimestamp(state.actions[key], nowMs) ? `${formatRecordedInstant(state.actions[key])}${key === 'reperfusionTime' && evtReperfusionIssue(state, nowMs) ? ` (${evtReperfusionIssue(state, nowMs)})` : ''}` : timestampReview(state.actions[key]));
@@ -310,7 +327,11 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     const gcs = reviewedGcs(state.gcs);
     if (ageValue !== null && gcs !== null && volume && typeof state.ich.ivh === 'boolean' && typeof state.ich.infratentorial === 'boolean') entry('ICH score', `${calculateICHScore({ gcs: gcs <= 4 ? 'gcs34' : gcs <= 12 ? 'gcs512' : 'gcs1315', age80: ageValue >= 80, volume30: volume.isLarge, ivh: state.ich.ivh, infratentorial: state.ich.infratentorial, criteriaReviewed: true })}/6 (severity grade; not an individual prognosis)`);
   }
-  if (n.diagnosisCategory === 'tia') { const abcd2 = numericInput(state.dapt?.abcd2, { min: 0, max: 7, integer: true }); entry('ABCD²', abcd2 === null ? 'not documented' : `${abcd2}/7 (reviewed)`); }
+  // ABCD² is entered in the acute DAPT screen; follow-up notes carry it only when one was recorded.
+  if (n.diagnosisCategory === 'tia' && (state.context === 'acute' || hasValue(state.dapt?.abcd2))) {
+    const abcd2 = numericInput(state.dapt?.abcd2, { min: 0, max: 7, integer: true });
+    entry('ABCD²', abcd2 !== null ? `${abcd2}/7 (reviewed)` : hasValue(state.dapt?.abcd2) ? `[ABCD² ${String(state.dapt.abcd2).trim()} invalid; correct before interpretation]` : 'not documented');
+  }
   entry('Discussion details', state.actions.discussionDetails);
   entry('Clinician rationale / recommendations', state.rationale);
   entry('Monitoring actions documented', state.actions.monitoring);
@@ -318,7 +339,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   entry('Handoff', state.actions.handoff);
 
   if (state.documentFormat === 'handoff') {
-    const labels = new Set(['Anticoagulant exposure', 'Last anticoagulant dose', 'LMWH dose intent', 'Recorded safety concerns', 'Entered values conflicting with a "No" answer', 'IVT safety review', 'IVT clinician decision', 'EVT clinician decision', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
+    const labels = new Set(['ABCD²', 'Anticoagulant exposure', 'Last anticoagulant dose', 'LMWH dose intent', 'Recorded safety concerns', 'Entered values conflicting with a "No" answer', 'IVT safety review', 'IVT clinician decision', 'EVT clinician decision', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
     return ['Team handoff', `${demographics} · ${diagnosis}${state.context === 'follow-up' ? ' · follow-up' : ''}`,
       lkw, `NIHSS: ${examText}${examDetails}${extraExam.length ? `; ${extraExam.join('; ')}` : ''}`,
       `CT (${ctTimestamp}): ${ct}`, `CTA: ${cta}`, hasValue(perfusion) ? `CTP: ${perfusion}` : '',
