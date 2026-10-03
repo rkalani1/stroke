@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "data/guidelines/eso-mobile-stroke-units-2022.json",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.7.9",
+    "appVersion": "7.7.10",
     "checksum": "sha256:74234e98afe7498fb5daf1f36ac2d78a",
     "count": 0,
     "source": "Retired historical portal endpoint",
