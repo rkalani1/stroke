@@ -53,7 +53,7 @@ describe('restored telephone Pulsara and video Epic documentation', () => {
     expect(text).toContain('incomplete: 14/15 items; partial sum 4; no completed score');
     expect(text).not.toContain('0/42 (all items documented)');
     partial.nihss.dysarthria = 'Intubated/other (UN)';
-    expect(buildSummary(partial, NOW)).toContain('no completed score');
+    expect(buildSummary(partial, NOW)).toContain('4/42 (all items documented; 1 item untestable (UN), not scored)');
   });
 
   it.each(['phone', 'video'])('distinguishes undocumented findings from negative findings in %s', format => {

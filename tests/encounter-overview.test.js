@@ -20,9 +20,13 @@ describe('encounter navigation readout', () => {
   it('does not present a partial or untestable NIHSS as complete', () => {
     const s = newEncounter(); s.nihss = Object.fromEntries(NIHSS_ITEMS.map(item => [item.id, item.options[0]]));
     expect(encounterOverview(s, now).examination).toBe('0/42');
+    // A documented UN item completes the examination; the UN count stays visible.
     s.nihss.dysarthria = 'Intubated/other (UN)';
-    expect(encounterOverview(s, now)).toMatchObject({ examination: '15/15 items · incomplete' });
-    expect(encounterOverview(s, now).missing).toContainEqual({ label: 'NIHSS examination', target: 'nihss-dysarthria' });
+    expect(encounterOverview(s, now)).toMatchObject({ examination: '0/42 · 1 UN' });
+    expect(encounterOverview(s, now).missing.map(item => item.label)).not.toContain('NIHSS examination');
+    s.nihss.sensory = '';
+    expect(encounterOverview(s, now)).toMatchObject({ examination: '14/15 items · incomplete' });
+    expect(encounterOverview(s, now).missing).toContainEqual({ label: 'NIHSS examination', target: 'nihss-sensory' });
   });
   it('keeps discovery distinct from onset, ignores retained LKW while unknown, and flags invalid time', () => {
     const s = newEncounter(); Object.assign(s.note, { lkwDate: '2026-10-01', lkwTime: '10:00' });

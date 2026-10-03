@@ -103,14 +103,18 @@ export const calculateAlteplaseDose = (weightKg) => {
   return { totalDose, bolus, infusion, weightKg: weight, capped: weight * 0.9 > 90 };
 };
 
+// Display values are rounded to 0.1 mg; the infusion is derived from the rounded
+// total and bolus so bolus + infusion always equals the displayed total.
 export const calculateAlteplaseDoseReviewed = (weightKg) => {
   const weight = reviewedNumber(weightKg);
   if (weight === null || weight <= 0 || weight > 350) return null;
-  const totalDose = Math.min(Number((weight * 0.9).toPrecision(12)), 90);
-  const bolus = Number((totalDose * 0.1).toPrecision(12));
-  const infusion = Number((totalDose - bolus).toPrecision(12));
+  const totalTenths = Math.round(Math.min(Number((weight * 0.9).toPrecision(12)), 90) * 10);
+  const bolusTenths = Math.round(totalTenths * 0.1);
+  const totalDose = totalTenths / 10;
+  const bolus = bolusTenths / 10;
+  const infusion = (totalTenths - bolusTenths) / 10;
   return { totalDose, bolus, infusion, weightKg: weight, capped: weight * 0.9 > 90,
-    roundingNote: 'Formula values shown without syringe rounding; independently verify preparation and administration. Bolus plus remaining infusion equals total dose.',
+    roundingNote: 'Values rounded to 0.1 mg; the remaining infusion is the rounded total minus the rounded bolus, so bolus plus infusion equals the total dose. Independently verify preparation and administration.',
     sourceUrl: 'https://www.gene.com/download/pdf/activase_prescribing.pdf' };
 };
 
@@ -158,14 +162,21 @@ export const calculateTNKDoseReviewed = (weightKg, authority = 'guideline') => {
     { minWeight: 80, maxWeight: 90, dose: 22.5, vial: '4.5 mL' },
     { minWeight: 90, maxWeight: null, dose: 25, vial: '5 mL' }
   ];
+  const round2 = value => Math.round(Number(value.toPrecision(12)) * 100) / 100;
   const dose = authority === 'fda-label'
     ? labeledBands.find(band => weight >= band.minWeight && (band.maxWeight === null || weight < band.maxWeight)).dose
-    : Math.min(Number((weight * 0.25).toPrecision(12)), 25);
+    : round2(Math.min(weight * 0.25, 25));
+  // Label bands deliver a fixed dose per band; report the delivered mg/kg so a
+  // low-weight patient receiving more than 0.30 mg/kg is visible at the bedside.
+  const deliveredMgPerKg = Math.round((dose / weight) * 1000) / 1000;
+  const labelNote = authority === 'fda-label'
+    ? ` Label band delivers ${deliveredMgPerKg.toFixed(3)} mg/kg (guideline arithmetic 0.25 mg/kg).${deliveredMgPerKg > 0.3 ? ' WARNING: above 0.30 mg/kg; confirm the weight and consider guideline weight-based dosing.' : ''} US TNKase AIS labeling covers treatment within 3 hours of symptom onset; guideline use extends to 4.5 hours.`
+    : '';
   return {
-    weightKg: weight, calculatedDose: String(dose), volume: `${Number((dose / 5).toPrecision(12))} mL`, isMaxDose: dose === 25,
+    weightKg: weight, calculatedDose: String(dose), volume: `${round2(dose / 5)} mL`, isMaxDose: authority === 'fda-label' ? dose === 25 : weight * 0.25 >= 25, deliveredMgPerKg,
     authority, authorityLabel: authority === 'fda-label' ? 'US TNKase AIS prescribing information: weight bands' : 'AHA/ASA 2026 AIS guideline: 0.25 mg/kg, maximum 25 mg',
     sourceUrl: authority === 'fda-label' ? 'https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e647640d-c395-4b4b-a0be-1162f9c21d84' : 'https://doi.org/10.1161/STR.0000000000000513',
-    roundingNote: 'No additional syringe rounding is applied. Volume assumes the labeled 5 mg/mL reconstituted concentration. This dose reference does not establish IVT eligibility or the treatment time window.',
+    roundingNote: `Dose and volume rounded to 0.01 mg / 0.01 mL; no additional syringe rounding is applied. Volume assumes the labeled 5 mg/mL reconstituted concentration. This dose reference does not establish IVT eligibility or the treatment time window.${labelNote}`,
     doseTable: authority === 'fda-label' ? labeledBands : [{ minWeight: 0, maxWeight: null, dose: '0.25 mg/kg, maximum 25 mg', vial: 'Dose ÷ 5 mg/mL' }]
   };
 };

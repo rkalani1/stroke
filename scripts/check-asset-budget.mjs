@@ -126,12 +126,16 @@ const precache = corePrecacheBytes();
 // v7.1.0 restores 13 worksheets, optional Encounter documentation and Trials UI.
 // Keep initial300KB/100KB, CSS90KB and cache2MB ceilings; source/UI prose is lazy.
 // Measured complete JS is about700KB raw/195KB gzip; bounded new ceilings below.
+// 2026-10-03 clinical audit: IVT lab/anticoagulant safety holds, NIHSS UN totals,
+// DAPT guideline tiers and dose-display rounding add ~1.5KB gzip to the initial
+// graph (measured 101.2KB); the deferred bedside QuickReference adds ~5KB gzip
+// once Protocols renders it. Reviewed ceilings: initial 102KB, whole-JS 208KB gzip.
 const checks = [
   {
     id: 'app-js-gzip',
     label: 'Initial module graph (gzip)',
     actual: sumSizes(manifest.initial, gzipSizeOf),
-    budget: 100 * KB,
+    budget: 102 * KB,
     unit: KB,
     unitLabel: 'KB',
     note: 'route-level code splitting is the lever that moves this',
@@ -148,7 +152,7 @@ const checks = [
   {
     id: 'all-js-gzip', label: 'All offline JavaScript (gzip)',
     actual: sumSizes(manifest.files.map(file => file.path), gzipSizeOf),
-    budget: 196 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
+    budget: 208 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
   },
   {
     id: 'all-js-raw', label: 'All offline JavaScript (raw)',

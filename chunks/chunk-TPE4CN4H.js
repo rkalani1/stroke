@@ -1,0 +1,1 @@
+import{e as t}from"./chunk-BMDVCXY2.js";t();var i=r=>{if(typeof r=="number")return Number.isFinite(r)?r:null;if(typeof r!="string"||!/^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/.test(r.trim()))return null;let e=Number(r);return Number.isFinite(e)?e:null};export{i as a};

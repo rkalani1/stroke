@@ -94,8 +94,11 @@ describe('EXTENDED_WINDOW_IVT_DISCUSSION', () => {
     expect(EXTENDED_WINDOW_IVT_DISCUSSION.length).toBeGreaterThan(0);
     expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/Tenecteplase/i);
     expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/4\.5-hour window/i);
-    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/9-11%/);
-    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/3%/);
+    // Absolute effects from EXTEND, WAKE-UP and TRACE-III: 6-12 per 100 more
+    // excellent outcomes; sICH 2-6 per 100 treated vs <1 per 100 untreated.
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/about 6 to 12 more people out of every 100 treated/);
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/about 2 to 6 of every 100 people treated, compared with fewer than 1 in 100 without treatment/);
+    expect(EXTENDED_WINDOW_IVT_DISCUSSION).not.toMatch(/9-11%|up to about 3%/);
     expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/serious bleeding/i);
     expect(EXTENDED_WINDOW_IVT_DISCUSSION).toMatch(/benefit of treatment outweighs the risk/i);
   });
@@ -327,17 +330,25 @@ describe('evaluateIVT', () => {
     expect(mri.eligible).toBe('consider');
     expect(mri.cor).toBe('2a');
   });
-  it('allows consider-TNK for 9-24h with CTP criteria met, and asserts no COR grade', () => {
-    const r = evaluateIVT({
+  it('allows consider-TNK for 9-24h only with LVO, CTP criteria and consent, graded COR 2b / B-R', () => {
+    const late = {
       ...extended,
       hoursFromLKW: 12,
       consentObtained: true,
       imagingPathway: { ctpCoreMl: 20, ctpRatio: 1.8, ctpMismatchVolMl: 30 }
-    });
+    };
+    const r = evaluateIVT({ ...late, lvoOnCta: true });
     expect(r.eligible).toBe('consider');
-    expect(r.cor).toBeUndefined();
-    expect(r.loe).toBeUndefined();
-    expect(r.nextStep).toMatch(/no COR or LOE grade/i);
+    expect(r.cor).toBe('2b');
+    expect(r.loe).toBe('B-R');
+    expect(r.selectionSource).toMatch(/institutional CTP thresholds/);
+    expect(r.selectionSource).toMatch(/TRACE-III/);
+    const unassessed = evaluateIVT(late);
+    expect(unassessed.eligible).toBe('pending');
+    expect(unassessed.reason).toMatch(/LVO \(ICA or MCA occlusion\) on CTA must be confirmed/);
+    const noLvo = evaluateIVT({ ...late, lvoOnCta: false });
+    expect(noLvo.eligible).toBe(false);
+    expect(noLvo.reason).toMatch(/limited to ICA\/MCA large-vessel occlusion/);
   });
   it('holds 9-24h when CTP criteria or consent are incomplete', () => {
     const tooLarge = evaluateIVT({
@@ -365,11 +376,11 @@ describe('evaluateIVT', () => {
     expect(noConsent.eligible).toBe('pending');
     expect(noConsent.reason).toMatch(/consent/i);
 
-    const consented = evaluateIVT({ ...atNine, consentObtained: true });
+    const consented = evaluateIVT({ ...atNine, consentObtained: true, lvoOnCta: true });
     expect(consented.eligible).toBe('consider');
     expect(consented.recommendation).toMatch(/late window \(9-24h\)/i);
-    expect(consented.cor).toBeUndefined();
-    expect(consented.loe).toBeUndefined();
+    expect(consented.cor).toBe('2b');
+    expect(consented.loe).toBe('B-R');
   });
   it('holds extreme glucose before any non-disabling or affirmative result', () => {
     const pending = evaluateIVT({ ...standard, glucose: 45, disablingDeficit: false });
@@ -509,10 +520,11 @@ describe('evaluateEVT_M2', () => {
     expect(r.eligible).toBe(false);
     expect(r.cor).toMatch(/3/);
   });
-  it('leaves M3 unassigned while the source explicitly does not recommend ACA/PCA', () => {
+  it('grades distal MCA (M3), ACA and PCA EVT as not recommended (AHA/ASA 2026 COR 3: No Benefit)', () => {
     const m3 = evaluateAdultM2({ segment: 'M3' });
-    expect(m3.eligible).toBeNull();
-    expect(m3.reason).toMatch(/not assigned/i);
+    expect(m3.eligible).toBe(false);
+    expect(m3.cor).toMatch(/3/);
+    expect(m3.loe).toBe('A');
     expect(evaluateAdultM2({ segment: 'ACA' }).eligible).toBe(false);
     expect(evaluateAdultM2({ segment: 'PCA' }).eligible).toBe(false);
   });
@@ -520,15 +532,18 @@ describe('evaluateEVT_M2', () => {
   it('dominant M2 at 6-24h requires CTP mismatch', () => {
     const base = { segment: 'M2-proximal-dominant', dominant: true, hoursFromLKWh: 11, nihss: 9, preMRS: 0, aspectsScore: 7 };
     expect(evaluateAdultM2({ ...base, ctpMismatch: true }).eligible).toBe('consider');
-    expect(evaluateAdultM2({ ...base, ctpMismatch: true }).cor).toBe('2a');
+    // AHA/ASA 2026 grades dominant M2 only within 6 h; 6-24 h is institutional.
+    expect(evaluateAdultM2({ ...base, ctpMismatch: true }).cor).toBeUndefined();
+    expect(evaluateAdultM2({ ...base, ctpMismatch: true }).gradeNote).toMatch(/No AHA\/ASA 2026 grade for 6-24 h/);
     expect(evaluateAdultM2({ ...base }).eligible).toBe('pending');
   });
-  // Codominant M2 (90-100 mL tissue at risk) sits between dominant and non-dominant and
-  // is NOT assigned COR 3 by the source; it must not be reported as "no benefit".
-  it('codominant M2 is indeterminate, not COR 3', () => {
+  // AHA/ASA 2026 (ESCAPE-MeVO, DISTAL): nondominant or codominant M2 EVT is
+  // COR 3: No Benefit, LOE A.
+  it('codominant M2 is COR 3: No Benefit / LOE A', () => {
     const r = evaluateAdultM2({ segment: 'M2-codominant' });
-    expect(r.eligible).toBe('pending');
-    expect(r.cor).not.toMatch(/3/);
+    expect(r.eligible).toBe(false);
+    expect(r.cor).toBe('3 (No Benefit)');
+    expect(r.loe).toBe('A');
   });
   it('fails closed on missing or out-of-range dominant-M2 inputs', () => {
     const base = { segment: 'M2-proximal-dominant', dominant: true, hoursFromLKWh: 4, nihss: 10, preMRS: 0, aspectsScore: 8 };
@@ -959,8 +974,12 @@ describe('2026-08-17 audit — second-pass corrections', () => {
   });
 
   it('scopes the heparin reversal regimens to treatment-dose exposure', () => {
-    expect(app).toMatch(/Treatment-dose UFH \(COR 2a\/C\)/);
-    expect(app).toMatch(/Treatment-dose LMWH — enoxaparin, dalteparin, or tinzaparin \(COR 2b\/C\)/);
+    expect(app).toMatch(/Treatment-dose UFH \(COR 2a, LOE C-LD\)/);
+    expect(app).toMatch(/Treatment-dose LMWH — enoxaparin, dalteparin, or tinzaparin \(COR 2b, LOE C-LD\)/);
+    // NCS/SCCM 2016 dose-proportional protamine replaces the fixed 25/50 mg doses.
+    expect(app).toMatch(/1 mg per 100 units of UFH given in the prior 2-3 hours \(max 50 mg\)/);
+    expect(app).toMatch(/enoxaparin within 8 h → protamine 1 mg per 1 mg enoxaparin \(max 50 mg\); 8-12 h → 0\.5 mg per 1 mg enoxaparin/);
+    expect(app).not.toMatch(/Protamine 25 mg IV immediately/);
   });
 
   it('carries the source assay gate for each DOAC class', () => {

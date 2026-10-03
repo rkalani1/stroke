@@ -8,6 +8,7 @@ import { AIS_COMMAND_CENTER_CARDS, AIS_SOURCE_LINKS, AIS_COMMAND_CENTER_LAST_REV
 import { recommendations, resolveClaimsWithCitations, citationLink } from './evidence-encounter.js';
 import { elapsedEncounterTime } from './clinical/encounter-time.js';
 import { createIcons, icons } from './lucide-subset.js';
+import { revealProtocolElement } from './protocol-navigation.js';
 
 export const TELESTROKE_MAP_LINK = Object.freeze({ label: 'Telestroke Map', url: 'https://rkalani1.github.io/telestroke-expansion-map/' });
 const MANAGEMENT_SUBTABS = ['ich', 'ischemic'];
@@ -69,7 +70,7 @@ const DEFAULT_EVT = Object.freeze({ population: 'adult', occlusion: '', timeWind
 // so protocol-only builder inputs and PocketCards remain in session. Remount at
 // an explicit New encounter boundary with the same case epoch as Encounter.
 export default function ProtectedProtocols({
-  telestrokeNote = {}, setTelestrokeNote,
+  telestrokeNote = {},
   nihssScore = 0, consultationType = 'telephone', pocketCardsCaseEpoch = 0, encounter,
   managementSubTab = 'ischemic', setManagementSubTab,
   ichVolumeParams: sharedVolumeParams, setIchVolumeParams: setSharedVolumeParams,
@@ -110,12 +111,23 @@ export default function ProtectedProtocols({
     }
   };
   const [protocolModal, setProtocolModal] = useState(null);
+  // The BP phase and spot check are protocol-local reference inputs. Writing them
+  // into the canonical note would change the shared source key and silently clear
+  // pocket-card attestations and the generated note.
+  const [bpPhase, setBpPhase] = useState('pre-tnk');
+  const [bpProtocolCheck, setBpProtocolCheck] = useState(null);
   const [currentTime] = useCurrentTime(active && timeFromLKW === undefined);
   useEffect(() => {
     if (!encounter) setEvtDecisionInputs({ ...DEFAULT_EVT });
     setLocalVolumeParams({ ...DEFAULT_VOLUME });
     setProtocolModal(null);
+    setBpPhase('pre-tnk');
+    setBpProtocolCheck(null);
   }, [pocketCardsCaseEpoch]);
+  const jumpToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) revealProtocolElement(element, { behavior: 'smooth' });
+  };
   const calculateTimeFromLKW = () => {
     if (timeFromLKW !== undefined) return timeFromLKW;
     const prefix = telestrokeNote.lkwUnknown ? 'discovery' : 'lkw';
@@ -127,7 +139,7 @@ export default function ProtectedProtocols({
   const bpPhaseTargets = {
     'pre-tnk': { label: 'Pre-lysis', systolic: 185, diastolic: 110 },
     'post-tnk': { label: 'Post-TNK', systolic: 180, diastolic: 105 },
-    'post-evt': { label: 'Post-EVT', systolicLow: 140, systolicHigh: 180 },
+    'post-evt': { label: 'Post-EVT', systolic: 180, diastolic: 105, systolicLow: 140, systolicHigh: 180 },
   };
           const localVolumeEstimate = useMemo(() => {
             const { a, b, thicknessMm, numSlices } = ichVolumeParams;
@@ -153,28 +165,32 @@ export default function ProtectedProtocols({
           }, [ichVolumeParams]);
   const ichVolumeEstimate = sharedVolumeEstimate === undefined ? localVolumeEstimate : sharedVolumeEstimate;
           const ischemicBpPhaseKeys = ['pre-tnk', 'post-tnk', 'post-evt'];
-          const currentBpPhase = ischemicBpPhaseKeys.includes(telestrokeNote.bpPhase) ? telestrokeNote.bpPhase : 'pre-tnk';
+          const currentBpPhase = ischemicBpPhaseKeys.includes(bpPhase) ? bpPhase : 'pre-tnk';
           const currentBpTarget = bpPhaseTargets[currentBpPhase] || bpPhaseTargets['pre-tnk'];
-          const currentBpReading = parseBloodPressure(telestrokeNote.bpProtocolCheck);
+          // Prefill from the Encounter BP until the clinician enters a spot check.
+          const bpCheckValue = bpProtocolCheck ?? (telestrokeNote.presentingBP || '');
+          const currentBpReading = parseBloodPressure(bpCheckValue);
+          const bpOrderInvalid = Boolean(currentBpReading) && currentBpReading.systolic <= currentBpReading.diastolic;
           const documentedPostEvtGrade = telestrokeNote.ticiScore || '';
           const postEvtSourceTargetApplies = isSuccessfulEvtReperfusion(documentedPostEvtGrade);
-          const bpWithinTarget = currentBpReading
-            ? currentBpPhase === 'post-evt' && postEvtSourceTargetApplies
-              ? currentBpReading.systolic >= currentBpTarget.systolicLow && currentBpReading.systolic <= currentBpTarget.systolicHigh
-              : currentBpPhase === 'post-evt'
-                ? null
-                : currentBpReading.systolic < currentBpTarget.systolic && currentBpReading.diastolic < currentBpTarget.diastolic
+          // Post-EVT: every EVT keeps BP <=180/105 for 24 h (AHA/ASA 2026 COR 2a,
+          // LOE B-NR); after documented mTICI >=2b the institutional SBP floor of 140
+          // also applies (intensive lowering below 140 is harmful, COR 3: Harm, LOE A).
+          const bpWithinTarget = currentBpReading && !bpOrderInvalid
+            ? currentBpPhase === 'post-evt'
+              ? currentBpReading.systolic <= currentBpTarget.systolicHigh && currentBpReading.diastolic <= currentBpTarget.diastolic && (!postEvtSourceTargetApplies || currentBpReading.systolic >= currentBpTarget.systolicLow)
+              : currentBpReading.systolic < currentBpTarget.systolic && currentBpReading.diastolic < currentBpTarget.diastolic
             : null;
           const protocolDetailMap = useMemo(() => ({
             PCC: {
               title: '4F-PCC (Kcentra)',
-              dosing: 'PCC (Kcentra) 2000 units IV — infuse immediately. Fixed dose, not weight- or INR-tiered.',
-              note: 'Give vitamin K 10 mg IV immediately. Check PT/INR at exactly 30 minutes, then every 6 hours for 24 hours. If INR >1.5 after the infusion, page hematology and consider PCC 500 units or plasma 2-4 units. If INR >1.5 at 24 hours, repeat vitamin K 10 mg IV.'
+              dosing: 'PCC (Kcentra) 2000 units IV — infuse immediately. Institutional fixed dose, not weight- or INR-tiered.',
+              note: 'Give vitamin K 10 mg IV immediately. Check PT/INR at exactly 30 minutes, then every 6 hours for 24 hours. If INR >1.5 after the infusion, page hematology and consider PCC 500 units or plasma 2-4 units. If INR >1.5 at 24 hours, repeat vitamin K 10 mg IV. A fixed 2000-unit dose may underdose heavier or high-INR patients; Kcentra label dosing is INR 2-<4: 25 units/kg (max 2500); INR 4-6: 35 units/kg (max 3500); INR >6: 50 units/kg (max 5000).'
             },
             PCC_DOAC: {
               title: '4F-PCC for DOAC Reversal',
-              dosing: 'PCC (Kcentra) 2000 units IV. Consider ONLY if no contraindications.',
-              note: 'For dabigatran, use only if idarucizumab is unavailable. For rivaroxaban, apixaban, or edoxaban, use only when the Direct Xa Inhibitor screen is elevated. Andexanet alfa is unavailable in the institutional pathway.'
+              dosing: 'PCC (Kcentra) 2000 units IV (institutional fixed dose; NCS/SCCM suggests 50 units/kg). Consider ONLY if no contraindications.',
+              note: 'For dabigatran, use only if idarucizumab is unavailable. For rivaroxaban, apixaban, or edoxaban: reverse if the last dose was <24 h ago, timing is unknown, or renal impairment is present, or if the anti-Xa/Xa screen is elevated; do not wait for the assay when ingestion is recent. Andexanet alfa (Andexxa) is no longer marketed in the US (withdrawn December 2025); the NCS/SCCM 2026 update suggests 4F-PCC rather than andexanet for factor Xa inhibitor-associated ICH (conditional recommendation, moderate certainty).'
             },
             VITK: {
               title: 'Vitamin K',
@@ -198,7 +214,7 @@ export default function ProtectedProtocols({
             },
             CRYO: {
               title: 'Cryoprecipitate',
-              dosing: '2 units of cryoprecipitate IV over 10-30 minutes.',
+              dosing: '2 pre-pooled units of cryoprecipitate (each pool ≈5 single-donor units; total ≈10 units) IV over 10-30 minutes.',
               note: 'Follow the CT-result and delayed-CT branches in the institutional post-thrombolytic hemorrhage algorithm.'
             },
             TXA: {
@@ -249,14 +265,14 @@ export default function ProtectedProtocols({
             PROT1: {
               title: 'Protamine (UFH)',
               classOfRec: 'Class IIa',
-              dosing: 'Protamine 25 mg IV immediately. Recheck anti-Xa after infusion; if >0.1 → additional protamine 10 mg (max cumulative dose 55 mg). (COR 2a, LOE C-LD)',
-              note: 'Check anti-Xa level. If platelets <100K, send HIT antibodies and consult Hematology if positive.'
+              dosing: 'Protamine 1 mg per 100 units of UFH given in the prior 2-3 hours (max 50 mg) by slow IV injection over about 10 minutes. If the aPTT remains elevated, consider repeat protamine 0.5 mg per 100 units of UFH. (COR 2a, LOE C-LD)',
+              note: 'Dosing per NCS/SCCM 2016 (PMID 26714677). Check aPTT/anti-Xa after infusion. If platelets <100K, send HIT antibodies and consult Hematology if positive.'
             },
             PROT2: {
               title: 'Protamine (LMWH)',
               classOfRec: 'Class IIb',
-              dosing: 'Last dose <8h: Protamine 50 mg IV. Last dose 8-24h: Protamine 25 mg IV. Last dose >24h: no reversal indicated. (COR 2b, LOE C-LD; protamine only partially reverses LMWH)',
-              note: 'Use the institutional last-dose timing tiers shown above.'
+              dosing: 'Enoxaparin within 8 h: protamine 1 mg per 1 mg enoxaparin (max 50 mg). Enoxaparin 8-12 h: protamine 0.5 mg per 1 mg enoxaparin. Dalteparin or tinzaparin: protamine 1 mg per 100 anti-Xa units given within 3-5 half-lives (max 50 mg). (COR 2b, LOE C-LD; protamine only partially reverses LMWH)',
+              note: 'Dosing per NCS/SCCM 2016 (PMID 26714677). After 3-5 half-lives protamine is probably not needed.'
             },
             NICARDIPINE: {
               title: 'Nicardipine (Cardene)',
@@ -270,7 +286,7 @@ export default function ProtectedProtocols({
             },
             LEVETIRACETAM: {
               title: 'Levetiracetam (Keppra)',
-              dosing: '500-1000 mg IV/PO q12h. Load: 1000-2000 mg IV for acute seizure.',
+              dosing: '500-1000 mg IV/PO q12h. Load: 1000-2000 mg IV for acute seizure; status epilepticus: 60 mg/kg IV (max 4500 mg).',
               note: 'For SAH seizure prophylaxis (if cortical SAH, IVH, poor-grade HH 3-5, or seizure at onset). Limit prophylaxis to 3-7 days; avoid prolonged routine use. Renal adjust: CrCl <30 → reduce dose 50%.'
             },
             NIMODIPINE: {
@@ -336,12 +352,17 @@ export default function ProtectedProtocols({
                 classOfRec: 'III: No Benefit / A',
                 label: 'No EVT',
                 color: 'rose',
-                rationale: ['The institutional flowchart assigns no EVT to nondominant M2, ACA, and PCA occlusions.']
+                rationale: ['EVT is not recommended for nondominant M2, ACA, and PCA occlusions (AHA/ASA 2026, COR 3: No Benefit, LOE A).']
               };
             }
 
             if (occlusion === 'mvo-codominant') {
-              return { ...result, rationale: ['The institutional flowchart supplies no recommendation for codominant M2.'] };
+              return {
+                classOfRec: 'III: No Benefit / A',
+                label: 'No EVT',
+                color: 'rose',
+                rationale: ['EVT is not recommended for codominant M2 occlusion (AHA/ASA 2026, COR 3: No Benefit, LOE A; ESCAPE-MeVO and DISTAL showed no functional benefit). ORIENTAL-MeVO (2026, after the guideline) reported benefit with NIHSS ≥6; individualize only with the neurointerventional team.']
+              };
             }
 
             if (occlusion === 'mvo-dominant') {
@@ -356,9 +377,9 @@ export default function ProtectedProtocols({
               }
               if (window === '6-24') {
                 if (!ctpMismatch) {
-                  return { classOfRec: 'Pending', label: 'Confirm CTP mismatch', color: 'amber', rationale: ['The 6-24-hour dominant-M2 tier also requires CTP hypoperfusion-hypodensity mismatch.'] };
+                  return { classOfRec: 'Pending', label: 'Confirm CTP mismatch', color: 'amber', rationale: ['The 6-24-hour dominant-M2 institutional tier also requires CTP hypoperfusion-hypodensity mismatch.'] };
                 }
-                return { classOfRec: 'IIa / B-NR', label: 'EVT', color: 'emerald', rationale: ['Dominant proximal M2 at 6-24 hours with the required CTP hypoperfusion-hypodensity mismatch confirmed.'] };
+                return { classOfRec: 'Institutional tier', label: 'EVT', color: 'amber', rationale: ['Dominant proximal M2 at 6-24 hours with the required CTP hypoperfusion-hypodensity mismatch confirmed (institutional tier; no AHA/ASA 2026 grade for 6-24 h).'] };
               }
               return result;
             }
@@ -494,7 +515,8 @@ export default function ProtectedProtocols({
                   </div>
                 </div>
               )}
-                  <div id="tabpanel-protocols" role="tabpanel" aria-labelledby="tab-protocols" className="space-y-6">
+                  <div id="tabpanel-protocols" role="region" aria-label="Protocols &amp; Algorithms" className="space-y-6">
+                    <h1 className="sr-only">Protocols &amp; Algorithms</h1>
                     {/* ===== NON-PUBLIC EXTENSION LAYER =====
                         Rendered only when a local extension populates
                         window.__INSTITUTIONAL_LOCAL__ before app.js loads.
@@ -565,31 +587,6 @@ export default function ProtectedProtocols({
                         </div>
                       );
                     })()}
-                    {/* ===== QUICK PATIENT SUMMARY CARD ===== */}
-                    {(telestrokeNote.age || nihssScore > 0 || telestrokeNote.diagnosis) && (
-                      <div className="bg-paper-2 border border-line rounded-md px-4 py-3">
-                        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">
-                          {telestrokeNote.age && <span className="font-semibold text-slate-800 dark:text-ink">{telestrokeNote.age}{telestrokeNote.sex || ''}</span>}
-                          {(nihssScore > 0 || telestrokeNote.nihss) && <span className="font-bold text-slate-900 dark:text-ink">NIHSS {telestrokeNote.nihss || nihssScore}</span>}
-                          {telestrokeNote.diagnosis && <span className="text-slate-700 dark:text-ink-2">Dx: {telestrokeNote.diagnosis}</span>}
-                          {telestrokeNote.presentingBP && <span className="text-slate-600 dark:text-ink-2">BP: {telestrokeNote.presentingBP}</span>}
-                          {telestrokeNote.glucose && <span className="text-slate-600 dark:text-ink-2">Gluc: {telestrokeNote.glucose}</span>}
-                          {telestrokeNote.inr && <span className="text-slate-600 dark:text-ink-2">INR: {telestrokeNote.inr}</span>}
-                          {telestrokeNote.plateletCount && <span className="text-slate-600 dark:text-ink-2">Plt: {telestrokeNote.plateletCount}K</span>}
-                          {telestrokeNote.tnkRecommended === true && (
-                            <span className="font-semibold text-ok-700 dark:text-ok-300">
-                              TNK: Yes
-                            </span>
-                          )}
-                          {telestrokeNote.evtRecommended === true && (
-                            <span className="font-semibold text-cobalt-700 dark:text-cobalt-300">
-                              EVT: Yes
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    )}
-
                     {/* Contextual guidance based on diagnosis */}
                     {!telestrokeNote.diagnosisCategory && (
                       <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg px-4 py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between dark:bg-cobalt-900 dark:border-cobalt-700">
@@ -602,22 +599,22 @@ export default function ProtectedProtocols({
                         <button
                           type="button"
                           onClick={() => navigateTo('encounter')}
-                          className="inline-flex shrink-0 items-center justify-center rounded-lg bg-cobalt-600 px-3 py-2 text-sm font-semibold text-white hover:bg-cobalt-700"
+                          className="inline-flex shrink-0 items-center justify-center rounded-md bg-cobalt-600 px-3 py-2 text-sm font-semibold text-white hover:bg-cobalt-700"
                         >
                           Set diagnosis
                         </button>
                       </div>
                     )}
                     {telestrokeNote.diagnosisCategory === 'ischemic' && managementSubTab === 'ich' && (
-                      <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg px-4 py-2 text-sm text-cobalt-800 flex items-center gap-2 dark:bg-cobalt-900 dark:border-cobalt-700 dark:text-cobalt-300">
-                        <i aria-hidden="true" data-lucide="arrow-right" className="w-4 h-4"></i>
-                        Current diagnosis is <strong>ischemic stroke</strong> — the <button onClick={() => setManagementSubTab('ischemic')} className="underline font-semibold hover:text-cobalt-900">Ischemic Stroke</button> tab may be more relevant.
+                      <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg px-4 py-2 text-sm text-cobalt-800 flex items-start gap-2 dark:bg-cobalt-900 dark:border-cobalt-700 dark:text-cobalt-300">
+                        <i aria-hidden="true" data-lucide="arrow-right" className="w-4 h-4 mt-0.5 shrink-0"></i>
+                        <span className="min-w-0">Current diagnosis is <strong>ischemic stroke</strong> — the <button onClick={() => setManagementSubTab('ischemic')} className="underline font-semibold hover:text-cobalt-900">Ischemic Stroke</button> tab may be more relevant.</span>
                       </div>
                     )}
                     {telestrokeNote.diagnosisCategory === 'ich' && managementSubTab === 'ischemic' && (
-                      <div className="bg-crit-50 border border-crit-200 rounded-lg px-4 py-2 text-sm text-crit-800 flex items-center gap-2 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300">
-                        <i aria-hidden="true" data-lucide="arrow-right" className="w-4 h-4"></i>
-                        Current diagnosis is <strong>ICH</strong> — the <button onClick={() => setManagementSubTab('ich')} className="underline font-semibold hover:text-crit-900">ICH Management</button> tab may be more relevant.
+                      <div className="bg-crit-50 border border-crit-200 rounded-lg px-4 py-2 text-sm text-crit-800 flex items-start gap-2 dark:bg-crit-950 dark:border-crit-800 dark:text-crit-300">
+                        <i aria-hidden="true" data-lucide="arrow-right" className="w-4 h-4 mt-0.5 shrink-0"></i>
+                        <span className="min-w-0">Current diagnosis is <strong>ICH</strong> — the <button onClick={() => setManagementSubTab('ich')} className="underline font-semibold hover:text-crit-900">ICH Management</button> tab may be more relevant.</span>
                       </div>
                     )}
                     {/* v6.0-08: sticky breadcrumb on top of the management
@@ -632,7 +629,7 @@ export default function ProtectedProtocols({
                       const activeLabel = subTabLabels[managementSubTab] || managementSubTab;
                       return (
                         <nav
-                          className="bg-paper-2 border border-line border-b-0 rounded-md rounded-b-none px-3 py-2 sticky top-0 z-40"
+                          className="bg-paper-2 border border-line border-b-0 rounded-md rounded-b-none px-3 py-2 sticky top-[var(--case-bar-h,0px)] z-40"
                           aria-label="Protocols & Algorithms breadcrumb"
                         >
                           <p className="font-mono uppercase text-eyebrow text-mute">
@@ -641,7 +638,7 @@ export default function ProtectedProtocols({
                         </nav>
                       );
                     })()}
-                    <div className="bg-white border border-line rounded-md rounded-t-none p-2 flex flex-wrap gap-2 sticky top-9 z-30 dark:bg-card " role="tablist" aria-label="Protocols & Algorithms sub-sections" onKeyDown={(e) => {
+                    <div className="bg-white border border-line rounded-md rounded-t-none p-2 flex flex-wrap gap-2 sticky top-[calc(var(--case-bar-h,0px)+2.25rem)] z-30 dark:bg-card " role="tablist" aria-label="Protocols & Algorithms sub-sections" onKeyDown={(e) => {
                       const subTabs = MANAGEMENT_SUBTABS;
                       const ci = subTabs.indexOf(managementSubTab);
                       let ni;
@@ -691,11 +688,11 @@ export default function ProtectedProtocols({
                             className={`px-3 h-9 rounded-md text-sm font-semibold transition-colors min-h-[44px] sm:min-h-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
                               isActive
                                 ? 'bg-cobalt-600 text-white shadow-sm'
-                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700'
+                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-paper-2 dark:text-ink-2 dark:hover:bg-line'
                             }`}
                             role="tab"
                             aria-selected={isActive}
-                            aria-controls={`mgmt-tabpanel-${tab.id}`}
+                            aria-controls={isActive ? `mgmt-tabpanel-${tab.id}` : undefined}
                             aria-label={`${tab.label} protocol tab`}
                             tabIndex={isActive ? 0 : -1}
                           >
@@ -707,10 +704,10 @@ export default function ProtectedProtocols({
 
                     {/* ICH Content */}
                     {managementSubTab === 'ich' && (
-                      <div id="mgmt-tabpanel-ich" role="tabpanel" aria-labelledby="mgmt-tab-ich" className="bg-crit-50 border border-crit-200 rounded-lg p-4 dark:bg-crit-950 dark:border-crit-800">
+                      <div id="mgmt-tabpanel-ich" role="tabpanel" aria-labelledby="mgmt-tab-ich" className="bg-card border border-line border-t-4 border-t-crit-600 rounded-lg p-4">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
-                          <h2 className="text-xl font-semibold text-crit-800 dark:text-crit-300">ICH Management</h2>
-                          <span className="text-xs text-crit-600 font-medium dark:text-crit-300">Algorithmic workflow</span>
+                          <h2 className="text-xl font-semibold text-ink">ICH Management</h2>
+                          <span className="text-xs text-mute font-medium">Algorithmic workflow</span>
                         </div>
 
                         <div className="space-y-4">
@@ -772,7 +769,7 @@ export default function ProtectedProtocols({
                                 </div>
                               </div>
                             </div>
-                            <div className="bg-slate-900 text-white rounded-lg p-3 mt-3 dark:bg-slate-950">
+                            <div className="bg-slate-900 text-white rounded-lg p-3 mt-3 dark:bg-paper-2">
                               <p className="text-sm font-semibold">{ICH_INITIAL_EVALUATION_ALGORITHM.safetyPause.title}</p>
                               <ul className="text-xs text-slate-100 space-y-1 mt-1">
                                 {ICH_INITIAL_EVALUATION_ALGORITHM.safetyPause.items.map((item) => <li key={item}>&#x2022; {item}</li>)}
@@ -837,7 +834,7 @@ export default function ProtectedProtocols({
                               </div>
                               <div className="bg-white border border-crit-200 rounded-lg p-2 md:col-span-2 dark:bg-card dark:border-crit-800">
                                 <p className="font-semibold text-crit-800 dark:text-crit-300">4. Surgery and Research Screens</p>
-                                <p className="text-slate-700 dark:text-ink-2">Symptomatic hydrocephalus → urgent EVD evaluation. Cerebellar mass effect, usually with obstructive hydrocephalus and/or brainstem compression → urgent suboccipital decompression evaluation, with EVD as indicated. Use the complete MIE, MINUTE, or other source-defined screen; do not gate on a single value.</p>
+                                <p className="text-slate-700 dark:text-ink-2">Symptomatic hydrocephalus → urgent EVD evaluation. Cerebellar ICH ≥15 mL, or with neurological deterioration, brainstem compression and/or hydrocephalus from ventricular obstruction → immediate surgical evacuation with or without EVD (ICH 2022, COR 1, LOE B-NR). Use the complete MIE, MINUTE, or other source-defined screen; do not gate on a single value.</p>
                               </div>
                             </div>
                             </div>
@@ -856,7 +853,7 @@ export default function ProtectedProtocols({
 
                               <div className="bg-crit-50 border border-crit-200 rounded-lg p-3 dark:bg-crit-950 dark:border-crit-800">
                                 <p className="text-sm font-semibold text-crit-800 mb-1 dark:text-crit-300">INR ≥ 2.0 (COR/LOE 1/B):</p>
-                                <p className="text-sm">Give <button onClick={() => setProtocolModal(protocolDetailMap.PCC)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">4F-PCC (Kcentra) 2000 units IV</button></p>
+                                <p className="text-sm">Give <button onClick={() => setProtocolModal(protocolDetailMap.PCC)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">4F-PCC (Kcentra) 2000 units IV</button> (institutional fixed dose; may underdose heavier or high-INR patients — label dosing is 25-50 units/kg by INR)</p>
                                 <ul className="text-sm mt-2 space-y-1 ml-4">
                                   <li>• Check PT/INR at <strong>30 min</strong>, then <strong>every 6h for 24h</strong> after PCC</li>
                                   <li>• If INR &gt;1.5 after infusion → <strong>page hematology</strong> and consider an additional <strong>500 units PCC</strong> or <strong>2-4 units plasma (FFP)</strong></li>
@@ -865,13 +862,13 @@ export default function ProtectedProtocols({
                               </div>
 
                               <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
-                                <p className="text-sm font-semibold text-warn-800 mb-1 dark:text-warn-300">INR 1.6-1.9 (COR IIb/C):</p>
-                                <p className="text-sm">4F-PCC 2000 units IV recommended</p>
+                                <p className="text-sm font-semibold text-warn-800 mb-1 dark:text-warn-300">INR 1.6-1.9 (COR 2b, LOE C-LD):</p>
+                                <p className="text-sm">4F-PCC 2000 units IV may be reasonable</p>
                               </div>
 
                               <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
-                                <p className="text-sm font-semibold text-slate-700 mb-1 dark:text-ink-2">INR 1.3-1.5 (COR IIb/C):</p>
-                                <p className="text-sm text-slate-600 dark:text-ink-2">Consider 4F-PCC 2000 units IV on a case-by-case basis</p>
+                                <p className="text-sm font-semibold text-slate-700 mb-1 dark:text-ink-2">INR 1.3-1.5 (COR 2b, LOE C-LD):</p>
+                                <p className="text-sm text-slate-600 dark:text-ink-2">4F-PCC 2000 units IV may be reasonable; decide case by case</p>
                               </div>
 
                               <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 dark:bg-orange-950 dark:border-orange-800">
@@ -931,7 +928,7 @@ export default function ProtectedProtocols({
                               {/* Factor Xa Inhibitors */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
                                 <p className="text-sm font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors)</p>
-                                <p className="text-xs text-cobalt-600 mb-2 dark:text-cobalt-300">Reverse if Direct Xa Inhibitor screen elevated</p>
+                                <p className="text-xs text-cobalt-600 mb-2 dark:text-cobalt-300">Reverse if last dose &lt;24 h, timing unknown, or renal impairment, or if the anti-Xa/Xa screen is elevated; do not wait for the assay when ingestion is recent</p>
                                 <ul className="text-sm space-y-1.5">
                                   <li className="flex gap-2">
                                     <span className="shrink-0 font-bold text-cobalt-700 dark:text-cobalt-300">1.</span>
@@ -939,7 +936,7 @@ export default function ProtectedProtocols({
                                   </li>
                                   <li className="flex gap-2">
                                     <span className="shrink-0 font-bold text-cobalt-700 dark:text-cobalt-300">2.</span>
-                                    <span>Andexanet alfa is not available on the local formulary; give <button onClick={() => setProtocolModal(protocolDetailMap.PCC_DOAC)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">4F-PCC 2000 units IV</button></span>
+                                    <span>Give <button onClick={() => setProtocolModal(protocolDetailMap.PCC_DOAC)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">4F-PCC 2000 units IV</button> (andexanet alfa is no longer marketed in the US; NCS/SCCM 2026 suggests 4F-PCC rather than andexanet)</span>
                                   </li>
                                 </ul>
                                 <p className="text-xs text-cobalt-600 mt-2 dark:text-cobalt-300"><strong>Drug-removal limits:</strong> Rivaroxaban is not dialyzable. Hemodialysis does not appear to substantially affect apixaban exposure and does not significantly contribute to edoxaban clearance. Follow the approved agent-specific reversal pathway and specialist assessment.</p>
@@ -992,7 +989,7 @@ export default function ProtectedProtocols({
                                 </div>
                                 <div className="flex gap-2 items-start">
                                   <span className="shrink-0 w-6 h-6 rounded-full bg-crit-700 text-white text-xs flex items-center justify-center font-bold">3</span>
-                                  <p className="text-sm">Contact <strong>blood bank/transfusion services</strong>; immediately order <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">2 units of cryoprecipitate</button> (1 unit = 5 prepooled cryoprecipitates)</p>
+                                  <p className="text-sm">Contact <strong>blood bank/transfusion services</strong>; immediately order <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-cobalt-600 underline font-semibold hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">2 pre-pooled units of cryoprecipitate</button> (each pool ≈5 single-donor units; total ≈10 units)</p>
                                 </div>
                                 <div className="flex gap-2 items-start">
                                   <span className="shrink-0 w-6 h-6 rounded-full bg-crit-700 text-white text-xs flex items-center justify-center font-bold">4</span>
@@ -1006,7 +1003,7 @@ export default function ProtectedProtocols({
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                   <div className="bg-white border border-warn-300 rounded p-2 dark:bg-card dark:border-warn-800">
                                     <p className="text-xs font-semibold text-warn-700 mb-1 dark:text-warn-300">YES — CT delayed:</p>
-                                    <p className="text-sm">If fibrinogen is &lt;200 mg/dL, empirically administer the 2 units of cryoprecipitate over 10-30 minutes</p>
+                                    <p className="text-sm">If fibrinogen is &lt;200 mg/dL, empirically administer the 2 pre-pooled units of cryoprecipitate (≈10 units) IV over 10-30 minutes</p>
                                   </div>
                                   <div className="bg-white border border-warn-300 rounded p-2 dark:bg-card dark:border-warn-800">
                                     <p className="text-xs font-semibold text-warn-700 mb-1 dark:text-warn-300">NO — CT available:</p>
@@ -1021,7 +1018,7 @@ export default function ProtectedProtocols({
                                   <div className="bg-white border border-crit-300 rounded p-2 dark:bg-card dark:border-crit-800">
                                     <p className="text-xs font-semibold text-crit-700 mb-1 dark:text-crit-300">YES — Blood confirmed:</p>
                                     <ol className="text-sm space-y-1 ml-4 list-decimal">
-                                      <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">2 units of cryoprecipitate</button> over 10-30 minutes, or continue if already started</li>
+                                      <li>Give <button onClick={() => setProtocolModal(protocolDetailMap.CRYO)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">2 pre-pooled units of cryoprecipitate</button> (each pool ≈5 single-donor units; total ≈10 units) IV over 10-30 minutes, or continue if already started</li>
                                       <li>Confirm intracranial blood on CT with the ordering provider, then verbally confirm with the RN that administration is post-CT; after both confirmations, give <button onClick={() => setProtocolModal(protocolDetailMap.TXA)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">tranexamic acid 1000 mg IV over 10 minutes</button></li>
                                       <li>Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal</li>
                                       <li>Call Stroke/Neuro attending</li>
@@ -1044,7 +1041,7 @@ export default function ProtectedProtocols({
                               <div className="bg-slate-50 border border-line rounded-lg p-3 dark:bg-paper-2">
                                 <p className="text-xs font-semibold text-slate-700 mb-1 dark:text-ink-2">Follow-up & Management:</p>
                                 <ul className="text-xs space-y-0.5 text-slate-600 dark:text-ink-2">
-                                  <li>• Notify the provider for SBP &gt;180, DBP &gt;90, a new neurologic deficit, or a GCS decrease of at least 2 points</li>
+                                  <li>• Notify the provider for SBP &gt;180 or DBP &gt;105, a new neurologic deficit, or a GCS decrease of at least 2 points</li>
                                   <li>• Use fibrinogen &lt;200 mg/dL as the action threshold</li>
                                   <li>• If labs abnormal or uncontrolled bleeding → consult Hematology</li>
                                   <li>• Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal</li>
@@ -1066,23 +1063,23 @@ export default function ProtectedProtocols({
                                 <p className="text-xs text-orange-700 mb-2 dark:text-orange-300">Post-thrombolytic orolingual angioedema</p>
                                 <div className="space-y-2">
                                   <div className="flex gap-2 items-start">
-                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">1</span>
+                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-700 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">1</span>
                                     <p className="text-sm"><strong>Maintain airway</strong> — intubation may not be necessary if edema is limited to the anterior tongue and lips. Edema involving the larynx, palate, floor of mouth, or oropharynx with rapid progression within 30 minutes poses higher risk of requiring intubation. Awake fiberoptic intubation is optimal.</p>
                                   </div>
                                   <div className="flex gap-2 items-start">
-                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">2</span>
+                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-700 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">2</span>
                                     <p className="text-sm"><strong>Hold ACE inhibitors</strong> — stop the thrombolytic infusion <em>if alteplase is being administered</em></p>
                                   </div>
                                   <div className="flex gap-2 items-start">
-                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">3</span>
+                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-700 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">3</span>
                                     <p className="text-sm"><button onClick={() => setProtocolModal(protocolDetailMap.METHYLPRED)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Methylprednisolone 125 mg IV</button></p>
                                   </div>
                                   <div className="flex gap-2 items-start">
-                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">4</span>
+                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-700 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">4</span>
                                     <p className="text-sm"><button onClick={() => setProtocolModal(protocolDetailMap.DIPHEN)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Diphenhydramine 50 mg IV</button></p>
                                   </div>
                                   <div className="flex gap-2 items-start">
-                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-600 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">5</span>
+                                    <span className="shrink-0 w-6 h-6 rounded-full bg-orange-700 text-white dark:bg-orange-700 text-xs flex items-center justify-center font-bold">5</span>
                                     <p className="text-sm"><button onClick={() => setProtocolModal(protocolDetailMap.FAMOTIDINE)} className="text-cobalt-600 underline hover:text-cobalt-800 dark:text-cobalt-300 dark:hover:text-cobalt-300">Famotidine 20 mg IV</button></p>
                                   </div>
                                 </div>
@@ -1111,8 +1108,9 @@ export default function ProtectedProtocols({
                             <div className="p-4 pt-0">
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-sm">
                               <div>
-                                <label className="block text-xs text-slate-500 mb-1 dark:text-mute">A (cm)</label>
+                                <label htmlFor="ich-abc2-a" className="block text-xs text-slate-500 mb-1 dark:text-mute">A (cm)</label>
                                 <input
+                                  id="ich-abc2-a"
                                   type="number" min="0.1" max="20" step="0.1"
                                   value={ichVolumeParams.a}
                                   onChange={(e) => setIchVolumeParams(prev => ({ ...prev, a: e.target.value }))}
@@ -1121,8 +1119,9 @@ export default function ProtectedProtocols({
                                 />
                               </div>
                               <div>
-                                <label className="block text-xs text-slate-500 mb-1 dark:text-mute">B (cm)</label>
+                                <label htmlFor="ich-abc2-b" className="block text-xs text-slate-500 mb-1 dark:text-mute">B (cm)</label>
                                 <input
+                                  id="ich-abc2-b"
                                   type="number" min="0.1" max="20" step="0.1"
                                   value={ichVolumeParams.b}
                                   onChange={(e) => setIchVolumeParams(prev => ({ ...prev, b: e.target.value }))}
@@ -1131,8 +1130,9 @@ export default function ProtectedProtocols({
                                 />
                               </div>
                               <div>
-                                <label className="block text-xs text-slate-500 mb-1 dark:text-mute">Slice thickness (mm)</label>
+                                <label htmlFor="ich-abc2-thickness" className="block text-xs text-slate-500 mb-1 dark:text-mute">Slice thickness (mm)</label>
                                 <input
+                                  id="ich-abc2-thickness"
                                   type="number" min="1" max="10" step="0.5"
                                   value={ichVolumeParams.thicknessMm}
                                   onChange={(e) => setIchVolumeParams(prev => ({ ...prev, thicknessMm: e.target.value }))}
@@ -1141,8 +1141,9 @@ export default function ProtectedProtocols({
                                 />
                               </div>
                               <div>
-                                <label className="block text-xs text-slate-500 mb-1 dark:text-mute">Slices w/ ICH</label>
+                                <label htmlFor="ich-abc2-slices" className="block text-xs text-slate-500 mb-1 dark:text-mute">Slices w/ ICH</label>
                                 <input
+                                  id="ich-abc2-slices"
                                   type="number" min="1" max="100" step="1"
                                   value={ichVolumeParams.numSlices}
                                   onChange={(e) => setIchVolumeParams(prev => ({ ...prev, numSlices: e.target.value }))}
@@ -1191,7 +1192,7 @@ export default function ProtectedProtocols({
                             <div className="p-4 pt-0">
                               <ul className="text-sm space-y-1 text-slate-700 dark:text-ink-2">
                                 <li>Continue the applicable agent-specific reversal and common reversal monitoring pathway.</li>
-                                <li>Evaluate symptomatic hydrocephalus for urgent EVD and cerebellar mass effect for urgent suboccipital decompression evaluation, with EVD as indicated.</li>
+                                <li>Evaluate symptomatic hydrocephalus for urgent EVD. Cerebellar ICH ≥15 mL, or with neurological deterioration, brainstem compression and/or hydrocephalus from ventricular obstruction → immediate surgical evacuation with or without EVD (ICH 2022, COR 1, LOE B-NR).</li>
                                 <li>Use generic head-of-bed elevation and the admitting ICU team's workflow; no fixed angle or broader rehabilitation/goals-of-care bundle is supplied by the institutional ICH sources.</li>
                               </ul>
                             </div>
@@ -1257,8 +1258,9 @@ export default function ProtectedProtocols({
                           <ul className="text-sm space-y-1">
                             <li><strong>Immediate:</strong> Vitamin K 10 mg IV for all warfarin patients.</li>
                             <li><strong>INR ≥2.0 (COR/LOE 1/B):</strong> 4F-PCC (Kcentra) 2000 units IV immediately. Vitamin K 10 mg IV is also given immediately.</li>
-                            <li><strong>INR 1.6-1.9 (COR/LOE 2b/C):</strong> 4F-PCC 2000 units IV recommended.</li>
-                            <li><strong>INR 1.3-1.5 (COR/LOE 2b/C):</strong> consider 4F-PCC 2000 units IV case by case.</li>
+                            <li><strong>INR 1.6-1.9 (COR 2b, LOE C-LD):</strong> 4F-PCC 2000 units IV may be reasonable.</li>
+                            <li><strong>INR 1.3-1.5 (COR 2b, LOE C-LD):</strong> 4F-PCC 2000 units IV may be reasonable; decide case by case.</li>
+                            <li><strong>Fixed-dose caveat:</strong> the institutional 2000-unit dose may underdose heavier or high-INR patients. Kcentra label dosing: INR 2-&lt;4, 25 units/kg (max 2500); INR 4-6, 35 units/kg (max 3500); INR &gt;6, 50 units/kg (max 5000).</li>
                             <li><strong>Check INR:</strong> at 30 min, then every 6h for 24h after PCC.</li>
                             <li><strong>INR &gt;1.5 after PCC:</strong> page hematology and consider an additional 500 units PCC or 2-4 units plasma (FFP).</li>
                             <li><strong>INR &gt;1.5 at 24h:</strong> repeat vitamin K 10 mg IV over 30 min.</li>
@@ -1282,11 +1284,12 @@ export default function ProtectedProtocols({
                           </div>
 
                           <div>
-                            <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors) — COR/LOE 2b/B:</p>
+                            <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors) — 4F-PCC: ICH 2022 COR 2b, LOE B-NR; NCS/SCCM 2026 conditional recommendation for 4F-PCC rather than andexanet:</p>
                             <ul className="text-sm space-y-1">
                               <li><strong>Assessment:</strong> Direct Xa Inhibitor screen — a normal screen excludes significant anticoagulant effect. For edoxaban the screen is not a calibrated drug-specific assay, so interpret it together with last-dose timing and renal function.</li>
-                              <li><strong>Andexanet alfa:</strong> not available on the local formulary.</li>
-                              <li><strong>4F-PCC:</strong> 2000 units IV — give if Direct Xa Inhibitor screen elevated and no contraindications.</li>
+                              <li><strong>When to reverse:</strong> last dose &lt;24 h, timing unknown, or renal impairment, or an elevated anti-Xa/Xa screen. Do not wait for the assay when ingestion is recent.</li>
+                              <li><strong>4F-PCC:</strong> 2000 units IV (institutional fixed dose; NCS/SCCM suggests 50 units/kg) if no contraindications.</li>
+                              <li><strong>Andexanet alfa:</strong> no longer marketed in the US (withdrawn December 2025); NCS/SCCM 2026 suggests 4F-PCC rather than andexanet.</li>
                               <li><strong>Activated charcoal:</strong> if ingestion &lt;2 hours.</li>
                               <li><strong>Drug-removal limits:</strong> Rivaroxaban is not dialyzable. Hemodialysis does not appear to substantially affect apixaban exposure and does not significantly contribute to edoxaban clearance. Follow the approved agent-specific reversal pathway and specialist assessment.</li>
                             </ul>
@@ -1296,9 +1299,9 @@ export default function ProtectedProtocols({
                         <div className="bg-white p-4 rounded border mb-4 dark:bg-card">
                           <h4 className="font-semibold text-cobalt-700 mb-3 dark:text-cobalt-300">Heparins</h4>
                           <ul className="text-sm space-y-1">
-                            <li><strong>Treatment-dose UFH (COR 2a/C):</strong> assess anti-Xa. Protamine 25 mg IV immediately; recheck anti-Xa after infusion and, if &gt;0.1, give an additional 10 mg protamine (max cumulative dose 55 mg).</li>
+                            <li><strong>Treatment-dose UFH (COR 2a, LOE C-LD):</strong> protamine 1 mg per 100 units of UFH given in the prior 2-3 hours (max 50 mg) by slow IV injection; if the aPTT remains elevated, consider 0.5 mg per 100 units (NCS/SCCM 2016).</li>
                             <li><strong>UFH — HIT screen:</strong> if platelets &lt;100 K/µL, send heparin-induced platelet antibodies; if positive, consult hematology.</li>
-                            <li><strong>Treatment-dose LMWH — enoxaparin, dalteparin, or tinzaparin (COR 2b/C):</strong> last dose &lt;8h → protamine 50 mg IV; last dose 8-24h → protamine 25 mg IV; last dose &gt;24h → no reversal indicated.</li>
+                            <li><strong>Treatment-dose LMWH — enoxaparin, dalteparin, or tinzaparin (COR 2b, LOE C-LD):</strong> enoxaparin within 8 h → protamine 1 mg per 1 mg enoxaparin (max 50 mg); 8-12 h → 0.5 mg per 1 mg enoxaparin; dalteparin/tinzaparin → 1 mg per 100 anti-Xa units given within 3-5 half-lives (max 50 mg). Protamine only partially reverses LMWH (NCS/SCCM 2016).</li>
                           </ul>
                         </div>
 
@@ -1325,7 +1328,7 @@ export default function ProtectedProtocols({
                           <h4 className="font-semibold text-cobalt-700 mb-3 dark:text-cobalt-300">Blood-Product Replacement Thresholds</h4>
                           <p className="text-xs text-cobalt-600 mb-2 dark:text-cobalt-300">Request these products, if not already ordered under a pathway above, based on the STAT results and assuming an average-sized adult.</p>
                           <ul className="text-sm space-y-1">
-                            <li><strong>Fibrinogen &lt;125 mg/dL:</strong> prepare and transfuse 2 units of cryoprecipitate (1 unit = 5 pre-pooled cryoprecipitates).</li>
+                            <li><strong>Fibrinogen &lt;125 mg/dL:</strong> prepare and transfuse 2 pre-pooled units of cryoprecipitate (each pool ≈5 single-donor units; total ≈10 units).</li>
                             <li><strong>Platelets &lt;50 K/µL:</strong> prepare and transfuse 2 units of platelets.</li>
                             <li><strong>Platelets 50-100 K/µL:</strong> prepare and transfuse 1 unit of platelets.</li>
                             <li><strong>INR &gt;1.5:</strong> use the 4F-PCC or plasma pathway above.</li>
@@ -1356,8 +1359,9 @@ export default function ProtectedProtocols({
                           <h3 className="text-lg font-semibold text-crit-700 mb-4 dark:text-crit-300">Antiplatelet-Associated ICH</h3>
                           <div className="bg-white p-4 rounded border dark:bg-card">
                           <ul className="text-sm space-y-1">
-                            <li>Discontinue antiplatelet agent(s). Platelet transfusion is <strong>NOT routinely recommended</strong> (COR/LOE 3/B).</li>
-                            <li>Desmopressin efficacy is uncertain for antiplatelet-associated hemorrhage (COR/LOE 2b/C); the institutional source does not provide a dose.</li>
+                            <li>Discontinue antiplatelet agent(s). Platelet transfusion is <strong>potentially harmful</strong> for aspirin-associated ICH when emergency surgery is not planned (ICH 2022, COR 3: Harm, LOE B-R); NCS/SCCM 2026 also suggests against platelet transfusion for antiplatelet-associated spontaneous IPH not requiring neurosurgery (conditional, low certainty).</li>
+                            <li>Aspirin + emergency neurosurgery: platelet transfusion may be considered (ICH 2022, COR 2b, LOE C-LD; NCS/SCCM 2026 conditional recommendation for transfusion in spontaneous IPH on aspirin undergoing neurosurgery).</li>
+                            <li>Desmopressin efficacy is uncertain for antiplatelet-associated hemorrhage (COR/LOE 2b/C-LD); the institutional source does not provide a dose.</li>
                             </ul>
                           </div>
                         </div>
@@ -1390,7 +1394,7 @@ export default function ProtectedProtocols({
                             <h4 className="font-semibold text-orange-700 mb-2 dark:text-orange-300">EVD Indications</h4>
                             <ul className="text-sm space-y-1">
                               <li>Symptomatic hydrocephalus: urgent EVD evaluation.</li>
-                              <li>Cerebellar mass effect, usually with obstructive hydrocephalus and/or brainstem compression: urgent suboccipital decompression evaluation, with EVD as indicated.</li>
+                              <li>Cerebellar ICH ≥15 mL, or with neurological deterioration, brainstem compression and/or hydrocephalus from ventricular obstruction → immediate surgical evacuation with or without EVD (ICH 2022, COR 1, LOE B-NR).</li>
                             </ul>
                           </div>
                         </div>
@@ -1402,7 +1406,7 @@ export default function ProtectedProtocols({
                           <div className="bg-white p-4 rounded border dark:bg-card">
                             <h4 className="font-semibold text-cobalt-600 mb-2 dark:text-cobalt-300">Surgical Indications</h4>
                             <ul className="text-sm space-y-1">
-                              <li><strong>Cerebellar ICH with mass effect</strong>: urgent Neurosurgery evaluation for suboccipital decompression; obstructive hydrocephalus and/or brainstem compression commonly increase urgency and may require EVD.</li>
+                              <li><strong>Cerebellar ICH ≥15 mL, or with neurological deterioration, brainstem compression and/or hydrocephalus from ventricular obstruction</strong>: immediate surgical evacuation with or without EVD (ICH 2022, COR 1, LOE B-NR); obtain urgent Neurosurgery evaluation.</li>
                               <li><strong>Life-threatening mass effect:</strong> evaluate for decompression; Neurosurgery leads the operative approach.</li>
                             </ul>
                           </div>
@@ -1698,7 +1702,7 @@ export default function ProtectedProtocols({
                               ['isch-contrast', 'Contrast Allergy'],
                               ['isch-posterior', 'Posterior Circ'],
                             ].map(([id, label]) => (
-                              <button key={id} type="button" onClick={() => document.getElementById(id)?.scrollIntoView({behavior: 'smooth', block: 'start'})}
+                              <button key={id} type="button" onClick={() => jumpToSection(id)}
                                 className="px-2.5 py-1.5 text-xs rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-cobalt-50 hover:border-cobalt-300 hover:text-cobalt-700 transition-colors dark:bg-card dark:border-strong dark:text-ink-2 dark:hover:bg-cobalt-900 dark:hover:text-cobalt-300">
                                 {label}
                               </button>
@@ -1712,9 +1716,10 @@ export default function ProtectedProtocols({
                             <li>For IV thrombolysis, establish a disabling deficit, time from last known well, noncontrast CT findings, blood pressure, glucose, and the source-listed exclusions.</li>
                             <li>For EVT, apply the institutional vessel, time, ASPECTS or PC-ASPECTS, NIHSS, baseline mRS, and low-ASPECTS qualifiers shown below.</li>
                             <li>After documented successful EVT recanalization (mTICI ≥2b), maintain the institutional SBP guardrail of 140-180 mmHg.</li>
+                            <li>For every EVT, keep BP ≤180/105 during the procedure and for 24 hours afterward.</li>
                           </ul>
                         </div>
-                        <details id="isch-evt" className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
+                        <details id="isch-evt" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-100/50 rounded-t-lg flex flex-col md:flex-row md:items-center md:justify-between gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">EVT Eligibility — Quick Reference</h2>
                           </summary>
@@ -1759,9 +1764,8 @@ export default function ProtectedProtocols({
                               <p className="font-semibold text-slate-800 text-sm mb-2 dark:text-ink">M2 / Distal Vessels</p>
                               <ul className="list-disc pl-4 text-xs text-slate-700 space-y-1 dark:text-ink-2">
                                 <li>Dominant proximal M2 (≤1 cm from the bifurcation and supplying ≥50% of MCA territory), 0-6 hours, ASPECTS ≥6, NIHSS ≥6: EVT, COR IIa / LOE B-NR.</li>
-                                <li>The same dominant-M2 criteria at 6-24 hours also require CTP hypoperfusion-hypodensity mismatch: EVT, COR IIa / LOE B-NR.</li>
-                                <li>Nondominant M2, ACA, or PCA: no EVT, COR III: No Benefit / LOE A.</li>
-                                <li>Codominant M2: the institutional flowchart supplies no recommendation.</li>
+                                <li>The same dominant-M2 criteria at 6-24 hours also require CTP hypoperfusion-hypodensity mismatch: EVT, institutional tier; no AHA/ASA 2026 grade for 6-24 h.</li>
+                                <li>Nondominant or codominant M2, distal MCA, ACA, or PCA: no EVT, COR III: No Benefit / LOE A (AHA/ASA 2026).</li>
                               </ul>
                             </div>
                             <div className="bg-white rounded-md border-l-4 border-warn-500 p-3 dark:bg-card ">
@@ -2071,7 +2075,7 @@ export default function ProtectedProtocols({
                           </div>
                         </details>
 
-                        <details id="isch-bp" className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
+                        <details id="isch-bp" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-100/50 rounded-t-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Blood Pressure Management</h2>
                           </summary>
@@ -2090,7 +2094,7 @@ export default function ProtectedProtocols({
                                   <button
                                     key={key}
                                     type="button"
-                                    onClick={() => setTelestrokeNote(prev => ({ ...prev, bpPhase: key }))}
+                                    onClick={() => setBpPhase(key)}
                                     className={`px-3 py-1.5 rounded-full text-xs font-semibold border ${
                                       currentBpPhase === key
                                         ? 'bg-cobalt-600 text-white border-cobalt-600'
@@ -2109,27 +2113,28 @@ export default function ProtectedProtocols({
                                 <p className="text-sm font-semibold text-cobalt-800 dark:text-cobalt-300">
                                   {currentBpPhase === 'post-evt'
                                     ? postEvtSourceTargetApplies
-                                      ? `SBP ${currentBpTarget.systolicLow}-${currentBpTarget.systolicHigh} (mTICI ≥2b)`
-                                      : 'Requires documented mTICI ≥2b'
+                                      ? `SBP ${currentBpTarget.systolicLow}-${currentBpTarget.systolicHigh} and ≤${currentBpTarget.systolic}/${currentBpTarget.diastolic} (mTICI ≥2b)`
+                                      : `BP ≤${currentBpTarget.systolic}/${currentBpTarget.diastolic} for 24 h (all EVT)`
                                     : `BP <${currentBpTarget.systolic}/${currentBpTarget.diastolic}`}
                                 </p>
                               </div>
                               <div className="bg-slate-50 border border-line rounded-lg p-2 dark:bg-paper-2">
-                                <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-mute">Current BP</p>
+                                <label htmlFor="protocol-bp-check" className="block text-xs uppercase tracking-wide text-slate-500 dark:text-mute">Current BP</label>
                                 <input
+                                  id="protocol-bp-check"
                                   type="text"
-                                  value={telestrokeNote.bpProtocolCheck || ''}
-                                  onChange={(e) => setTelestrokeNote(prev => ({ ...prev, bpProtocolCheck: e.target.value }))}
+                                  value={bpCheckValue}
+                                  onChange={(e) => setBpProtocolCheck(e.target.value)}
                                   className="w-full mt-1 px-2 py-1 border border-line rounded text-sm"
                                   placeholder="e.g. 172/98"
                                 />
-                                <p className="text-xs text-slate-500 mt-1 dark:text-mute">Compared only with the selected ischemic treatment phase.</p>
+                                <p className="text-xs text-slate-500 mt-1 dark:text-mute">Compared only with the selected ischemic treatment phase. Prefilled from the Encounter BP until edited; not saved to the note.</p>
                               </div>
                               <div className={`rounded-lg p-2 border ${bpWithinTarget === null ? 'bg-slate-50 border-slate-200 dark:bg-paper-2 dark:border-line' : bpWithinTarget ? 'bg-ok-50 border-ok-200 dark:bg-ok-950 dark:border-ok-800' : 'bg-crit-50 border-crit-200 dark:bg-crit-950 dark:border-crit-800'}`}>
                                 <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-mute">Status</p>
                                 <p className="text-sm font-semibold">
-                                  {currentBpPhase === 'post-evt' && !postEvtSourceTargetApplies
-                                    ? 'Source target not active'
+                                  {bpOrderInvalid
+                                    ? 'Check BP order (systolic must exceed diastolic)'
                                     : bpWithinTarget === null
                                       ? 'Enter BP to check'
                                       : bpWithinTarget
@@ -2150,6 +2155,8 @@ export default function ProtectedProtocols({
                                 <li><strong>Before lytics:</strong> SBP &lt;185, DBP &lt;110</li>
                                 <li><strong>After lytics:</strong> SBP &lt;180, DBP &lt;105</li>
                                 <li><strong>After documented successful thrombectomy recanalization (mTICI ≥2b):</strong> SBP 140-180</li>
+                                <li><strong>All EVT:</strong> maintain BP ≤180/105 during and for 24 hours after the procedure (AHA/ASA 2026, COR 2a, LOE B-NR)</li>
+                                <li><strong>After successful reperfusion (mTICI ≥2b):</strong> intensive SBP lowering to &lt;140 is harmful (AHA/ASA 2026, COR 3: Harm, LOE A)</li>
                               </ul>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
@@ -2163,7 +2170,7 @@ export default function ProtectedProtocols({
                           </div>
                         </details>
 
-                        <details id="isch-swallow" className="bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
+                        <details id="isch-swallow" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-900">
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Stroke-Specific Nursing Swallow Screen</h2>
                           </summary>
@@ -2172,14 +2179,14 @@ export default function ProtectedProtocols({
                             <ol className="list-decimal pl-5 space-y-1">
                               <li>Check whether GCS is &lt;13 or whether lower-facial, tongue, or palatal asymmetry/weakness is present.</li>
                               <li>If any answer is yes: stop the screen, document failure, keep the patient NPO including medications, request Speech-Language Pathology evaluation, and notify the treating team.</li>
-                              <li>If all answers are no: administer 3 ounces of water in sequential drinks and observe for throat clearing, cough, or voice-quality change immediately and for 1 minute.</li>
+                              <li>If all answers are no: administer 3 ounces of water by uninterrupted drinking and observe for throat clearing, cough, or voice-quality change immediately and for 1 minute.</li>
                               <li>If any water-step sign occurs: document failure, keep NPO including medications, request Speech-Language Pathology evaluation, and notify the treating team. Otherwise document pass and use the appropriate diet/medication pathway.</li>
                             </ol>
                             <p className="text-xs text-slate-600 dark:text-mute">A repeat RN screen within 24 hours after thrombolysis and/or thrombectomy requires significant neurologic improvement (NIHSS ≤5; no facial droop, tongue/palatal asymmetry, or airway concern), an authorized attending request, documented rationale, and team notification. Do not repeat the RN screen after an SLP evaluation has already been completed. If the patient’s clinical condition subsequently worsens, reconsider the need for further assessment.</p>
                           </div>
                         </details>
 
-                        <details id="isch-postlytic" className="bg-crit-50 border border-crit-200 rounded-lg dark:bg-crit-950 dark:border-crit-800">
+                        <details id="isch-postlytic" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-crit-50 border border-crit-200 rounded-lg dark:bg-crit-950 dark:border-crit-800">
                           <summary className="cursor-pointer p-4 font-semibold text-crit-800 hover:bg-crit-100/50 rounded-t-lg flex items-center justify-between dark:text-crit-300 dark:hover:bg-crit-900">
                             <h2 className="text-lg font-semibold text-crit-800 dark:text-crit-300">Post-Lytic ICH Protocol</h2>
                           </summary>
@@ -2191,15 +2198,15 @@ export default function ProtectedProtocols({
                               <ol className="text-sm space-y-1 list-decimal list-inside">
                                 <li>Stop thrombolytic if still running</li>
                                 <li>STAT non-contrast CT head + STAT blood draw (PT/INR, platelets, fibrinogen, PTT, TT, D-dimers, CBC, Type &amp; Cross)</li>
-                                <li>Contact blood bank/transfusion services and order 2 units of cryoprecipitate (1 unit = 5 prepooled cryoprecipitates)</li>
+                                <li>Contact blood bank/transfusion services and order 2 pre-pooled units of cryoprecipitate (each pool ≈5 single-donor units; total ≈10 units)</li>
                                 <li>Notify the patient’s family of the change in status</li>
-                                <li>If CT will be delayed &gt;30 minutes and fibrinogen is &lt;200 mg/dL, empirically administer the 2 units over 10-30 minutes</li>
+                                <li>If CT will be delayed &gt;30 minutes and fibrinogen is &lt;200 mg/dL, empirically administer the 2 pre-pooled units (≈10 units) IV over 10-30 minutes</li>
                               </ol>
                             </div>
                             <div className="bg-white p-3 rounded border dark:bg-card">
                               <h3 className="font-semibold mb-2">CT Result Branch</h3>
                               <ul className="text-sm space-y-1">
-                                <li><strong>Intracranial blood on CT:</strong> confirm the CT result with the ordering provider and administer 2 units of cryoprecipitate over 10-30 minutes</li>
+                                <li><strong>Intracranial blood on CT:</strong> confirm the CT result with the ordering provider and administer 2 pre-pooled units of cryoprecipitate (each pool ≈5 single-donor units; total ≈10 units) IV over 10-30 minutes</li>
                                 <li><strong>Before TXA:</strong> verbally confirm with the RN that administration is post-CT; after both confirmations, give tranexamic acid 1,000 mg IV over 10 minutes</li>
                                 <li><strong>Then:</strong> repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal; contact the Stroke/Neurology attending, consult Neurosurgery if needed, and update the family again</li>
                                 <li><strong>No intracranial blood on CT:</strong> do <strong>NOT</strong> restart the lytic; consider other causes — extending infarct, seizure, hypoxia, hypercarbia, hypoglycemia, or electrolyte abnormalities</li>
@@ -2211,14 +2218,14 @@ export default function ProtectedProtocols({
                             <h3 className="font-semibold mb-2">Monitoring and Escalation</h3>
                             <ul className="text-sm space-y-1">
                               <li>• Neurologic checks and vital signs every 15 minutes for 2 hours, every 30 minutes for 6 hours, then every hour for 16 hours</li>
-                              <li>• Notify the provider for SBP &gt;180, DBP &gt;90, a new neurologic deficit, or a GCS decrease of at least 2 points</li>
+                              <li>• Notify the provider for SBP &gt;180 or DBP &gt;105, a new neurologic deficit, or a GCS decrease of at least 2 points</li>
                               <li>• Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal; if abnormalities persist or bleeding remains uncontrolled, consult the Hematology attending</li>
                             </ul>
                           </div>
                           </div>
                         </details>
 
-                        <details id="isch-angioedema" className="bg-warn-50 border border-warn-300 rounded-lg dark:bg-warn-950 dark:border-warn-800">
+                        <details id="isch-angioedema" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-warn-50 border border-warn-300 rounded-lg dark:bg-warn-950 dark:border-warn-800">
                           <summary className="cursor-pointer p-4 font-semibold text-warn-800 hover:bg-warn-100/50 rounded-t-lg flex items-center justify-between dark:text-warn-300 dark:hover:bg-warn-900">
                             <h2 className="text-lg font-semibold text-warn-800 dark:text-warn-300">Orolingual Angioedema Protocol</h2>
                           </summary>
@@ -2249,7 +2256,7 @@ export default function ProtectedProtocols({
                           </div>
                         </details>
 
-                        <details id="isch-largecore" className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
+                        <details id="isch-largecore" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-100/50 rounded-t-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Large Core EVT Selection</h2>
                           </summary>
@@ -2276,7 +2283,7 @@ export default function ProtectedProtocols({
                           </div>
                         </details>
 
-                        <details id="isch-postevt" className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
+                        <details id="isch-postevt" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-100/50 rounded-t-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Post-EVT Management</h2>
                           </summary>
@@ -2285,15 +2292,15 @@ export default function ProtectedProtocols({
                             <h3 className="font-semibold text-cobalt-700 mb-2 dark:text-cobalt-300">Post-Procedure Care</h3>
                             <ul className="text-sm space-y-1">
                               <li>• Admit to the Neuro ICU for 24 hours after EVT; attend the post-thrombectomy huddle on admission for handoff with the ICU and anesthesiology teams</li>
-                              <li>• During the procedure, the institutional BP goal is SBP &gt;140 mmHg (neuroanesthesia responsible)</li>
+                              <li>• During the procedure, maintain SBP 140-180 mmHg and BP ≤180/105 (neuroanesthesia responsible)</li>
                               <li>• Follow-up brain CT or MRI at 24 hours ±6 hours; confirm dual-energy CT timing with the on-call stroke clinician</li>
                             </ul>
-                            <p className="text-xs text-slate-600 mt-2 dark:text-mute">After documented successful recanalization (mTICI ≥2b), use the BP Management section for the institutional SBP 140-180 guardrail. The current source set does not supply a post-EVT nursing cadence.</p>
+                            <p className="text-xs text-slate-600 mt-2 dark:text-mute">After documented successful recanalization (mTICI ≥2b), use the BP Management section for the institutional SBP 140-180 guardrail. For every EVT, keep BP ≤180/105 for 24 hours (AHA/ASA 2026, COR 2a, LOE B-NR); after mTICI ≥2b, intensive SBP lowering to &lt;140 is harmful (COR 3: Harm, LOE A). The current source set does not supply a post-EVT nursing cadence.</p>
                           </div>
                           </div>
                         </details>
 
-                        <details id="isch-mevo" className="bg-slate-50 border border-slate-300 rounded-lg dark:bg-paper-2 dark:border-strong">
+                        <details id="isch-mevo" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-slate-50 border border-slate-300 rounded-lg dark:bg-paper-2 dark:border-strong">
                           <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-100 rounded-t-lg flex items-center justify-between dark:text-ink dark:hover:bg-card">
                             <h2 className="text-lg font-semibold text-slate-800 dark:text-ink">Medium Vessel Occlusion (MeVO) EVT</h2>
                           </summary>
@@ -2302,15 +2309,15 @@ export default function ProtectedProtocols({
                             <p className="text-sm font-semibold mb-2 text-slate-800 dark:text-ink">Institutional M2 / distal-vessel branches</p>
                             <ul className="text-sm space-y-1">
                               <li>• Dominant proximal M2, 0-6 hours, ASPECTS ≥6, NIHSS ≥6: EVT, COR IIa / LOE B-NR</li>
-                              <li>• Dominant proximal M2, 6-24 hours, ASPECTS ≥6, NIHSS ≥6, and CTP hypoperfusion-hypodensity mismatch: EVT, COR IIa / LOE B-NR</li>
-                              <li>• Nondominant M2, ACA, or PCA: no EVT, COR III: No Benefit / LOE A</li>
-                              <li>• Codominant M2: no recommendation is supplied</li>
+                              <li>• Dominant proximal M2, 6-24 hours, ASPECTS ≥6, NIHSS ≥6, and CTP hypoperfusion-hypodensity mismatch: EVT, institutional tier; no AHA/ASA 2026 grade for 6-24 h</li>
+                              <li>• Nondominant or codominant M2, distal MCA, ACA, or PCA: no EVT, COR III: No Benefit / LOE A (AHA/ASA 2026; ESCAPE-MeVO and DISTAL)</li>
                             </ul>
+                            <p className="text-xs text-slate-600 mt-2 dark:text-mute">ORIENTAL-MeVO (2026), published after the guideline, reported benefit for medium-vessel occlusion with NIHSS ≥6 and more symptomatic ICH; individualize only with the neurointerventional team.</p>
                           </div>
                           </div>
                         </details>
 
-                        <details id="isch-contrast" className="bg-teal-50 border border-teal-200 rounded-lg dark:bg-teal-950 dark:border-teal-800">
+                        <details id="isch-contrast" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-teal-50 border border-teal-200 rounded-lg dark:bg-teal-950 dark:border-teal-800">
                           <summary className="cursor-pointer p-4 font-semibold text-teal-800 hover:bg-teal-100/50 rounded-t-lg flex items-center justify-between dark:text-teal-300 dark:hover:bg-teal-900">
                             <h2 className="text-lg font-semibold text-teal-800 dark:text-teal-300">Contrast Allergy + Suspected LVO Protocol</h2>
                           </summary>
@@ -2351,7 +2358,7 @@ export default function ProtectedProtocols({
                           </div>
                         </details>
 
-                        <details id="isch-posterior" className="bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
+                        <details id="isch-posterior" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-100/50 rounded-t-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Posterior Circulation Stroke</h2>
                           </summary>

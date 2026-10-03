@@ -104,7 +104,10 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
 
     expect(texts['src/ProtectedProtocols.jsx']).toMatch(/ED clinicians or the stroke service may call Neurosurgery directly; prior approval is not required/i);
     expect(texts['src/ProtectedProtocols.jsx']).toMatch(/plan must be closed-looped with the designated on-call stroke attending and other involved service/i);
-    expect(texts['src/ProtectedProtocols.jsx']).toMatch(/Cerebellar ICH with mass effect/);
+    // ICH 2022 (COR 1, LOE B-NR): cerebellar ICH >=15 mL, deterioration, brainstem
+    // compression or obstructive hydrocephalus -> immediate surgical evacuation +/- EVD.
+    expect(texts['src/ProtectedProtocols.jsx']).toMatch(/Cerebellar ICH ≥15 mL, or with neurological deterioration, brainstem compression and\/or hydrocephalus from ventricular obstruction/);
+    expect(texts['src/ProtectedProtocols.jsx']).toMatch(/immediate surgical evacuation with or without EVD \(ICH 2022, COR 1, LOE B-NR\)/);
 
     // The accepted institutional source does not state a separate negative policy
     // about attending-of-record notification, so that invented operational claim
@@ -119,6 +122,8 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
   });
 
   it('keeps the institutional MIE screen complete without the old ENRICH-based heading', () => {
+    const ENRICH_TRIAL_CONTEXT = /ENRICH trial context \(not the local screen\)/;
+    expect(texts['src/institutional-protocols.js']).toMatch(ENRICH_TRIAL_CONTEXT);
     expect(texts['src/ProtectedProtocols.jsx']).toMatch(/June 2026 Institutional MIE Screen/);
     expect(texts['src/ProtectedProtocols.jsx']).not.toMatch(/June 2026 MIE Screen \(ENRICH-Based\)/);
     expect(texts['src/ProtectedProtocols.jsx']).toMatch(/GCS 5-14/);
@@ -137,8 +142,10 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
       ...offendingLines(/(MIE|ENRICH)[^\n]{0,240}Premorbid mRS 0-1/i, { files: ['src/ProtectedProtocols.jsx', 'app.js'] }),
       ...offendingLines(/(≤|<=)24 hours of symptom onset/i, { files: ['src/ProtectedProtocols.jsx', 'app.js'] }),
       ...offendingLines(/24-72h after onset/i, { files: ['src/ProtectedProtocols.jsx', 'app.js'] }),
-      ...offendingLines(/mRS 0-1[^\n]{0,160}ENRICH/i),
-      ...offendingLines(/ENRICH[^\n]{0,160}mRS 0-1/i),
+      // 2026-10-03: the ENRICH trial inclusion context is allowed only when it is
+      // explicitly labeled as trial context rather than the local MIE screen.
+      ...offendingLines(/mRS 0-1[^\n]{0,160}ENRICH/i, { allow: ENRICH_TRIAL_CONTEXT }),
+      ...offendingLines(/ENRICH[^\n]{0,160}mRS 0-1/i, { allow: ENRICH_TRIAL_CONTEXT }),
       ...offendingLines(/ENRICH[^\n]{0,240}(≤|<=)\s*24\s*(h|hours?)/i, { files: ['src/ProtectedProtocols.jsx', 'app.js'] }),
       ...offendingLines(/ENRICH[^\n]{0,240}20-50\s*mL/i, { files: ['src/ProtectedProtocols.jsx', 'app.js'] }),
       ...offendingLines(/20-50\s*mL[^\n]{0,240}ENRICH/i, { files: ['src/ProtectedProtocols.jsx', 'app.js'] })

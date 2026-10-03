@@ -4,12 +4,21 @@ import { evaluateWakeUpScreen } from '../src/encounter-clinical-review.js';
 import { NIHSS_ITEMS } from '../src/clinical/nihss-items.js';
 const NOW = new Date('2026-10-01T12:00:00').getTime();
 describe('canonical state and honest documentation', () => {
-  it('never imputes zero from an incomplete or untestable NIHSS', () => {
+  it('never imputes zero from an incomplete NIHSS and totals documented UN items per NIHSS rules', () => {
     expect(nihssAssessment({}).total).toBeNull();
     const entries = Object.fromEntries(NIHSS_ITEMS.map(item => [item.id, item.options[0]]));
-    expect(nihssAssessment(entries).total).toBe(0);
-    entries.dysarthria='Intubated/other (UN)';expect(nihssAssessment(entries).total).toBeNull();
-    entries.dysarthria='';expect(nihssAssessment(entries).total).toBeNull();
+    expect(nihssAssessment(entries)).toMatchObject({ total: 0, untestable: 0 });
+    // UN (untestable) is a documented finding: all 15 items documented, UN not scored.
+    entries.dysarthria='Intubated/other (UN)';expect(nihssAssessment(entries)).toMatchObject({ complete: true, total: 0, untestable: 1 });
+    entries.motor_arm_left='Amputation/joint fusion (UN)';entries.motor_arm_right='No movement (4)';
+    expect(nihssAssessment(entries)).toMatchObject({ complete: true, total: 4, untestable: 2 });
+    // An item that is simply not assessed still withholds the total.
+    entries.dysarthria='';expect(nihssAssessment(entries)).toMatchObject({ complete: false, total: null });
+  });
+  it('offers UN only on NIHSS items whose rules allow it', () => {
+    const withUn = NIHSS_ITEMS.filter(item => item.options.some(option => option.includes('(UN)'))).map(item => item.id);
+    expect(withUn).toEqual(['motor_arm_left', 'motor_arm_right', 'motor_leg_left', 'motor_leg_right', 'limb_ataxia', 'dysarthria']);
+    for (const id of ['motor_arm_left', 'motor_arm_right', 'motor_leg_left', 'motor_leg_right', 'limb_ataxia']) expect(NIHSS_ITEMS.find(item => item.id === id).options).toContain('Amputation/joint fusion (UN)');
   });
   it('invalidates a draft after every source group changes or clears', () => {
     const s=newEncounter();s.draft={text:buildSummary(s,NOW),stale:false};
@@ -114,6 +123,9 @@ describe('canonical state and honest documentation', () => {
   it('uses existing concern distinctions for protocol safety review without classifying blue-tier flags as exclusions', () => {
     const s = newEncounter();s.note.diagnosisCategory = 'ischemic';
     s.note.tnkContraindicationChecklist = { aceInhibitor: true, dualAntiplatelet: true, seizureAtOnset: true };
+    // Anticoagulant exposure must be explicitly "none" for a clean protocol card.
+    expect(protocolEncounter(s, NOW).safetyReviewRequired).toBe(true);
+    s.note.lastDOACType = 'none';
     expect(protocolEncounter(s, NOW).safetyReviewRequired).toBe(false);
     const before = protocolEncounter(s, NOW).sourceKey;
     s.note.tnkContraindicationChecklist.priorICH = true;

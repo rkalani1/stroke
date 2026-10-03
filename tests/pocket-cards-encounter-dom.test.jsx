@@ -29,8 +29,8 @@ beforeAll(async () => {
     import ProtectedProtocols from './src/ProtectedProtocols.jsx';
     const root = createRoot(document.getElementById('root'));
     window.calls = [];
-    window.renderProtocols = value => {
-      flushSync(() => root.render(<ProtectedProtocols managementSubTab="ischemic" encounter={{ ...value, onChange: (key, value) => window.calls.push([key, value]) }} />));
+    window.renderProtocols = (value, note) => {
+      flushSync(() => root.render(<ProtectedProtocols managementSubTab="ischemic" telestrokeNote={note || {}} encounter={{ ...value, onChange: (key, value) => window.calls.push([key, value]) }} />));
     };
     window.renderCards = (value, defaults = {}) => {
       window.model = value;
@@ -241,5 +241,95 @@ describe('canonical Encounter bindings in retained protocol cards', () => {
     expect(await evt().getByLabel('NIHSS', { exact: true }).inputValue()).toBe('12');
     expect(await ivt().getByLabel('LKW (h)', { exact: true }).inputValue()).toBe('4.5');
     expect(await page.evaluate(() => window.calls)).toEqual([]);
+  });
+
+  // 2026-10-03 clinical audit corrections.
+  it('holds the IVT card with the Encounter safety reason instead of an affirmative COR 1 result', async () => {
+    await render({ ...complete, safetyReviewRequired: true, safetyReviewReason: 'anticoagulant exposure: DOAC timing unknown' });
+    await ivt().getByLabel('Absolute and relative contraindications reviewed', { exact: true }).check();
+    const text = await ivt().innerText();
+    expect(text).toContain('Final IVT safety gates incomplete');
+    expect(text).toContain('resolve the Encounter safety review (anticoagulant exposure: DOAC timing unknown)');
+    expect(text).not.toContain('TNK recommended');
+    expect(text).not.toMatch(/COR 1\b/);
+  });
+
+  it('rounds Encounter-derived weight and elapsed hours for display only', async () => {
+    await render({ ...complete, ivt: { ...complete.ivt, weight: '79.832257', hoursFromLKW: 2.5061980555555556 }, anterior: { ...complete.anterior, timeFromLKWh: 2.5061980555555556 } });
+    expect(await ivt().getByLabel('Weight (kg)', { exact: true }).inputValue()).toBe('79.8');
+    expect(await ivt().getByLabel('LKW (h)', { exact: true }).inputValue()).toBe('2.5');
+    expect(await evt().getByLabel('LKW (h)', { exact: true }).inputValue()).toBe('2.5');
+    await ivt().getByLabel('Absolute and relative contraindications reviewed', { exact: true }).check();
+    expect(await ivt().innerText()).toContain('TNK 19.96 mg');
+  });
+
+  it('flags an inverted BP instead of evaluating it', async () => {
+    await render({ ...complete, ivt: { ...complete.ivt, bpSystolic: '95', bpDiastolic: '172' } });
+    expect(await ivt().innerText()).toContain('Check BP order: systolic must exceed diastolic');
+  });
+
+  it('shows the DOAC absolute contraindication and the unresolved local source conflicts', async () => {
+    await render();
+    const contraindications = await card('INST IVT Contraindications').innerText();
+    expect(contraindications).toContain('Factor Xa inhibitor (apixaban, rivaroxaban, edoxaban) or dabigatran: last dose <48 h or unknown');
+    expect(contraindications).toContain('Unresolved local source conflicts');
+    expect(contraindications).toContain('DOAC / factor-Xa timing and assay pathway');
+  });
+
+  it('requires LVO for 9-24 h IVT and reads it from Encounter vessel imaging', async () => {
+    await render({ ...complete, ivt: { ...complete.ivt, hoursFromLKW: 12, preMRS: '0', lvoOnCta: true } });
+    const select = ivt().getByLabel('LVO on CTA (ICA or MCA occlusion) — required 9-24h');
+    expect(await select.inputValue()).toBe('yes');
+    expect(await select.isDisabled()).toBe(true);
+  });
+
+  it('labels codominant M2 EVT as COR 3: No Benefit', async () => {
+    await render();
+    await evt().getByRole('button', { name: 'M2 / Distal', exact: true }).click();
+    await evt().getByLabel('Segment').selectOption('M2-codominant');
+    const text = await evt().innerText();
+    expect(text).toContain('NO EVT');
+    expect(text).toContain('COR 3 (No Benefit)');
+  });
+
+  it('offers a drug-aware safety pause', async () => {
+    await render(null);
+    await safe().getByLabel('Thrombolytic agent').selectOption('alteplase');
+    await safe().getByLabel('Consent type').selectOption('informed');
+    await safe().getByLabel('BP at attestation', { exact: true }).fill('170/90');
+    await safe().getByLabel('Contraindications').selectOption('reviewed');
+    await safe().getByLabel('Provider agreement').selectOption('confirmed');
+    const text = await safe().locator('textarea').inputValue();
+    expect(text).toContain('alteplase 0.9 mg/kg, max 90 mg');
+    expect(text).not.toContain('tenecteplase');
+  });
+
+  it('keeps protocol BP phase and spot check out of the canonical note and prefills from Encounter BP', async () => {
+    await page.evaluate(value => window.renderProtocols(value, { presentingBP: '170/95' }), complete);
+    await page.getByRole('button', { name: 'BP Management', exact: true }).click();
+    const input = page.locator('#protocol-bp-check');
+    expect(await input.inputValue()).toBe('170/95');
+    await page.locator('#isch-bp').getByRole('button', { name: 'Post-TNK', exact: true }).click();
+    await input.fill('95/172');
+    expect(await page.locator('#isch-bp').innerText()).toContain('Check BP order (systolic must exceed diastolic)');
+    await input.fill('176/100');
+    expect(await page.locator('#isch-bp').innerText()).toContain('Within target');
+    await page.locator('#isch-bp').getByRole('button', { name: 'Post-EVT', exact: true }).click();
+    expect(await page.locator('#isch-bp').innerText()).toContain('BP ≤180/105 for 24 h (all EVT)');
+    expect(await page.evaluate(() => window.calls)).toEqual([]);
+  });
+
+  it('opens collapsed ancestors when a Jump to Section chip is used', async () => {
+    await page.evaluate(value => window.renderProtocols(value), complete);
+    for (const [label, id] of [['BP Management', 'isch-bp'], ['Swallow Screen', 'isch-swallow'], ['Post-Lytic ICH', 'isch-postlytic'], ['Posterior Circ', 'isch-posterior']]) {
+      await page.getByRole('button', { name: label, exact: true }).click();
+      const state = await page.evaluate(target => {
+        const element = document.getElementById(target);
+        const closed = [];
+        for (let node = element; node; node = node.parentElement) if (node.tagName === 'DETAILS' && !node.open) closed.push(node.id || node.querySelector('summary')?.textContent);
+        return { closed, visible: element.getBoundingClientRect().height > 0, focused: element.contains(document.activeElement) };
+      }, id);
+      expect(state).toEqual({ closed: [], visible: true, focused: true });
+    }
   });
 });

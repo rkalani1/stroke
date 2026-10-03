@@ -1,3 +1,4 @@
+Protocols & Algorithms
 No diagnosis set.
 Set a working diagnosis on the Encounter tab to activate pathway-specific management recommendations and auto-populate relevant protocols.
 Set diagnosis
@@ -36,6 +37,7 @@ B-R
 Glucose <50 or >400 mg/dL
 Correct first; reassess the deficit before an eligibility verdict
 I
+C-LD
 TNK dose from weight
 Alteplase calculator
 NIHSS
@@ -44,13 +46,14 @@ IVT eligibility decision algorithm and accepted telestroke workflow.
 Require the complete institutional extended-window gates
 Wake-Up and 4.5-24h IVT
 Advanced-imaging selection
-For a known 4.5-9-hour interval, the institutional pathway accepts MRI DWI-FLAIR mismatch or the full numeric CTP mismatch criteria. Wake-up or unknown-onset treatment requires MRI DWI-FLAIR mismatch. Every extended branch also requires baseline mRS <=1 and a determination that the patient is not an EVT candidate, subject to the pathway’s narrow EVT-infeasibility exception.
+For a known 4.5-9-hour interval, the institutional pathway accepts MRI DWI-FLAIR mismatch or the full numeric CTP mismatch criteria. Wake-up or unknown-onset treatment requires MRI DWI-FLAIR mismatch. The 9-24-hour branch requires large-vessel occlusion on CTA. Every extended branch also requires baseline mRS <=1 and a determination that the patient is not an EVT candidate, subject to the pathway’s narrow EVT-infeasibility exception.
 Do now
-For a known 4.5-9-hour interval, require either an explicit MRI DWI-FLAIR mismatch or CTP core <50 mL, mismatch ratio >=1.2, and mismatch volume >=10 mL.
+For a known 4.5-9-hour interval, require either an explicit MRI DWI-FLAIR mismatch or the institutional CTP thresholds: core <50 mL, mismatch ratio >=1.2, and mismatch volume >=10 mL (EXTEND used core <70 mL, ratio >1.2, mismatch >10 mL).
 For wake-up or unknown onset, require explicit MRI DWI-FLAIR mismatch; do not substitute the CTP branch.
 Prefer MRI when the presentation is small-vessel, posterior circulation, or complicated by contrast allergy.
 Confirm baseline mRS <=1.
 Confirm the patient is not an EVT candidate; IVT may be considered for selected LVO only when EVT within 24 hours is not feasible.
+For 9-24 hours, require LVO (ICA or MCA occlusion) on CTA when EVT cannot be performed, plus the institutional CTP thresholds. AHA/ASA 2026 grades this COR 2b, LOE B-R; TRACE-III enrolled ICA/MCA occlusion with core <70 mL, mismatch ratio >=1.8 and mismatch volume >=15 mL.
 Obtain consent for the 9-24-hour time window.
 Decision pathway
 Scenario
@@ -64,8 +67,12 @@ Wake-up or unknown onset with qualifying MRI DWI-FLAIR mismatch
 Consider TNK
 IIa
 B-R
-9-24h with qualifying CTP selection
+9-24h with qualifying CTP selection (institutional thresholds), LVO on CTA, and EVT not feasible
 Consider TNK; consent required
+IIb
+B-R
+9-24h without LVO
+No AHA/ASA 2026 grade; not supported by this pathway
 Missing imaging, mRS, or EVT-candidacy gate
 Do not return an affirmative extended-window result
 ASPECTS
@@ -136,6 +143,7 @@ Do now
 Before IVT, lower blood pressure to below 185/110 mmHg.
 After IVT, maintain blood pressure below 180/105 mmHg for 24 hours.
 After documented successful EVT recanalization (mTICI >=2b), use an SBP guardrail of 140-180 mmHg.
+For every EVT, maintain BP <=180/105 mmHg during and for 24 hours after the procedure.
 Decision pathway
 Scenario
 Decision
@@ -146,17 +154,21 @@ Post-IVT
 Maintain <180/105 for 24 hours
 Post-EVT with documented mTICI >=2b
 Maintain SBP 140-180
+Any EVT, during and 24 h after
+Maintain BP <=180/105
+IIa
+B-NR
 Post-EVT BP
 Institutional source basis
 Stroke pocket card.
 Do not combine branches the flowchart keeps separate
 M2 / Distal Occlusion
 Dominant and nondominant branches
-A dominant proximal M2 has separate early and late EVT tiers. The no-benefit branch applies to nondominant M2, ACA, and PCA. The accepted flowchart supplies no recommendation for codominant M2.
+A dominant proximal M2 has a guideline-graded early tier (within 6 hours) and a separate institutional late tier. AHA/ASA 2026 grades EVT for nondominant or codominant M2, distal MCA, ACA, and PCA occlusion as no benefit.
 Do now
 Define dominant proximal M2 as an M2 branch <=1 cm from the MCA bifurcation that supplies >=50% of MCA territory. The flowchart also grades dominance by tissue at risk: dominant >100 mL, codominant 90-100 mL, nondominant <90 mL.
 For 6-24 hours, require the flowchart’s CTP hypoperfusion-hypodensity mismatch in addition to ASPECTS and NIHSS. Mismatch means noncontrast CT shows no established hypodensity in >=90% of the CTP hypoperfused lesion.
-Do not infer a codominant-M2 recommendation from the nondominant branch.
+Codominant M2 shares the AHA/ASA 2026 no-benefit grade with nondominant M2 (ESCAPE-MeVO, DISTAL). ORIENTAL-MeVO (2026, after the guideline) reported benefit with NIHSS >=6; individualize only with the neurointerventional team.
 Decision pathway
 Scenario
 Decision
@@ -166,15 +178,11 @@ EVT
 IIa
 B-NR
 Dominant proximal M2, 6-24h, ASPECTS >=6, NIHSS >=6, CTP mismatch present
-EVT
-IIa
-B-NR
-Nondominant M2, ACA, or PCA
+EVT (institutional tier; no AHA/ASA 2026 grade for 6-24 h)
+Nondominant or codominant M2, distal MCA, ACA, or PCA
 No EVT
 III: No Benefit
 A
-Codominant M2
-No institutional recommendation is supplied
 EVT builder
 Institutional source basis
 EVT eligibility flowchart.
@@ -184,7 +192,7 @@ Suspected post-thrombolytic ICH
 The institutional algorithm separates the initial suspected-hemorrhage actions, the delayed-CT cryoprecipitate branch, CT-confirmed tranexamic acid, and subsequent laboratory and consultation steps.
 Do now
 Suspect intracranial hemorrhage with sudden neurologic deterioration, new headache, acute hypertension, nausea, or vomiting; stop the thrombolytic if still running and begin the STAT CT, laboratory, and reversal workflow.
-Order 2 units of cryoprecipitate immediately (1 unit = 5 prepooled cryoprecipitates). If CT results are expected to take more than 30 minutes, empirically administer 2 units only when fibrinogen is below 200 mg/dL.
+Order 2 pre-pooled units of cryoprecipitate immediately (each pool ≈5 single-donor units; total ≈10 units). If CT results are expected to take more than 30 minutes, empirically administer them IV over 10-30 minutes only when fibrinogen is below 200 mg/dL.
 Confirm intracranial blood on CT with the ordering provider, then confirm post-CT cryoprecipitate administration with the RN before tranexamic acid; after both confirmations, give tranexamic acid 1,000 mg IV over 10 minutes.
 Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal; call the Stroke/Neurology attending, consult Neurosurgery if needed, update the family, and obtain Hematology-attending input if abnormalities persist or bleeding remains uncontrolled.
 Avoid anticoagulants and antiplatelet agents for 24 hours after TNK.
@@ -195,9 +203,9 @@ COR / LOE
 CT not delayed
 Wait for CT result before the treatment branch
 CT delayed >30 min and fibrinogen <200 mg/dL
-Empirically administer 2 units cryoprecipitate over 10-30 min
+Empirically administer 2 pre-pooled units of cryoprecipitate (≈10 units) IV over 10-30 min
 Intracranial blood confirmed on CT
-Confirm CT with the ordering provider. If cryoprecipitate was not already given, give 2 units over 10-30 min; if given empirically, verbally confirm post-CT administration with the RN. Then give TXA 1,000 mg IV over 10 min
+Confirm CT with the ordering provider. If cryoprecipitate was not already given, give 2 pre-pooled units (≈10 units) IV over 10-30 min; if given empirically, verbally confirm post-CT administration with the RN. Then give TXA 1,000 mg IV over 10 min
 Empiric cryoprecipitate running and CT shows no ICH
 Stop the cryoprecipitate infusion; do not restart the lytic
 Orolingual angioedema
@@ -256,7 +264,7 @@ Preferred imaging when feasible: MRI brain plus MRA head/neck (mimics are common
 IVT with alteplase may be considered for a disabling, imaging-supported AIS treatable within 4.5h of LKW (the 2026 AHA/ASA guideline names alteplase for ages 28 days-18 years, COR IIb); thrombolysis is NOT FDA-approved in children and requires pediatric stroke expertise and family shared decision-making.
 If a weight-based dose is used, verify it against local pediatric pharmacy/ICU protocol: alteplase 0.9 mg/kg (max 90 mg) is the guideline-referenced agent; tenecteplase 0.25 mg/kg (max 25 mg) is adult-derived extrapolation only and is not specifically endorsed for children.
 EVT may be considered for LVO with a measurable deficit and salvageable tissue, generally within 24h: age >=6y is reasonable (COR IIa) and age 28 days-<6y may be reasonable in selected cases (COR IIb) — pediatric EVT is not categorically excluded in young children. Adapt adult criteria cautiously with the neurointerventionalist.
-Moyamoya and focal cerebral arteriopathy are generally not thrombolysis or thrombectomy targets (non-thromboembolic, vessel-fragility risk); in sickle cell disease, acute pediatric management centers on exchange transfusion (STOP-era protocols) rather than lysis.
+Moyamoya and focal cerebral arteriopathy are not thromboembolic and are generally not thrombectomy targets; any thrombolysis decision requires pediatric stroke expertise (the adult institutional IVT list does not treat moyamoya as a contraindication). In sickle cell disease, acute pediatric management centers on exchange transfusion (STOP-era protocols) rather than lysis.
 Screen for pediatric-specific risk factors: congenital/acquired heart disease, sickle cell disease, arteriopathy/moyamoya, inflammatory/autoimmune disease, thrombophilia/prior thrombosis, malignancy/chemotherapy, infection, trauma, and OCPs in adolescents.
 Manage blood pressure using age-specific percentile thresholds and local pediatric protocol rather than adult numeric targets. Data below ~age 2 are especially sparse — treat any lower age boundary as expert-consensus caution, not a formal guideline exclusion.
 Decision pathway
@@ -276,9 +284,7 @@ EVT may be reasonable in selected cases
 IIb
 B-NR
 Moyamoya / focal cerebral arteriopathy / mineralizing lenticulostriate vasculopathy
-Generally not reperfusion targets (non-thromboembolic) — high caution
-III
-C-LD
+Ungraded — generally not thrombectomy targets (non-thromboembolic); individualize any reperfusion decision with pediatric stroke expertise
 NIHSS / PedNIHSS
 Alteplase calculator
 Pitfalls
@@ -318,6 +324,7 @@ Key Principles
 For IV thrombolysis, establish a disabling deficit, time from last known well, noncontrast CT findings, blood pressure, glucose, and the source-listed exclusions.
 For EVT, apply the institutional vessel, time, ASPECTS or PC-ASPECTS, NIHSS, baseline mRS, and low-ASPECTS qualifiers shown below.
 After documented successful EVT recanalization (mTICI ≥2b), maintain the institutional SBP guardrail of 140-180 mmHg.
+For every EVT, keep BP ≤180/105 during the procedure and for 24 hours afterward.
 EVT Eligibility — Quick Reference
 Adult AIS — EVT Eligibility
 Anterior ICA / proximal M1 LVO
@@ -338,9 +345,8 @@ Within 24 hours, PC-ASPECTS ≥6, NIHSS ≥10: EVT, COR I / LOE A.
 Within 24 hours, PC-ASPECTS ≥6, NIHSS 6-9: EVT effectiveness is not well established, COR IIb / LOE B-R.
 M2 / Distal Vessels
 Dominant proximal M2 (≤1 cm from the bifurcation and supplying ≥50% of MCA territory), 0-6 hours, ASPECTS ≥6, NIHSS ≥6: EVT, COR IIa / LOE B-NR.
-The same dominant-M2 criteria at 6-24 hours also require CTP hypoperfusion-hypodensity mismatch: EVT, COR IIa / LOE B-NR.
-Nondominant M2, ACA, or PCA: no EVT, COR III: No Benefit / LOE A.
-Codominant M2: the institutional flowchart supplies no recommendation.
+The same dominant-M2 criteria at 6-24 hours also require CTP hypoperfusion-hypodensity mismatch: EVT, institutional tier; no AHA/ASA 2026 grade for 6-24 h.
+Nondominant or codominant M2, distal MCA, ACA, or PCA: no EVT, COR III: No Benefit / LOE A (AHA/ASA 2026).
 Generalizability limited for
 Age >80
 Significant head/neck vessel tortuosity
@@ -431,7 +437,7 @@ Post-EVT
 Target
 BP <185/110
 Current BP
-Compared only with the selected ischemic treatment phase.
+Compared only with the selected ischemic treatment phase. Prefilled from the Encounter BP until edited; not saved to the note.
 Status
 Enter BP to check
 BP Goals
@@ -441,6 +447,10 @@ After lytics:
 SBP <180, DBP <105
 After documented successful thrombectomy recanalization (mTICI ≥2b):
 SBP 140-180
+All EVT:
+maintain BP ≤180/105 during and for 24 hours after the procedure (AHA/ASA 2026, COR 2a, LOE B-NR)
+After successful reperfusion (mTICI ≥2b):
+intensive SBP lowering to <140 is harmful (AHA/ASA 2026, COR 3: Harm, LOE A)
 Quick Reference
 Before IVT:
 Labetalol IV push per the source-listed sequence
@@ -448,19 +458,19 @@ Stroke-Specific Nursing Swallow Screen
 Only a competency-validated registered nurse performs this stroke-specific screen.
 Check whether GCS is <13 or whether lower-facial, tongue, or palatal asymmetry/weakness is present.
 If any answer is yes: stop the screen, document failure, keep the patient NPO including medications, request Speech-Language Pathology evaluation, and notify the treating team.
-If all answers are no: administer 3 ounces of water in sequential drinks and observe for throat clearing, cough, or voice-quality change immediately and for 1 minute.
+If all answers are no: administer 3 ounces of water by uninterrupted drinking and observe for throat clearing, cough, or voice-quality change immediately and for 1 minute.
 If any water-step sign occurs: document failure, keep NPO including medications, request Speech-Language Pathology evaluation, and notify the treating team. Otherwise document pass and use the appropriate diet/medication pathway.
 A repeat RN screen within 24 hours after thrombolysis and/or thrombectomy requires significant neurologic improvement (NIHSS ≤5; no facial droop, tongue/palatal asymmetry, or airway concern), an authorized attending request, documented rationale, and team notification. Do not repeat the RN screen after an SLP evaluation has already been completed. If the patient’s clinical condition subsequently worsens, reconsider the need for further assessment.
 Post-Lytic ICH Protocol
 Immediate Actions
 Stop thrombolytic if still running
 STAT non-contrast CT head + STAT blood draw (PT/INR, platelets, fibrinogen, PTT, TT, D-dimers, CBC, Type & Cross)
-Contact blood bank/transfusion services and order 2 units of cryoprecipitate (1 unit = 5 prepooled cryoprecipitates)
+Contact blood bank/transfusion services and order 2 pre-pooled units of cryoprecipitate (each pool ≈5 single-donor units; total ≈10 units)
 Notify the patient’s family of the change in status
-If CT will be delayed >30 minutes and fibrinogen is <200 mg/dL, empirically administer the 2 units over 10-30 minutes
+If CT will be delayed >30 minutes and fibrinogen is <200 mg/dL, empirically administer the 2 pre-pooled units (≈10 units) IV over 10-30 minutes
 CT Result Branch
 Intracranial blood on CT:
-confirm the CT result with the ordering provider and administer 2 units of cryoprecipitate over 10-30 minutes
+confirm the CT result with the ordering provider and administer 2 pre-pooled units of cryoprecipitate (each pool ≈5 single-donor units; total ≈10 units) IV over 10-30 minutes
 Before TXA:
 verbally confirm with the RN that administration is post-CT; after both confirmations, give tranexamic acid 1,000 mg IV over 10 minutes
 Then:
@@ -473,7 +483,7 @@ No ICH on CT while empiric cryoprecipitate is infusing:
 stop cryoprecipitate and do not restart the thrombolytic
 Monitoring and Escalation
 • Neurologic checks and vital signs every 15 minutes for 2 hours, every 30 minutes for 6 hours, then every hour for 16 hours
-• Notify the provider for SBP >180, DBP >90, a new neurologic deficit, or a GCS decrease of at least 2 points
+• Notify the provider for SBP >180 or DBP >105, a new neurologic deficit, or a GCS decrease of at least 2 points
 • Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal; if abnormalities persist or bleeding remains uncontrolled, consult the Hematology attending
 Orolingual Angioedema Protocol
 Airway Assessment and Plan
@@ -511,15 +521,15 @@ Late Window (6-24h)
 Post-EVT Management
 Post-Procedure Care
 • Admit to the Neuro ICU for 24 hours after EVT; attend the post-thrombectomy huddle on admission for handoff with the ICU and anesthesiology teams
-• During the procedure, the institutional BP goal is SBP >140 mmHg (neuroanesthesia responsible)
+• During the procedure, maintain SBP 140-180 mmHg and BP ≤180/105 (neuroanesthesia responsible)
 • Follow-up brain CT or MRI at 24 hours ±6 hours; confirm dual-energy CT timing with the on-call stroke clinician
-After documented successful recanalization (mTICI ≥2b), use the BP Management section for the institutional SBP 140-180 guardrail. The current source set does not supply a post-EVT nursing cadence.
+After documented successful recanalization (mTICI ≥2b), use the BP Management section for the institutional SBP 140-180 guardrail. For every EVT, keep BP ≤180/105 for 24 hours (AHA/ASA 2026, COR 2a, LOE B-NR); after mTICI ≥2b, intensive SBP lowering to <140 is harmful (COR 3: Harm, LOE A). The current source set does not supply a post-EVT nursing cadence.
 Medium Vessel Occlusion (MeVO) EVT
 Institutional M2 / distal-vessel branches
 • Dominant proximal M2, 0-6 hours, ASPECTS ≥6, NIHSS ≥6: EVT, COR IIa / LOE B-NR
-• Dominant proximal M2, 6-24 hours, ASPECTS ≥6, NIHSS ≥6, and CTP hypoperfusion-hypodensity mismatch: EVT, COR IIa / LOE B-NR
-• Nondominant M2, ACA, or PCA: no EVT, COR III: No Benefit / LOE A
-• Codominant M2: no recommendation is supplied
+• Dominant proximal M2, 6-24 hours, ASPECTS ≥6, NIHSS ≥6, and CTP hypoperfusion-hypodensity mismatch: EVT, institutional tier; no AHA/ASA 2026 grade for 6-24 h
+• Nondominant or codominant M2, distal MCA, ACA, or PCA: no EVT, COR III: No Benefit / LOE A (AHA/ASA 2026; ESCAPE-MeVO and DISTAL)
+ORIENTAL-MeVO (2026), published after the guideline, reported benefit for medium-vessel occlusion with NIHSS ≥6 and more symptomatic ICH; individualize only with the neurointerventional team.
 Contrast Allergy + Suspected LVO Protocol
 Eligibility:
 • CT contrast allergy (mild/moderate/unknown severity) AND suspected LVO
@@ -612,11 +622,13 @@ Interim conservative safety hold from the dedicated criteria source. The current
 Infective endocarditis
 Should not be administered.
 Severe coagulopathy
-Plt <100K, INR >1.7, aPTT >40s, PT >15s. In patients without a history of thrombocytopenia the thrombolytic can be started before the platelet count returns, but should be discontinued if the platelet count returns <100,000/mm3.
+Plt <100K, INR >1.7, aPTT >40s, PT >15s. If thrombocytopenia is suspected, await the platelet count before thrombolysis; if there is no reason to suspect an abnormal result, do not delay IVT for the platelet count.
 Treatment-dose heparin or LMWH within 24 hours
 Treatment-dose unfractionated heparin or low-molecular-weight heparin within the previous 24 hours is an exclusion.
 History of GI malignancy, or GI/GU hemorrhage within 21 days
 The dedicated local eligibility criteria list this as one combined exclusion: a history of gastrointestinal malignancy, or gastrointestinal or urinary tract hemorrhage within the previous 21 days.
+Factor Xa inhibitor (apixaban, rivaroxaban, edoxaban) or dabigatran: last dose <48 h or unknown
+IVT is not recommended unless drug-specific assays/levels are normal (calibrated anti-Xa activity for a factor Xa inhibitor; thrombin time or dilute thrombin time for dabigatran) or the approved institutional pathway permits treatment; local sources still conflict on the 24-48-hour assay pathway (see unresolved source conflicts). Evaluate EVT independently; DOAC exposure does not delay or exclude thrombectomy. Source: AHA/ASA 2019 AIS guideline (PMID 31662037); no graded DOAC-specific recommendation appears in the AHA/ASA 2026 recommendation extract used here.
 Known or suspected direct thrombin inhibitor exposure unless thrombin time is confirmed normal
 Treat the exposure as an exclusion when thrombin time is abnormal, missing, or unavailable. A confirmed normal thrombin time is the sole source-listed escape; do not infer drug clearance from PT/INR or aPTT alone.
 Arterial puncture at non-compressible site <7 days
@@ -677,6 +689,13 @@ Stroke mimic uncertainty
 Risk of harm with IVT is low; benefit likely outweighs risk.
 Moya-moya disease
 No increased ICH risk; benefit likely outweighs risk.
+Unresolved local source conflicts (pending protocol-owner adjudication)
+DOAC / factor-Xa timing and assay pathway (<48 hours vs >24 to <48 hours with consent)
+One accepted source excludes factor-Xa exposure within 48 hours. Another excludes exposure within 24 hours when anti-Xa testing is unavailable and permits consideration after 24 but before 48 hours with consent. No rule is selected pending protocol-owner adjudication.
+Severe head trauma and intracranial/intraspinal surgery windows (14 vs 90/60 days)
+Accepted institutional sources list a 14-day window versus 90 days for severe head trauma and 60 days for intracranial/intraspinal surgery. Pending protocol-owner adjudication, the released conservative 90-day and 60-day safety holds remain displayed; this interim safeguard does not resolve the source conflict.
+Prior ischemic stroke within 90 days (absolute vs relative tier)
+One accepted source places prior ischemic stroke within 90 days under exclusions. Another places the same scenario under both exclusion and relative-exclusion headings. Pending protocol-owner adjudication, the released conservative hard-stop counsel remains displayed; this interim safeguard does not resolve the source tier.
 INST
 EVT Eligibility
 Anterior LVO
@@ -727,6 +746,9 @@ BP at attestation
 Contraindications
 Not reviewed
 Absolute and relative contraindications reviewed
+Thrombolytic agent
+Tenecteplase
+Alteplase
 Provider agreement
 Not confirmed
 All providers agree with the thrombolytic decision

@@ -35,6 +35,7 @@ export function formatWakeUpScreenForExport(note = {}, now = new Date()) {
   } else if (isCtp) {
     const perfusion = screen.perfusion;
     lines.push(
+      `Screen source: ${screen.perfusionSource}.`,
       `Documented premorbid mRS: ${recordedNumber(numericInput(note.premorbidMRS, { min: 0, max: 6, integer: true }))}.`,
       `Perfusion core: ${recordedNumber(perfusion.coreVolume)} mL; total hypoperfused volume: ${recordedNumber(perfusion.penumbraVolume)} mL; calculated mismatch volume: ${recordedNumber(perfusion.mismatchVolume)} mL; mismatch ratio: ${recordedNumber(perfusion.mismatchRatio)}.`,
       note.lkwUnknown === true
