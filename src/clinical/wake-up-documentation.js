@@ -17,7 +17,7 @@ export function formatWakeUpScreenForExport(note = {}, now = new Date()) {
   const pathway = isMri ? 'MRI (WAKE-UP)' : isCtp ? 'CTP (EXTEND)' : 'pathway not documented';
   const met = isMri ? screen.wakeUpEligible === true : isCtp ? screen.extendEligible === true : false;
   const lines = [
-    `Wake-up / unknown-onset imaging screen — ${pathway}: ${met ? 'partial source screen met' : isMri && screen.wakeUpApplicable === false ? 'not applicable (known LKW within 4.5 h)' : 'incomplete or not met'}; ${reviewLimit}.`,
+    `Wake-up / unknown-onset imaging screen — ${pathway}: ${met ? 'partial source screen met' : (isMri || isCtp) && screen.wakeUpApplicable === false ? 'not applicable (known LKW within 4.5 h)' : 'incomplete or not met'}; ${reviewLimit}.`,
     `Documented age: ${recordedNumber(numericInput(note.age, { min: 0 }))}; NIHSS: ${recordedNumber(documentedExamScore(note))}.`
   ];
 

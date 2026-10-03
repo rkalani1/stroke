@@ -179,18 +179,22 @@ export function evaluateVideoTreatment({ note = {}, clock, aspects, pcAspects, c
   const recordedConcern = concernKeys.some(key => checklist[key] === true) || context.pregnancy || context.medicationReconciliation || checklist.medicationReconciliation === true;
   const malformedConcern = concernKeys.some(key => checklist[key] !== undefined && typeof checklist[key] !== 'boolean');
   const labs = ivtLabConcerns(note);
+  const outsideStandardWindow = note.lkwUnknown !== true && hours !== null && hours > 4.5 && !wake.wakeUpEligible && !wake.extendEligible;
+  const windowNote = outsideStandardWindow ? ` ${hours.toFixed(1)} h from LKW is outside the standard 4.5 h window; IVT only through an imaging-selected extended-window pathway.` : '';
   let tnk = pending('Complete onset, examination, imaging and contraindication assessment.');
   if (labs.length) tnk = review(`Entered laboratory value${labs.length > 1 ? 's exceed' : ' exceeds'} the IVT coagulation thresholds: ${labs.join('; ')}. Clinician review is required before any IVT decision; do not proceed from this partial screen.`);
   else if (critical.length || exposure.status === 'block' || ['ich', 'sah'].includes(note.diagnosisCategory) || note.tnkAutoBlocked === true || note.infectiveEndocarditis === true || recordedConcern || malformedConcern) tnk = review('A recorded contraindication, relative risk factor or contradictory checklist entry requires clinician review; do not proceed from this partial screen. Relative/correctable factors are not permanent exclusions, and the review attestation does not override them.');
   else if (note.diagnosisCategory !== 'ischemic') tnk = pending('Confirm the working ischemic-stroke diagnosis and reconcile any alternative diagnosis before applying this partial screen. Diagnostic uncertainty alone is not a permanent IVT contraindication.');
+  else if (note.ctHemorrhageStatus === 'present') tnk = review('Reviewed imaging shows hemorrhage: IVT is contraindicated. Reconcile the working diagnosis and use the hemorrhage pathway.');
   else if (age === null || age < 18) tnk = pending(age === null ? 'Document age.' : 'Pediatric stroke: use the pediatric specialist pathway; adult IVT criteria do not apply.');
   else if (nihss === null || typeof note.disablingDeficit !== 'boolean') tnk = pending('Document a complete NIHSS and whether the residual deficit is disabling.');
   // The guideline answer for a non-disabling deficit does not wait for the full checklist.
   else if (note.disablingDeficit === false) tnk = review('Non-disabling deficit documented: IVT is not recommended for mild non-disabling stroke (AHA/ASA 2026 COR 3: No Benefit, LOE B-R). Reassess disability and use the appropriate antithrombotic pathway.');
-  // Past 4.5 h from a known LKW with no imaging-selected screen met, the window is the deciding fact.
-  else if (note.lkwUnknown !== true && hours !== null && hours > 4.5 && !wake.wakeUpEligible && !wake.extendEligible) tnk = pending('Outside the standard IVT window. A complete imaging-selected, drug-specific pathway is required.');
-  else if (note.ctHemorrhageStatus !== 'absent') tnk = pending('Confirm that reviewed imaging excludes hemorrhage.');
-  else if (note.ivtContraindicationsReviewed !== true) tnk = pending('Complete the IVT contraindication review.');
+  // Extended-window IVT needs the same prerequisites, so they come first; past 4.5 h from a known
+  // LKW with no imaging-selected screen met, each prompt also states the window.
+  else if (note.ctHemorrhageStatus !== 'absent') tnk = pending(`Confirm that reviewed imaging excludes hemorrhage.${windowNote}`);
+  else if (note.ivtContraindicationsReviewed !== true) tnk = pending(`Complete the IVT contraindication review.${windowNote}`);
+  else if (outsideStandardWindow) tnk = pending('Outside the standard IVT window. A complete imaging-selected, drug-specific pathway is required.');
   else if (systolic === null || diastolic === null || systolic <= diastolic || glucose === null) tnk = pending('Document valid current BP and glucose in mg/dL; an attestation does not fill missing measurements.');
   else if (systolic >= 185 || diastolic >= 110 || glucose < 50 || glucose > 400) tnk = review('Correct the recorded BP or severe glucose derangement and reassess persistent deficits before an IVT decision; no eligibility is inferred from this screen.');
   else if (exposure.status !== 'none') tnk = pending(exposure.reason + '. Resolve the anticoagulant assessment before an IVT decision.');

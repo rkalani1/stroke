@@ -237,6 +237,7 @@ export const evaluateIVT = ({
   evtStatus,
   consentObtained,
   wakeUpOrUnknownOnset = false,
+  wakeUpRecognition = false,
   bpSystolic,
   bpDiastolic,
   contraindicationsReviewed,
@@ -382,12 +383,16 @@ export const evaluateIVT = ({
   const core = parseFloat(ctpCoreMl);
   const ratio = parseFloat(ctpRatio);
   const mismatchVol = parseFloat(ctpMismatchVolMl);
-  const fullCTPCriteriaMet = Number.isFinite(core) && core >= 0 && core < 50 && Number.isFinite(ratio) && ratio >= 1.2 && Number.isFinite(mismatchVol) && mismatchVol >= 10;
+  // A 0 mL core with a qualifying mismatch volume is an unbounded ratio (matches the Encounter EXTEND screen).
+  const ratioMet = (Number.isFinite(ratio) && ratio >= 1.2) || (core === 0 && Number.isFinite(mismatchVol) && mismatchVol >= 10);
+  const fullCTPCriteriaMet = Number.isFinite(core) && core >= 0 && core < 50 && ratioMet && Number.isFinite(mismatchVol) && mismatchVol >= 10;
   const preferMRI = smallVessel || posteriorCirc || contrastAllergy;
   const extendedGates = [];
   if (!Number.isFinite(mrs) || mrs > 1) extendedGates.push('baseline mRS must be entered and be ≤1');
   if (!['not-candidate', 'not_candidate', 'candidate-infeasible', 'evt-infeasible', 'evt_infeasible'].includes(evtStatus)) extendedGates.push('EVT status must confirm not an EVT candidate or the narrow EVT-infeasible status');
-  const isWakeUpOrUnknown = wakeUpOrUnknownOnset === true && !Number.isFinite(hrs);
+  // A known bedtime LKW beyond 9 h with an Encounter-attested WAKE-UP MRI pattern (recognition
+  // within 4.5 h) uses the wake-up branch; without that MRI pattern the 9-24 h branch applies.
+  const isWakeUpOrUnknown = (wakeUpOrUnknownOnset === true && !Number.isFinite(hrs)) || (wakeUpRecognition === true && mriDwiFlairMismatch === true && Number.isFinite(hrs) && hrs >= 9);
   const isFourPointFiveToNine = Number.isFinite(hrs) && hrs > 4.5 && hrs < 9;
 
   if (isWakeUpOrUnknown || isFourPointFiveToNine) {
@@ -415,7 +420,9 @@ export const evaluateIVT = ({
       cor: '2a',
       loe: 'B-R',
       selectionSource: mriDwiFlairMismatch === true
-        ? 'Selection: MRI DWI-FLAIR mismatch with DWI lesion <1/3 MCA territory, treated within 4.5 h of symptom recognition (WAKE-UP; AHA/ASA 2026 COR 2a, LOE B-R).'
+        ? isWakeUpOrUnknown || wakeUpRecognition === true
+          ? 'Selection: MRI DWI-FLAIR mismatch with DWI lesion <1/3 MCA territory, treated within 4.5 h of symptom recognition (WAKE-UP; AHA/ASA 2026 COR 2a, LOE B-R).'
+          : 'Selection: MRI DWI-FLAIR mismatch (WAKE-UP; AHA/ASA 2026 COR 2a, LOE B-R).'
         : `Selection: ${INSTITUTIONAL_CTP_THRESHOLD_TEXT}; AHA/ASA 2026 COR 2a, LOE B-R for EVT-ineligible patients with salvageable penumbra at 4.5-9 h (EXTEND used core <70 mL, ratio >1.2, mismatch >10 mL).`,
       warnings,
       decisions,

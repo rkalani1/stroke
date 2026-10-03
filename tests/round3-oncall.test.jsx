@@ -20,22 +20,35 @@ const make = (patch = {}) => {
 const render = state => renderToStaticMarkup(<Encounter state={state} update={() => {}} now={now} onGenerate={() => {}} onCopy={() => {}} copyStatus="" />);
 const ischemic = patch => make({ ...patch, note: { diagnosisCategory: 'ischemic', age: '68', weight: '72', lkwDate: '2026-10-01', lkwTime: '10:20', ...patch?.note } });
 
-describe('patient-specific 4F-PCC arithmetic', () => {
-  it('uses the label INR tier with a 100 kg dosing cap and adds vitamin K', () => {
-    expect(reversalDoseLine({ weightKg: 80, agent: 'warfarin', inr: '3.1' })).toBe('INR 3.1, 80 kg: 4F-PCC 25 units/kg = 2000 units (label max 2500) + vitamin K 10 mg IV.');
-    expect(reversalDoseLine({ weightKg: 130, agent: 'warfarin', inr: '7' })).toBe('INR 7, 130 kg: 4F-PCC 50 units/kg = 5000 units (label max 5000) + vitamin K 10 mg IV.');
-    expect(reversalDoseLine({ weightKg: 80, agent: 'warfarin', inr: '1.6' })).toMatch(/PCC may be reasonable \(COR 2b\)/);
-    expect(reversalDoseLine({ weightKg: 80, agent: 'warfarin' })).toMatch(/enter the INR/);
+describe('local-first anticoagulant reversal line', () => {
+  it('leads with the fixed local 4F-PCC dose for warfarin and keeps label arithmetic as a comparison', () => {
+    const line = reversalDoseLine({ weightKg: 80, agent: 'warfarin', inr: '3.1' });
+    expect(line.local).toBe('INR 3.1 — 4F-PCC 2000 units IV now + vitamin K 10 mg IV; recheck INR at 30 min.');
+    expect(line.comparison).toBe('Label dose at 80 kg: 25 units/kg = 2000 units (max 2500); the fixed dose may underdose heavier or high-INR patients.');
+    expect(reversalDoseLine({ weightKg: 130, agent: 'warfarin', inr: '7' }).comparison).toMatch(/50 units\/kg = 5000 units \(max 5000\)/);
+    expect(reversalDoseLine({ weightKg: 80, agent: 'warfarin', inr: '1.6' }).local).toMatch(/may be reasonable \(COR 2b\)/);
+    expect(reversalDoseLine({ weightKg: 80, agent: 'warfarin', inr: '1.1' }).local).toBe('INR 1.1 — below the PCC range; vitamin K 10 mg IV.');
+    expect(reversalDoseLine({ weightKg: 80, agent: 'warfarin' }).local).toMatch(/vitamin K 10 mg IV now; enter the INR/);
+    expect(reversalDoseLine({ agent: 'warfarin', inr: '3' })).toEqual({ local: 'INR 3 — 4F-PCC 2000 units IV now + vitamin K 10 mg IV; recheck INR at 30 min.', comparison: null });
   });
-  it('computes 50 units/kg for factor Xa inhibitors and dabigatran without idarucizumab', () => {
-    expect(reversalDoseLine({ weightKg: 80, agent: 'apixaban', lastDoseHours: 6.4 })).toBe('80 kg, apixaban (last dose 6 h ago): 4F-PCC 50 units/kg = 4000 units (local fixed dose 2000 units).');
-    expect(reversalDoseLine({ weightKg: 80, agent: 'dabigatran' })).toMatch(/idarucizumab 5 g IV; if unavailable, 4F-PCC 50 units\/kg = 4000 units/);
-    expect(reversalDoseLine({ agent: 'apixaban' })).toBeNull();
+  it('applies the local <24 h factor Xa trigger and idarucizumab first for dabigatran', () => {
+    expect(reversalDoseLine({ weightKg: 80, agent: 'apixaban', lastDoseHours: 6.4 })).toEqual({ local: 'Apixaban, last dose 6 h ago (local trigger <24 h) — 4F-PCC 2000 units IV.', comparison: 'NCS/SCCM 50 units/kg at 80 kg = 4000 units.' });
+    expect(reversalDoseLine({ agent: 'rivaroxaban' }).local).toMatch(/last-dose time unknown \(treat as within the local <24 h trigger\)/);
+    expect(reversalDoseLine({ agent: 'edoxaban', lastDoseHours: 30 })).toEqual({ local: 'Edoxaban, last dose 30 h ago — beyond the local <24 h trigger; reverse only with renal impairment or an elevated anti-Xa level.', comparison: null });
+    expect(reversalDoseLine({ weightKg: 80, agent: 'dabigatran' }).local).toBe('Dabigatran, last-dose time unknown — idarucizumab 5 g IV; 4F-PCC 2000 units IV only if idarucizumab is unavailable.');
+    expect(reversalDoseLine({ weightKg: 80, agent: 'dabigatran', lastDoseHours: 40 }).local).toMatch(/^Dabigatran, last dose 40 h ago — reverse if residual effect is likely \(within 3–5 half-lives, renal impairment, or a prolonged thrombin time\): idarucizumab 5 g IV/);
+    expect(reversalDoseLine({ weightKg: 120, agent: 'apixaban', lastDoseHours: 2 }).comparison).toBe('NCS/SCCM 50 units/kg at 120 kg = 5000 units (dosing weight capped at 100 kg).');
     expect(reversalDoseLine({ weightKg: 80, agent: 'heparin' })).toBeNull();
+    expect(reversalDoseLine({ weightKg: 80 })).toBeNull();
   });
-  it('shows the line on the reversal card and in the acute ICH banner', () => {
-    expect(renderToStaticMarkup(<QuickReference sub="ich" weightKg={80} reversal={{ agent: 'apixaban', lastDoseHours: 6 }} />)).toContain('data-testid="qr-reversal-dose"');
-    expect(render(make({ note: { diagnosisCategory: 'ich', weight: '80', lastDOACType: 'apixaban', lastDOACDose: '2026-10-01T06:00' } }))).toContain('80 kg, apixaban (last dose 6 h ago): 4F-PCC 50 units/kg = 4000 units');
+  it('shows the local line on the reversal card and in the acute ICH banner; the banner carries no weight-based dose', () => {
+    const card = renderToStaticMarkup(<QuickReference sub="ich" weightKg={80} reversal={{ agent: 'apixaban', lastDoseHours: 6 }} />);
+    expect(card).toContain('data-testid="qr-reversal-dose"');
+    expect(card).toContain('This patient, local protocol:');
+    expect(card).toContain('For comparison only: NCS/SCCM 50 units/kg at 80 kg = 4000 units.');
+    const banner = render(make({ note: { diagnosisCategory: 'ich', weight: '80', lastDOACType: 'apixaban', lastDOACDose: '2026-10-01T06:00' } }));
+    expect(banner).toContain('Local protocol: Apixaban, last dose 6 h ago (local trigger &lt;24 h) — 4F-PCC 2000 units IV.');
+    expect(banner).not.toContain('4000 units');
   });
 });
 
@@ -68,6 +81,14 @@ describe('Encounter on-call prompts', () => {
     const html = render(make({ note: { diagnosisCategory: 'ich', lastDOACType: 'warfarin' } }));
     const safety = html.slice(html.indexOf('id="safety"'));
     expect(safety).toContain('aria-label="INR"');
+    for (const diagnosisCategory of ['ich', 'tia', 'sah', 'cvt']) {
+      const page = render(make({ note: { diagnosisCategory, lastDOACType: 'warfarin' } }));
+      expect(page.split('aria-label="INR"').length - 1).toBe(1);
+      expect(page.indexOf('aria-label="INR"')).toBeGreaterThan(page.indexOf('id="safety"'));
+    }
+    const heparin = render(make({ note: { diagnosisCategory: 'tia', lastDOACType: 'heparin' } }));
+    expect(heparin.split('aria-label="aPTT (seconds)"').length - 1).toBe(1);
+    expect(heparin.indexOf('aria-label="aPTT (seconds)"')).toBeGreaterThan(heparin.indexOf('id="safety"'));
   });
   it('raises neurosurgery triggers from volume, IVH and infratentorial origin', () => {
     const html = render(make({ note: { diagnosisCategory: 'ich', age: '74' }, volume: { a: '4', b: '3', thicknessMm: '5', numSlices: '8' }, ich: { ivh: true, infratentorial: true } }));
@@ -106,9 +127,13 @@ describe('wake-up stroke with a known bedtime LKW', () => {
     expect(evaluateWakeUpScreen(early, new Date(now)).wakeUpApplicable).toBe(false);
     expect(formatWakeUpScreenForExport(early, new Date(now))).toContain('not applicable (known LKW within 4.5 h)');
   });
-  it('states the window first when no imaging-selected screen applies', () => {
-    const late = evaluateVideoTreatment({ note: { diagnosisCategory: 'ischemic', age: '79', nihss: '22', disablingDeficit: true, ctHemorrhageStatus: 'absent', lastDOACType: 'none', presentingBP: '150/80', glucose: '120' }, clock: { total: 10, label: 'LKW' }, now: new Date(now) });
-    expect(late.tnk.reason).toMatch(/^Outside the standard IVT window/);
+  it('keeps the prerequisites first and states the window when no imaging-selected screen applies', () => {
+    const note = { diagnosisCategory: 'ischemic', age: '79', nihss: '22', disablingDeficit: true, ctHemorrhageStatus: 'absent', lastDOACType: 'none', presentingBP: '150/80', glucose: '120' };
+    const pendingReview = evaluateVideoTreatment({ note, clock: { total: 10, label: 'LKW' }, now: new Date(now) });
+    expect(pendingReview.tnk.reason).toBe('Complete the IVT contraindication review. 10.0 h from LKW is outside the standard 4.5 h window; IVT only through an imaging-selected extended-window pathway.');
+    const reviewed = evaluateVideoTreatment({ note: { ...note, ivtContraindicationsReviewed: true }, clock: { total: 10, label: 'LKW' }, now: new Date(now) });
+    expect(reviewed.tnk.reason).toMatch(/^Outside the standard IVT window/);
+    expect(evaluateVideoTreatment({ note, clock: { total: 3, label: 'LKW' }, now: new Date(now) }).tnk.reason).toBe('Complete the IVT contraindication review.');
   });
 });
 
@@ -161,7 +186,8 @@ describe('TIA and secondary prevention', () => {
     const { daptAnticoagulationReview } = await import('../src/workspace-state.js');
     const state = make({ note: { diagnosisCategory: 'tia', lastDOACType: 'none' }, dapt: { anticoagulationReview: 'none' }, details: { afDetected: 'yes' } });
     expect(daptAnticoagulationReview(state)).toMatchObject({ excluded: false });
-    expect(daptAnticoagulationReview({ ...state, details: { toastClassification: 'Cardioembolism' } }).reason).toMatch(/^AF or a cardioembolic mechanism/);
+    expect(daptAnticoagulationReview({ ...state, details: { toastClassification: 'Cardioembolism' } })).toMatchObject({ excluded: false, reason: expect.stringMatching(/^A cardioembolic mechanism is documented in Etiology; the DAPT source trials excluded it\. Choose antithrombotic therapy by the specific source\.$/) });
+    expect(daptAnticoagulationReview({ ...state, details: { toastClassification: 'Cardioembolism' } }).afTiming).toBeUndefined();
   });
   it('offers ticagrelor plus aspirin for TIA with symptomatic stenosis whatever the ABCD2, and states the 7-day window', async () => {
     const { recommendAcuteDAPT } = await import('../src/calculators-extended.js');

@@ -20,8 +20,12 @@ export function formatDocumentation(state, consultation, groups, timeline) {
     // The one-line Pulsara summary separates detail lines with semicolons so entries never run together.
     if (state.consultationType === 'phone') {
       const end = line => /[.;:!?]$/.test(line.trim()) ? line.trim() : `${line.trim()};`;
-      const phoneExtras = groups.map(group => `${group.title}: ${group.lines.map(end).join(' ').replace(/;$/, '.')}`);
-      if (timeline) phoneExtras.push(timeline);
+      const joined = (title, lines) => `${title}: ${lines.map(end).join(' ').replace(/;$/, '.')}`;
+      const phoneExtras = groups.map(group => joined(group.title, group.lines));
+      if (timeline) {
+        const [title, ...lines] = timeline.split('\n').map(line => line.trim()).filter(Boolean);
+        phoneExtras.push(lines.length ? joined(title.replace(/:$/, ''), lines) : title);
+      }
       return [consultation, ...phoneExtras].join(' ').replace(/\s*\n\s*/g, ' ');
     }
     return [consultation, ...extras].join('\n\n');
