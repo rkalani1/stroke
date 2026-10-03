@@ -16,13 +16,13 @@
       "eclampsia",
       "breastfeeding"
     ],
-    "summary": "Pregnancy-associated stroke has diverse mechanisms and requires coordinated neurovascular and obstetric care. The 2026 AHA statement addresses urgent evaluation, prevention, maternal stabilization and recovery needs extending into the postpartum period.",
+    "summary": "Pregnancy should not delay stroke evaluation or treatment: image without delay (CT with or without contrast, and MRI without contrast, are considered safe), and IVT and EVT are supported when benefits outweigh risks (AHA 2026 maternal statement). Severe hypertension (≥160/110 confirmed within 15 minutes) is an emergency; magnesium and antihypertensives are the cornerstones for preeclampsia and eclampsia. Consider ICH, SAH, CVT, RCVS and PRES as well as ischemic stroke, especially postpartum.",
     "consider": [
-      "Have the pregnancy or postpartum stage, blood pressure and likely stroke mechanism been established?",
-      "Are vascular neurology and maternal-fetal medicine involved in timely imaging and treatment decisions?",
-      "Does the recovery plan address infant care, breastfeeding and rehabilitation support?"
+      "Establish the pregnancy or postpartum stage, blood pressure and likely mechanism.",
+      "Involve vascular neurology and maternal-fetal medicine early; a transradial approach is preferred for endovascular procedures when possible.",
+      "Plan for infant care, breastfeeding and rehabilitation support."
     ],
-    "caution": "Pregnancy alone should not delay stroke evaluation. This statement does not make acute stroke an automatic indication for delivery or supply a universal antithrombotic choice.",
+    "caution": "Acute stroke is not by itself an indication for delivery, and the statement supplies no universal antithrombotic choice.",
     "sources": [
       {
         "title": "AHA Maternal Stroke in Pregnancy and Postpartum Scientific Statement 2026",
@@ -30,13 +30,21 @@
         "year": 2026,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": [
       {
-        "label": "Ischemic protocol",
+        "label": "Ischemic stroke protocol",
         "href": "#/protocols/ischemic"
+      },
+      {
+        "label": "RCVS and PRES",
+        "href": "#/evidence/rcvs-pres"
+      },
+      {
+        "label": "CVT",
+        "href": "#/evidence/cvt"
       }
     ]
   },
@@ -56,13 +64,13 @@
       "cancer-related stroke",
       "oncology"
     ],
-    "summary": "Active cancer can coexist with conventional stroke mechanisms or contribute directly to thrombosis. The 2026 AHA statement proposes graded certainty for cancer-related causation and emphasizes substantial remaining treatment uncertainty.",
+    "summary": "Complete the usual arterial and cardiac workup before blaming active cancer: it can coexist with conventional mechanisms or cause thrombosis directly. The 2026 AHA statement grades the certainty of cancer-related causation and highlights how uncertain treatment remains.",
     "consider": [
       "Has the usual arterial and cardiac evaluation been completed rather than attributing the event to cancer alone?",
       "What clinical evidence supports cancer-related thrombosis or another cancer-associated mechanism?",
       "Have recurrent thrombosis, bleeding, cancer treatment and patient goals been reviewed together?"
     ],
-    "caution": "A cancer diagnosis does not establish the stroke mechanism or an automatic anticoagulant indication. Treatment evidence varies by mechanism and population.",
+    "caution": "A cancer diagnosis does not establish the mechanism or an automatic anticoagulant indication.",
     "sources": [
       {
         "title": "AHA Scientific Statement 2026: Classification and Management of Ischemic Stroke in Patients With Active Cancer",
@@ -70,7 +78,7 @@
         "year": 2026,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -92,13 +100,13 @@
       "reperfusion",
       "baseline function"
     ],
-    "summary": "Patients with prior disability or dementia were commonly excluded from reperfusion trials. Observational evidence supports considering the possibility of returning to the person’s own baseline within individualized, transparent decisions.",
+    "summary": "Prior disability or dementia was usually excluded from reperfusion trials, but observational data show many patients can return to their own baseline. AHA 2026: within 6 h with ASPECTS ≥6, EVT is reasonable at prestroke mRS 2 (2a) and might be reasonable at mRS 3–4 (2b). Decide with the actual baseline, supports and the outcomes the patient values.",
     "consider": [
       "What were the patient’s actual baseline function, supports and valued activities?",
       "What additional disability might this stroke cause, and what outcome would the patient consider worthwhile?",
       "Are treatment risks and the limits of the evidence being discussed without relying on a baseline score alone?"
     ],
-    "caution": "Prior disability is not a complete treatment decision. Observational findings do not establish benefit for every patient; prognosis and goals require individual review.",
+    "caution": "Prior disability alone does not decide treatment, and observational benefit does not apply to every patient.",
     "sources": [
       {
         "title": "AHA Scientific Statement 2022: EVT and Thrombolysis in AIS With Premorbid Disability or Dementia",
@@ -106,7 +114,7 @@
         "year": 2022,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": [
@@ -132,13 +140,13 @@
       "noncardiac surgery",
       "perioperative antithrombotics"
     ],
-    "summary": "Perioperative stroke care spans preoperative risk assessment, coordinated hemodynamic and medication planning, and rapid recognition of new postoperative deficits. The AHA statement concerns noncardiac, nonneurological surgery.",
+    "summary": "Before noncardiac, nonneurological surgery, include recent stroke, vascular disease and the procedure in the risk discussion and plan antithrombotic changes as a team; after surgery, any new deficit should trigger the stroke pathway with prompt imaging (AHA statement).",
     "consider": [
       "Are recent stroke history, vascular disease and the proposed procedure included in the risk discussion?",
       "Are perioperative medication changes and the responsible teams clearly documented?",
       "Does a new postoperative deficit trigger the local stroke pathway with prompt imaging?"
     ],
-    "caution": "Timing after a recent stroke and perioperative medication changes require current guidance, procedure-specific bleeding assessment and multidisciplinary review; this card does not supply a universal surgery date.",
+    "caution": "Surgery timing after a recent stroke and perioperative medication changes need procedure-specific multidisciplinary review.",
     "sources": [
       {
         "title": "Perioperative Neurological Evaluation and Management to Lower the Risk of Acute Stroke in Patients Undergoing Noncardiac, Nonneurological Surgery: A Scientific Statement From the American Heart Association/American Stroke Association",
@@ -146,7 +154,7 @@
         "year": 2021,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       },
       {
         "title": "2024 AHA/ACC perioperative cardiovascular management for noncardiac surgery: official overview",
@@ -180,13 +188,13 @@
       "equity",
       "thrombectomy"
     ],
-    "summary": "The AHA statement examines sex- and gender-related differences in endovascular care and the effects of social and cultural context. Much of the available literature records sex rather than gender, leaving important knowledge gaps.",
+    "summary": "Base reperfusion decisions on the individual's findings and priorities; population-level sex and gender differences in recognition, access and endovascular outcomes do not create separate eligibility rules. Much of the evidence records sex rather than gender, leaving gaps (AHA statement).",
     "consider": [
       "Could differences in recognition, access, baseline circumstances or support be influencing care?",
       "Are decisions based on the individual’s clinical findings and priorities?",
       "Does the cited evidence actually address this patient population?"
     ],
-    "caution": "Population-level differences do not establish an individual treatment effect or a separate automatic eligibility rule.",
+    "caution": "Population-level differences do not establish an individual treatment effect or a separate eligibility rule.",
     "sources": [
       {
         "title": "Toward a Better Understanding of Sex- and Gender-Related Differences in Endovascular Stroke Treatment: A Scientific Statement From the American Heart Association/American Stroke Association",
@@ -194,7 +202,7 @@
         "year": 2022,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -216,13 +224,36 @@
       "arteriopathy",
       "child stroke"
     ],
-    "summary": "The AHA pediatric statement distinguishes perinatal from later childhood stroke and reviews age-specific presentation, mechanisms, evaluation and recovery. Childhood stroke can be difficult to recognize and may present with seizures or less-localizing symptoms.",
-    "consider": [
-      "Does the presentation warrant urgent pediatric stroke expertise and age-appropriate imaging?",
-      "Have age-specific mechanisms and stroke mimics been considered?",
-      "Does follow-up address development, learning, family support and recurrence prevention?"
+    "summary": "Suspect stroke in any child with a sudden focal deficit, including a first seizure (AHA 2026, COR 1). Image with MRI/MRA, or CT/CTA if MRI is not available within 25 minutes (2a). Alteplase may be considered from 28 days to 18 years within 4.5 h for a disabling deficit (2b). EVT by experienced neurointerventionalists can be effective for LVO in children aged 6 or older within 24 h (2a) and may be reasonable from 28 days to 6 years (2b).",
+    "recommendations": [
+      {
+        "text": "In pediatric patients with sudden-onset focal neurological deficits, including first-time seizure, acute stroke is recommended to be suspected to enable timely diagnosis.",
+        "cor": "1",
+        "loe": "C-EO",
+        "source": "AHA/ASA AIS 2026 · ais-2026-25 · p. 18",
+        "id": "ais-2026-25"
+      },
+      {
+        "text": "In pediatric patients aged 28 days to 18 years with confirmed AIS presenting within 4.5 hours of symptom onset with disabling deficits, IVT with alteplase may be considered as it appears safe, though efficacy is uncertain.",
+        "cor": "2b",
+        "loe": "C-LD",
+        "source": "AHA/ASA AIS 2026 · ais-2026-97 · p. 38",
+        "id": "ais-2026-97"
+      },
+      {
+        "text": "In pediatric patients 6 years or older with acute neurological symptoms from ischemic stroke due to LVO within 6 hours of symptom onset, EVT performed by experienced neurointerventionalists can be effective to improve functional outcomes.",
+        "cor": "2a",
+        "loe": "B-NR",
+        "source": "AHA/ASA AIS 2026 · ais-2026-133 · p. 60",
+        "id": "ais-2026-133"
+      }
     ],
-    "caution": "Adult pathways cannot simply be transferred to neonates or children. The 2019 statement predates the 2026 AIS guideline; acute reperfusion decisions need current pediatric expertise.",
+    "consider": [
+      "Call pediatric stroke expertise early and use age-appropriate imaging.",
+      "Consider age-specific mechanisms and mimics.",
+      "Follow-up should cover development, learning, family support and recurrence prevention."
+    ],
+    "caution": "Adult pathways cannot simply be transferred to neonates or children.",
     "sources": [
       {
         "title": "AHA/ASA management of stroke in neonates and children: official overview",
@@ -230,7 +261,7 @@
         "year": 2019,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Official society summary read; full primary statement and pediatric treatment tables not reviewed in this pass."
+        "access": "Official AHA summary page (2019 statement)."
       }
     ],
     "related": []
@@ -252,13 +283,13 @@
       "transcranial Doppler",
       "TCD"
     ],
-    "summary": "ASH guidance addresses overt stroke, silent cerebral injury and prevention in children and adults with sickle cell disease. Its cerebrovascular recommendations require disease-specific hematology and neurology coordination.",
+    "summary": "New neurological symptoms in sickle cell disease need urgent stroke and hematology assessment together. Eligible adults can receive IVT without excess sICH or other thrombolytic complications (AHA 2026, 2a). ASH guidance covers overt stroke, silent cerebral injury and prevention; transfusion and disease-modifying decisions belong with the treating specialists.",
     "consider": [
       "Are the sickle cell genotype, prior cerebral events and preventive treatment history known?",
       "Has a new neurologic event prompted urgent stroke and hematology assessment?",
       "Is the age- and disease-specific screening and follow-up plan clear?"
     ],
-    "caution": "An adult atherosclerotic-stroke pathway does not cover sickle cell disease. Transfusion and disease-modifying decisions require the full guideline and the treating specialists.",
+    "caution": "An adult atherosclerotic-stroke pathway does not cover sickle cell disease.",
     "sources": [
       {
         "title": "ASH 2020 sickle cell cerebrovascular disease guideline",
@@ -288,13 +319,13 @@
       "feeding",
       "SLP"
     ],
-    "summary": "ESO/ESSD guidance supports systematic dysphagia screening and assessment when risk is identified. Swallowing care connects aspiration prevention with nutrition, hydration, oral health and individualized rehabilitation.",
+    "summary": "Screen swallowing at the bedside before any oral intake (AHA 2026, COR 1); if the screen fails or cannot be done, an instrumental assessment (FEES or videofluoroscopy) is reasonable (2a). Start enteral feeding within 7 days (COR 1): nasogastric tube first, and gastrostomy if unsafe swallowing is expected beyond 2–3 weeks (2a). An oral hygiene protocol may reduce pneumonia (2b).",
     "consider": [
-      "Is swallowing safety assessed and the current intake plan communicated to the team?",
-      "Does a concerning screen or clinical change require specialist assessment?",
-      "Are nutrition, hydration, oral care and reassessment included in the plan?"
+      "Is the current intake plan clear to everyone, including medication routes?",
+      "Does a concerning screen or clinical change need specialist assessment?",
+      "Are hydration, oral care and reassessment in the plan?"
     ],
-    "caution": "A screening result does not determine the full swallowing diagnosis. Evidence quality differs across interventions; texture, feeding and rehabilitation decisions need individualized review.",
+    "caution": "A screening result is not the full swallowing diagnosis; in FOOD, PEG led to more death or poor outcome than nasogastric feeding.",
     "sources": [
       {
         "title": "European Stroke Organisation and European Society for Swallowing Disorders guideline for the diagnosis and treatment of post-stroke dysphagia",
@@ -302,7 +333,7 @@
         "year": 2021,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -321,13 +352,13 @@
       "dysphagia",
       "antibiotics"
     ],
-    "summary": "The 2026 ESO guideline addresses pneumonia diagnosis, prevention and treatment after stroke. It favors consistent diagnostic assessment and individualized prevention; preventive antibiotics have not improved relevant outcomes.",
+    "summary": "Diagnose stroke-associated pneumonia clinically, not from a risk score. Prevent it with swallow screening, oral care, positioning and mobility; do not give prophylactic antibiotics (AHA 2026, COR 3; ESO 2026). Treat confirmed pneumonia according to local microbiology.",
     "consider": [
       "Is pneumonia supported by a clinical assessment rather than a risk score alone?",
       "Have swallowing, positioning, mobility and nutritional needs been reviewed?",
       "If pneumonia is diagnosed, is treatment aligned with local microbiology and antimicrobial guidance?"
     ],
-    "caution": "Most questions in this guideline rely on expert consensus because direct evidence is limited. A prediction score does not diagnose pneumonia or justify prophylactic antibiotics.",
+    "caution": "Most ESO recommendations rest on expert consensus because direct evidence is limited.",
     "sources": [
       {
         "title": "ESO Guideline 2026: Stroke-Associated Pneumonia",
@@ -335,7 +366,7 @@
         "year": 2026,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -356,13 +387,13 @@
       "mobility",
       "discharge education"
     ],
-    "summary": "AHA nursing statements describe interprofessional care across the hyperacute, postinterventional and ward phases. The posthyperacute statement connects consistent inpatient care with patient and family preparation for discharge.",
+    "summary": "Care for all ages in an organized stroke unit with a trained interdisciplinary team and standardized orders (AHA 2026, COR 1). Nurse-initiated fever, glucose and swallowing protocols reduced death or dependency (QASC: 42 vs 58%). Make phase-specific monitoring and escalation explicit and carry unresolved issues into discharge planning.",
     "consider": [
       "Are phase-specific monitoring and escalation responsibilities clear?",
       "Have functional needs, safety concerns and family teaching been incorporated into daily care?",
       "Are unresolved inpatient issues carried forward into the discharge plan?"
     ],
-    "caution": "These statements complement current acute stroke guidance and local nursing procedures. They do not supply a universal monitoring frequency or replace a response to clinical deterioration.",
+    "caution": "These statements do not set a universal monitoring frequency or replace response to deterioration.",
     "sources": [
       {
         "title": "Care of the Patient With Acute Ischemic Stroke (Posthyperacute and Prehospital Discharge): Update to 2009 Comprehensive Nursing Care Scientific Statement: A Scientific Statement From the American Heart Association",
@@ -370,7 +401,7 @@
         "year": 2021,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -391,13 +422,13 @@
       "aphasia",
       "medical complications"
     ],
-    "summary": "Nonneurological complications affect multiple organ systems after ischemic and hemorrhagic stroke. The AHA statement emphasizes coordinated surveillance and management while acknowledging gaps in the evidence.",
+    "summary": "Watch for infection, cardiac events, hyperglycemia, fever and delirium. Keep persistent hyperglycemia at 140–180 mg/dL rather than 80–130 (SHINE: no benefit, severe hypoglycemia 2.6%), treat fever to normothermia, and avoid routine bladder catheters (AHA 2026, COR 3: Harm). Aphasia, delirium and neurological worsening can coexist.",
     "consider": [
-      "Have new systemic symptoms or laboratory changes been assessed alongside the neurologic course?",
-      "Could language impairment be limiting the examination, and does fluctuating attention require broader reassessment?",
-      "Are medical, nursing and rehabilitation teams sharing an explicit complication-management plan?"
+      "Have new systemic symptoms or laboratory changes been assessed alongside the neurological course?",
+      "Could aphasia be limiting the examination, and does fluctuating attention need broader reassessment?",
+      "Do medical, nursing and rehabilitation teams share a complication plan?"
     ],
-    "caution": "Aphasia, delirium and neurologic deterioration may coexist. A bedside impression or reference card cannot exclude an acute cause of change; management depends on the identified complication.",
+    "caution": "A bedside impression cannot exclude an acute cause of change.",
     "sources": [
       {
         "title": "AHA Systemic Complications of Acute Stroke Scientific Statement 2024",
@@ -405,7 +436,7 @@
         "year": 2024,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       },
       {
         "title": "AHA poststroke cognitive impairment: official overview",
@@ -433,13 +464,13 @@
       "heparin",
       "thromboprophylaxis"
     ],
-    "summary": "In immobile patients with ischemic stroke, ESO guidance supports intermittent pneumatic compression. Pharmacologic prophylaxis requires balancing thromboembolic benefit against intracranial and extracranial bleeding risks.",
+    "summary": "Immobile after ischemic stroke: intermittent pneumatic compression from admission (AHA 2026, COR 1; CLOTS 3 proximal DVT 8.5 vs 12.1%), and prophylactic-dose heparin (UFH or LMWH) is reasonable (2a). Do not use elastic compression stockings (COR 3: Harm). After ICH, start IPC on the day of diagnosis (AHA 2022, COR 1).",
     "consider": [
       "What are the current mobility, VTE and bleeding risks?",
-      "Is the chosen mechanical method appropriate and being used as intended?",
-      "If medication prophylaxis is considered, have renal function, recent treatment and hemorrhage risk been reviewed?"
+      "Is IPC fitted and worn as intended, with skin checks?",
+      "Before heparin prophylaxis, review renal function, recent treatment and hemorrhage risk."
     ],
-    "caution": "The source concerns immobile ischemic-stroke patients. ICH and postprocedure decisions need their own guidance; graduated compression stockings are not equivalent to intermittent pneumatic compression.",
+    "caution": "Graduated compression stockings are not equivalent to intermittent pneumatic compression.",
     "sources": [
       {
         "title": "European Stroke Organisation (ESO) guidelines for prophylaxis for venous thromboembolism in immobile patients with acute ischaemic stroke",
@@ -447,7 +478,7 @@
         "year": 2016,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -468,13 +499,13 @@
       "pain",
       "range of motion"
     ],
-    "summary": "Poststroke spasticity can combine involuntary muscle activity, impaired voluntary control and tissue changes. The 2026 AHA statement emphasizes earlier recognition and access to care before secondary impairment becomes established.",
+    "summary": "Recognize poststroke spasticity early — pain, hygiene, positioning or care tasks affected by tone — and refer for rehabilitation assessment before contracture and secondary impairment set in (AHA 2026 statement).",
     "consider": [
       "Are pain, hygiene, positioning, mobility or care tasks affected by tone or restricted movement?",
       "What active and passive functional goals matter to the patient and caregiver?",
       "Is timely specialist or rehabilitation assessment needed?"
     ],
-    "caution": "Increased tone is not the only cause of impaired movement. Treatment choice should follow a functional assessment; this card does not select a drug, injection pattern or procedure.",
+    "caution": "Increased tone is not the only cause of impaired movement; treatment follows a functional assessment.",
     "sources": [
       {
         "title": "AHA Scientific Statement 2026: Early Recognition and Intervention for Poststroke Spasticity",
@@ -482,7 +513,7 @@
         "year": 2026,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -504,13 +535,13 @@
       "comprehension",
       "delirium"
     ],
-    "summary": "ESO guidance supports individualized speech-language therapy and evaluates therapy amount, delivery and meaningful communication outcomes. Digital and group formats can be considered within an appropriate rehabilitation plan.",
+    "summary": "Offer individualized speech-language therapy aimed at the communication activities that matter to the patient; digital and group formats can be considered within an appropriate rehabilitation plan (ESO 2025).",
     "consider": [
       "Which communication activities matter most to the patient?",
       "Are assessment and shared decisions adapted to language impairment?",
       "Is the therapy plan feasible, sufficiently supported and reassessed as needs change?"
     ],
-    "caution": "Evidence certainty differs across therapy comparisons. Aphasia does not establish impaired decision-making capacity, and communication difficulty should not be assumed to explain every cognitive or behavioral change.",
+    "caution": "Aphasia does not establish impaired decision-making capacity, and evidence certainty differs across therapy comparisons.",
     "sources": [
       {
         "title": "ESO Guideline 2025: Aphasia Rehabilitation",
@@ -518,7 +549,7 @@
         "year": 2025,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -540,13 +571,13 @@
       "vision",
       "perception"
     ],
-    "summary": "ESO guidance addresses detection and assessment of poststroke visual problems across central vision, eye movements, visual fields, neglect and perception. Screening can identify needs that are otherwise missed.",
+    "summary": "Screen for visual problems — central vision, eye movements, visual fields, neglect and perception — because they are otherwise missed, and arrange specialist assessment and adaptations for reading and mobility (ESO 2025).",
     "consider": [
       "Has the patient been assessed for the relevant type of visual impairment?",
       "Do reading, mobility or daily activities require adaptations and specialist input?",
       "Are visual findings communicated to the rehabilitation and follow-up teams?"
     ],
-    "caution": "Different visual syndromes require different assessments; evidence for treatment varies. This card does not establish driving fitness or substitute for specialist visual evaluation.",
+    "caution": "Different visual syndromes need different assessments, and this card does not establish driving fitness.",
     "sources": [
       {
         "title": "ESO Guideline 2025: Visual Impairment in Stroke",
@@ -554,7 +585,7 @@
         "year": 2025,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -576,13 +607,13 @@
       "exercise",
       "mobility"
     ],
-    "summary": "ESO motor-rehabilitation guidance reviews upper-limb practice, gait training, therapy transfer into daily life, group therapy and sit-to-stand training. Recommendations differ in strength and in the population studied.",
+    "summary": "Link practice to tasks the patient needs in daily life and measure movement and participation goals over time. ESO 2025 covers upper-limb practice, gait training, transfer of therapy into daily life, group therapy and sit-to-stand training, with recommendations that differ in strength and population.",
     "consider": [
       "Which movement and participation goals are being measured over time?",
       "Is practice linked to tasks the patient needs in daily life?",
       "Do cardiovascular stability, endurance and access support the proposed training approach?"
     ],
-    "caution": "A finding in chronic, cardiovascularly stable stroke does not automatically apply during acute illness. Therapy dose and intensity need a rehabilitation assessment rather than a universal schedule.",
+    "caution": "Results from chronic, stable stroke do not automatically apply during acute illness; dose needs a rehabilitation assessment.",
     "sources": [
       {
         "title": "ESO Guideline 2025: Motor Rehabilitation After Stroke",
@@ -590,7 +621,7 @@
         "year": 2025,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -612,13 +643,13 @@
       "psychosocial",
       "caregiver"
     ],
-    "summary": "The AHA psychosocial statement considers depression, stress, anxiety, fatigue and quality of life after stroke. It emphasizes recognition, appropriate screening, education and access to interdisciplinary support.",
+    "summary": "Screen for depression with a structured inventory (AHA 2026, COR 1) and treat it with antidepressants and/or psychotherapy or other nonpharmacological options (COR 1). Ask about anxiety, fatigue and stress, and give patients and families education and access to interdisciplinary support.",
     "consider": [
       "Which emotional symptoms or fatigue are limiting recovery or daily life?",
       "Is a concerning screen followed by clinical assessment and a practical care pathway?",
       "Do the patient and family have support, education and access to needed services?"
     ],
-    "caution": "A screening score is not a diagnosis. Evidence for specific nursing interventions is limited, and fatigue or distress should not be assigned a single cause without assessment.",
+    "caution": "A screening score is not a diagnosis, and fatigue or distress should not be assigned a single cause without assessment.",
     "sources": [
       {
         "title": "Nursing's Role in Psychosocial Health Management After a Stroke Event: A Scientific Statement From the American Heart Association",
@@ -626,7 +657,7 @@
         "year": 2024,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": [
@@ -652,13 +683,13 @@
       "transportation",
       "return to work"
     ],
-    "summary": "The AAN seizure-driving position statement supports individualized licensing assessment and addresses medication effects, seizure recurrence and access to alternative transportation. Driving and other participation goals should be discussed explicitly during follow-up.",
+    "summary": "Discuss driving and return to work explicitly at follow-up. Licensing after seizures is individualized and depends on medication effects, recurrence risk, local rules and access to alternative transport (AAN 2025 position statement).",
     "consider": [
       "Are seizures, cognition, vision, motor function or medication effects relevant to the intended activity?",
       "Have the applicable licensing rules and any specialist assessment requirements been checked?",
       "What transport, workplace or rehabilitation support is needed?"
     ],
-    "caution": "An AAN consensus position is not state law, a universal poststroke waiting period or individual clearance. Driving rules and occupational demands require separate review.",
+    "caution": "A position statement is not state law, a universal waiting period or individual clearance.",
     "sources": [
       {
         "title": "Seizures, Driver Licensure, and Medical Reporting Update: An AAN Position Statement",
@@ -666,7 +697,7 @@
         "year": 2025,
         "type": "Position statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       },
       {
         "title": "AHA poststroke cognitive impairment: official overview",
@@ -694,13 +725,13 @@
       "medication review",
       "primary care"
     ],
-    "summary": "AHA primary-care guidance combines recurrent-stroke prevention with function, late complications and quality of life. Screening for cognition, mood, falls and unmet needs remains relevant beyond the early recovery period.",
+    "summary": "At every follow-up, reconcile risk-factor treatment and medications across clinicians, and rescreen cognition, mood, falls and unmet needs — they remain relevant beyond early recovery (AHA primary-care statement).",
     "consider": [
       "Are risk-factor treatment and the medication list reconciled across clinicians?",
       "Have changes in function, falls, cognition or mood prompted reassessment?",
       "Are patient and caregiver priorities linked to referrals and a named follow-up plan?"
     ],
-    "caution": "A stable initial follow-up does not resolve future recovery needs. Prevention and rehabilitation plans require reassessment as health, function and support change.",
+    "caution": "Prevention and rehabilitation plans need reassessment as health, function and support change.",
     "sources": [
       {
         "title": "AHA/ASA Scientific Statement 2021: Primary Care of Adult Patients After Stroke",
@@ -708,7 +739,7 @@
         "year": 2021,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -729,13 +760,13 @@
       "executive function",
       "delirium"
     ],
-    "summary": "Cognitive impairment after stroke can affect independence, employment and relationships. Vascular injury and preexisting neurodegenerative disease may interact; screening for associated conditions and interdisciplinary management are important.",
+    "summary": "Screen cognition after stroke against the person's baseline; vascular injury and preexisting neurodegeneration can interact, so look for associated conditions and plan safety, supports and follow-up across disciplines (AHA 2023). Impairment affects independence, employment and relationships.",
     "consider": [
       "What has changed from the person’s cognitive and functional baseline?",
       "Are language, mood, sensory limitations or acute illness affecting assessment?",
       "Does the care plan address everyday safety, supports and follow-up evaluation?"
     ],
-    "caution": "A single screen does not identify the full cause or establish permanent impairment. Early cognitive changes can evolve; review the trajectory and possible contributing conditions.",
+    "caution": "A single screen does not identify the cause or establish permanent impairment.",
     "sources": [
       {
         "title": "AHA Scientific Statement 2023: Cognitive Impairment After Ischemic and Hemorrhagic Stroke",
@@ -743,7 +774,7 @@
         "year": 2023,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       },
       {
         "title": "Vascular Contributions to Cognitive Impairment and Brain Health: Clinical Update and Mechanistic Considerations: A Scientific Statement From the American Heart Association",
@@ -751,7 +782,7 @@
         "year": 2026,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -772,13 +803,13 @@
       "circadian",
       "STOP-Bang"
     ],
-    "summary": "The AHA statement links disturbed sleep and sleep disorders with adverse cerebrovascular and cognitive outcomes. These associations support identifying sleep concerns, while causal pathways and treatment effects remain incompletely established.",
+    "summary": "Ask about sleep and screen for sleep-disordered breathing and insomnia, then confirm with diagnostic testing rather than assuming a diagnosis. Disturbed sleep is linked with worse cerebrovascular and cognitive outcomes, but treatment effects on those outcomes are not established (AHA 2024).",
     "consider": [
       "Are sleep-disordered breathing, insomnia or other sleep symptoms affecting recovery?",
       "Does screening warrant diagnostic evaluation rather than an assumed diagnosis?",
       "Are sleep symptoms and treatment feasibility included in follow-up?"
     ],
-    "caution": "An association with stroke or dementia does not prove that a particular sleep intervention prevents either outcome. A screening questionnaire does not diagnose sleep apnea.",
+    "caution": "A screening questionnaire does not diagnose sleep apnea, and association does not prove that treatment prevents stroke or dementia.",
     "sources": [
       {
         "title": "Impact of Sleep Disorders and Disturbed Sleep on Brain Health: A Scientific Statement From the American Heart Association",
@@ -786,7 +817,7 @@
         "year": 2024,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": [
@@ -812,13 +843,13 @@
       "environment",
       "prevention"
     ],
-    "summary": "The 2026 AHA framework places brain health within lifelong physical, emotional, environmental and social influences. It reviews potential mechanisms and prevention opportunities while distinguishing established knowledge from research questions.",
+    "summary": "Address the vascular, sleep, mental-health and social factors relevant to the person's goals without overinterpreting observational findings; the 2026 AHA framework separates established knowledge from research questions.",
     "consider": [
       "Which vascular, sleep, mental-health or social factors are relevant to this person’s goals?",
       "Are potentially modifiable exposures and barriers discussed without overinterpreting observational findings?",
       "Does the proposed intervention have evidence for the outcome being claimed?"
     ],
-    "caution": "This framework is a scientific statement for future study, not a validated brain-health score or proof that a supplement, biomarker or lifestyle intervention prevents dementia.",
+    "caution": "This framework is not a validated brain-health score or proof that any supplement, biomarker or lifestyle change prevents dementia.",
     "sources": [
       {
         "title": "Brain Health Across the Life Span: A Framework for Future Studies: A Scientific Statement From the American Heart Association",
@@ -826,7 +857,7 @@
         "year": 2026,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -849,13 +880,13 @@
       "microbleeds",
       "thrombolysis"
     ],
-    "summary": "Antiamyloid immunotherapies can cause amyloid-related imaging abnormalities, including edema and hemorrhage. The AHA advisory examines questions involving cerebrovascular disease, antithrombotics and acute stroke presentations in treated patients.",
+    "summary": "Ask stroke patients about antiamyloid immunotherapy: it can cause amyloid-related imaging abnormalities (edema and hemorrhage), and acute antithrombotic and reperfusion decisions in treated patients need the current drug label and specialist input (AHA advisory).",
     "consider": [
       "Is current or recent antiamyloid treatment known and communicated to the stroke team?",
       "Could the presentation and imaging reflect ARIA, ischemia or another process?",
       "Have the current drug label, imaging history and relevant specialists been consulted?"
     ],
-    "caution": "The advisory highlights important evidence gaps. This card supplies no blanket antithrombotic or reperfusion permission; acute decisions require current drug-specific and stroke guidance.",
+    "caution": "This card gives no blanket antithrombotic or reperfusion permission; check the current drug label and stroke guidance.",
     "sources": [
       {
         "title": "Vascular Neurology Considerations for Antiamyloid Immunotherapy: A Science Advisory From the American Heart Association",
@@ -863,7 +894,7 @@
         "year": 2024,
         "type": "Science advisory",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -883,13 +914,13 @@
       "hospital systems",
       "stroke alert"
     ],
-    "summary": "The AHA statement identifies staff recognition, rapid access to stroke expertise, standardized assessment and imaging, transfer planning and quality feedback as core elements of an in-hospital stroke system.",
+    "summary": "Every unit should be able to activate the stroke team immediately; use an organized protocol for emergent evaluation of acute deficits at any age (AHA 2026, COR 1). Hand over time last known well, the examination, imaging and recent procedures, and track delays for quality review.",
     "consider": [
       "Can staff immediately activate the stroke response from this location?",
       "Are timing, examination, imaging and relevant recent procedures communicated to the response team?",
       "Are transfer barriers and delays captured for review?"
     ],
-    "caution": "Being in a monitored setting does not ensure timely recognition. A systems statement complements current treatment guidance and the institution’s stroke pathway.",
+    "caution": "Being in a monitored setting does not ensure timely recognition.",
     "sources": [
       {
         "title": "Identifying Best Practices to Improve Evaluation and Management of In-Hospital Stroke: A Scientific Statement From the American Heart Association",
@@ -897,7 +928,7 @@
         "year": 2022,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": [
@@ -924,13 +955,13 @@
       "destination",
       "virtual network"
     ],
-    "summary": "AHA statements emphasize dependable access to expertise, clear transfer processes and collaboration between lower-resourced hospitals and larger stroke centers. Virtual networks can improve coordination when their clinical and operational limits are understood.",
+    "summary": "Without in-house stroke expertise, use telestroke for IVT decisions (AHA 2026, COR 1) and teleradiology for rapid image review (COR 1); EMS should go to the closest stroke-capable hospital, and direct transport to a thrombectomy center is reasonable where local access exists (2a). Agree transfer protocols that minimize door-in-door-out time (COR 1).",
     "consider": [
       "What imaging, specialist and treatment capabilities are available at the referring and receiving sites?",
       "Are clinical information, images and the transfer plan shared through a reliable process?",
       "Is responsibility clear if connection, transport or destination capacity changes?"
     ],
-    "caution": "Technology and center labels do not establish current local capability. Routing and treatment require the actual clinical assessment, regional agreements and available resources.",
+    "caution": "Technology and center labels do not establish current local capability.",
     "sources": [
       {
         "title": "Identifying Best Practices for Improving the Evaluation and Management of Stroke in Rural Lower-Resourced Settings: A Scientific Statement From the American Heart Association",
@@ -938,7 +969,7 @@
         "year": 2024,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       },
       {
         "title": "Creating Virtual Stroke Networks: Current and Future Role of Artificial Intelligence, Mobile Imaging Applications, and Telehealth in Triage and Treatment of Acute Ischemic Stroke: A Scientific Statement From the American Heart Association: The American Academy of Neurology affirms the value of this statement as an educational tool for neurologists",
@@ -946,7 +977,7 @@
         "year": 2025,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -967,13 +998,13 @@
       "care partner",
       "person-centered"
     ],
-    "summary": "The AHA transitions statement emphasizes matching care with patient preferences, coordination, education, comfort, emotional support, family involvement and continuity. These domains are not consistently represented in studied transition interventions.",
+    "summary": "Before discharge, confirm that the patient's priorities, medication plan, open questions and the named follow-up owner reach the next setting, and that patient and care partner have usable information and a way to get help (AHA transitions statement).",
     "consider": [
       "Are the patient’s priorities and support needs reflected in the next setting of care?",
       "Are medication plans, outstanding questions and responsibility for follow-up clearly communicated?",
       "Have the patient and care partner received usable information and a way to seek help?"
     ],
-    "caution": "A completed discharge document does not establish a successful transition. Understanding, access and follow-through need direct confirmation.",
+    "caution": "A completed discharge document does not establish a successful transition.",
     "sources": [
       {
         "title": "Exploring the Inclusion of Person-Centered Care Domains in Stroke Transitions of Care Interventions: A Scientific Statement From the American Heart Association",
@@ -981,7 +1012,7 @@
         "year": 2024,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -1002,13 +1033,13 @@
       "health equity",
       "care access"
     ],
-    "summary": "AHA statements identify insurance processes, geography and social or environmental conditions as barriers to rehabilitation and recovery. A workable plan must connect clinical needs with realistic access to services.",
+    "summary": "Match the rehabilitation plan to documented functional needs and check coverage, travel and caregiving barriers early; name who will resolve barriers and reassess if access is delayed (AHA statements).",
     "consider": [
       "Do coverage, travel, caregiving or other circumstances limit the proposed rehabilitation plan?",
       "Are the recommended setting and services linked to documented functional needs?",
       "Who will help resolve barriers and reassess needs if access is delayed?"
     ],
-    "caution": "Placement availability is not the same as clinical suitability. Broad policy recommendations do not predict an individual insurer’s decision or replace reassessment of the patient’s needs.",
+    "caution": "Placement availability is not the same as clinical suitability.",
     "sources": [
       {
         "title": "Improving Access to Stroke Rehabilitation and Recovery: A Policy Statement From the American Heart Association/American Stroke Association",
@@ -1016,7 +1047,7 @@
         "year": 2025,
         "type": "Policy statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       },
       {
         "title": "Social and Environmental Determinants of Stroke Functional Outcome and Strategies to Reduce Inequities: A Scientific Statement From the American Heart Association",
@@ -1024,7 +1055,7 @@
         "year": 2026,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -1045,13 +1076,13 @@
       "program development",
       "rehabilitation standards"
     ],
-    "summary": "AHA program guidance distinguishes structural capability from certification alone. Postacute standards address coordination, staff and caregiver education, medical management and quality improvement across rehabilitation settings.",
+    "summary": "Match staffing and expertise to the services the program promises, and measure processes and outcomes with named responsibility; certification alone does not establish capability (AHA program guidance).",
     "consider": [
       "Do staffing, expertise and operating arrangements match the services the program promises?",
       "Are processes and outcomes measured with clear responsibility for improvement?",
       "Are acute and postacute teams using shared expectations for coordinated care?"
     ],
-    "caution": "Certification does not establish identical capability across sites. Proposed postacute standards are a quality framework; outcome benefits and local implementation still require evaluation.",
+    "caution": "Certification does not establish identical capability across sites.",
     "sources": [
       {
         "title": "Ideal Foundational Requirements for Stroke Program Development and Growth: A Scientific Statement From the American Heart Association",
@@ -1059,7 +1090,7 @@
         "year": 2023,
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       },
       {
         "title": "American Heart Association Standards for Postacute Stroke Rehabilitation Care",
@@ -1067,7 +1098,7 @@
         "year": 2025,
         "type": "Clinical policy",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via live NLM PubMed record; full recommendation tables and supplementary material not reviewed in this pass."
+        "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
     "related": []

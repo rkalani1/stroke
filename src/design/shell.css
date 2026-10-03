@@ -373,3 +373,25 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
 .calc-attest:has(input:disabled) { color: var(--mute); }
 @media (min-width: 640px) { .supplementary-calculators .calc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 480px) { .calc-result-figure { font-size: 1.75rem; } }
+
+/* Evidence */
+.reference-headline { display: block; margin-top: 2px; color: var(--ink-2); font-size: .875rem; font-weight: 400; }
+.reference-study-results a .reference-headline { flex-basis: 100%; }
+.reference-recs { margin: 12px 0; }
+.reference-recs h3, .reference-body > section > h3 { font-size: .9375rem; font-weight: 700; }
+.reference-body .reference-recs ul { list-style: none; padding-left: 0; display: grid; gap: 10px; margin-top: 8px; }
+.reference-recs li { border-left: 3px solid var(--line); padding-left: 10px; }
+.reference-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
+.reference-chip { display: inline-flex; align-items: center; padding: 1px 8px; border: 1px solid currentColor; border-radius: 999px; font-size: .75rem; font-weight: 650; line-height: 1.5; }
+.reference-chip.cor-1 { color: var(--confirm); background: var(--confirm-soft); }
+.reference-chip.cor-2a { color: var(--accent-ink); background: var(--accent-soft); }
+.reference-chip.cor-2b { color: var(--caution); background: var(--caution-soft); }
+.reference-chip.cor-3 { color: var(--critical); background: var(--critical-soft); }
+.reference-chip.cor-neutral, .reference-chip-loe { color: var(--ink-2); background: var(--surface-2); border-color: var(--line); }
+.reference-rec-text { display: block; }
+.reference-rec-source { display: block; margin-top: 2px; color: var(--ink-2); font-size: .8125rem; }
+.reference-sources > summary, .reference-provenance > summary { display: list-item; min-height: 44px; padding: 10px 0; font-weight: 650; cursor: pointer; }
+.reference-body .reference-sources ul { list-style: none; padding-left: 0; display: grid; gap: 6px; }
+.reference-sources li > span { color: var(--ink-2); }
+.reference-provenance { margin-top: 4px; }
+.reference-provenance li { color: var(--ink-2); }

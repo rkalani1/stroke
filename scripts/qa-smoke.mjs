@@ -735,7 +735,7 @@ async function main() {
       assert.equal(await evidence.locator('[data-reference-id]').count(), 1);
       const af = evidence.locator('[data-reference-id="af-prevention"]'); await af.locator('summary').click();
       await af.getByRole('link', {name:/AVERROES/}).waitFor();
-      assert((await af.innerText()).includes('bibliographic identity checked'));
+      assert((await af.locator(':scope > .reference-body > .reference-sources > .reference-provenance').textContent()).includes('bibliographic record checked'));
       await page.getByRole('link', {name:'Trials',exact:true}).click();
       await page.getByRole('heading', {name:'Trials',exact:true}).waitFor();
       assert.equal(await page.getByRole('tab', {name:'Completed evidence',exact:true}).count(), 0);
