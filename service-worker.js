@@ -91,17 +91,18 @@ const CDN_ASSETS = [];
 // not execute deferred protocols, trials, calculators or reference modules.
 // BEGIN GENERATED APP CHUNKS
 const APP_CHUNKS = [
-  "./chunks/chunk-3RHMHLG3.js",
-  "./chunks/chunk-CCC5QWPU.js",
-  "./chunks/chunk-CM2WT52P.js",
-  "./chunks/chunk-DXV6LRZM.js",
-  "./chunks/chunk-HOFJI2PN.js",
-  "./chunks/chunk-YMRG3MKV.js",
-  "./chunks/InstallAppButton-JLW3PHBK.js",
-  "./chunks/ProtectedProtocols-JXJ4HSV7.js",
-  "./chunks/Reference-KF3OXFZ7.js",
-  "./chunks/Tools-C3SMYWSC.js",
-  "./chunks/Trials-L5ZU464V.js"
+  "./chunks/chunk-64PKFCON.js",
+  "./chunks/chunk-BMDVCXY2.js",
+  "./chunks/chunk-ER7FMCVO.js",
+  "./chunks/chunk-MNAH2GMN.js",
+  "./chunks/chunk-TLZD2LSM.js",
+  "./chunks/chunk-VFFXZOV4.js",
+  "./chunks/chunk-YWUQV2R5.js",
+  "./chunks/InstallAppButton-UXD7NMLJ.js",
+  "./chunks/ProtectedProtocols-NA5GMJCA.js",
+  "./chunks/Reference-6U4B7WBO.js",
+  "./chunks/Tools-EUXLIL4X.js",
+  "./chunks/Trials-K362LDXP.js"
 ];
 // END GENERATED APP CHUNKS
 

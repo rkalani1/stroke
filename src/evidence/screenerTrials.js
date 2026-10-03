@@ -1,15 +1,14 @@
 // src/evidence/screenerTrials.js
 //
-// Native port of the standalone stroke-trials-screener `trials` array.
-// 14 synthetic, public-clean trial objects used by the bedside Trial Screener
-// (src/components/TrialScreener.jsx) and the dual-eval engine
-// (src/evidence/screener-eval.js).
+// Canonical study profiles used by the bedside Trial Screener
+// (src/components/TrialScreener.jsx), the criteria tables and the study
+// database, and evaluated by the pure engine in src/evidence/screener-eval.js.
 //
 // COMPLIANCE: every object is institution-clean — zero identifiers, every
 // trial carries `noContactInfo: true`, pathways are generic ("Consult Stroke
-// Research Coordinator …"), and the unverified studies (ESUS, MOCHA) are
-// flagged `status: 'placeholder'` / `sourceCompletenessStatus:
-// 'not_registry_verified'` so the engine blocks them from screening.
+// Research Coordinator …"), and `localActivationStatus` is never asserted.
+// Profiles flagged `referenceOnly` (criteria-table/Database references) and
+// profiles that are not enrolling are never offered as screening candidates.
 
 import trialsData from './screenerTrials.json' with { type: 'json' };
 

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { eligibilityTables, CATEGORY_LABELS, PHASE_LABELS, ELIGIBILITY_COMPLIANCE_NOTE } from '../evidence/eligibilityTables.js';
+import { phaseLabel } from '../evidence/screener-eval.js';
 
 const statusText = { enrolling: 'Recruiting at recorded check', soon: 'Not yet recruiting at recorded check', closed: 'Closed to enrollment in stored profile', unverified: 'Unverified' };
 const HEADINGS = ['Study', 'Summary', 'Inclusion criteria', 'Exclusion criteria'];
 const escHtml = value => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const escMd = value => String(value).replace(/\|/g, '\\|').replace(/\n/g, ' ');
-const sourceRecord = trial => `${statusText[trial.status] || 'Unverified'}. Recorded registry check: ${trial.sourceDate || 'not recorded in this table'}. Local activation is not confirmed.`;
+const studyPhase = trial => phaseLabel({ phase: trial.phase, studyType: trial.studyType });
+const sourceRecord = trial => `${statusText[trial.status] || 'Unverified'}${studyPhase(trial) ? ` · ${studyPhase(trial)}` : ''}${trial.referenceOnly ? ' · not modeled in the screener' : ''}. Recorded registry check: ${trial.sourceDate || 'not recorded in this table'}. Local activation is not confirmed.`;
 const sourceGaps = trial => trial.sourceGaps?.length ? `Source gaps / confirmation required: ${trial.sourceGaps.join('; ')}` : '';
 
 export function buildTableMarkdown(table) {
@@ -47,6 +49,6 @@ function PhaseTable({ table, copyToClipboard }) {
 
 export function EligibilityTables({ copyToClipboard, onStateChange }) {
   const [category, setCategory] = useState('ischemic');
-  return <div className="space-y-4"><div className="flex flex-wrap gap-2" role="group" aria-label="Stroke category filter">{Object.entries(CATEGORY_LABELS).map(([id, label]) => <button key={id} type="button" aria-pressed={category === id} className="min-h-[44px] rounded-md border border-line bg-card px-4 font-semibold" onClick={() => { onStateChange?.(); setCategory(id); }}>{label}</button>)}</div><p className="text-sm text-mute">The same full stored criteria appear in the study database. The two table-only reference profiles are retained with their separate source limitations.</p>{eligibilityTables.filter(table => table.category === category).map(table => <PhaseTable key={table.id} table={table} copyToClipboard={copyToClipboard} />)}</div>;
+  return <div className="space-y-4"><div className="flex flex-wrap gap-2" role="group" aria-label="Stroke category filter">{Object.entries(CATEGORY_LABELS).map(([id, label]) => <button key={id} type="button" aria-pressed={category === id} className="min-h-[44px] rounded-md border border-line bg-card px-4 font-semibold" onClick={() => { onStateChange?.(); setCategory(id); }}>{label}</button>)}</div><p className="text-sm text-mute">Recruiting and not-yet-recruiting profiles, with the same stored criteria as Database. Studies marked “not modeled in the screener” are criteria references only; profiles not enrolling are listed in Database.</p>{eligibilityTables.filter(table => table.category === category).map(table => <PhaseTable key={table.id} table={table} copyToClipboard={copyToClipboard} />)}</div>;
 }
 export default EligibilityTables;
