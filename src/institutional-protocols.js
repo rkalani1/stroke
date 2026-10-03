@@ -4,6 +4,7 @@
 // identifiers, contact details, platform tokens, and source file names are omitted.
 // This educational implementation is not a substitute for the approved source or
 // patient-specific clinical judgment.
+import { calculateTNKDoseReviewed } from './calculators.js';
 
 // =====================================================================
 // Adult blood-pressure protocols in the accepted institutional source set
@@ -85,13 +86,13 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
     },
     {
       title: 'Cerebellar decompression',
-      criteria: ['Cerebellar mass effect', 'Usually obstructive hydrocephalus and/or brainstem compression'],
-      action: 'Evaluate urgently for suboccipital decompression with or without EVD.'
+      criteria: ['Cerebellar ICH >=15 mL', 'Or neurological deterioration, brainstem compression and/or hydrocephalus from ventricular obstruction'],
+      action: 'Immediate surgical evacuation with or without EVD is recommended (AHA/ASA 2022 ICH, COR 1, LOE B-NR); obtain urgent Neurosurgery evaluation.'
     },
     {
       title: 'Minimally invasive evacuation',
       criteria: ['Lobar IPH 30-80 mL', 'Age 18-80', 'NIHSS >5', 'GCS 5-14', 'No underlying vascular lesion'],
-      action: 'Screen for the approved ENRICH-based standard-of-care pathway.'
+      action: 'Screen for the approved ENRICH-based standard-of-care pathway. ENRICH trial context (not the local screen): enrolled within 24 hours of last known well, premorbid mRS 0-1, lobar or anterior basal-ganglia ICH 30-80 mL, GCS 5-14.'
     }
   ],
   researchScreens: [
@@ -181,7 +182,14 @@ export const getSafePauseIssues = ({ consentType = '', bp = '', contraindication
   return issues;
 };
 
-export const getSafePauseText = ({ consentType = '', bp = '', contraindications = '', providerAgreement = '' } = {}) => {
+// The dose line follows the selected agent; it never assumes tenecteplase.
+export const SAFE_PAUSE_DOSE_LINES = {
+  tnk: 'weight-based tenecteplase 0.25 mg/kg IV bolus, max 25 mg',
+  alteplase: 'weight-based alteplase 0.9 mg/kg, max 90 mg; 10% IV bolus over 1 min, remainder infused over 60 min'
+};
+const safePauseDrugKey = (drug) => /alteplase|activase|tpa/i.test(String(drug || '')) ? 'alteplase' : 'tnk';
+
+export const getSafePauseText = ({ consentType = '', bp = '', contraindications = '', providerAgreement = '', drug = 'tnk' } = {}) => {
   const issues = getSafePauseIssues({ consentType, bp, contraindications, providerAgreement });
   if (issues.length > 0) {
     return `SAFE PAUSE NOT READY — DO NOT ATTEST:
@@ -192,7 +200,7 @@ Attestation unavailable until every required item is complete.`;
 (1) Consent confirmed (${consentType}).
 (2) BP confirmed ${bp}; both values are strictly below 185/110.
 (3) Absolute & relative contraindications ${contraindications}.
-(4) Dose confirmed (weight-based TNK 0.25 mg/kg, max 25 mg).
+(4) Dose confirmed (${SAFE_PAUSE_DOSE_LINES[safePauseDrugKey(drug)]}).
 (5) Pause performed FACE-TO-FACE with the RN or anesthesia provider who will administer the drug.
 (6) Pause confirmed by neurology, the ED clinician, and the primary RN; all providers agree with the thrombolytic decision.
 (7) Safety pause documented using the approved local workflow.
@@ -202,6 +210,19 @@ Attestation: ${SAFE_PAUSE_ATTESTATION}`;
 // =====================================================================
 // Adult IVT eligibility — accepted institutional algorithm
 // =====================================================================
+// One dose arithmetic for every surface: AHA/ASA 2026 0.25 mg/kg, max 25 mg,
+// without the former 0.5 mg pocket-card rounding (calculators.js owns it).
+const guidelineTnkDose = (wt) => {
+  const dose = calculateTNKDoseReviewed(wt, 'guideline');
+  return dose ? Number(dose.calculatedDose) : null;
+};
+
+// Institutional extended-window CTP thresholds (source: local IVT eligibility
+// decision algorithm). They are stricter on core than the trials (EXTEND and
+// TRACE-III used core <70 mL) and are labeled institutional wherever shown.
+export const INSTITUTIONAL_CTP_THRESHOLD_TEXT = 'institutional CTP thresholds: core <50 mL, mismatch ratio ≥1.2, mismatch volume ≥10 mL';
+export const TRACE_III_SELECTION_TEXT = 'TRACE-III (source trial for AHA/ASA 2026 COR 2b) enrolled ICA/MCA occlusion without EVT access, core <70 mL, mismatch ratio ≥1.8 and mismatch volume ≥15 mL';
+
 export const evaluateIVT = ({
   ichOnCT,
   disablingDeficit,
@@ -218,7 +239,9 @@ export const evaluateIVT = ({
   wakeUpOrUnknownOnset = false,
   bpSystolic,
   bpDiastolic,
-  contraindicationsReviewed
+  contraindicationsReviewed,
+  lvoOnCta,
+  safetyReviewReason
 }) => {
   const hrs = wakeUpOrUnknownOnset === true ? Number.NaN : parseFloat(hoursFromLKW);
   const glc = parseFloat(glucose);
@@ -238,7 +261,9 @@ export const evaluateIVT = ({
     } else if (!(sbp < 185 && dbp < 110)) {
       issues.push('confirm both BP values are strictly below 185/110');
     }
-    if (contraindicationsReviewed !== true) {
+    if (typeof safetyReviewReason === 'string' && safetyReviewReason.trim()) {
+      issues.push(`resolve the Encounter safety review (${safetyReviewReason.trim()})`);
+    } else if (contraindicationsReviewed !== true) {
       issues.push('confirm the absolute and relative contraindications were reviewed');
     }
     if (issues.length === 0) return null;
@@ -344,7 +369,7 @@ export const evaluateIVT = ({
       eligible: true,
       recommendation: 'TNK recommended — standard window',
       agent: 'Tenecteplase 0.25 mg/kg IV bolus (max 25 mg)',
-      dose: Number.isFinite(wt) ? Math.min(25, Math.round(wt * 0.25 * 2) / 2) : null,
+      dose: guidelineTnkDose(wt),
       cor: '1',
       loe: 'A',
       warnings,
@@ -371,7 +396,7 @@ export const evaluateIVT = ({
       return {
         eligible: 'pending',
         recommendation: 'Extended-window IVT gates incomplete',
-        reason: [...(!qualifyingMismatch ? [isWakeUpOrUnknown ? 'Wake-up/unknown-onset treatment requires explicit MRI DWI-FLAIR mismatch in this institutional branch.' : 'Requires explicit MRI DWI-FLAIR mismatch or all CTP criteria: core <50 mL, ratio ≥1.2, mismatch volume ≥10 mL.'] : []), ...extendedGates].join(' '),
+        reason: [...(!qualifyingMismatch ? [isWakeUpOrUnknown ? 'Wake-up/unknown-onset treatment requires explicit MRI DWI-FLAIR mismatch in this institutional branch.' : `Requires explicit MRI DWI-FLAIR mismatch or all ${INSTITUTIONAL_CTP_THRESHOLD_TEXT} (EXTEND used core <70 mL, ratio >1.2, mismatch >10 mL).`] : []), ...extendedGates].join(' '),
         decisions,
         warnings,
         imagingGuidance: isWakeUpOrUnknown ? 'Use the limited hyperacute MRI pathway.' : preferMRI ? 'Prefer MRI if small vessel, posterior circulation, or contrast allergy.' : 'CTP acceptable; MRI alternative.'
@@ -386,9 +411,12 @@ export const evaluateIVT = ({
       eligible: 'consider',
       recommendation: `Consider TNK — ${isWakeUpOrUnknown ? 'wake-up/unknown-onset' : '4.5-9-hour'} window with qualifying mismatch imaging`,
       agent: 'Tenecteplase 0.25 mg/kg IV bolus (max 25 mg)',
-      dose: Number.isFinite(wt) ? Math.min(25, Math.round(wt * 0.25 * 2) / 2) : null,
+      dose: guidelineTnkDose(wt),
       cor: '2a',
       loe: 'B-R',
+      selectionSource: mriDwiFlairMismatch === true
+        ? 'Selection: MRI DWI-FLAIR mismatch (WAKE-UP; AHA/ASA 2026 COR 2a, LOE B-R).'
+        : `Selection: ${INSTITUTIONAL_CTP_THRESHOLD_TEXT}; AHA/ASA 2026 COR 2a, LOE B-R for EVT-ineligible patients with salvageable penumbra at 4.5-9 h (EXTEND used core <70 mL, ratio >1.2, mismatch >10 mL).`,
       warnings,
       decisions,
       nextStep: 'Complete the approved local safety pause.',
@@ -397,12 +425,25 @@ export const evaluateIVT = ({
   }
 
   if (Number.isFinite(hrs) && hrs >= 9 && hrs <= 24) {
+    // AHA/ASA 2026 (COR 2b, LOE B-R) covers 4.5-24 h only for LVO with salvageable
+    // penumbra in patients who cannot receive EVT (TRACE-III). Non-LVO late-window
+    // IVT has no guideline grade, so this branch now requires LVO on CTA.
+    if (lvoOnCta === false) {
+      return {
+        eligible: false,
+        recommendation: 'Late-window (9-24h) IVT not supported without LVO',
+        reason: `The AHA/ASA 2026 9-24-hour IVT recommendation (COR 2b, LOE B-R) is limited to ICA/MCA large-vessel occlusion with salvageable penumbra when EVT cannot be performed. ${TRACE_III_SELECTION_TEXT}. Non-LVO late-window thrombolysis is not guideline-graded.`,
+        decisions,
+        warnings
+      };
+    }
     const lateGates = consentObtained === true ? extendedGates : [...extendedGates, 'consent must be obtained'];
+    if (lvoOnCta !== true) lateGates.unshift('LVO (ICA or MCA occlusion) on CTA must be confirmed');
     if (!fullCTPCriteriaMet || lateGates.length > 0) {
       return {
         eligible: 'pending',
         recommendation: 'Late-window IVT gates incomplete',
-        reason: [...(!fullCTPCriteriaMet ? ['Requires all CTP criteria: core <50 mL, ratio ≥1.2, mismatch volume ≥10 mL. MRI mismatch alone is not sufficient for this branch.'] : []), ...lateGates].join(' '),
+        reason: [...(!fullCTPCriteriaMet ? [`Requires all ${INSTITUTIONAL_CTP_THRESHOLD_TEXT}. MRI mismatch alone is not sufficient for this branch.`] : []), ...lateGates].join(' '),
         decisions,
         warnings
       };
@@ -414,12 +455,15 @@ export const evaluateIVT = ({
     }
     return {
       eligible: 'consider',
-      recommendation: 'Consider TNK — late window (9-24h) with CTP-selected mismatch',
+      recommendation: 'Consider TNK — late window (9-24h), LVO without EVT, CTP-selected mismatch',
       agent: 'Tenecteplase 0.25 mg/kg IV bolus (max 25 mg)',
-      dose: Number.isFinite(wt) ? Math.min(25, Math.round(wt * 0.25 * 2) / 2) : null,
+      dose: guidelineTnkDose(wt),
+      cor: '2b',
+      loe: 'B-R',
+      selectionSource: `Selection: ${INSTITUTIONAL_CTP_THRESHOLD_TEXT}. ${TRACE_III_SELECTION_TEXT}.`,
       warnings,
       decisions,
-      nextStep: 'Complete the approved local safety pause; this source branch assigns no COR or LOE grade.'
+      nextStep: 'Complete the approved local safety pause. AHA/ASA 2026: IVT may be beneficial (COR 2b, LOE B-R) for LVO with salvageable penumbra 4.5-24 h when EVT cannot be performed, directed by clinicians with thrombolysis expertise.'
     };
   }
 
@@ -543,42 +587,38 @@ export const evaluateEVT_M2 = ({ segment, dominant, hoursFromLKWh, nihss, preMRS
       };
     }
     if (hrs > 6 && hrs <= 24 && coreMet) {
+      // AHA/ASA 2026 grades dominant proximal M2 EVT only within 6 hours (COR 2a,
+      // LOE B-NR). The 6-24-hour tier is an institutional flowchart tier.
       if (ctpMismatch === true) {
         return {
           eligible: 'consider',
           window: '6-24h',
-          reason: 'Dominant proximal M2 at 6-24h with CTP hypoperfusion–hypodensity mismatch present.',
-          cor: '2a',
-          loe: 'B-NR',
+          reason: 'Dominant proximal M2 at 6-24h with CTP hypoperfusion–hypodensity mismatch present (institutional tier).',
+          gradeNote: 'No AHA/ASA 2026 grade for 6-24 h; the guideline grades dominant proximal M2 EVT only within 6 hours (COR 2a, LOE B-NR).',
           requirement: 'Mismatch defined as NCCT showing no established hypodensity in ≥90% of the CTP hypoperfused lesion.'
         };
       }
       return {
         eligible: 'pending',
         window: '6-24h',
-        reason: 'Dominant proximal M2 beyond 6h — CTP hypoperfusion–hypodensity mismatch must be confirmed before EVT is supported.',
-        cor: '2a',
-        loe: 'B-NR'
+        reason: 'Dominant proximal M2 beyond 6h — CTP hypoperfusion–hypodensity mismatch must be confirmed before this institutional tier applies.',
+        gradeNote: 'No AHA/ASA 2026 grade for 6-24 h.'
       };
     }
     return { eligible: false, reason: 'Dominant M2 criteria not all met (need ≤24h, NIHSS ≥6, mRS ≤1, ASPECTS ≥6; beyond 6h also requires CTP mismatch).' };
   }
-  if (['M2-nondominant', 'ACA', 'PCA'].includes(segment)) {
+  // AHA/ASA 2026: nondominant or codominant M2, distal MCA, ACA and PCA EVT is
+  // not recommended (COR 3: No Benefit, LOE A; ESCAPE-MeVO, DISTAL).
+  if (['M2-nondominant', 'M2-codominant', 'ACA', 'PCA'].includes(segment)) {
+    const label = { 'M2-nondominant': 'nondominant M2', 'M2-codominant': 'codominant M2' }[segment] || segment;
     return {
       eligible: false,
       cor: '3 (No Benefit)',
       loe: 'A',
-      reason: `EVT is not recommended for ${segment} in the current institutional flowchart.`
+      reason: `EVT is not recommended for ${label} occlusion (AHA/ASA 2026; ESCAPE-MeVO and DISTAL showed no functional benefit). ORIENTAL-MeVO (2026, after the guideline) reported benefit with NIHSS ≥6; individualize only with the neurointerventional team.`
     };
   }
-  if (segment === 'M2-codominant') {
-    return {
-      eligible: 'pending',
-      cor: '—',
-      reason: 'Codominant M2 carries no recommendation in the current institutional eligibility flowchart.'
-    };
-  }
-  if (segment === 'M3') return { eligible: null, reason: 'M3 is not assigned a recommendation in the current institutional flowchart.' };
+  if (segment === 'M3') return { eligible: false, cor: '3 (No Benefit)', loe: 'A', reason: 'EVT is not recommended for distal MCA (M3) occlusion (AHA/ASA 2026, COR 3: No Benefit, LOE A).' };
   return { eligible: null, reason: 'Select segment to evaluate.' };
 };
 
@@ -619,8 +659,11 @@ export const evaluateEVT_Basilar = ({ nihss, hoursFromLKWh, preMRS, pcAspects, a
 
 // =====================================================================
 // Patient discussion script (extended-window IVT)
+// Absolute effects: EXTEND (PMID 31067369) mRS 0-1 35.4% vs 29.5%, sICH 6.2% vs
+// 0.9%; WAKE-UP (PMID 29766770) sICH 2.0% vs 0.4%; TRACE-III (PMID 38884324)
+// mRS 0-1 33.0% vs 24.2%, sICH 3.0% vs 0.8%.
 // =====================================================================
-export const EXTENDED_WINDOW_IVT_DISCUSSION = `Tenecteplase, a clot-dissolving medication, is a treatment for your suspected stroke that can be given beyond the usual 4.5-hour window when brain imaging shows there is still tissue that can be saved. In clinical trials, people who received this treatment in the extended time window had about a 9-11% better chance of recovering without disability compared with people who did not receive the treatment. However, all medicines have some risk, and with clot-dissolving drugs, there is a risk of serious bleeding. Bleeding into the brain that leads to new symptoms can occur in up to about 3% of those treated. This use of clot-dissolving medications beyond 4.5 hours from stroke onset is supported by limited evidence from clinical trials and many uncertainties remain. Your alternatives include standard stroke care without thrombolysis. Based on your imaging findings and clinical presentation, we suspect the benefit of treatment outweighs the risk and recommend proceeding with Tenecteplase treatment.`;
+export const EXTENDED_WINDOW_IVT_DISCUSSION = `Tenecteplase, a clot-dissolving medication, is a treatment for your suspected stroke that can be given beyond the usual 4.5-hour window when brain imaging shows there is still tissue that can be saved. In clinical trials, about 6 to 12 more people out of every 100 treated recovered with no or minimal disability compared with no treatment. However, all medicines have some risk, and with clot-dissolving drugs, there is a risk of serious bleeding. Bleeding into the brain that causes new symptoms occurred in about 2 to 6 of every 100 people treated, compared with fewer than 1 in 100 without treatment. This use of clot-dissolving medications beyond 4.5 hours from stroke onset is supported by limited evidence from clinical trials and many uncertainties remain. Your alternatives include standard stroke care without thrombolysis. Based on your imaging findings and clinical presentation, we suspect the benefit of treatment outweighs the risk and recommend proceeding with Tenecteplase treatment.`;
 
 // =====================================================================
 // COR/LOE key
@@ -674,9 +717,10 @@ export const IVT_ABSOLUTE_CONTRAINDICATIONS = [
   { label: 'Intra-axial neoplasm', detail: 'Potentially harmful — should not be administered. Extra-axial tumours are handled separately under benefit-greater.' },
   { label: 'Intracranial or intraspinal surgery <60 days', detail: 'Interim conservative safety hold from the dedicated criteria source. The current workflow prints <14 days; keep the discrepancy visible pending protocol-owner adjudication.' },
   { label: 'Infective endocarditis', detail: 'Should not be administered.' },
-  { label: 'Severe coagulopathy', detail: 'Plt <100K, INR >1.7, aPTT >40s, PT >15s. In patients without a history of thrombocytopenia the thrombolytic can be started before the platelet count returns, but should be discontinued if the platelet count returns <100,000/mm3.' },
+  { label: 'Severe coagulopathy', detail: 'Plt <100K, INR >1.7, aPTT >40s, PT >15s. If thrombocytopenia is suspected, await the platelet count before thrombolysis; if there is no reason to suspect an abnormal result, do not delay IVT for the platelet count.' },
   { label: 'Treatment-dose heparin or LMWH within 24 hours', detail: 'Treatment-dose unfractionated heparin or low-molecular-weight heparin within the previous 24 hours is an exclusion.' },
   { label: 'History of GI malignancy, or GI/GU hemorrhage within 21 days', detail: 'The dedicated local eligibility criteria list this as one combined exclusion: a history of gastrointestinal malignancy, or gastrointestinal or urinary tract hemorrhage within the previous 21 days.' },
+  { label: 'Factor Xa inhibitor (apixaban, rivaroxaban, edoxaban) or dabigatran: last dose <48 h or unknown', detail: 'IVT is not recommended unless drug-specific assays/levels are normal (calibrated anti-Xa activity for a factor Xa inhibitor; thrombin time or dilute thrombin time for dabigatran) or the approved institutional pathway permits treatment; local sources still conflict on the 24-48-hour assay pathway (see unresolved source conflicts). Evaluate EVT independently; DOAC exposure does not delay or exclude thrombectomy. Source: AHA/ASA 2019 AIS guideline (PMID 31662037); no graded DOAC-specific recommendation appears in the AHA/ASA 2026 recommendation extract used here.' },
   { label: 'Known or suspected direct thrombin inhibitor exposure unless thrombin time is confirmed normal', detail: 'Treat the exposure as an exclusion when thrombin time is abnormal, missing, or unavailable. A confirmed normal thrombin time is the sole source-listed escape; do not infer drug clearance from PT/INR or aPTT alone.' },
   { label: 'Arterial puncture at non-compressible site <7 days', detail: 'Arterial puncture at a non-compressible site within the previous 7 days is an absolute exclusion.' },
   { label: 'Aortic arch dissection', detail: 'Potentially harmful; should not be administered.' },

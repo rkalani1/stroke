@@ -3,7 +3,7 @@
     "endpoint": "generic-protocols",
     "schemaVersion": "2.0.0",
     "appVersion": "7.6.5",
-    "checksum": "sha256:d0c35b33af164dda1597f486ba9f8914",
+    "checksum": "sha256:4fbd390732b71483365b9d29a78dbb77",
     "count": 4,
     "source": "Protected public protocol reference bundle",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -86,10 +86,10 @@
         {
           "title": "Cerebellar decompression",
           "criteria": [
-            "Cerebellar mass effect",
-            "Usually obstructive hydrocephalus and/or brainstem compression"
+            "Cerebellar ICH >=15 mL",
+            "Or neurological deterioration, brainstem compression and/or hydrocephalus from ventricular obstruction"
           ],
-          "action": "Evaluate urgently for suboccipital decompression with or without EVD."
+          "action": "Immediate surgical evacuation with or without EVD is recommended (AHA/ASA 2022 ICH, COR 1, LOE B-NR); obtain urgent Neurosurgery evaluation."
         },
         {
           "title": "Minimally invasive evacuation",
@@ -100,7 +100,7 @@
             "GCS 5-14",
             "No underlying vascular lesion"
           ],
-          "action": "Screen for the approved ENRICH-based standard-of-care pathway."
+          "action": "Screen for the approved ENRICH-based standard-of-care pathway. ENRICH trial context (not the local screen): enrolled within 24 hours of last known well, premorbid mRS 0-1, lobar or anterior basal-ganglia ICH 30-80 mL, GCS 5-14."
         }
       ],
       "researchScreens": [

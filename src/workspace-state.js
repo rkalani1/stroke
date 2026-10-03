@@ -6,7 +6,7 @@ import { NIHSS_ITEMS } from './clinical/nihss-items.js';
 import { calculateNIHSS, calculateICHVolumeReviewed } from './calculators.js';
 import { formatPerfusionForExport } from './clinical/perfusion-documentation.js';
 import { formatWakeUpScreenForExport } from './clinical/wake-up-documentation.js';
-import { numericInput, gcsDocumentation, evaluateVideoTreatment, reviewedTiaDisposition, documentedIvtContext } from './encounter-clinical-review.js';
+import { numericInput, gcsDocumentation, evaluateVideoTreatment, reviewedTiaDisposition, documentedIvtContext, assessAnticoagulantExposure } from './encounter-clinical-review.js';
 import { computeLKWCountdown } from './calculators-extended.js';
 import { timestampCandidates } from './clinical/timestamp.js';
 import { getPublicDemoPhiWarnings } from './public-demo-guardrails.js';
@@ -74,13 +74,24 @@ export function protocolEncounter(state, nowMs = Date.now()) {
   const nihss = compatible ? encounterNihss(state).total ?? '' : '';
   const [bpSystolic = '', bpDiastolic = ''] = n.presentingBP.split('/').map(value => numericInput(value, { min: 0 }) === null ? '' : value.trim());
   const shared = { age: n.age, nihss, preMRS: n.premorbidMRS };
-  const safetyReviewRequired = compatible && evaluateVideoTreatment({ note: { ...n, nihss }, clock: hours === '' ? null : { total: hours, label: 'LKW' }, aspects: state.aspects, pcAspects: state.pcAspects, now: new Date(nowMs) }).tnk.reviewRequired === true;
+  // An affirmative IVT card requires an explicit "none documented" anticoagulant
+  // exposure. A DOAC, heparin, warfarin, unreconciled or unassessed exposure is a
+  // safety hold even when the Encounter screen labels it pending rather than review.
+  const treatment = compatible ? evaluateVideoTreatment({ note: { ...n, nihss }, clock: hours === '' ? null : { total: hours, label: 'LKW' }, aspects: state.aspects, pcAspects: state.pcAspects, now: new Date(nowMs) }).tnk : null;
+  const exposure = compatible ? assessAnticoagulantExposure(n, new Date(nowMs)) : null;
+  const safetyReasons = [
+    ...(treatment?.reviewRequired === true ? [treatment.reason] : []),
+    ...(exposure && exposure.status !== 'none' ? [`anticoagulant exposure: ${exposure.reason}`] : [])
+  ];
+  const safetyReviewRequired = compatible && safetyReasons.length > 0;
+  const vessels = Array.isArray(n.vesselOcclusion) ? n.vesselOcclusion : [];
+  const lvoOnCta = vessels.some(v => ['ICA', 'M1', 'M2'].includes(v)) ? true : vessels.length === 1 && vessels[0] === 'None' ? false : null;
   // Fixed source values define review validity; wall-clock advancement does not
   // reset local attestations, but elapsed time is recalculated on every render.
   const sourceKey = JSON.stringify([state.context, n, nihssSourceInput(state), state.aspects, state.pcAspects, state.evtMassEffect]);
   return {
-    sourceKey, compatible, safetyReviewRequired,
-    ivt: { age: n.age, weight: n.weight, glucose: n.glucose, hoursFromLKW: hours, wakeUpOrUnknownOnset: n.lkwUnknown, preMRS: n.premorbidMRS, bpSystolic, bpDiastolic, ichOnCT: compatible && ['present', 'absent'].includes(n.ctHemorrhageStatus) ? n.ctHemorrhageStatus === 'present' : null, disablingDeficit: compatible && typeof n.disablingDeficit === 'boolean' ? n.disablingDeficit : null },
+    sourceKey, compatible, safetyReviewRequired, safetyReviewReason: safetyReviewRequired ? safetyReasons.join(' ') : '', drug: state.drug || '',
+    ivt: { age: n.age, weight: n.weight, glucose: n.glucose, hoursFromLKW: hours, wakeUpOrUnknownOnset: n.lkwUnknown, preMRS: n.premorbidMRS, bpSystolic, bpDiastolic, ichOnCT: compatible && ['present', 'absent'].includes(n.ctHemorrhageStatus) ? n.ctHemorrhageStatus === 'present' : null, disablingDeficit: compatible && typeof n.disablingDeficit === 'boolean' ? n.disablingDeficit : null, ...(compatible && lvoOnCta !== null ? { lvoOnCta } : {}) },
     anterior: { ...shared, aspectsScore: compatible ? state.aspects : '', timeFromLKWh: hours, coreVolume: compatible ? n.coreVolume : '', massEffect: compatible && typeof state.evtMassEffect === 'boolean' ? state.evtMassEffect : null },
     m2: { ...shared, aspectsScore: compatible ? state.aspects : '', hoursFromLKWh: hours },
     basilar: { ...shared, pcAspects: compatible ? state.pcAspects : '', hoursFromLKWh: hours }
@@ -109,12 +120,18 @@ export function setEncounterReviewedScore(state, key, value) {
   delete applied[id];
   return { ...state, ...(key === 'abcd2' ? { dapt: { ...state.dapt, abcd2: value } } : { [key]: value }), supplementary: { ...state.supplementary, applied } };
 }
+// NIHSS rules: an item scored UN (amputation/joint fusion for limb items,
+// intubation/physical barrier for dysarthria) is documented but not scored. With
+// all 15 items documented, the total sums the scored items and reports the UN
+// count; an item that is simply not assessed still withholds the total.
 export function nihssAssessment(responses) {
-  const complete = NIHSS_ITEMS.every(item => item.options.includes(responses[item.id]) && !responses[item.id].includes('(UN)'));
   const entered = NIHSS_ITEMS.filter(item => item.options.includes(responses[item.id]));
+  const complete = entered.length === NIHSS_ITEMS.length;
+  const untestable = entered.filter(item => responses[item.id].includes('(UN)')).length;
   const valid = Object.fromEntries(entered.map(item => [item.id, responses[item.id]]));
-  return { complete, count: entered.length, partial: calculateNIHSS(valid), total: complete ? calculateNIHSS(valid) : null };
+  return { complete, count: entered.length, untestable, partial: calculateNIHSS(valid), total: complete ? calculateNIHSS(valid) : null };
 }
+export const nihssUntestableNote = count => count > 0 ? `${count} item${count === 1 ? '' : 's'} untestable (UN)` : '';
 // Keep the itemized examination and a reported total separately. Only the
 // selected source can supply a current score; an invalid report never falls back.
 function nihssSourceInput(state) {
@@ -123,7 +140,7 @@ function nihssSourceInput(state) {
 export function encounterNihss(state) {
   if (state.nihssSource !== 'reported') return { ...nihssAssessment(state.nihss), source: 'itemized' };
   const total = numericInput(state.reportedNihss, { min: 0, max: 42, integer: true });
-  return { source: 'reported', complete: total !== null, total, count: null, partial: null };
+  return { source: 'reported', complete: total !== null, total, count: null, untestable: 0, partial: null };
 }
 // Existing countdown validates calendar, DST gaps, finite values and future times.
 export function validTimestamp(value, nowMs = Date.now()) {
@@ -209,7 +226,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     : `Last known well (date/time): ${documentedDateTime(n.lkwDate, n.lkwTime, nowMs, encounterClockTimestamp(n, 'lkw'))}`;
   const examText = exam.source === 'reported'
     ? exam.complete ? `${exam.total}/42 (reported total)` : 'reported total missing or invalid; no current score'
-    : exam.complete ? `${exam.total}/42 (all items documented)`
+    : exam.complete ? `${exam.total}/42 (all items documented${exam.untestable ? `; ${nihssUntestableNote(exam.untestable)}, not scored` : ''})`
     : `incomplete: ${exam.count}/${NIHSS_ITEMS.length} items; partial sum ${exam.partial}; no completed score`;
   const examDetails = hasValue(n.nihssDetails) ? ` — ${n.nihssDetails}` : '';
   const extraExam = [];

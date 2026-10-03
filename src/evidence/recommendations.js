@@ -100,6 +100,7 @@ export const recommendations = [
     supportingClaimIds: ['cl-ich-warfarin-reversal-pcc-vk'],
     caveats: [
       'The Class I/B-R badge applies to 4F-PCC over FFP when INR is ≥2.0. IV vitamin K after factor replacement is a separate Class I/C-LD recommendation.',
+      'Fixed-dose caveat: a fixed 4F-PCC dose (for example an institutional 2000 units) may underdose heavier or high-INR patients. Kcentra label dosing: INR 2 to <4, 25 units/kg (max 2500 units); INR 4-6, 35 units/kg (max 3500 units); INR >6, 50 units/kg (max 5000 units). Recheck INR after the infusion; an institutional fixed dose remains a local protocol choice.',
       'Vitamin K is required for sustained reversal; PCC alone is short-acting.',
       'FFP carries volume-overload risk and slower correction.'
     ],

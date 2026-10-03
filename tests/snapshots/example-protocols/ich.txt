@@ -1,3 +1,4 @@
+Protocols & Algorithms
 No diagnosis set.
 Set a working diagnosis on the Encounter tab to activate pathway-specific management recommendations and auto-populate relevant protocols.
 Set diagnosis
@@ -54,13 +55,13 @@ Life-threatening mass effect; Full-care goals after outcome discussion
 .
 Neurosurgery determines operative approach.
 Cerebellar decompression
-Cerebellar mass effect; Usually obstructive hydrocephalus and/or brainstem compression
+Cerebellar ICH >=15 mL; Or neurological deterioration, brainstem compression and/or hydrocephalus from ventricular obstruction
 .
-Evaluate urgently for suboccipital decompression with or without EVD.
+Immediate surgical evacuation with or without EVD is recommended (AHA/ASA 2022 ICH, COR 1, LOE B-NR); obtain urgent Neurosurgery evaluation.
 Minimally invasive evacuation
 Lobar IPH 30-80 mL; Age 18-80; NIHSS >5; GCS 5-14; No underlying vascular lesion
 .
-Screen for the approved ENRICH-based standard-of-care pathway.
+Screen for the approved ENRICH-based standard-of-care pathway. ENRICH trial context (not the local screen): enrolled within 24 hours of last known well, premorbid mRS 0-1, lobar or anterior basal-ganglia ICH 30-80 mL, GCS 5-14.
 Trial and Registry Screens
 MINUTE screen
 Age 18-80; Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH; Basal-ganglia IPH volume >=20 mL by ABC/2; NIHSS >=6; CTA/MRA without vascular lesion; Arrival <=15 hours since last known well; No clear standard-of-care surgical indication
@@ -118,7 +119,7 @@ Use the presenting-SBP branches: 150-219 → target 140 and maintain 130-150; �
 3. Agent-Specific Reversal
 Confirm the applicable INR, thrombin-time, direct-Xa, anti-Xa, and last-dose timing gate, then use the institutional agent-specific pathway below.
 4. Surgery and Research Screens
-Symptomatic hydrocephalus → urgent EVD evaluation. Cerebellar mass effect, usually with obstructive hydrocephalus and/or brainstem compression → urgent suboccipital decompression evaluation, with EVD as indicated. Use the complete MIE, MINUTE, or other source-defined screen; do not gate on a single value.
+Symptomatic hydrocephalus → urgent EVD evaluation. Cerebellar ICH ≥15 mL, or with neurological deterioration, brainstem compression and/or hydrocephalus from ventricular obstruction → immediate surgical evacuation with or without EVD (ICH 2022, COR 1, LOE B-NR). Use the complete MIE, MINUTE, or other source-defined screen; do not gate on a single value.
 Warfarin Reversal Guide
 Immediate — All Warfarin Patients:
 Give
@@ -127,6 +128,7 @@ immediately. When PCC is indicated by the INR branch below, give it immediately.
 INR ≥ 2.0 (COR/LOE 1/B):
 Give
 4F-PCC (Kcentra) 2000 units IV
+(institutional fixed dose; may underdose heavier or high-INR patients — label dosing is 25-50 units/kg by INR)
 • Check PT/INR at
 30 min
 , then
@@ -139,10 +141,10 @@ and consider an additional
 or
 2-4 units plasma (FFP)
 • If INR >1.5 at 24h → repeat vitamin K 10 mg IV over 30 min
-INR 1.6-1.9 (COR IIb/C):
-4F-PCC 2000 units IV recommended
-INR 1.3-1.5 (COR IIb/C):
-Consider 4F-PCC 2000 units IV on a case-by-case basis
+INR 1.6-1.9 (COR 2b, LOE C-LD):
+4F-PCC 2000 units IV may be reasonable
+INR 1.3-1.5 (COR 2b, LOE C-LD):
+4F-PCC 2000 units IV may be reasonable; decide case by case
 FFP Pathway (if PCC unavailable or contraindicated):
 Give
 4 units emergency-release plasma
@@ -173,13 +175,14 @@ If idarucizumab unavailable →
 4F-PCC 2000 units IV
 Emergent dialysis option — dabigatran ~65% removed by dialysis (t½ = 14h, longer in renal impairment)
 Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors)
-Reverse if Direct Xa Inhibitor screen elevated
+Reverse if last dose <24 h, timing unknown, or renal impairment, or if the anti-Xa/Xa screen is elevated; do not wait for the assay when ingestion is recent
 1.
 If ingestion <2h →
 activated charcoal
 2.
-Andexanet alfa is not available on the local formulary; give
+Give
 4F-PCC 2000 units IV
+(andexanet alfa is no longer marketed in the US; NCS/SCCM 2026 suggests 4F-PCC rather than andexanet)
 Drug-removal limits:
 Rivaroxaban is not dialyzable. Hemodialysis does not appear to substantially affect apixaban exposure and does not significantly contribute to edoxaban clearance. Follow the approved agent-specific reversal pathway and specialist assessment.
 Absolute Contraindications to PCC:
@@ -207,20 +210,20 @@ STAT blood draw:
 Contact
 blood bank/transfusion services
 ; immediately order
-2 units of cryoprecipitate
-(1 unit = 5 prepooled cryoprecipitates)
+2 pre-pooled units of cryoprecipitate
+(each pool ≈5 single-donor units; total ≈10 units)
 4
 Notify family
 CT scan delayed >30 min?
 YES — CT delayed:
-If fibrinogen is <200 mg/dL, empirically administer the 2 units of cryoprecipitate over 10-30 minutes
+If fibrinogen is <200 mg/dL, empirically administer the 2 pre-pooled units of cryoprecipitate (≈10 units) IV over 10-30 minutes
 NO — CT available:
 Wait for CT results
 Intracranial blood on CT?
 YES — Blood confirmed:
 Give
-2 units of cryoprecipitate
-over 10-30 minutes, or continue if already started
+2 pre-pooled units of cryoprecipitate
+(each pool ≈5 single-donor units; total ≈10 units) IV over 10-30 minutes, or continue if already started
 Confirm intracranial blood on CT with the ordering provider, then verbally confirm with the RN that administration is post-CT; after both confirmations, give
 tranexamic acid 1000 mg IV over 10 minutes
 Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal
@@ -233,7 +236,7 @@ NOT
 restart lytic
 • Consider other causes: extending infarct, seizure, hypoxia, hypercarbia, hypoglycemia, electrolyte abnormalities
 Follow-up & Management:
-• Notify the provider for SBP >180, DBP >90, a new neurologic deficit, or a GCS decrease of at least 2 points
+• Notify the provider for SBP >180 or DBP >105, a new neurologic deficit, or a GCS decrease of at least 2 points
 • Use fibrinogen <200 mg/dL as the action threshold
 • If labs abnormal or uncontrolled bleeding → consult Hematology
 • Repeat the emergency hemorrhage panel STAT, every 30 minutes twice, then every 4 hours until normal
@@ -278,7 +281,7 @@ Plan repeat imaging and close neuro checks.
 Telephone: confirm NIHSS and exam details with the bedside team.
 Inpatient priorities
 Continue the applicable agent-specific reversal and common reversal monitoring pathway.
-Evaluate symptomatic hydrocephalus for urgent EVD and cerebellar mass effect for urgent suboccipital decompression evaluation, with EVD as indicated.
+Evaluate symptomatic hydrocephalus for urgent EVD. Cerebellar ICH ≥15 mL, or with neurological deterioration, brainstem compression and/or hydrocephalus from ventricular obstruction → immediate surgical evacuation with or without EVD (ICH 2022, COR 1, LOE B-NR).
 Use generic head-of-bed elevation and the admitting ICU team's workflow; no fixed angle or broader rehabilitation/goals-of-care bundle is supplied by the institutional ICH sources.
 ICH protocol details
 Minimally Invasive Evacuation (MIE)
@@ -311,10 +314,12 @@ Immediate:
 Vitamin K 10 mg IV for all warfarin patients.
 INR ≥2.0 (COR/LOE 1/B):
 4F-PCC (Kcentra) 2000 units IV immediately. Vitamin K 10 mg IV is also given immediately.
-INR 1.6-1.9 (COR/LOE 2b/C):
-4F-PCC 2000 units IV recommended.
-INR 1.3-1.5 (COR/LOE 2b/C):
-consider 4F-PCC 2000 units IV case by case.
+INR 1.6-1.9 (COR 2b, LOE C-LD):
+4F-PCC 2000 units IV may be reasonable.
+INR 1.3-1.5 (COR 2b, LOE C-LD):
+4F-PCC 2000 units IV may be reasonable; decide case by case.
+Fixed-dose caveat:
+the institutional 2000-unit dose may underdose heavier or high-INR patients. Kcentra label dosing: INR 2-<4, 25 units/kg (max 2500); INR 4-6, 35 units/kg (max 3500); INR >6, 50 units/kg (max 5000).
 Check INR:
 at 30 min, then every 6h for 24h after PCC.
 INR >1.5 after PCC:
@@ -335,24 +340,26 @@ Activated charcoal:
 if ingestion <2 hours.
 Dialysis:
 ~65% removed (t½ = 14h, longer in renal impairment).
-Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors) — COR/LOE 2b/B:
+Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors) — 4F-PCC: ICH 2022 COR 2b, LOE B-NR; NCS/SCCM 2026 conditional recommendation for 4F-PCC rather than andexanet:
 Assessment:
 Direct Xa Inhibitor screen — a normal screen excludes significant anticoagulant effect. For edoxaban the screen is not a calibrated drug-specific assay, so interpret it together with last-dose timing and renal function.
-Andexanet alfa:
-not available on the local formulary.
+When to reverse:
+last dose <24 h, timing unknown, or renal impairment, or an elevated anti-Xa/Xa screen. Do not wait for the assay when ingestion is recent.
 4F-PCC:
-2000 units IV — give if Direct Xa Inhibitor screen elevated and no contraindications.
+2000 units IV (institutional fixed dose; NCS/SCCM suggests 50 units/kg) if no contraindications.
+Andexanet alfa:
+no longer marketed in the US (withdrawn December 2025); NCS/SCCM 2026 suggests 4F-PCC rather than andexanet.
 Activated charcoal:
 if ingestion <2 hours.
 Drug-removal limits:
 Rivaroxaban is not dialyzable. Hemodialysis does not appear to substantially affect apixaban exposure and does not significantly contribute to edoxaban clearance. Follow the approved agent-specific reversal pathway and specialist assessment.
 Heparins
-Treatment-dose UFH (COR 2a/C):
-assess anti-Xa. Protamine 25 mg IV immediately; recheck anti-Xa after infusion and, if >0.1, give an additional 10 mg protamine (max cumulative dose 55 mg).
+Treatment-dose UFH (COR 2a, LOE C-LD):
+protamine 1 mg per 100 units of UFH given in the prior 2-3 hours (max 50 mg) by slow IV injection; if the aPTT remains elevated, consider 0.5 mg per 100 units (NCS/SCCM 2016).
 UFH — HIT screen:
 if platelets <100 K/µL, send heparin-induced platelet antibodies; if positive, consult hematology.
-Treatment-dose LMWH — enoxaparin, dalteparin, or tinzaparin (COR 2b/C):
-last dose <8h → protamine 50 mg IV; last dose 8-24h → protamine 25 mg IV; last dose >24h → no reversal indicated.
+Treatment-dose LMWH — enoxaparin, dalteparin, or tinzaparin (COR 2b, LOE C-LD):
+enoxaparin within 8 h → protamine 1 mg per 1 mg enoxaparin (max 50 mg); 8-12 h → 0.5 mg per 1 mg enoxaparin; dalteparin/tinzaparin → 1 mg per 100 anti-Xa units given within 3-5 half-lives (max 50 mg). Protamine only partially reverses LMWH (NCS/SCCM 2016).
 Fondaparinux and Parenteral Direct Thrombin Inhibitors
 Stop fondaparinux, bivalirudin, or argatroban and obtain STAT hematology-attending consultation.
 No specific antidote is available for these agents.
@@ -364,7 +371,7 @@ Neurologic checks every hour for 24 hours; blood pressure per the ICH protocol; 
 Blood-Product Replacement Thresholds
 Request these products, if not already ordered under a pathway above, based on the STAT results and assuming an average-sized adult.
 Fibrinogen <125 mg/dL:
-prepare and transfuse 2 units of cryoprecipitate (1 unit = 5 pre-pooled cryoprecipitates).
+prepare and transfuse 2 pre-pooled units of cryoprecipitate (each pool ≈5 single-donor units; total ≈10 units).
 Platelets <50 K/µL:
 prepare and transfuse 2 units of platelets.
 Platelets 50-100 K/µL:
@@ -383,9 +390,10 @@ Relative contraindications to PCC/FFP:
 Discuss relative contraindications with the stroke service before proceeding.
 Antiplatelet-Associated ICH
 Discontinue antiplatelet agent(s). Platelet transfusion is
-NOT routinely recommended
-(COR/LOE 3/B).
-Desmopressin efficacy is uncertain for antiplatelet-associated hemorrhage (COR/LOE 2b/C); the institutional source does not provide a dose.
+potentially harmful
+for aspirin-associated ICH when emergency surgery is not planned (ICH 2022, COR 3: Harm, LOE B-R); NCS/SCCM 2026 also suggests against platelet transfusion for antiplatelet-associated spontaneous IPH not requiring neurosurgery (conditional, low certainty).
+Aspirin + emergency neurosurgery: platelet transfusion may be considered (ICH 2022, COR 2b, LOE C-LD; NCS/SCCM 2026 conditional recommendation for transfusion in spontaneous IPH on aspirin undergoing neurosurgery).
+Desmopressin efficacy is uncertain for antiplatelet-associated hemorrhage (COR/LOE 2b/C-LD); the institutional source does not provide a dose.
 Hematoma Expansion Prevention
 Blood Pressure Target
 Spontaneous ICH only. Not for hemorrhage from a vascular malformation or for post-operative neurosurgical cases.
@@ -410,11 +418,11 @@ IV nicardipine or IV labetalol; no doses are supplied.
 IVH & Hydrocephalus Management
 EVD Indications
 Symptomatic hydrocephalus: urgent EVD evaluation.
-Cerebellar mass effect, usually with obstructive hydrocephalus and/or brainstem compression: urgent suboccipital decompression evaluation, with EVD as indicated.
+Cerebellar ICH ≥15 mL, or with neurological deterioration, brainstem compression and/or hydrocephalus from ventricular obstruction → immediate surgical evacuation with or without EVD (ICH 2022, COR 1, LOE B-NR).
 ICH Disposition & Goals of Care
 Surgical Indications
-Cerebellar ICH with mass effect
-: urgent Neurosurgery evaluation for suboccipital decompression; obstructive hydrocephalus and/or brainstem compression commonly increase urgency and may require EVD.
+Cerebellar ICH ≥15 mL, or with neurological deterioration, brainstem compression and/or hydrocephalus from ventricular obstruction
+: immediate surgical evacuation with or without EVD (ICH 2022, COR 1, LOE B-NR); obtain urgent Neurosurgery evaluation.
 Life-threatening mass effect:
 evaluate for decompression; Neurosurgery leads the operative approach.
 ICH Supportive Care Bundle
@@ -435,8 +443,8 @@ Press Esc or click outside to close
 --- modal via "4F-PCC (Kcentra) 2000 units IV" ---
 4F-PCC (Kcentra)
 Dosing
-PCC (Kcentra) 2000 units IV — infuse immediately. Fixed dose, not weight- or INR-tiered.
-Give vitamin K 10 mg IV immediately. Check PT/INR at exactly 30 minutes, then every 6 hours for 24 hours. If INR >1.5 after the infusion, page hematology and consider PCC 500 units or plasma 2-4 units. If INR >1.5 at 24 hours, repeat vitamin K 10 mg IV.
+PCC (Kcentra) 2000 units IV — infuse immediately. Institutional fixed dose, not weight- or INR-tiered.
+Give vitamin K 10 mg IV immediately. Check PT/INR at exactly 30 minutes, then every 6 hours for 24 hours. If INR >1.5 after the infusion, page hematology and consider PCC 500 units or plasma 2-4 units. If INR >1.5 at 24 hours, repeat vitamin K 10 mg IV. A fixed 2000-unit dose may underdose heavier or high-INR patients; Kcentra label dosing is INR 2-<4: 25 units/kg (max 2500); INR 4-6: 35 units/kg (max 3500); INR >6: 50 units/kg (max 5000).
 Press Esc or click outside to close
 --- modal via "4 units emergency-release plasma" ---
 Fresh Frozen Plasma (FFP)
@@ -459,8 +467,8 @@ Press Esc or click outside to close
 --- modal via "4F-PCC 2000 units IV" ---
 4F-PCC for DOAC Reversal
 Dosing
-PCC (Kcentra) 2000 units IV. Consider ONLY if no contraindications.
-For dabigatran, use only if idarucizumab is unavailable. For rivaroxaban, apixaban, or edoxaban, use only when the Direct Xa Inhibitor screen is elevated. Andexanet alfa is unavailable in the institutional pathway.
+PCC (Kcentra) 2000 units IV (institutional fixed dose; NCS/SCCM suggests 50 units/kg). Consider ONLY if no contraindications.
+For dabigatran, use only if idarucizumab is unavailable. For rivaroxaban, apixaban, or edoxaban: reverse if the last dose was <24 h ago, timing is unknown, or renal impairment is present, or if the anti-Xa/Xa screen is elevated; do not wait for the assay when ingestion is recent. Andexanet alfa (Andexxa) is no longer marketed in the US (withdrawn December 2025); the NCS/SCCM 2026 update suggests 4F-PCC rather than andexanet for factor Xa inhibitor-associated ICH (conditional recommendation, moderate certainty).
 Press Esc or click outside to close
 --- modal via "activated charcoal" ---
 Activated Charcoal
@@ -471,19 +479,19 @@ Press Esc or click outside to close
 --- modal via "4F-PCC 2000 units IV" ---
 4F-PCC for DOAC Reversal
 Dosing
-PCC (Kcentra) 2000 units IV. Consider ONLY if no contraindications.
-For dabigatran, use only if idarucizumab is unavailable. For rivaroxaban, apixaban, or edoxaban, use only when the Direct Xa Inhibitor screen is elevated. Andexanet alfa is unavailable in the institutional pathway.
+PCC (Kcentra) 2000 units IV (institutional fixed dose; NCS/SCCM suggests 50 units/kg). Consider ONLY if no contraindications.
+For dabigatran, use only if idarucizumab is unavailable. For rivaroxaban, apixaban, or edoxaban: reverse if the last dose was <24 h ago, timing is unknown, or renal impairment is present, or if the anti-Xa/Xa screen is elevated; do not wait for the assay when ingestion is recent. Andexanet alfa (Andexxa) is no longer marketed in the US (withdrawn December 2025); the NCS/SCCM 2026 update suggests 4F-PCC rather than andexanet for factor Xa inhibitor-associated ICH (conditional recommendation, moderate certainty).
 Press Esc or click outside to close
---- modal via "2 units of cryoprecipitate" ---
+--- modal via "2 pre-pooled units of cryoprecipitate" ---
 Cryoprecipitate
 Dosing
-2 units of cryoprecipitate IV over 10-30 minutes.
+2 pre-pooled units of cryoprecipitate (each pool ≈5 single-donor units; total ≈10 units) IV over 10-30 minutes.
 Follow the CT-result and delayed-CT branches in the institutional post-thrombolytic hemorrhage algorithm.
 Press Esc or click outside to close
---- modal via "2 units of cryoprecipitate" ---
+--- modal via "2 pre-pooled units of cryoprecipitate" ---
 Cryoprecipitate
 Dosing
-2 units of cryoprecipitate IV over 10-30 minutes.
+2 pre-pooled units of cryoprecipitate (each pool ≈5 single-donor units; total ≈10 units) IV over 10-30 minutes.
 Follow the CT-result and delayed-CT branches in the institutional post-thrombolytic hemorrhage algorithm.
 Press Esc or click outside to close
 --- modal via "tranexamic acid 1000 mg IV over 10 minutes" ---
