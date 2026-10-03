@@ -148,7 +148,10 @@ export const calculateICHVolumeReviewed = (items) => {
   if (!Number.isFinite(volume)) return null;
   const result = calculateICHVolume({ lengthCm: dimensions[0], widthCm: dimensions[1], slicesCm: dimensions[2] });
   if (!result || !Number.isFinite(result.volume)) return null;
-  return { ...result, unitWarning: dimensions.some(x => x > 15) || volume > 500
+  // The displayed value never rounds up across a threshold the app applies (2, 15, 20, 30, 60 mL),
+  // so the shown volume always agrees with the unrounded threshold flags.
+  const crosses = [2, 15, 20, 30, 60].some(t => result.volume >= t && volume < t);
+  return { ...result, rawVolume: volume, volume: crosses ? Math.floor(volume * 10) / 10 : result.volume, unitWarning: dimensions.some(x => x > 15) || volume > 500
     ? 'Confirm all three dimensions are in centimeters. Entering millimeters for one dimension inflates ABC/2 tenfold; doing so for all three inflates it 1000-fold.' : null };
 };
 

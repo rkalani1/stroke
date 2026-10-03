@@ -92,7 +92,7 @@ describe('Encounter on-call prompts', () => {
   });
   it('raises neurosurgery triggers from volume, IVH and infratentorial origin', () => {
     const html = render(make({ note: { diagnosisCategory: 'ich', age: '74' }, volume: { a: '4', b: '3', thicknessMm: '5', numSlices: '8' }, ich: { ivh: true, infratentorial: true } }));
-    expect(html).toContain('<strong>Neurosurgery:</strong> ≥15 mL: early neurosurgery and stroke-service evaluation (local)');
+    expect(html).toContain('<li><strong>≥15 mL:</strong> early neurosurgery and stroke-service evaluation (local)</li>');
     expect(html).toContain('EVD for large IVH with impaired consciousness (COR 1, B-NR)');
     expect(html).toContain('href="#/protocols/ich/qr-ich-surgery"');
   });

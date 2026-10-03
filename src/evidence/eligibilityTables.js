@@ -33,7 +33,7 @@ const groups = [
     "id": "ischemic-outpatient",
     "category": "ischemic",
     "phase": "outpatient",
-    "title": "Ischemic Stroke — Outpatient (Day 14 to Month 6)",
+    "title": "Ischemic Stroke — Outpatient (Day 14 Onward)",
     "trials": [
       "CLARITY",
       "TELE-REHAB-2",
@@ -45,7 +45,7 @@ const groups = [
     "id": "ich-acute",
     "category": "ich",
     "phase": "acute",
-    "title": "Intracranial Hemorrhage (ICH) — Acute (Onset ≤ 24 Hours)",
+    "title": "Intracerebral Hemorrhage (ICH) — Acute (Onset ≤ 24 Hours)",
     "trials": [
       "FASTEST-2",
       "MINUTE",
@@ -56,7 +56,7 @@ const groups = [
     "id": "ich-inpatient",
     "category": "ich",
     "phase": "inpatient",
-    "title": "Intracranial Hemorrhage (ICH) — Inpatient (Admission to Day 30)",
+    "title": "Intracerebral Hemorrhage (ICH) — Inpatient (Admission to Day 30)",
     "trials": [
       "SATURN",
       "SCOUTS-3",
@@ -67,7 +67,7 @@ const groups = [
     "id": "ich-outpatient",
     "category": "ich",
     "phase": "outpatient",
-    "title": "Intracranial Hemorrhage (ICH) — Outpatient (Day 14 to Month 6)",
+    "title": "Intracerebral Hemorrhage (ICH) — Outpatient (Day 14 Onward)",
     "trials": [
       "ASPIRE",
       "TELE-REHAB-2"

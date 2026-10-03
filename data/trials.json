@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "trials",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.7.4",
-    "checksum": "sha256:45d955866f9056464c626ddf94cccf41",
+    "appVersion": "7.7.5",
+    "checksum": "sha256:9deba469fc9736e6513e5bca78c3c032",
     "count": 4,
     "source": "Restored canonical trial screener and table summaries with original verification dates",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -2245,7 +2245,7 @@
         "id": "ischemic-outpatient",
         "category": "ischemic",
         "phase": "outpatient",
-        "title": "Ischemic Stroke — Outpatient (Day 14 to Month 6)",
+        "title": "Ischemic Stroke — Outpatient (Day 14 Onward)",
         "trials": [
           {
             "acronym": "CLARITY",
@@ -2373,7 +2373,7 @@
         "id": "ich-acute",
         "category": "ich",
         "phase": "acute",
-        "title": "Intracranial Hemorrhage (ICH) — Acute (Onset ≤ 24 Hours)",
+        "title": "Intracerebral Hemorrhage (ICH) — Acute (Onset ≤ 24 Hours)",
         "trials": [
           {
             "acronym": "FASTEST-2",
@@ -2486,7 +2486,7 @@
         "id": "ich-inpatient",
         "category": "ich",
         "phase": "inpatient",
-        "title": "Intracranial Hemorrhage (ICH) — Inpatient (Admission to Day 30)",
+        "title": "Intracerebral Hemorrhage (ICH) — Inpatient (Admission to Day 30)",
         "trials": [
           {
             "acronym": "SATURN",
@@ -2587,7 +2587,7 @@
         "id": "ich-outpatient",
         "category": "ich",
         "phase": "outpatient",
-        "title": "Intracranial Hemorrhage (ICH) — Outpatient (Day 14 to Month 6)",
+        "title": "Intracerebral Hemorrhage (ICH) — Outpatient (Day 14 Onward)",
         "trials": [
           {
             "acronym": "ASPIRE",

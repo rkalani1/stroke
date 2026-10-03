@@ -8,7 +8,7 @@ export const ENCOUNTER_TOOLS = [
   { id:'ich-volume', name:'ICH volume', aliases:'intracerebral hemorrhage ABC 2 ABC/2 hematoma volume' },
   { id:'ich-score', name:'ICH severity', aliases:'intracerebral hemorrhage score' },
   { id:'gcs', name:'GCS', aliases:'Glasgow coma scale' },
-  { id:'dawn', name:'Historical source screens', aliases:'DAWN DEFUSE 3 thrombectomy' },
+  { id:'dawn', name:'Historical source screens', aliases:'DAWN DEFUSE 3 thrombectomy EVT large core SELECT2 ANGEL ASPECT RESCUE Japan LIMIT TENSION TESLA LASTE' },
   { id:'dapt', name:'Acute DAPT source screen', aliases:'dual antiplatelet therapy CHANCE POINT' }
 ];
 const aliases = {
@@ -17,7 +17,7 @@ const aliases = {
   phases:'aneurysm', 'mrs-descriptors':'mRS modified Rankin scale disability', 'hunt-hess':'Hunt Hess subarachnoid hemorrhage SAH',
   wfns:'World Federation of Neurosurgical Societies subarachnoid hemorrhage SAH',
   'modified-fisher':'modified Fisher CT blood subarachnoid hemorrhage SAH IVH', mtici:'TICI reperfusion thrombectomy angiography', nascet:'carotid stenosis ICA diameter',
-  'aspects-regions':'Alberta stroke program early CT score anterior', 'pc-aspects-regions':'posterior circulation ASPECTS',
+  'aspects-regions':'Alberta stroke program early CT score anterior', 'pc-aspects-regions':'posterior circulation ASPECTS basilar vertebrobasilar',
   phq2:'PHQ2 patient health questionnaire depression', 'stop-bang':'STOPBANG sleep apnea'
 };
 const searchable = text => String(text || '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9]/g, '');

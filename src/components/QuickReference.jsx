@@ -215,6 +215,7 @@ export default function QuickReference({ weightKg, sub = 'ischemic', reversal } 
           <li>Hematology and neurosurgery consultation; supportive care for BP, ICP, CPP, temperature and glucose.</li>
         </ol>
         <p className="mt-2 text-ink-2">Local protocol may differ: empiric cryoprecipitate when CT is delayed &gt;30 min and fibrinogen is &lt;200 mg/dL; TXA after CT confirmation.</p>
+        <p className="mt-1 text-ink-2">Guideline scope: symptomatic ICH within 24 h of IV thrombolysis (AHA/ASA 2019). For later bleeding, guide hemostatic therapy by the fibrinogen and coagulation results.</p>
         <Sources ids={['ais2019', 'sich2017', 'ncs2016']} />
       </Card>
 

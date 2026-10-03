@@ -3,6 +3,10 @@
 import { reviewedNumber } from './reviewed-number.js';
 import { parseTimestamp } from './clinical/timestamp.js';
 
+// Elapsed hours as h:mm for screen messages, floored like the LKW clock so a time just under a
+// window edge never reads as the edge itself.
+const elapsedHm = hours => { const minutes = Math.floor(hours * 60); return `${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, '0')}`; };
+
 // Extended clinical calculators added in the P0/P1 expansion.
 // Each function is pure, fully unit-testable, and carries its primary source
 // citation in the function-level doc block. All inputs are permissive (strings
@@ -27,7 +31,7 @@ export const evaluateDAWN = ({ age, nihss, coreMl, timeFromLKWh } = {}) => {
   const t = reviewedNumber(timeFromLKWh);
   if (![a, n, c, t].every(Number.isFinite) || a <= 0 || a > 120 || !Number.isInteger(n) || n < 0 || n > 42 || c < 0 || t < 0) return null;
   if (Number.isFinite(t) && (t < 6 || t > 24)) {
-    return { eligible: false, tier: null, reason: `Outside DAWN window (6-24h); LKW ${t}h`, meetsImaging: false, meetsClinical: false };
+    return { eligible: false, tier: null, reason: `Outside DAWN window (6-24h); LKW ${elapsedHm(t)}`, meetsImaging: false, meetsClinical: false };
   }
   let tier = null; let reason = '';
   if (a >= 80 && n >= 10 && c < 21) tier = 'A';
@@ -54,7 +58,7 @@ export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, hypoperfusedMl, timeFromLK
   const a = reviewedNumber(age);
   if (![c, p, t, n, a].every(Number.isFinite) || c < 0 || p < c || t < 0 || !Number.isInteger(n) || n < 0 || n > 42 || a <= 0 || a > 120) return null;
   if (Number.isFinite(t) && (t < 6 || t > 16)) {
-    return { eligible: false, reason: `Outside DEFUSE-3 window (6-16h); LKW ${t}h`, meetsCore: c < 70, meetsMismatch: false };
+    return { eligible: false, reason: `Outside DEFUSE-3 window (6-16h); LKW ${elapsedHm(t)}`, meetsCore: c < 70, meetsMismatch: false };
   }
   const mismatchVolume = p - c;
   const mismatchRatio = c > 0 ? p / c : Infinity;

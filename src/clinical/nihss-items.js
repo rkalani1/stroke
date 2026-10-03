@@ -12,7 +12,7 @@ export const NIHSS_ITEMS = [
             { id: 'motor_arm_right', name: '5b. Motor Arm-Right', options: ['No drift (0)', 'Drift (1)', 'Some effort against gravity (2)', 'No effort against gravity (3)', 'No movement (4)', 'Amputation/joint fusion (UN)'] },
             { id: 'motor_leg_left', name: '6a. Motor Leg-Left', options: ['No drift (0)', 'Drift (1)', 'Some effort against gravity (2)', 'No effort against gravity (3)', 'No movement (4)', 'Amputation/joint fusion (UN)'] },
             { id: 'motor_leg_right', name: '6b. Motor Leg-Right', options: ['No drift (0)', 'Drift (1)', 'Some effort against gravity (2)', 'No effort against gravity (3)', 'No movement (4)', 'Amputation/joint fusion (UN)'] },
-            { id: 'limb_ataxia', name: '7. Limb Ataxia', options: ['Absent (0)', 'Present in upper or lower (1)', 'Present in both (2)', 'Amputation/joint fusion (UN)'] },
+            { id: 'limb_ataxia', name: '7. Limb Ataxia', options: ['Absent (0)', 'Present in one limb (1)', 'Present in two limbs (2)', 'Amputation/joint fusion (UN)'] },
             { id: 'sensory', name: '8. Sensory', options: ['Normal (0)', 'Partial loss (1)', 'Dense loss (2)'] },
             { id: 'language', name: '9. Best Language†', options: ['No aphasia (0)', 'Mild-moderate aphasia (1)', 'Severe aphasia (2)', 'Mute, global aphasia (3)'] },
             { id: 'dysarthria', name: '10. Dysarthria†', options: ['Normal articulation (0)', 'Mild-moderate slurring (1)', 'Severe dysarthria (2)', 'Intubated/other (UN)'] },

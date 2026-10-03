@@ -542,7 +542,7 @@
       "DISCOUNT",
       "ORIENTAL-MeVO"
     ],
-    "summary": "Routine EVT for medium or distal occlusion is not supported: DISTAL (n=543), ESCAPE-MeVO (n=530) and DISCOUNT (n=244, stopped for futility and excess sICH) showed no functional benefit, with more sICH (DISCOUNT 11 vs 3% among those treated) and higher mortality in ESCAPE-MeVO (13.3 vs 8.4%). ORIENTAL-MeVO (China, NIHSS ≥6, ≤24 h) is the only positive trial (mRS 0–2 58.6 vs 46.6%; sICH 4.7 vs 2.2%). EVT remains reasonable for a disabling dominant or proximal M2 occlusion (AHA 2026, 2a; SVIN 2026, 2a).",
+    "summary": "Routine EVT for medium or distal occlusion is not supported: DISTAL (n=543), ESCAPE-MeVO (n=530) and DISCOUNT (n=244, stopped for futility and excess sICH) showed no functional benefit, with more sICH (DISCOUNT 11 vs 3% among those treated) and higher mortality in ESCAPE-MeVO (13.3 vs 8.4%). ORIENTAL-MeVO (China, NIHSS ≥6, ≤24 h) is the only positive trial (mRS 0–2 58.6 vs 46.6%; sICH 4.7 vs 2.2%). EVT is reasonable for a disabling dominant proximal M2 occlusion within 6 h with NIHSS ≥6, ASPECTS ≥6 and prestroke mRS 0–1 (AHA 2026, 2a). AHA 2026 rates nondominant or codominant M2, distal MCA, ACA and PCA occlusion COR 3: No Benefit, whereas SVIN 2026 rates disabling proximal and/or dominant M2 2a.",
     "recommendations": [
       {
         "text": "In AIS patients with occlusion of the dominant proximal M2 division of the MCA presenting within 6 hours, prestroke mRS 0-1, NIHSS 6 or greater, and ASPECTS 6 or greater, EVT is reasonable to improve functional outcomes, though benefits are uncertain.",
@@ -1634,7 +1634,7 @@
       "ECMO",
       "cardioembolic"
     ],
-    "summary": "LV thrombus with stroke: warfarin for at least 3 months (AHA 2021, COR 1); DOAC safety for a new LV thrombus is uncertain (2b). Reduced ejection fraction without thrombus is not by itself an anticoagulation indication. Mechanical valves: warfarin — dabigatran (RE-ALIGN) and apixaban (PROACT Xa) caused more thromboembolism. Mechanical assist device: warfarin plus aspirin can be beneficial (2a).",
+    "summary": "LV thrombus with stroke: warfarin for at least 3 months (AHA 2021, COR 1); DOAC safety for a new LV thrombus is uncertain (2b). The 2022 AHA LV-thrombus statement considers a DOAC a reasonable alternative to warfarin (ungraded); an RCT meta-analysis (7 trials) found similar thrombus resolution and bleeding. Reduced ejection fraction without thrombus is not by itself an anticoagulation indication. Mechanical valves: warfarin — dabigatran (RE-ALIGN) and apixaban (PROACT Xa) caused more thromboembolism. Mechanical assist device: warfarin plus aspirin can be beneficial (2a).",
     "consider": [
       "Clarify the suspected source and whether the cardiac imaging adequately addresses it.",
       "Review valve/device status, rhythm, ventricular function and the antithrombotic indication with cardiology.",
@@ -1752,7 +1752,7 @@
       "mitral stenosis",
       "mechanical valve"
     ],
-    "summary": "After stroke or TIA with AF, anticoagulate regardless of AF pattern; use a DOAC over warfarin unless there is moderate-to-severe mitral stenosis or a mechanical valve (AHA 2021, COR 1). Do not routinely add an antiplatelet without active coronary disease or a recent stent (AHA 2026, harm). Device-detected subclinical AF: apixaban reduced stroke and embolism but increased major bleeding (ARTESiA), while edoxaban did not help (NOAH-AFNET 6). Cannot take long-term anticoagulation: left atrial appendage closure may be reasonable (2b). Rheumatic AF: rivaroxaban was worse than a VKA (INVICTUS).",
+    "summary": "After stroke or TIA with AF, anticoagulate regardless of AF pattern; use a DOAC over warfarin unless there is moderate-to-severe mitral stenosis or a mechanical valve (AHA 2021, COR 1). Do not routinely add an antiplatelet without active coronary disease or a recent stent (AHA 2026, harm). Device-detected subclinical AF: apixaban reduced stroke and embolism but increased major bleeding (ARTESiA), while edoxaban did not help (NOAH-AFNET 6). Nonreversible contraindication to long-term anticoagulation (CHA₂DS₂-VASc ≥2): percutaneous left atrial appendage closure is reasonable (ACC/AHA 2023, 2a; AHA 2021 stroke guideline 2b if at least 45 days of anticoagulation can be tolerated); with high bleeding risk on anticoagulation it may be an alternative (ACC/AHA 2023, 2b). Rheumatic AF: rivaroxaban was worse than a VKA (INVICTUS).",
     "consider": [
       "Confirm how AF was documented, its clinical context and the actual thromboembolic indication.",
       "Review valve disease, renal function, interactions, prior bleeding and concurrent antiplatelets.",
@@ -1806,13 +1806,13 @@
       "triglycerides",
       "hemorrhagic stroke"
     ],
-    "summary": "Atherosclerotic stroke or TIA: statin ± ezetimibe to LDL <70 mg/dL (AHA 2021, COR 1; Treat Stroke to Target events 8.5 vs 10.9%). No known coronary disease and LDL >100: atorvastatin 80 mg (COR 1; SPARCL stroke 11.2 vs 13.1%, with more hemorrhagic strokes). Very high risk above 70 on statin plus ezetimibe: add a PCSK9 inhibitor (2a). Recheck lipids 4–12 weeks after starting or changing therapy.",
+    "summary": "Atherosclerotic stroke or TIA: statin ± ezetimibe to LDL <70 mg/dL (AHA 2021, COR 1; Treat Stroke to Target events 8.5 vs 10.9%). No known coronary disease and LDL >100: atorvastatin 80 mg (COR 1; SPARCL stroke 11.2 vs 13.1%, with more hemorrhagic strokes). ACC/AHA 2026: very-high-risk ASCVD (ischemic stroke plus another major ASCVD event, or plus ≥2 high-risk conditions): high-intensity statin to LDL-C <55 and non-HDL-C <85 mg/dL, adding ezetimibe and/or a PCSK9 antibody as needed (COR 1). Other atherosclerotic stroke: LDL-C <70 (COR 1); adding a nonstatin toward <55 is reasonable (2a). Recheck lipids 4–12 weeks after starting or changing therapy.",
     "consider": [
       "Clarify the vascular indication, lipid profile, prior treatment and adherence.",
       "Triglycerides 135–499 mg/dL on a statin: icosapent ethyl is reasonable in selected patients (2a).",
       "After ICH, weigh statin benefit against hemorrhage risk individually (AHA 2022, 2b)."
     ],
-    "caution": "The 2026 dyslipidemia guideline sets risk-specific goals; check it for thresholds beyond this card.",
+    "caution": "The AHA 2021 <70 mg/dL goal predates the 2026 dyslipidemia guideline, which sets <55 mg/dL for very-high-risk ASCVD.",
     "sources": [
       {
         "title": "2026 ACC/AHA/AACVPR/ABC/ACPM/ADA/AGS/APhA/ASPC/NLA/PCNA Guideline on the Management of Dyslipidemia: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines",
@@ -1820,7 +1820,7 @@
         "year": 2026,
         "type": "Guideline",
         "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed. Indexed correction(s) 42330109, 42709919 not reconciled."
+        "access": "Primary abstract checked; section 4.2.6 (secondary prevention LDL-C goals) checked against the archived full-text transcription. Indexed correction(s) 42330109, 42709919 not reconciled."
       }
     ],
     "related": []
