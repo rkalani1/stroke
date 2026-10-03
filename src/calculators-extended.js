@@ -4,8 +4,11 @@ import { reviewedNumber } from './reviewed-number.js';
 import { parseTimestamp } from './clinical/timestamp.js';
 
 // Elapsed hours as h:mm for screen messages, floored like the LKW clock so a time just under a
-// window edge never reads as the edge itself.
-const elapsedHm = hours => { const minutes = Math.floor(hours * 60); return `${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, '0')}`; };
+// window edge never reads as the edge itself; past the upper edge it rounds up for the same reason.
+// Snapped to whole milliseconds first so float noise (16.1 h * 60 = 966.0000000000001) never moves a minute.
+const elapsedHm = (hours, round = Math.floor) => { const minutes = round(Math.round(hours * 3600000) / 60000); return `${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, '0')}`; };
+// Below-threshold values shown floored so a display never reads as the threshold itself.
+const floorTo = (value, places) => (Math.floor(value * 10 ** places + 1e-9) / 10 ** places).toFixed(places);
 
 // Extended clinical calculators added in the P0/P1 expansion.
 // Each function is pure, fully unit-testable, and carries its primary source
@@ -31,7 +34,7 @@ export const evaluateDAWN = ({ age, nihss, coreMl, timeFromLKWh } = {}) => {
   const t = reviewedNumber(timeFromLKWh);
   if (![a, n, c, t].every(Number.isFinite) || a <= 0 || a > 120 || !Number.isInteger(n) || n < 0 || n > 42 || c < 0 || t < 0) return null;
   if (Number.isFinite(t) && (t < 6 || t > 24)) {
-    return { eligible: false, tier: null, reason: `Outside DAWN window (6-24h); LKW ${elapsedHm(t)}`, meetsImaging: false, meetsClinical: false };
+    return { eligible: false, tier: null, reason: `Outside DAWN window (6-24h); LKW ${elapsedHm(t, t > 24 ? Math.ceil : Math.floor)}`, meetsImaging: false, meetsClinical: false };
   }
   let tier = null; let reason = '';
   if (a >= 80 && n >= 10 && c < 21) tier = 'A';
@@ -58,10 +61,12 @@ export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, hypoperfusedMl, timeFromLK
   const a = reviewedNumber(age);
   if (![c, p, t, n, a].every(Number.isFinite) || c < 0 || p < c || t < 0 || !Number.isInteger(n) || n < 0 || n > 42 || a <= 0 || a > 120) return null;
   if (Number.isFinite(t) && (t < 6 || t > 16)) {
-    return { eligible: false, reason: `Outside DEFUSE-3 window (6-16h); LKW ${elapsedHm(t)}`, meetsCore: c < 70, meetsMismatch: false };
+    return { eligible: false, reason: `Outside DEFUSE-3 window (6-16h); LKW ${elapsedHm(t, t > 16 ? Math.ceil : Math.floor)}`, meetsCore: c < 70, meetsMismatch: false };
   }
-  const mismatchVolume = p - c;
-  const mismatchRatio = c > 0 ? p / c : Infinity;
+  // Snap binary float noise (e.g. 37.8/21 = 1.7999999999999998) so the inclusive trial thresholds hold.
+  const snap = (value, factor) => Number.isFinite(value * factor) ? Math.round(value * factor) / factor : value;
+  const mismatchVolume = snap(p - c, 1e6);
+  const mismatchRatio = c > 0 ? snap(p / c, 1e9) : Infinity;
   const coreOk = c < 70;
   const ratioOk = mismatchRatio >= 1.8;
   const volumeOk = mismatchVolume >= 15;
@@ -78,7 +83,7 @@ export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, hypoperfusedMl, timeFromLK
     mismatchRatio,
     reason: eligible
       ? 'DEFUSE-3 age/severity/perfusion screen met. Confirm ICA/proximal MCA occlusion, baseline function, and all exclusions; this is not complete EVT eligibility.'
-      : `${!coreOk ? `Core ${c} mL ≥70; ` : ''}${!ratioOk ? `Mismatch ratio ${mismatchRatio.toFixed(1)} < 1.8; ` : ''}${!volumeOk ? `Mismatch volume ${mismatchVolume.toFixed(1)} mL < 15; ` : ''}${!clinicalOk ? 'Age 18–90 and NIHSS ≥6 required; ' : ''}Failure to meet DEFUSE-3 does not exclude EVT under newer evidence.`.trim(),
+      : `${!coreOk ? `Core ${c} mL ≥70; ` : ''}${!ratioOk ? `Mismatch ratio ${floorTo(mismatchRatio, 1)} < 1.8; ` : ''}${!volumeOk ? `Mismatch volume ${floorTo(mismatchVolume, 1)} mL < 15; ` : ''}${!clinicalOk ? 'Age 18–90 and NIHSS ≥6 required; ' : ''}Failure to meet DEFUSE-3 does not exclude EVT under newer evidence.`.trim(),
     window: '6-16h',
     endpointNNT: 3.6,
     source: 'Albers NEJM 2018;378:708-18 (NCT02586415)'

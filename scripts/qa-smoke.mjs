@@ -447,7 +447,7 @@ async function main() {
         assert(filteredIds.length < reference.data.topics.length);
         assert(filteredIds.every(id => reference.data.topics.find(topic => topic.id === id).settings.includes('clinic')));
         await evidence.getByRole('searchbox', { name: 'Find a clinical question', exact: true }).fill('unmatchableqareference');
-        await evidence.getByText('0 topics found.', { exact: true }).waitFor();
+        await evidence.getByText('No topics found. Try a drug, trial or condition, or clear the filters.', { exact: true }).waitFor();
         await evidence.getByRole('button', {name:'Clear filters', exact:true}).click();
         await evidence.getByRole('searchbox', {name:'Find a clinical question', exact:true}).fill('ELAN');
         const matches = evidence.getByRole('navigation', {name:'Matching study summaries', exact:true});

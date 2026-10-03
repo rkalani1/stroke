@@ -1,5 +1,46 @@
 # CHANGELOG
 
+## v7.7.6 — 2026-10-03 — Evidence quotes, trial screener, agent tools and visual polish
+
+Round-7 reviewers checked all 90 quoted guideline recommendations and 88 study cards against their sources, fuzzed the trial screener against the stored registry profiles, drove the MCP server with boundary inputs, and screenshot-audited every surface in light and dark themes. Skeptic agents verified the medium findings.
+
+- **Evidence:**
+  - The large-core card now grades the common case, ASPECTS 3–5 within 6 h. It falls under the COR 1 ASPECTS 3–10 recommendation (ais-2026-114), which has no age criterion. The summary keeps the age <80, mRS 0–1 and mass-effect limits on ASPECTS 0–2. The card also adds SVIN 2025's Class I for ASPECTS 0–5 within 6 h (age 18–80), and its SVIN source note records the full-text check.
+  - The MeVO card quotes SVIN 2026's 2b for distal, codominant or nondominant M2 with a disabling deficit and NIHSS ≥6, beside the AHA COR 3: No Benefit. The SVIN source note records the full-text check.
+  - The CVT key point carries the archived editorial note explaining why it says "chronic major risk factors" rather than thrombophilia.
+  - HERMES is labelled as five RCTs treating up to 12 h, most within 6 h.
+- **Trial screener:**
+  - A DOAC or warfarin last taken more than 7 days ago no longer imports as use at onset, including on reapply. Previously this wrongly excluded the patient from MINUTE.
+  - NIHSS (ICH), atrial fibrillation, statin at onset (ICH) and oral anticoagulant at the index stroke (ischemic/TIA) now have controls. Every imported fact that a modeled study uses can be changed, and changing OAC clears the facts derived from an imported anticoagulant.
+  - ACA, PCA and vertebral occlusions import as "Other"; an M3/distal occlusion is labelled "not imported".
+  - Answering "Pregnancy: absent" keeps each study's extra condition (post-partum, contraception, pregnancy test).
+  - Changing the classification clears the derived OAC fact.
+- **Agent (MCP) tools:**
+  - DEFUSE-3 returns an explanatory error when the hypoperfused volume is below the core.
+  - DAWN and DEFUSE-3 no longer expose misleading sub-criterion flags. A screen that is not met carries the "does not exclude EVT" note, and a 0 mL core reads as an infinite ratio.
+  - Dose tools flag weights below 30 kg, and CrCl flags implausible heights.
+  - Alteplase states its administration timing and scope.
+  - `list_calculators` marks which entries are callable.
+  - `search_reference` accepts whole questions and recommendation IDs; Evidence search also benefits.
+  - Outputs carry the app version.
+- **Screens:**
+  - DAWN and DEFUSE-3 never show a below-threshold value as the threshold itself (for example "ratio 1.7 < 1.8", or "LKW 16:01" when outside the window).
+  - DEFUSE-3 now meets its inclusive ratio ≥1.8 and mismatch ≥15 mL thresholds when decimal volumes land exactly on them (for example 21 / 37.8 mL); binary rounding previously failed these. The copied perfusion note rounds the mismatch volume to 0.1 mL.
+  - Searching by a recommendation ID ranks the topic that quotes it first.
+- **Visual polish:**
+  - In light theme, Install App is readable again.
+  - NIHSS boxes fill their row.
+  - The dark-theme active tab is distinct on phones and desktop.
+  - The vitals grid uses four columns from 1232 px, where the CT review value still fits, and Glucose no longer sits alone in a half cell on phones.
+  - The Copy and Generate buttons match.
+  - The mTICI and documentation-format selects sit in the field grid.
+  - The quick-search active row has an accent bar.
+  - Evidence topics get a rounded focus ring, a compact Clear filters button and a helpful empty state.
+  - Protocol chevrons align.
+  - Standalone scores get their own heading.
+  - Trial facts no longer break mid-word, and trial key-fact controls line up within each row.
+  - Trial card buttons align.
+
 ## v7.7.5 — 2026-10-03 — Evidence, calculators, on-call gaps and accessibility
 
 Round-5 reviewers swept Evidence and Trials accuracy, calculator correctness, six timed on-call scenarios, and accessibility, offline use and performance. Skeptic agents verified the medium findings.

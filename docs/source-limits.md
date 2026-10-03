@@ -163,3 +163,13 @@ Protected protocol text is unchanged. Source-checked corrections:
 - **ICH:** neurosurgery prompts use the local any-size triggers (hydrocephalus, decline, mass effect, cerebellar), ich-2022-74 (EVD for hydrocephalus lowering consciousness, COR 1, B-NR) and ich-2022-11 (serial CT after deterioration, 2a, C-LD). The shown ABC/2 volume is truncated, not rounded, within 0.05 mL below the 2, 15, 20, 30 and 60 mL thresholds.
 - **Checklist:** the surgery/trauma item now states the local list (<14 days) and notes that AHA/ASA also lists major non-CNS trauma up to 3 months as relative.
 - **NIHSS:** limb-ataxia options use the NINDS wording (present in one limb / two limbs).
+
+## Evidence quote and screener review — 7.7.6 (2026-10-03)
+
+Protected protocol text is unchanged. Source-checked corrections:
+
+- **Large core:** ais-2026-114 (COR 1, A; ICA/M1 within 6 h, NIHSS ≥6, prestroke mRS 0–1, ASPECTS 3–10, no age criterion) is quoted on the large-core card, copied verbatim from the EVT-selection card. SVIN 2025 (PMID 41573174) Class I covers ASPECTS 0–5 within 6 h, age 18–80, mRS 0–1, checked against the full-text recommendation table (PMC12671639). The summary keeps ais-2026-117's age <80, mRS 0–1 and mass-effect limits for ASPECTS 0–2.
+- **MeVO:** SVIN MeVO/DVO 2026 recommendation 2 (2b, B-R) was checked word for word against the PMC full text (PMC13331429, doi:10.1161/SVIN.125.002314).
+- **CVT:** cvt-2024-5 keeps the owner-approved "chronic major risk factors" wording (commit 3c48467) and now carries the archive's bracketed editorial note in the quoted text.
+- **HERMES:** PMID 26898852 pooled five RCTs that randomized up to 12 h (ESCAPE ≤12 h, REVASCAT ≤8 h, the others ≤6 h). cOR 2.49 (1.76–3.53) and NNT 2.6 are unchanged.
+- **Trial screener:** the extra pregnancy-related conditions come from each stored registry exclusion (SISTER breastfeeding, FASTEST-2 ≤12 weeks post-partum, INTERCEPT contraception, MINUTE pregnancy test).

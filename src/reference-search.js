@@ -1,4 +1,7 @@
 // Shared deterministic search. Queries stay in memory and never form URLs.
+// Self-contained (no imports): the service worker bundles validReferenceData from this file.
+// Filler words dropped from multi-word searches so a whole question still matches.
+export const STOPWORDS = new Set(['a', 'an', 'the', 'of', 'for', 'to', 'in', 'on', 'and', 'or', 'with', 'when', 'what', 'how', 'is', 'after', 'do', 'i']);
 export const CARE_SETTINGS = [['all', 'All settings'], ['on-call', 'On call'], ['hospital', 'Hospital'], ['clinic', 'Clinic']];
 // Whole-word clinical aliases, applied to queries and records alike so either spelling matches.
 const ALIASES = [
@@ -19,12 +22,14 @@ export function searchReference(records, query = '', setting = 'all') {
     return new RegExp(`\\b${parts.map(part => /^\d+$/.test(part) ? '\\d+' : part).join(' *')}\\b`, 'g');
   });
   const searchableText = value => identifiers.reduce((text, pattern) => text.replace(pattern, name => name.replace(/ /g, '')), normalize(value));
-  const phrase = searchableText(query), terms = phrase.split(' ').filter(Boolean);
-  const rank = record => [record.id, record.title, ...record.keywords].some(value => searchableText(value) === phrase) ? 2
+  const phrase = searchableText(query), words = phrase.split(' ').filter(Boolean);
+  // A whole question ('what is the bp target for ich') matches like its content words.
+  const content = words.filter(term => !STOPWORDS.has(term)), terms = words.length > 1 && content.length ? content : words;
+  const rank = record => [record.id, record.title, ...record.keywords, ...(record.recommendations || []).map(rec => rec.id)].some(value => searchableText(value) === phrase) ? 2
     : terms.every(term => ` ${searchableText(record.title)} `.includes(` ${term} `)) ? 1 : 0;
   return records.filter(record => {
     if (setting !== 'all' && !record.settings.includes(setting)) return false;
-    const searchable = searchableText([record.id, record.title, record.category || '', record.question || '', record.summary || '', ...(record.consider || []), ...(record.recommendations || []).map(rec => rec.text), record.headline || '', record.population || '', record.comparison || '', record.result || '', ...record.keywords, ...record.sources.map(source => source.title)].join(' '));
+    const searchable = searchableText([record.id, record.title, record.category || '', record.question || '', record.summary || '', ...(record.consider || []), ...(record.recommendations || []).flatMap(rec => [rec.text, rec.id]), record.headline || '', record.population || '', record.comparison || '', record.result || '', ...record.keywords, ...record.sources.map(source => source.title)].join(' '));
     return terms.every(term => searchable.includes(term));
   }).sort((a, b) => terms.length ? rank(b) - rank(a) : 0);
 }

@@ -68,12 +68,12 @@ function TrialCard({ trial, result, onDetails }) {
   const m = trial.externalMetadata || {};
   const confirm = result ? toConfirm(result) : [];
   const met = result?.matchedCriteria || [];
-  return <article className="min-w-0 rounded-lg border border-line bg-card p-3 shadow-card" data-trial={trial.acronym}>
+  return <article className="flex min-w-0 flex-col rounded-lg border border-line bg-card p-3 shadow-card" data-trial={trial.acronym}>
     <div className="flex flex-wrap items-center gap-x-2 gap-y-1"><h3 className="mr-1 text-base font-bold">{trial.acronym}</h3><RegistryLink trial={trial} compact /><Chips trial={trial} result={result} /></div>
     <p className="mt-1 text-sm">{trial.conciseBedsideSummary}</p>
     <p className="mt-1 text-xs text-mute">Window: {trial.enrollmentWindowText}{m.verificationDate && m.verificationDate !== LATEST_CHECK ? ` · registry checked ${m.verificationDate}` : ''}</p>
     {result?.beforeWindow && result.notYetEnrolling && <p className="mt-1 text-xs">Timing: before the modeled study window.</p>}
-    <div className="mt-1 flex flex-wrap items-start gap-x-3">
+    <div className="mt-auto flex flex-wrap items-start gap-x-3 pt-1">
       {result && (confirm.length > 0 || met.length > 0) && <details className="min-w-0 flex-1 basis-40 open:basis-full"><summary className="flex min-h-[44px] cursor-pointer items-center text-sm font-semibold">{confirm.length} to confirm{met.length ? ` · ${met.length} met` : ''}</summary>
         {met.length > 0 && <><h4 className="mt-1 text-xs font-semibold uppercase tracking-wide text-mute">Met</h4><ul className="list-disc space-y-1 pl-5 text-sm">{met.map((line, i) => <li key={i}>{line}</li>)}</ul></>}
         {confirm.length > 0 && <><h4 className="mt-2 text-xs font-semibold uppercase tracking-wide text-mute">To confirm</h4><ul className="list-disc space-y-1 pl-5 text-sm">{confirm.map((line, i) => <li key={i}>{line}</li>)}</ul></>}
@@ -91,30 +91,33 @@ function ResultGroup({ title, label, items, onDetails, children }) {
 function EncounterBanner({ prefill, onUse, applied }) {
   if (!prefill?.available) return null;
   return <section aria-label="Encounter facts" className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-lg border border-cobalt-300/60 bg-cobalt-50 p-3 dark:bg-cobalt-900">
-    <p className="min-w-0 flex-1 basis-60 text-sm"><span className="font-semibold">From Encounter:</span> {prefill.summary.join(' · ') || 'no screening facts recorded'}{!prefill.supported && <> — <span className="font-semibold">{prefill.message}</span></>}</p>
+    <p className="min-w-0 flex-1 basis-60 text-sm"><span className="font-semibold">From Encounter:</span> {prefill.summary.length ? prefill.summary.map((fact, i) => <React.Fragment key={i}>{i > 0 && ' · '}<span className="whitespace-nowrap">{fact}</span></React.Fragment>) : 'no screening facts recorded'}{!prefill.supported && <> — <span className="font-semibold">{prefill.message}</span></>}</p>
     {prefill.patch && <button type="button" className={buttonClass} onClick={onUse}>{applied ? 'Applied ✓ · reapply' : 'Use these facts'}</button>}
     {applied && <p role="status" className="basis-full text-xs text-ink-2">Encounter facts applied ({applied}). Every field can still be changed; anything not recorded stays unknown.</p>}
   </section>;
 }
 
 function NumberFact({ label, value, onChange, min, max, step = 1, unit }) {
-  return <label className="workspace-field !my-0"><span>{label}{unit && <span className="font-normal text-mute"> ({unit})</span>}</span><input type="number" inputMode="decimal" aria-label={unit ? `${label} (${unit})` : label} min={min} max={max} step={step} placeholder="Unknown" value={value === 'unselected' || value === null || value === undefined ? '' : value} onChange={e => onChange(e.target.value === '' ? 'unselected' : e.target.value)} /></label>;
+  return <label className="workspace-field !my-0 justify-between"><span>{label}{unit && <span className="font-normal text-mute"> ({unit})</span>}</span><input type="number" inputMode="decimal" aria-label={unit ? `${label} (${unit})` : label} min={min} max={max} step={step} placeholder="Unknown" value={value === 'unselected' || value === null || value === undefined ? '' : value} onChange={e => onChange(e.target.value === '' ? 'unselected' : e.target.value)} /></label>;
 }
 function SelectFact({ label, value, onChange, options }) {
   const current = value === 'unselected' || value === null || value === undefined ? '' : String(value);
-  return <label className="workspace-field !my-0"><span>{label}</span><select aria-label={label} value={current} onChange={e => onChange(e.target.value === '' ? 'unselected' : e.target.value)}><option value="">Unknown</option>{options.map(([v, text]) => <option key={v} value={v}>{text}</option>)}</select></label>;
+  return <label className="workspace-field !my-0 justify-between"><span>{label}</span><select aria-label={label} value={current} onChange={e => onChange(e.target.value === '' ? 'unselected' : e.target.value)}><option value="">Unknown</option>{options.map(([v, text]) => <option key={v} value={v}>{text}</option>)}</select></label>;
 }
 const range = (lo, hi) => Array.from({ length: hi - lo + 1 }, (_, i) => [String(lo + i), String(lo + i)]);
 const asNumber = v => v === 'unselected' ? v : Number(v);
+const asBoolean = v => v === 'unselected' ? v : v === 'true';
+const YES_NO = [['true', 'Yes'], ['false', 'No']];
 
 function KeyFacts({ state, change, replace }) {
   const cls = state.classification;
   const set = key => v => change({ [key]: v });
   const setNumber = key => v => change({ [key]: asNumber(v) });
+  const setBoolean = key => v => change({ [key]: asBoolean(v) });
   return <section aria-labelledby="trial-key-facts"><h2 id="trial-key-facts" className="mb-1 text-lg font-bold">3. Key facts</h2><p className="mb-2 text-sm text-mute">Optional. Unknown stays unknown.</p><div className="grid grid-cols-2 gap-x-3 gap-y-2">
     <NumberFact label="Age" unit="y" min={0} max={120} value={state.age} onChange={set('age')} />
+    {cls !== 'tia' && <NumberFact label="NIHSS" min={0} max={42} value={state.nihss} onChange={set('nihss')} />}
     {cls === 'ischemic' && <>
-      <NumberFact label="NIHSS" min={0} max={42} value={state.nihss} onChange={set('nihss')} />
       <SelectFact label="Pre-stroke mRS" value={state.preMrs} onChange={setNumber('preMrs')} options={range(0, 5)} />
       <SelectFact label="ASPECTS" value={state.aspects} onChange={setNumber('aspects')} options={range(0, 10).reverse()} />
       <div className="col-span-2"><SelectFact label="Occlusion site" value={state.vessel} onChange={set('vessel')} options={[['ica_m1', 'ICA or M1'], ['dominant_m2', 'Dominant M2'], ['m2_m3_nd', 'Non-dominant/co-dominant M2 or M3'], ['other', 'Other (basilar, ACA, PCA…)'], ['none', 'No occlusion']]} /></div>
@@ -125,7 +128,10 @@ function KeyFacts({ state, change, replace }) {
       <SelectFact label="ICH location" value={state.ichLocation} onChange={set('ichLocation')} options={[['bg', 'Basal ganglia'], ['lobar', 'Lobar'], ['thalamic', 'Thalamic'], ['infratentorial', 'Infratentorial'], ['other', 'Other']]} />
       <NumberFact label="Volume" unit="mL" min={0} max={300} step={0.1} value={state.ichVolume} onChange={set('ichVolume')} />
       <div className="col-span-2"><SelectFact label="Anticoagulant at onset" value={state.anticoagulant} onChange={v => replace(prev => applyAnticoagulant(prev, v))} options={[['none', 'None'], ['doac', 'DOAC (apixaban, rivaroxaban, dabigatran, edoxaban)'], ['lmwh', 'LMWH'], ['vka', 'Warfarin / VKA']]} /></div>
+      <SelectFact label="Statin at onset" value={state.statin} onChange={setBoolean('statin')} options={YES_NO} />
     </>}
+    <SelectFact label="Atrial fibrillation documented" value={state.afibHistory} onChange={setBoolean('afibHistory')} options={YES_NO} />
+    {cls !== 'ich' && <SelectFact label="On oral anticoagulant at index stroke" value={state.takingOac} onChange={v => replace(prev => ({ ...(prev.anticoagulant && prev.anticoagulant !== 'unselected' ? applyAnticoagulant(prev, 'unselected') : prev), takingOac: asBoolean(v) }))} options={YES_NO} />}
   </div></section>;
 }
 
@@ -180,7 +186,7 @@ export function TrialScreener({ copyToClipboard, initialState, onStateChange, ac
     <EncounterBanner prefill={prefill} onUse={importEncounter} applied={applied} />
     <div className="trial-screening-workspace space-y-5 lg:grid lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:items-start lg:gap-6 lg:space-y-0">
       <div className="trial-screening-filters min-w-0 space-y-5 lg:sticky lg:top-[calc(var(--case-bar-h,0px)+1rem)] lg:max-h-[calc(100dvh-var(--case-bar-h,0px)-2rem)] lg:overflow-y-auto lg:overscroll-contain lg:pr-1">
-        <section><h2 className="mb-2 text-lg font-bold">1. Stroke classification</h2><div className="flex flex-wrap gap-2">{CLASSIFICATIONS.map(([id, label]) => <button key={id} type="button" className={buttonClass} aria-pressed={state.classification === id} onClick={() => change({ classification: id, onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', exclusions: {}, anticoagulant: 'unselected' })}>{label}</button>)}</div>
+        <section><h2 className="mb-2 text-lg font-bold">1. Stroke classification</h2><div className="flex flex-wrap gap-2">{CLASSIFICATIONS.map(([id, label]) => <button key={id} type="button" className={buttonClass} aria-pressed={state.classification === id} onClick={() => change({ classification: id, onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', exclusions: {}, anticoagulant: 'unselected', takingOac: 'unselected' })}>{label}</button>)}</div>
           {results.ready && <a href="#trial-results" className="mt-1 text-sm font-semibold text-link-600 underline lg:!hidden">View {candidates.length} possible candidate{candidates.length === 1 ? '' : 's'} ↓</a>}</section>
         {results.ready && <><TimingSection state={state} change={change} /><KeyFacts state={state} change={change} replace={replace} /><ExclusionRefiner summaryRef={refinerRef} items={exclusions} checked={state.exclusions} onToggle={(id, value) => replace(prev => { const next = { ...prev.exclusions }; if (typeof value === 'boolean') next[id] = value; else delete next[id]; return { ...prev, exclusions: next }; })} onClear={() => { change({ exclusions: {} }); requestAnimationFrame(() => refinerRef.current?.focus()); }} /></>}
         <button type="button" className={buttonClass} onClick={() => { setApplied(null); change(createInitialScreenerState()); }}>Reset screen</button>

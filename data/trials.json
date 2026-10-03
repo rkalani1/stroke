@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "trials",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.7.5",
-    "checksum": "sha256:9deba469fc9736e6513e5bca78c3c032",
+    "appVersion": "7.7.6",
+    "checksum": "sha256:9af23424118dec6ea7dd183976701ab2",
     "count": 4,
     "source": "Restored canonical trial screener and table summaries with original verification dates",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -306,7 +306,8 @@
               "operator": "==",
               "value": true,
               "error": "Pregnancy or breastfeeding",
-              "pendingLabel": "Confirm not pregnant or breastfeeding"
+              "pendingLabel": "Confirm not pregnant or breastfeeding",
+              "residualPending": "Confirm not breastfeeding"
             }
           ],
           "manualPending": [
@@ -635,7 +636,8 @@
               "operator": "==",
               "value": true,
               "error": "Pregnancy",
-              "pendingLabel": "Confirm not pregnant (negative test if of childbearing potential)"
+              "pendingLabel": "Confirm not pregnant (negative test if of childbearing potential)",
+              "residualPending": "Negative pregnancy test required if of childbearing potential"
             }
           ],
           "manualPending": [
@@ -774,7 +776,8 @@
               "operator": "==",
               "value": true,
               "error": "Pregnancy or ≤12 weeks post-partum",
-              "pendingLabel": "Confirm not pregnant or ≤12 weeks post-partum"
+              "pendingLabel": "Confirm not pregnant or ≤12 weeks post-partum",
+              "residualPending": "Confirm not ≤12 weeks post-partum"
             }
           ],
           "manualPending": [
@@ -1012,7 +1015,8 @@
               "operator": "==",
               "value": true,
               "error": "Excludes pregnancy",
-              "pendingLabel": "Confirm not pregnant; non-postmenopausal patients must agree to effective contraception"
+              "pendingLabel": "Confirm not pregnant; non-postmenopausal patients must agree to effective contraception",
+              "residualPending": "Non-postmenopausal patients must agree to effective contraception"
             }
           ],
           "manualPending": [

@@ -320,6 +320,8 @@ export function evaluateTrialEligibility(trial, p) {
   const pendingCriteria = [
     ...criteria.filter(c => evaluateCriterion(c,p) === null).map(pendingText),
     ...exclusions.filter(c => evaluateCriterion(c,p) === null).map(c => c.pendingLabel || `Confirm exclusion absent: ${c.error || c.field}`),
+    // A shared refiner answer (e.g. 'Pregnancy: absent') can leave a study-specific part open.
+    ...exclusions.filter(c => c.residualPending && evaluateCriterion(c,p) === false).map(c => c.residualPending),
     ...(trial.eligibility?.manualPending || [])
   ].filter(Boolean);
   // Every stored profile is a partial summary. Neither absence of a modeled

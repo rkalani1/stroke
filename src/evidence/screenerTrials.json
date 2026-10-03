@@ -293,7 +293,8 @@
           "operator": "==",
           "value": true,
           "error": "Pregnancy or breastfeeding",
-          "pendingLabel": "Confirm not pregnant or breastfeeding"
+          "pendingLabel": "Confirm not pregnant or breastfeeding",
+          "residualPending": "Confirm not breastfeeding"
         }
       ],
       "manualPending": [
@@ -622,7 +623,8 @@
           "operator": "==",
           "value": true,
           "error": "Pregnancy",
-          "pendingLabel": "Confirm not pregnant (negative test if of childbearing potential)"
+          "pendingLabel": "Confirm not pregnant (negative test if of childbearing potential)",
+          "residualPending": "Negative pregnancy test required if of childbearing potential"
         }
       ],
       "manualPending": [
@@ -761,7 +763,8 @@
           "operator": "==",
           "value": true,
           "error": "Pregnancy or ≤12 weeks post-partum",
-          "pendingLabel": "Confirm not pregnant or ≤12 weeks post-partum"
+          "pendingLabel": "Confirm not pregnant or ≤12 weeks post-partum",
+          "residualPending": "Confirm not ≤12 weeks post-partum"
         }
       ],
       "manualPending": [
@@ -999,7 +1002,8 @@
           "operator": "==",
           "value": true,
           "error": "Excludes pregnancy",
-          "pendingLabel": "Confirm not pregnant; non-postmenopausal patients must agree to effective contraception"
+          "pendingLabel": "Confirm not pregnant; non-postmenopausal patients must agree to effective contraception",
+          "residualPending": "Non-postmenopausal patients must agree to effective contraception"
         }
       ],
       "manualPending": [
