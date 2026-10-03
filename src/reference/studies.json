@@ -670,7 +670,7 @@
     "question": "Does thrombectomy improve outcome after a primary isolated medium or distal occlusion?",
     "population": "244 adults at 22 French centers (median age 75, NIHSS 8) within 8 hours, or within 24 hours if FLAIR-negative; 488 planned.",
     "comparison": "Thrombectomy plus medical treatment versus medical treatment alone.",
-    "result": "mRS 0–2 at 3 months occurred in 62% vs 68% (OR 0.73; 95% CI 0.40–1.31). Among those actually treated, symptomatic ICH 11% vs 3%, SAH 13% vs 2% and embolus migration 5% vs 1%. Mortality 6% vs 8%.",
+    "result": "mRS 0–2 at 3 months occurred in 62% vs 68% (OR 0.73; 95% CI 0.40–1.31). Patients who received thrombectomy vs those who did not: symptomatic ICH 11% vs 3%, SAH 13% vs 2% and embolus migration 5% vs 1%. Mortality 6% vs 8%.",
     "limits": "Stopped at interim analysis for futility and excess sICH; open-label; 81% of the EVT arm received thrombectomy. The third neutral MeVO trial after DISTAL and ESCAPE-MeVO.",
     "sources": [
       {
@@ -2036,7 +2036,7 @@
   {
     "id": "tapis",
     "title": "TAPIS — aspirin plus ticagrelor started with IV thrombolysis",
-    "headline": "DAPT within 6 h of IVT: mRS 0–1 68.7 vs 62.0%",
+    "headline": "DAPT within 6 h of onset with IVT: mRS 0–1 68.7 vs 62.0%",
     "year": 2026,
     "settings": [
       "on-call",

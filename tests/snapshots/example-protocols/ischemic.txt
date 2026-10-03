@@ -622,7 +622,7 @@ Interim conservative safety hold from the dedicated criteria source. The current
 Infective endocarditis
 Should not be administered.
 Severe coagulopathy
-Plt <100K, INR >1.7, aPTT >40s, PT >15s. If thrombocytopenia is suspected, await the platelet count before thrombolysis; if there is no reason to suspect an abnormal result, do not delay IVT for the platelet count.
+Plt <100K, INR >1.7, aPTT >40s, PT >15s. If thrombocytopenia is suspected, await the platelet count before thrombolysis; if there is no reason to suspect an abnormal result, do not delay IVT for the platelet count. If alteplase was started before the count, stop the infusion if platelets return <100,000/mm³.
 Treatment-dose heparin or LMWH within 24 hours
 Treatment-dose unfractionated heparin or low-molecular-weight heparin within the previous 24 hours is an exclusion.
 History of GI malignancy, or GI/GU hemorrhage within 21 days

@@ -103,6 +103,19 @@
       "reason": "Retained Encounter Source / limits component resolves the unchanged canonical claim. Dose arithmetic and explicit source authority remain separate from treatment eligibility and administration. Reviewed JSX closing-expression repair; dose formula, labels and source limits unchanged."
     },
     {
+      "id": "tnk-stroke-dose:src/workspace-state.js:1",
+      "groupId": "tnk-stroke-dose",
+      "file": "src/workspace-state.js",
+      "line": 263,
+      "excerpt": "const calculatedText = calculated ? ` (calculated ${state.drug === 'TNK' ? `${calculated.calculatedDose} mg by ${state.doseAuthority === 'fda-label' ? 'US label weight band' : '0.25 mg/kg'}` : `${calculated.totalDose} mg total: ${calculated.bolus} mg bolus, ${calculated.infusion} mg infusion`} for ${Math.round(calculated.weightKg * 10) / 10} kg; administered dose not recorded)` : '';",
+      "sha256": "3adc594bc86027424dbd3ef83c33322671fcd7b7188560e8de2fd2275435d7be",
+      "disposition": "canonical",
+      "claimIds": [
+        "tnk-stroke-dose"
+      ],
+      "reason": "Documentation label naming which canonical TNK dose method (0.25 mg/kg guideline arithmetic or US label weight band) produced the calculated dose shown beside a recorded administration; the value comes from calculateTNKDoseReviewed and the line states that the administered dose is not recorded."
+    },
+    {
       "id": "alteplase-stroke-dose:src/Encounter.jsx:1",
       "groupId": "alteplase-stroke-dose",
       "file": "src/Encounter.jsx",
