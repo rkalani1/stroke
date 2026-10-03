@@ -3,10 +3,11 @@ import { formatTimeline, encounterClockTimestamp, evtReperfusionIssue } from './
 import { formatDocumentation } from './documentation-output.js';
 import { reconcileSupplementaryAppliedScores } from './supplementary-calculators.js';
 import { NIHSS_ITEMS } from './clinical/nihss-items.js';
+import { SAFETY_ITEMS } from './clinical/safety-items.js';
 import { calculateNIHSS, calculateICHVolumeReviewed, calculateICHScore, calculateTNKDoseReviewed, calculateAlteplaseDoseReviewed } from './calculators.js';
 import { formatPerfusionForExport } from './clinical/perfusion-documentation.js';
 import { formatWakeUpScreenForExport } from './clinical/wake-up-documentation.js';
-import { numericInput, reviewedGcs, gcsDocumentation, evaluateVideoTreatment, reviewedTiaDisposition, documentedIvtContext, assessAnticoagulantExposure } from './encounter-clinical-review.js';
+import { numericInput, reviewedGcs, gcsDocumentation, evaluateVideoTreatment, reviewedTiaDisposition, documentedIvtContext, assessAnticoagulantExposure, safetyChecklistSignals } from './encounter-clinical-review.js';
 import { computeLKWCountdown } from './calculators-extended.js';
 import { timestampCandidates, formatRecordedInstant } from './clinical/timestamp.js';
 import { getPublicDemoPhiWarnings } from './public-demo-guardrails.js';
@@ -195,7 +196,6 @@ export async function copySummary(stateRef, text, writeText) {
 // templates format recorded facts and clinician text; they never attest care.
 const hasValue = value => value !== '' && value !== null && value !== undefined && String(value).trim() !== '';
 const documented = (value, fallback = 'not documented') => hasValue(value) ? String(value).trim() : fallback;
-const measurement = (value, unit) => hasValue(value) ? `${value}${unit}` : 'not documented';
 const timestampReview = value => timestampCandidates(value).length > 1 ? 'ambiguous local time; choose the recorded clock occurrence before interpretation' : 'invalid or future; correct before interpretation';
 function documentedDateTime(date, time, nowMs, recordedTimestamp) {
   if (!hasValue(date) && !hasValue(time)) return 'not documented';
@@ -254,13 +254,19 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   if (n.lastDOACType === 'lmwh') entry('LMWH dose intent', n.anticoagulantDoseIntent);
   if (acuteIschemic) {
     if (n.lkwUnknown || n.wakeUpStrokeWorkflow.mriAvailable !== undefined) recommendations.push(formatWakeUpScreenForExport(n, new Date(nowMs)));
-    const concerns = Object.keys(n.tnkContraindicationChecklist || {}).filter(key => n.tnkContraindicationChecklist[key] === true);
-    entry('Recorded safety concerns', concerns.join(', ') || 'none recorded (unchecked does not mean reviewed)');
-    entry('IVT safety review', n.ivtContraindicationsReviewed ? 'explicitly recorded; concerns remain' : 'not documented');
+    const checklist = n.tnkContraindicationChecklist || {};
+    const concerns = Object.keys(checklist).filter(key => checklist[key] === true).map(key => SAFETY_ITEMS.find(item => item.id === key)?.label || key);
+    const unanswered = SAFETY_ITEMS.filter(item => typeof checklist[item.id] !== 'boolean').length;
+    const signals = safetyChecklistSignals(n, nowMs);
+    const conflicts = SAFETY_ITEMS.filter(item => signals[item.id]?.conflict && checklist[item.id] === false);
+    const unansweredText = unanswered ? `; ${unanswered} checklist item${unanswered === 1 ? '' : 's'} unanswered (checklist incomplete)` : '';
+    entry('Recorded safety concerns', concerns.join('; ') || 'none recorded (unchecked does not mean reviewed)');
+    if (conflicts.length) entry('Entered values conflicting with a "No" answer', conflicts.map(item => `${item.label} (${signals[item.id].reason})`).join('; '));
+    entry('IVT safety review', n.ivtContraindicationsReviewed ? `marked complete by clinician${concerns.length ? '; recorded concerns remain' : ''}${unansweredText}` : 'not documented');
     for (const type of ['ivt', 'evt']) entry(`${type.toUpperCase()} clinician decision`, state.decisions[type] || 'not documented');
     const administration = state.actions.administered && state.drug && validTimestamp(state.actions.administrationTime, nowMs);
     const calculated = administration ? state.drug === 'TNK' ? calculateTNKDoseReviewed(n.weight, state.doseAuthority) : calculateAlteplaseDoseReviewed(n.weight) : null;
-    const calculatedText = calculated ? ` (calculated ${state.drug === 'TNK' ? `${calculated.calculatedDose} mg` : `${calculated.totalDose} mg total, ${calculated.bolus} mg bolus`} for ${Math.round(calculated.weightKg * 10) / 10} kg)` : '';
+    const calculatedText = calculated ? ` (calculated ${state.drug === 'TNK' ? `${calculated.calculatedDose} mg by ${state.doseAuthority === 'fda-label' ? 'US label weight band' : '0.25 mg/kg'}` : `${calculated.totalDose} mg total: ${calculated.bolus} mg bolus, ${calculated.infusion} mg infusion`} for ${Math.round(calculated.weightKg * 10) / 10} kg; administered dose not recorded)` : '';
     entry('IVT administration', administration ? `${state.drug} at ${formatRecordedInstant(state.actions.administrationTime)}${calculatedText}` : `not documented with a valid drug and timestamp${state.actions.administrationTime && !validTimestamp(state.actions.administrationTime, nowMs) ? `; entered time is ${timestampReview(state.actions.administrationTime)}` : ''}`);
     for (const [key, label] of [['punctureTime', 'EVT puncture'], ['reperfusionTime', 'EVT reperfusion']]) if (state.actions[key]) entry(label, validTimestamp(state.actions[key], nowMs) ? `${formatRecordedInstant(state.actions[key])}${key === 'reperfusionTime' && evtReperfusionIssue(state, nowMs) ? ` (${evtReperfusionIssue(state, nowMs)})` : ''}` : timestampReview(state.actions[key]));
     entry('Recorded mTICI grade', state.note.ticiScore);
@@ -286,7 +292,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   entry('Handoff', state.actions.handoff);
 
   if (state.documentFormat === 'handoff') {
-    const labels = new Set(['Anticoagulant exposure', 'Last anticoagulant dose', 'LMWH dose intent', 'Recorded safety concerns', 'IVT clinician decision', 'EVT clinician decision', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
+    const labels = new Set(['Anticoagulant exposure', 'Last anticoagulant dose', 'LMWH dose intent', 'Recorded safety concerns', 'Entered values conflicting with a "No" answer', 'IVT clinician decision', 'EVT clinician decision', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
     return ['Team handoff', `${demographics} · ${diagnosis}${state.context === 'follow-up' ? ' · follow-up' : ''}`,
       lkw, `NIHSS: ${examText}${examDetails}${extraExam.length ? `; ${extraExam.join('; ')}` : ''}`,
       `CT (${ctTimestamp}): ${ct}`, `CTA: ${cta}`, hasValue(perfusion) ? `CTP: ${perfusion}` : '',
@@ -299,7 +305,12 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     const vitals = [hasValue(n.presentingBP) ? `BP (mmHg): ${n.presentingBP}` : '', hasValue(n.glucose) ? `Glucose (mg/dL): ${n.glucose}` : ''].filter(Boolean).join('; ');
     return `${demographics}${weight} with ${pmh} ${state.context === 'follow-up' ? 'seen in follow-up for' : 'who presents with'} ${symptoms}.${hasValue(n.chiefComplaint) ? ` Chief complaint: ${n.chiefComplaint}.` : ''} ${lkw}. ${extraExam.length ? `${extraExam.join('. ')}. ` : ''}NIHSS score: ${examText}${examDetails}.${disabling ? ` ${disabling}.` : ''} Working diagnosis: ${diagnosis}. Head CT (${ctTimestamp}): ${ct}. CTA Head/Neck (${documentedDateTime(n.ctaDate, n.ctaTime, nowMs, encounterClockTimestamp(n, 'cta'))}): ${cta}. CTP: ${documented(perfusion)}.${vitals ? ` ${vitals}.` : ''}${hasValue(n.medications) ? ` Medications: ${n.medications}.` : ''}${hasValue(state.assessment) ? ` Assessment: ${state.assessment}.` : ''} ${recommendations.join('. ')}.`.replace(/\s*\n\s*/g, ' ').replace(/([^.])\.\.(?=\s|$)/g, '$1.');
   }
-  return `Reason for Consultation: ${state.context === 'acute' ? 'Acute stroke evaluation' : 'Stroke follow-up'} — ${chiefComplaint}
+  // Optional measurements appear only when entered; core fields keep an explicit "not documented".
+  // Decision-relevant labs stay explicit: platelets, INR and weight for acute ischemic
+  // stroke, INR with warfarin and aPTT with heparin/LMWH exposure.
+  const optional = (label, value, unit = '', required = false) => hasValue(value) ? `, ${label} ${value}${unit}` : required ? `, ${label} not documented` : '';
+  const weightEntry = hasValue(n.weight) && weightKg === null ? '[weight invalid; correct before interpretation]' : weightText;
+  return `Reason for Consultation: ${state.context === 'acute' ? 'Acute stroke evaluation' : 'Stroke follow-up'}${hasValue(n.chiefComplaint) ? ` — ${chiefComplaint}` : ''}
 
 Chief complaint: ${chiefComplaint}
 ${lkw}
@@ -308,8 +319,8 @@ Relevant PMH: ${pmh}
 Medications: ${documented(n.medications)}
 
 Objective:
-Vitals: BP ${documented(n.presentingBP)}, HR ${documented(n.heartRate)}, SpO2 ${measurement(n.spO2, '%')}, Temp ${measurement(n.temperature, '°F')}, Wt ${weightText || 'not documented'}
-Labs: Glucose ${documented(n.glucose)}, Plt ${measurement(n.plateletCount, 'K/µL')}, Cr ${documented(n.creatinine)}, INR ${documented(n.inr)}, aPTT ${documented(n.ptt)}, PT ${documented(n.pt)}
+Vitals: BP ${documented(n.presentingBP)}${optional('HR', n.heartRate)}${optional('SpO2', n.spO2, '%')}${optional('Temp', n.temperature, '°F')}${optional('Wt', weightEntry, '', acuteIschemic)}
+Labs: Glucose ${documented(n.glucose)}${optional('Plt', n.plateletCount, 'K/µL', acuteIschemic)}${optional('Cr', n.creatinine)}${optional('INR', n.inr, '', acuteIschemic || n.lastDOACType === 'warfarin')}${optional('aPTT', n.ptt, '', ['heparin', 'lmwh'].includes(n.lastDOACType))}${optional('PT', n.pt)}
 Exam: NIHSS ${examText}${examDetails}${disabling ? `; ${disabling}` : ''}${extraExam.length ? `; ${extraExam.join('; ')}` : ''}
 
 Imaging findings:

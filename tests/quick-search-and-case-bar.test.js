@@ -26,9 +26,17 @@ describe('global quick search', () => {
     expect(searchIndex(index, 'elan zzzz')).toEqual([]);
     expect(searchIndex(index, '')).toEqual([]);
   });
-  it('groups results in a stable order', () => {
-    const groups = groupResults(searchIndex(index, 'doac')).map(([name]) => name);
-    expect(groups.indexOf('Evidence')).toBeLessThan(groups.indexOf('Studies'));
+  it('leads with the best match, then keeps the stable group order', () => {
+    const results = searchIndex(index, 'elan');
+    const groups = groupResults(results);
+    expect(groups[0][0]).toBe(results[0].group);
+    const mixed = [{ id: 's', group: 'Studies', title: 'S' }, { id: 'e', group: 'Evidence', title: 'E' }, { id: 'p', group: 'Protocols', title: 'P' }];
+    expect(groupResults(mixed).map(([group]) => group)).toEqual(['Studies', 'Protocols', 'Evidence']);
+  });
+  it('accepts quick-reference deep links under either protocol tab', () => {
+    expect(parseWorkspaceRoute('#/protocols/ich/qr-reversal')).toEqual({ surface: 'protocols', sub: 'ich', target: 'qr-reversal' });
+    expect(parseWorkspaceRoute('#/protocols/ich/post-evt').surface).toBe('retired');
+    expect(parseWorkspaceRoute('#/protocols/ischemic/reversal').surface).toBe('retired');
   });
 });
 
@@ -48,6 +56,10 @@ describe('case bar projection', () => {
     expect(caseSummary(base, new Date('2026-10-01T13:10:00').getTime()).window.tone).toBe('caution');
     expect(caseSummary(newEncounter(), now).hasData).toBe(false);
     expect(hoursMinutes(125 * 60000)).toBe('2:05');
+  });
+  it('labels anticoagulant exposure for the diagnosis badge', () => {
+    expect(caseSummary({ ...base, note: { ...base.note, lastDOACType: 'apixaban' } }, now).anticoagulant).toBe('Apixaban');
+    expect(caseSummary({ ...base, note: { ...base.note, lastDOACType: 'none' } }, now).anticoagulant).toBe('');
   });
   it('never shows a dose outside an acute ischemic encounter', () => {
     expect(caseSummary({ ...base, note: { ...base.note, diagnosisCategory: 'ich' } }, now).dose).toBeNull();

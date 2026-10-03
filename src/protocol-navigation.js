@@ -3,8 +3,8 @@ export const PROTOCOL_TARGETS = {
   reversal: { sub: 'ich', heading: 'Anticoagulation Reversal', label: 'Anticoagulant reversal' },
   'post-lytic': { sub: 'ischemic', id: 'isch-postlytic', label: 'Post-lytic hemorrhage' },
   angioedema: { sub: 'ischemic', id: 'isch-angioedema', label: 'Angioedema' },
-  bp: { sub: 'ischemic', id: 'isch-bp' },
-  'post-evt': { sub: 'ischemic', id: 'isch-postevt' },
+  bp: { sub: 'ischemic', id: 'isch-bp', label: 'BP management' },
+  'post-evt': { sub: 'ischemic', id: 'isch-postevt', label: 'Post-EVT care' },
   // Bedside quick-reference cards render above both protocol tabs.
   'qr-dose': { sub: 'ischemic', id: 'qr-dose', label: 'Thrombolytic dose by weight', quick: true },
   'qr-bp': { sub: 'ischemic', id: 'qr-bp', label: 'BP targets by phase', quick: true },

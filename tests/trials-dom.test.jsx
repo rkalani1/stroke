@@ -234,7 +234,7 @@ describe('restored independent Trials workspace', () => {
     });
     const banner = page.getByRole('region', { name: 'Encounter facts' });
     await banner.waitFor();
-    expect(await banner.innerText()).toMatch(/From Encounter: ICH · LKW 1\.\d h · 60 y · GCS 14 · 24\.0 mL · pre-mRS 0 · on DOAC/);
+    expect(await banner.innerText()).toMatch(/From Encounter: ICH · LKW 1 h \d{2} min · 60 y · GCS 14 · 24\.0 mL · pre-mRS 0 · on DOAC/);
     // Nothing is applied automatically.
     expect(await page.getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).getAttribute('aria-pressed')).toBe('false');
     await banner.getByRole('button', { name: 'Use these facts', exact: true }).click();

@@ -69,14 +69,16 @@ const Sources = ({ ids }) => (
   </p>
 );
 
+// Same class colours as the Evidence recommendation chips.
+const gradeTone = text => /COR 3/.test(text) ? 'cor-3' : /COR 2a/.test(text) ? 'cor-2a' : /COR 2b/.test(text) ? 'cor-2b' : /COR 1\b/.test(text) ? 'cor-1' : 'cor-neutral';
 const Grade = ({ children, harm = false }) => (
-  <span className={`ml-1 inline-block whitespace-nowrap rounded border px-1 text-[10px] font-semibold ${harm ? 'border-crit-300 text-crit-800 dark:border-crit-800 dark:text-crit-300' : 'border-line text-ink-2'}`}>{children}</span>
+  <span className={`reference-chip ${harm ? 'cor-3' : gradeTone(String(children))} ml-1 whitespace-nowrap align-[1px]`}>{children}</span>
 );
 
 const Card = ({ id, title, open = false, children }) => (
   <details id={id} open={open} className="rounded-md border border-line bg-card text-ink">
-    <summary className="flex min-h-[44px] cursor-pointer items-center px-3 py-2 text-sm font-semibold">{title}</summary>
-    <div className="px-3 pb-3 text-xs leading-relaxed">{children}</div>
+    <summary className="flex min-h-[44px] cursor-pointer items-center px-3 py-2 text-[15px] font-semibold">{title}</summary>
+    <div className="px-3 pb-3 text-sm leading-relaxed">{children}</div>
   </details>
 );
 
@@ -91,21 +93,21 @@ const Rows = ({ rows }) => (
   </dl>
 );
 
-function DoseCard({ weightKg }) {
+function DoseCard({ weightKg, open = true }) {
   const exact = weightKg === undefined || weightKg === null || weightKg === '' ? null : thrombolyticDoseRow(weightKg);
   const highlight = exact ? highlightedDoseRowKey(weightKg) : null;
   const rows = thrombolyticDoseTable();
   return (
-    <Card id="qr-dose" title="Thrombolytic dose by weight" open>
+    <Card id="qr-dose" title="Thrombolytic dose by weight" open={open}>
       {exact ? (
         <p className="mb-2 rounded border border-cobalt-300 bg-cobalt-50 p-2 text-ink dark:border-cobalt-700 dark:bg-cobalt-900" data-testid="qr-exact-dose">
-          <strong>{exact.weightKg} kg:</strong> TNK {exact.tnkMg} mg ({exact.tnkMl} mL at 5 mg/mL){exact.tnkCapped ? ', capped' : ''} · Alteplase {exact.alteplaseTotal} mg total: {exact.alteplaseBolus} mg bolus over 1 min, {exact.alteplaseInfusion} mg over 60 min{exact.alteplaseCapped ? ', capped' : ''}
+          <strong>{Math.round(exact.weightKg * 10) / 10} kg:</strong> TNK {exact.tnkMg} mg ({exact.tnkMl} mL at 5 mg/mL){exact.tnkCapped ? ', capped' : ''} · Alteplase {exact.alteplaseTotal} mg total: {exact.alteplaseBolus} mg bolus over 1 min, {exact.alteplaseInfusion} mg over 60 min{exact.alteplaseCapped ? ', capped' : ''}
         </p>
       ) : (
         <p className="mb-2 text-ink-2">Enter weight in Encounter to see the exact dose.</p>
       )}
       <div className="overflow-x-auto rounded border border-line" role="region" aria-label="Thrombolytic dose table" tabIndex={0}>
-        <table className="w-full min-w-[19rem] border-collapse text-[11px]">
+        <table className="w-full min-w-[19rem] border-collapse text-[13px] tabular-nums md:w-auto md:min-w-[34rem]">
           <thead className="bg-paper-2 text-left">
             <tr>
               <th scope="col" className="px-1 py-1">kg</th>
@@ -138,20 +140,23 @@ function DoseCard({ weightKg }) {
 
 const HARM = 'text-crit-800 dark:text-crit-300';
 
-export default function QuickReference({ weightKg } = {}) {
+export default function QuickReference({ weightKg, sub = 'ischemic' } = {}) {
+  // On the ICH tab the BP and reversal cards lead and the dose table stays closed.
+  const ich = sub === 'ich';
+  const dose = <DoseCard weightKg={weightKg} open={!ich} />;
   return (
-    <section aria-labelledby="quick-reference-heading" className="space-y-2">
+    <section aria-labelledby="quick-reference-heading" className="quick-reference space-y-2">
       <h2 id="quick-reference-heading" className="text-base font-semibold text-ink">Bedside quick reference</h2>
-      <DoseCard weightKg={weightKg} />
+      {!ich && dose}
 
       <Card id="qr-bp" title="BP targets by phase">
         <Rows rows={[
           ['Before IVT', <>&lt;185/110<Grade>COR 1, B-NR</Grade></>],
           ['EVT planned, no IVT', <>≤185/110<Grade>COR 2a, B-NR</Grade></>],
           ['After IVT (24 h)', <>&lt;180/105<Grade>COR 1, B-R</Grade></>],
-          ['Any EVT (during + 24 h)', <>≤180/105<Grade>COR 2a, B-NR</Grade></>],
+          ['Any EVT (during + 24 h)', <>≤180/105<Grade>COR 2a, B-NR</Grade>. Local protocol: SBP 140–180 during EVT.</>],
           ['After mTICI ≥2b', <>Do not lower SBP to &lt;140 (harm)<Grade harm>COR 3: Harm, A</Grade>. Local protocol: SBP 140–180.</>, HARM],
-          ['No reperfusion', <>≥220/120: benefit of lowering uncertain; if treated, modest gradual reduction<Grade>COR 2b, C-EO</Grade>. &lt;220/120: starting antihypertensives in the first 48–72 h is not effective<Grade>COR 3: No Benefit, A</Grade>. Treat earlier if a comorbidity requires it<Grade>COR 1, C-EO</Grade>.</>],
+          ['No reperfusion', <>≥220/120: benefit of starting treatment in the first 48–72 h is uncertain<Grade>COR 2b, C-EO</Grade> (ESO 2025: if lowered, by &lt;15% over 24 h). &lt;220/120: starting antihypertensives in the first 48–72 h is not effective<Grade>COR 3: No Benefit, A</Grade>. Treat earlier if a comorbidity requires it<Grade>COR 1, C-EO</Grade>.</>],
           ['ICH', <>Mild–moderate ICH presenting with SBP 150–220: target 140, keep 130–150<Grade>COR 2b, B-R</Grade>; avoid SBP &lt;130<Grade harm>COR 3: Harm, B-R</Grade>. Local protocol may differ (SBP ≥220 branch).</>],
           ['aSAH, unsecured aneurysm', <>Frequent BP monitoring with short-acting agents; avoid hypotension, hypertension and variability<Grade>COR 1, C-EO</Grade>. No numeric target is graded; SBP &lt;160 is a common local target — local protocol may differ.</>]
         ]} />
@@ -162,14 +167,15 @@ export default function QuickReference({ weightKg } = {}) {
       <Card id="qr-reversal" title="Anticoagulant reversal (ICH)">
         <Rows rows={[
           ['Warfarin', <>4F-PCC by INR and weight: INR 2–&lt;4, 25 units/kg (max 2500); 4–6, 35 units/kg (max 3500); &gt;6, 50 units/kg (max 5000)<Grade>COR 1, B-R</Grade>, plus vitamin K 10 mg IV<Grade>COR 1, C-LD</Grade>. INR 1.3–1.9: PCC may be reasonable<Grade>COR 2b, C-LD</Grade>. Local fixed dose 2000 units — local protocol may differ.</>],
-          ['Dabigatran', <>Idarucizumab 5 g IV (2 × 2.5 g)<Grade>COR 2a, B-NR</Grade>; if unavailable, 4F-PCC 50 units/kg.</>],
-          ['Apixaban, rivaroxaban, edoxaban', <>4F-PCC 50 units/kg<Grade>COR 2b, B-NR</Grade> if the last dose was &lt;24 h ago, timing is unknown or renal impairment is present; do not wait for the anti-Xa assay. Andexanet was withdrawn from the US market in December 2025; NCS/SCCM 2026 favors 4F-PCC (conditional). Local fixed dose 2000 units — local protocol may differ. Charcoal 50 g if ingestion &lt;2 h.</>],
+          ['Dabigatran', <>Idarucizumab 5 g IV (2 × 2.5 g)<Grade>COR 2a, B-NR</Grade>; if unavailable, 4F-PCC 50 units/kg. Local fixed dose 2000 units — local protocol may differ.</>],
+          ['Apixaban, rivaroxaban, edoxaban', <>4F-PCC 50 units/kg<Grade>COR 2b, B-NR</Grade>. Reverse when the last dose was within 3–5 half-lives, timing is unknown or clearance is impaired (NCS/SCCM 2016); do not wait for the anti-Xa assay. Local trigger: last dose &lt;24 h. Andexanet was withdrawn from the US market in December 2025; NCS/SCCM 2026 favors 4F-PCC (conditional). Local fixed dose 2000 units — local protocol may differ. Charcoal 50 g if ingestion &lt;2 h.</>],
           ['Unfractionated heparin', <>Protamine 1 mg per 100 units given in the prior 2–3 h, max 50 mg<Grade>COR 2a, C-LD</Grade>.</>],
           ['Enoxaparin', <>Protamine 1 mg per 1 mg if ≤8 h (max 50 mg); 0.5 mg per 1 mg if 8–12 h<Grade>COR 2b, C-LD</Grade>.</>],
           ['Antiplatelets', <>No platelet transfusion unless emergency neurosurgery (aspirin<Grade harm>COR 3: Harm, B-R</Grade>; NCS/SCCM 2026 suggests against for any antiplatelet agent). Aspirin with emergency neurosurgery: transfusion may be considered<Grade>COR 2b, C-LD</Grade>.</>]
         ]} />
         <Sources ids={['ich2022', 'ncs2016', 'ncs2026']} />
       </Card>
+      {ich && dose}
 
       <Card id="qr-sich" title="Post-thrombolysis symptomatic ICH">
         <ol className="list-decimal space-y-1 pl-4">
@@ -200,16 +206,16 @@ export default function QuickReference({ weightKg } = {}) {
           ['MCA infarct, age >60', <>Decompressive craniectomy may be considered to reduce mortality<Grade>COR 2b, B-R</Grade>; survivors often remain disabled, so use shared decision-making.</>],
           ['Trigger', <>Decreased consciousness from swelling is a reasonable trigger<Grade>COR 2a, B-NR</Grade>. Transfer early to a neurosurgical center<Grade>COR 1, C-LD</Grade>.</>],
           ['Cerebellar infarct', <>Obstructive hydrocephalus: ventriculostomy<Grade>COR 1, C-LD</Grade>. Deterioration from brainstem compression or infarct ≥35 mL: suboccipital decompressive craniectomy<Grade>COR 1, B-NR</Grade>.</>],
-          ['Medical bridge', <>Osmotic therapy as a bridge to surgery<Grade>COR 2a, C-LD</Grade>. Not hypothermia, barbiturates or corticosteroids<Grade>COR 3, C-LD</Grade>.</>]
+          ['Medical bridge', <>Osmotic therapy as a bridge to surgery<Grade>COR 2a, C-LD</Grade>. Not hypothermia, barbiturates or corticosteroids<Grade harm>COR 3: Harm, C-LD</Grade>.</>, HARM]
         ]} />
         <Sources ids={['ais2026']} />
       </Card>
 
       <Card id="qr-supportive" title="AIS supportive care">
         <Rows rows={[
-          ['Oxygen', <>Keep SpO₂ &gt;94% if hypoxic<Grade>COR 1, C-LD</Grade>; no supplemental O₂ when not hypoxic<Grade>COR 3: No Benefit, B-R</Grade>.</>],
+          ['Oxygen', <>Keep SpO₂ &gt;94% if hypoxic<Grade>COR 1, C-LD</Grade>; no supplemental O₂ when not hypoxic and EVT-ineligible<Grade>COR 3: No Benefit, B-R</Grade>; normobaric oxygen before planned EVT (NIHSS 10–20, ASPECTS ≥6, M1/ICA-T, ≤6 h) may be reasonable<Grade>COR 2b, B-R</Grade>.</>],
           ['Glucose', <>Treat &lt;60 mg/dL<Grade>COR 1, C-LD</Grade>; target 140–180 mg/dL<Grade>COR 2a, C-LD</Grade>; avoid intensive IV insulin to 80–130 (SHINE)<Grade>COR 3: No Benefit, A</Grade>.</>],
-          ['Temperature', <>Treat hyperthermia (&gt;38 °C) toward normothermia and find the source<Grade>COR 1, B-R</Grade>.</>],
+          ['Temperature', <>Treat hyperthermia toward normothermia<Grade>COR 1, B-R</Grade> and find the source<Grade>COR 1, C-EO</Grade>.</>],
           ['Seizures', <>No prophylactic antiseizure medication<Grade>COR 3: No Benefit, C-LD</Grade>.</>],
           ['VTE', <>Intermittent pneumatic compression if immobile<Grade>COR 1, B-R</Grade>; no elastic stockings<Grade harm>COR 3: Harm, B-R</Grade>.</>],
           ['Swallow', <>Bedside dysphagia screen before any oral intake<Grade>COR 1, C-EO</Grade>.</>]

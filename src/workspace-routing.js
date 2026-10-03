@@ -33,7 +33,8 @@ export function parseWorkspaceRoute(hash = '') {
   if (first === 'tools') return sub ? toolRoute(ALIASES[sub] || sub, path) : { surface: 'tools' };
   if (['protocols', 'management'].includes(first) && (!sub || ['ich', 'ischemic', 'tia'].includes(sub))) {
     const protocol = sub === 'ich' ? 'ich' : 'ischemic';
-    if (tool && (parts.length !== 3 || PROTOCOL_TARGETS[tool]?.sub !== protocol)) return { surface: 'retired', path };
+    // Quick-reference cards render on both protocol tabs; section targets stay tab-specific.
+    if (tool && (parts.length !== 3 || !PROTOCOL_TARGETS[tool] || !PROTOCOL_TARGETS[tool].quick && PROTOCOL_TARGETS[tool].sub !== protocol)) return { surface: 'retired', path };
     return { surface: 'protocols', sub: protocol, ...(tool ? { target: tool } : {}) };
   }
   if (first === 'calculators' || ['protocols', 'management', 'research'].includes(first) && sub === 'calculators') {

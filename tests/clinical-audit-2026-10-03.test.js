@@ -137,7 +137,10 @@ describe('M9: DAPT guideline tier before trial-population mismatch', () => {
   it('includes the trial loading doses for CHANCE/POINT', () => {
     const result = recommendAcuteDAPT({ ...base, age: 65, strokeType: 'ischemic', nihss: 2, timeFromOnsetH: 6 });
     expect(result.dosing).toMatch(/300 mg in CHANCE; 600 mg in POINT/);
-    expect(result.dosing).toMatch(/CHANCE 75-300 mg on day 1; POINT 50-325 mg on day 1/);
+    expect(result.dosing).toMatch(/CHANCE 75-300 mg on day 1, then 75 mg daily/);
+    // POINT used daily aspirin 50-325 mg (162 mg x 5 days then 81 mg recommended), not a day-1 load.
+    expect(result.dosing).toMatch(/POINT 50-325 mg daily, with 162 mg daily for 5 days then 81 mg daily recommended/);
+    expect(result.dosing).not.toMatch(/POINT 50-325 mg on day 1/);
   });
 });
 

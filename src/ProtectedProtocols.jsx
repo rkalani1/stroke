@@ -190,7 +190,7 @@ export default function ProtectedProtocols({
             PCC_DOAC: {
               title: '4F-PCC for DOAC Reversal',
               dosing: 'PCC (Kcentra) 2000 units IV (institutional fixed dose; NCS/SCCM suggests 50 units/kg). Consider ONLY if no contraindications.',
-              note: 'For dabigatran, use only if idarucizumab is unavailable. For rivaroxaban, apixaban, or edoxaban: reverse if the last dose was <24 h ago, timing is unknown, or renal impairment is present, or if the anti-Xa/Xa screen is elevated; do not wait for the assay when ingestion is recent. Andexanet alfa (Andexxa) is no longer marketed in the US (withdrawn December 2025); the NCS/SCCM 2026 update suggests 4F-PCC rather than andexanet for factor Xa inhibitor-associated ICH (conditional recommendation, moderate certainty).'
+              note: 'For dabigatran, use only if idarucizumab is unavailable. For rivaroxaban, apixaban, or edoxaban (institutional trigger): reverse if the last dose was <24 h ago, timing is unknown, or renal impairment is present, or if the anti-Xa/Xa screen is elevated (NCS/SCCM 2016: within 3–5 half-lives of the last dose); do not wait for the assay when ingestion is recent. Andexanet alfa (Andexxa) is no longer marketed in the US (withdrawn December 2025); the NCS/SCCM 2026 update suggests 4F-PCC rather than andexanet for factor Xa inhibitor-associated ICH (conditional recommendation, moderate certainty).'
             },
             VITK: {
               title: 'Vitamin K',
@@ -928,7 +928,7 @@ export default function ProtectedProtocols({
                               {/* Factor Xa Inhibitors */}
                               <div className="bg-cobalt-50 border border-cobalt-200 rounded-lg p-3 dark:bg-cobalt-900 dark:border-cobalt-700">
                                 <p className="text-sm font-semibold text-cobalt-800 mb-2 dark:text-cobalt-300">Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors)</p>
-                                <p className="text-xs text-cobalt-600 mb-2 dark:text-cobalt-300">Reverse if last dose &lt;24 h, timing unknown, or renal impairment, or if the anti-Xa/Xa screen is elevated; do not wait for the assay when ingestion is recent</p>
+                                <p className="text-xs text-cobalt-600 mb-2 dark:text-cobalt-300">Institutional trigger: reverse if last dose &lt;24 h, timing unknown, or renal impairment, or if the anti-Xa/Xa screen is elevated (NCS/SCCM 2016: within 3–5 half-lives of the last dose); do not wait for the assay when ingestion is recent</p>
                                 <ul className="text-sm space-y-1.5">
                                   <li className="flex gap-2">
                                     <span className="shrink-0 font-bold text-cobalt-700 dark:text-cobalt-300">1.</span>
@@ -1287,7 +1287,7 @@ export default function ProtectedProtocols({
                             <p className="text-sm font-semibold text-slate-700 dark:text-ink-2">Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors) — 4F-PCC: ICH 2022 COR 2b, LOE B-NR; NCS/SCCM 2026 conditional recommendation for 4F-PCC rather than andexanet:</p>
                             <ul className="text-sm space-y-1">
                               <li><strong>Assessment:</strong> Direct Xa Inhibitor screen — a normal screen excludes significant anticoagulant effect. For edoxaban the screen is not a calibrated drug-specific assay, so interpret it together with last-dose timing and renal function.</li>
-                              <li><strong>When to reverse:</strong> last dose &lt;24 h, timing unknown, or renal impairment, or an elevated anti-Xa/Xa screen. Do not wait for the assay when ingestion is recent.</li>
+                              <li><strong>When to reverse (institutional trigger):</strong> last dose &lt;24 h, timing unknown, or renal impairment, or an elevated anti-Xa/Xa screen (NCS/SCCM 2016: within 3–5 half-lives of the last dose). Do not wait for the assay when ingestion is recent.</li>
                               <li><strong>4F-PCC:</strong> 2000 units IV (institutional fixed dose; NCS/SCCM suggests 50 units/kg) if no contraindications.</li>
                               <li><strong>Andexanet alfa:</strong> no longer marketed in the US (withdrawn December 2025); NCS/SCCM 2026 suggests 4F-PCC rather than andexanet.</li>
                               <li><strong>Activated charcoal:</strong> if ingestion &lt;2 hours.</li>

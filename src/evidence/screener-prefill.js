@@ -40,7 +40,7 @@ export function applyAnticoagulant(state, kind) {
   return applyFacts(state, { anticoagulant: kind || 'unselected', ...anticoagulantFacts(kind) });
 }
 
-const fmtHours = h => h < 48 ? `${h.toFixed(1)} h` : `${(h / 24).toFixed(1)} d`;
+const fmtHours = h => { const minutes = Math.round(h * 60); return h < 48 ? `${Math.floor(minutes / 60)} h ${String(minutes % 60).padStart(2, '0')} min` : `${(h / 24).toFixed(1)} d`; };
 
 export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   const note = state?.note || {};

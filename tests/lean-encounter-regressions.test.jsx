@@ -82,8 +82,8 @@ describe('retained Encounter behavior replacing monolith output and duplicate-to
   it('safety-review acknowledgement preserves a separately recorded concern', () => {
     const state = make({ note: { diagnosisCategory: 'ischemic', ivtContraindicationsReviewed: true, tnkContraindicationChecklist: { currentICH: true } } });
     const output = buildSummary(state, now);
-    expect(output).toContain('Recorded safety concerns: currentICH');
-    expect(output).toContain('explicitly recorded; concerns remain');
+    expect(output).toContain('Recorded safety concerns: Hemorrhage on CT imaging');
+    expect(output).toContain('IVT safety review: marked complete by clinician; recorded concerns remain');
     expect(render(state)).toContain('Hemorrhage on CT imaging');
   });
   it('severity scoring has no individualized prognosis output', () => {
@@ -99,11 +99,11 @@ describe('retained Encounter behavior replacing monolith output and duplicate-to
   it('fresh TIA can explicitly complete its own reperfusion review without hidden ischemic decisions', () => {
     const state = make({ note: { diagnosisCategory: 'tia', age: '65', lastDOACType: 'none', lkwDate: '2026-10-01', lkwTime: '10:00', ctHemorrhageStatus: 'absent' }, dapt: { anticoagulationReview: 'none', abcd2: '4', noncardioembolicConfirmed: true, antiplateletContraindicationsReviewed: true, ichRisk: 'reviewed', atherosclerotic: false, lvdSymptomatic: false, cyp2c19LOF: false } });
     expect(render(state)).toContain('No reperfusion treatment after review');
-    expect(render(state)).not.toContain('clopidogrel+ASA:');
+    expect(render(state)).not.toContain('Clopidogrel + aspirin:');
     const reviewed = updateEncounter(state, prev => ({ ...prev, dapt: { ...prev.dapt, reperfusionExcluded: true, anticoagulationReview: 'none' } }));
-    expect(render(reviewed)).toContain('clopidogrel+ASA:');
+    expect(render(reviewed)).toContain('Clopidogrel + aspirin:');
     expect(reviewed.decisions).toEqual({ ivt: '', evt: '' });
-    expect(render({ ...reviewed, actions: { ...reviewed.actions, punctureTime: '2026-10-01T11:00' } })).not.toContain('clopidogrel+ASA:');
+    expect(render({ ...reviewed, actions: { ...reviewed.actions, punctureTime: '2026-10-01T11:00' } })).not.toContain('Clopidogrel + aspirin:');
     expect(render({ ...reviewed, actions: { ...reviewed.actions, punctureTime: '2026-10-01T11:00' } })).toContain('Recorded reperfusion');
   });
   it('ischemic-to-TIA and follow-up changes invalidate the explicit DAPT reperfusion review', () => {
@@ -111,15 +111,15 @@ describe('retained Encounter behavior replacing monolith output and duplicate-to
     const switched = updateEncounter(state, prev => ({ ...prev, note: { ...prev.note, diagnosisCategory: 'tia' } }));
     expect(switched.decisions).toEqual(state.decisions);
     expect(switched.dapt.reperfusionExcluded).toBeUndefined();
-    expect(render(switched)).not.toContain('clopidogrel+ASA:');
-    expect(render(updateEncounter(switched, prev => ({ ...prev, dapt: { ...prev.dapt, reperfusionExcluded: true, anticoagulationReview: 'none' } })))).toContain('clopidogrel+ASA:');
+    expect(render(switched)).not.toContain('Clopidogrel + aspirin:');
+    expect(render(updateEncounter(switched, prev => ({ ...prev, dapt: { ...prev.dapt, reperfusionExcluded: true, anticoagulationReview: 'none' } })))).toContain('Clopidogrel + aspirin:');
     expect(updateEncounter(state, prev => ({ ...prev, context: 'follow-up' })).dapt.reperfusionExcluded).toBeUndefined();
   });
   it('a recorded bleeding concern cannot be cleared by DAPT review attestation', () => {
     const state = make({ note: { diagnosisCategory: 'ischemic', age: '65', lastDOACType: 'none', lkwDate: '2026-10-01', lkwTime: '10:00', ctHemorrhageStatus: 'absent' }, nihss: zeroExam, decisions: { ivt: 'Not recommended', evt: 'Not recommended' }, dapt: { anticoagulationReview: 'none', reperfusionExcluded: true, noncardioembolicConfirmed: true, antiplateletContraindicationsReviewed: true, ichRisk: 'reviewed', atherosclerotic: false, lvdSymptomatic: false, cyp2c19LOF: false } });
-    expect(render(state)).toContain('clopidogrel+ASA:');
+    expect(render(state)).toContain('Clopidogrel + aspirin:');
     for (const key of ['currentICH', 'activeInternalBleeding', 'lowPlatelets', 'knownBleedingDiathesis', 'recentGIGUBleeding']) {
-      expect(render({ ...state, note: { ...state.note, tnkContraindicationChecklist: { [key]: true } } })).not.toContain('clopidogrel+ASA:');
+      expect(render({ ...state, note: { ...state.note, tnkContraindicationChecklist: { [key]: true } } })).not.toContain('Clopidogrel + aspirin:');
     }
   });
 });

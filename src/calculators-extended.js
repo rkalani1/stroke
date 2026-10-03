@@ -86,6 +86,7 @@ export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2,
   const n = reviewedNumber(nihss);
   const ab = reviewedNumber(abcd2);
   const tH = reviewedNumber(timeFromOnsetH);
+  const elapsed = Number.isFinite(tH) ? `${Math.floor(Math.round(tH * 60) / 60)} h ${String(Math.round(tH * 60) % 60).padStart(2, '0')} min` : '';
   const isTIA = strokeType === 'tia';
   const isMinor = strokeType === 'ischemic' && Number.isInteger(n) && n >= 0 && n <= 3;
   const isUpToModerate = strokeType === 'ischemic' && Number.isInteger(n) && n >= 0 && n <= 5;
@@ -161,7 +162,7 @@ export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2,
     const inspires = {
       regimen: 'clopidogrel+ASA', duration: '21 days',
       dosing: 'Clopidogrel 300 mg load then 75 mg daily; aspirin 100–300 mg on day 1 then 100 mg daily for 21 days (INSPIRES trial regimen)',
-      rationale: `INSPIRES-style screen: ${isTIA ? `high-risk TIA (ABCD² ${ab})` : `NIHSS ${n}`} within ${tH}h and presumed atherosclerotic cause. Verify qualifying stenosis/multiple infarcts, age 35–80, and all exclusions. Clopidogrel continued through day 90; bleeding increased. A CYP2C19 result does not validate substituting the CHANCE-2 regimen in this extended population.`,
+      rationale: `INSPIRES-style screen: ${isTIA ? `high-risk TIA (ABCD² ${ab})` : `NIHSS ${n}`} within ${elapsed} and presumed atherosclerotic cause. Verify qualifying stenosis/multiple infarcts, age 35–80, and all exclusions. Clopidogrel continued through day 90; bleeding increased. A CYP2C19 result does not validate substituting the CHANCE-2 regimen in this extended population.`,
       source: 'Gao NEJM 2023;389:2413–24 (INSPIRES, PMID 38157499); AHA/ASA 2026 AIS §4.7',
       class: 'COR 2a, LOE B-R (AHA/ASA 2026 AIS) for selected noncardioembolic minor stroke or high-risk TIA with presumed atherosclerotic cause; a partial screen, not complete treatment eligibility'
     };
@@ -177,10 +178,10 @@ export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2,
       duration: '21 days',
       dosing: useTicagrelor
         ? 'Ticagrelor 180 mg load, then 90 mg BID through day 90 + ASA 75-100 mg daily for the first 21 days only (CHANCE-2: ASA 75-300 mg on day 1, then 75 mg daily on days 2-21)'
-        : 'Clopidogrel load (300 mg in CHANCE; 600 mg in POINT) then 75 mg daily + aspirin load (CHANCE 75-300 mg on day 1; POINT 50-325 mg on day 1) then 75-100 mg daily',
+        : 'Clopidogrel load (300 mg in CHANCE; 600 mg in POINT) then 75 mg daily + aspirin (CHANCE 75-300 mg on day 1, then 75 mg daily; POINT 50-325 mg daily, with 162 mg daily for 5 days then 81 mg daily recommended)',
       rationale: useTicagrelor
         ? 'Known CYP2C19 LOF carrier — CHANCE-2 showed ticagrelor+ASA superior to clopidogrel+ASA.'
-        : `${isTIA ? `High-risk TIA (ABCD² ${ab} ≥4)` : `Minor stroke (NIHSS ${n} ≤3)`} within ${tH}h: ${a < 40 ? 'POINT enrolled adults ≥18 within 12h; CHANCE enrolled age ≥40 within 24h.' : 'CHANCE/POINT showed reduced 90-d stroke risk.'} Short-course guidance favors 21 d of DAPT to limit bleeding; confirm the full applicable source.`,
+        : `${isTIA ? `High-risk TIA (ABCD² ${ab} ≥4)` : `Minor stroke (NIHSS ${n} ≤3)`} within ${elapsed}: ${a < 40 ? 'POINT enrolled adults ≥18 within 12h; CHANCE enrolled age ≥40 within 24h.' : 'CHANCE/POINT showed reduced 90-d stroke risk.'} Short-course guidance favors 21 d of DAPT to limit bleeding; confirm the full applicable source.`,
       source: useTicagrelor ? 'Wang NEJM 2021;385:2520-30 (CHANCE-2); AHA/ASA 2026 AIS §4.7' : 'Wang NEJM 2013;369:11-19 (CHANCE); Johnston NEJM 2018;379:215-25 (POINT); AHA/ASA 2026 AIS §4.7',
       class: useTicagrelor ? 'Class 2b/B-R, 2026 AHA/ASA AIS §4.7; CHANCE-2 postdates the 2021 secondary-prevention guideline' : 'COR 1, LOE A (AHA/ASA 2026 AIS): DAPT with loading dose within 24 h for 21 days, then single antiplatelet therapy'
     };
@@ -194,7 +195,7 @@ export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2,
     return {
       regimen: 'individualized-review',
       duration: null,
-      rationale: `Outside the trial windows modeled here (${tH}h >72h). This is not a blanket DAPT contraindication: the 2021 secondary-prevention guideline allows initiation within 7 days for selected minor noncardioembolic stroke/high-risk TIA. Review current guidance, mechanism, and bleeding risk.`,
+      rationale: `Outside the trial windows modeled here (${elapsed} > 72 h). This is not a blanket DAPT contraindication: the 2021 secondary-prevention guideline allows initiation within 7 days for selected minor noncardioembolic stroke/high-risk TIA. Review current guidance, mechanism, and bleeding risk.`,
       source: 'AHA/ASA 2021 secondary-prevention guideline (doi: 10.1161/STR.0000000000000375); INSPIRES 2023',
       class: 'Trial screen limitation; individualized clinical review'
     };
@@ -204,7 +205,7 @@ export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2,
     regimen: 'individualized-review',
     duration: null,
     dosing: null,
-    rationale: `No DAPT trial branch modeled here is met (${isTIA ? `TIA ABCD² ${ab}` : `NIHSS ${n}`}, ${tH}h). Review the complete mechanism-specific guidance, timing and bleeding risk; failure to match these branches does not select single antiplatelet therapy or establish a DAPT contraindication.`,
+    rationale: `No DAPT trial branch modeled here is met (${isTIA ? `TIA ABCD² ${ab}` : `NIHSS ${n}`}, ${elapsed}). Review the complete mechanism-specific guidance, timing and bleeding risk; failure to match these branches does not select single antiplatelet therapy or establish a DAPT contraindication.`,
     source: 'Kleindorfer AHA/ASA Stroke 2021',
     class: 'Modeled screen not met; individualized clinical review'
   };

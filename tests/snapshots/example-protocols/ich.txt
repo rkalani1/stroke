@@ -175,7 +175,7 @@ If idarucizumab unavailable →
 4F-PCC 2000 units IV
 Emergent dialysis option — dabigatran ~65% removed by dialysis (t½ = 14h, longer in renal impairment)
 Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors)
-Reverse if last dose <24 h, timing unknown, or renal impairment, or if the anti-Xa/Xa screen is elevated; do not wait for the assay when ingestion is recent
+Institutional trigger: reverse if last dose <24 h, timing unknown, or renal impairment, or if the anti-Xa/Xa screen is elevated (NCS/SCCM 2016: within 3–5 half-lives of the last dose); do not wait for the assay when ingestion is recent
 1.
 If ingestion <2h →
 activated charcoal
@@ -343,8 +343,8 @@ Dialysis:
 Rivaroxaban / Apixaban / Edoxaban (Factor Xa Inhibitors) — 4F-PCC: ICH 2022 COR 2b, LOE B-NR; NCS/SCCM 2026 conditional recommendation for 4F-PCC rather than andexanet:
 Assessment:
 Direct Xa Inhibitor screen — a normal screen excludes significant anticoagulant effect. For edoxaban the screen is not a calibrated drug-specific assay, so interpret it together with last-dose timing and renal function.
-When to reverse:
-last dose <24 h, timing unknown, or renal impairment, or an elevated anti-Xa/Xa screen. Do not wait for the assay when ingestion is recent.
+When to reverse (institutional trigger):
+last dose <24 h, timing unknown, or renal impairment, or an elevated anti-Xa/Xa screen (NCS/SCCM 2016: within 3–5 half-lives of the last dose). Do not wait for the assay when ingestion is recent.
 4F-PCC:
 2000 units IV (institutional fixed dose; NCS/SCCM suggests 50 units/kg) if no contraindications.
 Andexanet alfa:
@@ -468,7 +468,7 @@ Press Esc or click outside to close
 4F-PCC for DOAC Reversal
 Dosing
 PCC (Kcentra) 2000 units IV (institutional fixed dose; NCS/SCCM suggests 50 units/kg). Consider ONLY if no contraindications.
-For dabigatran, use only if idarucizumab is unavailable. For rivaroxaban, apixaban, or edoxaban: reverse if the last dose was <24 h ago, timing is unknown, or renal impairment is present, or if the anti-Xa/Xa screen is elevated; do not wait for the assay when ingestion is recent. Andexanet alfa (Andexxa) is no longer marketed in the US (withdrawn December 2025); the NCS/SCCM 2026 update suggests 4F-PCC rather than andexanet for factor Xa inhibitor-associated ICH (conditional recommendation, moderate certainty).
+For dabigatran, use only if idarucizumab is unavailable. For rivaroxaban, apixaban, or edoxaban (institutional trigger): reverse if the last dose was <24 h ago, timing is unknown, or renal impairment is present, or if the anti-Xa/Xa screen is elevated (NCS/SCCM 2016: within 3–5 half-lives of the last dose); do not wait for the assay when ingestion is recent. Andexanet alfa (Andexxa) is no longer marketed in the US (withdrawn December 2025); the NCS/SCCM 2026 update suggests 4F-PCC rather than andexanet for factor Xa inhibitor-associated ICH (conditional recommendation, moderate certainty).
 Press Esc or click outside to close
 --- modal via "activated charcoal" ---
 Activated Charcoal
@@ -480,7 +480,7 @@ Press Esc or click outside to close
 4F-PCC for DOAC Reversal
 Dosing
 PCC (Kcentra) 2000 units IV (institutional fixed dose; NCS/SCCM suggests 50 units/kg). Consider ONLY if no contraindications.
-For dabigatran, use only if idarucizumab is unavailable. For rivaroxaban, apixaban, or edoxaban: reverse if the last dose was <24 h ago, timing is unknown, or renal impairment is present, or if the anti-Xa/Xa screen is elevated; do not wait for the assay when ingestion is recent. Andexanet alfa (Andexxa) is no longer marketed in the US (withdrawn December 2025); the NCS/SCCM 2026 update suggests 4F-PCC rather than andexanet for factor Xa inhibitor-associated ICH (conditional recommendation, moderate certainty).
+For dabigatran, use only if idarucizumab is unavailable. For rivaroxaban, apixaban, or edoxaban (institutional trigger): reverse if the last dose was <24 h ago, timing is unknown, or renal impairment is present, or if the anti-Xa/Xa screen is elevated (NCS/SCCM 2016: within 3–5 half-lives of the last dose); do not wait for the assay when ingestion is recent. Andexanet alfa (Andexxa) is no longer marketed in the US (withdrawn December 2025); the NCS/SCCM 2026 update suggests 4F-PCC rather than andexanet for factor Xa inhibitor-associated ICH (conditional recommendation, moderate certainty).
 Press Esc or click outside to close
 --- modal via "2 pre-pooled units of cryoprecipitate" ---
 Cryoprecipitate

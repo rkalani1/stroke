@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { encounterTiming, encounterNihss } from '../workspace-state.js';
 import { numericInput, reviewedGcs } from '../encounter-clinical-review.js';
 import { calculateTNKDoseReviewed, calculateAlteplaseDoseReviewed } from '../calculators.js';
 import { useCurrentTime } from '../use-current-time.js';
+import { revealProtocolTarget } from '../protocol-navigation.js';
 
 const SHORT_DX = { ischemic: 'Ischemic', ich: 'ICH', sah: 'SAH', tia: 'TIA', cvt: 'CVT', mimic: 'Mimic', other: 'Other' };
+export const ANTICOAGULANT_LABELS = { apixaban: 'Apixaban', rivaroxaban: 'Rivaroxaban', dabigatran: 'Dabigatran', edoxaban: 'Edoxaban', warfarin: 'Warfarin', heparin: 'Heparin', lmwh: 'LMWH', other: 'Anticoagulant' };
 const pad = value => String(value).padStart(2, '0');
 export const hoursMinutes = ms => { const minutes = Math.max(0, Math.floor(ms / 60000)); return `${Math.floor(minutes / 60)}:${pad(minutes % 60)}`; };
 
@@ -42,27 +44,43 @@ export function caseSummary(state, nowMs) {
     glucose: glucose === null ? '' : String(glucose),
     glucoseFlag: glucose !== null && (glucose < 50 || glucose > 400),
     weight: weight === null ? '' : `${Math.round(weight * 10) / 10}`,
-    dose: dose ? state.drug === 'Alteplase' ? { label: 'tPA', value: `${dose.totalDose} mg`, detail: `${dose.bolus} bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
-    anticoagulant: n.lastDOACType && n.lastDOACType !== 'none' ? n.lastDOACType : '',
+    dose: dose ? state.drug === 'Alteplase' ? { label: 'tPA', value: `${dose.totalDose} mg`, detail: `${dose.bolus} mg bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
+    anticoagulant: n.lastDOACType && n.lastDOACType !== 'none' ? ANTICOAGULANT_LABELS[n.lastDOACType] || 'Anticoagulant' : '',
     hasData: Boolean(n.diagnosisCategory || age !== null || timing.timestamp || n.lkwUnknown || exam.complete || exam.count || sbp !== null || glucose !== null || weight !== null)
   };
 }
 
-function Item({ label, short, value, detail, flag, title }) {
+function Item({ label, short, value, detail, flag, title, pill }) {
   return <div className="case-bar__item" data-empty={value ? undefined : ''} data-flag={flag || undefined} title={title}>
     <span className="case-bar__label">{short ? <><span className="case-bar__label-long">{label}</span><span className="case-bar__label-short" aria-hidden="true">{short}</span></> : label}</span>
-    <span className="case-bar__value">{value || '—'}{detail && <small>{detail}</small>}</span>
+    <span className="case-bar__value">{value || '—'}{detail && <small>{detail}</small>}{pill && <span className="case-bar__window" data-tone={pill.tone}>{pill.text}</span>}</span>
   </div>;
 }
 
+// A link to the current route fires no hashchange; reveal its target directly.
+const revealIfCurrent = (href, target) => event => { if (location.hash === href) { event.preventDefault(); revealProtocolTarget(target); } };
+
 export default function CaseBar({ state, documentLabel, blocked, onCopy, copyStatus }) {
   const [now] = useCurrentTime(true);
+  const bar = useRef(null);
   const c = caseSummary(state, now);
+  // Sticky offsets (section nav, scroll padding) follow the bar's real height as it wraps.
+  useLayoutEffect(() => {
+    const node = bar.current, root = document.documentElement;
+    if (!node) return undefined;
+    const sync = () => root.style.setProperty('--case-bar-h', `${Math.ceil(node.getBoundingClientRect().height)}px`);
+    sync();
+    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(sync) : null;
+    observer?.observe(node);
+    return () => { observer?.disconnect(); root.style.removeProperty('--case-bar-h'); };
+  }, [c.hasData]);
   if (!c.hasData) return null;
   const acuteIschemic = state.context === 'acute' && state.note.diagnosisCategory === 'ischemic';
-  return <section className="case-bar" aria-label="Current encounter">
-    <a className="case-bar__dx" data-dx={c.dxKey || undefined} href="#/encounter" aria-label="Open Encounter">{c.dx || 'No diagnosis'}{c.demographics && <span>· {c.demographics}</span>}</a>
-    <div className="case-bar__time"><Item label={c.timeLabel} value={c.elapsed} detail={c.window?.text} flag={c.window && c.window.tone !== 'neutral' && c.window.tone !== 'open' ? c.window.tone : undefined} title="Elapsed time (h:mm)" /></div>
+  const reversalHref = state.note.diagnosisCategory === 'ich' ? '#/protocols/ich/qr-reversal' : '#/protocols/ischemic/qr-reversal';
+  return <section ref={bar} className="case-bar" aria-label="Current encounter">
+    <a className="case-bar__dx" data-dx={c.dxKey || undefined} href="#/encounter" aria-label={`Open Encounter: ${[c.dx || 'No diagnosis', c.demographics].filter(Boolean).join(' · ')}`}>{c.dx || 'No diagnosis'}{c.demographics && <span className="case-bar__demo">· {c.demographics}</span>}</a>
+    {c.anticoagulant && <span className="case-bar__badge" title="Anticoagulant exposure documented"><span className="sr-only">Anticoagulant: </span>{c.anticoagulant}</span>}
+    <div className="case-bar__time"><Item label={c.timeLabel} value={c.elapsed} pill={c.window} flag={c.window?.tone === 'critical' ? 'critical' : undefined} title="Elapsed time (h:mm)" /></div>
     <div className="case-bar__items">
       {c.gcs ? <Item label="GCS" value={c.gcs} /> : null}
       <Item label="NIHSS" value={c.nihss} flag={c.nihssPartial ? 'partial' : undefined} title={c.nihssPartial ? 'Partial itemized sum' : undefined} />
@@ -70,11 +88,10 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
       <Item label="Glucose" short="Glu" value={c.glucose} flag={c.glucoseFlag ? 'caution' : undefined} />
       <Item label="Weight" short="Wt" value={c.weight && `${c.weight} kg`} />
       {acuteIschemic && <Item label={c.dose?.label || 'Dose'} value={c.dose?.value} detail={c.dose?.detail} title="Dose arithmetic only; not an eligibility decision" />}
-      {c.anticoagulant && <Item label="Anticoag" value={c.anticoagulant} flag="caution" />}
     </div>
     <div className="case-bar__actions">
-      {acuteIschemic && <a className="case-bar__link" href="#/protocols/ischemic/qr-bp">BP targets</a>}
-      {(state.note.diagnosisCategory === 'ich' || c.anticoagulant) && <a className="case-bar__link" href="#/protocols/ischemic/qr-reversal">Reversal</a>}
+      {acuteIschemic && <a className="case-bar__link" href="#/protocols/ischemic/qr-bp" onClick={revealIfCurrent('#/protocols/ischemic/qr-bp', 'qr-bp')}>BP targets</a>}
+      {(state.note.diagnosisCategory === 'ich' || c.anticoagulant) && <a className="case-bar__link" href={reversalHref} onClick={revealIfCurrent(reversalHref, 'qr-reversal')}>Reversal</a>}
       <button type="button" className="case-bar__copy" onClick={onCopy} aria-label={blocked ? undefined : `Copy ${documentLabel} (case bar)`}>{blocked ? `Review ${blocked} flag${blocked === 1 ? '' : 's'}` : /copied\.$/.test(copyStatus || '') ? 'Copied ✓' : <><span className="case-bar__copy-long">Copy {documentLabel}</span><span className="case-bar__copy-short" aria-hidden="true">Copy note</span></>}</button>
     </div>
   </section>;
