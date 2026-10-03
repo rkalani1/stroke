@@ -827,7 +827,9 @@ async function main() {
         await p.getByRole('heading', { name: 'Trials', exact: true }).waitFor();
         assert.equal(await p.getByRole('tab', { name: 'Completed evidence', exact: true }).count(), 0);
         await p.evaluate(() => { location.hash = '#/evidence/elan'; });
-        await p.getByRole('region', { name: 'Evidence', exact: true }).locator('[data-reference-id="elan"]').getByRole('link', {name:'ELAN primary report',exact:true}).waitFor();
+        const elanStudy = p.getByRole('region', { name: 'Evidence', exact: true }).locator('[data-reference-id="elan"]');
+        await elanStudy.locator(':scope > .reference-body > details.reference-sources > summary').click();
+        await elanStudy.getByRole('link', {name:'ELAN primary report',exact:true}).waitFor();
         report.live = { status: 'passed', url: p.url(), version, referenceEndpoint: endpoint, topics: deployed.data.topics.length, studies: deployed.data.studies.length };
       } finally { await p.close(); }
     });
