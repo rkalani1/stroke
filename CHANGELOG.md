@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v7.7.8 — 2026-10-03 — SAH grades and handoff labs
+
+Two more round-9 note-output fixes:
+
+- **SAH:** Hunt–Hess, WFNS and modified Fisher grades completed in the Encounter worksheets now appear in every note format, including the team handoff (AHA/ASA aSAH 2023 recommends documenting a validated clinical grade).
+- **Team handoff:** a Labs line now lists the entered glucose, platelets, INR and aPTT. Previously the INR behind a warfarin reversal appeared only in the Pulsara summary. The handoff also carries the antithrombotic plan, regimen and DAPT start/stop dates.
+
 ## v7.7.7 — 2026-10-03 — On-call fixes from a fresh scenario sweep
 
 Round-9 reviewers drove new on-call scenarios (wake-up MRI, ICH and SAH on apixaban, IVT then angioedema, mimics, M2 occlusion) and read every note format. This release ships the fixes for its two high-severity findings and two quick ones.

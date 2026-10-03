@@ -14,7 +14,9 @@ export function formatDocumentation(state, consultation, groups, timeline) {
   if (format === 'handoff') {
     // The diagnosis-specific group carries ICH reversal, neurosurgery and hydrocephalus entries
     // and the TIA review; only the reversal time is taken from the timeline.
-    const handoffGroups = groups.filter(group => ['post-reperfusion', 'transfer', 'diagnosis-details'].includes(group.id));
+    const handoffGroups = groups.filter(group => ['post-reperfusion', 'transfer', 'diagnosis-details'].includes(group.id))
+      // The antithrombotic plan (regimen, held/deferred, DAPT stop date) travels with the patient.
+      .concat(groups.filter(group => group.id === 'prevention').map(group => ({ ...group, lines: group.lines.filter(line => /^(Antithrombotic plan|Antithrombotic regimen|Documented DAPT start date|Planned DAPT stop date)/.test(line)) })).filter(group => group.lines.length));
     const reversal = (timeline || '').split('\n').find(line => line.startsWith('ICH reversal administration:'));
     const withReversal = group => group.id === 'diagnosis-details' && reversal ? [...group.lines, reversal] : group.lines;
     const standaloneReversal = handoffGroups.some(group => group.id === 'diagnosis-details') ? null : reversal;
