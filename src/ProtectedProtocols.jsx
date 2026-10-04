@@ -10,6 +10,18 @@ import { elapsedEncounterTime } from './clinical/encounter-time.js';
 import { createIcons, icons } from './lucide-subset.js';
 import { revealProtocolElement, revealProtocolTarget } from './protocol-navigation.js';
 
+// Scroll a protocol panel into view once React has mounted it; the new panel can take more than
+// one frame to appear, and its id differs from the old panel's, so wait for it (about 0.5 s at most).
+function revealManagementPanel(id) {
+  let tries = 0;
+  const step = () => {
+    const panel = document.getElementById(`mgmt-tabpanel-${id}`);
+    if (panel && typeof panel.scrollIntoView === 'function') panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    else if (tries++ < 30) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
 export const TELESTROKE_MAP_LINK = Object.freeze({ label: 'Telestroke Map', url: 'https://rkalani1.github.io/telestroke-expansion-map/' });
 const MANAGEMENT_SUBTABS = ['ich', 'ischemic'];
 const evidenceRecommendationsMap = new Map(recommendations.map(record => [record.id, record]));
@@ -651,12 +663,7 @@ export default function ProtectedProtocols({
                         const el = document.getElementById(`mgmt-tab-${subTabs[ni]}`);
                         if (el) el.focus();
                         // v6.0-08: snap-scroll the named protocol panel into view.
-                        requestAnimationFrame(() => {
-                          const panel = document.getElementById(`mgmt-tabpanel-${subTabs[ni]}`);
-                          if (panel && typeof panel.scrollIntoView === 'function') {
-                            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                          }
-                        });
+                        revealManagementPanel(subTabs[ni]);
                       }
                     }}>
                       {[
@@ -676,14 +683,8 @@ export default function ProtectedProtocols({
                             id={`mgmt-tab-${tab.id}`}
                             onClick={() => {
                               setManagementSubTab(tab.id);
-                              // v6.0-08: snap-scroll to named protocol panel.
-                              // requestAnimationFrame waits for React to mount the panel.
-                              requestAnimationFrame(() => {
-                                const panel = document.getElementById(`mgmt-tabpanel-${tab.id}`);
-                                if (panel && typeof panel.scrollIntoView === 'function') {
-                                  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                }
-                              });
+                              // v6.0-08: snap-scroll to named protocol panel once React has mounted it.
+                              revealManagementPanel(tab.id);
                             }}
                             className={`px-3 h-9 rounded-md text-sm font-semibold transition-colors min-h-[44px] sm:min-h-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-cobalt-500 ${
                               isActive
