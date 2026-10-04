@@ -225,6 +225,12 @@ export function evaluateVideoTreatment({ note = {}, clock, aspects, pcAspects, c
     else if (numericInput(aspects, { min: 0, max: 10, integer: true }) === null) evt = pending('Document assessed ASPECTS.');
     else if (aspects >= 6) evt = matched('Adult ICA/M1 partial guideline screen met: within 24 h, NIHSS ≥6, ASPECTS ≥6 and premorbid mRS 0–1. Confirm the complete clinical/imaging assessment.');
     else evt = review('Large-core assessment requires the complete age, timing, imaging and mass-effect pathway; ASPECTS alone cannot establish eligibility.');
+  } else if (vessels.length === 1 && vessels[0] === 'M2' && note.m2Segment) {
+    const assessedAspects = numericInput(aspects, { min: 0, max: 10, integer: true });
+    if (note.m2Segment === 'dominant-proximal') evt = hours <= 6 && nihss >= 6 && assessedAspects !== null && assessedAspects >= 6
+      ? review('Dominant proximal M2 within 6 h, NIHSS ≥6, ASPECTS ≥6 and premorbid mRS 0–1: EVT is reasonable, though benefit is uncertain (AHA/ASA 2026 COR 2a, LOE B-NR). Confirm with the neurointerventional team.')
+      : review('Dominant proximal M2 outside the AHA/ASA 2026 2a criteria (within 6 h, NIHSS ≥6, ASPECTS ≥6): individualized neurointerventional review.');
+    else evt = review(`${{ codominant: 'Codominant', nondominant: 'Nondominant', distal: 'Distal' }[note.m2Segment] || 'Nondominant'} M2 occlusion: AHA/ASA 2026 rates EVT COR 3: No Benefit (LOE A); SVIN 2026 says it may be considered (2b) with a disabling deficit and NIHSS ≥6. Discuss with the neurointerventional team.`);
   } else if (vessels.length) evt = review('Medium/distal or other occlusion: confirm the exact segment/dominance, disability and current evidence with the neurointerventional team.');
   return { tnk, evt };
 }

@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v7.7.10 — 2026-10-03 — M2 dominance, time zone, door-in-door-out, lobar ICH evacuation
+
+- **M2 occlusion:**
+  - Selecting M2 offers "M2 segment / dominance" (dominant proximal, codominant, nondominant or distal), and the choice is written to the note.
+  - The EVT screen then gives the graded recommendation. Dominant proximal M2 within 6 h with NIHSS ≥6 and ASPECTS ≥6 is AHA/ASA 2026 COR 2a. Codominant, nondominant or distal M2 is COR 3: No Benefit, with SVIN's 2b noted.
+  - The trial screener imports the segment.
+- **Time zone:** every note states that its times are local to the documenting device, with the zone. This matters on telestroke calls across time zones.
+- **Transfers:** a "Departure to receiving facility" timestamp gives the door-in to door-out interval.
+- **ICH:**
+  - A lobar ICH of 30–80 mL with GCS 5–14 within 24 h adds a neurosurgery prompt to discuss early minimally invasive evacuation (Pradilla, NEJM 2024).
+  - That trial postdates the AHA/ASA 2022 guideline.
+
 ## v7.7.9 — 2026-10-03 — Remaining round-9 fixes
 
 - **IVT checklist:** answers where IVT benefit generally outweighs risk (AHA/ASA 2026 Table 8) are no longer counted as safety concerns. These are unruptured aneurysm, prior MI, seizure at onset, antiplatelet therapy and ACE inhibitor. They are listed neutrally on screen and in the note, and no longer produce "recorded concerns remain".

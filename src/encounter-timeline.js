@@ -7,7 +7,7 @@ export const TIMELINE_FIELDS = [
   ['consultStart', 'Consultation start'], ['consultEnd', 'Consultation end'],
   ['arrival', 'ED arrival'], ['strokeAlert', 'Stroke alert'], ['ctStart', 'CT start'],
   ['ctRead', 'CT interpretation'], ['ivtOrder', 'IVT order'],
-  ['reversal', 'ICH reversal administration'], ['transferDecision', 'Transfer decision']
+  ['reversal', 'ICH reversal administration'], ['transferDecision', 'Transfer decision'], ['departure', 'Departure to receiving facility']
 ];
 export function localTimestamp(now = Date.now()) {
   const date = new Date(now), pad = value => String(value).padStart(2, '0');
@@ -28,7 +28,7 @@ export function timelineIntervals(state, now) {
   const reperfusion = acute && state.note.diagnosisCategory === 'ischemic' ? state.actions.reperfusionTime : '';
   const pairs = [
     [t.consultEnd ? 'Consultation elapsed' : 'Consultation elapsed so far (end not recorded)', t.consultStart, t.consultEnd || now],
-    ...(acute ? [['Door to CT', t.arrival, t.ctStart], ['CT to interpretation', t.ctStart, t.ctRead], ['Door to transfer decision', t.arrival, t.transferDecision]] : []),
+    ...(acute ? [['Door to CT', t.arrival, t.ctStart], ['CT to interpretation', t.ctStart, t.ctRead], ['Door to transfer decision', t.arrival, t.transferDecision], ['Door-in to door-out', t.arrival, t.departure]] : []),
     ...(ivt ? [['Door to IVT', t.arrival, ivt], ['CT to IVT', t.ctStart, ivt], ['Order to IVT', t.ivtOrder, ivt]] : []),
     ...(puncture ? [['Door to puncture', t.arrival, puncture], ['Puncture to reperfusion', puncture, reperfusion]] : []),
     ...(acute && state.note.diagnosisCategory === 'ich' ? [['Door to reversal', t.arrival, t.reversal]] : [])

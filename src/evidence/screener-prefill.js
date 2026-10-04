@@ -80,7 +80,9 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
 
   if (classification === 'ischemic') {
     const vesselLabel = note.vesselOcclusion?.[0] || '';
-    if (VESSEL[vesselLabel]) { patch.vessel = VESSEL[vesselLabel]; summary.push(vesselLabel === 'None' ? 'no occlusion' : vesselLabel); }
+    const M2_SEGMENT = { 'dominant-proximal': 'dominant_m2', codominant: 'm2_m3_nd', nondominant: 'm2_m3_nd', distal: 'm2_m3_nd' };
+    if (vesselLabel === 'M2' && M2_SEGMENT[note.m2Segment]) { patch.vessel = M2_SEGMENT[note.m2Segment]; summary.push(`M2 (${note.m2Segment.replace('-', ' ')})`); }
+    else if (VESSEL[vesselLabel]) { patch.vessel = VESSEL[vesselLabel]; summary.push(vesselLabel === 'None' ? 'no occlusion' : vesselLabel); }
     else if (vesselLabel) summary.push(vesselLabel === 'M2' ? 'M2 (dominance not recorded)' : `${vesselLabel} (not imported)`);
     const aspects = numericInput(state.aspects, { min: 0, max: 10, integer: true });
     if (aspects !== null) { patch.aspects = aspects; summary.push(`ASPECTS ${aspects}`); }
