@@ -61,7 +61,7 @@ describe('canonical state and honest documentation', () => {
   it('projects entered GCS into ischemic summaries without validating a future consent time', () => {
     const s=newEncounter();s.note.diagnosisCategory='ischemic';s.gcs={eye:'4',verbal:'5',motor:'6'};
     s.actions.consent='Informed consent';s.actions.consentTime='2026-10-01T13:00';
-    expect(buildSummary(s,NOW)).toContain('GCS E4 V5 M6 = 15/15');expect(buildSummary(s,NOW)).toContain('Consent time: invalid or future');
+    expect(buildSummary(s,NOW)).toContain('GCS E4 V5 M6 = 15/15');expect(buildSummary(s,NOW)).toContain('IVT Consent time: invalid or future');
   });
   it('uses the same strict calendar validator for partial imaging-selected screens', () => {
     const n={age:'65',nihss:'0',ctHemorrhageStatus:'absent',lkwUnknown:true,discoveryDate:'2026-02-30',discoveryTime:'02:30',wakeUpStrokeWorkflow:{dwi:{positiveForLesion:true},flair:{noMarkedHyperintensity:true},mriLesionExtentReviewed:true,dwiLesionUnderOneThirdMCA:true}};

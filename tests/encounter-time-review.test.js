@@ -36,7 +36,7 @@ describe('reconciled event timing in every documentation projection', () => {
     expect(computeNeurocheckSchedule(state.actions.administrationTime)).toBeNull();
     const text = buildSummary(state, now);
     expect(text).not.toContain('TNK at');
-    for (const label of ['EVT puncture', 'EVT reperfusion', 'Consent time', 'EVT consent time']) expect(text).toContain(`${label}: ambiguous local time`);
+    for (const label of ['EVT puncture', 'EVT reperfusion', 'IVT Consent time', 'EVT consent time']) expect(text).toContain(`${label}: ambiguous local time`);
     state.actions.administrationTime = '2026-11-01T01:31:00-08:00';
     expect(buildSummary(state, now)).toContain('TNK at 2026-11-01 01:31:00 (UTC−08:00)');
     expect(computeNeurocheckSchedule(state.actions.administrationTime).checks[0].at.toISOString()).toBe('2026-11-01T09:46:00.000Z');

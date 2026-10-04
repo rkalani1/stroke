@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v7.7.11 — 2026-10-04 — NIHSS item scores and IVT consent order in notes
+
+- **NIHSS:** a non-zero itemized NIHSS now lists each item score in every note format (for example "items 1a 0, 1b 1, … 5a 2"), so the receiving team can compare a later exam item by item. An all-zero exam is not itemized.
+- **Consent:** the IVT consent time now sits directly under the IVT consent status, labelled "IVT Consent time". It no longer appears after the EVT lines as an unlabelled "Consent time".
+
 ## v7.7.10 — 2026-10-03 — M2 dominance, time zone, door-in-door-out, lobar ICH evacuation
 
 - **M2 occlusion:**
