@@ -284,6 +284,9 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     ? exam.complete ? `${exam.total}/42 (reported total)` : 'reported total missing or invalid; no current score'
     : exam.complete ? `${exam.total}/42 (all items documented${exam.untestable ? `; ${nihssUntestableNote(exam.untestable)}, not scored` : ''})`
     : `incomplete: ${exam.count}/${NIHSS_ITEMS.length} items; partial sum ${exam.partial}; no completed score`;
+  // Item scores let the receiving team compare a later exam item by item (omitted for an all-zero exam).
+  const nihssItems = exam.source !== 'reported' && exam.complete && (exam.total > 0 || exam.untestable) ? NIHSS_ITEMS.map(item => { const match = String(state.nihss?.[item.id] || '').match(/\((\d|UN)\)$/); return match ? `${item.name.split('.')[0]} ${match[1]}` : null; }).filter(Boolean).join(', ') : '';
+  const examTextWithItems = nihssItems ? `${examText}; items ${nihssItems}` : examText;
   const examDetails = hasValue(n.nihssDetails) ? ` — ${n.nihssDetails}` : '';
   const extraExam = [];
   if (hasValue(n.premorbidMRS)) extraExam.push(`Pre-mRS: ${n.premorbidMRS}`);
@@ -335,10 +338,10 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     entry('Recorded mTICI grade', state.note.ticiScore);
     entry('IVT Discussion', state.actions.discussion || 'not documented');
     entry('IVT Consent status', state.actions.consent || 'not documented');
+    if (state.actions.consent && state.actions.consentTime) entry('IVT Consent time', validTimestamp(state.actions.consentTime, nowMs) ? formatRecordedInstant(state.actions.consentTime) : timestampReview(state.actions.consentTime));
     entry('EVT discussion', state.actions.evtDiscussion || 'not documented');
     entry('EVT consent status', state.actions.evtConsent || 'not documented');
     if (state.actions.evtConsent && state.actions.evtConsentTime) entry('EVT consent time', validTimestamp(state.actions.evtConsentTime, nowMs) ? formatRecordedInstant(state.actions.evtConsentTime) : timestampReview(state.actions.evtConsentTime));
-    if (state.actions.consent && state.actions.consentTime) entry('Consent time', validTimestamp(state.actions.consentTime, nowMs) ? formatRecordedInstant(state.actions.consentTime) : timestampReview(state.actions.consentTime));
   }
   if (n.diagnosisCategory === 'ich') {
     const volume = encounterVolume(state.volume);
@@ -372,7 +375,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   if (state.documentFormat === 'handoff') {
     const labels = new Set(['Times', 'ABCD²', 'ICH score', 'Hunt–Hess grade', 'WFNS grade', 'Modified Fisher grade', 'UFH dose intent', 'Anticoagulant exposure', 'Last anticoagulant dose', 'LMWH dose intent', 'Recorded safety concerns', 'Entered values conflicting with a "No" answer', 'IVT safety review', 'IVT clinician decision', 'EVT clinician decision', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
     return ['Team handoff', `${demographics} · ${diagnosis}${state.context === 'follow-up' ? ' · follow-up' : ''}`,
-      lkw, `NIHSS: ${examText}${examDetails}${extraExam.length ? `; ${extraExam.join('; ')}` : ''}`,
+      lkw, `NIHSS: ${examTextWithItems}${examDetails}${extraExam.length ? `; ${extraExam.join('; ')}` : ''}`,
       `CT (${ctTimestamp}): ${ct}`, `CTA: ${cta}`, hasValue(perfusion) ? `CTP: ${perfusion}` : '',
       hasValue(n.presentingBP) ? `BP: ${n.presentingBP} mmHg` : '',
       // The receiving team needs the coagulation values behind any reversal or IVT decision.
@@ -386,7 +389,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     const lab = (label, value, required) => hasValue(value) ? `${label}: ${value}` : required ? `${label}: not documented` : '';
     const vitals = [hasValue(n.presentingBP) ? `BP (mmHg): ${n.presentingBP}` : '', hasValue(n.glucose) ? `Glucose (mg/dL): ${n.glucose}` : '',
       lab('Plt', hasValue(n.plateletCount) ? plateletText : '', acuteIschemic), lab('INR', n.inr, acuteIschemic || n.lastDOACType === 'warfarin'), lab('aPTT (s)', n.ptt, ['heparin', 'lmwh'].includes(n.lastDOACType))].filter(Boolean).join('; ');
-    return `${demographics}${weight} with ${pmh} ${state.context === 'follow-up' ? 'seen in follow-up for' : 'who presents with'} ${symptoms}.${hasValue(n.chiefComplaint) ? ` Chief complaint: ${n.chiefComplaint}.` : ''} ${lkw}. ${extraExam.length ? `${extraExam.join('. ')}. ` : ''}NIHSS score: ${examText}${examDetails}.${disabling ? ` ${disabling}.` : ''} Working diagnosis: ${diagnosis}. Head CT (${ctTimestamp}): ${ct}. CTA Head/Neck (${documentedDateTime(n.ctaDate, n.ctaTime, nowMs, encounterClockTimestamp(n, 'cta'))}): ${cta}. CTP: ${documented(perfusion)}.${vitals ? ` ${vitals}.` : ''}${hasValue(n.medications) ? ` Medications: ${n.medications}.` : ''}${hasValue(state.assessment) ? ` Assessment: ${state.assessment}.` : ''} ${recommendations.join('. ')}.`.replace(/\s*\n\s*/g, ' ').replace(/([^.])\.\.(?=\s|$)/g, '$1.');
+    return `${demographics}${weight} with ${pmh} ${state.context === 'follow-up' ? 'seen in follow-up for' : 'who presents with'} ${symptoms}.${hasValue(n.chiefComplaint) ? ` Chief complaint: ${n.chiefComplaint}.` : ''} ${lkw}. ${extraExam.length ? `${extraExam.join('. ')}. ` : ''}NIHSS score: ${examTextWithItems}${examDetails}.${disabling ? ` ${disabling}.` : ''} Working diagnosis: ${diagnosis}. Head CT (${ctTimestamp}): ${ct}. CTA Head/Neck (${documentedDateTime(n.ctaDate, n.ctaTime, nowMs, encounterClockTimestamp(n, 'cta'))}): ${cta}. CTP: ${documented(perfusion)}.${vitals ? ` ${vitals}.` : ''}${hasValue(n.medications) ? ` Medications: ${n.medications}.` : ''}${hasValue(state.assessment) ? ` Assessment: ${state.assessment}.` : ''} ${recommendations.join('. ')}.`.replace(/\s*\n\s*/g, ' ').replace(/([^.])\.\.(?=\s|$)/g, '$1.');
   }
   // Optional measurements appear only when entered; core fields keep an explicit "not documented".
   // Decision-relevant labs stay explicit: platelets, INR and weight for acute ischemic
@@ -403,7 +406,7 @@ Medications: ${documented(n.medications)}
 Objective:
 Vitals: BP ${documented(n.presentingBP)}${optional('HR', n.heartRate)}${optional('SpO2', n.spO2, '%')}${optional('Temp', n.temperature, '°F')}${optional('Wt', weightEntry, '', acuteIschemic || anticoagulatedIch)}
 Labs: Glucose ${documented(n.glucose)}${optional('Plt', plateletText, '', acuteIschemic)}${optional('Cr', n.creatinine)}${optional('INR', n.inr, '', acuteIschemic || n.lastDOACType === 'warfarin')}${optional('aPTT', n.ptt, '', ['heparin', 'lmwh'].includes(n.lastDOACType))}${optional('PT', n.pt)}
-Exam: NIHSS ${examText}${examDetails}${disabling ? `; ${disabling}` : ''}${extraExam.length ? `; ${extraExam.join('; ')}` : ''}
+Exam: NIHSS ${examTextWithItems}${examDetails}${disabling ? `; ${disabling}` : ''}${extraExam.length ? `; ${extraExam.join('; ')}` : ''}
 
 Imaging findings:
 NCCT Head (${ctTimestamp}): ${ct}

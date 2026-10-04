@@ -37,3 +37,16 @@ describe('round 10 remaining fixes', () => {
     expect(render({ ...ich, details: { ichLocation: 'Deep' } })).not.toContain('trial population for early minimally invasive evacuation');
   });
 });
+
+describe('round 10 note labels', () => {
+  it('prints NIHSS item scores for a non-zero itemized exam', async () => {
+    const { NIHSS_ITEMS } = await import('../src/clinical/nihss-items.js');
+    const nihss = Object.fromEntries(NIHSS_ITEMS.map(item => [item.id, item.options[0]]));
+    nihss.motor_arm_left = NIHSS_ITEMS.find(item => item.id === 'motor_arm_left').options[2];
+    const state = make({ note: { diagnosisCategory: 'ischemic' }, nihssSource: 'itemized', nihss });
+    const text = buildSummary(state, now);
+    expect(text).toMatch(/2\/42 \(all items documented\); items 1a 0, 1b 0, 1c 0, 2 0, 3 0, 4 0, 5a 2/);
+    const zero = buildSummary(make({ note: { diagnosisCategory: 'ischemic' }, nihssSource: 'itemized', nihss: Object.fromEntries(NIHSS_ITEMS.map(item => [item.id, item.options[0]])) }), now);
+    expect(zero).not.toContain('; items 1a');
+  });
+});
