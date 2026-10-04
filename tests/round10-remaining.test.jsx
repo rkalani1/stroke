@@ -33,8 +33,12 @@ describe('round 10 remaining fixes', () => {
   });
   it('prompts a minimally invasive evacuation discussion for a lobar 30–80 mL ICH with GCS 5–14 within 24 h', () => {
     const ich = make({ note: { diagnosisCategory: 'ich', age: '70', lkwDate: '2026-10-01', lkwTime: '08:00' }, details: { ichLocation: 'Lobar' }, gcs: { eye: '3', verbal: '4', motor: '5' }, volume: { a: '5', b: '4', thicknessMm: '5', numSlices: '7' } });
-    expect(render(ich)).toContain('trial population for early minimally invasive evacuation');
-    expect(render({ ...ich, details: { ichLocation: 'Deep' } })).not.toContain('trial population for early minimally invasive evacuation');
+    expect(render(ich)).toContain('for early minimally invasive evacuation');
+    expect(render({ ...ich, details: { ichLocation: 'Deep' } })).not.toContain('for early minimally invasive evacuation');
+    expect(render(ich)).toContain('possible trial population (confirm age 18–80 and pre-ICH mRS 0–1)');
+    expect(render({ ...ich, note: { ...ich.note, age: '88', premorbidMRS: '0' } })).not.toContain('trial population');
+    expect(render({ ...ich, note: { ...ich.note, premorbidMRS: '4' } })).not.toContain('trial population');
+    expect(render({ ...ich, note: { ...ich.note, premorbidMRS: '0' } })).toContain('Lobar 30–80 mL');
   });
 });
 

@@ -1,6 +1,6 @@
 # Stroke Encounter Educational Demo
 
-> v7.7.11: deterministic synthetic Encounter workflow with embedded retained tools, protected example protocols, a trial screener/reference database, curated Evidence topics and completed primary-study summaries.
+> v7.7.12: deterministic synthetic Encounter workflow with embedded retained tools, protected example protocols, a trial screener/reference database, curated Evidence topics and completed primary-study summaries.
 
 Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.
 

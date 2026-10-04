@@ -6,9 +6,9 @@
    Old app caches are retired only on activation. Fetch policy is independent.
 */
 
-const APP_VERSION = '7.7.11';
+const APP_VERSION = '7.7.12';
 const CACHE_PREFIX = 'stroke-cache-v';
-const CACHE_NAME  = 'stroke-cache-v7-7-11-utility-review-20261001';
+const CACHE_NAME  = 'stroke-cache-v7-7-12-utility-review-20261001';
 
 // Retired teaching figures must not be served from a stale browser cache or
 // a bookmarked URL after this worker takes control. Paths are scope-relative
@@ -108,7 +108,7 @@ const APP_CHUNKS = [
   "./chunks/chunk-TVDPKXUF.js",
   "./chunks/chunk-V3TN6ZI3.js",
   "./chunks/InstallAppButton-LQX5XXGB.js",
-  "./chunks/ProtectedProtocols-YELJOP62.js",
+  "./chunks/ProtectedProtocols-QVHQGAD4.js",
   "./chunks/QuickReference-JXOIHPA4.js",
   "./chunks/QuickSearch-IDSGPIPT.js",
   "./chunks/Reference-YQRHXV2Z.js",
