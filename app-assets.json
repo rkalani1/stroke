@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "appVersion": "7.7.12",
+  "appVersion": "7.7.13",
   "buildTarget": "public",
   "entry": "app.js",
   "initial": [
@@ -21,7 +21,7 @@
       "path": "app.js",
       "bytes": 97222,
       "gzipBytes": 30382,
-      "sha256": "5d9572cc259c353af049322a255bed48e47053d495cf88b0fd0eec1ab08a2c36"
+      "sha256": "93ee43a264c09409600efcabf53b33d5cd890c9a911448730d73925134e41005"
     },
     {
       "path": "chunks/chunk-5PGM3YT2.js",
@@ -114,10 +114,10 @@
       "sha256": "e51db551f528003d9dc32af652fa66fd01d15316bca738c7d7c4e0e285614f5b"
     },
     {
-      "path": "chunks/ProtectedProtocols-QVHQGAD4.js",
-      "bytes": 232685,
-      "gzipBytes": 52958,
-      "sha256": "92882ce3c3dc0e3c02f700e6c8ae4a5717cd5f26ba317831ce7f90c7dde6c100"
+      "path": "chunks/ProtectedProtocols-6NL6HJRG.js",
+      "bytes": 232583,
+      "gzipBytes": 52955,
+      "sha256": "7dae9f8c379fa282c58c865be1a41f4b76c46f6a15470954655b46c79f062b11"
     },
     {
       "path": "chunks/QuickReference-JXOIHPA4.js",

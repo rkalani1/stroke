@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "sources",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.7.12",
+    "appVersion": "7.7.13",
     "checksum": "sha256:6e5bce5d59303c7d1f3bf230cee37e8b",
     "count": 4,
     "source": "Canonical clinical claims, source identities and retained primary-source projections",

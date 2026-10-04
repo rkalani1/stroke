@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v7.7.13 — 2026-10-04 — Protocol tab switching lands at the top
+
+- **Protocols:** switching between the ICH and Ischemic/TIA tabs (sticky bar or arrow keys) now scrolls to the start of the newly opened protocol. Previously the new panel could still be mounting, the scroll was skipped, and the view stayed mid-page.
+
 ## v7.7.12 — 2026-10-04 — Calculator and first-use review fixes
 
 A round-10 review checked every calculator against its source (all correct) and walked first-use flows on phone and desktop.
