@@ -123,14 +123,16 @@ export default function Encounter({ state: s, update, now, onGenerate, onCopy, o
   const age = numericInput(n.age, { min: 0, max: 120 });
   // ICH neurosurgery triggers, most urgent first (cerebellar/infratentorial: immediate evacuation).
   const ichDetails = s.details || {};
+  const premorbidMrs = numericInput(n.premorbidMRS, { min: 0, max: 6, integer: true });
   const ichNeurosurgeryTriggers = s.context === 'acute' && n.diagnosisCategory === 'ich' ? [
     (s.ich.infratentorial === true || ichDetails.ichLocation === 'Cerebellar') && ['Infratentorial', 'cerebellar ICH ≥15 mL, deteriorating, brainstem compression or hydrocephalus → immediate evacuation ± EVD (COR 1, B-NR)'],
     ichDetails.ichHydrocephalus === 'yes' && ['Hydrocephalus', 'neurosurgery at any size and urgent EVD evaluation (local); EVD when hydrocephalus lowers consciousness (COR 1, B-NR)'],
     ichDetails.ichDeterioration === 'yes' && ['Neurologic decline', 'neurosurgery at any size (local); repeat CT (COR 2a, C-LD)'],
     volume?.meetsNonTraumaticIphDualConsultVolume && !volume.unitWarning && ['≥15 mL', 'early neurosurgery and stroke-service evaluation (local)'],
     ichDetails.ichMassEffect === 'yes' && ['Mass effect', 'neurosurgery at any size (local)'],
-    // Minimally invasive evacuation trial (Pradilla, NEJM 2024): lobar 30–80 mL, GCS 5–14, within 24 h; postdates AHA/ASA 2022.
-    ichDetails.ichLocation === 'Lobar' && volume && !volume.unitWarning && volume.rawVolume >= 30 && volume.rawVolume <= 80 && gcs !== null && gcs >= 5 && gcs <= 14 && typeof timing.hours === 'number' && timing.hours <= 24 && ['Lobar 30–80 mL', 'trial population for early minimally invasive evacuation (GCS 5–14, ≤24 h; Pradilla, NEJM 2024; postdates AHA/ASA 2022): discuss with neurosurgery'],
+    // Minimally invasive evacuation trial (Pradilla, NEJM 2024; NCT02880878): lobar 30–80 mL, GCS 5–14, NIHSS ≥5, age 18–80,
+    // pre-ICH mRS 0–1, within 24 h; postdates AHA/ASA 2022. Hidden when a recorded value is outside; worded 'confirm' when missing.
+    ichDetails.ichLocation === 'Lobar' && volume && !volume.unitWarning && volume.rawVolume >= 30 && volume.rawVolume <= 80 && gcs !== null && gcs >= 5 && gcs <= 14 && typeof timing.hours === 'number' && timing.hours <= 24 && !(age !== null && (age < 18 || age > 80)) && !(premorbidMrs !== null && premorbidMrs > 1) && !(exam.total !== null && exam.total !== undefined && exam.total < 5) && ['Lobar 30–80 mL', `${age !== null && premorbidMrs !== null ? 'trial population' : 'possible trial population (confirm age 18–80 and pre-ICH mRS 0–1)'} for early minimally invasive evacuation (age 18–80, pre-ICH mRS 0–1, GCS 5–14, NIHSS ≥5, ≤24 h; Pradilla, NEJM 2024; postdates AHA/ASA 2022): discuss with neurosurgery`],
     s.ich.ivh === true && ['IVH', 'neurosurgery consult at any size (local); EVD for large IVH with impaired consciousness (COR 1, B-NR)']
   ].filter(Boolean) : [];
   // Triggers recorded in Section 3 point back to the Neurosurgery list beside the ICH score.

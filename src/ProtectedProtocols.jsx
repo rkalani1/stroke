@@ -8,7 +8,7 @@ import { AIS_COMMAND_CENTER_CARDS, AIS_SOURCE_LINKS, AIS_COMMAND_CENTER_LAST_REV
 import { recommendations, resolveClaimsWithCitations, citationLink } from './evidence-encounter.js';
 import { elapsedEncounterTime } from './clinical/encounter-time.js';
 import { createIcons, icons } from './lucide-subset.js';
-import { revealProtocolElement } from './protocol-navigation.js';
+import { revealProtocolElement, revealProtocolTarget } from './protocol-navigation.js';
 
 export const TELESTROKE_MAP_LINK = Object.freeze({ label: 'Telestroke Map', url: 'https://rkalani1.github.io/telestroke-expansion-map/' });
 const MANAGEMENT_SUBTABS = ['ich', 'ischemic'];
@@ -1468,6 +1468,10 @@ export default function ProtectedProtocols({
                           // (cf. navigateTo + scrollToSection at ~app.jsx:35058).
                           const goToCalculator = (calc) => {
                             if (!calc) return;
+                            // Route known targets through the app's deep links, which reveal, scroll and focus them.
+                            const CALC_ROUTES = { 'isch-evt': '#/protocols/ischemic/evt', 'isch-bp': '#/protocols/ischemic/bp', 'isch-postlytic': '#/protocols/ischemic/post-lytic', 'calc-nihss': '#/encounter/nihss', 'calc-aspects': '#/encounter/aspects', 'calc-pc-aspects': '#/encounter/pc-aspects', 'calc-alteplase': '#/encounter/alteplase', 'treatment-decision': '#/encounter/tnk' };
+                            const href = CALC_ROUTES[calc.anchor];
+                            if (href) { if (location.hash === href) { const key = href.split('/')[3]; if (href.startsWith('#/protocols/') && key) revealProtocolTarget(key); } else location.hash = href; return; }
                             if (calc.tab === 'encounter') {
                               navigateTo('encounter');
                               if (calc.anchor === 'treatment-decision') setEncounterPhase('phase-decision');
