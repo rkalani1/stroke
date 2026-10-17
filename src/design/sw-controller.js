@@ -39,6 +39,15 @@ export function bindSWController() {
   });
 }
 
+/* What the More panel may claim. A tab the worker does not control (first visit, hard
+   reload) still downloads lazily loaded surfaces from the network, so it is not offline-ready.
+   `waiting` is an installed update this controlled tab can switch to with Reload. */
+export function offlineState(registration) {
+  const controlled = Boolean(typeof navigator !== 'undefined' && navigator.serviceWorker?.controller);
+  const waiting = controlled && Boolean(registration?.waiting);
+  return { waiting, status: !controlled ? 'Saved for offline use · this tab needs internet until reopened' : waiting ? 'Available offline · update ready' : 'Available offline · links need internet' };
+}
+
 /* Called only by the visible Reload action; a blocked request can be retried. */
 export async function acceptUpdate(worker) {
   if (typeof navigator === 'undefined' || !navigator.serviceWorker) return;
