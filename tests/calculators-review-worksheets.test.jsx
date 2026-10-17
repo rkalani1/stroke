@@ -1,18 +1,10 @@
-// Calculator review 2026-10-17. Expected values come from the source definitions
-// (trial registries, Kothari ABC/2, Cockcroft–Gault, the mTICI consensus), not from the code.
-import React from 'react';
+// Calculator review 2026-10-17: worksheet definitions (mTICI consensus, NASCET bands, STOP-Bang, sources).
+// Expected values come from the source definitions, not from the code.
 import fs from 'node:fs';
-import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import Encounter from '../src/Encounter.jsx';
-import { newEncounter, protocolEncounter } from '../src/workspace-state.js';
-import { calculateCrClReviewed, abc2ThicknessCaution } from '../src/calculators.js';
-import { evaluateDAWN, evaluateDEFUSE3, evaluateLargeCoreEVT, recommendAcuteDAPT, daptReviewComplete } from '../src/calculators-extended.js';
-import { evaluateVideoTreatment, evaluateWakeUpScreen, wakeUpPremorbidGap } from '../src/encounter-clinical-review.js';
 import { MTICI_DESCRIPTORS, calculateReviewedNASCET, calculateReviewedSTOPBANG } from '../src/supplementary-calculators.js';
 import { calculatorDefinitions } from '../src/supplementary-calculator-definitions.js';
 import { calculatorResultParts, reviewedCalculatorText } from '../src/calculator-utilities.js';
-import { completeCases } from './fixtures/clinical-complete-cases.js';
 
 describe('worksheet definitions', () => {
   it('mTICI 2b is more than half of the target territory (Zaidat 2013 consensus)', () => {

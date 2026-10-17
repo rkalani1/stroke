@@ -26,7 +26,7 @@ try {
  const late=await call('calc_dawn_eligibility',{age:70,nihss:20,coreMl:5,timeFromLKWh:4});assert.equal(late.result.eligible,false);assert.match(late.result.nonExclusionNote,/does not exclude EVT/);assert(!('meetsImaging' in late.result)&&!('meetsClinical' in late.result));assert.equal(late.appVersion,JSON.parse(fs.readFileSync(new URL('../package.json',import.meta.url))).version);
  const zeroCore=(await call('calc_defuse3_eligibility',{age:70,nihss:10,coreMl:0,penumbraMl:40,timeFromLKWh:10})).result;assert.equal(zeroCore.mismatchRatio,'infinite (core 0 mL)');assert(!('meetsMismatch' in zeroCore));
  assert.match((await call('calc_tnk_dose',{weightKg:7.5})).weightWarning,/below 30 kg/);assert.equal((await call('calc_alteplase_dose',{weightKg:80})).weightWarning,undefined);assert.match((await call('calc_alteplase_dose',{weightKg:80})).result.administration,/over 60 minutes/);
- assert.match((await call('calc_crcl',{age:70,weight:80,sex:'male',creatinine:1,heightCm:66})).heightWarning,/centimeters/);
+ assert.match((await call('calc_crcl',{age:70,weight:80,sex:'male',creatinine:1,heightCm:66})).heightWarning,/centimeters/);assert.equal((await call('calc_crcl',{age:70,weight:80,sex:'male',creatinine:1,heightCm:170})).heightWarning,undefined);
  // 88 µmol/L typed as mg/dL: arithmetic unchanged (5600/6336), unit prompt above 20 mg/dL, no unsourced renal category.
  const umol=await call('calc_crcl',{age:70,weight:80,sex:'male',creatinine:88});assert(Math.abs(umol.result.rawValue-5600/6336)<1e-10);assert.match(umol.creatinineWarning,/µmol\/L/);assert.match(umol.result.unitWarning,/88\.4/);
  for(const key of ['label','renalCategory','isLow','isBorderline'])assert(!(key in umol.result));assert.match(umol.result.thresholdNote,/drug label/);

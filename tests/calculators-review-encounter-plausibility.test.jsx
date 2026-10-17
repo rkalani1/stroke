@@ -1,18 +1,12 @@
-// Calculator review 2026-10-17. Expected values come from the source definitions
-// (trial registries, Kothari ABC/2, Cockcroft–Gault, the mTICI consensus), not from the code.
+// Calculator review 2026-10-17: Encounter unit and population cautions (Cockcroft–Gault, Kothari ABC/2,
+// WAKE-UP NCT01525290 pre-stroke mRS). Expected values come from the source definitions, not from the code.
 import React from 'react';
-import fs from 'node:fs';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import Encounter from '../src/Encounter.jsx';
 import { newEncounter, protocolEncounter } from '../src/workspace-state.js';
 import { calculateCrClReviewed, abc2ThicknessCaution } from '../src/calculators.js';
-import { evaluateDAWN, evaluateDEFUSE3, evaluateLargeCoreEVT, recommendAcuteDAPT, daptReviewComplete } from '../src/calculators-extended.js';
 import { evaluateVideoTreatment, evaluateWakeUpScreen, wakeUpPremorbidGap } from '../src/encounter-clinical-review.js';
-import { MTICI_DESCRIPTORS, calculateReviewedNASCET, calculateReviewedSTOPBANG } from '../src/supplementary-calculators.js';
-import { calculatorDefinitions } from '../src/supplementary-calculator-definitions.js';
-import { calculatorResultParts, reviewedCalculatorText } from '../src/calculator-utilities.js';
-import { completeCases } from './fixtures/clinical-complete-cases.js';
 
 const renderEncounter = patch => {
   const state = newEncounter();

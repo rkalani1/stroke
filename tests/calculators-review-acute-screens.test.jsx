@@ -1,17 +1,7 @@
-// Calculator review 2026-10-17. Expected values come from the source definitions
-// (trial registries, Kothari ABC/2, Cockcroft–Gault, the mTICI consensus), not from the code.
-import React from 'react';
-import fs from 'node:fs';
-import { renderToStaticMarkup } from 'react-dom/server';
+// Calculator review 2026-10-17: acute trial screens (SELECT2, DEFUSE 3 and DAWN registries; DAPT trial windows).
+// Expected values come from the registry and trial definitions, not from the code.
 import { describe, expect, it } from 'vitest';
-import Encounter from '../src/Encounter.jsx';
-import { newEncounter, protocolEncounter } from '../src/workspace-state.js';
-import { calculateCrClReviewed, abc2ThicknessCaution } from '../src/calculators.js';
 import { evaluateDAWN, evaluateDEFUSE3, evaluateLargeCoreEVT, recommendAcuteDAPT, daptReviewComplete } from '../src/calculators-extended.js';
-import { evaluateVideoTreatment, evaluateWakeUpScreen, wakeUpPremorbidGap } from '../src/encounter-clinical-review.js';
-import { MTICI_DESCRIPTORS, calculateReviewedNASCET, calculateReviewedSTOPBANG } from '../src/supplementary-calculators.js';
-import { calculatorDefinitions } from '../src/supplementary-calculator-definitions.js';
-import { calculatorResultParts, reviewedCalculatorText } from '../src/calculator-utilities.js';
 import { completeCases } from './fixtures/clinical-complete-cases.js';
 
 const NOT_MET_TAIL = 'This partial screen is not a contraindication to EVT; review the 2026 guideline and complete imaging.';
@@ -105,6 +95,11 @@ describe('acute DAPT elapsed text agrees with the 24 h and 72 h branch edges', (
     expect(dapt(23.995).rationale).toContain('within 23 h 59 min');
     expect(dapt(24.004).rationale).toContain('24 h 01 min');
     expect(dapt(72.004).rationale).toContain('(72 h 01 min > 72 h)');
+  });
+  it('rounds the not-met elapsed text up only past the 24 h window edge', () => {
+    // NIHSS 7 is above every modeled branch (NIHSS 0-5); within 24 h no window edge is involved.
+    expect(dapt(12.5001, 7).rationale).toContain('(NIHSS 7, 12 h 30 min)');
+    expect(dapt(24.004, 7).rationale).toContain('(NIHSS 7, 24 h 01 min)');
   });
   it('requires an explicit mechanism, genotype and hemorrhage-risk review before a regimen is shown', () => {
     expect(daptReviewComplete({ ichRisk: 'reviewed', atherosclerotic: false, lvdSymptomatic: false })).toBe(false);

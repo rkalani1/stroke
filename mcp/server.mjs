@@ -86,7 +86,7 @@ server.registerTool('calc_crcl',
     const { label, renalCategory, isLow, isBorderline, ...result } = reviewed || {};
     return ok({ tool: 'calc_crcl', result: reviewed && { ...result, thresholdNote: 'No renal-impairment category is assigned; compare rawValue with the specific drug label CrCl thresholds.' },
       ...(reviewed?.unitWarning ? { creatinineWarning: reviewed.unitWarning } : {}),
-      ...(heightCm !== undefined && (heightCm < 120 || heightCm > 230) ? { heightWarning: 'Height outside 120–230 cm is unusual for an adult and drives the obesity weight adjustment; confirm centimeters, not inches.' } : {}) });
+      ...(reviewed?.heightWarning ? { heightWarning: reviewed.heightWarning } : {}) });
   });
 
 server.registerTool('calc_dawn_eligibility',

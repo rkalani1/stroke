@@ -110,6 +110,7 @@ export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2,
   const hm = round => { const minutes = round(Math.round(tH * 3600000) / 60000); return `${Math.floor(minutes / 60)} h ${String(minutes % 60).padStart(2, '0')} min`; };
   const elapsed = Number.isFinite(tH) ? hm(Math.floor) : '';
   const elapsedBeyond = Number.isFinite(tH) ? hm(Math.ceil) : '';
+  // The final not-met text rounds up only past 24 h, where a window edge can be the failing criterion; within 24 h every window is open.
   const isTIA = strokeType === 'tia';
   const isMinor = strokeType === 'ischemic' && Number.isInteger(n) && n >= 0 && n <= 3;
   const isUpToModerate = strokeType === 'ischemic' && Number.isInteger(n) && n >= 0 && n <= 5;
@@ -243,7 +244,7 @@ export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2,
     regimen: 'individualized-review',
     duration: null,
     dosing: null,
-    rationale: `No DAPT trial branch modeled here is met (${isTIA ? `TIA ABCD² ${ab}` : `NIHSS ${n}`}, ${elapsedBeyond}). Review the complete mechanism-specific guidance, timing and bleeding risk; failure to match these branches does not select single antiplatelet therapy or establish a DAPT contraindication.${((isTIA && highRisk) || isMinor) && tH <= 168 ? ' The 2021 secondary-prevention guideline recommends starting aspirin plus clopidogrel early for minor stroke or high-risk TIA, ideally within 12-24 h and at least within 7 days (COR 1, LOE A).' : ''}`,
+    rationale: `No DAPT trial branch modeled here is met (${isTIA ? `TIA ABCD² ${ab}` : `NIHSS ${n}`}, ${tH > 24 ? elapsedBeyond : elapsed}). Review the complete mechanism-specific guidance, timing and bleeding risk; failure to match these branches does not select single antiplatelet therapy or establish a DAPT contraindication.${((isTIA && highRisk) || isMinor) && tH <= 168 ? ' The 2021 secondary-prevention guideline recommends starting aspirin plus clopidogrel early for minor stroke or high-risk TIA, ideally within 12-24 h and at least within 7 days (COR 1, LOE A).' : ''}`,
     source: 'Kleindorfer AHA/ASA Stroke 2021',
     class: 'Modeled screen not met; individualized clinical review'
   };

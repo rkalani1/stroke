@@ -188,8 +188,8 @@ export const calculateTNKDoseReviewed = (weightKg, authority = 'guideline') => {
   };
 };
 
-// ABC/2 slice-thickness unit check (Encounter and note only; calculateICHVolumeReviewed and the Protocols
-// projection are unchanged). Kothari 1996: C = number of slices with hemorrhage × slice thickness. A thickness of
+// ABC/2 slice-thickness unit check, shown only as a separate Encounter calculator line (calculateICHVolumeReviewed,
+// the Protocols projection, the consultation note and the Trials screener prefill do not use it yet). Kothari 1996: C = number of slices with hemorrhage × slice thickness. A thickness of
 // 1 mm or less with C under half the smaller axial diameter most often means centimeters were typed into the
 // millimeter field (a tenfold underestimate). Thin-slice series pass when the slice count makes C plausible.
 // The 0.5 factor is a heuristic, so the caution never blocks or alters the estimate.
