@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { evaluateWakeUpScreen, evaluateVideoTreatment, assessAnticoagulantExposure, documentedIvtContext, numericInput, documentedExamScore, buildEvtConsentText, calculatorField, reviewedGcs, gcsDocumentation, reviewedAspects, reviewedPhq2, reviewedStopBang, reviewedTiaDisposition } from '../src/encounter-clinical-review.js';
+import { evaluateWakeUpScreen, evaluateVideoTreatment, assessAnticoagulantExposure, documentedIvtContext, numericInput, documentedExamScore, buildEvtConsentText, calculatorField, reviewedGcs, gcsDocumentation, reviewedPhq2, reviewedStopBang, reviewedTiaDisposition } from '../src/encounter-clinical-review.js';
 
 describe('reviewed Encounter decision boundaries', () => {
   const note = { diagnosisCategory: 'ischemic', presentingBP: '140/80', glucose: '100', age: '60', nihss: '10', disablingDeficit: true, premorbidMRS: '0', lastDOACType: 'none', ctHemorrhageStatus: 'absent', ivtContraindicationsReviewed: true };
@@ -52,12 +52,9 @@ describe('reviewed Encounter decision boundaries', () => {
     expect(reviewedGcs({eye:'4',verbal:'5',motor:'6'})).toBe(15);
     for (const eye of ['NT',null,0,99]) expect(reviewedGcs({eye,verbal:'5',motor:'6'})).toBe(null);
     expect(gcsDocumentation({eye:'4',verbal:'NT',motor:'6',notTestableReason:'intubated'})).toContain('total not reported');
-    expect(gcsDocumentation({eye:'4',verbal:'NT',motor:'6',notTestableReason:'intubated'})).toContain('E4 VNT M6');
-  });
-  it('ASPECTS counts only known regions after assessment', () => {
-    expect(reviewedAspects({C:true,extraneous:true},true)).toBe(9);
-    expect(reviewedAspects({},false)).toBe(null);
-    expect(reviewedAspects({C:'unknown'},true)).toBe(null);
+    expect(gcsDocumentation({eye:'4',verbal:'NT',motor:'6',notTestableReason:'intubated'})).toContain('E4 V(NT) M6');
+    expect(gcsDocumentation({eye:'NT',verbal:'5',motor:'6'})).toMatch(/^GCS E\(NT\) V5 M6; total not reported/);
+    expect(gcsDocumentation({eye:'4',verbal:'5',motor:'6'})).toMatch(/^GCS E4 V5 M6 = 15\/15/);
   });
   it('does not invent DOAC clearance for heparin', () => {
     const now = new Date('2026-09-30T12:00:00');

@@ -38,7 +38,7 @@ describe('restored source-bound grades and diameter arithmetic', () => {
   });
   it('keeps the 2c definition distinct from partial and complete reperfusion', () => {
     expect(mtici({reviewed:true,ischemic:true,grade:'2a'}).description).toContain('less than half');
-    expect(mtici({reviewed:true,ischemic:true,grade:'2b'}).description).toContain('at least half');
+    expect(mtici({reviewed:true,ischemic:true,grade:'2b'}).description).toContain('more than half');
     expect(mtici({reviewed:true,ischemic:true,grade:'2c'}).description).toContain('delayed flow or small emboli');
   });
   it.each(['',undefined,null,0,'2','2b50','2B','3x','constructor'])('rejects a missing or non-mTICI grade %j', grade => {

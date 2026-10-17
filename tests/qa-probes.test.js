@@ -34,7 +34,7 @@ describe('CRITICAL — clinical correctness probes', () => {
     expect(r.isLarge).toBe(true);
   });
 
-  it('CrCl — Cockcroft-Gault male 70y, 80 kg, Cr 1.0 = 64.8', () => {
+  it('CrCl — Cockcroft-Gault male 70y, 80 kg, Cr 1.0 = 77.8', () => {
     const r = calculateCrCl(70, 80, 'M', 1.0);
     expect(r.value).toBeCloseTo(77.8, 1); // (140-70)*80*1 / (72*1) = 77.78
   });
