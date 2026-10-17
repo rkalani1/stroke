@@ -137,7 +137,11 @@ export const calculateCrClReviewed = (age, weight, sex, creatinine, heightCm) =>
   }
   return { ...result, rawValue, rawAdjBwValue, label: below15 ? 'Severe (<15 before rounding); specialist assessment required' : result.label,
     renalCategory: below15 ? 'severe' : result.renalCategory,
-    scopeNote: 'Adult Cockcroft–Gault estimate. Confirm stable creatinine, appropriate weight convention, and the specific drug label; this estimate does not determine a dialysis indication.' };
+    scopeNote: 'Adult Cockcroft–Gault estimate. Confirm stable creatinine, appropriate weight convention, and the specific drug label; this estimate does not determine a dialysis indication.',
+    // Plausibility prompts only; the arithmetic is unchanged. 1 mg/dL creatinine = 88.4 µmol/L (molar mass 113.12 g/mol).
+    // Values above 20 mg/dL are rare but documented, so this asks for unit confirmation instead of rejecting the entry.
+    unitWarning: cr > 20 ? 'Creatinine above 20 mg/dL is rare. Confirm the unit: if the laboratory reports µmol/L, divide by 88.4 and re-enter (88 µmol/L ≈ 1.0 mg/dL).' : null,
+    heightWarning: heightProvided && (h < 120 || h > 230) ? 'Height outside 120–230 cm is unusual for an adult and drives the obesity weight adjustment; confirm centimeters, not inches.' : null };
 };
 
 export const calculateICHVolumeReviewed = (items) => {
@@ -182,4 +186,20 @@ export const calculateTNKDoseReviewed = (weightKg, authority = 'guideline') => {
     roundingNote: `Dose and volume rounded to 0.01 mg / 0.01 mL; no additional syringe rounding is applied. Volume assumes the labeled 5 mg/mL reconstituted concentration. This dose reference does not establish IVT eligibility or the treatment time window.${labelNote}`,
     doseTable: authority === 'fda-label' ? labeledBands : [{ minWeight: 0, maxWeight: null, dose: '0.25 mg/kg, maximum 25 mg', vial: 'Dose ÷ 5 mg/mL' }]
   };
+};
+
+// ABC/2 slice-thickness unit check, shown only as a separate Encounter calculator line (calculateICHVolumeReviewed,
+// the Protocols projection, the consultation note and the Trials screener prefill do not use it yet). Kothari 1996: C = number of slices with hemorrhage × slice thickness. A thickness of
+// 1 mm or less with C under half the smaller axial diameter most often means centimeters were typed into the
+// millimeter field (a tenfold underestimate). Thin-slice series pass when the slice count makes C plausible.
+// The 0.5 factor is a heuristic, so the caution never blocks or alters the estimate.
+export const abc2ThicknessCaution = (inputs = {}) => {
+  const values = inputs && typeof inputs === 'object' ? inputs : {};
+  const [a, b, t] = [values.a, values.b, values.thicknessMm].map(reviewedNumber);
+  const n = reviewedNumber(values.numSlices);
+  if ([a, b, t].some(x => x === null || x <= 0) || n === null || !Number.isInteger(n) || n < 1) return null;
+  const cCm = t * n / 10;
+  if (!(t <= 1 && cCm < 0.5 * Math.min(a, b))) return null;
+  const c = Math.round(cCm * 100) / 100;
+  return { cCm: c, text: `C (slices × thickness) = ${c} cm, less than half the smaller axial diameter (${Math.min(a, b)} cm). Confirm slice thickness is entered in millimeters (for example 5, not 0.5); if centimeters were entered, the volume, ICH score and volume-based prompts are underestimated tenfold.` };
 };

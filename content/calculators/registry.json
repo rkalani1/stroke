@@ -152,7 +152,7 @@
       "abcd2-instrument"
     ],
     "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
-    "limits": "For a clinically diagnosed TIA. Historical symptoms and duration need explicit review; the score does not diagnose TIA or determine disposition."
+    "limits": "For a clinically diagnosed TIA. Use the first recorded BP after the TIA, with the event symptoms and duration. Later treatment BP is separate. The score does not diagnose TIA or determine disposition."
   },
   {
     "id": "chadsvasc",
@@ -236,7 +236,7 @@
       "mrs-descriptors-instrument"
     ],
     "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
-    "limits": "Describes the existing baseline mRS entry; does not assign a grade from an interview or forecast recovery. Original descriptor wording retained in paraphrase; primary full-text review remains limited."
+    "limits": "Describes the existing baseline mRS entry; does not assign a grade from an interview or forecast recovery. Original descriptor wording retained in paraphrase; primary full-text review remains limited. Grade 6 (death) is the outcome-reporting convention added to the original 0–5 scale."
   },
   {
     "id": "hunt-hess",

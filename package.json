@@ -1,6 +1,6 @@
 {
   "name": "stroke",
-  "version": "7.7.13",
+  "version": "7.8.0",
   "description": "Encounter workspace with embedded calculations, protocols, Pulsara summaries and Epic note templates.",
   "main": "service-worker.js",
   "scripts": {
@@ -40,6 +40,8 @@
     "test:protocol": "vitest run tests/protocol-currency-guards.test.js tests/public-demo-labels.test.js tests/no-institutional-identifiers.test.js tests/leak-guard.test.js tests/lighthouse-workflow.test.js tests/service-worker.test.js tests/navigation-reorganization.test.js",
     "test:protocol-snapshot": "node ./scripts/snapshot-example-protocols.mjs",
     "test:protocol-snapshot:update": "node ./scripts/snapshot-example-protocols.mjs --update",
+    "test:protocol-tab": "node ./scripts/protocols-tab-lock.mjs",
+    "test:protocol-source": "node ./scripts/protocols-source-lock.mjs",
     "test:unit:watch": "vitest",
     "lint:tokens": "node ./scripts/lint-tokens.mjs",
     "lint:touch-targets": "node ./scripts/lint-touch-targets.mjs",

@@ -22,7 +22,7 @@
       "NINDS",
       "ECASS III"
     ],
-    "summary": "Disabling deficit within 4.5 h: give IVT as fast as possible — tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg) (AHA 2026, COR 1); tenecteplase was noninferior in AcT, ATTEST-2, TRACE-2 and ORIGINAL. Do not thrombolyse mild non-disabling deficits: PRISMS showed no benefit (sICH 3.2 vs 0%) and ARAMIS found DAPT noninferior. LVO: give IVT if eligible and start EVT without waiting for a response; EVT is indicated within 24 h for anterior LVO, including selected large cores, and for basilar occlusion with NIHSS ≥10.",
+    "summary": "Disabling deficit within 4.5 h: give IVT as fast as possible — tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg) (AHA 2026, COR 1); tenecteplase was noninferior in AcT, ATTEST-2, TRACE-2 and ORIGINAL. Do not thrombolyse mild non-disabling deficits: PRISMS showed no benefit (sICH 3.2 vs 0%) and ARAMIS found DAPT noninferior. LVO: give IVT if eligible and start EVT without waiting for a response; EVT is indicated within 24 h for anterior LVO, including selected large cores, and for basilar occlusion with NIHSS ≥10, prestroke mRS 0–1 and PC-ASPECTS ≥6 (COR 1).",
     "recommendations": [
       {
         "text": "In adult AIS patients with disabling deficits (regardless of NIHSS score) who are eligible for IVT, faster treatment is recommended as it improves functional outcomes.",
@@ -54,12 +54,12 @@
       }
     ],
     "consider": [
-      "Is the deficit disabling regardless of the NIHSS total? If not (e.g., isolated sensory symptoms), give DAPT instead of IVT.",
+      "Is the deficit disabling regardless of the NIHSS total? If not (e.g., isolated sensory symptoms), IVT is not recommended (COR 3: No Benefit); use antithrombotics instead: DAPT is COR 1 for noncardioembolic minor stroke (NIHSS ≤3) within 24 h, and NIHSS 4–5 options carry lower grades (see the minor-stroke card).",
       "Do not wait for coagulation results unless an abnormality is suspected, or for MRI to count microbleeds (AHA 2026).",
       "Minor stroke with a visible occlusion: TEMPO-2 found no benefit from tenecteplase and more deaths (5 vs 1%).",
       "Wake-up stroke, large core, basilar, MeVO and the late window have dedicated cards."
     ],
-    "caution": "Use the ischemic protocol for contraindications and dosing; this overview is not an eligibility checklist.",
+    "caution": "Use the ischemic protocol for contraindications and dosing, including recent DOAC intake (IVT after DOAC intake within 48 h: observational cohorts only); this overview is not an eligibility checklist.",
     "sources": [
       {
         "title": "AHA/ASA 2026 acute ischemic stroke guideline — official summary",
@@ -76,6 +76,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-03",
         "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "IVT after recent DOAC intake (cohort)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36807495/",
+        "year": 2023,
+        "type": "Observational study",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (retrospective, off-label use; no eligibility inferred)."
       }
     ],
     "related": [
@@ -94,6 +102,10 @@
       {
         "label": "Wake-up and late-window IVT",
         "href": "#/evidence/extended-window-ivt"
+      },
+      {
+        "label": "Minor stroke DAPT",
+        "href": "#/evidence/minor-stroke-antiplatelets"
       }
     ]
   },
@@ -308,7 +320,7 @@
       "angioedema",
       "orolingual"
     ],
-    "summary": "Any neurological worsening after IVT needs an emergent CT. If hemorrhage is suspected or seen, follow the post-lytic ICH protocol: stop a running thrombolytic, send urgent labs including fibrinogen, and correct the fibrinolytic coagulopathy early — the mainstay of treatment, though based on expert opinion (AHA 2017). Orolingual angioedema occurred in about 1% with tenecteplase or alteplase (ATTEST-2); assess the airway first. Teams must be ready to treat bleeding and angioedema (AHA 2026, COR 1).",
+    "summary": "Any neurological worsening after IVT needs an emergent CT. If hemorrhage is suspected or seen, follow the post-lytic ICH protocol: stop a running thrombolytic, send urgent labs including fibrinogen, and correct the fibrinolytic coagulopathy early — the mainstay of treatment, though based on expert opinion (AHA 2017). Angioedema occurred in about 1% (6 patients per arm) with tenecteplase or alteplase in ATTEST-2; assess the airway first. Teams must be ready to treat bleeding and angioedema (AHA 2026, COR 1).",
     "recommendations": [
       {
         "text": "Healthcare professionals are recommended to be prepared to treat potential emergent adverse effects of IVT, including bleeding complications and angioedema (which may cause partial airway obstruction), to reduce poor clinical outcomes.",
@@ -399,7 +411,7 @@
     "consider": [
       "Check for artifact: a poor contrast bolus or leukoaraiosis can make non-infarcted white matter look like core.",
       "EVT at 6–24 h can be selected on NCCT ASPECTS (AHA 2026, COR 1); perfusion is adjunctive when immediately available (2a).",
-      "Perfusion selection supports IVT at 4.5–9 h without EVT (2a) and for unknown onset up to 24 h from LKW (2a); at 9–24 h with known onset only LVO without EVT access is graded (2b, TRACE-III). Large-core trials also accepted CTP cores (e.g., SELECT2 ≥50 mL)."
+      "AHA 2026 grades perfusion-selected IVT for EVT-ineligible patients at 4.5–9 h from LKW or within 9 h of the sleep midpoint (2a, ais-2026-101); up to 24 h from onset or LKW, wake-up included, only LVO with salvageable penumbra that cannot receive EVT is graded (2b, ais-2026-102; TRACE-III). The 2a for CTP or DWI-PWI after wake-up or unknown onset (ais-2026-53) grades imaging selection, not IVT itself. Large-core trials also accepted CTP cores (e.g., SELECT2 ≥50 mL)."
     ],
     "caution": "Software thresholds estimate tissue fate; they are not exact infarct volumes or stand-alone exclusions.",
     "sources": [
@@ -464,7 +476,7 @@
       "vascular imaging",
       "rapid follow-up"
     ],
-    "summary": "Treat TIA as a stroke warning: MRI with DWI ideally within 24 h (about 40% show infarction, which makes it a stroke), head-and-neck vessel imaging in the ED regardless of ABCD2, and ECG, telemetry and troponin for all. Admit presumed symptomatic >50% extracranial or intracranial stenosis. High-risk TIA (ABCD2 ≥4) or minor stroke within 24 h: aspirin plus clopidogrel with a loading dose for 21 days, then one agent. Discharge only with the workup arranged and TIA-clinic review, preferably within 48 h.",
+    "summary": "Treat TIA as a stroke warning: MRI with DWI ideally within 24 h (about 40% show infarction, which makes it a stroke), head-and-neck vessel imaging in the ED regardless of ABCD2, and ECG, telemetry and troponin for all. Admit presumed symptomatic >50% extracranial or intracranial stenosis. Noncardioembolic high-risk TIA (ABCD2 ≥4) or minor stroke (NIHSS ≤3) within 24 h, without IVT: aspirin plus clopidogrel with a loading dose for 21 days, then one agent (AHA 2026, COR 1). Discharge only with the workup arranged and TIA-clinic review, preferably within 48 h.",
     "recommendations": [
       {
         "text": "Multimodal brain MRI is the preferred method to evaluate for acute ischemic infarct and ideally should be obtained within 24 hours of symptom onset. In cases where MRI with DWI can be obtained without delay, NCCT can be safely avoided in a stable patient with completely resolved symptoms.",
@@ -543,7 +555,7 @@
       "neurocritical care",
       "DNAR"
     ],
-    "summary": "Run the care bundle in the first hours (INTERACT3: better 6-month mRS, cOR 0.86): SBP <140 started early and reached within 1 h; glucose 6.1–7.8 mmol/L (7.8–10.0 with diabetes); temperature ≤37.5 °C; INR <1.5 after warfarin. Do not drop SBP below 130 in mild-to-moderate ICH (AHA 2022, harm; ATACH-2 at 110–139 gave no benefit and more renal adverse events, 9.0 vs 4.0%). Reverse anticoagulation immediately (see the reversal card). Severity scores frame discussion but must not alone limit care; defer new DNAR orders until at least the second full day.",
+    "summary": "Run the care bundle in the first hours (INTERACT3: better 6-month mRS, cOR 0.86): SBP <140 started early and reached within 1 h; glucose 6.1–7.8 mmol/L (≈110–140 mg/dL; 7.8–10.0 mmol/L ≈140–180 mg/dL with diabetes); temperature ≤37.5 °C; INR <1.5 after warfarin. Do not acutely lower SBP below 130 in mild-to-moderate ICH presenting with SBP >150 (AHA 2022, harm; ATACH-2 at 110–139 gave no benefit and more renal adverse events, 9.0 vs 4.0%). Reverse anticoagulation immediately (see the reversal card). Severity scores frame discussion but must not alone limit care; defer new DNAR orders until at least the second full day.",
     "recommendations": [
       {
         "text": "Initiating acute BP treatment within 2 hours of ICH onset and reaching the target within 1 hour can be beneficial to reduce hemorrhage expansion risk and improve functional outcome.",
@@ -654,8 +666,9 @@
     ],
     "consider": [
       "Location, volume, GCS, premorbid function and hours from onset decide which trial applies.",
-      "Craniotomy is a lifesaving option for deteriorating supratentorial ICH (2b); decompressive craniectomy may reduce mortality in comatose patients with large hematomas or refractory ICP (2b).",
-      "Agree on realistic goals with the family before surgery."
+      "Craniotomy is a lifesaving option for deteriorating supratentorial ICH (2b); decompressive craniectomy may be considered to reduce mortality in supratentorial ICH with coma, a large hematoma with significant midline shift, or refractory ICP (2b).",
+      "Agree on realistic goals with the family before surgery.",
+      "Cochrane 2025 (24 RCTs): minimally invasive evacuation may improve good function (RR 1.36, low certainty) and probably lowers mortality (RR 0.71, moderate certainty); most trials had high risk of bias."
     ],
     "caution": "Lower mortality is not the same as better function; do not extend lobar-ICH results to deep or infratentorial bleeds.",
     "sources": [
@@ -674,6 +687,14 @@
         "type": "Guideline",
         "checkedAt": "2026-10-01",
         "access": "Official AHA summary page."
+      },
+      {
+        "title": "Surgery for spontaneous supratentorial ICH (Cochrane review)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40673401/",
+        "year": 2025,
+        "type": "Meta-analysis",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract checked via PubMed."
       }
     ],
     "related": [
@@ -705,7 +726,7 @@
       "nimodipine",
       "hydrocephalus"
     ],
-    "summary": "Secure the aneurysm as early as feasible, preferably within 24 h (AHA 2023, COR 1; ESO 2026 consensus), at a high-volume center. Start enteral nimodipine early (COR 1). Until it is secured: frequent BP checks with short-acting agents, avoiding hypotension, hypertension and swings; ESO suggests targeting about 160 if SBP stays >160–180 after analgesia and nimodipine. Good grade and equally suitable for both: coil rather than clip. No routine antifibrinolytics, statins, magnesium or prophylactic hypervolemia. EVD for acute symptomatic hydrocephalus.",
+    "summary": "Secure the aneurysm as early as feasible, preferably within 24 h (AHA 2023, COR 1; ESO 2026 consensus), at a high-volume center. Start enteral nimodipine early (COR 1). Until it is secured: frequent BP checks with short-acting agents, avoiding hypotension, hypertension and swings; ESO 2026 expert consensus suggests targeting about 160 if SBP stays >160–180 after analgesia and nimodipine. Good grade and equally suitable for both: coil rather than clip. No routine antifibrinolytics, statins, magnesium, endothelin-receptor antagonists or prophylactic hypervolemia. Urgent CSF diversion (EVD and/or lumbar drain) for acute symptomatic hydrocephalus (COR 1).",
     "recommendations": [
       {
         "text": "Surgical or endovascular treatment of the ruptured aneurysm is recommended as early as feasible after presentation, preferably within 24 hours of onset, to improve outcome.",
@@ -738,7 +759,7 @@
     ],
     "consider": [
       "New decline: think rebleeding, hydrocephalus, DCI/vasospasm or seizures — urgent CT ± CTA/CTP.",
-      "Seizure prophylaxis only with high-risk features (MCA aneurysm, high grade, ICH, hydrocephalus, cortical infarct); avoid phenytoin; stop by 7 days after an onset seizure.",
+      "Seizure prophylaxis: AHA 2023 allows it only with high-risk features (MCA aneurysm, high grade, ICH, hydrocephalus, cortical infarct; 2b) and lists phenytoin as harmful; NCS 2026 is conditional (ASM or no ASM; either agent and duration), its expert guidance favoring levetiracetam for ≤3 days unless seizures or EEG features suggest ongoing risk. Seizure at onset: AHA 2023 supports treatment for no more than 7 days (2a).",
       "Keep euvolemia; liberal transfusion (Hb ≤10 g/dL) did not improve 12-month outcome (SAHaRA)."
     ],
     "caution": "Prophylactic hemodynamic augmentation and induced hypervolemia are harmful.",

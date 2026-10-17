@@ -96,6 +96,11 @@ for (const theme of ['light', 'dark']) {
   }
   SEMANTIC_PAIRS.push({ theme, kind: 'place', floor: 4.5, fg: 'c-faint', bg: 'c-surface', note: `${theme}: placeholder (faint) on surface` });
   SEMANTIC_PAIRS.push({ theme, kind: 'body', floor: 4.5, fg: 'c-accent-ink', bg: 'c-accent-soft', note: `${theme}: accent-ink on accent-soft` });
+  // Selected segments, pressed chips and the current desktop nav item (shell.css selected-state block).
+  SEMANTIC_PAIRS.push({ theme, kind: 'body', floor: 4.5, fg: 'c-on-accent', bg: 'c-accent-2', note: `${theme}: on-accent text on the accent fill` });
+  for (const bg of ['c-surface', 'c-muted']) {
+    SEMANTIC_PAIRS.push({ theme, kind: 'nontext', floor: 3.0, fg: 'c-accent-2', bg, note: `${theme}: selected fill against ${bg}` });
+  }
   for (const s of ['critical', 'confirm', 'caution', 'reference']) {
     SEMANTIC_PAIRS.push({ theme, kind: 'body', floor: 4.5, fg: `c-${s}`, bg: `c-${s}-soft`, note: `${theme}: ${s} on ${s}-soft` });
   }

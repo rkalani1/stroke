@@ -981,8 +981,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/34414300/",
     "year": 2021,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-17",
+    "access": "PMC full text read (PMC8370083); recommendations 1–2 and their GRADE strength and quality verified. Interpret with newer evidence.",
     "topicIds": [
       "minor-stroke-antiplatelets"
     ]
@@ -1053,8 +1053,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/34414299/",
     "year": 2021,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-17",
+    "access": "PubMed abstract verified; full recommendations not reviewed. Interpret with newer evidence.",
     "topicIds": [
       "tia-evaluation"
     ]
@@ -1159,8 +1159,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/37923968/",
     "year": 2023,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-17",
+    "access": "PMC full text (PMC10959839) read 2026-10-17; evidence tables not reviewed.",
     "topicIds": [
       "neuroprognostication"
     ]
@@ -1171,8 +1171,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42786382/",
     "year": 2026,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "Recommendations with GRADE strength and certainty from the archived full publisher text (reviewed 2026-09-30); quoted in the topic cards.",
+    "checkedAt": "2026-10-17",
+    "access": "Recommendations with GRADE strength and certainty from the archived full publisher text (reviewed 2026-09-30); quoted in the topic cards. Abstract rechecked 2026-10-17.",
     "topicIds": [
       "antithrombotic-reversal",
       "ich-management"
@@ -1184,10 +1184,11 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42552475/",
     "year": 2026,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-17",
+    "access": "PMC full text (PMC13642444) read 2026-10-17; supplementary tables not reviewed.",
     "topicIds": [
-      "poststroke-seizures"
+      "poststroke-seizures",
+      "sah"
     ]
   },
   {
@@ -1281,7 +1282,7 @@
     "year": 2023,
     "type": "Guideline",
     "checkedAt": "2026-10-01",
-    "access": "Recommendation text from the archived full-text transcription (reviewed 2026-09-30); quoted in the topic cards with class and level of evidence. Correction 38011240 renumbers seizure-section references only.",
+    "access": "Recommendation text from the archived full-text transcription (reviewed 2026-09-30); quoted in the topic cards with class and level of evidence. Correction 38011240 (Stroke 2023;54:e516) is indexed; its body was not re-read.",
     "topicIds": [
       "sah",
       "sah-critical-care",

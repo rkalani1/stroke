@@ -3,16 +3,25 @@ import { useReferenceData } from '../reference-resource.js';
 import { buildSearchIndex, searchIndex, groupResults } from '../quick-search-index.js';
 import { focusEncounterTarget } from '../encounter-overview.js';
 import { revealProtocolTarget } from '../protocol-navigation.js';
+import { screenerTrials } from '../evidence/screenerTrials.js';
+import { enrollmentLabel } from '../evidence/screener-eval.js';
 
 const SUGGESTIONS = [
   ['Dose by weight', 'qr-dose'], ['BP targets', 'qr-bp'], ['Reversal', 'qr-reversal'],
   ['Post-lytic sICH', 'qr-sich'], ['Angioedema', 'qr-angioedema'], ['NIHSS', '#/encounter/nihss'], ['ICH score', '#/encounter/ich-score']
 ];
+// The Trials database profiles, built once so the memoized index keeps its identity across
+// renders. Status leads the subtitle (the database's own label) so truncation never hides it;
+// the full study name is searchable as body text so it ranks below Evidence matches.
+export const SEARCH_TRIALS = screenerTrials.map(trial => ({
+  acronym: trial.acronym, nct: trial.externalMetadata?.nct, keywords: trial.externalMetadata?.registryAcronym,
+  subtitle: [enrollmentLabel(trial), trial.exactFullStudyName].filter(Boolean).join(' · '), body: trial.exactFullStudyName
+}));
 const groupId = group => `qs-group-${group.toLowerCase().replace(/[^a-z]+/g, '-')}`;
 
 // One search across navigation, protocols, calculators, evidence and trials.
 // Results are links; selecting one only changes the route.
-export default function QuickSearch({ open, onClose, version, trials = [], protocolSub = 'ischemic', onFocusEncounter = focusEncounterTarget }) {
+export default function QuickSearch({ open, onClose, version, trials = SEARCH_TRIALS, protocolSub = 'ischemic', onFocusEncounter = focusEncounterTarget }) {
   const dialog = useRef(null), input = useRef(null), list = useRef(null);
   const [query, setQuery] = useState(''), [active, setActive] = useState(0), [expanded, setExpanded] = useState([]);
   const { data, failed } = useReferenceData(version);
@@ -39,11 +48,12 @@ export default function QuickSearch({ open, onClose, version, trials = [], proto
     if (record.more) { setExpanded(value => [...value, record.more]); input.current?.focus(); return; }
     onClose();
     if (record.external) { window.open(record.href, '_blank', 'noopener,noreferrer'); return; }
-    // Re-selecting the current route fires no hashchange, so reveal the target directly.
+    // Re-selecting the current route fires no hashchange: reveal a protocol target directly,
+    // and replay the route change for other targets (an Encounter tool scrolls and focuses).
     // Encounter targets go through the app's hand-off so focus runs after the panel is
     // visible; wait for the dialog to close first, since closing returns focus to its opener.
     if (record.focus) { requestAnimationFrame(() => requestAnimationFrame(() => onFocusEncounter(record.focus))); return; }
-    if (location.hash === record.href) { const target = record.href.match(/^#\/protocols\/[a-z]+\/([a-z-]+)$/)?.[1]; if (target) requestAnimationFrame(() => revealProtocolTarget(target)); }
+    if (location.hash === record.href) { const target = record.href.match(/^#\/protocols\/[a-z]+\/([a-z-]+)$/)?.[1]; requestAnimationFrame(() => target ? revealProtocolTarget(target) : window.dispatchEvent(new HashChangeEvent('hashchange'))); }
     else location.hash = record.href;
   };
   const onKeyDown = event => {
@@ -61,7 +71,8 @@ export default function QuickSearch({ open, onClose, version, trials = [], proto
       <div className="quick-search__field">
         <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
         <input ref={input} type="text" inputMode="search" enterKeyHint="go" role="combobox" aria-expanded={flat.length > 0} aria-controls={flat.length ? 'quick-search-results' : undefined} aria-activedescendant={flat[active] ? `qs-${flat[active].id}` : undefined} aria-label="Search protocols, calculators, evidence and trials" placeholder="Search protocols, calculators, evidence, trials…" value={query} onChange={event => setQuery(event.target.value)} onKeyDown={onKeyDown} autoComplete="off" spellCheck="false" />
-        <button type="button" className="quick-search__close" onClick={onClose} aria-label="Close search">Esc</button>
+        {/* The visible word starts the accessible name: "Esc" with a keyboard, "Close" on touch (shell.css). */}
+        <button type="button" className="quick-search__close" onClick={onClose}><span className="quick-search__close-key">Esc<span className="sr-only">, close search</span></span><span className="quick-search__close-touch">Close<span className="sr-only"> search</span></span></button>
       </div>
       <div ref={list} className="quick-search__results">
         {!query.trim() && <div className="quick-search__empty"><p>Jump to</p><ul className="quick-search__chips">{SUGGESTIONS.map(([label, target]) => { const href = target.startsWith('#') ? target : `#/protocols/${protocolSub}/${target}`; return <li key={target}><a href={href} onClick={event => { event.preventDefault(); go({ href }); }}>{label}</a></li>; })}</ul>{!data && !failed && <p className="quick-search__hint">Loading evidence index…</p>}</div>}

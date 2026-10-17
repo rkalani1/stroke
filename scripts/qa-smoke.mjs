@@ -202,6 +202,14 @@ async function main() {
       await page.getByLabel('Disposition', { exact: true }).selectOption('Pending');
       const overview = page.getByRole('complementary', { name: 'Encounter at a glance' });
       assert((await page.locator('#calc-nihss').innerText()).includes('0/42'));
+      // 7.8.0: acute ischemic core entries also include BP, glucose, the discovery time
+      // for an unknown LKW and both clinician decisions.
+      assert((await overview.innerText()).includes('core entries missing'));
+      await page.getByLabel('Systolic BP (mmHg)', { exact: true }).fill('150'); await page.getByLabel('Diastolic BP (mmHg)', { exact: true }).fill('80');
+      await page.getByLabel('Glucose (mg/dL)', { exact: true }).fill('110');
+      await page.evaluate(() => { for (const d of document.querySelectorAll('#tabpanel-encounter details:not([open])')) d.open = true; });
+      const discovery = await localStamp(page); await page.getByLabel('Discovery date (local)', { exact: true }).fill(discovery.split('T')[0]); await page.getByLabel('Discovery time (local)', { exact: true }).fill(discovery.split('T')[1]);
+      for (const type of ['IVT', 'EVT']) await page.getByLabel(`${type} clinician decision`, { exact: true }).selectOption('Specialist review');
       assert((await overview.innerText()).includes('Core entries recorded'));
       const nav = page.getByRole('navigation', { name: 'Encounter sections' });
       for (const [name, id] of [['Context', 'context'], ['Examination', 'exam'], ['Decision review', 'safety'], ['Documentation', 'handoff']]) {
@@ -410,9 +418,9 @@ async function main() {
         await gcs.getByLabel('GCS assessment limitation (optional)', { exact: true }).fill('Intubation');
         assert.equal(await page.locator('[data-generated-note]').count(),0);
         let note = await (await generate(page)).inputValue();
-        assert(note.includes('GCS E4 VNT M6; total not reported')); assert(note.includes('limitation: Intubation')); assert(!note.includes('GCS E4 V5 M6 = 15/15'));
+        assert(note.includes('GCS E4 V(NT) M6; total not reported')); assert(note.includes('limitation: Intubation')); assert(!note.includes('GCS E4 V5 M6 = 15/15'));
         await page.getByRole('radio', { name: 'Video', exact: true }).check();
-        assert((await (await generate(page)).inputValue()).includes('GCS E4 VNT M6; total not reported'));
+        assert((await (await generate(page)).inputValue()).includes('GCS E4 V(NT) M6; total not reported'));
         await gcs.getByLabel('GCS Verbal', { exact: true }).selectOption('5');
         note = await (await generate(page)).inputValue(); assert(note.includes('GCS E4 V5 M6 = 15/15')); assert(!note.includes('limitation: Intubation'));
         await page.evaluate(() => { location.hash = '#/tools/nascet'; });

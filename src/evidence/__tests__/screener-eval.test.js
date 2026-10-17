@@ -100,7 +100,6 @@ describe('evaluateTrialEligibility — placeholder / soon handling', () => {
     state.onsetVal = 30;
     state.onsetUnit = 'days';
     state.age = 60;
-    state.singleAntiplateletSoc = true;
     const p = buildScreenerParams(state);
     const r = evaluateTrialEligibility(trialByAcronym('CLARITY'), p);
     expect(r.status).toBe('soon');
@@ -177,7 +176,7 @@ describe('evaluateAll — bucketing on representative patients', () => {
     expect(pendingAcr).toContain('SCOUTS-3');
     const scouts = res.pending.find((i) => i.trial.acronym === 'SCOUTS-3');
     expect(scouts.pendingFields).toEqual(
-      expect.arrayContaining(['Age', 'Rehab unit placement', 'Language spoken'])
+      expect.arrayContaining(['Age', 'Rehab unit placement'])
     );
     // Not double-counted.
     expect(res.eligible.map((i) => i.trial.acronym)).not.toContain('SCOUTS-3');
@@ -255,14 +254,17 @@ describe('screening summary generation', () => {
     state.anteriorCirculation = true;
     const res = evaluateAll(state);
     const text = res.briefingNote;
-    expect(text).toMatch(/^TRIAL SCREEN — first pass \(registry checked 2026-10-03\)/);
+    expect(text).toMatch(/^TRIAL SCREEN — first pass \(registry checked 2026-10-17\)\nStatuses are overall registry statuses at that check; local site activation is not confirmed\./);
     expect(text).toContain('Inputs: Ischemic stroke · LKW 12.0 h · age 65 · NIHSS 8 · pre-mRS 0 · ASPECTS 8');
     expect(res.pending.length).toBeGreaterThan(0);
-    expect(text).toMatch(new RegExp(`ACT NOW — possible candidates \\(${res.pending.length}\\)`));
-    expect(text).toMatch(/- SISTER \(NCT05948566\) · Recruiting · Phase 2 · window 4\.5 – 24 hours/);
+    // Every pending study still has an unknown modeled fact, so none is a potential match.
+    expect(res.pending.every(item => item.completeness === 'insufficient-information')).toBe(true);
+    expect(text).toContain('POTENTIAL MATCH (0) — every modeled criterion met; not a definitive match\n- None under the entered facts.');
+    expect(text).toMatch(new RegExp(`INSUFFICIENT INFORMATION \\(${res.pending.length}\\) — at least one modeled fact unknown`));
+    expect(text).toMatch(/- SISTER \(NCT05948566\) · Recruiting \(registry\) · Phase 2 · window 4\.5 – 24 hours · \d+ modeled facts? unknown/);
     expect(text).toContain('Pathway: Consult Stroke Research Coordinator');
     // Studies for another stroke type are omitted; only informative misses remain.
-    expect(text).toContain('NOT MET (1)\n- TESTED: Pre-stroke mRS must be exactly 3 or 4');
+    expect(text).toContain('DOES NOT MEET DOCUMENTED CRITERIA (1)\n- TESTED: Pre-stroke mRS must be exactly 3 or 4');
     expect(text).not.toMatch(/Requires ICH/);
     expect(text).not.toContain(GENERIC_CONFIRMATION);
     expect(text.trim().split('\n').pop()).toBe('First-pass registry screen — confirm full criteria, local activation and consent. Screening does not determine treatment eligibility.');
@@ -277,9 +279,9 @@ describe('screening summary generation', () => {
     // CLARITY's window ends at 180 days; INTERCEPT stays possible only if the
     // patient was on OAC at the index event (6–52-week group), which is unknown.
     expect(res.briefingNote).toContain('Inputs: TIA · LKW 6.7 mo');
-    expect(res.briefingNote).toMatch(/ACT NOW — possible candidates \(1\)\n- INTERCEPT \(NCT05723926\)/);
+    expect(res.briefingNote).toMatch(/INSUFFICIENT INFORMATION \(1\) — at least one modeled fact unknown\n- INTERCEPT \(NCT05723926\)/);
     expect(res.briefingNote).toContain('Confirm timing group: <6 weeks from index stroke (any OAC status) OR 6–52 weeks if on OAC at the index stroke');
-    expect(res.briefingNote).toContain('NOT MET (1)\n- CLARITY: Stroke/TIA occurred > 180 days ago');
+    expect(res.briefingNote).toContain('DOES NOT MEET DOCUMENTED CRITERIA (1)\n- CLARITY: Stroke/TIA occurred > 180 days ago');
   });
 });
 

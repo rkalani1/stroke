@@ -114,7 +114,7 @@
       "TIA"
     ],
     "question": "What was the benefit–bleeding tradeoff of adding clopidogrel?",
-    "population": "4,881 patients with minor ischemic stroke or high-risk TIA at international sites.",
+    "population": "4,881 adults with minor ischemic stroke (NIHSS ≤3) or high-risk TIA (ABCD² ≥4), randomized within 12 hours at 269 sites in 10 countries (82.8% in the US).",
     "comparison": "Clopidogrel plus aspirin versus aspirin alone for the 90-day trial period.",
     "result": "Major ischemic events (ischemic stroke, myocardial infarction or ischemic vascular death) occurred in 5.0% versus 6.5% at 90 days (HR 0.75; 95% CI 0.59–0.95). Major hemorrhage occurred in 0.9% versus 0.4% (HR 2.32; 95% CI 1.10–4.87).",
     "limits": "Stopped early. Most ischemic events occurred in the first week; the 90-day design alone does not establish the optimal DAPT duration or eligibility for other stroke populations.",
@@ -124,8 +124,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/29766750/",
         "year": 2018,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked."
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract and PMC full text (PMC6193486) checked."
       }
     ],
     "relatedTopic": "minor-stroke-antiplatelets"
@@ -699,7 +699,7 @@
       "minimally invasive"
     ],
     "question": "Does early minimally invasive evacuation improve recovery after selected ICH?",
-    "population": "300 patients with lobar or anterior basal ganglia ICH of 30–80 mL; treatment assignment within 24 hours.",
+    "population": "300 adults aged 18–80 (GCS 5–14, NIHSS ≥5, premorbid mRS 0–1) with lobar or anterior basal ganglia ICH of 30–80 mL, randomized within 24 hours of last known well; primary thalamic, infratentorial and large-IVH cases excluded.",
     "comparison": "Minimally invasive evacuation plus guideline-based medical management versus medical management alone.",
     "result": "Mean utility-weighted mRS (0–1; higher is better) at 180 days was 0.458 versus 0.374 (difference 0.084; 95% Bayesian credible interval 0.005–0.163). The benefit appeared attributable to lobar hemorrhage; 30-day mortality was 9.3% versus 18.0%.",
     "limits": "Adaptive enrollment later restricted inclusion to lobar ICH. Findings concern the tested technique, timing and selected population, not all ICH surgery. Postoperative rebleeding with deterioration occurred in 3.3%.",
@@ -709,8 +709,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/38598795/",
         "year": 2024,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked."
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract checked; registry eligibility (NCT02880878) checked 2026-10-17."
       }
     ],
     "relatedTopic": "ich-surgery"
@@ -732,7 +732,7 @@
       "ICH"
     ],
     "question": "What were andexanet’s efficacy and safety tradeoffs in factor Xa inhibitor-associated ICH?",
-    "population": "530 patients with acute ICH after factor Xa inhibitor use within 15 hours; the interim efficacy analysis included 452.",
+    "population": "530 patients with acute ICH (0.5–60 mL; GCS ≥7; NIHSS ≤35; baseline scan within 6 h of onset; no surgery planned within 12 h) after factor Xa inhibitor use within 15 hours; the interim efficacy analysis included 452.",
     "comparison": "Andexanet versus usual care; 85.5% of usual-care patients received PCC.",
     "result": "Composite hemostatic efficacy was 67.0% versus 53.1% (adjusted difference 13.4 percentage points; 95% CI 4.6–22.2). Thrombotic events occurred in 10.3% versus 5.6%, including ischemic stroke in 6.5% versus 1.5%. No appreciable difference in 30-day mRS or mortality was reported.",
     "limits": "Hemostatic efficacy is not functional benefit. NCS/SCCM 2026 conditionally recommends 4F-PCC rather than andexanet, and andexanet was withdrawn from the US market effective 22 December 2025.",
@@ -742,8 +742,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/38749032/",
         "year": 2024,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked."
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract checked; registry eligibility (NCT03661528) checked 2026-10-17."
       }
     ],
     "relatedTopic": "antithrombotic-reversal"
@@ -778,7 +778,7 @@
         "access": "Primary abstract read via PubMed/NLM. March and June 2025 corrections identified; publisher correction bodies inaccessible (403). No full corrected-report review."
       }
     ],
-    "relatedTopic": "ich-management"
+    "relatedTopic": "caa-ich-recurrence"
   },
   {
     "id": "mind",
@@ -828,7 +828,7 @@
       "thalamic hemorrhage"
     ],
     "question": "Does decompressive craniectomy improve outcome in severe deep ICH?",
-    "population": "Adults aged 18–75 with severe basal ganglia or thalamic ICH; 197 randomized participants gave delayed consent.",
+    "population": "Adults aged 18–75 with severe basal ganglia or thalamic ICH (GCS 8–13, NIHSS 10–30, stable volume 30–100 mL) randomized within 66 hours of onset; 197 randomized participants gave delayed consent (median volume 57 mL).",
     "comparison": "Decompressive craniectomy plus best medical treatment versus best medical treatment alone.",
     "result": "At 180 days, mRS 5–6 occurred in 44% versus 58% (adjusted risk ratio 0.77; 95% CI 0.59–1.01; p=0.057). The report characterized the evidence as weak.",
     "limits": "Stopped early for funding; survival often involved severe disability. This is a decompression study in deep ICH, not evidence for every hemorrhage location or evacuation technique. Two indexed correction bodies were inaccessible.",
@@ -838,8 +838,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/38761811/",
         "year": 2024,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM. June and July 2024 corrections identified; publisher correction bodies inaccessible (403). No full corrected-report review."
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract read via PubMed/NLM. June and July 2024 corrections identified; publisher correction bodies inaccessible (403). No full corrected-report review. Registry eligibility (NCT02258919) checked 2026-10-17."
       }
     ],
     "relatedTopic": "ich-surgery"
@@ -1686,7 +1686,7 @@
       "MRI"
     ],
     "question": "Does alteplase help unknown-onset stroke with DWI–FLAIR mismatch?",
-    "population": "503 patients with unknown onset, a DWI lesion and no marked FLAIR change; thrombectomy candidates excluded.",
+    "population": "503 patients with unknown onset, a DWI lesion and no marked FLAIR change; patients with planned thrombectomy excluded.",
     "comparison": "IV alteplase versus placebo.",
     "result": "mRS 0–1 at 90 days occurred in 53.3% vs 41.8% (adjusted OR 1.61; 95% CI 1.09–2.36). Deaths 4.1% vs 1.2% and symptomatic ICH 2.0% vs 0.4% (both not significant).",
     "limits": "Stopped early for lack of funding (503 of 800 planned). Applies to MRI mismatch selection, not perfusion or CT-only selection.",
@@ -1696,7 +1696,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/29766770/",
         "year": 2018,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-17",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -1937,7 +1937,7 @@
   {
     "id": "inspires",
     "title": "INSPIRES — dual antiplatelets started within 72 hours",
-    "headline": "DAPT up to 72 h: stroke 7.3 vs 9.2%; bleeding 0.9 vs 0.4%",
+    "headline": "DAPT up to 72 h: stroke 7.3 vs 9.2%; moderate-to-severe bleeding 0.9 vs 0.4%",
     "year": 2023,
     "settings": [
       "on-call",
@@ -2016,8 +2016,8 @@
       "occlusion",
       "thrombolysis"
     ],
-    "question": "Does tenecteplase help minor stroke (NIHSS 0–5) with intracranial occlusion?",
-    "population": "886 patients at 48 hospitals in 10 countries, enrolled within 12 hours.",
+    "question": "Does tenecteplase help minor stroke (NIHSS 0–5) with intracranial occlusion or a focal perfusion abnormality?",
+    "population": "886 patients with NIHSS 0–5 and intracranial occlusion or focal perfusion abnormality at 48 hospitals in 10 countries, enrolled within 12 hours.",
     "comparison": "Tenecteplase 0.25 mg/kg versus non-thrombolytic standard care.",
     "result": "Return to baseline mRS at 90 days occurred in 72% vs 75% (RR 0.96; 95% CI 0.88–1.04). Deaths 5% vs 1% (adjusted HR 3.8; 1.4–10.2); symptomatic ICH 2% vs <1%.",
     "limits": "Stopped early for futility; open-label.",
@@ -2027,7 +2027,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/38768626/",
         "year": 2024,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-17",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -2260,7 +2260,7 @@
         "access": "Primary abstract and indexed notices checked."
       }
     ],
-    "relatedTopic": "acute-bp"
+    "relatedTopic": "ich-management"
   },
   {
     "id": "atach-2",
@@ -2292,7 +2292,7 @@
         "access": "Primary abstract and indexed notices checked."
       }
     ],
-    "relatedTopic": "acute-bp"
+    "relatedTopic": "ich-management"
   },
   {
     "id": "interact3",
@@ -2425,7 +2425,7 @@
       "blood pressure"
     ],
     "question": "Did SBP <140 improve function after successful EVT?",
-    "population": "306 randomized patients with large-vessel ischemic stroke and mTICI ≥2b reperfusion at 19 South Korean centers; 305 were confirmed eligible.",
+    "population": "306 randomized patients with large-vessel ischemic stroke, mTICI ≥2b reperfusion and SBP ≥140 mmHg on two readings within 2 h of recanalization, at 19 South Korean centers; 305 were confirmed eligible.",
     "comparison": "SBP <140 versus 140–180 mmHg for 24 hours after enrollment.",
     "result": "Three-month independence (mRS 0–2) was 39.4% versus 54.4% (adjusted OR 0.56; 95% CI 0.33–0.96). Symptomatic ICH was 9.0% versus 8.1%; the difference was not significant. Stroke-related death was 7.7% versus 5.4%, also not significantly different.",
     "limits": "Stopped early for safety concerns. The result concerns the tested lowering strategy after successful reperfusion; it does not establish a universal target for unsuccessful EVT or individualized reperfusion-guided management.",
@@ -2457,18 +2457,18 @@
       "reperfusion-guided"
     ],
     "question": "Do reperfusion-guided SBP targets after successful EVT improve outcome?",
-    "population": "440 patients with anterior LVO and mTICI ≥2b after EVT at 11 Spanish centers (mean age 75).",
-    "comparison": "SBP 140–160 for mTICI 2b or 100–140 for 2c/3 for 72 hours versus SBP <180.",
+    "population": "440 previously independent adults (prestroke mRS 0–2) with anterior-circulation LVO and mTICI ≥2b after EVT within 24 h at 11 Spanish centers (mean age 75); elevated SBP was not required.",
+    "comparison": "SBP 140–160 for mTICI 2b or 100–140 for 2c/3 for 72 hours, using antihypertensives or vasopressors as needed, versus guideline management (SBP <180).",
     "result": "mRS 0–2 at 90 days occurred in 60.0% vs 47.1% (difference 13.3 points; 95% CI 4.1–22.6). Hemorrhagic transformation 22.3% vs 31.6%; symptomatic ICH 3.5% vs 3.9%; mortality 15.4% vs 15.6% (abstract figures).",
-    "limits": "Open-label single-country trial (446 enrolled, 440 analyzed); it tests the combined strategy rather than each target. Mortality figures are from the abstract narrative.",
+    "limits": "Open-label, single-country, stopped early for lack of funding (446 of 786 planned; 440 analyzed). Only 9.8% had mTICI 2b, with no clear benefit in that subgroup. The authors call it hypothesis-generating. It postdates AHA/ASA 2026 (COR 3: Harm for SBP <140 after mTICI 2b–3) and does not change that guidance.",
     "sources": [
       {
         "title": "HOPE (post-EVT BP) primary report",
         "url": "https://pubmed.ncbi.nlm.nih.gov/42258192/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
-        "access": "Primary abstract verified via PubMed."
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract and PMC full text (PMC13247842) read."
       }
     ],
     "relatedTopic": "acute-bp"
@@ -2728,7 +2728,7 @@
     "question": "Did early lumbar drainage improve outcome after aneurysm treatment?",
     "population": "287 analyzable adults with aneurysmal SAH across clinical grades; aneurysms were clipped or coiled within 48 hours.",
     "comparison": "Additional lumbar drainage at 5 mL/hour, begun within 72 hours, versus standard care.",
-    "result": "Six-month mRS 3–6 occurred in 32.6% versus 44.8% (RR 0.73; 95% CI 0.52–0.98). Secondary infarction at discharge was 28.5% versus 39.9%. Drain complications included a pressure gradient stopping drainage, local infection and a retained torn catheter.",
+    "result": "Six-month mRS 3–6 occurred in 32.6% versus 44.8% (RR 0.73; 95% CI 0.52–0.98). Secondary infarction at discharge was 28.5% versus 39.9%. Drain complications included a pressure gradient stopping drainage, a local skin infection needing excision and a torn-off drain needing surgical removal.",
     "limits": "Lumbar-drain contraindications included absent/compressed basal cisterns and therapeutic anticoagulation. Use the full neurosurgical drainage and pressure-monitoring protocol; this was not unrestricted drainage for every SAH presentation.",
     "sources": [
       {

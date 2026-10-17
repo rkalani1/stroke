@@ -78,6 +78,7 @@ function Card({ state, update, definition, selected, visible, copyContext }) {
     </div>}
     <Result definition={definition} progress={progress} parts={parts} />
     {progress.value?.bang && <p className="workspace-help">BANG: BMI &gt;35 {progress.value.bang.bmi ? 'Yes' : 'No'} · age &gt;50 {progress.value.bang.age ? 'Yes' : 'No'} · neck &gt;40 cm {progress.value.bang.neck ? 'Yes' : 'No'} · male {progress.value.bang.male ? 'Yes' : 'No'} (unrounded values).</p>}
+    {progress.value?.heightWarning && <p className="workspace-result" data-tone="caution" role="status">{progress.value.heightWarning}</p>}
     <div className="calc-actions"><button type="button" className="workspace-secondary-action" disabled={!copyText} onClick={copy}>Copy result</button></div>
     {currentCopy && <div role="status" className="workspace-result">{currentCopy.failed ? <><p>Clipboard unavailable. Select this result and copy it manually.</p><label className="workspace-field"><span>Result text</span><textarea ref={fallback} aria-label={`${definition.name} copy fallback`} readOnly rows={6} value={currentCopy.text} /></label></> : `${definition.name} copied.`}</div>}
     {encounterUse && <EncounterUse state={state} definition={definition} complete={progress.complete} edit={edit} update={update} />}
@@ -93,7 +94,7 @@ export default function SupplementaryCalculators({ state, update, tool, query = 
     const target = [...(root.current?.querySelectorAll('details[id]') || [])].find(node => node.id === `calc-${tool}`);
     if (target) { target.open = true; target.scrollIntoView?.({block:'start'}); (target.querySelector('select,input') || target.querySelector('summary'))?.focus({preventScroll:true}); }
   }, [tool]);
-  return <div ref={root} className="encounter-workflow supplementary-calculators" aria-label="Worksheets">
+  return <div ref={root} className="encounter-workflow supplementary-calculators" role="group" aria-label="Worksheets">
     {tool && !query.trim() && !calculatorDefinitions.some(item => item.id === tool) && <p role="status">Calculator unavailable.</p>}
     <h2 hidden={!calculatorDefinitions.some(visible)}>Scores and grading scales</h2>
     {[...new Set(calculatorDefinitions.map(item => item.category))].map(category => <section key={category} aria-label={category} hidden={!calculatorDefinitions.some(item => item.category === category && visible(item))}><h3>{category}</h3>{calculatorDefinitions.filter(item => item.category === category).map(definition => <Card key={definition.id} state={state} update={update} definition={definition} selected={tool === definition.id} visible={visible(definition)} copyContext={`${tool || ''}\n${query}`} />)}</section>)}

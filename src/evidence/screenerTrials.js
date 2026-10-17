@@ -15,6 +15,7 @@ import trialsData from './screenerTrials.json' with { type: 'json' };
 export const CTGOV_FIRST_PASS_NOTE =
   'First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.';
 
-export const screenerTrials = trialsData;
+// The shared first-pass note is stored once and leads every profile's sourceGaps.
+export const screenerTrials = trialsData.map(trial => ({ ...trial, sourceGaps: [CTGOV_FIRST_PASS_NOTE, ...(trial.sourceGaps || [])] }));
 
 export default screenerTrials;

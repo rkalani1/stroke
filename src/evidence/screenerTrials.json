@@ -6,16 +6,15 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires presentation to the enrolling hospital within 24 hours and arterial puncture within 2 hours of qualifying imaging; this screening summary does not encode every STEP domain exclusion.",
-      "Registry status rechecked 2026-10-03: RECRUITING; last update posted 2025-12-04 (recorded 2026-10-01). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2025-12-04 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "hyperacute",
     "enrollmentWindowText": "EVT window (≤ 24 hours)",
     "externalMetadata": {
       "nct": "NCT06289985",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06289985",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2025-12-04",
       "localActivationStatus": "not_assessed",
@@ -44,10 +43,6 @@
       "Significant mass effect with midline shift >5 mm; intracranial tumor (except small meningioma); acute intracranial hemorrhage",
       "Contrast anaphylaxis precluding EVT, unfavorable vascular access, known serious/terminal illness or life expectancy <6 months, or pre-existing disease confounding outcome assessment"
     ],
-    "optimisticDefaults": {
-      "nihss": 3,
-      "vessel": "ica_m1"
-    },
     "eligibility": {
       "criteria": [
         {
@@ -68,8 +63,8 @@
           "field": "onsetHours",
           "operator": "<=",
           "value": 24,
-          "error": "Presentation > 24 hours after last known well",
-          "matchedLabel": "Within the 24-hour presentation window"
+          "error": "More than 24 h from LKW at screening (registry: presentation to the enrolling hospital ≤ 24 h of LKW and puncture ≤ 2 h of qualifying imaging)",
+          "matchedLabel": "Within 24 h of LKW at screening (registry: presentation ≤ 24 h; confirm arrival time)"
         },
         {
           "field": "aspects",
@@ -87,10 +82,10 @@
         },
         {
           "operator": "or",
-          "error": "Does not meet Branch 1 (NIHSS 0-5 + ICA/M1) or Branch 2 (NIHSS ≥ 8 + non-dominant/co-dominant M2/M3)",
+          "error": "Does not meet Branch 1 (NIHSS 0-5 + intracranial ICA/M1) or Branch 2 (NIHSS ≥ 8 + non-dominant/co-dominant M2/M3)",
           "branches": [
             {
-              "label": "Meets Branch 1 (Low NIHSS LVO: NIHSS 0-5 + ICA/M1)",
+              "label": "Meets Branch 1 (Low NIHSS LVO: NIHSS 0-5 + intracranial ICA/M1)",
               "criteria": [
                 {
                   "field": "vessel",
@@ -187,18 +182,17 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov excludes EVT with clot engagement, any IV thrombolysis, Xa inhibitors or direct thrombin inhibitors within 48 h, GP IIb/IIIa within 14 days, and multiple bleeding-risk laboratory thresholds; not all are encoded here.",
-      "Registry status checked 2026-10-03: RECRUITING. Registry last-update date not captured in this check. This is the overall study status; local site activation and recruitment availability have not been verified."
+      "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-10-02 (recorded 2026-10-17). This is the overall study status; local site activation and recruitment availability have not been verified."
     ],
     "timeCategory": "hyperacute",
     "enrollmentWindowText": "4.5 – 24 hours",
     "externalMetadata": {
       "nct": "NCT05948566",
       "registryUrl": "https://clinicaltrials.gov/study/NCT05948566",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "RECRUITING",
-      "registryLastUpdatePosted": null,
+      "registryLastUpdatePosted": "2026-10-02",
       "localActivationStatus": "not_assessed",
       "phase": "PHASE2",
       "studyType": "INTERVENTIONAL",
@@ -279,7 +273,8 @@
           "operator": "==",
           "value": true,
           "error": "Factor Xa inhibitor or direct thrombin inhibitor within 48 h",
-          "pendingLabel": "Confirm no Xa inhibitor or direct thrombin inhibitor within 48 h (and INR ≤ 1.7 if on VKA)"
+          "pendingLabel": "Confirm no Xa inhibitor or direct thrombin inhibitor within 48 h (and INR ≤ 1.7 if on VKA)",
+          "residualPending": "Confirm INR ≤ 1.7 if on warfarin/VKA"
         },
         {
           "field": "exIvtGivenOrPlanned",
@@ -311,18 +306,18 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "Criteria-table reference only: this profile is not modeled in the screener. The registry inclusion criteria conflict on whether an associated intracranial ICA-T/M1/proximal M2 occlusion is required (criterion 3 requires it; criterion 9 says \"with or without\"). Resolve with the approved protocol and study team.",
-      "Registry status checked 2026-10-03: RECRUITING; last update posted 2025-12-17 (recorded 2026-10-01). This is the overall study status; local site activation and recruitment availability have not been verified."
+      "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-10-02 (recorded 2026-10-17). This is the overall study status; local site activation and recruitment availability have not been verified.",
+      "The registry intervention list (checked 2026-10-17) names MT+CAS with IV antiplatelet, MT+CAS with oral antiplatelet and MT+CAT with oral antiplatelet, while the description still states 1:1 randomization of stenting vs non-stenting; confirm the current arm structure with the study team."
     ],
     "timeCategory": "hyperacute",
     "enrollmentWindowText": "≤ 16 hours",
     "externalMetadata": {
       "nct": "NCT05611242",
       "registryUrl": "https://clinicaltrials.gov/study/NCT05611242",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "RECRUITING",
-      "registryLastUpdatePosted": "2025-12-17",
+      "registryLastUpdatePosted": "2026-10-02",
       "localActivationStatus": "not_assessed",
       "phase": "PHASE3",
       "studyType": "INTERVENTIONAL",
@@ -365,16 +360,15 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "Assessment of pre-stroke disability during hospitalization and investigator determination that disability is not temporary are not encoded in this screening summary.",
-      "Registry status rechecked 2026-10-03: RECRUITING; last update posted 2026-09-02 (recorded 2026-10-01). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-09-02 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "acute_subacute",
     "enrollmentWindowText": "Presentation ≤ 24 hours",
     "externalMetadata": {
       "nct": "NCT05911568",
       "registryUrl": "https://clinicaltrials.gov/study/NCT05911568",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-09-02",
       "localActivationStatus": "not_assessed",
@@ -387,7 +381,7 @@
     "exactInclusionCriteria": [
       "Age ≥ 18 years",
       "Acute ischemic stroke presenting to the study hospital within 24 hours of last known well",
-      "Caused by occlusion of ICA, M1, or dominant M2",
+      "Caused by intracranial occlusion of the ICA, M1, or dominant M2",
       "mRS 3-4 for at least 3 months prior to stroke onset",
       "Presenting CT ASPECTS ≥ 3 or MRI ASPECTS ≥ 4",
       "NIHSS ≥ 6"
@@ -397,10 +391,6 @@
       "Assessment of pre-stroke functional status cannot be performed during the hospital stay",
       "Pre-stroke disability deemed temporary by the investigator"
     ],
-    "optimisticDefaults": {
-      "preMrs": 3,
-      "vessel": "ica_m1"
-    },
     "eligibility": {
       "criteria": [
         {
@@ -424,7 +414,7 @@
             "ica_m1",
             "dominant_m2"
           ],
-          "error": "Requires ICA, M1, or dominant M2 occlusion",
+          "error": "Requires intracranial ICA, M1, or dominant M2 occlusion",
           "matchedLabel": "Vessel is {value}"
         },
         {
@@ -489,17 +479,16 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires spontaneous non-traumatic basal ganglia ICH >=20 mL by ABC/2, pre-ICH mRS 0-2, randomization <=16 hours from LKW, and surgery initiated <120 min from randomization.",
       "CTA/MRA without underlying vascular lesion and goals of care to pursue life-saving therapies (no early withdrawal of care <7 days); detailed registry criteria, coagulation labs (INR <=1.4, aPTT <=40s, platelets >=100k), and consent requirements must be verified through the active protocol.",
-      "Registry status rechecked 2026-10-03: RECRUITING; last update posted 2026-09-15 (recorded 2026-10-01). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-09-15 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "hyperacute",
     "enrollmentWindowText": "≤ 16 hours",
     "externalMetadata": {
       "nct": "NCT07260916",
       "registryUrl": "https://clinicaltrials.gov/study/NCT07260916",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-09-15",
       "localActivationStatus": "not_assessed",
@@ -530,9 +519,6 @@
       "Pregnancy (negative test required if of childbearing potential)",
       "Pre-existing DNR/DNI status or history of severe dementia; remaining registry exclusions require confirmation"
     ],
-    "optimisticDefaults": {
-      "ichVolume": 20
-    },
     "eligibility": {
       "criteria": [
         {
@@ -602,7 +588,8 @@
           "operator": "==",
           "value": true,
           "error": "Excludes suspected secondary cause",
-          "pendingLabel": "Confirm no secondary cause (AVM, aneurysm, tumor, SAH)"
+          "pendingLabel": "Confirm no suspected secondary cause (vascular malformation incl. cavernous malformation/AVM, aneurysm, neoplasm, hemorrhagic transformation of an infarct, venous infarct)",
+          "residualPending": "Confirm no cavernous or other vascular malformation, hemorrhagic transformation of an underlying ischemic infarct, or venous infarct; the shared secondary-cause answer does not cover these MINUTE exclusions"
         },
         {
           "field": "exMidbrain",
@@ -628,8 +615,9 @@
         }
       ],
       "manualPending": [
-        "Confirm CTA/MRA excludes an underlying vascular lesion, surgery can start <120 minutes after randomization, and goals of care meet the protocol",
-        "Confirm coagulation criteria (INR ≤1.4, aPTT ≤40 s, platelets ≥100,000; reversal not allowed), registry details, activation rules and consent requirements through the active protocol"
+        "Confirm CTA/MRA excludes an underlying vascular lesion, randomization within 2 hours of arrival at the randomizing center, surgery can start <120 minutes after randomization, and goals of care meet the protocol",
+        "Confirm coagulation criteria (INR ≤1.4, aPTT ≤40 s, platelets ≥100,000; reversal not allowed), registry details, activation rules and consent requirements through the active protocol",
+        "Confirm no active infection (fever ≥100.7 °F or open draining wound) and no comorbidity expected to compromise survival or follow-up through 365 days"
       ]
     }
   },
@@ -640,18 +628,18 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov excludes oral anticoagulant (VKA or DOAC) use within 7 days, LMWH within 24 hours, pro-coagulant drugs within 24 hours, symptomatic thrombotic/vaso-occlusive disease within 90 days, recent carotid/coronary/cerebrovascular stenting, and planned comfort care; not all are encoded here.",
-      "Registry status checked 2026-10-03: RECRUITING. Registry last-update date not captured in this check. This is the overall study status; local site activation, EFIC community consultation and recruitment availability have not been verified."
+      "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-08-20 (recorded 2026-10-17). This is the overall study status; local site activation, EFIC community consultation and recruitment availability have not been verified.",
+      "FASTEST Part 1 (NCT03496883; ACTIVE_NOT_RECRUITING on 2026-10-17) was reported in Lancet 2026 (PMID 41653933; doi:10.1016/S0140-6736(26)00097-8): stopped for futility, with no 180-day mRS difference (adjusted common OR 1.09, 95% CI 0.79–1.51); life-threatening thromboembolic complications within 4 days in 15 (<5%) vs 4 (1%) participants (RR 3.41, 95% CI 1.14–10.15); ICH growth 3.7 mL lower at 24 h. Part 2 is a separate registry record restricted to spot-sign-positive ≤ 120 min or any ≤ 90 min. Emerging evidence, not a guideline recommendation."
     ],
     "timeCategory": "hyperacute",
     "enrollmentWindowText": "≤ 120 min (spot sign +) or ≤ 90 min (any)",
     "externalMetadata": {
       "nct": "NCT07227246",
       "registryUrl": "https://clinicaltrials.gov/study/NCT07227246",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "RECRUITING",
-      "registryLastUpdatePosted": null,
+      "registryLastUpdatePosted": "2026-08-20",
       "localActivationStatus": "not_assessed",
       "phase": "PHASE3",
       "studyType": "INTERVENTIONAL",
@@ -673,7 +661,7 @@
       "Pre-existing disability mRS > 2",
       "Symptomatic thrombotic or vaso-occlusive event within 90 days (infarct, MI, PE, DVT, unstable angina); acute ST elevation",
       "Brainstem hemorrhage (cerebellar permitted)",
-      "LMWH or pro-coagulant drug within 24 hours; platelets < 50,000/µL; planned comfort care; pregnancy or ≤ 12 weeks post-partum"
+      "LMWH or pro-coagulant drug within 24 hours; unfractionated heparin with abnormal PTT; platelets < 50,000/µL; planned comfort care; known pregnancy, ≤ 12 weeks post-partum and/or lactating"
     ],
     "eligibility": {
       "criteria": [
@@ -762,53 +750,69 @@
           "field": "exPregnancy",
           "operator": "==",
           "value": true,
-          "error": "Pregnancy or ≤12 weeks post-partum",
-          "pendingLabel": "Confirm not pregnant or ≤12 weeks post-partum",
+          "error": "Pregnancy, ≤12 weeks post-partum or lactating",
+          "pendingLabel": "Confirm not pregnant, ≤12 weeks post-partum or lactating",
           "residualPending": "Confirm not ≤12 weeks post-partum"
         }
       ],
       "manualPending": [
         "Confirm IVH limits (<2/3 of one lateral ventricle and <1/3 of both)",
         "Confirm CTA spot sign if treatment will be 90–120 min from LKW",
-        "Confirm no thrombotic/vaso-occlusive event within 90 days, no LMWH or pro-coagulant within 24 h, no stenting/endarterectomy within 90 days, platelets >50,000 and no planned comfort care"
+        "Confirm no thrombotic/vaso-occlusive event within 90 days, no LMWH or pro-coagulant within 24 h, no UFH with abnormal PTT, no stenting/endarterectomy within 90 days, platelets >50,000, not lactating, and no planned comfort care"
       ]
     }
   },
   {
     "acronym": "CLARITY",
-    "exactFullStudyName": "Cilostazol for Prevention of Recurrent Stroke",
-    "sourceHypothesisText": "A Phase 3 randomized trial evaluating cilostazol for prevention of recurrent stroke in patients with stroke or TIA within 180 days who are taking aspirin or clopidogrel, but not both.",
+    "exactFullStudyName": "Cilostazol for Prevention of Recurrent Stroke Trial",
+    "sourceHypothesisText": "A Phase 3 randomized, placebo-controlled trial testing whether cilostazol 100 mg added to usual antithrombotic therapy reduces ischemic stroke, acute myocardial infarction or ischemic vascular death after ischemic stroke or high-risk TIA (ABCD2 score ≥ 6) within 180 days.",
     "status": "soon",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
-      "Public CT.gov eligibility text for NCT07174414 does not state the older draft's stroke-subtype or TIA risk-score thresholds; those criteria are not used in this screening summary.",
-      "Registry status rechecked 2026-10-03: NOT_YET_RECRUITING; last update posted 2025-09-16 (recorded 2026-10-01). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "CT.gov eligibility (read 2026-10-17; last update posted 2026-10-15) requires high-risk TIA (ABCD2 score ≥ 6) and ≥ 2 listed vascular risk factors; ABCD2 is asked as a confirmation question and the risk factors are listed for confirmation, not modeled.",
+      "Registry status rechecked 2026-10-17: NOT_YET_RECRUITING; last update posted 2026-10-15 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified.",
+      "Before this update the profile recorded the registry version first posted 2025-09-16 (aspirin or clopidogrel, not both; no atrial fibrillation exclusion). Version history was not accessible, so when the eligibility text changed is unverified. Confirm current antithrombotic eligibility with the study team."
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "≤ 180 days",
     "externalMetadata": {
       "nct": "NCT07174414",
       "registryUrl": "https://clinicaltrials.gov/study/NCT07174414",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "NOT_YET_RECRUITING",
-      "registryLastUpdatePosted": "2025-09-16",
+      "registryLastUpdatePosted": "2026-10-15",
       "localActivationStatus": "not_assessed",
       "phase": "PHASE3",
       "studyType": "INTERVENTIONAL"
     },
-    "conciseBedsideSummary": "Phase 3 trial of cilostazol in stroke or TIA within 180 days while taking aspirin or clopidogrel, but not both.",
+    "conciseBedsideSummary": "Phase 3 trial of cilostazol vs placebo added to single or dual antithrombotic therapy (aspirin, clopidogrel and/or ticagrelor) after ischemic stroke or high-risk TIA (ABCD2 ≥ 6) within 180 days, with ≥ 2 listed risk factors. Excludes atrial fibrillation, mechanical heart valve or LVAD.",
     "pathway": "Consult Stroke Research Coordinator / Stroke Neurology",
     "noContactInfo": true,
     "exactInclusionCriteria": [
-      "Stroke or TIA within 180 days",
       "Age ≥ 40 years",
-      "Currently taking aspirin or clopidogrel, but not both"
+      "Ischemic stroke or high-risk TIA (ABCD2 score ≥ 6)",
+      "Can be randomized within 180 days after the ischemic stroke or high-risk TIA",
+      "Single or dual antithrombotic therapy with aspirin, clopidogrel and/or ticagrelor per international and/or national guidelines",
+      "Two or more risk factors: age ≥ 65, hypertension, diabetes mellitus, ischemic stroke other than the qualifying event, current smoking, peripheral arterial disease, coronary artery disease including prior MI, aortic atherosclerotic plaque ≥ 4 mm, or ≥ 50% stenosis or occlusion of a major intracranial (ICA, M1, M2, A1, P1, vertebral, basilar) or extracranial (ICA, vertebral) artery",
+      "In the site investigator's opinion, medically stable, capable of participating, and willing and able to attend follow-up",
+      "Able to receive study drug by mail and to begin taking it promptly after receipt",
+      "Signed informed consent by the patient or legally authorized representative"
     ],
     "exactExclusionCriteria": [
-      "Spontaneous brain hemorrhage within the last 2 years",
-      "Moderate to severe heart failure",
-      "Life expectancy < 6 months"
+      "Atrial fibrillation, mechanical heart valve, or left ventricular assist device",
+      "Use of prohibited medication (as specified in the manual of procedures)",
+      "Modified Rankin Scale 5",
+      "Planned cardiac surgery, percutaneous coronary intervention, carotid endarterectomy or stenting (eligible post-procedure)",
+      "History of symptomatic non-traumatic intracerebral hemorrhage within the last 2 years",
+      "Known thrombocytopenia (platelets ≤ 100,000/µL)",
+      "Severe liver dysfunction (active hepatitis or Child-Pugh B or C)",
+      "Pregnant, breastfeeding, or of child-bearing potential and not on birth control",
+      "Confirmed diagnosis of heart failure with current or prior symptoms or signs (e.g., paroxysmal nocturnal dyspnea, reduced exercise tolerance, ankle swelling, elevated jugular venous pressure)",
+      "Hypersensitivity to cilostazol or any component of the formulation",
+      "Currently enrolled in an investigational intervention study",
+      "Life expectancy < 6 months",
+      "Does not allow contact with a surrogate or health care practitioner for follow-up information",
+      "Incarcerated or compulsorily detained for psychiatric treatment"
     ],
     "eligibility": {
       "criteria": [
@@ -824,11 +828,43 @@
           "pendingLabel": "Confirm event type is Ischemic Stroke or TIA"
         },
         {
+          "operator": "or",
+          "error": "Requires ischemic stroke or high-risk TIA (ABCD2 score ≥ 6)",
+          "pendingLabel": "Confirm high-risk TIA: ABCD2 score ≥ 6 (registry inclusion)",
+          "branches": [
+            {
+              "label": "",
+              "criteria": [
+                {
+                  "field": "classification",
+                  "operator": "==",
+                  "value": "ischemic"
+                }
+              ]
+            },
+            {
+              "label": "High-risk TIA (ABCD2 score ≥ 6)",
+              "criteria": [
+                {
+                  "field": "classification",
+                  "operator": "==",
+                  "value": "tia"
+                },
+                {
+                  "field": "abcd2",
+                  "operator": ">=",
+                  "value": 6
+                }
+              ]
+            }
+          ]
+        },
+        {
           "field": "onsetDays",
           "operator": "<=",
           "value": 180,
           "error": "Stroke/TIA occurred > 180 days ago",
-          "matchedLabel": "Matches the CT.gov event-window criterion: stroke or TIA within 180 days"
+          "matchedLabel": "Within the registry's 180-day randomization window after ischemic stroke or high-risk TIA"
         },
         {
           "field": "age",
@@ -838,32 +874,42 @@
           "matchedLabel": "Age is {value} (meets ≥ 40)"
         },
         {
-          "field": "singleAntiplateletSoc",
+          "field": "antithromboticSoc",
           "operator": "==",
           "value": true,
-          "error": "Requires standard-of-care single antiplatelet (Aspirin or Clopidogrel)",
-          "matchedLabel": "Taking single antiplatelet (aspirin/clopidogrel)",
-          "pendingLabel": "Confirm patient is on aspirin or clopidogrel, but not both"
+          "error": "Requires guideline-based single or dual antithrombotic therapy with aspirin, clopidogrel and/or ticagrelor",
+          "matchedLabel": "On guideline-based single or dual antithrombotic therapy (aspirin, clopidogrel and/or ticagrelor)",
+          "pendingLabel": "Confirm single or dual antithrombotic therapy with aspirin, clopidogrel and/or ticagrelor per guidelines"
         }
       ],
       "exclusions": [
         {
+          "field": "afibHistory",
+          "operator": "==",
+          "value": true,
+          "error": "Excludes atrial fibrillation (registry exclusion also covers mechanical heart valve and LVAD)",
+          "pendingLabel": "Confirm no atrial fibrillation, mechanical heart valve or left ventricular assist device",
+          "residualPending": "Confirm no mechanical heart valve or left ventricular assist device"
+        },
+        {
           "field": "exBrainBleed2y",
           "operator": "==",
           "value": true,
-          "error": "Excludes spontaneous brain hemorrhage within the last 2 years",
-          "pendingLabel": "Confirm no spontaneous brain bleed in the past 2 years"
+          "error": "Excludes symptomatic non-traumatic intracerebral hemorrhage within the last 2 years",
+          "pendingLabel": "Confirm no symptomatic non-traumatic intracerebral hemorrhage in the past 2 years"
         },
         {
           "field": "exCongestiveHeartFailure",
           "operator": "==",
           "value": true,
-          "error": "Excludes moderate-to-severe heart failure / congestive heart failure",
-          "pendingLabel": "Confirm no moderate/severe congestive heart failure"
+          "error": "Excludes a confirmed diagnosis of heart failure with current or prior symptoms or signs",
+          "pendingLabel": "Confirm no diagnosis of heart failure with current or prior symptoms or signs (e.g., paroxysmal nocturnal dyspnea, reduced exercise tolerance, ankle swelling, elevated JVP)"
         }
       ],
       "manualPending": [
-        "Wait for trial enrollment to officially open"
+        "Confirm ≥ 2 listed risk factors: age ≥ 65, hypertension, diabetes, ischemic stroke other than the qualifying event, current smoking, peripheral arterial disease, coronary artery disease including prior MI, aortic plaque ≥ 4 mm, or ≥ 50% stenosis/occlusion of a major intracranial (ICA, M1, M2, A1, P1, vertebral, basilar) or extracranial (ICA, vertebral) artery",
+        "Confirm no mRS 5, prohibited medication, planned cardiac surgery/PCI/carotid endarterectomy or stenting (eligible post-procedure), platelets ≤ 100,000/µL, severe liver dysfunction (active hepatitis or Child-Pugh B/C), pregnancy, breastfeeding or childbearing potential without birth control, cilostazol hypersensitivity, concurrent investigational intervention study, life expectancy < 6 months, refusal of surrogate contact, or incarceration",
+        "Registry status was NOT_YET_RECRUITING at the recorded check; confirm the study is open at this site before referral"
       ]
     }
   },
@@ -874,16 +920,15 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires planned VKA/DOAC use for the trial duration, SAPT plus OAC tolerability, and detailed bilateral carotid anatomy criteria not fully encoded here.",
-      "Registry status rechecked 2026-10-03: RECRUITING; last update posted 2026-08-19 (recorded 2026-10-01). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-08-19 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "< 6 weeks (any OAC status) or 6–52 weeks if on OAC at index stroke",
     "externalMetadata": {
       "nct": "NCT05723926",
       "registryUrl": "https://clinicaltrials.gov/study/NCT05723926",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-08-19",
       "localActivationStatus": "not_assessed",
@@ -907,12 +952,15 @@
       "Contraindication to additional single antiplatelet therapy for 6 months from randomization",
       "≥50% stenosis, or high-risk plaque of the common carotid, internal carotid, subclavian, vertebral, or intracranial arteries that has not been treated with a revascularization procedure",
       "Pregnancy, or non-postmenopausal and unwilling to use effective contraception",
-      "Left atrial appendage occlusion device implanted after the most recent ischemic stroke, or planned LAA occlusion"
+      "Pre-existing percutaneous left atrial appendage occlusion device implanted after the most recent ischemic stroke, or planned left atrial appendage occlusion procedure",
+      "Visualized active (acute/subacute, free-floating) cervical or intracranial arterial thrombus on CT, MR or DS angiography at risk of causing additional stroke/brain injury",
+      "Previously documented aneurysm ≥6 mm of the internal carotid artery or its branches (ophthalmic, posterior communicating, anterior choroidal, anterior cerebral, middle cerebral)",
+      "Prior surgery or radiation of the neck at the implantation segment",
+      "Overt systemic infection",
+      "Known sensitivity to nickel or titanium metals, or their alloys",
+      "Active participation in another investigational drug or device treatment trial",
+      "Any other condition that, in the investigator's opinion, may adversely affect patient safety or limit trial completion"
     ],
-    "optimisticDefaults": {
-      "afibHistory": true,
-      "takingOac": true
-    },
     "eligibility": {
       "criteria": [
         {
@@ -1009,7 +1057,11 @@
       "manualPending": [
         "Confirm positive neuroimaging for the index event; a TIA-classified event (symptoms resolving <24 h) qualifies only with an imaging-positive infarct",
         "Confirm planned VKA/DOAC use for the trial duration; investigator assesses conditions affecting safety or trial completion",
-        "Confirm bilateral protocol-specified carotid measurements and absence of current ≥50% ICA stenosis, independently of the prior untreated vascular-disease exclusion"
+        "Confirm bilateral protocol-specified carotid measurements and absence of current ≥50% ICA stenosis, independently of the prior untreated vascular-disease exclusion",
+        "Confirm no other contraindication to oral anticoagulation (e.g., known hereditary or acquired coagulation disorder, or recurrent major bleeding)",
+        "Confirm no visualized active (acute/subacute, free-floating) cervical or intracranial arterial thrombus at risk of causing further stroke, no previously documented aneurysm ≥6 mm of the ICA or its branches (ophthalmic, posterior communicating, anterior choroidal, ACA, MCA), and no prior neck surgery or radiation at the implantation segment",
+        "Confirm no percutaneous left atrial appendage occlusion device implanted after the most recent ischemic stroke and no planned left atrial appendage occlusion procedure",
+        "Confirm no overt systemic infection, no known sensitivity to nickel or titanium (or their alloys), and no active participation in another investigational drug or device treatment trial"
       ]
     }
   },
@@ -1020,16 +1072,15 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov includes renal, hepatic, hematologic, pregnancy, blood pressure, allergy, competing-trial, and AVM-security exclusions not fully encoded here.",
-      "Registry status rechecked 2026-10-03: RECRUITING; last update posted 2026-05-08 (recorded 2026-10-01). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-05-08 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "14 – 180 days",
     "externalMetadata": {
       "nct": "NCT03907046",
       "registryUrl": "https://clinicaltrials.gov/study/NCT03907046",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-05-08",
       "localActivationStatus": "not_assessed",
@@ -1050,9 +1101,6 @@
       "prior ICH within 12 months of index stroke",
       "A separate mandatory indication for anticoagulation (e.g., DVT/PE) or antiplatelet therapy (e.g., recent coronary stent)"
     ],
-    "optimisticDefaults": {
-      "afibHistory": true
-    },
     "eligibility": {
       "criteria": [
         {
@@ -1124,16 +1172,15 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov also excludes women of childbearing potential, known severe dementia, familial hypercholesterolemia or PCSK9-inhibitor use, statin contraindications, competing experimental-therapy trials and planned withdrawal of care; these are listed for confirmation, not modeled.",
-      "Registry status rechecked 2026-10-03: RECRUITING; last update posted 2026-04-21 (recorded 2026-10-01). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-04-21 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "acute_subacute",
     "enrollmentWindowText": "≤ 7 days",
     "externalMetadata": {
       "nct": "NCT03936361",
       "registryUrl": "https://clinicaltrials.gov/study/NCT03936361",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-04-21",
       "localActivationStatus": "not_assessed",
@@ -1163,10 +1210,6 @@
       "Contraindication to continuing or resuming statin therapy",
       "Indication that withdrawal of care will be implemented for the qualifying ICH"
     ],
-    "optimisticDefaults": {
-      "ichLocation": "lobar",
-      "statin": true
-    },
     "eligibility": {
       "criteria": [
         {
@@ -1218,7 +1261,8 @@
           "operator": "==",
           "value": true,
           "error": "Excludes suspected secondary cause",
-          "pendingLabel": "Confirm no secondary cause (AVM, aneurysm, tumor, SAH)"
+          "pendingLabel": "Confirm no suspected secondary cause for the qualifying ICH, such as an underlying vascular abnormality or tumor, trauma, venous infarction, or hemorrhagic transformation of an ischemic infarct",
+          "residualPending": "Confirm no venous infarction or hemorrhagic transformation of an ischemic infarct; the shared secondary-cause answer does not cover these SATURN exclusions"
         },
         {
           "field": "exIchScore3",
@@ -1255,16 +1299,18 @@
     "status": "closed",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "This screening summary cannot distinguish sporadic CAA age >=50 from Dutch-type CAA age >=30 with E693Q APP mutation, and it does not encode ALT/AST, recent investigational agent, or amyloid-antibody exclusions.",
-      "Registry status rechecked 2026-10-03: ACTIVE_NOT_RECRUITING; last update posted 2026-09-18 (recorded 2026-10-01). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status rechecked 2026-10-17: ACTIVE_NOT_RECRUITING; last update posted 2026-09-18 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "Chronic",
+    "databaseClassifications": [
+      "ich"
+    ],
     "externalMetadata": {
       "nct": "NCT06393712",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06393712",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "ACTIVE_NOT_RECRUITING",
       "registryLastUpdatePosted": "2026-09-18",
       "localActivationStatus": "not_assessed",
@@ -1352,16 +1398,15 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires CT/MRI proof of acute ischemic infarction or intraparenchymal hemorrhage within 30 days and includes oxygen, aspiration-risk, sedative, surgery, and anticipated rehab length-of-stay exclusions not fully encoded here.",
-      "Registry status rechecked 2026-10-03: RECRUITING; last update posted 2026-08-13 (recorded 2026-10-01). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-08-13 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "acute_subacute",
     "enrollmentWindowText": "≤ 30 days",
     "externalMetadata": {
       "nct": "NCT06722755",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06722755",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-08-13",
       "localActivationStatus": "not_assessed",
@@ -1419,17 +1464,6 @@
           "error": "Must have inpatient rehabilitation placement and expected length of stay ≥ 5 nights",
           "matchedLabel": "Inpatient rehabilitation placement confirmed",
           "pendingLabel": "Confirm inpatient rehabilitation placement and anticipated length of stay at least 5 nights"
-        },
-        {
-          "field": "language",
-          "operator": "in",
-          "value": [
-            "english",
-            "spanish"
-          ],
-          "error": "Must be English or Spanish speaking",
-          "matchedLabel": "Language is English or Spanish",
-          "pendingLabel": "Confirm patient speaks English or Spanish"
         }
       ],
       "exclusions": [
@@ -1468,6 +1502,9 @@
           "error": "Excludes stroke related to tumor, vascular malformation, or SAH",
           "pendingLabel": "Confirm stroke was not caused by tumor, vascular malformation, or SAH"
         }
+      ],
+      "manualPending": [
+        "Confirm the consent-giver (patient or legally authorized representative) can be consented in English or Spanish"
       ]
     }
   },
@@ -1478,16 +1515,15 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires SAFE score <=8 within 48-96 hours, Day 90 in-person availability, and MRI/TMS contraindication screening not fully encoded here.",
-      "Registry status rechecked 2026-10-03: RECRUITING; last update posted 2026-08-20 (recorded 2026-10-01). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-08-20 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "acute_subacute",
     "enrollmentWindowText": "24 – 96 hours",
     "externalMetadata": {
       "nct": "NCT05338697",
       "registryUrl": "https://clinicaltrials.gov/study/NCT05338697",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-08-20",
       "localActivationStatus": "not_assessed",
@@ -1635,16 +1671,15 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires UEFM 25-45, at least 30% corticospinal pathway preservation on MRI, observable motor output to TMS, and additional surgical/device safety screening not fully encoded here.",
-      "Registry status rechecked 2026-10-03: RECRUITING; last update posted 2026-04-13 (recorded 2026-10-01). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-04-13 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "≥ 6 months",
     "externalMetadata": {
       "nct": "NCT06506279",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06506279",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-04-13",
       "localActivationStatus": "not_assessed",
@@ -1670,10 +1705,6 @@
       "History of spontaneous hemorrhagic stroke",
       "Aphasia or cognitive deficits preventing communication of pain/discomfort or understanding motor testing and rehabilitation tasks"
     ],
-    "optimisticDefaults": {
-      "age": 45,
-      "currentMrs": 3
-    },
     "eligibility": {
       "criteria": [
         {
@@ -1684,11 +1715,12 @@
           "matchedLabel": "Ischemic Stroke classification selected"
         },
         {
-          "field": "onsetMonths",
+          "field": "onsetDays",
           "operator": ">=",
-          "value": 6,
+          "value": 184,
           "error": "Requires at least 6 months after ischemic cortical stroke",
-          "matchedLabel": "Stroke occurred at least 6 months ago"
+          "matchedLabel": "At least 6 calendar months (≥ 184 days) since the index ischemic stroke",
+          "pendingLabel": "Confirm at least 6 calendar months since the index ischemic cortical stroke"
         },
         {
           "field": "age",
@@ -1771,6 +1803,7 @@
         }
       ],
       "manualPending": [
+        "Confirm the index ischemic stroke involved the cortex (registry: ischemic cortical stroke)",
         "Confirm UEFM 25-45, corticospinal pathway preservation, and TMS motor output requirements",
         "Confirm current post-stroke mRS 3–4 separately from pre-stroke function; consent and surgical/device suitability require study-team review",
         "Shoulder subluxation, adhesive capsulitis or contracture requires pain/range-of-motion screening and enrolling-clinician approval, not automatic exclusion",
@@ -1785,18 +1818,17 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires ARAT 18-44, Box & Block affected arm >=1 block/60 seconds, ability to perform 3 exercise examples, and self-signed consent/behavioral contract; not all are encoded here.",
-      "Registry status rechecked 2026-10-03: RECRUITING; last update posted 2026-09-09 (recorded 2026-10-01). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-10-09 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "90 – 150 days",
     "externalMetadata": {
       "nct": "NCT06682429",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06682429",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "RECRUITING",
-      "registryLastUpdatePosted": "2026-09-09",
+      "registryLastUpdatePosted": "2026-10-09",
       "localActivationStatus": "not_assessed",
       "phase": "NA",
       "studyType": "INTERVENTIONAL",
@@ -1815,14 +1847,11 @@
     ],
     "exactExclusionCriteria": [
       "mRS prior to stroke of >2",
-      "a new stroke has occurred since index stroke",
+      "a new symptomatic stroke has occurred since the index stroke",
       "a separate stroke occurred within 30 days prior to index stroke",
       "life expectancy < 9 months",
       "botulinum toxin to the paretic arm received in the prior 3 months or expected by the 8-month visit"
     ],
-    "optimisticDefaults": {
-      "age": 45
-    },
     "eligibility": {
       "criteria": [
         {
@@ -1883,8 +1912,8 @@
           "field": "exRecurrentStroke",
           "operator": "==",
           "value": true,
-          "error": "Excludes recurrent stroke since index stroke",
-          "pendingLabel": "Confirm no recurrent stroke since the index stroke"
+          "error": "Excludes a new symptomatic stroke since the index stroke",
+          "pendingLabel": "Confirm no new symptomatic stroke since the index stroke"
         },
         {
           "field": "exRecentStroke30d",
@@ -1925,8 +1954,8 @@
     "referenceOnly": true,
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
-      "Registry status rechecked 2026-10-03: ACTIVE_NOT_RECRUITING; last update posted 2026-09-25 (recorded 2026-10-01). No new enrollment. The registry intervention list still includes the rivaroxaban, ticagrelor and clopidogrel arms; arm-level changes are not verified here.",
+      "Registry status rechecked 2026-10-17: ACTIVE_NOT_RECRUITING; last update posted 2026-10-13 (recorded 2026-10-17). No new enrollment. The registry intervention list still includes the rivaroxaban, ticagrelor and clopidogrel arms; arm-level changes are not verified here.",
+      "Registry primary outcomes at this check (each up to 12 months): parenchymal ICH or non-ICH major hemorrhage; and ischemic stroke, intracerebral hemorrhage or vascular death.",
       "Partial profile retained for reference; it is not modeled in the screener and is not a treatment recommendation or local activation record."
     ],
     "timeCategory": "acute_subacute",
@@ -1934,9 +1963,9 @@
     "externalMetadata": {
       "nct": "NCT05047172",
       "registryUrl": "https://clinicaltrials.gov/study/NCT05047172",
-      "verificationDate": "2026-10-03",
+      "verificationDate": "2026-10-17",
       "registryStatus": "ACTIVE_NOT_RECRUITING",
-      "registryLastUpdatePosted": "2026-09-25",
+      "registryLastUpdatePosted": "2026-10-13",
       "localActivationStatus": "not_assessed",
       "phase": "PHASE3",
       "studyType": "INTERVENTIONAL"

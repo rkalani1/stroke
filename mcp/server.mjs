@@ -76,11 +76,18 @@ server.registerTool('calc_alteplase_dose',
 server.registerTool('calc_crcl',
   { title: 'Creatinine clearance', description: 'Adult Cockcroft-Gault estimate with rawValue for renal thresholds and one-decimal value for display. Confirm drug-specific weight convention and stable creatinine; this is not a dialysis indication.', inputSchema: {
       age: z.number().finite().min(18).max(120), weight: z.number().finite().positive().max(350),
-      sex: z.enum(['male', 'female']), creatinine: z.number().finite().min(0.1).describe('Serum creatinine mg/dL'),
+      sex: z.enum(['male', 'female']), creatinine: z.number().finite().min(0.1).describe('Serum creatinine in mg/dL (if reported in µmol/L, divide by 88.4)'),
       heightCm: z.number().finite().positive().max(300).optional(),
     } },
-  async ({ age, weight, sex, creatinine, heightCm }) => ok({ tool: 'calc_crcl', result: calculateCrClReviewed(age, weight, sex === 'female' ? 'F' : 'M', creatinine, heightCm),
-    ...(heightCm !== undefined && (heightCm < 120 || heightCm > 230) ? { heightWarning: 'Height outside 120–230 cm is unusual for an adult and drives the obesity weight adjustment; confirm centimeters, not inches.' } : {}) }));
+  async ({ age, weight, sex, creatinine, heightCm }) => {
+    const reviewed = calculateCrClReviewed(age, weight, sex === 'female' ? 'F' : 'M', creatinine, heightCm);
+    // Cockcroft–Gault defines the estimate only; the legacy renal-category bands have no maintained source here,
+    // so agents compare rawValue with the specific drug label's CrCl thresholds instead.
+    const { label, renalCategory, isLow, isBorderline, ...result } = reviewed || {};
+    return ok({ tool: 'calc_crcl', result: reviewed && { ...result, thresholdNote: 'No renal-impairment category is assigned; compare rawValue with the specific drug label CrCl thresholds.' },
+      ...(reviewed?.unitWarning ? { creatinineWarning: reviewed.unitWarning } : {}),
+      ...(reviewed?.heightWarning ? { heightWarning: reviewed.heightWarning } : {}) });
+  });
 
 server.registerTool('calc_dawn_eligibility',
   { title: 'DAWN EVT eligibility', description: 'Partial DAWN age/NIHSS/core/time screen (6–24h), not complete EVT eligibility. A positive partial screen returns eligible:null.', inputSchema: {
@@ -94,6 +101,7 @@ server.registerTool('calc_defuse3_eligibility',
   { title: 'DEFUSE-3 EVT eligibility', description: 'Partial DEFUSE-3 age/NIHSS/perfusion/time screen (6–16h), not complete EVT eligibility. penumbraMl is the legacy name for TOTAL Tmax>6s hypoperfused volume, including core. A positive partial screen returns eligible:null.', inputSchema: {
       coreMl: z.number().nonnegative(), penumbraMl: z.number().nonnegative(),
       timeFromLKWh: z.number().finite().nonnegative(), nihss: z.number().int().min(0).max(42), age: z.number().finite().positive().max(120),
+      aspects: z.number().int().min(0).max(10).optional().describe('Reviewed NCCT ASPECTS; DEFUSE 3 excluded ASPECTS <6 when enrolled on CT perfusion'),
     } },
   async (a) => a.penumbraMl < a.coreMl
     ? toolError('penumbraMl is the TOTAL Tmax>6s hypoperfused volume and includes the core, so it cannot be below coreMl. Check whether the mismatch (penumbra-only) volume was entered instead.')

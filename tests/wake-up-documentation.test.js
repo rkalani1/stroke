@@ -94,7 +94,7 @@ describe('canonical wake-up screen documentation', () => {
     expect(text).toContain('CTP (EXTEND): partial source screen met; complete eligibility and drug-specific treatment decision require review.');
     expect(text).toContain('Documented premorbid mRS: 0.');
     expect(text).toContain('Perfusion core: 20 mL; total hypoperfused volume: 50 mL; calculated mismatch volume: 30 mL; mismatch ratio: 2.5.');
-    expect(text).toContain('Sleep midpoint: 2026-10-01T06:00.');
+    expect(text).toContain('Sleep midpoint: 2026-10-01 06:00.');
     expect(text).not.toContain('DWI-positive lesion');
   });
 

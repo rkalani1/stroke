@@ -381,7 +381,8 @@ describe('service worker update lifecycle', () => {
     // payload has to be precached. See the budget history in
     // scripts/check-asset-budget.mjs for why splitting does not avoid this.
     // 2.2 MB after the 2026-10-03 integrated review (see check-asset-budget.mjs).
-    expect(total).toBeLessThan(2.2 * 1024 * 1024);
+    // 7.8.0 raised 2.2 to 2.3 MiB for verified clinical-reference and trials content (matches check-asset-budget).
+    expect(total).toBeLessThan(2.3 * 1024 * 1024);
   });
 
   it('includes iOS splash screens in precache list', () => {
