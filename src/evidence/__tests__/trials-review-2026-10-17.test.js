@@ -403,6 +403,14 @@ describe('profile metadata hygiene (TO-5, TO-6, TO-7)', () => {
     const r = evaluateAll(S({ classification: 'ich', onsetVal: 200, onsetUnit: 'days' }));
     expect(r.closed.map(i => i.trial.acronym)).toEqual(['CAPPRICORN-1']);
   });
+  it('leads every profile\'s source gaps with the shared first-pass note exactly once', async () => {
+    const { CTGOV_FIRST_PASS_NOTE } = await import('../screenerTrials.js');
+    for (const t of screenerTrials) {
+      expect(t.sourceGaps[0], t.acronym).toBe(CTGOV_FIRST_PASS_NOTE);
+      expect(t.sourceGaps.filter(g => g === CTGOV_FIRST_PASS_NOTE), t.acronym).toHaveLength(1);
+      expect(t.sourceGaps.length, t.acronym).toBeGreaterThan(1);
+    }
+  });
   it('reports the study count, not the data-key count, in the trials endpoint envelope', async () => {
     // Asserts the generator's envelope logic directly; data/trials.json is a generated output.
     const { trialsEnvelopeCounts } = await import('../../../scripts/generate-agent-assets.mjs');

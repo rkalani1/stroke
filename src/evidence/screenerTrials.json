@@ -6,7 +6,6 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires presentation to the enrolling hospital within 24 hours and arterial puncture within 2 hours of qualifying imaging; this screening summary does not encode every STEP domain exclusion.",
       "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2025-12-04 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
@@ -183,7 +182,6 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov excludes EVT with clot engagement, any IV thrombolysis, Xa inhibitors or direct thrombin inhibitors within 48 h, GP IIb/IIIa within 14 days, and multiple bleeding-risk laboratory thresholds; not all are encoded here.",
       "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-10-02 (recorded 2026-10-17). This is the overall study status; local site activation and recruitment availability have not been verified."
     ],
@@ -308,7 +306,6 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "Criteria-table reference only: this profile is not modeled in the screener. The registry inclusion criteria conflict on whether an associated intracranial ICA-T/M1/proximal M2 occlusion is required (criterion 3 requires it; criterion 9 says \"with or without\"). Resolve with the approved protocol and study team.",
       "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-10-02 (recorded 2026-10-17). This is the overall study status; local site activation and recruitment availability have not been verified.",
       "The registry intervention list (checked 2026-10-17) names MT+CAS with IV antiplatelet, MT+CAS with oral antiplatelet and MT+CAT with oral antiplatelet, while the description still states 1:1 randomization of stenting vs non-stenting; confirm the current arm structure with the study team."
@@ -363,7 +360,6 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "Assessment of pre-stroke disability during hospitalization and investigator determination that disability is not temporary are not encoded in this screening summary.",
       "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-09-02 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
@@ -483,7 +479,6 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires spontaneous non-traumatic basal ganglia ICH >=20 mL by ABC/2, pre-ICH mRS 0-2, randomization <=16 hours from LKW, and surgery initiated <120 min from randomization.",
       "CTA/MRA without underlying vascular lesion and goals of care to pursue life-saving therapies (no early withdrawal of care <7 days); detailed registry criteria, coagulation labs (INR <=1.4, aPTT <=40s, platelets >=100k), and consent requirements must be verified through the active protocol.",
       "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-09-15 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
@@ -633,7 +628,6 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov excludes oral anticoagulant (VKA or DOAC) use within 7 days, LMWH within 24 hours, pro-coagulant drugs within 24 hours, symptomatic thrombotic/vaso-occlusive disease within 90 days, recent carotid/coronary/cerebrovascular stenting, and planned comfort care; not all are encoded here.",
       "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-08-20 (recorded 2026-10-17). This is the overall study status; local site activation, EFIC community consultation and recruitment availability have not been verified.",
       "FASTEST Part 1 (NCT03496883; ACTIVE_NOT_RECRUITING on 2026-10-17) was reported in Lancet 2026 (PMID 41653933; doi:10.1016/S0140-6736(26)00097-8): stopped for futility, with no 180-day mRS difference (adjusted common OR 1.09, 95% CI 0.79–1.51); life-threatening thromboembolic complications within 4 days in 15 (<5%) vs 4 (1%) participants (RR 3.41, 95% CI 1.14–10.15); ICH growth 3.7 mL lower at 24 h. Part 2 is a separate registry record restricted to spot-sign-positive ≤ 120 min or any ≤ 90 min. Emerging evidence, not a guideline recommendation."
@@ -775,7 +769,6 @@
     "status": "soon",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov eligibility (read 2026-10-17; last update posted 2026-10-15) requires high-risk TIA (ABCD2 score ≥ 6) and ≥ 2 listed vascular risk factors; ABCD2 is asked as a confirmation question and the risk factors are listed for confirmation, not modeled.",
       "Registry status rechecked 2026-10-17: NOT_YET_RECRUITING; last update posted 2026-10-15 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified.",
       "Before this update the profile recorded the registry version first posted 2025-09-16 (aspirin or clopidogrel, not both; no atrial fibrillation exclusion). Version history was not accessible, so when the eligibility text changed is unverified. Confirm current antithrombotic eligibility with the study team."
@@ -927,7 +920,6 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires planned VKA/DOAC use for the trial duration, SAPT plus OAC tolerability, and detailed bilateral carotid anatomy criteria not fully encoded here.",
       "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-08-19 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
@@ -1080,7 +1072,6 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov includes renal, hepatic, hematologic, pregnancy, blood pressure, allergy, competing-trial, and AVM-security exclusions not fully encoded here.",
       "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-05-08 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
@@ -1181,7 +1172,6 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov also excludes women of childbearing potential, known severe dementia, familial hypercholesterolemia or PCSK9-inhibitor use, statin contraindications, competing experimental-therapy trials and planned withdrawal of care; these are listed for confirmation, not modeled.",
       "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-04-21 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
@@ -1309,7 +1299,6 @@
     "status": "closed",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "This screening summary cannot distinguish sporadic CAA age >=50 from Dutch-type CAA age >=30 with E693Q APP mutation, and it does not encode ALT/AST, recent investigational agent, or amyloid-antibody exclusions.",
       "Registry status rechecked 2026-10-17: ACTIVE_NOT_RECRUITING; last update posted 2026-09-18 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
@@ -1409,7 +1398,6 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires CT/MRI proof of acute ischemic infarction or intraparenchymal hemorrhage within 30 days and includes oxygen, aspiration-risk, sedative, surgery, and anticipated rehab length-of-stay exclusions not fully encoded here.",
       "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-08-13 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
@@ -1527,7 +1515,6 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires SAFE score <=8 within 48-96 hours, Day 90 in-person availability, and MRI/TMS contraindication screening not fully encoded here.",
       "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-08-20 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
@@ -1684,7 +1671,6 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires UEFM 25-45, at least 30% corticospinal pathway preservation on MRI, observable motor output to TMS, and additional surgical/device safety screening not fully encoded here.",
       "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-04-13 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
@@ -1832,7 +1818,6 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "CT.gov requires ARAT 18-44, Box & Block affected arm >=1 block/60 seconds, ability to perform 3 exercise examples, and self-signed consent/behavioral contract; not all are encoded here.",
       "Registry status rechecked 2026-10-17: RECRUITING; last update posted 2026-10-09 (recorded 2026-10-17). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
@@ -1969,7 +1954,6 @@
     "referenceOnly": true,
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
       "Registry status rechecked 2026-10-17: ACTIVE_NOT_RECRUITING; last update posted 2026-10-13 (recorded 2026-10-17). No new enrollment. The registry intervention list still includes the rivaroxaban, ticagrelor and clopidogrel arms; arm-level changes are not verified here.",
       "Registry primary outcomes at this check (each up to 12 months): parenchymal ICH or non-ICH major hemorrhage; and ischemic stroke, intracerebral hemorrhage or vascular death.",
       "Partial profile retained for reference; it is not modeled in the screener and is not a treatment recommendation or local activation record."
