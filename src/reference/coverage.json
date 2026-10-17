@@ -823,11 +823,10 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/40401775/",
     "year": 2025,
     "type": "Guideline",
-    "checkedAt": "2026-10-17",
-    "access": "Abstract and plain-language summary read 2026-10-17 (PMC body unavailable); recommendation wording, strength and certainty not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-01",
+    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
     "topicIds": [
-      "ich-management",
-      "ich-surgery"
+      "ich-management"
     ]
   },
   {
@@ -1161,7 +1160,7 @@
     "year": 2023,
     "type": "Guideline",
     "checkedAt": "2026-10-17",
-    "access": "PMC full text (PMC10959839) read 2026-10-17: good-practice statements 1–4 and the ICH-score and max-ICH recommendations; evidence tables not reviewed.",
+    "access": "PMC full text (PMC10959839) read 2026-10-17; evidence tables not reviewed.",
     "topicIds": [
       "neuroprognostication"
     ]
@@ -1173,7 +1172,7 @@
     "year": 2026,
     "type": "Guideline",
     "checkedAt": "2026-10-17",
-    "access": "Recommendations with GRADE strength and certainty from the archived full publisher text (reviewed 2026-09-30); quoted in the topic cards. Abstract rechecked 2026-10-17 (direction and population only).",
+    "access": "Recommendations with GRADE strength and certainty from the archived full publisher text (reviewed 2026-09-30); quoted in the topic cards. Abstract rechecked 2026-10-17.",
     "topicIds": [
       "antithrombotic-reversal",
       "ich-management"
@@ -1186,7 +1185,7 @@
     "year": 2026,
     "type": "Guideline",
     "checkedAt": "2026-10-17",
-    "access": "PMC full text (PMC13642444) read 2026-10-17: GRADE recommendations and expert guidance; supplementary tables not reviewed.",
+    "access": "PMC full text (PMC13642444) read 2026-10-17; supplementary tables not reviewed.",
     "topicIds": [
       "poststroke-seizures",
       "sah"
@@ -1283,7 +1282,7 @@
     "year": 2023,
     "type": "Guideline",
     "checkedAt": "2026-10-01",
-    "access": "Recommendation text from the archived full-text transcription (reviewed 2026-09-30); quoted in the topic cards with class and level of evidence. Correction 38011240 (Stroke 2023;54:e516) is indexed; the archive records it as seizure-reference renumbering only, but its body was not re-read in the 2026-10-17 review.",
+    "access": "Recommendation text from the archived full-text transcription (reviewed 2026-09-30); quoted in the topic cards with class and level of evidence. Correction 38011240 (Stroke 2023;54:e516) is indexed; its body was not re-read.",
     "topicIds": [
       "sah",
       "sah-critical-care",

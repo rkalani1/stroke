@@ -543,7 +543,7 @@
       "neurocritical care",
       "DNAR"
     ],
-    "summary": "Run the care bundle in the first hours (INTERACT3: better 6-month mRS, cOR 0.86): SBP <140 started early and reached within 1 h; glucose 6.1–7.8 mmol/L (≈110–140 mg/dL; 7.8–10.0 mmol/L ≈140–180 mg/dL with diabetes); temperature ≤37.5 °C; INR <1.5 after warfarin. Do not acutely lower SBP below 130 in mild-to-moderate ICH presenting with SBP >150 (AHA 2022, harm; ATACH-2 at 110–139 gave no benefit and more renal adverse events, 9.0 vs 4.0%). A 2025 pooled individual-patient analysis of INTERACT1–4 (11,312 patients) found that intensive lowering reduced poor function (OR 0.85) and death (OR 0.83), with the greatest benefit when started within 3 h of onset; it does not change the AHA 2022 grades. Reverse anticoagulation immediately (see the reversal card). Severity scores frame discussion but must not alone limit care; defer new DNAR orders until at least the second full day.",
+    "summary": "Run the care bundle in the first hours (INTERACT3: better 6-month mRS, cOR 0.86): SBP <140 started early and reached within 1 h; glucose 6.1–7.8 mmol/L (≈110–140 mg/dL; 7.8–10.0 mmol/L ≈140–180 mg/dL with diabetes); temperature ≤37.5 °C; INR <1.5 after warfarin. Do not acutely lower SBP below 130 in mild-to-moderate ICH presenting with SBP >150 (AHA 2022, harm; ATACH-2 at 110–139 gave no benefit and more renal adverse events, 9.0 vs 4.0%). Reverse anticoagulation immediately (see the reversal card). Severity scores frame discussion but must not alone limit care; defer new DNAR orders until at least the second full day.",
     "recommendations": [
       {
         "text": "Initiating acute BP treatment within 2 hours of ICH onset and reaching the target within 1 hour can be beneficial to reduce hemorrhage expansion risk and improve functional outcome.",
@@ -580,7 +580,7 @@
       "Cerebellar ICH, hydrocephalus or a large hematoma: call neurosurgery now (see the ICH surgery card).",
       "No prophylactic antiseizure drugs; continuous EEG for unexplained or fluctuating mental status."
     ],
-    "caution": "Intensive targets are less certain for large or surgical hematomas; avoid SBP drops >70 mm Hg or below 110 (ESO 2026 consensus). Lower BP once imaging confirms ICH: ambulance lowering before imaging (INTERACT4) gave no overall benefit and worse outcome in ischemic stroke (cOR 1.30).",
+    "caution": "Intensive targets are less certain for large or surgical hematomas; avoid SBP drops >70 mm Hg or below 110 (ESO 2026 consensus).",
     "sources": [
       {
         "title": "AHA/ASA 2022 spontaneous ICH guideline — official summary",
@@ -656,7 +656,7 @@
       "Location, volume, GCS, premorbid function and hours from onset decide which trial applies.",
       "Craniotomy is a lifesaving option for deteriorating supratentorial ICH (2b); decompressive craniectomy may be considered to reduce mortality in supratentorial ICH with coma, a large hematoma with significant midline shift, or refractory ICP (2b).",
       "Agree on realistic goals with the family before surgery.",
-      "Cochrane 2025 (24 RCTs): minimally invasive evacuation may increase good functional outcome (RR 1.36, low certainty) and probably reduces mortality (RR 0.71, moderate certainty), but most trials had high risk of bias. ESO/EANS 2025 lists minimally invasive surgery for supratentorial ICH and decompressive surgery for deep supratentorial ICH among treatments with weaker supporting evidence."
+      "Cochrane 2025 (24 RCTs): minimally invasive evacuation may improve good function (RR 1.36, low certainty) and probably lowers mortality (RR 0.71, moderate certainty); most trials had high risk of bias."
     ],
     "caution": "Lower mortality is not the same as better function; do not extend lobar-ICH results to deep or infratentorial bleeds.",
     "sources": [
@@ -677,12 +677,12 @@
         "access": "Official AHA summary page."
       },
       {
-        "title": "Surgery for spontaneous supratentorial intracerebral haemorrhage (Cochrane review)",
+        "title": "Surgery for spontaneous supratentorial ICH (Cochrane review)",
         "url": "https://pubmed.ncbi.nlm.nih.gov/40673401/",
         "year": 2025,
         "type": "Meta-analysis",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract checked via PubMed; full review not appraised."
+        "access": "Primary abstract checked via PubMed."
       }
     ],
     "related": [
@@ -747,7 +747,7 @@
     ],
     "consider": [
       "New decline: think rebleeding, hydrocephalus, DCI/vasospasm or seizures — urgent CT ± CTA/CTP.",
-      "Seizure prophylaxis: AHA 2023 allows it only with high-risk features (MCA aneurysm, high grade, ICH, hydrocephalus, cortical infarct; 2b) and lists phenytoin as harmful; NCS 2026 is conditional (ASM or no ASM), and its expert guidance favors levetiracetam for ≤3 days without seizures. Seizure at onset: AHA 2023 supports treatment for no more than 7 days (2a).",
+      "Seizure prophylaxis: AHA 2023 allows it only with high-risk features (MCA aneurysm, high grade, ICH, hydrocephalus, cortical infarct; 2b) and lists phenytoin as harmful; NCS 2026 is conditional (ASM or no ASM; either agent and duration), its expert guidance favoring levetiracetam for ≤3 days unless seizures or EEG features suggest ongoing risk. Seizure at onset: AHA 2023 supports treatment for no more than 7 days (2a).",
       "Keep euvolemia; liberal transfusion (Hb ≤10 g/dL) did not improve 12-month outcome (SAHaRA)."
     ],
     "caution": "Prophylactic hemodynamic augmentation and induced hypervolemia are harmful.",
@@ -798,7 +798,7 @@
       "papilledema",
       "venography"
     ],
-    "summary": "Anticoagulate on diagnosis, even with venous hemorrhage: parenteral heparin (LMWH favored), then oral anticoagulation for 3–12 months, or indefinitely with chronic major risk factors or recurrent VTE (AHA 2024). DOACs are a reasonable alternative to warfarin after the lead-in: RE-SPECT CVT (dabigatran) had no recurrent VTE and major bleeding 1.7 vs 3.3%; ACTION-CVT (observational) found similar recurrence and less major hemorrhage (aHR 0.35); the prospective DOAC-CVT cohort (619 patients) found 6-month symptomatic VTE or major bleeding in 3% vs 3% (weighted OR 0.99). Endovascular therapy is rescue only (TO-ACT: no benefit); decompressive craniectomy is lifesaving with impending herniation.",
+    "summary": "Anticoagulate on diagnosis, even with venous hemorrhage: parenteral heparin (LMWH favored), then oral anticoagulation for 3–12 months, or indefinitely with chronic major risk factors or recurrent VTE (AHA 2024). DOACs are a reasonable alternative to warfarin after the lead-in: RE-SPECT CVT (dabigatran) had no recurrent VTE and major bleeding 1.7 vs 3.3%; ACTION-CVT (observational) found similar recurrence and less major hemorrhage (aHR 0.35). Endovascular therapy is rescue only (TO-ACT: no benefit); decompressive craniectomy is lifesaving with impending herniation.",
     "recommendations": [
       {
         "text": "The mainstream initial treatment of cerebral venous thrombosis includes parenteral heparin followed by transition to oral vitamin K antagonists for 3 to 12 months, depending on the underlying cause, or indefinitely in the presence of chronic major risk factors or recurrent venous thromboembolism. [Editorial note: the statement's abbreviated key point refers broadly to thrombophilia; its treatment section specifies chronic major risk factors. An isolated thrombophilia result is not, by itself, a universal indication for indefinite treatment.]",
@@ -836,14 +836,6 @@
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
         "access": "Official AHA summary page."
-      },
-      {
-        "title": "DOAC-CVT: direct oral anticoagulants versus vitamin K antagonists for CVT (prospective cohort)",
-        "url": "https://pubmed.ncbi.nlm.nih.gov/39986309/",
-        "year": 2025,
-        "type": "Observational study",
-        "checkedAt": "2026-10-17",
-        "access": "Primary abstract read via PubMed; prospective observational cohort, not randomized."
       }
     ],
     "related": [

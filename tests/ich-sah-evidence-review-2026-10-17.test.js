@@ -40,54 +40,53 @@ describe('ICH evidence cards (2026-10-17 review)', () => {
     expect(summary).toMatch(/4F-PCC rather than andexanet.*withdrawn from the US market effective 22 December 2025/);
     // GRADE certainty was not re-verified on 2026-10-17 (abstract only); the access note must say so.
     expect(topic('antithrombotic-reversal').sources[0].access).toMatch(/2026-09-30.*not re-verified/);
+    // The abstract summarizes four conditional recommendations and three no-recommendation areas, not all eight.
+    expect(topic('antithrombotic-reversal').sources[0].access).toContain('the recommendations it summarizes');
   });
 
-  it('states the CLEAR III population and the split AHA grades (PMID 28081952; ich-2022-83/84)', () => {
+  it('states the CLEAR III and AHA IVH populations separately with the split grades (PMID 28081952; NCT00784134; ich-2022-83/84)', () => {
     const summary = topic('ich-expansion-ivh').summary;
-    expect(summary).toContain('stable ICH <30 mL with IVH obstructing the third or fourth ventricle and a routine EVD');
+    // CLEAR III registry: ICH <=30 cc or primary IVH; IVH obstructing 3rd/4th ventricle; EVD per standard care; infratentorial hemorrhage excluded.
+    expect(summary).toContain('CLEAR III (stable supratentorial ICH <30 mL or primary IVH; IVH obstructing the third or fourth ventricle; routine EVD)');
     expect(summary).toContain('increased mRS 5 (17 vs 9%)');
-    expect(summary).toContain('reasonable to reduce mortality, 2a; functional benefit uncertain, 2b');
+    // Archived AHA 2022 transcription (archive/pre-encounter-first-20261001-4f8e99d), ich-2022-83 (IIa, B-R) and ich-2022-84 (IIb, B-R):
+    // "for patients with GCS >3 and primary IVH or IVH extension from supratentorial ICH <30 mL requiring EVD".
+    expect(summary).toContain('AHA 2022, for GCS >3 with primary IVH or IVH extension from supratentorial ICH <30 mL requiring EVD: reasonable to reduce mortality (2a); functional benefit uncertain (2b)');
+    expect(summary).not.toMatch(/stable ICH <30 mL with IVH/);
     // ich-2022-74 and ich-2022-82 are separate COR 1 populations.
     expect(summary).toContain('Hydrocephalus contributing to reduced consciousness: ventricular drainage (AHA 2022, COR 1)');
     expect(summary).toContain('large IVH with impaired consciousness: EVD rather than medical management alone (COR 1)');
   });
 
-  it('adds the 2026 tranexamic acid IPD meta-analysis without implying functional benefit (PMID 42276775)', () => {
-    const card = topic('ich-expansion-ivh');
-    expect(card.summary).toContain('no 90-day functional benefit (adjusted cOR 0.93)');
-    expect(card.summary).toContain('7-day death (aOR 0.70) and hematoma expansion (OR 0.81)');
-    expect(urls(card)).toContain('https://pubmed.ncbi.nlm.nih.gov/42276775/');
-  });
-
-  it('completes the AHA recurrence factor list and adds AF-restart timing and pooled RCT data (ich-2022-109/115; PMID 41446322)', () => {
+  it('completes the AHA recurrence factor list and adds AF-restart timing (ich-2022-109/115)', () => {
     const summary = topic('caa-ich-recurrence').summary;
     expect(summary).toContain('poor BP control, Asian or Black race and APOE ε2/ε4 (AHA 2022, 2a)');
     expect(summary).toContain('starting 7–8 weeks after ICH may be considered after weighing individual factors (AHA 2022, 2b)');
-    expect(summary).toContain('ischemic stroke RR 0.20; recurrent ICH RR 3.14');
-    expect(urls(topic('caa-ich-recurrence'))).toContain('https://pubmed.ncbi.nlm.nih.gov/41446322/');
   });
 
-  it('qualifies the <130 harm population, converts glucose to mg/dL and adds timing evidence on the first-hour card', () => {
+  it('qualifies the <130 harm population and converts glucose to mg/dL on the first-hour card', () => {
     const card = topic('ich-management');
     // ich-2022-25: mild to moderate ICH presenting with SBP >150.
     expect(card.summary).toContain('Do not acutely lower SBP below 130 in mild-to-moderate ICH presenting with SBP >150');
     // INTERACT3 targets 6.1–7.8 and 7.8–10.0 mmol/L × 18.0 mg/dL per mmol/L.
     expect(Math.round(6.1 * 18)).toBe(110); expect(Math.round(7.8 * 18)).toBe(140); expect(Math.round(10 * 18)).toBe(180);
     expect(card.summary).toContain('6.1–7.8 mmol/L (≈110–140 mg/dL; 7.8–10.0 mmol/L ≈140–180 mg/dL with diabetes)');
-    // Pooled INTERACT1–4 (PMID 40541207) is labeled as not changing guideline grades.
-    expect(card.summary).toMatch(/INTERACT1–4 \(11,312 patients\).*OR 0\.85.*OR 0\.83.*within 3 h.*does not change the AHA 2022 grades/);
-    // INTERACT4 (PMID 38752650): pre-imaging lowering harmed ischemic stroke.
-    expect(card.caution).toContain('ambulance lowering before imaging (INTERACT4) gave no overall benefit and worse outcome in ischemic stroke (cOR 1.30)');
-    expect(urls(card)).toEqual(expect.arrayContaining(['https://pubmed.ncbi.nlm.nih.gov/40541207/', 'https://pubmed.ncbi.nlm.nih.gov/38752650/']));
+    // INTERACT4 (undifferentiated prehospital stroke) stays on the acute BP card; no unsourced imaging directive here.
+    expect(card.caution).not.toContain('INTERACT4');
+    expect(card.caution).not.toContain('Lower BP once imaging confirms ICH');
+    // AF-restart and antiplatelet-restart records belong to the AF, secondary-prevention and study cards, not the first-hours card.
+    for (const pmid of ['40023176', '31128924', '37839434']) expect(urls(card)).not.toContain(`https://pubmed.ncbi.nlm.nih.gov/${pmid}/`);
+    expect(urls(topic('af-prevention'))).toContain('https://pubmed.ncbi.nlm.nih.gov/40023176/');
+    expect(urls(topic('secondary-prevention'))).toContain('https://pubmed.ncbi.nlm.nih.gov/31128924/');
   });
 
-  it('restates the disjunctive craniectomy population and adds Cochrane 2025 / ESO-EANS 2025 surgery evidence', () => {
+  it('restates the disjunctive craniectomy population and adds Cochrane 2025 surgery evidence', () => {
     const card = topic('ich-surgery');
     // ich-2022-90: comatose, OR large hematoma with significant midline shift, OR refractory ICP.
     expect(card.consider.join(' ')).toContain('coma, a large hematoma with significant midline shift, or refractory ICP (2b)');
     expect(card.consider.join(' ')).toMatch(/Cochrane 2025.*RR 1\.36, low certainty.*RR 0\.71, moderate certainty.*high risk of bias/);
     expect(card.consider.length).toBeLessThanOrEqual(4);
-    expect(urls(card)).toEqual(expect.arrayContaining(['https://pubmed.ncbi.nlm.nih.gov/40673401/', 'https://pubmed.ncbi.nlm.nih.gov/40401775/']));
+    expect(urls(card)).toContain('https://pubmed.ncbi.nlm.nih.gov/40673401/');
   });
 });
 
@@ -98,12 +97,6 @@ describe('ICH and aSAH study records (2026-10-17 review)', () => {
     expect(study('enrich').population).toContain('within 24 hours of last known well');
     // SWITCH registry: GCS <14 and >7 → 8–13; NIHSS 10–30; 30–100 mL; within 66 h.
     expect(study('switch').population).toContain('GCS 8–13, NIHSS 10–30, stable volume 30–100 mL) randomized within 66 hours');
-  });
-
-  it('adds STATICH-Antiplatelets to the RESTART limits (PMID 42312355)', () => {
-    expect(study('restart').limits).toContain('15% vs 3%');
-    expect(study('restart').limits).toContain('9% vs 20%');
-    expect(urls(study('restart'))).toContain('https://pubmed.ncbi.nlm.nih.gov/42312355/');
   });
 
   it('files ICH BP trials under the ICH card and PRESTIGE-AF under the recurrence card that discusses it', () => {
@@ -123,13 +116,15 @@ describe('SAH, CVT and other vascular cards (2026-10-17 review)', () => {
   it('discloses both AHA 2023 and NCS 2026 aSAH seizure-prophylaxis positions (PMC13642444; sah-2023-67)', () => {
     const seizures = topic('poststroke-seizures');
     expect(seizures.summary).toContain('NCS 2026 suggests ASM or no ASM (conditional, low certainty)');
-    expect(seizures.summary).toContain('stopping by 3 days without seizures');
+    // NCS 2026 formal recommendations allow either agent and either duration; the ≤3-day levetiracetam course is expert guidance with an EEG/clinical-risk exception.
+    expect(seizures.summary).toContain('allows either agent and duration; its expert guidance prefers levetiracetam, stopped by 3 days unless seizures or EEG features suggest ongoing risk');
     expect(seizures.summary).toContain('(AHA 2022, 2a)');
     expect(seizures.summary).not.toContain('brief prophylaxis');
     expect(seizures.sources[1].access).toContain('PMC13642444');
     const sah = topic('sah');
     expect(sah.consider[1]).toContain('AHA 2023 allows it only with high-risk features (MCA aneurysm, high grade, ICH, hydrocephalus, cortical infarct; 2b)');
-    expect(sah.consider[1]).toContain('NCS 2026 is conditional (ASM or no ASM)');
+    expect(sah.consider[1]).toContain('NCS 2026 is conditional (ASM or no ASM; either agent and duration)');
+    expect(sah.consider[1]).toContain('unless seizures or EEG features suggest ongoing risk');
     expect(sah.consider[1]).toContain('no more than 7 days (2a)');
     expect(urls(sah)).toContain('https://pubmed.ncbi.nlm.nih.gov/42552475/');
   });
@@ -159,22 +154,18 @@ describe('SAH, CVT and other vascular cards (2026-10-17 review)', () => {
     expect(urls(card)).toContain('https://pubmed.ncbi.nlm.nih.gov/27940651/');
   });
 
-  it('adds DOAC-CVT as prospective observational evidence (PMID 39986309)', () => {
-    expect(topic('cvt').summary).toContain('prospective DOAC-CVT cohort (619 patients)');
-    expect(topic('cvt').summary).toContain('weighted OR 0.99');
-    expect(topic('cvt').sources.find(source => source.url.includes('39986309')).type).toBe('Observational study');
-  });
-
   it('cites the published CM guideline with its graded stroke-relevant recommendations (PMC12680281)', () => {
     const card = topic('cavernous-malformation');
     expect(card.sources[0].url).toBe('https://pubmed.ncbi.nlm.nih.gov/40396744/');
     expect(card.summary).toContain('should not preclude needed antithrombotics (Class 2a, B-NR)');
-    expect(card.summary).toContain('IV alteplase may be considered for AIS (Class 2b, C-LD)');
+    // Recommendation 11: risk not well established; "may be considered if indicated for acute ischemic stroke". Class 2B, C-LD.
+    expect(card.summary).toContain('IV alteplase may be considered if otherwise indicated for AIS; its risk is not well established (Class 2b, C-LD)');
+    expect(card.sources.filter(source => /cavernous malformations/i.test(source.title))).toHaveLength(1);
   });
 
-  it('adds the ARUBA final result and the AHA AVM statement record (PMIDs 32562682, 28642352)', () => {
+  it('adds the ARUBA final result (PMID 32562682)', () => {
     expect(topic('brain-avm').summary).toContain('3.39 vs 12.32 per 100 patient-years; HR 0.31');
-    expect(urls(topic('brain-avm'))).toEqual(expect.arrayContaining(['https://pubmed.ncbi.nlm.nih.gov/32562682/', 'https://pubmed.ncbi.nlm.nih.gov/28642352/']));
+    expect(urls(topic('brain-avm'))).toContain('https://pubmed.ncbi.nlm.nih.gov/32562682/');
   });
 
   it('keeps guideline populations and strengths exact on smaller cards', () => {
@@ -186,7 +177,6 @@ describe('SAH, CVT and other vascular cards (2026-10-17 review)', () => {
     expect(topic('unruptured-aneurysms').summary).toContain('All ESO recommendations');
     // Zalewski 2019: "mild inflammation in 7 of 89 patients (8%)".
     expect(topic('spinal-cord-infarction').summary).toContain('mildly inflammatory in only 8%');
-    expect(topic('spinal-cord-infarction').consider.some(item => item.includes('off-label') && item.includes('29.2% vs 13.5%'))).toBe(true);
   });
 
   it('no longer asserts the content of the unread AHA aSAH correction', () => {

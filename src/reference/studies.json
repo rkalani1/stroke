@@ -699,7 +699,7 @@
       "minimally invasive"
     ],
     "question": "Does early minimally invasive evacuation improve recovery after selected ICH?",
-    "population": "300 adults aged 18–80 (GCS 5–14, NIHSS ≥5, premorbid mRS 0–1) with lobar or anterior basal ganglia ICH of 30–80 mL, randomized within 24 hours of last known well; primary thalamic, infratentorial and large-IVH (>50% of a lateral ventricle) cases were excluded.",
+    "population": "300 adults aged 18–80 (GCS 5–14, NIHSS ≥5, premorbid mRS 0–1) with lobar or anterior basal ganglia ICH of 30–80 mL, randomized within 24 hours of last known well; primary thalamic, infratentorial and large-IVH cases excluded.",
     "comparison": "Minimally invasive evacuation plus guideline-based medical management versus medical management alone.",
     "result": "Mean utility-weighted mRS (0–1; higher is better) at 180 days was 0.458 versus 0.374 (difference 0.084; 95% Bayesian credible interval 0.005–0.163). The benefit appeared attributable to lobar hemorrhage; 30-day mortality was 9.3% versus 18.0%.",
     "limits": "Adaptive enrollment later restricted inclusion to lobar ICH. Findings concern the tested technique, timing and selected population, not all ICH surgery. Postoperative rebleeding with deterioration occurred in 3.3%.",
@@ -2696,7 +2696,7 @@
     "population": "537 ICH survivors previously taking antithrombotic therapy for occlusive vascular disease; randomized a median of 76 days after ICH.",
     "comparison": "Start versus avoid antiplatelet therapy.",
     "result": "Over a median two years, recurrent symptomatic ICH occurred in 12/268 (4%) versus 23/268 (9%) (adjusted HR 0.51; 95% CI 0.25–1.03). Major hemorrhagic events were 7% versus 9%; major occlusive events were 15% versus 14%, without significant differences.",
-    "limits": "The confidence interval does not prove antiplatelets prevent recurrent ICH. This selected survivor cohort does not establish immediate restart timing, safety for every CAA phenotype, or anticoagulant resumption. STATICH-Antiplatelets (n=69, stopped early) found numerically more recurrent ICH (15% vs 3%) and fewer major ischemic events (9% vs 20%) with antiplatelets — too small to change this interpretation.",
+    "limits": "The confidence interval does not prove antiplatelets prevent recurrent ICH. This selected survivor cohort does not establish immediate restart timing, safety for every CAA phenotype, or anticoagulant resumption.",
     "sources": [
       {
         "title": "RESTART primary report",
@@ -2705,14 +2705,6 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract and indexed notices checked."
-      },
-      {
-        "title": "STATICH-Antiplatelets randomized trial",
-        "url": "https://pubmed.ncbi.nlm.nih.gov/42312355/",
-        "year": 2026,
-        "type": "Randomized trial",
-        "checkedAt": "2026-10-17",
-        "access": "Primary abstract checked via PubMed; stopped early for slow recruitment (69 of a planned 500)."
       }
     ],
     "relatedTopic": "caa-ich-recurrence"

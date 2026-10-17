@@ -864,7 +864,6 @@
   {
     "id": "study-source-prestige-af",
     "topicIds": [
-      "ich-management",
       "af-prevention"
     ],
     "title": "PRESTIGE-AF — Direct oral anticoagulants versus no anticoagulation for the prevention of stroke in survivors of intracerebral haemorrhage with atrial fibrillation (PRESTIGE-AF): a multicentre, open-label, randomised, phase 3 trial.",
@@ -877,7 +876,6 @@
   {
     "id": "study-source-enrich-af",
     "topicIds": [
-      "ich-management",
       "af-prevention"
     ],
     "title": "ENRICH-AF — Anticoagulation in patients with cerebral amyloid angiopathy.",
@@ -890,7 +888,6 @@
   {
     "id": "study-source-sostart",
     "topicIds": [
-      "ich-management",
       "af-prevention"
     ],
     "title": "SoSTART — Effects of oral anticoagulation for atrial fibrillation after spontaneous intracranial haemorrhage in the UK: a randomised, open-label, assessor-masked, pilot-phase, non-inferiority trial.",
@@ -903,7 +900,6 @@
   {
     "id": "study-source-apache-af",
     "topicIds": [
-      "ich-management",
       "af-prevention"
     ],
     "title": "APACHE-AF — Apixaban versus no anticoagulation after anticoagulation-associated intracerebral haemorrhage in patients with atrial fibrillation in the Netherlands (APACHE-AF): a randomised, open-label, phase 2 trial.",
@@ -916,7 +912,6 @@
   {
     "id": "study-source-cocroach",
     "topicIds": [
-      "ich-management",
       "af-prevention"
     ],
     "title": "COCROACH — Effects of oral anticoagulation in people with atrial fibrillation after spontaneous intracranial haemorrhage (COCROACH): prospective, individual participant data meta-analysis of randomised trials.",
@@ -954,8 +949,7 @@
     "id": "study-source-interact4",
     "topicIds": [
       "rural-telestroke",
-      "acute-bp",
-      "ich-management"
+      "acute-bp"
     ],
     "title": "INTERACT4 — Intensive Ambulance-Delivered Blood-Pressure Reduction in Hyperacute Stroke.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/38752650/",
@@ -1196,7 +1190,6 @@
   {
     "id": "study-source-restart",
     "topicIds": [
-      "ich-management",
       "secondary-prevention"
     ],
     "title": "RESTART — Effects of antiplatelet therapy after stroke due to intracerebral haemorrhage (RESTART): a randomised, open-label trial.",
@@ -2510,8 +2503,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/40541207/",
     "year": 2025,
     "type": "Report",
-    "checkedAt": "2026-10-17",
-    "access": "PubMed bibliographic record checked; primary abstract verified 2026-10-17. Pooled analysis of four randomized trials, not a new trial."
+    "checkedAt": "2026-10-01",
+    "access": "PubMed bibliographic record checked; outcomes not reviewed here. Pooled analysis of four randomized trials, not a new trial."
   },
   {
     "id": "study-source-ich-bp-deep-vs-lobar-meta",
@@ -3276,7 +3269,6 @@
   {
     "id": "study-source-restart-extended-2021",
     "topicIds": [
-      "ich-management",
       "secondary-prevention"
     ],
     "title": "RESTART extended follow-up — Effects of Antiplatelet Therapy After Stroke Caused by Intracerebral Hemorrhage: Extended Follow-up of the RESTART Randomized Clinical Trial.",
