@@ -19,7 +19,9 @@ describe('GCS assessment and documentation', () => {
     const state = newEncounter(); state.note.diagnosisCategory = diagnosis;
     for (const format of ['phone', 'video']) {
       state.consultationType = format;
-      expect(buildSummary(state, now)).not.toContain('GCS');
+      // Acute ICH states a missing GCS (the ICH score needs it); other diagnoses export only an entered GCS.
+      if (diagnosis === 'ich') expect(buildSummary(state, now)).toContain('GCS: not documented');
+      else expect(buildSummary(state, now)).not.toContain('GCS');
       state.gcs = { eye:'4', verbal:'5', motor:'6' };
       expect(buildSummary(state, now)).toContain('GCS E4 V5 M6 = 15/15; eye: Spontaneous; verbal: Oriented; motor: Obeys commands');
       state.gcs = {};

@@ -71,7 +71,7 @@ describe('retained Encounter behavior replacing monolith output and duplicate-to
   });
   it('a recommendation and a timestamp alone do not attest administration', () => {
     const state = make({ note: { diagnosisCategory: 'ischemic' }, decisions: { ivt: 'Recommended', evt: '' }, drug: 'TNK', actions: { administrationTime: '2026-10-01T11:00', administered: false } });
-    expect(buildSummary(state, now)).toContain('IVT administration: not documented with a valid drug and timestamp');
+    expect(buildSummary(state, now)).toContain('IVT administration: not documented as given (administration checkbox not ticked); entered time 2026-10-01 11:00 retained for review');
     expect(render(state)).toContain('Monitoring timer inactive');
   });
   it('completed elapsed schedule does not attest that monitoring was performed', () => {

@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useRef } from 'react';
-import { encounterTiming, encounterNihss, validTimestamp, parsePreIvtBp } from '../workspace-state.js';
+import { encounterTiming, encounterNihss, validTimestamp, parsePreIvtBp, protocolEncounter } from '../workspace-state.js';
 import { numericInput, reviewedGcs } from '../encounter-clinical-review.js';
 import { calculateTNKDoseReviewed, calculateAlteplaseDoseReviewed } from '../calculators.js';
 import { computeNeurocheckSchedule } from '../calculators-extended.js';
@@ -40,7 +40,10 @@ export function caseSummary(state, nowMs) {
     else if (acuteIschemic && !timing.clock.toLateEvtClosed) window = { text: `24 h in ${hoursMinutes(timing.clock.toLateEvtMs)}`, tone: 'neutral' };
     else if (elapsed >= 24 * 3600000) window = { text: '>24 h', tone: 'neutral' };
   }
-  const dose = acuteIschemic && weight !== null && state.decisions?.ivt !== 'Not recommended' ? (state.drug === 'Alteplase' ? calculateAlteplaseDoseReviewed(n.weight) : calculateTNKDoseReviewed(n.weight, state.drug === 'TNK' ? state.doseAuthority : 'guideline')) : null;
+  // Dose arithmetic is shown only for a selected agent with no recorded hold: never a default agent, and
+  // never beside a held IVT card, a hemorrhage/uncertain CT review or an implausible adult weight or age.
+  const hold = acuteIschemic && !administered && state.decisions?.ivt !== 'Not recommended' ? doseHold(state, nowMs, weight, age) : null;
+  const dose = acuteIschemic && !hold && weight !== null && ['TNK', 'Alteplase'].includes(state.drug) && state.decisions?.ivt !== 'Not recommended' ? (state.drug === 'Alteplase' ? calculateAlteplaseDoseReviewed(n.weight) : calculateTNKDoseReviewed(n.weight, state.doseAuthority)) : null;
   const gcs = ['ich', 'sah', 'cvt'].includes(n.diagnosisCategory) ? reviewedGcs(state.gcs) : null;
   // BP flags: AIS before IVT not <185/110 (AHA/ASA 2026 COR 1); after IVT above 180/105 (COR 1);
   // acute ICH SBP >=150, the 2022 range in which lowering toward 140 applies.
@@ -67,11 +70,25 @@ export function caseSummary(state, nowMs) {
     glucose: glucose === null ? '' : String(glucose),
     glucoseFlag: glucose !== null && (glucose < 50 || glucose > 400),
     weight: weight === null ? '' : `${Math.round(weight * 10) / 10}`,
-    dose: administered ? { label: state.drug === 'Alteplase' ? 'tPA given' : 'TNK given', value: clockTime(state.actions.administrationTime), detail: state.actions.administeredDose ? `${state.actions.administeredDose} mg` : '' } : dose ? state.drug === 'Alteplase' ? { label: 'tPA', value: `${dose.totalDose} mg`, detail: `${dose.bolus} mg bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
+    // Why no dose is shown when nothing is held: name the missing input, not a generic one.
+    doseNote: state.decisions?.ivt === 'Not recommended' ? 'IVT clinician decision is Not recommended; no dose shown' : `${!['TNK', 'Alteplase'].includes(state.drug) ? `Select the IV thrombolytic${weight === null ? ' and enter a valid weight (kg)' : ''}` : 'Enter a valid weight (kg)'} in Encounter for dose arithmetic; not an eligibility decision`,
+    dose: administered ? { label: state.drug === 'Alteplase' ? 'tPA given' : 'TNK given', value: clockTime(state.actions.administrationTime), detail: state.actions.administeredDose ? `${state.actions.administeredDose} mg` : '' } : hold ? { label: 'IVT dose', value: hold.value, title: hold.title, flag: hold.flag } : dose ? state.drug === 'Alteplase' ? { label: 'tPA', value: `${dose.totalDose} mg`, detail: `${dose.bolus} mg bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
     anticoagulant: n.lastDOACType && n.lastDOACType !== 'none' ? ANTICOAGULANT_LABELS[n.lastDOACType] || 'Anticoagulant' : '',
     aceInhibitor: ACE_INHIBITOR.test(n.medications || ''),
     hasData: Boolean(n.diagnosisCategory || age !== null || timing.timestamp || n.lkwUnknown || exam.complete || exam.count || sbp !== null || glucose !== null || weight !== null)
   };
+}
+
+// Why the case bar withholds dose arithmetic. The IVT-held reason is the Protocols banner's own text.
+function doseHold(state, nowMs, weight, age) {
+  const n = state.note;
+  if (['present', 'uncertain'].includes(n.ctHemorrhageStatus)) return { value: 'Held', flag: 'caution', title: n.ctHemorrhageStatus === 'present' ? 'CT hemorrhage recorded; no dose shown' : 'CT hemorrhage review uncertain or conflicting; no dose shown' };
+  const protocol = protocolEncounter(state, nowMs);
+  if (protocol.safetyReviewRequired) return { value: 'Held', flag: 'caution', title: `IVT card held. ${protocol.safetyReviewReason}` };
+  // Same limit as the MCP dose contract: below 30 kg is implausible for adult dosing (often a decimal slip).
+  if (weight !== null && weight < 30) return { value: 'Check weight', flag: 'caution', title: 'Weight below 30 kg is implausible for adult IVT dosing; confirm kilograms and decimal placement. No dose shown.' };
+  if (age !== null && age < 18) return { value: 'Not shown', flag: 'caution', title: 'Age under 18: adult dose arithmetic does not apply; use the pediatric specialist pathway.' };
+  return null;
 }
 
 function Item({ label, short, value, detail, flag, title, pill }) {
@@ -137,7 +154,7 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
       <Item label="BP" value={c.bp} flag={c.bpHigh ? 'caution' : undefined} title={c.bpTitle} />
       <Item label="Glucose" short="Glu" value={c.glucose} flag={c.glucoseFlag ? 'caution' : undefined} title={c.glucoseFlag ? 'Glucose outside 50–400 mg/dL' : undefined} />
       <Item label="Weight" short="Wt" value={c.weight && `${c.weight} kg`} />
-      {acuteIschemic && <Item label={c.dose?.label || 'Dose'} value={c.dose?.value} detail={c.dose?.detail} title={c.administered ? 'Recorded administration time' : 'Dose arithmetic only; not an eligibility decision'} />}
+      {acuteIschemic && <Item label={c.dose?.label || 'Dose'} value={c.dose?.value} detail={c.dose?.detail} flag={c.dose?.flag} title={c.administered ? 'Recorded administration time' : c.dose?.title || (c.dose ? 'Dose arithmetic only; not an eligibility decision' : c.doseNote)} />}
     </div>
     <div className="case-bar__actions">
       {bpLink && <a className="case-bar__link" href={bpHref} onClick={revealIfCurrent(bpHref, 'qr-bp')}>BP targets</a>}

@@ -34,7 +34,8 @@ describe('ICH volume, score and neurosurgery prompts', () => {
     expect(html).not.toContain('≥15 mL: early neurosurgery');
     const note = buildSummary(state, now);
     expect(note).toContain('[ABC/2 volume 299.7 mL implausible; confirm centimeter units before interpretation]');
-    expect(note).not.toContain('ICH score:');
+    expect(note).not.toMatch(/ICH score: \d/);
+    expect(note).toContain('ICH score: withheld: confirm ABC/2 centimeter units');
   });
   it('prompts neurosurgery from recorded hydrocephalus, decline, mass effect and cerebellar location', () => {
     const html = render(ich({ details: { ichHydrocephalus: 'yes', ichDeterioration: 'yes', ichMassEffect: 'yes', ichLocation: 'Cerebellar' } }));
@@ -48,7 +49,8 @@ describe('ICH volume, score and neurosurgery prompts', () => {
     expect(render(conflict)).toContain('ICH location is brainstem but Infratentorial origin is No; reconcile before scoring.');
     const conflictNote = buildSummary(conflict, now);
     expect(conflictNote).toContain('Infratentorial origin: absent (reviewed) [conflicts with ICH location Brainstem; reconcile before interpretation]');
-    expect(conflictNote).not.toContain('ICH score:');
+    expect(conflictNote).not.toMatch(/ICH score: \d/);
+    expect(conflictNote).toContain('ICH score: withheld: ICH location conflicts with infratentorial origin; reconcile');
   });
   it('carries ICH reversal, neurosurgery, the ICH score and the reversal time into the team handoff', () => {
     const state = ich({ documentFormat: 'handoff', volume: { a: '3', b: '2', thicknessMm: '5', numSlices: '6' }, ich: { ivh: false, infratentorial: false }, details: { ichReversalStatus: 'Administered', ichNeurosurgery: 'Ordered', ichHydrocephalus: 'yes' }, timeline: { reversal: '2026-10-01T11:30' } });
