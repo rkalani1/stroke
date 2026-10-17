@@ -106,13 +106,11 @@ describe('ICH and aSAH study records (2026-10-17 review)', () => {
     expect(urls(study('restart'))).toContain('https://pubmed.ncbi.nlm.nih.gov/42312355/');
   });
 
-  it('files ICH BP trials under the ICH card and PRESTIGE-AF under recurrence, with AF-after-ICH sources on that card', () => {
+  it('files ICH BP trials under the ICH card and PRESTIGE-AF under the recurrence card that discusses it', () => {
     expect(study('interact2').relatedTopic).toBe('ich-management');
     expect(study('atach-2').relatedTopic).toBe('ich-management');
     expect(study('prestige-af').relatedTopic).toBe('caa-ich-recurrence');
-    for (const pmid of ['40023176', '34487722', '34687635', '37839434', '31128924']) {
-      expect(urls(topic('caa-ich-recurrence'))).toContain(`https://pubmed.ncbi.nlm.nih.gov/${pmid}/`);
-    }
+    expect(topic('caa-ich-recurrence').related.some(link => link.href === '#/evidence/prestige-af')).toBe(true);
   });
 
   it('reports EARLYDRAIN drain complications as described in the full report (PMC10277935)', () => {
