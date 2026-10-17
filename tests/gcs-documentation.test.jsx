@@ -29,7 +29,7 @@ describe('GCS assessment and documentation', () => {
     const state = newEncounter(); state.gcs = { eye:'4', verbal:'UN', motor:'6', notTestableReason:'Intubation' };
     expect(render(state)).toContain('GCS assessment limitation (optional)');
     const text = buildSummary(state, now);
-    expect(text).toContain('GCS E4 VNT M6; total not reported (incomplete or not testable)');
+    expect(text).toContain('GCS E4 V(NT) M6; total not reported (incomplete or not testable)');
     expect(text).toContain('verbal: not testable');
     expect(text).toContain('limitation: Intubation');
     expect(reviewedGcs(state.gcs)).toBeNull();
