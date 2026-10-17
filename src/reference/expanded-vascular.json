@@ -908,7 +908,7 @@
       "INTERACT4",
       "prehospital"
     ],
-    "summary": "Before IVT <185/110; after IVT <180/105 for at least 24 h; during and for 24 h after EVT ≤180/105 (AHA 2026; ESO 2026). After successful EVT do not target SBP <140 (AHA 2026, harm): ENCHANTED2/MT (<120) worsened mRS (OR 1.37) and OPTIMAL-BP (<140) lowered mRS 0–2 from 54.4 to 39.4%. One Spanish trial (HOPE) found reperfusion-guided targets (140–160 for mTICI 2b; 100–140 for 2c/3) improved mRS 0–2 (60.0 vs 47.1%). No reperfusion and <220/120: starting treatment in the first 48–72 h does not help; ≥220/120: benefit uncertain (ESO: lower by <15% over 24 h). No routine prehospital lowering (INTERACT4: ischemic stroke cOR 1.30).",
+    "summary": "Before IVT <185/110; EVT planned without IVT: ≤185/110 before the procedure (AHA 2026, 2a); after IVT <180/105 for at least 24 h; during and for 24 h after EVT ≤180/105 (AHA 2026, 2a; ESO 2025 update: <180/105). After successful EVT for anterior LVO (mTICI 2b–3), do not target SBP <140 for the first 72 h (AHA 2026, COR 3: Harm; ESO 2025 update: not <140 in the first 24 h, high certainty): ENCHANTED2/MT (<120) worsened mRS (OR 1.37) and OPTIMAL-BP (<140) lowered mRS 0–2 from 54.4 to 39.4%; a 2026 Cochrane review (9 RCTs, searched to March 2025) found that intensive SBP targets after reperfusion probably increase all-cause mortality (RR 1.19, 95% CI 1.08–1.32). One open-label Spanish trial published after both guidelines and stopped early (HOPE, 2026) found reperfusion-guided targets (140–160 for mTICI 2b; 100–140 for 2c/3, for 72 h) improved mRS 0–2 (60.0 vs 47.1%); its authors call it hypothesis-generating, and it does not override the COR 3: Harm recommendation. No reperfusion and <220/120: starting treatment in the first 48–72 h does not help; ≥220/120: benefit uncertain (AHA 2026, 2b; ESO 2025 expert consensus: if lowered, reduce SBP cautiously by <15% over 24 h). No routine prehospital lowering in suspected stroke (AHA 2026, COR 3: No Benefit; ESO 2025 update, moderate certainty): in INTERACT4, ambulance lowering to SBP 130–140 was neutral overall and worse in ischemic stroke (cOR 1.30).",
     "recommendations": [
       {
         "text": "AIS patients with elevated BP who are otherwise eligible for IVT are recommended to have SBP lowered below 185 mmHg and DBP below 110 mmHg before initiating IVT therapy to reduce hemorrhagic complications.",
@@ -947,9 +947,10 @@
       }
     ],
     "consider": [
-      "After alteplase, SBP 130–140 did not improve outcome versus <180 (ENCHANTED; AHA 2026 COR 3).",
-      "Treat hypertension early only when a comorbidity demands it (ACS, heart failure, aortic dissection, post-IVT sICH, preeclampsia); correct hypotension and hypovolemia.",
-      "Hold home oral antihypertensives while swallowing is unsafe; ESO advises against routinely continuing them in the acute phase."
+      "After alteplase, a target SBP of 130–140 did not improve 90-day function versus <180, although any intracranial hemorrhage was less frequent (14.8 vs 18.7%) (ENCHANTED; AHA 2026 COR 3: No Benefit).",
+      "Beyond the reperfusion limits above, treat hypertension early when a comorbid condition requires it (e.g., acute coronary event, acute heart failure, aortic dissection, post-thrombolysis sICH, preeclampsia/eclampsia; AHA 2026 COR 1); correct hypotension and hypovolemia (COR 1). Without IVT or EVT, ESO 2025 discourages routinely raising BP with vasopressors in deteriorating patients (low certainty).",
+      "Hold home oral antihypertensives while swallowing is unsafe; ESO advises against routinely continuing them in the acute phase.",
+      "During EVT, targeting each patient's pre-procedure BP was no better than a standard SBP 140–180 range (INDIVIDUATE; DETERMINE 2026, mRS 0–2 44.2 vs 48.8%)."
     ],
     "caution": "One number does not fit every pathway; ICH and long-term targets are on their own cards.",
     "sources": [
@@ -958,8 +959,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42095756/",
         "year": 2026,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed for the reperfusion, post-thrombectomy, vasopressor and prehospital statements and their certainty; recommendation boxes and the >220/120 expert consensus were not read at primary scope."
       },
       {
         "title": "The Management of Elevated Blood Pressure in the Acute Care Setting: A Scientific Statement From the American Heart Association",
@@ -976,6 +977,30 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-03",
         "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "Blood pressure management in reperfused ischemic stroke (Cochrane review)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42445947/",
+        "year": 2026,
+        "type": "Meta-analysis",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed: 9 RCTs, 4,381 participants, latest search 20 March 2025 (before HOPE); mortality RR 1.19 (moderate certainty)."
+      },
+      {
+        "title": "DETERMINE: individualized vs standard blood pressure control during thrombectomy",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42585603/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety)."
+      },
+      {
+        "title": "INDIVIDUATE: individualized vs standardized blood pressure management during endovascular stroke treatment",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37732489/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (single center; population, comparison and outcome)."
       }
     ],
     "related": [

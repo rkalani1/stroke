@@ -2425,10 +2425,10 @@
       "blood pressure"
     ],
     "question": "Did SBP <140 improve function after successful EVT?",
-    "population": "306 randomized patients with large-vessel ischemic stroke and mTICI ≥2b reperfusion at 19 South Korean centers; 305 were confirmed eligible.",
+    "population": "306 randomized patients with large-vessel ischemic stroke, mTICI ≥2b reperfusion and SBP ≥140 mmHg on two readings within 2 h of recanalization, at 19 South Korean centers; 305 were confirmed eligible.",
     "comparison": "SBP <140 versus 140–180 mmHg for 24 hours after enrollment.",
     "result": "Three-month independence (mRS 0–2) was 39.4% versus 54.4% (adjusted OR 0.56; 95% CI 0.33–0.96). Symptomatic ICH was 9.0% versus 8.1%; the difference was not significant. Stroke-related death was 7.7% versus 5.4%, also not significantly different.",
-    "limits": "Stopped early for safety concerns. The result concerns the tested lowering strategy after successful reperfusion; it does not establish a universal target for unsuccessful EVT or individualized reperfusion-guided management.",
+    "limits": "Stopped early for safety concerns. The result concerns the tested lowering strategy after successful reperfusion; it does not establish a universal target for unsuccessful EVT or individualized reperfusion-guided management. At 1 year, functional independence was 40.5% vs 52.7% (adjusted OR 0.59, 95% CI 0.34–1.00; P = .051, intention to treat).",
     "sources": [
       {
         "title": "OPTIMAL-BP primary report",
@@ -2437,6 +2437,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract and indexed notices checked."
+      },
+      {
+        "title": "OPTIMAL-BP 1-year outcomes",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42212393/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (entry SBP criterion and 1-year outcomes)."
       }
     ],
     "relatedTopic": "acute-bp"
@@ -2457,18 +2465,18 @@
       "reperfusion-guided"
     ],
     "question": "Do reperfusion-guided SBP targets after successful EVT improve outcome?",
-    "population": "440 patients with anterior LVO and mTICI ≥2b after EVT at 11 Spanish centers (mean age 75).",
-    "comparison": "SBP 140–160 for mTICI 2b or 100–140 for 2c/3 for 72 hours versus SBP <180.",
+    "population": "440 previously independent adults (prestroke mRS 0–2) with anterior-circulation LVO and mTICI ≥2b after EVT within 24 h at 11 Spanish centers (mean age 75); elevated SBP was not required, residual ≥50% stenosis was excluded, and 90% had mTICI 2c/3.",
+    "comparison": "SBP 140–160 for mTICI 2b or 100–140 for 2c/3 for 72 hours, using antihypertensives or vasopressors as needed, versus guideline management (SBP <180).",
     "result": "mRS 0–2 at 90 days occurred in 60.0% vs 47.1% (difference 13.3 points; 95% CI 4.1–22.6). Hemorrhagic transformation 22.3% vs 31.6%; symptomatic ICH 3.5% vs 3.9%; mortality 15.4% vs 15.6% (abstract figures).",
-    "limits": "Open-label single-country trial (446 enrolled, 440 analyzed); it tests the combined strategy rather than each target. Mortality figures are from the abstract narrative.",
+    "limits": "Open-label single-country trial stopped early for lack of funding (446 of 786 planned; 440 analyzed). Only 9.8% had mTICI 2b, and that subgroup showed no clear benefit, so the result mainly reflects lower SBP after near-complete or complete reperfusion (mean first-24-h SBP 125 vs 134 mmHg). Controls had more hypertension and terminal ICA occlusion; the authors call the findings hypothesis-generating. Published after AHA/ASA 2026, which rates intensive SBP lowering to <140 mmHg for 72 h after mTICI 2b–3 in anterior LVO as harmful (COR 3: Harm), and after the ESO 2025 update; it does not change that guidance.",
     "sources": [
       {
         "title": "HOPE (post-EVT BP) primary report",
         "url": "https://pubmed.ncbi.nlm.nih.gov/42258192/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
-        "access": "Primary abstract verified via PubMed."
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract and PMC full text (PMC13247842) read; Table 2 lists 105 control responders where the abstract and text report 106 (47.1%)."
       }
     ],
     "relatedTopic": "acute-bp"
@@ -2492,7 +2500,7 @@
     "population": "2,404 Chinese patients with a motor deficit and SBP ≥150 within 2 hours; 46.5% of confirmed strokes were hemorrhagic.",
     "comparison": "Immediate lowering to SBP 130–140 versus usual care.",
     "result": "No overall difference in 90-day mRS (cOR 1.00; 95% CI 0.87–1.15). Hemorrhagic stroke: cOR 0.75 (0.60–0.92); ischemic stroke: cOR 1.30 (1.06–1.60), i.e., worse outcome.",
-    "limits": "Subgroup effects by stroke type; a very high hemorrhage proportion limits transfer to other regions.",
+    "limits": "Subgroup effects by stroke type; a very high hemorrhage proportion limits transfer to other regions. AHA/ASA 2026 rates intensive prefacility lowering to SBP 130–140 as COR 3: No Benefit, and the ESO 2025 update advises against routine prehospital lowering (moderate certainty).",
     "sources": [
       {
         "title": "INTERACT4 primary report",

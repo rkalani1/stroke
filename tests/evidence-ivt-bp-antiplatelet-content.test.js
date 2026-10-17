@@ -88,3 +88,51 @@ describe('thrombolysis Evidence cards', () => {
     expect(study('wake-up').population).toContain('patients with planned thrombectomy excluded');
   });
 });
+
+describe('acute blood pressure Evidence cards', () => {
+  it('scopes the post-EVT harm statement and adds the direct-to-EVT threshold', () => {
+    const card = topic('acute-bp');
+    // ais-2026-73 (2a, B-NR): EVT planned without IVT, ≤185/110 before the procedure.
+    expect(card.summary).toContain('EVT planned without IVT: ≤185/110 before the procedure (AHA 2026, 2a)');
+    // ais-2026-77: anterior LVO, mTICI 2b–3, first 72 h; ESO 2025 update: not <140 in first 24 h (high certainty).
+    expect(card.summary).toContain('After successful EVT for anterior LVO (mTICI 2b–3), do not target SBP <140 for the first 72 h (AHA 2026, COR 3: Harm');
+    expect(card.summary).toContain('ESO 2025 update: <180/105');
+    expect(card.summary).not.toContain('ESO 2026');
+    // Cochrane 2026: mortality RR 1.19 (1.08–1.32); search to 20 March 2025.
+    expect(card.summary).toContain('RR 1.19, 95% CI 1.08–1.32');
+    // HOPE: open-label, stopped early, hypothesis-generating per the authors.
+    expect(card.summary).toMatch(/HOPE, 2026\) found .*hypothesis-generating, and it does not override the COR 3: Harm recommendation/);
+    // ESO >220/120 statement is expert consensus; ais-2026-70 is 2b; ais-2026-13 is 3: No Benefit.
+    expect(card.summary).toContain('ESO 2025 expert consensus: if lowered, reduce SBP cautiously by <15% over 24 h');
+    expect(card.summary).toContain('No routine prehospital lowering in suspected stroke (AHA 2026, COR 3: No Benefit; ESO 2025 update, moderate certainty)');
+  });
+
+  it('keeps review points graded and inside the four-item limit', () => {
+    const card = topic('acute-bp');
+    expect(card.consider).toHaveLength(4);
+    // ENCHANTED: any ICH 14.8 vs 18.7%; ais-2026-75 is COR 3: No Benefit.
+    expect(card.consider[0]).toContain('(14.8 vs 18.7%) (ENCHANTED; AHA 2026 COR 3: No Benefit)');
+    // ais-2026-69 has no "only"; ESO 2025 discourages routine vasopressors without reperfusion (low certainty).
+    expect(card.consider[1]).not.toMatch(/only when a comorbidity/);
+    expect(card.consider[1]).toMatch(/treat hypertension early when a comorbid condition requires it .*AHA 2026 COR 1\)/);
+    expect(card.consider[1]).toContain('discourages routinely raising BP with vasopressors in deteriorating patients (low certainty)');
+    // DETERMINE: mRS 0–2 44.2 vs 48.8%.
+    expect(card.consider[3]).toContain('DETERMINE 2026, mRS 0–2 44.2 vs 48.8%');
+    for (const pmid of ['42445947', '42585603', '37732489']) expect(urls(card)).toContain(`https://pubmed.ncbi.nlm.nih.gov/${pmid}/`);
+  });
+
+  it('states HOPE, OPTIMAL-BP and INTERACT4 limits from their reports', () => {
+    const hope = study('hope-post-evt-bp');
+    expect(hope.population).toContain('elevated SBP was not required');
+    expect(hope.comparison).toContain('antihypertensives or vasopressors as needed');
+    expect(hope.limits).toMatch(/stopped early for lack of funding \(446 of 786 planned; 440 analyzed\)/);
+    expect(hope.limits).toContain('Only 9.8% had mTICI 2b');
+    expect(hope.limits).toContain('COR 3: Harm');
+    expect(hope.sources[0].access).toContain('PMC13247842');
+    const optimal = study('optimal-bp');
+    expect(optimal.population).toContain('SBP ≥140 mmHg on two readings within 2 h of recanalization');
+    expect(optimal.limits).toContain('40.5% vs 52.7% (adjusted OR 0.59, 95% CI 0.34–1.00; P = .051');
+    expect(urls(optimal)).toContain('https://pubmed.ncbi.nlm.nih.gov/42212393/');
+    expect(study('interact4').limits).toContain('COR 3: No Benefit');
+  });
+});
