@@ -43,7 +43,8 @@ describe('global quick search', () => {
 
 describe('case bar projection', () => {
   const now = new Date('2026-10-01T12:00:00').getTime();
-  const base = updateEncounter(newEncounter(), prev => ({ ...prev, drug: 'TNK', note: { ...prev.note, diagnosisCategory: 'ischemic', age: '72', sex: 'F', weight: '80', presentingBP: '190/100', glucose: '132', lkwDate: '2026-10-01', lkwTime: '09:00' } }));
+  // Exposure explicitly 'none': an unassessed exposure holds the IVT card, and the bar then shows no dose.
+  const base = updateEncounter(newEncounter(), prev => ({ ...prev, drug: 'TNK', note: { ...prev.note, diagnosisCategory: 'ischemic', age: '72', sex: 'F', weight: '80', presentingBP: '190/100', glucose: '132', lkwDate: '2026-10-01', lkwTime: '09:00', lastDOACType: 'none' } }));
   it('shows elapsed h:mm, the 4.5 h countdown and dose arithmetic for acute ischemic stroke', () => {
     const c = caseSummary(base, now);
     expect(c.dx).toBe('Ischemic');

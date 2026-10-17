@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import Encounter from './Encounter.jsx';
 import { BUILD_PUBLIC_DEMO, BUILD_TARGET_MARKER } from './build-flags.js';
 import { newEncounter, updateEncounter, setEncounterReviewedScore, encounterVolume, protocolVolumeEstimate, protocolEncounter, encounterNihss, encounterTiming, copySummary, buildSummary, outputWarnings } from './workspace-state.js';
-import { documentationLabel } from './documentation-output.js';
+import { documentationLabel, copyStatusMessage } from './documentation-output.js';
 import { focusEncounterTarget } from './encounter-overview.js';
 import CaseBar from './components/CaseBar.jsx';
 import { NAV_ICONS, SearchIcon } from './components/NavIcons.jsx';
@@ -227,10 +227,16 @@ function App() {
     scrollMemory.current.focus = { id, then };
     location.hash = '#/encounter';
   };
+  // Every clipboard outcome is reported: a superseded or blocked copy must not look like success.
+  const reportCopy = (result, label, onDenied) => {
+    setCopyStatus(copyStatusMessage(result, label));
+    if (result === 'denied') onDenied();
+  };
   const copy = async text => {
+    // A preview with time-dependent text (elapsed times, future-time checks) is regenerated before copying.
+    if (buildSummary(stateRef.current, Date.now()) !== text) { await generateAndCopy(); return; }
     const result = await copySummary(stateRef, text, value => navigator.clipboard.writeText(value));
-    if (result === 'copied') setCopyStatus('Summary copied.');
-    if (result === 'denied') { setCopyStatus('Clipboard unavailable. Select the read-only summary and copy it manually.'); document.querySelector('[data-generated-note]')?.select(); }
+    reportCopy(result, documentationLabel(stateRef.current), () => document.querySelector('[data-generated-note]')?.select());
   };
   // One tap: regenerate the current note from canonical fields, then copy it.
   const generateAndCopy = async () => {
@@ -240,8 +246,7 @@ function App() {
     stateRef.current = { ...current, draft };
     setState(prev => prev.revision === current.revision ? { ...prev, draft } : prev);
     const result = await copySummary(stateRef, text, value => navigator.clipboard.writeText(value));
-    if (result === 'copied') setCopyStatus(`${documentationLabel(current)} copied.`);
-    if (result === 'denied') { setCopyStatus('Clipboard unavailable. Select the read-only summary and copy it manually.'); goToEncounter('handoff-title', () => document.querySelector('[data-generated-note]')?.select()); }
+    reportCopy(result, documentationLabel(current), () => goToEncounter('handoff-title', () => document.querySelector('[data-generated-note]')?.select()));
   };
   const timing = encounterTiming(state.note, now);
   const volume = encounterVolume(state.volume);
