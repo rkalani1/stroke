@@ -555,7 +555,7 @@
       "neurocritical care",
       "DNAR"
     ],
-    "summary": "Run the care bundle in the first hours (INTERACT3: better 6-month mRS, cOR 0.86): SBP <140 started early and reached within 1 h; glucose 6.1–7.8 mmol/L (7.8–10.0 with diabetes); temperature ≤37.5 °C; INR <1.5 after warfarin. Do not drop SBP below 130 in mild-to-moderate ICH (AHA 2022, harm; ATACH-2 at 110–139 gave no benefit and more renal adverse events, 9.0 vs 4.0%). Reverse anticoagulation immediately (see the reversal card). Severity scores frame discussion but must not alone limit care; defer new DNAR orders until at least the second full day.",
+    "summary": "Run the care bundle in the first hours (INTERACT3: better 6-month mRS, cOR 0.86): SBP <140 started early and reached within 1 h; glucose 6.1–7.8 mmol/L (≈110–140 mg/dL; 7.8–10.0 mmol/L ≈140–180 mg/dL with diabetes); temperature ≤37.5 °C; INR <1.5 after warfarin. Do not acutely lower SBP below 130 in mild-to-moderate ICH presenting with SBP >150 (AHA 2022, harm; ATACH-2 at 110–139 gave no benefit and more renal adverse events, 9.0 vs 4.0%). Reverse anticoagulation immediately (see the reversal card). Severity scores frame discussion but must not alone limit care; defer new DNAR orders until at least the second full day.",
     "recommendations": [
       {
         "text": "Initiating acute BP treatment within 2 hours of ICH onset and reaching the target within 1 hour can be beneficial to reduce hemorrhage expansion risk and improve functional outcome.",
@@ -666,8 +666,9 @@
     ],
     "consider": [
       "Location, volume, GCS, premorbid function and hours from onset decide which trial applies.",
-      "Craniotomy is a lifesaving option for deteriorating supratentorial ICH (2b); decompressive craniectomy may reduce mortality in comatose patients with large hematomas or refractory ICP (2b).",
-      "Agree on realistic goals with the family before surgery."
+      "Craniotomy is a lifesaving option for deteriorating supratentorial ICH (2b); decompressive craniectomy may be considered to reduce mortality in supratentorial ICH with coma, a large hematoma with significant midline shift, or refractory ICP (2b).",
+      "Agree on realistic goals with the family before surgery.",
+      "Cochrane 2025 (24 RCTs): minimally invasive evacuation may improve good function (RR 1.36, low certainty) and probably lowers mortality (RR 0.71, moderate certainty); most trials had high risk of bias."
     ],
     "caution": "Lower mortality is not the same as better function; do not extend lobar-ICH results to deep or infratentorial bleeds.",
     "sources": [
@@ -686,6 +687,14 @@
         "type": "Guideline",
         "checkedAt": "2026-10-01",
         "access": "Official AHA summary page."
+      },
+      {
+        "title": "Surgery for spontaneous supratentorial ICH (Cochrane review)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40673401/",
+        "year": 2025,
+        "type": "Meta-analysis",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract checked via PubMed."
       }
     ],
     "related": [
@@ -717,7 +726,7 @@
       "nimodipine",
       "hydrocephalus"
     ],
-    "summary": "Secure the aneurysm as early as feasible, preferably within 24 h (AHA 2023, COR 1; ESO 2026 consensus), at a high-volume center. Start enteral nimodipine early (COR 1). Until it is secured: frequent BP checks with short-acting agents, avoiding hypotension, hypertension and swings; ESO suggests targeting about 160 if SBP stays >160–180 after analgesia and nimodipine. Good grade and equally suitable for both: coil rather than clip. No routine antifibrinolytics, statins, magnesium or prophylactic hypervolemia. EVD for acute symptomatic hydrocephalus.",
+    "summary": "Secure the aneurysm as early as feasible, preferably within 24 h (AHA 2023, COR 1; ESO 2026 consensus), at a high-volume center. Start enteral nimodipine early (COR 1). Until it is secured: frequent BP checks with short-acting agents, avoiding hypotension, hypertension and swings; ESO 2026 expert consensus suggests targeting about 160 if SBP stays >160–180 after analgesia and nimodipine. Good grade and equally suitable for both: coil rather than clip. No routine antifibrinolytics, statins, magnesium, endothelin-receptor antagonists or prophylactic hypervolemia. Urgent CSF diversion (EVD and/or lumbar drain) for acute symptomatic hydrocephalus (COR 1).",
     "recommendations": [
       {
         "text": "Surgical or endovascular treatment of the ruptured aneurysm is recommended as early as feasible after presentation, preferably within 24 hours of onset, to improve outcome.",
@@ -750,7 +759,7 @@
     ],
     "consider": [
       "New decline: think rebleeding, hydrocephalus, DCI/vasospasm or seizures — urgent CT ± CTA/CTP.",
-      "Seizure prophylaxis only with high-risk features (MCA aneurysm, high grade, ICH, hydrocephalus, cortical infarct); avoid phenytoin; stop by 7 days after an onset seizure.",
+      "Seizure prophylaxis: AHA 2023 allows it only with high-risk features (MCA aneurysm, high grade, ICH, hydrocephalus, cortical infarct; 2b) and lists phenytoin as harmful; NCS 2026 is conditional (ASM or no ASM; either agent and duration), its expert guidance favoring levetiracetam for ≤3 days unless seizures or EEG features suggest ongoing risk. Seizure at onset: AHA 2023 supports treatment for no more than 7 days (2a).",
       "Keep euvolemia; liberal transfusion (Hb ≤10 g/dL) did not improve 12-month outcome (SAHaRA)."
     ],
     "caution": "Prophylactic hemodynamic augmentation and induced hypervolemia are harmful.",

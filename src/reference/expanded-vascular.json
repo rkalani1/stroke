@@ -1005,7 +1005,7 @@
       "warfarin",
       "dabigatran"
     ],
-    "summary": "Stop the drug and reverse as soon as ICH is diagnosed (AHA 2022, COR 1). Factor Xa inhibitor: 4F-PCC rather than andexanet (NCS/SCCM 2026, conditional); andexanet (Andexxa) was withdrawn from the US market effective 22 December 2025. Warfarin with INR ≥2.0: 4F-PCC over FFP, then IV vitamin K (COR 1). Dabigatran: idarucizumab (2a). Heparin: protamine (2a). Antiplatelets: no platelet transfusion unless neurosurgery is planned; if on aspirin and going to surgery, transfuse platelets (conditional). No recommendation on desmopressin or on reversal in small ICH.",
+    "summary": "Stop the drug and reverse as soon as ICH is diagnosed (AHA 2022, COR 1). Factor Xa inhibitor: 4F-PCC rather than andexanet (NCS/SCCM 2026, conditional); andexanet (Andexxa) was withdrawn from the US market effective 22 December 2025. Warfarin with INR ≥2.0: 4F-PCC over FFP, then IV vitamin K (COR 1). Dabigatran: idarucizumab (2a). Unfractionated heparin: protamine (2a); LMWH: protamine may partially reverse (2b). Antiplatelets: no platelet transfusion unless neurosurgery is planned; if on aspirin and going to surgery, transfuse platelets (conditional). No recommendation on desmopressin or on reversal in small ICH.",
     "recommendations": [
       {
         "text": "Immediate discontinuation of anticoagulation and rapid reversal are recommended as soon as possible after diagnosis of anticoagulant-associated spontaneous ICH to improve survival.",
@@ -1062,8 +1062,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42786382/",
         "year": 2026,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-17",
+        "access": "Abstract rechecked 2026-10-17: direction and population of the recommendations it summarizes. GRADE strength and certainty were transcribed from the full text on 2026-09-30 and not re-verified (no PMC copy)."
       },
       {
         "title": "AABB news: AstraZeneca withdraws factor Xa reversal agent (Andexxa) from the U.S. market",
@@ -1108,7 +1108,7 @@
       "CAA-ri",
       "anticoagulation after ICH"
     ],
-    "summary": "Suspect CAA with lobar ICH, convexity SAH or transient focal episodes; MRI with blood-sensitive sequences looks for lobar microbleeds and cortical superficial siderosis. Recurrence risk rises with lobar location, older age, more lobar microbleeds, disseminated superficial siderosis, poor BP control and APOE ε2/ε4 (AHA 2022, 2a). Restarting antiplatelets may be reasonable (2b; RESTART: recurrent ICH 4 vs 9%, not significant). In AF after ICH, PRESTIGE-AF found fewer ischemic strokes but more recurrent ICH with DOACs — individualize; left atrial appendage closure may be considered if anticoagulation is not possible (2b).",
+    "summary": "Suspect CAA with lobar ICH, convexity SAH or transient focal episodes; MRI with blood-sensitive sequences looks for lobar microbleeds and cortical superficial siderosis. Recurrence risk rises with lobar location, older age, more lobar microbleeds, disseminated superficial siderosis, poor BP control, Asian or Black race and APOE ε2/ε4 (AHA 2022, 2a). Restarting antiplatelets may be reasonable (2b; RESTART: recurrent ICH 4 vs 9%, not significant). In AF after ICH, PRESTIGE-AF found fewer ischemic strokes but more recurrent ICH with DOACs — individualize; if anticoagulation is restarted, starting 7–8 weeks after ICH may be considered after weighing individual factors (AHA 2022, 2b); left atrial appendage closure may be considered if anticoagulation is not possible (2b).",
     "consider": [
       "Transient focal episodes may be CAA rather than TIA — avoid reflex antithrombotics.",
       "Long-term BP <130/80 is reasonable after ICH (AHA 2022, 2a).",
@@ -1155,7 +1155,7 @@
       "clipping",
       "flow diversion"
     ],
-    "summary": "Weigh rupture risk (size, location, growth, morphology, prior SAH; PHASES, ELAPSS and UIATS support the discussion) against treatment risk and patient preference in a multidisciplinary team. Stop smoking and treat hypertension. Most ESO recommendations rest on very low-certainty evidence.",
+    "summary": "Weigh rupture risk (size, location, growth, morphology, prior SAH; PHASES, ELAPSS and UIATS support the discussion) against treatment risk and patient preference in a multidisciplinary team. Stop smoking and treat hypertension. All ESO recommendations rest on very low-certainty evidence.",
     "consider": [
       "Review aneurysm size, location, morphology, growth and prior hemorrhage alongside patient factors.",
       "Clarify the purpose and interval of surveillance with the treating team.",
@@ -1168,7 +1168,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/36082246/",
         "year": 2022,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-17",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
@@ -1197,7 +1197,7 @@
       "epilepsy",
       "ASM withdrawal"
     ],
-    "summary": "Treat clinical or EEG-confirmed seizures. Do not give prophylactic antiseizure drugs after ischemic stroke or ICH without seizures (AHA 2026; AHA 2022: no benefit). After aSAH, brief prophylaxis may be reasonable only with high-risk features; avoid phenytoin. Use continuous EEG (at least 24 h) for unexplained or fluctuating mental status after ICH.",
+    "summary": "Treat clinical or EEG-confirmed seizures. Do not give prophylactic antiseizure drugs after ischemic stroke or ICH without seizures (AHA 2026; AHA 2022: no benefit). After aSAH, AHA 2023 allows prophylaxis only with high-risk features (2b) and lists phenytoin as harmful (3: Harm); NCS 2026 suggests ASM or no ASM (conditional, low certainty) and allows either agent and duration; its expert guidance prefers levetiracetam, stopped by 3 days unless seizures or EEG features suggest ongoing risk. Continuous EEG (at least 24 h) is reasonable for unexplained or fluctuating mental status after ICH (AHA 2022, 2a).",
     "recommendations": [
       {
         "text": "In adult AIS patients, prophylactic antiseizure medication is not recommended as it does not prevent seizures or improve functional outcome.",
@@ -1234,8 +1234,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42552475/",
         "year": 2026,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-17",
+        "access": "PMC full text (PMC13642444) read 2026-10-17; supplementary tables not reviewed."
       }
     ],
     "related": []
@@ -1256,11 +1256,11 @@
       "video EEG",
       "nonepileptic"
     ],
-    "summary": "Make a positive diagnosis from the event history, witness accounts and, when feasible, video-EEG of a typical event; explain it respectfully, screen for coexisting epilepsy and psychiatric conditions, and arrange continuity (AAN 2025). Reassess antiseizure or benzodiazepine exposure against any coexisting indication.",
+    "summary": "Make a positive diagnosis from the event history, witness accounts and, when feasible, video-EEG of a typical event; explain it respectfully, screen for coexisting epilepsy and psychiatric conditions, and arrange continuity (AAN 2025). Do not prescribe ASMs or benzodiazepines for functional seizures without another indication, taper ASMs that lack one, and refer appropriate patients for psychological treatment (AAN 2025).",
     "consider": [
       "Review event history, witness information and typical-event recording or video-EEG when feasible.",
       "Explain the diagnostic rationale and arrange continuity rather than relying on a label alone.",
-      "Reassess ASM or benzodiazepine exposure against any coexisting indication."
+      "Do not prescribe ASMs or benzodiazepines for functional seizures alone; taper ASMs that lack another indication."
     ],
     "caution": "Functional seizures and epilepsy can coexist; a normal routine EEG or one bedside sign does not make the diagnosis.",
     "sources": [
@@ -1269,8 +1269,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/41370742/",
         "year": 2025,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract (executive summary) checked 2026-10-17; full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -1293,7 +1293,7 @@
       "tracheostomy",
       "recovery"
     ],
-    "summary": "Do not settle prognosis on day 1. After ICH, full care with new DNAR or withdrawal deferred until at least the second full hospital day is reasonable unless prior wishes say otherwise (AHA 2022, 2a). Severity scores such as the ICH score frame discussion but must not be the sole basis to limit treatment (COR 3), and a DNAR order alone should not limit other care. Clear confounders such as sedation and medical instability first (NCS).",
+    "summary": "Do not settle prognosis early. After ICH, full care with new DNAR or withdrawal deferred until at least the second full hospital day is reasonable unless prior wishes say otherwise (AHA 2022, 2a); aside from the most clinically devastated patients, defer ICH neuroprognostication for at least the first 48–72 h of ICU admission (NCS 2023 good-practice statement). Severity scores such as the ICH score frame discussion but must not be the sole basis to limit treatment (COR 3), and a DNAR order alone should not limit other care. Clear confounders such as sedation and medical instability first (NCS).",
     "recommendations": [
       {
         "text": "A baseline severity score alone is not recommended as the sole basis for forecasting individual prognosis or deciding to limit life-sustaining treatment in patients with spontaneous ICH.",
@@ -1306,7 +1306,8 @@
     "consider": [
       "Identify sedation, medical instability and other confounders before discussing prognosis.",
       "Explain the outcome being estimated, the time horizon and the range of uncertainty.",
-      "Revisit recovery over time and incorporate what outcomes the patient would value."
+      "Revisit recovery over time and incorporate what outcomes the patient would value.",
+      "After ICH, the original ICH score or the max-ICH score alone is not a reliable predictor of poor function at ≥3 months, nor the original score of 30-day mortality (NCS 2023; weak, low or very low certainty)."
     ],
     "caution": "Premature withdrawal can distort both individual care and the evidence used to estimate prognosis.",
     "sources": [
@@ -1315,16 +1316,16 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/41942818/",
         "year": 2026,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-17",
+        "access": "PMC full text (PMC13249629) read 2026-10-17; evidence tables not reviewed."
       },
       {
         "title": "Guidelines for Neuroprognostication in Critically Ill Adults with Intracerebral Hemorrhage",
         "url": "https://pubmed.ncbi.nlm.nih.gov/37923968/",
         "year": 2023,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-17",
+        "access": "PMC full text (PMC10959839) read 2026-10-17; evidence tables not reviewed."
       }
     ],
     "related": [
@@ -1356,7 +1357,7 @@
       "end of life",
       "shared decision"
     ],
-    "summary": "Offer palliative support alongside restorative stroke care. With large cerebral or cerebellar infarcts at risk of swelling, discuss options and likely outcomes early (AHA 2026, COR 1). Clarify capacity and the appropriate surrogate, and use shared decision-making for patients who cannot fully participate (AHA 2022, 2a).",
+    "summary": "Offer palliative support alongside restorative stroke care. With large cerebral or cerebellar infarcts at risk of swelling, discuss options and likely outcomes early (AHA 2026, COR 1). Clarify capacity and the appropriate surrogate; after ICH, a surrogate–physician shared decision-making model is reasonable for patients who cannot fully participate (AHA 2022 ICH, 2a).",
     "consider": [
       "Clarify capacity, the appropriate surrogate and known preferences.",
       "Explain the decision, alternatives and uncertainty in language suited to the situation.",
@@ -1515,9 +1516,9 @@
       "eclampsia",
       "postpartum"
     ],
-    "summary": "Recurrent thunderclap headaches with segmental cerebral vasoconstriction suggest RCVS; over half of cases are postpartum or follow adrenergic or serotonergic drugs. Vasoconstriction peaks 2–3 weeks after onset and resolves within 3 months, and stroke can follow initially normal imaging. RCVS2 (thunderclap headache, carotid involvement, vasoconstrictive trigger, sex, SAH; range −2 to +10): ≥5 was 99% specific and 90% sensitive for RCVS; ≤2 was 100% specific for excluding it, including against PACNS. PRES (bilateral subcortical vasogenic edema) follows BP fluctuation, renal failure, cytotoxic drugs, autoimmune disease or eclampsia, and usually resolves.",
+    "summary": "Recurrent thunderclap headaches with segmental cerebral vasoconstriction suggest RCVS; over half of cases are postpartum or follow adrenergic or serotonergic drugs. Vasoconstriction peaks 2–3 weeks after onset and resolves within 3 months, and stroke can follow initially normal imaging. RCVS2 (thunderclap headache, carotid involvement, vasoconstrictive trigger, sex, SAH; range −2 to +10): ≥5 was 99% specific and 90% sensitive for RCVS; ≤2 was 100% specific (85% sensitive) for excluding it; performance was similar against PACNS in a separate validation cohort. PRES (bilateral subcortical vasogenic edema) follows BP fluctuation, renal failure, cytotoxic drugs, autoimmune disease or eclampsia, and usually resolves.",
     "consider": [
-      "Exclude aneurysmal SAH first and remove vasoactive triggers.",
+      "Exclude aneurysmal SAH first and remove vasoactive triggers; avoid empirical glucocorticoids when RCVS is likely (in 162 patients they independently predicted worsening and poor outcome; observational).",
       "Repeat vessel imaging if early imaging is normal but suspicion persists.",
       "Nimodipine may ease thunderclap headache within 48 h but has no proven effect on stroke or hemorrhage.",
       "PRES: treat the driver (BP, drug, eclampsia) and watch for hemorrhage or posterior-fossa edema with hydrocephalus."
@@ -1547,6 +1548,14 @@
         "type": "Report",
         "checkedAt": "2026-10-03",
         "access": "Abstract verified via PubMed."
+      },
+      {
+        "title": "Glucocorticoid-associated worsening in RCVS",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/27940651/",
+        "year": 2017,
+        "type": "Observational study",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed; retrospective cohort."
       }
     ],
     "related": [
@@ -1580,7 +1589,7 @@
       "myelopathy",
       "aortic surgery"
     ],
-    "summary": "Suspect spinal cord infarction with sudden severe myelopathy reaching its nadir within 12 h (77% of 133 Mayo patients; 76% had vascular risk factors). The first spine MRI was normal in 24%, so repeat it with DWI and axial T2: owl-eye (65%) or pencil-like (40%) T2 signal, and DWI restriction in 67% of those imaged. Supportive findings: adjacent arterial dissection or occlusion (20%) and vertebral body infarction (9%); CSF was inflammatory in only 8%.",
+    "summary": "Suspect spinal cord infarction with sudden severe myelopathy reaching its nadir within 12 h (77% of 133 Mayo patients; 76% had vascular risk factors). The first spine MRI was normal in 24%, so repeat it with DWI and axial T2: owl-eye (65%) or pencil-like (40%) T2 signal, and DWI restriction in 67% of those imaged. Supportive findings: adjacent arterial dissection or occlusion (20%) and vertebral body infarction (9%); CSF was mildly inflammatory in only 8%.",
     "consider": [
       "Recent aortic surgery or repair, hypotension or vertebral dissection?",
       "Selective pain and temperature loss (39%) and a stuttering course (23%) occur; do not label transverse myelitis too early.",
@@ -1955,7 +1964,7 @@
       "embolization",
       "radiosurgery"
     ],
-    "summary": "Separate ruptured from unruptured AVMs and decide with a multidisciplinary vascular team, weighing natural history against surgical, endovascular and radiosurgical risks (AHA/ASA 2017).",
+    "summary": "Separate ruptured from unruptured AVMs and decide with a multidisciplinary vascular team, weighing natural history against surgical, endovascular and radiosurgical risks (AHA/ASA 2017). In ARUBA (226 adults with unruptured AVMs judged suitable for intervention; non-blinded, mixed interventions), medical management alone had fewer deaths or symptomatic strokes over a mean 50 months (3.39 vs 12.32 per 100 patient-years; HR 0.31).",
     "consider": [
       "Clarify rupture status, anatomy, symptoms and associated lesions.",
       "Review expected natural history and treatment risks with a multidisciplinary vascular team.",
@@ -1970,6 +1979,14 @@
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
         "access": "Official AHA key points page."
+      },
+      {
+        "title": "ARUBA final follow-up (unruptured brain AVMs)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/32562682/",
+        "year": 2020,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract read via PubMed."
       }
     ],
     "related": []
@@ -1991,7 +2008,7 @@
       "hemorrhage",
       "seizure"
     ],
-    "summary": "Establish lesion location, prior symptomatic hemorrhage, seizures and whether lesions are familial or multiple, then plan imaging, genetic counseling and any intervention in a specialist setting; evidence gaps remain substantial (2025 consensus).",
+    "summary": "Establish lesion location, prior symptomatic hemorrhage, seizures and whether lesions are familial or multiple, then plan imaging, genetic counseling and any intervention in a specialist setting; evidence gaps remain substantial (2025 consensus). Brain MRI should include susceptibility-weighted sequences (Class 1). A cavernous malformation should not preclude needed antithrombotics (Class 2a, B-NR); with a known unruptured, untreated one, IV alteplase may be considered if otherwise indicated for AIS; its risk is not well established (Class 2b, C-LD).",
     "consider": [
       "Clarify lesion location, prior symptomatic hemorrhage, seizures and whether lesions are familial or multiple.",
       "Review imaging, genetic counseling and follow-up needs in the appropriate specialty setting.",
@@ -2000,12 +2017,12 @@
     "caution": "Many recommendations rely on limited evidence, and incidental and symptomatic brainstem or spinal lesions need different discussions.",
     "sources": [
       {
-        "title": "2025 Alliance to Cure Cavernous Malformation consensus guideline",
-        "url": "https://www.alliancetocure.org/ccm-clinical-care-guidelines-publish/",
+        "title": "Alliance to Cure CM 2025 guidelines for cavernous malformations of the brain and spinal cord",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40396744/",
         "year": 2025,
         "type": "Consensus statement",
-        "checkedAt": "2026-10-01",
-        "access": "Alliance guideline announcement page."
+        "checkedAt": "2026-10-17",
+        "access": "PMC full text (PMC12680281) read 2026-10-17: graded recommendations."
       }
     ],
     "related": []
@@ -2028,11 +2045,11 @@
       "transfusion",
       "antifibrinolytic"
     ],
-    "summary": "Keep euvolemia (AHA 2023, 2a); induced hypervolemia and prophylactic hemodynamic augmentation are harmful (COR 3). Monitor for DCI with frequent exams, TCD, and CTA or CT perfusion when the exam is unreliable (2a). Symptomatic vasospasm: raising SBP, intra-arterial vasodilators or angioplasty may be reasonable (2b). Acute symptomatic hydrocephalus: EVD and/or lumbar drainage (COR 1) under a bundled EVD protocol. EARLYDRAIN (lumbar drain after securing) reduced poor outcome, but ESO 2026 makes no recommendation on prophylactic lumbar drainage.",
+    "summary": "Keep euvolemia (AHA 2023, 2a); induced hypervolemia and prophylactic hemodynamic augmentation are harmful (COR 3: Harm). Monitor for DCI with frequent neurological exams (COR 1); TCD, and CTA or CT perfusion with suspected vasospasm or an unreliable exam, are reasonable (2a). Symptomatic vasospasm: raising SBP may be reasonable; severe vasospasm: intra-arterial vasodilators or angioplasty may be reasonable (2b). ESO 2026 gives no evidence-based recommendation on these; its guidance reserves induced hypertension for after the aneurysm is secured and fluids have failed, and angioplasty for last-line rescue. Acute symptomatic hydrocephalus: EVD and/or lumbar drainage (COR 1) under a bundled EVD protocol. EARLYDRAIN (lumbar drain after securing) reduced poor outcome, but ESO 2026 makes no recommendation on prophylactic lumbar drainage.",
     "consider": [
       "Do not drain CSF for radiological hydrocephalus alone when consciousness is normal (ESO consensus).",
       "Liberal transfusion (Hb ≤10 g/dL) did not improve 12-month outcome (SAHaRA).",
-      "Start VTE prophylaxis once the aneurysm is secured (COR 1)."
+      "Pharmacological or mechanical VTE prophylaxis is recommended once the aneurysm is secured (AHA 2023, COR 1, C-LD)."
     ],
     "caution": "Drain management needs the full neurosurgical protocol.",
     "sources": [
@@ -2264,7 +2281,7 @@
       "factor VIIa",
       "hemostatic"
     ],
-    "summary": "No hemostatic drug improves function: recombinant factor VIIa within 2 h (FASTEST) slowed growth by 3.7 mL but did not change 180-day mRS (cOR 1.09) and increased life-threatening thromboembolism (RR 3.41); tranexamic acid (TICH-2) also gave no functional benefit (aOR 0.88). IVH with hydrocephalus and reduced consciousness: EVD (AHA 2022, COR 1). Intraventricular alteplase through an EVD lowered 180-day mortality (18 vs 29%) without improving mRS ≤3 and increased mRS 5 (CLEAR III).",
+    "summary": "No hemostatic drug improves function: recombinant factor VIIa within 2 h (FASTEST) slowed growth by 3.7 mL but did not change 180-day mRS (cOR 1.09) and increased life-threatening thromboembolism (RR 3.41); tranexamic acid (TICH-2) also gave no functional benefit (aOR 0.88). Hydrocephalus contributing to reduced consciousness: ventricular drainage (AHA 2022, COR 1); large IVH with impaired consciousness: EVD rather than medical management alone (COR 1). CLEAR III (stable supratentorial ICH <30 mL or primary IVH; IVH obstructing the third or fourth ventricle; routine EVD): intraventricular alteplase lowered 180-day mortality (18 vs 29%) without improving mRS ≤3 and increased mRS 5 (17 vs 9%). AHA 2022, for GCS >3 with primary IVH or IVH extension from supratentorial ICH <30 mL requiring EVD: reasonable to reduce mortality (2a); functional benefit uncertain (2b).",
     "consider": [
       "Is the problem expansion, ventricular obstruction, hydrocephalus or mass effect?",
       "Repeat CT within 24 h, sooner with any decline, to catch expansion.",
@@ -2285,8 +2302,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/28081952/",
         "year": 2017,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; no approval or availability inferred."
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract and registry (NCT00784134) checked 2026-10-17; no approval or availability inferred."
       }
     ],
     "related": [
