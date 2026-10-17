@@ -24,7 +24,7 @@
       "tenecteplase",
       "alteplase"
     ],
-    "summary": "Unknown onset within 4.5 h of symptom recognition with DWI–FLAIR mismatch: IVT can be beneficial (AHA 2026, 2a; WAKE-UP: mRS 0–1 53.3 vs 41.8%). Perfusion mismatch at 4.5–9 h, or within 9 h of the sleep midpoint, in patients ineligible for EVT: IVT can be beneficial (2a; EXTEND: 35.4 vs 29.5%, sICH 6.2 vs 0.9%). LVO at 4.5–24 h with salvageable tissue and no EVT access: IVT may be beneficial (2b; TRACE-III tenecteplase 33.0 vs 24.2%, sICH 3.0 vs 0.8%). With EVT planned, late tenecteplase added nothing (TIMELESS; TNK-PLUS; basilar: ATTENTION LATE), and ETERNAL-LVO (perfusion-selected LVO within 24 h, 79% EVT, stopped early) was neutral.",
+    "summary": "Unknown onset within 4.5 h of symptom recognition with DWI–FLAIR mismatch: IVT can be beneficial (AHA 2026, 2a; WAKE-UP: mRS 0–1 53.3 vs 41.8%). Perfusion mismatch at 4.5–9 h, or within 9 h of the sleep midpoint, in patients ineligible for EVT: IVT can be beneficial (2a; EXTEND: 35.4 vs 29.5%, sICH 6.2 vs 0.9%). LVO at 4.5–24 h with salvageable tissue and no EVT access: IVT may be beneficial (2b; TRACE-III tenecteplase 33.0 vs 24.2%, sICH 3.0 vs 0.8%). With EVT planned, late tenecteplase added nothing (TIMELESS; TNK-PLUS; basilar: ATTENTION LATE).",
     "recommendations": [
       {
         "text": "In AIS patients with unknown onset time who are within 4.5 hours of symptom recognition and have a DWI lesion smaller than one-third of MCA territory with no marked FLAIR signal change, IVT within 4.5 hours of symptom recognition can be beneficial to improve functional outcomes.",
@@ -49,12 +49,12 @@
       }
     ],
     "consider": [
-      "Perfusion mismatch at 4.5–24 h without planned EVT (China): OPTION (non-LVO, tenecteplase; mRS 0–1 43.6 vs 34.2%, sICH 2.8 vs 0%) and HOPE (with or without LVO, alteplase; 40 vs 26%, sICH 3.8 vs 0.5%) were positive; both were published after the AHA 2026 evidence review (searched to March 2025) and are not graded there.",
-      "Posterior circulation at 4.5–24 h, mostly mild, no EVT: EXPECTS (alteplase) functional independence 89.6 vs 72.6%. Basilar occlusion within 24 h (China): tenecteplase vs standard care improved mRS 0–1 or return to baseline (TRACE-5, 38 vs 29%; 49% had EVT; published 2026, not graded by AHA 2026).",
+      "Perfusion mismatch at 4.5–24 h without planned EVT (China): OPTION (non-LVO, tenecteplase; mRS 0–1 43.6 vs 34.2%, sICH 2.8 vs 0%) and HOPE (with or without LVO, alteplase; 40 vs 26%, sICH 3.8 vs 0.5%) were positive; both postdate the AHA 2026 evidence review (to March 2025) and are not graded there.",
+      "Posterior circulation at 4.5–24 h, mostly mild, no EVT: EXPECTS (alteplase) functional independence 89.6 vs 72.6%.",
       "Pin down last known well, symptom discovery and the imaging route (MRI mismatch vs automated perfusion).",
-      "Wake-up stroke selected by non-contrast CT alone: tenecteplase within 4.5 h of awakening did not improve 90-day mRS (TWIST, aOR 1.18; 95% CI 0.88–1.58), and ESO 2023 recommends against it (strong recommendation, low-quality evidence)."
+      "Wake-up stroke selected by non-contrast CT alone: tenecteplase did not improve mRS (TWIST, aOR 1.18; 95% CI 0.88–1.58); ESO 2023 recommends against it (strong recommendation, low-quality evidence)."
     ],
-    "caution": "Benefit beyond 9 h comes from imaging-selected trials in China (TRACE-III, OPTION, HOPE, EXPECTS); the 2a recommendations rest on WAKE-UP (Europe) and EXTEND. Extended-window IVT costs more sICH.",
+    "caution": "Benefit beyond 9 h comes from imaging-selected trials in China (TRACE-III, OPTION, HOPE, EXPECTS); the 2a grades rest on WAKE-UP and EXTEND. Late IVT costs more sICH.",
     "sources": [
       {
         "title": "European Stroke Organisation (ESO) guidelines on intravenous thrombolysis for acute ischaemic stroke",
@@ -121,44 +121,36 @@
         "access": "Primary abstract verified via PubMed."
       },
       {
-        "title": "TWIST: tenecteplase in wake-up stroke selected by non-contrast CT",
+        "title": "TWIST: tenecteplase in CT-selected wake-up stroke",
         "url": "https://pubmed.ncbi.nlm.nih.gov/36549308/",
         "year": 2023,
         "type": "Randomized trial",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety)."
+        "access": "Primary abstract verified via PubMed."
       },
       {
-        "title": "European Stroke Organisation (ESO) expedited recommendation on tenecteplase for acute ischaemic stroke",
+        "title": "ESO expedited recommendation on tenecteplase (2023)",
         "url": "https://pubmed.ncbi.nlm.nih.gov/37021186/",
         "year": 2023,
         "type": "Guideline",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed for the recommendation against tenecteplase after NCCT-only selection on awakening or unknown onset (low evidence, strong recommendation); full recommendation tables not reviewed."
+        "access": "Primary abstract verified via PubMed; full recommendation tables not reviewed."
       },
       {
-        "title": "ETERNAL-LVO: tenecteplase in large vessel occlusion within 24 hours",
-        "url": "https://pubmed.ncbi.nlm.nih.gov/40927857/",
-        "year": 2025,
-        "type": "Randomized trial",
-        "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety); terminated early."
-      },
-      {
-        "title": "TRACE-5: tenecteplase vs standard medical treatment for basilar artery occlusion within 24 h",
+        "title": "TRACE-5: tenecteplase for basilar occlusion within 24 h",
         "url": "https://pubmed.ncbi.nlm.nih.gov/41655588/",
         "year": 2026,
         "type": "Randomized trial",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (population, comparison, thrombectomy and alteplase use, outcomes and safety)."
+        "access": "Primary abstract verified via PubMed."
       },
       {
-        "title": "ATTENTION LATE: tenecteplase before thrombectomy at 4.5–24 h for basilar artery occlusion",
+        "title": "ATTENTION LATE: tenecteplase before EVT for late basilar occlusion",
         "url": "https://pubmed.ncbi.nlm.nih.gov/42776543/",
         "year": 2026,
         "type": "Randomized trial",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety)."
+        "access": "Primary abstract verified via PubMed."
       }
     ],
     "related": [
@@ -200,7 +192,7 @@
       "TEMPO-2",
       "TAPIS"
     ],
-    "summary": "Noncardioembolic minor stroke (NIHSS ≤3) or high-risk TIA (ABCD2 ≥4) within 24 h without IVT: aspirin plus clopidogrel with a loading dose for 21 days, then one agent (AHA 2026, COR 1). CHANCE: stroke 8.2 vs 11.7%; POINT: major ischemic events 5.0 vs 6.5% with major hemorrhage 0.9 vs 0.4%. Lower-grade options, each for its own population: ticagrelor plus aspirin for 30 days (NIHSS ≤5, or TIA with ABCD2 ≥6 or symptomatic stenosis ≥50%; COR 2b; THALES 5.5 vs 6.6%, severe bleeding 0.5 vs 0.1%); presumed atherosclerotic cause at 24–72 h (or NIHSS 4–5 within 24 h): clopidogrel plus aspirin for 21 days (COR 2a; INSPIRES 7.3 vs 9.2%); known CYP2C19 loss-of-function carriers: ticagrelor plus aspirin for 21 days, then ticagrelor, rather than clopidogrel-based DAPT (COR 2b; CHANCE-2 versus clopidogrel plus aspirin 6.0 vs 7.6%).",
+    "summary": "Noncardioembolic minor stroke (NIHSS ≤3) or high-risk TIA (ABCD2 ≥4) within 24 h without IVT: aspirin plus clopidogrel with a loading dose for 21 days, then one agent (AHA 2026, COR 1). CHANCE: stroke 8.2 vs 11.7%; POINT: major ischemic events 5.0 vs 6.5% with major hemorrhage 0.9 vs 0.4%. Lower-grade options: ticagrelor plus aspirin for 30 days (NIHSS ≤5, or TIA with ABCD2 ≥6 or symptomatic stenosis ≥50%; COR 2b; THALES 5.5 vs 6.6%, severe bleeding 0.5 vs 0.1%); presumed atherosclerotic cause at 24–72 h (or NIHSS 4–5 within 24 h): clopidogrel plus aspirin for 21 days (COR 2a; INSPIRES 7.3 vs 9.2%); known CYP2C19 loss-of-function carriers: ticagrelor plus aspirin for 21 days, then ticagrelor, rather than clopidogrel-aspirin (COR 2b; CHANCE-2 6.0 vs 7.6%).",
     "recommendations": [
       {
         "text": "In patients with minor noncardioembolic AIS (NIHSS 3 or less) or high-risk TIA (ABCD2 4 or greater) who did not receive IVT, DAPT (aspirin plus clopidogrel with loading dose) is recommended to be initiated within 24 hours of symptom onset and continued for 21 days, followed by single antiplatelet therapy, to reduce the 90-day risk of recurrent ischemic stroke.",
@@ -227,7 +219,7 @@
     "consider": [
       "Disabling deficit? Assess for IVT/EVT first. Non-disabling: DAPT was noninferior to alteplase (ARAMIS), and alteplase showed no benefit in PRISMS (stopped early).",
       "Write the stop date (day 21 or 30) and the single agent to continue.",
-      "After IVT, two Chinese RCTs published after the AHA 2026 evidence review disagree: TAPIS (NIHSS 4–10; aspirin plus ticagrelor within 6 h of onset) improved mRS 0–1 (68.7 vs 62.0%; sICH 0.9 vs 0.7%, wide CI), whereas EAST (NIHSS 0–5; clopidogrel plus aspirin within 6 h after IVT) did not (89.7 vs 89.6%). AHA 2026 rates the risk of antiplatelets in the first 24 h after IVT as uncertain (COR 2b, B-NR)."
+      "After IVT, two Chinese RCTs postdating AHA 2026 disagree: TAPIS (NIHSS 4–10; aspirin plus ticagrelor within 6 h of onset) improved mRS 0–1 (68.7 vs 62.0%; sICH 0.9 vs 0.7%, wide CI); EAST (NIHSS 0–5; clopidogrel plus aspirin within 6 h after IVT) did not (89.7 vs 89.6%). AHA 2026 rates the risk of antiplatelets in the first 24 h after IVT as uncertain (COR 2b, B-NR)."
     ],
     "caution": "Do not extend DAPT beyond 21–30 days without a separate indication; bleeding rose with DAPT in POINT, THALES and INSPIRES.",
     "sources": [
@@ -237,15 +229,15 @@
         "year": 2021,
         "type": "Guideline",
         "checkedAt": "2026-10-17",
-        "access": "PMC full text (PMC8370083) read: recommendation 1 (aspirin plus clopidogrel for 21 days; strong, high-quality evidence) and recommendation 2 (aspirin plus ticagrelor for 30 days; weak, moderate-quality evidence) checked."
+        "access": "PMC full text (PMC8370083) read: recommendations 1–2 with GRADE strength and quality."
       },
       {
-        "title": "EAST: early clopidogrel plus aspirin after thrombolysis for minor stroke",
+        "title": "EAST: clopidogrel plus aspirin after IVT for minor stroke",
         "url": "https://pubmed.ncbi.nlm.nih.gov/40973702/",
         "year": 2026,
         "type": "Randomized trial",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (population, comparison, outcome and safety)."
+        "access": "Primary abstract verified via PubMed."
       }
     ],
     "related": [
@@ -286,7 +278,7 @@
       "EXTEND-IA TNK",
       "bolus"
     ],
-    "summary": "Within 4.5 h use tenecteplase 0.25 mg/kg (max 25 mg) as a single bolus or alteplase 0.9 mg/kg (max 90 mg) (AHA 2026, COR 1); for IVT-eligible LVO within 4.5 h, ESO 2023 recommends tenecteplase 0.25 mg/kg over alteplase (strong recommendation, moderate-quality evidence). Tenecteplase was noninferior in AcT, ATTEST-2 (OR 1.07), TRACE-2 and ORIGINAL, and doubled early reperfusion before EVT in EXTEND-IA TNK (22 vs 10%). Do not use tenecteplase 0.4 mg/kg (COR 3: No Benefit, LOE A). Reteplase or mutant prourokinase may be considered when EVT is not planned (2b).",
+    "summary": "Within 4.5 h use tenecteplase 0.25 mg/kg (max 25 mg) as a single bolus or alteplase 0.9 mg/kg (max 90 mg) (AHA 2026, COR 1); for LVO within 4.5 h, ESO 2023 recommends tenecteplase 0.25 mg/kg over alteplase (strong, moderate-quality evidence). Tenecteplase was noninferior in AcT, ATTEST-2 (OR 1.07), TRACE-2 and ORIGINAL, and doubled early reperfusion before EVT in EXTEND-IA TNK (22 vs 10%). Do not use tenecteplase 0.4 mg/kg (COR 3: No Benefit, LOE A). Reteplase or mutant prourokinase may be considered when EVT is not planned (2b).",
     "recommendations": [
       {
         "text": "In adult AIS patients presenting within 4.5 hours of symptom onset or last known well who are eligible for IVT, tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg) is recommended to improve functional outcomes.",
@@ -316,7 +308,7 @@
         "year": 2023,
         "type": "Guideline",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed for the recommendations and their GRADE strength and quality; full recommendation tables not reviewed."
+        "access": "Primary abstract verified via PubMed; full recommendation tables not reviewed."
       },
       {
         "title": "RAISE: Reteplase versus Alteplase for Acute Ischemic Stroke",
@@ -707,7 +699,7 @@
       "Confirm the ophthalmic diagnosis and onset; coordinate stroke and ophthalmology assessment.",
       "Both trials studied nonarteritic CRAO; suspected arteritis needs its own pathway.",
       "THEIA measured visual acuity and TenCRAOS a vision-recovery threshold; weigh safety alongside benefit.",
-      "ESO 2025 suggests IVT within 4.5 h for CRAO (weak recommendation wording; very low-quality, nonrandomized evidence through 2023, issued before THEIA and TenCRAOS reported). REVISION (NCT04965038) is listed as terminated with no posted results (registry checked 2026-10-17)."
+      "ESO 2025 suggests IVT within 4.5 h for CRAO (weak wording; very low-quality nonrandomized evidence through 2023, before THEIA and TenCRAOS)."
     ],
     "caution": "Small neutral trials do not prove equivalence, and the 2021 AHA statement predates them.",
     "sources": [
@@ -736,28 +728,15 @@
         "access": "Primary abstract checked (population, comparison, outcomes and safety)."
       },
       {
-        "title": "European Stroke Organisation (ESO) guideline on visual impairment in stroke (PICO 9: ocular stroke)",
+        "title": "ESO guideline on visual impairment in stroke (2025)",
         "url": "https://pubmed.ncbi.nlm.nih.gov/40401755/",
         "year": 2025,
         "type": "Guideline",
         "checkedAt": "2026-10-17",
-        "access": "PMC full text (PMC12098360) read for the PICO 9 recommendation ('we suggest thrombolysis within 4.5 h') and its summary-of-findings table (very low quality); the strength symbols did not render as text."
-      },
-      {
-        "title": "REVISION: intravenous thrombolysis for central retinal artery occlusion (registry record)",
-        "url": "https://clinicaltrials.gov/study/NCT04965038",
-        "year": 2026,
-        "type": "Randomized trial",
-        "checkedAt": "2026-10-17",
-        "access": "ClinicalTrials.gov record checked: status terminated, registry enrollment 127, no results posted."
+        "access": "PMC full text (PMC12098360) read for PICO 9 and its evidence table."
       }
     ],
-    "related": [
-      {
-        "label": "Reperfusion overview",
-        "href": "#/evidence/acute-reperfusion"
-      }
-    ]
+    "related": []
   },
   {
     "id": "neurointerventional-care",
@@ -908,7 +887,7 @@
       "INTERACT4",
       "prehospital"
     ],
-    "summary": "Before IVT <185/110; EVT planned without IVT: ≤185/110 before the procedure (AHA 2026, 2a); after IVT <180/105 for at least 24 h; during and for 24 h after EVT ≤180/105 (AHA 2026, 2a; ESO 2025 update: <180/105). After successful EVT for anterior LVO (mTICI 2b–3), do not target SBP <140 for the first 72 h (AHA 2026, COR 3: Harm; ESO 2025 update: not <140 in the first 24 h, high certainty): ENCHANTED2/MT (<120) worsened mRS (OR 1.37) and OPTIMAL-BP (<140) lowered mRS 0–2 from 54.4 to 39.4%; a 2026 Cochrane review (9 RCTs, searched to March 2025) found that intensive SBP targets after reperfusion probably increase all-cause mortality (RR 1.19, 95% CI 1.08–1.32). One open-label Spanish trial published after both guidelines and stopped early (HOPE, 2026) found reperfusion-guided targets (140–160 for mTICI 2b; 100–140 for 2c/3, for 72 h) improved mRS 0–2 (60.0 vs 47.1%); its authors call it hypothesis-generating, and it does not override the COR 3: Harm recommendation. No reperfusion and <220/120: starting treatment in the first 48–72 h does not help; ≥220/120: benefit uncertain (AHA 2026, 2b; ESO 2025 expert consensus: if lowered, reduce SBP cautiously by <15% over 24 h). No routine prehospital lowering in suspected stroke (AHA 2026, COR 3: No Benefit; ESO 2025 update, moderate certainty): in INTERACT4, ambulance lowering to SBP 130–140 was neutral overall and worse in ischemic stroke (cOR 1.30).",
+    "summary": "Before IVT <185/110; EVT without IVT: ≤185/110 before the procedure (AHA 2026, 2a); after IVT <180/105 for at least 24 h; during and for 24 h after EVT ≤180/105 (AHA 2026, 2a; ESO 2025 update: <180/105). After successful EVT for anterior LVO (mTICI 2b–3), do not target SBP <140 for 72 h (AHA 2026, COR 3: Harm; ESO 2025 update: not <140 for 24 h, high certainty): ENCHANTED2/MT (<120) worsened mRS (OR 1.37), OPTIMAL-BP (<140) lowered mRS 0–2 from 54.4 to 39.4%, and Cochrane 2026 found probably higher mortality (RR 1.19, 95% CI 1.08–1.32). HOPE (2026, post-guideline; open-label, stopped early, hypothesis-generating) favored reperfusion-guided targets but does not override COR 3: Harm. No reperfusion and <220/120: starting treatment in the first 48–72 h does not help; ≥220/120: benefit uncertain (AHA 2026, 2b; ESO 2025 expert consensus: if lowered, reduce SBP by <15% over 24 h). No routine prehospital lowering (AHA 2026, COR 3: No Benefit; ESO 2025, moderate certainty; INTERACT4 ischemic stroke cOR 1.30).",
     "recommendations": [
       {
         "text": "AIS patients with elevated BP who are otherwise eligible for IVT are recommended to have SBP lowered below 185 mmHg and DBP below 110 mmHg before initiating IVT therapy to reduce hemorrhagic complications.",
@@ -947,10 +926,9 @@
       }
     ],
     "consider": [
-      "After alteplase, a target SBP of 130–140 did not improve 90-day function versus <180, although any intracranial hemorrhage was less frequent (14.8 vs 18.7%) (ENCHANTED; AHA 2026 COR 3: No Benefit).",
-      "Beyond the reperfusion limits above, treat hypertension early when a comorbid condition requires it (e.g., acute coronary event, acute heart failure, aortic dissection, post-thrombolysis sICH, preeclampsia/eclampsia; AHA 2026 COR 1); correct hypotension and hypovolemia (COR 1). Without IVT or EVT, ESO 2025 discourages routinely raising BP with vasopressors in deteriorating patients (low certainty).",
-      "Hold home oral antihypertensives while swallowing is unsafe; ESO advises against routinely continuing them in the acute phase.",
-      "During EVT, targeting each patient's pre-procedure BP was no better than a standard SBP 140–180 range (INDIVIDUATE; DETERMINE 2026, mRS 0–2 44.2 vs 48.8%)."
+      "After alteplase, SBP 130–140 did not improve 90-day function versus <180, though any ICH was less frequent (14.8 vs 18.7%) (ENCHANTED; AHA 2026 COR 3: No Benefit).",
+      "Treat hypertension early when a comorbid condition requires it (e.g., ACS, heart failure, aortic dissection, post-IVT sICH, preeclampsia; AHA 2026 COR 1); correct hypotension and hypovolemia. Without IVT or EVT, ESO 2025 discourages routine vasopressors to raise BP (low certainty).",
+      "Hold home oral antihypertensives while swallowing is unsafe; ESO advises against routinely continuing them in the acute phase."
     ],
     "caution": "One number does not fit every pathway; ICH and long-term targets are on their own cards.",
     "sources": [
@@ -960,7 +938,7 @@
         "year": 2026,
         "type": "Guideline",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed for the reperfusion, post-thrombectomy, vasopressor and prehospital statements and their certainty; recommendation boxes and the >220/120 expert consensus were not read at primary scope."
+        "access": "Primary abstract verified via PubMed; recommendation boxes and the >220/120 expert consensus not read at primary scope."
       },
       {
         "title": "The Management of Elevated Blood Pressure in the Acute Care Setting: A Scientific Statement From the American Heart Association",
@@ -979,28 +957,12 @@
         "access": "Primary abstract verified via PubMed."
       },
       {
-        "title": "Blood pressure management in reperfused ischemic stroke (Cochrane review)",
+        "title": "Cochrane review: BP management in reperfused ischemic stroke",
         "url": "https://pubmed.ncbi.nlm.nih.gov/42445947/",
         "year": 2026,
         "type": "Meta-analysis",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed: 9 RCTs, 4,381 participants, latest search 20 March 2025 (before HOPE); mortality RR 1.19 (moderate certainty)."
-      },
-      {
-        "title": "DETERMINE: individualized vs standard blood pressure control during thrombectomy",
-        "url": "https://pubmed.ncbi.nlm.nih.gov/42585603/",
-        "year": 2026,
-        "type": "Randomized trial",
-        "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety)."
-      },
-      {
-        "title": "INDIVIDUATE: individualized vs standardized blood pressure management during endovascular stroke treatment",
-        "url": "https://pubmed.ncbi.nlm.nih.gov/37732489/",
-        "year": 2023,
-        "type": "Randomized trial",
-        "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (single center; population, comparison and outcome)."
+        "access": "Primary abstract verified via PubMed (9 RCTs; search to March 2025)."
       }
     ],
     "related": [
@@ -2126,14 +2088,14 @@
       "SERIC-EVT",
       "tirofiban"
     ],
-    "summary": "Asundexian (factor XIa inhibitor) added to antiplatelets reduced ischemic stroke after noncardioembolic stroke or high-risk TIA (OCEANIC-STROKE 6.2 vs 8.4%; major bleeding 1.9 vs 1.7%) but was worse than apixaban in AF (OCEANIC-AF). Adjunctive IV argatroban or eptifibatide after IVT did not help and increased mortality (MOST: 24% and 12% vs 8%). Nerinetide (ESCAPE-NEXT), prehospital remote ischemic conditioning (RESIST) and colchicine (CONVINCE, CHANCE-3) were neutral; SERIC-EVT (conditioning after EVT) was positive, but EnTRIPS (postconditioning after EVT) and SERIC-IVT (conditioning after IVT) were neutral.",
+    "summary": "Asundexian (factor XIa inhibitor) added to antiplatelets reduced ischemic stroke after noncardioembolic stroke or high-risk TIA (OCEANIC-STROKE 6.2 vs 8.4%; major bleeding 1.9 vs 1.7%) but was worse than apixaban in AF (OCEANIC-AF). Adjunctive IV argatroban or eptifibatide after IVT did not help and increased mortality (MOST: 24% and 12% vs 8%). Nerinetide (ESCAPE-NEXT), prehospital remote ischemic conditioning (RESIST) and colchicine (CONVINCE, CHANCE-3) were neutral; SERIC-EVT (conditioning after EVT) was positive, but EnTRIPS (postconditioning after EVT) was neutral.",
     "consider": [
       "Compare the population, background therapy and primary endpoint with your patient before applying a new result.",
       "Separate confirmatory results from subgroup signals, and look for independent replication.",
       "Confirm regulatory approval and local availability before using any new agent.",
-      "IV tirofiban (Chinese RCTs): better 90-day function after IVT in noncardioembolic stroke without EVT (ASSET-IT, mRS 0–1 65.9 vs 54.9%; sICH 1.7 vs 0%), after an inadequate response to tenecteplase (INSTANT, 63.8 vs 52.2%) and after successful EVT (ATTRACTION, mRS 0–2 49 vs 43%; sICH 12 vs 9%, not significant), but not before EVT (RESCUE BT) or in branch atheromatous disease (STRATEGY). AHA 2026, whose evidence review predates ASSET-IT, INSTANT and ATTRACTION, rates IV tirofiban efficacy as not well established (COR 2b, B-R)."
+      "Tirofiban (Chinese RCTs) improved 90-day function as an IV infusion after IVT in noncardioembolic stroke without EVT (ASSET-IT, mRS 0–1 65.9 vs 54.9%; sICH 1.7 vs 0%) or after inadequate response to tenecteplase without LVO, MeVO or cardioembolism (INSTANT, 63.8 vs 52.2%), and as an intra-arterial bolus plus IV infusion after successful EVT (ATTRACTION, mRS 0–2 49 vs 43%; sICH 12 vs 9%, not significant); IV tirofiban before EVT was neutral (RESCUE BT). AHA 2026, predating these trials, rates IV tirofiban efficacy as not well established (COR 2b, B-R)."
     ],
-    "caution": "AHA 2026 does not recommend neuroprotective treatments to improve functional outcome (COR 3: No Benefit, LOE A), argatroban as an adjunct to IVT (COR 3: No Benefit, LOE A) or adjunctive IV eptifibatide after IVT within 3 h (COR 3: No Benefit, LOE B-R).",
+    "caution": "AHA 2026 does not recommend neuroprotective agents to improve function (COR 3: No Benefit, LOE A), adjunctive argatroban with IVT (COR 3: No Benefit, LOE A) or adjunctive IV eptifibatide in patients given IVT within 3 h of onset (COR 3: No Benefit, LOE B-R).",
     "sources": [
       {
         "title": "OCEANIC-STROKE: Asundexian for Secondary Stroke Prevention",
@@ -2192,60 +2154,52 @@
         "access": "Primary abstract checked; no approval or availability inferred."
       },
       {
-        "title": "SERIC-IVT: remote ischemic conditioning after intravenous thrombolysis",
-        "url": "https://pubmed.ncbi.nlm.nih.gov/39772709/",
-        "year": 2025,
-        "type": "Randomized trial",
-        "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (population, comparison and outcome)."
-      },
-      {
-        "title": "EnTRIPS: remote ischemic postconditioning after thrombectomy",
+        "title": "EnTRIPS: remote ischemic postconditioning after EVT",
         "url": "https://pubmed.ncbi.nlm.nih.gov/42267436/",
         "year": 2026,
         "type": "Randomized trial",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (population, comparison and outcome)."
+        "access": "Primary abstract verified via PubMed."
       },
       {
-        "title": "ASSET-IT: early tirofiban infusion after intravenous thrombolysis",
+        "title": "ASSET-IT: tirofiban infusion after IVT",
         "url": "https://pubmed.ncbi.nlm.nih.gov/40616232/",
         "year": 2025,
         "type": "Randomized trial",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety); no approval or availability inferred."
+        "access": "Primary abstract verified via PubMed."
       },
       {
-        "title": "INSTANT: intravenous tirofiban after tenecteplase",
+        "title": "INSTANT: IV tirofiban after tenecteplase",
         "url": "https://pubmed.ncbi.nlm.nih.gov/42100960/",
         "year": 2026,
         "type": "Randomized trial",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety); no approval or availability inferred."
+        "access": "Primary abstract verified via PubMed."
       },
       {
-        "title": "ATTRACTION: tirofiban after successful endovascular reperfusion",
+        "title": "ATTRACTION: tirofiban after successful EVT",
         "url": "https://pubmed.ncbi.nlm.nih.gov/42341797/",
         "year": 2026,
         "type": "Randomized trial",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety); no approval or availability inferred."
+        "access": "Primary abstract verified via PubMed."
       },
       {
-        "title": "RESCUE BT: intravenous tirofiban before thrombectomy",
+        "title": "RESCUE BT: IV tirofiban before EVT",
         "url": "https://pubmed.ncbi.nlm.nih.gov/35943471/",
         "year": 2022,
         "type": "Randomized trial",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety)."
+        "access": "Primary abstract verified via PubMed."
       },
       {
-        "title": "STRATEGY: tirofiban for branch atheromatous disease-related stroke",
+        "title": "STRATEGY: tirofiban for branch atheromatous disease",
         "url": "https://pubmed.ncbi.nlm.nih.gov/42671865/",
         "year": 2026,
         "type": "Randomized trial",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety)."
+        "access": "Primary abstract verified via PubMed."
       }
     ],
     "related": []

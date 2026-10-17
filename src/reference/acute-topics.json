@@ -54,12 +54,12 @@
       }
     ],
     "consider": [
-      "Is the deficit disabling regardless of the NIHSS total? If not (e.g., isolated sensory symptoms), IVT is not recommended (COR 3: No Benefit); use guideline antithrombotic therapy instead — DAPT only for noncardioembolic minor stroke (NIHSS ≤3) started within 24 h (COR 1; see the minor-stroke card).",
+      "Is the deficit disabling regardless of the NIHSS total? If not (e.g., isolated sensory symptoms), IVT is not recommended (COR 3: No Benefit); use antithrombotics instead: DAPT is COR 1 for noncardioembolic minor stroke (NIHSS ≤3) within 24 h, and NIHSS 4–5 options carry lower grades (see the minor-stroke card).",
       "Do not wait for coagulation results unless an abnormality is suspected, or for MRI to count microbleeds (AHA 2026).",
       "Minor stroke with a visible occlusion: TEMPO-2 found no benefit from tenecteplase and more deaths (5 vs 1%).",
       "Wake-up stroke, large core, basilar, MeVO and the late window have dedicated cards."
     ],
-    "caution": "Use the ischemic protocol for contraindications and dosing, including recent DOAC intake (evidence on IVT after DOAC ingestion within 48 h comes from observational cohorts, not randomized trials); this overview is not an eligibility checklist.",
+    "caution": "Use the ischemic protocol for contraindications and dosing, including recent DOAC intake (IVT after DOAC intake within 48 h: observational cohorts only); this overview is not an eligibility checklist.",
     "sources": [
       {
         "title": "AHA/ASA 2026 acute ischemic stroke guideline — official summary",
@@ -78,12 +78,12 @@
         "access": "Primary abstract verified via PubMed."
       },
       {
-        "title": "IVT in patients with ischemic stroke and recent ingestion of direct oral anticoagulants (international cohort)",
+        "title": "IVT after recent DOAC intake (cohort)",
         "url": "https://pubmed.ncbi.nlm.nih.gov/36807495/",
         "year": 2023,
         "type": "Observational study",
         "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed: retrospective cohort of IVT-treated patients with DOAC ingestion within 48 h versus no anticoagulation; off-label, observational evidence only; no eligibility inferred."
+        "access": "Primary abstract verified via PubMed (retrospective, off-label use; no eligibility inferred)."
       }
     ],
     "related": [
@@ -411,8 +411,7 @@
     "consider": [
       "Check for artifact: a poor contrast bolus or leukoaraiosis can make non-infarcted white matter look like core.",
       "EVT at 6–24 h can be selected on NCCT ASPECTS (AHA 2026, COR 1); perfusion is adjunctive when immediately available (2a).",
-      "AHA 2026 grades perfusion-selected IVT for EVT-ineligible patients at 4.5–9 h from LKW or within 9 h of the sleep midpoint for wake-up stroke (2a, ais-2026-101); beyond that and up to 24 h from onset or LKW (wake-up and unwitnessed onset included), only LVO with salvageable penumbra that cannot receive EVT is graded (2b, ais-2026-102; TRACE-III). The 2a for automated CTP or DWI-PWI 4.5–24 h after wake-up or unknown onset (ais-2026-53) grades imaging selection for eligibility, not IVT itself; MRI DWI–FLAIR mismatch is graded separately (ais-2026-100). Large-core trials also accepted CTP cores (e.g., SELECT2 ≥50 mL).",
-      "Within 4.5 h, routine CTA plus CTP before IVT reduced thrombolysis use (49 vs 68%) without changing decision times or 90-day outcomes (PRACTISE, n=271; published 2026, after the AHA 2026 evidence review)."
+      "AHA 2026 grades perfusion-selected IVT for EVT-ineligible patients at 4.5–9 h from LKW or within 9 h of the sleep midpoint (2a, ais-2026-101); up to 24 h from onset or LKW, wake-up included, only LVO with salvageable penumbra that cannot receive EVT is graded (2b, ais-2026-102; TRACE-III). The 2a for CTP or DWI-PWI after wake-up or unknown onset (ais-2026-53) grades imaging selection, not IVT itself. Large-core trials also accepted CTP cores (e.g., SELECT2 ≥50 mL)."
     ],
     "caution": "Software thresholds estimate tissue fate; they are not exact infarct volumes or stand-alone exclusions.",
     "sources": [
@@ -439,14 +438,6 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-03",
         "access": "Primary abstract verified via PubMed."
-      },
-      {
-        "title": "PRACTISE: CT perfusion and angiography vs non-contrast CT alone before thrombolysis within 4.5 h",
-        "url": "https://pubmed.ncbi.nlm.nih.gov/41614492/",
-        "year": 2026,
-        "type": "Randomized trial",
-        "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (population, comparison, thrombolysis rate, decision times and 90-day outcome)."
       }
     ],
     "related": [
@@ -465,10 +456,6 @@
       {
         "label": "Large core",
         "href": "#/evidence/large-core-evt"
-      },
-      {
-        "label": "Wake-up and late-window IVT",
-        "href": "#/evidence/extended-window-ivt"
       }
     ]
   },
@@ -516,8 +503,7 @@
     "consider": [
       "Does the story fit focal ischemia (abrupt, maximal at onset, usually <60 min) or a mimic (marching symptoms, positive visual phenomena, migraine, seizure)?",
       "ABCD2 omits posterior-circulation signs and stenosis; dual or crescendo TIA is high risk and may warrant admission whatever the score.",
-      "Suspected cardioembolism: arrange prolonged rhythm monitoring (30 days) within 6 months.",
-      "ESO 2021 recommends specialist review within 24 h of TIA onset and advises against using prediction tools such as ABCD2 alone for triage or treatment decisions."
+      "Suspected cardioembolism: arrange prolonged rhythm monitoring (30 days) within 6 months."
     ],
     "caution": "A normal CT does not exclude infarction; persisting or recurrent deficits need acute stroke reassessment.",
     "sources": [
