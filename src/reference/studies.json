@@ -114,7 +114,7 @@
       "TIA"
     ],
     "question": "What was the benefit–bleeding tradeoff of adding clopidogrel?",
-    "population": "4,881 patients with minor ischemic stroke or high-risk TIA at international sites.",
+    "population": "4,881 adults with minor ischemic stroke (NIHSS ≤3) or high-risk TIA (ABCD² ≥4), randomized within 12 hours at 269 sites in 10 countries (82.8% in the US).",
     "comparison": "Clopidogrel plus aspirin versus aspirin alone for the 90-day trial period.",
     "result": "Major ischemic events (ischemic stroke, myocardial infarction or ischemic vascular death) occurred in 5.0% versus 6.5% at 90 days (HR 0.75; 95% CI 0.59–0.95). Major hemorrhage occurred in 0.9% versus 0.4% (HR 2.32; 95% CI 1.10–4.87).",
     "limits": "Stopped early. Most ischemic events occurred in the first week; the 90-day design alone does not establish the optimal DAPT duration or eligibility for other stroke populations.",
@@ -124,8 +124,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/29766750/",
         "year": 2018,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked."
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract and PMC full text (PMC6193486) checked."
       }
     ],
     "relatedTopic": "minor-stroke-antiplatelets"
@@ -1686,7 +1686,7 @@
       "MRI"
     ],
     "question": "Does alteplase help unknown-onset stroke with DWI–FLAIR mismatch?",
-    "population": "503 patients with unknown onset, a DWI lesion and no marked FLAIR change; thrombectomy candidates excluded.",
+    "population": "503 patients with unknown onset, a DWI lesion and no marked FLAIR change; patients with planned thrombectomy excluded.",
     "comparison": "IV alteplase versus placebo.",
     "result": "mRS 0–1 at 90 days occurred in 53.3% vs 41.8% (adjusted OR 1.61; 95% CI 1.09–2.36). Deaths 4.1% vs 1.2% and symptomatic ICH 2.0% vs 0.4% (both not significant).",
     "limits": "Stopped early for lack of funding (503 of 800 planned). Applies to MRI mismatch selection, not perfusion or CT-only selection.",
@@ -1696,7 +1696,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/29766770/",
         "year": 2018,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-17",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -1937,7 +1937,7 @@
   {
     "id": "inspires",
     "title": "INSPIRES — dual antiplatelets started within 72 hours",
-    "headline": "DAPT up to 72 h: stroke 7.3 vs 9.2%; bleeding 0.9 vs 0.4%",
+    "headline": "DAPT up to 72 h: stroke 7.3 vs 9.2%; moderate-to-severe bleeding 0.9 vs 0.4%",
     "year": 2023,
     "settings": [
       "on-call",
@@ -2016,8 +2016,8 @@
       "occlusion",
       "thrombolysis"
     ],
-    "question": "Does tenecteplase help minor stroke (NIHSS 0–5) with intracranial occlusion?",
-    "population": "886 patients at 48 hospitals in 10 countries, enrolled within 12 hours.",
+    "question": "Does tenecteplase help minor stroke (NIHSS 0–5) with intracranial occlusion or a focal perfusion abnormality?",
+    "population": "886 patients with NIHSS 0–5 and intracranial occlusion or focal perfusion abnormality at 48 hospitals in 10 countries, enrolled within 12 hours.",
     "comparison": "Tenecteplase 0.25 mg/kg versus non-thrombolytic standard care.",
     "result": "Return to baseline mRS at 90 days occurred in 72% vs 75% (RR 0.96; 95% CI 0.88–1.04). Deaths 5% vs 1% (adjusted HR 3.8; 1.4–10.2); symptomatic ICH 2% vs <1%.",
     "limits": "Stopped early for futility; open-label.",
@@ -2027,7 +2027,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/38768626/",
         "year": 2024,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-17",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -2425,7 +2425,7 @@
       "blood pressure"
     ],
     "question": "Did SBP <140 improve function after successful EVT?",
-    "population": "306 randomized patients with large-vessel ischemic stroke and mTICI ≥2b reperfusion at 19 South Korean centers; 305 were confirmed eligible.",
+    "population": "306 randomized patients with large-vessel ischemic stroke, mTICI ≥2b reperfusion and SBP ≥140 mmHg on two readings within 2 h of recanalization, at 19 South Korean centers; 305 were confirmed eligible.",
     "comparison": "SBP <140 versus 140–180 mmHg for 24 hours after enrollment.",
     "result": "Three-month independence (mRS 0–2) was 39.4% versus 54.4% (adjusted OR 0.56; 95% CI 0.33–0.96). Symptomatic ICH was 9.0% versus 8.1%; the difference was not significant. Stroke-related death was 7.7% versus 5.4%, also not significantly different.",
     "limits": "Stopped early for safety concerns. The result concerns the tested lowering strategy after successful reperfusion; it does not establish a universal target for unsuccessful EVT or individualized reperfusion-guided management.",
@@ -2457,18 +2457,18 @@
       "reperfusion-guided"
     ],
     "question": "Do reperfusion-guided SBP targets after successful EVT improve outcome?",
-    "population": "440 patients with anterior LVO and mTICI ≥2b after EVT at 11 Spanish centers (mean age 75).",
-    "comparison": "SBP 140–160 for mTICI 2b or 100–140 for 2c/3 for 72 hours versus SBP <180.",
+    "population": "440 previously independent adults (prestroke mRS 0–2) with anterior-circulation LVO and mTICI ≥2b after EVT within 24 h at 11 Spanish centers (mean age 75); elevated SBP was not required.",
+    "comparison": "SBP 140–160 for mTICI 2b or 100–140 for 2c/3 for 72 hours, using antihypertensives or vasopressors as needed, versus guideline management (SBP <180).",
     "result": "mRS 0–2 at 90 days occurred in 60.0% vs 47.1% (difference 13.3 points; 95% CI 4.1–22.6). Hemorrhagic transformation 22.3% vs 31.6%; symptomatic ICH 3.5% vs 3.9%; mortality 15.4% vs 15.6% (abstract figures).",
-    "limits": "Open-label single-country trial (446 enrolled, 440 analyzed); it tests the combined strategy rather than each target. Mortality figures are from the abstract narrative.",
+    "limits": "Open-label, single-country, stopped early for lack of funding (446 of 786 planned; 440 analyzed). Only 9.8% had mTICI 2b, with no clear benefit in that subgroup. The authors call it hypothesis-generating. It postdates AHA/ASA 2026 (COR 3: Harm for SBP <140 after mTICI 2b–3) and does not change that guidance.",
     "sources": [
       {
         "title": "HOPE (post-EVT BP) primary report",
         "url": "https://pubmed.ncbi.nlm.nih.gov/42258192/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
-        "access": "Primary abstract verified via PubMed."
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract and PMC full text (PMC13247842) read."
       }
     ],
     "relatedTopic": "acute-bp"
