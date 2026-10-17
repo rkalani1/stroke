@@ -120,3 +120,80 @@ describe('ICH and aSAH study records (2026-10-17 review)', () => {
     expect(study('earlydrain').result).not.toContain('retained');
   });
 });
+
+describe('SAH, CVT and other vascular cards (2026-10-17 review)', () => {
+  it('discloses both AHA 2023 and NCS 2026 aSAH seizure-prophylaxis positions (PMC13642444; sah-2023-67)', () => {
+    const seizures = topic('poststroke-seizures');
+    expect(seizures.summary).toContain('NCS 2026 suggests ASM or no ASM (conditional, low certainty)');
+    expect(seizures.summary).toContain('stopping by 3 days without seizures');
+    expect(seizures.summary).toContain('(AHA 2022, 2a)');
+    expect(seizures.summary).not.toContain('brief prophylaxis');
+    expect(seizures.sources[1].access).toContain('PMC13642444');
+    const sah = topic('sah');
+    expect(sah.consider[1]).toMatch(/AHA 2023.*\(2b\?|AHA 2023/);
+    expect(sah.consider[1]).toContain('NCS 2026 is conditional (ASM or no ASM)');
+    expect(sah.consider[1]).toContain('no more than 7 days (2a)');
+    expect(urls(sah)).toContain('https://pubmed.ncbi.nlm.nih.gov/42552475/');
+  });
+
+  it('labels the ESO BP target as consensus and states AHA CSF diversion and ESO ETRA recommendations (PMID 42095754; sah-2023-62)', () => {
+    const summary = topic('sah').summary;
+    expect(summary).toContain('ESO 2026 expert consensus suggests targeting about 160');
+    expect(summary).toContain('endothelin-receptor antagonists');
+    expect(summary).toContain('Urgent CSF diversion (EVD and/or lumbar drain) for acute symptomatic hydrocephalus (COR 1)');
+  });
+
+  it('separates symptomatic from severe vasospasm and COR 1 from 2a monitoring (sah-2023-45/50/56/57/58)', () => {
+    const card = topic('sah-critical-care');
+    expect(card.summary).toContain('COR 3: Harm');
+    expect(card.summary).toContain('frequent neurological exams (COR 1)');
+    expect(card.summary).toContain('Symptomatic vasospasm: raising SBP may be reasonable; severe vasospasm: intra-arterial vasodilators or angioplasty may be reasonable (2b)');
+    expect(card.summary).toContain('after the aneurysm is secured');
+    expect(card.consider[2]).toContain('Pharmacological or mechanical VTE prophylaxis');
+  });
+
+  it('adds the glucocorticoid caution and the exact RCVS2 performance (PMIDs 27940651, 30635475)', () => {
+    const card = topic('rcvs-pres');
+    expect(card.consider[0]).toContain('avoid empirical glucocorticoids');
+    expect(card.consider.length).toBeLessThanOrEqual(4);
+    expect(card.summary).toContain('100% specific (85% sensitive)');
+    expect(card.summary).not.toContain('including against PACNS');
+    expect(urls(card)).toContain('https://pubmed.ncbi.nlm.nih.gov/27940651/');
+  });
+
+  it('adds DOAC-CVT as prospective observational evidence (PMID 39986309)', () => {
+    expect(topic('cvt').summary).toContain('prospective DOAC-CVT cohort (619 patients)');
+    expect(topic('cvt').summary).toContain('weighted OR 0.99');
+    expect(topic('cvt').sources.find(source => source.url.includes('39986309')).type).toBe('Observational study');
+  });
+
+  it('cites the published CM guideline with its graded stroke-relevant recommendations (PMC12680281)', () => {
+    const card = topic('cavernous-malformation');
+    expect(card.sources[0].url).toBe('https://pubmed.ncbi.nlm.nih.gov/40396744/');
+    expect(card.summary).toContain('should not preclude needed antithrombotics (Class 2a, B-NR)');
+    expect(card.summary).toContain('IV alteplase may be considered for AIS (Class 2b, C-LD)');
+  });
+
+  it('adds the ARUBA final result and the AHA AVM statement record (PMIDs 32562682, 28642352)', () => {
+    expect(topic('brain-avm').summary).toContain('3.39 vs 12.32 per 100 patient-years; HR 0.31');
+    expect(urls(topic('brain-avm'))).toEqual(expect.arrayContaining(['https://pubmed.ncbi.nlm.nih.gov/32562682/', 'https://pubmed.ncbi.nlm.nih.gov/28642352/']));
+  });
+
+  it('keeps guideline populations and strengths exact on smaller cards', () => {
+    expect(topic('goals-of-care').summary).toContain('after ICH, a surrogate–physician shared decision-making model is reasonable');
+    expect(topic('goals-of-care').summary).toContain('(AHA 2022 ICH, 2a)');
+    // AAN 2025: should not prescribe; should taper; refer for psychological treatment.
+    expect(topic('functional-seizures').summary).toMatch(/Do not prescribe.*taper.*psychological treatment/);
+    // ESO 2022 UIA abstract: "All recommendations were based on very low evidence."
+    expect(topic('unruptured-aneurysms').summary).toContain('All ESO recommendations');
+    // Zalewski 2019: "mild inflammation in 7 of 89 patients (8%)".
+    expect(topic('spinal-cord-infarction').summary).toContain('mildly inflammatory in only 8%');
+    expect(topic('spinal-cord-infarction').consider.some(item => item.includes('off-label') && item.includes('29.2% vs 13.5%'))).toBe(true);
+  });
+
+  it('no longer asserts the content of the unread AHA aSAH correction', () => {
+    const sah = read('src/reference/coverage.json').find(entry => entry.id === 'sah-2023');
+    expect(sah.access).not.toContain('renumbers seizure-section references only');
+    expect(sah.access).toContain('not re-read');
+  });
+});

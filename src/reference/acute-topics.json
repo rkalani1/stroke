@@ -714,7 +714,7 @@
       "nimodipine",
       "hydrocephalus"
     ],
-    "summary": "Secure the aneurysm as early as feasible, preferably within 24 h (AHA 2023, COR 1; ESO 2026 consensus), at a high-volume center. Start enteral nimodipine early (COR 1). Until it is secured: frequent BP checks with short-acting agents, avoiding hypotension, hypertension and swings; ESO suggests targeting about 160 if SBP stays >160–180 after analgesia and nimodipine. Good grade and equally suitable for both: coil rather than clip. No routine antifibrinolytics, statins, magnesium or prophylactic hypervolemia. EVD for acute symptomatic hydrocephalus.",
+    "summary": "Secure the aneurysm as early as feasible, preferably within 24 h (AHA 2023, COR 1; ESO 2026 consensus), at a high-volume center. Start enteral nimodipine early (COR 1). Until it is secured: frequent BP checks with short-acting agents, avoiding hypotension, hypertension and swings; ESO 2026 expert consensus suggests targeting about 160 if SBP stays >160–180 after analgesia and nimodipine. Good grade and equally suitable for both: coil rather than clip. No routine antifibrinolytics, statins, magnesium, endothelin-receptor antagonists or prophylactic hypervolemia. Urgent CSF diversion (EVD and/or lumbar drain) for acute symptomatic hydrocephalus (COR 1).",
     "recommendations": [
       {
         "text": "Surgical or endovascular treatment of the ruptured aneurysm is recommended as early as feasible after presentation, preferably within 24 hours of onset, to improve outcome.",
@@ -747,7 +747,7 @@
     ],
     "consider": [
       "New decline: think rebleeding, hydrocephalus, DCI/vasospasm or seizures — urgent CT ± CTA/CTP.",
-      "Seizure prophylaxis only with high-risk features (MCA aneurysm, high grade, ICH, hydrocephalus, cortical infarct); avoid phenytoin; stop by 7 days after an onset seizure.",
+      "Seizure prophylaxis: AHA 2023 allows it only with high-risk features (MCA aneurysm, high grade, ICH, hydrocephalus, cortical infarct; 2b) and lists phenytoin as harmful; NCS 2026 is conditional (ASM or no ASM), and its expert guidance favors levetiracetam for ≤3 days without seizures. Seizure at onset: AHA 2023 supports treatment for no more than 7 days (2a).",
       "Keep euvolemia; liberal transfusion (Hb ≤10 g/dL) did not improve 12-month outcome (SAHaRA)."
     ],
     "caution": "Prophylactic hemodynamic augmentation and induced hypervolemia are harmful.",
@@ -798,7 +798,7 @@
       "papilledema",
       "venography"
     ],
-    "summary": "Anticoagulate on diagnosis, even with venous hemorrhage: parenteral heparin (LMWH favored), then oral anticoagulation for 3–12 months, or indefinitely with chronic major risk factors or recurrent VTE (AHA 2024). DOACs are a reasonable alternative to warfarin after the lead-in: RE-SPECT CVT (dabigatran) had no recurrent VTE and major bleeding 1.7 vs 3.3%; ACTION-CVT (observational) found similar recurrence and less major hemorrhage (aHR 0.35). Endovascular therapy is rescue only (TO-ACT: no benefit); decompressive craniectomy is lifesaving with impending herniation.",
+    "summary": "Anticoagulate on diagnosis, even with venous hemorrhage: parenteral heparin (LMWH favored), then oral anticoagulation for 3–12 months, or indefinitely with chronic major risk factors or recurrent VTE (AHA 2024). DOACs are a reasonable alternative to warfarin after the lead-in: RE-SPECT CVT (dabigatran) had no recurrent VTE and major bleeding 1.7 vs 3.3%; ACTION-CVT (observational) found similar recurrence and less major hemorrhage (aHR 0.35); the prospective DOAC-CVT cohort (619 patients) found 6-month symptomatic VTE or major bleeding in 3% vs 3% (weighted OR 0.99). Endovascular therapy is rescue only (TO-ACT: no benefit); decompressive craniectomy is lifesaving with impending herniation.",
     "recommendations": [
       {
         "text": "The mainstream initial treatment of cerebral venous thrombosis includes parenteral heparin followed by transition to oral vitamin K antagonists for 3 to 12 months, depending on the underlying cause, or indefinitely in the presence of chronic major risk factors or recurrent venous thromboembolism. [Editorial note: the statement's abbreviated key point refers broadly to thrombophilia; its treatment section specifies chronic major risk factors. An isolated thrombophilia result is not, by itself, a universal indication for indefinite treatment.]",
@@ -836,6 +836,14 @@
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
         "access": "Official AHA summary page."
+      },
+      {
+        "title": "DOAC-CVT: direct oral anticoagulants versus vitamin K antagonists for CVT (prospective cohort)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39986309/",
+        "year": 2025,
+        "type": "Observational study",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract read via PubMed; prospective observational cohort, not randomized."
       }
     ],
     "related": [
