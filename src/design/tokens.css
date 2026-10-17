@@ -258,7 +258,8 @@
   --c-mute:           82 105 119;   /* #526977 — 5.8:1 on white */
   --c-faint:          var(--slate-500);
   --c-accent:         var(--cobalt-500);
-  --c-accent-2:       var(--cobalt-600);
+  --c-accent-2:       var(--cobalt-600);  /* solid fill: selected segments, pressed chips, current nav item */
+  --c-on-accent:      var(--slate-0);     /* text on --c-accent-2: 6.75:1 */
   --c-accent-soft:    var(--cobalt-50);
   --c-accent-ink:     var(--cobalt-800);
   --c-focus:          var(--cobalt-500);
@@ -327,6 +328,49 @@
   --font-sans:     "Public Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-display:  "Bricolage Grotesque", "Public Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono-font:     "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Type scale (rem, so browser text-size settings apply). Hand-written CSS
+     takes every font size from here. --text-2xs is the legibility floor:
+     no clinical label or value is set smaller. UI text uses the --text-*
+     steps (Public Sans / Plex Mono); titles and figures use --display-*
+     (Bricolage Grotesque). Shipped weights: sans 400–700, display 400–800,
+     mono 400–600; use only those (a 650 has no face and renders as 700). */
+  --text-2xs:      .6875rem;  /* 11px: floor; uppercase labels, kbd, NIHSS anchors */
+  --text-xs:       .75rem;    /* 12px: pills, chips, meta */
+  --text-sm:       .8125rem;  /* 13px: secondary UI, help, compact buttons */
+  --text-md:       .875rem;   /* 14px: default UI: fields, buttons, links */
+  --text-lg:       .9375rem;  /* 15px: phone case-bar values, option digits */
+  --text-xl:       1rem;      /* 16px: emphasised results */
+  --text-2xl:      1.0625rem; /* 17px: case-bar values, search field */
+  --display-xs:    1.125rem;  /* 18px: phone section titles, pending figures */
+  --display-sm:    1.25rem;   /* 20px: section titles (h2) */
+  --display-md:    1.375rem;  /* 22px: phone brand */
+  --display-lg:    1.625rem;  /* 26px: brand, phone page titles */
+  --display-xl:    1.75rem;   /* 28px: phone result figures */
+  --display-2xl:   2rem;      /* 32px: page titles (h1), result figures */
+  /* Line heights paired with the scale. */
+  --leading-none:    1;       /* single-line pills, kbd, figures in a row */
+  --leading-tight:   1.2;     /* titles, labels, chips with min-height */
+  --leading-snug:    1.3;     /* stacked label/value pairs, section titles */
+  --leading-normal:  1.5;     /* compact running text, count chips */
+  --leading-relaxed: 1.6;     /* body copy (the document default) */
+  --leading-loose:   1.65;    /* monospaced note text */
+
+  /* Spacing scale (px; --space-N is N × 2px). Padding, margin and gap in
+     hand-written CSS use these steps; 1–3px optical insets, borders and
+     fixed component sizes (44px targets, bar heights) stay literal. */
+  --space-1:       2px;
+  --space-2:       4px;
+  --space-3:       6px;
+  --space-4:       8px;
+  --space-5:       10px;
+  --space-6:       12px;
+  --space-7:       14px;
+  --space-8:       16px;
+  --space-9:       18px;
+  --space-10:      20px;
+  --space-12:      24px;
+  --space-16:      32px;
 
   /* ─── 8. Legacy aliases — declared ONCE, here ───────────────────
      Every older name resolves through the semantic layer above, so a
@@ -430,6 +474,7 @@
   --c-faint:          var(--slate-400);
   --c-accent:         var(--cobalt-300);
   --c-accent-2:       var(--cobalt-500);
+  --c-on-accent:      var(--cobalt-950);  /* dark text on the brightened fill: 5.3:1 */
   --c-accent-soft:    var(--cobalt-900);
   --c-accent-ink:     var(--cobalt-200);
   --c-focus:          var(--cobalt-300);

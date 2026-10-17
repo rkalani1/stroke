@@ -28,6 +28,24 @@ const getPublicDemoMode = () => {
 };
 const PUBLIC_DEMO_MODE = getPublicDemoMode();
 const MAP_URL = 'https://rkalani1.github.io/telestroke-expansion-map/';
+// macOS and iPadOS: Command is the shortcut modifier, and Control+K is the native
+// "delete to end of line" inside text fields.
+const MAC_LIKE = /Mac|iPhone|iPad|iPod/.test(navigator.platform || '') || navigator.userAgentData?.platform === 'macOS';
+// At phone and tablet widths the primary nav docks to the bottom of the screen (shell.css), so
+// More (top right) comes before it in the DOM: focus runs brand → search → More → nav there,
+// and left to right (brand → search → nav → More) on the desktop header.
+const NAV_DOCKED_QUERY = '(max-width: 768px)';
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(() => typeof window.matchMedia === 'function' && window.matchMedia(query).matches);
+  useEffect(() => {
+    if (typeof window.matchMedia !== 'function') return undefined;
+    const list = window.matchMedia(query), change = () => setMatches(list.matches);
+    change();
+    if (list.addEventListener) list.addEventListener('change', change); else list.addListener(change);
+    return () => { if (list.removeEventListener) list.removeEventListener('change', change); else list.removeListener(change); };
+  }, [query]);
+  return matches;
+}
 class SurfaceBoundary extends React.Component {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
@@ -57,11 +75,16 @@ function App() {
   const [installPrompt, setInstallPrompt] = useState(null);
   const [isInstalled, setInstalled] = useState(() => Boolean(navigator.standalone || matchMedia('(display-mode: standalone)').matches));
   const [searchOpen, setSearchOpen] = useState(false), [searchVisited, setSearchVisited] = useState(false);
+  const navDocked = useMediaQuery(NAV_DOCKED_QUERY);
   const openSearch = () => { setSearchVisited(true); setSearchOpen(true); };
   useEffect(() => {
     const onKey = event => {
       const typing = event.target instanceof HTMLElement && (event.target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(event.target.tagName));
-      if ((event.metaKey || event.ctrlKey) && !event.altKey && !event.shiftKey && event.key.toLowerCase() === 'k') { event.preventDefault(); openSearch(); }
+      if ((event.metaKey || event.ctrlKey) && !event.altKey && !event.shiftKey && event.key.toLowerCase() === 'k') {
+        // Leave Control+K to the field on macOS; Command+K still opens search from anywhere.
+        if (typing && MAC_LIKE && event.ctrlKey && !event.metaKey) return;
+        event.preventDefault(); openSearch();
+      }
       else if (event.key === '/' && !typing && !event.metaKey && !event.ctrlKey && !event.altKey) { event.preventDefault(); openSearch(); }
     };
     window.addEventListener('keydown', onKey);
@@ -234,13 +257,15 @@ function App() {
     const noteValue = key === 'ichOnCT' ? value === null ? '' : value ? 'present' : 'absent' : value;
     return { ...prev, note: { ...prev.note, [noteKey]: noteValue } };
   }) };
+  const primaryNav = <nav key="nav" className="workspace-secondary" aria-label="Primary navigation">{[['encounter', '#/encounter', 'Encounter'], ['protocols', state.note.diagnosisCategory === 'ich' ? '#/protocols/ich' : '#/protocols/ischemic', 'Protocols'], ['trials', '#/trials', 'Trials'], ['evidence', '#/evidence', 'Evidence'], ['tools', '#/tools', 'Calculators']].map(([surface, href, label]) => { const Icon = NAV_ICONS[surface]; return <a key={surface} href={href} aria-current={route.surface === surface ? 'page' : undefined}><Icon /><span>{label}</span></a>; })}</nav>;
+  const utilities = <details key="more" ref={utilitiesRef} className="workspace-utilities" onToggle={event => { if (event.currentTarget.open) setUtilitiesVisited(true); }}><summary aria-label="More utilities">More</summary><div className="utility-panel"><label>Theme<select aria-label="Theme" value={theme} onChange={e => { setThemePref(e.target.value); setTheme(e.target.value); }}>{[['auto', 'System'], ['light', 'Light'], ['dark', 'Dark']].map(([v, t]) => <option key={v} value={v}>{t}</option>)}</select></label><button type="button" className="utility-action" onClick={() => { if (utilitiesRef.current) utilitiesRef.current.open = false; reset(); }}>Start new encounter</button>{utilitiesVisited && <Suspense fallback={<p role="status">Loading install options…</p>}><InstallAppButton className="w-full justify-center" installPrompt={installPrompt} isInstalled={isInstalled} onInstall={async () => { if (!installPrompt) return; try { await installPrompt.prompt(); const choice = await installPrompt.userChoice; if (choice.outcome === 'accepted') setInstalled(true); setInstallPrompt(null); } catch { setInstallPrompt(null); } }} /></Suspense>}<p className="utility-shortcuts"><kbd>Ctrl</kbd>/<kbd>⌘</kbd> <kbd>K</kbd> or <kbd>/</kbd> search</p><p>Version {APP_VERSION}</p><p role="status">{offlineStatus}</p></div></details>;
   const targetUnavailable = route.tool && !['nihss', 'mrs', 'crcl', 'gcs'].includes(route.tool) && (['ich-volume', 'ich-score', 'gcs'].includes(route.tool) ? !(['ich-volume', 'ich-score'].includes(route.tool) ? state.note.diagnosisCategory === 'ich' : ['ich','sah','cvt'].includes(state.note.diagnosisCategory)) : !(state.context === 'acute' && (state.note.diagnosisCategory === 'ischemic' || route.tool === 'dapt' && state.note.diagnosisCategory === 'tia')));
   return <div className="app-shell workspace-shell" data-build={BUILD_TARGET_MARKER} data-demo={PUBLIC_DEMO_MODE ? 'synthetic' : 'private'} data-version={APP_VERSION}>
     <a className="workspace-skip" href="#workspace-main" onClick={event => { event.preventDefault(); const main = document.getElementById('workspace-main'); main?.focus(); main?.scrollIntoView({ block: 'start' }); }}>Skip to content</a>
     <header className="workspace-header"><a className="workspace-brand" href="#/encounter"><span className="workspace-mark" aria-hidden="true"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg></span>Stroke</a>
-      <button type="button" className="workspace-search" onClick={openSearch} aria-label="Search protocols, calculators, evidence and trials" aria-keyshortcuts="Control+K Meta+K /"><SearchIcon /><span className="workspace-search__text">Search</span><kbd>{/Mac|iPhone|iPad/.test(navigator.platform || '') ? '⌘K' : 'Ctrl K'}</kbd></button>
-      <nav className="workspace-secondary" aria-label="Primary navigation">{[['encounter', '#/encounter', 'Encounter'], ['protocols', state.note.diagnosisCategory === 'ich' ? '#/protocols/ich' : '#/protocols/ischemic', 'Protocols'], ['trials', '#/trials', 'Trials'], ['evidence', '#/evidence', 'Evidence'], ['tools', '#/tools', 'Calculators']].map(([surface, href, label]) => { const Icon = NAV_ICONS[surface]; return <a key={surface} href={href} aria-current={route.surface === surface ? 'page' : undefined}><Icon /><span>{label}</span></a>; })}</nav>
-      <details ref={utilitiesRef} className="workspace-utilities" onToggle={event => { if (event.currentTarget.open) setUtilitiesVisited(true); }}><summary aria-label="More utilities">More</summary><div className="utility-panel"><label>Theme<select aria-label="Theme" value={theme} onChange={e => { setThemePref(e.target.value); setTheme(e.target.value); }}>{[['auto', 'System'], ['light', 'Light'], ['dark', 'Dark']].map(([v, t]) => <option key={v} value={v}>{t}</option>)}</select></label><button type="button" className="utility-action" onClick={() => { if (utilitiesRef.current) utilitiesRef.current.open = false; reset(); }}>Start new encounter</button>{utilitiesVisited && <Suspense fallback={<p role="status">Loading install options…</p>}><InstallAppButton className="w-full justify-center" installPrompt={installPrompt} isInstalled={isInstalled} onInstall={async () => { if (!installPrompt) return; try { await installPrompt.prompt(); const choice = await installPrompt.userChoice; if (choice.outcome === 'accepted') setInstalled(true); setInstallPrompt(null); } catch { setInstallPrompt(null); } }} /></Suspense>}<p className="utility-shortcuts"><kbd>Ctrl</kbd>/<kbd>⌘</kbd> <kbd>K</kbd> or <kbd>/</kbd> search</p><p>Version {APP_VERSION}</p><p role="status">{offlineStatus}</p></div></details></header>
+      {/* The visible "Search" starts the accessible name (WCAG 2.5.3); the shortcut hint is decoration. */}
+      <button type="button" className="workspace-search" onClick={openSearch} aria-keyshortcuts="Control+K Meta+K /"><SearchIcon /><span className="workspace-search__text">Search</span><span className="sr-only"> protocols, calculators, evidence and trials</span><kbd aria-hidden="true">{MAC_LIKE ? '⌘K' : 'Ctrl K'}</kbd></button>
+      {navDocked ? [utilities, primaryNav] : [primaryNav, utilities]}</header>
     <nav className="workspace-external" aria-label="External references"><a href={MAP_URL} target="_blank" rel="noopener noreferrer">Telestroke Map</a><a href="https://www.uptodate.com/" target="_blank" rel="noopener noreferrer">UpToDate</a><a href="https://www.openevidence.com/" target="_blank" rel="noopener noreferrer">OpenEvidence</a></nav>
     <CaseBar state={state} documentLabel={documentationLabel(state)} blocked={outputWarnings(state).length} onCopy={generateAndCopy} copyStatus={copyStatus} announceCopy={route.surface !== 'encounter'} />
     {searchVisited && <Suspense fallback={null}><QuickSearch open={searchOpen} onClose={() => setSearchOpen(false)} onFocusEncounter={goToEncounter} version={APP_VERSION} protocolSub={route.surface === 'protocols' && route.sub ? route.sub : state.note.diagnosisCategory === 'ich' ? 'ich' : 'ischemic'} /></Suspense>}

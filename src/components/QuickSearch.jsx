@@ -61,7 +61,8 @@ export default function QuickSearch({ open, onClose, version, trials = [], proto
       <div className="quick-search__field">
         <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
         <input ref={input} type="text" inputMode="search" enterKeyHint="go" role="combobox" aria-expanded={flat.length > 0} aria-controls={flat.length ? 'quick-search-results' : undefined} aria-activedescendant={flat[active] ? `qs-${flat[active].id}` : undefined} aria-label="Search protocols, calculators, evidence and trials" placeholder="Search protocols, calculators, evidence, trials…" value={query} onChange={event => setQuery(event.target.value)} onKeyDown={onKeyDown} autoComplete="off" spellCheck="false" />
-        <button type="button" className="quick-search__close" onClick={onClose} aria-label="Close search">Esc</button>
+        {/* The visible word starts the accessible name: "Esc" with a keyboard, "Close" on touch (shell.css). */}
+        <button type="button" className="quick-search__close" onClick={onClose}><span className="quick-search__close-key">Esc<span className="sr-only">, close search</span></span><span className="quick-search__close-touch">Close<span className="sr-only"> search</span></span></button>
       </div>
       <div ref={list} className="quick-search__results">
         {!query.trim() && <div className="quick-search__empty"><p>Jump to</p><ul className="quick-search__chips">{SUGGESTIONS.map(([label, target]) => { const href = target.startsWith('#') ? target : `#/protocols/${protocolSub}/${target}`; return <li key={target}><a href={href} onClick={event => { event.preventDefault(); go({ href }); }}>{label}</a></li>; })}</ul>{!data && !failed && <p className="quick-search__hint">Loading evidence index…</p>}</div>}

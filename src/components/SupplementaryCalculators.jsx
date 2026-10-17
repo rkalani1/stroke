@@ -93,7 +93,7 @@ export default function SupplementaryCalculators({ state, update, tool, query = 
     const target = [...(root.current?.querySelectorAll('details[id]') || [])].find(node => node.id === `calc-${tool}`);
     if (target) { target.open = true; target.scrollIntoView?.({block:'start'}); (target.querySelector('select,input') || target.querySelector('summary'))?.focus({preventScroll:true}); }
   }, [tool]);
-  return <div ref={root} className="encounter-workflow supplementary-calculators" aria-label="Worksheets">
+  return <div ref={root} className="encounter-workflow supplementary-calculators" role="group" aria-label="Worksheets">
     {tool && !query.trim() && !calculatorDefinitions.some(item => item.id === tool) && <p role="status">Calculator unavailable.</p>}
     <h2 hidden={!calculatorDefinitions.some(visible)}>Scores and grading scales</h2>
     {[...new Set(calculatorDefinitions.map(item => item.category))].map(category => <section key={category} aria-label={category} hidden={!calculatorDefinitions.some(item => item.category === category && visible(item))}><h3>{category}</h3>{calculatorDefinitions.filter(item => item.category === category).map(definition => <Card key={definition.id} state={state} update={update} definition={definition} selected={tool === definition.id} visible={visible(definition)} copyContext={`${tool || ''}\n${query}`} />)}</section>)}

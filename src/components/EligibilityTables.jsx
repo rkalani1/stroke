@@ -30,11 +30,17 @@ function CriteriaList({ lines }) {
   return <ul className="list-disc space-y-2 pl-4">{lines.length ? lines.map((line, i) => <li key={i}>{line}</li>) : <li>Not specified in the stored source profile.</li>}</ul>;
 }
 
+// Sentence case, like every other label outside the protected Protocols content.
+const PHASE_DISPLAY = { acute: 'Acute (onset ≤ 24 hours)', inpatient: 'Inpatient (admission to day 30)', outpatient: 'Outpatient (day 14 onward)' };
+
+// Each phase is an h2 (visually hidden: the summary already shows it), so the study h3s
+// sit one level below the page h1. As a sibling between space-y items it takes no space.
 function PhaseTable({ table, copyToClipboard }) {
-  return <details open={table.phase === 'acute'} className="overflow-hidden rounded-lg border border-line bg-card shadow-card">
-    <summary className="min-h-[52px] cursor-pointer px-4 py-3 font-bold">{PHASE_LABELS[table.phase]} · {table.trials.length} studies</summary>
+  const phase = PHASE_DISPLAY[table.phase] || PHASE_LABELS[table.phase];
+  return <><h2 className="sr-only">{phase}</h2><details open={table.phase === 'acute'} className="overflow-hidden rounded-lg border border-line bg-card shadow-card">
+    <summary className="min-h-[52px] cursor-pointer px-4 py-3 font-bold">{phase} · {table.trials.length} studies</summary>
     <div className="border-t border-line">
-      <div className="space-y-4 p-4 lg:hidden" aria-label={`${table.title} study cards`}>
+      <div className="space-y-4 p-4 lg:hidden" role="group" aria-label={`${table.title} study cards`}>
         {table.trials.map(trial => <article key={trial.acronym} className="rounded-lg border border-line bg-card p-4 text-sm"><StudyIdentity trial={trial} /><div className="mt-3"><h4 className="mb-2 font-semibold">Summary</h4><StudySummary trial={trial} /></div>{[['Inclusion criteria', trial.eligibility], ['Exclusion criteria', trial.exclusions]].map(([label, lines]) => <div key={label} className="mt-4"><h4 className="mb-2 font-semibold">{label}</h4><CriteriaList lines={lines} /></div>)}</article>)}
       </div>
       <table className="hidden w-full table-fixed border-collapse text-left text-sm lg:table" aria-label={table.title}>
@@ -44,7 +50,7 @@ function PhaseTable({ table, copyToClipboard }) {
       </table>
       <div className="flex flex-wrap gap-3 border-t border-line bg-paper-2 p-3">{[['HTML', buildTableHtml], ['Markdown', buildTableMarkdown]].map(([format, build]) => <button key={format} type="button" className="min-h-[44px] rounded-md border border-line bg-card px-3 text-sm font-semibold" onClick={() => copyToClipboard?.(build(table), `${table.title} (${format})`)}>Copy as {format}</button>)}</div>
     </div>
-  </details>;
+  </details></>;
 }
 
 // Same wording and size as the Screener and Database filters.

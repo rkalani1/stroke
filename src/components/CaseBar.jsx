@@ -57,8 +57,9 @@ export function caseSummary(state, nowMs) {
     timeLabel: n.lkwUnknown ? 'Discovery' : 'LKW',
     elapsed: timing.clock ? hoursMinutes(timing.clock.elapsedMinutes * 60000) : timing.invalid ? '!' : n.lkwUnknown && !timing.timestamp ? 'unknown' : '',
     window,
-    nihss: exam.complete ? String(exam.total) : exam.source === 'itemized' && exam.count ? `${exam.partial}…` : '',
+    nihss: exam.complete ? String(exam.total) : exam.source === 'itemized' && exam.count ? String(exam.partial) : '',
     nihssPartial: !exam.complete && exam.source === 'itemized' && exam.count > 0,
+    nihssDocumented: exam.count || 0,
     gcs: gcs === null ? '' : String(gcs),
     bp: sbp !== null && dbp !== null ? `${sbp}/${dbp}` : '',
     bpHigh: Boolean(bpFlag), bpTitle: bpFlag || undefined,
@@ -74,10 +75,30 @@ export function caseSummary(state, nowMs) {
 }
 
 function Item({ label, short, value, detail, flag, title, pill }) {
-  return <div className="case-bar__item" data-empty={value ? undefined : ''} data-flag={flag || undefined} title={title}>
+  // data-detail lets a narrow phone row set the detail under the value (shell.css).
+  return <div className="case-bar__item" data-empty={value ? undefined : ''} data-flag={flag || undefined} data-detail={value && detail ? '' : undefined} title={title}>
     <span className="case-bar__label">{short ? <><span className="case-bar__label-long">{label}</span><span className="case-bar__label-short" aria-hidden="true">{short}</span></> : label}</span>
-    <span className="case-bar__value">{value || '—'}{flag === 'caution' && <span className="case-bar__flag" aria-hidden="true">!</span>}{title && flag && <span className="sr-only">, {title}</span>}{detail && <small>{detail}</small>}{pill && <span className="case-bar__window" data-tone={pill.tone}>{pill.short ? <><span className="case-bar__label-long">{pill.text}</span><span className="case-bar__label-short" aria-hidden="true">{pill.short}</span></> : pill.text}</span>}</span>
+    <span className="case-bar__value">{value || '—'}{flag === 'caution' && <span className="case-bar__flag" aria-hidden="true">!</span>}{detail && <small>{detail}</small>}{title && flag && <span className="sr-only">, {title}</span>}{pill && <span className="case-bar__window" data-tone={pill.tone}>{pill.short ? <><span className="case-bar__label-long">{pill.text}</span><span className="case-bar__label-short" aria-hidden="true">{pill.short}</span></> : pill.text}</span>}</span>
   </div>;
+}
+
+// Mounting the bar in flow pushes everything below it down by its height. Keep the element
+// being worked in (the focused one, or else the one at mid-screen) where it was. Browser scroll
+// anchoring does this only sometimes (never at the top of the page), so the shift is measured
+// before and after the DOM update and only the uncompensated remainder is scrolled.
+class HoldPositionOnMount extends React.Component {
+  getSnapshotBeforeUpdate(previous) {
+    if (previous.shown || !this.props.shown || typeof document === 'undefined') return null;
+    const focused = document.activeElement;
+    const target = focused && focused !== document.body && focused !== document.documentElement ? focused : document.elementFromPoint?.(window.innerWidth / 2, window.innerHeight / 2);
+    return target ? { target, top: target.getBoundingClientRect().top } : null;
+  }
+  componentDidUpdate(previous, state, snapshot) {
+    if (!snapshot || !snapshot.target.isConnected) return;
+    const shift = snapshot.target.getBoundingClientRect().top - snapshot.top;
+    if (shift >= 1) window.scrollBy(0, shift);
+  }
+  render() { return this.props.children; }
 }
 
 // A link to the current route fires no hashchange; reveal its target directly.
@@ -99,20 +120,20 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
     observer?.observe(node);
     return () => { observer?.disconnect(); root.style.removeProperty('--case-bar-h'); };
   }, [c.hasData]);
-  if (!c.hasData) return null;
+  if (!c.hasData) return <HoldPositionOnMount shown={false} />;
   const acuteIschemic = state.context === 'acute' && state.note.diagnosisCategory === 'ischemic';
   const sub = ['ich', 'sah'].includes(state.note.diagnosisCategory) ? 'ich' : 'ischemic';
   const reversalHref = `#/protocols/${sub}/qr-reversal`, bpHref = `#/protocols/${sub}/qr-bp`;
   // In acute ischemic stroke the anticoagulant matters for IVT eligibility, not reversal.
   const badge = acuteIschemic ? { href: '#/protocols/ischemic/contraindications', target: 'contraindications', title: 'Anticoagulant exposure documented · open IVT contraindications', action: 'open IVT contraindications' } : { href: reversalHref, target: 'qr-reversal', title: 'Anticoagulant exposure documented · open the reversal table', action: 'open reversal table' };
   const bpLink = acuteIschemic || state.context === 'acute' && ['ich', 'sah'].includes(state.note.diagnosisCategory);
-  return <section ref={bar} className="case-bar" aria-label="Current encounter">
+  return <HoldPositionOnMount shown><section ref={bar} className="case-bar" aria-label="Current encounter">
     <a className="case-bar__dx" data-dx={c.dxKey || undefined} href="#/encounter" aria-label={`Open Encounter: ${[c.dx || 'No diagnosis', c.demographics].filter(Boolean).join(' · ')}`}>{c.dx || 'No diagnosis'}{c.demographics && <span className="case-bar__demo">· {c.demographics}</span>}</a>
     {c.anticoagulant && <a className="case-bar__badge" href={badge.href} onClick={revealIfCurrent(badge.href, badge.target)} title={badge.title}><span className="sr-only">Anticoagulant: </span>{c.anticoagulant}<span className="sr-only">, {badge.action}</span></a>}
     <div className="case-bar__time"><Item label={c.timeLabel} value={c.elapsed} pill={c.window} flag={c.window?.tone === 'critical' ? 'critical' : undefined} title="Elapsed time (h:mm)" /></div>
     <div className="case-bar__items">
       {c.gcs ? <Item label="GCS" value={c.gcs} /> : null}
-      <Item label="NIHSS" value={c.nihss} flag={c.nihssPartial ? 'partial' : undefined} title={c.nihssPartial ? 'Partial itemized sum' : undefined} />
+      <Item label="NIHSS" value={c.nihss} detail={c.nihssPartial ? 'partial' : undefined} flag={c.nihssPartial ? 'partial' : undefined} title={c.nihssPartial ? `Partial itemized sum: ${c.nihssDocumented} of 15 items documented` : undefined} />
       <Item label="BP" value={c.bp} flag={c.bpHigh ? 'caution' : undefined} title={c.bpTitle} />
       <Item label="Glucose" short="Glu" value={c.glucose} flag={c.glucoseFlag ? 'caution' : undefined} title={c.glucoseFlag ? 'Glucose outside 50–400 mg/dL' : undefined} />
       <Item label="Weight" short="Wt" value={c.weight && `${c.weight} kg`} />
@@ -123,8 +144,9 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
       {c.administered && <a className="case-bar__link" href="#/protocols/ischemic/qr-sich" onClick={revealIfCurrent('#/protocols/ischemic/qr-sich', 'qr-sich')}>Post-lytic bleed</a>}
       {c.administered && c.aceInhibitor && <a className="case-bar__link" href="#/protocols/ischemic/qr-angioedema" onClick={revealIfCurrent('#/protocols/ischemic/qr-angioedema', 'qr-angioedema')}>Angioedema</a>}
       {(['ich', 'sah'].includes(state.note.diagnosisCategory) || (c.anticoagulant && !acuteIschemic)) && <a className="case-bar__link" href={reversalHref} onClick={revealIfCurrent(reversalHref, 'qr-reversal')}>Reversal</a>}
-      <button type="button" className="case-bar__copy" onClick={onCopy}>{blocked ? `Review ${blocked} flag${blocked === 1 ? '' : 's'}` : /copied\.$/.test(copyStatus || '') ? 'Copied ✓' : <><span className="case-bar__copy-long">Copy {documentLabel}</span><span className="case-bar__copy-short">Copy note<span className="sr-only"> ({documentLabel})</span></span><span className="sr-only"> (case bar)</span></>}</button>
+      {/* No-break space: on a two-line phone button the count stays with "flags". */}
+      <button type="button" className="case-bar__copy" onClick={onCopy}>{blocked ? `Review ${blocked} flag${blocked === 1 ? '' : 's'}` : /copied\.$/.test(copyStatus || '') ? 'Copied ✓' : <><span className="case-bar__copy-long">Copy {documentLabel}</span><span className="case-bar__copy-short">Copy note<span className="sr-only"> ({documentLabel})</span></span><span className="sr-only"> (case bar)</span></>}</button>
       {announceCopy && <span className="sr-only" role="status">{copyStatus}</span>}
     </div>
-  </section>;
+  </section></HoldPositionOnMount>;
 }
