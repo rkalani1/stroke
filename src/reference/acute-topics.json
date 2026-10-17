@@ -22,7 +22,7 @@
       "NINDS",
       "ECASS III"
     ],
-    "summary": "Disabling deficit within 4.5 h: give IVT as fast as possible — tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg) (AHA 2026, COR 1); tenecteplase was noninferior in AcT, ATTEST-2, TRACE-2 and ORIGINAL. Do not thrombolyse mild non-disabling deficits: PRISMS showed no benefit (sICH 3.2 vs 0%) and ARAMIS found DAPT noninferior. LVO: give IVT if eligible and start EVT without waiting for a response; EVT is indicated within 24 h for anterior LVO, including selected large cores, and for basilar occlusion with NIHSS ≥10.",
+    "summary": "Disabling deficit within 4.5 h: give IVT as fast as possible — tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg) (AHA 2026, COR 1); tenecteplase was noninferior in AcT, ATTEST-2, TRACE-2 and ORIGINAL. Do not thrombolyse mild non-disabling deficits: PRISMS showed no benefit (sICH 3.2 vs 0%) and ARAMIS found DAPT noninferior. LVO: give IVT if eligible and start EVT without waiting for a response; EVT is indicated within 24 h for anterior LVO, including selected large cores, and for basilar occlusion with NIHSS ≥10, prestroke mRS 0–1 and PC-ASPECTS ≥6 (COR 1).",
     "recommendations": [
       {
         "text": "In adult AIS patients with disabling deficits (regardless of NIHSS score) who are eligible for IVT, faster treatment is recommended as it improves functional outcomes.",
@@ -54,12 +54,12 @@
       }
     ],
     "consider": [
-      "Is the deficit disabling regardless of the NIHSS total? If not (e.g., isolated sensory symptoms), give DAPT instead of IVT.",
+      "Is the deficit disabling regardless of the NIHSS total? If not (e.g., isolated sensory symptoms), IVT is not recommended (COR 3: No Benefit); use guideline antithrombotic therapy instead — DAPT only for noncardioembolic minor stroke (NIHSS ≤3) started within 24 h (COR 1; see the minor-stroke card).",
       "Do not wait for coagulation results unless an abnormality is suspected, or for MRI to count microbleeds (AHA 2026).",
       "Minor stroke with a visible occlusion: TEMPO-2 found no benefit from tenecteplase and more deaths (5 vs 1%).",
       "Wake-up stroke, large core, basilar, MeVO and the late window have dedicated cards."
     ],
-    "caution": "Use the ischemic protocol for contraindications and dosing; this overview is not an eligibility checklist.",
+    "caution": "Use the ischemic protocol for contraindications and dosing, including recent DOAC intake (evidence on IVT after DOAC ingestion within 48 h comes from observational cohorts, not randomized trials); this overview is not an eligibility checklist.",
     "sources": [
       {
         "title": "AHA/ASA 2026 acute ischemic stroke guideline — official summary",
@@ -76,6 +76,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-03",
         "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "IVT in patients with ischemic stroke and recent ingestion of direct oral anticoagulants (international cohort)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36807495/",
+        "year": 2023,
+        "type": "Observational study",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed: retrospective cohort of IVT-treated patients with DOAC ingestion within 48 h versus no anticoagulation; off-label, observational evidence only; no eligibility inferred."
       }
     ],
     "related": [
@@ -94,6 +102,10 @@
       {
         "label": "Wake-up and late-window IVT",
         "href": "#/evidence/extended-window-ivt"
+      },
+      {
+        "label": "Minor stroke DAPT",
+        "href": "#/evidence/minor-stroke-antiplatelets"
       }
     ]
   },
@@ -308,7 +320,7 @@
       "angioedema",
       "orolingual"
     ],
-    "summary": "Any neurological worsening after IVT needs an emergent CT. If hemorrhage is suspected or seen, follow the post-lytic ICH protocol: stop a running thrombolytic, send urgent labs including fibrinogen, and correct the fibrinolytic coagulopathy early — the mainstay of treatment, though based on expert opinion (AHA 2017). Orolingual angioedema occurred in about 1% with tenecteplase or alteplase (ATTEST-2); assess the airway first. Teams must be ready to treat bleeding and angioedema (AHA 2026, COR 1).",
+    "summary": "Any neurological worsening after IVT needs an emergent CT. If hemorrhage is suspected or seen, follow the post-lytic ICH protocol: stop a running thrombolytic, send urgent labs including fibrinogen, and correct the fibrinolytic coagulopathy early — the mainstay of treatment, though based on expert opinion (AHA 2017). Angioedema occurred in about 1% (6 patients per arm) with tenecteplase or alteplase in ATTEST-2; assess the airway first. Teams must be ready to treat bleeding and angioedema (AHA 2026, COR 1).",
     "recommendations": [
       {
         "text": "Healthcare professionals are recommended to be prepared to treat potential emergent adverse effects of IVT, including bleeding complications and angioedema (which may cause partial airway obstruction), to reduce poor clinical outcomes.",
@@ -399,7 +411,8 @@
     "consider": [
       "Check for artifact: a poor contrast bolus or leukoaraiosis can make non-infarcted white matter look like core.",
       "EVT at 6–24 h can be selected on NCCT ASPECTS (AHA 2026, COR 1); perfusion is adjunctive when immediately available (2a).",
-      "Perfusion selection supports IVT at 4.5–9 h without EVT (2a) and for unknown onset up to 24 h from LKW (2a); at 9–24 h with known onset only LVO without EVT access is graded (2b, TRACE-III). Large-core trials also accepted CTP cores (e.g., SELECT2 ≥50 mL)."
+      "AHA 2026 grades perfusion-selected IVT for EVT-ineligible patients at 4.5–9 h from LKW or within 9 h of the sleep midpoint for wake-up stroke (2a, ais-2026-101); beyond that and up to 24 h from onset or LKW (wake-up and unwitnessed onset included), only LVO with salvageable penumbra that cannot receive EVT is graded (2b, ais-2026-102; TRACE-III). The 2a for automated CTP or DWI-PWI 4.5–24 h after wake-up or unknown onset (ais-2026-53) grades imaging selection for eligibility, not IVT itself; MRI DWI–FLAIR mismatch is graded separately (ais-2026-100). Large-core trials also accepted CTP cores (e.g., SELECT2 ≥50 mL).",
+      "Within 4.5 h, routine CTA plus CTP before IVT reduced thrombolysis use (49 vs 68%) without changing decision times or 90-day outcomes (PRACTISE, n=271; published 2026, after the AHA 2026 evidence review)."
     ],
     "caution": "Software thresholds estimate tissue fate; they are not exact infarct volumes or stand-alone exclusions.",
     "sources": [
@@ -426,6 +439,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-03",
         "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "PRACTISE: CT perfusion and angiography vs non-contrast CT alone before thrombolysis within 4.5 h",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41614492/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (population, comparison, thrombolysis rate, decision times and 90-day outcome)."
       }
     ],
     "related": [
@@ -444,6 +465,10 @@
       {
         "label": "Large core",
         "href": "#/evidence/large-core-evt"
+      },
+      {
+        "label": "Wake-up and late-window IVT",
+        "href": "#/evidence/extended-window-ivt"
       }
     ]
   },

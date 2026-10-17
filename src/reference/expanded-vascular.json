@@ -24,7 +24,7 @@
       "tenecteplase",
       "alteplase"
     ],
-    "summary": "Unknown onset within 4.5 h of symptom recognition with DWI–FLAIR mismatch: IVT can be beneficial (AHA 2026, 2a; WAKE-UP: mRS 0–1 53.3 vs 41.8%). Perfusion mismatch at 4.5–9 h, or within 9 h of the sleep midpoint, without EVT: IVT is reasonable (2a; EXTEND: 35.4 vs 29.5%, sICH 6.2 vs 0.9%). LVO at 4.5–24 h with salvageable tissue and no EVT access: IVT may be beneficial (2b; TRACE-III tenecteplase 33.0 vs 24.2%, sICH 3.0 vs 0.8%). With EVT planned, late tenecteplase added nothing (TIMELESS; TNK-PLUS).",
+    "summary": "Unknown onset within 4.5 h of symptom recognition with DWI–FLAIR mismatch: IVT can be beneficial (AHA 2026, 2a; WAKE-UP: mRS 0–1 53.3 vs 41.8%). Perfusion mismatch at 4.5–9 h, or within 9 h of the sleep midpoint, in patients ineligible for EVT: IVT can be beneficial (2a; EXTEND: 35.4 vs 29.5%, sICH 6.2 vs 0.9%). LVO at 4.5–24 h with salvageable tissue and no EVT access: IVT may be beneficial (2b; TRACE-III tenecteplase 33.0 vs 24.2%, sICH 3.0 vs 0.8%). With EVT planned, late tenecteplase added nothing (TIMELESS; TNK-PLUS; basilar: ATTENTION LATE), and ETERNAL-LVO (perfusion-selected LVO within 24 h, 79% EVT, stopped early) was neutral.",
     "recommendations": [
       {
         "text": "In AIS patients with unknown onset time who are within 4.5 hours of symptom recognition and have a DWI lesion smaller than one-third of MCA territory with no marked FLAIR signal change, IVT within 4.5 hours of symptom recognition can be beneficial to improve functional outcomes.",
@@ -49,11 +49,12 @@
       }
     ],
     "consider": [
-      "Perfusion mismatch at 4.5–24 h without planned EVT (China): OPTION (non-LVO, tenecteplase; mRS 0–1 43.6 vs 34.2%, sICH 2.8 vs 0%) and HOPE (with or without LVO, alteplase; 40 vs 26%, sICH 3.8 vs 0.5%) were positive.",
-      "Posterior circulation at 4.5–24 h, mostly mild, no EVT: EXPECTS (alteplase) functional independence 89.6 vs 72.6%.",
-      "Pin down last known well, symptom discovery and the imaging route (MRI mismatch vs automated perfusion)."
+      "Perfusion mismatch at 4.5–24 h without planned EVT (China): OPTION (non-LVO, tenecteplase; mRS 0–1 43.6 vs 34.2%, sICH 2.8 vs 0%) and HOPE (with or without LVO, alteplase; 40 vs 26%, sICH 3.8 vs 0.5%) were positive; both were published after the AHA 2026 evidence review (searched to March 2025) and are not graded there.",
+      "Posterior circulation at 4.5–24 h, mostly mild, no EVT: EXPECTS (alteplase) functional independence 89.6 vs 72.6%. Basilar occlusion within 24 h (China): tenecteplase vs standard care improved mRS 0–1 or return to baseline (TRACE-5, 38 vs 29%; 49% had EVT; published 2026, not graded by AHA 2026).",
+      "Pin down last known well, symptom discovery and the imaging route (MRI mismatch vs automated perfusion).",
+      "Wake-up stroke selected by non-contrast CT alone: tenecteplase within 4.5 h of awakening did not improve 90-day mRS (TWIST, aOR 1.18; 95% CI 0.88–1.58), and ESO 2023 recommends against it (strong recommendation, low-quality evidence)."
     ],
-    "caution": "Late-window benefit comes from imaging-selected, mostly Chinese cohorts and costs more sICH.",
+    "caution": "Benefit beyond 9 h comes from imaging-selected trials in China (TRACE-III, OPTION, HOPE, EXPECTS); the 2a recommendations rest on WAKE-UP (Europe) and EXTEND. Extended-window IVT costs more sICH.",
     "sources": [
       {
         "title": "European Stroke Organisation (ESO) guidelines on intravenous thrombolysis for acute ischaemic stroke",
@@ -118,6 +119,46 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-03",
         "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "TWIST: tenecteplase in wake-up stroke selected by non-contrast CT",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/36549308/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety)."
+      },
+      {
+        "title": "European Stroke Organisation (ESO) expedited recommendation on tenecteplase for acute ischaemic stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37021186/",
+        "year": 2023,
+        "type": "Guideline",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed for the recommendation against tenecteplase after NCCT-only selection on awakening or unknown onset (low evidence, strong recommendation); full recommendation tables not reviewed."
+      },
+      {
+        "title": "ETERNAL-LVO: tenecteplase in large vessel occlusion within 24 hours",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40927857/",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety); terminated early."
+      },
+      {
+        "title": "TRACE-5: tenecteplase vs standard medical treatment for basilar artery occlusion within 24 h",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41655588/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (population, comparison, thrombectomy and alteplase use, outcomes and safety)."
+      },
+      {
+        "title": "ATTENTION LATE: tenecteplase before thrombectomy at 4.5–24 h for basilar artery occlusion",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42776543/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety)."
       }
     ],
     "related": [
@@ -237,7 +278,7 @@
       "EXTEND-IA TNK",
       "bolus"
     ],
-    "summary": "Within 4.5 h use tenecteplase 0.25 mg/kg (max 25 mg) as a single bolus or alteplase 0.9 mg/kg (max 90 mg) (AHA 2026, COR 1); tenecteplase is preferred before EVT for LVO (ESO 2023, strong). Tenecteplase was noninferior in AcT, ATTEST-2 (OR 1.07), TRACE-2 and ORIGINAL, and doubled early reperfusion before EVT in EXTEND-IA TNK (22 vs 10%). Do not use tenecteplase 0.4 mg/kg (COR 3). Reteplase or mutant prourokinase may be considered when EVT is not planned (2b).",
+    "summary": "Within 4.5 h use tenecteplase 0.25 mg/kg (max 25 mg) as a single bolus or alteplase 0.9 mg/kg (max 90 mg) (AHA 2026, COR 1); for IVT-eligible LVO within 4.5 h, ESO 2023 recommends tenecteplase 0.25 mg/kg over alteplase (strong recommendation, moderate-quality evidence). Tenecteplase was noninferior in AcT, ATTEST-2 (OR 1.07), TRACE-2 and ORIGINAL, and doubled early reperfusion before EVT in EXTEND-IA TNK (22 vs 10%). Do not use tenecteplase 0.4 mg/kg (COR 3: No Benefit, LOE A). Reteplase or mutant prourokinase may be considered when EVT is not planned (2b).",
     "recommendations": [
       {
         "text": "In adult AIS patients presenting within 4.5 hours of symptom onset or last known well who are eligible for IVT, tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg) is recommended to improve functional outcomes.",
@@ -257,7 +298,7 @@
     "consider": [
       "Use the agent and dose source your protocol specifies, and dose from the patient's weight with the calculator.",
       "Angioedema occurred in 1% with either agent (ATTEST-2): be ready to manage the airway and bleeding.",
-      "Not recommended: desmoteplase, urokinase, streptokinase and sonothrombolysis (COR 3)."
+      "Not recommended: desmoteplase, urokinase, mutant prourokinase plus low-dose alteplase and adjunctive sonothrombolysis (COR 3: No Benefit); streptokinase is COR 3: Harm (higher early mortality)."
     ],
     "caution": "A positive trial does not establish local approval or availability of a newer thrombolytic.",
     "sources": [
@@ -266,8 +307,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/37021186/",
         "year": 2023,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed for the recommendations and their GRADE strength and quality; full recommendation tables not reviewed."
       },
       {
         "title": "RAISE: Reteplase versus Alteplase for Acute Ischemic Stroke",
@@ -653,11 +694,12 @@
       "alteplase",
       "tenecteplase"
     ],
-    "summary": "Treat acute central retinal artery occlusion as an ischemic stroke and an emergency: same-day stroke workup and vascular risk-factor treatment, urgent ophthalmology, and assessment for an arteritic cause. IVT within 4.5 h has uncertain usefulness (AHA 2026, 2b): THEIA (alteplase vs aspirin) and TenCRAOS (tenecteplase) showed no significant visual benefit, and TenCRAOS had one fatal intracranial hemorrhage.",
+    "summary": "Treat acute central retinal artery occlusion as an ischemic stroke and an emergency: same-day stroke workup and vascular risk-factor treatment, urgent ophthalmology, and assessment for an arteritic cause. For non-arteritic CRAO with disabling visual loss in an otherwise IVT-eligible adult, the usefulness of IVT within 4.5 h of last known well is uncertain (AHA 2026, COR 2b, LOE C-LD): THEIA (alteplase vs aspirin) and TenCRAOS (tenecteplase vs aspirin) showed no significant visual benefit, and TenCRAOS had one fatal intracranial hemorrhage.",
     "consider": [
       "Confirm the ophthalmic diagnosis and onset; coordinate stroke and ophthalmology assessment.",
       "Both trials studied nonarteritic CRAO; suspected arteritis needs its own pathway.",
-      "THEIA measured visual acuity and TenCRAOS a vision-recovery threshold; weigh safety alongside benefit."
+      "THEIA measured visual acuity and TenCRAOS a vision-recovery threshold; weigh safety alongside benefit.",
+      "ESO 2025 suggests IVT within 4.5 h for CRAO (weak recommendation wording; very low-quality, nonrandomized evidence through 2023, issued before THEIA and TenCRAOS reported). REVISION (NCT04965038) is listed as terminated with no posted results (registry checked 2026-10-17); an individual-participant meta-analysis of the trials is registered (PROSPERO 1154900)."
     ],
     "caution": "Small neutral trials do not prove equivalence, and the 2021 AHA statement predates them.",
     "sources": [
@@ -684,9 +726,38 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract checked (population, comparison, outcomes and safety)."
+      },
+      {
+        "title": "European Stroke Organisation (ESO) guideline on visual impairment in stroke (PICO 9: ocular stroke)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40401755/",
+        "year": 2025,
+        "type": "Guideline",
+        "checkedAt": "2026-10-17",
+        "access": "PMC full text (PMC12098360) read for the PICO 9 recommendation ('we suggest thrombolysis within 4.5 h') and its summary-of-findings table (very low quality); the strength symbols did not render as text."
+      },
+      {
+        "title": "REVISION: intravenous thrombolysis for central retinal artery occlusion (registry record)",
+        "url": "https://clinicaltrials.gov/study/NCT04965038",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "ClinicalTrials.gov record checked: status terminated, registry enrollment 127, no results posted."
+      },
+      {
+        "title": "IV thrombolysis for acute CRAO: protocol for an individual participant data meta-analysis of randomized trials",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41805966/",
+        "year": 2026,
+        "type": "Report",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (protocol only; PROSPERO 1154900); no results."
       }
     ],
-    "related": []
+    "related": [
+      {
+        "label": "Reperfusion overview",
+        "href": "#/evidence/acute-reperfusion"
+      }
+    ]
   },
   {
     "id": "neurointerventional-care",
