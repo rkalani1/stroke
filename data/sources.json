@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "sources",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.7.13",
-    "checksum": "sha256:6e5bce5d59303c7d1f3bf230cee37e8b",
+    "appVersion": "7.8.0",
+    "checksum": "sha256:a07c443d4a594d937aa7d4bd70f56a08",
     "count": 4,
     "source": "Canonical clinical claims, source identities and retained primary-source projections",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -190,13 +190,13 @@
       {
         "id": "mrs-descriptors-instrument",
         "label": "Modified Rankin scale descriptors",
-        "title": "Bruno et al., Stroke 2010",
-        "sourceIdentity": "Bruno et al., Stroke 2010",
-        "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/20224060/",
-        "sourceLabel": "Bruno et al., Stroke 2010",
-        "url": "https://pubmed.ncbi.nlm.nih.gov/20224060/",
-        "population": "Describes the existing baseline mRS entry; does not assign a grade from an interview or forecast recovery. Original descriptor wording retained in paraphrase; primary full-text review remains limited.",
-        "limits": "Describes the existing baseline mRS entry; does not assign a grade from an interview or forecast recovery. Original descriptor wording retained in paraphrase; primary full-text review remains limited.",
+        "title": "van Swieten et al., Stroke 1988",
+        "sourceIdentity": "van Swieten et al., Stroke 1988",
+        "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/3363593/",
+        "sourceLabel": "van Swieten et al., Stroke 1988",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/3363593/",
+        "population": "Describes the existing baseline mRS entry; does not assign a grade from an interview or forecast recovery. Original descriptor wording retained in paraphrase; primary full-text review remains limited. Grade 6 (death) is the outcome-reporting convention added to the original 0–5 scale.",
+        "limits": "Describes the existing baseline mRS entry; does not assign a grade from an interview or forecast recovery. Original descriptor wording retained in paraphrase; primary full-text review remains limited. Grade 6 (death) is the outcome-reporting convention added to the original 0–5 scale.",
         "reviewedAt": null,
         "reviewScope": "Existing descriptor aid retained; no new questionnaire or prognostic validation."
       },
@@ -268,7 +268,7 @@
         "limits": "Patent extracranial ICA only. Use minimum residual lumen and normal distal ICA diameters from the same side, measured perpendicular to the vessel; the distal reference must be beyond bulb tapering. Excludes occlusion and suspected near-occlusion. Formula: 100 × (1 − minimum/distal). Rounded to 0.1%; values above 99.9% remain below complete occlusion. No revascularization recommendation.",
         "reviewedAt": "2026-10-01",
         "reviewScope": "Primary methods checked for the diameter ratio, distal reference and near-occlusion exclusion; measurement arithmetic only.",
-        "verificationUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4681631/"
+        "verificationUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7976065/"
       },
       {
         "id": "aspects-regions-instrument",

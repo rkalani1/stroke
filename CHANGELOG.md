@@ -1,5 +1,46 @@
 # CHANGELOG
 
+## v7.8.0 — 2026-10-17 — Verified clinical, workflow, design and accessibility review
+
+Audit agents checked the non-Protocols content against primary sources: PubMed abstracts, PMC full text and ClinicalTrials.gov records, read on 2026-10-17. Separate agents verified each change and adversarially reviewed every unit before merge. Sources and access scope are in [docs/evidence-ledger-2026-10.md](docs/evidence-ledger-2026-10.md). The Protocols tab is unchanged. Possible Protocols issues are reported separately in [docs/protocols-review-notes-2026-10.md](docs/protocols-review-notes-2026-10.md), for the owner only.
+
+- **Protocols preservation:** new locks cover the whole Protocols surface for 26 synthetic encounters (46 captures), plus source/output hashes, both run in CI. CI now also fails when the committed bundle that Pages serves is not a build of the committed source.
+- **Encounter notes:**
+  - Acute ICH/SAH notes state anticoagulant exposure, including "not assessed". They flag a medication list that names an anticoagulant when "none" is selected.
+  - "Set unentered items to 0" asks for confirmation, and the note records which NIHSS items were bulk-set.
+  - Missing or invalid core items are stated instead of silently omitted. Partial or reversed BP is no longer printed raw.
+  - Unfilled prompt blanks are flagged before copy, and the team handoff adds the safety items it was dropping.
+  - Every copy outcome is reported, including a copy superseded by an edit.
+- **Case bar:** no actionable thrombolytic dose is shown while no drug is selected, the IVT card is held, CT shows hemorrhage or the weight is implausible.
+- **Calculators and screens:**
+  - SELECT2 excludes NCCT ASPECTS 0–2, and DEFUSE-3 applies its NCCT ASPECTS <6 exclusion.
+  - The WAKE-UP MRI screen states the pre-stroke mRS ≤1 requirement.
+  - Encounter warns about likely unit errors: creatinine, ABC/2 slice thickness, weight and height.
+  - mTICI 2b is >50%. NASCET band display and its source, STOP-BANG height checks, the mRS source and the DAPT window-edge text are corrected.
+- **Trials:**
+  - All 16 profiles were re-verified against ClinicalTrials.gov on 2026-10-17. CLARITY was rebuilt to the current registry text.
+  - Results separate potential match, insufficient information and does-not-meet. Partial Encounter data never yields a match.
+  - Imported LKW stays live, and re-import no longer keeps stale facts.
+  - Check dates are shown per profile. Statuses read "(registry)" and never imply local activation. FASTEST Part 1 results are noted on FASTEST-2.
+  - Trials are indexed in global search.
+- **Evidence:**
+  - IVT/perfusion imaging grades are separated from treatment grades, and DAPT, CRAO and post-EVT BP populations are restored.
+  - UFH and LMWH protamine grades are separated. CLEAR III, ANNEXA-I, ENRICH and SWITCH populations and the neuroprognostication timing are corrected.
+  - Newer ICH, SAH and CVT sources are added and labelled as evidence that postdates the guideline.
+- **Reliability:**
+  - A failed download of a lazy surface no longer unmounts the encounter.
+  - SAH opens the ICH Protocols tab.
+  - "Available offline" is shown only when true. The service worker refuses a half-swapped deploy at install.
+  - Worktree builds keep stable chunk names.
+- **Design and accessibility:**
+  - Type and spacing tokens are added. The phone case bar fits two rows and no longer moves the field being typed into.
+  - Selected states are consistent, and controls meet ≥3:1 non-text contrast.
+  - All axe-core WCAG 2.2 AA violations (70 nodes) are fixed.
+  - The external-links row is compact. On macOS, Ctrl+K inside a field is left to the field.
+- **Budgets:** asset budgets were raised by 3–5% as a deliberate decision for the verified safety logic, content and accessibility CSS. Measured initial JS is 124.4 KB gzip, up from 119.3 KB. This release claims no speedup.
+- **Not in this release:** the EVT/systems and prevention/rehabilitation evidence units did not finish independent review before the deadline. Their cards are unchanged from 7.7.13.
+
+
 ## v7.7.13 — 2026-10-04 — Protocol tab switching lands at the top
 
 - **Protocols:** switching between the ICH and Ischemic/TIA tabs (sticky bar or arrow keys) now scrolls to the start of the newly opened protocol. Previously the new panel could still be mounting, the scroll was skipped, and the view stayed mid-page.

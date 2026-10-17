@@ -56,17 +56,17 @@ const options = () => page.locator('#quick-search-results [role="option"]').eval
 describe('global search reaches study profiles', () => {
   it('finds CLARITY by NCT number with its registry status first', async () => {
     await page.fill('dialog.quick-search input', 'NCT07174414');
-    expect(await options()).toEqual([{ group: 'Trials', title: 'CLARITY', meta: 'Not yet recruiting · Cilostazol for Prevention of Recurrent Stroke', href: '#/trials/database' }]);
+    expect(await options()).toEqual([{ group: 'Trials', title: 'CLARITY', meta: 'Not yet recruiting (registry) · Cilostazol for Prevention of Recurrent Stroke Trial', href: '#/trials/database' }]);
   });
   // Registry statuses read on ClinicalTrials.gov 2026-10-17: NCT05948566 RECRUITING,
   // NCT07174414 NOT_YET_RECRUITING, NCT05047172 ACTIVE_NOT_RECRUITING, NCT06682429 RECRUITING.
   it('finds SISTER by acronym as a recruiting study', async () => {
     await page.fill('dialog.quick-search input', 'SISTER');
-    expect((await options())[0]).toEqual({ group: 'Trials', title: 'SISTER', meta: 'Recruiting · Strategy for Improving Stroke Treatment Response (SISTER) Trial', href: '#/trials/database' });
+    expect((await options())[0]).toEqual({ group: 'Trials', title: 'SISTER', meta: 'Recruiting (registry) · Strategy for Improving Stroke Treatment Response (SISTER) Trial', href: '#/trials/database' });
   });
   it('finds TELE-REHAB-2 by its registry acronym and opens the study database', async () => {
     await page.fill('dialog.quick-search input', 'tr2');
-    expect(await options()).toEqual([{ group: 'Trials', title: 'TELE-REHAB-2', meta: 'Recruiting · Telerehabilitation in the home after stroke', href: '#/trials/database' }]);
+    expect(await options()).toEqual([{ group: 'Trials', title: 'TELE-REHAB-2', meta: 'Recruiting (registry) · Telerehabilitation in the home after stroke', href: '#/trials/database' }]);
     await page.fill('dialog.quick-search input', 'NCT06682429');
     await page.keyboard.press('Enter');
     expect(await page.evaluate(() => location.hash)).toBe('#/trials/database');

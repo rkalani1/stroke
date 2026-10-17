@@ -6,9 +6,9 @@
    Old app caches are retired only on activation. Fetch policy is independent.
 */
 
-const APP_VERSION = '7.7.13';
+const APP_VERSION = '7.8.0';
 const CACHE_PREFIX = 'stroke-cache-v';
-const CACHE_NAME  = 'stroke-cache-v7-7-13-utility-review-20261001';
+const CACHE_NAME  = 'stroke-cache-v7-8-0-utility-review-20261001';
 
 // Retired teaching figures must not be served from a stale browser cache or
 // a bookmarked URL after this worker takes control. Paths are scope-relative
@@ -93,27 +93,28 @@ const CDN_ASSETS = [];
 // not execute deferred protocols, trials, calculators or reference modules.
 // BEGIN GENERATED APP CHUNKS
 const APP_CHUNKS = [
-  "./chunks/chunk-5PGM3YT2.js",
-  "./chunks/chunk-5RLOP6YY.js",
-  "./chunks/chunk-BPABBSMJ.js",
-  "./chunks/chunk-D4I3WRI5.js",
-  "./chunks/chunk-J54UCCXE.js",
-  "./chunks/chunk-JX2MFBQ4.js",
-  "./chunks/chunk-MHDN3HTY.js",
-  "./chunks/chunk-MWVXX6OZ.js",
-  "./chunks/chunk-O344IBEI.js",
-  "./chunks/chunk-O6C54Q3L.js",
-  "./chunks/chunk-SHWC3W4Q.js",
-  "./chunks/chunk-T7WWQYBT.js",
-  "./chunks/chunk-TVDPKXUF.js",
-  "./chunks/chunk-V3TN6ZI3.js",
-  "./chunks/InstallAppButton-LQX5XXGB.js",
-  "./chunks/ProtectedProtocols-6NL6HJRG.js",
-  "./chunks/QuickReference-JXOIHPA4.js",
-  "./chunks/QuickSearch-IDSGPIPT.js",
-  "./chunks/Reference-YQRHXV2Z.js",
-  "./chunks/Tools-ZWBIBBOQ.js",
-  "./chunks/Trials-UC77XPHE.js"
+  "./chunks/chunk-3EH37YPU.js",
+  "./chunks/chunk-6IG4POVN.js",
+  "./chunks/chunk-BVAA575E.js",
+  "./chunks/chunk-CCC5QWPU.js",
+  "./chunks/chunk-CVE5G7EA.js",
+  "./chunks/chunk-DXV6LRZM.js",
+  "./chunks/chunk-HOFJI2PN.js",
+  "./chunks/chunk-KXBYGU7T.js",
+  "./chunks/chunk-QPJ3MHXX.js",
+  "./chunks/chunk-RKNMGIFI.js",
+  "./chunks/chunk-ROT5RF3S.js",
+  "./chunks/chunk-RZXX55EJ.js",
+  "./chunks/chunk-USXDLG6G.js",
+  "./chunks/chunk-UUVPNWCE.js",
+  "./chunks/chunk-VBK5MHSV.js",
+  "./chunks/InstallAppButton-NWUBLKJU.js",
+  "./chunks/ProtectedProtocols-D6RTNENP.js",
+  "./chunks/QuickReference-OQ6AATTM.js",
+  "./chunks/QuickSearch-VGWPKPQC.js",
+  "./chunks/Reference-OAN5TN5O.js",
+  "./chunks/Tools-BAFTAQK7.js",
+  "./chunks/Trials-UWNFDFXG.js"
 ];
 // END GENERATED APP CHUNKS
 
