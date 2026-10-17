@@ -22,7 +22,7 @@ const groupOf = (state, acronym) => {
 
 describe('preset onset bands that only touch a study limit at an endpoint (H3)', () => {
   it.each([
-    ['ischemic', '24h – 7d', 'STEP', /Presentation > 24 hours/],
+    ['ischemic', '24h – 7d', 'STEP', /More than 24 h from LKW at screening/],
     ['ischemic', '24h – 7d', 'SISTER', /Outside 4\.5–24 h/],
     ['ich', '24h – 7d', 'MINUTE', /16 hours/],
     ['ich', '7 – 30d', 'SATURN', /> 7 days/],
@@ -60,7 +60,7 @@ describe('preset onset bands that only touch a study limit at an endpoint (H3)',
   });
 
   it('resolves bands fully inside a window as met', () => {
-    expect(evaluate('STEP', withPreset('ischemic', '4.5 – 24h')).matchedCriteria).toContain('Within the 24-hour presentation window');
+    expect(evaluate('STEP', withPreset('ischemic', '4.5 – 24h')).matchedCriteria).toContain('Within 24 h of LKW at screening (registry: presentation ≤ 24 h; confirm arrival time)');
     expect(evaluate('SATURN', withPreset('ich', '24h – 7d')).matchedCriteria).toContain('Onset within 7 days window');
   });
 
@@ -94,7 +94,7 @@ describe('pending criteria read as questions, never as raw templates (H4)', () =
   it('phrases criteria without a stored pending label from the operator and value', () => {
     expect(pendingText({ field: 'age', operator: '>=', value: 18, matchedLabel: 'Age is {value} (meets ≥ 18)' })).toBe('Confirm age ≥ 18');
     expect(pendingText({ field: 'age', operator: 'between', value: [18, 80] })).toBe('Confirm age 18–80');
-    expect(pendingText({ field: 'vessel', operator: 'in', value: ['ica_m1', 'dominant_m2'] })).toBe('Confirm occlusion site is ICA/M1 or dominant M2');
+    expect(pendingText({ field: 'vessel', operator: 'in', value: ['ica_m1', 'dominant_m2'] })).toBe('Confirm occlusion site is intracranial ICA/M1 or dominant M2');
     expect(pendingText({ field: 'preMrs', operator: 'in', value: [3, 4] })).toBe('Confirm pre-stroke mRS is 3 or 4');
     expect(pendingText({ field: 'afibHistory', operator: '==', value: true })).toBe('Confirm documented clinical atrial fibrillation');
     expect(pendingText({ field: 'ichLocation', operator: '==', value: 'bg' })).toBe('Confirm ICH location = basal ganglia');

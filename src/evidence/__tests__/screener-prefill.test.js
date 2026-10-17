@@ -38,9 +38,10 @@ describe('screenerPrefillFromEncounter', () => {
     expect(screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lkwDate: '2026-10-03', lkwTime: '13:00' }), NOW).patch.onsetVal).toBeUndefined();
   });
 
-  it('maps vessel segments: ICA/M1 → ica_m1, None → none, Basilar/Other → other, M2 stays unknown', () => {
+  it('maps vessel segments: M1 → ica_m1, None → none, Basilar/Other → other, ICA alone and M2 stay unknown', () => {
     const vessel = v => screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', vesselOcclusion: v ? [v] : [] }), NOW).patch.vessel;
-    expect(vessel('ICA')).toBe('ica_m1');
+    // The registries require an intracranial ICA/M1 occlusion; the Encounter ICA chip may be cervical.
+    expect(vessel('ICA')).toBeUndefined();
     expect(vessel('M1')).toBe('ica_m1');
     expect(vessel('None')).toBe('none');
     expect(vessel('Basilar')).toBe('other');
