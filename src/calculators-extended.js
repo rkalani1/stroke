@@ -53,7 +53,9 @@ export const evaluateDAWN = ({ age, nihss, coreMl, timeFromLKWh } = {}) => {
   };
 };
 
-export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, hypoperfusedMl, timeFromLKWh, nihss, age } = {}) => {
+// DEFUSE 3 registry (NCT02586415) neuroimaging exclusion: NCCT ASPECTS <6 when enrolled on CT perfusion
+// criteria. Optional inputs: a reviewed NCCT `aspects` and `perfusionModality` ('mri' skips that CT-specific exclusion).
+export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, hypoperfusedMl, timeFromLKWh, nihss, age, aspects, perfusionModality } = {}) => {
   const c = reviewedNumber(coreMl);
   const p = reviewedNumber(hypoperfusedMl ?? penumbraMl);
   const t = reviewedNumber(timeFromLKWh);
@@ -71,7 +73,12 @@ export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, hypoperfusedMl, timeFromLK
   const ratioOk = mismatchRatio >= 1.8;
   const volumeOk = mismatchVolume >= 15;
   const clinicalOk = n >= 6 && a >= 18 && a <= 90;
-  const eligible = coreOk && ratioOk && volumeOk && clinicalOk;
+  const asp = aspects === undefined || aspects === null || (typeof aspects === 'string' && aspects.trim() === '') ? null : reviewedNumber(aspects);
+  const aspectsValid = Number.isInteger(asp) && asp >= 0 && asp <= 10;
+  const ctSelection = perfusionModality !== 'mri';
+  const aspectsOk = !(ctSelection && aspectsValid && asp < 6);
+  const eligible = coreOk && ratioOk && volumeOk && clinicalOk && aspectsOk;
+  const aspectsNote = !ctSelection ? '' : aspectsValid ? '' : ' Confirm NCCT ASPECTS ≥6 (DEFUSE-3 excluded ASPECTS <6 when enrolled on CT perfusion).';
   return {
     eligible,
     meetsCore: coreOk,
@@ -82,20 +89,27 @@ export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, hypoperfusedMl, timeFromLK
     mismatchVolumeMl: mismatchVolume,
     mismatchRatio,
     reason: eligible
-      ? 'DEFUSE-3 age/severity/perfusion screen met. Confirm ICA/proximal MCA occlusion, baseline function, and all exclusions; this is not complete EVT eligibility.'
-      : `${!coreOk ? `Core ${c} mL ≥70; ` : ''}${!ratioOk ? `Mismatch ratio ${floorTo(mismatchRatio, 1)} < 1.8; ` : ''}${!volumeOk ? `Mismatch volume ${floorTo(mismatchVolume, 1)} mL < 15; ` : ''}${!clinicalOk ? 'Age 18–90 and NIHSS ≥6 required; ' : ''}Failure to meet DEFUSE-3 does not exclude EVT under newer evidence.`.trim(),
+      ? `DEFUSE-3 age/severity/perfusion screen met. Confirm ICA/proximal MCA occlusion, baseline function, and all exclusions; this is not complete EVT eligibility.${aspectsNote}`
+      : `${!aspectsOk ? `NCCT ASPECTS ${asp} <6 (DEFUSE-3 excluded ASPECTS <6 when enrolled on CT perfusion); ` : ''}${!coreOk ? `Core ${c} mL ≥70; ` : ''}${!ratioOk ? `Mismatch ratio ${floorTo(mismatchRatio, 1)} < 1.8; ` : ''}${!volumeOk ? `Mismatch volume ${floorTo(mismatchVolume, 1)} mL < 15; ` : ''}${!clinicalOk ? 'Age 18–90 and NIHSS ≥6 required; ' : ''}Failure to meet DEFUSE-3 does not exclude EVT under newer evidence.`.trim(),
     window: '6-16h',
     endpointNNT: 3.6,
     source: 'Albers NEJM 2018;378:708-18 (NCT02586415)'
   };
 };
 
+// recommendAcuteDAPT treats a non-true mechanism, stenosis, CYP2C19 or ichRisk entry as negative.
+// Callers must apply daptReviewComplete before displaying a regimen: unknown is not negative.
+export const daptReviewComplete = (d = {}) => ['reviewed', 'high'].includes(d?.ichRisk) && ['atherosclerotic', 'lvdSymptomatic', 'cyp2c19LOF'].every(key => typeof d?.[key] === 'boolean');
+
 export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2, strokeType, atherosclerotic, lvdSymptomatic, cyp2c19LOF, ichRisk, timeFromOnsetH, noncardioembolicConfirmed, hemorrhageExcluded, reperfusionExcluded, antiplateletContraindicationsReviewed } = {}) => {
   const a = reviewedNumber(age);
   const n = reviewedNumber(nihss);
   const ab = reviewedNumber(abcd2);
   const tH = reviewedNumber(timeFromOnsetH);
-  const elapsed = Number.isFinite(tH) ? `${Math.floor(Math.round(tH * 60) / 60)} h ${String(Math.round(tH * 60) % 60).padStart(2, '0')} min` : '';
+  // Floored inside a window and rounded up beyond one, as elapsedHm does, so the text never contradicts the branch at the 24/72 h edges.
+  const hm = round => { const minutes = round(Math.round(tH * 3600000) / 60000); return `${Math.floor(minutes / 60)} h ${String(minutes % 60).padStart(2, '0')} min`; };
+  const elapsed = Number.isFinite(tH) ? hm(Math.floor) : '';
+  const elapsedBeyond = Number.isFinite(tH) ? hm(Math.ceil) : '';
   const isTIA = strokeType === 'tia';
   const isMinor = strokeType === 'ischemic' && Number.isInteger(n) && n >= 0 && n <= 3;
   const isUpToModerate = strokeType === 'ischemic' && Number.isInteger(n) && n >= 0 && n <= 5;
@@ -219,7 +233,7 @@ export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2,
     return {
       regimen: 'individualized-review',
       duration: null,
-      rationale: `Outside the trial windows modeled here (${elapsed} > 72 h). This is not a blanket DAPT contraindication: the 2021 secondary-prevention guideline allows initiation within 7 days for selected minor noncardioembolic stroke/high-risk TIA. Review current guidance, mechanism, and bleeding risk.`,
+      rationale: `Outside the trial windows modeled here (${elapsedBeyond} > 72 h). This is not a blanket DAPT contraindication: the 2021 secondary-prevention guideline allows initiation within 7 days for selected minor noncardioembolic stroke/high-risk TIA. Review current guidance, mechanism, and bleeding risk.`,
       source: 'AHA/ASA 2021 secondary-prevention guideline (doi: 10.1161/STR.0000000000000375); INSPIRES 2023',
       class: 'Trial screen limitation; individualized clinical review'
     };
@@ -229,7 +243,7 @@ export const recommendAcuteDAPT = ({ age, anticoagulationExcluded, nihss, abcd2,
     regimen: 'individualized-review',
     duration: null,
     dosing: null,
-    rationale: `No DAPT trial branch modeled here is met (${isTIA ? `TIA ABCD² ${ab}` : `NIHSS ${n}`}, ${elapsed}). Review the complete mechanism-specific guidance, timing and bleeding risk; failure to match these branches does not select single antiplatelet therapy or establish a DAPT contraindication.${((isTIA && highRisk) || isMinor) && tH <= 168 ? ' The 2021 secondary-prevention guideline recommends starting aspirin plus clopidogrel early for minor stroke or high-risk TIA, ideally within 12-24 h and at least within 7 days (COR 1, LOE A).' : ''}`,
+    rationale: `No DAPT trial branch modeled here is met (${isTIA ? `TIA ABCD² ${ab}` : `NIHSS ${n}`}, ${elapsedBeyond}). Review the complete mechanism-specific guidance, timing and bleeding risk; failure to match these branches does not select single antiplatelet therapy or establish a DAPT contraindication.${((isTIA && highRisk) || isMinor) && tH <= 168 ? ' The 2021 secondary-prevention guideline recommends starting aspirin plus clopidogrel early for minor stroke or high-risk TIA, ideally within 12-24 h and at least within 7 days (COR 1, LOE A).' : ''}`,
     source: 'Kleindorfer AHA/ASA Stroke 2021',
     class: 'Modeled screen not met; individualized clinical review'
   };
@@ -316,8 +330,11 @@ export const evaluateLargeCoreEVT = (input = {}) => {
   if (aspects35 && t <= 12 && n < 26 && a >= 18 && pm <= 2) {
     trial.push('TENSION'); bestMatch = bestMatch || 'TENSION'; eligible = true;
   }
-  // SELECT-2 — ASPECTS 3-5 OR core ≥50, ≤24h
-  if ((aspects35 || (Number.isFinite(c) && c >= 50)) && t <= 24 && nihssOk && ageOk && pmOk) {
+  // SELECT-2 — NCCT ASPECTS 3-5 OR perfusion/DWI core ≥50 mL, ≤24h. NCCT ASPECTS ≤2 was a registry
+  // neuroimaging exclusion (NCT03876457); a core ≥50 mL does not override it.
+  const select2Imaging = aspects35 || (!aspects02 && Number.isFinite(c) && c >= 50);
+  if (aspects02 && Number.isFinite(c) && c >= 50 && t <= 24 && nihssOk && ageOk && pmOk) reasons.push('SELECT2 excluded NCCT ASPECTS 0–2 even with core ≥50 mL');
+  if (select2Imaging && t <= 24 && nihssOk && ageOk && pmOk) {
     trial.push('SELECT-2'); bestMatch = bestMatch || 'SELECT-2'; eligible = true;
   }
   // ANGEL-ASPECT — ASPECTS 3-5 OR core 70-100, ≤24h
@@ -345,8 +362,8 @@ export const evaluateLargeCoreEVT = (input = {}) => {
     timeFromLKWh: t,
     status: eligible ? 'partial-screen-met' : 'screen-not-met',
     rationale: eligible
-      ? 'Partial age/severity/imaging/time screen overlaps ' + trial.join(', ') + '. Confirm all remaining imaging exclusions, time definitions, baseline function, and 2026 guideline criteria with the stroke team. This does not establish complete trial or EVT eligibility.' + (coreGT100 ? ' A core above 100 mL is not outside all trial evidence; uncertainty increases with very extensive injury.' : '')
-      : 'No modeled positive-trial branch is met. ' + reasons.join('; ') + ' This partial screen is not a contraindication to EVT; review the 2026 guideline and complete imaging.',
+      ? 'Partial age/severity/imaging/time screen overlaps ' + trial.join(', ') + '. Confirm all remaining imaging exclusions, time definitions, baseline function, and 2026 guideline criteria with the stroke team. This does not establish complete trial or EVT eligibility.' + (trial.includes('SELECT-2') && !Number.isFinite(asp) ? ' SELECT2 excluded NCCT ASPECTS 0–2; ASPECTS was not entered.' : '') + (coreGT100 ? ' A core above 100 mL is not outside all trial evidence; uncertainty increases with very extensive injury.' : '')
+      : ['No modeled positive-trial branch is met.', reasons.length ? `${reasons.join('; ')}.` : '', 'This partial screen is not a contraindication to EVT; review the 2026 guideline and complete imaging.'].filter(Boolean).join(' '),
     sichCounseling: 'Large-core EVT improves disability outcomes in selected patients, while substantial disability may persist. Symptomatic-hemorrhage rates and definitions differ across trials; use trial-specific absolute risks instead of a pooled 6–7% assumption.',
     guidelineClass: 'Use the 2026 AHA/ASA AIS guideline section 4.7.2 and complete patient criteria; no single recommendation class applies to every large-core profile.',
     sources: 'NEJM 2022 (LIMIT, PMID 35138767); NEJM 2023 (SELECT-2 36762865; ANGEL-ASPECT 36762852); Lancet 2023 (TENSION 37837989); JAMA 2024 (TESLA, PMID 39374319); NEJM 2024 (LASTE 38718358)'
