@@ -1,0 +1,30 @@
+{
+  "note": "Protocols-tab source lock. Update only for an owner-approved Protocols change; see scripts/protocols-source-lock.mjs.",
+  "files": {
+    "src/ProtectedProtocols.jsx": "48e401131bb10e4ab5e475c56f91a0f0f8f4a0976cc9c5b377065d77a96d64be",
+    "src/components/QuickReference.jsx": "a47c949d56307453725e0dcf23511233c6091c829f40f09d93032a0c10c9b137",
+    "src/pocket-cards.jsx": "cbe3b8fd9b38dc3f9fc44d5775f3d2b840f8f177722b821db0cbb2147e1b5b51",
+    "src/institutional-protocols.js": "a2b5516f9879fe28df6506732ce7b134d8fe7f99db755392cc743c0bac4c2755",
+    "src/management-guidance.js": "4ea3776064a8e85c6dc054be7c43d59f5237295b4ff5c5747beefa4ca42fd5e7",
+    "src/clinical/reversal-dose.js": "6c8aa3e1d9009f108889013f438833d2a0ed12ae1cb3b950fd831a067b558563",
+    "src/evidence-encounter.js": "404c47f80a958854b1bf9eb9ebd60e9a41ec8258cb1074c32f750ee0f146c563",
+    "tests/snapshots/example-protocols/ich.txt": "f23cc289f83eeeb5903e8e9eff274632d0bef5687da089ba1722505cf79ec63e",
+    "tests/snapshots/example-protocols/ischemic.txt": "bd460885adbd1b3fb72067895deeb86787576196b9da8d84ae7a3c37e4d4f303"
+  },
+  "exports": {
+    "evidence.recommendations": "258116bc24a6a974bb669414525be05f925ec671c7aa7357d673867ac8167045",
+    "evidence.claims": "d67377827a118a59b001f9203d9ad58dcc0dcdf1ee5eb92797611d09ae641a73",
+    "evidence.citations": "7df7539161214e503ebdb9e3b3ab04afecac2fd70a4aa7d2c423310b8208cd78",
+    "evidence.citationLinks": "8c86b86c12438de4298f8c37954b3fadf0cac9cee33fc68e181ab994deb23e4a",
+    "management-guidance.all": "4a00d61165bd08b0c6dc9b374ccce68e08421fcb4066f9f1e2ba309f4239e33b",
+    "protocol-navigation.PROTOCOL_TARGETS": "8b503bdd0730f9b6e2bc1ca1ae75344ab969b9f7bb5c5d3ef9b764d6a0e3ea2e"
+  },
+  "behavior": {
+    "calculators.tnkGuideline": "e76f76bf803fa358174c8579e94b20a05b70d9a0dbad33dba567bec64db2de6b",
+    "calculators.tnkLabel": "5d457441ce15ad9ddde6f608adf983de40bb7b5ae0383969684adf90adb083dc",
+    "calculators.alteplase": "ccd30e5045acec640451a0cab0f22acc890dcdcadca25307b6667056a50ae499",
+    "reversal-dose.lines": "c7e1f3953ce1f08e6700d5a73f6b34caa57da24cb91886dcf95b2a1ef8d82311",
+    "encounter-time.elapsed": "90cdd42f785a6c75feafbf1e2e7cfaa59b4111cc6c098ad6c6e0acf940dac5d4",
+    "workspace-state.protocolProjection": "a560f4b0b2d7ba5a0891a3fd682eb4a3fbe68f40e91ca570786badc9ba5f7dfa"
+  }
+}

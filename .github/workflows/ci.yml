@@ -90,6 +90,59 @@ jobs:
             test-output/
           if-no-files-found: ignore
 
+  protocols-tab-lock:
+    name: Protocols tab preservation lock
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright system deps (cache hit)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      # Runs against the committed artifact, which is what GitHub Pages serves.
+      - name: Protocols source lock
+        run: npm run test:protocol-source
+
+      - name: Protocols tab rendered lock (synthetic encounter states)
+        run: |
+          mkdir -p output/diagnostics
+          set -o pipefail
+          npm run test:protocol-tab 2>&1 | tee output/diagnostics/protocols-tab-lock.log
+
+      - name: Upload lock output (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: protocols-tab-lock
+          path: output/diagnostics/protocols-tab-lock.log
+          if-no-files-found: ignore
+
   mcp-smoke:
     name: MCP smoke
     runs-on: ubuntu-latest
@@ -169,6 +222,19 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Committed bundle matches source
+        # Pages serves the committed app.js/chunks; CI tests its own rebuild.
+        # Chunk names are path-dependent, so the check compares normalized content.
+        run: node scripts/check-committed-bundle.mjs
+
+      - name: Build output drift (_config.yml)
+        # publish-stage regenerates the Jekyll exclude list from the root listing.
+        run: |
+          git diff --exit-code --stat -- _config.yml || {
+            echo '::error file=_config.yml::_config.yml is stale: run `npm run publish:stage` and commit the result.'
+            exit 1
+          }
 
       - name: Build output drift (tailwind.css)
         # tailwind.css is a committed build output served as-is by GitHub
