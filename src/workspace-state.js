@@ -266,6 +266,9 @@ function documentedCtTime(value) {
     ? `${value}; date not documented`
     : `${value} (invalid time; correct before interpretation)`;
 }
+// A plain decimal prints as entered (INR 1.0 keeps its written precision); any other accepted form
+// (1e3, +5, 0120) prints as the parsed number, so BP and measurements read alike.
+const enteredNumber = (raw, number) => /^(0|[1-9]\d*)(\.\d+)?$/.test(raw) ? raw : String(number);
 // Note-only BP text: the stored presentingBP ("SBP/DBP") is never rewritten. '' when nothing is
 // entered; an incomplete, malformed or reversed pair is flagged instead of printed raw.
 export function documentedBp(value, unit = '') {
@@ -275,7 +278,7 @@ export function documentedBp(value, unit = '') {
   if (parts.length === 2 && (!parts[0] || !parts[1])) return `[BP incomplete: systolic ${parts[0] || 'not documented'}, diastolic ${parts[1] || 'not documented'}; correct before interpretation]`;
   const sbp = parts.length === 2 ? numericInput(parts[0], { min: 1, max: 400 }) : null, dbp = parts.length === 2 ? numericInput(parts[1], { min: 1, max: 300 }) : null;
   if (sbp === null || dbp === null) return `[BP ${raw} invalid; correct before interpretation]`;
-  return `${sbp}/${dbp}${unit}${sbp <= dbp ? ' [systolic not above diastolic; check order]' : ''}`;
+  return `${enteredNumber(parts[0], sbp)}/${enteredNumber(parts[1], dbp)}${unit}${sbp <= dbp ? ' [systolic not above diastolic; check order]' : ''}`;
 }
 // Note-only measurement text: '' when not entered; a non-numeric or out-of-range entry is flagged.
 const MEASUREMENT_RANGES = { glucose: [Number.MIN_VALUE, 2000], heartRate: [Number.MIN_VALUE, 300], spO2: [Number.MIN_VALUE, 100], temperature: [Number.MIN_VALUE, 115], inr: [Number.MIN_VALUE, 20], ptt: [Number.MIN_VALUE, 300], pt: [Number.MIN_VALUE, 300], creatinine: [Number.MIN_VALUE, 30] };
@@ -286,7 +289,7 @@ export function documentedMeasurement(key, value, unit = '') {
   if (number === null) return `[${raw} invalid; correct before interpretation]`;
   // The field is labelled °F; a value below 80 °F reads as a Celsius entry.
   if (key === 'temperature' && number < 80) return `[${raw} °F implausible; check unit]`;
-  return `${raw}${unit}`;
+  return `${enteredNumber(raw, number)}${unit}`;
 }
 const unfilledPromptPattern = /:[ \t]*\[ \][ \t]*$/gm;
 // Inserted documentation prompts leave "Label: [ ]" blanks; an unfilled blank is never copied as documentation.

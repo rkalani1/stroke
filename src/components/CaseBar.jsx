@@ -70,6 +70,8 @@ export function caseSummary(state, nowMs) {
     glucose: glucose === null ? '' : String(glucose),
     glucoseFlag: glucose !== null && (glucose < 50 || glucose > 400),
     weight: weight === null ? '' : `${Math.round(weight * 10) / 10}`,
+    // Why no dose is shown when nothing is held: name the missing input, not a generic one.
+    doseNote: state.decisions?.ivt === 'Not recommended' ? 'IVT clinician decision is Not recommended; no dose shown' : `${!['TNK', 'Alteplase'].includes(state.drug) ? `Select the IV thrombolytic${weight === null ? ' and enter a valid weight (kg)' : ''}` : 'Enter a valid weight (kg)'} in Encounter for dose arithmetic; not an eligibility decision`,
     dose: administered ? { label: state.drug === 'Alteplase' ? 'tPA given' : 'TNK given', value: clockTime(state.actions.administrationTime), detail: state.actions.administeredDose ? `${state.actions.administeredDose} mg` : '' } : hold ? { label: 'IVT dose', value: hold.value, title: hold.title, flag: hold.flag } : dose ? state.drug === 'Alteplase' ? { label: 'tPA', value: `${dose.totalDose} mg`, detail: `${dose.bolus} mg bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
     anticoagulant: n.lastDOACType && n.lastDOACType !== 'none' ? ANTICOAGULANT_LABELS[n.lastDOACType] || 'Anticoagulant' : '',
     aceInhibitor: ACE_INHIBITOR.test(n.medications || ''),
@@ -152,7 +154,7 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
       <Item label="BP" value={c.bp} flag={c.bpHigh ? 'caution' : undefined} title={c.bpTitle} />
       <Item label="Glucose" short="Glu" value={c.glucose} flag={c.glucoseFlag ? 'caution' : undefined} title={c.glucoseFlag ? 'Glucose outside 50–400 mg/dL' : undefined} />
       <Item label="Weight" short="Wt" value={c.weight && `${c.weight} kg`} />
-      {acuteIschemic && <Item label={c.dose?.label || 'Dose'} value={c.dose?.value} detail={c.dose?.detail} flag={c.dose?.flag} title={c.administered ? 'Recorded administration time' : c.dose?.title || (c.dose ? 'Dose arithmetic only; not an eligibility decision' : 'Select the IV thrombolytic in Encounter for dose arithmetic; not an eligibility decision')} />}
+      {acuteIschemic && <Item label={c.dose?.label || 'Dose'} value={c.dose?.value} detail={c.dose?.detail} flag={c.dose?.flag} title={c.administered ? 'Recorded administration time' : c.dose?.title || (c.dose ? 'Dose arithmetic only; not an eligibility decision' : c.doseNote)} />}
     </div>
     <div className="case-bar__actions">
       {bpLink && <a className="case-bar__link" href={bpHref} onClick={revealIfCurrent(bpHref, 'qr-bp')}>BP targets</a>}

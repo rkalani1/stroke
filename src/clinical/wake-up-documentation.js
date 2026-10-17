@@ -8,7 +8,8 @@ const recordedNumber = value => Number.isFinite(value) ? String(value) : 'not do
 const recordedCheck = value => value === true ? 'documented' : 'not documented';
 const recordedFinding = value => value === true ? 'yes' : value === false ? 'no' : 'not documented';
 
-// A chosen DST occurrence is stored as a UTC instant; print local wall time, never raw ISO.
+// Encounter stores the sleep midpoint as a datetime-local string with no occurrence chooser, so a
+// value in the repeated fall-back hour is ambiguous and stays flagged; a valid value prints as local wall time.
 const sleepMidpointText = (value, now) => {
   const text = recordedText(value);
   if (text === 'not documented') return text;

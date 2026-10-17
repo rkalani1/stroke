@@ -245,12 +245,15 @@ describe('EN-10 event ordering flags', () => {
 });
 
 describe('EN-11 sleep midpoint', () => {
-  it('prints local wall time for a chosen DST occurrence and flags a future value', () => {
+  it('prints the stored local value as wall time and flags future or repeated-hour values', () => {
     const prior = process.env.TZ; process.env.TZ = 'America/Los_Angeles';
     try {
-      const note = { lkwUnknown: true, wakeUpStrokeWorkflow: { mriAvailable: false, sleepMidpoint: '2026-11-01T08:30:00.000Z' } };
-      // 08:30Z on 2026-11-01 is the first (PDT, UTC−07:00) 01:30.
-      expect(formatWakeUpScreenForExport(note, new Date('2026-11-01T14:00:00Z'))).toContain('Sleep midpoint: 2026-11-01 01:30:00 (UTC−07:00).');
+      // Encounter's datetime-local field stores a local string with no occurrence chooser.
+      const note = { lkwUnknown: true, wakeUpStrokeWorkflow: { mriAvailable: false, sleepMidpoint: '2026-10-17T02:30' } };
+      expect(formatWakeUpScreenForExport(note, new Date('2026-10-17T18:00:00Z'))).toContain('Sleep midpoint: 2026-10-17 02:30.');
+      // 01:30 on 2026-11-01 occurs twice in Los Angeles (PDT, then PST): ambiguous, so it stays flagged.
+      const repeated = { lkwUnknown: true, wakeUpStrokeWorkflow: { mriAvailable: false, sleepMidpoint: '2026-11-01T01:30' } };
+      expect(formatWakeUpScreenForExport(repeated, new Date('2026-11-01T14:00:00Z'))).toContain('Sleep midpoint: 2026-11-01T01:30 (invalid, future or ambiguous; correct before interpretation).');
       const future = { lkwUnknown: true, wakeUpStrokeWorkflow: { mriAvailable: false, sleepMidpoint: '2026-10-18T03:00' } };
       expect(formatWakeUpScreenForExport(future, new Date('2026-10-17T18:00:00Z'))).toContain('Sleep midpoint: 2026-10-18T03:00 (invalid, future or ambiguous; correct before interpretation).');
     } finally { if (prior === undefined) delete process.env.TZ; else process.env.TZ = prior; }
@@ -269,6 +272,13 @@ describe('EN-13 / EN-14 measurements', () => {
     expect(documentedMeasurement('temperature', '37')).toBe('[37 °F implausible; check unit]');
     expect(documentedMeasurement('creatinine', 'abc')).toBe('[abc invalid; correct before interpretation]');
     expect(documentedMeasurement('glucose', '120', ' mg/dL')).toBe('120 mg/dL');
+    // BP and measurements share one rule: a plain decimal prints as entered, any other accepted form as its value.
+    expect(documentedMeasurement('glucose', '1e3')).toBe('1000');
+    expect(documentedBp('1e2/50')).toBe('100/50');
+    expect(documentedMeasurement('inr', '1.0')).toBe('1.0');
+    expect(documentedMeasurement('inr', '+1.2')).toBe('1.2');
+    expect(documentedBp('0120/080')).toBe('120/80');
+    expect(documentedMeasurement('inr', '0.9')).toBe('0.9');
     const video = buildSummary(make({ consultationType: 'video', note: { diagnosisCategory: 'ischemic', glucose: '-5', plateletCount: '-3', temperature: '37', heartRate: '0' } }), NOW);
     expect(video).toContain('Labs: Glucose [-5 invalid; correct before interpretation], Plt [-3 invalid; correct before interpretation]');
     expect(video).toContain('Temp [37 °F implausible; check unit]');
@@ -304,6 +314,14 @@ describe('EN-16 / calculators F6 case bar dose', () => {
     expect(caseSummary(ready({ note: { weight: '30' } }), NOW).dose).toMatchObject({ label: 'TNK', value: '7.5 mg' });
     expect(caseSummary(ready({ note: { age: '17', weight: '60' } }), NOW).dose.value).toBe('Not shown');
     expect(caseSummary(ready({ decisions: { ivt: 'Not recommended', evt: '' } }), NOW).dose).toBeNull();
+  });
+  it('names the missing input when no dose is shown', () => {
+    // 400 kg is above the 350 kg weight field limit, so no weight is usable even with an agent selected.
+    expect(caseSummary(ready({ note: { weight: '400' } }), NOW)).toMatchObject({ dose: null, doseNote: 'Enter a valid weight (kg) in Encounter for dose arithmetic; not an eligibility decision' });
+    expect(caseSummary(ready({ note: { weight: '' } }), NOW).doseNote).toBe('Enter a valid weight (kg) in Encounter for dose arithmetic; not an eligibility decision');
+    expect(caseSummary(ready({ drug: '' }), NOW).doseNote).toBe('Select the IV thrombolytic in Encounter for dose arithmetic; not an eligibility decision');
+    expect(caseSummary(ready({ drug: '', note: { weight: '' } }), NOW).doseNote).toBe('Select the IV thrombolytic and enter a valid weight (kg) in Encounter for dose arithmetic; not an eligibility decision');
+    expect(caseSummary(ready({ decisions: { ivt: 'Not recommended', evt: '' } }), NOW).doseNote).toBe('IVT clinician decision is Not recommended; no dose shown');
   });
 });
 
