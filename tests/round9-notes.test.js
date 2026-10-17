@@ -11,12 +11,17 @@ describe('round 9 note output', () => {
     expect(text).toMatch(/Hunt–Hess grade: 3 \(/);
     expect(text).toContain('Modified Fisher grade: 4 (Thick subarachnoid blood; IVH present)');
     expect(buildSummary({ ...sah, documentFormat: 'handoff' }, now)).toMatch(/Hunt–Hess grade: 3/);
-    expect(buildSummary(make({ note: { diagnosisCategory: 'sah' } }), now)).not.toContain('Hunt–Hess');
+    // No worksheet: the grade is stated as not documented, never invented or omitted.
+    expect(buildSummary(make({ note: { diagnosisCategory: 'sah' } }), now)).not.toContain('Hunt–Hess grade');
+    expect(buildSummary(make({ note: { diagnosisCategory: 'sah' } }), now)).toContain('Clinical grade (Hunt–Hess / WFNS): not documented');
+    expect(text).not.toContain('Clinical grade (Hunt–Hess / WFNS)');
   });
   it('gives the handoff the labs and the antithrombotic plan', () => {
     const ich = make({ documentFormat: 'handoff', note: { diagnosisCategory: 'ich', lastDOACType: 'warfarin', inr: '3.1', glucose: '142', plateletCount: '210' } });
-    expect(buildSummary(ich, now)).toContain('Labs: Glucose 142 mg/dL; Platelets 210; INR 3.1');
-    expect(buildSummary(make({ documentFormat: 'handoff', note: { diagnosisCategory: 'ich' } }), now)).not.toContain('Labs:');
+    expect(buildSummary(ich, now)).toContain('Labs: Glucose 142 mg/dL; Platelets 210 K/µL; INR 3.1');
+    // Acute care: missing glucose is stated; labs that were not entered and are not required stay out.
+    expect(buildSummary(make({ documentFormat: 'handoff', note: { diagnosisCategory: 'ich' } }), now)).toContain('Labs: Glucose not documented\n');
+    expect(buildSummary(make({ documentFormat: 'handoff', note: { diagnosisCategory: 'ich' } }), now)).not.toContain('Platelets');
     const tia = make({ documentFormat: 'handoff', note: { diagnosisCategory: 'tia' }, details: { antithromboticPlanType: 'Dual antiplatelet', daptStopDate: '2026-10-22', lipidPlan: 'atorvastatin 80' } });
     const text = buildSummary(tia, now);
     expect(text).toContain('Antithrombotic plan: Dual antiplatelet');

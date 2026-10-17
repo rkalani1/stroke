@@ -8,7 +8,7 @@ export function formatPerfusionForExport(note = {}) {
   const hypoperfusion = numericInput(values.penumbraVolume, { min: 0 });
   const parts = [];
   if (has(values.coreVolume)) parts.push(core === null ? 'Core: invalid measurement; review required' : `Core: ${core} mL`);
-  if (has(values.penumbraVolume)) parts.push(hypoperfusion === null ? 'Total hypoperfused volume: invalid measurement; review required' : `Total hypoperfused volume (Tmax >6 s): ${hypoperfusion} mL`);
+  if (has(values.penumbraVolume)) parts.push(hypoperfusion === null ? 'Total hypoperfused volume: invalid measurement; review required' : `Total hypoperfused volume (as entered, including core): ${hypoperfusion} mL`);
   if (core !== null && hypoperfusion !== null) {
     if (hypoperfusion < core) {
       parts.push('Perfusion volumes conflict: total hypoperfused volume is below core; reconcile measurements');

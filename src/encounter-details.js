@@ -230,7 +230,7 @@ export const ENCOUNTER_DETAIL_GROUPS = [
     choice('dischargeReview', 'Discharge / transition review', ['Planning', 'Completed', 'Follow-up reconciliation']),
     number('dischargeNihss', 'Recorded discharge NIHSS', 0, 42),
     choice('dischargeMrs', 'Recorded discharge mRS', mrsOptions),
-    text('dischargeScoreSource', 'Discharge score source / assessment date / limitations', { when: state => entered('dischargeNihss')(state) || entered('dischargeMrs')(state) }),
+    text('dischargeScoreSource', 'Discharge score source / timing (e.g., hospital day) / limitations', { when: state => entered('dischargeNihss')(state) || entered('dischargeMrs')(state) }),
     date('admissionDate', 'Actual admission date', { actual: true, when: dischargeEntered }),
     date('dischargeDate', 'Actual discharge date', { actual: true, after: 'admissionDate', when: dischargeEntered }),
     text('hospitalCourse', 'Hospital course / interval care summary', { when: dischargeEntered }),
@@ -295,17 +295,16 @@ export function formatEncounterDetails(state, now = Date.now(), { omit = [] } = 
 
 // Scan retained hidden entries too, including fields not recognized by the UI.
 // Only genuine calendar dates in known date fields bypass the text scan.
-export function encounterDetailWarnings(state, scanFn) {
+export const encounterDetailWarnings = (state, scanFn) => [...new Set(encounterDetailWarningSources(state, scanFn).map(source => source.label))];
+// The detail field behind each flag, and whether it is hidden (retained from an earlier diagnosis,
+// context or plan, so the user cannot see it). Same scan scope as encounterDetailWarnings.
+export function encounterDetailWarningSources(state, scanFn) {
   const fields = new Map(ENCOUNTER_DETAIL_GROUPS.flatMap(group => group.fields.map(field => [field.key, field])));
-  const texts = [];
-  const collect = value => {
-    if (Array.isArray(value)) value.forEach(collect);
-    else if (value && typeof value === 'object') Object.values(value).forEach(collect);
-    else if (hasValue(value)) texts.push(String(value));
-  };
-  for (const [key, value] of Object.entries(state.details || {})) {
-    if (fields.get(key)?.type === 'date' && validDate(value)) continue;
-    collect(value);
-  }
-  return [...new Set(texts.flatMap(scanFn))];
+  const visible = new Set(getEncounterDetailGroups(state).flatMap(group => group.fields.map(field => field.key)));
+  const texts = value => Array.isArray(value) ? value.flatMap(texts) : value && typeof value === 'object' ? Object.values(value).flatMap(texts) : hasValue(value) ? [String(value)] : [];
+  return Object.entries(state.details || {}).flatMap(([key, value]) => {
+    if (fields.get(key)?.type === 'date' && validDate(value)) return [];
+    const labels = [...new Set(texts(value).flatMap(scanFn))];
+    return labels.map(label => ({ label, key, field: fields.get(key)?.label || key, hidden: !visible.has(key) }));
+  });
 }

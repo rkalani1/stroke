@@ -15,7 +15,7 @@ describe('perfusion measurement export', () => {
   it.each(['-1', -1, 'Infinity', Infinity, '12abc', true])('marks invalid core %j without calculating a ratio', coreVolume => {
     const text = formatPerfusionForExport({ ctpStructured: { coreVolume, penumbraVolume: '20' } });
     expect(text).toContain('Core: invalid measurement; review required');
-    expect(text).toContain('Total hypoperfused volume (Tmax >6 s): 20 mL');
+    expect(text).toContain('Total hypoperfused volume (as entered, including core): 20 mL');
     expect(text).not.toMatch(/Calculated mismatch|Mismatch ratio|Favorable/);
   });
 

@@ -10,11 +10,11 @@ describe('restored optional documentation formats', () => {
     Object.assign(state.actions, { administrationTime: '2026-10-01T11:30', administered: false, disposition: 'Transfer', handoff: 'Pending transport.' });
     state.details = { transferStatus: 'Requested', transferDestination: 'Receiving stroke service', transferAcceptance: 'no', dischargeReview: 'Planning', hospitalCourse: 'LONG HOSPITAL COURSE NOT FOR HANDOFF' };
     const note = buildSummary(state, now);
-    expect(note).toMatch(/^Team handoff\n65 year old female · Ischemic stroke/);
+    expect(note).toMatch(/^Team handoff\n65 year old female · Wt not documented · Ischemic stroke/);
     expect(note).toContain('Last known well: UNKNOWN');
     expect(note).toContain('discovery does not establish onset');
     expect(note).toContain('NIHSS: 0/42 (reported total)');
-    expect(note).toContain('IVT administration: not documented with a valid drug and timestamp');
+    expect(note).toContain('IVT administration: not documented as given (administration checkbox not ticked); entered time 2026-10-01 11:30 retained for review');
     expect(note).toContain('Receiving service acceptance documented: No');
     expect(note).toContain('Handoff: Pending transport.');
     expect(note).not.toContain('LONG HISTORY');

@@ -1,10 +1,19 @@
 import { documentedExamScore, evaluateWakeUpScreen, numericInput } from '../encounter-clinical-review.js';
+import { computeLKWCountdown } from '../calculators-extended.js';
+import { formatRecordedInstant } from './timestamp.js';
 
 const reviewLimit = 'complete eligibility and drug-specific treatment decision require review';
 const recordedText = value => typeof value === 'string' && value.trim() ? value.trim() : 'not documented';
 const recordedNumber = value => Number.isFinite(value) ? String(value) : 'not documented or invalid';
 const recordedCheck = value => value === true ? 'documented' : 'not documented';
 const recordedFinding = value => value === true ? 'yes' : value === false ? 'no' : 'not documented';
+
+// A chosen DST occurrence is stored as a UTC instant; print local wall time, never raw ISO.
+const sleepMidpointText = (value, now) => {
+  const text = recordedText(value);
+  if (text === 'not documented') return text;
+  return computeLKWCountdown(text, now.getTime()) ? formatRecordedInstant(text) : `${text} (invalid, future or ambiguous; correct before interpretation)`;
+};
 
 // Export the selected source screen, using the same assessment as the Encounter
 // UI. Checkbox state is an attestation, not proof of a negative imaging finding.
@@ -39,7 +48,7 @@ export function formatWakeUpScreenForExport(note = {}, now = new Date()) {
       `Documented premorbid mRS: ${recordedNumber(numericInput(note.premorbidMRS, { min: 0, max: 6, integer: true }))}.`,
       `Perfusion core: ${recordedNumber(perfusion.coreVolume)} mL; total hypoperfused volume: ${recordedNumber(perfusion.penumbraVolume)} mL; calculated mismatch volume: ${recordedNumber(perfusion.mismatchVolume)} mL; mismatch ratio: ${recordedNumber(perfusion.mismatchRatio)}.`,
       note.lkwUnknown === true
-        ? `Sleep midpoint: ${recordedText(workflow.sleepMidpoint)}.`
+        ? `Sleep midpoint: ${sleepMidpointText(workflow.sleepMidpoint, now)}.`
         : `Last known well (date/time): ${recordedText(note.lkwDate)} / ${recordedText(note.lkwTime)}.`
     );
   }
