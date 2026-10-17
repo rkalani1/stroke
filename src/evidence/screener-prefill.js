@@ -5,14 +5,16 @@
 // recognise stays unknown, and every imported fact a modeled study uses has a screener control.
 
 import { encounterTiming, encounterNihss, encounterVolume, validTimestamp } from '../workspace-state.js';
-import { reviewedGcs, numericInput } from '../encounter-clinical-review.js';
+import { reviewedGcs, numericInput, documentedIvtContext } from '../encounter-clinical-review.js';
 
 const MODELED = { ischemic: 'ischemic', ich: 'ich', tia: 'tia' };
 const DIAGNOSIS_LABEL = { ischemic: 'Ischemic', ich: 'ICH', tia: 'TIA', sah: 'SAH', cvt: 'CVT', mimic: 'Stroke mimic', other: 'Other / uncertain' };
 export const NO_MODELED_STUDIES = 'No modeled studies for this diagnosis';
-// Dominance of an M2 occlusion is not recorded in the Encounter, so M2 stays unknown;
-// 'M3 / distal' also stays unknown because the screener groups M3 with non-dominant M2.
-const VESSEL = { ICA: 'ica_m1', M1: 'ica_m1', None: 'none', ACA: 'other', PCA: 'other', Vertebral: 'other', Basilar: 'other', Other: 'other' };
+// M2 maps only when the Encounter records its segment/dominance (note.m2Segment); M2 without
+// it, and 'M3 / distal', stay unknown because the screener groups M3 with non-dominant M2.
+// The Encounter 'ICA' chip does not distinguish intracranial from cervical ICA, so on its own
+// it stays unknown (the studies require an intracranial ICA/M1 occlusion); ICA with M1 maps.
+const VESSEL = { M1: 'ica_m1', None: 'none', ACA: 'other', PCA: 'other', Vertebral: 'other', Basilar: 'other', Other: 'other' };
 const ANTICOAGULANT_KIND = { apixaban: 'doac', rivaroxaban: 'doac', dabigatran: 'doac', edoxaban: 'doac', warfarin: 'vka', lmwh: 'lmwh', none: 'none' };
 const ANTICOAGULANT_TEXT = { doac: 'on DOAC', vka: 'on warfarin/VKA', lmwh: 'on LMWH', none: 'no anticoagulant' };
 
@@ -57,15 +59,18 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
 
   const timing = encounterTiming(note, nowMs);
   if (typeof timing.hours === 'number' && Number.isFinite(timing.hours) && timing.hours >= 0) {
-    Object.assign(patch, { onsetVal: Math.round(timing.hours * 100) / 100, onsetUnit: 'hours', onsetRangeHours: null });
+    // onsetVal is the snapshot at import; onsetAnchorMs keeps elapsed time live.
+    const anchor = new Date(timing.timestamp).getTime();
+    Object.assign(patch, { onsetVal: Math.round(timing.hours * 100) / 100, onsetUnit: 'hours', onsetRangeHours: null, onsetAnchorMs: Number.isFinite(anchor) ? anchor : null });
     summary.push(`LKW ${fmtHours(timing.hours)}`);
   }
 
   const age = numericInput(note.age, { min: 0, max: 120 });
   if (age !== null) { patch.age = age; summary.push(`${age} y`); }
 
+  // The TIA screen has no NIHSS control, so an Encounter NIHSS is not imported for TIA.
   const nihss = encounterNihss(state).total;
-  if (nihss !== null && nihss !== undefined) { patch.nihss = nihss; summary.push(`NIHSS ${nihss}`); }
+  if (classification !== 'tia' && nihss !== null && nihss !== undefined) { patch.nihss = nihss; summary.push(`NIHSS ${nihss}`); }
 
   if (classification === 'ich') {
     const gcs = reviewedGcs(state.gcs || {});
@@ -79,9 +84,14 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   }
 
   if (classification === 'ischemic') {
-    const vesselLabel = note.vesselOcclusion?.[0] || '';
+    const vessels = Array.isArray(note.vesselOcclusion) ? note.vesselOcclusion : [];
+    const vesselLabel = vessels[0] || '';
     const M2_SEGMENT = { 'dominant-proximal': 'dominant_m2', codominant: 'm2_m3_nd', nondominant: 'm2_m3_nd', distal: 'm2_m3_nd' };
-    if (vesselLabel === 'M2' && M2_SEGMENT[note.m2Segment]) { patch.vessel = M2_SEGMENT[note.m2Segment]; summary.push(`M2 (${note.m2Segment.replace('-', ' ')})`); }
+    if (vesselLabel === 'ICA') {
+      if (vessels.includes('M1')) { patch.vessel = 'ica_m1'; summary.push('ICA + M1'); }
+      else summary.push('ICA (intracranial vs cervical not recorded; not imported)');
+    }
+    else if (vesselLabel === 'M2' && M2_SEGMENT[note.m2Segment]) { patch.vessel = M2_SEGMENT[note.m2Segment]; summary.push(`M2 (${note.m2Segment.replace('-', ' ')})`); }
     else if (VESSEL[vesselLabel]) { patch.vessel = VESSEL[vesselLabel]; summary.push(vesselLabel === 'None' ? 'no occlusion' : vesselLabel); }
     else if (vesselLabel) summary.push(vesselLabel === 'M2' ? 'M2 (dominance not recorded)' : `${vesselLabel} (not imported)`);
     const aspects = numericInput(state.aspects, { min: 0, max: 10, integer: true });
@@ -95,8 +105,12 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   const af = state.details?.afDetected;
   if (af === 'yes' || af === 'no') { patch.afibHistory = af === 'yes'; summary.push(af === 'yes' ? 'AF documented' : 'no AF documented'); }
 
+  // 'None' that the Encounter medication list contradicts is not imported: an
+  // unreconciled answer must not become a definitive 'absent' exclusion.
   const kind = ANTICOAGULANT_KIND[note.lastDOACType];
-  if (kind) {
+  const noneConflict = kind === 'none' && documentedIvtContext(note).medicationReconciliation;
+  if (noneConflict) summary.push('anticoagulant "none" conflicts with medication list (not imported)');
+  if (kind && !noneConflict) {
     const facts = anticoagulantFacts(kind);
     patch.anticoagulant = kind;
     // Import only what is known; it never clears an assessment already entered.
@@ -119,16 +133,24 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
     } else summary.push(ANTICOAGULANT_TEXT[kind]);
   }
 
-  const facts = Object.keys(patch).filter(key => key !== 'exclusions' && key !== 'onsetUnit' && key !== 'onsetRangeHours');
+  const facts = Object.keys(patch).filter(key => key !== 'exclusions' && key !== 'onsetUnit' && key !== 'onsetRangeHours' && key !== 'onsetAnchorMs');
   return { available: facts.length > 0, supported: Boolean(classification), classification, message: classification ? null : 'Diagnosis not recorded in Encounter', patch, summary };
 }
 
 // Apply an Encounter prefill. Switching classification starts from a clean
 // screen (as the classification buttons do); otherwise entered facts persist.
+// Facts the previous import wrote and the user has not changed since are first
+// returned to unknown, so a reapply never keeps what the Encounter no longer says.
 export function applyEncounterPrefill(state, prefill, initialState) {
   if (!prefill?.patch) return state;
   const base = prefill.patch.classification && prefill.patch.classification !== state.classification ? initialState : state;
-  return applyFacts(base, prefill.patch);
+  const cleared = { ...base, exclusions: { ...base.exclusions } };
+  for (const [key, value] of Object.entries(base.imported?.fields || {})) if (Object.is(base[key], value)) cleared[key] = initialState[key];
+  for (const [id, value] of Object.entries(base.imported?.exclusions || {})) if (cleared.exclusions[id] === value) delete cleared.exclusions[id];
+  const next = applyFacts(cleared, prefill.patch);
+  const fields = Object.fromEntries(Object.entries(prefill.patch).filter(([key, value]) => key !== 'exclusions' && value !== undefined));
+  const exclusions = Object.fromEntries(Object.entries(prefill.patch.exclusions || {}).filter(([, value]) => typeof value === 'boolean'));
+  return { ...next, imported: { fields, exclusions } };
 }
 
 export default screenerPrefillFromEncounter;

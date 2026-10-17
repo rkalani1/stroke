@@ -90,7 +90,7 @@ describe('restored independent Trials workspace', () => {
     await page.getByRole('tab', { name: 'Database', exact: true }).click();
     // The registry date and activation caveat are stated once for the page,
     // and in full in each study's details, instead of on every card.
-    expect(body).toContain('First-pass registry screen (registry checked 2026-10-03) — confirm full criteria, local activation and consent.');
+    expect(body).toMatch(/First-pass registry screen \(registry checked 2026-10-17(, (today|1 day ago|\d+ days ago))?\) — confirm full criteria, local activation and consent\./);
     await page.getByRole('searchbox').fill('NCT06289985');
     expect(await page.locator('#trials-database-panel article').count()).toBe(1);
     const card = await page.locator('#trials-database-panel article').innerText();
@@ -99,7 +99,8 @@ describe('restored independent Trials workspace', () => {
     expect(card).not.toContain('Local activation');
     await page.getByRole('button', { name: 'Full criteria for STEP', exact: true }).click();
     const text = await page.getByRole('dialog').innerText();
-    expect(text).toContain('Recorded registry check: 2026-10-03');
+    expect(text).toContain('Recorded registry check: 2026-10-17');
+    expect(text).toContain('Last update posted, as recorded at that check: 2025-12-04; the live record may be newer.');
     expect(text).toContain('Local activation: not confirmed');
     expect(text).toContain('Inclusion criteria'); expect(text).toContain('Exclusion criteria');
     expect(text).toContain('Source gaps / confirmation required');
@@ -130,7 +131,9 @@ describe('restored independent Trials workspace', () => {
     await page.getByText('Screening summary copied.', { exact: true }).waitFor();
     const copied = await page.evaluate(() => window.copies[0]);
     expect(copied).toContain('Inputs: Ischemic stroke · LKW unknown');
-    expect(copied).toContain('ACT NOW — possible candidates');
+    expect(copied).toContain('POTENTIAL MATCH (0) — every modeled criterion met; not a definitive match');
+    expect(copied).toMatch(/INSUFFICIENT INFORMATION \(\d+\) — at least one modeled fact unknown/);
+    expect(copied).not.toContain('ACT NOW');
     expect(copied).toContain('confirm full criteria, local activation and consent');
     expect(copied).toBe(await page.locator('[aria-label="Screening summary preview"]').textContent());
     await page.evaluate(() => { window.denyClipboard = true; });
@@ -156,7 +159,7 @@ describe('restored independent Trials workspace', () => {
     expect(await later.locator('article').count()).toBeGreaterThan(1);
     expect(await later.innerText()).toContain('Before study window');
     expect(await later.locator('article[data-trial="CLARITY"]').innerText()).toContain('Not yet recruiting');
-    const excluded = page.locator('#trials-screener-panel details').filter({ has: page.locator('summary', { hasText: /^Modeled criterion not met/ }) });
+    const excluded = page.locator('#trials-screener-panel details').filter({ has: page.locator('summary', { hasText: /^Does not meet documented criteria/ }) });
     expect(await excluded.count()).toBe(0); // no informative miss yet; other stroke types are not listed
     expect(await page.locator('#trials-screener-panel').innerText()).not.toMatch(/Requires ICH/);
     await page.getByRole('button', { name: 'Copy screening summary', exact: true }).click();
@@ -194,7 +197,7 @@ describe('restored independent Trials workspace', () => {
     const table = page.getByRole('table', { name: title, exact: true });
     expect(await table.isVisible()).toBe(true);
     expect(await table.getByRole('columnheader').allTextContents()).toEqual(['Study', 'Summary', 'Inclusion criteria', 'Exclusion criteria']);
-    expect(await table.innerText()).toContain('Recorded registry check: 2026-10-03');
+    expect(await table.innerText()).toContain('Recorded registry check: 2026-10-17');
     expect(await table.innerText()).toContain('Recruiting at recorded check · Phase 2');
     expect(await table.innerText()).toContain('Local activation is not confirmed');
     await page.setViewportSize({ width: 390, height: 844 });
@@ -205,7 +208,7 @@ describe('restored independent Trials workspace', () => {
     expect(await cards.innerText()).toContain('STEP');
     expect(await cards.innerText()).toContain('PICASSO');
     expect(await cards.innerText()).toContain('not modeled in the screener');
-    expect(await cards.innerText()).toContain('Recorded registry check: 2026-10-03');
+    expect(await cards.innerText()).toContain('Recorded registry check: 2026-10-17');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   });
 
@@ -243,7 +246,7 @@ describe('restored independent Trials workspace', () => {
     expect(await page.getByLabel('Volume (mL)').inputValue()).toBe('24');
     expect(await page.getByLabel('Anticoagulant at onset').inputValue()).toBe('doac');
     expect(Number(await page.getByLabel('Exact hours from LKW').inputValue())).toBeCloseTo(1.5, 1);
-    const notMet = page.locator('#trials-screener-panel details').filter({ has: page.locator('summary', { hasText: /^Modeled criterion not met/ }) });
+    const notMet = page.locator('#trials-screener-panel details').filter({ has: page.locator('summary', { hasText: /^Does not meet documented criteria/ }) });
     await notMet.locator('summary').click();
     expect(await notMet.innerText()).toContain('Concurrent DOAC or LMWH at ICH onset');
     expect(await notMet.innerText()).toContain('Oral anticoagulant (VKA or DOAC) within 7 days');
