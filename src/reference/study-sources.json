@@ -865,7 +865,8 @@
     "id": "study-source-prestige-af",
     "topicIds": [
       "ich-management",
-      "af-prevention"
+      "af-prevention",
+      "caa-ich-recurrence"
     ],
     "title": "PRESTIGE-AF — Direct oral anticoagulants versus no anticoagulation for the prevention of stroke in survivors of intracerebral haemorrhage with atrial fibrillation (PRESTIGE-AF): a multicentre, open-label, randomised, phase 3 trial.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/40023176/",
@@ -878,7 +879,8 @@
     "id": "study-source-enrich-af",
     "topicIds": [
       "ich-management",
-      "af-prevention"
+      "af-prevention",
+      "caa-ich-recurrence"
     ],
     "title": "ENRICH-AF — Anticoagulation in patients with cerebral amyloid angiopathy.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/37839419/",
@@ -891,7 +893,8 @@
     "id": "study-source-sostart",
     "topicIds": [
       "ich-management",
-      "af-prevention"
+      "af-prevention",
+      "caa-ich-recurrence"
     ],
     "title": "SoSTART — Effects of oral anticoagulation for atrial fibrillation after spontaneous intracranial haemorrhage in the UK: a randomised, open-label, assessor-masked, pilot-phase, non-inferiority trial.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/34487722/",
@@ -904,7 +907,8 @@
     "id": "study-source-apache-af",
     "topicIds": [
       "ich-management",
-      "af-prevention"
+      "af-prevention",
+      "caa-ich-recurrence"
     ],
     "title": "APACHE-AF — Apixaban versus no anticoagulation after anticoagulation-associated intracerebral haemorrhage in patients with atrial fibrillation in the Netherlands (APACHE-AF): a randomised, open-label, phase 2 trial.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/34687635/",
@@ -917,7 +921,8 @@
     "id": "study-source-cocroach",
     "topicIds": [
       "ich-management",
-      "af-prevention"
+      "af-prevention",
+      "caa-ich-recurrence"
     ],
     "title": "COCROACH — Effects of oral anticoagulation in people with atrial fibrillation after spontaneous intracranial haemorrhage (COCROACH): prospective, individual participant data meta-analysis of randomised trials.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/37839434/",
@@ -1197,7 +1202,8 @@
     "id": "study-source-restart",
     "topicIds": [
       "ich-management",
-      "secondary-prevention"
+      "secondary-prevention",
+      "caa-ich-recurrence"
     ],
     "title": "RESTART — Effects of antiplatelet therapy after stroke due to intracerebral haemorrhage (RESTART): a randomised, open-label trial.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/31128924/",
@@ -3277,7 +3283,8 @@
     "id": "study-source-restart-extended-2021",
     "topicIds": [
       "ich-management",
-      "secondary-prevention"
+      "secondary-prevention",
+      "caa-ich-recurrence"
     ],
     "title": "RESTART extended follow-up — Effects of Antiplatelet Therapy After Stroke Caused by Intracerebral Hemorrhage: Extended Follow-up of the RESTART Randomized Clinical Trial.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/34477823/",

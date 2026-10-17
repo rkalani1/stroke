@@ -90,3 +90,33 @@ describe('ICH evidence cards (2026-10-17 review)', () => {
     expect(urls(card)).toEqual(expect.arrayContaining(['https://pubmed.ncbi.nlm.nih.gov/40673401/', 'https://pubmed.ncbi.nlm.nih.gov/40401775/']));
   });
 });
+
+describe('ICH and aSAH study records (2026-10-17 review)', () => {
+  it('states registry eligibility limits for ANNEXA-I, ENRICH and SWITCH (NCT03661528, NCT02880878, NCT02258919)', () => {
+    expect(study('annexa-i').population).toContain('0.5–60 mL; GCS ≥7; NIHSS ≤35; baseline scan within 6 h of onset; no surgery planned within 12 h');
+    expect(study('enrich').population).toContain('aged 18–80 (GCS 5–14, NIHSS ≥5, premorbid mRS 0–1)');
+    expect(study('enrich').population).toContain('within 24 hours of last known well');
+    // SWITCH registry: GCS <14 and >7 → 8–13; NIHSS 10–30; 30–100 mL; within 66 h.
+    expect(study('switch').population).toContain('GCS 8–13, NIHSS 10–30, stable volume 30–100 mL) randomized within 66 hours');
+  });
+
+  it('adds STATICH-Antiplatelets to the RESTART limits (PMID 42312355)', () => {
+    expect(study('restart').limits).toContain('15% vs 3%');
+    expect(study('restart').limits).toContain('9% vs 20%');
+    expect(urls(study('restart'))).toContain('https://pubmed.ncbi.nlm.nih.gov/42312355/');
+  });
+
+  it('files ICH BP trials under the ICH card and PRESTIGE-AF under recurrence, with AF-after-ICH sources on that card', () => {
+    expect(study('interact2').relatedTopic).toBe('ich-management');
+    expect(study('atach-2').relatedTopic).toBe('ich-management');
+    expect(study('prestige-af').relatedTopic).toBe('caa-ich-recurrence');
+    for (const pmid of ['40023176', '34487722', '34687635', '37839434', '31128924']) {
+      expect(urls(topic('caa-ich-recurrence'))).toContain(`https://pubmed.ncbi.nlm.nih.gov/${pmid}/`);
+    }
+  });
+
+  it('reports EARLYDRAIN drain complications as described in the full report (PMC10277935)', () => {
+    expect(study('earlydrain').result).toContain('a torn-off drain needing surgical removal');
+    expect(study('earlydrain').result).not.toContain('retained');
+  });
+});
