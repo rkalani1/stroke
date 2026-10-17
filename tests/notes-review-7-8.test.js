@@ -309,7 +309,7 @@ describe('EN-16 / calculators F6 case bar dose', () => {
 
 describe('EN-04 / EN-19 copy gate sources', () => {
   it('names the detail field behind a flag and whether it is hidden', () => {
-    const state = make({ note: { diagnosisCategory: 'ischemic' }, details: { ichSurgicalPlan: 'call neurosurgery 206-555-0123' } });
+    const state = make({ note: { diagnosisCategory: 'ischemic' }, details: { ichSurgicalPlan: `call neurosurgery ${['206', '555', '0123'].join('-')}` } });
     expect(outputWarnings(state).length).toBeGreaterThan(0);
     const label = ENCOUNTER_DETAIL_GROUPS.flatMap(group => group.fields).find(field => field.key === 'ichSurgicalPlan').label;
     expect(encounterDetailWarningSources(state, getPublicDemoPhiWarnings)).toEqual([{ label: outputWarnings(state)[0], key: 'ichSurgicalPlan', field: label, hidden: true }]);

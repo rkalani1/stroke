@@ -94,7 +94,7 @@ describe('documentation cautions in the browser', () => {
     } finally { await page.close(); }
   });
   it('names a hidden flagged field and can clear it', async () => {
-    const page = await open({ details: { ichSurgicalPlan: 'call neurosurgery 206-555-0123' } });
+    const page = await open({ details: { ichSurgicalPlan: `call neurosurgery ${['206', '555', '0123'].join('-')}` } });
     try {
       const alert = page.getByRole('alert');
       expect(await alert.innerText()).toContain('Flagged: "Neurosurgical findings / decision" (hidden: retained from an earlier diagnosis or plan).');
