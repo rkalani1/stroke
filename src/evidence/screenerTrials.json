@@ -593,7 +593,8 @@
           "operator": "==",
           "value": true,
           "error": "Excludes suspected secondary cause",
-          "pendingLabel": "Confirm no suspected secondary cause (vascular malformation incl. cavernous malformation/AVM, aneurysm, neoplasm, hemorrhagic transformation of an infarct, venous infarct)"
+          "pendingLabel": "Confirm no suspected secondary cause (vascular malformation incl. cavernous malformation/AVM, aneurysm, neoplasm, hemorrhagic transformation of an infarct, venous infarct)",
+          "residualPending": "Confirm no cavernous or other vascular malformation, hemorrhagic transformation of an underlying ischemic infarct, or venous infarct; the shared secondary-cause answer does not cover these MINUTE exclusions"
         },
         {
           "field": "exMidbrain",

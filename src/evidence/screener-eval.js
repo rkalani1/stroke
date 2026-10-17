@@ -551,7 +551,7 @@ export function buildBriefingNote(state, buckets, nowMs = null) {
   const { eligible = [], pending = [], soon = [], excluded = [] } = buckets;
   const cls = CLASSIFICATION_NOTE_LABELS[state.classification] || String(state.classification || '').toUpperCase();
   const visible = VISIBLE_FACTS[state.classification] || [];
-  const inputs = [cls, onsetSummary(state, nowMs), ...INPUT_TEXT.filter(([key]) => visible.includes(key) && !missing(state[key]) && state[key] !== 'unselected').filter(([key]) => !(key === 'takingOac' && state.anticoagulant && state.anticoagulant !== 'unselected')).map(([key, text]) => text(state[key]))];
+  const inputs = [cls, onsetSummary(state, nowMs), ...INPUT_TEXT.filter(([key]) => visible.includes(key) && !missing(state[key]) && state[key] !== 'unselected').map(([key, text]) => text(state[key]))];
   // Only assessments that can affect a study for this stroke type are reported.
   const itemFor = id => EXCLUSION_ITEMS.find(item => item.id === id && item.classifications.includes(state.classification));
   const recorded = Object.entries(state.exclusions || {}).filter(([id, v]) => typeof v === 'boolean' && itemFor(id)).map(([id, v]) => `${itemFor(id).label}: ${v ? 'present' : 'absent'}`);

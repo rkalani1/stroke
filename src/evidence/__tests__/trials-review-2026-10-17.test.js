@@ -3,7 +3,6 @@
 // from the screener's own definitions (tri-state, live LKW anchor), not from the
 // implementation output.
 import { describe, expect, it } from 'vitest';
-import { readFileSync } from 'node:fs';
 import { newEncounter } from '../../workspace-state.js';
 import { screenerTrials } from '../screenerTrials.js';
 import {
@@ -157,6 +156,29 @@ describe('the copied summary prints only facts the classification shows (TA-F5)'
     const p = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'tia' }, { nihssSource: 'reported', reportedNihss: '2' }), NOW);
     expect(p.patch.nihss).toBeUndefined();
   });
+  it('does not import pre-stroke mRS into the TIA screen, which has no control for it', () => {
+    const p = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'tia', premorbidMRS: '2' }), NOW);
+    expect(p.patch.preMrs).toBeUndefined();
+    expect(p.summary.join(' ')).not.toMatch(/pre-mRS/);
+    expect(screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', premorbidMRS: '2' }), NOW).patch.preMrs).toBe(2);
+  });
+  // An Encounter import sets the ICH-only 'anticoagulant' fact as well as takingOac;
+  // for ischemic/TIA the summary must still state the OAC status the screen shows.
+  for (const [dx, label] of [['ischemic', 'Ischemic stroke'], ['tia', 'TIA']]) {
+    it(`prints the OAC status of an Encounter-imported ${dx} screen`, () => {
+      const inputsLine = drug => {
+        const e = encounter({ diagnosisCategory: dx, age: '70', lastDOACType: drug }, { details: { afDetected: 'yes' } });
+        const state = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(e, NOW), fresh());
+        return evaluateAll(state, screenerTrials, NOW).briefingNote.split('\n').find(l => l.startsWith('Inputs: '));
+      };
+      const on = inputsLine('apixaban');
+      expect(on).toContain('on OAC at index event');
+      expect(on).not.toContain('not on OAC');
+      expect(on).not.toContain('anticoagulant at onset');
+      expect(on.startsWith('Inputs: ' + label)).toBe(true);
+      expect(inputsLine('none')).toContain('not on OAC at index event');
+    });
+  }
 });
 
 describe('registry wording restored in to-confirm prompts', () => {
@@ -204,6 +226,21 @@ describe('registry wording restored in to-confirm prompts', () => {
     expect(c).toMatch(/venous infarct/);
     expect(c).toMatch(/active infection/);
     expect(c).toMatch(/365 days/);
+  });
+
+  it('MINUTE keeps its uncovered secondary causes open after the shared answer is Absent (TA-F10)', () => {
+    // NCT07260916 exclusion 1: "... vascular malformation (cavernous malformation, arteriovenous malformation, etc.),
+    // aneurysm, neoplasm, hemorrhagic transformation of an underlying ischemic infarct; or venous infarct".
+    // The shared item covers AVM, aneurysm, tumor, SAH, trauma, coagulopathy only.
+    const facts = { classification: 'ich', age: 60, onsetVal: 3, onsetUnit: 'hours', nihss: 10, gcs: 13, preMrs: 0, ichVolume: 30, ichLocation: 'bg' };
+    const absent = evaluate('MINUTE', { ...facts, exclusions: { exSecondaryIch: false, exMidbrain: false, exDoacLmwhAtOnset: false, exPregnancy: false } });
+    expect(absent.status).toBe('pending');
+    const lines = toConfirm(absent);
+    expect(lines.filter(l => /venous infarct/.test(l))).toHaveLength(1);
+    expect(lines.some(l => /cavernous/.test(l) && /hemorrhagic transformation of an underlying ischemic infarct/.test(l))).toBe(true);
+    const present = evaluate('MINUTE', { ...facts, exclusions: { exSecondaryIch: true } });
+    expect(present.status).toBe('excluded');
+    expect(toConfirm(present).some(l => /venous infarct/.test(l))).toBe(false);
   });
 
   it('implausible age or volume stays unknown and matched labels show readable values (TA-F12)', () => {
@@ -366,11 +403,12 @@ describe('profile metadata hygiene (TO-5, TO-6, TO-7)', () => {
     const r = evaluateAll(S({ classification: 'ich', onsetVal: 200, onsetUnit: 'days' }));
     expect(r.closed.map(i => i.trial.acronym)).toEqual(['CAPPRICORN-1']);
   });
-  it('reports the study count in the generated trials endpoint (regenerate with npm run agent:assets)', () => {
-    const envelope = JSON.parse(readFileSync(new URL('../../../data/trials.json', import.meta.url), 'utf8'));
-    expect(envelope._meta.count).toBe(screenerTrials.length);
-    expect(envelope._meta.studyCount).toBe(envelope.data.studies.length);
-    expect(envelope._meta.tableCount).toBe(envelope.data.tables.length);
-    expect(envelope._meta.count).not.toBe(Object.keys(envelope.data).length);
+  it('reports the study count, not the data-key count, in the trials endpoint envelope', async () => {
+    // Asserts the generator's envelope logic directly; data/trials.json is a generated output.
+    const { trialsEnvelopeCounts } = await import('../../../scripts/generate-agent-assets.mjs');
+    const { eligibilityTables } = await import('../eligibilityTables.js');
+    const counts = trialsEnvelopeCounts(screenerTrials, eligibilityTables);
+    expect(counts).toEqual({ count: 16, studyCount: 16, tableCount: eligibilityTables.length });
+    expect(counts.count).not.toBe(4); // studies, tables, scope, statusCurrency
   });
 });

@@ -99,7 +99,7 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   }
 
   const preMrs = numericInput(note.premorbidMRS, { min: 0, max: 5, integer: true });
-  if (preMrs !== null) { patch.preMrs = preMrs; summary.push(`pre-mRS ${preMrs}`); }
+  if (classification !== 'tia' && preMrs !== null) { patch.preMrs = preMrs; summary.push(`pre-mRS ${preMrs}`); }
 
   // Etiology answer: documented AF (or its explicit absence) feeds AF-dependent profiles.
   const af = state.details?.afDetected;
