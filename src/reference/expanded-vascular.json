@@ -200,7 +200,7 @@
       "TEMPO-2",
       "TAPIS"
     ],
-    "summary": "Noncardioembolic minor stroke (NIHSS ≤3) or high-risk TIA (ABCD2 ≥4) within 24 h without IVT: aspirin plus clopidogrel with a loading dose for 21 days, then one agent (AHA 2026, COR 1). CHANCE: stroke 8.2 vs 11.7%; POINT: major ischemic events 5.0 vs 6.5% with major hemorrhage 0.9 vs 0.4%. Alternatives: ticagrelor plus aspirin for 30 days (NIHSS ≤5; THALES 5.5 vs 6.6%, severe bleeding 0.5 vs 0.1%); presumed atherosclerotic at 24–72 h: clopidogrel plus aspirin for 21 days (INSPIRES 7.3 vs 9.2%); CYP2C19 loss-of-function: ticagrelor plus aspirin (CHANCE-2 6.0 vs 7.6%).",
+    "summary": "Noncardioembolic minor stroke (NIHSS ≤3) or high-risk TIA (ABCD2 ≥4) within 24 h without IVT: aspirin plus clopidogrel with a loading dose for 21 days, then one agent (AHA 2026, COR 1). CHANCE: stroke 8.2 vs 11.7%; POINT: major ischemic events 5.0 vs 6.5% with major hemorrhage 0.9 vs 0.4%. Lower-grade options, each for its own population: ticagrelor plus aspirin for 30 days (NIHSS ≤5, or TIA with ABCD2 ≥6 or symptomatic stenosis ≥50%; COR 2b; THALES 5.5 vs 6.6%, severe bleeding 0.5 vs 0.1%); presumed atherosclerotic cause at 24–72 h (or NIHSS 4–5 within 24 h): clopidogrel plus aspirin for 21 days (COR 2a; INSPIRES 7.3 vs 9.2%); known CYP2C19 loss-of-function carriers: ticagrelor plus aspirin for 21 days, then ticagrelor, rather than clopidogrel-based DAPT (COR 2b; CHANCE-2 versus clopidogrel plus aspirin 6.0 vs 7.6%).",
     "recommendations": [
       {
         "text": "In patients with minor noncardioembolic AIS (NIHSS 3 or less) or high-risk TIA (ABCD2 4 or greater) who did not receive IVT, DAPT (aspirin plus clopidogrel with loading dose) is recommended to be initiated within 24 hours of symptom onset and continued for 21 days, followed by single antiplatelet therapy, to reduce the 90-day risk of recurrent ischemic stroke.",
@@ -225,9 +225,9 @@
       }
     ],
     "consider": [
-      "Disabling deficit? Assess for IVT/EVT first. Non-disabling: DAPT was noninferior to alteplase (ARAMIS), and alteplase gave no benefit (PRISMS).",
+      "Disabling deficit? Assess for IVT/EVT first. Non-disabling: DAPT was noninferior to alteplase (ARAMIS), and alteplase showed no benefit in PRISMS (stopped early).",
       "Write the stop date (day 21 or 30) and the single agent to continue.",
-      "After IVT (NIHSS 4–10), TAPIS started aspirin plus ticagrelor within 6 h with better mRS 0–1 (68.7 vs 62.0%); AHA 2026 still rates antiplatelets in the first 24 h after IVT as uncertain."
+      "After IVT, two Chinese RCTs published after the AHA 2026 evidence review disagree: TAPIS (NIHSS 4–10; aspirin plus ticagrelor within 6 h of onset) improved mRS 0–1 (68.7 vs 62.0%; sICH 0.9 vs 0.7%, wide CI), whereas EAST (NIHSS 0–5; clopidogrel plus aspirin within 6 h after IVT) did not (89.7 vs 89.6%). AHA 2026 rates the risk of antiplatelets in the first 24 h after IVT as uncertain (COR 2b, B-NR)."
     ],
     "caution": "Do not extend DAPT beyond 21–30 days without a separate indication; bleeding rose with DAPT in POINT, THALES and INSPIRES.",
     "sources": [
@@ -236,8 +236,16 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/34414300/",
         "year": 2021,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-17",
+        "access": "PMC full text (PMC8370083) read: recommendation 1 (aspirin plus clopidogrel for 21 days; strong, high-quality evidence) and recommendation 2 (aspirin plus ticagrelor for 30 days; weak, moderate-quality evidence) checked."
+      },
+      {
+        "title": "EAST: early clopidogrel plus aspirin after thrombolysis for minor stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40973702/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (population, comparison, outcome and safety)."
       }
     ],
     "related": [
@@ -2126,13 +2134,14 @@
       "SERIC-EVT",
       "tirofiban"
     ],
-    "summary": "Asundexian (factor XIa inhibitor) added to antiplatelets reduced ischemic stroke after noncardioembolic stroke or high-risk TIA (OCEANIC-STROKE 6.2 vs 8.4%; major bleeding 1.9 vs 1.7%) but was worse than apixaban in AF (OCEANIC-AF). Adjunctive IV argatroban or eptifibatide after IVT did not help and increased mortality (MOST: 24% and 12% vs 8%). Nerinetide (ESCAPE-NEXT), prehospital remote ischemic conditioning (RESIST) and colchicine (CONVINCE, CHANCE-3) were neutral; SERIC-EVT (conditioning after EVT) is a single positive trial.",
+    "summary": "Asundexian (factor XIa inhibitor) added to antiplatelets reduced ischemic stroke after noncardioembolic stroke or high-risk TIA (OCEANIC-STROKE 6.2 vs 8.4%; major bleeding 1.9 vs 1.7%) but was worse than apixaban in AF (OCEANIC-AF). Adjunctive IV argatroban or eptifibatide after IVT did not help and increased mortality (MOST: 24% and 12% vs 8%). Nerinetide (ESCAPE-NEXT), prehospital remote ischemic conditioning (RESIST) and colchicine (CONVINCE, CHANCE-3) were neutral; SERIC-EVT (conditioning after EVT) was positive, but EnTRIPS (postconditioning after EVT) and SERIC-IVT (conditioning after IVT) were neutral.",
     "consider": [
       "Compare the population, background therapy and primary endpoint with your patient before applying a new result.",
       "Separate confirmatory results from subgroup signals, and look for independent replication.",
-      "Confirm regulatory approval and local availability before using any new agent."
+      "Confirm regulatory approval and local availability before using any new agent.",
+      "IV tirofiban (Chinese RCTs): better 90-day function after IVT in noncardioembolic stroke without EVT (ASSET-IT, mRS 0–1 65.9 vs 54.9%; sICH 1.7 vs 0%), after an inadequate response to tenecteplase (INSTANT, 63.8 vs 52.2%) and after successful EVT (ATTRACTION, mRS 0–2 49 vs 43%; sICH 12 vs 9%, not significant), but not before EVT (RESCUE BT) or in branch atheromatous disease (STRATEGY). AHA 2026, whose evidence review predates ASSET-IT, INSTANT and ATTRACTION, rates IV tirofiban efficacy as not well established (COR 2b, B-R)."
     ],
-    "caution": "Neuroprotective agents and IV argatroban are not recommended outside trials (AHA 2026, COR 3).",
+    "caution": "AHA 2026 does not recommend neuroprotective treatments to improve functional outcome (COR 3: No Benefit, LOE A), argatroban as an adjunct to IVT (COR 3: No Benefit, LOE A) or adjunctive IV eptifibatide after IVT within 3 h (COR 3: No Benefit, LOE B-R).",
     "sources": [
       {
         "title": "OCEANIC-STROKE: Asundexian for Secondary Stroke Prevention",
@@ -2189,6 +2198,62 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract checked; no approval or availability inferred."
+      },
+      {
+        "title": "SERIC-IVT: remote ischemic conditioning after intravenous thrombolysis",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39772709/",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (population, comparison and outcome)."
+      },
+      {
+        "title": "EnTRIPS: remote ischemic postconditioning after thrombectomy",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42267436/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (population, comparison and outcome)."
+      },
+      {
+        "title": "ASSET-IT: early tirofiban infusion after intravenous thrombolysis",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40616232/",
+        "year": 2025,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety); no approval or availability inferred."
+      },
+      {
+        "title": "INSTANT: intravenous tirofiban after tenecteplase",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42100960/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety); no approval or availability inferred."
+      },
+      {
+        "title": "ATTRACTION: tirofiban after successful endovascular reperfusion",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42341797/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety); no approval or availability inferred."
+      },
+      {
+        "title": "RESCUE BT: intravenous tirofiban before thrombectomy",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/35943471/",
+        "year": 2022,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety)."
+      },
+      {
+        "title": "STRATEGY: tirofiban for branch atheromatous disease-related stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42671865/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (population, comparison, outcomes and safety)."
       }
     ],
     "related": []

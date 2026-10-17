@@ -114,7 +114,7 @@
       "TIA"
     ],
     "question": "What was the benefit–bleeding tradeoff of adding clopidogrel?",
-    "population": "4,881 patients with minor ischemic stroke or high-risk TIA at international sites.",
+    "population": "4,881 adults with minor ischemic stroke (NIHSS ≤3) or high-risk TIA (ABCD² ≥4), randomized within 12 hours at 269 sites in 10 countries (82.8% in the US).",
     "comparison": "Clopidogrel plus aspirin versus aspirin alone for the 90-day trial period.",
     "result": "Major ischemic events (ischemic stroke, myocardial infarction or ischemic vascular death) occurred in 5.0% versus 6.5% at 90 days (HR 0.75; 95% CI 0.59–0.95). Major hemorrhage occurred in 0.9% versus 0.4% (HR 2.32; 95% CI 1.10–4.87).",
     "limits": "Stopped early. Most ischemic events occurred in the first week; the 90-day design alone does not establish the optimal DAPT duration or eligibility for other stroke populations.",
@@ -124,8 +124,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/29766750/",
         "year": 2018,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked."
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract and PMC full text (PMC6193486) checked."
       }
     ],
     "relatedTopic": "minor-stroke-antiplatelets"
@@ -1889,7 +1889,7 @@
     "population": "12,327 patients within 72 hours of noncardioembolic ischemic stroke or high-risk TIA with atherosclerosis or nonlacunar infarct.",
     "comparison": "Asundexian 50 mg daily versus placebo, on top of single or dual antiplatelet therapy.",
     "result": "Ischemic stroke 6.2% vs 8.4% (cause-specific HR 0.74; 95% CI 0.65–0.84). Major bleeding 1.9% vs 1.7% (HR 1.10; 95% CI 0.85–1.44).",
-    "limits": "Industry-funded; regulatory status and availability are separate questions. Asundexian was inferior to apixaban in AF (OCEANIC-AF).",
+    "limits": "Industry-funded; regulatory status and availability are separate questions. In the bleeding analysis, lower gastrointestinal bleeding was more frequent with asundexian (1.7 vs 1.0%) and symptomatic ICH was 0.7 vs 0.6%. The second factor XIa stroke trial (LIBREXIA-STROKE, milvexian, NCT05702034) had no posted results when checked on 2026-10-17. Asundexian was inferior to apixaban in AF (OCEANIC-AF).",
     "sources": [
       {
         "title": "OCEANIC-STROKE primary report",
@@ -1898,6 +1898,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-03",
         "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "Bleeding with asundexian versus placebo in OCEANIC-STROKE",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42866879/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract verified via PubMed (bleeding categories and sites)."
       }
     ],
     "relatedTopic": "research-adjuncts"
@@ -1937,7 +1945,7 @@
   {
     "id": "inspires",
     "title": "INSPIRES — dual antiplatelets started within 72 hours",
-    "headline": "DAPT up to 72 h: stroke 7.3 vs 9.2%; bleeding 0.9 vs 0.4%",
+    "headline": "DAPT up to 72 h: stroke 7.3 vs 9.2%; moderate-to-severe bleeding 0.9 vs 0.4%",
     "year": 2023,
     "settings": [
       "on-call",

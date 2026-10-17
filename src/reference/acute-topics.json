@@ -489,7 +489,7 @@
       "vascular imaging",
       "rapid follow-up"
     ],
-    "summary": "Treat TIA as a stroke warning: MRI with DWI ideally within 24 h (about 40% show infarction, which makes it a stroke), head-and-neck vessel imaging in the ED regardless of ABCD2, and ECG, telemetry and troponin for all. Admit presumed symptomatic >50% extracranial or intracranial stenosis. High-risk TIA (ABCD2 ≥4) or minor stroke within 24 h: aspirin plus clopidogrel with a loading dose for 21 days, then one agent. Discharge only with the workup arranged and TIA-clinic review, preferably within 48 h.",
+    "summary": "Treat TIA as a stroke warning: MRI with DWI ideally within 24 h (about 40% show infarction, which makes it a stroke), head-and-neck vessel imaging in the ED regardless of ABCD2, and ECG, telemetry and troponin for all. Admit presumed symptomatic >50% extracranial or intracranial stenosis. Noncardioembolic high-risk TIA (ABCD2 ≥4) or minor stroke (NIHSS ≤3) within 24 h, without IVT: aspirin plus clopidogrel with a loading dose for 21 days, then one agent (AHA 2026, COR 1). Discharge only with the workup arranged and TIA-clinic review, preferably within 48 h.",
     "recommendations": [
       {
         "text": "Multimodal brain MRI is the preferred method to evaluate for acute ischemic infarct and ideally should be obtained within 24 hours of symptom onset. In cases where MRI with DWI can be obtained without delay, NCCT can be safely avoided in a stable patient with completely resolved symptoms.",
@@ -516,7 +516,8 @@
     "consider": [
       "Does the story fit focal ischemia (abrupt, maximal at onset, usually <60 min) or a mimic (marching symptoms, positive visual phenomena, migraine, seizure)?",
       "ABCD2 omits posterior-circulation signs and stenosis; dual or crescendo TIA is high risk and may warrant admission whatever the score.",
-      "Suspected cardioembolism: arrange prolonged rhythm monitoring (30 days) within 6 months."
+      "Suspected cardioembolism: arrange prolonged rhythm monitoring (30 days) within 6 months.",
+      "ESO 2021 recommends specialist review within 24 h of TIA onset and advises against using prediction tools such as ABCD2 alone for triage or treatment decisions."
     ],
     "caution": "A normal CT does not exclude infarction; persisting or recurrent deficits need acute stroke reassessment.",
     "sources": [

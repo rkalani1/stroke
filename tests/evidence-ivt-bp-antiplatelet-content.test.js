@@ -136,3 +136,55 @@ describe('acute blood pressure Evidence cards', () => {
     expect(study('interact4').limits).toContain('COR 3: No Benefit');
   });
 });
+
+describe('antiplatelet, TIA and research-adjunct Evidence cards', () => {
+  it('states the DAPT population and grade on the TIA card and adds ESO 2021', () => {
+    const card = topic('tia-evaluation');
+    // ais-2026-147: noncardioembolic, NIHSS ≤3 or ABCD2 ≥4, no IVT, within 24 h (COR 1).
+    expect(card.summary).toContain('Noncardioembolic high-risk TIA (ABCD2 ≥4) or minor stroke (NIHSS ≤3) within 24 h, without IVT');
+    expect(card.summary).toContain('(AHA 2026, COR 1)');
+    // ESO 2021 TIA: specialist review within 24 h; against prediction tools alone.
+    expect(card.consider.join(' ')).toContain('ESO 2021 recommends specialist review within 24 h of TIA onset');
+    expect(card.consider).toHaveLength(4);
+  });
+
+  it('keeps each lower-grade DAPT option with its own grade and comparator', () => {
+    const card = topic('minor-stroke-antiplatelets');
+    expect(card.summary).not.toContain('Alternatives:');
+    // ais-2026-148 2b; -149 2a; -150 2b; CHANCE-2 compared ticagrelor-aspirin with clopidogrel-aspirin.
+    expect(card.summary).toContain('TIA with ABCD2 ≥6 or symptomatic stenosis ≥50%; COR 2b; THALES');
+    expect(card.summary).toContain('(COR 2a; INSPIRES 7.3 vs 9.2%)');
+    expect(card.summary).toContain('rather than clopidogrel-based DAPT (COR 2b; CHANCE-2 versus clopidogrel plus aspirin 6.0 vs 7.6%)');
+    expect(card.consider[0]).toContain('PRISMS (stopped early)');
+    // TAPIS 68.7 vs 62.0%; EAST 89.7 vs 89.6%; ais-2026-137 is 2b / B-NR.
+    expect(card.consider[2]).toMatch(/TAPIS .*68\.7 vs 62\.0%.*EAST .*89\.7 vs 89\.6%.*\(COR 2b, B-NR\)/);
+    expect(card.consider[2]).not.toMatch(/still rates/);
+    expect(urls(card)).toContain('https://pubmed.ncbi.nlm.nih.gov/40973702/');
+    expect(card.sources.find(source => source.url === 'https://pubmed.ncbi.nlm.nih.gov/34414300/').access).toContain('PMC8370083');
+  });
+
+  it('quotes research-adjunct limits as AHA 2026 states them and covers tirofiban', () => {
+    const card = topic('research-adjuncts');
+    // ais-2026-added-32-1 and -158 are 3: No Benefit/A; -153 eptifibatide 3: No Benefit/B-R; -138 tirofiban 2b/B-R.
+    expect(card.caution).not.toContain('outside trials');
+    expect(card.caution).toContain('argatroban as an adjunct to IVT (COR 3: No Benefit, LOE A)');
+    expect(card.caution).toContain('adjunctive IV eptifibatide after IVT within 3 h (COR 3: No Benefit, LOE B-R)');
+    const item = card.consider.join(' ');
+    expect(item).toContain('ASSET-IT, mRS 0–1 65.9 vs 54.9%');
+    expect(item).toContain('INSTANT, 63.8 vs 52.2%');
+    expect(item).toContain('ATTRACTION, mRS 0–2 49 vs 43%');
+    expect(item).toContain('(COR 2b, B-R)');
+    expect(card.summary).toContain('EnTRIPS (postconditioning after EVT) and SERIC-IVT (conditioning after IVT) were neutral');
+    expect(card.consider).toHaveLength(4);
+    for (const pmid of ['40616232', '42100960', '42341797', '39772709']) expect(urls(card)).toContain(`https://pubmed.ncbi.nlm.nih.gov/${pmid}/`);
+  });
+
+  it('matches the antiplatelet study cards to their primary reports', () => {
+    expect(study('point').population).toContain('randomized within 12 hours at 269 sites in 10 countries (82.8% in the US)');
+    expect(study('inspires').headline).toContain('moderate-to-severe bleeding 0.9 vs 0.4%');
+    const oceanic = study('oceanic-stroke');
+    expect(oceanic.limits).toContain('lower gastrointestinal bleeding was more frequent with asundexian (1.7 vs 1.0%)');
+    expect(oceanic.limits).toContain('LIBREXIA-STROKE');
+    expect(urls(oceanic)).toContain('https://pubmed.ncbi.nlm.nih.gov/42866879/');
+  });
+});
