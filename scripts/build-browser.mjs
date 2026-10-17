@@ -50,6 +50,9 @@ const result = await build({
     });
   } }],
   absWorkingDir: root,
+  // Chunk hashes include input paths: a symlinked or junctioned node_modules (a git worktree,
+  // another checkout) must name the same chunks as a real one.
+  preserveSymlinks: true,
   entryPoints: [{ in: 'src/app.jsx', out: path.basename(entryFile, '.js') }],
   bundle: true,
   format: 'esm',

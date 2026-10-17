@@ -3,16 +3,25 @@ import { useReferenceData } from '../reference-resource.js';
 import { buildSearchIndex, searchIndex, groupResults } from '../quick-search-index.js';
 import { focusEncounterTarget } from '../encounter-overview.js';
 import { revealProtocolTarget } from '../protocol-navigation.js';
+import { screenerTrials } from '../evidence/screenerTrials.js';
+import { enrollmentLabel } from '../evidence/screener-eval.js';
 
 const SUGGESTIONS = [
   ['Dose by weight', 'qr-dose'], ['BP targets', 'qr-bp'], ['Reversal', 'qr-reversal'],
   ['Post-lytic sICH', 'qr-sich'], ['Angioedema', 'qr-angioedema'], ['NIHSS', '#/encounter/nihss'], ['ICH score', '#/encounter/ich-score']
 ];
+// The Trials database profiles, built once so the memoized index keeps its identity across
+// renders. Status leads the subtitle (the database's own label) so truncation never hides it;
+// the full study name is searchable as body text so it ranks below Evidence matches.
+export const SEARCH_TRIALS = screenerTrials.map(trial => ({
+  acronym: trial.acronym, nct: trial.externalMetadata?.nct, keywords: trial.externalMetadata?.registryAcronym,
+  subtitle: [enrollmentLabel(trial), trial.exactFullStudyName].filter(Boolean).join(' · '), body: trial.exactFullStudyName
+}));
 const groupId = group => `qs-group-${group.toLowerCase().replace(/[^a-z]+/g, '-')}`;
 
 // One search across navigation, protocols, calculators, evidence and trials.
 // Results are links; selecting one only changes the route.
-export default function QuickSearch({ open, onClose, version, trials = [], protocolSub = 'ischemic', onFocusEncounter = focusEncounterTarget }) {
+export default function QuickSearch({ open, onClose, version, trials = SEARCH_TRIALS, protocolSub = 'ischemic', onFocusEncounter = focusEncounterTarget }) {
   const dialog = useRef(null), input = useRef(null), list = useRef(null);
   const [query, setQuery] = useState(''), [active, setActive] = useState(0), [expanded, setExpanded] = useState([]);
   const { data, failed } = useReferenceData(version);
@@ -39,11 +48,12 @@ export default function QuickSearch({ open, onClose, version, trials = [], proto
     if (record.more) { setExpanded(value => [...value, record.more]); input.current?.focus(); return; }
     onClose();
     if (record.external) { window.open(record.href, '_blank', 'noopener,noreferrer'); return; }
-    // Re-selecting the current route fires no hashchange, so reveal the target directly.
+    // Re-selecting the current route fires no hashchange: reveal a protocol target directly,
+    // and replay the route change for other targets (an Encounter tool scrolls and focuses).
     // Encounter targets go through the app's hand-off so focus runs after the panel is
     // visible; wait for the dialog to close first, since closing returns focus to its opener.
     if (record.focus) { requestAnimationFrame(() => requestAnimationFrame(() => onFocusEncounter(record.focus))); return; }
-    if (location.hash === record.href) { const target = record.href.match(/^#\/protocols\/[a-z]+\/([a-z-]+)$/)?.[1]; if (target) requestAnimationFrame(() => revealProtocolTarget(target)); }
+    if (location.hash === record.href) { const target = record.href.match(/^#\/protocols\/[a-z]+\/([a-z-]+)$/)?.[1]; requestAnimationFrame(() => target ? revealProtocolTarget(target) : window.dispatchEvent(new HashChangeEvent('hashchange'))); }
     else location.hash = record.href;
   };
   const onKeyDown = event => {

@@ -153,6 +153,17 @@ self.addEventListener('install', (event) => {
     await cache.addAll([...CORE_ASSETS, ...APP_CHUNKS].map(asset =>
       new Request(new URL(asset, self.registration.scope), { cache: 'reload' })
     ));
+    // A partly swapped Pages deploy can pair this worker's chunk list with a stale entry or
+    // shell, which would then be served cache-first as a blank app. Refuse to stage a module
+    // graph that names a module this worker does not cache; the current version stays.
+    const listed = new Set(APP_CHUNKS.map(asset => asset.slice(asset.lastIndexOf('/') + 1)));
+    for (const asset of ['./index.html', './app.js', ...APP_CHUNKS]) {
+      const staged = await cache.match(new URL(asset, self.registration.scope).href);
+      const text = staged ? await staged.text() : '';
+      for (const [, name] of text.matchAll(/[/"]([A-Za-z][A-Za-z0-9_]*-[A-Z0-9]{8}\.js)\b/g)) {
+        if (!listed.has(name)) throw new Error(`Staged ${asset} references unlisted module ${name}`);
+      }
+    }
     const referenceResponse = await cache.match(new URL('./data/clinical-reference.json', self.registration.scope).href);
     const reference = await referenceResponse?.json();
     if (!validReferenceEnvelope(reference)) {
@@ -284,6 +295,10 @@ async function matchCurrentCache(request, url, navigation = false) {
     const exact = await cache.match(request);
     if (exact) return exact;
     if (navigation) {
+      // The shell loads its modules relative to the document URL, so served at a deeper
+      // path it renders blank offline. Send in-scope sub-paths to the scope root instead.
+      const scope = new URL(self.registration.scope);
+      if (url.origin === scope.origin && url.pathname.startsWith(scope.pathname) && url.pathname.slice(scope.pathname.length).includes('/')) return Response.redirect(scope.href, 302);
       for (const asset of ['./index.html', './', './offline.html']) {
         const cached = await cache.match(new URL(asset, self.registration.scope).href);
         if (cached) return cached;

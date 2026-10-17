@@ -99,3 +99,17 @@ test('environments without service workers are safe', async () => {
   await f.api.acceptUpdate();
   assert.equal(f.reloads, 0);
 });
+
+test('offline status is claimed only for a tab the worker controls', async () => {
+  const f = await fixture();
+  const uncontrolled = 'Saved for offline use · this tab needs internet until reopened';
+  // First visit or hard reload: no controller, so lazily loaded surfaces still need the network.
+  f.sw.controller = null;
+  assert.deepEqual(f.api.offlineState({ active: {}, waiting: null }), { waiting: false, status: uncontrolled });
+  assert.deepEqual(f.api.offlineState({ active: {}, waiting: {} }), { waiting: false, status: uncontrolled });
+  f.sw.controller = {};
+  assert.deepEqual(f.api.offlineState({ active: {}, waiting: null }), { waiting: false, status: 'Available offline · links need internet' });
+  // An installed update a controlled tab can switch to; re-offered after Later at each re-check.
+  assert.deepEqual(f.api.offlineState({ active: {}, waiting: {} }), { waiting: true, status: 'Available offline · update ready' });
+  assert.deepEqual(f.api.offlineState(null), { waiting: false, status: 'Available offline · links need internet' });
+});
