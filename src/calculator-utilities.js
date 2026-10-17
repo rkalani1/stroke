@@ -37,7 +37,7 @@ export function calculatorResultParts(state, definition, value = supplementaryRe
     text:`${definition.name}: ${value.grade}${value.description ? ` — ${value.description}` : ` (GCS ${value.gcs}).`}` };
   const figure = value.unit ? `${value.score}${value.unit}` : `${value.score}/${value.max}`;
   const qualifier = definition.id === 'aspects-regions' ? `${data.hemisphere} hemisphere` : definition.id === 'nascet' ? `${data.side} ICA` : '';
-  const detail = qualifier ? qualifier.replace(/^./, letter => letter.toUpperCase()) : value.bmi === undefined ? '' : `BMI ${value.bmi.toFixed(1)} kg/m²`;
+  const detail = qualifier ? qualifier.replace(/^./, letter => letter.toUpperCase()) : value.bmi === undefined ? '' : `BMI ${value.bmi > 35 && value.bmi.toFixed(1) === '35.0' ? '>35.0' : value.bmi.toFixed(1)} kg/m²`;
   return { figure, detail, text:`${definition.name}: ${figure}${qualifier ? ` (${qualifier})` : ''}.` };
 }
 

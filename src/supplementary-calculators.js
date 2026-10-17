@@ -113,7 +113,7 @@ export const MTICI_DESCRIPTORS = {
   '0':'No forward flow past the occlusion.',
   '1':'Contrast crosses the obstruction with minimal downstream filling.',
   '2a':'Downstream branches fill less than half of the affected territory.',
-  '2b':'Downstream branches fill at least half of the affected territory, short of near-complete reperfusion.',
+  '2b':'Downstream branches fill more than half of the affected territory, short of near-complete reperfusion.',
   '2c':'Almost complete reperfusion; a few distal cortical branches have delayed flow or small emboli.',
   '3':'All downstream branches fill normally with complete reperfusion.'
 };
@@ -128,9 +128,12 @@ export function calculateReviewedNASCET(input = {}) {
   const narrow = numericInput(input.minimumDiameterMm, { min:Number.MIN_VALUE }), distal = numericInput(input.distalDiameterMm, { min:Number.MIN_VALUE });
   if (!complete(input,['patentExtracranialICA','nearOcclusion']) || input.patentExtracranialICA !== true || input.nearOcclusion !== false ||
     !['left','right'].includes(input.side) || narrow === null || distal === null || narrow > distal) return null;
-  const percent = 100 * (1 - narrow / distal);
+  const percent = Number((100 * (1 - narrow / distal)).toPrecision(12));
+  // Display rounding never lifts a value across the NASCET 50% or 70% band edges (floored there instead).
+  const shown = Math.round(percent * 10) / 10;
+  const value = [50, 70].some(edge => percent < edge && shown >= edge) ? Math.floor(percent * 10) / 10 : shown;
   // A positive residual lumen must never be displayed as complete occlusion.
-  return { score:percent > 99.9 ? '>99.9' : Number(percent.toFixed(1)), max:100, unit:'%' };
+  return { score:percent > 99.9 ? '>99.9' : value, max:100, unit:'%' };
 }
 
 export const ASPECTS_REGIONS = [['C', 'Caudate'], ['L', 'Lentiform nucleus'], ['IC', 'Internal capsule'], ['I', 'Insular ribbon'], ...['M1','M2','M3','M4','M5','M6'].map(key => [key, key])].map(([key, label]) => ({ key, label, weight: 1 }));
@@ -160,7 +163,9 @@ export function calculateReviewedSTOPBANG(input = {}) {
   if (age === null || weight === null || height === null || neck === null || !['M','F'].includes(input.sex) || !complete(input,keys)) return null;
   const bmi = weight / (height / 100) ** 2;
   const score = reviewedStopBang({ ...input, stopBangAssessed:true, sb_bmi:bmi > 35, sb_age:age > 50, sb_neck:neck > 40, sb_gender:input.sex === 'M' });
-  return score === null ? null : { ...result(score,8), bmi, bang:{ bmi:bmi > 35, age:age > 50, neck:neck > 40, male:input.sex === 'M' } };
+  // Non-blocking: an inch value typed as centimeters silently scores the BMI item.
+  const heightWarning = height < 120 || height > 230 ? 'Height outside 120–230 cm is unusual for an adult and drives the BMI item; confirm centimeters, not inches.' : null;
+  return score === null ? null : { ...result(score,8), bmi, bang:{ bmi:bmi > 35, age:age > 50, neck:neck > 40, male:input.sex === 'M' }, ...(heightWarning ? { heightWarning } : {}) };
 }
 
 const engines = { abcd2:calculateReviewedABCD2, chadsvasc:calculateReviewedCHADS2VASc, 'has-bled':calculateReviewedHASBLED, rope:calculateReviewedRoPE, pascal:classifyReviewedPASCAL, phases:calculateReviewedPHASES, 'mrs-descriptors':describeReviewedMRS, 'hunt-hess':describeReviewedHuntHess, wfns:calculateReviewedWFNS, 'modified-fisher':calculateReviewedModifiedFisher, mtici:describeReviewedMTICI, nascet:calculateReviewedNASCET, 'aspects-regions':calculateReviewedRegionalASPECTS, 'pc-aspects-regions':calculateReviewedRegionalPCASPECTS, phq2:calculateReviewedPHQ2, 'stop-bang':calculateReviewedSTOPBANG };
