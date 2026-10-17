@@ -954,7 +954,8 @@
     "id": "study-source-interact4",
     "topicIds": [
       "rural-telestroke",
-      "acute-bp"
+      "acute-bp",
+      "ich-management"
     ],
     "title": "INTERACT4 — Intensive Ambulance-Delivered Blood-Pressure Reduction in Hyperacute Stroke.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/38752650/",
@@ -2509,8 +2510,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/40541207/",
     "year": 2025,
     "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here. Pooled analysis of four randomized trials, not a new trial."
+    "checkedAt": "2026-10-17",
+    "access": "PubMed bibliographic record checked; primary abstract verified 2026-10-17 (11,312 patients; poor function OR 0.85, death OR 0.83; effect crossing unity at 3 h in the CT substudy). Pooled analysis of four randomized trials, not a new trial."
   },
   {
     "id": "study-source-ich-bp-deep-vs-lobar-meta",

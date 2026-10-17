@@ -823,10 +823,11 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/40401775/",
     "year": 2025,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-17",
+    "access": "Abstract and plain-language summary read 2026-10-17 (PMC body unavailable); recommendation wording, strength and certainty not reviewed. Interpret with newer evidence.",
     "topicIds": [
-      "ich-management"
+      "ich-management",
+      "ich-surgery"
     ]
   },
   {
@@ -1159,8 +1160,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/37923968/",
     "year": 2023,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-17",
+    "access": "PMC full text (PMC10959839) read 2026-10-17: good-practice statements 1–4 and the ICH-score and max-ICH recommendations; evidence tables not reviewed.",
     "topicIds": [
       "neuroprognostication"
     ]
@@ -1171,8 +1172,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42786382/",
     "year": 2026,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "Recommendations with GRADE strength and certainty from the archived full publisher text (reviewed 2026-09-30); quoted in the topic cards.",
+    "checkedAt": "2026-10-17",
+    "access": "Recommendations with GRADE strength and certainty from the archived full publisher text (reviewed 2026-09-30); quoted in the topic cards. Abstract rechecked 2026-10-17 (direction and population only).",
     "topicIds": [
       "antithrombotic-reversal",
       "ich-management"

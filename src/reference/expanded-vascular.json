@@ -947,7 +947,7 @@
       "warfarin",
       "dabigatran"
     ],
-    "summary": "Stop the drug and reverse as soon as ICH is diagnosed (AHA 2022, COR 1). Factor Xa inhibitor: 4F-PCC rather than andexanet (NCS/SCCM 2026, conditional); andexanet (Andexxa) was withdrawn from the US market effective 22 December 2025. Warfarin with INR ≥2.0: 4F-PCC over FFP, then IV vitamin K (COR 1). Dabigatran: idarucizumab (2a). Heparin: protamine (2a). Antiplatelets: no platelet transfusion unless neurosurgery is planned; if on aspirin and going to surgery, transfuse platelets (conditional). No recommendation on desmopressin or on reversal in small ICH.",
+    "summary": "Stop the drug and reverse as soon as ICH is diagnosed (AHA 2022, COR 1). Factor Xa inhibitor: 4F-PCC rather than andexanet (NCS/SCCM 2026, conditional); andexanet (Andexxa) was withdrawn from the US market effective 22 December 2025. Warfarin with INR ≥2.0: 4F-PCC over FFP, then IV vitamin K (COR 1). Dabigatran: idarucizumab (2a). Unfractionated heparin: protamine (2a); LMWH: protamine may partially reverse (2b). Antiplatelets: no platelet transfusion unless neurosurgery is planned; if on aspirin and going to surgery, transfuse platelets (conditional). No recommendation on desmopressin or on reversal in small ICH.",
     "recommendations": [
       {
         "text": "Immediate discontinuation of anticoagulation and rapid reversal are recommended as soon as possible after diagnosis of anticoagulant-associated spontaneous ICH to improve survival.",
@@ -1004,8 +1004,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42786382/",
         "year": 2026,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-17",
+        "access": "Abstract rechecked 2026-10-17: direction and population of the eight recommendations. The GRADE strength and certainty shown were transcribed from the full publisher text on 2026-09-30 and were not re-verified (no PMC copy)."
       },
       {
         "title": "AABB news: AstraZeneca withdraws factor Xa reversal agent (Andexxa) from the U.S. market",
@@ -1050,7 +1050,7 @@
       "CAA-ri",
       "anticoagulation after ICH"
     ],
-    "summary": "Suspect CAA with lobar ICH, convexity SAH or transient focal episodes; MRI with blood-sensitive sequences looks for lobar microbleeds and cortical superficial siderosis. Recurrence risk rises with lobar location, older age, more lobar microbleeds, disseminated superficial siderosis, poor BP control and APOE ε2/ε4 (AHA 2022, 2a). Restarting antiplatelets may be reasonable (2b; RESTART: recurrent ICH 4 vs 9%, not significant). In AF after ICH, PRESTIGE-AF found fewer ischemic strokes but more recurrent ICH with DOACs — individualize; left atrial appendage closure may be considered if anticoagulation is not possible (2b).",
+    "summary": "Suspect CAA with lobar ICH, convexity SAH or transient focal episodes; MRI with blood-sensitive sequences looks for lobar microbleeds and cortical superficial siderosis. Recurrence risk rises with lobar location, older age, more lobar microbleeds, disseminated superficial siderosis, poor BP control, Asian or Black race and APOE ε2/ε4 (AHA 2022, 2a). Restarting antiplatelets may be reasonable (2b; RESTART: recurrent ICH 4 vs 9%, not significant). In AF after ICH, PRESTIGE-AF and a 2025 meta-analysis of six RCTs (ischemic stroke RR 0.20; recurrent ICH RR 3.14; no 90-day mortality difference) show the same trade-off — individualize; if anticoagulation is restarted, starting 7–8 weeks after ICH may be considered after weighing individual factors (AHA 2022, 2b); left atrial appendage closure may be considered if anticoagulation is not possible (2b).",
     "consider": [
       "Transient focal episodes may be CAA rather than TIA — avoid reflex antithrombotics.",
       "Long-term BP <130/80 is reasonable after ICH (AHA 2022, 2a).",
@@ -1065,6 +1065,14 @@
         "type": "Scientific statement",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
+      },
+      {
+        "title": "Oral anticoagulation after ICH in atrial fibrillation: meta-analysis of randomized trials",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41446322/",
+        "year": 2025,
+        "type": "Meta-analysis",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract checked via PubMed; study-level meta-analysis of six RCTs."
       }
     ],
     "related": [
@@ -1235,7 +1243,7 @@
       "tracheostomy",
       "recovery"
     ],
-    "summary": "Do not settle prognosis on day 1. After ICH, full care with new DNAR or withdrawal deferred until at least the second full hospital day is reasonable unless prior wishes say otherwise (AHA 2022, 2a). Severity scores such as the ICH score frame discussion but must not be the sole basis to limit treatment (COR 3), and a DNAR order alone should not limit other care. Clear confounders such as sedation and medical instability first (NCS).",
+    "summary": "Do not settle prognosis early. After ICH, full care with new DNAR or withdrawal deferred until at least the second full hospital day is reasonable unless prior wishes say otherwise (AHA 2022, 2a); aside from the most clinically devastated patients, defer ICH neuroprognostication for at least the first 48–72 h of ICU admission (NCS 2023 good-practice statement). Severity scores such as the ICH score frame discussion but must not be the sole basis to limit treatment (COR 3), and a DNAR order alone should not limit other care. Clear confounders such as sedation and medical instability first (NCS).",
     "recommendations": [
       {
         "text": "A baseline severity score alone is not recommended as the sole basis for forecasting individual prognosis or deciding to limit life-sustaining treatment in patients with spontaneous ICH.",
@@ -1248,7 +1256,8 @@
     "consider": [
       "Identify sedation, medical instability and other confounders before discussing prognosis.",
       "Explain the outcome being estimated, the time horizon and the range of uncertainty.",
-      "Revisit recovery over time and incorporate what outcomes the patient would value."
+      "Revisit recovery over time and incorporate what outcomes the patient would value.",
+      "After ICH, the original ICH score or the max-ICH score alone is not a reliable predictor of poor function at 3 months or later, and the original ICH score alone is not reliable for 30-day mortality (NCS 2023; weak recommendations, low or very low certainty)."
     ],
     "caution": "Premature withdrawal can distort both individual care and the evidence used to estimate prognosis.",
     "sources": [
@@ -1257,16 +1266,16 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/41942818/",
         "year": 2026,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-17",
+        "access": "PMC full text (PMC13249629) read 2026-10-17: recommendations on confounders of the neurological examination and on avoiding premature neuroprognostication; evidence tables not reviewed."
       },
       {
         "title": "Guidelines for Neuroprognostication in Critically Ill Adults with Intracerebral Hemorrhage",
         "url": "https://pubmed.ncbi.nlm.nih.gov/37923968/",
         "year": 2023,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-17",
+        "access": "PMC full text (PMC10959839) read 2026-10-17: good-practice statements 1–4 and the ICH-score and max-ICH recommendations; evidence tables not reviewed."
       }
     ],
     "related": [
@@ -2157,7 +2166,7 @@
       "factor VIIa",
       "hemostatic"
     ],
-    "summary": "No hemostatic drug improves function: recombinant factor VIIa within 2 h (FASTEST) slowed growth by 3.7 mL but did not change 180-day mRS (cOR 1.09) and increased life-threatening thromboembolism (RR 3.41); tranexamic acid (TICH-2) also gave no functional benefit (aOR 0.88). IVH with hydrocephalus and reduced consciousness: EVD (AHA 2022, COR 1). Intraventricular alteplase through an EVD lowered 180-day mortality (18 vs 29%) without improving mRS ≤3 and increased mRS 5 (CLEAR III).",
+    "summary": "No hemostatic drug improves function: recombinant factor VIIa within 2 h (FASTEST) slowed growth by 3.7 mL but did not change 180-day mRS (cOR 1.09) and increased life-threatening thromboembolism (RR 3.41); tranexamic acid (TICH-2) also gave no functional benefit (aOR 0.88), and a 2026 individual-patient meta-analysis (5 trials, 2,860 patients) found no 90-day functional benefit (adjusted cOR 0.93) despite small reductions in 7-day death (aOR 0.70) and hematoma expansion (OR 0.81). Hydrocephalus contributing to reduced consciousness: ventricular drainage (AHA 2022, COR 1); large IVH with impaired consciousness: EVD rather than medical management alone (COR 1). In stable ICH <30 mL with IVH obstructing the third or fourth ventricle and a routine EVD, intraventricular alteplase lowered 180-day mortality (18 vs 29%) without improving mRS ≤3 and increased mRS 5 (17 vs 9%) (CLEAR III; AHA 2022: reasonable to reduce mortality, 2a; functional benefit uncertain, 2b).",
     "consider": [
       "Is the problem expansion, ventricular obstruction, hydrocephalus or mass effect?",
       "Repeat CT within 24 h, sooner with any decline, to catch expansion.",
@@ -2178,8 +2187,16 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/28081952/",
         "year": 2017,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; no approval or availability inferred."
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract checked 2026-10-17 (population and outcomes); no approval or availability inferred."
+      },
+      {
+        "title": "Tranexamic acid for spontaneous ICH: systematic review and individual patient data meta-analysis",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42276775/",
+        "year": 2026,
+        "type": "Meta-analysis",
+        "checkedAt": "2026-10-17",
+        "access": "Primary abstract checked via PubMed; no treatment recommendation inferred."
       }
     ],
     "related": [
