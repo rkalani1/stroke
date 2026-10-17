@@ -50,7 +50,10 @@ async function main() {
  put('data/clinical-reference.json',JSON.stringify(referenceEnvelope)+'\n');
  const trials=await load('src/evidence/screenerTrials.js');
  const tables=await load('src/evidence/eligibilityTables.js');
- put('data/trials.json',envelope('trials','Restored canonical trial screener and table summaries with original verification dates',{studies:trials.screenerTrials,tables:tables.eligibilityTables,scope:trials.CTGOV_FIRST_PASS_NOTE,statusCurrency:'Statuses reflect the dated checks in each record; current recruitment and local activation require confirmation.'}));
+ const trialsEnvelope=envelope('trials','Restored canonical trial screener and table summaries with original verification dates',{studies:trials.screenerTrials,tables:tables.eligibilityTables,scope:trials.CTGOV_FIRST_PASS_NOTE,statusCurrency:'Statuses reflect the dated checks in each record; current recruitment and local activation require confirmation.'});
+ // count is the number of study profiles; tables are projections of the same profiles.
+ Object.assign(trialsEnvelope._meta,{count:trials.screenerTrials.length,studyCount:trials.screenerTrials.length,tableCount:tables.eligibilityTables.length});
+ put('data/trials.json',trialsEnvelope);
  const retirement=JSON.parse(await fs.readFile(path.join(ROOT,'docs/retired-endpoints.json'),'utf8'));
  for(const endpoint of retirement.endpoints)put(endpoint,{...envelope(endpoint,'Retired historical portal endpoint',null,'retired'),retirement:{status:'retired',reason:'The broad reference, trial and teaching portal is retired from the maintained product.',replacement:`${BASE_URL}/data/sources.json`,archiveRef:ARCHIVE_REF,archiveUrl:ARCHIVE_URL,compatibility:'HTTP transport may return 200 on static Pages; clients must inspect _meta.status. The data payload is null and is not a current clinical corpus.'}});
  const endpoints=['data/trials.json','data/clinical-reference.json','data/sources.json','data/calculators-index.json','data/atlas/recommendations.json','data/atlas/claims.json','data/atlas/citations.json','data/management-cards.json','data/generic-protocols.json'];
