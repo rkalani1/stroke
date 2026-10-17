@@ -130,7 +130,7 @@ describe('SAH, CVT and other vascular cards (2026-10-17 review)', () => {
     expect(seizures.summary).not.toContain('brief prophylaxis');
     expect(seizures.sources[1].access).toContain('PMC13642444');
     const sah = topic('sah');
-    expect(sah.consider[1]).toMatch(/AHA 2023.*\(2b\?|AHA 2023/);
+    expect(sah.consider[1]).toContain('AHA 2023 allows it only with high-risk features (MCA aneurysm, high grade, ICH, hydrocephalus, cortical infarct; 2b)');
     expect(sah.consider[1]).toContain('NCS 2026 is conditional (ASM or no ASM)');
     expect(sah.consider[1]).toContain('no more than 7 days (2a)');
     expect(urls(sah)).toContain('https://pubmed.ncbi.nlm.nih.gov/42552475/');
