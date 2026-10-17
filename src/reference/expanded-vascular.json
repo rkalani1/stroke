@@ -707,7 +707,7 @@
       "Confirm the ophthalmic diagnosis and onset; coordinate stroke and ophthalmology assessment.",
       "Both trials studied nonarteritic CRAO; suspected arteritis needs its own pathway.",
       "THEIA measured visual acuity and TenCRAOS a vision-recovery threshold; weigh safety alongside benefit.",
-      "ESO 2025 suggests IVT within 4.5 h for CRAO (weak recommendation wording; very low-quality, nonrandomized evidence through 2023, issued before THEIA and TenCRAOS reported). REVISION (NCT04965038) is listed as terminated with no posted results (registry checked 2026-10-17); an individual-participant meta-analysis of the trials is registered (PROSPERO 1154900)."
+      "ESO 2025 suggests IVT within 4.5 h for CRAO (weak recommendation wording; very low-quality, nonrandomized evidence through 2023, issued before THEIA and TenCRAOS reported). REVISION (NCT04965038) is listed as terminated with no posted results (registry checked 2026-10-17)."
     ],
     "caution": "Small neutral trials do not prove equivalence, and the 2021 AHA statement predates them.",
     "sources": [
@@ -750,14 +750,6 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-17",
         "access": "ClinicalTrials.gov record checked: status terminated, registry enrollment 127, no results posted."
-      },
-      {
-        "title": "IV thrombolysis for acute CRAO: protocol for an individual participant data meta-analysis of randomized trials",
-        "url": "https://pubmed.ncbi.nlm.nih.gov/41805966/",
-        "year": 2026,
-        "type": "Report",
-        "checkedAt": "2026-10-17",
-        "access": "Primary abstract verified via PubMed (protocol only; PROSPERO 1154900); no results."
       }
     ],
     "related": [
