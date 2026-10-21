@@ -125,7 +125,8 @@ const revealIfCurrent = (href, target) => event => { if (location.hash === href)
 
 // announceCopy: off on Encounter, whose own status region already announces the copy result.
 export default function CaseBar({ state, documentLabel, blocked, onCopy, copyStatus, announceCopy = false }) {
-  const [now] = useCurrentTime(true);
+  // Tick only while the bar shows a time; resume and edits still refresh it.
+  const [now] = useCurrentTime(Boolean(state.note.lkwTime || state.note.discoveryTime || state.note.lastDOACDose || state.actions?.administrationTime));
   const bar = useRef(null);
   // A timestamp set to "now" can be newer than the last one-second tick.
   const c = caseSummary(state, Math.max(now, Date.now()));

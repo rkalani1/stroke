@@ -36,8 +36,15 @@ async function open({ time = '2026-10-21T10:00:00-07:00', timezoneId = 'America/
     if (files.has(relative)) return route.fulfill({ contentType: 'text/javascript', body: files.get(relative) });
     return route.fulfill({ status: 404, body: 'Not found' });
   });
+  // The fake clock is installed first so the counter below wraps its timers.
+  await page.clock.install({ time: new Date(Date.parse(time) - 1000) });
+  await page.clock.pauseAt(new Date(time));
   await page.addInitScript(mode => {
     window.copied = [];
+    // Counts periodic callbacks so a test can check that an empty encounter does no per-second work.
+    window.ticks = 0;
+    const interval = window.setInterval;
+    window.setInterval = (callback, ms, ...rest) => interval(() => { if (ms <= 1000) window.ticks += 1; callback(); }, ms, ...rest);
     const writeText = text => mode === 'denied' ? Promise.reject(new DOMException('Write permission denied.', 'NotAllowedError'))
       : mode === 'slow' ? new Promise(resolve => setTimeout(() => { window.copied.push(text); resolve(); }, 1500))
       : (window.copied.push(text), Promise.resolve());
@@ -47,8 +54,6 @@ async function open({ time = '2026-10-21T10:00:00-07:00', timezoneId = 'America/
     Object.defineProperty(document, 'hidden', { configurable: true, get: () => window.tabHidden });
     Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => window.tabHidden ? 'hidden' : 'visible' });
   }, clipboard);
-  await page.clock.install({ time: new Date(Date.parse(time) - 1000) });
-  await page.clock.pauseAt(new Date(time));
   await page.goto(`${ORIGIN}#/encounter`);
   await page.locator('#input-age').waitFor();
 }
@@ -136,6 +141,20 @@ describe('elapsed time in the running app', { timeout: 40000 }, () => {
     expect(await lkwResult()).toMatch(/^LKW: 90 min elapsed \(1:30\)/);
   });
 
+  it('runs no per-second clock for an encounter without a time, and one clock once a time is entered', async () => {
+    await open();
+    await field('Working diagnosis').selectOption('ischemic');
+    await page.fill('#input-age', '71');
+    await page.clock.runFor(5000);
+    expect(await page.evaluate(() => window.ticks)).toBe(0);
+    await field('LKW date (local)').fill('2026-10-21');
+    await field('LKW time (local)').fill('09:10');
+    const before = await page.evaluate(() => window.ticks);
+    await page.clock.runFor(5000);
+    // The shell clock and the case bar each refresh once a second while a time is shown.
+    expect(await page.evaluate(() => window.ticks) - before).toBe(10);
+  });
+
   it('jumps to wall time after a background suspension instead of counting ticks', async () => {
     await open();
     await ischemic({ lkwTime: '09:00' });
@@ -177,7 +196,7 @@ describe('entries that cannot be used are named where they are entered', { timeo
     expect(await page.locator('#exam .workspace-result', { hasText: 'whole number' }).innerText()).toBe('Reviewed ASPECTS: enter a whole number from 0 to 10; the current entry is not used.');
     await page.evaluate(() => { for (const d of document.querySelectorAll('#tabpanel-encounter details:not([open])')) d.open = true; });
     await field('EVT puncture timestamp (local)').fill('2026-10-21T11:30');
-    expect(await page.locator('#handoff .workspace-result', { hasText: 'EVT puncture' }).innerText()).toBe('Check EVT puncture: in the future, invalid or an unresolved repeated hour. The note flags it until corrected.');
+    expect(await page.locator('#handoff .workspace-result', { hasText: 'EVT puncture' }).innerText()).toBe('Check EVT puncture: future, invalid or an unresolved repeated hour; flagged in the note until corrected.');
   });
 });
 

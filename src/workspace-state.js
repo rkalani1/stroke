@@ -227,7 +227,7 @@ export function outputWarnings(state) {
   const actionTimes = ['administrationTime', 'punctureTime', 'reperfusionTime', 'consentTime', 'evtConsentTime'];
   const actionTexts = Object.entries(state.actions).filter(([key, value]) => typeof value === 'string' && !(actionTimes.includes(key) && timestampPattern.test(value))).map(([, value]) => value);
   const texts = [state.rationale, state.assessment, state.gcs.notTestableReason, ...noteFields.map(key => state.note[key]), state.note.lastDOACType, ...malformedDates, ...actionTexts];
-  return [...new Set([...texts.flatMap(getPublicDemoPhiWarnings), ...encounterDetailWarnings(state, getPublicDemoPhiWarnings), ...Object.values(state.timeline || {}).filter(value => value && !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d{3})?)?(?:Z|[+-]\d{2}:\d{2})?$/.test(value)).flatMap(getPublicDemoPhiWarnings)])];
+  return [...new Set([...texts.flatMap(getPublicDemoPhiWarnings), ...encounterDetailWarnings(state, getPublicDemoPhiWarnings), ...Object.values(state.timeline || {}).filter(value => value && !timestampPattern.test(value)).flatMap(getPublicDemoPhiWarnings)])];
 }
 // A delayed clipboard result must never attest or select a newer draft.
 export async function copySummary(stateRef, text, writeText) {
