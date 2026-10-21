@@ -73,9 +73,13 @@ export const evaluateDEFUSE3 = ({ coreMl, penumbraMl, hypoperfusedMl, timeFromLK
   const ratioOk = mismatchRatio >= 1.8;
   const volumeOk = mismatchVolume >= 15;
   const clinicalOk = n >= 6 && a >= 18 && a <= 90;
-  const asp = aspects === undefined || aspects === null || (typeof aspects === 'string' && aspects.trim() === '') ? null : reviewedNumber(aspects);
+  const aspectsSupplied = !(aspects === undefined || aspects === null || (typeof aspects === 'string' && aspects.trim() === ''));
+  const asp = aspectsSupplied ? reviewedNumber(aspects) : null;
   const aspectsValid = Number.isInteger(asp) && asp >= 0 && asp <= 10;
   const ctSelection = perfusionModality !== 'mri';
+  // On CT selection a blank ASPECTS asks for confirmation; an entered but malformed or out-of-range one
+  // (11, 5.5, '5x') is unresolved input, as in evaluateLargeCoreEVT, and must not pass as "not entered".
+  if (ctSelection && aspectsSupplied && !aspectsValid) return null;
   const aspectsOk = !(ctSelection && aspectsValid && asp < 6);
   const eligible = coreOk && ratioOk && volumeOk && clinicalOk && aspectsOk;
   const aspectsNote = !ctSelection ? '' : aspectsValid ? '' : ' Confirm NCCT ASPECTS ≥6 (DEFUSE-3 excluded ASPECTS <6 when enrolled on CT perfusion).';
