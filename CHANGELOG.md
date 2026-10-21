@@ -1,5 +1,34 @@
 # CHANGELOG
 
+## v7.9.0 — 2026-10-21 — Evidence, trials, calculators, encounter and accessibility review
+
+Eight review units worked in parallel against primary sources read on 2026-10-21 (PubMed abstracts, PMC full text and ClinicalTrials.gov records; publisher sites, DailyMed and FDA pages were not reachable). The lead integrated and re-checked the highest-risk changes, and two independent verification rounds re-read the sources and the shipped code. Sources, access scope and open questions are in [docs/evidence-ledger-2026-10-21.md](docs/evidence-ledger-2026-10-21.md) and [docs/review-2026-10-21/](docs/review-2026-10-21/). The Protocols tab is unchanged; possible Protocols issues, including one cross-surface conflict that needs the owner's decision, are in [docs/protocols-review-notes-2026-10.md](docs/protocols-review-notes-2026-10.md).
+
+- **Protocols preservation:** the rendered Protocols lock now also runs at phone width (390 px) against the same baselines and fails when protected text is clipped out of reach. CI runs both.
+- **Evidence (EVT and systems of care, previously unreviewed):**
+  - EVT is graded only for its studied population: ICA/M1, NIHSS ≥6, prestroke mRS 0–1 and window-specific ASPECTS; prestroke mRS 2–4 only for ICA/M1 within 6 h with ASPECTS ≥6.
+  - Direct-to-angiography is a 2b "may be considered", not a directive; mobile stroke units apply to thrombolytic-eligible patients; rural bypass of a proficient local center is COR 3: No Benefit.
+  - Trial designs, populations and early stopping are corrected (PRISMS, ATTENTION, DISTAL, TESLA, PEARL, BEST-MSU, RACE pooled accuracy). Newer evidence (ATLAS, DIRECT ANGIO, CHOICE-2, IAT-TOP, TESLA, ANGEL-REBOOT) is labelled as postdating the guideline.
+- **Evidence (prevention and stroke mechanisms, previously unreviewed):**
+  - AF anticoagulation timing now leads with the AHA 2026 grade (2a, selected milder strokes) and labels CATALYST as postdating it.
+  - BASIS (intracranial stenting) is reported as the positive trial it was, with its procedural risks; reduced ejection fraction without thrombus is graded 2b, not dismissed.
+  - Carotid <50% is COR 3: No Benefit; CREST-2 is labelled as newer than the guidelines with its population and crossover.
+- **Evidence (recovery, inpatient care and specific populations, previously unreviewed):**
+  - Anti-amyloid therapy: both appropriate-use recommendations advise against IV thrombolysis (fatal hemorrhages reported; ARIA can be missed on CT/CTA); thrombectomy without thrombolysis should be considered for LVO.
+  - SSRIs for recovery are COR 3: No Benefit (FOCUS, AFFINITY, EFFECTS: no functional benefit, more fractures).
+  - Pediatric EVT, prior-disability EVT and post-EVT BP harm keep their population limits; driving after seizures follows the AAN 2025 three-month position.
+- **Evidence (IVT and hemorrhage, second check):** the US tenecteplase label (3 h; weight bands deliver more than 0.25 mg/kg below 100 kg) is stated beside the guideline dose; malignant-edema COR 3 categories are separated (Harm vs No Benefit); BP-card populations are restored.
+- **Evidence presentation:** each collapsed topic shows its bottom line in full (never truncated: a clamped sentence can lose its qualifier) with its contents, and a section index.
+- **Trials:** all 16 profiles re-read on ClinicalTrials.gov on 2026-10-21. Study-specific facts (language, rehabilitation setting, current mRS, ABCD², antithrombotic therapy and others) now have controls, so VERIFY, TELE-REHAB-2, MR-PICS, SCOUTS-3, TESTED and CLARITY can be fully answered; CLARITY's ABCD² and antithrombotic facts were not reaching the screening engine. Rejected entries are printed as "(invalid entry; treated as unknown)"; each candidate in the copied summary has its registry link; an imported NIHSS that excludes untestable items says so.
+- **Calculators:** an invalid DEFUSE-3 ASPECTS (for example 11 or 5.5) no longer reads as "screen met"; the ICH score requires an explicit answer for every criterion; global search finds worksheets by synonym; STOP-BANG warns about a neck size in inches; CHA₂DS₂-VASc and PHQ-2 limits note ESC 2024 CHA₂DS₂-VA and the PHQ-2 cutpoint population. The MCP tools match Encounter on implausible height and accept the DEFUSE-3 selection modality.
+- **Encounter and notes:**
+  - Times on the other side of a daylight-saving change carry their UTC offset; an unexamined NIHSS no longer reads "partial sum 0"; "EVT puncture: not documented" keeps a recommendation or consent from reading as a performed procedure.
+  - Consent times without a status and discovery times with a known LKW are no longer dropped; discovery before LKW is flagged; flagged times keep the typed value; CTP export values are rounded.
+  - EVT screen messages give the window-specific AHA 2026 tier for baseline disability and large cores; TIA readiness keeps vessel imaging and ECG open when marked "not indicated"; the case bar flags post-IVT BP at exactly 180/105.
+  - After 2 h without an entry, a notice asks whether the encounter belongs to a previous patient (in memory only).
+- **Accessibility and design:** keyboard focus is no longer hidden under the sticky case bar, bottom navigation or update notice (WCAG 2.4.11); search shortcuts never fire while typing; the search result count and repeated copy outcomes are announced; external links are marked and an offline note says they need internet; "Later" on an update leaves an Update badge. Calculators read as grouped lists.
+- **Performance:** Encounter typing no longer restyles the whole page after Calculators has been visited (median keystroke at 4× CPU throttle 240 → 120 ms). Seven unused font faces were removed: tailwind.css 117 → 104 KB and the offline precache 2.23 → 2.02 MB (58 → 51 entries). JavaScript grew by about 4 KB gzip for the verified logic above and stays within budget.
+
 ## v7.8.0 — 2026-10-17 — Verified clinical, workflow, design and accessibility review
 
 Audit agents checked the non-Protocols content against primary sources: PubMed abstracts, PMC full text and ClinicalTrials.gov records, read on 2026-10-17. Separate agents verified each change and adversarially reviewed every unit before merge. Sources and access scope are in [docs/evidence-ledger-2026-10.md](docs/evidence-ledger-2026-10.md). The Protocols tab is unchanged. Possible Protocols issues are reported separately in [docs/protocols-review-notes-2026-10.md](docs/protocols-review-notes-2026-10.md), for the owner only.
