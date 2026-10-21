@@ -358,7 +358,7 @@ export const evaluateLargeCoreEVT = (input = {}) => {
     eligible,
     bestMatch,
     matchingTrials: trial,
-    modeledSubsets: { LASTE: 'Only the age <80, ASPECTS 0–2, ≤6.5h subset is modeled here. Other LASTE age/imaging profiles and MRI-selected unknown onset are not evaluated; a missing match is not a trial exclusion.' },
+    modeledSubsets: { LASTE: 'Only the age <80, ASPECTS 0–2, ≤6.5h subset is modeled here. Other LASTE age/imaging profiles and MRI-selected unknown onset are not evaluated; a missing match is not a trial exclusion.', 'RESCUE-Japan LIMIT': 'Only the ≤6 h ASPECTS 3–5 subset is modeled; its 6–24 h DWI-ASPECTS 3–5 without FLAIR change subset is not evaluated.' },
     nihssSourceNote: 'NIHSS ≥6 follows the final LASTE/TESLA publications; registry >6 wording was adjudicated separately.',
     beyondTrialRange,
     aspects: Number.isFinite(asp) ? asp : null,

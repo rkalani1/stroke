@@ -114,6 +114,8 @@ describe('large-core trial version and subset boundaries', () => {
       const result = evaluateLargeCoreEVT({ ...input, age: 65, aspects: 1, nihss });
       expect(result.matchingTrials).toContain('LASTE');
       expect(result.modeledSubsets.LASTE).toContain('Only the age <80');
+      // SVIN 2025 lists RESCUE-Japan LIMIT 6–24 h eligibility as ASPECTS 3–5 without FLAIR change; only ≤6 h is modeled.
+      expect(result.modeledSubsets['RESCUE-Japan LIMIT']).toMatch(/≤6 h ASPECTS 3–5.*6–24 h DWI-ASPECTS 3–5 without FLAIR change subset is not evaluated/);
       expect(result.nihssSourceNote).toContain('final LASTE/TESLA publications');
       expect(result.rationale).toContain('does not establish complete trial or EVT eligibility');
     }
