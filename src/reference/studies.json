@@ -24,7 +24,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/37222476/",
         "year": 2023,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
       }
     ],
@@ -90,7 +90,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/40570866/",
         "year": 2025,
         "type": "Meta-analysis",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
       }
     ],
@@ -188,7 +188,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/28902593/",
         "year": 2017,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
       }
     ],
@@ -221,7 +221,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/33765420/",
         "year": 2021,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
       }
     ],
@@ -937,7 +937,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/31738483/",
         "year": 2020,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract read via PubMed/NLM; online publication 2019, print issue 2020. Full report and supplements not reviewed."
       }
     ],
@@ -1029,7 +1029,7 @@
     "question": "Does a low-dose triple antihypertensive pill added to usual care reduce recurrent stroke after ICH?",
     "population": "1,670 patients with prior ICH and SBP 130–160 who completed a 2-week active run-in (mean age 58).",
     "comparison": "Telmisartan 20 mg, amlodipine 2.5 mg and indapamide 1.25 mg in one pill versus placebo.",
-    "result": "Recurrent stroke over a median 2.5 years: 4.6% vs 7.4% (HR 0.61; 95% CI 0.41–0.92). Mean SBP 127 vs 138; major cardiovascular events 6.6% vs 9.8%. Discontinuation for adverse events 13.6% vs 6.0%, mostly creatinine rises.",
+    "result": "Recurrent stroke over a median 2.5 years: 4.6% vs 7.4% (HR 0.61; 95% CI 0.41–0.92). Mean SBP 127 vs 138; major cardiovascular events 6.6% vs 9.8%. Discontinuation for adverse events 13.6% vs 6.0%, most often a creatinine rise ≥20%.",
     "limits": "Run-in design selects tolerant patients; renal monitoring is needed.",
     "sources": [
       {
@@ -1037,7 +1037,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42019018/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -1070,7 +1070,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/29766772/",
         "year": 2018,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
       }
     ],
@@ -1103,7 +1103,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/31091372/",
         "year": 2019,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
       }
     ],
@@ -1136,7 +1136,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/38324415/",
         "year": 2024,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
       }
     ],
@@ -1169,7 +1169,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/24963567/",
         "year": 2014,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
       }
     ],
@@ -1192,18 +1192,18 @@
       "intensive medical management"
     ],
     "question": "Did adding revascularization improve outcomes on intensive medical therapy?",
-    "population": "Two parallel trials of asymptomatic stenosis ≥70%: 1,245 participants in the stenting trial and 1,240 in the endarterectomy trial.",
+    "population": "Two parallel trials of ≥70% stenosis without carotid-territory stroke, TIA or amaurosis fugax for 180 days: 1,245 in the stenting trial and 1,240 in the endarterectomy trial.",
     "comparison": "Each procedure plus intensive medical management versus intensive medical management alone.",
     "result": "The four-year composite of stroke/death through day 44 or later ipsilateral ischemic stroke was 2.8% versus 6.0% with stenting (P=0.02), and 3.7% versus 5.3% with endarterectomy (P=0.24). Early events included seven strokes and one death with stenting versus none medically; nine versus three strokes in the endarterectomy trial.",
-    "limits": "Separate trials did not compare stenting directly with endarterectomy. Results concern selected asymptomatic disease and include procedural harms; they do not establish a universal procedure choice.",
+    "limits": "Separate trials did not compare stenting directly with endarterectomy. Only certified high-volume operators took part, and 17–18% of medical-therapy patients later underwent revascularization. Results concern selected asymptomatic disease and include procedural harms; they do not establish a universal procedure choice.",
     "sources": [
       {
         "title": "CREST-2 primary report",
         "url": "https://pubmed.ncbi.nlm.nih.gov/41269206/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract read via PubMed/NLM; online publication 2025, print issue 2026. Full report and supplements not reviewed."
+        "checkedAt": "2026-10-21",
+        "access": "PMC full text (PMC13148431) read 2026-10-21; online publication 2025, print issue 2026. Supplement not reviewed."
       }
     ],
     "relatedTopic": "carotid"
@@ -1904,7 +1904,7 @@
     "question": "Does asundexian added to antiplatelet therapy prevent recurrent ischemic stroke?",
     "population": "12,327 patients within 72 hours of noncardioembolic ischemic stroke or high-risk TIA with atherosclerosis or nonlacunar infarct.",
     "comparison": "Asundexian 50 mg daily versus placebo, on top of single or dual antiplatelet therapy.",
-    "result": "Ischemic stroke 6.2% vs 8.4% (cause-specific HR 0.74; 95% CI 0.65–0.84). Major bleeding 1.9% vs 1.7% (HR 1.10; 95% CI 0.85–1.44).",
+    "result": "Ischemic stroke 6.2% vs 8.4% (cause-specific HR 0.74; 95% CI 0.65–0.84). Major bleeding 1.9% vs 1.7% (HR 1.10; 95% CI 0.85–1.44); lower gastrointestinal bleeding 1.7% vs 1.0% (csHR 1.75).",
     "limits": "Industry-funded; regulatory status and availability are separate questions. Asundexian was inferior to apixaban in AF (OCEANIC-AF).",
     "sources": [
       {
@@ -1912,7 +1912,15 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/41985132/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
+        "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "OCEANIC-STROKE bleeding report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42866879/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -1944,7 +1952,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/39231343/",
         "year": 2024,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -2866,7 +2874,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/28902590/",
         "year": 2017,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
