@@ -113,7 +113,7 @@ describe('profile corrections from the registry text read on 2026-10-21', () => 
     // MR-PICS "Severe Neglect as measured by NIH Stroke Scale Question 11 score of 2" and no outside OT/PT/speech therapy.
     expect(toConfirm(evaluate('ASPIRE', { classification: 'ich' })).join(' ')).toMatch(/no active infective endocarditis/);
     const scouts = toConfirm(evaluate('SCOUTS-3', { classification: 'ich' })).join(' ');
-    for (const re of [/pneumothorax, bullous emphysema/, /within 48 h of the sleep study/, /CSF leak within 3 months/, /aspiration risk/]) expect(scouts).toMatch(re);
+    for (const re of [/pneumothorax, bullous emphysema/, /general anesthesia or conscious sedation within 48 h before the sleep study/, /CSF leak within 3 months/, /aspiration risk/]) expect(scouts).toMatch(re);
     expect(toConfirm(evaluate('VERIFY', { classification: 'ischemic' })).join(' ')).toMatch(/behavioral testing at 48–120 h, TMS at 72–168 h and MRI at 48–168 h/);
     const mrPics = toConfirm(evaluate('MR-PICS', { classification: 'ischemic' })).join(' ');
     for (const re of [/NIHSS item 11 = 2/, /no outside occupational, physical or speech therapy/, /GDS > 10/]) expect(mrPics).toMatch(re);

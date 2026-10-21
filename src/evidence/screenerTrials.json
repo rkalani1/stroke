@@ -1505,7 +1505,7 @@
       ],
       "manualPending": [
         "Confirm the consent-giver (patient or legally authorized representative) can be consented in English or Spanish",
-        "Confirm no pneumothorax, bullous emphysema or other condition limiting CPAP use or OSA testing, no benzodiazepine, barbiturate or sedation within 48 h of the sleep study, no cranial/spinal surgery with possible CSF leak within 3 months, and no significant aspiration risk"
+        "Confirm no pneumothorax, bullous emphysema or other condition limiting CPAP use or OSA testing, no benzodiazepine, barbiturate, general anesthesia or conscious sedation within 48 h before the sleep study, no cranial/spinal surgery with possible CSF leak within 3 months, and no significant aspiration risk"
       ]
     }
   },
@@ -1808,7 +1808,7 @@
         "Confirm UEFM 25-45, corticospinal pathway preservation, and TMS motor output requirements",
         "Confirm current post-stroke mRS 3–4 separately from pre-stroke function; consent and surgical/device suitability require study-team review",
         "Shoulder subluxation, adhesive capsulitis or contracture requires pain/range-of-motion screening and enrolling-clinician approval, not automatic exclusion",
-        "Review antiplatelet interruption (7 days before to 3 days after surgery), GDS > 10, suicide-scale ideation > 1, MoCA < 22 (aphasia exception with PI approval), severe neglect (NIHSS item 11 = 2), other implanted devices, active infection, bleeding or thrombosis risk, and no outside occupational, physical or speech therapy during the study"
+        "Review antiplatelet interruption (7 days before to 3 days after surgery), GDS > 10, Columbia suicide-scale ideation > 1, MoCA < 22 (aphasia exception with PI approval), severe neglect (NIHSS item 11 = 2), other implanted devices, active infection, bleeding or thrombosis risk, and no outside occupational, physical or speech therapy during the study"
       ]
     }
   },
