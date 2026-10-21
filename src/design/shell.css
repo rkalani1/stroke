@@ -204,11 +204,12 @@ html[data-theme="dark"] .workspace-result[data-tone="value"] { color: var(--ink)
 :is(.encounter-workflow, .reference-surface, .trials-surface, .quick-reference, .tools-surface) summary::after { content: ''; flex-shrink: 0; width: 7px; height: 7px; margin: 0 var(--space-2) 0 auto; border-right: 2px solid var(--mute); border-bottom: 2px solid var(--mute); transform: rotate(45deg) translate(-2px, -2px); transition: transform calc(var(--dur) * var(--motion-scale)) var(--ease); }
 :is(.encounter-workflow, .reference-surface, .trials-surface, .quick-reference, .tools-surface) details[open] > summary::after { transform: rotate(-135deg) translate(-2px, -2px); }
 :is(.reference-surface, .trials-surface, .quick-reference, .tools-surface) summary { display: flex; align-items: center; gap: var(--space-4); }
-/* Study summaries: title, year and marker on one line; the headline below. */
-.reference-surface summary:has(> .reference-year) { flex-wrap: wrap; }
-.reference-surface summary:has(> .reference-year) > span:first-child { flex: 1 1 0; min-width: 0; }
+/* Evidence rows: title (and a study's year) beside the marker on the first line; a study's headline,
+   or a topic's bottom line and contents, on full-width lines below. */
+.reference-card > summary { flex-wrap: wrap; }
+.reference-card > summary > span:first-child { flex: 1 1 0; min-width: 0; }
 .reference-surface summary > .reference-year { flex-shrink: 0; margin-left: 0; white-space: nowrap; }
-.reference-surface summary > .reference-headline { order: 3; flex-basis: 100%; }
+.reference-surface summary > :is(.reference-headline, .reference-bottom-line, .reference-contents) { order: 3; flex-basis: 100%; }
 .safety-group { margin: var(--space-6) 0; padding: 0; border: 0; min-width: 0; }
 .safety-group > legend { margin-bottom: var(--space-2); font-size: var(--text-sm); font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: var(--ink-2); }
 .safety-group[data-tier="absolute"] > legend { color: var(--critical); }
@@ -583,6 +584,54 @@ a.case-bar__badge::before { content: ''; position: absolute; inset: -8px -3px; }
 }
 
 /* ── 2026-10-21 review ── */
+/* Evidence: a collapsed topic shows its bottom line (the summary's opening sentence, clamped to two
+   lines, three on phones; the full sentence stays in the accessible name) and what it holds. Open,
+   the summary paragraph repeats the sentence, so the preview steps aside. */
+.reference-bottom-line { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; margin-top: var(--space-1); color: var(--ink-2); font-size: var(--text-md); font-weight: 400; line-height: var(--leading-normal); }
+.reference-card[open] > summary > .reference-bottom-line { display: none; }
+.reference-contents { margin-top: var(--space-2); color: var(--mute); font-size: var(--text-xs); font-weight: 600; }
+/* Section index: jump buttons with counts; one sideways-scrolling row below 1024 px. */
+.reference-index ul { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-6) 0 0; padding: 0; list-style: none; }
+.reference-index button { display: inline-flex; align-items: center; gap: var(--space-4); min-height: 44px; padding: var(--space-3) var(--space-6); border: 1px solid var(--line); border-radius: var(--radius-pill); background: var(--surface); color: var(--ink-2); font-size: var(--text-sm); font-weight: 600; white-space: nowrap; }
+.reference-index button:hover { border-color: rgb(var(--c-line-control)); color: var(--ink); }
+.reference-index button > span, .reference-group > h2 > span { font: 400 var(--text-xs)/var(--leading-none) var(--mono-font); color: var(--mute); }
+.reference-group > h2 > span { padding: var(--space-1) var(--space-4); border-radius: var(--radius-pill); background: var(--paper-2); color: var(--ink-2); }
+.reference-group > h2:focus-visible { outline-offset: 4px; }
+@media (max-width: 1023px) {
+  .reference-index ul { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--space-6)); padding: 0 var(--space-6) var(--space-2); overscroll-behavior-x: contain; }
+  .reference-index li { flex: 0 0 auto; }
+}
+@media (max-width: 639px) { .reference-bottom-line { -webkit-line-clamp: 3; } }
+
+/* Calculators: each category reads as one grouped list under a section label; a row opens in place.
+   Encounter-tool links say where they go with an arrow. */
+.supplementary-calculators > section > h3 { margin: var(--space-12) 0 var(--space-4); font: 600 var(--text-xs)/var(--leading-tight) var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.supplementary-calculators details.calc-card { margin: 0; border-radius: 0; background: var(--surface); box-shadow: none; }
+.supplementary-calculators .calc-card:not([hidden]) ~ .calc-card { border-top-width: 0; }
+.supplementary-calculators .calc-card:first-of-type { border-top-left-radius: var(--radius-lg); border-top-right-radius: var(--radius-lg); }
+.supplementary-calculators .calc-card:last-of-type { border-bottom-left-radius: var(--radius-lg); border-bottom-right-radius: var(--radius-lg); }
+.supplementary-calculators details.calc-card[open] { background: var(--surface-2); }
+.supplementary-calculators .calc-card > summary { font-weight: 700; }
+.tool-links a::after { content: ''; flex-shrink: 0; width: 14px; height: 14px; margin-left: var(--space-4); background: currentColor; -webkit-mask: var(--icon-arrow) center / contain no-repeat; mask: var(--icon-arrow) center / contain no-repeat; }
+@media (max-width: 639px) {
+  .tools-surface .tool-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+  .tools-surface .tool-links li { margin: 0; }
+  .tools-surface .tool-links a { width: 100%; justify-content: space-between; }
+}
+
+/* Contraindication review: a tier rule beside each group, so 42 items read as four groups. Recorded
+   answers stand out from unanswered ones; the select's own word (Yes, No, Not assessed) carries the
+   meaning and the colour only repeats it. */
+.safety-group { padding: var(--space-2) 0 var(--space-2) var(--space-7); border-left: 3px solid rgb(var(--c-line-strong)); }
+.safety-group[data-tier="absolute"] { border-left-color: rgb(var(--c-critical)); }
+.safety-group[data-tier="relative"] { border-left-color: rgb(var(--c-caution)); }
+.safety-group[data-tier="correctable"] { border-left-color: rgb(var(--c-accent)); }
+.encounter-workflow .workspace-field select:has(> option[value=""]:checked) { color: var(--mute); }
+.encounter-workflow .workspace-field select option { color: var(--ink); }
+.safety-group[data-tier="absolute"] select:has(> option[value="true"]:checked) { border-color: rgb(var(--c-critical)); box-shadow: inset 4px 0 0 rgb(var(--c-critical)); }
+.safety-group[data-tier="relative"] select:has(> option[value="true"]:checked) { border-color: rgb(var(--c-caution)); box-shadow: inset 4px 0 0 rgb(var(--c-caution)); }
+.safety-group[data-tier="correctable"] select:has(> option[value="true"]:checked) { border-color: rgb(var(--c-accent)); box-shadow: inset 4px 0 0 rgb(var(--c-accent)); }
+
 /* Links that leave the app need internet: an arrow-out marker (decorative mask, never read aloud).
    Protocols keep their own link styling. */
 :is(.workspace-external, .reference-surface, .tools-surface, .trials-surface, .encounter-workflow) a[target="_blank"]::after { content: ''; display: inline-block; flex-shrink: 0; width: .8em; height: .8em; margin-left: var(--space-2); vertical-align: -.05em; background: currentColor; -webkit-mask: var(--icon-external) center / contain no-repeat; mask: var(--icon-external) center / contain no-repeat; }
