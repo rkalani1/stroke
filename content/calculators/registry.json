@@ -208,7 +208,7 @@
       "pascal-instrument"
     ],
     "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
-    "limits": "Simplified three-category classification for the source population aged 18–60 with otherwise cryptogenic stroke and PFO. Shunt/ASA definitions require specialist review; category does not establish individual causality or closure benefit."
+    "limits": "Simplified three-category classification for the source population aged 18–60 with otherwise cryptogenic stroke and PFO. Shunt/ASA definitions require specialist review; category does not establish individual causality or closure benefit. In pooled trial data, closure reduced stroke in possible/probable but not unlikely categories, where late AF rose."
   },
   {
     "id": "phases",
