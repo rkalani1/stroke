@@ -588,10 +588,10 @@ a.case-bar__badge::before { content: ''; position: absolute; inset: -8px -3px; }
 }
 
 /* ── 2026-10-21 review ── */
-/* Evidence: a collapsed topic shows its bottom line (the summary's opening sentence, clamped to two
-   lines, three on phones; the full sentence stays in the accessible name) and what it holds. Open,
-   the summary paragraph repeats the sentence, so the preview steps aside. */
-.reference-bottom-line { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; margin-top: var(--space-1); color: var(--ink-2); font-size: var(--text-md); font-weight: 400; line-height: var(--leading-normal); }
+/* Evidence: a collapsed topic shows its bottom line (the summary's opening sentence, in full: a
+   clamped clinical sentence can lose its population or "only if" qualifier) and what it holds.
+   Open, the summary paragraph repeats the sentence, so the preview steps aside. */
+.reference-bottom-line { display: block; margin-top: var(--space-1); color: var(--ink-2); font-size: var(--text-md); font-weight: 400; line-height: var(--leading-normal); }
 .reference-card[open] > summary > .reference-bottom-line { display: none; }
 .reference-contents { margin-top: var(--space-2); color: var(--mute); font-size: var(--text-xs); font-weight: 600; }
 /* Section index: jump buttons with counts; one sideways-scrolling row below 1024 px. */
@@ -605,7 +605,6 @@ a.case-bar__badge::before { content: ''; position: absolute; inset: -8px -3px; }
   .reference-index ul { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--space-6)); padding: 0 var(--space-6) var(--space-2); overscroll-behavior-x: contain; scroll-padding-inline: var(--space-6); }
   .reference-index li { flex: 0 0 auto; }
 }
-@media (max-width: 639px) { .reference-bottom-line { -webkit-line-clamp: 3; } }
 
 /* Calculators: each category reads as one grouped list under a section label; a row opens in place.
    Encounter-tool links say where they go with an arrow. */

@@ -314,6 +314,8 @@ describe('shell behaviour in Chromium', { timeout: 60000 }, () => {
     // Open, the summary paragraph repeats the sentence, so the preview steps aside (source rule:
     // the generated stylesheet is rebuilt at integration).
     expect(shell).toContain('.reference-card[open] > summary > .reference-bottom-line { display: none; }');
+    // Never clamped: a cut clinical sentence can drop its population or "only if" qualifier.
+    expect(shell).not.toMatch(/\.reference-bottom-line\s*\{[^}]*(line-clamp|overflow:\s*hidden|text-overflow)/);
     const sections = [...new Set(data.topics.map(item => item.category))];
     const ungrouped = data.studies.some(study => !study.relatedTopic) ? 1 : 0;
     expect(await page.locator('nav[aria-label="Evidence sections"] button').count()).toBe(sections.length + ungrouped);
@@ -321,6 +323,15 @@ describe('shell behaviour in Chromium', { timeout: 60000 }, () => {
     await page.locator('nav[aria-label="Evidence sections"] button', { hasText: last }).click();
     await poll(() => page.evaluate(() => document.activeElement?.id)).toBe(sectionId(last));
     expect(await page.evaluate(() => document.activeElement.getBoundingClientRect().top)).toBeLessThan(200);
+  });
+  it('shows every collapsed bottom line in full on a phone (no sentence is cut short)', async () => {
+    await open('#/evidence', { width: 390, height: 844 });
+    await page.locator('.reference-bottom-line').first().waitFor();
+    const lines = await page.locator('.reference-bottom-line').evaluateAll(nodes => nodes.map(node => ({ text: node.textContent, cut: node.scrollHeight > node.clientHeight + 1 || node.scrollWidth > node.clientWidth + 1 })));
+    const topics = JSON.parse(reference).data.topics;
+    expect(lines.length).toBe(topics.length);
+    expect(lines.filter(line => line.cut)).toEqual([]);
+    expect(lines.map(line => line.text).sort()).toEqual(topics.map(topic => bottomLine(topic.summary)).sort());
   });
   it('brings a keyboard-focused section button fully into view in the sideways index (820 px)', async () => {
     await open('#/evidence', { width: 820, height: 1180 });
