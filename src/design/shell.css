@@ -602,7 +602,7 @@ a.case-bar__badge::before { content: ''; position: absolute; inset: -8px -3px; }
 .reference-group > h2 > span { padding: var(--space-1) var(--space-4); border-radius: var(--radius-pill); background: var(--paper-2); color: var(--ink-2); }
 .reference-group > h2:focus-visible { outline-offset: 4px; }
 @media (max-width: 1023px) {
-  .reference-index ul { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--space-6)); padding: 0 var(--space-6) var(--space-2); overscroll-behavior-x: contain; }
+  .reference-index ul { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--space-6)); padding: 0 var(--space-6) var(--space-2); overscroll-behavior-x: contain; scroll-padding-inline: var(--space-6); }
   .reference-index li { flex: 0 0 auto; }
 }
 @media (max-width: 639px) { .reference-bottom-line { -webkit-line-clamp: 3; } }

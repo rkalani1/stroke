@@ -322,6 +322,25 @@ describe('shell behaviour in Chromium', { timeout: 60000 }, () => {
     await poll(() => page.evaluate(() => document.activeElement?.id)).toBe(sectionId(last));
     expect(await page.evaluate(() => document.activeElement.getBoundingClientRect().top)).toBeLessThan(200);
   });
+  it('brings a keyboard-focused section button fully into view in the sideways index (820 px)', async () => {
+    await open('#/evidence', { width: 820, height: 1180 });
+    const buttons = page.locator('nav[aria-label="Evidence sections"] button');
+    await buttons.first().waitFor();
+    // Below 1024 px the index is one row that scrolls sideways; at 820 px it overflows.
+    expect(await page.evaluate(() => { const list = document.querySelector('.reference-index ul'); return list.scrollWidth > list.clientWidth; })).toBe(true);
+    await buttons.first().focus();
+    const count = await buttons.count();
+    for (let i = 1; i < count; i += 1) {
+      await page.keyboard.press('Tab');
+      const fit = await page.evaluate(() => {
+        const button = document.activeElement, list = button.closest('.reference-index ul');
+        if (!list) return { label: button.textContent, inside: false };
+        const box = button.getBoundingClientRect(), port = list.getBoundingClientRect();
+        return { label: button.textContent, inside: box.left >= port.left - 1 && box.right <= port.right + 1 };
+      });
+      expect(fit.inside, fit.label).toBe(true);
+    }
+  });
   it('says when it is offline that app content still works and links need internet', async () => {
     await open('#/encounter');
     const status = page.locator('.workspace-offline');
