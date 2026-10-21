@@ -286,7 +286,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/36762852/",
         "year": 2023,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -319,7 +319,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/35138767/",
         "year": 2022,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -352,7 +352,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/37837989/",
         "year": 2023,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -384,7 +384,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/38718358/",
         "year": 2024,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -417,7 +417,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/7477192/",
         "year": 1995,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -450,7 +450,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/18815396/",
         "year": 2008,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -481,7 +481,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/36239645/",
         "year": 2022,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
       }
     ],
@@ -506,14 +506,14 @@
     "population": "340 patients at 36 Chinese centers; about one third received IVT.",
     "comparison": "EVT versus best medical care (2:1 randomization).",
     "result": "mRS 0–3 at 90 days occurred in 46% vs 23% (adjusted rate ratio 2.06; 95% CI 1.46–2.91). Mortality 37% vs 55%; symptomatic ICH 5% vs 0%; procedural complications 14%.",
-    "limits": "Single-country trial; most patients had severe deficits.",
+    "limits": "Single-country trial; it required NIHSS ≥10 (registry NCT04751708).",
     "sources": [
       {
         "title": "ATTENTION primary report",
         "url": "https://pubmed.ncbi.nlm.nih.gov/36239644/",
         "year": 2022,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -545,7 +545,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/41655588/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -578,7 +578,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42776543/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -606,14 +606,14 @@
     "population": "543 participants within 24 hours; nondominant/codominant M2 or selected more distal MCA, ACA or PCA occlusions. Median NIHSS was 6.",
     "comparison": "EVT plus best medical treatment versus best medical treatment alone.",
     "result": "The 90-day mRS distribution did not improve significantly (common OR 0.90; 95% CI 0.67–1.22). Symptomatic intracranial hemorrhage was 5.9% versus 2.6%; mortality was 15.5% versus 14.0%.",
-    "limits": "A neutral trial in its selected vessel/severity population; it does not establish equivalence or settle every medium-vessel treatment question. Dominant M2 was outside the stated M2 population.",
+    "limits": "A neutral trial in its selected vessel/severity population; it does not establish equivalence or settle every medium-vessel treatment question. Dominant M2 was outside the stated M2 population. At 12 months there was still no benefit (acOR 0.81; 95% CI 0.59–1.12).",
     "sources": [
       {
         "title": "DISTAL primary report",
         "url": "https://pubmed.ncbi.nlm.nih.gov/39908430/",
         "year": 2025,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
       }
     ],
@@ -645,7 +645,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/39908448/",
         "year": 2025,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
       }
     ],
@@ -678,7 +678,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42485024/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -870,7 +870,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42127389/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
       }
     ],
@@ -1446,7 +1446,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/35810756/",
         "year": 2022,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -1478,7 +1478,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/34758251/",
         "year": 2021,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -1510,7 +1510,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/32374959/",
         "year": 2020,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -1543,7 +1543,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/40396577/",
         "year": 2025,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
