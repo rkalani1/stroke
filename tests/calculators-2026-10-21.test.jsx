@@ -2,9 +2,12 @@
 // source definition named in the comment (abstract, PMC full text or registry record read on
 // 2026-10-21; see docs/review-2026-10-21/calculators.md), not from the implementation.
 import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vitest';
+import { build } from 'esbuild';
+import { chromium } from 'playwright';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import Encounter from '../src/Encounter.jsx';
 import { calculateICHScore, calculateGCS, calculateNIHSS, calculateCrClReviewed, calculateAlteplaseDoseReviewed, calculateTNKDoseReviewed, calculateICHVolumeReviewed } from '../src/calculators.js';
 import { evaluateDAWN, evaluateDEFUSE3, evaluateLargeCoreEVT, recommendAcuteDAPT, computeNeurocheckSchedule } from '../src/calculators-extended.js';
@@ -457,5 +460,51 @@ describe('worksheet copy text, search and deep links', () => {
     }
     expect(links.size).toBeGreaterThan(10);
     for (const link of links) expect(parseWorkspaceRoute(link).surface, link).not.toBe('retired');
+  });
+});
+
+describe('Calculators tab keyboard use (headless Chromium)', () => {
+  let browser, page;
+  beforeAll(async () => {
+    const bundled = await build({ bundle: true, write: false, format: 'iife', platform: 'browser', stdin: { resolveDir: fileURLToPath(new URL('../', import.meta.url)), loader: 'jsx', contents: `
+      import React from 'react';import {createRoot} from 'react-dom/client';import {flushSync} from 'react-dom';
+      import {CalculatorDirectory} from './src/Tools.jsx';import {calculatorDefinitions} from './src/supplementary-calculator-definitions.js';import {reconcileSupplementaryAppliedScores} from './src/supplementary-calculators.js';
+      const root=createRoot(document.getElementById('root'));window.copied=[];
+      Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:text=>{window.copied.push(text);return Promise.resolve();}}});
+      const draw=()=>root.render(<CalculatorDirectory definitions={calculatorDefinitions} state={window.model} update={fn=>{window.model=reconcileSupplementaryAppliedScores(window.model,fn(window.model));flushSync(draw);}}/>);
+      window.renderTools=state=>{window.model=state;flushSync(draw)};
+    ` } });
+    browser = await chromium.launch({ headless: true });
+    page = await browser.newPage();
+    await page.setContent('<div id="root"></div>');
+    await page.addScriptTag({ content: bundled.outputFiles[0].text });
+  }, 30000);
+  afterAll(async () => { await browser?.close(); });
+  const focused = () => page.evaluate(() => document.activeElement?.getAttribute('aria-label') || document.activeElement?.tagName.toLowerCase());
+  it('finds, opens, completes and copies a worksheet from the keyboard alone', async () => {
+    await page.evaluate(state => window.renderTools(state), { context: 'follow-up', note: { age: '60', sex: 'M', weight: '80', heightCm: '175' }, gcs: {}, details: {}, supplementary: {} });
+    await page.getByLabel('Find a calculator').focus();
+    await page.keyboard.type('sleep apnea');
+    await page.keyboard.press('Tab'); // Clear search
+    await page.keyboard.press('Tab'); // the only matching worksheet
+    expect(await focused()).toBe('summary');
+    await page.keyboard.press('Enter');
+    expect(await page.locator('#calc-stop-bang').evaluate(node => node.open)).toBe(true);
+    await page.keyboard.press('Tab'); // Edit in Encounter
+    await page.keyboard.press('Tab');
+    for (const [label, key] of [['Loud snoring', 'Y'], ['Frequent daytime tiredness / sleepiness', 'N'], ['Observed stopping breathing during sleep', 'N'], ['High blood pressure or treatment for hypertension', 'Y']]) {
+      expect(await focused()).toBe(label);
+      await page.keyboard.press(key); // type-ahead picks Yes / No
+      await page.keyboard.press('Tab');
+    }
+    expect(await focused()).toBe('Measured neck circumference (cm)');
+    await page.keyboard.type('41');
+    // Snoring + pressure + age >50 + male + neck >40 cm = 5; BMI 80 / 1.75² = 26.1 is not >35.
+    expect(await page.locator('#calc-stop-bang [role="status"]').first().textContent()).toContain('STOP-BANG: 5/8');
+    await page.locator('#calc-stop-bang').getByRole('button', { name: 'Copy result' }).focus();
+    await page.keyboard.press('Enter');
+    const copied = await page.evaluate(() => window.copied.at(-1));
+    expect(copied.split('\n')[0]).toBe('STOP-BANG: 5/8.');
+    expect(copied.split('\n')[1]).toMatch(/^Limits: Original eight-item/);
   });
 });
