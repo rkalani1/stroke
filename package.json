@@ -41,6 +41,7 @@
     "test:protocol-snapshot": "node ./scripts/snapshot-example-protocols.mjs",
     "test:protocol-snapshot:update": "node ./scripts/snapshot-example-protocols.mjs --update",
     "test:protocol-tab": "node ./scripts/protocols-tab-lock.mjs",
+    "test:protocol-tab:phone": "node ./scripts/protocols-tab-lock.mjs --viewport=phone",
     "test:protocol-source": "node ./scripts/protocols-source-lock.mjs",
     "test:unit:watch": "vitest",
     "lint:tokens": "node ./scripts/lint-tokens.mjs",
