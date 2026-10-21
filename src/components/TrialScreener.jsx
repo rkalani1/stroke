@@ -117,7 +117,8 @@ function EncounterBanner({ prefill, onUse, applied }) {
 function NumberFact({ label, field, rule, value, onChange, min, max, step = 1, unit }) {
   const shown = value === 'unselected' || value === null || value === undefined ? '' : value;
   const invalid = shown !== '' && numericFact(field, shown) === null, hint = `trial-${field}-invalid`;
-  return <label className="workspace-field !my-0 justify-between"><span>{label}{unit && <span className="font-normal text-mute"> ({unit})</span>}</span><input type="number" inputMode="decimal" aria-label={unit ? `${label} (${unit})` : label} aria-invalid={invalid || undefined} aria-describedby={invalid ? hint : undefined} min={min} max={max} step={step} placeholder="Unknown" value={shown} onChange={e => onChange(e.target.value === '' ? 'unselected' : e.target.value)} />{invalid && <small id={hint} className="text-xs text-crit-700 dark:text-crit-300">Treated as unknown: enter <span className="whitespace-nowrap">{rule}</span>.</small>}</label>;
+  // The hint sits in the label block so the input stays bottom-aligned with its grid neighbour.
+  return <label className="workspace-field !my-0 justify-between"><span>{label}{unit && <span className="font-normal text-mute"> ({unit})</span>}{invalid && <small id={hint} className="block text-xs font-normal text-crit-700 dark:text-crit-300">Treated as unknown: enter <span className="whitespace-nowrap">{rule}</span>.</small>}</span><input type="number" inputMode="decimal" aria-label={unit ? `${label} (${unit})` : label} aria-invalid={invalid || undefined} aria-describedby={invalid ? hint : undefined} min={min} max={max} step={step} placeholder="Unknown" value={shown} onChange={e => onChange(e.target.value === '' ? 'unselected' : e.target.value)} /></label>;
 }
 function SelectFact({ label, value, onChange, options }) {
   const current = value === 'unselected' || value === null || value === undefined ? '' : String(value);

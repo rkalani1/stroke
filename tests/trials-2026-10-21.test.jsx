@@ -345,7 +345,7 @@ describe('on-call clarity of the key facts and timing controls', () => {
     const html = render({ classification: 'ich', age: '150', nihss: '3.5', ichVolume: '1e3', onsetVal: '-1', onsetUnit: 'hours' });
     expect(html).toContain('aria-invalid="true" aria-describedby="trial-age-invalid"');
     const hint = rule => `Treated as unknown: enter <span class="whitespace-nowrap">${rule}</span>.</small>`;
-    expect(html).toContain('<small id="trial-age-invalid" class="text-xs text-crit-700 dark:text-crit-300">' + hint('0–120'));
+    expect(html).toContain('<small id="trial-age-invalid" class="block text-xs font-normal text-crit-700 dark:text-crit-300">' + hint('0–120'));
     expect(html).toContain(hint('a whole number 0–42'));
     expect(html).toContain(hint('0–300 mL'));
     expect(html).toContain('Not a valid interval; timing remains unknown.');
