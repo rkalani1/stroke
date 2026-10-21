@@ -9,7 +9,7 @@ const absoluteContraindications = [
                                   { id: 'sahPresentation', label: 'Clinical presentation suggestive of SAH', note: 'even if CT normal' },
                                   { id: 'infectiveEndocarditis', label: 'Presentation consistent with infective endocarditis', note: null },
                                   { id: 'acuteSevereTBI', label: 'Moderate-severe TBI within 14 days', note: 'GCS <13 OR intracranial hemorrhage / contusion / skull fracture (AHA/ASA 2026)' },
-                                  { id: 'severeUncontrolledHTN', label: 'SBP >185 or DBP >110 mmHg', note: 'unresponsive to treatment' },
+                                  { id: 'severeUncontrolledHTN', label: 'SBP ≥185 or DBP ≥110 mmHg', note: 'unresponsive to treatment' },
                                   { id: 'lowPlatelets', label: 'Platelet count <100,000', note: null },
                                   { id: 'warfarinElevatedINR', label: 'Warfarin use with PT >15s, INR >1.7, or aPTT >40s', note: null },
                                   { id: 'knownBleedingDiathesis', label: 'Severe coagulopathy or bleeding diathesis', note: null },
@@ -46,7 +46,7 @@ const cautionaryConditions = [
                                   { id: 'intracranialAneurysm', label: 'Unruptured intracranial aneurysm (<10mm or secured)', note: 'IVT benefit outweighs risk' },
                                   { id: 'recentMI', label: 'History of myocardial infarction', note: 'IVT benefit outweighs risk' },
                                   { id: 'seizureAtOnset', label: 'Seizure at onset / diagnostic uncertainty', note: 'if true stroke, IVT benefit outweighs risk' },
-                                  { id: 'highGlucose', label: 'Blood glucose >400 mg/dL', note: 'correct; if deficits persist, IVT is eligible' },
+                                  { id: 'highGlucose', label: 'Blood glucose >400 mg/dL', note: 'correct to normoglycemia first; IVT is recommended if disabling deficits persist (AHA/ASA 2026 COR 1)' },
                                   { id: 'dualAntiplatelet', label: 'Antiplatelet therapy (single or dual)', note: 'IVT recommended despite increased sICH (COR I, B-NR)' },
                                   { id: 'aceInhibitor', label: 'ACE inhibitor use', note: 'Increased angioedema risk in alteplase cohorts; prepare airway assessment without treating ACE-inhibitor use alone as an absolute exclusion.' }
                                 ];

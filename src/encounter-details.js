@@ -102,7 +102,7 @@ export const ENCOUNTER_DETAIL_GROUPS = [
     status('tiaCardiacWorkup', 'TIA ECG / rhythm workup', { when: isTia }),
     ...TIA_RISK_FIELDS.map(([key, , label]) => yesNo(key, label, { when: isTia })),
     yesNo('tiaWorkupComplete', 'Same-day TIA workup complete', { when: isTia }),
-    yesNo('tiaFollowupAccess', 'Prompt outpatient follow-up confirmed', { when: isTia }),
+    yesNo('tiaFollowupAccess', 'Rapid neurology or TIA-clinic follow-up confirmed (ideally ≤48 h)', { when: isTia }),
     text('tiaDispositionAssessment', 'TIA workup gaps / disposition assessment', { when: isTia }),
     choice('mimicDifferential', 'Alternative diagnosis under consideration', ['Seizure / postictal deficit', 'Migraine', 'Metabolic / toxic', 'Peripheral vestibular disorder', 'Functional neurologic disorder', 'Structural lesion', 'Infection', 'Other / uncertain'], { when: isMimicOrOther }),
     text('mimicEvidence', 'Findings supporting differential / unresolved concerns', { when: isMimicOrOther })
@@ -287,7 +287,7 @@ export function formatEncounterDetails(state, now = Date.now(), { omit = [] } = 
     id: group.id,
     title: group.title,
     lines: group.fields.filter(field => !omit.includes(field.key)).flatMap(field => {
-      if (field.type === 'worksheet') return field.result ? [`${field.label}: ${field.result.score}/${field.result.max}`] : [];
+      if (field.type === 'worksheet') return field.result ? [`${field.label}: ${field.result.score}/${field.result.max}${[field.result.heightWarning, field.result.neckWarning].filter(Boolean).map(text => ` [${text}]`).join('')}`] : [];
       return hasValue(values[field.key]) ? [`${field.label}: ${formatField(field, values[field.key], values, now)}`] : [];
     })
   })).filter(group => group.lines.length);

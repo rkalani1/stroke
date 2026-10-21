@@ -62,7 +62,8 @@ describe('case bar after thrombolysis and for ICH', () => {
     expect(caseSummary({ ...given, actions: { ...given.actions, agentConfirmed: undefined } }, now).dose).toMatchObject({ label: 'IVT given', flag: 'caution', title: 'Recorded administration time; confirm the agent given in Encounter' });
   });
   it('flags BP against the phase-specific limit', () => {
-    expect(caseSummary(given, now).bpTitle).toBe('Above the post-IVT limit of 180/105');
+    // 2026-10-21: the target is below 180/105 (ais-2026-74), so exactly 180/105 is flagged too.
+    expect(caseSummary(given, now).bpTitle).toBe('Not below the post-IVT limit of 180/105');
     expect(caseSummary(ischemic({ note: { presentingBP: '185/100' } }), now).bpHigh).toBe(true);
     expect(caseSummary(ischemic({ note: { presentingBP: '184/109' } }), now).bpHigh).toBe(false);
     expect(caseSummary(make({ note: { diagnosisCategory: 'ich', presentingBP: '210/110' } }), now).bpTitle).toMatch(/^ICH: SBP 150–220 → target 140/);

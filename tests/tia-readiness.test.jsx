@@ -68,7 +68,8 @@ describe('TIA readiness from canonical encounter fields', () => {
 
   it('preserves negative and unknown overall workup/follow-up gaps without claiming clearance', () => {
     const review = encounterTiaReadiness(tia({ ...negativeRisks, ...completedWorkup, tiaWorkupComplete: 'no', tiaFollowupAccess: '' }));
-    expect(review.gaps).toEqual(['Same-day workup: not confirmed.', 'Prompt outpatient follow-up: confirmation not documented.']);
+    // 2026-10-21: the follow-up gap names its AHA 2023 timing anchor (tia-ed-2023-49/-30: preferably within 48 hours).
+    expect(review.gaps).toEqual(['Same-day workup: not confirmed.', 'Rapid follow-up (ideally ≤48 h): confirmation not documented.']);
     expect(review.status).toBe('review');
   });
 

@@ -46,13 +46,13 @@ export function caseSummary(state, nowMs) {
   const hold = acuteIschemic && !administered && state.decisions?.ivt !== 'Not recommended' ? doseHold(state, nowMs, weight, age) : null;
   const dose = acuteIschemic && !hold && weight !== null && ['TNK', 'Alteplase'].includes(state.drug) && state.decisions?.ivt !== 'Not recommended' ? (state.drug === 'Alteplase' ? calculateAlteplaseDoseReviewed(n.weight) : calculateTNKDoseReviewed(n.weight, state.doseAuthority)) : null;
   const gcs = ['ich', 'sah', 'cvt'].includes(n.diagnosisCategory) ? reviewedGcs(state.gcs) : null;
-  // BP flags: AIS before IVT not <185/110 (AHA/ASA 2026 COR 1); after IVT above 180/105 (COR 1);
+  // BP flags: AIS before IVT not <185/110 (AHA/ASA 2026 COR 1); after IVT not <180/105 (COR 1, ais-2026-74);
   // acute ICH SBP >=150, the 2022 range in which lowering toward 140 applies.
   const bpKnown = sbp !== null && dbp !== null;
   const ich = state.context === 'acute' && n.diagnosisCategory === 'ich';
   // After IVT the entered BP may still be the presenting value; a documented pre-IVT BP shows that.
   const preIvt = parsePreIvtBp(state.details?.preIvtBP);
-  const bpFlag = !bpKnown ? null : acuteIschemic ? administered ? sbp > 180 || dbp > 105 ? `Above the post-IVT limit of 180/105${preIvt ? `; documented pre-IVT BP ${preIvt.text}. Update the entered BP with the current reading` : ''}` : null : sbp >= 185 || dbp >= 110 ? 'Not below 185/110 (pre-IVT)' : null
+  const bpFlag = !bpKnown ? null : acuteIschemic ? administered ? sbp >= 180 || dbp >= 105 ? `Not below the post-IVT limit of 180/105${preIvt ? `; documented pre-IVT BP ${preIvt.text}. Update the entered BP with the current reading` : ''}` : null : sbp >= 185 || dbp >= 110 ? 'Not below 185/110 (pre-IVT)' : null
     : ich && sbp >= 220 ? 'ICH: SBP ≥220 is outside the 2022 150–220 range; local protocol: reduce about 20% (never more than 25%) in the first hour, then gradually to 140–160'
     : ich && sbp >= 150 ? 'ICH: SBP 150–220 → target 140 (130–150), start ≤2 h, reach ≤1 h; avoid <130' : null;
   return {

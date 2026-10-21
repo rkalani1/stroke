@@ -64,10 +64,14 @@ export function encounterTiaReadiness(state) {
   const missing = TIA_RISK_FIELDS.filter(([, name]) => typeof assessment[name] !== 'boolean').map(([, , label]) => label);
   const concerns = TIA_RISK_FIELDS.filter(([, name]) => assessment[name] === true).map(([, , label]) => label);
   const gaps = [
-    ...[['tiaMri', 'MRI / DWI'], ['tiaVascularImaging', 'Head / neck vascular imaging'], ['tiaCardiacWorkup', 'ECG / rhythm workup']]
-      .filter(([key]) => !['Completed', 'Not indicated'].includes(details[key]))
-      .map(([, label]) => `${label}: completion or a clinician-reviewed alternative remains to be documented.`),
-    ...[['tiaWorkupComplete', 'Same-day workup'], ['tiaFollowupAccess', 'Prompt outpatient follow-up']]
+    // AHA 2023 TIA ED statement: vessel imaging and ECG are warranted for every TIA; MRI may reasonably be
+    // unavailable acutely, so only MRI can be closed as "Not indicated".
+    ...[['tiaMri', 'MRI / DWI', true], ['tiaVascularImaging', 'Head / neck vascular imaging', false], ['tiaCardiacWorkup', 'ECG / rhythm workup', false]]
+      .filter(([key, , optional]) => !(details[key] === 'Completed' || (optional && details[key] === 'Not indicated')))
+      .map(([key, label]) => details[key] === 'Not indicated'
+        ? `${label}: recorded as not indicated; the AHA 2023 TIA statement considers it warranted for every TIA. Document the reason.`
+        : `${label}: completion or a clinician-reviewed alternative remains to be documented.`),
+    ...[['tiaWorkupComplete', 'Same-day workup'], ['tiaFollowupAccess', 'Rapid follow-up (ideally ≤48 h)']]
       .filter(([key]) => details[key] !== 'yes')
       .map(([key, label]) => `${label}: ${details[key] === 'no' ? 'not confirmed' : 'confirmation not documented'}.`)
   ];
