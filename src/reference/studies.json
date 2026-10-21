@@ -1262,15 +1262,31 @@
     "population": "108 patients with moderate-to-severe arm weakness at least nine months after ischemic stroke.",
     "comparison": "Implanted active versus sham vagus stimulation paired with six weeks of rehabilitation; all participants received implants.",
     "result": "The primary Fugl-Meyer upper-extremity improvement immediately after therapy was 5.0 versus 2.4 points (difference 2.6; 95% CI 1.0–4.2). One serious surgery-related vocal-cord paresis occurred in the sham group.",
-    "limits": "Small, selected chronic-stroke trial. The endpoint measures impairment, not independent living; both arms carried implantation risks. Trial efficacy does not establish individual candidacy, device availability or coverage.",
+    "limits": "Small, selected chronic-stroke trial. The endpoint measures impairment, not independent living; both arms carried implantation risks. Trial efficacy does not establish individual candidacy, device availability or coverage. A 2026 Cochrane review (10 RCTs, 7 transcutaneous; mostly high risk of bias) rated the arm-motor evidence very uncertain; 2-year gains (post hoc) are uncontrolled because both arms then received active stimulation.",
     "sources": [
       {
         "title": "VNS-REHAB primary report",
         "url": "https://pubmed.ncbi.nlm.nih.gov/33894832/",
         "year": 2021,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
+      },
+      {
+        "title": "VNS-REHAB 2-year follow-up (post hoc)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42447422/",
+        "year": 2026,
+        "type": "Report",
+        "checkedAt": "2026-10-21",
+        "access": "Primary abstract read."
+      },
+      {
+        "title": "Cochrane review of VNS for post-stroke motor function",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41823357/",
+        "year": 2026,
+        "type": "Meta-analysis",
+        "checkedAt": "2026-10-21",
+        "access": "Primary abstract read."
       }
     ],
     "relatedTopic": "motor-recovery"

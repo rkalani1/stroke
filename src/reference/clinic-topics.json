@@ -512,13 +512,13 @@
       "participation",
       "telehealth"
     ],
-    "summary": "Start formal interdisciplinary rehabilitation assessment in hospital (AHA 2026, COR 1) and avoid high-dose mobilization within 24 h (COR 3: Harm). Screen for depression with a structured inventory and treat it (COR 1); SSRIs do not improve motor recovery (COR 3). Reassess function, mood and goals at follow-up and re-engage therapy when needs change.",
+    "summary": "AHA/ASA AIS 2026: formal inpatient interdisciplinary assessment and rehabilitation matched to the patient (COR 1); no high-dose, very early mobilization within 24 h (COR 3: Harm); screen for depression with a structured inventory and treat it (COR 1). SSRIs are not recommended for motor or functional recovery (COR 3: No Benefit): fluoxetine 20 mg daily for 6 months did not improve mRS and increased fractures (FOCUS, AFFINITY, EFFECTS). Reassess function, mood and goals at follow-up.",
     "consider": [
       "Which impairments, daily activities and participation goals need assessment or renewed therapy?",
       "Have the patient and care partner received education, training and support?",
       "Is follow-up feasible (transport, access, telehealth), and who reassesses progress?"
     ],
-    "caution": "A screening score is not a diagnosis, and this card gives no driving, work or travel clearance.",
+    "caution": "A screening score is not a diagnosis, and this card gives no driving, work or travel clearance. Grades are from AIS 2026; the August 2026 AHA/ASA rehabilitation guideline was not reviewed.",
     "sources": [
       {
         "title": "2026 AHA/ASA adult stroke rehabilitation and recovery guideline: overview",
@@ -527,6 +527,30 @@
         "type": "Guideline",
         "checkedAt": "2026-10-01",
         "access": "Official AHA summary page."
+      },
+      {
+        "title": "FOCUS trial of fluoxetine after stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/30528472/",
+        "year": 2019,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-21",
+        "access": "Primary abstract read."
+      },
+      {
+        "title": "AFFINITY trial of fluoxetine after stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/32702334/",
+        "year": 2020,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-21",
+        "access": "Primary abstract read."
+      },
+      {
+        "title": "EFFECTS trial of fluoxetine after stroke",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/32702335/",
+        "year": 2020,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-21",
+        "access": "Primary abstract read."
       }
     ],
     "related": [

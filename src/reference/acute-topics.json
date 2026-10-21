@@ -284,7 +284,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/26180146/",
         "year": 2015,
         "type": "Observational study",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -908,7 +908,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/19762709/",
         "year": 2009,
         "type": "Observational study",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       },
       {
@@ -916,7 +916,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/24127701/",
         "year": 2013,
         "type": "Observational study",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -997,7 +997,7 @@
       "Screen nutrition within 48 h and depression with a structured tool; start enteral feeding within 7 days if the patient cannot swallow.",
       "After EVT: neurological checks, access site, the BP plan and urgent imaging for any decline."
     ],
-    "caution": "Intensive targets backfire here: SBP <140 after successful EVT is harmful, and IV insulin to 80–130 mg/dL adds hypoglycemia without benefit.",
+    "caution": "Intensive targets backfire here: targeting SBP <140 for 72 h after successful anterior-LVO EVT is harmful, and IV insulin to 80–130 mg/dL adds hypoglycemia without benefit.",
     "sources": [
       {
         "title": "AHA 2024 systemic complications of acute stroke statement — official summary",
@@ -1060,7 +1060,7 @@
       "MRV",
       "recanalization"
     ],
-    "summary": "TIA or minor stroke: MRI DWI within 24 h and head-and-neck vessel imaging in the ED. ICH: repeat CT within 24 h (sooner with decline) for expansion; CTA ± venography for lobar ICH <70 y, deep or posterior fossa ICH <45 y, or 45–70 y without hypertension; DSA if CTA suggests a macrovascular cause or for primary IVH; MRI/MRA if CTA is negative; repeat DSA at 3–6 months may be reasonable after a negative first study. aSAH: CTA/CTP and TCD for vasospasm; after adequately occluded coiling, image again at ≥12 months (ESO). CVT: MRI/MRV (CT/CTV acceptable); whether recanalization should guide anticoagulation duration is uncertain.",
+    "summary": "TIA or minor stroke: MRI DWI within 24 h and head-and-neck vessel imaging in the ED. ICH: repeat CT within 24 h (sooner with decline) for expansion; CTA ± venography for lobar ICH <70 y, deep or posterior fossa ICH <45 y, or 45–70 y without hypertension; DSA if CTA suggests a macrovascular cause or for primary IVH; MRI/MRA if CTA is negative; repeat DSA at 3–6 months may be reasonable after a negative first study. aSAH: CTA/CTP and TCD for vasospasm (AHA 2023, 2a; ESO 2026 makes no TCD recommendation); after adequately occluded coiling, image again at ≥12 months (ESO 2026 consensus). CVT: MRI/MRV (CT/CTV acceptable); whether recanalization should guide anticoagulation duration is uncertain.",
     "consider": [
       "Any neurological decline: urgent CT first (hemorrhage, swelling, hydrocephalus), then CTA if reocclusion or vasospasm is possible.",
       "Ischemic stroke: noninvasive intracranial and vertebrobasilar imaging (CTA or MRA) identifies atherosclerosis, dissection and moyamoya (AHA 2021, 2a).",
