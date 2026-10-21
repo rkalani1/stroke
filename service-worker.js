@@ -93,28 +93,28 @@ const CDN_ASSETS = [];
 // not execute deferred protocols, trials, calculators or reference modules.
 // BEGIN GENERATED APP CHUNKS
 const APP_CHUNKS = [
+  "./chunks/chunk-2KZGYFQZ.js",
+  "./chunks/chunk-3C5ZDFRN.js",
   "./chunks/chunk-3EH37YPU.js",
   "./chunks/chunk-6IG4POVN.js",
+  "./chunks/chunk-AAVWIZZF.js",
   "./chunks/chunk-BVAA575E.js",
   "./chunks/chunk-CCC5QWPU.js",
-  "./chunks/chunk-CVE5G7EA.js",
   "./chunks/chunk-DXV6LRZM.js",
   "./chunks/chunk-HOFJI2PN.js",
-  "./chunks/chunk-KXBYGU7T.js",
   "./chunks/chunk-QPJ3MHXX.js",
   "./chunks/chunk-RKNMGIFI.js",
-  "./chunks/chunk-ROT5RF3S.js",
   "./chunks/chunk-RZXX55EJ.js",
-  "./chunks/chunk-USXDLG6G.js",
-  "./chunks/chunk-UUVPNWCE.js",
-  "./chunks/chunk-VBK5MHSV.js",
+  "./chunks/chunk-SQ3QWPC3.js",
+  "./chunks/chunk-UK7GGLSN.js",
+  "./chunks/chunk-W7HN36VK.js",
   "./chunks/InstallAppButton-NWUBLKJU.js",
-  "./chunks/ProtectedProtocols-D6RTNENP.js",
-  "./chunks/QuickReference-OQ6AATTM.js",
-  "./chunks/QuickSearch-VGWPKPQC.js",
+  "./chunks/ProtectedProtocols-WCC5DBMZ.js",
+  "./chunks/QuickReference-UB37GWVX.js",
+  "./chunks/QuickSearch-EJYIEUNY.js",
   "./chunks/Reference-OAN5TN5O.js",
-  "./chunks/Tools-BAFTAQK7.js",
-  "./chunks/Trials-UWNFDFXG.js"
+  "./chunks/Tools-6MI5B5LE.js",
+  "./chunks/Trials-ZWR45LAD.js"
 ];
 // END GENERATED APP CHUNKS
 
