@@ -99,8 +99,8 @@ describe('restored telephone Pulsara and video Epic documentation', () => {
     state.actions.consentTime = '2026-10-01T13:00';
     state.actions.punctureTime = '2026-02-30T11:00';
     expect(buildSummary(state, NOW)).not.toContain('Alteplase at');
-    expect(buildSummary(state, NOW)).toContain('IVT Consent time: invalid or future');
-    expect(buildSummary(state, NOW)).toContain('EVT puncture: invalid or future');
+    expect(buildSummary(state, NOW)).toContain('IVT Consent time: 2026-10-01 13:00 (invalid or future');
+    expect(buildSummary(state, NOW)).toContain('EVT puncture: 2026-02-30 11:00 (invalid or future');
   });
 
   it.each(['phone', 'video'])('includes the entered manual rationale once and never recycles a generated draft in %s', format => {

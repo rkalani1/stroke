@@ -12,10 +12,11 @@ describe('encounter navigation readout', () => {
   });
   it('recognizes zero values while retaining invalid numeric entries as missing', () => {
     const s = newEncounter(); Object.assign(s.note, { diagnosisCategory: 'mimic', age: '0', weight: '0', premorbidMRS: '0' });
-    expect(encounterOverview(s, now).missing.map(item => item.label)).toContain('Weight');
+    // 2026-10-21: an entered but invalid value stays missing and is labelled for correction.
+    expect(encounterOverview(s, now).missing.map(item => item.label)).toContain('Weight (check entry)');
     expect(encounterOverview(s, now).missing.map(item => item.label)).not.toContain('Age');
     expect(encounterOverview(s, now).missing.map(item => item.label)).not.toContain('Baseline mRS');
-    s.note.age = '121'; expect(encounterOverview(s, now).missing.map(item => item.label)).toContain('Age');
+    s.note.age = '121'; expect(encounterOverview(s, now).missing.map(item => item.label)).toContain('Age (check entry)');
   });
   it('does not present a partial or untestable NIHSS as complete', () => {
     const s = newEncounter(); s.nihss = Object.fromEntries(NIHSS_ITEMS.map(item => [item.id, item.options[0]]));
