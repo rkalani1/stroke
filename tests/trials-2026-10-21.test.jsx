@@ -8,7 +8,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { newEncounter } from '../src/workspace-state.js';
 import { screenerTrials } from '../src/evidence/screenerTrials.js';
 import {
-  buildScreenerParams, createInitialScreenerState, evaluateAll, evaluateTrialEligibility, enrollmentLabel,
+  anchoredOnsetHours, buildScreenerParams, createInitialScreenerState, evaluateAll, evaluateTrialEligibility, enrollmentLabel,
   EXCLUSION_ITEMS, numericFact, onsetSummary, potentialMatches, registryCheckLabel, toConfirm, ONSET_PRESETS
 } from '../src/evidence/screener-eval.js';
 import { applyEncounterPrefill, screenerPrefillFromEncounter } from '../src/evidence/screener-prefill.js';
@@ -285,6 +285,14 @@ describe('Encounter LKW import across midnight, daylight saving and invalid time
       expect(onsetSummary(applyEncounterPrefill(fresh(), p, fresh()), now)).toBe('LKW unknown');
     }
   }));
+
+  it('ignores an anchor or clock outside the representable date range instead of failing', () => {
+    const state = S({ classification: 'ich', onsetVal: 2, onsetUnit: 'hours', onsetAnchorMs: -1e20 });
+    expect(anchoredOnsetHours(state, Date.now())).toBeNull();
+    expect(onsetSummary(state, Date.now())).toBe('LKW 2.0 h');
+    expect(anchoredOnsetHours({ onsetAnchorMs: 0 }, 9e15)).toBeNull();
+    expect(() => evaluateAll(state, screenerTrials, Date.now())).not.toThrow();
+  });
 
   it('imports a threshold-safe ABC/2 volume, so rounding never crosses a study limit', () => {
     // ABC/2 = 7.9 × 8.1 × (10 × 0.0625 cm) / 2 = 19.996875 mL: below MINUTE's "volume ≥ 20 mL".

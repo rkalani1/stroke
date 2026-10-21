@@ -267,7 +267,9 @@ export function onsetToHours(onsetVal, onsetUnit) {
 // not anchored or no valid clock is supplied (the stored snapshot is used then).
 export function anchoredOnsetHours(state, nowMs) {
   const anchor = state?.onsetAnchorMs;
-  if (typeof anchor !== 'number' || !Number.isFinite(anchor) || typeof nowMs !== 'number' || !Number.isFinite(nowMs) || nowMs < anchor) return null;
+  // Only instants a Date can represent (±8.64e15 ms); anything else is not an anchor.
+  const instant = ms => typeof ms === 'number' && Number.isFinite(new Date(ms).getTime());
+  if (!instant(anchor) || !instant(nowMs) || nowMs < anchor) return null;
   return (nowMs - anchor) / 3600000;
 }
 
