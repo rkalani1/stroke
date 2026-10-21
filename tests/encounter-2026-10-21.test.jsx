@@ -86,6 +86,22 @@ describe('copy feedback is reported for every clipboard outcome', { timeout: 400
     await expect.poll(() => page.locator('.case-bar__actions [role="status"]').innerText()).toBe('Pulsara summary copied.');
   });
 
+  it('announces a second identical outcome again: the status region empties before each attempt', async () => {
+    await open();
+    await ischemic();
+    const copyButton = page.getByRole('button', { name: 'Copy Pulsara summary', exact: true });
+    await copyButton.click();
+    await expect.poll(status).toBe('Pulsara summary copied.');
+    await page.evaluate(() => {
+      window.statusTexts = [];
+      const region = document.querySelector('.handoff-status');
+      new MutationObserver(() => window.statusTexts.push(region.textContent)).observe(region, { childList: true, subtree: true, characterData: true });
+    });
+    await copyButton.click();
+    await expect.poll(() => page.evaluate(() => window.statusTexts.at(-1))).toBe('Pulsara summary copied.');
+    expect(await page.evaluate(() => window.statusTexts.slice(0, -1))).toContain('');
+  });
+
   for (const clipboard of ['denied', 'missing']) {
     it(`announces a ${clipboard} clipboard and selects the full note for manual copy`, async () => {
       await open({ clipboard });

@@ -267,6 +267,8 @@ function App() {
   const copy = async text => {
     // A preview with time-dependent text (elapsed times, future-time checks) is regenerated before copying.
     if (buildSummary(stateRef.current, Date.now()) !== text) { await generateAndCopy(); return; }
+    // Clear first so a repeated identical outcome still changes the live region and is announced again.
+    setCopyStatus('');
     const result = await copySummary(stateRef, text, value => navigator.clipboard.writeText(value));
     reportCopy(result, documentationLabel(stateRef.current), () => document.querySelector('[data-generated-note]')?.select());
   };
@@ -277,6 +279,7 @@ function App() {
     const text = buildSummary(current, Date.now()), draft = { text, revision: current.revision, stale: false };
     stateRef.current = { ...current, draft };
     setState(prev => prev.revision === current.revision ? { ...prev, draft } : prev);
+    setCopyStatus('');
     const result = await copySummary(stateRef, text, value => navigator.clipboard.writeText(value));
     reportCopy(result, documentationLabel(current), () => goToEncounter('handoff-title', () => document.querySelector('[data-generated-note]')?.select()));
   };
