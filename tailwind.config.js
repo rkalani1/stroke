@@ -32,14 +32,13 @@ module.exports = {
     './src/design/*.js'
   ],
 
-  safelist: [
-    /* The shared component language (src/styles.css, `ui-*`) ships whole,
-       whether or not a view has adopted a given recipe yet. The old ^v6- /
-       ^v7- patterns are gone: no class name is built dynamically, so the
-       content scan finds every v7-* class still in use. */
-    /* Codemod replaces accent classes; keep cobalt-* available regardless */
-    { pattern: /^(bg|text|border|ring)-(cobalt|crit|warn|ok|info|link)-(50|100|200|300|400|500|600|700|800|900|950)$/ }
-  ],
+  /* No safelist. No class name is built dynamically (every ramp class is
+     written out in full in a scanned file), so the content scan finds every
+     class in use. The old ramp safelist (bg/text/border/ring × cobalt, crit,
+     warn, ok, info, link × every step) emitted ~23 KB, about 18 KB of it for
+     classes nothing renders. tests/design-2026-10-21.test.jsx fails if a
+     safelist comes back or if a scanned source starts assembling a colour
+     class at runtime (`bg-${tone}`), which the scan could not see. */
 
   theme: {
     extend: {

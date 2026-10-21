@@ -19,7 +19,7 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .workspace-search { grid-area: search; justify-self: start; display: inline-flex; align-items: center; gap: var(--space-5); width: min(340px, 100%); min-height: 44px; padding: var(--space-4) var(--space-5) var(--space-4) var(--space-7); border: 1px solid var(--line); border-radius: var(--radius-pill); background: var(--surface-2); color: var(--mute); font-size: var(--text-md); text-align: left; transition: border-color calc(var(--dur) * var(--motion-scale)) var(--ease), background-color calc(var(--dur) * var(--motion-scale)) var(--ease); }
 .workspace-search:hover { border-color: rgb(var(--c-line-control)); background: var(--surface); color: var(--ink-2); }
 .workspace-search__text { flex: 1; }
-.workspace-search kbd, .utility-shortcuts kbd, .quick-search kbd { display: inline-flex; align-items: center; min-height: 22px; padding: 0 var(--space-3); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: var(--radius-sm); background: var(--surface); font: 500 var(--text-2xs)/var(--leading-none) var(--mono-font); color: var(--ink-2); }
+.workspace-search kbd, .utility-shortcuts kbd, .quick-search kbd { display: inline-flex; align-items: center; min-height: 22px; padding: 0 var(--space-3); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: var(--radius-sm); background: var(--surface); font: 400 var(--text-2xs)/var(--leading-none) var(--mono-font); color: var(--ink-2); }
 .search-ico { width: 18px; height: 18px; flex-shrink: 0; }
 .nav-ico { display: none; width: 18px; height: 18px; flex-shrink: 0; }
 .workspace-secondary { grid-area: nav; display: flex; flex-wrap: nowrap; align-items: center; gap: var(--space-2); padding: var(--space-2); background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius-card); font-size: var(--text-md); }
@@ -40,8 +40,11 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .utility-panel .utility-action { width: 100%; font-weight: 600; color: var(--ink); }
 .utility-shortcuts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 @media (pointer: coarse) { .utility-shortcuts { display: none; } }
-/* ── Case bar: the current encounter, pinned on every tab ── */
-:root:has(.case-bar) { --case-bar-h: 58px; }
+/* ── Case bar: the current encounter, pinned on every tab ──
+   CaseBar publishes its measured height as --case-bar-h in a layout effect, before the
+   bar first paints, so no CSS fallback is needed. The old :root:has(.case-bar) fallback
+   made Chrome restyle the whole document (≈3,500 elements) on every Encounter keystroke
+   once Calculators had been opened (2026-10-21, 4× CPU: median keystroke 232 → 88 ms). */
 html { scroll-padding-top: calc(var(--case-bar-h) + 8px); }
 .case-bar { position: sticky; top: 0; z-index: 45; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-8); min-height: 58px; margin: 0 -24px; padding: 7px var(--space-12); background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: 0 6px 18px -16px rgba(20, 51, 65, .45); font-variant-numeric: tabular-nums; }
 .case-bar__dx { flex-shrink: 0; display: inline-flex; align-items: center; min-height: 34px; padding: var(--space-2) var(--space-6); border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--accent-ink); font: 700 var(--text-md)/var(--leading-tight) var(--font-display); text-decoration: none; white-space: nowrap; }
@@ -69,10 +72,11 @@ html { scroll-padding-top: calc(var(--case-bar-h) + 8px); }
 .workspace-trigger-list { margin: var(--space-2) 0 0; padding-left: var(--space-9); list-style: disc; }
 .workspace-trigger-list li + li { margin-top: 3px; }
 /* Flagged values carry a glyph as well as colour; the value is a flex row, so the glyph pulls in and rides high. */
-.case-bar__flag { margin-left: -4px; align-self: flex-start; font: 800 .75em/var(--leading-none) var(--font-sans); font-size: max(.75em, var(--text-2xs)); color: var(--caution); }
+.case-bar__flag { margin-left: -4px; align-self: flex-start; font: 700 .75em/var(--leading-none) var(--font-sans); font-size: max(.75em, var(--text-2xs)); color: var(--caution); }
 a.case-bar__badge { text-decoration: none; }
 a.case-bar__badge:hover { filter: brightness(1.08); }
-.case-bar__item[data-empty] .case-bar__value { color: var(--faint); font-weight: 500; }
+/* The empty-value dash uses the already-loaded Public Sans 500; Bricolage ships only 700. */
+.case-bar__item[data-empty] .case-bar__value { color: var(--faint); font-family: var(--font-sans); font-weight: 500; }
 .case-bar__item[data-flag="caution"] .case-bar__value, .case-bar__item[data-flag="caution"] .case-bar__value small { color: var(--caution); }
 .case-bar__item[data-flag="critical"] .case-bar__value, .case-bar__item[data-flag="critical"] .case-bar__value small { color: var(--critical); }
 /* A partial itemized NIHSS reads "12 partial" in text; the softer ink is only a second cue. */
@@ -97,7 +101,7 @@ html[data-theme="dark"] .case-bar { box-shadow: 0 6px 18px -14px rgba(0, 0, 0, .
 .quick-search__field input { flex: 1; min-width: 0; min-height: 44px; border: 0; background: transparent; color: var(--ink); font-size: var(--text-2xl); outline: none; }
 .quick-search__field input:focus-visible { outline: none; }
 .quick-search__field input::-webkit-search-cancel-button { display: none; }
-.quick-search__close { min-height: 32px !important; padding: var(--space-1) var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-2); font: 500 var(--text-xs) var(--mono-font); color: var(--ink-2); }
+.quick-search__close { min-height: 32px !important; padding: var(--space-1) var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-2); font: 400 var(--text-xs) var(--mono-font); color: var(--ink-2); }
 .quick-search__results { overflow-y: auto; padding: var(--space-3) var(--space-4) var(--space-5); overscroll-behavior: contain; }
 .quick-search__group { margin: var(--space-5) var(--space-4) var(--space-2); font: 600 var(--text-2xs)/var(--leading-tight) var(--font-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
 .quick-search__results a[role="option"] { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-6); min-height: 44px; padding: var(--space-5) var(--space-6); border-radius: var(--radius-md); color: var(--ink); text-decoration: none; }
@@ -260,7 +264,7 @@ h1 { font-family: var(--font-display); font-size: var(--display-2xl); font-weigh
 .workflow-section { margin: var(--space-8) 0; padding: var(--space-10); background: var(--card); border: 1px solid var(--panel-border); border-radius: var(--radius-lg); box-shadow: var(--elev-1); }
 .workflow-section h2, .tools-surface h2 { font-family: var(--font-display); font-weight: 700; font-size: var(--display-sm); letter-spacing: -.01em; }
 .workflow-section h2 { display: flex; align-items: center; gap: var(--space-5); margin: -20px -20px var(--space-8); padding: var(--space-8) var(--space-10); border-bottom: 1px solid var(--line); }
-.workflow-section h2 > span { display: inline-grid; place-items: center; flex-shrink: 0; width: 28px; height: 28px; border-radius: var(--radius-sm); background: var(--teal-wash); color: var(--tag-teal); font: 500 var(--text-xs) var(--mono-font); }
+.workflow-section h2 > span { display: inline-grid; place-items: center; flex-shrink: 0; width: 28px; height: 28px; border-radius: var(--radius-sm); background: var(--teal-wash); color: var(--tag-teal); font: 600 var(--text-xs) var(--mono-font); }
 h3 { font-family: var(--font-sans); font-weight: 700; margin: var(--space-6) 0; }
 .field-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-8); }
 .workspace-field { display: flex; flex-direction: column; gap: var(--space-3); margin: var(--space-4) 0; font-size: var(--text-md); min-width: 0; }
@@ -331,10 +335,8 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
   .workspace-search__text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
 /* Below the full shell width the bar wraps instead of clipping: identity, time and
-   actions first (actions drop to their own row when needed), measurements below.
-   CaseBar publishes its measured height as --case-bar-h; these are first-paint fallbacks. */
+   actions first (actions drop to their own row when needed), measurements below. */
 @media (max-width: 1231px) {
-  :root:has(.case-bar) { --case-bar-h: 100px; }
   .case-bar { flex-wrap: wrap; gap: var(--space-3) var(--space-7); }
   .case-bar__actions { order: 2; }
   .case-bar__items { order: 3; flex: 1 0 100%; min-width: 0; flex-wrap: wrap; gap: var(--space-1) var(--space-10); overflow: visible; }
