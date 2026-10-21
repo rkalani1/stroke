@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useDialogChrome } from './use-dialog-chrome.js';
 import { screenerTrials } from '../evidence/screenerTrials.js';
 import { eligibilityTables } from '../evidence/eligibilityTables.js';
-import { evaluateAll, buildScreenerParams, isTrialPotentiallyActive, createInitialScreenerState, anchoredOnsetHours, onsetToHours, numericFact, ONSET_PRESETS, EXCLUSION_ITEMS, VISIBLE_FACTS, NOT_MET_TEXT, phaseLabel, enrollmentLabel, toConfirm, relevantNotMet, potentialMatches, insufficientInformation, registryCheckAgeText } from '../evidence/screener-eval.js';
+import { evaluateAll, buildScreenerParams, isTrialPotentiallyActive, createInitialScreenerState, anchoredOnsetHours, onsetToHours, numericFact, ONSET_PRESETS, EXCLUSION_ITEMS, STUDY_FACTS, YES_NO, withClassification, NOT_MET_TEXT, phaseLabel, enrollmentLabel, toConfirm, relevantNotMet, potentialMatches, insufficientInformation, registryCheckAgeText } from '../evidence/screener-eval.js';
 import { screenerPrefillFromEncounter, applyEncounterPrefill, applyAnticoagulant } from '../evidence/screener-prefill.js';
 
 const CLASSIFICATIONS = [['ischemic', 'Ischemic stroke'], ['tia', 'TIA'], ['ich', 'Hemorrhage (ICH)']];
@@ -19,8 +19,6 @@ const STATUS_FILTERS = [['all', 'All statuses'], ['enrolling', 'Recruiting'], ['
 // Cards omit their own check date only when every profile shares the single date stated once for the page.
 const CHECK_DATES = new Set(screenerTrials.map(trial => trial.externalMetadata?.verificationDate || null));
 const SHARED_CHECK = CHECK_DATES.size === 1 ? [...CHECK_DATES][0] : null;
-// Every key fact any classification shows; switching classification resets the ones the new screen hides.
-const ALL_VISIBLE_FACTS = [...new Set(Object.values(VISIBLE_FACTS).flat())];
 const screenable = trial => !trial.referenceOnly && ['enrolling', 'soon'].includes(trial.status);
 
 // Classification filters describe the stored profile, independently of recruitment
@@ -113,21 +111,23 @@ function EncounterBanner({ prefill, onUse, applied }) {
   </section>;
 }
 
+// A study-specific fact names the studies that read it (note); its id joins the control's description.
+const noteId = field => `trial-${field}-note`;
+const Note = ({ field, note }) => note ? <small id={noteId(field)} className="block text-xs font-normal text-mute">{note.map((study, i) => <React.Fragment key={study}>{i > 0 && ' · '}<span className="whitespace-nowrap">{study}</span></React.Fragment>)}</small> : null;
 // An entry the criteria cannot read (out of range, fractional score) stays on screen, flagged as unknown.
-function NumberFact({ label, field, rule, value, onChange, min, max, step = 1, unit }) {
+function NumberFact({ label, field, rule, value, onChange, min, max, step = 1, unit, note }) {
   const shown = value === 'unselected' || value === null || value === undefined ? '' : value;
   const invalid = shown !== '' && numericFact(field, shown) === null, hint = `trial-${field}-invalid`;
   // The hint sits in the label block so the input stays bottom-aligned with its grid neighbour.
-  return <label className="workspace-field !my-0 justify-between"><span>{label}{unit && <span className="font-normal text-mute"> ({unit})</span>}{invalid && <small id={hint} className="block text-xs font-normal text-crit-700 dark:text-crit-300">Treated as unknown: enter <span className="whitespace-nowrap">{rule}</span>.</small>}</span><input type="number" inputMode="decimal" aria-label={unit ? `${label} (${unit})` : label} aria-invalid={invalid || undefined} aria-describedby={invalid ? hint : undefined} min={min} max={max} step={step} placeholder="Unknown" value={shown} onChange={e => onChange(e.target.value === '' ? 'unselected' : e.target.value)} /></label>;
+  return <label className="workspace-field !my-0 justify-between"><span>{label}{unit && <span className="font-normal text-mute"> ({unit})</span>}<Note field={field} note={note} />{invalid && <small id={hint} className="block text-xs font-normal text-crit-700 dark:text-crit-300">Treated as unknown: enter <span className="whitespace-nowrap">{rule}</span>.</small>}</span><input type="number" inputMode="decimal" aria-label={unit ? `${label} (${unit})` : label} aria-invalid={invalid || undefined} aria-describedby={[note && noteId(field), invalid && hint].filter(Boolean).join(' ') || undefined} min={min} max={max} step={step} placeholder="Unknown" value={shown} onChange={e => onChange(e.target.value === '' ? 'unselected' : e.target.value)} /></label>;
 }
-function SelectFact({ label, value, onChange, options }) {
+function SelectFact({ label, field, note, value, onChange, options }) {
   const current = value === 'unselected' || value === null || value === undefined ? '' : String(value);
-  return <label className="workspace-field !my-0 justify-between"><span>{label}</span><select aria-label={label} value={current} onChange={e => onChange(e.target.value === '' ? 'unselected' : e.target.value)}><option value="">Unknown</option>{options.map(([v, text]) => <option key={v} value={v}>{text}</option>)}</select></label>;
+  return <label className="workspace-field !my-0 justify-between"><span>{label}<Note field={field} note={note} /></span><select aria-label={label} aria-describedby={note ? noteId(field) : undefined} value={current} onChange={e => onChange(e.target.value === '' ? 'unselected' : e.target.value)}><option value="">Unknown</option>{options.map(([v, text]) => <option key={v} value={v}>{text}</option>)}</select></label>;
 }
 const range = (lo, hi) => Array.from({ length: hi - lo + 1 }, (_, i) => [String(lo + i), String(lo + i)]);
 const asNumber = v => v === 'unselected' ? v : Number(v);
 const asBoolean = v => v === 'unselected' ? v : v === 'true';
-const YES_NO = [['true', 'Yes'], ['false', 'No']];
 
 function KeyFacts({ state, change, replace }) {
   const cls = state.classification;
@@ -136,7 +136,7 @@ function KeyFacts({ state, change, replace }) {
   const setBoolean = key => v => change({ [key]: asBoolean(v) });
   return <section aria-labelledby="trial-key-facts"><h2 id="trial-key-facts" className="mb-1 text-lg font-bold">3. Key facts</h2><p className="mb-2 text-sm text-mute">Optional. Unknown stays unknown.</p><div className="grid grid-cols-2 gap-x-3 gap-y-2">
     <NumberFact label="Age" unit="y" field="age" rule="0–120" min={0} max={120} value={state.age} onChange={set('age')} />
-    {cls !== 'tia' && <NumberFact label="NIHSS" field="nihss" rule="a whole number 0–42" min={0} max={42} value={state.nihss} onChange={set('nihss')} />}
+    {cls !== 'tia' && <NumberFact label="NIHSS" field="nihss" rule="a whole number 0–42" min={0} max={42} value={state.nihss} onChange={v => change({ nihss: v, nihssUntestable: 0 })} />}
     {cls === 'ischemic' && <>
       <SelectFact label="Pre-stroke mRS" value={state.preMrs} onChange={setNumber('preMrs')} options={range(0, 5)} />
       <SelectFact label="ASPECTS" value={state.aspects} onChange={setNumber('aspects')} options={range(0, 10).reverse()} />
@@ -153,6 +153,17 @@ function KeyFacts({ state, change, replace }) {
     <SelectFact label="Atrial fibrillation documented" value={state.afibHistory} onChange={setBoolean('afibHistory')} options={YES_NO} />
     {cls !== 'ich' && <SelectFact label="On oral anticoagulant at index stroke" value={state.takingOac} onChange={v => replace(prev => ({ ...(prev.anticoagulant && prev.anticoagulant !== 'unselected' ? applyAnticoagulant(prev, 'unselected') : prev), takingOac: asBoolean(v) }))} options={YES_NO} />}
   </div></section>;
+}
+
+// Facts only some studies test, collapsed after the key facts so the screen stays scannable.
+function StudyFacts({ state, change }) {
+  const facts = STUDY_FACTS[state.classification] || [];
+  if (!facts.length) return null;
+  // Answered means readable: an invalid number is flagged at its field and not counted.
+  const answered = facts.filter(([key, , spec]) => !['unselected', '', null, undefined].includes(state[key]) && (typeof spec !== 'number' || numericFact(key, state[key]) !== null)).length;
+  return <details className="rounded-lg border border-line bg-card p-4"><summary className="min-h-[44px] cursor-pointer font-semibold"><span>Study-specific facts <span className="font-normal text-mute">({answered} of {facts.length} answered)</span></span></summary><p className="my-2 text-sm text-mute">Each is read only by the studies named under it. Unknown stays unknown.</p><div className="grid grid-cols-2 gap-x-3 gap-y-2">{facts.map(([key, label, spec, studies]) => typeof spec === 'number'
+    ? <NumberFact key={key} label={label} field={key} note={studies} rule={`a whole number 0–${spec}`} min={0} max={spec} value={state[key]} onChange={v => change({ [key]: v })} />
+    : <SelectFact key={key} label={label} field={key} note={studies} options={spec} value={state[key]} onChange={v => change({ [key]: spec === YES_NO ? asBoolean(v) : v })} />)}</div></details>;
 }
 
 // Manual timing entries replace an Encounter LKW anchor (onsetAnchorMs: null).
@@ -217,9 +228,9 @@ export function TrialScreener({ copyToClipboard, initialState, onStateChange, ac
     <EncounterBanner prefill={prefill} onUse={importEncounter} applied={applied} />
     <div className="trial-screening-workspace space-y-5 lg:grid lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:items-start lg:gap-6 lg:space-y-0">
       <div className="trial-screening-filters min-w-0 space-y-5 lg:sticky lg:top-[calc(var(--case-bar-h,0px)+1rem)] lg:max-h-[calc(100dvh-var(--case-bar-h,0px)-2rem)] lg:overflow-y-auto lg:overscroll-contain lg:pr-1">
-        <section><h2 className="mb-2 text-lg font-bold">1. Stroke classification</h2><div className="flex flex-wrap gap-2">{CLASSIFICATIONS.map(([id, label]) => <button key={id} type="button" className={buttonClass} aria-pressed={state.classification === id} onClick={() => { const initial = createInitialScreenerState(); const hidden = Object.fromEntries(ALL_VISIBLE_FACTS.filter(key => !VISIBLE_FACTS[id].includes(key)).map(key => [key, initial[key]])); change({ ...hidden, classification: id, onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null, exclusions: {}, anticoagulant: 'unselected', takingOac: 'unselected', imported: null }); }}>{label}</button>)}</div>
+        <section><h2 className="mb-2 text-lg font-bold">1. Stroke classification</h2><div className="flex flex-wrap gap-2">{CLASSIFICATIONS.map(([id, label]) => <button key={id} type="button" className={buttonClass} aria-pressed={state.classification === id} onClick={() => replace(prev => withClassification(prev, id))}>{label}</button>)}</div>
           {results.ready && <a href="#trial-results" className="mt-1 text-sm font-semibold text-link-600 underline lg:!hidden">View {candidates.length} possible candidate{candidates.length === 1 ? '' : 's'} ↓</a>}</section>
-        {results.ready && <><TimingSection state={state} change={change} nowMs={nowMs} /><KeyFacts state={state} change={change} replace={replace} /><ExclusionRefiner summaryRef={refinerRef} items={exclusions} checked={state.exclusions} onToggle={(id, value) => replace(prev => { const next = { ...prev.exclusions }; if (typeof value === 'boolean') next[id] = value; else delete next[id]; return { ...prev, exclusions: next }; })} onClear={() => { change({ exclusions: {} }); requestAnimationFrame(() => refinerRef.current?.focus()); }} /></>}
+        {results.ready && <><TimingSection state={state} change={change} nowMs={nowMs} /><KeyFacts state={state} change={change} replace={replace} /><StudyFacts state={state} change={change} /><ExclusionRefiner summaryRef={refinerRef} items={exclusions} checked={state.exclusions} onToggle={(id, value) => replace(prev => { const next = { ...prev.exclusions }; if (typeof value === 'boolean') next[id] = value; else delete next[id]; return { ...prev, exclusions: next }; })} onClear={() => { change({ exclusions: {} }); requestAnimationFrame(() => refinerRef.current?.focus()); }} /></>}
         <button type="button" className={buttonClass} onClick={() => { setApplied(null); change(createInitialScreenerState()); }}>Reset screen</button>
       </div>
       <div id="trial-results" className="min-w-0 scroll-mt-4 space-y-4">
@@ -228,7 +239,7 @@ export function TrialScreener({ copyToClipboard, initialState, onStateChange, ac
         {results.ready && <>
           <ResultGroup title="Possible candidates (not definitive)" label="Possible candidates" items={[]} count={candidates.length} onDetails={setModal}>{candidates.length === 0 && <p className="text-sm text-mute">No possible candidate under the entered facts.</p>}
             <CandidateSubgroup title="Potential match" label="Potential match" description="Every modeled criterion is met. Not a definitive match: confirm the remaining registry items, protocol, local activation and consent." empty="No study has every modeled criterion met." items={matches} onDetails={setModal} />
-            <CandidateSubgroup title="Insufficient information" label="Insufficient information" description="At least one modeled fact is unknown; confirm it before treating the study as a potential match." empty="None." items={insufficient} onDetails={setModal} />
+            <CandidateSubgroup title="Insufficient information" label="Insufficient information" description="At least one modeled fact is unknown; confirm and enter it before treating the study as a potential match." empty="None." items={insufficient} onDetails={setModal} />
           </ResultGroup>
           {later.length > 0 && <ResultGroup title="Later · before window or not yet recruiting" label="Later" items={later} onDetails={setModal} />}
           {notMet.length > 0 && <details className="rounded-lg border border-line bg-paper-2 p-3"><summary className="min-h-[44px] cursor-pointer font-semibold">{NOT_MET_TEXT} ({notMet.length})</summary><ul className="mt-1 space-y-1">{notMet.map(item => <li key={item.trial.acronym} className="flex flex-wrap items-center gap-x-2 text-sm"><button type="button" className="min-h-[44px] font-bold text-link-600 underline" aria-label={`Full criteria for ${item.trial.acronym}`} onClick={() => setModal(item.trial)}>{item.trial.acronym}</button><span className="min-w-0 flex-1">{item.exclusionReasons.join('; ')}</span></li>)}</ul></details>}

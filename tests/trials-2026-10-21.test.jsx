@@ -2,14 +2,20 @@
 // re-read on 2026-10-21 (quoted beside each case), the exact-day LastUpdatePostDate
 // queries run that day, and the screener's own tri-state definitions. They are not
 // copied from implementation output.
-import { describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { build } from 'esbuild';
+import { chromium } from 'playwright';
+import { fileURLToPath } from 'node:url';
+import { readFile } from 'node:fs/promises';
 import { newEncounter } from '../src/workspace-state.js';
+import { NIHSS_ITEMS } from '../src/clinical/nihss-items.js';
 import { screenerTrials } from '../src/evidence/screenerTrials.js';
 import {
   anchoredOnsetHours, buildScreenerParams, createInitialScreenerState, evaluateAll, evaluateTrialEligibility, enrollmentLabel,
-  EXCLUSION_ITEMS, numericFact, onsetSummary, potentialMatches, registryCheckLabel, toConfirm, ONSET_PRESETS
+  EXCLUSION_ITEMS, numericFact, onsetSummary, potentialMatches, registryCheckLabel, toConfirm, ONSET_PRESETS,
+  STUDY_FACTS, VISIBLE_FACTS, withClassification
 } from '../src/evidence/screener-eval.js';
 import { applyEncounterPrefill, screenerPrefillFromEncounter } from '../src/evidence/screener-prefill.js';
 import { TrialScreener, TrialSourceContext } from '../src/components/TrialScreener.jsx';
@@ -238,7 +244,8 @@ describe('copied screening summary is truthful about what was used', () => {
   });
 
   it('never prints undefined, null, NaN or object artifacts across classifications, presets and facts', () => {
-    const facts = [{}, { age: 70, nihss: 8, preMrs: 0, aspects: 8, vessel: 'ica_m1', afibHistory: true, takingOac: false }, { age: '150', nihss: '3.5', gcs: 14, ichVolume: '1e3', ichLocation: 'bg', statin: true, anticoagulant: 'doac' }, { exclusions: { exPregnancy: false, exSecondaryIch: true, exTandem: false } }];
+    const facts = [{}, { age: 70, nihss: 8, preMrs: 0, aspects: 8, vessel: 'ica_m1', afibHistory: true, takingOac: false }, { age: '150', nihss: '3.5', gcs: 14, ichVolume: '1e3', ichLocation: 'bg', statin: true, anticoagulant: 'doac' }, { exclusions: { exPregnancy: false, exSecondaryIch: true, exTandem: false } },
+      { presentedWithin24h: false, unilateralSymptomatic: true, ueWeakness: false, self_consent: true, language: 'other', currentMrs: '9', availability_54w: false, rehab: 'yes', abcd2: '7', antithromboticSoc: false, nihss: 7, nihssUntestable: 1 }];
     for (const classification of ['ischemic', 'tia', 'ich']) for (const preset of [null, ...ONSET_PRESETS]) for (const extra of facts) {
       const timing = preset ? { onsetVal: preset.val, onsetUnit: preset.unit, onsetRangeHours: preset.rangeHours } : { onsetVal: 3, onsetUnit: 'hours' };
       const note = evaluateAll(S({ classification, ...timing, ...extra })).briefingNote;
@@ -357,6 +364,326 @@ describe('on-call clarity of the key facts and timing controls', () => {
     expect(html).not.toContain('aria-invalid');
     expect(html).not.toContain('Treated as unknown');
     expect(html).toContain('Exact interval entered.');
-    expect(html).toContain('confirm it before treating the study as a potential match');
+    expect(html).toContain('confirm and enter it before treating the study as a potential match');
   });
 });
+
+// TR-11 follow-up: every modeled fact now has a control. Registry eligibility text re-read on
+// 2026-10-21 with get_trial_details:
+//   TESTED NCT05911568 incl. 3 "Presenting to study hospital within 24 hours of last known well time".
+//   VERIFY NCT05338697 incl. 2 "Unilateral symptomatic stroke due to ischemia", 3 "Motor deficits in the acutely
+//     affected UE", 6 "Fluent in study approved languages (i.e., English or Spanish)", excl. 9 "Cognitive or
+//     communication impairment precluding informed consent by the participant".
+//   MR-PICS NCT06506279 "Disability measured between 3 and 4 on the modified Rankin Scale", "Levels of hemiparesis
+//     that warrant surgical intervention (upper limb impairment)", "Available for the duration of the study, 54 weeks".
+//   TELE-REHAB-2 NCT06682429 incl. 2 "due to ischemia or intracerebral hemorrhage (ICH)", 3 "upper extremity
+//     deficits", 6 "signed by the subject (i.e., no surrogate consent)".
+//   SCOUTS-3 NCT06722755 description "recruited upon IPR admission"; excl. 9 "Anticipated inpatient rehabilitation
+//     length of stay < 5 nights"; incl. 2 "acute ischemic infarction or intraparenchymal hemorrhage".
+//   CLARITY NCT07174414 incl. 2 "Ischemic stroke or high-risk TIA (ABCD2 score ≥6)", 4 "single or dual antithrombotic
+//     therapy with aspirin, clopidogrel and/or ticagrelor".
+const inputsOf = state => evaluateAll(state).briefingNote.split('\n').find(line => line.startsWith('Inputs: '));
+const renderScreen = (patch, props = {}) => renderToStaticMarkup(<TrialScreener initialState={S(patch)} {...props} />);
+const escapeRe = text => text.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
+const optionsOf = (html, label) => {
+  const select = new RegExp(`<select aria-label="${escapeRe(label)}"[^>]*>(.*?)</select>`).exec(html);
+  if (!select) throw new Error(`No select ${label}`);
+  return [...select[1].matchAll(/<option value="([^"]*)"( selected="")?/g)].map(m => [m[1], Boolean(m[2])]);
+};
+const LABELS = {
+  presentedWithin24h: 'Presented ≤ 24 h from LKW', unilateralSymptomatic: 'Unilateral symptoms', ueWeakness: 'Upper-limb motor deficit',
+  self_consent: 'Able to self-consent', language: 'Fluent language', currentMrs: 'Current mRS', availability_54w: 'Available for the 54-week study',
+  rehab: 'Inpatient rehab, stay ≥ 5 nights expected', abcd2: 'ABCD2 score', antithromboticSoc: 'Guideline antithrombotic therapy (aspirin, clopidogrel and/or ticagrelor)'
+};
+
+describe('study-specific facts have screener controls (TR-11 follow-up)', () => {
+  const expected = {
+    ischemic: [['presentedWithin24h', ['TESTED']], ['unilateralSymptomatic', ['VERIFY']], ['ueWeakness', ['VERIFY', 'MR-PICS', 'TELE-REHAB-2']], ['self_consent', ['VERIFY', 'TELE-REHAB-2']],
+      ['language', ['VERIFY']], ['currentMrs', ['MR-PICS']], ['availability_54w', ['MR-PICS']], ['rehab', ['SCOUTS-3']], ['antithromboticSoc', ['CLARITY']]],
+    tia: [['abcd2', ['CLARITY']], ['antithromboticSoc', ['CLARITY']]],
+    ich: [['ueWeakness', ['TELE-REHAB-2']], ['self_consent', ['TELE-REHAB-2']], ['rehab', ['SCOUTS-3']]]
+  };
+
+  it('offers each fact only for the classifications whose screened profiles test it', () => {
+    expect(Object.fromEntries(Object.entries(STUDY_FACTS).map(([cls, facts]) => [cls, facts.map(([key, , , studies]) => [key, studies])]))).toEqual(expected);
+    for (const facts of Object.values(STUDY_FACTS)) for (const [key, label] of facts) expect(label, key).toBe(LABELS[key]);
+  });
+
+  it('leaves no modeled criterion without a control for any classification a study screens', () => {
+    const STATE_KEY = { exUeWeakness: 'ueWeakness', afOrFlutterHistory: 'afibHistory' };
+    // An or-branch whose own classification rule excludes this classification is not read (CLARITY's ABCD2 for ischemic stroke).
+    const reads = (c, cls) => c.operator === 'or'
+      ? c.branches.filter(b => !b.criteria.some(cc => cc.field === 'classification' && ![cc.value].flat().includes(cls))).flatMap(b => b.criteria.flatMap(cc => reads(cc, cls)))
+      : [c.field];
+    for (const t of screenerTrials.filter(screenable)) {
+      for (const cls of [t.eligibility.criteria.find(c => c.field === 'classification').value].flat()) {
+        const fields = [...t.eligibility.criteria.flatMap(c => reads(c, cls)), ...t.eligibility.exclusions.map(c => c.field).filter(f => !f.startsWith('ex'))];
+        for (const field of fields.filter(f => !['classification', 'onsetHours', 'onsetDays', 'onsetMonths'].includes(f))) {
+          expect(VISIBLE_FACTS[cls], `${t.acronym} ${cls} ${field}`).toContain(STATE_KEY[field] || field);
+        }
+      }
+    }
+  });
+
+  it('shows them in a collapsed "Study-specific facts" section after the key facts, naming the studies that read each', () => {
+    for (const [cls, facts] of Object.entries(expected)) {
+      const html = renderScreen({ classification: cls });
+      const at = html.indexOf('<details class="rounded-lg border border-line bg-card p-4"><summary class="min-h-[44px] cursor-pointer font-semibold"><span>Study-specific facts');
+      expect(at, cls).toBeGreaterThan(html.indexOf('3. Key facts'));
+      expect(at, cls).toBeLessThan(html.indexOf('Optional exclusion review'));
+      expect(html, cls).toContain(`Study-specific facts <span class="font-normal text-mute">(0 of ${facts.length} answered)</span>`);
+      for (const [key, studies] of facts) {
+        expect(html, `${cls} ${key}`).toContain(`aria-label="${LABELS[key]}"`);
+        // Each study name stays on one line (TELE-REHAB-2 never breaks at its hyphen).
+        expect(html, `${cls} ${key}`).toContain(`<small id="trial-${key}-note" class="block text-xs font-normal text-mute">${studies.map(s => `<span class="whitespace-nowrap">${s}</span>`).join(' · ')}</small>`);
+        expect(html, `${cls} ${key}`).toMatch(new RegExp(`aria-describedby="trial-${key}-note"`));
+      }
+      for (const key of Object.keys(LABELS).filter(k => !facts.some(([f]) => f === k))) expect(html, `${cls} hides ${key}`).not.toContain(`aria-label="${LABELS[key]}"`);
+    }
+  });
+
+  it('offers unknown/yes/no for booleans and, for lists, exactly the values the criteria test, all read by the engine', () => {
+    const html = renderScreen({ classification: 'ischemic' });
+    // Tri-state booleans default to unknown.
+    for (const key of ['presentedWithin24h', 'unilateralSymptomatic', 'ueWeakness', 'self_consent', 'availability_54w', 'antithromboticSoc']) {
+      expect(optionsOf(html, LABELS[key]), key).toEqual([['', true], ['true', false], ['false', false]]);
+    }
+    // VERIFY "English or Spanish"; SCOUTS-3 inpatient rehabilitation with stay ≥ 5 nights.
+    const language = crit('VERIFY', 'language'), rehab = crit('SCOUTS-3', 'rehab');
+    expect(optionsOf(html, LABELS.language)).toEqual([['', true], ['english', false], ['spanish', false], ['other', false]]);
+    expect(optionsOf(html, LABELS.rehab)).toEqual([['', true], ['yes', false], ['none', false]]);
+    for (const value of language.value) expect(optionsOf(html, LABELS.language).map(([v]) => v)).toContain(value);
+    expect(['english', 'spanish', 'other'].map(v => verdict(language, { classification: 'ischemic', language: v }))).toEqual(['met', 'met', 'not met']);
+    expect(['yes', 'none'].map(v => verdict(rehab, { classification: 'ischemic', rehab: v }))).toEqual(['met', 'not met']);
+    for (const [acronym, field, key] of [['TESTED', 'presentedWithin24h'], ['VERIFY', 'unilateralSymptomatic'], ['VERIFY', 'exUeWeakness', 'ueWeakness'], ['TELE-REHAB-2', 'self_consent'], ['MR-PICS', 'availability_54w'], ['CLARITY', 'antithromboticSoc']]) {
+      expect([true, false].map(v => verdict(crit(acronym, field), { classification: 'ischemic', [key || field]: v })), `${acronym} ${field}`).toEqual(['met', 'not met']);
+    }
+  });
+
+  it('flags current mRS and ABCD2 entries the criteria cannot read, and the summary marks them unknown', () => {
+    const hint = rule => `Treated as unknown: enter <span class="whitespace-nowrap">${rule}</span>.</small>`;
+    const ischemic = renderScreen({ classification: 'ischemic', currentMrs: '3.5', unilateralSymptomatic: true });
+    expect(ischemic).toContain('aria-invalid="true" aria-describedby="trial-currentMrs-note trial-currentMrs-invalid"');
+    expect(ischemic).toContain(hint('a whole number 0–6'));
+    // An unreadable entry is not counted as answered.
+    expect(ischemic).toContain('(1 of 9 answered)');
+    const tia = renderScreen({ classification: 'tia', abcd2: '8' });
+    expect(tia).toContain('aria-invalid="true" aria-describedby="trial-abcd2-note trial-abcd2-invalid"');
+    expect(tia).toContain(hint('a whole number 0–7'));
+    expect(renderScreen({ classification: 'tia', abcd2: '7' })).not.toContain('trial-abcd2-invalid');
+    // ABCD2 is scored 0–7; mRS 0–6. Out-of-range or fractional entries stay unknown.
+    for (const value of ['8', '6.5', '-1', 'high']) expect(numericFact('abcd2', value), value).toBeNull();
+    for (const value of ['7', '3.5', '-1']) expect(numericFact('currentMrs', value), value).toBeNull();
+    expect([numericFact('abcd2', '0'), numericFact('abcd2', '7'), numericFact('currentMrs', '6')]).toEqual([0, 7, 6]);
+    expect(verdict(crit('CLARITY', null, 'or'), { classification: 'tia', abcd2: '8' })).toBe('unknown');
+    expect(inputsOf(S({ classification: 'tia', abcd2: '8' }))).toBe('Inputs: TIA · LKW unknown · ABCD2 score: 8 (invalid entry; treated as unknown)');
+    expect(inputsOf(S({ classification: 'ischemic', currentMrs: '3.5' }))).toBe('Inputs: Ischemic stroke · LKW unknown · current mRS: 3.5 (invalid entry; treated as unknown)');
+  });
+
+  it('prints study facts in the copied summary only when visible and answered, as the option chosen', () => {
+    const all = { presentedWithin24h: true, unilateralSymptomatic: false, ueWeakness: true, self_consent: false, language: 'spanish', currentMrs: '4', availability_54w: true, rehab: 'none', abcd2: '6', antithromboticSoc: true };
+    expect(inputsOf(S({ classification: 'ich', ...all }))).toBe('Inputs: Hemorrhage (ICH) · LKW unknown · upper-limb motor deficit: Yes · able to self-consent: No · inpatient rehab, stay ≥ 5 nights expected: No');
+    expect(inputsOf(S({ classification: 'tia', ...all }))).toBe('Inputs: TIA · LKW unknown · ABCD2 score: 6 · guideline antithrombotic therapy (aspirin, clopidogrel and/or ticagrelor): Yes');
+    expect(inputsOf(S({ classification: 'ischemic', ...all }))).toBe('Inputs: Ischemic stroke · LKW unknown · presented ≤ 24 h from LKW: Yes · unilateral symptoms: No · upper-limb motor deficit: Yes · able to self-consent: No · fluent language: Spanish · current mRS: 4 · available for the 54-week study: Yes · inpatient rehab, stay ≥ 5 nights expected: No · guideline antithrombotic therapy (aspirin, clopidogrel and/or ticagrelor): Yes');
+    expect(inputsOf(S({ classification: 'ischemic', language: 'other', rehab: 'yes', currentMrs: '0' }))).toBe('Inputs: Ischemic stroke · LKW unknown · fluent language: Neither · current mRS: 0 · inpatient rehab, stay ≥ 5 nights expected: Yes');
+    expect(inputsOf(S({ classification: 'ischemic' }))).toBe('Inputs: Ischemic stroke · LKW unknown');
+    // Legacy boolean entries print as the engine reads them; a value no option offers is marked unknown.
+    expect(inputsOf(S({ classification: 'ich', rehab: true }))).toBe('Inputs: Hemorrhage (ICH) · LKW unknown · inpatient rehab, stay ≥ 5 nights expected: Yes');
+    expect(inputsOf(S({ classification: 'ich', self_consent: 'maybe' }))).toBe('Inputs: Hemorrhage (ICH) · LKW unknown · able to self-consent: maybe (invalid entry; treated as unknown)');
+  });
+
+  it('returns hidden study facts to unknown when the classification changes, like other hidden facts', () => {
+    const ischemic = S({ classification: 'ischemic', presentedWithin24h: true, unilateralSymptomatic: true, ueWeakness: true, self_consent: true, language: 'english', currentMrs: '3', availability_54w: true, rehab: 'yes', antithromboticSoc: true, nihss: 7, nihssUntestable: 2 });
+    const ich = withClassification(ischemic, 'ich');
+    expect([ich.ueWeakness, ich.self_consent, ich.rehab, ich.nihss, ich.nihssUntestable]).toEqual([true, true, 'yes', 7, 2]);
+    for (const key of ['presentedWithin24h', 'unilateralSymptomatic', 'language', 'currentMrs', 'availability_54w', 'antithromboticSoc']) expect(ich[key], key).toBe('unselected');
+    const tia = withClassification(ischemic, 'tia');
+    expect(tia.antithromboticSoc).toBe(true);
+    for (const key of ['presentedWithin24h', 'unilateralSymptomatic', 'ueWeakness', 'self_consent', 'language', 'currentMrs', 'availability_54w', 'rehab', 'nihss']) expect(tia[key], key).toBe('unselected');
+    expect(tia.nihssUntestable).toBe(0);
+    const back = withClassification({ ...tia, abcd2: '6' }, 'ischemic');
+    expect([back.abcd2, back.antithromboticSoc]).toEqual(['unselected', true]);
+    expect([back.onsetVal, back.exclusions, back.imported]).toEqual([null, {}, null]);
+    const initial = createInitialScreenerState();
+    for (const key of Object.keys(LABELS)) expect(initial[key], key).toBe('unselected');
+  });
+});
+
+describe('answering every modeled fact with registry-consistent values (TR-11 follow-up)', () => {
+  const absent = (...ids) => Object.fromEntries(ids.map(id => [id, false]));
+  // [study, facts at or inside the registry limits, contrary answers {fact: [value, error]}, registry item still to confirm]
+  const studies = [
+    ['VERIFY', { classification: 'ischemic', onsetVal: 24, onsetUnit: 'hours', age: 18, unilateralSymptomatic: true, ueWeakness: true, self_consent: true, language: 'spanish',
+      exclusions: absent('exPriorUeCondition', 'exLegallyBlind', 'exDenseSensoryLoss', 'exRecentStroke30d', 'exVerifySeizure', 'exPregnancy') },
+    { unilateralSymptomatic: [false, 'Requires unilateral symptomatic AIS'], ueWeakness: [false, 'Requires upper extremity motor weakness'], self_consent: [false, 'Patient must be able to self-consent'], language: ['other', 'Must be English or Spanish speaking'] }, /SAFE score ≤8/],
+    ['TELE-REHAB-2', { classification: 'ich', onsetVal: 150, onsetUnit: 'days', age: 80, preMrs: 2, ueWeakness: true, self_consent: true,
+      exclusions: absent('exRecurrentStroke', 'exRecentStroke30d', 'exLifeExpectancy9m', 'exBotoxVns3m', 'exPregnancy') },
+    { ueWeakness: [false, 'Requires moderate upper extremity weakness'], self_consent: [false, 'Patient must be able to self-consent'] }, /ARAT 18–44/],
+    ['MR-PICS', { classification: 'ischemic', onsetVal: 184, onsetUnit: 'days', age: 75, currentMrs: '4', ueWeakness: true, availability_54w: true,
+      exclusions: absent('exTherapeuticAnticoagulation', 'exHistoryDvtPe', 'exSeizures', 'exSpontaneousHemorrhagicStroke', 'exPregnancy', 'exMrPicsCommunication') },
+    { currentMrs: ['2', 'Current (post-stroke) mRS must be 3 or 4'], ueWeakness: [false, 'Requires moderate unilateral upper extremity weakness'], availability_54w: [false, 'Requires availability for 54 weeks of visits'] }, /UEFM 25-45/],
+    ['SCOUTS-3', { classification: 'ischemic', onsetVal: 30, onsetUnit: 'days', age: 18, rehab: 'yes',
+      exclusions: absent('exIncarcerated', 'exPregnancy', 'exTrach', 'exCpapUse14d', 'exSecondaryIchOrSah') },
+    { rehab: ['none', 'Must have inpatient rehabilitation placement and expected length of stay ≥ 5 nights'] }, /consent-giver/],
+    ['TESTED', { classification: 'ischemic', onsetVal: 20, onsetUnit: 'hours', age: 18, vessel: 'dominant_m2', preMrs: 4, nihss: 6, aspects: 3, presentedWithin24h: true, exclusions: absent('exTerminalIllness') },
+    { presentedWithin24h: [false, 'Did not present within 24h of onset'] }, /stable for at least 3 months/],
+    ['CLARITY', { classification: 'tia', onsetVal: 180, onsetUnit: 'days', age: 40, abcd2: '6', antithromboticSoc: true, afibHistory: false, exclusions: absent('exBrainBleed2y', 'exCongestiveHeartFailure') },
+    { abcd2: ['5', 'Requires ischemic stroke or high-risk TIA (ABCD2 score ≥ 6)'], antithromboticSoc: [false, 'Requires guideline-based single or dual antithrombotic therapy with aspirin, clopidogrel and/or ticagrelor'] }, /≥ 2 listed risk factors/]
+  ];
+
+  it.each(studies)('%s reaches a potential match, with its registry items still to confirm', (acronym, facts, contrary, item) => {
+    const r = evaluate(acronym, facts);
+    expect(r.completeness).toBe('potential-match');
+    expect(r.unknownModeledCount).toBe(0);
+    expect(r.exclusionReasons).toEqual([]);
+    expect(toConfirm(r).join(' ')).toMatch(item);
+    const all = evaluateAll(S(facts));
+    if (trial(acronym).status === 'soon') {
+      // CLARITY: NOT_YET_RECRUITING on the registry, so it is listed under Later, never as a match.
+      expect(r.status).toBe('soon');
+      expect(all.soon.find(i => i.trial.acronym === acronym).completeness).toBe('potential-match');
+      expect(potentialMatches(all).map(i => i.trial.acronym)).not.toContain(acronym);
+    } else {
+      expect(r.status).toBe('pending');
+      expect(potentialMatches(all).map(i => i.trial.acronym)).toContain(acronym);
+      expect(renderScreen(facts)).toContain(`data-trial="${acronym}" data-completeness="potential-match"`);
+    }
+  });
+
+  it.each(studies)('%s does not meet documented criteria after one contrary answer', (acronym, facts, contrary) => {
+    for (const [key, [value, error]] of Object.entries(contrary)) {
+      const r = evaluate(acronym, { ...facts, [key]: value });
+      expect(r.status, `${acronym} ${key}`).toBe('excluded');
+      expect(r.exclusionReasons, `${acronym} ${key}`).toContain(error);
+    }
+  });
+
+  it.each(studies)('%s stays insufficient information while any modeled fact is unanswered', (acronym, facts) => {
+    const keys = Object.keys(facts).filter(key => !['classification', 'onsetUnit', 'exclusions'].includes(key));
+    const variants = [...keys.map(key => [key, { ...facts, [key]: key === 'onsetVal' ? null : 'unselected' }]),
+      ...Object.keys(facts.exclusions).map(id => [id, { ...facts, exclusions: { ...facts.exclusions, [id]: undefined } }])];
+    for (const [key, patch] of variants) {
+      const r = evaluate(acronym, patch);
+      expect(r.status, `${acronym} without ${key}`).not.toBe('excluded');
+      expect(r.completeness, `${acronym} without ${key}`).toBe('insufficient-information');
+      expect(r.unknownModeledCount, `${acronym} without ${key}`).toBe(1);
+    }
+  });
+});
+
+describe('imported NIHSS totals that leave out untestable items (TR-13)', () => {
+  // NIHSS rules (src/clinical/nihss-items.js): UN items are documented but not summed; the Encounter counts them.
+  const itemized = scores => Object.fromEntries(NIHSS_ITEMS.map(item => [item.id, item.options.find(o => o.endsWith(`(${scores[item.id] ?? 0})`))]));
+  const withExam = (scores, diagnosisCategory = 'ischemic') => encounter({ diagnosisCategory }, { nihss: itemized(scores) });
+
+  it('says how many items the total excludes in the import banner and the copied summary', () => {
+    const e = withExam({ motor_arm_left: 4, motor_leg_left: 3, limb_ataxia: 'UN', dysarthria: 'UN' });
+    const prefill = screenerPrefillFromEncounter(e, Date.now());
+    expect(prefill.summary).toContain('NIHSS 7 (excludes 2 untestable items)');
+    const state = applyEncounterPrefill(fresh(), prefill, fresh());
+    expect([state.nihss, state.nihssUntestable]).toEqual([7, 2]);
+    expect(inputsOf(state)).toBe('Inputs: Ischemic stroke · LKW unknown · NIHSS 7 (excludes 2 untestable items)');
+    expect(renderToStaticMarkup(<TrialScreener encounter={e} now={Date.now()} />)).toContain('<span class="whitespace-nowrap">NIHSS 7 (excludes 2 untestable items)</span>');
+    const one = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(withExam({ motor_arm_right: 'UN', visual: 2 }, 'ich'), Date.now()), fresh());
+    expect(inputsOf(one)).toBe('Inputs: Hemorrhage (ICH) · LKW unknown · NIHSS 2 (excludes 1 untestable item)');
+  });
+
+  it('adds no note when every item was scored, for a reported total, or once the NIHSS is no longer the imported one', () => {
+    const scored = screenerPrefillFromEncounter(withExam({ motor_arm_left: 2 }), Date.now());
+    expect(scored.summary).toContain('NIHSS 2');
+    expect(scored.patch.nihssUntestable).toBe(0);
+    const reported = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic' }, { nihssSource: 'reported', reportedNihss: '7' }), Date.now());
+    expect(reported.summary).toContain('NIHSS 7');
+    expect(reported.patch.nihssUntestable).toBe(0);
+    // Reapplying an Encounter whose exam is no longer complete clears the imported total and its note.
+    const first = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(withExam({ limb_ataxia: 'UN' }), Date.now()), fresh());
+    expect(first.nihssUntestable).toBe(1);
+    const partial = encounter({ diagnosisCategory: 'ischemic' }, { nihss: { motor_arm_left: 'No movement (4)' } });
+    const again = applyEncounterPrefill(first, screenerPrefillFromEncounter(partial, Date.now()), fresh());
+    expect([again.nihss, again.nihssUntestable]).toEqual(['unselected', 0]);
+    // TIA screens no NIHSS, so nothing is imported or noted.
+    expect(screenerPrefillFromEncounter(withExam({ limb_ataxia: 'UN' }, 'tia'), Date.now()).summary.join(' ')).not.toMatch(/NIHSS|untestable/);
+  });
+});
+
+describe('study-specific facts and the NIHSS note in a browser', () => {
+  let browser, page, script, css;
+  beforeAll(async () => {
+    css = await readFile(new URL('../tailwind.css', import.meta.url), 'utf8');
+    const result = await build({ bundle: true, write: false, format: 'iife', platform: 'browser', stdin: {
+      resolveDir: fileURLToPath(new URL('../', import.meta.url)), loader: 'jsx', contents: `
+        import React, { useState } from 'react';
+        import { createRoot } from 'react-dom/client';
+        import Trials from './src/Trials.jsx';
+        import { newEncounter } from './src/workspace-state.js';
+        window.newEncounter = newEncounter;
+        function Harness() {
+          const [encounter, setEncounter] = useState(null);
+          window.setEncounter = setEncounter;
+          return <Trials sub="screener" onNavigate={() => {}} active encounter={encounter} now={Date.now()} />;
+        }
+        createRoot(document.getElementById('root')).render(<Harness />);
+      ` } });
+    script = result.outputFiles[0].text;
+    browser = await chromium.launch();
+  });
+  afterAll(async () => { await browser?.close(); });
+  const open = async (width = 390) => {
+    page = await browser.newPage({ viewport: { width, height: 900 } });
+    page.setDefaultTimeout(10000);
+    await page.setContent('<div id="root"></div>');
+    await page.addStyleTag({ content: css });
+    await page.addScriptTag({ content: script });
+    await page.getByRole('heading', { name: 'Trials', exact: true }).waitFor();
+  };
+  const preview = () => page.locator('[aria-label="Screening summary preview"]').textContent();
+  const section = () => page.locator('details').filter({ has: page.locator('summary', { hasText: /^Study-specific facts/ }) });
+  const heading = async () => (await section().locator('summary').innerText()).replace(/\s+/g, ' ');
+
+  it('answers facts from the collapsed section, resets hidden ones on a classification change and fits 390 px', async () => {
+    await open();
+    try {
+      await page.getByRole('button', { name: 'Ischemic stroke', exact: true }).click();
+      expect(await heading()).toBe('Study-specific facts (0 of 9 answered)');
+      expect(await page.getByLabel('Unilateral symptoms', { exact: true }).isVisible()).toBe(false);
+      await section().locator('summary').click();
+      await page.getByLabel('Unilateral symptoms', { exact: true }).selectOption('true');
+      await page.getByLabel('Upper-limb motor deficit', { exact: true }).selectOption('true');
+      await page.getByLabel('Fluent language', { exact: true }).selectOption('spanish');
+      await page.getByLabel('Current mRS', { exact: true }).fill('3');
+      expect(await heading()).toBe('Study-specific facts (4 of 9 answered)');
+      expect(await preview()).toContain('Inputs: Ischemic stroke · LKW unknown · unilateral symptoms: Yes · upper-limb motor deficit: Yes · fluent language: Spanish · current mRS: 3');
+      for (const theme of ['light', 'dark']) {
+        await page.evaluate(t => document.documentElement.setAttribute('data-theme', t), theme);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), theme).toBe(true);
+        const small = await section().evaluate(el => [...el.querySelectorAll('select, input, summary')].filter(c => c.offsetParent !== null && c.getBoundingClientRect().height < 44).map(c => c.outerHTML.slice(0, 80)));
+        expect(small, theme).toEqual([]);
+      }
+      await page.getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).click();
+      expect(await heading()).toBe('Study-specific facts (1 of 3 answered)');
+      expect(await page.getByLabel('Unilateral symptoms', { exact: true }).count()).toBe(0);
+      expect(await preview()).not.toMatch(/unilateral symptoms|fluent language|current mRS/);
+      await page.getByRole('button', { name: 'Ischemic stroke', exact: true }).click();
+      expect(await heading()).toBe('Study-specific facts (1 of 9 answered)');
+    } finally { await page.close(); }
+  });
+
+  it('shows the untestable-item note from the Encounter until the NIHSS is edited', async () => {
+    await open();
+    try {
+      await page.evaluate(scores => {
+        const s = window.newEncounter();
+        s.note.diagnosisCategory = 'ischemic';
+        s.nihss = scores;
+        window.setEncounter(s);
+      }, itemizedForBrowser);
+      await page.getByText('NIHSS 7 (excludes 2 untestable items)', { exact: true }).waitFor();
+      await page.getByRole('button', { name: 'Use these facts', exact: true }).click();
+      expect(await preview()).toContain('NIHSS 7 (excludes 2 untestable items)');
+      await page.getByLabel('NIHSS', { exact: true }).fill('8');
+      expect(await preview()).toContain('NIHSS 8');
+      expect(await preview()).not.toContain('untestable');
+    } finally { await page.close(); }
+  });
+});
+const itemizedForBrowser = Object.fromEntries(NIHSS_ITEMS.map(item => [item.id, item.options.find(o => o.endsWith(`(${{ motor_arm_left: 4, motor_leg_left: 3, limb_ataxia: 'UN', dysarthria: 'UN' }[item.id] ?? 0})`))]));

@@ -6,7 +6,7 @@ Scope: the Trials surface (`#/trials`, `#/trials/tables`, `#/trials/database`), 
 
 **Surfaces** (`src/Trials.jsx`): three tabs.
 
-- **Screener** (`src/components/TrialScreener.jsx`). It has four steps: classification (ischemic, TIA, ICH); timing (6 onset presets, an exact-hours field and a live Encounter LKW anchor); key facts; and an optional exclusion review with 41 refiner items. Results fall into four groups: potential match, insufficient information, later (before the window or not yet recruiting) and does not meet documented criteria. Each card has registry links, chips and an expandable confirm/met list. The tab also offers a copy button for the summary, a summary preview and a details modal.
+- **Screener** (`src/components/TrialScreener.jsx`). It has four steps: classification (ischemic, TIA, ICH); timing (6 onset presets, an exact-hours field and a live Encounter LKW anchor); key facts, followed (since the follow-up) by a collapsed "Study-specific facts" section; and an optional exclusion review with 41 refiner items. Results fall into four groups: potential match, insufficient information, later (before the window or not yet recruiting) and does not meet documented criteria. Each card has registry links, chips and an expandable confirm/met list. The tab also offers a copy button for the summary, a summary preview and a details modal.
 - **Tables** (`src/components/EligibilityTables.jsx`, `src/evidence/eligibilityTables.js`): 6 phase tables. Ischemic acute has 3 studies, inpatient 5 and outpatient 4. ICH acute has 3, inpatient 3 and outpatient 2. Each table can be copied as HTML or Markdown.
 - **Database** (`StudyDatabase` in `TrialScreener.jsx`): search by acronym, name, NCT or registry acronym, plus classification and status filters.
 - Outside this unit's files, global search (`QuickSearch.jsx`, shell-owned) indexes the 16 profiles through `enrollmentLabel`. It was read, not changed.
@@ -36,21 +36,23 @@ Scope: the Trials surface (`#/trials`, `#/trials/tables`, `#/trials/database`), 
 
 - Operators: `== != >= <= > < between in`, plus a composite `or` with branches.
 - Onset: preset bands use the endpoint rule, so a band that only touches a limit counts as outside it. A band that starts before a window opens counts as "before window". The Encounter LKW anchor stays live.
-- Numeric acceptance (now `numericFact`): scores (NIHSS 0–42, ASPECTS 0–10, GCS 3–15, pre/current mRS 0–6) must be whole numbers. Age must be 0–120 and ICH volume 0–300 mL. Anything else stays unknown.
+- Numeric acceptance (now `numericFact`): scores (NIHSS 0–42, ASPECTS 0–10, GCS 3–15, pre/current mRS 0–6, and since the follow-up ABCD2 0–7) must be whole numbers. Age must be 0–120 and ICH volume 0–300 mL. Anything else stays unknown.
 - Fields used: age, classification, onsetHours/Days, nihss, aspects, gcs, preMrs, currentMrs, vessel, ichLocation, ichVolume, statin, afibHistory, afOrFlutterHistory, takingOac, abcd2, antithromboticSoc, presentedWithin24h, unilateralSymptomatic, exUeWeakness, self_consent, language, rehab, availability_54w, and 43 `ex*` exclusion facts. The refiner offers 41 of them; the 2 used only by the closed CAPPRICORN-1 are not offered.
-- Ten of these facts have no screener control: presentedWithin24h, unilateralSymptomatic, exUeWeakness, self_consent, language, rehab, currentMrs, availability_54w, abcd2 and antithromboticSoc. They therefore always stay unknown in the UI.
+- At first review, ten of these facts had no screener control, so they always stayed unknown in the UI: presentedWithin24h, unilateralSymptomatic, exUeWeakness, self_consent, language, rehab, currentMrs, availability_54w, abcd2 and antithromboticSoc. abcd2 and antithromboticSoc were not even passed to the engine.
+- Since the follow-up, every modeled fact has a control (a test checks this for each screened study and each classification it screens). The ten facts sit under "Study-specific facts". Each appears only for the classifications whose screened profiles test it, derived from the profiles: ischemic 9, TIA 2 (ABCD2 and antithrombotic therapy, both CLARITY), ICH 3. Each control names the studies that read it.
 
 **Encounter imports** (`src/evidence/screener-prefill.js`, explicit "Use these facts" only):
 
 - Diagnosis maps to ischemic, ICH or TIA. SAH, CVT, mimic and other are reported as unmodeled, with no import.
 - LKW is imported as a live anchor. Unknown, future, impossible, skipped-hour or ambiguous repeated-hour times are not imported, and a discovery time is never used as onset.
 - Age 0–120 is imported.
-- NIHSS is imported for ischemic stroke and ICH when the itemized exam is complete or a reported total of 0–42 is entered. It is not imported for TIA.
+- NIHSS is imported for ischemic stroke and ICH when the itemized exam is complete or a reported total of 0–42 is entered. It is not imported for TIA. Since the follow-up, the count of untestable (UN) items that an itemized total leaves out is carried with it (TR-13).
 - For ICH: a complete reviewed GCS; the threshold-safe ABC/2 volume (not imported when a unit warning is present); and an infratentorial location.
 - For ischemic stroke: the vessel (M1, ICA + M1 or M2 with its segment; ACA, PCA, vertebral, basilar and Other import as "other"; None as no occlusion; ICA alone and unsegmented M2 are not imported) and ASPECTS 0–10.
 - Pre-mRS 0–5, except for TIA.
 - AF documented: yes or no.
 - Anticoagulant at onset: DOAC, VKA, LMWH or none. "None" is not imported when the medication list conflicts with it. A last dose more than 7 days ago clears use at onset, and a valid last-dose time answers the 7-day and 48-hour exclusions.
+- None of the ten study-specific facts is imported. The Encounter's ABCD² (`dapt.abcd2`, a validated 0–7 integer recorded for TIA) would map cleanly, but it was left out as the lead preferred. It is listed in section 7 as a candidate.
 
 **Outputs**: the copyable screening summary (`buildBriefingNote`) and its preview; the table exports (HTML and Markdown); the details modal (`TrialSourceContext`); the Trials header and page caveat; global-search subtitles; and `data/trials.json`, which is generated and not committed.
 
@@ -68,19 +70,23 @@ Scope: the Trials surface (`#/trials`, `#/trials/tables`, `#/trials/database`), 
 | TR-08 | Low | Registry exclusions were missing from the confirm prompts: ASPIRE active infective endocarditis; SCOUTS-3 exclusions 6, 8, 10–12; VERIFY procedure windows (exclusion 15); MR-PICS GDS, C-SSRS, MoCA, neglect, implanted devices, infection, bleeding/thrombosis risk and outside therapy. | Corrected |
 | TR-09 | Low | MR-PICS `sourceHypothesisText` ("To assess the safe use…") is not in the current registry record, which describes "an open prospective feasibility study". | Corrected |
 | TR-10 | Info | Three records were updated on the registry after the 7.8.0 check: SISTER (2026-10-19), and CAPPRICORN-1 and CAPTIVA (2026-10-20). Version history is not available through the connector, so what changed cannot be identified. Every stored field was compared with today's full record and none differs. | Verified (dates updated) |
-| TR-11 | Info | "Insufficient information" told users to "answer" facts that have no screener control (the 10 facts above). These studies can never reach "potential match" in the UI, which is conservative. The wording is now "confirm it". | Corrected (wording); design noted |
+| TR-11 | Info | "Insufficient information" told users to "answer" facts that had no screener control (the 10 facts above). VERIFY, TELE-REHAB-2, MR-PICS, SCOUTS-3 and TESTED could therefore never reach "potential match" in the UI, and neither could CLARITY's completeness. That was conservative. | First pass: wording corrected. Follow-up (lead's decision): controls added. Each study can now reach "potential match" with its registry items still listed to confirm. |
 | TR-12 | Info | FASTEST-2: the registry describes Part 2 as "an extension of the FASTEST Trial". The Part 1 registry record (NCT03496883, ACTIVE_NOT_RECRUITING) and its Lancet 2026 result are separate. | Added / verified |
-| TR-13 | Low | An imported Encounter NIHSS total that excludes untestable (UN) items is shown without a UN note in the import banner and the summary. | Unresolved (report only) |
+| TR-13 | Low | An imported Encounter NIHSS total that excludes untestable (UN) items is shown without a UN note in the import banner and the summary. | Corrected (follow-up). The Encounter's own count now appears in both, e.g. "NIHSS 7 (excludes 2 untestable items)". The note is dropped once the NIHSS is edited, or when a reapply no longer imports it. |
 | TR-14 | Info | The ABC/2 volume import is threshold-safe: a raw 19.996875 mL imports as 19.9, so MINUTE's ≥ 20 mL is not met. Confirmed by test. | Verified |
 | TR-15 | Info | README line 14 still says "re-verified against ClinicalTrials.gov on 2026-10-17". README is outside this unit's scope. | For the lead |
 | TR-16 | Low | The copied summary listed candidates by NCT number only. Cards, modal and tables link directly to `https://clinicaltrials.gov/study/<NCT>`, but the copied text did not. | Added: one "Registry record:" line per candidate |
 | TR-17 | Info | No record has posted results (`has_results` false for all 16 and for NCT03496883). FASTEST Part 1's result is the journal report only. | Verified |
+| TR-18 | Low | Follow-up. CLARITY's `abcd2` (TIA pathway, "ABCD2 score ≥6") and `antithromboticSoc` were missing from the screener state and the engine inputs. CLARITY could not be fully answered even outside the UI, and ABCD2 had no range check. | Corrected. Both are passed to the engine, and ABCD2 must be a whole number 0–7. |
+| TR-19 | Low | Follow-up. SCOUTS-3 stored the inclusion "On or moving to inpatient rehabilitation with anticipated length of stay at least 5 nights", which is not in today's registry inclusion list. The requirement comes from the description ("recruited upon IPR admission") and exclusion 9 ("Anticipated inpatient rehabilitation length of stay < 5 nights"). | Corrected. The inclusion is attributed to the description, exclusion 9 is added, and the met label and source gap are reworded. |
+| TR-20 | Low | Follow-up. MR-PICS stored "available … (54 weeks) for in person visits". Today's registry says "Available for the duration of the study, 54 weeks for multiple visits (38 weeks implanted and 16 weeks post-explant follow-up)". | Corrected (inclusion text and the met and to-confirm labels) |
 
 No filter defect produced a false potential match. Tri-state behaviour held throughout the audit:
 
 - Invalid or missing entries stay unknown.
 - Partial Encounter data never produced a potential match in 400 seeded combinations.
 - Registry status is always labelled "(registry)" and never as local activation.
+- After the follow-up, a potential match still requires every modeled criterion and exclusion to be answered. No study-specific fact is imported from the Encounter, so the 400-combination invariant still holds. CLARITY can be fully answered, but it stays under "Later" while the registry says NOT_YET_RECRUITING.
 
 ## 3. Changes and reasons
 
@@ -102,6 +108,20 @@ Commits (branch `worktree-agent-aa2e74000fc2e9de6`):
 6. `unit(trials): keep key-fact inputs aligned when flagged`. A hint placed below the Volume input made its grid row taller, which pushed the neighbouring "ICH location" select out of line (checked at 390 px, dark theme). The hint now sits in the label block above the input, so both controls stay bottom-aligned.
 7. `unit(trials): 2026-10-21 review report` (this file).
 
+Follow-up commits, after the lead merged commits 1–7:
+
+8. `unit(trials): follow today's SCOUTS-3 and MR-PICS registry wording` (TR-19, TR-20; `src/evidence/screenerTrials.json`).
+9. `unit(trials): controls for study-specific facts and the untestable NIHSS note` (TR-11 follow-up, TR-18, TR-13). Files: `src/evidence/screener-eval.js`, `src/evidence/screener-prefill.js`, `src/components/TrialScreener.jsx` and the tests.
+   - `STUDY_FACTS` is derived from the profiles with `studiesUsing()`. An or-branch whose own classification rule excludes a classification does not count, so CLARITY's ABCD2 is offered for TIA only.
+   - `VISIBLE_FACTS` now covers key facts and study-specific facts. The copied summary prints a study fact only when it is shown and answered, as "label: option chosen". An invalid number uses the same "(invalid entry; treated as unknown)" wording.
+   - Booleans are unknown/yes/no, defaulting to unknown. Current mRS (0–6) and ABCD2 (0–7) use `numericFact` with the existing hint and `aria-invalid` pattern.
+   - The lists use the values the criteria test: language English/Spanish/Neither (VERIFY `in ["english","spanish"]`) and rehab Yes/No (SCOUTS-3 `== "yes"`). `antithromboticSoc` is tested as a boolean (`== true`), so it is a yes/no control, not a list.
+   - The section header counts only entries the criteria can read.
+   - The classification switch moved into the pure `withClassification()`. Hidden study facts return to unknown with the other hidden facts.
+   - TR-13: `untestableNote()` is shared by the import banner and the summary. A manual NIHSS entry resets the count.
+   - The "Insufficient information" description now reads "confirm and enter it".
+10. `unit(trials): report the TR-11 follow-up and TR-13` (this update).
+
 No change to locked files or exports. `npm run test:protocol-source` PASS after each change. CSS: none. The hints use the existing utilities `block`, `font-normal`, `text-xs`, `text-crit-700`, `dark:text-crit-300` and `whitespace-nowrap`, so tailwind.css is unchanged.
 
 **Byte delta** (fresh `npm run build` of commit 1a5f9d4, then `npm run check:asset-budget:json`; "before" is the committed 7.8.0 bundle measured the same way):
@@ -121,6 +141,25 @@ All budgets pass, with no manifest problems and no missing precache entries. The
 - The Trials chunk (screener UI): +574 raw, +247 gzip.
 
 Per-chunk gzip figures use level 9. `app.js` keeps the same length. Its gzip size moves by −2 only because the deferred chunk names changed. Most of the increase is registry-specific confirmation text, and shortening the MR-PICS summary offset part of it.
+
+**Follow-up byte delta.** Measured on a fresh `npm run build` of the follow-up source, then `npm run check:asset-budget:json`. "Before" is the merged state (the build of 1a5f9d4 above).
+
+| Measure | Before | After | Delta | Budget | Used | Cumulative vs 7.8.0 |
+|---|---|---|---|---|---|---|
+| Initial JS (gzip) | 127,372 | 127,373 | +1 | 131,072 | 97.18% | −1 |
+| Initial JS (raw) | 375,274 | 375,274 | 0 | 385,024 | 97.47% | 0 |
+| All offline JS (gzip) | 256,049 | 257,118 | +1,069 | 262,144 | 98.08% | +2,218 |
+| All offline JS (raw) | 855,574 | 859,247 | +3,673 | 876,544 | 98.03% | +6,734 |
+| tailwind.css | 119,694 | 119,694 | 0 | 122,880 | 97.41% | 0 |
+| SW precache (58 entries) | 2,338,546 | 2,342,219 | +3,673 | 2,411,724.8 | 97.12% | +6,734 |
+
+All budgets pass. All offline JS (gzip) has 5,026 bytes left. The increase is again only in deferred chunks:
+
+- Shared screener chunk: +2,363 raw, +791 gzip. This is the field table (labels and options), the derivation, `withClassification`, the summary lines and the registry text.
+- Trials chunk: +1,310 raw, +278 gzip. This is the section, the study-name notes and the NIHSS reset.
+- The QuickSearch chunk is unchanged in size.
+
+To keep growth down, each label is defined once and the summary reuses it as "label: option" instead of separate sentences. That brought the gzip growth from +1,335 to +1,069. No CSS changed: the new markup uses existing utilities only.
 
 ## 4. Evidence ledger (accessed 2026-10-21)
 
@@ -151,9 +190,18 @@ Scope labels: "registry" means the full record via `get_trial_details`. "Registr
 | Anchored LKW across midnight / repeated DST hour (TR-03) | screener-eval.js onsetSummary, wallTime | corrected | repository convention: src/clinical/timestamp.js formatRecordedInstant ("a UTC offset is added only when that local clock time repeats") | accessed 2026-10-21, repository source | before: "LKW 25.0 h (Encounter LKW 11:00, as of 12:00)" | Now dates both ends across midnight; "01:30 (UTC−07:00)" for a repeated hour |
 | Invalid exact interval shown as entered (TR-04) | TrialScreener.jsx TimingSection | corrected | repository definition: screener-eval.js onsetToHours | accessed 2026-10-21, repository source | "-1" → hint "Exact interval entered." | Now "Not a valid interval; timing remains unknown." with aria-invalid |
 | Rejected key-fact entries not flagged (TR-05) | TrialScreener.jsx NumberFact | added | repository definition: screener-eval.js numericFact | accessed 2026-10-21, repository source | age "150", NIHSS "3.5" | Hint "Treated as unknown: enter 0–120" / "a whole number 0–42" / "0–300 mL", linked by aria-describedby |
-| "Answer it" for facts without a control (TR-11) | TrialScreener.jsx insufficient-information description | corrected | repository: VISIBLE_FACTS / KeyFacts controls | accessed 2026-10-21, repository source | 10 modeled facts have no control | Wording "confirm it"; behaviour unchanged (conservative) |
+| "Answer it" for facts without a control (TR-11) | TrialScreener.jsx insufficient-information description | corrected | repository: VISIBLE_FACTS / KeyFacts controls | accessed 2026-10-21, repository source | 10 modeled facts have no control | First pass: wording "confirm it". Follow-up: controls added (rows below); wording now "confirm and enter it" |
 | Copied summary lacked direct registry links (TR-16) | screener-eval.js buildBriefingNote | added | ClinicalTrials.gov study URL pattern — https://clinicaltrials.gov/study/NCT… (each profile's registryUrl, validated against its NCT) | accessed 2026-10-21, registry | e.g. "https://clinicaltrials.gov/study/NCT07227246" | One "Registry record:" line under each candidate; later and not-met groups unchanged |
-| Imported NIHSS total with UN items (TR-13) | screener-prefill.js | unresolved | repository: workspace-state.js nihssAssessment ("UN items … documented but not scored") | accessed 2026-10-21, repository source | total excludes UN items | Not changed; the banner and summary do not mention UN items |
+| Imported NIHSS total with UN items (TR-13) | screener-prefill.js, screener-eval.js untestableNote / buildBriefingNote, TrialScreener.jsx NIHSS control | corrected | repository: src/clinical/nihss-items.js ("UN items are not summed") and workspace-state.js nihssAssessment (`untestable` count) | accessed 2026-10-21, repository source | "an item scored UN … is documented but not scored" | Follow-up: banner and summary read "NIHSS 7 (excludes 2 untestable items)" using the Encounter's count. A manual NIHSS entry, or a reapply without the total, drops the note. Reported totals carry no item detail, so no note |
+| Presentation ≤ 24 h control (TESTED) | screener-eval.js STUDY_FACTS presentedWithin24h; ischemic only | added | Treatment With Endovascular Intervention for STroke Patients With Existing Disability — NCT05911568 — last update posted 2026-09-02 | accessed 2026-10-21, registry (re-read for the follow-up) | inclusion 3 "Presenting to study hospital within 24 hours of last known well time" | Unknown/yes/no. A "no" gives "Did not present within 24h of onset" |
+| Unilateral symptoms, upper-limb deficit, self-consent and language controls (VERIFY) | STUDY_FACTS unilateralSymptomatic, ueWeakness, self_consent, language; ischemic | added | Validation of Early Prognostic Data for Recovery Outcome After Stroke — NCT05338697 — last update posted 2026-08-20 | accessed 2026-10-21, registry (re-read for the follow-up) | "Unilateral symptomatic stroke due to ischemia"; "Motor deficits in the acutely affected UE"; "Cognitive or communication impairment precluding informed consent by the participant"; "Fluent in study approved languages (i.e., English or Spanish)" | Language options are the criterion's values (English, Spanish) plus Neither. SAFE ≤ 8 and the procedure windows stay to confirm |
+| Current mRS, upper-limb deficit and 54-week availability controls (MR-PICS) | STUDY_FACTS currentMrs (0–6), ueWeakness, availability_54w; ischemic | added | Motor Recovery Through Plasticity-Inducing Cortical Stimulation — NCT06506279 — last update posted 2026-04-13 | accessed 2026-10-21, registry (re-read for the follow-up) | "Disability measured between 3 and 4 on the modified Rankin Scale"; "Levels of hemiparesis that warrant surgical intervention (upper limb impairment)" | mRS 3–4 meets; 2 does not; 3.5 or 7 stays unknown. UEFM 25–45 stays to confirm |
+| MR-PICS availability wording (TR-20) | MR-PICS exactInclusionCriteria[5], availability_54w matched/pending labels | corrected | Motor Recovery Through Plasticity-Inducing Cortical Stimulation — NCT06506279 — last update posted 2026-04-13 | accessed 2026-10-21, registry (re-read for the follow-up) | "Available for the duration of the study, 54 weeks for multiple visits (38 weeks implanted and 16 weeks post-explant follow-up)" | The stored "for in person visits" is not in today's record |
+| Upper-limb deficit and self-consent controls (TELE-REHAB-2), ischemic and ICH | STUDY_FACTS ueWeakness, self_consent | added | Telerehabilitation In The Home After Stroke (TR-2) — NCT06682429 — last update posted 2026-10-09 | accessed 2026-10-21, registry (re-read for the follow-up) | "due to ischemia or intracerebral hemorrhage (ICH)"; "The stroke caused upper extremity deficits as defined by Action Research Arm Test score 18-44"; "signed by the subject (i.e., no surrogate consent)" | ARAT 18–44 and the other baseline tests stay to confirm |
+| Inpatient-rehabilitation control (SCOUTS-3), ischemic and ICH | STUDY_FACTS rehab | added | Optimizing Adherence to the Treatment of Sleep Apnea Among Patients With Stroke Undergoing Inpatient Rehabilitation (SCOUTS3) — NCT06722755 — last update posted 2026-08-13 | accessed 2026-10-21, registry (re-read for the follow-up) | description "recruited upon IPR admission"; exclusion 9 "Anticipated inpatient rehabilitation length of stay < 5 nights" | Options are the criterion's value ("yes") plus No; "No" gives "does not meet" |
+| SCOUTS-3 rehabilitation wording (TR-19) | SCOUTS-3 exactInclusionCriteria[3], exactExclusionCriteria, rehab matchedLabel, sourceGaps[0] | corrected | Optimizing Adherence to the Treatment of Sleep Apnea Among Patients With Stroke Undergoing Inpatient Rehabilitation (SCOUTS3) — NCT06722755 — last update posted 2026-08-13 | accessed 2026-10-21, registry (re-read for the follow-up) | inclusion 1 "Age 18 years or older", 2 "Head CT or brain MRI demonstrating an acute ischemic infarction or intraparenchymal hemorrhage within past 30 days", 3 "Person providing consent … able to be consented in English or Spanish"; exclusion 9 "Anticipated inpatient rehabilitation length of stay < 5 nights" | The stored "On or moving to inpatient rehabilitation…" inclusion is not in today's record. It is now attributed to the description, and exclusion 9 is added |
+| ABCD2 (TIA only) and antithrombotic-therapy controls (CLARITY) | STUDY_FACTS abcd2 (0–7), antithromboticSoc; ischemic (antithrombotic only) and TIA | added | Cilostazol for Prevention of Recurrent Stroke Trial — NCT07174414 — last update posted 2026-10-15 | accessed 2026-10-21, registry (re-read for the follow-up) | "Ischemic stroke or high-risk TIA (ABCD2 score ≥6)"; "Treatment with single or dual antithrombotic therapy with aspirin, clopidogrel and/or ticagrelor per international and/or national guidelines" | For TIA, ABCD2 6 meets and 5 does not. With every modeled fact answered, the completeness is "potential match", but the study stays under "Later" while NOT_YET_RECRUITING |
+| CLARITY facts missing from the engine inputs (TR-18) | screener-eval.js createInitialScreenerState, buildScreenerParams, SCORE_RANGES | corrected | repository definition: src/evidence/screener-eval.js (not a clinical source) | accessed 2026-10-21, repository source | `abcd2` and `antithromboticSoc` were read by CLARITY's criteria but never placed in the screener state or parameters | Both are now passed through; ABCD2 must be a whole number 0–7, otherwise unknown |
 
 ## 5. Tests added and results
 
@@ -186,6 +234,43 @@ Runs (final source = commit 1a5f9d4 plus this report):
 - Final source: `check:clinical-claims` PASS. `content:validate` PASS (16 trial profiles). `evidence:validate` PASS. `validate:citations` PASS. `validate:inline-citations` PASS. `check:leak-guard` PASS (public scan of 598 tracked text files, run with this report staged; it warns that no private denylist was loaded). `check:leak-guard:staged` could not run here: it exits 1 because it requires a private denylist, and none is available in this environment. `check:asset-budget`: all within budget (figures in section 3).
 - Build outputs regenerated by the build and test runs were restored to the committed files before each commit. None is committed.
 
+**Follow-up tests** (same file, now 153 tests; expected values come from the registry text re-read for the follow-up, quoted in the file):
+
+- **Visibility.** `STUDY_FACTS` per classification equals the registry-derived list: ischemic 9, TIA 2, ICH 3, each with the studies that read it. A second test walks every screened profile and each classification it screens. No modeled criterion is left without a control (or-branches for another classification excluded).
+- **Rendering.** For each classification the collapsed "Study-specific facts" section sits after the key facts and before the exclusion review, shows "(0 of N answered)", and has only that classification's controls, each naming its studies and linked by `aria-describedby`.
+- **Options.**
+  - Booleans offer Unknown/Yes/No, with Unknown selected by default.
+  - Language offers exactly English, Spanish and Neither, and rehab offers Yes and No.
+  - Every option gives a definite met or not-met for its criterion, and every value a criterion tests is offered.
+- **Invalid numbers.** Current mRS 3.5 and ABCD2 8 get `aria-invalid`, the hint and "(invalid entry; treated as unknown)" in the summary. An invalid entry is not counted as answered.
+- **Summary.** Study facts print only when shown and answered, for each classification, as "label: option chosen". Legacy booleans print as the engine reads them.
+- **Classification change.** Hidden study facts, including the NIHSS untestable count, return to unknown. Facts shown on both screens are kept.
+- **Each of VERIFY, TELE-REHAB-2, MR-PICS, SCOUTS-3, TESTED and CLARITY:**
+  - With every modeled fact answered at the registry limits, it reaches "potential match" and its registry items are still listed to confirm. CLARITY reaches that completeness but stays under "Later".
+  - Each contrary answer to a study-specific fact gives "does not meet documented criteria" with the criterion's reason.
+  - Leaving any one modeled fact or exclusion unanswered keeps it at "insufficient information" with exactly 1 unknown.
+- **TR-13.**
+  - Banner, state and summary read "NIHSS 7 (excludes 2 untestable items)", and "1 untestable item" for one.
+  - There is no note for a fully scored exam or a reported total.
+  - A reapply that no longer imports the total clears the note. TIA imports nothing.
+- **Browser (Playwright, 390 px).**
+  - The section starts collapsed, counts answered facts and prints them in the preview.
+  - Switching to ICH and back resets the hidden facts.
+  - With the section open there is no horizontal overflow and no target under 44 px, in light and dark.
+  - The Encounter banner shows the untestable note, the preview carries it after "Use these facts", and editing the NIHSS drops it.
+- **The 400-combination partial-Encounter invariant** still passes unchanged.
+
+Ten key follow-up assertions (scratch harness) fail on the pre-follow-up HEAD source (e81cb7b) and pass on the follow-up source.
+
+Follow-up runs:
+
+- `npx vitest run` (full, Playwright browser path set): 113 files passed, 2,149 tests passed, 3 skipped, 0 failed. The merged state had 2,120 passed; the +29 are the follow-up's new tests in this file. The same 3 tests are skipped.
+- Trial-related files (`npx vitest run trials screener eligibility`): 11 files, 306 passed.
+- `npm run test:protocol-source`: PASS after the follow-up changes and on the final follow-up source.
+- `check:clinical-claims`, `content:validate` (16 trial profiles), `evidence:validate`, `validate:citations` and `validate:inline-citations`: all PASS on the follow-up source.
+- `check:leak-guard`: PASS (public scan with this report staged; no private denylist is available here, as before).
+- `npm run build` then `STROKE_PROTOCOL_LOCK_PORT=4350 npm run test:protocol-tab`: PASS (46 fixture/sub-tab captures) on a fresh build of the follow-up source. This was run as a precaution; no Protocols module changed.
+
 ## 6. Protocols observations (report only)
 
 None. This unit did not review Protocols content, and no trials finding depends on it. Trial data reaches no Protocols-rendered module: global search loads it lazily, only after search is opened. The Protocols tab lock was run as a precaution (result in section 5).
@@ -196,8 +281,11 @@ None. This unit did not review Protocols content, and no trials finding depends 
 - **Index lag.** Last-update dates come from the search index, which can lag the live record. "Registry index" scope is stated.
 - **PICASSO.** Criterion 3 vs 9 (intracranial occlusion required or not) and the three-arm intervention list vs "1:1" randomization remain unresolved. Confirm with the study team. The profile is not screened.
 - **CLARITY.** The estimated start is 2026-10 but the status is still NOT_YET_RECRUITING, so it may change within days.
-- **Controls.** Ten modeled facts have no screener control. VERIFY, TELE-REHAB-2, MR-PICS, SCOUTS-3 and TESTED therefore always read "insufficient information" in the UI, and CLARITY (antithrombotic therapy; ABCD2 for TIA) can never be fully answered either, though it sits under "Later" while not yet recruiting. This is conservative. Adding controls is a product decision.
+- **Controls.** Resolved in the follow-up (TR-11). A potential match still depends on every modeled fact being answered, and the registry's unmodeled items stay in the to-confirm list.
+- **Encounter ABCD².** The Encounter records a validated ABCD² (0–7) for TIA in `dapt.abcd2`, which would map cleanly to CLARITY's fact. It was not imported, as the lead preferred. Importing it would be a one-field change in `screener-prefill.js` and would need its own import test.
+- **Shared upper-limb fact.** One "Upper-limb motor deficit" answer serves VERIFY, MR-PICS and TELE-REHAB-2. Each study's own threshold (SAFE ≤ 8, UEFM 25–45, ARAT 18–44) stays in its to-confirm list, so "yes" does not mean the study threshold is met.
+- **VERIFY language labels.** The control reads "Fluent language", per the registry's "Fluent in study approved languages (i.e., English or Spanish)". The criterion's own labels still say "speaks" / "English or Spanish speaking", which the 2026-10-17 test TO-10 pins. They were left unchanged.
 - **Partial exclusion lists.** Some registry exclusions remain covered only by generic confirmation text, and the source gaps say so. Examples: VERIFY co-enrollment and comorbidity; ASPIRE lab and BP thresholds; FASTEST-2 terminal illness and investigational-trial items; MINUTE capacity and DNR.
-- **NIHSS with UN items (TR-13).** Not changed.
+- **NIHSS with UN items (TR-13).** Resolved in the follow-up.
 - **FASTEST Part 1.** Abstract scope only. PMC full text (PMC13005960) exists but was not needed for the stored numbers.
 - **README.** README line 14 (date) is outside this unit's scope.
