@@ -1398,7 +1398,7 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "CT.gov requires CT/MRI proof of acute ischemic infarction or intraparenchymal hemorrhage within 30 days and includes oxygen, aspiration-risk, sedative, surgery, and anticipated rehab length-of-stay exclusions not fully encoded here.",
+      "CT.gov requires CT/MRI proof of acute ischemic infarction or intraparenchymal hemorrhage within 30 days. The rehab fact follows the description (recruitment on inpatient rehabilitation admission) and exclusion 9 (anticipated stay < 5 nights). Aspiration, sedative, surgery and co-morbidity exclusions are listed for confirmation, not modeled.",
       "Registry status rechecked 2026-10-21: RECRUITING; last update posted 2026-08-13 (recorded 2026-10-21). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "acute_subacute",
@@ -1421,7 +1421,7 @@
       "Age ≥ 18 years",
       "Acute ischemic stroke or ICH within past 30 days",
       "Head CT or brain MRI demonstrating acute ischemic infarction or intraparenchymal hemorrhage within 30 days",
-      "On or moving to inpatient rehabilitation with anticipated length of stay at least 5 nights",
+      "Recruited on admission to inpatient rehabilitation (registry description)",
       "Consent-giver (patient or legally authorized representative) able to consent in English or Spanish"
     ],
     "exactExclusionCriteria": [
@@ -1429,7 +1429,8 @@
       "pregnant",
       "mechanical ventilation, tracheostomy, or supplemental oxygen > 4 L/min",
       "CPAP use within 14 days pre-CVA",
-      "CVA related to tumor, vascular malformation, or SAH"
+      "CVA related to tumor, vascular malformation, or SAH",
+      "anticipated inpatient rehabilitation length of stay < 5 nights"
     ],
     "eligibility": {
       "criteria": [
@@ -1462,7 +1463,7 @@
           "operator": "==",
           "value": "yes",
           "error": "Must have inpatient rehabilitation placement and expected length of stay ≥ 5 nights",
-          "matchedLabel": "Inpatient rehabilitation placement confirmed",
+          "matchedLabel": "Inpatient rehabilitation admission with anticipated stay ≥ 5 nights",
           "pendingLabel": "Confirm inpatient rehabilitation placement and anticipated length of stay at least 5 nights"
         }
       ],
@@ -1697,7 +1698,7 @@
       "Post-stroke mRS 3-4",
       "UEFM score 25-45 with upper limb impairment",
       "Minimum 30% corticospinal pathway preservation on MRI and observable upper-limb motor output to TMS",
-      "available for duration of study period (54 weeks) for in person visits"
+      "Available for the duration of the study: 54 weeks of multiple visits (38 weeks implanted, 16 weeks post-explant follow-up)"
     ],
     "exactExclusionCriteria": [
       "Therapeutic anticoagulation",
@@ -1755,8 +1756,8 @@
           "operator": "==",
           "value": true,
           "error": "Requires availability for 54 weeks of visits",
-          "matchedLabel": "Available for 54-week in-person visits",
-          "pendingLabel": "Confirm availability for 54 weeks of in-person follow-up visits"
+          "matchedLabel": "Available for the 54-week study",
+          "pendingLabel": "Confirm availability for the 54-week study (38 weeks implanted, 16 weeks post-explant follow-up)"
         }
       ],
       "exclusions": [
