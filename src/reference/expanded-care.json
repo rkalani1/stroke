@@ -914,7 +914,7 @@
       "hospital systems",
       "stroke alert"
     ],
-    "summary": "Every unit should be able to activate the stroke team immediately; use an organized protocol for emergent evaluation of acute deficits at any age (AHA 2026, COR 1). Hand over time last known well, the examination, imaging and recent procedures, and track delays for quality review.",
+    "summary": "Train all staff to activate the in-hospital stroke alert and give responders immediate neurological expertise (AHA 2022 statement); use an organized protocol for emergent evaluation of acute deficits at any age (AHA 2026, COR 1). Hand over time last known well, the examination, imaging and recent procedures, and track delays for quality review.",
     "consider": [
       "Can staff immediately activate the stroke response from this location?",
       "Are timing, examination, imaging and relevant recent procedures communicated to the response team?",
@@ -927,8 +927,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/35137601/",
         "year": 2022,
         "type": "Scientific statement",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-21",
+        "access": "Primary abstract re-read: five core elements of an ungraded statement."
       }
     ],
     "related": [
@@ -955,7 +955,7 @@
       "destination",
       "virtual network"
     ],
-    "summary": "Without in-house stroke expertise, use telestroke for IVT decisions (AHA 2026, COR 1) and teleradiology for rapid image review (COR 1); EMS should go to the closest stroke-capable hospital, and direct transport to a thrombectomy center is reasonable where local access exists (2a). Agree transfer protocols that minimize door-in-door-out time (COR 1).",
+    "summary": "Without in-house stroke expertise, use telestroke for IVT decisions (AHA 2026, COR 1) and teleradiology for rapid image review (COR 1); EMS should go to the closest stroke-capable hospital. For suspected LVO, direct transport to a locally accessible thrombectomy center is reasonable (2a), but bypassing a proficient local stroke center for a distant one did not improve outcome (COR 3: No Benefit). Agree transfer protocols that minimize door-in-door-out time (COR 1).",
     "consider": [
       "What imaging, specialist and treatment capabilities are available at the referring and receiving sites?",
       "Are clinical information, images and the transfer plan shared through a reliable process?",
@@ -968,7 +968,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/39665145/",
         "year": 2024,
         "type": "Scientific statement",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
       },
       {
@@ -976,8 +976,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/41342129/",
         "year": 2025,
         "type": "Scientific statement",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-21",
+        "access": "Primary abstract checked; full recommendation tables not reviewed. Correction 41871197 (2026) not read."
       }
     ],
     "related": []
@@ -1011,7 +1011,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/38557155/",
         "year": 2024,
         "type": "Scientific statement",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
@@ -1089,7 +1089,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/36748462/",
         "year": 2023,
         "type": "Scientific statement",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
       },
       {
@@ -1097,7 +1097,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/40408522/",
         "year": 2025,
         "type": "Clinical policy",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],

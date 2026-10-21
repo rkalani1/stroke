@@ -390,18 +390,18 @@
       }
     ],
     "consider": [
-      "Prestroke mRS 2: EVT is reasonable (2a); mRS 3–4 within 6 h: EVT might be reasonable (2b).",
-      "Transfers: go straight to angiography without repeat imaging unless the exam changed or the transfer was delayed (2b).",
-      "Large core, basilar, MeVO and perfusion details: see the dedicated cards."
+      "Prestroke mRS 2 (2a) or 3–4 (2b): graded only for ICA/M1 within 6 h with NIHSS ≥6 and ASPECTS ≥6.",
+      "Direct to angiography may be considered (2b each): transfers without repeat imaging unless the exam changed or transfer was delayed; EMS arrivals with a positive LVO scale, imaged by flat-panel CT. DIRECT ANGIO (France, 2026; postdates AHA 2026) stopped early for safety: more sICH (15 vs 0%), no functional benefit.",
+      "ASPECTS ≥6 at 6–24 h keeps COR 1: in July 2026 the writing group declined a request from DAWN/DEFUSE investigators to downgrade it to 2b, while noting an unresolved observational mortality signal favoring perfusion selection (NO-SELECT trial ongoing)."
     ],
-    "caution": "DIRECT-MT (China) found EVT alone noninferior, but European trials did not; give IVT whenever eligible.",
+    "caution": "Only DIRECT-MT and DEVT (both China) found EVT alone noninferior; SWIFT DIRECT, MR CLEAN-NO IV, SKIP, DIRECT-SAFE and the IRIS meta-analysis did not. Give IVT whenever eligible.",
     "sources": [
       {
         "title": "European Stroke Organisation (ESO) - European Society for Minimally Invasive Neurological Therapy (ESMINT) Guidelines on Mechanical Thrombectomy in Acute Ischaemic StrokeEndorsed by Stroke Alliance for Europe (SAFE)",
         "url": "https://pubmed.ncbi.nlm.nih.gov/31165090/",
         "year": 2019,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
       },
       {
@@ -411,6 +411,14 @@
         "type": "Guideline",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract checked; full recommendation tables not reviewed. Indexed correction(s) 37021163 not reconciled."
+      },
+      {
+        "title": "AHA/ASA writing group response: EVT imaging selection in the 6–24 h window",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42535264/",
+        "year": 2026,
+        "type": "Report",
+        "checkedAt": "2026-10-21",
+        "access": "PMC full text (PMC13491549) read: request to downgrade recommendation 4.7.2 #2 declined; July 2026 print edition adds supporting text."
       }
     ],
     "related": [
@@ -429,6 +437,14 @@
       {
         "label": "Large core",
         "href": "#/evidence/large-core-evt"
+      },
+      {
+        "label": "Basilar occlusion",
+        "href": "#/evidence/basilar-occlusion"
+      },
+      {
+        "label": "MeVO",
+        "href": "#/evidence/medium-distal-evt"
       }
     ]
   },
@@ -450,7 +466,7 @@
       "LASTE",
       "TESLA"
     ],
-    "summary": "Large cores still benefit: within 6 h, ASPECTS 3–5 falls under the COR 1 ASPECTS 3–10 recommendation, which has no age criterion (ais-2026-114), and ASPECTS 0–2 is reasonable (2a) only with age <80, mRS 0–1 and no significant mass effect (ais-2026-117); at 6–24 h, ASPECTS 3–5 (age <80, mRS 0–1, no significant mass effect) is COR 1 (ais-2026-116) (AHA 2026). SELECT2: generalized OR 1.51 (mRS 0–2 20 vs 7%); ANGEL-ASPECT: GOR 1.37; RESCUE-Japan LIMIT: mRS 0–3 31.0 vs 12.7%; TENSION: cOR 2.58 with lower mortality; LASTE (ASPECTS ≤5 within 6.5 h): mortality 36.1 vs 55.5%. Expect more hemorrhage (ANGEL-ASPECT sICH 6.1 vs 2.7%).",
+    "summary": "Large cores still benefit: within 6 h, ASPECTS 3–5 falls under the COR 1 ASPECTS 3–10 recommendation, which has no age criterion (ais-2026-114), and ASPECTS 0–2 is reasonable (2a) only with age <80, mRS 0–1 and no significant mass effect (ais-2026-117); at 6–24 h, ASPECTS 3–5 (age <80, mRS 0–1, no significant mass effect) is COR 1 (ais-2026-116) (AHA 2026). SELECT2: generalized OR 1.51 (mRS 0–2 20 vs 7%); ANGEL-ASPECT: GOR 1.37; RESCUE-Japan LIMIT: mRS 0–3 31.0 vs 12.7%; TENSION: cOR 2.58 with lower mortality; LASTE (ASPECTS ≤5 within 6.5 h): mortality 36.1 vs 55.5%; TESLA (NCCT ASPECTS 2–5, ≤24 h) missed its primary endpoint. Expect more hemorrhage (ANGEL-ASPECT sICH 6.1 vs 2.7%).",
     "recommendations": [
       {
         "text": "In AIS patients with anterior circulation proximal LVO (ICA or M1), presenting within 6 hours of symptom onset, with NIHSS 6 or greater, prestroke mRS 0-1, and ASPECTS 3-10, EVT (endovascular thrombectomy) is recommended to improve functional outcomes and reduce mortality.",
@@ -477,17 +493,18 @@
     "consider": [
       "Measure the core consistently (NCCT/MRI ASPECTS or CTP core) and confirm age, baseline mRS and mass effect.",
       "Set expectations: the benefit is mostly less disability, not independence (LASTE median mRS 4 vs 6).",
-      "SVIN 2025: ASPECTS 0–5 within 6 h (age 18–80, mRS 0–1) is Class I (LASTE); ASPECTS 0–2 at 6–24 h — benefit uncertain (2b)."
+      "SVIN 2025: ASPECTS 0–5 within 6 h (age 18–80, mRS 0–1) is Class I (LASTE); ASPECTS 0–2 at 6–24 h — benefit uncertain (2b).",
+      "ATLAS (Lancet 2026; postdates AHA 2026 and SVIN 2025), IPD of 6 RCTs (n=1886): better mRS (aGenOR 1.63) and lower mortality (31.1 vs 37.3%) up to 24 h, consistent across ASPECTS and core strata; evidence is limited for core ≥150 mL beyond 6 h."
     ],
-    "caution": "Trials mostly enrolled patients aged 80 or younger with prestroke mRS 0–1.",
+    "caution": "Trial age limits: ANGEL-ASPECT ≤80; SELECT2 and TESLA ≤85; none in RESCUE-Japan LIMIT, TENSION or LASTE. All but TENSION (mRS ≤2) required prestroke mRS 0–1.",
     "sources": [
       {
         "title": "Endovascular Therapy in Patients With Acute Ischemic Stroke With Large Infarct: A Guideline From the Society of Vascular and Interventional Neurology",
         "url": "https://pubmed.ncbi.nlm.nih.gov/41573174/",
         "year": 2025,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary full text (PMC12671639) checked for the summarized recommendations."
+        "checkedAt": "2026-10-21",
+        "access": "PMC full text (PMC12671639) re-read: 0–6 h Class I table and trial age/mRS limits. The 6–24 h table did not render, so its 2b wording is from the archived transcription."
       }
     ],
     "related": [
@@ -553,8 +570,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/38752743/",
         "year": 2024,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-21",
+        "access": "PMC full text (PMC11569583) synoptic table read; certainty symbols did not render."
       }
     ],
     "related": [
@@ -623,7 +640,7 @@
     ],
     "consider": [
       "Confirm the segment (dominant vs codominant/nondominant M2, M3, ACA, PCA), a disabling deficit and IVT eligibility; give IVT if eligible.",
-      "SVIN 2026: EVT may be considered case by case for disabling ACA or PCA occlusion; it is not standard for M3/M4.",
+      "SVIN 2026: EVT may be considered case by case for disabling ACA or PCA occlusion (2b); not standard for M3/M4 (COR 3: No Benefit).",
       "Review ORIENTAL-MeVO's population limits with the intervention team."
     ],
     "caution": "The AHA 2026 grading predates ORIENTAL-MeVO and DISCOUNT; one positive Chinese trial does not establish benefit for every M2 or distal lesion.",
@@ -633,7 +650,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42404835/",
         "year": 2026,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary full text (PMC13331429) checked for the quoted recommendations."
       },
       {
@@ -641,7 +658,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/39908430/",
         "year": 2025,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked (population, comparison, outcomes and safety)."
       },
       {
@@ -649,7 +666,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/39908448/",
         "year": 2025,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked (population, comparison, outcomes and safety)."
       },
       {
@@ -657,7 +674,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42127389/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked (population, comparison, outcomes and safety)."
       }
     ],
@@ -756,11 +773,12 @@
       "intra arterial thrombolysis",
       "adjuncts"
     ],
-    "summary": "Aim for eTICI 2b–3 as early as possible with a stent retriever, aspiration or both (AHA 2026, COR 1); general anesthesia or procedural sedation are both acceptable (COR 1). Tandem lesions: treating both may be reasonable (2b). Intra-arterial thrombolytic after mTICI ≥2b may be reasonable (2b); preprocedural tirofiban is not useful (COR 3). Rescue angioplasty or stenting after failed EVT remains uncertain (2b).",
+    "summary": "Aim for eTICI 2b–3 as early as possible with a stent retriever, aspiration or both (AHA 2026, COR 1); general anesthesia or procedural sedation are both acceptable (COR 1). Tandem lesions: treating both may be reasonable (2b). Intra-arterial thrombolytic after mTICI ≥2b may be reasonable (2b); preprocedural tirofiban is not useful (COR 3: No Benefit). Rescue angioplasty or stenting after failed EVT remains uncertain (2b); in ANGEL-REBOOT (China) it did not improve outcome and raised sICH (5 vs 1%).",
     "consider": [
       "Document final eTICI, complications, access site and the BP plan for the receiving team.",
       "Tandem stenting or rescue stenting commits the patient to antiplatelets — weigh hemorrhage risk.",
-      "Avoid SBP drops during the procedure (ESO 2026)."
+      "Avoid SBP drops during the procedure (prior ESO advice; the ESO 2025 BP update notes no study defines a safe drop).",
+      "IA lytic after successful EVT: ANGEL-TNK, PEARL and CHOICE-2 improved mRS 0–1 (CHOICE-2 57.5 vs 42.5%, but mortality 12.1 vs 6.4%); POST-UK, POST-TNK and, in the posterior circulation, ATTENTION-IA and IAT-TOP were neutral. CHOICE-2 and IAT-TOP postdate AHA 2026."
     ],
     "caution": "Technique choices depend on operator expertise and devices; this card is not a procedural protocol.",
     "sources": [
@@ -769,7 +787,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/31165090/",
         "year": 2019,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
