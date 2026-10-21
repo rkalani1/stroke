@@ -124,3 +124,29 @@ Verification status: evidence items were raised by the clinical auditors from pr
 
 ## Not a Protocols change in 7.8.0
 - SAH encounters now open the ICH Protocols sub-tab from the header and search, matching the case bar. The Protocols content itself is unchanged; the rendered lock (46 states) and the source hash lock pass.
+
+# 7.9.0 review (2026-10-21): additional Protocols observations, report only
+
+The Protocols tab is still unchanged in 7.9.0: the rendered lock (46 synthetic states) passes at 1440 px and, new in this release, at 390 px, and the source hash lock and the example-protocols snapshot pass. Nothing below was changed or annotated in the app. Each item needs the protocol owner's decision; the first is a cross-surface conflict that could not be fixed without changing Protocols output.
+
+## Decision needed: reversal card and Encounter can disagree about a mistyped last-dose time
+- Where: `src/app.jsx` computes the quick-reference reversal input `lastDoseHours` with `Date.parse(state.note.lastDOACDose)`; Encounter uses its strict `validTimestamp`.
+- Observation: `Date.parse` (V8) rolls an impossible date forward (`2026-02-30T08:00` becomes 2 March), accepts a time skipped by the spring-forward change, and silently picks one occurrence of a repeated hour. Encounter rejects all three. For an acute ICH on apixaban with the mistyped dose `2026-02-30T08:00` at 2026-10-21 10:00 (Los Angeles), reproduced with `reversalDoseLine`: Encounter says "last-dose time unknown (treat as within the local <24 h trigger) — 4F-PCC 2000 units IV"; the Protocols card says "last dose 5593 h ago — beyond the local <24 h trigger; reverse only with renal impairment or an elevated anti-Xa level."
+- Why not fixed: the input feeds the frozen quick reference, so correcting it changes Protocols output (only for invalid, skipped or ambiguous dose times). Suggested fix if approved: compute `lastDoseHours` with `validTimestamp(state.note.lastDOACDose, now)` in `src/app.jsx`, as Encounter does, and add a lock fixture with an impossible dose date.
+- Source: the app's own local rule that unknown timing is treated as within the trigger (CHANGELOG 7.7.4). Found by the encounter review unit.
+
+## Boundary wording (low)
+- Post-IVT: the local protocol says "treat if SBP >180 or DBP >105; maintain BP below 180/105" (`institutional-protocols.js`); ais-2026-74 (COR I, B-R) says "maintained below 180/105 mmHg", so exactly 180 or 105 is neither below target nor a treatment trigger. The Encounter case bar now flags ≥180/≥105.
+- Pre-IVT: the local exclusion list prints "SBP >185 or DBP >110 mmHg on repeated measures"; ais-2026-72 requires lowering "below 185 mmHg and DBP below 110 mmHg". The Encounter checklist label now reads ≥185/≥110, matching its long-standing logic. The two surfaces therefore word the same boundary differently until the owner decides.
+
+## EVT tiers with institutional qualifiers (low)
+- The frozen EVT quick reference grades "0–6 h ASPECTS 3–5 with no significant mass effect: EVT, COR I / LOE A". ais-2026-114 (ASPECTS 3–10) has no mass-effect or age criterion. It also grades "ASPECTS 0–2, age <80, no significant mass effect, and CTP core ≤70 mL: COR IIa / LOE B-R"; ais-2026-117 has no CTP-core criterion. These may be intended local policy; if so, the owner may want them labelled "AHA grade with institutional qualifier". Encounter's EVT screen messages in 7.9.0 follow the AHA text.
+
+## Citations and wording to check (low)
+- The IVT exclusion list's DOAC detail cites the "AHA/ASA 2019 AIS guideline (PMID 31662037)"; the 2026 guideline (PMID 41582814) states that it replaces the 2018 guideline and the 2019 update.
+- Pediatric card: "In sickle cell disease, acute pediatric management centers on exchange transfusion (STOP-era protocols) rather than lysis." STOP was a primary-prevention transfusion trial; ASH 2020 acute-management text could not be read in this review, so no discrepancy is asserted.
+- Kcentra INR-tier dosing and idarucizumab 5 g in the locked reversal file could not be re-verified against the labels (DailyMed blocked). The quick-reference BP rows, glucose rows, TNK label bands and 3-h window, andexanet withdrawal note and nimodipine regimen were checked and agree with the sources read.
+
+## Presentation (low)
+- `ProtectedProtocols.jsx` scrolls with `behavior: 'smooth'` on sub-tab switch, section jumps and reveals; a script-requested smooth scroll ignores the reduced-motion preference.
+- The "IVT card held" banner is inserted together with its `role="status"`, a pattern that some screen readers do not announce; it sits inside the locked surface.
