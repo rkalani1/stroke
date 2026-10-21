@@ -102,7 +102,7 @@ const OPERATORS = {
 };
 
 const missing = v => v === undefined || v === null || (typeof v === 'string' && (!v.trim() || v === 'unselected')) || (typeof v === 'number' && !Number.isFinite(v));
-const SCORE_RANGES = { nihss: [0, 42], aspects: [0, 10], gcs: [3, 15], preMrs: [0, 6], currentMrs: [0, 6] };
+const SCORE_RANGES = { nihss: [0, 42], aspects: [0, 10], gcs: [3, 15], preMrs: [0, 6], currentMrs: [0, 6], abcd2: [0, 7] };
 // Physiologically implausible entries stay unknown instead of counting as met facts.
 const VALUE_RANGES = { age: [0, 120], ichVolume: [0, 300] };
 const CLASSIFICATIONS = ['ischemic', 'tia', 'ich'];
@@ -223,6 +223,8 @@ export function createInitialScreenerState() {
     onsetAnchorMs: null,
     age: 'unselected',
     nihss: 'unselected',
+    // Untestable (UN) items an imported Encounter NIHSS total leaves out; any manual NIHSS entry resets it.
+    nihssUntestable: 0,
     aspects: 'unselected',
     gcs: 'unselected',
     preMrs: 'unselected',
@@ -247,6 +249,8 @@ export function createInitialScreenerState() {
     afibHistory: 'unselected',
     afOrFlutterHistory: 'unselected',
     takingOac: 'unselected',
+    abcd2: 'unselected',
+    antithromboticSoc: 'unselected',
     exclusions: {},
     // Values the last Encounter import wrote, so a reapply can clear what the
     // Encounter no longer supports without discarding later manual edits.
@@ -310,7 +314,9 @@ export function buildScreenerParams(state, nowMs = null) {
     afibHistory: state.afibHistory,
     // AF establishes this broader ASPIRE criterion; absent AF does not exclude flutter.
     afOrFlutterHistory: typeof state.afOrFlutterHistory === 'boolean' ? state.afOrFlutterHistory : state.afibHistory === true ? true : 'unselected',
-    takingOac: state.takingOac
+    takingOac: state.takingOac,
+    abcd2: state.abcd2,
+    antithromboticSoc: state.antithromboticSoc
   };
 
   const ex = state.exclusions || {};
@@ -532,19 +538,60 @@ export function onsetSummary(state, nowMs = null) {
   return 'LKW ' + exact;
 }
 
-// Key facts each classification shows a control for. Facts outside this set
-// are neither shown nor printed, so the copied summary matches the screen.
-export const VISIBLE_FACTS = {
+// Screened profiles that test a fact for this classification. A profile or
+// or-branch whose classification rule excludes it does not count.
+export function studiesUsing(field, classification, trials = screenerTrials) {
+  const p = { classification };
+  const allows = list => list.every(c => c.field !== 'classification' || evaluateCriterion(c, p));
+  const reads = c => c.operator === 'or' ? c.branches.some(b => allows(b.criteria) && b.criteria.some(reads)) : c.field === field;
+  return trials.filter(t => !t.referenceOnly && ['enrolling', 'soon'].includes(t.status) && allows(t.eligibility.criteria) &&
+    [...t.eligibility.criteria, ...t.eligibility.exclusions].some(reads)).map(t => t.acronym);
+}
+
+export const YES_NO = [['true', 'Yes'], ['false', 'No']];
+// Facts only some studies test, in display order: [state key, label, whole-number
+// maximum or options]. Booleans are unknown/yes/no; lists offer the values the criteria test.
+const STUDY_FACT_FIELDS = [
+  ['presentedWithin24h', 'Presented ≤ 24 h from LKW'],
+  ['unilateralSymptomatic', 'Unilateral symptoms'],
+  ['ueWeakness', 'Upper-limb motor deficit'],
+  ['self_consent', 'Able to self-consent'],
+  ['language', 'Fluent language', [['english', 'English'], ['spanish', 'Spanish'], ['other', 'Neither']]],
+  ['currentMrs', 'Current mRS', 6],
+  ['availability_54w', 'Available for the 54-week study'],
+  ['rehab', 'Inpatient rehab, stay ≥ 5 nights expected', [['yes', 'Yes'], ['none', 'No']]],
+  ['abcd2', 'ABCD2 score', 7],
+  ['antithromboticSoc', 'Guideline antithrombotic therapy (aspirin, clopidogrel and/or ticagrelor)']
+];
+// Each classification offers the facts its screened profiles read: [key, label, spec, studies].
+export const STUDY_FACTS = Object.fromEntries(CLASSIFICATIONS.map(cls => [cls, STUDY_FACT_FIELDS
+  .map(([key, label, spec = YES_NO]) => [key, label, spec, studiesUsing(key === 'ueWeakness' ? 'exUeWeakness' : key, cls)]).filter(fact => fact[3].length)]));
+const KEY_FACTS = {
   ischemic: ['age', 'nihss', 'preMrs', 'aspects', 'vessel', 'afibHistory', 'takingOac'],
   tia: ['age', 'afibHistory', 'takingOac'],
   ich: ['age', 'nihss', 'gcs', 'preMrs', 'ichLocation', 'ichVolume', 'anticoagulant', 'statin', 'afibHistory']
 };
+// Facts each classification shows a control for. Facts outside this set are
+// neither shown nor printed, so the copied summary matches the screen.
+export const VISIBLE_FACTS = Object.fromEntries(CLASSIFICATIONS.map(cls => [cls, [...KEY_FACTS[cls], ...STUDY_FACTS[cls].map(([key]) => key)]]));
+
+// Choosing a classification restarts timing, exclusions and the anticoagulant
+// answer, and returns every fact the new screen hides to unknown.
+export function withClassification(state, classification) {
+  const initial = createInitialScreenerState();
+  const hidden = [...new Set(Object.values(VISIBLE_FACTS).flat())].filter(key => !VISIBLE_FACTS[classification].includes(key));
+  return { ...state, ...Object.fromEntries(hidden.map(key => [key, initial[key]])), ...(hidden.includes('nihss') && { nihssUntestable: 0 }),
+    classification, onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null, exclusions: {}, anticoagulant: 'unselected', takingOac: 'unselected', imported: null };
+}
+
+// "NIHSS 7 (excludes 2 untestable items)": an Encounter total leaves UN items out.
+export const untestableNote = count => count > 0 ? ` (excludes ${count} untestable item${count === 1 ? '' : 's'})` : '';
 
 // Numeric facts (third element) print the value the criteria read; an entry
 // they reject is printed as entered and marked unknown, never as a used fact.
 const INPUT_TEXT = [
   ['age', v => 'age ' + v, 1],
-  ['nihss', v => 'NIHSS ' + v, 1],
+  ['nihss', (v, s) => 'NIHSS ' + v + untestableNote(s?.nihssUntestable), 1],
   ['gcs', v => 'GCS ' + v, 1],
   ['preMrs', v => 'pre-mRS ' + v, 1],
   ['aspects', v => 'ASPECTS ' + v, 1],
@@ -563,9 +610,16 @@ export function buildBriefingNote(state, buckets, nowMs = null) {
   const { eligible = [], pending = [], soon = [], excluded = [] } = buckets;
   const cls = CLASSIFICATION_NOTE_LABELS[state.classification] || String(state.classification || '').toUpperCase();
   const visible = VISIBLE_FACTS[state.classification] || [];
-  const inputs = [cls, onsetSummary(state, nowMs), ...INPUT_TEXT.filter(([key]) => visible.includes(key) && !missing(state[key]) && state[key] !== 'unselected').map(([key, text, numeric]) => {
-    const read = numeric ? numericFact(key, state[key]) : state[key];
-    return read === null ? text(state[key]) + ' (invalid entry; treated as unknown)' : text(read);
+  // Language and rehab print as the engine reads them (legacy booleans are mapped).
+  const { language, rehab } = buildScreenerParams(state), shown = { ...state, language, rehab };
+  const inputs = [cls, onsetSummary(state, nowMs), ...INPUT_TEXT.filter(([key]) => visible.includes(key) && !missing(shown[key])).map(([key, text, numeric]) => {
+    const read = numeric ? numericFact(key, shown[key]) : shown[key];
+    return read === null ? text(shown[key]) + ' (invalid entry; treated as unknown)' : text(read, state);
+  }),
+  // Study-specific facts print as "label: the option chosen" (or the number read).
+  ...(STUDY_FACTS[state.classification] || []).filter(([key]) => !missing(shown[key])).map(([key, label, spec]) => {
+    const v = shown[key], read = typeof spec === 'number' ? numericFact(key, v) : spec.find(([value]) => value === String(v))?.[1];
+    return `${/^[A-Z][a-z]/.test(label) ? label[0].toLowerCase() + label.slice(1) : label}: ${read ?? v + ' (invalid entry; treated as unknown)'}`;
   })];
   // Only assessments that can affect a study for this stroke type are reported.
   const itemFor = id => EXCLUSION_ITEMS.find(item => item.id === id && item.classifications.includes(state.classification));

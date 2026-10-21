@@ -6,6 +6,7 @@
 
 import { encounterTiming, encounterNihss, encounterVolume, validTimestamp } from '../workspace-state.js';
 import { reviewedGcs, numericInput, documentedIvtContext } from '../encounter-clinical-review.js';
+import { untestableNote } from './screener-eval.js';
 
 const MODELED = { ischemic: 'ischemic', ich: 'ich', tia: 'tia' };
 const DIAGNOSIS_LABEL = { ischemic: 'Ischemic', ich: 'ICH', tia: 'TIA', sah: 'SAH', cvt: 'CVT', mimic: 'Stroke mimic', other: 'Other / uncertain' };
@@ -69,8 +70,13 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   if (age !== null) { patch.age = age; summary.push(`${age} y`); }
 
   // The TIA screen has no NIHSS control, so an Encounter NIHSS is not imported for TIA.
-  const nihss = encounterNihss(state).total;
-  if (classification !== 'tia' && nihss !== null && nihss !== undefined) { patch.nihss = nihss; summary.push(`NIHSS ${nihss}`); }
+  // A complete itemized total leaves untestable (UN) items out; the count travels with it.
+  const { total: nihss, untestable } = encounterNihss(state);
+  if (classification !== 'tia' && nihss !== null && nihss !== undefined) {
+    patch.nihss = nihss;
+    patch.nihssUntestable = untestable || 0;
+    summary.push(`NIHSS ${nihss}${untestableNote(untestable)}`);
+  }
 
   if (classification === 'ich') {
     const gcs = reviewedGcs(state.gcs || {});
