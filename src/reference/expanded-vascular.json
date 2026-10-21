@@ -1374,7 +1374,12 @@
         "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
-    "related": []
+    "related": [
+      {
+        "label": "Neuroprognostication",
+        "href": "#/evidence/neuroprognostication"
+      }
+    ]
   },
   {
     "id": "brain-death",

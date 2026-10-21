@@ -485,8 +485,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42657476/",
     "year": 2026,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence. Archive contained an access placeholder, not a full recommendation extraction; the 2026 source replaces the 2016 guideline.",
+    "checkedAt": "2026-10-21",
+    "access": "Abstract read: published 2026-08-27, replaces the 2016 guideline (literature search June–October 2025). No PMC copy; recommendations not reviewed or quoted. Archive held only an access placeholder.",
     "topicIds": [
       "recovery"
     ]
@@ -1005,8 +1005,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/35647308/",
     "year": 2022,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence. Indexed correction(s) 37021188 not reconciled.",
+    "checkedAt": "2026-10-21",
+    "access": "PMC full text read (PMC9134774): no RCTs of IVT or MT in pregnancy; expert consensus statements. Erratum 37021188 not reconciled (PMC returned no body).",
     "topicIds": [
       "maternal-stroke"
     ]
