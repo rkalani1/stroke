@@ -66,7 +66,9 @@ export default function QuickSearch({ open, onClose, version, trials = SEARCH_TR
     <span className="quick-search__title">{record.title}</span>{record.subtitle && <span className="quick-search__meta">{record.subtitle}</span>}
   </a>;
   let position = -1;
-  return <dialog ref={dialog} className="quick-search" aria-label="Search" onClose={onClose} onCancel={event => { event.preventDefault(); onClose(); }} onClick={event => { if (event.target === dialog.current) onClose(); }}>
+  // The native close event arrives a task after close(). If search was reopened in between (Esc,
+  // then Ctrl+K straight away), that late event belongs to the old dialog and must not shut the new one.
+  return <dialog ref={dialog} className="quick-search" aria-label="Search" onClose={() => { if (!dialog.current?.open) onClose(); }} onCancel={event => { event.preventDefault(); onClose(); }} onClick={event => { if (event.target === dialog.current) onClose(); }}>
     <div className="quick-search__panel">
       <div className="quick-search__field">
         <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
@@ -76,13 +78,15 @@ export default function QuickSearch({ open, onClose, version, trials = SEARCH_TR
       </div>
       <div ref={list} className="quick-search__results">
         {!query.trim() && <div className="quick-search__empty"><p>Jump to</p><ul className="quick-search__chips">{SUGGESTIONS.map(([label, target]) => { const href = target.startsWith('#') ? target : `#/protocols/${protocolSub}/${target}`; return <li key={target}><a href={href} onClick={event => { event.preventDefault(); go({ href }); }}>{label}</a></li>; })}</ul>{!data && !failed && <p className="quick-search__hint">Loading evidence index…</p>}</div>}
-        {query.trim() && !flat.length && <p className="quick-search__hint" role="status">No matches. Try a drug, score, trial or topic.</p>}
+        {query.trim() && !flat.length && <p className="quick-search__hint">No matches. Try a drug, score, trial or topic.</p>}
         {flat.length > 0 && <div id="quick-search-results" role="listbox" aria-label="Search results">{groups.map(([group, items, hidden]) => <div key={group} role="group" aria-labelledby={groupId(group)}>
           <div id={groupId(group)} className="quick-search__group" role="presentation">{group}</div>
           {items.map(record => { position += 1; return option(record, position); })}
           {hidden > 0 && (() => { position += 1; return option(flat[position], position); })()}
         </div>)}</div>}
       </div>
+      {/* Always rendered, so the count is announced as it changes (a live region inserted with its text often is not). */}
+      <p className="sr-only" role="status">{!query.trim() ? '' : results.length ? `${results.length} ${results.length === 1 ? 'result' : 'results'}` : 'No matches'}</p>
       <p className="quick-search__footer"><kbd>↑</kbd><kbd>↓</kbd> move · <kbd>Enter</kbd> open · <kbd>Esc</kbd> close</p>
     </div>
   </dialog>;

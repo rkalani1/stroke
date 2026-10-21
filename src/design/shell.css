@@ -90,6 +90,21 @@ a.case-bar__badge:hover { filter: brightness(1.08); }
 /* html scroll-padding clears the case bar; margins below clear the in-page sticky bars. */
 .encounter-workflow :is(h2, h3, input, select, textarea, fieldset, .tool-target, .encounter-details) { scroll-margin-top: 72px; }
 #tabpanel-protocols :is(h2, h3, details, [id]) { scroll-margin-top: 96px; }
+/* Keyboard focus never lands under sticky chrome (WCAG 2.4.11). Chrome reveals a focused text
+   field from the root scroll padding and ignores its scroll margin, so the padding covers each
+   surface's sticky bar; the shell sets data-surface on <html>. Encounter: the section nav
+   (61 px under the case bar). Protocols: the breadcrumb and sub-tabs (36 px + up to 62 px).
+   Margins are rebalanced so every reveal lands where it did: Encounter 69 + 8 ≈ the old 8 + 72;
+   protocol targets 104 + 0 = 8 + 96; quick-reference cards, above the sticky bars, 104 − 96 = 8. */
+@media (min-width: 481px) and (min-height: 501px) {
+  html[data-surface="encounter"] { scroll-padding-top: calc(var(--case-bar-h) + 69px); }
+  .encounter-workflow :is(h2, h3, input, select, textarea, fieldset, .tool-target, .encounter-details) { scroll-margin-top: var(--space-4); }
+}
+@media (min-width: 481px) {
+  html[data-surface="protocols"] { scroll-padding-top: calc(var(--case-bar-h) + 104px); }
+  #tabpanel-protocols :is(h2, h3, details, [id]) { scroll-margin-top: 0; }
+  .quick-reference details[id] { scroll-margin-top: -96px; }
+}
 html[data-theme="dark"] .case-bar { box-shadow: 0 6px 18px -14px rgba(0, 0, 0, .8); }
 
 /* ── Quick search (⌘K) ── */
@@ -321,6 +336,8 @@ h3 { font-family: var(--font-sans); font-weight: 700; margin: var(--space-6) 0; 
 .trials-surface [role="tab"] { overflow-wrap: anywhere; transition: background-color calc(var(--dur) * var(--motion-scale)) var(--ease), color calc(var(--dur) * var(--motion-scale)) var(--ease); }
 .trials-surface article { overflow-wrap: anywhere; border-color: var(--panel-border); border-radius: var(--radius-lg); box-shadow: var(--elev-1); }
 [id^="trials-"][role="tabpanel"] a[href] { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; }
+/* A short acronym ("STEP") still gets a 44 px wide target. */
+.trials-surface button { min-width: 44px; }
 html[data-theme="dark"] :is(a:not([class]), .workspace-skip, .text-link-600) { color: rgb(var(--link-400)); }
 html[data-theme="dark"] .workspace-brand { color: var(--ink); }
 html[data-theme="dark"] .encounter-next-entry button { color: rgb(var(--link-400)); }
@@ -564,3 +581,23 @@ a.case-bar__badge::before { content: ''; position: absolute; inset: -8px -3px; }
 @media (max-width: 374px) {
   .workspace-secondary > a { font-size: var(--text-2xs); letter-spacing: 0; }
 }
+
+/* ── 2026-10-21 review ── */
+/* Links that leave the app need internet: an arrow-out marker (decorative mask, never read aloud).
+   Protocols keep their own link styling. */
+:is(.workspace-external, .reference-surface, .tools-surface, .trials-surface, .encounter-workflow) a[target="_blank"]::after { content: ''; display: inline-block; flex-shrink: 0; width: .8em; height: .8em; margin-left: var(--space-2); vertical-align: -.05em; background: currentColor; -webkit-mask: var(--icon-external) center / contain no-repeat; mask: var(--icon-external) center / contain no-repeat; }
+.workspace-offline { margin: 0; }
+.workspace-offline:not(:empty) { width: fit-content; margin: var(--space-4) 0 0; padding: var(--space-2) var(--space-6); border-radius: var(--radius-pill); background: var(--caution-soft); color: var(--caution); font-size: var(--text-sm); font-weight: 600; }
+
+/* A deferred app update keeps a marker on More until it is accepted. */
+.workspace-utilities__badge { padding: var(--space-1) var(--space-3); border-radius: var(--radius-pill); background: rgb(var(--c-accent-2)); color: rgb(var(--c-on-accent)); font: 700 var(--text-2xs)/var(--leading-normal) var(--font-sans); }
+.utility-panel > .utility-update { border-color: transparent; background: rgb(var(--c-accent-2)); }
+.utility-panel .utility-update { color: rgb(var(--c-on-accent)); }
+
+/* Six motor scores keep 44 px tiles down to 360 px: the score disclosure and rows give up some inset
+   on narrow phones, and below 360 px a row of five or more scores wraps to three per line. */
+@media (max-width: 389px) {
+  #calc-nihss > details:not(.source-limits) { padding-inline: var(--space-3); }
+  .nihss-row { padding-inline: var(--space-2); }
+}
+@media (max-width: 359px) { .nihss-options:has(> :nth-child(5)) { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); } }

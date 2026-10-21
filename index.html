@@ -66,6 +66,11 @@
       try { for (const key of Object.keys(sessionStorage)) if (key.startsWith('strokeApp:') || legacy.includes(key)) sessionStorage.removeItem(key); } catch (_) {}
     })();
   </script>
+  <script>
+    // Browser chrome matches the first paint: the theme's surface colour (--c-surface in tokens.css),
+    // so it does not flash the manifest teal until app.js syncs it.
+    (function () { var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.setAttribute('content', document.documentElement.getAttribute('data-theme') === 'dark' ? '#172731' : '#FFFFFF'); })();
+  </script>
 </head>
 <body>
   <div id="root"></div>
