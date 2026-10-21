@@ -9,6 +9,7 @@
 
 import { screenerTrials } from './screenerTrials.js';
 import { tryInt } from './matcher-helpers.js';
+import { formatRecordedInstant } from '../clinical/timestamp.js';
 
 /* ── Constants the UI also needs ───────────────────────────────────── */
 
@@ -113,6 +114,14 @@ const CATEGORICAL_VALUES = {
   etiology: ['esus', 'cardioembolic', 'laa', 'small_vessel', 'other'],
   rehab: ['yes', 'none'], language: ['english', 'spanish', 'other']
 };
+// The number a criterion reads from an entry, or null when the entry is missing,
+// malformed or outside its range (scores must also be whole numbers); null stays unknown.
+export function numericFact(field, value) {
+  const n = tryInt(value);
+  if (n === null || n < 0 || (SCORE_RANGES[field] && !Number.isInteger(n))) return null;
+  const range = SCORE_RANGES[field] || VALUE_RANGES[field];
+  return range && (n < range[0] || n > range[1]) ? null : n;
+}
 function criterionValue(c, p) {
   const value = p[c.field];
   if (missing(value)) return null;
@@ -120,15 +129,7 @@ function criterionValue(c, p) {
   if (CATEGORICAL_VALUES[c.field] && !CATEGORICAL_VALUES[c.field].includes(value)) return null;
   const numeric = ['>=', '<=', '>', '<', 'between'].includes(c.operator) ||
     typeof c.value === 'number' || (Array.isArray(c.value) && c.value.every(v => typeof v === 'number'));
-  if (numeric) {
-    const n = tryInt(value);
-    if (n === null || n < 0) return null;
-    const range = SCORE_RANGES[c.field];
-    if (range && (!Number.isInteger(n) || n < range[0] || n > range[1])) return null;
-    const plausible = VALUE_RANGES[c.field];
-    if (plausible && (n < plausible[0] || n > plausible[1])) return null;
-    return n;
-  }
+  if (numeric) return numericFact(c.field, value);
   return typeof value === 'string' ? value : null;
 }
 function validOnsetRange(range, hours) {
@@ -511,14 +512,21 @@ function onsetNoteLabel(onsetHours) {
   return band ? band.label : '> 6 months from LKW';
 }
 
-const clockText = ms => { const d = new Date(ms); return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; };
+// Local wall time as the notes print it ("YYYY-MM-DD HH:MM"); a UTC offset is
+// added only when that local time repeats at a daylight-saving change.
+const wallTime = ms => formatRecordedInstant(new Date(ms).toISOString().slice(0, 16) + 'Z');
 
 export function onsetSummary(state, nowMs = null) {
   const { onsetHours, onsetRangeHours } = buildScreenerParams(state, nowMs);
   if (onsetHours === null) return 'LKW unknown';
   if (Array.isArray(onsetRangeHours)) return onsetNoteLabel(onsetHours) + ' (selected range)';
   const exact = onsetHours < 48 ? onsetHours.toFixed(1) + ' h' : onsetHours < 24 * 60 ? (onsetHours / 24).toFixed(1) + ' d' : (onsetHours / 24 / 30).toFixed(1) + ' mo';
-  if (anchoredOnsetHours(state, nowMs) !== null) return `LKW ${exact} (Encounter LKW ${clockText(state.onsetAnchorMs)}, as of ${clockText(nowMs)})`;
+  if (anchoredOnsetHours(state, nowMs) !== null) {
+    // Clock times alone on the same local day; dates as well when midnight lies between them.
+    const [lkw, asOf] = [state.onsetAnchorMs, nowMs].map(wallTime);
+    const from = lkw.slice(0, 10) === asOf.slice(0, 10) ? 11 : 0;
+    return `LKW ${exact} (Encounter LKW ${lkw.slice(from)}, as of ${asOf.slice(from)})`;
+  }
   return 'LKW ' + exact;
 }
 
@@ -530,15 +538,17 @@ export const VISIBLE_FACTS = {
   ich: ['age', 'nihss', 'gcs', 'preMrs', 'ichLocation', 'ichVolume', 'anticoagulant', 'statin', 'afibHistory']
 };
 
+// Numeric facts (third element) print the value the criteria read; an entry
+// they reject is printed as entered and marked unknown, never as a used fact.
 const INPUT_TEXT = [
-  ['age', v => 'age ' + v],
-  ['nihss', v => 'NIHSS ' + v],
-  ['gcs', v => 'GCS ' + v],
-  ['preMrs', v => 'pre-mRS ' + v],
-  ['aspects', v => 'ASPECTS ' + v],
+  ['age', v => 'age ' + v, 1],
+  ['nihss', v => 'NIHSS ' + v, 1],
+  ['gcs', v => 'GCS ' + v, 1],
+  ['preMrs', v => 'pre-mRS ' + v, 1],
+  ['aspects', v => 'ASPECTS ' + v, 1],
   ['vessel', v => 'occlusion ' + valueText(v)],
   ['ichLocation', v => 'location ' + valueText(v)],
-  ['ichVolume', v => 'volume ' + v + ' mL'],
+  ['ichVolume', v => 'volume ' + v + ' mL', 1],
   ['anticoagulant', v => 'anticoagulant at onset: ' + ({ none: 'none', doac: 'DOAC', lmwh: 'LMWH', vka: 'warfarin/VKA' }[v] || v)],
   ['takingOac', v => v ? 'on OAC at index event' : 'not on OAC at index event'],
   ['afibHistory', v => v ? 'atrial fibrillation' : 'no atrial fibrillation'],
@@ -551,7 +561,10 @@ export function buildBriefingNote(state, buckets, nowMs = null) {
   const { eligible = [], pending = [], soon = [], excluded = [] } = buckets;
   const cls = CLASSIFICATION_NOTE_LABELS[state.classification] || String(state.classification || '').toUpperCase();
   const visible = VISIBLE_FACTS[state.classification] || [];
-  const inputs = [cls, onsetSummary(state, nowMs), ...INPUT_TEXT.filter(([key]) => visible.includes(key) && !missing(state[key]) && state[key] !== 'unselected').map(([key, text]) => text(state[key]))];
+  const inputs = [cls, onsetSummary(state, nowMs), ...INPUT_TEXT.filter(([key]) => visible.includes(key) && !missing(state[key]) && state[key] !== 'unselected').map(([key, text, numeric]) => {
+    const read = numeric ? numericFact(key, state[key]) : state[key];
+    return read === null ? text(state[key]) + ' (invalid entry; treated as unknown)' : text(read);
+  })];
   // Only assessments that can affect a study for this stroke type are reported.
   const itemFor = id => EXCLUSION_ITEMS.find(item => item.id === id && item.classifications.includes(state.classification));
   const recorded = Object.entries(state.exclusions || {}).filter(([id, v]) => typeof v === 'boolean' && itemFor(id)).map(([id, v]) => `${itemFor(id).label}: ${v ? 'present' : 'absent'}`);
