@@ -77,6 +77,10 @@ describe('ev-acute Evidence cards (2026-10-21)', () => {
     // Cochrane CD016085.pub2 (PMID 42445947): reperfusion by IVT or EVT; intensive = any SBP target <160 vs <180.
     expect(card.summary).toContain('Cochrane 2026 (after IVT or EVT; targets <160) found probably higher mortality (RR 1.19, 95% CI 1.08–1.32)');
     for (const pmid of ['42095756', '30739745', '42445947']) expect(source(card, pmid).checkedAt).toBe('2026-10-21');
+    // Archive ais-2026-75 (COR 3: No Benefit, B-R) is limited to mild-to-moderate AIS treated with IVT; the ENCHANTED
+    // abstract (PMID 30739745) draws the same population boundary and reports any ICH 14.8% vs 18.7%.
+    expect(card.consider[0]).toContain('After alteplase for mild-to-moderate stroke, SBP 130–140 did not improve 90-day function versus <180');
+    expect(card.consider[0]).toContain('(14.8 vs 18.7%) (ENCHANTED; AHA 2026 COR 3: No Benefit)');
     // Archive ais-2026-72/-74/-76/-77 and the ESO abstract thresholds, re-read unchanged.
     expect(card.summary).toContain('Before IVT <185/110');
     expect(card.summary).toContain('after IVT <180/105 for at least 24 h');
