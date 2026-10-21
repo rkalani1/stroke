@@ -130,7 +130,7 @@
       "transfer",
       "door to needle"
     ],
-    "summary": "Activate the stroke team for any acute focal deficit — EVT can be offered up to 24 h from last known well. Check glucose, and do not wait for creatinine before CTA. EMS should use a validated scale, pre-notify, and go to the closest stroke-capable hospital (AHA 2026, COR 1). RACE (face 0–2, arm 0–2, leg 0–2, gaze 0–1, aphasia or agnosia 0–2) ≥5 detected LVO with 85% sensitivity and 68% specificity in its 2013 validation, but 75% and 76% pooled across EMS studies (2026 meta-analysis). In nonurban Catalonia, bypassing the local stroke center for a thrombectomy center did not improve outcome (RACECAT, cOR 1.03): fewer received IVT (47.5 vs 60.4%) and more had EVT (48.8 vs 39.4%).",
+    "summary": "Activate the stroke team for any acute focal deficit — EVT can be offered up to 24 h from last known well. Check glucose, and do not wait for creatinine before CTA/CTP. EMS should use a validated scale, pre-notify, and go to the closest stroke-capable hospital (AHA 2026, COR 1). RACE (face 0–2, arm 0–2, leg 0–2, gaze 0–1, aphasia or agnosia 0–2) ≥5 detected LVO with 85% sensitivity and 68% specificity in its 2013 validation, but 75% and 76% pooled across EMS studies (2026 meta-analysis). In nonurban Catalonia, bypassing the local stroke center for a thrombectomy center did not improve outcome (RACECAT, cOR 1.03): fewer received IVT (47.5 vs 60.4%) and more had EVT (48.8 vs 39.4%).",
     "recommendations": [
       {
         "text": "For patients with suspected stroke transported by ambulance, use of a brief validated stroke assessment tool by prefacility personnel is recommended to improve early stroke identification, including detection of large vessel occlusion.",
@@ -148,7 +148,7 @@
       }
     ],
     "consider": [
-      "Aim to image as fast as possible (for example within 25 minutes); do not delay CTA/CTP for a serum creatinine.",
+      "Aim to image as fast as possible (for example within 25 minutes).",
       "Children: suspect stroke with any sudden focal deficit, including a first seizure.",
       "Where available, mobile stroke units are recommended over conventional EMS for thrombolytic-eligible patients: faster treatment and better outcome (COR 1, LOE A).",
       "A seizure, hypoglycemia or apparent mimic can coexist with stroke; keep the stroke pathway open until a clinician has reassessed."

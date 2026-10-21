@@ -112,6 +112,10 @@ describe('EVT and systems-of-care Evidence cards (2026-10-21 review)', () => {
     expect(activation).toContain('In nonurban Catalonia, bypassing the local stroke center for a thrombectomy center did not improve outcome (RACECAT, cOR 1.03): fewer received IVT (47.5 vs 60.4%) and more had EVT (48.8 vs 39.4%).');
     // TESLA (PMID 39374319): posterior probability .96 below the .975 threshold.
     expect(topic('large-core-evt').summary).toContain('TESLA (NCCT ASPECTS 2–5, ≤24 h) missed its primary endpoint');
+    // BRIDGE-TNK (PMID 40396577): China, within 4.5 h, functional independence 52.9 vs 44.1%.
+    expect(topic('evt-selection').summary).toContain('BRIDGE-TNK (China, ≤4.5 h) favored tenecteplase first (mRS 0–2 52.9 vs 44.1%)');
+    // ais-2026-49: CTA and/or CTP are not delayed for a serum creatinine.
+    expect(topic('code-stroke-activation').summary).toContain('do not wait for creatinine before CTA/CTP');
     // DIRECT-MT and DEVT met noninferiority; SKIP, MR CLEAN-NO IV, SWIFT DIRECT, DIRECT-SAFE and IRIS did not.
     expect(topic('evt-selection').caution).toBe('Only DIRECT-MT and DEVT (both China) found EVT alone noninferior; SWIFT DIRECT, MR CLEAN-NO IV, SKIP, DIRECT-SAFE and the IRIS meta-analysis did not. Give IVT whenever eligible.');
     // ANGEL-REBOOT (PMID 38914085): sICH 8/175 (5%) vs 1/169 (1%).
