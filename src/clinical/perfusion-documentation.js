@@ -22,6 +22,6 @@ export function formatPerfusionForExport(note = {}) {
         : `Mismatch ratio: ${ratioText}; arithmetic does not establish eligibility`);
     }
   }
-  if (typeof note.ctpResults === 'string' && note.ctpResults.trim()) parts.push(note.ctpResults);
+  if (typeof note.ctpResults === 'string' && note.ctpResults.trim()) parts.push(note.ctpResults.trim());
   return parts.join('; ');
 }

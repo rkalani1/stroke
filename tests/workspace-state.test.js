@@ -30,7 +30,7 @@ describe('canonical state and honest documentation', () => {
   it('preserves entered rationale in the restored paragraph without old labels or recursive draft', () => {
     const s=newEncounter();s.rationale='Synthetic manually entered rationale';s.draft={text:'OLD GENERATED SENTENCE'};
     const text=buildSummary(s,NOW);expect(text).toContain(s.rationale);expect(text).not.toContain(s.draft.text);
-    expect(text).not.toMatch(/SYNTHETIC EDUCATIONAL DEMO|NOT A REAL CLINICAL NOTE|NO PHI/);expect(text).toContain('NIHSS score: incomplete');expect(text).not.toContain('Informed consent');
+    expect(text).not.toMatch(/SYNTHETIC EDUCATIONAL DEMO|NOT A REAL CLINICAL NOTE|NO PHI/);expect(text).toContain('NIHSS score: not documented (0/15 items scored)');expect(text).not.toContain('Informed consent');
   });
   it('retains incompatible inputs without projecting them into outputs', () => {
     const s=newEncounter();s.note.diagnosisCategory='ich';s.note.vesselOcclusion=['Basilar'];s.actions.administered=true;s.actions.administrationTime='2026-10-01T11:00';s.drug='TNK';
@@ -61,7 +61,7 @@ describe('canonical state and honest documentation', () => {
   it('projects entered GCS into ischemic summaries without validating a future consent time', () => {
     const s=newEncounter();s.note.diagnosisCategory='ischemic';s.gcs={eye:'4',verbal:'5',motor:'6'};
     s.actions.consent='Informed consent';s.actions.consentTime='2026-10-01T13:00';
-    expect(buildSummary(s,NOW)).toContain('GCS E4 V5 M6 = 15/15');expect(buildSummary(s,NOW)).toContain('IVT Consent time: invalid or future');
+    expect(buildSummary(s,NOW)).toContain('GCS E4 V5 M6 = 15/15');expect(buildSummary(s,NOW)).toContain('IVT Consent time: 2026-10-01 13:00 (invalid or future');
   });
   it('uses the same strict calendar validator for partial imaging-selected screens', () => {
     const n={age:'65',nihss:'0',ctHemorrhageStatus:'absent',lkwUnknown:true,discoveryDate:'2026-02-30',discoveryTime:'02:30',wakeUpStrokeWorkflow:{dwi:{positiveForLesion:true},flair:{noMarkedHyperintensity:true},mriLesionExtentReviewed:true,dwiLesionUnderOneThirdMCA:true}};

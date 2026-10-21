@@ -24,7 +24,7 @@ describe('restored optional documentation formats', () => {
     state.actions.administered = true;
     expect(buildSummary(state, now)).toContain('TNK at 2026-10-01 11:30');
     state.actions.administrationTime = '2026-10-01T13:00';
-    expect(buildSummary(state, now)).toContain('entered time is invalid or future');
+    expect(buildSummary(state, now)).toContain('entered time 2026-10-01 13:00 is invalid or future');
     expect(buildSummary(state, now)).not.toContain('TNK at');
     state.context = 'follow-up';
     const followup = buildSummary(state, now);
@@ -66,7 +66,8 @@ describe('restored optional documentation formats', () => {
     expect(note).toContain('IVT Consent status: Declined');
     expect(note).toContain('EVT consent status: Informed consent');
     expect(note).toContain('EVT consent time: 2026-10-01 11:00');
-    expect(note).not.toContain('EVT puncture:');
+    // An EVT consent never implies the procedure: no puncture time is stated as not documented.
+    expect(note).toContain('EVT puncture: not documented');
   });
   it('invalidates drafts for restored details and format changes, and scans hidden details', () => {
     const s = newEncounter(); s.draft = { text: 'Old note', stale: false, revision: 0 };

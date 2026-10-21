@@ -186,7 +186,7 @@ describe('EN-08 / EN-16 IVT administration record', () => {
   it('names what is missing and keeps an entered time', () => {
     expect(buildSummary(base({ actions: { administrationTime: '2026-10-01T10:15' } }), NOW)).toContain('IVT administration: not documented as given (administration checkbox not ticked; agent not selected); entered time 2026-10-01 10:15 retained for review');
     expect(buildSummary(base({ drug: 'TNK', actions: { administered: true } }), NOW)).toContain('IVT administration: not documented as given (timestamp not entered)');
-    expect(buildSummary(base({ drug: 'TNK', actions: { administered: true, administrationTime: '2026-10-01T13:00' } }), NOW)).toContain('not documented as given (entered time is invalid or future; correct before interpretation)');
+    expect(buildSummary(base({ drug: 'TNK', actions: { administered: true, administrationTime: '2026-10-01T13:00' } }), NOW)).toContain('not documented as given (entered time 2026-10-01 13:00 is invalid or future; correct before interpretation)');
     expect(buildSummary(base(), NOW)).toContain('IVT administration: not documented as given.');
   });
   it('marks an agent pre-filled from the dose calculation until it is confirmed', () => {
@@ -248,14 +248,15 @@ describe('EN-11 sleep midpoint', () => {
   it('prints the stored local value as wall time and flags future or repeated-hour values', () => {
     const prior = process.env.TZ; process.env.TZ = 'America/Los_Angeles';
     try {
-      // Encounter's datetime-local field stores a local string with no occurrence chooser.
+      // Encounter's datetime-local field stores a local string until an occurrence is chosen.
       const note = { lkwUnknown: true, wakeUpStrokeWorkflow: { mriAvailable: false, sleepMidpoint: '2026-10-17T02:30' } };
       expect(formatWakeUpScreenForExport(note, new Date('2026-10-17T18:00:00Z'))).toContain('Sleep midpoint: 2026-10-17 02:30.');
       // 01:30 on 2026-11-01 occurs twice in Los Angeles (PDT, then PST): ambiguous, so it stays flagged.
+      // 2026-10-21: a flagged value keeps its written date and time, separated like every other note time.
       const repeated = { lkwUnknown: true, wakeUpStrokeWorkflow: { mriAvailable: false, sleepMidpoint: '2026-11-01T01:30' } };
-      expect(formatWakeUpScreenForExport(repeated, new Date('2026-11-01T14:00:00Z'))).toContain('Sleep midpoint: 2026-11-01T01:30 (invalid, future or ambiguous; correct before interpretation).');
+      expect(formatWakeUpScreenForExport(repeated, new Date('2026-11-01T14:00:00Z'))).toContain('Sleep midpoint: 2026-11-01 01:30 (invalid, future or ambiguous; correct before interpretation).');
       const future = { lkwUnknown: true, wakeUpStrokeWorkflow: { mriAvailable: false, sleepMidpoint: '2026-10-18T03:00' } };
-      expect(formatWakeUpScreenForExport(future, new Date('2026-10-17T18:00:00Z'))).toContain('Sleep midpoint: 2026-10-18T03:00 (invalid, future or ambiguous; correct before interpretation).');
+      expect(formatWakeUpScreenForExport(future, new Date('2026-10-17T18:00:00Z'))).toContain('Sleep midpoint: 2026-10-18 03:00 (invalid, future or ambiguous; correct before interpretation).');
     } finally { if (prior === undefined) delete process.env.TZ; else process.env.TZ = prior; }
   });
 });

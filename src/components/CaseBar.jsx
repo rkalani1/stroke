@@ -28,6 +28,7 @@ export function caseSummary(state, nowMs) {
   // Once IV thrombolysis is recorded, the next neuro/BP check replaces the lytic countdown.
   const administered = acuteIschemic && state.actions?.administered && state.drug && validTimestamp(state.actions.administrationTime, nowMs);
   const schedule = administered ? computeNeurocheckSchedule(state.actions.administrationTime) : null;
+  const unconfirmed = state.actions?.agentConfirmed !== state.drug;
   const nextCheck = schedule?.checks.find(check => check.at.getTime() > nowMs);
   let window = null;
   if (timing.invalid) window = { text: 'Check time', tone: 'critical' };
@@ -72,7 +73,8 @@ export function caseSummary(state, nowMs) {
     weight: weight === null ? '' : `${Math.round(weight * 10) / 10}`,
     // Why no dose is shown when nothing is held: name the missing input, not a generic one.
     doseNote: state.decisions?.ivt === 'Not recommended' ? 'IVT clinician decision is Not recommended; no dose shown' : `${!['TNK', 'Alteplase'].includes(state.drug) ? `Select the IV thrombolytic${weight === null ? ' and enter a valid weight (kg)' : ''}` : 'Enter a valid weight (kg)'} in Encounter for dose arithmetic; not an eligibility decision`,
-    dose: administered ? { label: state.drug === 'Alteplase' ? 'tPA given' : 'TNK given', value: clockTime(state.actions.administrationTime), detail: state.actions.administeredDose ? `${state.actions.administeredDose} mg` : '' } : hold ? { label: 'IVT dose', value: hold.value, title: hold.title, flag: hold.flag } : dose ? state.drug === 'Alteplase' ? { label: 'tPA', value: `${dose.totalDose} mg`, detail: `${dose.bolus} mg bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
+    // An agent pre-filled from the dose calculation is not named until it is confirmed (as in the note).
+    dose: administered ? { label: unconfirmed ? 'IVT given' : state.drug === 'Alteplase' ? 'tPA given' : 'TNK given', value: clockTime(state.actions.administrationTime), detail: state.actions.administeredDose ? `${state.actions.administeredDose} mg` : '', title: `Recorded administration time${unconfirmed ? '; confirm the agent given in Encounter' : ''}`, flag: unconfirmed ? 'caution' : undefined } : hold ? { label: 'IVT dose', value: hold.value, title: hold.title, flag: hold.flag } : dose ? state.drug === 'Alteplase' ? { label: 'tPA', value: `${dose.totalDose} mg`, detail: `${dose.bolus} mg bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
     anticoagulant: n.lastDOACType && n.lastDOACType !== 'none' ? ANTICOAGULANT_LABELS[n.lastDOACType] || 'Anticoagulant' : '',
     aceInhibitor: ACE_INHIBITOR.test(n.medications || ''),
     hasData: Boolean(n.diagnosisCategory || age !== null || timing.timestamp || n.lkwUnknown || exam.complete || exam.count || sbp !== null || glucose !== null || weight !== null)
@@ -154,7 +156,7 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
       <Item label="BP" value={c.bp} flag={c.bpHigh ? 'caution' : undefined} title={c.bpTitle} />
       <Item label="Glucose" short="Glu" value={c.glucose} flag={c.glucoseFlag ? 'caution' : undefined} title={c.glucoseFlag ? 'Glucose outside 50–400 mg/dL' : undefined} />
       <Item label="Weight" short="Wt" value={c.weight && `${c.weight} kg`} />
-      {acuteIschemic && <Item label={c.dose?.label || 'Dose'} value={c.dose?.value} detail={c.dose?.detail} flag={c.dose?.flag} title={c.administered ? 'Recorded administration time' : c.dose?.title || (c.dose ? 'Dose arithmetic only; not an eligibility decision' : c.doseNote)} />}
+      {acuteIschemic && <Item label={c.dose?.label || 'Dose'} value={c.dose?.value} detail={c.dose?.detail} flag={c.dose?.flag} title={c.dose?.title || (c.dose ? 'Dose arithmetic only; not an eligibility decision' : c.doseNote)} />}
     </div>
     <div className="case-bar__actions">
       {bpLink && <a className="case-bar__link" href={bpHref} onClick={revealIfCurrent(bpHref, 'qr-bp')}>BP targets</a>}

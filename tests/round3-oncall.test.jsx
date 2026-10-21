@@ -53,11 +53,13 @@ describe('local-first anticoagulant reversal line', () => {
 });
 
 describe('case bar after thrombolysis and for ICH', () => {
-  const given = ischemic({ drug: 'TNK', actions: { administered: true, administrationTime: '2026-10-01T11:50', administeredDose: '18' }, note: { presentingBP: '182/100' } });
+  const given = ischemic({ drug: 'TNK', actions: { administered: true, administrationTime: '2026-10-01T11:50', administeredDose: '18', agentConfirmed: 'TNK' }, note: { presentingBP: '182/100' } });
   it('replaces the lytic countdown with the next neuro check and shows the administration', () => {
     const c = caseSummary(given, now);
     expect(c.window.text).toMatch(/^Next check /);
     expect(c.dose).toMatchObject({ label: 'TNK given', detail: '18 mg' });
+    // 2026-10-21: an agent pre-filled from the dose calculation is not named until confirmed (as in the note).
+    expect(caseSummary({ ...given, actions: { ...given.actions, agentConfirmed: undefined } }, now).dose).toMatchObject({ label: 'IVT given', flag: 'caution', title: 'Recorded administration time; confirm the agent given in Encounter' });
   });
   it('flags BP against the phase-specific limit', () => {
     expect(caseSummary(given, now).bpTitle).toBe('Above the post-IVT limit of 180/105');
