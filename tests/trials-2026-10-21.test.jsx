@@ -228,6 +228,15 @@ describe('copied screening summary is truthful about what was used', () => {
     expect(inputsLine({ classification: 'ischemic', onsetVal: '-1', onsetUnit: 'hours' })).toBe('Inputs: Ischemic stroke · LKW unknown');
   });
 
+  it('gives each candidate a direct registry link and keeps the other groups compact', () => {
+    const r = evaluateAll(S({ classification: 'ich', onsetVal: 1, onsetUnit: 'hours' }));
+    const lines = r.briefingNote.split('\n');
+    const candidates = [...r.pending].map(item => item.trial.externalMetadata.nct);
+    expect(candidates.length).toBeGreaterThan(0);
+    for (const nct of candidates) expect(lines).toContain(`  Registry record: https://clinicaltrials.gov/study/${nct}`);
+    expect(lines.filter(line => line.startsWith('  Registry record: '))).toHaveLength(candidates.length);
+  });
+
   it('never prints undefined, null, NaN or object artifacts across classifications, presets and facts', () => {
     const facts = [{}, { age: 70, nihss: 8, preMrs: 0, aspects: 8, vessel: 'ica_m1', afibHistory: true, takingOac: false }, { age: '150', nihss: '3.5', gcs: 14, ichVolume: '1e3', ichLocation: 'bg', statin: true, anticoagulant: 'doac' }, { exclusions: { exPregnancy: false, exSecondaryIch: true, exTandem: false } }];
     for (const classification of ['ischemic', 'tia', 'ich']) for (const preset of [null, ...ONSET_PRESETS]) for (const extra of facts) {

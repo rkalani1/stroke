@@ -588,6 +588,7 @@ export function buildBriefingNote(state, buckets, nowMs = null) {
       lines.push(head(item) + (unknownCount && item.unknownModeledCount ? ` · ${item.unknownModeledCount} modeled fact${item.unknownModeledCount === 1 ? '' : 's'} unknown` : ''));
       if (confirm.length) lines.push(`  To confirm (${confirm.length}): ${confirm.join('; ')}`);
       lines.push(`  Pathway: ${item.trial.pathway}`);
+      if (item.trial.externalMetadata?.registryUrl) lines.push(`  Registry record: ${item.trial.externalMetadata.registryUrl}`);
     });
   };
   const listed = { eligible, pending };
