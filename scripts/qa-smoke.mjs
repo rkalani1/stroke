@@ -547,7 +547,7 @@ async function main() {
         assert((await review.innerText()).includes('ABCD² alone cannot clear discharge'));
         await review.getByRole('heading', { name: 'Workup & follow-up gaps', exact: true }).waitFor();
         for (const label of ['TIA MRI / DWI workup', 'TIA head / neck vascular imaging workup', 'TIA ECG / rhythm workup']) await page.getByLabel(label, { exact: true }).selectOption('Completed');
-        for (const label of ['Same-day TIA workup complete', 'Prompt outpatient follow-up confirmed']) await page.getByLabel(label, { exact: true }).selectOption('yes');
+        for (const label of ['Same-day TIA workup complete', 'Rapid neurology or TIA-clinic follow-up confirmed (ideally ≤48 h)']) await page.getByLabel(label, { exact: true }).selectOption('yes');
         await review.getByRole('heading', { name: 'Workup & follow-up gaps', exact: true }).waitFor({ state: 'hidden' });
         await page.getByLabel('Presumed symptomatic extracranial or intracranial stenosis >50%', { exact: true }).selectOption('');
         await review.getByText(/Disposition assessment incomplete/).waitFor();
