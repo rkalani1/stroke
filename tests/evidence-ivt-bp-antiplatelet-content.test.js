@@ -14,7 +14,8 @@ const urls = record => record.sources.map(source => source.url);
 
 describe('thrombolysis Evidence cards', () => {
   it('stays inside the structural contract on the review date', () => {
-    expect(validateClinicalReference(data, { now: new Date('2026-10-17T23:59:59Z') })).toEqual([]);
+    // Pinned to the latest review date: sources re-read on 2026-10-21 carry that checkedAt.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-21T23:59:59Z') })).toEqual([]);
   });
 
   it('separates the AHA 2026 imaging grade from the perfusion-selected IVT treatment grades', () => {

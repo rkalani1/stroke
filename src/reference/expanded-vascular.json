@@ -296,11 +296,11 @@
       }
     ],
     "consider": [
-      "Use the agent and dose source your protocol specifies, and dose from the patient's weight with the calculator.",
+      "Use the agent and dose source your protocol specifies; dose by weight with the calculator.",
       "Angioedema occurred in 1% with either agent (ATTEST-2): be ready to manage the airway and bleeding.",
       "Not recommended: desmoteplase, urokinase, mutant prourokinase plus low-dose alteplase and adjunctive sonothrombolysis (COR 3: No Benefit); streptokinase is COR 3: Harm (higher early mortality)."
     ],
-    "caution": "A positive trial does not establish local approval or availability of a newer thrombolytic.",
+    "caution": "US labels cover alteplase and (since February 2025) tenecteplase within 3 h of onset; the tenecteplase label uses five weight bands (15–25 mg), above 0.25 mg/kg below 100 kg (0.33 mg/kg at 45 kg). A positive trial does not establish local approval or availability of a newer thrombolytic.",
     "sources": [
       {
         "title": "European Stroke Organisation (ESO) expedited recommendation on tenecteplase for acute ischaemic stroke",
@@ -317,6 +317,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract checked; no approval or availability inferred."
+      },
+      {
+        "title": "FDA tenecteplase stroke approval (editorial quoting the label)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41573708/",
+        "year": 2025,
+        "type": "Report",
+        "checkedAt": "2026-10-21",
+        "access": "PMC full text (PMC12697625): label approval date, 3-h window and weight-band table; the FDA label was not reachable."
       }
     ],
     "related": [
@@ -835,7 +843,7 @@
     "consider": [
       "Discuss goals early and transfer large MCA or cerebellar infarcts to a neurosurgical center before they swell.",
       "Falling consciousness from swelling is a reasonable trigger for surgery (2a); use osmotherapy only as a bridge.",
-      "Avoid hypothermia, barbiturates and corticosteroids for swelling; IV glibenclamide did not help (COR 3)."
+      "Avoid hypothermia, barbiturates and corticosteroids for swelling (COR 3: Harm); IV glibenclamide did not help at ages 18–70 (COR 3: No Benefit)."
     ],
     "caution": "Surgery saves lives, but most older survivors need help with daily care; decide with the outcomes the patient would accept.",
     "sources": [
@@ -887,7 +895,7 @@
       "INTERACT4",
       "prehospital"
     ],
-    "summary": "Before IVT <185/110; EVT without IVT: ≤185/110 before the procedure (AHA 2026, 2a); after IVT <180/105 for at least 24 h; during and for 24 h after EVT ≤180/105 (AHA 2026, 2a; ESO 2025 update: <180/105). After successful EVT for anterior LVO (mTICI 2b–3), do not target SBP <140 for 72 h (AHA 2026, COR 3: Harm; ESO 2025 update: not <140 for 24 h, high certainty): ENCHANTED2/MT (<120) worsened mRS (OR 1.37), OPTIMAL-BP (<140) lowered mRS 0–2 from 54.4 to 39.4%, and Cochrane 2026 found probably higher mortality (RR 1.19, 95% CI 1.08–1.32). HOPE (2026, post-guideline; open-label, stopped early, hypothesis-generating) favored reperfusion-guided targets but does not override COR 3: Harm. No reperfusion and <220/120: starting treatment in the first 48–72 h does not help; ≥220/120: benefit uncertain (AHA 2026, 2b; ESO 2025 expert consensus: if lowered, reduce SBP by <15% over 24 h). No routine prehospital lowering (AHA 2026, COR 3: No Benefit; ESO 2025, moderate certainty; INTERACT4 ischemic stroke cOR 1.30).",
+    "summary": "Before IVT <185/110; EVT without IVT: ≤185/110 before the procedure (AHA 2026, 2a); after IVT <180/105 for at least 24 h; during and for 24 h after EVT ≤180/105 (AHA 2026, 2a; ESO 2025 update: <180/105). After successful EVT for anterior LVO (mTICI 2b–3), do not target SBP <140 for 72 h (AHA 2026, COR 3: Harm; ESO 2025 update: not <140 for 24 h, high certainty): ENCHANTED2/MT (<120) worsened mRS (OR 1.37), OPTIMAL-BP (<140) lowered mRS 0–2 from 54.4 to 39.4%, and Cochrane 2026 (after IVT or EVT; targets <160) found probably higher mortality (RR 1.19, 95% CI 1.08–1.32). HOPE (2026, post-guideline; open-label, stopped early, hypothesis-generating) favored reperfusion-guided targets but does not override COR 3: Harm. No reperfusion and <220/120: starting treatment in the first 48–72 h does not help; ≥220/120: benefit uncertain (AHA 2026, 2b; ESO 2025 expert consensus: if lowered, reduce SBP by <15% over 24 h). No routine prehospital lowering (AHA 2026, COR 3: No Benefit; ESO 2025, moderate certainty; INTERACT4 ischemic stroke cOR 1.30).",
     "recommendations": [
       {
         "text": "AIS patients with elevated BP who are otherwise eligible for IVT are recommended to have SBP lowered below 185 mmHg and DBP below 110 mmHg before initiating IVT therapy to reduce hemorrhagic complications.",
@@ -927,7 +935,7 @@
     ],
     "consider": [
       "After alteplase, SBP 130–140 did not improve 90-day function versus <180, though any ICH was less frequent (14.8 vs 18.7%) (ENCHANTED; AHA 2026 COR 3: No Benefit).",
-      "Treat hypertension early when a comorbid condition requires it (e.g., ACS, heart failure, aortic dissection, post-IVT sICH, preeclampsia; AHA 2026 COR 1); correct hypotension and hypovolemia. Without IVT or EVT, ESO 2025 discourages routine vasopressors to raise BP (low certainty).",
+      "Treat hypertension early when a comorbid condition requires it (e.g., ACS, heart failure, aortic dissection, post-IVT sICH, preeclampsia; AHA 2026 COR 1); correct hypotension and hypovolemia. For neurological deterioration without IVT or EVT, ESO 2025 discourages routine vasopressors to raise BP (low certainty).",
       "Hold home oral antihypertensives while swallowing is unsafe; ESO advises against routinely continuing them in the acute phase."
     ],
     "caution": "One number does not fit every pathway; ICH and long-term targets are on their own cards.",
@@ -937,7 +945,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42095756/",
         "year": 2026,
         "type": "Guideline",
-        "checkedAt": "2026-10-17",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed; recommendation boxes and the >220/120 expert consensus not read at primary scope."
       },
       {
@@ -953,7 +961,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/30739745/",
         "year": 2019,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       },
       {
@@ -961,7 +969,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42445947/",
         "year": 2026,
         "type": "Meta-analysis",
-        "checkedAt": "2026-10-17",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed (9 RCTs; search to March 2025)."
       }
     ],
