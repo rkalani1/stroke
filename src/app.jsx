@@ -30,6 +30,7 @@ const getPublicDemoMode = () => {
 };
 const PUBLIC_DEMO_MODE = getPublicDemoMode();
 const MAP_URL = 'https://rkalani1.github.io/telestroke-expansion-map/';
+const UPDATE_READY_TEXT = 'A new version is ready. Updating reloads this page and clears its session; finish or copy your note first.';
 // macOS and iPadOS: Command is the shortcut modifier, and Control+K is the native
 // "delete to end of line" inside text fields.
 const MAC_LIKE = /Mac|iPhone|iPad|iPod/.test(navigator.platform || '') || navigator.userAgentData?.platform === 'macOS';
@@ -166,6 +167,19 @@ function App() {
   }, [route.surface, route.sub]);
   // shell.css sizes the root scroll padding per surface (the Encounter's sticky section nav).
   useLayoutEffect(() => { document.documentElement.dataset.surface = route.surface; }, [route.surface]);
+  // While the update notice floats at the bottom, the root scroll padding keeps keyboard focus
+  // above it (WCAG 2.4.11); shell.css reads the notice's measured height.
+  const updateNotice = useRef(null);
+  const noticeShown = Boolean(updateReady);
+  useLayoutEffect(() => {
+    const root = document.documentElement, notice = updateNotice.current;
+    if (!noticeShown || !notice) return undefined;
+    const measure = () => root.style.setProperty('--update-notice-h', `${Math.ceil(notice.getBoundingClientRect().height)}px`);
+    measure(); root.dataset.updateNotice = '';
+    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(measure) : null;
+    observer?.observe(notice);
+    return () => { observer?.disconnect(); delete root.dataset.updateNotice; root.style.removeProperty('--update-notice-h'); };
+  }, [noticeShown]);
   // Tool deep links reveal their target on navigation, and again when a diagnosis change first
   // renders a gated tool; other diagnosis edits never move scroll or focus.
   const toolReveal = useRef({ route: null, missing: false });
@@ -299,7 +313,9 @@ function App() {
     <p className="workspace-offline" role="status">{online ? '' : 'Offline · the workspace still works; external and source links need internet'}</p>
     <CaseBar state={state} documentLabel={documentationLabel(state)} blocked={outputWarnings(state).length} onCopy={generateAndCopy} copyStatus={copyStatus} announceCopy={route.surface !== 'encounter'} />
     {searchVisited && <SurfaceBoundary label="Search"><Suspense fallback={null}><QuickSearch open={searchOpen} onClose={() => setSearchOpen(false)} onFocusEncounter={goToEncounter} version={APP_VERSION} protocolSub={route.surface === 'protocols' && route.sub ? route.sub : protocolSub} /></Suspense></SurfaceBoundary>}
-    {updateReady && <aside className="workspace-update" aria-label="App update"><p role="status">{updateReady.message || 'A new version is ready. Updating reloads this page and clears its session; finish or copy your note first.'}</p><button type="button" onClick={() => acceptUpdate().catch(failedUpdate)}>Reload to update</button><button type="button" onClick={() => { setUpdateReady(null); setUpdateDeferred(true); }}>Later</button></aside>}
+    {/* Always rendered, so screen readers hear the update notice when it appears; a live region inserted together with its text often is not announced. */}
+    <p id="app-update-status" className="sr-only" role="status">{updateReady ? updateReady.message || UPDATE_READY_TEXT : ''}</p>
+    {updateReady && <aside ref={updateNotice} className="workspace-update" aria-label="App update"><p>{updateReady.message || UPDATE_READY_TEXT}</p><button type="button" onClick={() => acceptUpdate().catch(failedUpdate)}>Reload to update</button><button type="button" onClick={() => { setUpdateReady(null); setUpdateDeferred(true); }}>Later</button></aside>}
     <main id="workspace-main" tabIndex={-1}>
       <div hidden={route.surface !== 'encounter'}>{sectionUnavailable && <div role="status" className="workspace-result workspace-inline-action" data-tone="caution"><span>{sectionGroup.title} is not shown for this encounter's diagnosis or setting.</span></div>}{targetUnavailable && <div role="status" className="workspace-result workspace-inline-action" data-tone="caution"><span>{['ich-volume', 'ich-score'].includes(route.tool) ? 'This calculator needs an ICH encounter.' : route.tool === 'gcs' ? 'GCS opens with ICH, SAH or CVT.' : 'This tool needs an acute ischemic stroke encounter.'}</span><button type="button" className="workspace-secondary-action" onClick={() => update(prev => ({ ...prev, context: 'acute', note: { ...prev.note, diagnosisCategory: ['ich-volume', 'ich-score', 'gcs'].includes(route.tool) ? 'ich' : route.tool === 'dapt' && prev.note.diagnosisCategory === 'tia' ? 'tia' : 'ischemic' } }))}>{['ich-volume', 'ich-score', 'gcs'].includes(route.tool) ? 'Set ICH' : 'Set acute ischemic stroke'}</button></div>}<Encounter onReset={reset} state={state} update={update} now={now} copyStatus={copyStatus} onCopy={copy} onGenerateAndCopy={generateAndCopy} onGenerate={text => { setState(prev => ({ ...prev, draft: { text, revision: prev.revision, stale: false } })); setCopyStatus(''); }} /></div>
       {protocolVisited && <div hidden={route.surface !== 'protocols'}>{sharedProtocol.safetyReviewRequired && <p role="status" className="workspace-result workspace-inline-action" data-tone={sharedProtocol.safetyReviewSeverity || 'critical'}><span><strong>IVT card held.</strong> {sharedProtocol.safetyReviewReason || 'Unresolved safety or anticoagulant concern in Encounter.'}</span><a href="#/encounter" onClick={event => { event.preventDefault(); goToEncounter('safety-title'); }}>Review in Encounter</a></p>}{/* One outer boundary holds the linked note and protocols back until the quick reference above them has loaded, so a first visit never pushes them down (layout shift); the quick reference keeps its own error boundary. */}<Suspense fallback={<p role="status">Loading protocols…</p>}><SurfaceBoundary label="Quick reference"><QuickReference sub={route.sub || 'ischemic'} weightKg={Number(state.note.weight) > 0 && Number(state.note.weight) <= 350 ? Number(state.note.weight) : undefined} reversal={state.context === 'acute' && ['ich', 'sah'].includes(state.note.diagnosisCategory) ? { agent: state.note.lastDOACType, inr: state.note.inr, lastDoseHours: state.note.lastDOACDose && Number.isFinite(Date.parse(state.note.lastDOACDose)) && Date.parse(state.note.lastDOACDose) <= now ? (now - Date.parse(state.note.lastDOACDose)) / 3600000 : null } : undefined} /></SurfaceBoundary><p className="workspace-linked">Linked to Encounter: NIHSS, elapsed time and shared measurements update these cards.</p><SurfaceBoundary key={epoch}><Suspense fallback={<p role="status">Loading protocols…</p>}><ProtectedProtocols encounter={sharedProtocol} key={epoch} active={route.surface === 'protocols'} telestrokeNote={state.note} setTelestrokeNote={change => update(prev => ({ ...prev, note: typeof change === 'function' ? change(prev.note) : change }))} nihssScore={encounterNihss(state).total ?? 0} consultationType={state.consultationType === 'phone' ? 'telephone' : 'video'} pocketCardsCaseEpoch={epoch} managementSubTab={route.sub || 'ischemic'} setManagementSubTab={sub => { location.hash = `#/protocols/${sub}`; }} navigateTo={tab => { if (tab === 'encounter') goToEncounter('input-diagnosis'); else location.hash = '#/tools'; }} timeFromLKW={timing.clock ? elapsedEncounterTime({ time: new Date(timing.timestamp), label: timing.label }, new Date(now)) : null} ichVolumeParams={state.volume} setIchVolumeParams={change => update(prev => ({ ...prev, volume: typeof change === 'function' ? change(prev.volume) : change }))} ichVolumeEstimate={protocolVolumeEstimate(volume)} /></Suspense></SurfaceBoundary></Suspense></div>}

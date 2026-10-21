@@ -24,6 +24,14 @@ const groupId = group => `qs-group-${group.toLowerCase().replace(/[^a-z]+/g, '-'
 export default function QuickSearch({ open, onClose, version, trials = SEARCH_TRIALS, protocolSub = 'ischemic', onFocusEncounter = focusEncounterTarget }) {
   const dialog = useRef(null), input = useRef(null), list = useRef(null);
   const [query, setQuery] = useState(''), [active, setActive] = useState(0), [expanded, setExpanded] = useState([]);
+  // Each opening starts empty. The reset happens while rendering the opening, so the field is
+  // already clear when showModal focuses it; reset in the effect, it could land after a first key
+  // typed at once and keep the previous query in front of it.
+  const [shownOpen, setShownOpen] = useState(open);
+  if (open !== shownOpen) {
+    setShownOpen(open);
+    if (open) { setQuery(''); setActive(0); setExpanded([]); }
+  }
   const { data, failed } = useReferenceData(version);
   const index = useMemo(() => buildSearchIndex({ ...(data || {}), trials }, { protocolSub }), [data, trials, protocolSub]);
   // groupResults caps what renders, so every match stays reachable through "Show N more".
@@ -36,7 +44,6 @@ export default function QuickSearch({ open, onClose, version, trials = SEARCH_TR
     if (!node) return;
     if (open && !node.open) {
       if (typeof node.showModal === 'function') node.showModal(); else node.setAttribute('open', '');
-      setQuery(''); setActive(0); setExpanded([]);
       requestAnimationFrame(() => input.current?.focus());
     }
     if (!open && node.open) { if (typeof node.close === 'function') node.close(); else node.removeAttribute('open'); }

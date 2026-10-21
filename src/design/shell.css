@@ -314,8 +314,12 @@ h3 { font-family: var(--font-sans); font-weight: 700; margin: var(--space-6) 0; 
 /* The update notice floats above the content so it never pushes the form while someone is tapping. */
 .workspace-update { position: fixed; z-index: 55; right: 16px; bottom: 16px; max-width: 420px; padding: var(--space-8); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--card); box-shadow: var(--elev-2, var(--elev-1)); font-size: var(--text-md); }
 @media (max-width: 768px) { .workspace-update { left: 12px; right: 12px; margin: 0 auto; bottom: calc(76px + env(safe-area-inset-bottom)); } }
-/* While the notice shows, reserve scroll room so it never covers the note's Copy and Generate buttons. */
-.workspace-update + #workspace-main { padding-bottom: 176px; }
+/* While the notice shows, reserve scroll room so it never covers the note's Copy and Generate buttons,
+   and pad the root scrollport past it so Tab never moves focus underneath it (WCAG 2.4.11). The
+   shell publishes the notice's measured height as --update-notice-h (it grows with larger text). */
+.workspace-update + #workspace-main { padding-bottom: max(176px, calc(var(--update-notice-h) + 48px)); }
+html[data-update-notice] { scroll-padding-bottom: calc(var(--update-notice-h) + 16px + var(--space-4)); }
+@media (max-width: 768px) { html[data-update-notice] { scroll-padding-bottom: calc(var(--update-notice-h) + 76px + var(--space-4) + env(safe-area-inset-bottom)); } }
 .workspace-update button { padding: var(--space-4) var(--space-6); margin: var(--space-4) var(--space-4) 0 0; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--paper-2); }
 .tools-surface { margin: 0 0 var(--space-12); }
 /* Every surface starts the same distance below the case bar. */
