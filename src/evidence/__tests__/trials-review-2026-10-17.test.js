@@ -374,8 +374,10 @@ describe('registry check dates are truthful per profile (TO-2, TO-3, TO-4)', () 
   });
 
   it('records each profile recheck consistently with its metadata', () => {
-    // Exact-day LastUpdatePostDate queries on 2026-10-17 (registry search index).
-    const expected = { STEP: '2025-12-04', SISTER: '2026-10-02', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', 'FASTEST-2': '2026-08-20', CLARITY: '2026-10-15', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-09-18', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-09', CAPTIVA: '2026-10-13' };
+    // Exact-day LastUpdatePostDate queries (registry search index), first run on 2026-10-17 and
+    // repeated on 2026-10-21: SISTER (2026-10-19), CAPPRICORN-1 and CAPTIVA (2026-10-20) were
+    // updated in between; the other 13 dates were re-established unchanged.
+    const expected = { STEP: '2025-12-04', SISTER: '2026-10-19', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', 'FASTEST-2': '2026-08-20', CLARITY: '2026-10-15', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-09', CAPTIVA: '2026-10-20' };
     expect(screenerTrials.map(t => t.acronym).sort()).toEqual(Object.keys(expected).sort());
     for (const t of screenerTrials) {
       const m = t.externalMetadata;

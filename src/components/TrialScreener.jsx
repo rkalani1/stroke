@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useDialogChrome } from './use-dialog-chrome.js';
 import { screenerTrials } from '../evidence/screenerTrials.js';
 import { eligibilityTables } from '../evidence/eligibilityTables.js';
-import { evaluateAll, buildScreenerParams, isTrialPotentiallyActive, createInitialScreenerState, anchoredOnsetHours, ONSET_PRESETS, EXCLUSION_ITEMS, VISIBLE_FACTS, NOT_MET_TEXT, phaseLabel, enrollmentLabel, toConfirm, relevantNotMet, potentialMatches, insufficientInformation, registryCheckAgeText } from '../evidence/screener-eval.js';
+import { evaluateAll, buildScreenerParams, isTrialPotentiallyActive, createInitialScreenerState, anchoredOnsetHours, onsetToHours, numericFact, ONSET_PRESETS, EXCLUSION_ITEMS, VISIBLE_FACTS, NOT_MET_TEXT, phaseLabel, enrollmentLabel, toConfirm, relevantNotMet, potentialMatches, insufficientInformation, registryCheckAgeText } from '../evidence/screener-eval.js';
 import { screenerPrefillFromEncounter, applyEncounterPrefill, applyAnticoagulant } from '../evidence/screener-prefill.js';
 
 const CLASSIFICATIONS = [['ischemic', 'Ischemic stroke'], ['tia', 'TIA'], ['ich', 'Hemorrhage (ICH)']];
@@ -113,8 +113,12 @@ function EncounterBanner({ prefill, onUse, applied }) {
   </section>;
 }
 
-function NumberFact({ label, value, onChange, min, max, step = 1, unit }) {
-  return <label className="workspace-field !my-0 justify-between"><span>{label}{unit && <span className="font-normal text-mute"> ({unit})</span>}</span><input type="number" inputMode="decimal" aria-label={unit ? `${label} (${unit})` : label} min={min} max={max} step={step} placeholder="Unknown" value={value === 'unselected' || value === null || value === undefined ? '' : value} onChange={e => onChange(e.target.value === '' ? 'unselected' : e.target.value)} /></label>;
+// An entry the criteria cannot read (out of range, fractional score) stays on screen, flagged as unknown.
+function NumberFact({ label, field, rule, value, onChange, min, max, step = 1, unit }) {
+  const shown = value === 'unselected' || value === null || value === undefined ? '' : value;
+  const invalid = shown !== '' && numericFact(field, shown) === null, hint = `trial-${field}-invalid`;
+  // The hint sits in the label block so the input stays bottom-aligned with its grid neighbour.
+  return <label className="workspace-field !my-0 justify-between"><span>{label}{unit && <span className="font-normal text-mute"> ({unit})</span>}{invalid && <small id={hint} className="block text-xs font-normal text-crit-700 dark:text-crit-300">Treated as unknown: enter <span className="whitespace-nowrap">{rule}</span>.</small>}</span><input type="number" inputMode="decimal" aria-label={unit ? `${label} (${unit})` : label} aria-invalid={invalid || undefined} aria-describedby={invalid ? hint : undefined} min={min} max={max} step={step} placeholder="Unknown" value={shown} onChange={e => onChange(e.target.value === '' ? 'unselected' : e.target.value)} /></label>;
 }
 function SelectFact({ label, value, onChange, options }) {
   const current = value === 'unselected' || value === null || value === undefined ? '' : String(value);
@@ -131,8 +135,8 @@ function KeyFacts({ state, change, replace }) {
   const setNumber = key => v => change({ [key]: asNumber(v) });
   const setBoolean = key => v => change({ [key]: asBoolean(v) });
   return <section aria-labelledby="trial-key-facts"><h2 id="trial-key-facts" className="mb-1 text-lg font-bold">3. Key facts</h2><p className="mb-2 text-sm text-mute">Optional. Unknown stays unknown.</p><div className="grid grid-cols-2 gap-x-3 gap-y-2">
-    <NumberFact label="Age" unit="y" min={0} max={120} value={state.age} onChange={set('age')} />
-    {cls !== 'tia' && <NumberFact label="NIHSS" min={0} max={42} value={state.nihss} onChange={set('nihss')} />}
+    <NumberFact label="Age" unit="y" field="age" rule="0–120" min={0} max={120} value={state.age} onChange={set('age')} />
+    {cls !== 'tia' && <NumberFact label="NIHSS" field="nihss" rule="a whole number 0–42" min={0} max={42} value={state.nihss} onChange={set('nihss')} />}
     {cls === 'ischemic' && <>
       <SelectFact label="Pre-stroke mRS" value={state.preMrs} onChange={setNumber('preMrs')} options={range(0, 5)} />
       <SelectFact label="ASPECTS" value={state.aspects} onChange={setNumber('aspects')} options={range(0, 10).reverse()} />
@@ -142,7 +146,7 @@ function KeyFacts({ state, change, replace }) {
       <SelectFact label="GCS" value={state.gcs} onChange={setNumber('gcs')} options={range(3, 15).reverse()} />
       <SelectFact label="Pre-stroke mRS" value={state.preMrs} onChange={setNumber('preMrs')} options={range(0, 5)} />
       <SelectFact label="ICH location" value={state.ichLocation} onChange={set('ichLocation')} options={[['bg', 'Basal ganglia'], ['lobar', 'Lobar'], ['thalamic', 'Thalamic'], ['infratentorial', 'Infratentorial'], ['other', 'Other']]} />
-      <NumberFact label="Volume" unit="mL" min={0} max={300} step={0.1} value={state.ichVolume} onChange={set('ichVolume')} />
+      <NumberFact label="Volume" unit="mL" field="ichVolume" rule="0–300 mL" min={0} max={300} step={0.1} value={state.ichVolume} onChange={set('ichVolume')} />
       <div className="col-span-2"><SelectFact label="Anticoagulant at onset" value={state.anticoagulant} onChange={v => replace(prev => applyAnticoagulant(prev, v))} options={[['none', 'None (none at onset or in the past 7 days)'], ['doac', 'DOAC (apixaban, rivaroxaban, dabigatran, edoxaban)'], ['lmwh', 'LMWH'], ['vka', 'Warfarin / VKA']]} /></div>
       <SelectFact label="Statin at onset" value={state.statin} onChange={setBoolean('statin')} options={YES_NO} />
     </>}
@@ -155,11 +159,13 @@ function KeyFacts({ state, change, replace }) {
 function TimingSection({ state, change, nowMs }) {
   const live = anchoredOnsetHours(state, nowMs);
   const exact = state.onsetVal !== null && !Array.isArray(state.onsetRangeHours) && state.onsetUnit === 'hours';
+  // A negative or unreadable interval is not used; say so instead of "entered".
+  const invalid = live === null && exact && onsetToHours(state.onsetVal, 'hours') === null;
   const pressed = preset => Array.isArray(state.onsetRangeHours) && state.onsetRangeHours[0] === preset.rangeHours[0] && state.onsetRangeHours[1] === preset.rangeHours[1];
   const shown = live !== null ? Math.round(live * 100) / 100 : exact ? state.onsetVal : '';
   return <section><h2 className="mb-2 text-lg font-bold">2. Time since last known well</h2><div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2">{ONSET_PRESETS.map(preset => <button key={preset.name} type="button" className={buttonClass} aria-pressed={pressed(preset)} onClick={() => change({ onsetVal: preset.val, onsetUnit: preset.unit, onsetRangeHours: preset.rangeHours, onsetAnchorMs: null })}>{preset.name}{' '}<span className="block text-xs text-mute">{preset.desc}</span></button>)}</div>
-    <label htmlFor="trial-exact-onset" className="mt-3 block text-sm font-semibold text-ink-2">Exact hours from LKW</label><div className="workspace-field !my-1"><div className="flex flex-wrap items-center gap-2"><input id="trial-exact-onset" className="!w-auto min-w-0 flex-1 basis-24" type="number" inputMode="decimal" aria-label="Exact hours from LKW" min={0} step={0.1} placeholder="Optional" value={shown} onChange={e => change(e.target.value === '' ? { onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null } : { onsetVal: e.target.value, onsetUnit: 'hours', onsetRangeHours: null, onsetAnchorMs: null })} /><button type="button" className={buttonClass} onClick={() => change({ onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null })}>Clear onset to unknown</button></div></div>
-    <p className="mt-2 text-sm text-mute">{live !== null ? 'Live from the Encounter LKW time; updates as time passes. Editing replaces it.' : state.onsetVal === null ? 'Onset not recorded; timing remains unknown.' : exact ? 'Exact interval entered.' : 'Selected range only; confirm the exact interval required by each study.'}</p></section>;
+    <label htmlFor="trial-exact-onset" className="mt-3 block text-sm font-semibold text-ink-2">Exact hours from LKW</label><div className="workspace-field !my-1"><div className="flex flex-wrap items-center gap-2"><input id="trial-exact-onset" className="!w-auto min-w-0 flex-1 basis-24" type="number" inputMode="decimal" aria-label="Exact hours from LKW" aria-invalid={invalid || undefined} min={0} step={0.1} placeholder="Optional" value={shown} onChange={e => change(e.target.value === '' ? { onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null } : { onsetVal: e.target.value, onsetUnit: 'hours', onsetRangeHours: null, onsetAnchorMs: null })} /><button type="button" className={buttonClass} onClick={() => change({ onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null })}>Clear onset to unknown</button></div></div>
+    <p className="mt-2 text-sm text-mute">{live !== null ? 'Live from the Encounter LKW time; updates as time passes. Editing replaces it.' : state.onsetVal === null ? 'Onset not recorded; timing remains unknown.' : invalid ? 'Not a valid interval; timing remains unknown.' : exact ? 'Exact interval entered.' : 'Selected range only; confirm the exact interval required by each study.'}</p></section>;
 }
 
 // Before a classification is chosen, list what the screener covers so the
@@ -222,7 +228,7 @@ export function TrialScreener({ copyToClipboard, initialState, onStateChange, ac
         {results.ready && <>
           <ResultGroup title="Possible candidates (not definitive)" label="Possible candidates" items={[]} count={candidates.length} onDetails={setModal}>{candidates.length === 0 && <p className="text-sm text-mute">No possible candidate under the entered facts.</p>}
             <CandidateSubgroup title="Potential match" label="Potential match" description="Every modeled criterion is met. Not a definitive match: confirm the remaining registry items, protocol, local activation and consent." empty="No study has every modeled criterion met." items={matches} onDetails={setModal} />
-            <CandidateSubgroup title="Insufficient information" label="Insufficient information" description="At least one modeled fact is unknown; answer it before treating the study as a potential match." empty="None." items={insufficient} onDetails={setModal} />
+            <CandidateSubgroup title="Insufficient information" label="Insufficient information" description="At least one modeled fact is unknown; confirm it before treating the study as a potential match." empty="None." items={insufficient} onDetails={setModal} />
           </ResultGroup>
           {later.length > 0 && <ResultGroup title="Later · before window or not yet recruiting" label="Later" items={later} onDetails={setModal} />}
           {notMet.length > 0 && <details className="rounded-lg border border-line bg-paper-2 p-3"><summary className="min-h-[44px] cursor-pointer font-semibold">{NOT_MET_TEXT} ({notMet.length})</summary><ul className="mt-1 space-y-1">{notMet.map(item => <li key={item.trial.acronym} className="flex flex-wrap items-center gap-x-2 text-sm"><button type="button" className="min-h-[44px] font-bold text-link-600 underline" aria-label={`Full criteria for ${item.trial.acronym}`} onClick={() => setModal(item.trial)}>{item.trial.acronym}</button><span className="min-w-0 flex-1">{item.exclusionReasons.join('; ')}</span></li>)}</ul></details>}
