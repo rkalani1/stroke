@@ -1435,11 +1435,11 @@
       "hemodynamic impairment",
       "collaterals"
     ],
-    "summary": "Moyamoya with ischemic stroke or TIA: direct or indirect extracranial–intracranial bypass can prevent recurrent ischemia (AHA 2021, 2a); refer to an experienced center. Distinguish ischemic from hemorrhagic presentations and moyamoya disease from secondary moyamoya syndrome, and review perfusion studies and the antithrombotic rationale.",
+    "summary": "Moyamoya with ischemic stroke or TIA: direct or indirect extracranial–intracranial bypass can be beneficial to prevent recurrent ischemia (AHA 2021, 2a); refer to an experienced center. Distinguish ischemic from hemorrhagic presentations and moyamoya disease from secondary moyamoya syndrome, and review perfusion studies and the antithrombotic rationale.",
     "consider": [
       "Confirm the vascular pattern and whether a secondary moyamoya syndrome is plausible.",
-      "Review recurrent symptoms, perfusion studies and hemorrhagic features with an experienced team.",
-      "Clarify surveillance, perioperative planning and the rationale for any antithrombotic therapy."
+      "With hemodynamic impairment, ESO 2023 suggests direct or combined rather than indirect bypass, 6–12 weeks after the last event; long-term antiplatelet therapy for non-hemorrhagic moyamoya is expert consensus.",
+      "Clarify surveillance imaging and perioperative planning."
     ],
     "caution": "Do not manage moyamoya as ordinary atherosclerotic stenosis.",
     "sources": [
@@ -1448,8 +1448,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/37021176/",
         "year": 2023,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-21",
+        "access": "Primary abstract re-read 2026-10-21 (bypass technique and timing, antiplatelet consensus); full recommendation tables not reviewed."
       }
     ],
     "related": []
@@ -1485,7 +1485,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/37903069/",
         "year": 2023,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
@@ -1602,7 +1602,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/30264146/",
         "year": 2019,
         "type": "Observational study",
-        "checkedAt": "2026-10-03",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       }
     ],
@@ -1644,7 +1644,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/37602377/",
         "year": 2023,
         "type": "Scientific statement",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
@@ -1667,7 +1667,7 @@
       "leukoaraiosis",
       "SPS3"
     ],
-    "summary": "Lacunar stroke and covert small-vessel disease are different populations (ESO). Symptomatic lacunar stroke gets standard secondary prevention with antiplatelet, BP and lipid treatment; in SPS3, SBP <130 vs 130–149 did not significantly reduce all stroke but reduced ICH (HR 0.37). Address cognition and gait when relevant.",
+    "summary": "Lacunar stroke and covert small-vessel disease are different populations (ESO). Symptomatic lacunar stroke: long-term single antiplatelet, BP control and lipid lowering per current guidelines (ESO 2024); in SPS3, SBP <130 vs 130–149 did not significantly reduce all stroke but reduced ICH (HR 0.37). Address cognition and gait when relevant.",
     "consider": [
       "Is there a corresponding clinical stroke syndrome or only an incidental imaging finding?",
       "Review BP, lifestyle and competing stroke mechanisms rather than assuming every small lesion is lacunar.",
@@ -1680,7 +1680,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/38380638/",
         "year": 2024,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
       },
       {
@@ -1688,7 +1688,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/34414301/",
         "year": 2021,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
       }
     ],
@@ -1715,7 +1715,7 @@
       "ECMO",
       "cardioembolic"
     ],
-    "summary": "LV thrombus with stroke: warfarin for at least 3 months (AHA 2021, COR 1); DOAC safety for a new LV thrombus is uncertain (2b). The 2022 AHA LV-thrombus statement considers a DOAC a reasonable alternative to warfarin (ungraded); an RCT meta-analysis (7 trials) found similar thrombus resolution and bleeding. Reduced ejection fraction without thrombus is not by itself an anticoagulation indication. Mechanical valves: warfarin — dabigatran (RE-ALIGN) and apixaban (PROACT Xa) caused more thromboembolism. Mechanical assist device: warfarin plus aspirin can be beneficial (2a).",
+    "summary": "LV thrombus with stroke: warfarin for at least 3 months (AHA 2021, COR 1); DOAC safety for a new LV thrombus is uncertain (2b). The 2022 AHA LV-thrombus statement considers a DOAC a reasonable alternative to warfarin (ungraded); an RCT meta-analysis (7 trials) found similar thrombus resolution and bleeding. LV dysfunction without thrombus (sinus rhythm): anticoagulant vs antiplatelet is uncertain (AHA 2021, 2b); a 2026 AHA statement suggests anticoagulation may lower recurrence with net benefit, so individualize. Mechanical valves: warfarin — dabigatran (RE-ALIGN) and apixaban (PROACT Xa) caused more thromboembolism. Mechanical assist device: warfarin plus aspirin can be beneficial (AHA 2021, 2a); ARIES-HM3 (2023; fully magnetically levitated LVAD, advanced heart failure) later found a VKA without aspirin noninferior, with less bleeding.",
     "consider": [
       "Clarify the suspected source and whether the cardiac imaging adequately addresses it.",
       "Review valve/device status, rhythm, ventricular function and the antithrombotic indication with cardiology.",
@@ -1736,8 +1736,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42389837/",
         "year": 2026,
         "type": "Scientific statement",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-21",
+        "access": "Primary abstract re-read 2026-10-21; full statement not reviewed."
       }
     ],
     "related": []
@@ -1758,7 +1758,7 @@
       "vegetation",
       "prosthetic valve"
     ],
-    "summary": "Suspected endocarditis with stroke: involve cardiology, infectious diseases and cardiac surgery early. Recurrent emboli with persistent vegetations despite antibiotics: early surgery is reasonable if there is no ICH or extensive brain injury (AHA 2021, 2a); with a major stroke or ICH, delaying valve surgery for at least 4 weeks may be considered (2b).",
+    "summary": "Suspected endocarditis with stroke: involve cardiology, infectious diseases and cardiac surgery early. Recurrent emboli with persistent vegetations despite antibiotics: early surgery is reasonable if there is no ICH or extensive brain injury (AHA 2021, 2a); with a major stroke or ICH, delaying valve surgery for at least 4 weeks may be considered if hemodynamically stable (2b).",
     "consider": [
       "Assess whether the presentation warrants an endocarditis evaluation and multidisciplinary team involvement.",
       "Clarify the neurologic complication and any hemorrhage or infective aneurysm concern.",
@@ -1808,7 +1808,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/39429201/",
         "year": 2024,
         "type": "Guideline",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; full recommendation tables not reviewed. Indexed correction(s) 39585937, 39869715 not reconciled."
       }
     ],
@@ -1833,11 +1833,11 @@
       "mitral stenosis",
       "mechanical valve"
     ],
-    "summary": "After stroke or TIA with AF, anticoagulate regardless of AF pattern; use a DOAC over warfarin unless there is moderate-to-severe mitral stenosis or a mechanical valve (AHA 2021, COR 1). Do not routinely add an antiplatelet without active coronary disease or a recent stent (AHA 2026, harm). Device-detected subclinical AF: apixaban reduced stroke and embolism but increased major bleeding (ARTESiA), while edoxaban did not help (NOAH-AFNET 6). Nonreversible contraindication to long-term anticoagulation (CHA₂DS₂-VASc ≥2): percutaneous left atrial appendage closure is reasonable (ACC/AHA 2023, 2a; AHA 2021 stroke guideline 2b if at least 45 days of anticoagulation can be tolerated); with high bleeding risk on anticoagulation it may be an alternative (ACC/AHA 2023, 2b). Rheumatic AF: rivaroxaban was worse than a VKA (INVICTUS).",
+    "summary": "After stroke or TIA with AF, anticoagulate regardless of AF pattern; use a DOAC over warfarin unless there is moderate-to-severe mitral stenosis or a mechanical valve (AHA 2021, COR 1). Do not routinely add an antiplatelet without active coronary disease or a recent stent (AHA 2026, harm). Device-detected subclinical AF: apixaban reduced stroke and embolism but increased major bleeding (ARTESiA), while edoxaban did not help (NOAH-AFNET 6). Nonreversible contraindication to long-term anticoagulation (CHA₂DS₂-VASc ≥2): percutaneous left atrial appendage closure is reasonable (ACC/AHA 2023, 2a; AHA 2021 stroke guideline 2b if at least 45 days of anticoagulation can be tolerated); with high bleeding risk on anticoagulation it may be an alternative (ACC/AHA 2023, 2b). Postdating these (2026; AF populations not limited to stroke), device closure was not noninferior to physician-directed medical care at high stroke and bleeding risk (CLOSURE-AF) but was noninferior to a DOAC, with less non-procedural bleeding, in anticoagulation candidates (CHAMPION-AF). Rheumatic AF: rivaroxaban was worse than a VKA (INVICTUS).",
     "consider": [
       "Confirm how AF was documented, its clinical context and the actual thromboembolic indication.",
       "Review valve disease, renal function, interactions, prior bleeding and concurrent antiplatelets.",
-      "If considering LAAO or a device-detected AF strategy, review that specific evidence and follow-up requirements."
+      "For LAAO or device-detected AF, check the specific trial population and follow-up."
     ],
     "caution": "Valve- and device-specific evidence overrides general AF risk scores.",
     "sources": [
@@ -1856,6 +1856,22 @@
         "type": "Guideline",
         "checkedAt": "2026-10-01",
         "access": "Primary publication identity and official ESC overview checked live; complete corrected recommendations not reviewed for this companion source."
+      },
+      {
+        "title": "CLOSURE-AF — Left Atrial Appendage Closure or Medical Therapy in Atrial Fibrillation.",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41849741/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-21",
+        "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "CHAMPION-AF — Left Atrial Appendage Closure or Anticoagulation for Atrial Fibrillation.",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41910347/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-21",
+        "access": "Primary abstract verified via PubMed."
       }
     ],
     "related": [
@@ -1887,7 +1903,7 @@
       "triglycerides",
       "hemorrhagic stroke"
     ],
-    "summary": "Atherosclerotic stroke or TIA: statin ± ezetimibe to LDL <70 mg/dL (AHA 2021, COR 1; Treat Stroke to Target events 8.5 vs 10.9%). No known coronary disease and LDL >100: atorvastatin 80 mg (COR 1; SPARCL stroke 11.2 vs 13.1%, with more hemorrhagic strokes). ACC/AHA 2026: very-high-risk ASCVD (ischemic stroke plus another major ASCVD event, or plus ≥2 high-risk conditions): high-intensity statin to LDL-C <55 and non-HDL-C <85 mg/dL, adding ezetimibe and/or a PCSK9 antibody as needed (COR 1). Other atherosclerotic stroke: LDL-C <70 (COR 1); adding a nonstatin toward <55 is reasonable (2a). Recheck lipids 4–12 weeks after starting or changing therapy.",
+    "summary": "Atherosclerotic stroke or TIA: statin ± ezetimibe to LDL <70 mg/dL (AHA 2021, COR 1; Treat Stroke to Target events 8.5 vs 10.9%). No known coronary disease or major cardiac source and LDL >100: atorvastatin 80 mg (COR 1; SPARCL stroke 11.2 vs 13.1%, with more hemorrhagic strokes). ACC/AHA 2026: very-high-risk ASCVD (ischemic stroke plus another major ASCVD event, or plus ≥2 high-risk conditions): high-intensity statin to LDL-C <55 and non-HDL-C <85 mg/dL, adding ezetimibe and/or a PCSK9 antibody as needed (COR 1). Other atherosclerotic stroke: LDL-C <70 (COR 1); adding a nonstatin toward <55 is reasonable (2a). Recheck lipids 4–12 weeks after starting or changing therapy.",
     "consider": [
       "Clarify the vascular indication, lipid profile, prior treatment and adherence.",
       "Triglycerides 135–499 mg/dL on a statin: icosapent ethyl is reasonable in selected patients (2a).",
@@ -2119,7 +2135,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/41985132/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract read via NLM; selected noncardioembolic add-on population and endpoint checked. No regulatory or availability inference."
       },
       {
@@ -2127,7 +2143,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/39225267/",
         "year": 2025,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; no approval or availability inferred."
       },
       {
@@ -2135,7 +2151,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/39955119/",
         "year": 2025,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; no approval or availability inferred."
       },
       {
@@ -2143,7 +2159,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/37787796/",
         "year": 2023,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; no approval or availability inferred."
       },
       {
@@ -2151,7 +2167,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/40796242/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; no approval or availability inferred."
       },
       {
@@ -2159,7 +2175,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/38857611/",
         "year": 2024,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; no approval or availability inferred."
       },
       {
@@ -2167,7 +2183,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/38925803/",
         "year": 2024,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-01",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; no approval or availability inferred."
       },
       {
@@ -2175,7 +2191,7 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42267436/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-17",
+        "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
       },
       {

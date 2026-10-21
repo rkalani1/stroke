@@ -77,8 +77,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/35314513/",
     "year": 2022,
     "type": "Practice advisory",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract read 2026-10-21; full advisory not reviewed.",
     "topicIds": [
       "sicas"
     ]
@@ -101,8 +101,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/37609846/",
     "year": 2023,
     "type": "Scientific statement",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract read 2026-10-21; full recommendations not reviewed. Interpret with newer evidence.",
     "topicIds": [
       "moyamoya"
     ]
@@ -173,8 +173,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/37602377/",
     "year": 2023,
     "type": "Scientific statement",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract read 2026-10-21; full recommendations not reviewed. Interpret with newer evidence.",
     "topicIds": [
       "inherited-arteriopathy"
     ]
@@ -221,8 +221,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/38299330/",
     "year": 2024,
     "type": "Scientific statement",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract read 2026-10-21; full statement not reviewed.",
     "topicIds": [
       "dissection"
     ]
@@ -353,8 +353,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42389837/",
     "year": 2026,
     "type": "Scientific statement",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract read 2026-10-21; full statement not reviewed.",
     "topicIds": [
       "cardiac-sources"
     ]
@@ -653,8 +653,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/31984228/",
     "year": 2019,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract read 2026-10-21; full recommendations not reviewed. Interpret with newer evidence.",
     "topicIds": [
       "af-prevention"
     ]
@@ -727,8 +727,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/34414302/",
     "year": 2021,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract read 2026-10-21; full recommendations not reviewed. Interpret with newer evidence.",
     "topicIds": [
       "carotid"
     ]
@@ -739,8 +739,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/34414301/",
     "year": 2021,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract read 2026-10-21; full recommendations not reviewed. Interpret with newer evidence.",
     "topicIds": [
       "lacunar-small-vessel"
     ]
@@ -835,8 +835,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/36082254/",
     "year": 2022,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract read 2026-10-21; full recommendations not reviewed. Interpret with newer evidence.",
     "topicIds": [
       "sicas"
     ]
@@ -859,8 +859,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/38380638/",
     "year": 2024,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract read 2026-10-21; full recommendations not reviewed. Interpret with newer evidence.",
     "topicIds": [
       "lacunar-small-vessel"
     ]
@@ -895,8 +895,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/37021176/",
     "year": 2023,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract read 2026-10-21; full recommendations not reviewed. Interpret with newer evidence.",
     "topicIds": [
       "moyamoya"
     ]
@@ -907,8 +907,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/37903069/",
     "year": 2023,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract read 2026-10-21; full recommendations not reviewed. Interpret with newer evidence.",
     "topicIds": [
       "cns-vasculitis"
     ]
@@ -919,8 +919,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/38752755/",
     "year": 2024,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract read 2026-10-21; full recommendations not reviewed.",
     "topicIds": [
       "pfo"
     ]
@@ -969,8 +969,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/36082250/",
     "year": 2022,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract read 2026-10-21; full recommendations not reviewed. Interpret with newer evidence.",
     "topicIds": [
       "secondary-prevention"
     ]

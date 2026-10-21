@@ -7,8 +7,8 @@ import { searchReference } from '../src/reference-search.js';
 import { readClinicalReference } from '../scripts/reference-data.mjs';
 const read = path => JSON.parse(fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8'));
 const canonical = readClinicalReference();
-// Review cutoff: source checkedAt dates may not postdate the latest evidence review (2026-10-17).
-const now = new Date('2026-10-17T23:59:59Z');
+// Review cutoff: source checkedAt dates may not postdate the latest evidence review (2026-10-21).
+const now = new Date('2026-10-21T23:59:59Z');
 const validate = data => validateClinicalReference(data, { now });
 const changed = change => { const data = structuredClone(canonical); change(data); return data; };
 
