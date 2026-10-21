@@ -163,9 +163,11 @@ export function calculateReviewedSTOPBANG(input = {}) {
   if (age === null || weight === null || height === null || neck === null || !['M','F'].includes(input.sex) || !complete(input,keys)) return null;
   const bmi = weight / (height / 100) ** 2;
   const score = reviewedStopBang({ ...input, stopBangAssessed:true, sb_bmi:bmi > 35, sb_age:age > 50, sb_neck:neck > 40, sb_gender:input.sex === 'M' });
-  // Non-blocking: an inch value typed as centimeters silently scores the BMI item.
+  // Non-blocking: an inch value typed as centimeters silently scores the BMI or neck item "no"
+  // (16 in = 40.64 cm). The 120 cm and 25 cm adult plausibility limits are heuristics, not source values.
   const heightWarning = height < 120 || height > 230 ? 'Height outside 120–230 cm is unusual for an adult and drives the BMI item; confirm centimeters, not inches.' : null;
-  return score === null ? null : { ...result(score,8), bmi, bang:{ bmi:bmi > 35, age:age > 50, neck:neck > 40, male:input.sex === 'M' }, ...(heightWarning ? { heightWarning } : {}) };
+  const neckWarning = neck < 25 ? 'Neck circumference under 25 cm is unusual for an adult and drives the neck item; confirm centimeters, not inches (16 in ≈ 40.6 cm).' : null;
+  return score === null ? null : { ...result(score,8), bmi, bang:{ bmi:bmi > 35, age:age > 50, neck:neck > 40, male:input.sex === 'M' }, ...(heightWarning ? { heightWarning } : {}), ...(neckWarning ? { neckWarning } : {}) };
 }
 
 const engines = { abcd2:calculateReviewedABCD2, chadsvasc:calculateReviewedCHADS2VASc, 'has-bled':calculateReviewedHASBLED, rope:calculateReviewedRoPE, pascal:classifyReviewedPASCAL, phases:calculateReviewedPHASES, 'mrs-descriptors':describeReviewedMRS, 'hunt-hess':describeReviewedHuntHess, wfns:calculateReviewedWFNS, 'modified-fisher':calculateReviewedModifiedFisher, mtici:describeReviewedMTICI, nascet:calculateReviewedNASCET, 'aspects-regions':calculateReviewedRegionalASPECTS, 'pc-aspects-regions':calculateReviewedRegionalPCASPECTS, phq2:calculateReviewedPHQ2, 'stop-bang':calculateReviewedSTOPBANG };
