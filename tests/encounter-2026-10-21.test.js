@@ -165,6 +165,9 @@ describe('notes keep missing, negative, proposed and completed distinct', () => 
       expect(text).toContain('EVT puncture: not documented');
       expect(text).not.toContain('EVT reperfusion');
     }
+    // A reperfusion time without a puncture time keeps the missing puncture visible, in order.
+    const partial = buildSummary({ ...recommended, consultationType: 'video', actions: { ...recommended.actions, reperfusionTime: '2026-10-21T09:30' } }, now);
+    expect(partial).toContain('EVT puncture: not documented\nEVT reperfusion: 2026-10-21 09:30\n');
     // Non-ischemic and follow-up notes carry no acute EVT line at all.
     expect(buildSummary({ ...recommended, note: { ...recommended.note, diagnosisCategory: 'ich' } }, now)).not.toContain('EVT puncture');
     expect(buildSummary({ ...recommended, context: 'follow-up' }, now)).not.toContain('EVT puncture');
@@ -303,7 +306,7 @@ describe('documentation fuzz (fixed seed)', () => {
         if (/\/42 \(all items documented/.test(text) && !(state.nihssSource === 'itemized' && NIHSS_ITEMS.every(item => item.options.includes(state.nihss[item.id])))) fail('complete NIHSS without every item');
         if (/Disabling deficit: (?:yes|no)\b/.test(text) && typeof state.note.disablingDeficit !== 'boolean') fail('disabling deficit invented');
         if (text.includes('every checklist item answered No') && !SAFETY_ITEMS.every(item => state.note.tnkContraindicationChecklist[item.id] === false)) fail('checklist reported as answered');
-        if (acuteIschemic && !state.actions.punctureTime && !state.actions.reperfusionTime && !text.includes('EVT puncture: not documented')) fail('EVT not stated as undocumented');
+        if (acuteIschemic && !state.actions.punctureTime && !text.includes('EVT puncture: not documented')) fail('missing EVT puncture not stated');
         if (acuteIschemic && !state.decisions.ivt && !text.includes('IVT clinician decision: not documented')) fail('missing IVT decision not stated');
       }
     }

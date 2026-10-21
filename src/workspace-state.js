@@ -410,12 +410,11 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
       key === 'punctureTime' && state.decisions.evt !== 'Recommended' && `[EVT clinician decision is '${state.decisions.evt || 'not documented'}'; reconcile]`,
       key === 'reperfusionTime' && ['0', '1'].includes(state.note.ticiScore) && `[mTICI ${state.note.ticiScore} recorded with a reperfusion time; review]`
     ].filter(Boolean).join(' ');
+    // Like IVT administration, a missing puncture time is stated: a recommendation or consent never implies the procedure.
     for (const [key, label] of [['punctureTime', 'EVT puncture'], ['reperfusionTime', 'EVT reperfusion']]) if (state.actions[key]) {
       const issue = key === 'reperfusionTime' ? evtReperfusionIssue(state, nowMs).replace(/\.$/, '') : '', flags = evtFlags(key);
       entry(label, validTimestamp(state.actions[key], nowMs) ? `${formatRecordedInstant(state.actions[key], nowMs)}${issue ? ` (${issue})` : ''}${flags ? ` ${flags}` : ''}` : recordedTime(state.actions[key], nowMs));
-    }
-    // Like IVT administration, a recommendation or consent never implies that the procedure started.
-    if (!state.actions.punctureTime && !state.actions.reperfusionTime) entry('EVT puncture', 'not documented');
+    } else if (key === 'punctureTime') entry(label, 'not documented');
     entry('Recorded mTICI grade', state.note.ticiScore);
     entry('IVT Discussion', state.actions.discussion || 'not documented');
     entry('IVT Consent status', state.actions.consent || 'not documented');
