@@ -30,7 +30,7 @@ describe('canonical state and honest documentation', () => {
   it('preserves entered rationale in the restored paragraph without old labels or recursive draft', () => {
     const s=newEncounter();s.rationale='Synthetic manually entered rationale';s.draft={text:'OLD GENERATED SENTENCE'};
     const text=buildSummary(s,NOW);expect(text).toContain(s.rationale);expect(text).not.toContain(s.draft.text);
-    expect(text).not.toMatch(/SYNTHETIC EDUCATIONAL DEMO|NOT A REAL CLINICAL NOTE|NO PHI/);expect(text).toContain('NIHSS score: not documented (0/15 items scored)');expect(text).not.toContain('Informed consent');
+    expect(text).not.toMatch(/SYNTHETIC EDUCATIONAL DEMO|NOT A REAL CLINICAL NOTE|NO PHI/);expect(text).toContain('NIHSS score: incomplete');expect(text).not.toContain('Informed consent');
   });
   it('retains incompatible inputs without projecting them into outputs', () => {
     const s=newEncounter();s.note.diagnosisCategory='ich';s.note.vesselOcclusion=['Basilar'];s.actions.administered=true;s.actions.administrationTime='2026-10-01T11:00';s.drug='TNK';

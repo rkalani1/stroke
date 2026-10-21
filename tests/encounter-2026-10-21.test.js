@@ -148,10 +148,10 @@ describe('impossible ordering is flagged, never repaired', () => {
 
 describe('notes keep missing, negative, proposed and completed distinct', () => {
   const now = Date.parse('2026-10-21T10:00:00-07:00');
-  it.each(['phone', 'video', 'handoff'])('states an unexamined NIHSS as not documented, never as a partial sum of 0 (%s)', format => {
+  it.each(['phone', 'video', 'handoff'])('states that no NIHSS item was scored, never a partial sum of 0 (%s)', format => {
     const state = encounter(format === 'handoff' ? { documentFormat: 'handoff' } : { consultationType: format });
     const text = buildSummary(state, now);
-    expect(text).toContain('not documented (0/15 items scored)');
+    expect(text).toContain('incomplete: 0/15 items scored; no completed score');
     expect(text).not.toContain('partial sum 0');
     // One item scored 0 is a real partial examination and keeps its partial sum.
     expect(buildSummary({ ...state, nihss: { consciousness: 'Alert (0)' } }, now)).toContain('incomplete: 1/15 items; partial sum 0; no completed score');
@@ -189,7 +189,7 @@ describe('notes keep missing, negative, proposed and completed distinct', () => 
     expect(phone).toContain('Monitoring actions documented: Neuro checks q15 min; BP every 15 min. Plan: escalate if worse');
     expect(phone).toContain('Head CT (time not documented): No hemorrhage. CT hemorrhage review');
     const video = buildSummary({ ...state, consultationType: 'video' }, now);
-    expect(video).toContain('Exam: NIHSS not documented (0/15 items scored) — Examined via video. Disabling deficit: not assessed');
+    expect(video).toContain('Exam: NIHSS incomplete: 0/15 items scored; no completed score — Examined via video. Disabling deficit: not assessed');
     expect(video).toContain('Suspected Diagnosis: Ischemic stroke\nLarge vessel syndrome\n');
     expect(video).not.toMatch(/ [.;,]|\.;|[ \t]$/m);
   });
@@ -281,7 +281,7 @@ describe('documentation fuzz (fixed seed)', () => {
     'literal undefined/null/NaN/Infinity': /\b(?:undefined|null|NaN|Infinity)\b/, 'object text': /\[object /,
     'double space': /\S {2,}\S/, 'space before punctuation': / [,.;:](?=\s|$)/, 'doubled period': /[^.]\.\.(?!\.)/, 'empty clause': /;\s*[;.]|\.;|,\s*[,.]/,
     'empty brackets': /\(\s*\)|\[\s*\]/, 'unfilled prompt blank': /: \[ \]/, 'unrounded decimal': /\d\.\d{4,}/, 'unit after placeholder': /(?:documented|invalid) (?:mL|mg|kg|mg\/dL|s)\b/,
-    'trailing whitespace': /[ \t]$/m, 'blank-line run': /\n[ \t]*\n[ \t]*\n/, 'zero-item partial sum': /incomplete: 0\/15 items/
+    'trailing whitespace': /[ \t]$/m, 'blank-line run': /\n[ \t]*\n[ \t]*\n/, 'zero-item partial sum': /\b0\/15 items; partial sum/
   };
   const balanced = text => text.split('\n').every(entry => (entry.match(/\(/g) || []).length === (entry.match(/\)/g) || []).length && (entry.match(/\[/g) || []).length === (entry.match(/\]/g) || []).length);
   const now = Date.parse('2026-10-21T10:00:00-07:00');

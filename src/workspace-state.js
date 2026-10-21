@@ -337,7 +337,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     ? exam.complete ? `${exam.total}/42 (reported total)` : 'reported total missing or invalid; no current score'
     : exam.complete ? `${exam.total}/42 (all items documented${exam.untestable ? `; ${nihssUntestableNote(exam.untestable)}, not scored` : ''}${nihssBulkZeroItems(state).length ? `; ${nihssBulkZeroNote(nihssBulkZeroItems(state))}` : ''})`
     // With no item scored there is no partial sum to report (a "0" would read as an examined NIHSS of 0).
-    : exam.count ? `incomplete: ${exam.count}/${NIHSS_ITEMS.length} items; partial sum ${exam.partial}; no completed score` : `not documented (0/${NIHSS_ITEMS.length} items scored)`;
+    : `incomplete: ${exam.count}/${NIHSS_ITEMS.length} items${exam.count ? `; partial sum ${exam.partial}` : ' scored'}; no completed score`;
   // Item scores let the receiving team compare a later exam item by item (omitted for an all-zero exam).
   const nihssItems = exam.source !== 'reported' && exam.complete && (exam.total > 0 || exam.untestable) ? NIHSS_ITEMS.map(item => { const match = String(state.nihss?.[item.id] || '').match(/\((\d|UN)\)$/); return match ? `${item.name.split('.')[0]} ${match[1]}` : null; }).filter(Boolean).join(', ') : '';
   const examTextWithItems = nihssItems ? `${examText}; items ${nihssItems}` : examText;
