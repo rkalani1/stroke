@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { CARE_SETTINGS, searchReference, referenceText, recommendationLabels } from './reference-search.js';
+import { CARE_SETTINGS, searchReference, referenceText, recommendationLabels, bottomLine, sectionId } from './reference-search.js';
 import { useReferenceData } from './reference-resource.js';
 
 export default function Reference({ version, focusId, active = true }) {
@@ -49,12 +49,15 @@ export default function Reference({ version, focusId, active = true }) {
   const renderCard = record => {
     const study = !record.summary;
     const relatedStudies = study ? [] : data.studies.filter(item => item.relatedTopic === record.id);
+    // A collapsed topic shows its bottom line (the summary's first sentence, verbatim) and what it holds.
+    const recCount = record.recommendations?.length || 0;
+    const contents = study ? '' : [recCount && `${recCount} guideline recommendation${recCount === 1 ? '' : 's'}`, relatedStudies.length && `${relatedStudies.length} study ${relatedStudies.length === 1 ? 'summary' : 'summaries'}`].filter(Boolean).join(' · ');
     return <details className="reference-card" data-reference-id={record.id} key={record.id} open={Boolean(opened[record.id])} onToggle={event => {
       if (event.target !== event.currentTarget) return;
       const open = event.currentTarget.open; if (!open) clearCopy();
       setOpened(previous => previous[record.id] === open ? previous : { ...previous, [record.id]: open });
     }}>
-      <summary><span>{record.title}</span>{study && <span className="reference-year">{record.year}</span>}{study && record.headline && <span className="reference-headline">{record.headline}</span>}</summary>
+      <summary><span>{record.title}</span>{study && <span className="reference-year">{record.year}</span>}{study && record.headline && <span className="reference-headline">{record.headline}</span>}{!study && <span className="reference-bottom-line">{bottomLine(record.summary)}</span>}{contents && <span className="reference-contents">{contents}</span>}</summary>
       {opened[record.id] && <div className="reference-body">{study ? <><p>{record.question}</p><dl>{[['Population', record.population], ['Comparison', record.comparison], ['Result', record.result]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></> : <><p className="reference-summary">{record.summary}</p>{record.recommendations?.length > 0 && renderRecommendations(record)}<ul>{record.consider.map(item => <li key={item}>{item}</li>)}</ul></>}
         <p className="reference-limits"><strong>Limits:</strong> {record.caution || record.limits}</p>
         {(record.related || []).length > 0 && <div className="reference-links">{record.related.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</div>}
@@ -71,7 +74,12 @@ export default function Reference({ version, focusId, active = true }) {
     <p role="status" className="workspace-help">{results.length === 0 && ungrouped.length === 0 ? 'No topics found. Try a drug, trial or condition, or clear the filters.' : <>{results.length} {results.length === 1 ? 'topic' : 'topics'} found.{ungrouped.length > 0 && ` ${ungrouped.length} additional study summaries.`}</>}</p>
     {studyResults.length > 0 && <nav className="reference-study-results" aria-label="Matching study summaries"><h2>Matching study summaries <span>({studyResults.length})</span></h2><ul>{studyResults.map(record => <li key={record.id}><a href={`#/evidence/${record.id}`} onClick={event => { if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) { resultTargets.current.add(record.id); if (focusId === record.id) requestFocus(value => value + 1); } }}>{record.title}<span className="reference-year">{record.year}</span>{record.headline && <span className="reference-headline">{record.headline}</span>}</a></li>)}</ul></nav>}
     {focusId && ![...data.topics, ...data.studies].some(record => record.id === focusId) && <p role="status">Reference not found. Browse below.</p>}
-    {groups.map(([name, entries]) => <section key={name} className="reference-group" aria-label={name}><h2>{name}<span>{entries.length}</span></h2>{entries.map(renderCard)}</section>)}
+    {/* Buttons, not #fragment links: the hash is the app's route. Each moves focus to its section heading.
+        Below 1024 px the index scrolls sideways, and Chrome leaves a focused button that is barely in view
+        where it is, so keyboard focus brings the whole button into view (a click does not, so it never
+        moves under the pointer). */}
+    {groups.length > 1 && <nav className="reference-index" aria-label="Evidence sections"><ul>{groups.map(([name, entries]) => <li key={name}><button type="button" onFocus={event => { if (event.currentTarget.matches(':focus-visible')) event.currentTarget.scrollIntoView({ block: 'nearest', inline: 'nearest' }); }} onClick={() => { const heading = container.current?.querySelector(`#${sectionId(name)}`); heading?.scrollIntoView({ block: 'start' }); heading?.focus({ preventScroll: true }); }}>{name}<span>{entries.length}</span></button></li>)}</ul></nav>}
+    {groups.map(([name, entries]) => <section key={name} className="reference-group" aria-label={name}><h2 id={sectionId(name)} tabIndex={-1}>{name}<span>{entries.length}</span></h2>{entries.map(renderCard)}</section>)}
     <p className="workspace-help">Summaries work offline; source links need internet.</p>
     <div className="reference-links"><a href="https://professional.heart.org/en/guidelines-statements" target="_blank" rel="noopener noreferrer">AHA guidelines and statements</a><a href="https://eso-stroke.org/guidelines/eso-guideline-directory/" target="_blank" rel="noopener noreferrer">ESO guideline directory</a></div>
   </section>;

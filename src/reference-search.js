@@ -33,6 +33,24 @@ export function searchReference(records, query = '', setting = 'all') {
     return terms.every(term => searchable.includes(term));
   }).sort((a, b) => terms.length ? rank(b) - rank(a) : 0);
 }
+// A topic's bedside bottom line: the opening sentence of its summary, shown verbatim in the
+// collapsed Evidence row. A sentence ends at . ! or ? followed by a space and a capital, digit or
+// opening bracket, outside parentheses, and not after an abbreviation or a single capital
+// initial ("U.S. label", "e.g. DOAC", "vs. 4.1%"). Decimals never split ("0.25 mg/kg").
+const ABBREVIATION_END = /(?:\b(?:vs|e\.g|i\.e|etc|approx|al|Dr|No|Fig|ca|cf|min|max|mo|yr|yrs|wk|wks|h|hr|hrs|St|Mt)|\b[A-Z])$/;
+export function bottomLine(text) {
+  const value = String(text || '').trim();
+  let depth = 0;
+  for (let i = 0; i < value.length; i += 1) {
+    const char = value[i];
+    if (char === '(' || char === '[') depth += 1;
+    else if ((char === ')' || char === ']') && depth > 0) depth -= 1;
+    else if (depth === 0 && '.!?'.includes(char) && /^\s+["'“(\[]?[A-Z0-9]/.test(value.slice(i + 1)) && !ABBREVIATION_END.test(value.slice(0, i))) return value.slice(0, i + 1);
+  }
+  return value;
+}
+// Stable in-page id for an Evidence section heading (section index targets).
+export const sectionId = name => `evidence-section-${String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
 // ACC/AHA class (1, 2a, 2b, 3), GRADE strength or an ungraded statement.
 export function recommendationLabels(rec) {
   if (/^[123]/.test(rec.cor)) return { cor: `COR ${rec.cor}`, loe: `LOE ${rec.loe}`, tone: rec.cor.startsWith('3') ? /no benefit/i.test(rec.cor) ? 'cor-neutral' : 'cor-3' : `cor-${rec.cor}` };
