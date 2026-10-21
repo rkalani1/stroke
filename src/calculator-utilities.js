@@ -11,20 +11,14 @@ export const ENCOUNTER_TOOLS = [
   { id:'dawn', name:'Historical source screens', aliases:'DAWN DEFUSE 3 thrombectomy EVT large core SELECT2 ANGEL ASPECT RESCUE Japan LIMIT TENSION TESLA LASTE' },
   { id:'dapt', name:'Acute DAPT source screen', aliases:'dual antiplatelet therapy CHANCE POINT' }
 ];
-const aliases = {
-  abcd2:'ABCD2 TIA', chadsvasc:'CHA2DS2VASc CHADS VASC atrial fibrillation',
-  'has-bled':'HASBLED bleeding', rope:'risk of paradoxical embolism PFO', pascal:'PFO associated stroke causal likelihood',
-  phases:'aneurysm', 'mrs-descriptors':'mRS modified Rankin scale disability', 'hunt-hess':'Hunt Hess subarachnoid hemorrhage SAH',
-  wfns:'World Federation of Neurosurgical Societies subarachnoid hemorrhage SAH',
-  'modified-fisher':'modified Fisher CT blood subarachnoid hemorrhage SAH IVH', mtici:'TICI reperfusion thrombectomy angiography', nascet:'carotid stenosis ICA diameter',
-  'aspects-regions':'Alberta stroke program early CT score anterior', 'pc-aspects-regions':'posterior circulation ASPECTS basilar vertebrobasilar',
-  phq2:'PHQ2 patient health questionnaire depression', 'stop-bang':'STOPBANG sleep apnea'
-};
+// Worksheet aliases live on their definitions, so the global quick search reads the same synonyms.
 const searchable = text => String(text || '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9]/g, '');
 export function matchesCalculatorSearch(item, query) {
-  const haystack = searchable([item.name, item.id, item.aliases, aliases[item.id], item.category].filter(Boolean).join(' '));
+  const haystack = searchable([item.name, item.id, item.aliases, item.category].filter(Boolean).join(' '));
   return String(query || '').trim().split(/\s+/).every(word => haystack.includes(searchable(word)));
 }
+// Non-blocking unit-plausibility cautions a result carries; shown beside it and copied with it.
+export const resultCautions = value => [value?.heightWarning, value?.neckWarning].filter(Boolean);
 
 // Display and copy share one formatter so the copied figure always matches the
 // figure on screen. No interpretation band is added beyond the definitions.
@@ -45,9 +39,9 @@ export function calculatorResultParts(state, definition, value = supplementaryRe
 // Encounter note or the unrelated data used by other worksheets. The name is
 // retained for importers; copying needs a complete score, not an attestation.
 export function reviewedCalculatorText(state, definition) {
-  const parts = calculatorResultParts(state, definition);
+  const value = supplementaryResult(state, definition.id), parts = calculatorResultParts(state, definition, value);
   if (!parts) return '';
-  return [parts.text, `Limits: ${definition.limits}`, `Source: ${definition.sourceLabel} — ${definition.sourceUrl}`, definition.reviewScope, definition.verificationUrl ? `Verification: ${definition.verificationUrl}` : ''].filter(Boolean).join('\n');
+  return [parts.text, ...resultCautions(value).map(text => `Caution: ${text}`), `Limits: ${definition.limits}`, `Source: ${definition.sourceLabel} — ${definition.sourceUrl}`, definition.reviewScope, definition.verificationUrl ? `Verification: ${definition.verificationUrl}` : ''].filter(Boolean).join('\n');
 }
 
 const SHARED_LABELS = { age:'age', sex:'sex', bp:'presenting BP', mrs:'baseline mRS', gcs:'complete GCS', weight:'weight', height:'height', mtici:'mTICI grade', sahCause:'SAH cause' };
