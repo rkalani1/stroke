@@ -477,11 +477,14 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
 
 /* Third-party references: a slim strip under the header on every surface. Each link keeps a
    44px box, but the negative margins let the boxes overhang the header's bottom padding (8px or
-   more) and the space above the content (12px or more), so the strip itself is 28px tall. If the
-   links wrap (large text), the 16px row gap keeps their boxes from overlapping. */
+   more) and the space below the strip by 8px, so the strip itself is 28px tall. If the links wrap
+   (large text), the 16px row gap keeps their boxes from overlapping. The sticky case bar would
+   paint over the bottom of a focused link's outline, so it starts 8px lower (an offline note
+   between them brings its own 8px margin). */
 .workspace-external { min-height: 28px; gap: var(--space-8); font-size: var(--text-sm); }
 .workspace-external a { margin: -8px; padding-inline: var(--space-4); }
 .workspace-external a:focus-visible { outline-offset: -6px; }
+.workspace-offline:empty + .case-bar { margin-top: var(--space-4); }
 .reference-group { margin: var(--space-12) 0; }
 /* The topic count stays on the title's first line instead of wrapping under a long title. */
 .reference-group > h2 { display: flex; gap: var(--space-6); align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: var(--space-4); }
