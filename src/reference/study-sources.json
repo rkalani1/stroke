@@ -2272,9 +2272,9 @@
     "title": "ARIES-HM3 — Aspirin and Hemocompatibility Events With a Left Ventricular Assist Device in Advanced Heart Failure: The ARIES-HM3 Randomized Clinical Trial.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/37950897/",
     "year": 2023,
-    "type": "Report",
-    "checkedAt": "2026-10-21",
-    "access": "PubMed bibliographic record and abstract checked 2026-10-21."
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-22",
+    "access": "PubMed bibliographic record, abstract and ClinicalTrials.gov record NCT04069156 re-read 2026-10-22: first durable HeartMate 3 implant; investigator-mandated antiplatelet therapy excluded; PMC copy has no body text."
   },
   {
     "id": "study-source-ecmo-lv-venting-brain-injury",

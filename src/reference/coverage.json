@@ -77,8 +77,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/35314513/",
     "year": 2022,
     "type": "Practice advisory",
-    "checkedAt": "2026-10-21",
-    "access": "Primary abstract read 2026-10-21; full advisory not reviewed.",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read 2026-10-22 (systematic review through November 2020); full advisory not reviewed. Interpret with newer evidence (BASIS 2024).",
     "topicIds": [
       "sicas"
     ]
@@ -221,8 +221,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/38299330/",
     "year": 2024,
     "type": "Scientific statement",
-    "checkedAt": "2026-10-21",
-    "access": "Primary abstract read 2026-10-21; full statement not reviewed.",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read 2026-10-22 (literature 1990–2022); full statement not reviewed. Interpret with newer evidence (2024 CADISS/TREAT-CAD participant-data meta-analysis; AHA 2026 AIS guideline).",
     "topicIds": [
       "dissection"
     ]
@@ -488,7 +488,9 @@
     "checkedAt": "2026-10-22",
     "access": "PubMed record and abstract read: published online 2026-08-27 (Stroke 2026;57(10):e514–e658); replaces the 2016 guideline; literature since 2016 searched June–October 2025, so later evidence is not reflected. No PMC copy; recommendations not reviewed or quoted. Archive held only an access placeholder.",
     "topicIds": [
-      "recovery"
+      "recovery",
+      "motor-recovery",
+      "driving-work"
     ]
   },
   {
@@ -713,12 +715,13 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42095756/",
     "year": 2026,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "Recommendations from the archived full-text transcription (reviewed 2026-09-30); cited in topic summaries. Published in 2026 under a 2025-update title.",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read 2026-10-22 (against intensive SBP lowering <140 in the first 24 h after successful thrombectomy, high certainty); other recommendations from the archived full-text transcription (reviewed 2026-09-30). Published in 2026 under a 2025-update title.",
     "topicIds": [
       "acute-bp",
       "ich-management",
-      "neurointerventional-care"
+      "neurointerventional-care",
+      "inpatient-care"
     ]
   },
   {
@@ -835,8 +838,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/36082254/",
     "year": 2022,
     "type": "Guideline",
-    "checkedAt": "2026-10-21",
-    "access": "Primary abstract read 2026-10-21; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read 2026-10-22 (endovascular therapy not recommended as first choice in high-grade symptomatic ICAD, moderate-level evidence); full recommendations not reviewed. Interpret with newer evidence (BASIS 2024).",
     "topicIds": [
       "sicas"
     ]
@@ -1269,10 +1272,11 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/39429201/",
     "year": 2024,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence. Indexed correction(s) 39585937, 39869715 not reconciled.",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read 2026-10-22 (literature searched May–November 2023); no PMC copy. The asymptomatic carotid grades (shared decision-making >70%, COR 1; revascularization at low perioperative risk, 2b) are from the archived full-text transcription. Interpret with newer evidence (CREST-2). Indexed correction(s) 39585937, 39869715 not reconciled.",
     "topicIds": [
-      "primary-prevention"
+      "primary-prevention",
+      "carotid"
     ]
   },
   {
