@@ -89,7 +89,7 @@ function App() {
     // Chrome reveals only the caret line of a text area reached with Tab, which can leave the rest of
     // the field and its focus indicator under the docked nav or update notice; the root scroll padding
     // reserves that chrome, so bring the whole field into view. The frozen Protocols tab is left as is.
-    const reveal = ({ key, target }) => key === 'Tab' && target.matches('textarea:not(#tabpanel-protocols *)') && target.scrollIntoView({ block: 'nearest' });
+    const reveal = ({ key, target }) => key === 'Tab' && target.tagName === 'TEXTAREA' && !target.closest('#tabpanel-protocols') && target.scrollIntoView({ block: 'nearest' });
     window.addEventListener('keydown', onKey); window.addEventListener('keyup', reveal);
     return () => { window.removeEventListener('keydown', onKey); window.removeEventListener('keyup', reveal); };
   }, []);
