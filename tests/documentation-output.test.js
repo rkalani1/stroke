@@ -29,7 +29,9 @@ describe('restored optional documentation formats', () => {
     state.context = 'follow-up';
     const followup = buildSummary(state, now);
     expect(followup).toContain('· follow-up');
-    expect(followup).not.toContain('IVT administration');
+    // A recorded administration is not hidden by a context change: it stays, flagged for reconciliation.
+    expect(followup).toContain('Recorded reperfusion treatment: [follow-up / review context, not acute ischemic stroke; reconcile]');
+    expect(followup).toContain('IVT administration: not documented as given (entered time 2026-10-01 13:00 is invalid or future');
     expect(followup).not.toContain('Receiving stroke service');
   });
   it('keeps compact handoff and discharge output freshness tied to their source fields', () => {

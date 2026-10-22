@@ -34,8 +34,10 @@ describe('canonical state and honest documentation', () => {
   });
   it('retains incompatible inputs without projecting them into outputs', () => {
     const s=newEncounter();s.note.diagnosisCategory='ich';s.note.vesselOcclusion=['Basilar'];s.actions.administered=true;s.actions.administrationTime='2026-10-01T11:00';s.drug='TNK';
-    expect(activeNote(s).vesselOcclusion).toEqual([]);expect(s.note.vesselOcclusion).toEqual(['Basilar']);expect(buildSummary(s,NOW)).not.toContain('IVT administration');
-    s.context='follow-up';s.note.diagnosisCategory='ischemic';expect(buildSummary(s,NOW)).not.toContain('IVT administration');
+    expect(activeNote(s).vesselOcclusion).toEqual([]);expect(s.note.vesselOcclusion).toEqual(['Basilar']);expect(buildSummary(s,NOW)).not.toContain('Basilar');
+    // A recorded administration is a fact, not a derived output: it is printed and flagged, never hidden.
+    expect(buildSummary(s,NOW)).toContain('TNK at 2026-10-01 11:00');expect(buildSummary(s,NOW)).toContain('[working diagnosis Intracerebral hemorrhage, not acute ischemic stroke; reconcile]');
+    s.context='follow-up';s.note.diagnosisCategory='ischemic';expect(buildSummary(s,NOW)).toContain('TNK at 2026-10-01 11:00');expect(buildSummary(s,NOW)).toContain('[follow-up / review context, not acute ischemic stroke; reconcile]');
   });
   it('does not populate discovery or turn it into onset', () => {
     const s=newEncounter();s.note.lkwUnknown=true;s.note.lkwDate='2026-10-01';s.note.lkwTime='10:00';

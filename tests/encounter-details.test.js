@@ -58,8 +58,11 @@ describe('optional encounter details', () => {
     const followupOutput = output(encounter('ischemic', 'follow-up', details));
     expect(followupOutput).toContain('Current follow-up mRS: 0 — No symptoms');
     expect(followupOutput).toContain('Reviewed MoCA score: 0');
-    expect(followupOutput).not.toContain('EVT passes');
-    expect(output(encounter('ich', 'acute', details))).not.toContain('EVT passes');
+    // Recorded post-treatment observations stay in every context; without a puncture time they are flagged.
+    expect(followupOutput).toContain('Post-treatment review: After EVT [no EVT puncture recorded; reconcile]');
+    expect(followupOutput).toContain('Recorded EVT passes: 0');
+    expect(output(encounter('ich', 'acute', details))).toContain('Recorded EVT passes: 0');
+    expect(output(encounter('ich', 'acute', { followupMrs: '0' }))).not.toContain('Post-treatment');
   });
   it('requires the relevant selected parent before exporting dependent details', () => {
     const state = encounter('ischemic', 'acute', { antithromboticPlanType: 'Dual antiplatelet', daptStartDate: '2026-10-01', daptMissedDoses: 0 });

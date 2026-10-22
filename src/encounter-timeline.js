@@ -21,11 +21,17 @@ export function encounterClockTimestamp(note, prefix) {
   const value = `${date}T${time}`, clock = note[`${prefix}Clock`];
   return clock?.value === value ? typeof clock.instant === 'string' ? clock.instant : '' : value;
 }
+// A recorded reperfusion treatment (IVT administration, EVT times, mTICI or a post-treatment review) is never hidden by
+// a later change of working diagnosis or context: notes, case bar and Section 4 keep it, flagged for reconciliation.
+export const treatmentRecorded = state => Boolean(['administered', 'administrationTime', 'punctureTime', 'reperfusionTime'].some(key => state.actions?.[key]) || state.note?.ticiScore || state.details?.reperfusionReview);
+const treatmentShown = state => state.note.diagnosisCategory === 'ischemic' || treatmentRecorded(state);
+// A recorded ICH reversal administration time with any other reversal status is flagged, as IVT is against its decision.
+export const reversalIssue = state => state.context === 'acute' && state.note.diagnosisCategory === 'ich' && state.timeline?.reversal && state.details?.ichReversalStatus !== 'Administered' ? `reversal status is '${state.details?.ichReversalStatus || 'not documented'}'; reconcile` : '';
 export function timelineIntervals(state, now) {
-  const t = state.timeline || {}, acute = state.context === 'acute';
-  const ivt = acute && state.note.diagnosisCategory === 'ischemic' && state.actions.administered && state.drug ? state.actions.administrationTime : '';
-  const puncture = acute && state.note.diagnosisCategory === 'ischemic' ? state.actions.punctureTime : '';
-  const reperfusion = acute && state.note.diagnosisCategory === 'ischemic' ? state.actions.reperfusionTime : '';
+  const t = state.timeline || {}, acute = state.context === 'acute', treated = acute && treatmentShown(state);
+  const ivt = treated && state.actions.administered && state.drug ? state.actions.administrationTime : '';
+  const puncture = treated ? state.actions.punctureTime : '';
+  const reperfusion = treated ? state.actions.reperfusionTime : '';
   const pairs = [
     [t.consultEnd ? 'Consultation elapsed' : 'Consultation elapsed so far (end not recorded)', t.consultStart, t.consultEnd || now],
     ...(acute ? [['Door to CT', t.arrival, t.ctStart], ['CT to interpretation', t.ctStart, t.ctRead], ['Door to transfer decision', t.arrival, t.transferDecision], ['Door-in to door-out', t.arrival, t.departure]] : []),
@@ -40,7 +46,6 @@ export function timelineIntervals(state, now) {
   });
 }
 export function evtReperfusionIssue(state, now) {
-  if (state.context !== 'acute' || state.note.diagnosisCategory !== 'ischemic') return '';
   const puncture = validTimestamp(state.actions.punctureTime, now);
   const reperfusion = validTimestamp(state.actions.reperfusionTime, now);
   return puncture && reperfusion && reperfusion < puncture ? 'EVT reperfusion precedes puncture; review the recorded dates and times.' : '';
@@ -48,11 +53,11 @@ export function evtReperfusionIssue(state, now) {
 export function activeTimelineFields(state) {
   return TIMELINE_FIELDS.filter(([key]) => state.context === 'acute' || ['consultStart', 'consultEnd'].includes(key))
     .filter(([key]) => key !== 'reversal' || state.note.diagnosisCategory === 'ich')
-    .filter(([key]) => key !== 'ivtOrder' || state.note.diagnosisCategory === 'ischemic');
+    .filter(([key]) => key !== 'ivtOrder' || treatmentShown(state));
 }
 export function formatTimeline(state, now) {
   const entered = activeTimelineFields(state).filter(([key]) => state.timeline?.[key]);
-  const intervals = timelineIntervals(state, now);
+  const intervals = timelineIntervals(state, now), reversal = reversalIssue(state);
   if (!entered.length && !intervals.length) return '';
-  return ['Timeline:', ...entered.map(([key, label]) => `${label}: ${enteredTime(state.timeline[key], now)}${unambiguousTimestamp(state.timeline[key], now) ? '' : ' (invalid or future, or ambiguous local time; review)'}`), ...intervals.map(interval => `${interval.label}: ${interval.text}`)].join('\n');
+  return ['Timeline:', ...entered.map(([key, label]) => `${label}: ${enteredTime(state.timeline[key], now)}${unambiguousTimestamp(state.timeline[key], now) ? '' : ' (invalid or future, or ambiguous local time; review)'}${key === 'reversal' && reversal ? ` [${reversal}]` : ''}`), ...intervals.map(interval => `${interval.label}: ${interval.text}`)].join('\n');
 }

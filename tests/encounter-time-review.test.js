@@ -67,13 +67,16 @@ describe('reconciled event timing in every documentation projection', () => {
     }
   });
 
-  it('does not export or flag retained acute EVT values in an incompatible context', () => {
+  it('keeps and flags recorded EVT times after a change of context or working diagnosis', () => {
     const state = acute('phone'); Object.assign(state.actions, { punctureTime: '2026-11-01T08:30:00Z', reperfusionTime: '2026-11-01T08:00:00Z' });
     for (const patch of [{ context: 'follow-up' }, { context: 'acute', note: { ...state.note, diagnosisCategory: 'ich' } }]) {
       const changed = updateEncounter(state, patch);
-      expect(evtReperfusionIssue(changed, now)).toBe('');
-      expect(buildSummary(changed, now)).not.toContain('EVT reperfusion');
-      expect(timelineIntervals(changed, now)).toEqual([]);
+      // Recorded procedure times are facts: still exported, still checked, and flagged for reconciliation.
+      expect(evtReperfusionIssue(changed, now)).toBe('EVT reperfusion precedes puncture; review the recorded dates and times.');
+      expect(buildSummary(changed, now)).toContain('EVT reperfusion: 2026-11-01 01:00:00 (UTC−07:00) (EVT reperfusion precedes puncture; review the recorded dates and times)');
+      expect(buildSummary(changed, now)).toContain('; reconcile]');
+      // Event intervals belong to the acute timeline only.
+      expect(timelineIntervals(changed, now).map(interval => interval.label)).toEqual(patch.context === 'follow-up' ? [] : ['Puncture to reperfusion']);
     }
   });
 });

@@ -44,10 +44,15 @@ describe('retained Encounter behavior replacing monolith output and duplicate-to
     expect(render(state)).not.toContain('Dose calculation');
     expect(state.note.vesselOcclusion).toEqual(['M1']);
   });
-  it('follow-up does not activate stored reperfusion inputs or administration timers', () => {
+  it('follow-up does not activate stored reperfusion inputs, but keeps a recorded administration and its timer, flagged', () => {
+    const idle = render(make({ context: 'follow-up', note: { diagnosisCategory: 'ischemic', weight: '83' }, drug: 'TNK' }));
+    expect(idle).not.toContain('Dose calculation');
+    expect(idle).not.toContain('IV thrombolytic administration explicitly recorded');
+    // A recorded treatment is never hidden by a context change (2026-10-22): its controls and monitoring stay, flagged.
     const html = render(make({ context: 'follow-up', note: { diagnosisCategory: 'ischemic', weight: '83' }, drug: 'TNK', actions: { administered: true, administrationTime: '2026-10-01T11:00' } }));
     expect(html).not.toContain('Dose calculation');
-    expect(html).not.toContain('next scheduled check');
+    expect(html).toContain('next scheduled check');
+    expect(html).toContain('Recorded reperfusion treatment: follow-up / review context, not acute ischemic stroke. It stays in every note and the case bar; reconcile.');
   });
   it('asks for MRI lesion extent and its qualifying finding separately without preselecting a finding', () => {
     const html = render(make({ note: { diagnosisCategory: 'ischemic', wakeUpStrokeWorkflow: { mriLesionExtentReviewed: true } } }));

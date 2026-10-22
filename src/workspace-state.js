@@ -1,5 +1,5 @@
-import { formatEncounterDetails, encounterDetailWarnings, TIA_RISK_FIELDS } from './encounter-details.js';
-import { formatTimeline, encounterClockTimestamp, evtReperfusionIssue } from './encounter-timeline.js';
+import { formatEncounterDetails, encounterDetailWarnings, TIA_RISK_FIELDS, treatmentGaps } from './encounter-details.js';
+import { formatTimeline, encounterClockTimestamp, evtReperfusionIssue, treatmentRecorded } from './encounter-timeline.js';
 import { formatDocumentation } from './documentation-output.js';
 import { reconcileSupplementaryAppliedScores, supplementaryResult } from './supplementary-calculators.js';
 import { NIHSS_ITEMS } from './clinical/nihss-items.js';
@@ -205,6 +205,9 @@ export function encounterTiming(note, nowMs = Date.now()) {
   const clock = computeLKWCountdown(timestamp, nowMs);
   return { timestamp, clock, label: note.lkwUnknown ? 'Discovery' : 'LKW', invalid: Boolean(timestamp && !clock), hours: !note.lkwUnknown && clock ? (nowMs - new Date(timestamp).getTime()) / 3600000 : null };
 }
+// Why a recorded treatment needs reconciling: the encounter is no longer acute ischemic stroke ('' otherwise).
+export const treatmentContext = state => state.context === 'acute' && state.note.diagnosisCategory === 'ischemic' || !treatmentRecorded(state) ? ''
+  : `${state.context === 'acute' ? `working diagnosis ${DIAGNOSES[state.note.diagnosisCategory] || 'not documented'}` : 'follow-up / review context'}, not acute ischemic stroke`;
 // Incompatible state is retained for reconciliation, but never projected into outputs.
 export function activeNote(state) {
   const note = { ...state.note, nihss: encounterNihss(state).total ?? '' };
@@ -304,8 +307,7 @@ const markUnfilledPrompts = text => hasValue(text) ? String(text).replace(unfill
 export function buildSummary(state, nowMs = Date.now()) {
   const consultation = buildConsultationSummary(state, nowMs);
   // A recorded administration carries the pre-IVT BP on its own line; do not repeat it in the details.
-  const n = activeNote(state);
-  const administrationLine = state.context === 'acute' && n.diagnosisCategory === 'ischemic' && state.actions?.administered && state.drug && validTimestamp(state.actions.administrationTime, nowMs);
+  const administrationLine = state.actions?.administered && state.drug && validTimestamp(state.actions.administrationTime, nowMs);
   return formatDocumentation(state, consultation, formatEncounterDetails(state, nowMs, { omit: administrationLine ? ['preIvtBP', 'preIvtBPTime'] : [] }), formatTimeline(state, nowMs));
 }
 function buildConsultationSummary(state, nowMs = Date.now()) {
@@ -376,8 +378,13 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   if (n.lastDOACType === 'lmwh') entry('LMWH dose intent', n.anticoagulantDoseIntent);
   // Documentation only: prophylactic SC heparin is standard care, unlike treatment-dose UFH.
   if (n.lastDOACType === 'heparin') entry('UFH dose intent', n.anticoagulantDoseIntent === 'prophylactic' ? 'prophylactic SC' : n.anticoagulantDoseIntent === 'therapeutic' ? 'treatment dose' : '');
+  // Recorded treatment prints whatever the working diagnosis or context; outside acute ischemic stroke it is flagged.
+  const treated = acuteIschemic || treatmentRecorded(state);
+  const administration = state.actions.administered && state.drug && validTimestamp(state.actions.administrationTime, nowMs);
   if (acuteIschemic) {
-    if (n.lkwUnknown || n.wakeUpStrokeWorkflow.mriAvailable !== undefined) recommendations.push(formatWakeUpScreenForExport(n, new Date(nowMs)));
+    // Evaluated at a recorded IVT administration, so a later note does not change the conclusion; otherwise at note time.
+    const at = administration || new Date(nowMs);
+    if (n.lkwUnknown || n.wakeUpStrokeWorkflow.mriAvailable !== undefined) recommendations.push(formatWakeUpScreenForExport(n, at, `evaluated at ${administration ? 'the recorded IVT administration' : 'note generation'}, ${formatRecordedInstant(`${at.toISOString().slice(0, 16)}Z`, nowMs)}`));
     const checklist = n.tnkContraindicationChecklist || {};
     const concerns = Object.keys(checklist).filter(key => checklist[key] === true && !BENEFIT_ITEM_IDS.has(key)).map(key => SAFETY_ITEMS.find(item => item.id === key)?.label || key);
     const benefitFactors = Object.keys(checklist).filter(key => checklist[key] === true && BENEFIT_ITEM_IDS.has(key)).map(key => SAFETY_ITEMS.find(item => item.id === key)?.label || key);
@@ -390,7 +397,10 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     if (conflicts.length) entry('Entered values conflicting with a "No" answer', conflicts.map(item => `${item.label} (${signals[item.id].reason})`).join('; '));
     entry('IVT safety review', n.ivtContraindicationsReviewed ? `marked complete by clinician${concerns.length ? '; recorded concerns remain' : ''}${unansweredText}` : 'not documented');
     for (const type of ['ivt', 'evt']) entry(`${type.toUpperCase()} clinician decision`, state.decisions[type] || 'not documented');
-    const administration = state.actions.administered && state.drug && validTimestamp(state.actions.administrationTime, nowMs);
+  }
+  if (treated) {
+    const context = treatmentContext(state);
+    entry('Recorded reperfusion treatment', context && `[${context}; reconcile]`);
     const calculated = administration ? state.drug === 'TNK' ? calculateTNKDoseReviewed(n.weight, state.doseAuthority) : calculateAlteplaseDoseReviewed(n.weight) : null;
     // The recorded administered dose is reported whether or not the calculated dose is available.
     const doseMax = state.drug === 'TNK' ? 25 : state.drug === 'Alteplase' ? 90 : null;
@@ -418,7 +428,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     for (const [key, label] of [['punctureTime', 'EVT puncture'], ['reperfusionTime', 'EVT reperfusion']]) if (state.actions[key]) {
       const issue = key === 'reperfusionTime' ? evtReperfusionIssue(state, nowMs).replace(/\.$/, '') : '', flags = evtFlags(key);
       entry(label, validTimestamp(state.actions[key], nowMs) ? `${formatRecordedInstant(state.actions[key], nowMs)}${issue ? ` (${issue})` : ''}${flags ? ` ${flags}` : ''}` : recordedTime(state.actions[key], nowMs));
-    } else if (key === 'punctureTime') entry(label, 'not documented');
+    } else if (key === 'punctureTime') entry(label, `not documented${treatmentGaps(state).evt ? ` [${treatmentGaps(state).evt} recorded; reconcile]` : ''}`);
     entry('Recorded mTICI grade', state.note.ticiScore);
     entry('IVT Discussion', state.actions.discussion || 'not documented');
     entry('IVT Consent status', state.actions.consent || 'not documented');
@@ -471,7 +481,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   const tidy = text => text.replace(/\.; /g, '. ');
 
   if (state.documentFormat === 'handoff') {
-    const labels = new Set(['Times', 'ABCD²', 'ICH score', 'Hunt–Hess grade', 'WFNS grade', 'Modified Fisher grade', 'Clinical grade (Hunt–Hess / WFNS)', 'UFH dose intent', 'Anticoagulant exposure', 'Last anticoagulant dose', 'LMWH dose intent', 'Recorded safety concerns', 'Entered values conflicting with a "No" answer', 'IVT safety review', 'IVT clinician decision', 'EVT clinician decision', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
+    const labels = new Set(['Times', 'ABCD²', 'ICH score', 'Hunt–Hess grade', 'WFNS grade', 'Modified Fisher grade', 'Clinical grade (Hunt–Hess / WFNS)', 'UFH dose intent', 'Anticoagulant exposure', 'Last anticoagulant dose', 'LMWH dose intent', 'Recorded safety concerns', 'Entered values conflicting with a "No" answer', 'IVT safety review', 'IVT clinician decision', 'EVT clinician decision', 'Recorded reperfusion treatment', 'IVT administration', 'EVT puncture', 'EVT reperfusion', 'Recorded mTICI grade', 'ABC/2 volume', 'Intraventricular hemorrhage', 'Infratentorial origin', 'Clinician rationale / recommendations', 'Monitoring actions documented', 'Disposition', 'Handoff']);
     const handoffLine = line => labels.has(line.slice(0, line.indexOf(':'))) || line.startsWith('Wake-up / unknown-onset imaging screen');
     const weight = weightEntry ? ` · Wt ${weightEntry}` : weightRequired ? ' · Wt not documented' : '';
     const labItem = (label, text, required) => hasValue(text) ? `${label} ${text}` : required ? `${label} not documented` : '';

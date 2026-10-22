@@ -135,6 +135,8 @@ export function ivtLabConcerns(note = {}) {
 // answers an item: bulk "No" skips both, and only conflicts raise an alert.
 // Thresholds mirror ivtLabConcerns, the checklist labels and assessAnticoagulantExposure.
 const ACE_INHIBITOR = /\b(?:benaze|capto|enala|fosino|lisino|moexi|perindo|quina|rami|trandola|zofeno|cilaza|imida)pril(?:at)?\b/i;
+// Named antiplatelet agents (generic and common US brand names; "ASA" is the usual aspirin abbreviation).
+const ANTIPLATELET = /\b(?:aspirin|asa|clopidogrel|plavix|ticagrelor|brilinta|prasugrel|effient|dipyridamole|aggrenox|cilostazol|pletal)\b/i;
 export function safetyChecklistSignals(note = {}, now = new Date(), details = {}) {
   const signals = {};
   const flag = (id, reason, conflict = true) => { if (!signals[id] || conflict && !signals[id].conflict) signals[id] = { reason, conflict }; };
@@ -172,7 +174,15 @@ export function safetyChecklistSignals(note = {}, now = new Date(), details = {}
   if (context === 'Multiple contexts') { flag('infectiveEndocarditis', 'multiple care contexts recorded', false); flag('pregnancy', 'multiple care contexts recorded', false); }
   if (details?.seizureAtOnset === 'yes') flag('seizureAtOnset', 'seizure observed at onset');
   if (ACE_INHIBITOR.test(note.medications || '')) flag('aceInhibitor', 'medication record names an ACE inhibitor');
+  if (ANTIPLATELET.test(note.medications || '')) flag('dualAntiplatelet', 'medication record names an antiplatelet');
   return signals;
+}
+// The note with each "No" that an entered value contradicts read as "Yes" (the same note when none is), so the Encounter
+// IVT screen and the case-bar dose hold exactly as a "Yes" would. The Protocols projection reads the answers as given.
+export function contradictedAsYes(note = {}, now = new Date(), details = {}) {
+  const checklist = note.tnkContraindicationChecklist || {}, signals = safetyChecklistSignals(note, now, details);
+  const ids = Object.keys(signals).filter(id => signals[id].conflict && checklist[id] === false);
+  return ids.length ? { ...note, tnkContraindicationChecklist: { ...checklist, ...Object.fromEntries(ids.map(id => [id, true])) } } : note;
 }
 
 export function evaluateVideoTreatment({ note = {}, clock, aspects, pcAspects, critical = [], now = new Date() } = {}) {
