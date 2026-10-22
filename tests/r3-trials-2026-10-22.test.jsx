@@ -18,6 +18,9 @@ import {
 import { applyEncounterPrefill, importChanged, screenerPrefillFromEncounter } from '../src/evidence/screener-prefill.js';
 import { buildSearchIndex, searchIndex } from '../src/quick-search-index.js';
 import { SEARCH_TRIALS } from '../src/components/QuickSearch.jsx';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { ExclusionRefiner } from '../src/components/TrialScreener.jsx';
+import { NIHSS_ITEMS } from '../src/clinical/nihss-items.js';
 
 const trial = acronym => screenerTrials.find(t => t.acronym === acronym);
 const S = patch => ({ ...createInitialScreenerState(), ...patch });
@@ -62,7 +65,7 @@ describe('a stale Encounter import is never presented as current (e2e#0)', () =>
     expect(current).not.toMatch(/Caution|at import/);
     expect(current).toMatch(/LKW 3\.0 h \(Encounter LKW \d{2}:\d{2}, as of 12:00\)/);
     const stale = evaluateAll(state, screenerTrials, now, { staleImport: true }).briefingNote;
-    expect(stale).toContain('Caution: the Encounter changed after import; reapply before relying on this screen.');
+    expect(stale).toContain('Caution: the Encounter facts changed after import; reapply before relying on this screen.');
     expect(stale).toMatch(/LKW 3\.0 h \(Encounter LKW at import \d{2}:\d{2}, as of 12:00\)/);
     // The tri-state is unchanged: a stale screen still has no definitive result.
     expect(evaluateAll(state, screenerTrials, now, { staleImport: true }).eligible).toEqual([]);
@@ -298,6 +301,42 @@ describe('registry wording re-read on 2026-10-22', () => {
   });
 });
 
+describe('further checks of the round-3 fixes', () => {
+  const now = new Date(2026, 9, 22, 12).getTime();
+  it('prints untestable and bulk-entry provenance in one note', () => {
+    // 13 items scored (one UN), 2 left unentered and then bulk-filled with 0: total = scored points only.
+    const scores = { consciousness: 1, motor_arm_left: 2, limb_ataxia: 'UN' };
+    const nihss = Object.fromEntries(NIHSS_ITEMS.slice(0, 13).map(item => [item.id, item.options.find(o => o.endsWith(`(${scores[item.id] ?? 0})`))]));
+    const prefill = screenerPrefillFromEncounter(nihssWithBulkZero(encounter({ diagnosisCategory: 'ischemic' }, { nihss })), now);
+    expect(prefill.summary).toContain('NIHSS 3 (excludes 1 untestable item; 2 items set to 0 by bulk entry, not individually scored)');
+  });
+  it('with no LKW recorded, a DOAC dose more than 48 h before now leaves use at onset unknown', () => {
+    const p = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ich', lastDOACType: 'apixaban', lastDOACDose: localIso(now - 76 * HOUR) }), now);
+    expect(p.patch).toMatchObject({ takingOac: 'unselected', anticoagulant: 'unselected', exclusions: { exOacWithin7d: true, exXaDtiWithin48h: false } });
+    expect(p.patch.exclusions.exDoacLmwhAtOnset).toBeUndefined();
+    expect(p.summary).toContain('DOAC, last dose 76 h before now (use at onset unknown)');
+  });
+  it('treats a time-derived Encounter fact that has since changed as a changed import', () => {
+    // SISTER's Xa/DTI window is "within the past 48 hours"; a dose 47 h old at import is 49 h old two hours later.
+    const e = encounter({ diagnosisCategory: 'ischemic', ...lkwAt(now - 2 * HOUR), lastDOACType: 'apixaban', lastDOACDose: localIso(now - 47 * HOUR) });
+    const state = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(e, now), fresh());
+    expect(state.exclusions.exXaDtiWithin48h).toBe(true);
+    expect(importChanged(state, screenerPrefillFromEncounter(e, now + 2 * HOUR))).toBe(true);
+  });
+  it('FASTEST-2 asks for a documented platelet count only when thrombocytopenia is known or suspected', () => {
+    expect(toConfirm(evaluate('FASTEST-2', { classification: 'ich' })).join(' ')).toContain('platelets >50,000 if thrombocytopenia is known or suspected');
+  });
+  it('asks only SATURN\'s own secondary-cause question once MINUTE and FASTEST-2 are out of their windows', () => {
+    const ids = refinerItems(S({ classification: 'ich', onsetVal: 3, onsetUnit: 'days' })).map(i => i.id);
+    expect(ids).toContain('exSaturnSecondaryCause');
+    expect(ids).not.toContain('exSecondaryIch');
+  });
+  it('counts only the shown refiner answers as present', () => {
+    const html = renderToStaticMarkup(<ExclusionRefiner items={[item('exPregnancy')]} checked={{ exPregnancy: true, exIvtGivenOrPlanned: true }} onToggle={() => {}} onClear={() => {}} />);
+    expect(html).toContain('>1 present<');
+  });
+});
+
 describe('Encounter import and global-search pick in a browser', () => {
   let browser, page, script, css;
   beforeAll(async () => {
@@ -346,12 +385,12 @@ describe('Encounter import and global-search pick in a browser', () => {
       await setEncounter({ diagnosisCategory: 'ischemic', age: '70', lkwDate: '2026-10-21', lkwTime: '06:00' });
       await banner().getByRole('button', { name: 'Reapply Encounter facts', exact: true }).waitFor();
       const text = await banner().innerText();
-      expect(text).toContain('The Encounter changed after these facts were applied; the screen still uses the earlier import.');
+      expect(text).toContain('The Encounter facts changed after they were applied; the screen still uses the earlier import.');
       expect(text).not.toMatch(/Applied ✓|timing live/);
       expect(await timingNote()).toBe('Counting from the earlier imported LKW; the Encounter LKW has since changed.');
       expect(await page.getByRole('status').filter({ hasText: 'potential match' }).innerText()).toMatch(/ · based on an earlier Encounter import$/);
       const note = await copied();
-      expect(note).toContain('Caution: the Encounter changed after import');
+      expect(note).toContain('Caution: the Encounter facts changed after import');
       expect(note).toContain('LKW 3.0 h (Encounter LKW at import 09:00, as of 12:00)');
       await banner().getByRole('button', { name: 'Reapply Encounter facts', exact: true }).click();
       expect(await banner().getByRole('button').innerText()).toBe('Applied ✓ · reapply');

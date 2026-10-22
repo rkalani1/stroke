@@ -646,7 +646,7 @@ export function buildBriefingNote(state, buckets, nowMs = null, { staleImport = 
   };
 
   const lines = ['TRIAL SCREEN — first pass' + (checkLabel ? ` (${checkLabel})` : '')];
-  if (staleImport) lines.push('Caution: the Encounter changed after import; reapply before relying on this screen.');
+  if (staleImport) lines.push('Caution: the Encounter facts changed after import; reapply before relying on this screen.');
   lines.push('Statuses are overall registry statuses at that check; local site activation is not confirmed.');
   lines.push('Inputs: ' + inputs.join(' · '));
   if (recorded.length) lines.push('Exclusions recorded: ' + recorded.join('; '));

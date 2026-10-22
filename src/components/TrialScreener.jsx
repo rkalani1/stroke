@@ -108,7 +108,7 @@ function EncounterBanner({ prefill, onUse, applied, stale, kept }) {
   return <section aria-label="Encounter facts" className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-lg border border-cobalt-300/60 bg-cobalt-50 p-3 dark:bg-cobalt-900">
     <p className="min-w-0 flex-1 basis-60 text-sm"><span className="font-semibold">From Encounter:</span> {prefill.summary.length ? prefill.summary.map((fact, i) => <React.Fragment key={i}>{i > 0 && ' · '}<span className="whitespace-nowrap">{fact}</span></React.Fragment>) : 'no screening facts recorded'}{!prefill.supported && <> — <span className="font-semibold">{prefill.message}</span></>}</p>
     {prefill.patch && <button type="button" className={buttonClass} onClick={onUse}>{stale ? 'Reapply Encounter facts' : applied ? 'Applied ✓ · reapply' : 'Use these facts'}</button>}
-    {(stale || applied || kept.length > 0) && <p role="status" className="basis-full text-xs text-ink-2">{stale ? 'The Encounter changed after these facts were applied; the screen still uses the earlier import.' : applied && `Encounter facts applied (${applied}). Every field can still be changed; anything not recorded stays unknown.`}{kept.length > 0 && ` Kept your entry where the Encounter differs: ${kept.join('; ')}.`}</p>}
+    {(stale || applied || kept.length > 0) && <p role="status" className="basis-full text-xs text-ink-2">{stale ? 'The Encounter facts changed after they were applied; the screen still uses the earlier import.' : applied && `Encounter facts applied (${applied}). Every field can still be changed; anything not recorded stays unknown.`}{kept.length > 0 && ` Kept your entry where the Encounter differs: ${kept.join('; ')}.`}</p>}
   </section>;
 }
 
