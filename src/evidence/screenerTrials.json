@@ -65,7 +65,7 @@
           "pendingLabel": "Confirm presentation to the enrolling hospital ≤ 24 h from LKW",
           "branches": [
             {
-              "label": "Within 24 h of LKW at screening (registry: presentation ≤ 24 h; confirm arrival time)",
+              "label": "Within 24 h of LKW at screening (so presented ≤ 24 h)",
               "criteria": [
                 {
                   "field": "onsetHours",

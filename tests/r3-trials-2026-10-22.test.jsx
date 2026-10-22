@@ -244,7 +244,7 @@ describe('registry wording re-read on 2026-10-22', () => {
     expect(toConfirm(unknown)).toContain('Confirm enrolling-hospital presentation and arterial puncture timing per STEP protocol');
     expect(STUDY_FACTS.ischemic.find(([key]) => key === 'presentedWithin24h')[3]).toEqual(['STEP', 'TESTED']);
     // Within 24 h at screening still meets the timing criterion without the presentation fact.
-    expect(evaluate('STEP', { ...facts, onsetVal: 3 }).matchedCriteria).toContain('Within 24 h of LKW at screening (registry: presentation ≤ 24 h; confirm arrival time)');
+    expect(evaluate('STEP', { ...facts, onsetVal: 3 }).matchedCriteria).toContain('Within 24 h of LKW at screening (so presented ≤ 24 h)');
   });
 
   it('FASTEST-2 states the thrombocytopenia exclusion as registered (NCT07227246 exclusion 10)', () => {

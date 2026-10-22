@@ -62,7 +62,7 @@ describe('preset onset bands that only touch a study limit at an endpoint (H3)',
   });
 
   it('resolves bands fully inside a window as met', () => {
-    expect(evaluate('STEP', withPreset('ischemic', '4.5 – 24h')).matchedCriteria).toContain('Within 24 h of LKW at screening (registry: presentation ≤ 24 h; confirm arrival time)');
+    expect(evaluate('STEP', withPreset('ischemic', '4.5 – 24h')).matchedCriteria).toContain('Within 24 h of LKW at screening (so presented ≤ 24 h)');
     expect(evaluate('SATURN', withPreset('ich', '24h – 7d')).matchedCriteria).toContain('Onset within 7 days window');
   });
 
