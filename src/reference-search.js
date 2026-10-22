@@ -72,7 +72,7 @@ export function recommendationLabels(rec) {
 // apart from graded guideline recommendations, so a statement is never presented as graded.
 export function recommendationGroups(recs = []) {
   const ungraded = recs.filter(rec => rec.cor === 'Statement').length, graded = recs.length - ungraded;
-  return { graded, ungraded, heading: graded && ungraded ? 'Guideline recommendations and statements' : graded ? 'Guideline recommendations' : 'Ungraded statements' };
+  return { graded, ungraded, heading: graded ? `Guideline recommendations${ungraded ? ' and statements' : ''}` : 'Ungraded statements' };
 }
 export function referenceText(record) {
   const recommendation = rec => { const label = recommendationLabels(rec); return `• ${rec.text} (${[label.cor, label.loe].filter(Boolean).join(', ')}; ${rec.source})`; };
