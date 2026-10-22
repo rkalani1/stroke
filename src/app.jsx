@@ -87,7 +87,7 @@ function App() {
     // Ctrl/⌘ K from anywhere (macOS leaves Control+K to text fields); "/" only outside form controls.
     const onKey = event => { if (opensSearch(event, { macLike: MAC_LIKE })) { event.preventDefault(); openSearch(); } };
     // Chrome reveals only the caret line of a text area reached with Tab, which can leave the rest of
-    // the field and its focus outline under the docked nav or update notice; the root scroll padding
+    // the field and its focus indicator under the docked nav or update notice; the root scroll padding
     // reserves that chrome, so bring the whole field into view. The frozen Protocols tab is left as is.
     const reveal = ({ key, target }) => key === 'Tab' && target.matches('textarea:not(#tabpanel-protocols *)') && target.scrollIntoView({ block: 'nearest' });
     window.addEventListener('keydown', onKey); window.addEventListener('keyup', reveal);
