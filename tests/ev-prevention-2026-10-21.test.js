@@ -56,7 +56,9 @@ describe('prevention evidence cards (2026-10-21 review)', () => {
     const card = topic('af-timing');
     // ais-2026-154: "a strategy of early oral anticoagulation ... is low risk and is reasonable" (IIa, A); "oral" keeps it
     // apart from ais-2026-159 (early anticoagulation within 48 h, 3: No Benefit) (evidence-fixes 2026-10-22, BL-09).
-    expect(card.summary).toContain('Early oral anticoagulation is reasonable in carefully selected (e.g., milder) AF-associated ischemic stroke once hemorrhage is excluded (AHA 2026, 2a)');
+    // r3 2026-10-22 (prev-a#4): the guideline's efficacy qualifier is kept, and "once hemorrhage is excluded" (not in
+    // ais-2026-154; pre-anticoagulation imaging is secondary-prevention-2021-12, 2b, on consider[0]) is no longer inside the 2a.
+    expect(card.summary).toContain('Early oral anticoagulation is reasonable and low risk versus a delayed start in carefully selected (e.g., milder) AF-associated ischemic stroke (AHA 2026, 2a), although its efficacy against early recurrence is not established.');
     expect(card.summary).not.toMatch(/^Start the DOAC early/);
     // AHA 2026 abstract: search Sept–Dec 2024, additions through March 2025; CATALYST published June 2025.
     expect(card.summary).toContain('CATALYST (5,441 patients from 4 trials; published after the AHA 2026 evidence-review cutoff)');
@@ -75,10 +77,11 @@ describe('prevention evidence cards (2026-10-21 review)', () => {
   it('gives PASCAL-specific closure results and the ESO anticoagulation stance on the PFO card', () => {
     const card = topic('pfo');
     // Kent, JAMA 2021 (SCOPE IPD, PMID 34905030): HR 1.14 unlikely, 0.38 possible, 0.10 probable;
-    // AF beyond day 45 +4.41% (unlikely).
-    expect(card.consider[1]).toContain('possible or probable (HR 0.38 and 0.10) but not unlikely (HR 1.14), where late AF rose (absolute +4.4%)');
-    // ESO 2024 (PMID 38752755): "We suggest against long-term anticoagulation ... unless anticoagulation is indicated for other medical reasons."
-    expect(card.consider[2]).toContain('ESO 2024 suggests against long-term anticoagulation unless otherwise indicated');
+    // AF beyond day 45 +4.41% (unlikely) and +1.53% (possible) (r3 2026-10-22: the possible-category rise was missing).
+    expect(card.consider[1]).toContain('possible or probable (HR 0.38 and 0.10) but not unlikely (HR 1.14); AF beyond day 45 rose with closure in unlikely (+4.4%) and possible (+1.5%) categories');
+    // ESO 2024 Table 12 (archived transcription): PICO 3 conditional, low certainty, possible/probable PASCAL: closure plus
+    // antiplatelet instead of long-term anticoagulation alone; PICO 4 consensus: individualize if closure is refused (r3 prev-a#2).
+    expect(card.consider[2]).toContain('ESO 2024 suggests closure plus antiplatelet therapy over long-term anticoagulation alone (possible or probable PASCAL; low certainty); if closure is declined, individualize antiplatelet versus anticoagulant therapy (expert consensus)');
     expect(urls(card)).toEqual(expect.arrayContaining([pubmed('34905030'), pubmed('38752755')]));
     expect(card.caution).toContain('Evidence over age 60');
   });
@@ -89,8 +92,12 @@ describe('prevention evidence cards (2026-10-21 review)', () => {
     expect(card.summary).toContain('<50%: no revascularization (COR 3: No Benefit)');
     // ESO 2021 (PMID 34414302): CEA for ≥60–99% asymptomatic stenosis at increased risk on BMT (moderate quality).
     expect(card.summary).toContain('ESO 2021 recommends endarterectomy for 60–99% stenosis at increased stroke risk on best medical therapy (moderate-quality evidence)');
+    // AHA 2024 primary prevention (archived transcription): primary-prevention-2024-32 (I, C-EO) >70% shared decision-making;
+    // -34 (IIb, B-R) >70% at low perioperative risk (r3 prev-a#1). CREST-2 (2025-11) postdates both guidelines.
+    expect(card.summary).toContain('Asymptomatic: for >70% stenosis, AHA 2024 recommends shared decision-making on revascularization versus medical management (COR 1); at low perioperative risk, adding revascularization to intensive medical therapy may be reasonable (2b).');
+    expect(urls(card)).toContain(pubmed('39429201'));
     // CREST-2 (PMID 41269206): 2.8 vs 6.0% stenting (P=0.02); 3.7 vs 5.3% endarterectomy (P=0.24).
-    expect(card.summary).toMatch(/Postdating it, CREST-2 \(≥70%\) found fewer 4-year events with stenting.*\(2\.8 vs 6\.0%\).*\(3\.7 vs 5\.3%\)/);
+    expect(card.summary).toMatch(/Postdating both, CREST-2 \(≥70%\) found fewer 4-year events with stenting.*\(2\.8 vs 6\.0%\).*\(3\.7 vs 5\.3%\)/);
     expect(urls(card)).not.toContain('https://www.nejm.org/doi/full/10.1056/NEJMoa2508800');
     expect(urls(card)).toContain(pubmed('41269206'));
     const crest = study('crest-2');
@@ -101,18 +108,25 @@ describe('prevention evidence cards (2026-10-21 review)', () => {
     expect(crest.sources[0].access).toContain('PMC13148431');
   });
 
-  it('reports BASIS as a positive trial with its early procedural risk', () => {
+  it('reports BASIS as a positive trial with its population, early procedural risk and the guideline positions', () => {
     const card = topic('sicas');
-    // BASIS (PMID 39235816): 4.4 vs 13.5% (HR 0.32); 30-day stroke or death 3.2 vs 1.6%; dissection 14.5%.
-    expect(card.summary).toContain('lowered the 1-year composite (4.4 vs 13.5%), but 30-day stroke or death was 3.2 vs 1.6% and dissection occurred in 14.5%');
-    expect(card.summary).not.toContain('does not establish routine intervention');
+    // BASIS (PMID 39235816): ages 35–80, TIA <90 days or stroke 14–90 days; composite included revascularization of the
+    // qualifying artery after 30 days; 4.4 vs 13.5% (HR 0.32); 30-day stroke or death 3.2 vs 1.6%; dissection 14.5%.
+    expect(card.summary).toContain('at ages 35–80 with TIA within 90 days or stroke 14–90 days earlier');
+    expect(card.summary).toContain('lowered a 1-year composite that included later revascularization of the qualifying artery (4.4 vs 13.5%), but 30-day stroke or death was 3.2 vs 1.6% and dissection occurred in 14.5%');
+    // r3 prev-a#0: the guideline positions return, attributed rather than as an editorial verdict. AAN 2022 abstract (PMID 35314513):
+    // "should not routinely recommend angioplasty alone ... outside clinical trials"; ESO 2022 abstract (PMID 36082254):
+    // angioplasty and/or stenting "not recommended as a treatment of first choice".
+    expect(card.summary).toContain('AAN 2022 advises against routine angioplasty alone outside trials, and ESO 2022 against first-line angioplasty or stenting.');
+    expect(urls(card)).toEqual(expect.arrayContaining([pubmed('35314513'), pubmed('36082254')]));
     expect(card.summary).toContain('No angioplasty or stenting as first treatment (COR 3: Harm)');
   });
 
   it('adds the pooled dissection trials and the AHA 2024 duration in place of an unsourced instruction', () => {
     const card = topic('dissection');
-    // Kaufmann, JAMA Neurol 2024 (PMID 38739383): 3/218 (1.4%) vs 10/226 (4.4%), P=.06; fewer strokes, more bleeding (2 vs 0).
-    expect(card.summary).toContain('Pooled (444 patients): composite 1.4% with anticoagulation vs 4.4% with antiplatelets (P=0.06), with fewer strokes but more bleeding');
+    // Kaufmann, JAMA Neurol 2024 (PMID 38739383): primary composite ischemic stroke, death or major bleeding at 90 days,
+    // 3/218 (1.4%) vs 10/226 (4.4%), P=.06 "not statistically significant"; strokes OR 0.14; bleeding 2 vs 0 (r3 prev-a#5).
+    expect(card.summary).toContain('Pooled CADISS/TREAT-CAD participant data (444 patients): 90-day ischemic stroke, death or major bleeding 1.4% with anticoagulation vs 4.4% with antiplatelets (P=0.06, not significant), with fewer strokes (OR 0.14) but 2 vs 0 bleeding events.');
     // AHA 2024 statement (PMID 38299330): "individualized and continued for at least 3 to 6 months".
     expect(card.summary).toContain('AHA 2024 suggests individualizing the choice for at least 3–6 months');
     expect(card.summary).not.toContain('Reassess the regimen');
@@ -125,17 +139,29 @@ describe('prevention evidence cards (2026-10-21 review)', () => {
     // secondary-prevention-2021-107 (IIb, B-R); AHA 2026 statement (PMID 42389837): anticoagulation "may be associated
     // with a lower risk of recurrent stroke and a net benefit when compared with antiplatelet therapy".
     expect(summary).not.toContain('not by itself an anticoagulation indication');
-    expect(summary).toContain('LV dysfunction without thrombus (sinus rhythm): anticoagulant vs antiplatelet is uncertain (AHA 2021, 2b); a 2026 AHA statement suggests anticoagulation may lower recurrence with net benefit, so individualize');
-    // secondary-prevention-2021-105 (IIa, C-LD); ARIES-HM3 (PMID 37950897): aspirin avoidance noninferior, less bleeding.
-    expect(summary).toContain('warfarin plus aspirin can be beneficial (AHA 2021, 2a); ARIES-HM3 (2023; fully magnetically levitated LVAD, advanced heart failure) later found a VKA without aspirin noninferior, with less bleeding');
+    // r3 prev-b#5: association wording, ungraded label, LVEF ≤40% or wall-motion definition and the evidence type from the abstract.
+    expect(summary).toContain('LV dysfunction without thrombus (sinus rhythm): anticoagulant vs antiplatelet is uncertain (AHA 2021, 2b); a 2026 AHA scientific statement (ungraded; LVEF ≤40% or wall-motion abnormality; meta-analysis of secondary trial analyses) reports anticoagulation may be associated with less recurrent stroke and net benefit vs antiplatelet therapy, so individualize with cardiology.');
+    expect(summary).not.toContain('may lower recurrence');
+    // secondary-prevention-2021-105 (IIa, C-LD) covers patients after stroke or TIA. ARIES-HM3 (PMID 37950897; NCT04069156):
+    // first durable HeartMate 3 implant, investigator-mandated antiplatelet therapy excluded; 12-month survival free of
+    // hemocompatibility events 74 vs 68%; nonsurgical bleeding RR 0.66; "no increase in stroke" (r3 prev-b#2).
+    expect(summary).toContain('warfarin plus aspirin can be beneficial (AHA 2021, 2a); ARIES-HM3 (2023; first-time HeartMate 3 recipients, excluding those needing antiplatelets for other conditions) later found VKA plus placebo noninferior to VKA plus aspirin for 12-month survival free of hemocompatibility events, with less nonsurgical bleeding and no more strokes; it did not test stopping aspirin after a stroke.');
+    const aries = topic('cardiac-sources').sources.find(source => source.url === pubmed('37950897'));
+    expect(aries).toMatchObject({ type: 'Randomized trial', checkedAt: '2026-10-22' });
+    expect(aries.access).toContain('NCT04069156');
   });
 
   it('adds the 2026 LAAO trials after the guideline grades without changing them', () => {
     const card = topic('af-prevention');
     expect(card.summary).toContain('percutaneous left atrial appendage closure is reasonable (ACC/AHA 2023, 2a; AHA 2021 stroke guideline 2b if at least 45 days of anticoagulation can be tolerated); with high bleeding risk on anticoagulation it may be an alternative (ACC/AHA 2023, 2b).');
-    // CLOSURE-AF (PMID 41849741): not noninferior to physician-directed best medical care;
-    // CHAMPION-AF (PMID 41910347): noninferior to NOAC, superior for non-procedure-related bleeding (10.9 vs 19.0%).
-    expect(card.summary).toContain('Postdating these (2026; AF populations not limited to stroke), device closure was not noninferior to physician-directed medical care at high stroke and bleeding risk (CLOSURE-AF) but was noninferior to a DOAC, with less non-procedural bleeding, in anticoagulation candidates (CHAMPION-AF)');
+    // CLOSURE-AF (PMID 41849741): not noninferior to "physician-directed best medical care (including direct oral
+    // anticoagulants, if eligible)"; 16.8 vs 13.3 per 100 patient-years (r3 prev-b#3).
+    expect(card.summary).toContain('Postdating these (2026; AF populations not limited to stroke), device closure was not noninferior to physician-directed best medical care, including a DOAC if eligible, at high stroke and bleeding risk, with more primary events (16.8 vs 13.3 per 100 patient-years; CLOSURE-AF).');
+    // CHAMPION-AF (PMID 41910347): 3-year CV death, stroke or SE 5.7 vs 4.8%; non-procedure-related bleeding 10.9 vs 19.0%.
+    // NCT04394546 excludes stroke or TIA within 30 days; its third primary endpoint (ischemic stroke + SE, 60 months) is
+    // pending, primary completion 2027-12 (r3 prev-b#0).
+    expect(card.summary).toContain('In anticoagulation candidates without stroke or TIA in the prior 30 days, closure was noninferior to a DOAC for 3-year cardiovascular death, stroke or systemic embolism (5.7 vs 4.8%), with less non-procedural bleeding (10.9 vs 19.0%); its 5-year ischemic stroke or embolism endpoint is pending (CHAMPION-AF).');
+    expect(card.sources.find(source => source.url === pubmed('41910347')).access).toContain('NCT04394546');
     expect(urls(card)).toEqual(expect.arrayContaining([pubmed('41849741'), pubmed('41910347')]));
   });
 
@@ -145,14 +171,23 @@ describe('prevention evidence cards (2026-10-21 review)', () => {
     expect(topic('secondary-prevention').summary).toContain('no known coronary disease or major cardiac source and LDL >100: atorvastatin 80 mg (SPARCL)');
     // secondary-prevention-2021-38 (I, B-R): glucose-lowering agents with proven cardiovascular benefit.
     expect(topic('secondary-prevention').summary).toContain('Diabetes: glucose-lowering drugs with proven cardiovascular benefit (AHA 2021, COR 1)');
-    // secondary-prevention-2021-98 (IIb, B-NR): delay ≥4 weeks "if the patient is hemodynamically stable".
-    expect(topic('endocarditis').summary).toContain('delaying valve surgery for at least 4 weeks may be considered if hemodynamically stable (2b)');
-    // secondary-prevention-2021-77 (IIa, C-LD): bypass "can be beneficial"; ESO 2023 (PMID 37021176): direct or combined, 6–12 weeks.
+    // secondary-prevention-2021-98 (IIb, B-NR): "major ischemic stroke or intracranial hemorrhage", delay ≥4 weeks "if the
+    // patient is hemodynamically stable"; ESC 2023 t17-2 (I, B) and t17-3 (IIa, C) from the archived transcription (r3 prev-b#1).
+    const endocarditis = topic('endocarditis').summary;
+    expect(endocarditis).toContain('with a major ischemic stroke or ICH, delaying valve surgery for at least 4 weeks may be considered if hemodynamically stable (AHA 2021, 2b).');
+    expect(endocarditis).toContain('ESC 2023 differs after ischemic stroke: do not delay indicated surgery if the patient is not comatose and CT/MRI excludes hemorrhage (class I); after ICH, consider delaying surgery for more than 1 month if feasible (IIa).');
+    // secondary-prevention-2021-77 (IIa, C-LD): bypass "can be beneficial"; ESO 2023 (PMID 37021176): "For ischaemic adult
+    // patients and children ... direct or combined ... 6-12 weeks"; "direct bypass surgery in adult patients with haemorrhagic
+    // presentation" (low quality, r3 prev-b#8).
     const moyamoya = topic('moyamoya');
     expect(moyamoya.summary).toContain('can be beneficial to prevent recurrent ischemia (AHA 2021, 2a)');
-    expect(moyamoya.consider[1]).toContain('ESO 2023 suggests direct or combined rather than indirect bypass, 6–12 weeks after the last event');
-    // ESO 2024 lacunar (PMID 38380638): "single antiplatelet treatment long-term, blood pressure control, and lipid lowering".
-    expect(topic('lacunar-small-vessel').summary).toContain('long-term single antiplatelet, BP control and lipid lowering per current guidelines (ESO 2024)');
+    expect(moyamoya.consider[1]).toContain('Ischemic presentation with hemodynamic impairment (adults and children): ESO 2023 suggests direct or combined rather than indirect bypass, 6–12 weeks after the last event; it recommends direct bypass for adults with hemorrhagic presentation (low-quality evidence)');
+    // ESO 2024 lacunar (PMID 38380638): "single antiplatelet treatment long-term, blood pressure control, and lipid lowering";
+    // PMC10916806 PICO 2 consensus (12/12): antiplatelets "as soon as possible after stroke onset"; DAPT "short term according
+    // to the CHANCE and POINT trials' protocols" may be reasonable (r3 prev-b#4).
+    const lacunar = topic('lacunar-small-vessel');
+    expect(lacunar.summary).toContain('Symptomatic lacunar stroke: start antiplatelets as soon as possible (ESO 2024 expert consensus; its text adds that short-term DAPT per CHANCE/POINT may be reasonable), then long-term single antiplatelet, BP control and lipid lowering per current guidelines (ESO 2024)');
+    expect(lacunar.related).toEqual([{ label: 'Minor stroke DAPT', href: '#/evidence/minor-stroke-antiplatelets' }]);
   });
 
   it('matches the corrected study cards to their primary reports', () => {

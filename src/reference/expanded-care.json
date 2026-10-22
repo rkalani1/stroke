@@ -656,7 +656,7 @@
       "Is practice linked to tasks the patient needs in daily life?",
       "Do cardiovascular stability, endurance and access support the proposed training approach?"
     ],
-    "caution": "Results from chronic, stable stroke do not automatically apply during acute illness; dose needs a rehabilitation assessment.",
+    "caution": "Results from chronic, stable stroke do not automatically apply during acute illness; dose needs a rehabilitation assessment. The August 2026 AHA/ASA rehabilitation guideline was not reviewed.",
     "sources": [
       {
         "title": "ESO Guideline 2025: Motor Rehabilitation After Stroke",
@@ -725,21 +725,21 @@
       "transportation",
       "return to work"
     ],
-    "summary": "Discuss driving and return to work explicitly at follow-up, before the patient resumes either; seizures, cognitive impairment and medication effects can make driving unsafe. After seizures, the AAN 2025 position is that licensing should ordinarily require at least 3 seizure-free months, extended individually; exclusively provoked seizures unlikely to recur may need no interval, and driving should pause during and after an antiseizure-medication taper unless another is started.",
+    "summary": "Discuss driving and return to work explicitly at follow-up, before the patient resumes either; seizures, cognitive impairment and medication effects can make driving unsafe. After seizures, the AAN 2025 position is that licensing should ordinarily require at least 3 seizure-free months, extended individually; seizures exclusively provoked by a factor unlikely to recur (e.g., major systemic infection with high fever) may need no interval, but a structural lesion such as stroke is an unfavorable factor that can extend it, and driving should pause during and after an antiseizure-medication taper unless another is started.",
     "consider": [
       "Are seizures, cognition, vision, motor function or medication effects relevant to the intended activity?",
       "Have the applicable licensing rules and any specialist assessment requirements been checked?",
       "What transport, workplace or rehabilitation support is needed?"
     ],
-    "caution": "A position statement is not state law or individual clearance.",
+    "caution": "A position statement is not state law or individual clearance; state seizure-free intervals vary (3 to 18 months) and should be followed. The August 2026 AHA/ASA rehabilitation guideline, which revises return-to-work and driving recommendations, was not reviewed.",
     "sources": [
       {
         "title": "Seizures, Driver Licensure, and Medical Reporting Update: An AAN Position Statement",
         "url": "https://pubmed.ncbi.nlm.nih.gov/40073306/",
         "year": 2025,
         "type": "Position statement",
-        "checkedAt": "2026-10-21",
-        "access": "Primary abstract read (11 consensus positions)."
+        "checkedAt": "2026-10-22",
+        "access": "Primary abstract re-read 2026-10-22 (11 consensus positions); no PMC copy. The provoked-seizure example, stroke as an unfavorable factor and the 3–18-month state range are from the archived full-text transcription."
       },
       {
         "title": "AHA poststroke cognitive impairment: official overview",
@@ -926,7 +926,7 @@
       "Could the presentation and imaging reflect ARIA, ischemia or another process?",
       "Have the current drug label, imaging history and relevant specialists been consulted?"
     ],
-    "caution": "These are consensus recommendations, not trial evidence. If anticoagulation becomes necessary, the lecanemab AUR advises stopping infusions; standard-dose antiplatelets are allowed.",
+    "caution": "These are consensus recommendations, not trial evidence. If anticoagulation becomes necessary, the lecanemab AUR advises stopping infusions; standard-dose antiplatelet monotherapy is allowed, but the donanemab AUR makes no recommendation on dual antiplatelet therapy (insufficient safety data). The Encounter IVT checklist lists antiamyloid therapy as generally contraindicated. The August 2026 AHA ARIA Summit statement was read at abstract level only and is not reflected here.",
     "sources": [
       {
         "title": "Vascular Neurology Considerations for Antiamyloid Immunotherapy: A Science Advisory From the American Heart Association",
@@ -941,16 +941,16 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/37357276/",
         "year": 2023,
         "type": "Consensus statement",
-        "checkedAt": "2026-10-21",
-        "access": "PMC full text read (PMC10313141)."
+        "checkedAt": "2026-10-22",
+        "access": "PMC full text read (PMC10313141); concomitant-medication section re-read 2026-10-22 (thrombolytics, anticoagulants, standard-dose antiplatelets)."
       },
       {
         "title": "Donanemab: Appropriate Use Recommendations",
         "url": "https://pubmed.ncbi.nlm.nih.gov/40155270/",
         "year": 2025,
         "type": "Consensus statement",
-        "checkedAt": "2026-10-21",
-        "access": "PMC full text read (PMC12180672), section 5.3."
+        "checkedAt": "2026-10-22",
+        "access": "PMC full text read (PMC12180672); sections 5.2 (antiplatelet monotherapy allowed, no recommendation on dual therapy) and 5.3 (thrombolysis) re-read 2026-10-22."
       },
       {
         "title": "AHA ARIA Summit proceedings: antiamyloid therapy and stroke",

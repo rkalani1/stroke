@@ -80,9 +80,15 @@ describe('rehabilitation and recovery cards (2026-10-21 review)', () => {
     // PMID 40073306 abstract positions 4, 5 and 7.
     const card = topic('driving-work');
     expect(card.summary).toContain('licensing should ordinarily require at least 3 seizure-free months, extended individually');
-    expect(card.summary).toContain('exclusively provoked seizures unlikely to recur may need no interval');
+    // r3 2026-10-22 (recovery-rest#0): in position 5 "unlikely to reoccur" describes the provoking factor, not the seizure;
+    // the archived transcription gives the example (major systemic infection with high fever) and lists "structural brain
+    // lesion (e.g., stroke ...)" among unfavorable factors, so the old pinned phrase is replaced.
+    expect(card.summary).not.toContain('exclusively provoked seizures unlikely to recur may need no interval');
+    expect(card.summary).toContain('seizures exclusively provoked by a factor unlikely to recur (e.g., major systemic infection with high fever) may need no interval, but a structural lesion such as stroke is an unfavorable factor that can extend it');
     expect(card.caution).not.toContain('universal waiting period');
     expect(card.caution).toContain('not state law or individual clearance');
+    // Archived transcription: "Many states require different seizure-free intervals ranging from 3 to 18 months".
+    expect(card.caution).toContain('state seizure-free intervals vary (3 to 18 months) and should be followed');
   });
 
   it('labels VNS evidence that postdates the 2021 trial', () => {

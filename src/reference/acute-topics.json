@@ -1005,7 +1005,7 @@
       "Screen nutrition within 48 h and depression with a structured tool; start enteral feeding within 7 days if the patient cannot swallow.",
       "After EVT: neurological checks, access site, the BP plan and urgent imaging for any decline."
     ],
-    "caution": "Intensive targets backfire here: targeting SBP <140 for 72 h after successful anterior-LVO EVT is harmful, and IV insulin to 80–130 mg/dL adds hypoglycemia without benefit.",
+    "caution": "Intensive targets backfire here: targeting SBP <140 for 72 h after successful anterior-LVO EVT is harmful (AHA 2026, COR 3: Harm); after successful LVO EVT, a 24-h <140 target also lowered functional independence (OPTIMAL-BP 39.4 vs 54.4%), and ESO 2025 recommends against intensive lowering below 140 in the first 24 h; IV insulin to 80–130 mg/dL adds hypoglycemia without benefit.",
     "sources": [
       {
         "title": "AHA 2024 systemic complications of acute stroke statement — official summary",
@@ -1030,6 +1030,14 @@
         "type": "Guideline",
         "checkedAt": "2026-10-01",
         "access": "Official AHA summary page."
+      },
+      {
+        "title": "OPTIMAL-BP randomized trial",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/37668619/",
+        "year": 2023,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-22",
+        "access": "Primary abstract re-read 2026-10-22: LVO with mTICI ≥2b after EVT; SBP <140 vs 140–180 for 24 h; stopped early for safety."
       }
     ],
     "related": [
@@ -1044,6 +1052,10 @@
       {
         "label": "Follow-up imaging",
         "href": "#/evidence/imaging-follow-up"
+      },
+      {
+        "label": "Acute BP context",
+        "href": "#/evidence/acute-bp"
       }
     ]
   },

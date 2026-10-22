@@ -24,7 +24,7 @@
       "TIMING",
       "START"
     ],
-    "summary": "Early oral anticoagulation is reasonable in carefully selected (e.g., milder) AF-associated ischemic stroke once hemorrhage is excluded (AHA 2026, 2a). CATALYST (5,441 patients from 4 trials; published after the AHA 2026 evidence-review cutoff): starting within 4 days vs day 5 or later reduced 30-day recurrent ischemic stroke, sICH or unclassified stroke (2.1 vs 3.0%; OR 0.70), with identical sICH (0.4%). ELAN schedule: within 48 h for minor or moderate and day 6–7 for major imaging-defined infarcts. OPTIMAS: within 4 days was noninferior to days 7–14 (3.3% each).",
+    "summary": "Early oral anticoagulation is reasonable and low risk versus a delayed start in carefully selected (e.g., milder) AF-associated ischemic stroke (AHA 2026, 2a), although its efficacy against early recurrence is not established. CATALYST (5,441 patients from 4 trials; published after the AHA 2026 evidence-review cutoff): starting within 4 days vs day 5 or later reduced 30-day recurrent ischemic stroke, sICH or unclassified stroke (2.1 vs 3.0%; OR 0.70), with identical sICH (0.4%). ELAN schedule: within 48 h for minor or moderate and day 6–7 for major imaging-defined infarcts. OPTIMAS: within 4 days was noninferior to days 7–14 (3.3% each).",
     "recommendations": [
       {
         "text": "In carefully selected (e.g., milder severity) AIS patients with atrial fibrillation, a strategy of early oral anticoagulation post-stroke is low risk and is reasonable compared with delayed anticoagulation, although the efficacy of early anticoagulation for preventing early recurrent stroke is not established.",
@@ -45,7 +45,7 @@
       "Size the infarct on imaging (ELAN categories), not by NIHSS alone; brain imaging before starting may be considered (AHA 2021, 2b).",
       "ELAN infarct size: minor ≤1.5 cm; moderate involves a cortical superficial branch of the MCA, ACA or PCA, a deep MCA branch or the internal border zone; major involves an entire MCA, ACA or PCA territory, two or more MCA cortical branches, cortical plus deep MCA branches, or a brainstem or cerebellar lesion >1.5 cm (ELAN, NEJM 2023).",
       "Hemorrhagic transformation: starting or continuing anticoagulation may be considered case by case (AHA 2026, 2b).",
-      "TIA with AF: anticoagulate immediately (AHA 2021, 2a)."
+      "TIA with nonvalvular AF: starting anticoagulation immediately is reasonable (AHA 2021, 2a, expert opinion)."
     ],
     "caution": "Trial schedules guide but do not set an individual start date for very large infarcts or significant hemorrhagic transformation.",
     "sources": [
@@ -155,7 +155,7 @@
     "consider": [
       "An incomplete workup leaves the mechanism undetermined; it does not establish ESUS.",
       "DWI pattern helps: a single deep lacune suggests small-vessel disease, scattered emboli in several territories a cardiac source, and a watershed pattern large-artery disease (AHA TIA statement).",
-      "Lateral medullary infarction (n=130; angiography in 123): vertebral artery disease in 67% and PICA disease in 10%; mechanisms were large-vessel 50%, dissection 15%, small-vessel 13% and cardioembolic 5%."
+      "Pure lateral medullary infarction (n=130; angiography in 123): vertebral artery disease in 67% and PICA disease in 10%; presumed mechanisms included large-vessel 50%, dissection 15%, small-vessel 13% and cardioembolic 5%."
     ],
     "caution": "TOAST was built to classify trial participants; it does not replace an individual mechanism review.",
     "sources": [
@@ -206,8 +206,8 @@
     "summary": "PFO closure with long-term antiplatelet therapy is reasonable for ages 18–60 with nonlacunar stroke of undetermined cause after a full evaluation and a PFO with high-risk anatomic features (AHA 2021, 2a); without them AHA rates the benefit uncertain (2b), but ESO 2024 recommends closure when PASCAL rates the PFO possibly or probably causal. RESPECT: recurrent ischemic stroke 0.58 vs 1.07 per 100 patient-years (HR 0.55) over a median 5.9 years; CLOSE: 0/238 vs 14/235 strokes over a mean 5.3 years. Closure adds AF (CLOSE 4.6 vs 0.9%) and venous thromboembolism (RESPECT).",
     "consider": [
       "Exclude competing causes first: vessel imaging, prolonged rhythm monitoring and echocardiography with a bubble study.",
-      "Use RoPE and PASCAL to judge causality: in pooled trial data (SCOPE), closure reduced stroke when PASCAL rated the PFO possible or probable (HR 0.38 and 0.10) but not unlikely (HR 1.14), where late AF rose (absolute +4.4%).",
-      "Discuss procedural risk, AF and the long-term antiplatelet plan with the closure team; ESO 2024 suggests against long-term anticoagulation unless otherwise indicated."
+      "Use RoPE and PASCAL to judge causality: in pooled trial data (SCOPE), closure reduced stroke when PASCAL rated the PFO possible or probable (HR 0.38 and 0.10) but not unlikely (HR 1.14); AF beyond day 45 rose with closure in unlikely (+4.4%) and possible (+1.5%) categories.",
+      "Discuss procedural risk, AF and the long-term antiplatelet plan with the closure team. ESO 2024 suggests closure plus antiplatelet therapy over long-term anticoagulation alone (possible or probable PASCAL; low certainty); if closure is declined, individualize antiplatelet versus anticoagulant therapy (expert consensus)."
     ],
     "caution": "Evidence over age 60 and for an incidental PFO is limited.",
     "sources": [
@@ -224,8 +224,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/34905030/",
         "year": 2021,
         "type": "Meta-analysis",
-        "checkedAt": "2026-10-21",
-        "access": "Primary abstract verified via PubMed (individual-participant data, 6 RCTs)."
+        "checkedAt": "2026-10-22",
+        "access": "Primary abstract re-read 2026-10-22 (individual-participant data, 6 RCTs; stroke HR and AF beyond day 45 by PASCAL category)."
       }
     ],
     "related": [
@@ -260,7 +260,7 @@
       "within 2 weeks",
       "symptomatic stenosis"
     ],
-    "summary": "TIA or nondisabling stroke within 6 months with ipsilateral 70–99% stenosis: endarterectomy if perioperative stroke or death risk is <6% (AHA 2021, COR 1), ideally within 2 weeks (2a); 50–69%: endarterectomy depending on patient factors (COR 1); <50%: no revascularization (COR 3: No Benefit). At age ≥70 or within the first week, endarterectomy is preferred over stenting (2a). Asymptomatic: ESO 2021 recommends endarterectomy for 60–99% stenosis at increased stroke risk on best medical therapy (moderate-quality evidence). Postdating it, CREST-2 (≥70%) found fewer 4-year events with stenting plus intensive medical management (2.8 vs 6.0%) but no significant benefit from endarterectomy (3.7 vs 5.3%); ACST-2 found stenting and endarterectomy similar (5-year non-procedural stroke 5.3 vs 4.5%).",
+    "summary": "TIA or nondisabling stroke within 6 months with ipsilateral 70–99% stenosis: endarterectomy if perioperative stroke or death risk is <6% (AHA 2021, COR 1), ideally within 2 weeks (2a); 50–69%: endarterectomy depending on patient factors (COR 1); <50%: no revascularization (COR 3: No Benefit). At age ≥70 or within the first week, endarterectomy is preferred over stenting (2a). Asymptomatic: for >70% stenosis, AHA 2024 recommends shared decision-making on revascularization versus medical management (COR 1); at low perioperative risk, adding revascularization to intensive medical therapy may be reasonable (2b). ESO 2021 recommends endarterectomy for 60–99% stenosis at increased stroke risk on best medical therapy (moderate-quality evidence). Postdating both, CREST-2 (≥70%) found fewer 4-year events with stenting plus intensive medical management (2.8 vs 6.0%) but no significant benefit from endarterectomy (3.7 vs 5.3%); ACST-2 (2021) found stenting and endarterectomy similar (5-year non-procedural stroke 5.3 vs 4.5%).",
     "recommendations": [
       {
         "text": "CEA is recommended for patients with TIA or nondisabling ischemic stroke within the past 6 months and ipsilateral severe (70-99%) carotid stenosis to reduce future stroke risk, provided the estimated perioperative morbidity and mortality is below 6%.",
@@ -289,8 +289,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/34414302/",
         "year": 2021,
         "type": "Guideline",
-        "checkedAt": "2026-10-21",
-        "access": "Primary abstract read 2026-10-21 (asymptomatic and symptomatic recommendations); full text not reviewed."
+        "checkedAt": "2026-10-22",
+        "access": "Primary abstract re-read 2026-10-22 (asymptomatic and symptomatic recommendations); full text not reviewed."
       }
     ],
     "related": [
@@ -320,7 +320,7 @@
       "angioplasty",
       "DAPT"
     ],
-    "summary": "Severe (70–99%) intracranial stenosis with stroke or TIA within 30 days: aspirin plus clopidogrel for up to 90 days (AHA 2021, 2a; AAN 2022, when hemorrhagic-transformation risk is low), plus high-intensity statin with LDL <70 mg/dL, long-term SBP <140 and exercise (COR 1). No angioplasty or stenting as first treatment (COR 3: Harm) — SAMMPRIS: 30-day stroke or death 14.7 vs 5.8% with stenting. BASIS (China, 2024; after AHA 2021 and AAN 2022): in selected patients, submaximal balloon angioplasty plus medical therapy lowered the 1-year composite (4.4 vs 13.5%), but 30-day stroke or death was 3.2 vs 1.6% and dissection occurred in 14.5%.",
+    "summary": "Severe (70–99%) intracranial stenosis with stroke or TIA within 30 days: aspirin plus clopidogrel for up to 90 days (AHA 2021, 2a; AAN 2022, when hemorrhagic-transformation risk is low), plus high-intensity statin with LDL <70 mg/dL, long-term SBP <140 and exercise (COR 1). No angioplasty or stenting as first treatment (COR 3: Harm) — SAMMPRIS: 30-day stroke or death 14.7 vs 5.8% with stenting. BASIS (China, 2024; after AHA 2021 and AAN 2022): at ages 35–80 with TIA within 90 days or stroke 14–90 days earlier, submaximal balloon angioplasty plus medical therapy lowered a 1-year composite that included later revascularization of the qualifying artery (4.4 vs 13.5%), but 30-day stroke or death was 3.2 vs 1.6% and dissection occurred in 14.5%. AAN 2022 advises against routine angioplasty alone outside trials, and ESO 2022 against first-line angioplasty or stenting.",
     "consider": [
       "Confirm the stenosis is symptomatic and in the right territory; 50–69% stenosis gets medical therapy (stenting is harmful).",
       "Write the DAPT stop date and the single agent to continue.",
@@ -368,7 +368,7 @@
       "arteriopathy",
       "antithrombotic"
     ],
-    "summary": "Extracranial carotid or vertebral dissection with stroke or TIA: give antithrombotic therapy for at least 3 months (AHA 2021, COR 1) — antiplatelet or anticoagulant are both reasonable (AHA 2026, 2a), but a large infarct, hemorrhagic transformation or intradural extension may favor antiplatelet therapy (AHA 2024). CADISS found no difference (stroke or death 3/126 vs 1/124); TREAT-CAD did not show aspirin noninferior to a vitamin K antagonist (composite 23 vs 15%; 7 ischemic strokes vs none). Pooled (444 patients): composite 1.4% with anticoagulation vs 4.4% with antiplatelets (P=0.06), with fewer strokes but more bleeding. AHA 2024 suggests individualizing the choice for at least 3–6 months.",
+    "summary": "Extracranial carotid or vertebral dissection with stroke or TIA: give antithrombotic therapy for at least 3 months (AHA 2021, COR 1) — antiplatelet or anticoagulant are both reasonable (AHA 2026, 2a), but a large infarct, hemorrhagic transformation or intradural extension may favor antiplatelet therapy (AHA 2024). CADISS found no difference (stroke or death 3/126 vs 1/124); TREAT-CAD did not show aspirin noninferior to a vitamin K antagonist (composite 23 vs 15%; 7 ischemic strokes vs none). Pooled CADISS/TREAT-CAD participant data (444 patients): 90-day ischemic stroke, death or major bleeding 1.4% with anticoagulation vs 4.4% with antiplatelets (P=0.06, not significant), with fewer strokes (OR 0.14) but 2 vs 0 bleeding events. AHA 2024 suggests individualizing the choice for at least 3–6 months.",
     "recommendations": [
       {
         "text": "In AIS patients with extracranial carotid or vertebral arterial dissection, treatment with either antiplatelet or anticoagulant therapy for at least 3 months is reasonable to prevent recurrent stroke.",
