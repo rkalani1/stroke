@@ -4,7 +4,7 @@ An independent round-3 verifier reported 20 findings against pin `8af8c59` for t
 
 **Resumed session.** The first agent on this unit was interrupted by a container restart after committing `6db0395`, `535317d`, `873e679` and `41b528f`. The resumed agent re-read that work rather than trusting it: it re-ran every new and updated test, re-read each cited source itself on 2026-10-22 (§4), re-ran the `.;` separator sweep with a control (§2, notes#7), and re-ran every check in §5. One defect in the earlier work was found and fixed (`104a665`): the Baseline mRS select dropped option 6, but the frozen Protocols EVT card still offers pre-stroke mRS 0–6 and writes it back to the Encounter, so a 6 set there was hidden in the Encounter select while the note printed it. The select now keeps "6 · Death" visible when it is the current value.
 
-The Protocols tab is unchanged. `protocolEncounter`, the functions it calls and the `.tnk` output it reads were not edited. `npm run test:protocol-source` passes, and the rendered locks pass at desktop and phone width (§5).
+The Protocols tab is unchanged. `protocolEncounter` was not edited. Of the functions it calls, only `evaluateVideoTreatment` changed, in its EVT branch; `protocolEncounter` reads only that function's `.tnk` result, which is unchanged. `npm run test:protocol-source` passes, and the rendered locks pass at desktop and phone width (§5).
 
 ## 1. Scope inventory
 
@@ -91,9 +91,9 @@ Updated pinned tests (behavior deliberately changed):
 - `tests/wake-up-documentation.test.js`, two assertions: the screen no longer repeats "Symptom discovery (date/time): … / …" or "Last known well (date/time): … / …" (notes#6).
 
 Checks run by the resumed session on the final tree (exact results):
-- `npx vitest run`: @@VITEST@@
+- `npx vitest run`: 127 files, 2533 passed, 3 skipped, 0 failed (baseline `4d13e0e`: 125 files, 2483 passed, 3 skipped; the two new files add 50 tests).
 - `npm run test:protocol-source`: Protocols source lock: PASS.
-- `git clean -fqX chunks && npm run build`, then `STROKE_PROTOCOL_LOCK_PORT=4300 npm run test:protocol-tab`: @@DESKTOP@@; `STROKE_PROTOCOL_LOCK_PORT=4300 npm run test:protocol-tab:phone`: @@PHONE@@.
+- `git clean -fqX chunks && npm run build`, then `STROKE_PROTOCOL_LOCK_PORT=4300 npm run test:protocol-tab`: "Protocols tab preservation lock: PASS (46 fixture/sub-tab captures, desktop 1440x900)"; `STROKE_PROTOCOL_LOCK_PORT=4300 npm run test:protocol-tab:phone`: "Protocols tab preservation lock: PASS (46 fixture/sub-tab captures, phone 390x844)".
 - `npm run check:asset-budget`: all six budgets pass (initial gzip 130,760 / 131,072; initial raw 384,794 / 385,024).
 - `npm run test:mcp`: "SMOKE OK: 79 calls across all 8 maintained tools; retired tool names unavailable."
 - Validators, all exit 0: `check:clinical-claims` (PASS, 4 bounded groups, 31 occurrences, 0 exports); `content:validate` (PASS; output byte-identical to `4d13e0e`); `evidence:validate` (PASS); `validate:citations` (43 rows passed); `validate:inline-citations` (15 PMIDs, 0 warnings); `check:leak-guard` (no institutional / PHI-adjacent content).
