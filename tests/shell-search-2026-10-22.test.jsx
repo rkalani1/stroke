@@ -346,6 +346,19 @@ describe('shell fixes in Chromium', { timeout: 90000 }, () => {
     await page.evaluate(() => navigator.serviceWorker.dispatchEvent(new MessageEvent('message', { data: { type: 'sw-update-ready' } })));
     await page.locator('aside.workspace-update').waitFor();
     await check('notice', 'update notice');
+    // The frozen Protocols tab keeps its own behaviour: a Tab keyup on its text area scrolls nothing.
+    await go('#/protocols/ischemic');
+    const field = page.locator('#tabpanel-protocols textarea').first();
+    await field.waitFor({ state: 'attached' });
+    const moved = await field.evaluate(el => {
+      el.closest('details')?.setAttribute('open', '');
+      window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + window.scrollY - innerHeight + 40));
+      const before = window.scrollY;
+      el.focus({ preventScroll: true });
+      el.dispatchEvent(new KeyboardEvent('keyup', { key: 'Tab', bubbles: true }));
+      return window.scrollY - before;
+    });
+    expect(moved).toBe(0);
   });
 
   it('keeps a Tab-focused tall Evidence row title below the case bar on a short screen', async () => {

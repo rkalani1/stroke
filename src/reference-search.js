@@ -4,7 +4,7 @@
 export const STOPWORDS = new Set(['a', 'an', 'the', 'of', 'for', 'to', 'in', 'on', 'and', 'or', 'with', 'when', 'what', 'how', 'is', 'after', 'do', 'i']);
 export const CARE_SETTINGS = [['all', 'All settings'], ['on-call', 'On call'], ['hospital', 'Hospital'], ['clinic', 'Clinic']];
 // Whole-word clinical aliases, applied to queries and records alike so either spelling matches.
-// One table for Evidence, global search and the Calculators filter. NFKD turns \u2082 and \u00b2 into 2.
+// One table for Evidence, global search and the Calculators filter. NFKD turns subscript and superscript digits (CHA\u2082DS\u2082, ABCD\u00b2) into plain ones.
 const ALIASES = [
   [/\b(?:a ?fib|af)\b/g, 'atrial fibrillation'],
   [/\b(?:rt ?pa|t ?pa)\b/g, 'alteplase'],
