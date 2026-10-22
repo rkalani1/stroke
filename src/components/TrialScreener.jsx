@@ -3,8 +3,8 @@ import { createPortal } from 'react-dom';
 import { useDialogChrome } from './use-dialog-chrome.js';
 import { screenerTrials } from '../evidence/screenerTrials.js';
 import { eligibilityTables } from '../evidence/eligibilityTables.js';
-import { evaluateAll, buildScreenerParams, isTrialPotentiallyActive, createInitialScreenerState, anchoredOnsetHours, onsetToHours, numericFact, ONSET_PRESETS, EXCLUSION_ITEMS, STUDY_FACTS, YES_NO, withClassification, NOT_MET_TEXT, phaseLabel, enrollmentLabel, toConfirm, relevantNotMet, potentialMatches, insufficientInformation, registryCheckAgeText } from '../evidence/screener-eval.js';
-import { screenerPrefillFromEncounter, applyEncounterPrefill, applyAnticoagulant } from '../evidence/screener-prefill.js';
+import { evaluateAll, createInitialScreenerState, anchoredOnsetHours, onsetToHours, numericFact, ONSET_PRESETS, STUDY_FACTS, YES_NO, withClassification, NOT_MET_TEXT, phaseLabel, enrollmentLabel, toConfirm, relevantNotMet, potentialMatches, insufficientInformation, registryCheckAgeText, refinerItems, keptEntries } from '../evidence/screener-eval.js';
+import { screenerPrefillFromEncounter, applyEncounterPrefill, applyAnticoagulant, importChanged } from '../evidence/screener-prefill.js';
 
 const CLASSIFICATIONS = [['ischemic', 'Ischemic stroke'], ['tia', 'TIA'], ['ich', 'Hemorrhage (ICH)']];
 const CLASS_SHORT = { ischemic: 'Ischemic', tia: 'TIA', ich: 'ICH' };
@@ -64,7 +64,7 @@ function Chips({ trial, result }) {
 
 export function ExclusionRefiner({ items, checked, onToggle, onClear, summaryRef }) {
   const documented = Object.values(checked || {}).some(value => typeof value === 'boolean');
-  const positives = Object.values(checked || {}).filter(value => value === true).length;
+  const positives = items.filter(item => checked?.[item.id] === true).length;
   return <details className="rounded-lg border border-line bg-card p-4"><summary ref={summaryRef} className="min-h-[44px] cursor-pointer font-semibold">Optional exclusion review {positives > 0 && <span className="rounded bg-crit-600 px-2 text-white">{positives} present</span>}</summary><p className="my-2 text-sm text-mute">Unanswered is unknown. Record present or absent only after assessment.</p><div className="grid gap-2">{items.map(item => <label key={item.id} className="workspace-field"><span>{item.label}</span><select aria-label={item.label} value={typeof checked?.[item.id] === 'boolean' ? String(checked[item.id]) : ''} onChange={e => onToggle(item.id, e.target.value === '' ? undefined : e.target.value === 'true')}><option value="">Not assessed</option><option value="true">Present</option><option value="false">Absent</option></select></label>)}</div>{documented && <button type="button" className={buttonClass} onClick={onClear}>Reset exclusions to unknown</button>}</details>;
 }
 
@@ -102,12 +102,13 @@ function CandidateSubgroup({ title, label, description, items, empty, onDetails 
   return <section className="space-y-2" aria-label={label}><div className="flex items-center justify-between gap-3 pt-1"><h3 className="text-sm font-bold uppercase tracking-wide text-ink-2">{title}</h3><span className="rounded-pill border border-cobalt-600 px-2 py-0.5 font-mono text-xs">{items.length}</span></div><p className="text-xs text-mute">{description}</p>{items.length === 0 && <p className="text-sm text-mute">{empty}</p>}{items.map(item => <TrialCard key={item.trial.acronym} trial={item.trial} result={item} headingLevel={4} onDetails={() => onDetails(item.trial)} />)}</section>;
 }
 
-function EncounterBanner({ prefill, onUse, applied }) {
-  if (!prefill?.available) return null;
+// A stale import (the Encounter changed after its facts were applied) is never shown as applied or live.
+function EncounterBanner({ prefill, onUse, applied, stale, kept }) {
+  if (!prefill?.available && !stale) return null;
   return <section aria-label="Encounter facts" className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-lg border border-cobalt-300/60 bg-cobalt-50 p-3 dark:bg-cobalt-900">
     <p className="min-w-0 flex-1 basis-60 text-sm"><span className="font-semibold">From Encounter:</span> {prefill.summary.length ? prefill.summary.map((fact, i) => <React.Fragment key={i}>{i > 0 && ' · '}<span className="whitespace-nowrap">{fact}</span></React.Fragment>) : 'no screening facts recorded'}{!prefill.supported && <> — <span className="font-semibold">{prefill.message}</span></>}</p>
-    {prefill.patch && <button type="button" className={buttonClass} onClick={onUse}>{applied ? 'Applied ✓ · reapply' : 'Use these facts'}</button>}
-    {applied && <p role="status" className="basis-full text-xs text-ink-2">Encounter facts applied ({applied}). Every field can still be changed; anything not recorded stays unknown.</p>}
+    {prefill.patch && <button type="button" className={buttonClass} onClick={onUse}>{stale ? 'Reapply Encounter facts' : applied ? 'Applied ✓ · reapply' : 'Use these facts'}</button>}
+    {(stale || applied || kept.length > 0) && <p role="status" className="basis-full text-xs text-ink-2">{stale ? <span className="font-semibold text-warn-800 dark:text-warn-200">Encounter facts changed since they were applied; the screen still uses the earlier import. Reapply to update.</span> : applied && `Encounter facts applied (${applied}). Every field can still be changed; anything not recorded stays unknown.`}{kept.length > 0 && ` Kept your screener entr${kept.length === 1 ? 'y' : 'ies'} that differ${kept.length === 1 ? 's' : ''} from the Encounter: ${kept.join('; ')}.`}</p>}
   </section>;
 }
 
@@ -136,7 +137,7 @@ function KeyFacts({ state, change, replace }) {
   const setBoolean = key => v => change({ [key]: asBoolean(v) });
   return <section aria-labelledby="trial-key-facts"><h2 id="trial-key-facts" className="mb-1 text-lg font-bold">3. Key facts</h2><p className="mb-2 text-sm text-mute">Optional. Unknown stays unknown.</p><div className="grid grid-cols-2 gap-x-3 gap-y-2">
     <NumberFact label="Age" unit="y" field="age" rule="0–120" min={0} max={120} value={state.age} onChange={set('age')} />
-    {cls !== 'tia' && <NumberFact label="NIHSS" field="nihss" rule="a whole number 0–42" min={0} max={42} value={state.nihss} onChange={v => change({ nihss: v, nihssUntestable: 0 })} />}
+    {cls !== 'tia' && <NumberFact label="NIHSS" field="nihss" rule="a whole number 0–42" min={0} max={42} value={state.nihss} onChange={v => change({ nihss: v, nihssUntestable: 0, nihssBulkZero: 0 })} />}
     {cls === 'ischemic' && <>
       <SelectFact label="Pre-stroke mRS" value={state.preMrs} onChange={setNumber('preMrs')} options={range(0, 5)} />
       <SelectFact label="ASPECTS" value={state.aspects} onChange={setNumber('aspects')} options={range(0, 10).reverse()} />
@@ -167,7 +168,8 @@ function StudyFacts({ state, change }) {
 }
 
 // Manual timing entries replace an Encounter LKW anchor (onsetAnchorMs: null).
-function TimingSection({ state, change, nowMs }) {
+// An anchor the Encounter no longer holds (lkwChanged) is not described as live.
+function TimingSection({ state, change, nowMs, lkwChanged }) {
   const live = anchoredOnsetHours(state, nowMs);
   const exact = state.onsetVal !== null && !Array.isArray(state.onsetRangeHours) && state.onsetUnit === 'hours';
   // A negative or unreadable interval is not used; say so instead of "entered".
@@ -176,7 +178,7 @@ function TimingSection({ state, change, nowMs }) {
   const shown = live !== null ? Math.round(live * 100) / 100 : exact ? state.onsetVal : '';
   return <section><h2 className="mb-2 text-lg font-bold">2. Time since last known well</h2><div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2">{ONSET_PRESETS.map(preset => <button key={preset.name} type="button" className={buttonClass} aria-pressed={pressed(preset)} onClick={() => change({ onsetVal: preset.val, onsetUnit: preset.unit, onsetRangeHours: preset.rangeHours, onsetAnchorMs: null })}>{preset.name}{' '}<span className="block text-xs text-mute">{preset.desc}</span></button>)}</div>
     <label htmlFor="trial-exact-onset" className="mt-3 block text-sm font-semibold text-ink-2">Exact hours from LKW</label><div className="workspace-field !my-1"><div className="flex flex-wrap items-center gap-2"><input id="trial-exact-onset" className="!w-auto min-w-0 flex-1 basis-24" type="number" inputMode="decimal" aria-label="Exact hours from LKW" aria-invalid={invalid || undefined} min={0} step={0.1} placeholder="Optional" value={shown} onChange={e => change(e.target.value === '' ? { onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null } : { onsetVal: e.target.value, onsetUnit: 'hours', onsetRangeHours: null, onsetAnchorMs: null })} /><button type="button" className={buttonClass} onClick={() => change({ onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null })}>Clear onset to unknown</button></div></div>
-    <p className="mt-2 text-sm text-mute">{live !== null ? 'Live from the Encounter LKW time; updates as time passes. Editing replaces it.' : state.onsetVal === null ? 'Onset not recorded; timing remains unknown.' : invalid ? 'Not a valid interval; timing remains unknown.' : exact ? 'Exact interval entered.' : 'Selected range only; confirm the exact interval required by each study.'}</p></section>;
+    <p className="mt-2 text-sm text-mute">{live !== null ? (lkwChanged ? 'Counting from the LKW imported earlier; the Encounter LKW has changed since. Reapply the Encounter facts to update, or edit to replace it.' : 'Live from the Encounter LKW time; updates as time passes. Editing replaces it.') : state.onsetVal === null ? 'Onset not recorded; timing remains unknown.' : invalid ? 'Not a valid interval; timing remains unknown.' : exact ? 'Exact interval entered.' : 'Selected range only; confirm the exact interval required by each study.'}</p></section>;
 }
 
 // Before a classification is chosen, list what the screener covers so the
@@ -205,6 +207,8 @@ export function TrialScreener({ copyToClipboard, initialState, onStateChange, ac
   }, [active, encounter, anchored]);
   const nowMs = Math.max(typeof now === 'number' ? now : 0, tick);
   const prefill = useMemo(() => encounter ? screenerPrefillFromEncounter(encounter, nowMs) : null, [encounter, nowMs]);
+  const stale = importChanged(state, prefill);
+  const lkwChanged = stale && anchored && prefill?.patch?.onsetAnchorMs !== state.onsetAnchorMs;
   const replace = updater => { onStateChange?.(); setApplied(null); setState(updater); };
   const change = patch => replace(prev => ({ ...prev, ...patch }));
   const importEncounter = () => {
@@ -217,24 +221,24 @@ export function TrialScreener({ copyToClipboard, initialState, onStateChange, ac
   };
   // The clock only matters for an Encounter-anchored onset; otherwise results stay put.
   const evalNow = anchored ? nowMs : null;
-  const results = useMemo(() => evaluateAll(state, screenerTrials, evalNow), [state, evalNow]);
-  const exclusions = useMemo(() => { const p = buildScreenerParams({ ...state, exclusions: {} }, evalNow); const activeTrials = screenerTrials.filter(trial => screenable(trial) && isTrialPotentiallyActive(trial, p)).map(trial => trial.acronym); return EXCLUSION_ITEMS.filter(item => item.classifications.includes(state.classification) && item.trials.some(id => activeTrials.includes(id))); }, [state, evalNow]);
+  const results = useMemo(() => evaluateAll(state, screenerTrials, evalNow, { staleImport: stale }), [state, evalNow, stale]);
+  const exclusions = useMemo(() => refinerItems(state, evalNow), [state, evalNow]);
   const matches = potentialMatches(results), insufficient = insufficientInformation(results);
   const candidates = [...matches, ...insufficient];
   const later = results.soon;
   const notMet = relevantNotMet(results.excluded);
   const picasso = screenerTrials.find(trial => trial.acronym === 'PICASSO' && trial.referenceOnly);
   return <div className="space-y-4">
-    <EncounterBanner prefill={prefill} onUse={importEncounter} applied={applied} />
+    <EncounterBanner prefill={prefill} onUse={importEncounter} applied={applied} stale={stale} kept={keptEntries(state)} />
     <div className="trial-screening-workspace space-y-5 lg:grid lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:items-start lg:gap-6 lg:space-y-0">
       <div className="trial-screening-filters min-w-0 space-y-5 lg:sticky lg:top-[calc(var(--case-bar-h,0px)+1rem)] lg:max-h-[calc(100dvh-var(--case-bar-h,0px)-2rem)] lg:overflow-y-auto lg:overscroll-contain lg:pr-1">
         <section><h2 className="mb-2 text-lg font-bold">1. Stroke classification</h2><div className="flex flex-wrap gap-2">{CLASSIFICATIONS.map(([id, label]) => <button key={id} type="button" className={buttonClass} aria-pressed={state.classification === id} onClick={() => replace(prev => withClassification(prev, id))}>{label}</button>)}</div>
           {results.ready && <a href="#trial-results" className="mt-1 text-sm font-semibold text-link-600 underline lg:!hidden">View {candidates.length} possible candidate{candidates.length === 1 ? '' : 's'} ↓</a>}</section>
-        {results.ready && <><TimingSection state={state} change={change} nowMs={nowMs} /><KeyFacts state={state} change={change} replace={replace} /><StudyFacts state={state} change={change} /><ExclusionRefiner summaryRef={refinerRef} items={exclusions} checked={state.exclusions} onToggle={(id, value) => replace(prev => { const next = { ...prev.exclusions }; if (typeof value === 'boolean') next[id] = value; else delete next[id]; return { ...prev, exclusions: next }; })} onClear={() => { change({ exclusions: {} }); requestAnimationFrame(() => refinerRef.current?.focus()); }} /></>}
+        {results.ready && <><TimingSection state={state} change={change} nowMs={nowMs} lkwChanged={lkwChanged} /><KeyFacts state={state} change={change} replace={replace} /><StudyFacts state={state} change={change} /><ExclusionRefiner summaryRef={refinerRef} items={exclusions} checked={state.exclusions} onToggle={(id, value) => replace(prev => { const next = { ...prev.exclusions }; if (typeof value === 'boolean') next[id] = value; else delete next[id]; return { ...prev, exclusions: next }; })} onClear={() => { change({ exclusions: {} }); requestAnimationFrame(() => refinerRef.current?.focus()); }} /></>}
         <button type="button" className={buttonClass} onClick={() => { setApplied(null); change(createInitialScreenerState()); }}>Reset screen</button>
       </div>
       <div id="trial-results" className="min-w-0 scroll-mt-4 space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-2"><p role="status" className="text-sm text-mute">{results.ready ? `${matches.length} potential match${matches.length === 1 ? '' : 'es'} · ${insufficient.length} insufficient information · ${later.length} later · ${notMet.length} not met` : 'Choose a classification to see possible study profiles.'}</p>{results.ready && <button type="button" className={buttonClass} onClick={() => copyToClipboard?.(results.briefingNote, 'Screening summary')}>Copy screening summary</button>}</div>
+        <div className="flex flex-wrap items-center justify-between gap-2"><p role="status" className="text-sm text-mute">{results.ready ? `${matches.length} potential match${matches.length === 1 ? '' : 'es'} · ${insufficient.length} insufficient information · ${later.length} later · ${notMet.length} not met${stale ? ' · based on an earlier Encounter import' : ''}` : 'Choose a classification to see possible study profiles.'}</p>{results.ready && <button type="button" className={buttonClass} onClick={() => copyToClipboard?.(results.briefingNote, 'Screening summary')}>Copy screening summary</button>}</div>
         {!results.ready && <StudyOverview onDetails={setModal} />}
         {results.ready && <>
           <ResultGroup title="Possible candidates (not definitive)" label="Possible candidates" items={[]} count={candidates.length} onDetails={setModal}>{candidates.length === 0 && <p className="text-sm text-mute">No possible candidate under the entered facts.</p>}
@@ -258,6 +262,13 @@ export function StudyDatabase({ active = true, now = null }) {
   const [query, setQuery] = useState(''), [filter, setFilter] = useState('all'), [classification, setClassification] = useState('all'), [modal, setModal] = useState(null);
   const searchRef = useRef(null);
   useEffect(() => { if (!active) setModal(null); }, [active]);
+  // A study picked in global search arrives as #/trials/database?q=ACRONYM and is shown on its own.
+  useEffect(() => {
+    const pick = () => { const q = /[?&]q=([^&]*)/.exec(location.hash)?.[1]; if (q) { setQuery(decodeURIComponent(q)); setFilter('all'); setClassification('all'); } };
+    pick();
+    addEventListener('hashchange', pick);
+    return () => removeEventListener('hashchange', pick);
+  }, []);
   const categoryTrials = screenerTrials.filter(trial => matchesClassification(trial, classification));
   const q = query.trim().toLowerCase(), qn = normalize(query);
   // Registry acronyms (e.g. TR-2, SCOUTS3, MRPICS) match with or without punctuation.

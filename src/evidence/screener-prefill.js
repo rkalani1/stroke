@@ -4,7 +4,7 @@
 // Prefill is applied only on an explicit user action; every value it does not
 // recognise stays unknown, and every imported fact a modeled study uses has a screener control.
 
-import { encounterTiming, encounterNihss, encounterVolume, validTimestamp } from '../workspace-state.js';
+import { encounterTiming, encounterNihss, encounterVolume, validTimestamp, nihssBulkZeroItems } from '../workspace-state.js';
 import { reviewedGcs, numericInput, documentedIvtContext } from '../encounter-clinical-review.js';
 import { untestableNote } from './screener-eval.js';
 
@@ -70,12 +70,13 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   if (age !== null) { patch.age = age; summary.push(`${age} y`); }
 
   // The TIA screen has no NIHSS control, so an Encounter NIHSS is not imported for TIA.
-  // A complete itemized total leaves untestable (UN) items out; the count travels with it.
+  // A complete itemized total leaves untestable (UN) items out, and bulk entry sets items
+  // to 0 without scoring them; both counts travel with it.
   const { total: nihss, untestable } = encounterNihss(state);
   if (classification !== 'tia' && nihss !== null && nihss !== undefined) {
-    patch.nihss = nihss;
-    patch.nihssUntestable = untestable || 0;
-    summary.push(`NIHSS ${nihss}${untestableNote(untestable)}`);
+    const bulk = nihssBulkZeroItems(state).length;
+    Object.assign(patch, { nihss, nihssUntestable: untestable || 0, nihssBulkZero: bulk });
+    summary.push(`NIHSS ${nihss}${untestableNote(untestable, bulk)}`);
   }
 
   if (classification === 'ich') {
@@ -125,17 +126,22 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
     // A valid last-dose time answers the dose-interval exclusions directly.
     const dose = kind !== 'none' && kind !== 'lmwh' ? validTimestamp(note.lastDOACDose, nowMs) : null;
     const hours = dose ? (nowMs - dose.getTime()) / 3600000 : null;
+    // Last dose to onset: from the LKW when recorded; otherwise the time to now bounds it.
+    const lkw = typeof patch.onsetAnchorMs === 'number' ? patch.onsetAnchorMs : nowMs;
+    const beforeOnset = dose ? (lkw - dose.getTime()) / 3600000 : null;
+    const drug = kind === 'doac' ? 'DOAC' : 'warfarin/VKA';
     if (dose) {
       patch.exclusions.exOacWithin7d = hours <= 168;
       if (kind === 'doac') patch.exclusions.exXaDtiWithin48h = hours <= 48;
     }
-    if (hours !== null && hours > 168) {
-      // A last dose more than 7 days ago says nothing about use at onset or at the index stroke.
-      // Clear explicitly (not omit) so a reapply also clears what an earlier import set.
+    if (beforeOnset !== null && beforeOnset > 48) {
+      // A last dose more than 48 h (two daily dosing intervals) before onset does not establish
+      // use at onset or at the index stroke; leave both unknown. Clear explicitly (not omit) so
+      // a reapply also clears what an earlier import set.
       patch.exclusions.exDoacLmwhAtOnset = undefined;
       patch.takingOac = 'unselected';
       patch.anticoagulant = 'unselected';
-      summary.push(`${kind === 'doac' ? 'DOAC' : 'warfarin/VKA'}, last dose >7 d`);
+      summary.push(hours > 168 ? `${drug}, last dose >7 d` : `${drug}, last dose ${Math.round(beforeOnset)} h before ${lkw === nowMs ? 'now' : 'LKW'} (use at onset unknown)`);
     } else summary.push(ANTICOAGULANT_TEXT[kind]);
   }
 
@@ -143,20 +149,35 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   return { available: facts.length > 0, supported: Boolean(classification), classification, message: classification ? null : 'Diagnosis not recorded in Encounter', patch, summary };
 }
 
+// What an import says, without the elapsed-time snapshot (the LKW anchor is kept),
+// so the passage of time alone never reads as a changed Encounter.
+const canonical = v => v && typeof v === 'object' ? Object.keys(v).filter(k => v[k] !== undefined).sort().map(k => [k, canonical(v[k])]) : v;
+const importSource = prefill => prefill?.patch ? JSON.stringify(canonical({ ...prefill.patch, onsetVal: null })) : 'none';
+
+// True when facts were imported and the live Encounter prefill no longer matches them.
+export const importChanged = (state, prefill) => Boolean(state?.imported?.source) && Boolean(prefill) && state.imported.source !== importSource(prefill);
+
 // Apply an Encounter prefill. Switching classification starts from a clean
 // screen (as the classification buttons do); otherwise entered facts persist.
 // Facts the previous import wrote and the user has not changed since are first
 // returned to unknown, so a reapply never keeps what the Encounter no longer says.
+// A yes/no answer or anticoagulant the user entered that a definite Encounter value
+// contradicts is kept, not overwritten, and listed in imported.conflicts.
 export function applyEncounterPrefill(state, prefill, initialState) {
   if (!prefill?.patch) return state;
   const base = prefill.patch.classification && prefill.patch.classification !== state.classification ? initialState : state;
   const cleared = { ...base, exclusions: { ...base.exclusions } };
   for (const [key, value] of Object.entries(base.imported?.fields || {})) if (Object.is(base[key], value)) cleared[key] = initialState[key];
   for (const [id, value] of Object.entries(base.imported?.exclusions || {})) if (cleared.exclusions[id] === value) delete cleared.exclusions[id];
-  const next = applyFacts(cleared, prefill.patch);
-  const fields = Object.fromEntries(Object.entries(prefill.patch).filter(([key, value]) => key !== 'exclusions' && value !== undefined));
-  const exclusions = Object.fromEntries(Object.entries(prefill.patch.exclusions || {}).filter(([, value]) => typeof value === 'boolean'));
-  return { ...next, imported: { fields, exclusions } };
+  const entered = v => typeof v === 'boolean' || (typeof v === 'string' && v !== 'unselected');
+  const conflicts = [];
+  const patch = { ...prefill.patch, exclusions: { ...prefill.patch.exclusions } };
+  for (const key of Object.keys(patch)) if ((typeof patch[key] === 'boolean' || key === 'anticoagulant') && entered(patch[key]) && entered(cleared[key]) && cleared[key] !== patch[key]) { conflicts.push(key); delete patch[key]; }
+  for (const [id, value] of Object.entries(patch.exclusions)) if (typeof value === 'boolean' && typeof cleared.exclusions[id] === 'boolean' && cleared.exclusions[id] !== value) { conflicts.push(id); delete patch.exclusions[id]; }
+  const next = applyFacts(cleared, patch);
+  const fields = Object.fromEntries(Object.entries(patch).filter(([key, value]) => key !== 'exclusions' && value !== undefined));
+  const exclusions = Object.fromEntries(Object.entries(patch.exclusions).filter(([, value]) => typeof value === 'boolean'));
+  return { ...next, imported: { fields, exclusions, conflicts, source: importSource(prefill) } };
 }
 
 export default screenerPrefillFromEncounter;

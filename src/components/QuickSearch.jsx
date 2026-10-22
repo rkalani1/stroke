@@ -12,10 +12,11 @@ const SUGGESTIONS = [
 ];
 // The Trials database profiles, built once so the memoized index keeps its identity across
 // renders. Status leads the subtitle (the database's own label) so truncation never hides it;
-// the full study name is searchable as body text so it ranks below Evidence matches.
+// the full study name and bedside summary (population, condition, intervention) are searchable
+// as body text so they rank below Evidence matches.
 export const SEARCH_TRIALS = screenerTrials.map(trial => ({
   acronym: trial.acronym, nct: trial.externalMetadata?.nct, keywords: trial.externalMetadata?.registryAcronym,
-  subtitle: [enrollmentLabel(trial), trial.exactFullStudyName].filter(Boolean).join(' · '), body: trial.exactFullStudyName
+  subtitle: [enrollmentLabel(trial), trial.exactFullStudyName].filter(Boolean).join(' · '), body: `${trial.exactFullStudyName} ${trial.conciseBedsideSummary}`
 }));
 const groupId = group => `qs-group-${group.toLowerCase().replace(/[^a-z]+/g, '-')}`;
 
