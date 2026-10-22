@@ -70,7 +70,7 @@ Existing tests updated, each because the behavior it pinned was the reported def
 - `tests/round7-polish.test.jsx`. The "recent DOAC" case had no LKW and a dose 76 h before now. Under the 48-h rule that is correctly unknown, so the case now has an LKW 2 h after the dose. The expected values are unchanged.
 - `tests/quick-search-trials.test.jsx`. Trial hrefs now carry `?q=ACRONYM`.
 
-Results: see §6.
+Results: see §6. The new file passes 39/39.
 
 ## 4. Protocols observations (report only)
 
@@ -86,4 +86,23 @@ Results: see §6.
 
 ## 6. Checks and budget
 
-Filled in at the final commit (exact commands and results).
+All run in this worktree on the final source (commit `ac0c8e1` plus this report):
+- `npx vitest run`: 126 files, 2524 passed, 3 skipped, 0 failed. Baseline at `4d13e0e` was 125 files, 2483 passed, 3 skipped.
+- `npm run test:protocol-source`: PASS.
+- `npm run check:clinical-claims`: PASS (4 bounded groups, 31 occurrences, 0 exports). `npm run content:validate`: PASS (16 trial profiles). `npm run evidence:validate`: PASS. `npm run validate:citations`: PASS (43 rows). `npm run validate:inline-citations`: PASS. `npm run check:leak-guard`: no institutional/PHI-adjacent content.
+- Protocols tab locks (desktop and phone): not run. No file that Protocols imports or renders was changed: no shared module, global CSS, app shell or `workspace-state.js` edit. `workspace-state.js` is only imported from (`nihssBulkZeroItems`).
+- `git clean -fqX chunks && npm run build && npm run check:asset-budget`: all six checks pass.
+
+Budget, measured with the same build script at `4d13e0e` (my six source files checked out from it) and at the final source. Gzip level 9, bytes:
+
+| measure | base | final | delta |
+|---|---|---|---|
+| initial module graph, raw | 384,554 | 384,554 | **0** |
+| initial module graph, gzip | 130,536 | 130,537 | +1 (hashed chunk names in app.js only; varied ±1 between builds) |
+| Trials chunk, gzip | 13,354 | 13,890 | +536 |
+| shared Trials/QuickSearch chunk (profiles + engine), gzip | 26,184 | 27,204 | +1,020 |
+| QuickSearch chunk, gzip | 5,303 | 5,344 | +41 |
+| all offline JS, gzip | 260,509 | 262,107 | +1,598 (budget 262,144: 37 B left) |
+| all offline JS, raw | 869,427 | 873,865 | +4,438 (budget 876,544) |
+
+Trials code (Trials chunk plus the shared chunk) grew by +1,556 B gzip, 20 B over this unit's +1.5 KB allowance. The first complete draft measured +2,131 B and failed the all-offline budget. I then trimmed the new registry wording (one combined SISTER confirm line, no duplicated SCOUTS-3 exclusion lines, shorter STEP and UI messages). I also removed two duplicated label tables in my files: the onset-band labels are now derived from `ONSET_PRESETS`, and the classification names are shared between the engine and the screener buttons. With the build at 37 B under the all-offline gzip budget, other units' lazy-chunk additions will need the lead's decision.
