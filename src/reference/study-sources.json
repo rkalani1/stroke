@@ -1725,9 +1725,9 @@
     "title": "IA Thrombolysis Dose Network Meta-analysis — Dose-Specific Intra-Arterial Thrombolysis After Endovascular Thrombectomy for Large-Vessel Occlusion Stroke: A Network Meta-Analysis of Randomized Trials.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/42088338/",
     "year": 2026,
-    "type": "Report",
-    "checkedAt": "2026-10-21",
-    "access": "Primary abstract verified via PubMed; bibliographic record checked."
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read via PubMed on 2026-10-22: network meta-analysis of 7 randomized trials (2126 patients), hypothesis-generating per its authors; bibliographic record checked."
   },
   {
     "id": "study-source-attraction",
@@ -1897,9 +1897,9 @@
     "title": "GWTG-Stroke door-in-door-out — Door-in-Door-out Times for Interhospital Transfer of Patients With Stroke.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/37581671/",
     "year": 2023,
-    "type": "Report",
-    "checkedAt": "2026-10-21",
-    "access": "Primary abstract verified via PubMed; bibliographic record checked."
+    "type": "Observational study",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read via PubMed on 2026-10-22: US registry-based retrospective study; bibliographic record checked."
   },
   {
     "id": "study-source-target-stroke-phase-3-strategies",
@@ -1910,9 +1910,9 @@
     "title": "Target Stroke Phase III — Association of Component Strategies of the Target Stroke Phase 3 Nationwide Quality Improvement Program With Accelerated Door-to-Puncture and Door-In-Door-Out Times for Ischemic Stroke Endovascular Thrombectomy in the United States.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/41111412/",
     "year": 2025,
-    "type": "Report",
-    "checkedAt": "2026-10-21",
-    "access": "Primary abstract verified via PubMed; bibliographic record checked."
+    "type": "Observational study",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read via PubMed on 2026-10-22: retrospective observational cohort from the GWTG-Stroke registry; bibliographic record checked."
   },
   {
     "id": "study-source-ai-lvo-detection-accuracy-meta",
@@ -1923,9 +1923,9 @@
     "title": "AI LVO-detection accuracy meta-analysis — Diagnostic Test Accuracy of Artificial Intelligence in Large Vessel Occlusion: A Systematic Review and Meta-Analysis.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/42028301/",
     "year": 2026,
-    "type": "Report",
-    "checkedAt": "2026-10-21",
-    "access": "Primary abstract verified via PubMed; bibliographic record checked."
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read via PubMed on 2026-10-22: systematic review and diagnostic-accuracy meta-analysis of 11 studies; bibliographic record checked."
   },
   {
     "id": "study-source-catis",
@@ -3010,9 +3010,9 @@
     "title": "ORIENTAL-MeVO ACAo Registry — Endovascular Thrombectomy Versus Standard Medical Management in Acute Anterior Cerebral Artery Occlusion Stroke: The ORIENTAL-MeVO Registry Study.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/42017224/",
     "year": 2026,
-    "type": "Report",
-    "checkedAt": "2026-10-21",
-    "access": "Primary abstract verified via PubMed; bibliographic record checked."
+    "type": "Observational study",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read via PubMed on 2026-10-22; bibliographic record checked. Retrospective propensity-weighted registry analysis, not the randomized ORIENTAL-MeVO trial."
   },
   {
     "id": "study-source-tension-prior-antithrombotic",

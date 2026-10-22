@@ -52,13 +52,16 @@ describe('EVT and systems-of-care Evidence cards (2026-10-21 review)', () => {
     const recs = Object.fromEntries(topic('medium-distal-evt').recommendations.map(rec => [rec.id, rec]));
     expect(recs['svin-mevo-dvo-evt-2026-r1']).toMatchObject({ cor: '2a', loe: 'B-NR', text: 'EVT is reasonable for patients with disabling stroke due to proximal and/or dominant M2 occlusions, particularly when associated with moderate-to-severe deficits and imaging evidence of salvageable brain tissue.' });
     expect(recs['svin-mevo-dvo-evt-2026-r2']).toMatchObject({ cor: '2b', loe: 'B-R', text: 'EVT may be considered in distal, codominant, or nondominant M2 occlusions who present with disabling deficits and an NIHSS score ≥6.' });
-    expect(topic('medium-distal-evt').consider[1]).toBe('SVIN 2026: EVT may be considered case by case for disabling ACA or PCA occlusion (2b); not standard for M3/M4 (COR 3: No Benefit).');
+    // Round 3 (2026-10-22): each SVIN ACA/PCA 2b now sits beside its COR 3 default; exact text pinned in r3-ev-evt-2026-10-22.test.js.
+    expect(topic('medium-distal-evt').consider[1]).toContain('may be considered case by case for ACA occlusion with disabling deficits');
+    expect(topic('medium-distal-evt').consider[1]).toContain('is not standard for M3/M4 (COR 3: No Benefit, B-R)');
   });
 
   it('keeps each graded statement inside its guideline population', () => {
     // ais-2026-114/-115/-116: ICA or M1, NIHSS ≥6, prestroke mRS 0–1, window-specific ASPECTS.
     const reperfusion = topic('acute-reperfusion').summary;
-    expect(reperfusion).toContain('EVT within 24 h is graded for ICA/M1 occlusion with NIHSS ≥6, prestroke mRS 0–1 and window-specific ASPECTS');
+    // Round 3 (2026-10-22): the tiers are now spelled out with their own grades (ais-2026-117 is 2a).
+    expect(reperfusion).toContain('EVT is recommended for ICA/M1 occlusion with NIHSS ≥6 and prestroke mRS 0–1 within 6 h if ASPECTS 3–10');
     expect(reperfusion).not.toContain('indicated within 24 h for anterior LVO');
     // ais-2026-118 (2a) and -119 (2b): ICA/M1, within 6 h, NIHSS ≥6, ASPECTS ≥6.
     const selection = topic('evt-selection');
@@ -69,10 +72,11 @@ describe('EVT and systems-of-care Evidence cards (2026-10-21 review)', () => {
     expect(text(selection)).not.toContain('go straight to angiography');
     // ais-2026-20 (COR 1, LOE A): thrombolytic-eligible patients, where available.
     expect(topic('code-stroke-activation').consider).toContain('Where available, mobile stroke units are recommended over conventional EMS for thrombolytic-eligible patients: faster treatment and better outcome (COR 1, LOE A).');
-    // ais-2026-16 (2a) needs local thrombectomy access; ais-2026-18 is COR 3: No Benefit.
+    // ais-2026-16 (2a) needs local thrombectomy access; ais-2026-18 is COR 3: No Benefit only in a well-coordinated
+    // system (round 3, 2026-10-22: setting restored and the 2b ais-2026-17 added; see r3-ev-evt-2026-10-22.test.js).
     const rural = topic('rural-telestroke').summary;
     expect(rural).toContain('direct transport to a locally accessible thrombectomy center is reasonable (2a)');
-    expect(rural).toContain('bypassing a proficient local stroke center for a distant one did not improve outcome (COR 3: No Benefit)');
+    expect(rural).toContain('bypassing it for a distant thrombectomy-capable center (e.g., 45–60 min away) does not improve 3-month outcome (COR 3: No Benefit)');
     // AHA 2022 in-hospital statement (ungraded) and ais-2026-24 (COR 1).
     const inHospital = topic('in-hospital-stroke').summary;
     expect(inHospital).toContain('in-hospital stroke alert and give responders immediate neurological expertise (AHA 2022 statement)');
@@ -80,7 +84,9 @@ describe('EVT and systems-of-care Evidence cards (2026-10-21 review)', () => {
     // ais-2026-132: COR 3: No Benefit, not Harm.
     expect(topic('neurointerventional-care').summary).toContain('preprocedural tirofiban is not useful (COR 3: No Benefit)');
     // Registries NCT04551664, NCT03876457, NCT03805308, NCT03702413, NCT03094715, NCT03811769.
-    expect(topic('large-core-evt').caution).toBe('Trial age limits: ANGEL-ASPECT ≤80; SELECT2 and TESLA ≤85; none in RESCUE-Japan LIMIT, TENSION or LASTE. All but TENSION (mRS ≤2) required prestroke mRS 0–1.');
+    // Round 3 (2026-10-22): LASTE required ASPECTS 4–5 at age ≥80 (SVIN 2025; registry 3–5), so it is no longer "none".
+    expect(topic('large-core-evt').caution).toContain('Trial age limits: ANGEL-ASPECT ≤80; SELECT2 and TESLA ≤85; none in RESCUE-Japan LIMIT or TENSION;');
+    expect(topic('large-core-evt').caution).toContain('All but TENSION (mRS ≤2) required prestroke mRS 0–1.');
     // ATTENTION registry NCT04751708: NIHSS ≥10.
     expect(study('attention').limits).toContain('NIHSS ≥10');
   });
@@ -91,14 +97,17 @@ describe('EVT and systems-of-care Evidence cards (2026-10-21 review)', () => {
     expect(largeCore).toContain('ATLAS (Lancet 2026; postdates AHA 2026 and SVIN 2025), IPD of 6 RCTs (n=1886): better mRS (aGenOR 1.63) and lower mortality (31.1 vs 37.3%)');
     expect(largeCore).toContain('evidence is limited for core ≥150 mL beyond 6 h');
     // DIRECT ANGIO, Lancet Neurol 2026 (PMID 41864232): sICH 5/34 vs 0/42, stopped for safety.
-    expect(text(topic('evt-selection'))).toContain('DIRECT ANGIO (France, 2026; postdates AHA 2026) stopped early for safety: more sICH (15 vs 0%), no functional benefit.');
+    // Round 3 (2026-10-22): population and imprecision added; exact text pinned in r3-ev-evt-2026-10-22.test.js.
+    expect(text(topic('evt-selection'))).toContain('DIRECT ANGIO (France, 2026; postdates AHA 2026;');
+    expect(text(topic('evt-selection'))).toContain('stopped early for safety: more sICH (15 vs 0%), no evidence of functional benefit (small and imprecise).');
     // Writing-group response, Stroke 2026 (PMID 42535264): request declined; NO-SELECT pending.
     expect(topic('evt-selection').consider[2]).toContain('ASPECTS ≥6 at 6–24 h keeps COR 1');
     expect(topic('evt-selection').consider[2]).toContain('NO-SELECT trial ongoing');
-    // ANGEL-TNK (2025) and PEARL (October 2025) predate the January 2026 guideline; CHOICE-2 and IAT-TOP do not.
+    // ANGEL-TNK (2025) and PEARL (October 2025) predate the January 2026 guideline but postdate its literature window
+    // (through March 2025, PMID 41582814 abstract); CHOICE-2 and IAT-TOP postdate the guideline (round 3, 2026-10-22).
     const neuro = text(topic('neurointerventional-care'));
-    expect(neuro).toContain('CHOICE-2 and IAT-TOP postdate AHA 2026.');
-    expect(neuro).toContain('mortality 12.1 vs 6.4%');
+    expect(neuro).toContain('ANGEL-TNK and PEARL (2025) appeared after the AHA 2026 literature window (through March 2025), CHOICE-2 and IAT-TOP after the guideline itself.');
+    expect(neuro).toContain('CHOICE-2 (12.1 vs 6.4%, P=.03)');
     expect(neuro).not.toContain('trials that postdate it');
     expect(neuro).not.toContain('ESO 2026');
     expect(topic('medium-distal-evt').caution).toContain('The AHA 2026 grading predates ORIENTAL-MeVO and DISCOUNT');
@@ -112,7 +121,7 @@ describe('EVT and systems-of-care Evidence cards (2026-10-21 review)', () => {
     expect(activation).toContain('85% sensitivity and 68% specificity in its 2013 validation, but 75% and 76% pooled across EMS studies (2026 meta-analysis)');
     expect(activation).toContain('In nonurban Catalonia, bypassing the local stroke center for a thrombectomy center did not improve outcome (RACECAT, cOR 1.03): fewer received IVT (47.5 vs 60.4%) and more had EVT (48.8 vs 39.4%).');
     // TESLA (PMID 39374319): posterior probability .96 below the .975 threshold.
-    expect(topic('large-core-evt').summary).toContain('TESLA (NCCT ASPECTS 2–5, ≤24 h) missed its primary endpoint');
+    expect(topic('large-core-evt').summary).toContain('TESLA (NCCT ASPECTS 2–5, ≤24 h) missed its 90-day primary endpoint (posterior probability 0.96; 0.975 required)');
     // BRIDGE-TNK (PMID 40396577): China, within 4.5 h, functional independence 52.9 vs 44.1%.
     expect(topic('evt-selection').summary).toContain('BRIDGE-TNK (China, ≤4.5 h) favored tenecteplase first (mRS 0–2 52.9 vs 44.1%)');
     // ais-2026-49: CTA and/or CTP are not delayed for a serum creatinine.
@@ -120,9 +129,10 @@ describe('EVT and systems-of-care Evidence cards (2026-10-21 review)', () => {
     // DIRECT-MT and DEVT met noninferiority; SKIP, MR CLEAN-NO IV, SWIFT DIRECT, DIRECT-SAFE and IRIS did not.
     expect(topic('evt-selection').caution).toBe('Only DIRECT-MT and DEVT (both China) found EVT alone noninferior; SWIFT DIRECT, MR CLEAN-NO IV, SKIP, DIRECT-SAFE and the IRIS meta-analysis did not. Give IVT whenever eligible.');
     // ANGEL-REBOOT (PMID 38914085): sICH 8/175 (5%) vs 1/169 (1%).
-    expect(topic('neurointerventional-care').summary).toContain('in ANGEL-REBOOT (China) it did not improve outcome and raised sICH (5 vs 1%)');
-    // DISTAL 12-month report (PMID 42105785).
-    expect(study('distal').limits).toContain('At 12 months there was still no benefit (acOR 0.81; 95% CI 0.59–1.12).');
+    // Round 3 (2026-10-22): the 90-day result is named as such and the 1-year report (PMID 41122847) is added.
+    expect(topic('neurointerventional-care').summary).toContain('it did not improve 90-day mRS (cOR 0.86) and raised sICH (5 vs 1%)');
+    // DISTAL 12-month report (PMID 42105785), now cited on the card itself (round 3).
+    expect(study('distal').limits).toContain('At 12 months there was still no benefit (adjusted common OR for better mRS 0.81; 95% CI 0.59–1.12; Lancet Neurol 2026).');
   });
 
   it('cites each newly summarized study on the card that summarizes it', () => {

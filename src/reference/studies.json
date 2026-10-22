@@ -506,7 +506,7 @@
     "population": "340 patients at 36 Chinese centers; about one third received IVT.",
     "comparison": "EVT versus best medical care (2:1 randomization).",
     "result": "mRS 0–3 at 90 days occurred in 46% vs 23% (adjusted rate ratio 2.06; 95% CI 1.46–2.91). Mortality 37% vs 55%; symptomatic ICH 5% vs 0%; procedural complications 14%.",
-    "limits": "Single-country trial; it required NIHSS ≥10 (registry NCT04751708).",
+    "limits": "Single-country trial; it required NIHSS ≥10, PC-ASPECTS ≥6 and prestroke mRS 0–2, and for age ≥80 PC-ASPECTS ≥8 and prestroke mRS 0 (registry NCT04751708).",
     "sources": [
       {
         "title": "ATTENTION primary report",
@@ -606,7 +606,7 @@
     "population": "543 participants within 24 hours; nondominant/codominant M2 or selected more distal MCA, ACA or PCA occlusions. Median NIHSS was 6.",
     "comparison": "EVT plus best medical treatment versus best medical treatment alone.",
     "result": "The 90-day mRS distribution did not improve significantly (common OR 0.90; 95% CI 0.67–1.22). Symptomatic intracranial hemorrhage was 5.9% versus 2.6%; mortality was 15.5% versus 14.0%.",
-    "limits": "A neutral trial in its selected vessel/severity population; it does not establish equivalence or settle every medium-vessel treatment question. Dominant M2 was outside the stated M2 population. At 12 months there was still no benefit (acOR 0.81; 95% CI 0.59–1.12).",
+    "limits": "A neutral trial in its selected vessel/severity population; it does not establish equivalence or settle every medium-vessel treatment question. Dominant M2 was outside the stated M2 population. At 12 months there was still no benefit (adjusted common OR for better mRS 0.81; 95% CI 0.59–1.12; Lancet Neurol 2026).",
     "sources": [
       {
         "title": "DISTAL primary report",
@@ -615,6 +615,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
+      },
+      {
+        "title": "DISTAL 12-month outcomes",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42105785/",
+        "year": 2026,
+        "type": "Report",
+        "checkedAt": "2026-10-22",
+        "access": "Primary abstract read via PubMed on 2026-10-22; 12-month follow-up of the original randomized population (524 of 543 with 12-month data)."
       }
     ],
     "relatedTopic": "medium-distal-evt"
