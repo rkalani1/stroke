@@ -91,7 +91,7 @@ describe('r3 ev-evt: MeVO, basilar and EVT technique', () => {
     // PMID 38914085: eTICI 0–2a or residual stenosis >70%; tirofiban in 334/348 (96%); cOR 0.86; sICH 8/175 vs 1/169.
     // PMID 41122847 (Circulation 2025): 1-year generalized OR 1.34; treated-artery recurrence 7/166 vs 21/160.
     const card = topic('neurointerventional-care');
-    expect(card.summary).toContain('Rescue angioplasty or stenting after failed EVT remains uncertain (2b); in ANGEL-REBOOT (China; eTICI 0–2a or >70% residual stenosis after EVT, tirofiban in 96%) it did not improve 90-day mRS (cOR 0.86) and raised sICH (5 vs 1%), but at 1 year mRS was better (generalized OR 1.34) and same-artery recurrence lower (4 vs 13%).');
+    expect(card.summary).toContain('Rescue angioplasty or stenting after failed EVT remains uncertain (2b); in ANGEL-REBOOT (China; eTICI 0–2a or >70% residual stenosis after EVT, tirofiban in 96%) it did not improve 90-day mRS (cOR 0.86) and raised sICH (5 vs 1%); a later 1-year report (2025, after the AHA 2026 literature window) found a better mRS distribution (generalized OR 1.34), less same-artery recurrence (4 vs 13%) and similar mortality (15 vs 17%).');
     // Cited directly on the card (not through study-sources.json, whose entry count another test pins).
     expect(source(card, '41122847')).toMatchObject({ year: 2025, type: 'Report', checkedAt: '2026-10-22' });
     expect(read('src/reference/expanded-vascular.json').find(record => record.id === 'neurointerventional-care').sources.map(item => item.url)).toContain(pubmed('41122847'));
