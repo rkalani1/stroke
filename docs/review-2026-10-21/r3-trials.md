@@ -95,7 +95,7 @@ Final results, on the source after the §7 repair (commit `65a9266` plus this re
 - `npm run test:protocol-source`: PASS.
 - `npm run check:clinical-claims`: PASS (4 bounded groups, 31 occurrences, 0 exports). `npm run content:validate`: PASS (16 trial profiles). `npm run evidence:validate`: PASS (43 citations). `npm run validate:citations`: PASS (43 rows). `npm run validate:inline-citations`: PASS (15 PMIDs). `npm run check:leak-guard`: no institutional or PHI-adjacent content.
 - `git clean -fqX chunks && npm run build && npm run check:asset-budget`: all six checks pass.
-- Protocols tab locks, desktop and phone, port 4320: running at the time of this commit; result recorded in the next commit. No file that Protocols imports was changed. The repair edits `screener-eval.js`, which the lazy QuickSearch chunk also loads, so I ran both locks anyway.
+- Protocols tab locks, desktop and phone, port 4320: PASS (desktop 1440x900: 46 fixture/sub-tab captures; phone 390x844: 46 captures), run on the final build. No file that Protocols imports was changed. The repair edits `screener-eval.js`, which the lazy QuickSearch chunk also loads, so I ran both locks anyway.
 
 Budget, measured with gzip level 9, in bytes. "Pre-repair" is commit `21b0388`, the version the reviewer checked.
 
@@ -118,7 +118,7 @@ The first pass of this unit (before the repair) started from a draft that measur
 
 ## 7. Verification and repair (independent review of the committed fixes)
 
-The reviewer raised one blocking item against `e2e:trials-calculators-search#6`, with two non-blocking observations (B, C). I checked each claim by running the code at `21b0388`: the reviewer's own probe (`r3review/probe2.mjs`), run in `TZ=America/Los_Angeles`, reproduced every observation. I re-read the three registry exclusions involved on ClinicalTrials.gov (§2). My new tests failed 8 of 45 before the fix and pass 45/45 after it. The probe output after the fix is quoted below.
+The reviewer raised one blocking item against `e2e:trials-calculators-search#6`, with two non-blocking observations (B, C). I checked each claim by running the code at `21b0388`: the reviewer's own probe (`r3review/probe2.mjs` in the session scratchpad, run in `TZ=America/Los_Angeles`; another agent has since reused that file name, and my copy adapted to the renamed helper is `r3trials-probe2-after.mjs`) reproduced every observation. I re-read the three registry exclusions involved on ClinicalTrials.gov (§2). My new tests failed 8 of 45 before the fix and pass 45/45 after it. The probe output after the fix is quoted below.
 
 | reviewer item | verdict | resolution | test |
 |---|---|---|---|
