@@ -464,7 +464,7 @@ describe('Encounter import and global-search pick in a browser', () => {
       await setEncounter({ diagnosisCategory: 'ischemic', age: '70', lkwDate: '2026-10-21', lkwTime: '06:00' });
       await banner().getByRole('button', { name: 'Reapply Encounter facts', exact: true }).waitFor();
       const text = await banner().innerText();
-      expect(text).toContain('The Encounter facts changed after they were applied; the screen still uses the earlier import.');
+      expect(text).toContain('Caution: the Encounter facts changed after import; reapply before relying on this screen.');
       expect(text).not.toMatch(/Applied ✓|timing live/);
       expect(await timingNote()).toBe('Counting from the earlier imported LKW; the Encounter LKW has since changed.');
       expect(await page.getByRole('status').filter({ hasText: 'potential match' }).innerText()).toMatch(/ · based on an earlier Encounter import$/);

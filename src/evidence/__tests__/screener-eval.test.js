@@ -136,7 +136,7 @@ describe('evaluateAll — bucketing on representative patients', () => {
     const scouts = res.pending.find((i) => i.trial.acronym === 'SCOUTS-3');
     expect(scouts.matchedCriteria.length).toBeGreaterThan(0);
     // Every hard criterion is met, so the registry gate is the only thing left.
-    expect(scouts.pendingFields).toContain('Full registry/protocol confirmation');
+    expect(scouts.pendingCriteria).toContain('Full registry/protocol, local activation and consent confirmation required');
     expect(scouts.pendingCriteria.some(s => /pregnan/i.test(s))).toBe(true);
   });
 
@@ -175,8 +175,9 @@ describe('evaluateAll — bucketing on representative patients', () => {
     const pendingAcr = res.pending.map((i) => i.trial.acronym);
     expect(pendingAcr).toContain('SCOUTS-3');
     const scouts = res.pending.find((i) => i.trial.acronym === 'SCOUTS-3');
-    expect(scouts.pendingFields).toEqual(
-      expect.arrayContaining(['Age', 'Rehab unit placement'])
+    // The unanswered age (≥ 18) and rehab-placement criteria are listed to confirm.
+    expect(scouts.pendingCriteria).toEqual(
+      expect.arrayContaining(['Confirm age ≥ 18', 'Confirm inpatient rehabilitation placement and anticipated length of stay at least 5 nights'])
     );
     // Not double-counted.
     expect(res.eligible.map((i) => i.trial.acronym)).not.toContain('SCOUTS-3');

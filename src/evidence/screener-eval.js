@@ -332,16 +332,10 @@ export function buildScreenerParams(state, nowMs = null) {
 }
 
 export function evaluateTrialEligibility(trial, p) {
-  if (trial.status === 'closed') {
-    return { status: 'closed', matchedCriteria: [], pendingCriteria: [], pendingFields: [], exclusionReasons: ['Study is closed to enrollment'], sourceGaps: trial.sourceGaps || [] };
-  }
-  if (trial.status === 'placeholder') {
-    return { status: 'placeholder', matchedCriteria: [], pendingCriteria: [], pendingFields: [], exclusionReasons: ['Incomplete study profile in source; screening not possible'], sourceGaps: trial.sourceGaps || [] };
-  }
-
-  if (!['enrolling', 'soon'].includes(trial.status)) {
-    return { status: 'closed', matchedCriteria: [], pendingCriteria: [], pendingFields: [], exclusionReasons: ['Enrollment status is unknown or inactive; confirm with the study team'], sourceGaps: trial.sourceGaps || [] };
-  }
+  const unscreened = (status, reason) => ({ status, matchedCriteria: [], pendingCriteria: [], exclusionReasons: [reason], sourceGaps: trial.sourceGaps || [] });
+  if (trial.status === 'closed') return unscreened('closed', 'Study is closed to enrollment');
+  if (trial.status === 'placeholder') return unscreened('placeholder', 'Incomplete study profile in source; screening not possible');
+  if (!['enrolling', 'soon'].includes(trial.status)) return unscreened('closed', 'Enrollment status is unknown or inactive; confirm with the study team');
   const criteria = trial.eligibility?.criteria || [];
   const exclusions = trial.eligibility?.exclusions || [];
   const failed = criteria.filter(c => evaluateCriterion(c, p) === false);
@@ -358,7 +352,7 @@ export function evaluateTrialEligibility(trial, p) {
   ].filter(Boolean);
   // Every stored profile is a partial summary. Neither absence of a modeled
   // exclusion nor metadata verification establishes complete eligibility.
-  pendingCriteria.push('Full registry/protocol, local activation and consent confirmation required');
+  pendingCriteria.push(GENERIC_CONFIRMATION);
   const matchedCriteria = criteria.filter(c => evaluateCriterion(c,p) === true).map(c => c.operator === 'or' ? getActiveBranch(c,p)?.label : formatLabel(c.matchedLabel,p,c.field)).filter(Boolean);
   // Tri-state for studies that are not excluded: a potential match only when no
   // modeled criterion or exclusion is unknown. Neither state is definitive
@@ -372,13 +366,11 @@ export function evaluateTrialEligibility(trial, p) {
     notYetEnrolling: trial.status === 'soon',
     matchedCriteria: [...new Set(matchedCriteria)],
     pendingCriteria: [...new Set(pendingCriteria)],
-    pendingFields: [...new Set([...criteria.filter(c => evaluateCriterion(c,p) === null).flatMap(c => c.operator === 'or' ? ['Alternative eligibility pathway'] : [{age:'Age',rehab:'Rehab unit placement',language:'Language spoken',currentMrs:'Current post-stroke mRS',preMrs:'Pre-stroke mRS',ichVolume:'ICH volume'}[c.field] || c.field]), ...exclusions.filter(c => evaluateCriterion(c,p) === null).map(c => c.pendingLabel || c.error || c.field), 'Full registry/protocol confirmation'])],
     exclusionReasons: [...failed.filter(c => !futureWindow).map(c => c.error), ...hits.map(c => c.error)].filter(Boolean),
     failedFields: [...failed.map(c => c.field || 'pathway'), ...hits.map(c => c.field)],
     sourceGaps: trial.sourceGaps || [],
     unknownModeledCount,
-    completeness: unknownModeledCount === 0 ? 'potential-match' : 'insufficient-information',
-    fullProtocolReviewRequired: true
+    completeness: unknownModeledCount === 0 ? 'potential-match' : 'insufficient-information'
   };
 }
 
@@ -441,7 +433,7 @@ export function evaluateAll(state, trials = screenerTrials, nowMs = null, { stal
   if (ready) {
     trials.filter(trial => !trial.referenceOnly).forEach((trial) => {
       const r = evaluateTrialEligibility(trial, params);
-      const item = { trial, status: r.status, beforeWindow: r.beforeWindow || false, notYetEnrolling: r.notYetEnrolling || false, matchedCriteria: r.matchedCriteria, pendingCriteria: r.pendingCriteria, pendingFields: r.pendingFields || [], exclusionReasons: r.exclusionReasons || [], failedFields: r.failedFields || [], sourceGaps: r.sourceGaps || [], completeness: r.completeness || 'insufficient-information', unknownModeledCount: r.unknownModeledCount ?? null };
+      const item = { trial, status: r.status, beforeWindow: r.beforeWindow || false, notYetEnrolling: r.notYetEnrolling || false, matchedCriteria: r.matchedCriteria, pendingCriteria: r.pendingCriteria, exclusionReasons: r.exclusionReasons || [], failedFields: r.failedFields || [], sourceGaps: r.sourceGaps || [], completeness: r.completeness || 'insufficient-information', unknownModeledCount: r.unknownModeledCount ?? null };
       if (r.status === 'placeholder') buckets.incomplete.push(item);
       else buckets[r.status].push(item);
     });
@@ -460,6 +452,8 @@ export const insufficientInformation = results => (results?.pending || []).filte
 
 /* ── Display helpers shared by the UI and the copied summary ───────── */
 
+// Shown on the screen and in the copied summary once the imported Encounter facts have changed.
+export const STALE_IMPORT_NOTE = 'Caution: the Encounter facts changed after import; reapply before relying on this screen.';
 export const SCREEN_CAVEAT = 'First-pass registry screen — confirm full criteria, local activation and consent.';
 export const NOT_MET_TEXT = 'Does not meet documented criteria';
 
@@ -651,11 +645,8 @@ export function buildBriefingNote(state, buckets, nowMs = null, { staleImport = 
     return `- ${item.trial.acronym} (${m.nct || 'no NCT'}) · ${enrollmentLabel(item.trial, item)}${phaseLabel(m) ? ' · ' + phaseLabel(m) : ''} · window ${item.trial.enrollmentWindowText}`;
   };
 
-  const lines = ['TRIAL SCREEN — first pass' + (checkLabel ? ` (${checkLabel})` : '')];
-  if (staleImport) lines.push('Caution: the Encounter facts changed after import; reapply before relying on this screen.');
-  if (conflictNote(state)) lines.push(conflictNote(state));
-  lines.push('Statuses are overall registry statuses at that check; local site activation is not confirmed.');
-  lines.push('Inputs: ' + inputs.join(' · '));
+  const lines = ['TRIAL SCREEN — first pass' + (checkLabel ? ` (${checkLabel})` : ''), staleImport && STALE_IMPORT_NOTE, conflictNote(state),
+    'Statuses are overall registry statuses at that check; local site activation is not confirmed.', 'Inputs: ' + inputs.join(' · ')].filter(Boolean);
   if (recorded.length) lines.push('Exclusions recorded: ' + recorded.join('; '));
   lines.push('Anything not listed was not entered and remains unknown.', '');
 
