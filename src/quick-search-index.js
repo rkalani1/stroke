@@ -76,9 +76,10 @@ export function buildSearchIndex(reference, { protocolSub = 'ischemic' } = {}) {
   return records.map(record => ({ ...record, _title: normalize(record.title), _titleCompact: compact(record.title), _keys: normalize(record.keywords), _keysCompact: compact(record.keywords), _body: normalize(record.body) }));
 }
 
-// Every term must match the title, keywords or summary text. Ranking favours
-// exact names, then exact multi-word aliases and title prefixes, title words,
-// keywords and body text. Short letter-only terms match at word starts (hasTerm).
+// Every term must match the title, keywords or summary text. Records whose every
+// term is a whole word of the name or an alias ("ABC/2" for ICH volume) come first
+// (exact), then the score favours exact names, title prefixes, title words, keywords
+// and body text. Short letter-only terms match at word starts (hasTerm).
 export function searchIndex(index, query, limit = 40) {
   const phrase = normalize(query);
   if (!phrase) return [];
@@ -87,7 +88,7 @@ export function searchIndex(index, query, limit = 40) {
   const phraseCompact = phrase.replace(/ /g, '');
   const scored = [];
   for (const record of index) {
-    let score = 0;
+    let score = 0, exact = true;
     for (const term of terms) {
       const anywhere = !wordStart(term);
       const termScore = ` ${record._title} `.includes(` ${term} `) ? 6
@@ -97,25 +98,28 @@ export function searchIndex(index, query, limit = 40) {
               : hasTerm(record._keys, term) ? 2
                 : hasTerm(record._body, term) ? 1 : 0;
       if (!termScore) { score = 0; break; }
+      exact &&= ` ${record._title} ${record._keys} `.includes(` ${term} `);
       score += termScore;
     }
     if (!score) continue;
-    if (record._title === phrase || record._titleCompact === phraseCompact) score += 20;
-    else if (terms.length > 1 && ` ${record._keys} `.includes(` ${phrase} `)) score += 10;
+    if (record._title === phrase || record._titleCompact === phraseCompact) { score += 20; exact = true; }
     else if (record._title.startsWith(phrase)) score += 8;
     if (record.group === 'Go to' || record.group === 'Protocols' || record.group === 'Calculators') score += 1;
-    scored.push([score, record]);
+    scored.push([score + (exact ? 100 : 0), { ...record, exact, phrase: [record._title, record._keys].some(text => ` ${text} `.includes(` ${phrase} `)) }]);
   }
   return scored.sort((a, b) => b[0] - a[0] || a[1].title.localeCompare(b[1].title)).slice(0, limit).map(([, record]) => record);
 }
 
 // Groups keep the predictable SEARCH_GROUPS order. The lead group holds the best
 // navigation match (Go to, Protocols, Calculators) when there is one, otherwise the
-// best match overall, so Enter opens it. Long result sets show the top few per
-// group and report how many are hidden ([group, shown, hiddenCount]).
+// best match overall, so Enter opens it. A navigation match never leads a better one:
+// partial words over exact ones, or scattered words over the whole phrase ("DIRECT-MT").
+// Long result sets show the top few per group and report how many are hidden
+// ([group, shown, hiddenCount]).
 const NAVIGATION_GROUPS = ['Go to', 'Protocols', 'Calculators'];
 export function groupResults(results, { perGroup = 5, expanded = [] } = {}) {
-  const lead = (results.find(record => NAVIGATION_GROUPS.includes(record.group)) || results[0])?.group;
+  const top = results[0];
+  const lead = (results.find(record => NAVIGATION_GROUPS.includes(record.group) && (record.exact || !top.exact) && (record.phrase || !top.phrase)) || top)?.group;
   const capped = results.length > 12;
   return SEARCH_GROUPS.map(group => [group, results.filter(record => record.group === group)])
     .filter(([, items]) => items.length)

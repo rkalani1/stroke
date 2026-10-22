@@ -15,7 +15,10 @@ const ALIASES = [
   [/\b(?:evt|mt)\b/g, 'thrombectomy'],
   [/\bivt\b/g, 'thrombolysis'],
   [/\b(?:obstructive )?sleep apno?ea\b|\bosa\b/g, 'sleep apnea'],
-  [/\babc 2\b/g, 'abc2']
+  [/\babc 2\b/g, 'abc2'],
+  // Prefixed forms keep their own word and add the base one, so ICH, SAH, BP and CT (which match
+  // only at word starts) still find sICH, aSAH, SBP/DBP and NCCT, and "sICH" stays specific.
+  [/\b(?:s(ich)|a(sah)|[sd](bp)|nc(ct))\b/g, '$& $1$2$3$4']
 ];
 export const normalizeSearch = value => ALIASES.reduce((text, [pattern, replacement]) => text.replace(pattern, replacement), String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim());
 // A letter-only term of up to three letters ("TIA", "BP") matches only at a word start, so "TIA"
@@ -43,8 +46,8 @@ export function searchReference(records, query = '', setting = 'all') {
 // A topic's bedside bottom line: the opening sentence of its summary, shown verbatim in the
 // collapsed Evidence row. A sentence ends at . ! or ? followed by a space and a capital, digit or
 // opening bracket, outside parentheses, and not after an abbreviation or a one-letter initial,
-// in any case ("U.S. label", "e.g. DOAC", "vs. 4.1%", "Approx. 40%", "Dec. 22, 2025").
-// Decimals never split ("0.25 mg/kg").
+// in any case ("U.S. label", "e.g. DOAC", "vs. 4.1%", "Approx. 40%", "Dec. 22, 2025"); an
+// all-capital acronym still ends one ("before MT. Then"). Decimals never split ("0.25 mg/kg").
 const ABBREVIATION_END = /\b(?:vs|e\.g|i\.e|etc|approx|al|dr|no|fig|ca|cf|ref|pts?|inj|min|max|mo|yrs?|wks?|h|hrs?|st|mt|jan|feb|mar|apr|jun|jul|aug|sept?|oct|nov|dec|[a-z])$/i;
 export function bottomLine(text) {
   const value = String(text || '').trim();
@@ -53,7 +56,7 @@ export function bottomLine(text) {
     const char = value[i];
     if (char === '(' || char === '[') depth += 1;
     else if ((char === ')' || char === ']') && depth > 0) depth -= 1;
-    else if (depth === 0 && '.!?'.includes(char) && /^\s+["'“(\[]?[A-Z0-9]/.test(value.slice(i + 1)) && !ABBREVIATION_END.test(value.slice(0, i))) return value.slice(0, i + 1);
+    else if (depth === 0 && '.!?'.includes(char) && /^\s+["'“(\[]?[A-Z0-9]/.test(value.slice(i + 1)) && (/\b[A-Z]{2,}$/.test(value.slice(0, i)) || !ABBREVIATION_END.test(value.slice(0, i)))) return value.slice(0, i + 1);
   }
   return value;
 }

@@ -68,12 +68,34 @@ describe('global search uses the Evidence aliases', () => {
     }
     expect(ids('ABCD2')[0]).toBe('calc:abcd2');
   });
-  it('ranks a record whose keywords hold the whole multi-word query above a title-prefix match', () => {
+  it('ranks an exact name or alias above records matched only through word prefixes', () => {
+    // Each prefix-only record matches every term, at word starts of its title, and would win on score.
     const synthetic = buildSearchIndex({ calculators: [
-      { id: 'prefix-only', name: 'Glasgow outcome worksheet', category: 'Synthetic' },
-      { id: 'exact-alias', name: 'Synthetic coma tool', category: 'Synthetic', aliases: 'Glasgow coma scale' }
+      { id: 'prefix-only', name: 'Zetaline omegas scales worksheet', category: 'Synthetic' },
+      { id: 'exact-alias', name: 'Synthetic omega tool', category: 'Synthetic', aliases: 'Zeta omega scale' },
+      { id: 'short-prefix', name: 'XYQZ worksheet', category: 'Synthetic' },
+      { id: 'short-alias', name: 'Synthetic tool', category: 'Synthetic', aliases: 'XYQ' }
     ] });
-    expect(searchIndex(synthetic, 'glasgow coma scale').map(record => record.id)[0]).toBe('calc:exact-alias');
+    for (const [query, expected, other] of [['zeta omega scale', 'calc:exact-alias', 'calc:prefix-only'], ['XYQ', 'calc:short-alias', 'calc:short-prefix']]) {
+      const results = searchIndex(synthetic, query, Infinity);
+      expect(results.map(record => record.id), query).toEqual([expected, other]);
+      expect(groupResults(results)[0][1][0].id, query).toBe(expected);
+    }
+  });
+  it('keeps navigation first for exact matches, but never over a better match', () => {
+    const lead = query => groupResults(searchIndex(index, query, Infinity))[0][1][0].id;
+    // Navigation records that hold the query as whole words still lead (the protocol-first design).
+    expect(lead('large vessel occlusion')).toBe('protocol:evt');
+    expect(lead('LVO')).toBe('protocol:evt');
+    expect(lead('intracerebral hemorrhage')).toBe('nav:Protocols · Intracerebral hemorrhage');
+    expect(lead('ICH score')).toBe('tool:ich-score');
+    expect(lead('NIHSS')).toBe('tool:nihss');
+    // A navigation record matched only inside words ("tension" in hypertension, "extend" in
+    // extended) or by scattered words ("direct" from DOAC, "thrombectomy" from EVT) does not.
+    expect(lead('TENSION')).not.toBe('protocol:bp');
+    expect(lead('EXTEND')).toBe('study:extend');
+    expect(lead('DIRECT-MT')).toBe('study:direct-mt');
+    expect(lead('TRACE-2')).toBe('study:trace-2');
   });
   it('matches short letter-only terms at word starts, so TIA skips "initiation" and AF skips "after"', () => {
     const synthetic = buildSearchIndex({ topics: [
@@ -109,6 +131,19 @@ describe('Evidence search', () => {
     // Every shipped topic that matches "TIA" names TIA as a word.
     for (const topic of searchReference(data.topics, 'TIA')) expect(JSON.stringify(topic), topic.id).toMatch(/\bTIAs?\b|transient ischa?emic attack/i);
   });
+  it('still finds prefixed abbreviations (sICH, aSAH, SBP/DBP, NCCT) by their base abbreviation', () => {
+    // sICH is symptomatic ICH, aSAH aneurysmal SAH, SBP/DBP systolic/diastolic BP, NCCT non-contrast CT.
+    for (const [base, prefixed] of [['ICH', /\bsICH\b/], ['SAH', /\baSAH\b/], ['BP', /\b[SD]BP\b/], ['CT', /\bNCCT\b/]]) {
+      for (const set of ['topics', 'studies']) {
+        const holders = data[set].filter(record => prefixed.test(JSON.stringify(record))).map(record => record.id);
+        expect(evidenceIds(data[set], base), `${base} ${set}`).toEqual(expect.arrayContaining(holders));
+      }
+    }
+    expect(data.topics.some(record => /\bsICH\b/.test(JSON.stringify(record)))).toBe(true);
+    // The prefixed query stays specific: every "sICH" result names sICH.
+    for (const topic of searchReference(data.topics, 'sICH')) expect(JSON.stringify(topic), topic.id).toMatch(/\bsICH\b|symptomatic (?:intracranial|intracerebral) h(?:a)?emorrhage/i);
+    expect(normalizeSearch('ACT')).toBe('act');
+  });
 });
 
 describe('Calculators filter shares the normalizer', () => {
@@ -133,6 +168,9 @@ describe('bottom lines keep abbreviations whole', () => {
     ['Seen on Sept. 3 and again on Jan. 9 in clinic. Next.', 'Seen on Sept. 3 and again on Jan. 9 in clinic.'],
     ['See Ref. 12 for the methods. Then dose.', 'See Ref. 12 for the methods.'],
     ['Give IVT within 4.5 h of onset. Then reassess.', 'Give IVT within 4.5 h of onset.'],
+    // An all-capital acronym is not an abbreviation, so it still ends the sentence.
+    ['Bridging IVT is reasonable before MT. Then image.', 'Bridging IVT is reasonable before MT.'],
+    ['Refer to PT. Then review.', 'Refer to PT.'],
     ['Is it a stroke? Image now.', 'Is it a stroke?']
   ])('%s', (text, expected) => {
     expect(bottomLine(text)).toBe(expected);
