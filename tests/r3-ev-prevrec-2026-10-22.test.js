@@ -53,6 +53,8 @@ describe('r3 ev-prevrec: prevention cards', () => {
     expect(entry.access).toContain('archived full-text transcription');
     expect(entry.access).toContain('39585937, 39869715 not reconciled');
     expect(source(topic('carotid'), '39429201')).toBeTruthy();
+    // "Postdating both" applies to CREST-2 (2025-11-21) only; ACST-2 (PMID 34469763, 2021-08-29) predates AHA 2024.
+    expect(topic('carotid').summary).toContain('; ACST-2 (2021) found stenting and endarterectomy similar (5-year non-procedural stroke 5.3 vs 4.5%)');
   });
 
   it('discloses that the ESO PFO anticoagulation wording comes from the archived Table 12, not the abstract', () => {

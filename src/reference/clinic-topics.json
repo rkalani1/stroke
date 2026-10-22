@@ -260,7 +260,7 @@
       "within 2 weeks",
       "symptomatic stenosis"
     ],
-    "summary": "TIA or nondisabling stroke within 6 months with ipsilateral 70–99% stenosis: endarterectomy if perioperative stroke or death risk is <6% (AHA 2021, COR 1), ideally within 2 weeks (2a); 50–69%: endarterectomy depending on patient factors (COR 1); <50%: no revascularization (COR 3: No Benefit). At age ≥70 or within the first week, endarterectomy is preferred over stenting (2a). Asymptomatic: for >70% stenosis, AHA 2024 recommends shared decision-making on revascularization versus medical management (COR 1); at low perioperative risk, adding revascularization to intensive medical therapy may be reasonable (2b). ESO 2021 recommends endarterectomy for 60–99% stenosis at increased stroke risk on best medical therapy (moderate-quality evidence). Postdating both, CREST-2 (≥70%) found fewer 4-year events with stenting plus intensive medical management (2.8 vs 6.0%) but no significant benefit from endarterectomy (3.7 vs 5.3%); ACST-2 found stenting and endarterectomy similar (5-year non-procedural stroke 5.3 vs 4.5%).",
+    "summary": "TIA or nondisabling stroke within 6 months with ipsilateral 70–99% stenosis: endarterectomy if perioperative stroke or death risk is <6% (AHA 2021, COR 1), ideally within 2 weeks (2a); 50–69%: endarterectomy depending on patient factors (COR 1); <50%: no revascularization (COR 3: No Benefit). At age ≥70 or within the first week, endarterectomy is preferred over stenting (2a). Asymptomatic: for >70% stenosis, AHA 2024 recommends shared decision-making on revascularization versus medical management (COR 1); at low perioperative risk, adding revascularization to intensive medical therapy may be reasonable (2b). ESO 2021 recommends endarterectomy for 60–99% stenosis at increased stroke risk on best medical therapy (moderate-quality evidence). Postdating both, CREST-2 (≥70%) found fewer 4-year events with stenting plus intensive medical management (2.8 vs 6.0%) but no significant benefit from endarterectomy (3.7 vs 5.3%); ACST-2 (2021) found stenting and endarterectomy similar (5-year non-procedural stroke 5.3 vs 4.5%).",
     "recommendations": [
       {
         "text": "CEA is recommended for patients with TIA or nondisabling ischemic stroke within the past 6 months and ipsilateral severe (70-99%) carotid stenosis to reduce future stroke risk, provided the estimated perioperative morbidity and mortality is below 6%.",
@@ -289,8 +289,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/34414302/",
         "year": 2021,
         "type": "Guideline",
-        "checkedAt": "2026-10-21",
-        "access": "Primary abstract read 2026-10-21 (asymptomatic and symptomatic recommendations); full text not reviewed."
+        "checkedAt": "2026-10-22",
+        "access": "Primary abstract re-read 2026-10-22 (asymptomatic and symptomatic recommendations); full text not reviewed."
       }
     ],
     "related": [
