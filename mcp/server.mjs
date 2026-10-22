@@ -84,8 +84,9 @@ server.registerTool('calc_crcl',
     // Cockcroft–Gault defines the estimate only; the legacy renal-category bands have no maintained source here,
     // so agents compare rawValue with the specific drug label's CrCl thresholds instead.
     const { label, renalCategory, isLow, isBorderline, ...result } = reviewed || {};
-    // As in Encounter: an implausible height drives the obesity adjustment, so no adjusted-weight estimate is returned.
-    if (reviewed?.heightWarning) Object.assign(result, { adjBwValue: null, rawAdjBwValue: null, obesityWarning: null });
+    // As in Encounter: an implausible height drives the obesity adjustment, so no adjusted-weight estimate is returned;
+    // BMI and the obesity flag derive from the same height and are withheld with it.
+    if (reviewed?.heightWarning) Object.assign(result, { adjBwValue: null, rawAdjBwValue: null, obesityWarning: null, bmi: null, isObese: null });
     return ok({ tool: 'calc_crcl', result: reviewed && { ...result, thresholdNote: 'No renal-impairment category is assigned; compare rawValue with the specific drug label CrCl thresholds.' },
       ...(reviewed?.unitWarning ? { creatinineWarning: reviewed.unitWarning } : {}),
       ...(reviewed?.heightWarning ? { heightWarning: reviewed.heightWarning } : {}) });
