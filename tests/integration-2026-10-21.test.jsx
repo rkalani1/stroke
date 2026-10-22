@@ -65,8 +65,10 @@ describe('TIA readiness does not close warranted workup as "Not indicated" (ev-r
       'ECG / rhythm workup: recorded as not indicated; the AHA 2023 TIA statement considers it warranted for every TIA. Document the reason.'
     ]);
   });
-  it('still lets MRI be closed as not indicated, and a completed workup leaves no gaps', () => {
-    expect(encounterTiaReadiness(tia({ ...done, tiaMri: 'Not indicated' })).gaps).toEqual([]);
+  // 2026-10-22 (r3 encounter-notes#1): tia-ed-2023-12/-15 prefer MRI (ideally within 24 h) and list admission, transfer or a
+  // timely outpatient MRI when it is unavailable acutely; none calls it not indicated, so the gap stays with a reason prompt.
+  it('keeps MRI open when recorded as not indicated, and a completed workup leaves no gaps', () => {
+    expect(encounterTiaReadiness(tia({ ...done, tiaMri: 'Not indicated' })).gaps).toEqual(['MRI / DWI: recorded as not indicated; the AHA 2023 TIA statement prefers MRI, ideally within 24 h of symptom onset (if unavailable acutely: admission, transfer or a timely outpatient MRI). Document the reason.']);
     expect(encounterTiaReadiness(tia(done)).gaps).toEqual([]);
   });
 });

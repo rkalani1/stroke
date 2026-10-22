@@ -5,8 +5,9 @@ import { formatRecordedInstant, enteredTime } from './timestamp.js';
 const reviewLimit = 'complete eligibility and drug-specific treatment decision require review';
 const recordedText = value => typeof value === 'string' && value.trim() ? value.trim() : 'not documented';
 // A unit follows only a number; derived values use the CTP export precision (0.1 mL, ratio 0.01).
-const recordedNumber = (value, unit = '') => Number.isFinite(value) ? `${value}${unit}` : 'not documented or invalid';
-const rounded = (value, places) => { const result = Math.round(value * 10 ** places) / 10 ** places; return Number.isFinite(value) && Number.isFinite(result) ? result : value; };
+const recordedNumber = (value, unit = '') => Number.isFinite(value) || typeof value === 'string' ? `${value}${unit}` : 'not documented or invalid';
+// A value above a strict EXTEND threshold (ratio >1.2, mismatch >10 mL) that rounds onto it prints as ">edge", never as the edge.
+const rounded = (value, places, edge) => { const result = Math.round(value * 10 ** places) / 10 ** places; return !Number.isFinite(value) || !Number.isFinite(result) ? value : result === edge && value > edge ? `>${edge}` : result; };
 const recordedFinding = value => value === true ? 'yes' : value === false ? 'no' : 'not documented';
 
 // A sleep midpoint in the repeated fall-back hour stays flagged until its occurrence is chosen;
@@ -40,7 +41,8 @@ export function formatWakeUpScreenForExport(note = {}, now = new Date(), evaluat
       `No marked corresponding FLAIR hyperintensity: ${recordedFinding(workflow.flair?.noMarkedHyperintensity)}.`,
       `MRI lesion extent reviewed: ${recordedFinding(workflow.mriLesionExtentReviewed)}.`,
       `DWI lesion smaller than one-third MCA territory: ${recordedFinding(workflow.dwiLesionUnderOneThirdMCA)}.`,
-      ...notApplicable ? [] : [`Symptom discovery (date/time): ${recordedText(note.discoveryDate)} / ${recordedText(note.discoveryTime)}.`]
+      // The note's LKW line carries a recorded discovery time, with its offset and flags; a missing one is stated here.
+      ...notApplicable || note.discoveryDate || note.discoveryTime ? [] : ['Symptom discovery: not documented.']
     );
     if (workflow.dwi?.lesionVolume !== undefined && workflow.dwi?.lesionVolume !== null && String(workflow.dwi.lesionVolume).trim() !== '') {
       lines.push(`Recorded MRI lesion volume: ${recordedNumber(numericInput(workflow.dwi.lesionVolume, { min: 0 }), ' mL')}.`);
@@ -52,10 +54,8 @@ export function formatWakeUpScreenForExport(note = {}, now = new Date(), evaluat
     lines.push(
       `Screen source: ${screen.perfusionSource}.`,
       `Documented premorbid mRS: ${recordedNumber(numericInput(note.premorbidMRS, { min: 0, max: 6, integer: true }))}.`,
-      `Perfusion core: ${recordedNumber(perfusion.coreVolume, ' mL')}; total hypoperfused volume: ${recordedNumber(perfusion.penumbraVolume, ' mL')}; calculated mismatch volume: ${conflict || recordedNumber(rounded(perfusion.mismatchVolume, 1), ' mL')}; mismatch ratio: ${conflict || (perfusion.coreVolume === 0 && perfusion.penumbraVolume !== null ? 'not calculable (core 0)' : recordedNumber(rounded(perfusion.mismatchRatio, 2)))}.`,
-      note.lkwUnknown === true
-        ? `Sleep midpoint: ${sleepMidpointText(workflow.sleepMidpoint, now)}.`
-        : `Last known well (date/time): ${recordedText(note.lkwDate)} / ${recordedText(note.lkwTime)}.`
+      `Perfusion core: ${recordedNumber(perfusion.coreVolume, ' mL')}; total hypoperfused volume: ${recordedNumber(perfusion.penumbraVolume, ' mL')}; calculated mismatch volume: ${conflict || recordedNumber(rounded(perfusion.mismatchVolume, 1, 10), ' mL')}; mismatch ratio: ${conflict || (perfusion.coreVolume === 0 && perfusion.penumbraVolume !== null ? 'not calculable (core 0)' : recordedNumber(rounded(perfusion.mismatchRatio, 2, 1.2)))}.`,
+      ...note.lkwUnknown === true ? [`Sleep midpoint: ${sleepMidpointText(workflow.sleepMidpoint, now)}.`] : []
     );
   }
 

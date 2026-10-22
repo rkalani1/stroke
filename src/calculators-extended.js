@@ -353,12 +353,19 @@ export const evaluateLargeCoreEVT = (input = {}) => {
 
   // SELECT2 and LASTE did not impose a universal 100-mL upper core limit.
   const beyondTrialRange = false;
+  // NCT03702413: age ≥18 with no maximum; randomization within 6 h, or 6–24 h without a positive MRI-FLAIR lesion.
+  const limitSubset = 'Only the ≤6 h ASPECTS 3–5 subset is modeled; its 6–24 h DWI-ASPECTS 3–5 without FLAIR change subset is not evaluated.';
 
+  // Large-core counseling, kept here for maintainers (not shown): EVT improves disability outcomes in selected patients,
+  // while substantial disability may persist; symptomatic-hemorrhage rates and definitions differ across trials, so use
+  // trial-specific absolute risks instead of a pooled 6–7% assumption. No single AHA/ASA 2026 class (section 4.7.2) applies
+  // to every large-core profile. Sources: NEJM 2022 (LIMIT, PMID 35138767); NEJM 2023 (SELECT-2 36762865; ANGEL-ASPECT
+  // 36762852); Lancet 2023 (TENSION 37837989); JAMA 2024 (TESLA, PMID 39374319); NEJM 2024 (LASTE 38718358).
   return {
     eligible,
     bestMatch,
     matchingTrials: trial,
-    modeledSubsets: { LASTE: 'Only the age <80, ASPECTS 0–2, ≤6.5h subset is modeled here. Other LASTE age/imaging profiles and MRI-selected unknown onset are not evaluated; a missing match is not a trial exclusion.', 'RESCUE-Japan LIMIT': 'Only the ≤6 h ASPECTS 3–5 subset is modeled; its 6–24 h DWI-ASPECTS 3–5 without FLAIR change subset is not evaluated.' },
+    modeledSubsets: { LASTE: 'Only the age <80, ASPECTS 0–2, ≤6.5h subset is modeled here. Other LASTE age/imaging profiles and MRI-selected unknown onset are not evaluated; a missing match is not a trial exclusion.', 'RESCUE-Japan LIMIT': limitSubset },
     nihssSourceNote: 'NIHSS ≥6 follows the final LASTE/TESLA publications; registry >6 wording was adjudicated separately.',
     beyondTrialRange,
     aspects: Number.isFinite(asp) ? asp : null,
@@ -368,9 +375,7 @@ export const evaluateLargeCoreEVT = (input = {}) => {
     status: eligible ? 'partial-screen-met' : 'screen-not-met',
     rationale: eligible
       ? 'Partial age/severity/imaging/time screen overlaps ' + trial.join(', ') + '. Confirm all remaining imaging exclusions, time definitions, baseline function, and 2026 guideline criteria with the stroke team. This does not establish complete trial or EVT eligibility.' + (trial.includes('SELECT-2') && !Number.isFinite(asp) ? ' SELECT2 excluded NCCT ASPECTS 0–2; ASPECTS was not entered.' : '') + (coreGT100 ? ' A core above 100 mL is not outside all trial evidence; uncertainty increases with very extensive injury.' : '')
-      : ['No modeled positive-trial branch is met.', reasons.length ? `${reasons.join('; ')}.` : '', 'This partial screen is not a contraindication to EVT; review the 2026 guideline and complete imaging.'].filter(Boolean).join(' '),
-    sichCounseling: 'Large-core EVT improves disability outcomes in selected patients, while substantial disability may persist. Symptomatic-hemorrhage rates and definitions differ across trials; use trial-specific absolute risks instead of a pooled 6–7% assumption.',
-    guidelineClass: 'Use the 2026 AHA/ASA AIS guideline section 4.7.2 and complete patient criteria; no single recommendation class applies to every large-core profile.',
-    sources: 'NEJM 2022 (LIMIT, PMID 35138767); NEJM 2023 (SELECT-2 36762865; ANGEL-ASPECT 36762852); Lancet 2023 (TENSION 37837989); JAMA 2024 (TESLA, PMID 39374319); NEJM 2024 (LASTE 38718358)'
+      // The unmodeled LIMIT 6–24 h subset is named when the patient would otherwise fit LIMIT's NIHSS, mRS and ASPECTS.
+      : ['No modeled positive-trial branch is met.', reasons.length ? `${reasons.join('; ')}.` : '', 'This partial screen is not a contraindication to EVT; review the 2026 guideline and complete imaging.', aspects35 && t > 6 && t <= 24 && nihssOk && pmOk ? `RESCUE-Japan LIMIT: ${limitSubset}` : ''].filter(Boolean).join(' ')
   };
 };
