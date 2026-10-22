@@ -49,7 +49,9 @@ describe('trial screener', () => {
     const warfarin = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'warfarin', lastDOACDose: '2026-09-23T08:00' }), NOW);
     expect(warfarin.summary).toContain('warfarin/VKA, last dose >7 d');
     expect(warfarin.patch.exclusions).toMatchObject({ exDoacLmwhAtOnset: undefined, exOacWithin7d: false });
-    const recent = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ich', lastDOACType: 'apixaban', lastDOACDose: '2026-09-30T08:00' }), NOW);
+    // Since r3-trials (2026-10-22) use at onset needs a last dose ≤ 48 h before the LKW (or before now when no LKW
+    // is recorded); this dose is 2 h before the LKW and 76 h before now.
+    const recent = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ich', lastDOACType: 'apixaban', lastDOACDose: '2026-09-30T08:00', lkwDate: '2026-09-30', lkwTime: '10:00' }), NOW);
     expect(recent.patch).toMatchObject({ anticoagulant: 'doac', takingOac: true, exclusions: { exDoacLmwhAtOnset: true, exOacWithin7d: true, exXaDtiWithin48h: false } });
     expect(recent.summary).toContain('on DOAC');
   });

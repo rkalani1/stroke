@@ -73,7 +73,8 @@ export function buildSearchIndex(reference, { protocolSub = 'ischemic' } = {}) {
   (reference?.calculators || []).forEach(calc => records.push({ id: `calc:${calc.id}`, group: 'Calculators', title: calc.name, subtitle: calc.category, href: `#/tools/${calc.id}`, keywords: [calc.id, calc.category, ...(calc.aliases ? [calc.aliases] : [])].join(' ') }));
   (reference?.topics || []).forEach(topic => records.push({ id: `topic:${topic.id}`, group: 'Evidence', title: topic.title, subtitle: topic.category, href: `#/evidence/${topic.id}`, keywords: [topic.id, ...(topic.keywords || [])].join(' '), body: topic.summary }));
   (reference?.studies || []).forEach(study => records.push({ id: `study:${study.id}`, group: 'Studies', title: study.title, subtitle: String(study.year || ''), href: `#/evidence/${study.id}`, keywords: [study.id, ...(study.keywords || [])].join(' '), body: [study.question, study.population, study.result].join(' ') }));
-  (reference?.trials || []).forEach(trial => records.push({ id: `trial:${trial.acronym}`, group: 'Trials', title: trial.acronym, subtitle: trial.subtitle || '', href: '#/trials/database', keywords: [trial.nct, trial.keywords].filter(Boolean).join(' '), body: trial.body }));
+  // A trial opens the Database filtered to it.
+  (reference?.trials || []).forEach(trial => records.push({ id: `trial:${trial.acronym}`, group: 'Trials', title: trial.acronym, subtitle: trial.subtitle || '', href: `#/trials/database?q=${encodeURIComponent(trial.acronym)}`, keywords: [trial.nct, trial.keywords].filter(Boolean).join(' '), body: trial.body }));
   EXTERNAL.forEach(item => records.push({ ...item, group: 'External', id: `ext:${item.title}`, external: true }));
   return records.map(record => ({ ...record, _title: normalize(record.title), _titleCompact: compact(record.title), _keys: normalize(record.keywords), _keysCompact: compact(record.keywords), _body: normalize(record.body) }));
 }
