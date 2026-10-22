@@ -605,9 +605,9 @@ export function withClassification(state, classification) {
 
 // "NIHSS 7 (excludes 2 untestable items; 3 items set to 0 by bulk entry, not individually
 // scored)": the provenance of an Encounter total travels with it.
-const itemCount = n => `${n} item${n === 1 ? '' : 's'}`;
+const itemCount = (n, kind = '') => `${n} ${kind}item${n === 1 ? '' : 's'}`;
 export const untestableNote = (count, bulk = 0) => {
-  const notes = [count > 0 && `excludes ${itemCount(count)} untestable`, bulk > 0 && `${itemCount(bulk)} set to 0 by bulk entry, not individually scored`].filter(Boolean);
+  const notes = [count > 0 && `excludes ${itemCount(count, 'untestable ')}`, bulk > 0 && `${itemCount(bulk)} set to 0 by bulk entry, not individually scored`].filter(Boolean);
   return notes.length ? ` (${notes.join('; ')})` : '';
 };
 

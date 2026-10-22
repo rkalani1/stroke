@@ -22,7 +22,9 @@ const groupOf = (state, acronym) => {
 
 describe('preset onset bands that only touch a study limit at an endpoint (H3)', () => {
   it.each([
-    ['ischemic', '24h – 7d', 'STEP', /More than 24 h from LKW at screening/],
+    // STEP reads presentation to the enrolling hospital ≤ 24 h (NCT06289985), so the band alone leaves it
+    // unknown; with presentation after 24 h recorded it is not met (r3-trials, 2026-10-22).
+    ['ischemic', '24h – 7d', 'STEP', /Did not present to the enrolling hospital within 24 h of LKW/, { presentedWithin24h: false }],
     ['ischemic', '24h – 7d', 'SISTER', /Outside 4\.5–24 h/],
     ['ich', '24h – 7d', 'MINUTE', /16 hours/],
     ['ich', '7 – 30d', 'SATURN', /> 7 days/],
@@ -33,8 +35,8 @@ describe('preset onset bands that only touch a study limit at an endpoint (H3)',
     ['ischemic', '> 6mo', 'CLARITY', /> 180 days ago/],
     ['ischemic', '> 6mo', 'TELE-REHAB-2', /90-150 days/],
     ['ischemic', '7 – 30d', 'VERIFY', /24-96h/]
-  ])('%s %s resolves %s as not met', (classification, band, acronym, reason) => {
-    const r = evaluateAll(withPreset(classification, band));
+  ])('%s %s resolves %s as not met', (classification, band, acronym, reason, extra = {}) => {
+    const r = evaluateAll(withPreset(classification, band, extra));
     const item = r.excluded.find(i => i.trial.acronym === acronym);
     expect(item, `${acronym} should be excluded`).toBeTruthy();
     expect(item.exclusionReasons.join(' ')).toMatch(reason);

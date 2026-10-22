@@ -38,8 +38,11 @@ const verdict = (c, patch) => {
   const r = evaluateTrialEligibility(only(c), buildScreenerParams(S(patch)));
   return r.status === 'excluded' ? 'not met' : r.status === 'soon' ? 'before window' : r.completeness === 'potential-match' ? 'met' : 'unknown';
 };
+// An 'or' criterion is found by a field one of its branches reads (or the first one when field is null).
 const crit = (acronym, field, operator) => {
-  const found = trial(acronym).eligibility.criteria.find(c => (field ? c.field === field : c.operator === 'or') && (!operator || c.operator === operator));
+  const found = trial(acronym).eligibility.criteria.find(c => operator === 'or'
+    ? c.operator === 'or' && (!field || c.branches.some(b => b.criteria.some(cc => cc.field === field)))
+    : (field ? c.field === field : c.operator === 'or') && (!operator || c.operator === operator));
   if (!found) throw new Error(`No ${acronym} ${field} criterion`);
   return found;
 };
@@ -119,10 +122,11 @@ describe('profile corrections from the registry text read on 2026-10-21', () => 
     // MR-PICS "Severe Neglect as measured by NIH Stroke Scale Question 11 score of 2" and no outside OT/PT/speech therapy.
     expect(toConfirm(evaluate('ASPIRE', { classification: 'ich' })).join(' ')).toMatch(/no active infective endocarditis/);
     const scouts = toConfirm(evaluate('SCOUTS-3', { classification: 'ich' })).join(' ');
-    for (const re of [/pneumothorax, bullous emphysema/, /general anesthesia or conscious sedation within 48 h before the sleep study/, /CSF leak within 3 months/, /aspiration risk/]) expect(scouts).toMatch(re);
+    // r3-trials (2026-10-22): exclusion 6 is a history of pneumothorax; exclusion 11 includes pneumocephalus.
+    for (const re of [/history of pneumothorax or bullous emphysema/, /general anesthesia or conscious sedation within 48 h before the planned sleep study/, /CSF leak or pneumocephalus within 3 months/, /aspiration risk/]) expect(scouts).toMatch(re);
     expect(toConfirm(evaluate('VERIFY', { classification: 'ischemic' })).join(' ')).toMatch(/behavioral testing at 48–120 h, TMS at 72–168 h and MRI at 48–168 h/);
     const mrPics = toConfirm(evaluate('MR-PICS', { classification: 'ischemic' })).join(' ');
-    for (const re of [/NIHSS item 11 = 2/, /no outside occupational, physical or speech therapy/, /GDS > 10/]) expect(mrPics).toMatch(re);
+    for (const re of [/NIHSS item 11 = 2/, /occupational, physical or speech therapy outside the protocol/, /GDS > 10/]) expect(mrPics).toMatch(re);
     // NCT06506279 brief summary: "We will be structuring this study as an open prospective feasibility study."
     expect(trial('MR-PICS').sourceHypothesisText).toMatch(/^Open prospective feasibility study/);
   });
@@ -140,12 +144,14 @@ describe('criterion boundaries follow the registry wording', () => {
   // [study, field, operator or null, facts, expected, registry wording]
   const cases = [
     ['STEP', 'age', '>=', { age: 18 }, 'met', '"Age 18 years or older"'], ['STEP', 'age', '>=', { age: 17.9 }, 'not met', ''],
-    ['STEP', 'onsetHours', '<=', { onsetVal: 24 }, 'met', '"within 24 hours"'], ['STEP', 'onsetHours', '<=', { onsetVal: 24.01 }, 'not met', ''],
+    // "Presentation to enrolling hospital within 24 hours of last known well/stroke onset" (r3-trials, 2026-10-22).
+    ['STEP', 'onsetHours', 'or', { onsetVal: 24 }, 'met', '"within 24 hours"'], ['STEP', 'onsetHours', 'or', { onsetVal: 24.01 }, 'unknown', 'presentation time unknown'],
+    ['STEP', 'onsetHours', 'or', { onsetVal: 24.01, presentedWithin24h: false }, 'not met', ''], ['STEP', 'onsetHours', 'or', { onsetVal: 30, presentedWithin24h: true }, 'met', ''],
     ['STEP', 'aspects', '>=', { aspects: 6 }, 'met', '"CT ASPECT score <6" excluded'], ['STEP', 'aspects', '>=', { aspects: 5 }, 'not met', ''],
     ['STEP', 'preMrs', '<=', { preMrs: 2 }, 'met', '"Pre-stroke modified Rankin Scale score 0-2"'], ['STEP', 'preMrs', '<=', { preMrs: 3 }, 'not met', ''],
-    ['STEP', null, 'or', { vessel: 'ica_m1', nihss: 5 }, 'met', '"NIHSS 0-5" + intracranial ICA/M1'], ['STEP', null, 'or', { vessel: 'ica_m1', nihss: 0 }, 'met', ''],
-    ['STEP', null, 'or', { vessel: 'ica_m1', nihss: 6 }, 'not met', ''], ['STEP', null, 'or', { vessel: 'm2_m3_nd', nihss: 8 }, 'met', '"NIHSS > =8" + non-dominant M2/M3'],
-    ['STEP', null, 'or', { vessel: 'm2_m3_nd', nihss: 7 }, 'not met', ''], ['STEP', null, 'or', { vessel: 'ica_m1' }, 'unknown', ''],
+    ['STEP', 'vessel', 'or', { vessel: 'ica_m1', nihss: 5 }, 'met', '"NIHSS 0-5" + intracranial ICA/M1'], ['STEP', 'vessel', 'or', { vessel: 'ica_m1', nihss: 0 }, 'met', ''],
+    ['STEP', 'vessel', 'or', { vessel: 'ica_m1', nihss: 6 }, 'not met', ''], ['STEP', 'vessel', 'or', { vessel: 'm2_m3_nd', nihss: 8 }, 'met', '"NIHSS > =8" + non-dominant M2/M3'],
+    ['STEP', 'vessel', 'or', { vessel: 'm2_m3_nd', nihss: 7 }, 'not met', ''], ['STEP', 'vessel', 'or', { vessel: 'ica_m1' }, 'unknown', ''],
     ['SISTER', 'onsetHours', 'between', { onsetVal: 4.5 }, 'met', '"within 4.5 to 24 hours"'], ['SISTER', 'onsetHours', 'between', { onsetVal: 24 }, 'met', ''],
     ['SISTER', 'onsetHours', 'between', { onsetVal: 4.4 }, 'before window', ''], ['SISTER', 'onsetHours', 'between', { onsetVal: 24.1 }, 'not met', ''],
     ['SISTER', 'nihss', '>=', { nihss: 4 }, 'met', '"NIH Stroke Scale score ≥4"'], ['SISTER', 'nihss', '>=', { nihss: 3 }, 'not met', ''],
@@ -391,17 +397,18 @@ const optionsOf = (html, label) => {
   return [...select[1].matchAll(/<option value="([^"]*)"( selected="")?/g)].map(m => [m[1], Boolean(m[2])]);
 };
 const LABELS = {
-  presentedWithin24h: 'Presented ≤ 24 h from LKW', unilateralSymptomatic: 'Unilateral symptoms', ueWeakness: 'Upper-limb motor deficit',
+  presentedWithin24h: 'Presented ≤ 24 h from LKW', afOrFlutterHistory: 'Non-valvular AF or atrial flutter', unilateralSymptomatic: 'Unilateral symptoms', ueWeakness: 'Upper-limb motor deficit',
   self_consent: 'Able to self-consent', language: 'Fluent language', currentMrs: 'Current mRS', availability_54w: 'Available for the 54-week study',
   rehab: 'Inpatient rehab, stay ≥ 5 nights expected', abcd2: 'ABCD2 score', antithromboticSoc: 'Guideline antithrombotic therapy (aspirin, clopidogrel and/or ticagrelor)'
 };
 
 describe('study-specific facts have screener controls (TR-11 follow-up)', () => {
   const expected = {
-    ischemic: [['presentedWithin24h', ['TESTED']], ['unilateralSymptomatic', ['VERIFY']], ['ueWeakness', ['VERIFY', 'MR-PICS', 'TELE-REHAB-2']], ['self_consent', ['VERIFY', 'TELE-REHAB-2']],
+    // r3-trials (2026-10-22): STEP reads presentation ≤ 24 h; ASPIRE's AF-or-flutter fact has its own control.
+    ischemic: [['presentedWithin24h', ['STEP', 'TESTED']], ['unilateralSymptomatic', ['VERIFY']], ['ueWeakness', ['VERIFY', 'MR-PICS', 'TELE-REHAB-2']], ['self_consent', ['VERIFY', 'TELE-REHAB-2']],
       ['language', ['VERIFY']], ['currentMrs', ['MR-PICS']], ['availability_54w', ['MR-PICS']], ['rehab', ['SCOUTS-3']], ['antithromboticSoc', ['CLARITY']]],
     tia: [['abcd2', ['CLARITY']], ['antithromboticSoc', ['CLARITY']]],
-    ich: [['ueWeakness', ['TELE-REHAB-2']], ['self_consent', ['TELE-REHAB-2']], ['rehab', ['SCOUTS-3']]]
+    ich: [['afOrFlutterHistory', ['ASPIRE']], ['ueWeakness', ['TELE-REHAB-2']], ['self_consent', ['TELE-REHAB-2']], ['rehab', ['SCOUTS-3']]]
   };
 
   it('offers each fact only for the classifications whose screened profiles test it', () => {
@@ -410,7 +417,7 @@ describe('study-specific facts have screener controls (TR-11 follow-up)', () => 
   });
 
   it('leaves no modeled criterion without a control for any classification a study screens', () => {
-    const STATE_KEY = { exUeWeakness: 'ueWeakness', afOrFlutterHistory: 'afibHistory' };
+    const STATE_KEY = { exUeWeakness: 'ueWeakness' };
     // An or-branch whose own classification rule excludes this classification is not read (CLARITY's ABCD2 for ischemic stroke).
     const reads = (c, cls) => c.operator === 'or'
       ? c.branches.filter(b => !b.criteria.some(cc => cc.field === 'classification' && ![cc.value].flat().includes(cls))).flatMap(b => b.criteria.flatMap(cc => reads(cc, cls)))
@@ -660,7 +667,7 @@ describe('study-specific facts and the NIHSS note in a browser', () => {
         expect(small, theme).toEqual([]);
       }
       await page.getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).click();
-      expect(await heading()).toBe('Study-specific facts (1 of 3 answered)');
+      expect(await heading()).toBe('Study-specific facts (1 of 4 answered)');
       expect(await page.getByLabel('Unilateral symptoms', { exact: true }).count()).toBe(0);
       expect(await preview()).not.toMatch(/unilateral symptoms|fluent language|current mRS/);
       await page.getByRole('button', { name: 'Ischemic stroke', exact: true }).click();

@@ -250,17 +250,19 @@ describe('registry wording restored in to-confirm prompts', () => {
     expect(evaluate('TESTED', { classification: 'ischemic', vessel: 'ica_m1' }).matchedCriteria).toContain('Vessel is intracranial ICA/M1');
   });
 
-  it('SATURN prompts its registry secondary causes even after the shared answer is Absent (TO-9)', () => {
+  it('SATURN prompts its registry secondary causes and reads its own answer, not the shared one (TO-9, r3 2026-10-22)', () => {
     // NCT03936361 exclusion 1: "... vascular abnormality or tumor, trauma, venous infarction, or hemorrhagic transformation of an ischemic infarct."
+    // Since r3-trials SATURN has its own refiner item (exSaturnSecondaryCause): the shared item adds SAH and coagulopathy,
+    // which this list does not name, so the shared answer no longer decides SATURN.
     const un = toConfirm(evaluate('SATURN', { classification: 'ich' })).join(' ');
     for (const re of [/vascular abnormality/, /tumor/, /trauma/, /venous infarction/, /hemorrhagic transformation of an ischemic infarct/]) expect(un).toMatch(re);
-    expect(trial('SATURN').eligibility.exclusions.find(e => e.field === 'exSecondaryIch').pendingLabel).not.toMatch(/\bSAH\b/);
-    const absent = evaluate('SATURN', { classification: 'ich', exclusions: { exSecondaryIch: false } });
+    expect(trial('SATURN').eligibility.exclusions.find(e => e.field === 'exSaturnSecondaryCause').pendingLabel).not.toMatch(/\bSAH\b/);
+    const absent = evaluate('SATURN', { classification: 'ich', exclusions: { exSaturnSecondaryCause: false } });
     expect(absent.status).toBe('pending');
-    expect(toConfirm(absent).filter(l => /venous infarction/.test(l))).toHaveLength(1);
-    const present = evaluate('SATURN', { classification: 'ich', exclusions: { exSecondaryIch: true } });
+    expect(toConfirm(absent).some(l => /venous infarction/.test(l))).toBe(false);
+    const present = evaluate('SATURN', { classification: 'ich', exclusions: { exSaturnSecondaryCause: true } });
     expect(present.status).toBe('excluded');
-    expect(toConfirm(present).some(l => /venous infarction/.test(l))).toBe(false);
+    expect(evaluate('SATURN', { classification: 'ich', exclusions: { exSecondaryIch: true } }).status).toBe('pending');
   });
 
   it('SCOUTS-3 asks about the consent-giver language, never the patient language (TO-10)', () => {
