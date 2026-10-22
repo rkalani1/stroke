@@ -7,8 +7,8 @@ import { searchReference } from '../src/reference-search.js';
 import { readClinicalReference } from '../scripts/reference-data.mjs';
 const read = path => JSON.parse(fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8'));
 const canonical = readClinicalReference();
-// Review cutoff: source checkedAt dates may not postdate the latest evidence review (2026-10-21).
-const now = new Date('2026-10-21T23:59:59Z');
+// Review cutoff: source checkedAt dates may not postdate the latest evidence review (2026-10-22).
+const now = new Date('2026-10-22T23:59:59Z');
 const validate = data => validateClinicalReference(data, { now });
 const changed = change => { const data = structuredClone(canonical); change(data); return data; };
 
@@ -165,7 +165,8 @@ describe('bounded clinical-reference data', () => {
 
   it('quotes a curated set of graded guideline recommendations on high-yield topics', () => {
     const recs = canonical.topics.flatMap(topic => (topic.recommendations || []).map(rec => ({ ...rec, topic: topic.id })));
-    expect(recs).toHaveLength(82);
+    // 84 since 2026-10-22: pediatric-stroke quotes ais-2026-134 and -135 (archived transcription, table-28 p. 60).
+    expect(recs).toHaveLength(84);
     for (const rec of recs) expect(rec.source).toMatch(/AHA|NCS|SVIN/);
     const tnk = recs.find(rec => rec.id === 'ais-2026-98' && rec.topic === 'acute-reperfusion');
     expect(tnk).toMatchObject({ cor: '1', loe: 'A' });

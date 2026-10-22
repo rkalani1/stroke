@@ -22,7 +22,8 @@ const SCOPE = ['af-timing', 'secondary-prevention', 'pfo', 'carotid', 'sicas', '
 
 describe('prevention evidence cards (2026-10-21 review)', () => {
   it('still validates against the reference contract at the review date', () => {
-    expect(validateClinicalReference(data, { now: new Date('2026-10-21T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-10-22: the evidence-fixes pass re-read and re-dated sources that day.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
   });
 
   it('keeps every quoted recommendation on its archived class and level of evidence', () => {
@@ -53,8 +54,9 @@ describe('prevention evidence cards (2026-10-21 review)', () => {
 
   it('states early anticoagulation as the AHA 2026 2a and labels CATALYST as postdating its evidence review', () => {
     const card = topic('af-timing');
-    // ais-2026-154: "In carefully selected (e.g., milder severity) AIS patients with AF ... reasonable" (IIa, A).
-    expect(card.summary).toContain('Early anticoagulation is reasonable in carefully selected (e.g., milder) AF-associated ischemic stroke once hemorrhage is excluded (AHA 2026, 2a)');
+    // ais-2026-154: "a strategy of early oral anticoagulation ... is low risk and is reasonable" (IIa, A); "oral" keeps it
+    // apart from ais-2026-159 (early anticoagulation within 48 h, 3: No Benefit) (evidence-fixes 2026-10-22, BL-09).
+    expect(card.summary).toContain('Early oral anticoagulation is reasonable in carefully selected (e.g., milder) AF-associated ischemic stroke once hemorrhage is excluded (AHA 2026, 2a)');
     expect(card.summary).not.toMatch(/^Start the DOAC early/);
     // AHA 2026 abstract: search Sept–Dec 2024, additions through March 2025; CATALYST published June 2025.
     expect(card.summary).toContain('CATALYST (5,441 patients from 4 trials; published after the AHA 2026 evidence-review cutoff)');

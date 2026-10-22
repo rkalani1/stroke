@@ -485,8 +485,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42657476/",
     "year": 2026,
     "type": "Guideline",
-    "checkedAt": "2026-10-21",
-    "access": "Abstract read: published 2026-08-27, replaces the 2016 guideline (literature search June–October 2025). No PMC copy; recommendations not reviewed or quoted. Archive held only an access placeholder.",
+    "checkedAt": "2026-10-22",
+    "access": "PubMed record and abstract read: published online 2026-08-27 (Stroke 2026;57(10):e514–e658); replaces the 2016 guideline; literature since 2016 searched June–October 2025, so later evidence is not reflected. No PMC copy; recommendations not reviewed or quoted. Archive held only an access placeholder.",
     "topicIds": [
       "recovery"
     ]
@@ -823,8 +823,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/40401775/",
     "year": 2025,
     "type": "Guideline",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-22",
+    "access": "NLM title, PMID, DOI and abstract checked; PMC copy returned no body text; the BP consensus on the ICH card (>70 mm Hg, 110, >220, >30 mL, evacuation) is from the archived transcription. Interpret with newer evidence.",
     "topicIds": [
       "ich-management"
     ]
@@ -1005,8 +1005,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/35647308/",
     "year": 2022,
     "type": "Guideline",
-    "checkedAt": "2026-10-21",
-    "access": "PMC full text read (PMC9134774): no RCTs of IVT or MT in pregnancy; expert consensus statements. Erratum 37021188 not reconciled (PMC returned no body).",
+    "checkedAt": "2026-10-22",
+    "access": "PMC body text read (PMC9134774; recommendation and vote tables not in the retrieved text): no RCTs of IVT or MT in pregnancy or postpartum; expert consensus, not evidence-based recommendations; no IVT data <10 days after delivery. Search to 2020; interpret with newer evidence (AHA 2026 maternal statement). Erratum 37021188 not reconciled (PMC copy has no body).",
     "topicIds": [
       "maternal-stroke"
     ]
@@ -1123,8 +1123,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/41603019/",
     "year": 2026,
     "type": "Scientific statement",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence.",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract read; full statement not accessible. The severe-hypertension threshold, magnesium and transradial details come from the archived transcription (incomplete fragments) and were not verified against the full statement.",
     "topicIds": [
       "maternal-stroke"
     ]
@@ -1245,8 +1245,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/41608795/",
     "year": 2026,
     "type": "Scientific statement",
-    "checkedAt": "2026-10-01",
-    "access": "NLM title, PMID and DOI checked; full recommendations not reviewed. Interpret with newer evidence. Indexed correction(s) 42044236 not reconciled.",
+    "checkedAt": "2026-10-22",
+    "access": "PMC body text read (PMC13063836; Table and figures not in the retrieved text); correction 42044236 (Stroke 2026;57(5):e193) not reconciled; the 2026 AHA/ASA rehabilitation guideline was not reviewed for spasticity.",
     "topicIds": [
       "spasticity"
     ]
@@ -1314,7 +1314,8 @@
       "bp-prevention",
       "antiphospholipid-syndrome",
       "fibromuscular-dysplasia",
-      "imaging-follow-up"
+      "imaging-follow-up",
+      "sleep-brain-health"
     ]
   },
   {
@@ -1387,7 +1388,8 @@
     "access": "Key-point statements (ungraded) from the archived full-text transcription (reviewed 2026-09-30); quoted in the topic cards.",
     "topicIds": [
       "tia-evaluation",
-      "stroke-classification"
+      "stroke-classification",
+      "imaging-follow-up"
     ]
   }
 ]

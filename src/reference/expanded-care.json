@@ -16,21 +16,21 @@
       "eclampsia",
       "breastfeeding"
     ],
-    "summary": "Pregnancy should not delay evidence-based stroke evaluation or treatment (AHA 2026 maternal statement); CT, CTA and noncontrast MRI are safe. There are no reperfusion RCTs in pregnancy: ESO 2022 expert consensus supports thrombectomy and, after individual risk–benefit review, IVT. Severe hypertension (≥160/110 confirmed within 15 minutes) is an emergency; magnesium and antihypertensives are the cornerstones for preeclampsia and eclampsia. Consider ICH, SAH, CVT, RCVS and PRES as well as ischemic stroke, especially postpartum.",
+    "summary": "Pregnancy should not delay evidence-based treatment of acute stroke, and CT, CTA and noncontrast MRI are safe (AHA 2026 maternal statement), but IVT needs an individual risk–benefit review (ESO 2022 consensus). No reperfusion RCT included pregnant or postpartum patients; ESO 2022 expert consensus supports thrombectomy for LVO (preferred over IVT whenever possible) and IVT (in pregnancy by majority), not withheld if thrombectomy is unavailable; ESO found no IVT data within 10 days of delivery. Severe hypertension (systolic ≥160 or diastolic ≥110 mm Hg, confirmed within 15 minutes) is an emergency; magnesium and antihypertensives are the cornerstones for preeclampsia and eclampsia. Consider ICH, SAH, CVT, RCVS and PRES as well as ischemic stroke, especially postpartum.",
     "consider": [
       "Establish the pregnancy or postpartum stage, blood pressure and likely mechanism.",
       "Involve vascular neurology and maternal-fetal medicine early; a transradial approach is preferred for endovascular procedures when possible.",
       "Plan for infant care, breastfeeding and rehabilitation support."
     ],
-    "caution": "Acute stroke is not by itself an indication for delivery, and the statement supplies no universal antithrombotic choice.",
+    "caution": "Acute stroke alone is not an indication for immediate delivery; stabilize the mother first, and the statement supplies no universal antithrombotic choice.",
     "sources": [
       {
-        "title": "AHA Maternal Stroke in Pregnancy and Postpartum Scientific Statement 2026",
+        "title": "Prevention and Treatment of Maternal Stroke in Pregnancy and Postpartum: A Scientific Statement From the American Heart Association",
         "url": "https://pubmed.ncbi.nlm.nih.gov/41603019/",
         "year": 2026,
         "type": "Scientific statement",
-        "checkedAt": "2026-10-21",
-        "access": "Primary abstract read; full statement not accessible."
+        "checkedAt": "2026-10-22",
+        "access": "Primary abstract read; full statement not accessible. The severe-hypertension threshold, magnesium and transradial details come from the archived transcription (incomplete fragments) and were not verified against the full statement."
       }
     ],
     "related": [
@@ -62,7 +62,8 @@
       "hypercoagulability",
       "NBTE",
       "cancer-related stroke",
-      "oncology"
+      "oncology",
+      "cancer evaluation"
     ],
     "summary": "Complete the usual arterial and cardiac workup before blaming active cancer: it can coexist with conventional mechanisms or cause thrombosis directly. The 2026 AHA statement grades the certainty of cancer-related causation and highlights how uncertain treatment remains.",
     "consider": [
@@ -99,7 +100,7 @@
       "reperfusion",
       "baseline function"
     ],
-    "summary": "Prior disability or dementia was usually excluded from reperfusion trials, but observational data show many patients can return to their own baseline. AHA/ASA AIS 2026, ICA or M1 occlusion within 6 h with NIHSS ≥6 and ASPECTS ≥6: EVT is reasonable at prestroke mRS 2 (2a) and might be reasonable at mRS 3–4 (2b). Decide with the actual baseline, supports and the outcomes the patient values.",
+    "summary": "Prior disability or dementia was usually excluded from reperfusion trials, and observational data suggest many treated patients can return to their own baseline despite a worse overall prognosis; AHA/ASA AIS 2026, ICA or M1 occlusion within 6 h with NIHSS ≥6 and ASPECTS ≥6: EVT is reasonable at prestroke mRS 2 (2a) and might be reasonable at mRS 3–4 (2b). Decide with the actual baseline, supports and the outcomes the patient values.",
     "consider": [
       "What were the patient’s actual baseline function, supports and valued activities?",
       "What additional disability might this stroke cause, and what outcome would the patient consider worthwhile?",
@@ -108,18 +109,22 @@
     "caution": "Prior disability alone does not decide treatment, and observational benefit does not apply to every patient.",
     "sources": [
       {
-        "title": "AHA Scientific Statement 2022: EVT and Thrombolysis in AIS With Premorbid Disability or Dementia",
+        "title": "Endovascular Treatment and Thrombolysis for Acute Ischemic Stroke in Patients With Premorbid Disability or Dementia: A Scientific Statement From the American Heart Association/American Stroke Association",
         "url": "https://pubmed.ncbi.nlm.nih.gov/35343235/",
         "year": 2022,
         "type": "Scientific statement",
-        "checkedAt": "2026-10-21",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-22",
+        "access": "Primary abstract checked: proposes principles rather than COR/LOE-graded recommendations; the 2a/2b grades on this card are from AHA/ASA AIS 2026 (ais-2026-118/119)."
       }
     ],
     "related": [
       {
         "label": "mRS descriptors",
         "href": "#/tools/mrs-descriptors"
+      },
+      {
+        "label": "EVT selection",
+        "href": "#/evidence/evt-selection"
       }
     ]
   },
@@ -139,7 +144,7 @@
       "noncardiac surgery",
       "perioperative antithrombotics"
     ],
-    "summary": "Before noncardiac, nonneurological surgery, include recent stroke, vascular disease and the procedure in the risk discussion and plan antithrombotic changes as a team; after surgery, any new deficit should trigger the stroke pathway with prompt imaging (AHA statement).",
+    "summary": "After noncardiac, nonneurological surgery, any new deficit should trigger the stroke pathway with prompt imaging, preferring thrombectomy for LVO and weighing surgical-site bleeding before IVT (AHA 2021 statement). Before such surgery, include recent stroke, vascular disease and the procedure in the risk discussion and plan antithrombotic changes as a team.",
     "consider": [
       "Are recent stroke history, vascular disease and the proposed procedure included in the risk discussion?",
       "Are perioperative medication changes and the responsible teams clearly documented?"
@@ -151,8 +156,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/33827230/",
         "year": 2021,
         "type": "Scientific statement",
-        "checkedAt": "2026-10-01",
-        "access": "Primary abstract checked; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-22",
+        "access": "Primary abstract read; the thrombectomy-preference and surgical-site-bleeding points come from the archived transcription (incomplete fragments); full statement not reviewed."
       },
       {
         "title": "2024 AHA/ACC perioperative cardiovascular management for noncardiac surgery: official overview",
@@ -221,7 +226,7 @@
       "arteriopathy",
       "child stroke"
     ],
-    "summary": "Suspect stroke in any child with a sudden focal deficit, including a first seizure (AHA 2026, COR 1). Image with MRI/MRA, or CT/CTA if MRI is not available within 25 minutes (2a). Alteplase may be considered from 28 days to 18 years within 4.5 h for a disabling deficit (2b). EVT by experienced neurointerventionalists can be effective for LVO at age 6 or older within 6 h, or 6–24 h with salvageable tissue (2a), and may be reasonable from 28 days to 6 years within 24 h with salvageable tissue (2b).",
+    "summary": "Suspect stroke in any child with a sudden focal deficit, including a first seizure (AHA 2026, COR 1). Image with MRI/MRA, or CT/CTA if MRI is not available within 25 minutes (2a). Alteplase may be considered from 28 days to 18 years within 4.5 h for a disabling deficit (2b). EVT by experienced neurointerventionalists can be effective for LVO at age 6 or older within 6 h, or 6–24 h with salvageable tissue (2a). EVT by neurointerventionalists with pediatric experience may be reasonable from 28 days to 6 years within 24 h with salvageable tissue (2b).",
     "recommendations": [
       {
         "text": "In pediatric patients with sudden-onset focal neurological deficits, including first-time seizure, acute stroke is recommended to be suspected to enable timely diagnosis.",
@@ -243,6 +248,20 @@
         "loe": "B-NR",
         "source": "AHA/ASA AIS 2026 · ais-2026-133 · p. 60",
         "id": "ais-2026-133"
+      },
+      {
+        "text": "In pediatric patients 6 years or older with ischemic stroke due to LVO, presenting 6-24 hours from symptom onset with potentially salvageable brain tissue, EVT can be effective to improve functional outcomes.",
+        "cor": "2a",
+        "loe": "B-NR",
+        "source": "AHA/ASA AIS 2026 · ais-2026-134 · p. 60",
+        "id": "ais-2026-134"
+      },
+      {
+        "text": "In pediatric patients aged 28 days to 6 years with acute neurological symptoms (including first-time seizure) and AIS due to LVO within 24 hours of symptom onset with potentially salvageable brain tissue, EVT by neurointerventionalists with pediatric experience may be reasonable to improve functional outcomes.",
+        "cor": "2b",
+        "loe": "B-NR",
+        "source": "AHA/ASA AIS 2026 · ais-2026-135 · p. 60",
+        "id": "ais-2026-135"
       }
     ],
     "consider": [
@@ -280,7 +299,7 @@
       "transcranial Doppler",
       "TCD"
     ],
-    "summary": "New neurological symptoms in sickle cell disease need urgent stroke and hematology assessment together. Eligible adults can receive IVT without excess sICH or other thrombolytic complications (AHA 2026, 2a). ASH guidance covers overt stroke, silent cerebral injury and prevention; transfusion and disease-modifying decisions belong with the treating specialists.",
+    "summary": "New neurological symptoms in sickle cell disease need urgent joint stroke and hematology care, including transfusion decisions, and eligible adults can receive IVT without excess sICH or other thrombolytic complications (AHA 2026, 2a). ASH guidance covers overt stroke, silent cerebral injury and prevention; disease-modifying decisions belong with the treating specialists.",
     "consider": [
       "Are the sickle cell genotype, prior cerebral events and preventive treatment history known?",
       "Is the age- and disease-specific screening and follow-up plan clear?"
@@ -321,7 +340,7 @@
       "Does a concerning screen or clinical change need specialist assessment?",
       "Are hydration, oral care and reassessment in the plan?"
     ],
-    "caution": "A screening result is not the full swallowing diagnosis; in FOOD, early PEG increased death or poor outcome versus nasogastric feeding (P=0.05).",
+    "caution": "A screening result is not the full swallowing diagnosis; in FOOD, early PEG increased death or poor outcome versus nasogastric feeding (P=0.05), without a difference in death alone.",
     "sources": [
       {
         "title": "European Stroke Organisation and European Society for Swallowing Disorders guideline for the diagnosis and treatment of post-stroke dysphagia",
@@ -330,6 +349,14 @@
         "type": "Guideline",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
+      },
+      {
+        "title": "Effect of timing and method of enteral tube feeding for dysphagic stroke patients (FOOD): a multicentre randomised controlled trial",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/15733717/",
+        "year": 2005,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-22",
+        "access": "Primary abstract read: PEG vs nasogastric trial (n=321): death or poor outcome +7.8% (95% CI 0.0–15.5; P=0.05); death +1.0% (P=0.9)."
       }
     ],
     "related": []
@@ -348,10 +375,11 @@
       "dysphagia",
       "antibiotics"
     ],
-    "summary": "Diagnose stroke-associated pneumonia with standardized criteria (chest CT and CRP can add value), not from a risk score (ESO 2026). Prevent it with swallow screening, oral care, positioning and mobilization; do not give prophylactic antibiotics (AHA/ASA AIS 2026, COR 3: No Benefit; ESO 2026). Once diagnosed, start empirical antibiotics promptly, guided by local protocols for aspiration-associated pathogens.",
+    "summary": "Diagnose stroke-associated pneumonia with standardized criteria (e.g., PISCES probable or definite), not from a risk score; chest CT or CRP may add value in selected cases (ESO 2026). Prevent it with swallow screening, oral care, positioning and early mobilization within 48 h (ESO 2026), avoiding high-dose, very early mobilization within 24 h of onset (AHA/ASA AIS 2026, COR 3: Harm); do not give prophylactic antibiotics (AHA/ASA AIS 2026, COR 3: No Benefit; ESO 2026). Once SAP is diagnosed, take cultures where feasible and start empirical antibiotics promptly under local protocols for aspiration-associated pathogens (onset >7 days after stroke: hospital-acquired pneumonia protocols); give at least 5 days guided by response and stop early if SAP is refuted (ESO 2026 expert consensus).",
     "consider": [
-      "Is pneumonia supported by a clinical assessment rather than a risk score alone?",
-      "Have swallowing, positioning, mobility and nutritional needs been reviewed?"
+      "Is pneumonia diagnosed by standardized criteria rather than a risk score or CRP alone?",
+      "Have swallowing, positioning, mobility and nutritional needs been reviewed?",
+      "Has the regimen been reviewed against cultures and local microbiology for de-escalation or stopping?"
     ],
     "caution": "Most ESO recommendations rest on expert consensus because direct evidence is limited.",
     "sources": [
@@ -360,8 +388,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42095755/",
         "year": 2026,
         "type": "Guideline",
-        "checkedAt": "2026-10-21",
-        "access": "Primary abstract read; full recommendation tables not reviewed."
+        "checkedAt": "2026-10-22",
+        "access": "PMC full text read (PMC13151663); recommendation boxes and synoptic table (images) not in the retrieved text."
       }
     ],
     "related": []
@@ -417,13 +445,13 @@
       "aphasia",
       "medical complications"
     ],
-    "summary": "Watch for infection, cardiac events, hyperglycemia, fever and delirium. Keep persistent hyperglycemia at 140–180 mg/dL rather than 80–130 (SHINE: no benefit, severe hypoglycemia 2.6%), treat fever to normothermia, and avoid routine bladder catheters (AHA 2026, COR 3: Harm).",
+    "summary": "Watch for infection (pneumonia, urinary), fever, hyperglycemia, VTE, acute kidney injury, GI bleeding, urinary retention, cardiac events and delirium, which cluster early after stroke and worsen outcomes. In ischemic stroke (AHA 2026): treat persistent hyperglycemia to 140–180 mg/dL with close monitoring (2a) but not with IV insulin to 80–130 (COR 3: No Benefit; SHINE vs a sliding-scale 80–179 target: no functional benefit, severe hypoglycemia 2.6% vs none); target normothermia in fever (COR 1); avoid routine indwelling bladder catheters (COR 3: Harm). ICH glucose and temperature targets differ (see the ICH card).",
     "consider": [
       "Have new systemic symptoms or laboratory changes been assessed alongside the neurological course?",
       "Could aphasia be limiting the examination, and does fluctuating attention need broader reassessment?",
       "Do medical, nursing and rehabilitation teams share a complication plan?"
     ],
-    "caution": "A bedside impression cannot exclude an acute cause of change.",
+    "caution": "A bedside impression cannot exclude an acute cause of change; aphasia, delirium and neurological worsening can coexist.",
     "sources": [
       {
         "title": "AHA Systemic Complications of Acute Stroke Scientific Statement 2024",
@@ -442,7 +470,16 @@
         "access": "Official summary read for differential assessment, comorbid delirium, home safety, driving and work considerations; full statement not re-reviewed."
       }
     ],
-    "related": []
+    "related": [
+      {
+        "label": "Follow-up imaging",
+        "href": "#/evidence/imaging-follow-up"
+      },
+      {
+        "label": "ICH first-hour targets",
+        "href": "#/evidence/ich-management"
+      }
+    ]
   },
   {
     "id": "vte-prevention",
@@ -459,7 +496,7 @@
       "heparin",
       "thromboprophylaxis"
     ],
-    "summary": "Immobile after ischemic stroke: intermittent pneumatic compression (AHA/ASA AIS 2026, COR 1; CLOTS 3, started within 3 days of admission: proximal DVT 8.5 vs 12.1%), and prophylactic-dose UFH or LMWH is reasonable (2a). Do not use elastic compression stockings (COR 3: Harm). Nonambulatory after ICH: IPC from the day of diagnosis (AHA 2022, COR 1); low-dose UFH or LMWH can be useful (2a), and starting it 24–48 h after onset may be reasonable (2b).",
+    "summary": "Immobile after ischemic stroke: intermittent pneumatic compression unless contraindicated (AHA/ASA AIS 2026, COR 1; CLOTS 3, started within 3 days of admission: proximal DVT 8.5 vs 12.1%), and prophylactic-dose UFH or LMWH is reasonable to reduce VTE (2a), although a survival benefit is not well established (2b). Do not use elastic compression stockings (COR 3: Harm). Nonambulatory after ICH: IPC from the day of diagnosis (AHA 2022, COR 1); low-dose UFH or LMWH can be useful (2a), and starting it 24–48 h after onset may be reasonable (2b), weighing VTE prevention against hematoma expansion.",
     "consider": [
       "What are the current mobility, VTE and bleeding risks?",
       "Is IPC fitted and worn as intended, with skin checks?",
@@ -474,6 +511,14 @@
         "type": "Guideline",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
+      },
+      {
+        "title": "Effectiveness of intermittent pneumatic compression in reduction of risk of deep vein thrombosis in patients who have had a stroke (CLOTS 3): a multicentre randomised controlled trial",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/23727163/",
+        "year": 2013,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-22",
+        "access": "Primary abstract read: immobile patients enrolled day 0–3 of admission; proximal DVT 8.5 vs 12.1%; skin breaks 3 vs 1%. Indexed correction notices not reconciled."
       }
     ],
     "related": []
@@ -494,7 +539,7 @@
       "pain",
       "range of motion"
     ],
-    "summary": "Recognize poststroke spasticity early — pain, hygiene, positioning or care tasks affected by tone — and refer for rehabilitation assessment before contracture sets in. The AHA 2026 statement defines early treatment as within 3 months; botulinum toxin has the most early-treatment evidence, and severe initial weakness or NIHSS ≥10 raises risk.",
+    "summary": "Recognize poststroke spasticity early — pain, hygiene, positioning, mobility or care tasks affected by tone or restricted movement — and refer for rehabilitation assessment before contracture and secondary impairment set in. The AHA 2026 statement defines early treatment as within 3 months of stroke onset (a working definition); for established spasticity, botulinum toxin has the most early-treatment evidence (mainly short-term reduction in muscle overactivity; functional gains less consistent). Higher risk: severe initial sensorimotor impairment, early hyperreflexia or spasticity, hemorrhage, NIHSS ≥10, or lesions >3 cm or in the corticospinal tract, internal capsule, basal ganglia or brainstem.",
     "consider": [
       "What active and passive functional goals matter to the patient and caregiver?",
       "Is timely specialist or rehabilitation assessment needed?"
@@ -506,8 +551,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/41608795/",
         "year": 2026,
         "type": "Scientific statement",
-        "checkedAt": "2026-10-21",
-        "access": "PMC full text read (PMC13063836); correction 42044236 not reconciled."
+        "checkedAt": "2026-10-22",
+        "access": "PMC body text read (PMC13063836; Table and figures not in the retrieved text); correction 42044236 (Stroke 2026;57(5):e193) not reconciled; the 2026 AHA/ASA rehabilitation guideline was not reviewed for spasticity."
       }
     ],
     "related": []
@@ -529,12 +574,12 @@
       "comprehension",
       "delirium"
     ],
-    "summary": "Offer individually tailored speech-language therapy aimed at the communication activities that matter to the patient: at least 20 h in total (ESO 2025, recommended), ideally ≥3 h a week on ≥4 days (suggested), in person, digitally or in groups. Offer tDCS only within trials.",
+    "summary": "Offer speech-language therapy of at least 20 h in total (ESO 2025, recommended), ideally ≥3 h a week on ≥4 days (suggested), tailored to the communication activities that matter to the patient and to language-task difficulty, in person with digital augmentation, one-to-one or in groups (all suggested). Use tDCS alongside therapy only within high-quality trials (ESO expert consensus; benefit uncertain).",
     "consider": [
       "Are assessment and shared decisions adapted to language impairment?",
       "Is the therapy plan feasible, sufficiently supported and reassessed as needs change?"
     ],
-    "caution": "Aphasia does not establish impaired decision-making capacity, and evidence certainty differs across therapy comparisons.",
+    "caution": "Aphasia does not establish impaired decision-making capacity; the ≥20 h recommendation rests on low-quality evidence, and certainty differs across therapy comparisons.",
     "sources": [
       {
         "title": "ESO Guideline 2025: Aphasia Rehabilitation",
@@ -564,7 +609,7 @@
       "vision",
       "perception"
     ],
-    "summary": "Screen every stroke patient for visual problems — central vision, eye movements, visual fields, neglect and perception — with a validated tool, ideally in the first week (ESO 2025, suggested; feasible by 3–4 days). Refer eye-movement disorders to specialist eye services and offer visual scanning training for field loss.",
+    "summary": "Screen every adult with stroke for visual problems — central vision, eye movements, visual fields, neglect and perception — ideally by eye-team assessment or at least with a validated tool, because many patients cannot report visual symptoms (ESO 2025, suggested). Screen early: by ESO expert consensus this is feasible within 3–4 days and most patients can be assessed within the first week (timing is not an evidence-based recommendation). Refer eye-movement disorders to specialist eye services (meanwhile, partial or total occlusion can relieve diplopia; total occlusion leaves the patient monocular), start compensatory visual scanning training for field loss as early as feasible, and individualize neglect and perceptual treatment with occupational therapy, neuropsychology and eye-care teams (ESO 2025, suggested).",
     "consider": [
       "Has the patient been assessed for the relevant type of visual impairment?",
       "Do reading, mobility or daily activities require adaptations and specialist input?",
@@ -581,7 +626,12 @@
         "access": "PMC full text read (PMC12098360)."
       }
     ],
-    "related": []
+    "related": [
+      {
+        "label": "Acute retinal ischemia and CRAO",
+        "href": "#/evidence/retinal-ischemia"
+      }
+    ]
   },
   {
     "id": "motor-recovery",
@@ -600,7 +650,7 @@
       "exercise",
       "mobility"
     ],
-    "summary": "ESO 2025: add at least 20 h of repetitive upper-limb practice (weak, very low certainty); offer high-intensity gait training to improve walking endurance in chronic stroke with stable cardiovascular status (strong, moderate certainty); add sit-to-stand training for balance (weak, moderate certainty).",
+    "summary": "ESO 2025: add at least 20 h of repetitive upper-limb practice (weak, very low certainty) to improve arm capacity; offer high-intensity gait training to improve walking endurance in chronic stroke with stable cardiovascular status (strong, moderate certainty); add sit-to-stand training for balance (weak, moderate certainty).",
     "consider": [
       "Which movement and participation goals are being measured over time?",
       "Is practice linked to tasks the patient needs in daily life?",
@@ -636,7 +686,7 @@
       "psychosocial",
       "caregiver"
     ],
-    "summary": "Screen for depression with a structured inventory (AHA/ASA AIS 2026, COR 1) and treat it with antidepressants and/or psychotherapy or other nonpharmacological options (COR 1). Ask about anxiety, fatigue and stress, and give patients and families education and access to interdisciplinary support.",
+    "summary": "Screen for depression with a structured inventory (AHA/ASA AIS 2026, COR 1) and treat diagnosed depression (not a positive screen alone) with antidepressants and/or psychotherapy or other nonpharmacological options (COR 1). Ask about anxiety, fatigue and stress, and give patients and families education and access to interdisciplinary support.",
     "consider": [
       "Which emotional symptoms or fatigue are limiting recovery or daily life?",
       "Is a concerning screen followed by clinical assessment and a practical care pathway?"
@@ -675,7 +725,7 @@
       "transportation",
       "return to work"
     ],
-    "summary": "Discuss driving and return to work explicitly at follow-up. After seizures, the AAN 2025 position is that licensing should ordinarily require at least 3 seizure-free months, extended individually; exclusively provoked seizures unlikely to recur may need no interval, and driving should pause during and after an antiseizure-medication taper unless another is started.",
+    "summary": "Discuss driving and return to work explicitly at follow-up, before the patient resumes either; seizures, cognitive impairment and medication effects can make driving unsafe. After seizures, the AAN 2025 position is that licensing should ordinarily require at least 3 seizure-free months, extended individually; exclusively provoked seizures unlikely to recur may need no interval, and driving should pause during and after an antiseizure-medication taper unless another is started.",
     "consider": [
       "Are seizures, cognition, vision, motor function or medication effects relevant to the intended activity?",
       "Have the applicable licensing rules and any specialist assessment requirements been checked?",
@@ -794,7 +844,7 @@
       "circadian",
       "STOP-Bang"
     ],
-    "summary": "Ask about sleep and screen for sleep-disordered breathing and insomnia, then confirm with diagnostic testing rather than assuming a diagnosis. Disturbed sleep is linked with worse cerebrovascular and cognitive outcomes, but treatment effects on those outcomes are not established (AHA 2024).",
+    "summary": "Ask about sleep and insomnia, and consider evaluating ischemic stroke or TIA patients for sleep apnea (AHA 2021, 2b) with diagnostic testing rather than a questionnaire alone. Disturbed sleep is linked with worse cerebrovascular and cognitive outcomes, but treatment effects on those outcomes are not established (AHA 2024).",
     "consider": [
       "Are sleep-disordered breathing, insomnia or other sleep symptoms affecting recovery?",
       "Does screening warrant diagnostic evaluation rather than an assumed diagnosis?",
@@ -870,7 +920,7 @@
       "microbleeds",
       "thrombolysis"
     ],
-    "summary": "Ask every suspected stroke patient about antiamyloid antibodies (lecanemab, donanemab). ARIA edema can mimic stroke and may be missed on CT/CTA, and fatal hemorrhages after IV thrombolysis have been reported. Appropriate-use recommendations advise against thrombolysis in treated patients (donanemab: unless MRI unequivocally excludes ARIA); the donanemab AUR says thrombectomy without thrombolysis should be considered for LVO.",
+    "summary": "Ask every suspected stroke patient about antiamyloid antibodies (lecanemab, donanemab): appropriate-use recommendations advise against thrombolysis in treated patients (donanemab: unless MRI unequivocally excludes ARIA), and the donanemab AUR says thrombectomy without thrombolysis should be considered for LVO. ARIA edema can mimic stroke and may be missed on CT/CTA, and fatal hemorrhages after IV thrombolysis have been reported.",
     "consider": [
       "Is current or recent antiamyloid treatment known, and when was the last infusion?",
       "Could the presentation and imaging reflect ARIA, ischemia or another process?",
@@ -969,7 +1019,7 @@
       "destination",
       "virtual network"
     ],
-    "summary": "Without in-house stroke expertise, use telestroke for IVT decisions (AHA 2026, COR 1) and teleradiology for rapid image review (COR 1); EMS should go to the closest stroke-capable hospital. For suspected LVO, direct transport to a locally accessible thrombectomy center is reasonable (2a), but bypassing a proficient local stroke center for a distant one did not improve outcome (COR 3: No Benefit). Agree transfer protocols that minimize door-in-door-out time (COR 1).",
+    "summary": "Without in-house stroke expertise, use telestroke for IVT decisions (AHA 2026, COR 1) and teleradiology for rapid image review (COR 1); EMS should go to the closest appropriate stroke-capable hospital (COR 1), although for suspected LVO direct transport to a locally accessible thrombectomy center is reasonable (2a). In contrast, bypassing a proficient local stroke center for a distant one did not improve outcome (COR 3: No Benefit). Agree transfer protocols that minimize door-in-door-out time (COR 1).",
     "consider": [
       "What imaging, specialist and treatment capabilities are available at the referring and receiving sites?",
       "Are clinical information, images and the transfer plan shared through a reliable process?",

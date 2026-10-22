@@ -19,7 +19,8 @@ const labelDose = kg => LABEL_BANDS.find(([low, high]) => kg >= low && kg < high
 
 describe('ev-acute Evidence cards (2026-10-21)', () => {
   it('still validates against the reference contract on the review date', () => {
-    expect(validateClinicalReference(data, { now: new Date('2026-10-21T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-10-22: the evidence-fixes pass re-read and re-dated sources that day.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
   });
 
   it('separates the US label scope and weight bands from the guideline dose on the thrombolytic-choice card', () => {
@@ -74,13 +75,17 @@ describe('ev-acute Evidence cards (2026-10-21)', () => {
     // ESO 2025 update abstract (PMID 42095756): "Routine use of vasopressors to raise BP in AIS patients with
     // neurological deterioration who are not treated with acute reperfusion therapies is discouraged (low-certainty evidence)."
     expect(card.consider[1]).toContain('For neurological deterioration without IVT or EVT, ESO 2025 discourages routine vasopressors to raise BP (low certainty)');
-    // Cochrane CD016085.pub2 (PMID 42445947): reperfusion by IVT or EVT; intensive = any SBP target <160 vs <180.
-    expect(card.summary).toContain('Cochrane 2026 (after IVT or EVT; targets <160) found probably higher mortality (RR 1.19, 95% CI 1.08–1.32)');
+    // Cochrane CD016085.pub2 (PMID 42445947): 9 RCTs, reperfusion by IVT or EVT; intensive = any SBP target <160
+    // (mostly <140) vs mostly <180 (evidence-fixes 2026-10-22, R1-66).
+    expect(card.summary).toContain('Cochrane 2026 (9 RCTs after IVT or EVT; intensive targets <160, mostly <140, vs mostly <180) found probably higher mortality (RR 1.19, 95% CI 1.08–1.32)');
     for (const pmid of ['42095756', '30739745', '42445947']) expect(source(card, pmid).checkedAt).toBe('2026-10-21');
     // Archive ais-2026-75 (COR 3: No Benefit, B-R) is limited to mild-to-moderate AIS treated with IVT; the ENCHANTED
     // abstract (PMID 30739745) draws the same population boundary and reports any ICH 14.8% vs 18.7%.
-    expect(card.consider[0]).toContain('After alteplase for mild-to-moderate stroke, SBP 130–140 did not improve 90-day function versus <180');
-    expect(card.consider[0]).toContain('(14.8 vs 18.7%) (ENCHANTED; AHA 2026 COR 3: No Benefit)');
+    // Evidence-fixes 2026-10-22 (R1-67): the trial result has no severity cap; only the AHA grade is limited to
+    // mild-to-moderate stroke, and the prespecified severe-stroke subgroup (PMID 33031175) had higher mortality.
+    expect(card.consider[0]).toContain('After alteplase, SBP 130–140 did not improve 90-day function versus <180');
+    expect(card.consider[0]).toContain('(14.8 vs 18.7%) (ENCHANTED; AHA 2026 COR 3: No Benefit, graded for mild-to-moderate stroke)');
+    expect(card.consider[0]).toContain('intensive lowering raised mortality (OR 1.52; hypothesis-generating)');
     // Archive ais-2026-72/-74/-76/-77 and the ESO abstract thresholds, re-read unchanged.
     expect(card.summary).toContain('Before IVT <185/110');
     expect(card.summary).toContain('after IVT <180/105 for at least 24 h');
