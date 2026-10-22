@@ -157,12 +157,17 @@ const importSource = ({ patch } = {}) => patch ? JSON.stringify(patch, [...Objec
 // True when facts were imported and the live Encounter prefill no longer matches them.
 export const importChanged = (state, prefill) => Boolean(state?.imported?.source) && Boolean(prefill) && state.imported.source !== importSource(prefill);
 
+const OAC_KEYS = ['anticoagulant', 'takingOac'];
+
 // Apply an Encounter prefill. Switching classification starts from a clean
 // screen (as the classification buttons do); otherwise entered facts persist.
 // Facts the previous import wrote and the user has not changed since are first
 // returned to unknown, so a reapply never keeps what the Encounter no longer says.
-// A yes/no answer or anticoagulant the user entered that a definite Encounter value
-// contradicts is kept, not overwritten, and listed in imported.conflicts.
+// An Encounter unknown never clears an entry. Where an entered yes/no answer,
+// anticoagulant or exclusion differs from a definite Encounter value, the exclusion
+// is present (from either side) and any other answer unknown; an anticoagulant answer
+// the user contradicted supplies no absent exclusion. imported.conflicts maps each
+// conflict to the value it left.
 export function applyEncounterPrefill(state, prefill, initialState) {
   if (!prefill?.patch) return state;
   const base = prefill.patch.classification && prefill.patch.classification !== state.classification ? initialState : state;
@@ -170,14 +175,24 @@ export function applyEncounterPrefill(state, prefill, initialState) {
   for (const [key, value] of Object.entries(base.imported?.fields || {})) if (Object.is(base[key], value)) cleared[key] = initialState[key];
   for (const [id, value] of Object.entries(base.imported?.exclusions || {})) if (cleared.exclusions[id] === value) delete cleared.exclusions[id];
   const entered = v => v != null && v !== 'unselected';
-  const conflicts = [];
-  const patch = { ...prefill.patch, exclusions: { ...prefill.patch.exclusions } };
-  for (const key of Object.keys(patch)) if ((typeof patch[key] === 'boolean' || key === 'anticoagulant') && entered(patch[key]) && entered(cleared[key]) && cleared[key] !== patch[key]) { conflicts.push(key); delete patch[key]; }
-  for (const [id, value] of Object.entries(patch.exclusions)) if (typeof value === 'boolean' && typeof cleared.exclusions[id] === 'boolean' && cleared.exclusions[id] !== value) { conflicts.push(id); delete patch.exclusions[id]; }
-  const next = applyFacts(cleared, patch);
-  const fields = Object.fromEntries(Object.entries(patch).filter(([key, value]) => key !== 'exclusions' && value !== undefined));
-  const exclusions = Object.fromEntries(Object.entries(patch.exclusions).filter(([, value]) => typeof value === 'boolean'));
-  return { ...next, imported: { fields, exclusions, conflicts, source: importSource(prefill) } };
+  const { exclusions: found = {}, ...facts } = prefill.patch;
+  const differs = key => entered(facts[key]) && entered(cleared[key]) && cleared[key] !== facts[key];
+  const oacConflict = OAC_KEYS.some(differs);
+  const conflicts = {}, patch = { exclusions: {} };
+  for (const [key, value] of Object.entries(facts)) {
+    const oac = OAC_KEYS.includes(key);
+    if (typeof value !== 'boolean' && !oac) patch[key] = value;
+    else if (differs(key)) patch[key] = conflicts[key] = 'unselected';
+    else if (entered(value) && !entered(cleared[key]) && !(oac && oacConflict)) patch[key] = value;
+  }
+  for (const [id, value] of Object.entries(found)) {
+    const mine = cleared.exclusions[id];
+    if (typeof value !== 'boolean' || mine === value) continue;
+    if (typeof mine === 'boolean') conflicts[id] = true;
+    if (value || (mine === undefined && !(oacConflict && id in anticoagulantFacts().exclusions))) patch.exclusions[id] = value;
+  }
+  const fields = Object.fromEntries(Object.entries(patch).filter(([key]) => key !== 'exclusions'));
+  return { ...applyFacts(cleared, patch), imported: { fields, exclusions: patch.exclusions, conflicts, source: importSource(prefill) } };
 }
 
 export default screenerPrefillFromEncounter;

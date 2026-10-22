@@ -12,10 +12,10 @@ import { readFile } from 'node:fs/promises';
 import { newEncounter, nihssWithBulkZero } from '../src/workspace-state.js';
 import { screenerTrials } from '../src/evidence/screenerTrials.js';
 import {
-  buildScreenerParams, createInitialScreenerState, evaluateAll, evaluateTrialEligibility, EXCLUSION_ITEMS, onsetSummary,
+  buildScreenerParams, conflictNote, createInitialScreenerState, evaluateAll, evaluateTrialEligibility, EXCLUSION_ITEMS, onsetSummary,
   potentialMatches, refinerItems, STUDY_FACTS, toConfirm, withClassification
 } from '../src/evidence/screener-eval.js';
-import { applyEncounterPrefill, importChanged, screenerPrefillFromEncounter } from '../src/evidence/screener-prefill.js';
+import { applyAnticoagulant, applyEncounterPrefill, importChanged, screenerPrefillFromEncounter } from '../src/evidence/screener-prefill.js';
 import { buildSearchIndex, searchIndex } from '../src/quick-search-index.js';
 import { SEARCH_TRIALS } from '../src/components/QuickSearch.jsx';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -181,18 +181,97 @@ describe('Encounter anticoagulant facts (e2e#5, e2e#6)', () => {
     expect(recent.patch.exclusions.exDoacLmwhAtOnset).toBe(true);
   });
 
-  it('keeps conflicting screener answers instead of overwriting them, and lists them', () => {
+  it('keeps a recorded present exclusion the Encounter contradicts, and lists the conflict', () => {
     const manual = S({ classification: 'ischemic', takingOac: true, exclusions: { exXaDtiWithin48h: true } });
     const prefill = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'none' }), now);
     expect(prefill.patch.exclusions.exXaDtiWithin48h).toBe(false);
     const state = applyEncounterPrefill(manual, prefill, fresh());
     expect(state.exclusions.exXaDtiWithin48h).toBe(true);
-    expect(state.takingOac).toBe(true);
-    expect(state.imported.conflicts).toEqual(['takingOac', 'exXaDtiWithin48h']);
+    // A contradicted yes/no answer is neither kept nor overwritten: it becomes unknown.
+    expect(state.takingOac).toBe('unselected');
+    expect(conflictNote(state)).toBe(`${CONFLICT_HEAD}oral anticoagulant at the index stroke; Factor Xa inhibitor or direct thrombin inhibitor within 48 h${CONFLICT_TAIL}`);
     // SISTER stays not met for the recorded Xa inhibitor.
     expect(evaluateAll(state).excluded.find(i => i.trial.acronym === 'SISTER').exclusionReasons).toContain('Factor Xa inhibitor or direct thrombin inhibitor within 48 h');
-    // The kept answers do not make the import look stale.
+    // The conflicts do not make the import look stale.
     expect(importChanged(state, prefill)).toBe(false);
+  });
+});
+
+// Independent verification of the e2e#6 repair (2026-10-22). A conflict between an entry and a
+// definite Encounter value never yields the less cautious answer: an exclusion is present if
+// either side records it present (NCT05948566 SISTER exclusion 21 "Received Factor Xa inhibitors
+// (such as Fondaparinux, apixaban or rivaroxaban) within the past 48 hours"; NCT07260916 MINUTE
+// exclusion 6 "Concurrent use of direct oral anticoagulants or low molecular weight heparin at ICH
+// onset"; NCT07227246 FASTEST-2 exclusion 2 "oral anticoagulant use (vitamin K antagonists or novel
+// oral anticoagulants) within the past 7 days"), any other answer becomes unknown, and the copied
+// summary lists every conflict.
+const CONFLICT_HEAD = 'Encounter and screener entries differed: ';
+const CONFLICT_TAIL = '. Exclusions are set to present, other answers to unknown; confirm them.';
+describe('Encounter conflicts never make a screen less cautious (e2e#6 verification)', () => {
+  const now = new Date(2026, 9, 22, 12).getTime();
+  const find = (r, acronym) => [...r.eligible, ...r.pending, ...r.soon, ...r.excluded].find(i => i.trial.acronym === acronym);
+  const apixaban = { lastDOACType: 'apixaban', lastDOACDose: localIso(now - 10 * HOUR) };
+
+  it('a documented Xa inhibitor 10 h ago overrides an earlier "absent" and excludes SISTER (H)', () => {
+    const manual = { ...withClassification(fresh(), 'ischemic'), onsetVal: 8, onsetUnit: 'hours', age: 70, nihss: 14, aspects: 8, preMrs: 0, vessel: 'ica_m1', exclusions: { exXaDtiWithin48h: false, exIvtGivenOrPlanned: false, exPregnancy: false } };
+    expect(find(evaluateAll(manual, screenerTrials), 'SISTER').completeness).toBe('potential-match');
+    const e = encounter({ diagnosisCategory: 'ischemic', age: '70', ...lkwAt(now - 8 * HOUR), premorbidMRS: '0', vesselOcclusion: ['M1'], ...apixaban }, { nihssSource: 'reported', reportedNihss: '14', aspects: '8' });
+    const state = applyEncounterPrefill(manual, screenerPrefillFromEncounter(e, now), fresh());
+    expect(state.exclusions).toMatchObject({ exXaDtiWithin48h: true, exIvtGivenOrPlanned: false, exPregnancy: false });
+    const r = evaluateAll(state, screenerTrials, now);
+    expect(r.excluded.find(i => i.trial.acronym === 'SISTER')?.exclusionReasons).toContain('Factor Xa inhibitor or direct thrombin inhibitor within 48 h');
+    expect(potentialMatches(r).map(i => i.trial.acronym)).not.toContain('SISTER');
+    expect(r.briefingNote).toContain('Factor Xa inhibitor or direct thrombin inhibitor within 48 h: present');
+    expect(r.briefingNote).not.toContain('within 48 h: absent');
+    expect(r.briefingNote).toContain(`\n${CONFLICT_HEAD}Factor Xa inhibitor or direct thrombin inhibitor within 48 h${CONFLICT_TAIL}\n`);
+  });
+
+  it('a documented DOAC overrides an earlier anticoagulant "None" and excludes MINUTE and FASTEST-2 (I)', () => {
+    const manual = { ...applyAnticoagulant(withClassification(fresh(), 'ich'), 'none'), onsetVal: 1.5, onsetUnit: 'hours' };
+    const e = encounter({ diagnosisCategory: 'ich', age: '65', ...lkwAt(now - 1.5 * HOUR), ...apixaban });
+    const state = applyEncounterPrefill(manual, screenerPrefillFromEncounter(e, now), fresh());
+    expect(state.anticoagulant).toBe('unselected');
+    expect(state.exclusions).toMatchObject({ exDoacLmwhAtOnset: true, exOacWithin7d: true });
+    const r = evaluateAll(state, screenerTrials, now);
+    expect(r.excluded.find(i => i.trial.acronym === 'MINUTE')?.exclusionReasons).toContain('Concurrent DOAC or LMWH at ICH onset');
+    expect(r.excluded.find(i => i.trial.acronym === 'FASTEST-2')?.exclusionReasons).toContain('Oral anticoagulant (VKA or DOAC) within 7 days');
+    expect(r.briefingNote).not.toMatch(/anticoagulant at onset: none|ICH onset: absent|within 7 days: absent/);
+    expect(r.briefingNote).toContain(`${CONFLICT_HEAD}anticoagulant at onset; DOAC or LMWH at ICH onset; Oral anticoagulant (VKA or DOAC) within 7 days${CONFLICT_TAIL}`);
+  });
+
+  it('imports no absence derived from an anticoagulant answer the user contradicted (B)', () => {
+    const manual = S({ classification: 'ischemic', takingOac: true });
+    const state = applyEncounterPrefill(manual, screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'none' }), now), fresh());
+    expect(state.takingOac).toBe('unselected');
+    expect(state.anticoagulant).toBe('unselected');
+    expect(state.exclusions.exXaDtiWithin48h).toBeUndefined();
+    // Without a contradiction, the Encounter's "none" still answers it.
+    expect(applyEncounterPrefill(S({ classification: 'ischemic' }), screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'none' }), now), fresh()).exclusions.exXaDtiWithin48h).toBe(false);
+  });
+
+  it('turns a contradicted inclusion fact into unknown, and agreeing entries into no conflict', () => {
+    const state = applyEncounterPrefill(S({ classification: 'ischemic', afibHistory: true, takingOac: false }), screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'none' }, { details: { afDetected: 'no' } }), now), fresh());
+    expect(state.afibHistory).toBe('unselected');
+    expect(state.takingOac).toBe(false);
+    expect(conflictNote(state)).toBe(`${CONFLICT_HEAD}documented clinical atrial fibrillation${CONFLICT_TAIL}`);
+  });
+
+  it('drops a conflict from the note once its answer is changed (C)', () => {
+    const state = applyEncounterPrefill(S({ classification: 'ischemic', takingOac: true, exclusions: { exXaDtiWithin48h: true } }), screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'none' }), now), fresh());
+    const agreed = { ...state, exclusions: { ...state.exclusions, exXaDtiWithin48h: false } };
+    expect(conflictNote(agreed)).toBe(`${CONFLICT_HEAD}oral anticoagulant at the index stroke${CONFLICT_TAIL}`);
+    expect(conflictNote({ ...agreed, takingOac: false })).toBe('');
+    expect(evaluateAll({ ...agreed, takingOac: false }).briefingNote).not.toContain(CONFLICT_HEAD);
+  });
+
+  it('never lets an Encounter "unknown" clear a recorded anticoagulant or present exclusion', () => {
+    // A last dose 71 h before LKW leaves use at onset unknown in the Encounter import.
+    const manual = applyAnticoagulant(withClassification(fresh(), 'ich'), 'doac');
+    const e = encounter({ diagnosisCategory: 'ich', ...lkwAt(now - 1.5 * HOUR), lastDOACType: 'apixaban', lastDOACDose: localIso(now - 72 * HOUR) });
+    const state = applyEncounterPrefill(manual, screenerPrefillFromEncounter(e, now), fresh());
+    expect(state.anticoagulant).toBe('doac');
+    expect(state.exclusions.exDoacLmwhAtOnset).toBe(true);
+    expect(evaluateAll(state, screenerTrials, now).excluded.find(i => i.trial.acronym === 'MINUTE')?.exclusionReasons).toContain('Concurrent DOAC or LMWH at ICH onset');
   });
 });
 
@@ -411,8 +490,14 @@ describe('Encounter import and global-search pick in a browser', () => {
       await page.locator('summary', { hasText: 'Optional exclusion review' }).click();
       await page.getByLabel('Factor Xa inhibitor or direct thrombin inhibitor within 48 h', { exact: true }).selectOption('true');
       await banner().getByRole('button', { name: 'Use these facts', exact: true }).click();
-      expect(await banner().innerText()).toContain('Kept your entry where the Encounter differs: Factor Xa inhibitor or direct thrombin inhibitor within 48 h.');
+      const conflict = `${CONFLICT_HEAD}Factor Xa inhibitor or direct thrombin inhibitor within 48 h${CONFLICT_TAIL}`;
+      expect(await banner().innerText()).toContain(conflict);
       expect(await page.getByLabel('Factor Xa inhibitor or direct thrombin inhibitor within 48 h', { exact: true }).inputValue()).toBe('true');
+      expect(await copied()).toContain(conflict);
+      // Answering it again (here: agreeing with the Encounter) withdraws the notice.
+      await page.getByLabel('Factor Xa inhibitor or direct thrombin inhibitor within 48 h', { exact: true }).selectOption('false');
+      expect(await banner().innerText()).not.toContain(CONFLICT_HEAD);
+      await page.getByLabel('Factor Xa inhibitor or direct thrombin inhibitor within 48 h', { exact: true }).selectOption('true');
       await setEncounter({ diagnosisCategory: 'ischemic', age: '70', premorbidMRS: '0', lastDOACType: 'none' }, { nihssSource: 'reported', reportedNihss: '12' });
       await banner().getByRole('button', { name: 'Reapply Encounter facts', exact: true }).waitFor();
       expect(await copied()).toMatch(/NIHSS 4 · pre-mRS 1/);

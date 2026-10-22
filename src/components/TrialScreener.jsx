@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useDialogChrome } from './use-dialog-chrome.js';
 import { screenerTrials } from '../evidence/screenerTrials.js';
 import { eligibilityTables } from '../evidence/eligibilityTables.js';
-import { evaluateAll, CLASSIFICATION_NOTE_LABELS, createInitialScreenerState, anchoredOnsetHours, onsetToHours, numericFact, ONSET_PRESETS, STUDY_FACTS, YES_NO, withClassification, NOT_MET_TEXT, phaseLabel, enrollmentLabel, toConfirm, relevantNotMet, potentialMatches, insufficientInformation, registryCheckAgeText, refinerItems, keptEntries } from '../evidence/screener-eval.js';
+import { evaluateAll, CLASSIFICATION_NOTE_LABELS, createInitialScreenerState, anchoredOnsetHours, onsetToHours, numericFact, ONSET_PRESETS, STUDY_FACTS, YES_NO, withClassification, NOT_MET_TEXT, phaseLabel, enrollmentLabel, toConfirm, relevantNotMet, potentialMatches, insufficientInformation, registryCheckAgeText, refinerItems, conflictNote } from '../evidence/screener-eval.js';
 import { screenerPrefillFromEncounter, applyEncounterPrefill, applyAnticoagulant, importChanged } from '../evidence/screener-prefill.js';
 
 const CLASSIFICATIONS = Object.entries(CLASSIFICATION_NOTE_LABELS);
@@ -103,12 +103,12 @@ function CandidateSubgroup({ title, label, description, items, empty, onDetails 
 }
 
 // A stale import (the Encounter changed after its facts were applied) is never shown as applied or live.
-function EncounterBanner({ prefill, onUse, applied, stale, kept }) {
+function EncounterBanner({ prefill, onUse, applied, stale, conflict }) {
   if (!prefill?.available && !stale) return null;
   return <section aria-label="Encounter facts" className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-lg border border-cobalt-300/60 bg-cobalt-50 p-3 dark:bg-cobalt-900">
     <p className="min-w-0 flex-1 basis-60 text-sm"><span className="font-semibold">From Encounter:</span> {prefill.summary.length ? prefill.summary.map((fact, i) => <React.Fragment key={i}>{i > 0 && ' · '}<span className="whitespace-nowrap">{fact}</span></React.Fragment>) : 'no screening facts recorded'}{!prefill.supported && <> — <span className="font-semibold">{prefill.message}</span></>}</p>
     {prefill.patch && <button type="button" className={buttonClass} onClick={onUse}>{stale ? 'Reapply Encounter facts' : applied ? 'Applied ✓ · reapply' : 'Use these facts'}</button>}
-    {(stale || applied || kept.length > 0) && <p role="status" className="basis-full text-xs text-ink-2">{stale ? 'The Encounter facts changed after they were applied; the screen still uses the earlier import.' : applied && `Encounter facts applied (${applied}). Every field can still be changed; anything not recorded stays unknown.`}{kept.length > 0 && ` Kept your entry where the Encounter differs: ${kept.join('; ')}.`}</p>}
+    {(stale || applied || conflict) && <p role="status" className="basis-full text-xs text-ink-2">{stale ? 'The Encounter facts changed after they were applied; the screen still uses the earlier import.' : applied && `Encounter facts applied (${applied}). Every field can still be changed; anything not recorded stays unknown.`} {conflict}</p>}
   </section>;
 }
 
@@ -229,7 +229,7 @@ export function TrialScreener({ copyToClipboard, initialState, onStateChange, ac
   const notMet = relevantNotMet(results.excluded);
   const picasso = screenerTrials.find(trial => trial.acronym === 'PICASSO' && trial.referenceOnly);
   return <div className="space-y-4">
-    <EncounterBanner prefill={prefill} onUse={importEncounter} applied={applied} stale={stale} kept={keptEntries(state)} />
+    <EncounterBanner prefill={prefill} onUse={importEncounter} applied={applied} stale={stale} conflict={conflictNote(state)} />
     <div className="trial-screening-workspace space-y-5 lg:grid lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:items-start lg:gap-6 lg:space-y-0">
       <div className="trial-screening-filters min-w-0 space-y-5 lg:sticky lg:top-[calc(var(--case-bar-h,0px)+1rem)] lg:max-h-[calc(100dvh-var(--case-bar-h,0px)-2rem)] lg:overflow-y-auto lg:overscroll-contain lg:pr-1">
         <section><h2 className="mb-2 text-lg font-bold">1. Stroke classification</h2><div className="flex flex-wrap gap-2">{CLASSIFICATIONS.map(([id, label]) => <button key={id} type="button" className={buttonClass} aria-pressed={state.classification === id} onClick={() => replace(prev => withClassification(prev, id))}>{label}</button>)}</div>

@@ -580,10 +580,16 @@ const KEY_FACTS = {
 // Facts each classification shows a control for. Facts outside this set are
 // neither shown nor printed, so the copied summary matches the screen.
 export const VISIBLE_FACTS = Object.fromEntries(CLASSIFICATIONS.map(cls => [cls, [...KEY_FACTS[cls], ...STUDY_FACTS[cls].map(([key]) => key)]]));
-// Names of the screener entries an Encounter import kept because the Encounter
-// said otherwise (imported.conflicts), limited to facts this screen shows.
-export const keptEntries = state => (state.imported?.conflicts || []).filter(key => (VISIBLE_FACTS[state.classification] || []).includes(key) ||
-  EXCLUSION_ITEMS.some(item => item.id === key && item.classifications.includes(state.classification))).map(key => EXCLUSION_ITEMS.find(item => item.id === key)?.label || FIELD_TEXT[key]);
+// Entries where an Encounter import met a conflicting answer (imported.conflicts:
+// key → value it left), while that value stands and this screen shows the fact.
+export function conflictNote(state) {
+  const cls = state.classification;
+  const names = Object.entries(state.imported?.conflicts || {}).map(([key, value]) => {
+    const item = EXCLUSION_ITEMS.find(entry => entry.id === key);
+    return (item ? item.classifications.includes(cls) && state.exclusions?.[key] === value : VISIBLE_FACTS[cls]?.includes(key) && state[key] === value) && (item?.label || FIELD_TEXT[key]);
+  }).filter(Boolean);
+  return names.length ? `Encounter and screener entries differed: ${names.join('; ')}. Exclusions are set to present, other answers to unknown; confirm them.` : '';
+}
 
 // Choosing a classification restarts timing, exclusions and the anticoagulant
 // answer, and returns every fact the new screen hides to unknown.
@@ -647,6 +653,7 @@ export function buildBriefingNote(state, buckets, nowMs = null, { staleImport = 
 
   const lines = ['TRIAL SCREEN — first pass' + (checkLabel ? ` (${checkLabel})` : '')];
   if (staleImport) lines.push('Caution: the Encounter facts changed after import; reapply before relying on this screen.');
+  if (conflictNote(state)) lines.push(conflictNote(state));
   lines.push('Statuses are overall registry statuses at that check; local site activation is not confirmed.');
   lines.push('Inputs: ' + inputs.join(' · '));
   if (recorded.length) lines.push('Exclusions recorded: ' + recorded.join('; '));
