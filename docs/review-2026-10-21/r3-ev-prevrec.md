@@ -155,3 +155,11 @@ The Encounter checklist places antiamyloid therapy in its absolute ("Generally c
    The archive records ESC corrections 37738322, 38086544 and 39824219 as applied, with none affecting Table 17. That is archive scope only, so the card's "not reconciled" source note is left as it was.
 3. **AHA 2024 primary-prevention corrections.** 39585937 and 39869715 have no abstract, the archive marks them unresolved, and their effect on the carotid rows is unknown. The coverage note says so.
 4. **Two 2026 AHA documents read at abstract level only.** The 2026 AHA/ASA rehabilitation guideline and the 2026 AHA ARIA Summit statement could not be read beyond their abstracts. Both gaps are disclosed on the affected cards.
+
+## Lead follow-up after independent verification (2026-10-22)
+
+The independent verifier found no blocking problem (22 of 23 items sound, Protocols files untouched, source lock PASS). The lead applied its three non-blocking suggestions after re-reading the sources:
+
+- prev-b#0, CHAMPION-AF: the noninferiority margin is now stated ("margin 4.8 points"; primary abstract, PMID 41910347). The ischemic-stroke signal is added as review-reported: "reviews report numerically more ischemic strokes with closure (HR 1.61)". The source is the 2026 review PMID 42747337 (abstract: "Ischemic stroke alone, however, was numerically more frequent with LAAC (HR 1.61)"), added as a card source of type Report. A second 2026 review, PMID 42739532 (abstract), agrees on direction. The primary full report remains unreachable.
+- The CHAMPION-AF sentence now opens "Also in 2026," so it keeps the postdating framing.
+- Endocarditis: after ICH both guidelines favour waiting; the ESC clause now carries its own qualifier ("with frequent clinical and imaging reassessment", esc-ie-2023-t17-3, IIa/C, archived transcription).
