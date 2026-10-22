@@ -21,7 +21,8 @@ describe('evidence corrections', () => {
     const card = topic('large-core-evt');
     expect(card.recommendations[0]).toMatchObject({ id: 'ais-2026-114', cor: '1', loe: 'A' });
     expect(card.recommendations[0].text).toBe(topic('evt-selection').recommendations.find(rec => rec.id === 'ais-2026-114').text);
-    expect(card.summary).toContain('within 6 h, ASPECTS 3–5 falls under the COR 1 ASPECTS 3–10 recommendation, which has no age criterion (ais-2026-114), and ASPECTS 0–2 is reasonable (2a) only with age <80, mRS 0–1 and no significant mass effect (ais-2026-117)');
+    // Bottom line rewritten 2026-10-22 (evidence-fixes BL-32): same grades, plus the ICA/M1, NIHSS ≥6 and mRS 0–1 limits.
+    expect(card.summary).toContain('in anterior LVO (ICA or M1) with NIHSS ≥6 and prestroke mRS 0–1, EVT is COR 1 for ASPECTS 3–5 within 6 h (no age criterion) and at 6–24 h (age <80, no significant mass effect), and reasonable (2a) for ASPECTS 0–2 within 6 h (age <80, no significant mass effect)');
   });
   it('quotes the SVIN 2b position for distal, codominant or nondominant M2', () => {
     const card = topic('medium-distal-evt');

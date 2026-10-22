@@ -22,7 +22,7 @@
       "NINDS",
       "ECASS III"
     ],
-    "summary": "Disabling deficit within 4.5 h: give IVT as fast as possible — tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg) (AHA 2026, COR 1); tenecteplase was noninferior in AcT, ATTEST-2, TRACE-2 and ORIGINAL. Do not thrombolyse mild non-disabling deficits: PRISMS (stopped early) found no benefit (sICH 3.2 vs 0%) and ARAMIS found DAPT noninferior. LVO: give IVT if eligible and start EVT without waiting for a response; EVT within 24 h is graded for ICA/M1 occlusion with NIHSS ≥6, prestroke mRS 0–1 and window-specific ASPECTS, including selected large cores, and for basilar occlusion with NIHSS ≥10, prestroke mRS 0–1 and PC-ASPECTS ≥6 (COR 1).",
+    "summary": "Disabling deficit within 4.5 h of onset or last known well in an otherwise IVT-eligible adult: give IVT as fast as possible — tenecteplase 0.25 mg/kg (max 25 mg) or alteplase 0.9 mg/kg (max 90 mg) (AHA 2026, COR 1); tenecteplase was noninferior in AcT, ATTEST-2, TRACE-2 and ORIGINAL. Do not thrombolyse mild non-disabling deficits: PRISMS (stopped early) found no benefit (sICH 3.2 vs 0%) and ARAMIS found DAPT noninferior. LVO: give IVT if eligible and start EVT without waiting for a response; EVT within 24 h is graded for ICA/M1 occlusion with NIHSS ≥6, prestroke mRS 0–1 and window-specific ASPECTS, including selected large cores, and for basilar occlusion with NIHSS ≥10, prestroke mRS 0–1 and PC-ASPECTS ≥6 (COR 1).",
     "recommendations": [
       {
         "text": "In adult AIS patients with disabling deficits (regardless of NIHSS score) who are eligible for IVT, faster treatment is recommended as it improves functional outcomes.",
@@ -279,7 +279,7 @@
       "coma",
       "dizziness"
     ],
-    "summary": "About 2% of ischemic strokes were missed in the emergency department (47 of 2,200 in Lausanne). Missed patients were younger, had fewer vascular risk factors, less eye deviation and more cerebellar strokes, and were often very mild or very severe. They were labeled as another neurological illness (43%), a non-neurological illness (17%), unexplained decreased consciousness (21%) or a coexisting disease (19%), and had worse 12-month outcomes and higher mortality.",
+    "summary": "In one university emergency department (Lausanne), 47 of 2,200 ischemic strokes (2.1%) were missed, more often in younger patients and in cerebellar, very mild or very severe strokes. Missed patients also had fewer vascular risk factors and less eye deviation. They were labeled as another neurological illness (43%), a non-neurological illness (17%), unexplained decreased consciousness (21%) or a coexisting disease (19%), and had worse 12-month outcomes and higher mortality.",
     "consider": [
       "Acute dizziness or imbalance: examine gait and eye movements; cerebellar strokes are over-represented among misses.",
       "Unexplained decreased consciousness was a common label — image the brain and vessels, including the posterior circulation.",
@@ -328,7 +328,7 @@
       "angioedema",
       "orolingual"
     ],
-    "summary": "Any neurological worsening after IVT needs an emergent CT. If hemorrhage is suspected or seen, follow the post-lytic ICH protocol: stop a running thrombolytic, send urgent labs including fibrinogen, and correct the fibrinolytic coagulopathy early — the mainstay of treatment, though based on expert opinion (AHA 2017). Angioedema occurred in about 1% (6 patients per arm) with tenecteplase or alteplase in ATTEST-2; assess the airway first. Teams must be ready to treat bleeding and angioedema (AHA 2026, COR 1).",
+    "summary": "Neurological worsening during or after IVT: stop any running thrombolytic and get an emergent CT. If hemorrhage is suspected or seen, follow the post-lytic ICH protocol: send urgent labs including fibrinogen, and correct the fibrinolytic coagulopathy early — the mainstay of treatment, though based on expert opinion (AHA 2017). Angioedema occurred in about 1% (6 patients per arm) with tenecteplase or alteplase in ATTEST-2; assess the airway first. Teams must be ready to treat bleeding and angioedema (AHA 2026, COR 1).",
     "recommendations": [
       {
         "text": "Healthcare professionals are recommended to be prepared to treat potential emergent adverse effects of IVT, including bleeding complications and angioedema (which may cause partial airway obstruction), to reduce poor clinical outcomes.",
@@ -399,7 +399,7 @@
       "DAWN",
       "DEFUSE 3"
     ],
-    "summary": "Perfusion maps estimate hypoperfused tissue (Tmax >6 s) and core (markedly reduced relative CBF; below about 31% of the contralateral side best matched DWI in the derivation study). DEFUSE 3 target mismatch at 6–16 h: core <70 mL, hypoperfused-to-core ratio ≥1.8 and mismatch volume ≥15 mL. DAWN used clinical–core mismatch instead: core <21 mL at age ≥80 with NIHSS ≥10; <31 mL under 80 with NIHSS ≥10; <51 mL under 80 with NIHSS ≥20. Within 4.5 h, do not delay IVT for perfusion imaging. Collateral flow on CTA alone selected patients who still benefited from EVT at 6–24 h in MR CLEAN-LATE (cOR 1.67; sICH 7 vs 2%).",
+    "summary": "Perfusion maps estimate hypoperfused tissue (Tmax >6 s) and core (markedly reduced relative CBF; below about 31% of the contralateral side best matched DWI in the derivation study), but within 4.5 h IVT must not wait for them (AHA 2026, COR 1). DEFUSE 3 target mismatch at 6–16 h: core <70 mL, hypoperfused-to-core ratio ≥1.8 and mismatch volume ≥15 mL. DAWN used clinical–core mismatch instead: core <21 mL at age ≥80 with NIHSS ≥10; <31 mL under 80 with NIHSS ≥10; <51 mL under 80 with NIHSS ≥20. Collateral flow on CTA alone selected patients who still benefited from EVT at 6–24 h in MR CLEAN-LATE (cOR 1.67; sICH 7 vs 2%).",
     "recommendations": [
       {
         "text": "In adult AIS patients eligible for IVT within 4.5 hours of symptom onset, treatment is recommended to be initiated as quickly as possible while ensuring safe administration, avoiding potential delays from additional multimodal neuroimaging (CTA/MRA, CT/MR perfusion).",
@@ -563,7 +563,7 @@
       "neurocritical care",
       "DNAR"
     ],
-    "summary": "Run the care bundle in the first hours (INTERACT3: better 6-month mRS, cOR 0.86): SBP <140 started early and reached within 1 h; glucose 6.1–7.8 mmol/L (≈110–140 mg/dL; 7.8–10.0 mmol/L ≈140–180 mg/dL with diabetes); temperature ≤37.5 °C; INR <1.5 after warfarin. Do not acutely lower SBP below 130 in mild-to-moderate ICH presenting with SBP >150 (AHA 2022, harm; ATACH-2 at 110–139 gave no benefit and more renal adverse events, 9.0 vs 4.0%). Reverse anticoagulation immediately (see the reversal card). Severity scores frame discussion but must not alone limit care; defer new DNAR orders until at least the second full day.",
+    "summary": "Run the care bundle in the first hours (INTERACT3: better 6-month mRS, cOR 0.86): SBP <140 started early and reached within 1 h (stop lowering at 130); glucose 6.1–7.8 mmol/L (≈110–140 mg/dL; 7.8–10.0 mmol/L ≈140–180 mg/dL with diabetes); temperature ≤37.5 °C; INR <1.5 after warfarin. Do not acutely lower SBP below 130 in mild-to-moderate ICH presenting with SBP >150 (AHA 2022, harm; ATACH-2 at 110–139 gave no benefit and more renal adverse events, 9.0 vs 4.0%). Reverse anticoagulation immediately (see the reversal card). Severity scores frame discussion but must not alone limit care; defer new DNAR orders until at least the second full day.",
     "recommendations": [
       {
         "text": "Initiating acute BP treatment within 2 hours of ICH onset and reaching the target within 1 hour can be beneficial to reduce hemorrhage expansion risk and improve functional outcome.",
@@ -600,7 +600,7 @@
       "Cerebellar ICH, hydrocephalus or a large hematoma: call neurosurgery now (see the ICH surgery card).",
       "No prophylactic antiseizure drugs; continuous EEG for unexplained or fluctuating mental status."
     ],
-    "caution": "Intensive targets are less certain for large or surgical hematomas; avoid SBP drops >70 mm Hg or below 110 (ESO 2025 consensus).",
+    "caution": "Intensive targets are less certain with SBP >220 mm Hg, hematomas >30 mL or planned evacuation; avoid SBP drops >70 mm Hg or below 110 (ESO 2025 consensus).",
     "sources": [
       {
         "title": "AHA/ASA 2022 spontaneous ICH guideline — official summary",
@@ -818,7 +818,7 @@
       "papilledema",
       "venography"
     ],
-    "summary": "Anticoagulate on diagnosis, even with venous hemorrhage: parenteral heparin (LMWH favored), then oral anticoagulation for 3–12 months, or indefinitely with chronic major risk factors or recurrent VTE (AHA 2024). DOACs are a reasonable alternative to warfarin after the lead-in: RE-SPECT CVT (dabigatran) had no recurrent VTE and major bleeding 1.7 vs 3.3%; ACTION-CVT (observational) found similar recurrence and less major hemorrhage (aHR 0.35). Endovascular therapy is rescue only (TO-ACT: no benefit); decompressive craniectomy is lifesaving with impending herniation.",
+    "summary": "Anticoagulate on diagnosis, even with venous hemorrhage: parenteral heparin (LMWH favored; nonheparin agents if VITT is suspected), then oral anticoagulation for 3–12 months, or indefinitely with chronic major risk factors or recurrent VTE (AHA 2024); in pregnancy, LMWH only. DOACs are a reasonable alternative to warfarin after the lead-in: RE-SPECT CVT (dabigatran) had no recurrent VTE and major bleeding 1.7 vs 3.3%; ACTION-CVT (observational) found similar recurrence and less major hemorrhage (aHR 0.35). Endovascular therapy is rescue only (TO-ACT: no benefit); decompressive craniectomy is lifesaving with impending herniation.",
     "recommendations": [
       {
         "text": "The mainstream initial treatment of cerebral venous thrombosis includes parenteral heparin followed by transition to oral vitamin K antagonists for 3 to 12 months, depending on the underlying cause, or indefinitely in the presence of chronic major risk factors or recurrent venous thromboembolism. [Editorial note: the statement's abbreviated key point refers broadly to thrombophilia; its treatment section specifies chronic major risk factors. An isolated thrombophilia result is not, by itself, a universal indication for indefinite treatment.]",
@@ -847,7 +847,7 @@
       "Look for pregnancy/puerperium, estrogen, obesity, APS, myeloproliferative disease, malignancy and infection; headache with thrombocytopenia after an adenoviral vaccine suggests VITT — avoid heparin and involve hematology.",
       "Watch vision, seizures and consciousness; escalate for deterioration or propagation despite anticoagulation."
     ],
-    "caution": "Use LMWH in pregnancy; DOACs are contraindicated in pregnancy and breastfeeding and carry more thrombotic events in APS.",
+    "caution": "DOACs are contraindicated in pregnancy and breastfeeding and carry more thrombotic events in APS.",
     "sources": [
       {
         "title": "AHA 2024 CVT diagnosis and management statement — official summary",
@@ -1068,7 +1068,7 @@
       "MRV",
       "recanalization"
     ],
-    "summary": "TIA or minor stroke: MRI DWI within 24 h and head-and-neck vessel imaging in the ED. ICH: repeat CT within 24 h (sooner with decline) for expansion; CTA ± venography for lobar ICH <70 y, deep or posterior fossa ICH <45 y, or 45–70 y without hypertension; DSA if CTA suggests a macrovascular cause or for primary IVH; MRI/MRA if CTA is negative; repeat DSA at 3–6 months may be reasonable after a negative first study. aSAH: CTA/CTP and TCD for vasospasm (AHA 2023, 2a; ESO 2026 makes no TCD recommendation); after adequately occluded coiling, image again at ≥12 months (ESO 2026 consensus). CVT: MRI/MRV (CT/CTV acceptable); whether recanalization should guide anticoagulation duration is uncertain.",
+    "summary": "TIA, and by extension minor stroke: brain MRI with DWI, ideally within 24 h of onset, plus head-and-neck vessel imaging in the ED (AHA 2023 TIA statement, ungraded). ICH: repeat CT within 24 h (sooner with decline) for expansion; CTA ± venography for lobar ICH <70 y, deep or posterior fossa ICH <45 y, or 45–70 y without hypertension; DSA if CTA suggests a macrovascular cause or for primary IVH; MRI/MRA if CTA is negative; repeat DSA at 3–6 months may be reasonable after a negative first study. aSAH: CTA/CTP and TCD for vasospasm (AHA 2023, 2a; ESO 2026 makes no TCD recommendation); after adequately occluded coiling, image again at ≥12 months (ESO 2026 consensus). CVT: MRI/MRV (CT/CTV acceptable); whether recanalization should guide anticoagulation duration is uncertain.",
     "consider": [
       "Any neurological decline: urgent CT first (hemorrhage, swelling, hydrocephalus), then CTA if reocclusion or vasospasm is possible.",
       "Ischemic stroke: noninvasive intracranial and vertebrobasilar imaging (CTA or MRA) identifies atherosclerosis, dissection and moyamoya (AHA 2021, 2a).",
@@ -1124,7 +1124,7 @@
       "P-gp",
       "CYP3A4"
     ],
-    "summary": "Before reversal, procedures or switching, confirm the exact drug, dose, indication, last intake and current renal function against the U.S. label. AF and VTE dosing differ. Apixaban's AF dose adjustment combines age, weight and serum creatinine; edoxaban carries an upper creatinine-clearance restriction for AF; warfarin needs INR monitoring. Check P-gp/CYP3A4 interactions and feeding-tube or swallowing constraints.",
+    "summary": "Before procedures or switching, confirm the exact drug, dose, indication, last intake and current renal function against the U.S. label; in anticoagulant-associated ICH, identify the drug and last dose but do not delay reversal (AHA 2022, COR 1). AF and VTE dosing differ. Apixaban's AF dose adjustment combines age, weight and serum creatinine; edoxaban carries an upper creatinine-clearance restriction for AF; warfarin needs INR monitoring. Check P-gp/CYP3A4 interactions and feeding-tube or swallowing constraints.",
     "consider": [
       "Are the indication, current formulation, last dose, adherence and any planned procedure established?",
       "Are current renal function, weight, age and hepatic status appropriate for the specific label?",

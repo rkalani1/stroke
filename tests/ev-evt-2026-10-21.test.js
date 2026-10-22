@@ -33,7 +33,8 @@ const CARD_RECOMMENDATIONS = {
 
 describe('EVT and systems-of-care Evidence cards (2026-10-21 review)', () => {
   it('validates against the reference contract on the review date', () => {
-    expect(validateClinicalReference(data, { now: new Date('2026-10-21T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-10-22: the evidence-fixes pass re-read and re-dated sources that day.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
   });
 
   it('keeps the exact AHA/ASA 2026 grades on each EVT card', () => {

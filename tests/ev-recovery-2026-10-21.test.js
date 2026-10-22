@@ -19,7 +19,8 @@ const ais2026 = id => read('src/guidelines/ais-2026.json').recommendations.find(
 
 describe('rehabilitation and recovery cards (2026-10-21 review)', () => {
   it('validates against the reference contract at the review date', () => {
-    expect(validateClinicalReference(data, { now: new Date('2026-10-21T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-10-22: the evidence-fixes pass re-read and re-dated sources that day.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
   });
 
   it('attributes recovery grades to AIS 2026 and keeps the SSRI grade as No Benefit', () => {
@@ -27,7 +28,8 @@ describe('rehabilitation and recovery cards (2026-10-21 review)', () => {
     // Archive ais-2026-179 (1, A), -181 (3: Harm, B-R), -174/-175 (1), -180 (3: No Benefit, A).
     expect(card.summary.startsWith('AHA/ASA AIS 2026:')).toBe(true);
     expect(card.summary).not.toContain('(AHA 2026, COR 1)');
-    expect(card.summary).toContain('within 24 h (COR 3: Harm)');
+    // ais-2026-181 anchors the window to stroke onset (evidence-fixes 2026-10-22, R1-01).
+    expect(card.summary).toContain('within 24 h of stroke onset (COR 3: Harm)');
     expect(card.summary).toContain('SSRIs are not recommended for motor or functional recovery (COR 3: No Benefit)');
     // FOCUS cOR 0.951, AFFINITY 0.94, EFFECTS 0.94 for mRS; fractures 2.88 vs 1.47%, 3 vs 1%, 4 vs 2%.
     expect(card.summary).toContain('fluoxetine 20 mg daily for 6 months did not improve mRS and increased fractures (FOCUS, AFFINITY, EFFECTS)');
@@ -35,7 +37,8 @@ describe('rehabilitation and recovery cards (2026-10-21 review)', () => {
     // PMID 42657476 abstract: published 2026-08-27; no PMC copy, so its recommendations are not quoted.
     expect(card.caution).toContain('the August 2026 AHA/ASA rehabilitation guideline was not reviewed');
     const coverage = read('src/reference/coverage.json').find(entry => entry.id === 'aha-stroke-rehabilitation-2026');
-    expect(coverage).toMatchObject({ checkedAt: '2026-10-21', url: pubmed('42657476') });
+    // PubMed record and abstract re-read on 2026-10-22 (evidence-fixes R1-04/05).
+    expect(coverage).toMatchObject({ checkedAt: '2026-10-22', url: pubmed('42657476') });
     expect(coverage.access).toContain('replaces the 2016 guideline');
     expect(coverage.access).toContain('recommendations not reviewed or quoted');
   });
@@ -48,15 +51,18 @@ describe('rehabilitation and recovery cards (2026-10-21 review)', () => {
     // PMC12098336 Table 4: recommend ≥20 h; suggest ≥3 h/week and ≥4 days/week; tDCS only in trials.
     const aphasia = topic('aphasia');
     expect(aphasia.summary).toContain('at least 20 h in total (ESO 2025, recommended), ideally ≥3 h a week on ≥4 days (suggested)');
-    expect(aphasia.summary).toContain('Offer tDCS only within trials.');
+    // PICO 6 expert consensus (12/12): tDCS only alongside SLT in a high-quality trial (evidence-fixes R1-52/54).
+    expect(aphasia.summary).toContain('Use tDCS alongside therapy only within high-quality trials (ESO expert consensus; benefit uncertain).');
     expect(source(aphasia, '40401776').access).toContain('PMC12098336');
     // PMID 40401760 abstract: 20 h upper limb (weak, very low); high-intensity gait (strong, moderate, chronic stroke, stable CV status).
     const motor = topic('motor-recovery').summary;
     expect(motor).toContain('at least 20 h of repetitive upper-limb practice (weak, very low certainty)');
     expect(motor).toContain('chronic stroke with stable cardiovascular status (strong, moderate certainty)');
-    // PMC12098360 Table 14: suggest screening with a validated tool; consensus: feasible within 3–4 days, most within 1 week.
+    // PMC12098360 Table 14: suggest screening by eye team or at least a validated tool; timing is expert consensus
+    // (feasible within 3–4 days, most within 1 week), not a graded recommendation (evidence-fixes R1-55/57).
     const visual = topic('visual-recovery');
-    expect(visual.summary).toContain('with a validated tool, ideally in the first week (ESO 2025, suggested; feasible by 3–4 days)');
+    expect(visual.summary).toContain('ideally by eye-team assessment or at least with a validated tool');
+    expect(visual.summary).toContain('by ESO expert consensus this is feasible within 3–4 days and most patients can be assessed within the first week');
     expect(visual.summary).toContain('visual scanning training for field loss');
   });
 
@@ -106,7 +112,8 @@ describe('inpatient-care cards (2026-10-21 review)', () => {
     // Archive ais-2026-177: COR 3: No Benefit, LOE A. ESO 2026 (PMID 42095755) abstract: standardized criteria; prompt empirical antibiotics.
     expect(card.summary).toContain('(AHA/ASA AIS 2026, COR 3: No Benefit; ESO 2026)');
     expect(card.summary).toContain('start empirical antibiotics promptly');
-    expect(card.summary).toContain('standardized criteria (chest CT and CRP can add value)');
+    // PMC13151663: CT and CRP are "useful adjuncts in selected cases" (evidence-fixes R1-26/30).
+    expect(card.summary).toContain('standardized criteria (e.g., PISCES probable or definite), not from a risk score; chest CT or CRP may add value in selected cases (ESO 2026)');
   });
 
   it('keeps the post-EVT blood-pressure harm within its population', () => {
@@ -151,10 +158,13 @@ describe('specific-population cards (2026-10-21 review)', () => {
   it('attributes pregnancy reperfusion support to ESO expert consensus', () => {
     const card = topic('maternal-stroke');
     // AHA 2026 (PMID 41603019) abstract: "Pregnancy should not delay evidence-based treatments"; CT, CTA and noncontrast MRI are safe.
-    expect(card.summary).toContain('Pregnancy should not delay evidence-based stroke evaluation or treatment (AHA 2026 maternal statement); CT, CTA and noncontrast MRI are safe.');
+    // Evidence-fixes 2026-10-22 (BL-17, R1-10/12): the bottom line carries the IVT caveat; no RCT included pregnant or postpartum patients.
+    expect(card.summary).toContain('Pregnancy should not delay evidence-based treatment of acute stroke, and CT, CTA and noncontrast MRI are safe (AHA 2026 maternal statement), but IVT needs an individual risk–benefit review (ESO 2022 consensus).');
     expect(card.summary).not.toContain('IVT and EVT are supported when benefits outweigh risks (AHA 2026');
-    // ESO 2022 (PMC9134774): no RCTs; majority suggested IVT after individual benefit/risk assessment; all suggested MT.
-    expect(card.summary).toContain('There are no reperfusion RCTs in pregnancy: ESO 2022 expert consensus supports thrombectomy and, after individual risk–benefit review, IVT.');
+    // ESO 2022 (PMC9134774): no RCTs; majority suggested IVT after individual benefit/risk assessment; all suggested MT;
+    // MT preferred whenever possible, IVT not withheld if MT inaccessible; no IVT data <10 days postpartum.
+    expect(card.summary).toContain('No reperfusion RCT included pregnant or postpartum patients; ESO 2022 expert consensus supports thrombectomy for LVO (preferred over IVT whenever possible)');
+    expect(card.summary).toContain('ESO found no IVT data within 10 days of delivery');
     expect(read('src/reference/coverage.json').find(entry => entry.id === 'eso-stroke-in-women-2022').access).toContain('PMC9134774');
   });
 
@@ -175,7 +185,8 @@ describe('specific-population cards (2026-10-21 review)', () => {
 
   it('keeps the sickle cell IVT grade and links goals of care to neuroprognostication', () => {
     expect(ais2026('ais-2026-110')).toMatchObject({ classOfRec: 'IIa', levelOfEvidence: 'B-NR' });
-    expect(topic('sickle-cell-stroke').summary).toContain('Eligible adults can receive IVT without excess sICH or other thrombolytic complications (AHA 2026, 2a)');
+    // The IVT clause now sits inside the bottom line (evidence-fixes BL-20), hence the lower-case "eligible".
+    expect(topic('sickle-cell-stroke').summary).toContain('eligible adults can receive IVT without excess sICH or other thrombolytic complications (AHA 2026, 2a)');
     const goals = topic('goals-of-care');
     expect(goals.related).toEqual([{ label: 'Neuroprognostication', href: '#/evidence/neuroprognostication' }]);
     expect(goals.summary).toContain('(AHA 2022 ICH, 2a)');
