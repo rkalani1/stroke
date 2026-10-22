@@ -23,7 +23,7 @@ Tests: the new `tests/shell-search-2026-10-22.test.jsx` and one assertion in `te
 | design-shell#3 | low | fixed | Offline banner. A tab the service worker controls keeps "Offline · the workspace still works; external and source links need internet". Any other tab (first visit, hard reload, no service worker) shows "Offline · " followed by the More panel's own status, e.g. "Saved for offline use · this tab needs internet until reopened" or "Offline mode unavailable in this browser". This reuses `offlineStatus`, as the reviewer proposed, and adds no new initial strings. | Reproduced: with service workers blocked, the old banner said "still works". | Chromium: an uncontrolled tab shows "Offline · " plus the More status and never "still works"; a controlled tab (controller stubbed) shows "still works". The design-2026-10-21 assertion is updated (§4). |
 | design-shell#4 | low | fixed | Global search no longer reports a failed or loading Evidence index as "No matches". When the download failed, it shows "Evidence index unavailable: evidence, studies and calculator worksheets were not searched." and a "Retry evidence download" button, with or without a query or results. Retry calls `useReferenceData().retry` and returns focus to the field. While loading with a query, it shows "No matches. Evidence index still loading." The sr-only status adds the same state, e.g. "3 results; Evidence index unavailable: …", and announces "still loading" only while a query is present. The reviewer's wording "protocols, calculators and trials were searched" would be wrong: the calculator worksheets also come from the reference download (`buildSearchIndex` reads `reference.calculators`). | Reproduced with the reference routed to HTTP 503: "moyamoya" gave "No matches". | Chromium: empty, no-match and with-results states; status text; Retry recovers without a reload and refocuses the input; loading state. |
 | design-shell#5 | low | fixed | `ABBREVIATION_END` is now case-insensitive and adds the month abbreviations (Jan–Dec, Sep/Sept), ref, pt/pts and inj; a one-letter initial matches in either case. **Correction:** with the case-insensitive rule, an all-capital acronym such as "MT." or "PT." would no longer end a sentence, because `mt` (Mount) and `pt` are on the list. A sentence ending "…before MT. Then…" would then run on. An all-capital word of 2 or more letters therefore still ends a sentence. | Node at 4d13e0e reproduced both reviewer cases. All 92 shipped bottom lines are identical before and after. | Unit: "Dec. 22, 2025", "Approx. 40%", "Sept. 3 … Jan. 9", "Ref. 12", "before MT. Then", "to PT. Then", plus the existing cases. The existing all-topics bottom-line tests pass. |
-| e2e:trials-calculators-search#2 | low | fixed | One normalizer, `normalizeSearch` in reference-search.js, with one alias table for Evidence, global search and the Calculators filter. New whole-word aliases: a-fib and AF → atrial fibrillation; "obstructive sleep apnea", "sleep apnoea" and OSA → sleep apnea; ABC/2 and "abc 2" → abc2; plural "direct oral anticoagulants". `matchesCalculatorSearch` applies it to the query and the text, and keeps the raw compact text so a partial abbreviation ("tn") still finds TNK. Exact over prefix: ABC/2 now matches only ICH volume, so Enter opens `#/encounter/ich-volume`. Generally, results whose every term is a whole word of the name or an alias now rank above prefix or partial matches (§3). | Reproduced in node: "obstructive sleep apnea" gave 0 results; "ABC/2" ranked ABCD² first; the Calculators filter gave nothing for "afib". | Unit: alias table; ABC/2, "abc 2" and "abc2" put ICH volume first and in the lead group; synthetic exact-alias over prefix-only cases (multi-word and 3-letter); Calculators-filter cases ("afib", "a-fib", "AF", the OSA forms, ABC/2, CHA₂DS₂, chadsvasc, stopbang, "tn", empty). |
+| e2e:trials-calculators-search#2 | low | fixed | One normalizer, `normalizeSearch` in reference-search.js, with one alias table for Evidence, global search and the Calculators filter. New whole-word aliases: a-fib and AF → atrial fibrillation; "obstructive sleep apnea", "sleep apnoea" and OSA → sleep apnea; ABC/2 and "abc 2" → abc2; plural "direct oral anticoagulants". `matchesCalculatorSearch` applies it to the query and the text, and keeps the raw compact text so a partial abbreviation ("tn") still finds TNK. Exact over prefix: ABC/2 now matches only ICH volume, so Enter opens `#/encounter/ich-volume`. Generally, results whose every term is a whole word of the name or an alias now rank above prefix or partial matches (§3). **Repaired after verification (§9):** my first phrase-aware lead moved Enter off the protocol card for bedside queries such as "ICH blood pressure". Phrase parity now applies only to a record the query names. | Reproduced in node: "obstructive sleep apnea" gave 0 results; "ABC/2" ranked ABCD² first; the Calculators filter gave nothing for "afib". | Unit: alias table; ABC/2, "abc 2" and "abc2" put ICH volume first and in the lead group; synthetic exact-alias over prefix-only cases (multi-word and 3-letter); Calculators-filter cases ("afib", "a-fib", "AF", the OSA forms, ABC/2, CHA₂DS₂, chadsvasc, stopbang, "tn", empty). Added in §9: Enter-target tests for the verifier's bedside queries, built with the Trials database records, and a synthetic test of a named record against a keyword-phrase record. |
 | e2e:evidence-a11y-pwa#0 | low | fixed | Global search uses the shared normalizer for index fields and queries. NFKD already turns ₂ and ² into 2, so the separate ₂/² replacements were dropped. | Reproduced: "rt-PA dose" led with TRIDENT; "direct oral anticoagulant(s)" gave no matches; "t-PA" gave 149 results; "large vessel occlusion" did not list the EVT protocol. | Unit: rt-PA/alteplase, t-PA, DOAC(s), LVO, TNK, AFib, OSA and apnoea pairs give identical results; "rt-PA dose" finds Lytic dose and the dose table, not TRIDENT; LVO and "large vessel occlusion" lead with `protocol:evt`. |
 | e2e:evidence-a11y-pwa#1 | low | fixed (keyword part: lead) | A letter-only term of 1 to 3 letters matches only at a word start, in both Evidence and global search (`hasTerm`, `wordStart`). "TIA" therefore skips "initiation" and "potential", and "AF" skips "after" and "safe". Terms with digits (e.g. "tr2" for TELE-REHAB-2's "TR-2") and longer terms still match anywhere, so type-ahead still works. AF and A-fib are aliased to atrial fibrillation. **Correction:** word-start matching alone hid prefixed abbreviations. "BP" lost the SBP-only topics (aSAH critical care, sICAS, stroke mimics, TRIDENT), "SAH" lost 2 aSAH-only topics, and "ICH" lost 18 sICH-only topics. The alias table now keeps each prefixed form and adds its base: sICH → "sich ich", aSAH → "asah sah", SBP/DBP → "sbp bp" / "dbp bp", NCCT → "ncct ct". "BP", "SAH", "ICH" and "CT" find them again, and "sICH" stays specific. The optional "posterior circulation LVO" keyword on `basilar-occlusion` is content I do not own (§5). | Reproduced: AF gave 67 topics (53 only via "after" or "safe"); TIA gave 37; A-fib included fibromuscular dysplasia. Now AF, A-fib and AFib each return the same 12 topics as "atrial fibrillation". TIA returns 16 topics, each naming TIA. The topics dropped for "ICH" now match only through "which" or "enrich", and for "CT" only through in-word text ("infarct", "direct", …). | Unit: synthetic word-start cases; AF/A-fib/AFib/af equal "atrial fibrillation" on shipped topics; every shipped TIA match names TIA; every shipped topic and study naming sICH, aSAH, SBP/DBP or NCCT is found by ICH, SAH, BP or CT; every "sICH" result names sICH. |
 | e2e:evidence-a11y-pwa#2 | low | fixed | `.workspace-offline:empty + .case-bar { margin-top: 8px }`. The external links' 44 px boxes overhang the strip by 8 px, so a case bar directly below now starts under that overhang. When the offline note shows, it already brings its own 8 px top margin. I rejected a larger negative outline offset: it would cut into the link text, because the inline padding is only 8 px. | Measured at 390 px: the outline spanned 91–93 px and the case bar started at 90 px. At 820 and 1440 px: 134–136 px against 132 px. After the change, the outline ends at 93 / 136 px and the bar starts at 98 / 140 px. | Chromium at 390, 820 and 1440 px: the bottom edge of each link's outline is at or above the case bar's top. |
@@ -56,7 +56,7 @@ Severity: reviewers rated all 12 findings low, and none changes a clinical value
   - imports `normalizeSearch`; the local normalize, its ₂/² replacements and its afib/tpa-only aliases are removed
   - short terms match at word starts
   - **exact tier:** a result whose every term is a whole word of its title or keywords (a name or an alias), or whose title equals the query, sorts above every partial or prefix result
-  - the lead (Enter) still prefers a navigation result, but only one that is in the top tier and, if the top result holds the whole query as a phrase, holds it too
+  - the lead (Enter) still prefers a navigation result, but only one that is in the top tier and, if the query names the top result, holds the query's words as a phrase too. "Names" means the title is the query, or begins with it as whole words. This narrower rule is the §9 repair; the first version checked any title or keyword phrase.
 - `src/calculator-utilities.js`: `matchesCalculatorSearch` applies `normalizeSearch` to the query and the text, and keeps the raw compact text.
 - `src/components/QuickSearch.jsx`: index-state hint, Retry and status line.
 - `src/reference-resource.js`: precache fallback validated with `validReferenceData`.
@@ -84,13 +84,13 @@ Severity: reviewers rated all 12 findings low, and none changes a clinical value
      - EXTEND → the EXTEND study instead of the IVT card ("extended")
      - TRACE-2 → the TRACE-2 study instead of ICH volume ("intracerebral")
      - PRES → the RCVS/PRES topic instead of the BP protocol ("pressure")
-   - The protocol-first design is kept wherever the protocol matches exactly: TIA, SAH, ICH score, NIHSS, BP targets and "tPA" lead as before.
+   - ~~The protocol-first design is kept wherever the protocol matches exactly: TIA, SAH, ICH score, NIHSS, BP targets and "tPA" lead as before.~~ **Wrong as first committed.** Those six did lead as before, but the phrase-aware lead also took Enter away from protocols that match every word whole, whenever a study or topic held the query as a keyword phrase. Examples: "ICH blood pressure" → INTERACT2 and "ASPECTS EVT" → RESCUE-Japan LIMIT. My 1636-query sweep missed these because it used single titles and keywords, not the combinations clinicians type. The independent verifier found them; the repair is in §9.
 2. Prefixed abbreviations: see e2e:evidence-a11y-pwa#1.
 3. Acronym sentence end: see design-shell#5.
 
 ## 4. Tests and checks
 
-New: `tests/shell-search-2026-10-22.test.jsx`, 69 tests. 61 run in node. 8 run in headless Chromium, built from source with esbuild and routed on `http://localhost:4314/`; no server is started. I ran the file against the 4d13e0e sources: 57 of 69 fail there. The 12 that pass guard behaviour that already worked and must not regress: "tn" finds TNK, "Is it a stroke?", "4.5 h", "before MT. Then", "to PT. Then", CHA₂DS₂, chadsvasc and stopbang in the Calculators filter, and the empty query. All 69 pass with the fixes. The probes that motivated the corrections (BP lost the SBP-only topics; DIRECT-MT led to "Safety & decision review") reproduced on the earlier agent's commit `3b74cae`.
+New: `tests/shell-search-2026-10-22.test.jsx`, 71 tests: 69 from the first round and 2 added in the §9 repair. The figures in the rest of this paragraph are for the first 69. 61 run in node. 8 run in headless Chromium, built from source with esbuild and routed on `http://localhost:4314/`; no server is started. I ran the file against the 4d13e0e sources: 57 of 69 fail there. The 12 that pass guard behaviour that already worked and must not regress: "tn" finds TNK, "Is it a stroke?", "4.5 h", "before MT. Then", "to PT. Then", CHA₂DS₂, chadsvasc and stopbang in the Calculators filter, and the empty query. All 69 pass with the fixes. The probes that motivated the corrections (BP lost the SBP-only topics; DIRECT-MT led to "Safety & decision review") reproduced on the earlier agent's commit `3b74cae`.
 
 Updated assertion: `tests/design-2026-10-21.test.jsx`, "says when it is offline…". That harness blocks service workers, so its tab is never controlled. The old expected text ("the workspace still works") is the defect described in design-shell#3. The test now expects "Offline · " followed by the More panel's status; the controlled-tab wording is tested in the new file.
 
@@ -100,7 +100,7 @@ Updated assertion: `tests/design-2026-10-21.test.jsx`, "says when it is offline�
 2. Evidence content: optionally add the keyword "large vessel occlusion" or "posterior circulation LVO" to the basilar-occlusion topic, so an LVO search lists basilar artery occlusion. Keywords drive search only. I did not make the change: the topic data is outside my ownership, and I did not re-read a source for it today.
 3. `src/calculator-utilities.js` ENCOUNTER_TOOLS (not mine): the ICH severity tool's aliases are "intracerebral hemorrhage score". Adding "ICH score" would make that the tool's own exact alias. Today "ICH score" + Enter already opens it, through the protocol-first lead, and the Evidence topic `neuroprognostication`, which carries the exact keyword "ICH score", ranks first within Evidence. This is optional.
 4. `src/supplementary-calculator-definitions.js` ALIASES needs no change. The shared normalizer maps "obstructive sleep apnea", "sleep apnoea" and OSA to the STOP-BANG alias "sleep apnea".
-5. Budget: see §8. The lazy-chunk delta exceeds my +600 B gzip cap by about 100 B.
+5. Budget: see §8 and §9.4. After the verification repair, the lazy-chunk delta is +715 B gzip, over my +600 B cap by about 115 B. The repair itself adds 15 B.
 
 ## 6. Protocols observations (report only)
 
@@ -112,12 +112,12 @@ Updated assertion: `tests/design-2026-10-21.test.jsx`, "says when it is offline�
 
 - `navigator.serviceWorker.controller` decides the banner at render time. A tab becomes controlled without a reload only after an explicit update, and that update reloads the tab. So this is not a practical case.
 - The Tab reveal relies on Chrome placing focus before keyup. It was verified in Chromium only; other browsers keep their own focus scrolling, and the handler can only add a scroll.
-- Ranking: the exact tier and the phrase-aware lead were checked against 1636 queries drawn from shipped content, but not every possible query. Single-word queries that equal an alias now lead with that alias's record, e.g. "exam" → NIHSS ("neurologic exam") rather than the Examination section, which matched only by prefix. That follows the requested rule, exact alias above prefix.
+- Ranking: after the §9 repair, the exact tier and the lead were checked against 6470 queries. They include ordered pairs of 68 bedside terms and type-ahead prefixes, but not every possible query. Single-word queries that equal an alias now lead with that alias's record, e.g. "exam" → NIHSS ("neurologic exam") rather than the Examination section, which matched only by prefix. That follows the requested rule, exact alias above prefix. §9 lists the 25 queries where Enter does not open the first navigation match, and why.
 - "direct oral …" typed slowly: the DOAC alias still expands to "direct oral anticoagulant", so Evidence type-ahead stays smooth. I rejected the alternative canonical token "doac", which would have broken the partial query "direct oral".
 
-## 8. Final check results
+## 8. Check results before the verification repair
 
-Run on the final source tree (commit `db1df19` plus this report), after `git clean -fqX chunks && npm run build`. The build left `data/` unchanged.
+These are the first-round results, superseded by §9.4. Run on the source tree of commit `db1df19` plus this report, after `git clean -fqX chunks && npm run build`. The build left `data/` unchanged.
 
 - `npx vitest run`: 126 files passed; 2552 tests passed, 3 skipped, 0 failed. The 4d13e0e baseline was 125 files and 2483 passed; the difference is the new 69-test file.
 - `npm run test:protocol-source`: PASS.
@@ -138,3 +138,102 @@ Run on the final source tree (commit `db1df19` plus this report), after `git cle
   | SW precache | 2135416 | 2137078 | +1662 B |
 
   The lazy chunks add +700 B gzip against a cap of +600, so they are over by about 100 B. By chunk: the shared reference-search chunk +329, Reference +217, QuickSearch +136, the calculator-utilities chunk +21, Tools −1. Trims I tried in my own files saved too little to matter: a shorter heading expression (kept), and a plural helper (reverted, because it added 10 B gzip). The remaining bytes are the alias table, word-start matching, the exact tier, the graded/ungraded counts, the precache fallback and the focus handlers. The lead decides whether to accept the overage.
+
+## 9. Verification and repair
+
+An independent reviewer re-checked the committed fixes and raised one blocking item. It confirmed that the alias part works: OSA, the sleep apnea forms, the afib forms and ABC/2 all behave as intended. It also confirmed that I left the locked files untouched.
+
+### 9.1 Reviewer items
+
+| reviewer item | blocking | my check | resolution | test |
+|---|---|---|---|---|
+| e2e:trials-calculators-search#2: the exact tier and the phrase-aware lead (`src/quick-search-index.js`) take Enter away from the protocol card on common bedside queries. In each case the protocol matches every term as a whole word, but a study or topic holds the query as a literal phrase in its title or keywords. The §3 claim that the protocol-first design was kept is contradicted. | yes | **Confirmed by running the code.** In a node probe with the shipped `data/clinical-reference.json` and the Trials database records, built the way `SEARCH_TRIALS` builds them, the Enter targets at `ff0dcec` (4d13e0e in brackets) were: "ICH blood pressure" → `study:interact2` (`protocol:qr-bp`); "ICH reversal" → `topic:antithrombotic-reversal` (`protocol:qr-reversal`); "post EVT BP" and "EVT BP" → `study:enchanted2-mt` (`protocol:qr-bp`); "blood pressure post EVT" → `study:hope-post-evt-bp` (`protocol:post-evt`); "ASPECTS EVT" → `study:rescue-japan-limit` (`protocol:evt`). All six reproduced exactly. The cause: `phrase` was true for any record whose title or keywords held the query in sequence. INTERACT2's keywords "ICH" and "blood pressure" sit next to each other, and its title reads "acute ICH blood-pressure lowering". The lead then required the protocol to hold the phrase as well. | **fixed**, as the reviewer proposed. Phrase parity now applies only when the query *names* the top result: its title is the query, also with separators removed ("TRACE-2" = "trace2"), or begins with it as whole words. Examples: the DIRECT-MT study, the "CT perfusion…" topic. A study or topic that holds the query elsewhere in its title or keywords no longer displaces a protocol that matches every word whole. The exact condition is unchanged: a navigation match that is only partial (inside a word or a word prefix) still never leads an exact match. The phrase test now compares the query's content words, without the filler words that matching already ignores. So the MeVO protocol keywords "medium distal vessel occlusion" hold "Medium and distal vessel occlusion", and Enter opens the protocol, as at 4d13e0e. §3 now marks the earlier claim as wrong. | New in `tests/shell-search-2026-10-22.test.jsx`. (1) Enter targets with the shipped data plus `SEARCH_TRIALS`: the six verifier queries, plus "IVT hemorrhage" → post-lytic hemorrhage, "extended window IVT" → IVT eligibility card and "Medium and distal vessel occlusion" → MeVO protocol. Named records still lead: DIRECT-MT, "CT perfusion", EXTEND. The test also asserts that INTERACT2 ranks first, so the case it guards really occurs. (2) A synthetic study whose title holds "ICH blood pressure" mid-title, with the same keyword, leaves Enter on the BP card; a study titled "ICH blood pressure registry" takes it. Both tests fail on `ff0dcec` with the reviewer's symptoms (`study:interact2`, `study:keyword-phrase`) and pass after the repair. |
+
+The expected targets come from the stated design and the reviewer's request. A protocol that matches every word whole leads, and a record the query names leads. They do not come from the implementation's output.
+
+### 9.2 What changed
+
+`src/quick-search-index.js` only (ranking and lead code, inside my ownership):
+- `searchIndex` marks each result `named` (the title equals the query, or begins with it as whole words) and computes `phrase` from the content words. Scores and order within each group are unchanged.
+- `groupResults` asks for phrase parity only when the top result is `named`.
+- To offset the bytes, the navigation bonus reuses `NAVIGATION_GROUPS` (now `SEARCH_GROUPS.slice(0, 3)`) instead of three string comparisons. Behaviour is identical: the 6470-query comparison is the same before and after this trim.
+
+### 9.3 Measured effect
+
+I compared Enter targets over 6470 queries:
+- every shipped topic and study title and keyword
+- calculator names, ids and aliases
+- protocol labels, Encounter tool names and aliases, Trials acronyms
+- every protocol and navigation keyword
+- all ordered pairs of 68 bedside terms (ICH, SAH, EVT, IVT, BP, blood pressure, reversal, dose, ASPECTS, post EVT, DOAC, hemorrhage, perfusion, CT, …)
+- every type-ahead prefix (2 characters or more) of each protocol label and Encounter tool name
+
+Against `ff0dcec`, 20 Enter targets changed. Each now opens the first navigation match. 18 equal the 4d13e0e target exactly. The other 2 had no navigation match at 4d13e0e, because the IVT and EVT aliases were added in this unit.
+
+| query | `ff0dcec` | now (= 4d13e0e unless noted) |
+|---|---|---|
+| ICH blood pressure; EVT BP; post EVT BP | INTERACT2; ENCHANTED2/MT; ENCHANTED2/MT | BP targets by phase |
+| thrombectomy BP | ENCHANTED2/MT | BP targets by phase (4d13e0e: ENCHANTED2/MT; no EVT alias then) |
+| ICH reversal | antithrombotic-associated ICH reversal topic | Anticoagulant reversal table |
+| apixaban warfarin | PROACT Xa | Anticoagulant reversal (ICH protocol) |
+| blood pressure post EVT; blood pressure post | HOPE | Post-EVT care |
+| BP blood pressure | Examination & imaging | BP management |
+| ASPECTS EVT; ASPECTS thrombectomy | RESCUE-Japan LIMIT | EVT eligibility |
+| IVT hemorrhage | post-thrombolysis hemorrhage topic | Post-lytic hemorrhage (4d13e0e: the topic; no IVT alias then) |
+| thrombolysis hemorrhage | post-thrombolysis hemorrhage topic | Post-lytic hemorrhage |
+| extended window IVT; extended window thrombolysis | wake-up and extended-window topic | IVT eligibility card |
+| dysphagia fever; fever glucose | QASC | AIS supportive care |
+| Medium and distal vessel occlusion | medium and distal vessel occlusion topic | MeVO / distal occlusion |
+| perfusion CT | CT perfusion topic | Examination & imaging |
+| acute headache | sudden severe headache / SAH topic | Post-thrombolysis symptomatic ICH card |
+
+"acute headache" now opens the post-thrombolysis sICH card again, as at 4d13e0e. Its search keywords hold "headache" and "acute hypertension", and the reviewer's rule (protocol-first when the protocol matches every word) applies. The SAH evaluation topic still lists first in the Evidence group. I did not change `PROTOCOL_KEYWORDS`, which is not in my ownership.
+
+In 25 queries, Enter does not open the first navigation match (45 at `ff0dcec`). None of them comes from a keyword phrase:
+- **Named by the query (6):** DIRECT-MT and "direct thrombectomy" → DIRECT-MT study; EXTEND → EXTEND study; TRACE-2 → TRACE-2 study; "CT perfusion" → CT perfusion topic; "Wake-up and extended-window thrombolysis" → the topic with that title.
+- **The navigation match is partial, and another record holds every word whole (19).**
+  - Inside a word:
+    - RACE: "intracerebral" in ICH severity
+    - compression: "decompression"
+    - EVT perfusion, thrombectomy perfusion, perfusion EVT and perfusion thrombectomy: "reperfusion" in Post-EVT care. The DEFUSE 3 study leads.
+  - At a word start:
+    - PRES ("pressure") → RCVS and PRES topic
+    - BAO ("BAOCHE") → basilar artery occlusion topic
+    - CAS ("case") → carotid topic
+    - work ("worksheet") → driving and work topic
+    - target ("targets") → Treat Stroke to Target
+    - On-X ("x" at the start of "xanthochromia" in the SAH card) → PROACT Xa, the On-X valve trial
+    - DEFUSE3: Historical source screens hold "DEFUSE 3" with a space; the EVT selection topic holds "DEFUSE3"
+  - Half-typed prefixes: An, Or, IV, AI, Re, "Anticoagulant re". RE-ALIGN is also named by "Re".
+
+These follow the exact-over-prefix rule the reviewer accepted. Whole-word cases such as "target", PRES or BAO lead with the record that holds the word whole. A side effect: while a word is half typed, the lead group can change. For example, "IV" leads with the MOST study until "IVH" or "IVT" is complete. I left these as they are. "DEFUSE3" without the space is the only case where the leading record and the navigation match name the same trial. Both are reasonable targets, and 4d13e0e opened the source screens.
+
+### 9.4 Checks after the repair
+
+Run on the final source tree (the repair commit plus this report) after `git clean -fqX chunks && npm run build`, in this order: build, budget, locks, validators, full suite.
+
+- `npx vitest run`: 126 files passed; 2554 tests passed, 3 skipped, 0 failed. That is the first-round 2552 plus the 2 new tests.
+- `npm run test:protocol-source`: PASS.
+- Protocols tab locks on this build, port 4310:
+  - `test:protocol-tab`: PASS, 46 fixture/sub-tab captures, desktop 1440×900
+  - `test:protocol-tab:phone`: PASS, 46 fixture/sub-tab captures, phone 390×844
+- Validators (no clinical content or data changed in the repair):
+  - `check:clinical-claims` PASS (4 bounded groups, 31 occurrences, 0 exports)
+  - `content:validate` PASS (26 retained tools, 25 source/limits records, 16 trial profiles, 92 topics, 88 studies)
+  - `evidence:validate` PASS (43 citations, 12 claims, 10 recommendations, 4 guidelines, 9 topics)
+  - `validate:citations` passed (43 rows)
+  - `validate:inline-citations` passed (15 PMIDs, 0 warnings)
+  - `check:leak-guard`: no institutional or PHI-adjacent content found
+  - All exited 0.
+- Budget (`npm run check:asset-budget`: every check within budget):
+
+  | check | 4d13e0e | `ff0dcec` | final | repair delta | unit delta |
+  |---|---|---|---|---|---|
+  | initial gzip | 130536 | 130584 | 130584 | 0 | +48 B (cap +120: within) |
+  | initial raw | 384554 | 384571 | 384571 | 0 | +17 B |
+  | all offline JS gzip | 260509 | 261257 | 261272 | +15 B | +763 B |
+  | all offline JS raw | 869427 | 871028 | 871028 | 0 | +1601 B |
+  | tailwind.css | 106849 | 106910 | 106910 | 0 | +61 B |
+  | SW precache | 2135416 | 2137078 | 2137078 | 0 | +1662 B |
+
+  The repair adds 15 B gzip and 0 B raw, all in the lazy QuickSearch chunk. Before the `NAVIGATION_GROUPS` trim it measured +27 B gzip and +75 B raw. For the whole unit, the lazy chunks now add +715 B gzip against a cap of +600, over by about 115 B (§5).

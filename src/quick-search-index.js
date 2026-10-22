@@ -9,6 +9,7 @@ import { STOPWORDS, normalizeSearch as normalize, hasTerm, wordStart } from './r
 const compact = value => normalize(value).replace(/ /g, '');
 
 export const SEARCH_GROUPS = ['Go to', 'Protocols', 'Calculators', 'Evidence', 'Studies', 'Trials', 'External'];
+const NAVIGATION_GROUPS = SEARCH_GROUPS.slice(0, 3);
 
 const NAVIGATION = [
   { title: 'Encounter', href: '#/encounter', keywords: 'consult case workspace note' },
@@ -104,7 +105,7 @@ export function searchIndex(index, query, limit = 40) {
     if (!score) continue;
     if (record._title === phrase || record._titleCompact === phraseCompact) { score += 20; exact = true; }
     else if (record._title.startsWith(phrase)) score += 8;
-    if (record.group === 'Go to' || record.group === 'Protocols' || record.group === 'Calculators') score += 1;
+    if (NAVIGATION_GROUPS.includes(record.group)) score += 1;
     // Named: the title is the query or begins with it as whole words ("DIRECT-MT", "CT perfusion").
     // Phrase: the title or keywords hold the query's words in order, filler words aside.
     scored.push([score + (exact ? 100 : 0), { ...record, exact, named: record._titleCompact === phraseCompact || `${record._title} `.startsWith(`${phrase} `), phrase: [record._title, record._keys].some(text => ` ${text} `.includes(wording)) }]);
@@ -120,7 +121,6 @@ export function searchIndex(index, query, limit = 40) {
 // pressure") does not displace a protocol that matches every word.
 // Long result sets show the top few per group and report how many are hidden
 // ([group, shown, hiddenCount]).
-const NAVIGATION_GROUPS = ['Go to', 'Protocols', 'Calculators'];
 export function groupResults(results, { perGroup = 5, expanded = [] } = {}) {
   const top = results[0];
   const lead = (results.find(record => NAVIGATION_GROUPS.includes(record.group) && (record.exact || !top.exact) && (record.phrase || !top.named)) || top)?.group;
