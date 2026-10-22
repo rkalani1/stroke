@@ -257,7 +257,8 @@ export default function Encounter({ state: s, update, now, onGenerate, onCopy, o
         {noteControl(NumberField, 'age', "Age (years)", { id: "input-age", min: "0", max: "120", inputMode: "numeric" })}
         {noteControl(Field, 'sex', "Sex", { options: [[ '', 'Not documented' ], ['M', 'Male'], ['F', 'Female']] })}
         <div className="weight-field"><NumberField id="input-weight" label={s.weightUnit === 'lb' ? 'Weight (lb)' : 'Weight (kg)'} value={weightDisplay} min="0" max={s.weightUnit === 'lb' ? 771.62 : 350} inputMode="decimal" onChange={value => update(prev => ({ ...prev, weightEntry: value, note: { ...prev.note, weight: weightInKg(value, prev.weightUnit) } }))} /><fieldset className="unit-toggle"><legend className="sr-only">Weight unit</legend>{['kg', 'lb'].map(unit => <label key={unit}><input type="radio" name="weight-unit" value={unit} checked={(s.weightUnit || 'kg') === unit} onChange={() => update(prev => ({ ...prev, weightUnit: unit, weightEntry: undefined }))} /><span>{unit}</span></label>)}</fieldset></div>
-        {noteControl(Field, 'premorbidMRS', "Baseline mRS", { id: "calc-mrs", options: MRS_OPTIONS.slice(0, -1) })}
+        {/* 6 (death) is not a baseline; one set elsewhere stays visible for correction instead of hiding. */}
+        {noteControl(Field, 'premorbidMRS', "Baseline mRS", { id: "calc-mrs", options: n.premorbidMRS === '6' ? MRS_OPTIONS : MRS_OPTIONS.slice(0, -1) })}
         <Field label="Context" value={s.context} options={[[ 'acute', 'Acute consultation' ], ['follow-up', 'Follow-up / review']]} onChange={v => update(prev => ({ ...prev, context: v }))} />
       </FieldGrid>
       <div className="lkw-block">

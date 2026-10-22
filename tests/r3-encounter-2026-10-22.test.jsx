@@ -34,6 +34,12 @@ describe('Baseline mRS offers 0–5 only (e2e:trials-calculators-search#8)', () 
     const select = html.match(/<select[^>]*id="calc-mrs"[^>]*>(.*?)<\/select>/)?.[1] || '';
     expect([...select.matchAll(/value="([^"]*)"/g)].map(match => match[1])).toEqual(['', '0', '1', '2', '3', '4', '5']);
   });
+  it('keeps a 6 that arrived from elsewhere (the Protocols EVT card offers 0–6) visible instead of hiding it', () => {
+    const base = newEncounter();
+    const html = renderToStaticMarkup(<Encounter state={{ ...base, note: { ...base.note, premorbidMRS: '6' } }} update={() => {}} now={Date.parse('2026-10-22T12:00:00Z')} onGenerate={() => {}} onCopy={() => {}} copyStatus="" />);
+    const select = html.match(/<select[^>]*id="calc-mrs"[^>]*>(.*?)<\/select>/)?.[1] || '';
+    expect(select).toContain('<option value="6" selected="">6 · Death</option>');
+  });
 });
 
 const root = fileURLToPath(new URL('../', import.meta.url));
