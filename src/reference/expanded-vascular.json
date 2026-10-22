@@ -399,7 +399,7 @@
     ],
     "consider": [
       "Prestroke mRS 2 (2a) or 3–4 (2b): graded only for ICA/M1 within 6 h with NIHSS ≥6 and ASPECTS ≥6.",
-      "Direct to angiography may be considered (2b each): transfers without repeat imaging unless the exam changed or transfer was delayed; EMS arrivals with a positive LVO scale, imaged by flat-panel CT. DIRECT ANGIO (France, 2026; postdates AHA 2026) stopped early for safety: more sICH (15 vs 0%), no functional benefit.",
+      "Direct to angiography may be considered (2b each): transfers without repeat imaging unless the exam changed or transfer was delayed; EMS arrivals with a positive LVO scale, imaged by flat-panel CT. DIRECT ANGIO (France, 2026; postdates AHA 2026; direct arrivals ≤85 y within 5 h selected by neurologist exam, not a prehospital scale) stopped early for safety: more sICH (15 vs 0%), no evidence of functional benefit (small and imprecise).",
       "ASPECTS ≥6 at 6–24 h keeps COR 1: in July 2026 the writing group declined a request from DAWN/DEFUSE investigators to downgrade it to 2b, while noting an unresolved observational mortality signal favoring perfusion selection (NO-SELECT trial ongoing)."
     ],
     "caution": "Only DIRECT-MT and DEVT (both China) found EVT alone noninferior; SWIFT DIRECT, MR CLEAN-NO IV, SKIP, DIRECT-SAFE and the IRIS meta-analysis did not. Give IVT whenever eligible.",
@@ -474,7 +474,7 @@
       "LASTE",
       "TESLA"
     ],
-    "summary": "Large cores still benefit (AHA 2026): in anterior LVO (ICA or M1) with NIHSS ≥6 and prestroke mRS 0–1, EVT is COR 1 for ASPECTS 3–5 within 6 h (no age criterion) and at 6–24 h (age <80, no significant mass effect), and reasonable (2a) for ASPECTS 0–2 within 6 h (age <80, no significant mass effect). SELECT2: generalized OR 1.51 (mRS 0–2 20 vs 7%); ANGEL-ASPECT: GOR 1.37; RESCUE-Japan LIMIT: mRS 0–3 31.0 vs 12.7%; TENSION: cOR 2.58 with lower mortality; LASTE (ASPECTS ≤5 within 6.5 h): mortality 36.1 vs 55.5%; TESLA (NCCT ASPECTS 2–5, ≤24 h) missed its primary endpoint. Expect more hemorrhage (ANGEL-ASPECT sICH 6.1 vs 2.7%).",
+    "summary": "Large cores still benefit (AHA 2026): in anterior LVO (ICA or M1) with NIHSS ≥6 and prestroke mRS 0–1, EVT is COR 1 for ASPECTS 3–5 within 6 h (no age criterion) and at 6–24 h (age <80, no significant mass effect), and reasonable (2a) for ASPECTS 0–2 within 6 h (age <80, no significant mass effect). SELECT2: generalized OR 1.51 (mRS 0–2 20 vs 7%); ANGEL-ASPECT: GOR 1.37; RESCUE-Japan LIMIT: mRS 0–3 31.0 vs 12.7%; TENSION: cOR 2.58 with lower mortality; LASTE (ASPECTS ≤5 within 6.5 h): mortality 36.1 vs 55.5%; TESLA (NCCT ASPECTS 2–5, ≤24 h) missed its 90-day primary endpoint (posterior probability 0.96; 0.975 required), though SVIN 2025 reports benefit at 1 year. Expect more hemorrhage (ANGEL-ASPECT sICH 6.1 vs 2.7%).",
     "recommendations": [
       {
         "text": "In AIS patients with anterior circulation proximal LVO (ICA or M1), presenting within 6 hours of symptom onset, with NIHSS 6 or greater, prestroke mRS 0-1, and ASPECTS 3-10, EVT (endovascular thrombectomy) is recommended to improve functional outcomes and reduce mortality.",
@@ -504,7 +504,7 @@
       "SVIN 2025: ASPECTS 0–5 within 6 h (age 18–80, mRS 0–1) is Class I (LASTE); ASPECTS 0–2 at 6–24 h — benefit uncertain (2b).",
       "ATLAS (Lancet 2026; postdates AHA 2026 and SVIN 2025), IPD of 6 RCTs (n=1886): better mRS (aGenOR 1.63) and lower mortality (31.1 vs 37.3%) up to 24 h, consistent across ASPECTS and core strata; evidence is limited for core ≥150 mL beyond 6 h."
     ],
-    "caution": "Trial age limits: ANGEL-ASPECT ≤80; SELECT2 and TESLA ≤85; none in RESCUE-Japan LIMIT, TENSION or LASTE. All but TENSION (mRS ≤2) required prestroke mRS 0–1.",
+    "caution": "Trial age limits: ANGEL-ASPECT ≤80; SELECT2 and TESLA ≤85; none in RESCUE-Japan LIMIT or TENSION; LASTE had no upper limit but required ASPECTS 4–5 at age ≥80 (registry: 3–5), so it gives no evidence for ASPECTS 0–2 at that age. All but TENSION (mRS ≤2) required prestroke mRS 0–1.",
     "sources": [
       {
         "title": "Endovascular Therapy in Patients With Acute Ischemic Stroke With Large Infarct: A Guideline From the Society of Vascular and Interventional Neurology",
@@ -569,7 +569,7 @@
     "consider": [
       "A low NIHSS can understate posterior-circulation disability; recheck for fluctuation.",
       "Very extensive bilateral or brainstem infarction: ESO consensus suggests no reperfusion; with PC-ASPECTS 0–6, weigh age, frailty and prestroke disability.",
-      "First pass: aspiration is suggested over a stent retriever (ESO, weak); rescue angioplasty or stenting for an underlying stenosis after failed EVT (consensus)."
+      "First pass: aspiration is suggested over a stent retriever (ESO, weak). With suspected intracranial atherosclerosis and severe basilar stenosis, ESO consensus (written before ANGEL-REBOOT) suggests rescue angioplasty or stenting after failed EVT; AHA 2026 rates rescue angioplasty or stenting after failed EVT as uncertain (2b)."
     ],
     "caution": "Most trial patients were Chinese with severe deficits; evidence for mild BAO is weak.",
     "sources": [
@@ -590,6 +590,10 @@
       {
         "label": "Acute dizziness",
         "href": "#/evidence/dizziness"
+      },
+      {
+        "label": "EVT technique and rescue",
+        "href": "#/evidence/neurointerventional-care"
       }
     ]
   },
@@ -648,7 +652,7 @@
     ],
     "consider": [
       "Confirm the segment (dominant vs codominant/nondominant M2, M3, ACA, PCA), a disabling deficit and IVT eligibility; give IVT if eligible.",
-      "SVIN 2026: EVT may be considered case by case for disabling ACA or PCA occlusion (2b); not standard for M3/M4 (COR 3: No Benefit).",
+      "SVIN 2026: routine EVT is not recommended for distal ACA (A2/A3) or isolated PCA occlusion (COR 3: No Benefit, B-NR) and is not standard for M3/M4 (COR 3: No Benefit, B-R); it may be considered case by case for ACA occlusion with disabling deficits, large territory at risk, favorable imaging and good baseline function (2b, B-NR), and in selected patients with P1–P3 occlusion who present early, have severe deficits or cannot receive IVT (2b, B-R).",
       "Review ORIENTAL-MeVO's population limits with the intervention team."
     ],
     "caution": "The AHA 2026 grading predates ORIENTAL-MeVO and DISCOUNT; one positive Chinese trial does not establish benefit for every M2 or distal lesion.",
@@ -781,12 +785,12 @@
       "intra arterial thrombolysis",
       "adjuncts"
     ],
-    "summary": "Aim for eTICI 2b–3 as early as possible with a stent retriever, aspiration or both (AHA 2026, COR 1); general anesthesia or procedural sedation are both acceptable (COR 1). Tandem lesions: treating both may be reasonable (2b). Intra-arterial thrombolytic after mTICI ≥2b may be reasonable (2b); preprocedural tirofiban is not useful (COR 3: No Benefit). Rescue angioplasty or stenting after failed EVT remains uncertain (2b); in ANGEL-REBOOT (China) it did not improve outcome and raised sICH (5 vs 1%).",
+    "summary": "Aim for eTICI 2b–3 as early as possible with a stent retriever, aspiration or both (AHA 2026, COR 1); general anesthesia or procedural sedation are both acceptable (COR 1). Tandem lesions: treating both may be reasonable (2b). Intra-arterial thrombolytic after mTICI ≥2b may be reasonable (2b); preprocedural tirofiban is not useful (COR 3: No Benefit). Rescue angioplasty or stenting after failed EVT remains uncertain (2b); in ANGEL-REBOOT (China; eTICI 0–2a or >70% residual stenosis after EVT, tirofiban in 96%) it did not improve 90-day mRS (cOR 0.86) and raised sICH (5 vs 1%), but at 1 year mRS was better (generalized OR 1.34) and same-artery recurrence lower (4 vs 13%).",
     "consider": [
       "Document final eTICI, complications, access site and the BP plan for the receiving team.",
       "Tandem stenting or rescue stenting commits the patient to antiplatelets — weigh hemorrhage risk.",
       "Avoid SBP drops during the procedure (prior ESO advice; the ESO 2025 BP update notes no study defines a safe drop).",
-      "IA lytic after successful EVT: ANGEL-TNK, PEARL and CHOICE-2 improved mRS 0–1 (CHOICE-2 57.5 vs 42.5%, but mortality 12.1 vs 6.4%); POST-UK, POST-TNK and, in the posterior circulation, ATTENTION-IA and IAT-TOP were neutral. CHOICE-2 and IAT-TOP postdate AHA 2026."
+      "IA lytic after successful EVT: ANGEL-TNK, PEARL and CHOICE-2 improved mRS 0–1 (CHOICE-2 57.5 vs 42.5%), but 90-day mortality was higher with IA alteplase in CHOICE-2 (12.1 vs 6.4%, P=.03) and PEARL (17.1 vs 11.3%, not significant); POST-UK, POST-TNK and, in the posterior circulation, ATTENTION-IA and IAT-TOP were neutral. ANGEL-TNK and PEARL (2025) appeared after the AHA 2026 literature window (through March 2025), CHOICE-2 and IAT-TOP after the guideline itself."
     ],
     "caution": "Technique choices depend on operator expertise and devices; this card is not a procedural protocol.",
     "sources": [
@@ -797,6 +801,14 @@
         "type": "Guideline",
         "checkedAt": "2026-10-21",
         "access": "Primary abstract checked; full recommendation tables not reviewed."
+      },
+      {
+        "title": "ANGEL-REBOOT 1-year outcomes: bailout intracranial angioplasty or stenting after thrombectomy",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41122847/",
+        "year": 2025,
+        "type": "Report",
+        "checkedAt": "2026-10-22",
+        "access": "Primary abstract read via PubMed on 2026-10-22. Long-term follow-up of the original randomized population (326 of 348 completed 1 year)."
       }
     ],
     "related": [
@@ -2165,7 +2177,7 @@
       "Compare the population, background therapy and primary endpoint with your patient before applying a new result.",
       "Separate confirmatory results from subgroup signals, and look for independent replication.",
       "Confirm regulatory approval and local availability before using any new agent.",
-      "Tirofiban (Chinese RCTs) improved 90-day function as an IV infusion after IVT in noncardioembolic stroke without EVT (ASSET-IT, mRS 0–1 65.9 vs 54.9%; sICH 1.7 vs 0%) or after inadequate response to tenecteplase without LVO, MeVO or cardioembolism (INSTANT, 63.8 vs 52.2%), and as an intra-arterial bolus plus IV infusion after successful EVT (ATTRACTION, mRS 0–2 49 vs 43%; sICH 12 vs 9%, not significant); IV tirofiban before EVT was neutral (RESCUE BT). AHA 2026, predating these trials, rates IV tirofiban efficacy as not well established (COR 2b, B-R)."
+      "Tirofiban (Chinese RCTs) improved 90-day function as an IV infusion after IVT in noncardioembolic stroke without EVT (ASSET-IT, mRS 0–1 65.9 vs 54.9%; sICH 1.7 vs 0%) or after inadequate response to tenecteplase without LVO, MeVO or cardioembolism (INSTANT, 63.8 vs 52.2%), and as an intra-arterial bolus plus IV infusion after successful EVT (ATTRACTION, mRS 0–2 49 vs 43%; sICH 12 vs 9%, not significant); IV tirofiban before EVT was neutral (RESCUE BT), and AHA 2026 rates preprocedural tirofiban before EVT as not useful (COR 3: No Benefit, B-R). With literature through March 2025, before ASSET-IT, INSTANT and ATTRACTION, AHA 2026 rates IV tirofiban efficacy as not well established (COR 2b, B-R)."
     ],
     "caution": "AHA 2026 does not recommend neuroprotective agents to improve function (COR 3: No Benefit, LOE A), adjunctive argatroban with IVT (COR 3: No Benefit, LOE A) or adjunctive IV eptifibatide in patients given IVT within 3 h of onset (COR 3: No Benefit, LOE B-R).",
     "sources": [
