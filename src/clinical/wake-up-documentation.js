@@ -7,7 +7,6 @@ const recordedText = value => typeof value === 'string' && value.trim() ? value.
 // A unit follows only a number; derived values use the CTP export precision (0.1 mL, ratio 0.01).
 const recordedNumber = (value, unit = '') => Number.isFinite(value) ? `${value}${unit}` : 'not documented or invalid';
 const rounded = (value, places) => { const result = Math.round(value * 10 ** places) / 10 ** places; return Number.isFinite(value) && Number.isFinite(result) ? result : value; };
-const recordedCheck = value => value === true ? 'documented' : 'not documented';
 const recordedFinding = value => value === true ? 'yes' : value === false ? 'no' : 'not documented';
 
 // A sleep midpoint in the repeated fall-back hour stays flagged until its occurrence is chosen;
@@ -19,9 +18,10 @@ const sleepMidpointText = (value, now) => {
 };
 
 // Export the selected source screen, using the same assessment as the Encounter
-// UI. Checkbox state is an attestation, not proof of a negative imaging finding.
+// UI. MRI findings are Yes/No selects: an explicit No prints "no", only an unanswered
+// item "not documented". `evaluated` names the instant the screen was evaluated at.
 // Callers decide whether the wake-up workflow belongs in their note surface.
-export function formatWakeUpScreenForExport(note = {}, now = new Date()) {
+export function formatWakeUpScreenForExport(note = {}, now = new Date(), evaluated = '') {
   const workflow = note.wakeUpStrokeWorkflow || {};
   const screen = evaluateWakeUpScreen(note, now);
   const isMri = workflow.mriAvailable === true;
@@ -31,14 +31,14 @@ export function formatWakeUpScreenForExport(note = {}, now = new Date()) {
   // A known LKW within 4.5 h: the screen does not apply. Only recorded MRI findings are kept; age, NIHSS,
   // perfusion volumes and times are already elsewhere in the note.
   const notApplicable = !met && (isMri || isCtp) && screen.wakeUpApplicable === false;
-  const lines = [`Wake-up / unknown-onset imaging screen — ${pathway}: ${met ? 'partial source screen met' : notApplicable ? 'not applicable (known LKW within 4.5 h)' : 'incomplete or not met'}; ${reviewLimit}.`];
+  const lines = [`Wake-up / unknown-onset imaging screen — ${pathway}: ${met ? 'partial source screen met' : notApplicable ? 'not applicable (known LKW within 4.5 h)' : 'incomplete or not met'}; ${reviewLimit}${evaluated && `; ${evaluated}`}.`];
   if (!notApplicable) lines.push(`Documented age: ${recordedNumber(numericInput(note.age, { min: 0 }))}; NIHSS: ${recordedNumber(documentedExamScore(note))}.`);
 
   if (isMri) {
     lines.push(
-      `DWI-positive lesion: ${recordedCheck(workflow.dwi?.positiveForLesion)}.`,
-      `No marked corresponding FLAIR hyperintensity: ${recordedCheck(workflow.flair?.noMarkedHyperintensity)}.`,
-      `MRI lesion extent reviewed: ${recordedCheck(workflow.mriLesionExtentReviewed)}.`,
+      `DWI-positive lesion: ${recordedFinding(workflow.dwi?.positiveForLesion)}.`,
+      `No marked corresponding FLAIR hyperintensity: ${recordedFinding(workflow.flair?.noMarkedHyperintensity)}.`,
+      `MRI lesion extent reviewed: ${recordedFinding(workflow.mriLesionExtentReviewed)}.`,
       `DWI lesion smaller than one-third MCA territory: ${recordedFinding(workflow.dwiLesionUnderOneThirdMCA)}.`,
       ...notApplicable ? [] : [`Symptom discovery (date/time): ${recordedText(note.discoveryDate)} / ${recordedText(note.discoveryTime)}.`]
     );

@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import { encounterTiming, encounterNihss, validTimestamp, parsePreIvtBp, protocolEncounter } from '../workspace-state.js';
-import { numericInput, reviewedGcs } from '../encounter-clinical-review.js';
+import { numericInput, reviewedGcs, contradictedAsYes } from '../encounter-clinical-review.js';
 import { calculateTNKDoseReviewed, calculateAlteplaseDoseReviewed } from '../calculators.js';
 import { computeNeurocheckSchedule } from '../calculators-extended.js';
 import { useCurrentTime } from '../use-current-time.js';
@@ -25,10 +25,13 @@ export function caseSummary(state, nowMs) {
   const weight = numericInput(n.weight, { min: Number.MIN_VALUE, max: 350 });
   const [sbp, dbp] = String(n.presentingBP || '').split('/').map(value => numericInput(value, { min: 1, max: 400 }));
   const glucose = numericInput(n.glucose, { min: 1 });
-  // Once IV thrombolysis is recorded, the next neuro/BP check replaces the lytic countdown.
-  const administered = acuteIschemic && state.actions?.administered && state.drug && validTimestamp(state.actions.administrationTime, nowMs);
+  // Once IV thrombolysis is recorded, the next neuro/BP check replaces the lytic countdown, whatever the later
+  // working diagnosis or context (a thrombolysed mimic, a post-lytic ICH).
+  const administered = state.actions?.administered && state.drug && validTimestamp(state.actions.administrationTime, nowMs);
   const schedule = administered ? computeNeurocheckSchedule(state.actions.administrationTime) : null;
   const unconfirmed = state.actions?.agentConfirmed !== state.drug;
+  // A recorded dose above the agent maximum (TNK 25 mg, alteplase 90 mg) is flagged here and in Encounter, as in the note.
+  const doseMax = administered && { TNK: 25, Alteplase: 90 }[state.drug], overMax = doseMax && numericInput(state.actions.administeredDose, { min: Number.MIN_VALUE }) > doseMax ? doseMax : 0;
   const nextCheck = schedule?.checks.find(check => check.at.getTime() > nowMs);
   let window = null;
   if (timing.invalid) window = { text: 'Check time', tone: 'critical' };
@@ -46,15 +49,17 @@ export function caseSummary(state, nowMs) {
   const hold = acuteIschemic && !administered && state.decisions?.ivt !== 'Not recommended' ? doseHold(state, nowMs, weight, age) : null;
   const dose = acuteIschemic && !hold && weight !== null && ['TNK', 'Alteplase'].includes(state.drug) && state.decisions?.ivt !== 'Not recommended' ? (state.drug === 'Alteplase' ? calculateAlteplaseDoseReviewed(n.weight) : calculateTNKDoseReviewed(n.weight, state.doseAuthority)) : null;
   const gcs = ['ich', 'sah', 'cvt'].includes(n.diagnosisCategory) ? reviewedGcs(state.gcs) : null;
-  // BP flags: AIS before IVT not <185/110 (AHA/ASA 2026 COR 1); after IVT not <180/105 (COR 1, ais-2026-74);
-  // acute ICH SBP >=150, the 2022 range in which lowering toward 140 applies.
+  // BP flags: AIS before IVT not <185/110 (AHA/ASA 2026 COR 1); after IVT not <180/105 (COR 1, ais-2026-74), kept in
+  // acute care when the working diagnosis changes after a recorded IVT; acute ICH SBP >=150, the 2022 range in which
+  // lowering toward 140 applies (it takes precedence for a post-lytic ICH).
   const bpKnown = sbp !== null && dbp !== null;
   const ich = state.context === 'acute' && n.diagnosisCategory === 'ich';
   // After IVT the entered BP may still be the presenting value; a documented pre-IVT BP shows that.
   const preIvt = parsePreIvtBp(state.details?.preIvtBP);
-  const bpFlag = !bpKnown ? null : acuteIschemic ? administered ? sbp >= 180 || dbp >= 105 ? `Not below the post-IVT limit of 180/105${preIvt ? `; documented pre-IVT BP ${preIvt.text}. Update the entered BP with the current reading` : ''}` : null : sbp >= 185 || dbp >= 110 ? 'Not below 185/110 (pre-IVT)' : null
-    : ich && sbp >= 220 ? 'ICH: SBP ≥220 is outside the 2022 150–220 range; local protocol: reduce about 20% (never more than 25%) in the first hour, then gradually to 140–160'
-    : ich && sbp >= 150 ? 'ICH: SBP 150–220 → target 140 (130–150), start ≤2 h, reach ≤1 h; avoid <130' : null;
+  const bpFlag = !bpKnown ? null : ich && sbp >= 220 ? 'ICH: SBP ≥220 is outside the 2022 150–220 range; local protocol: reduce about 20% (never more than 25%) in the first hour, then gradually to 140–160'
+    : ich && sbp >= 150 ? 'ICH: SBP 150–220 → target 140 (130–150), start ≤2 h, reach ≤1 h; avoid <130'
+    : administered && state.context === 'acute' ? sbp >= 180 || dbp >= 105 ? `Not below the post-IVT limit of 180/105${preIvt ? `; documented pre-IVT BP ${preIvt.text}. Update the entered BP with the current reading` : ''}` : null
+    : acuteIschemic && (sbp >= 185 || dbp >= 110) ? 'Not below 185/110 (pre-IVT)' : null;
   return {
     dx: SHORT_DX[n.diagnosisCategory] || '', dxKey: n.diagnosisCategory || '',
     demographics: [age !== null ? String(age) : '', n.sex === 'M' || n.sex === 'F' ? n.sex : ''].filter(Boolean).join(' '),
@@ -74,19 +79,21 @@ export function caseSummary(state, nowMs) {
     // Why no dose is shown when nothing is held: name the missing input, not a generic one.
     doseNote: state.decisions?.ivt === 'Not recommended' ? 'IVT clinician decision is Not recommended; no dose shown' : `${!['TNK', 'Alteplase'].includes(state.drug) ? `Select the IV thrombolytic${weight === null ? ' and enter a valid weight (kg)' : ''}` : 'Enter a valid weight (kg)'} in Encounter for dose arithmetic; not an eligibility decision`,
     // An agent pre-filled from the dose calculation is not named until it is confirmed (as in the note).
-    dose: administered ? { label: unconfirmed ? 'IVT given' : state.drug === 'Alteplase' ? 'tPA given' : 'TNK given', value: clockTime(state.actions.administrationTime), detail: state.actions.administeredDose ? `${state.actions.administeredDose} mg` : '', title: `Recorded administration time${unconfirmed ? '; confirm the agent given in Encounter' : ''}`, flag: unconfirmed ? 'caution' : undefined } : hold ? { label: 'IVT dose', value: hold.value, title: hold.title, flag: hold.flag } : dose ? state.drug === 'Alteplase' ? { label: 'tPA', value: `${dose.totalDose} mg`, detail: `${dose.bolus} mg bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
+    doseAboveMax: overMax,
+    dose: administered ? { label: unconfirmed ? 'IVT given' : state.drug === 'Alteplase' ? 'tPA given' : 'TNK given', value: clockTime(state.actions.administrationTime), detail: state.actions.administeredDose ? `${state.actions.administeredDose} mg` : '', title: `Recorded administration time${unconfirmed ? '; confirm the agent given in Encounter' : ''}${overMax ? `; administered dose above the ${overMax} mg maximum` : ''}`, flag: unconfirmed || overMax ? 'caution' : undefined } : hold ? { label: 'IVT dose', value: hold.value, title: hold.title, flag: hold.flag } : dose ? state.drug === 'Alteplase' ? { label: 'tPA', value: `${dose.totalDose} mg`, detail: `${dose.bolus} mg bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
     anticoagulant: n.lastDOACType && n.lastDOACType !== 'none' ? ANTICOAGULANT_LABELS[n.lastDOACType] || 'Anticoagulant' : '',
     aceInhibitor: ACE_INHIBITOR.test(n.medications || ''),
     hasData: Boolean(n.diagnosisCategory || age !== null || timing.timestamp || n.lkwUnknown || exam.complete || exam.count || sbp !== null || glucose !== null || weight !== null)
   };
 }
 
-// Why the case bar withholds dose arithmetic. The IVT-held reason is the Protocols banner's own text.
+// Why the case bar withholds dose arithmetic. The IVT-held reason is the Protocols banner's own text; a "No" that an
+// entered value contradicts holds the dose as a "Yes" would, although the Protocols card reads the answer as given.
 function doseHold(state, nowMs, weight, age) {
   const n = state.note;
   if (['present', 'uncertain'].includes(n.ctHemorrhageStatus)) return { value: 'Held', flag: 'caution', title: n.ctHemorrhageStatus === 'present' ? 'CT hemorrhage recorded; no dose shown' : 'CT hemorrhage review uncertain or conflicting; no dose shown' };
-  const protocol = protocolEncounter(state, nowMs);
-  if (protocol.safetyReviewRequired) return { value: 'Held', flag: 'caution', title: `IVT card held. ${protocol.safetyReviewReason}` };
+  const note = contradictedAsYes(n, nowMs, state.details), protocol = protocolEncounter({ ...state, note }, nowMs);
+  if (protocol.safetyReviewRequired) return { value: 'Held', flag: 'caution', title: `${note === n ? 'IVT card held.' : 'Entered values contradict a "No" safety answer; no dose shown.'} ${protocol.safetyReviewReason}` };
   // Same limit as the MCP dose contract: below 30 kg is implausible for adult dosing (often a decimal slip).
   if (weight !== null && weight < 30) return { value: 'Check weight', flag: 'caution', title: 'Weight below 30 kg is implausible for adult IVT dosing; confirm kilograms and decimal placement. No dose shown.' };
   if (age !== null && age < 18) return { value: 'Not shown', flag: 'caution', title: 'Age under 18: adult dose arithmetic does not apply; use the pediatric specialist pathway.' };
@@ -146,7 +153,7 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
   const reversalHref = `#/protocols/${sub}/qr-reversal`, bpHref = `#/protocols/${sub}/qr-bp`;
   // In acute ischemic stroke the anticoagulant matters for IVT eligibility, not reversal.
   const badge = acuteIschemic ? { href: '#/protocols/ischemic/contraindications', target: 'contraindications', title: 'Anticoagulant exposure documented · open IVT contraindications', action: 'open IVT contraindications' } : { href: reversalHref, target: 'qr-reversal', title: 'Anticoagulant exposure documented · open the reversal table', action: 'open reversal table' };
-  const bpLink = acuteIschemic || state.context === 'acute' && ['ich', 'sah'].includes(state.note.diagnosisCategory);
+  const bpLink = acuteIschemic || c.administered || state.context === 'acute' && ['ich', 'sah'].includes(state.note.diagnosisCategory);
   return <HoldPositionOnMount shown><section ref={bar} className="case-bar" aria-label="Current encounter">
     <a className="case-bar__dx" data-dx={c.dxKey || undefined} href="#/encounter" aria-label={`Open Encounter: ${[c.dx || 'No diagnosis', c.demographics].filter(Boolean).join(' · ')}`}>{c.dx || 'No diagnosis'}{c.demographics && <span className="case-bar__demo">· {c.demographics}</span>}</a>
     {c.anticoagulant && <a className="case-bar__badge" href={badge.href} onClick={revealIfCurrent(badge.href, badge.target)} title={badge.title}><span className="sr-only">Anticoagulant: </span>{c.anticoagulant}<span className="sr-only">, {badge.action}</span></a>}
@@ -157,7 +164,7 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
       <Item label="BP" value={c.bp} flag={c.bpHigh ? 'caution' : undefined} title={c.bpTitle} />
       <Item label="Glucose" short="Glu" value={c.glucose} flag={c.glucoseFlag ? 'caution' : undefined} title={c.glucoseFlag ? 'Glucose outside 50–400 mg/dL' : undefined} />
       <Item label="Weight" short="Wt" value={c.weight && `${c.weight} kg`} />
-      {acuteIschemic && <Item label={c.dose?.label || 'Dose'} value={c.dose?.value} detail={c.dose?.detail} flag={c.dose?.flag} title={c.dose?.title || (c.dose ? 'Dose arithmetic only; not an eligibility decision' : c.doseNote)} />}
+      {(acuteIschemic || c.administered) && <Item label={c.dose?.label || 'Dose'} value={c.dose?.value} detail={c.dose?.detail} flag={c.dose?.flag} title={c.dose?.title || (c.dose ? 'Dose arithmetic only; not an eligibility decision' : c.doseNote)} />}
     </div>
     <div className="case-bar__actions">
       {bpLink && <a className="case-bar__link" href={bpHref} onClick={revealIfCurrent(bpHref, 'qr-bp')}>BP targets</a>}

@@ -3,7 +3,7 @@
 // every documentation format. Expected values come from UTC arithmetic and the field definitions,
 // not from the formatter.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { buildSummary, encounterTiming, newEncounter, deviceTimeZoneText } from '../src/workspace-state.js';
+import { buildSummary, encounterTiming, newEncounter, deviceTimeZoneText, validTimestamp } from '../src/workspace-state.js';
 import { formatRecordedInstant, enteredTime } from '../src/clinical/timestamp.js';
 import { formatTimeline, timelineIntervals, TIMELINE_FIELDS } from '../src/encounter-timeline.js';
 import { formatWakeUpScreenForExport } from '../src/clinical/wake-up-documentation.js';
@@ -165,9 +165,9 @@ describe('notes keep missing, negative, proposed and completed distinct', () => 
       expect(text).toContain('EVT puncture: not documented');
       expect(text).not.toContain('EVT reperfusion');
     }
-    // A reperfusion time without a puncture time keeps the missing puncture visible, in order.
+    // A reperfusion time without a puncture time keeps the missing puncture visible, in order, and flags it.
     const partial = buildSummary({ ...recommended, consultationType: 'video', actions: { ...recommended.actions, reperfusionTime: '2026-10-21T09:30' } }, now);
-    expect(partial).toContain('EVT puncture: not documented\nEVT reperfusion: 2026-10-21 09:30\n');
+    expect(partial).toContain('EVT puncture: not documented [reperfusion time recorded; reconcile]\nEVT reperfusion: 2026-10-21 09:30\n');
     // Non-ischemic and follow-up notes carry no acute EVT line at all.
     expect(buildSummary({ ...recommended, note: { ...recommended.note, diagnosisCategory: 'ich' } }, now)).not.toContain('EVT puncture');
     expect(buildSummary({ ...recommended, context: 'follow-up' }, now)).not.toContain('EVT puncture');
@@ -208,7 +208,7 @@ describe('notes keep missing, negative, proposed and completed distinct', () => 
     expect(formatWakeUpScreenForExport(known, new Date(now))).toBe('Wake-up / unknown-onset imaging screen — CTP (EXTEND): not applicable (known LKW within 4.5 h); complete eligibility and drug-specific treatment decision require review.');
     // The MRI pathway keeps its recorded findings even when the screen does not apply.
     const mri = formatWakeUpScreenForExport({ ...known, wakeUpStrokeWorkflow: { mriAvailable: true, dwi: { positiveForLesion: true } } }, new Date(now)).split('\n');
-    expect(mri).toEqual(['Wake-up / unknown-onset imaging screen — MRI (WAKE-UP): not applicable (known LKW within 4.5 h); complete eligibility and drug-specific treatment decision require review.', 'DWI-positive lesion: documented.', 'No marked corresponding FLAIR hyperintensity: not documented.', 'MRI lesion extent reviewed: not documented.', 'DWI lesion smaller than one-third MCA territory: not documented.']);
+    expect(mri).toEqual(['Wake-up / unknown-onset imaging screen — MRI (WAKE-UP): not applicable (known LKW within 4.5 h); complete eligibility and drug-specific treatment decision require review.', 'DWI-positive lesion: yes.', 'No marked corresponding FLAIR hyperintensity: not documented.', 'MRI lesion extent reviewed: not documented.', 'DWI lesion smaller than one-third MCA territory: not documented.']);
   });
 
   it('starts every optional format with its clinical context directly under the heading', () => {
@@ -302,7 +302,10 @@ describe('documentation fuzz (fixed seed)', () => {
         if (consultationType === 'phone' && documentFormat === 'consultation' && text.includes('\n')) fail('Pulsara summary is not one paragraph');
         // Never invent: administration, procedure, completed exams or answered checklists need their inputs.
         const acuteIschemic = state.context === 'acute' && state.note.diagnosisCategory === 'ischemic';
-        if (/(?:TNK|Alteplase) at \d/.test(text) && !(acuteIschemic && state.actions.administered && state.drug)) fail('administration without an explicit record');
+        // A recorded administration is printed whatever the diagnosis or context (2026-10-22), flagged outside acute ischemic stroke.
+        if (/(?:TNK|Alteplase) at \d/.test(text) && !(state.actions.administered && state.drug)) fail('administration without an explicit record');
+        if (state.actions.administered && state.drug && validTimestamp(state.actions.administrationTime, now) && !text.includes(`${state.drug} at `)) fail('recorded administration omitted');
+        if (state.actions.administered && !acuteIschemic && !/Recorded reperfusion treatment: \[.*; reconcile\]/.test(text)) fail('recorded treatment outside acute ischemic stroke not flagged');
         if (/\/42 \(all items documented/.test(text) && !(state.nihssSource === 'itemized' && NIHSS_ITEMS.every(item => item.options.includes(state.nihss[item.id])))) fail('complete NIHSS without every item');
         if (/Disabling deficit: (?:yes|no)\b/.test(text) && typeof state.note.disablingDeficit !== 'boolean') fail('disabling deficit invented');
         if (text.includes('every checklist item answered No') && !SAFETY_ITEMS.every(item => state.note.tnkContraindicationChecklist[item.id] === false)) fail('checklist reported as answered');

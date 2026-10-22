@@ -119,11 +119,15 @@ describe('restored telephone Pulsara and video Epic documentation', () => {
     expect(text).toContain('Intraventricular hemorrhage: absent (reviewed)');
     expect(text).toContain('Infratentorial origin: not assessed');
     expect(text).toContain('GCS E4 V5 M6 = 15/15');
-    expect(text).not.toContain('IVT administration');
+    // A recorded administration is a fact, not an ischemic-only output: a post-lytic ICH keeps it, flagged.
+    expect(text).toContain('Recorded reperfusion treatment: [working diagnosis Intracerebral hemorrhage, not acute ischemic stroke; reconcile]');
+    expect(text).toContain('IVT administration: TNK at 2026-10-01 11:00');
+    expect(text).not.toContain('Recorded safety concerns');
     expect(text).not.toContain('Vessel imaging: M1');
     expect(text).not.toContain('Core: 20 mL');
     const followUp = { ...state, context: 'follow-up', note: { ...state.note, diagnosisCategory: 'ischemic' } };
-    expect(buildSummary(followUp, NOW)).not.toContain('IVT administration');
+    expect(buildSummary(followUp, NOW)).toContain('Recorded reperfusion treatment: [follow-up / review context, not acute ischemic stroke; reconcile]');
+    expect(buildSummary(followUp, NOW)).toContain('IVT administration: TNK at 2026-10-01 11:00');
     expect(buildSummary(followUp, NOW)).not.toContain('Core: 20 mL');
     if (format === 'video') expect(buildSummary(followUp, NOW)).toMatch(/^Reason for Consultation: Stroke follow-up/);
     else expect(buildSummary(followUp, NOW)).toContain('seen in follow-up for');
@@ -141,7 +145,7 @@ describe('restored telephone Pulsara and video Epic documentation', () => {
     const state = make(format, { note: { lkwUnknown: true, discoveryDate: '2026-10-01', discoveryTime: '11:00', wakeUpStrokeWorkflow: { mriAvailable: true, dwi: { positiveForLesion: true }, flair: { noMarkedHyperintensity: true }, mriLesionExtentReviewed: true, dwiLesionUnderOneThirdMCA: false } } });
     const text = buildSummary(state, NOW);
     expect(text).toContain('MRI (WAKE-UP): incomplete or not met;');
-    expect(text).toContain('MRI lesion extent reviewed: documented.');
+    expect(text).toContain('MRI lesion extent reviewed: yes.');
     expect(text).toContain('DWI lesion smaller than one-third MCA territory: no.');
     expect(text).not.toContain('partial source screen met');
   });
