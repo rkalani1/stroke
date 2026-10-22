@@ -88,7 +88,7 @@ describe('rehabilitation and recovery cards (2026-10-21 review)', () => {
     expect(card.caution).not.toContain('universal waiting period');
     expect(card.caution).toContain('not state law or individual clearance');
     // Archived transcription: "Many states require different seizure-free intervals ranging from 3 to 18 months".
-    expect(card.caution).toContain('state seizure-free intervals vary (3 to 18 months) and must be followed');
+    expect(card.caution).toContain('state seizure-free intervals vary (3 to 18 months) and should be followed');
   });
 
   it('labels VNS evidence that postdates the 2021 trial', () => {

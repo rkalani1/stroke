@@ -186,7 +186,7 @@ describe('prevention evidence cards (2026-10-21 review)', () => {
     // PMC10916806 PICO 2 consensus (12/12): antiplatelets "as soon as possible after stroke onset"; DAPT "short term according
     // to the CHANCE and POINT trials' protocols" may be reasonable (r3 prev-b#4).
     const lacunar = topic('lacunar-small-vessel');
-    expect(lacunar.summary).toContain('Symptomatic lacunar stroke: start antiplatelets as soon as possible (ESO 2024 consensus, which adds that short-term DAPT per CHANCE/POINT may be reasonable), then long-term single antiplatelet, BP control and lipid lowering per current guidelines (ESO 2024)');
+    expect(lacunar.summary).toContain('Symptomatic lacunar stroke: start antiplatelets as soon as possible (ESO 2024 expert consensus; its text adds that short-term DAPT per CHANCE/POINT may be reasonable), then long-term single antiplatelet, BP control and lipid lowering per current guidelines (ESO 2024)');
     expect(lacunar.related).toEqual([{ label: 'Minor stroke DAPT', href: '#/evidence/minor-stroke-antiplatelets' }]);
   });
 

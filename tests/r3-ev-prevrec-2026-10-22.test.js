@@ -55,6 +55,17 @@ describe('r3 ev-prevrec: prevention cards', () => {
     expect(source(topic('carotid'), '39429201')).toBeTruthy();
   });
 
+  it('discloses that the ESO PFO anticoagulation wording comes from the archived Table 12, not the abstract', () => {
+    // ESO 2024 abstract (PMID 38752755) says "We suggest against long-term anticoagulation ... unless anticoagulation is
+    // indicated"; Table 12 (archived transcription) gives PICO 3 (conditional, low certainty) and the PICO 4 consensus.
+    const entry = coverage('eso-pfo-2024');
+    expect(entry.checkedAt).toBe('2026-10-22');
+    expect(entry.access).toContain('archived full-text transcription (Table 12)');
+    // Kent, JAMA 2021 abstract re-read for the AF-by-category figures now on the card.
+    expect(source(topic('pfo'), '34905030')).toMatchObject({ checkedAt: '2026-10-22' });
+    expect(topic('pfo').consider[2]).toContain('if closure is declined, individualize antiplatelet versus anticoagulant therapy (expert consensus)');
+  });
+
   it('restores the newer-evidence caveat on the sICAS and dissection guideline sources', () => {
     // AAN advisory 2022-03-22 and AHA dissection statement 2024-02-01 predate BASIS (2024-10) and the CAD IPD meta-analysis (2024-06).
     expect(coverage('aan-sicas-2022').access).toContain('Interpret with newer evidence (BASIS 2024).');
@@ -102,6 +113,7 @@ describe('r3 ev-prevrec: recovery, inpatient and antiamyloid cards', () => {
     expect(card.caution).toContain('The Encounter IVT checklist lists antiamyloid therapy as generally contraindicated.');
     const absolute = SAFETY_TIERS.find(([tier]) => tier === 'absolute')[1].map(item => item.id);
     expect(absolute).toContain('lecanemab');
+    expect(fs.readFileSync(new URL('../src/Encounter.jsx', import.meta.url), 'utf8')).toContain("absolute: 'Generally contraindicated'");
     // PMID 42622140: no PMCID; abstract only.
     expect(card.caution).toContain('The August 2026 AHA ARIA Summit statement was read at abstract level only and is not reflected here.');
     expect(source(card, '40155270').access).toContain('no recommendation on dual therapy');
