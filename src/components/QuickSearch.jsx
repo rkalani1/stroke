@@ -32,7 +32,9 @@ export default function QuickSearch({ open, onClose, version, trials = SEARCH_TR
     setShownOpen(open);
     if (open) { setQuery(''); setActive(0); setExpanded([]); }
   }
-  const { data, failed } = useReferenceData(version);
+  const { data, failed, retry } = useReferenceData(version);
+  // Evidence, studies and calculator worksheets come from the reference download.
+  const indexNote = failed ? 'Evidence index unavailable: evidence, studies and calculator worksheets were not searched' : data ? '' : 'Evidence index still loading';
   const index = useMemo(() => buildSearchIndex({ ...(data || {}), trials }, { protocolSub }), [data, trials, protocolSub]);
   // groupResults caps what renders, so every match stays reachable through "Show N more".
   const results = useMemo(() => searchIndex(index, query, Infinity), [index, query]);
@@ -84,8 +86,9 @@ export default function QuickSearch({ open, onClose, version, trials = SEARCH_TR
         <button type="button" className="quick-search__close" onClick={onClose}><span className="quick-search__close-key">Esc<span className="sr-only">, close search</span></span><span className="quick-search__close-touch">Close<span className="sr-only"> search</span></span></button>
       </div>
       <div ref={list} className="quick-search__results">
-        {!query.trim() && <div className="quick-search__empty"><p>Jump to</p><ul className="quick-search__chips">{SUGGESTIONS.map(([label, target]) => { const href = target.startsWith('#') ? target : `#/protocols/${protocolSub}/${target}`; return <li key={target}><a href={href} onClick={event => { event.preventDefault(); go({ href }); }}>{label}</a></li>; })}</ul>{!data && !failed && <p className="quick-search__hint">Loading evidence index…</p>}</div>}
-        {query.trim() && !flat.length && <p className="quick-search__hint">No matches. Try a drug, score, trial or topic.</p>}
+        {!query.trim() && <div className="quick-search__empty"><p>Jump to</p><ul className="quick-search__chips">{SUGGESTIONS.map(([label, target]) => { const href = target.startsWith('#') ? target : `#/protocols/${protocolSub}/${target}`; return <li key={target}><a href={href} onClick={event => { event.preventDefault(); go({ href }); }}>{label}</a></li>; })}</ul></div>}
+        {/* A missing Evidence index is not "no matches": say what was not searched, and offer a retry. */}
+        {(indexNote || query.trim() && !flat.length) && <p className="quick-search__hint">{query.trim() && !flat.length && 'No matches. '}{indexNote ? `${indexNote}.` : 'Try a drug, score, trial or topic.'}{failed && <> <button type="button" className="workspace-secondary-action" onClick={() => { retry(); input.current?.focus(); }}>Retry evidence download</button></>}</p>}
         {flat.length > 0 && <div id="quick-search-results" role="listbox" aria-label="Search results">{groups.map(([group, items, hidden]) => <div key={group} role="group" aria-labelledby={groupId(group)}>
           <div id={groupId(group)} className="quick-search__group" role="presentation">{group}</div>
           {items.map(record => { position += 1; return option(record, position); })}
@@ -93,7 +96,7 @@ export default function QuickSearch({ open, onClose, version, trials = SEARCH_TR
         </div>)}</div>}
       </div>
       {/* Always rendered, so the count is announced as it changes (a live region inserted with its text often is not). */}
-      <p className="sr-only" role="status">{!query.trim() ? '' : results.length ? `${results.length} ${results.length === 1 ? 'result' : 'results'}` : 'No matches'}</p>
+      <p className="sr-only" role="status">{[query.trim() && (results.length ? `${results.length} ${results.length === 1 ? 'result' : 'results'}` : 'No matches'), (query.trim() || failed) && indexNote].filter(Boolean).join('; ')}</p>
       <p className="quick-search__footer"><kbd>↑</kbd><kbd>↓</kbd> move · <kbd>Enter</kbd> open · <kbd>Esc</kbd> close</p>
     </div>
   </dialog>;
