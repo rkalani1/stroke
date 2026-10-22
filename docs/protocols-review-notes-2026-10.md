@@ -143,6 +143,7 @@ The Protocols tab is still unchanged in 7.9.0: the rendered lock (46 synthetic s
 ## Boundary wording (low)
 - Post-IVT: the local protocol says "treat if SBP >180 or DBP >105; maintain BP below 180/105" (`institutional-protocols.js`); ais-2026-74 (COR I, B-R) says "maintained below 180/105 mmHg", so exactly 180 or 105 is neither below target nor a treatment trigger. The Encounter case bar now flags ≥180/≥105.
 - Pre-IVT: the local exclusion list prints "SBP >185 or DBP >110 mmHg on repeated measures"; ais-2026-72 requires lowering "below 185 mmHg and DBP below 110 mmHg". The Encounter checklist label now reads ≥185/≥110, matching its long-standing logic. The two surfaces therefore word the same boundary differently until the owner decides.
+- Round-3 verification confirmed both items independently and proposed the same wording for the owner: "treat if SBP ≥180 or DBP ≥105" and "SBP ≥185 or DBP ≥110".
 
 ## EVT tiers with institutional qualifiers (low)
 - The frozen EVT quick reference grades "0–6 h ASPECTS 3–5 with no significant mass effect: EVT, COR I / LOE A". ais-2026-114 (ASPECTS 3–10) has no mass-effect or age criterion. It also grades "ASPECTS 0–2, age <80, no significant mass effect, and CTP core ≤70 mL: COR IIa / LOE B-R"; ais-2026-117 has no CTP-core criterion. These may be intended local policy; if so, the owner may want them labelled "AHA grade with institutional qualifier". Encounter's EVT screen messages in 7.9.0 follow the AHA text.
@@ -151,6 +152,9 @@ The Protocols tab is still unchanged in 7.9.0: the rendered lock (46 synthetic s
 - The IVT exclusion list's DOAC detail cites the "AHA/ASA 2019 AIS guideline (PMID 31662037)"; the 2026 guideline (PMID 41582814) states that it replaces the 2018 guideline and the 2019 update.
 - Pediatric card: "In sickle cell disease, acute pediatric management centers on exchange transfusion (STOP-era protocols) rather than lysis." STOP was a primary-prevention transfusion trial; ASH 2020 acute-management text could not be read in this review, so no discrepancy is asserted.
 - Kcentra INR-tier dosing and idarucizumab 5 g in the locked reversal file could not be re-verified against the labels (DailyMed blocked). The quick-reference BP rows, glucose rows, TNK label bands and 3-h window, andexanet withdrawal note and nimodipine regimen were checked and agree with the sources read.
+
+## MINUTE pre-screen time limit (low)
+- `src/institutional-protocols.js` research screen "MINUTE screen" lists "Arrival <=15 hours since last known well". The ClinicalTrials.gov record NCT07260916 (read 2026-10-22, full registry record) has inclusion 8: "Randomization within 16 hours from LKW and within 2 hours of arrival to the randomizing center." The Trials-tab MINUTE profile follows the registry (≤16 h from LKW, within 2 h of arrival). A patient arriving 15–16 h after last known well and randomized by 16 h fits the registry but not the Protocols screen. The 15 h figure may be a deliberate local buffer; if so, the owner may want it labelled as a local operational cutoff. Found by the round-3 trials verifier; not changed.
 
 ## Pediatric EVT wording (low)
 - `src/ProtectedProtocols.jsx` (about line 2079) says EVT for ages 28 days–6 years by an "experienced neurointerventionalist"; the AHA 2026 recommendation (archived transcription) says "with pediatric experience". Possibly intended; the owner may want the source wording. Found by the evidence-fixes unit; not changed.
