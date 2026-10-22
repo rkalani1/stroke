@@ -210,7 +210,10 @@ export default function Encounter({ state: s, update, now, onGenerate, onCopy, o
   // A session left open may still hold an earlier patient's entries, which are never cleared automatically.
   const lastEntry = React.useRef(null);
   if (lastEntry.current?.revision !== s.revision) lastEntry.current = { revision: s.revision, at: Date.now() };
-  const idleMinutes = caseFlags.hasData ? Math.floor((now - lastEntry.current.at) / 60000) : 0;
+  // The app clock ticks only while a time is shown, so entries without timestamps get their own minute tick.
+  const [, tick] = React.useReducer(count => count + 1, 0);
+  React.useEffect(() => { if (caseFlags.hasData) { const id = setInterval(tick, 60000); return () => clearInterval(id); } }, [caseFlags.hasData]);
+  const idleMinutes = caseFlags.hasData ? Math.floor((Date.now() - lastEntry.current.at) / 60000) : 0;
   // Open items when an administration is recorded; copy stays enabled.
   // The last pre-IVT BP (details.preIvtBP) is checked when recorded; otherwise the entered BP.
   const preIvtBp = parsePreIvtBp(s.details?.preIvtBP);
@@ -254,7 +257,7 @@ export default function Encounter({ state: s, update, now, onGenerate, onCopy, o
         {noteControl(NumberField, 'age', "Age (years)", { id: "input-age", min: "0", max: "120", inputMode: "numeric" })}
         {noteControl(Field, 'sex', "Sex", { options: [[ '', 'Not documented' ], ['M', 'Male'], ['F', 'Female']] })}
         <div className="weight-field"><NumberField id="input-weight" label={s.weightUnit === 'lb' ? 'Weight (lb)' : 'Weight (kg)'} value={weightDisplay} min="0" max={s.weightUnit === 'lb' ? 771.62 : 350} inputMode="decimal" onChange={value => update(prev => ({ ...prev, weightEntry: value, note: { ...prev.note, weight: weightInKg(value, prev.weightUnit) } }))} /><fieldset className="unit-toggle"><legend className="sr-only">Weight unit</legend>{['kg', 'lb'].map(unit => <label key={unit}><input type="radio" name="weight-unit" value={unit} checked={(s.weightUnit || 'kg') === unit} onChange={() => update(prev => ({ ...prev, weightUnit: unit, weightEntry: undefined }))} /><span>{unit}</span></label>)}</fieldset></div>
-        {noteControl(Field, 'premorbidMRS', "Baseline mRS", { id: "calc-mrs", options: MRS_OPTIONS })}
+        {noteControl(Field, 'premorbidMRS', "Baseline mRS", { id: "calc-mrs", options: MRS_OPTIONS.slice(0, -1) })}
         <Field label="Context" value={s.context} options={[[ 'acute', 'Acute consultation' ], ['follow-up', 'Follow-up / review']]} onChange={v => update(prev => ({ ...prev, context: v }))} />
       </FieldGrid>
       <div className="lkw-block">
