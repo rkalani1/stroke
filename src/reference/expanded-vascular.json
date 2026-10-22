@@ -1814,7 +1814,7 @@
       "vegetation",
       "prosthetic valve"
     ],
-    "summary": "Suspected endocarditis with stroke: do not give IV thrombolysis (ESC 2023, class III; thrombectomy may be considered, IIb) and involve cardiology, infectious diseases and cardiac surgery early. Recurrent emboli with persistent vegetations despite antibiotics: early surgery is reasonable if there is no ICH or extensive brain injury (AHA 2021, 2a); with a major ischemic stroke or ICH, delaying valve surgery for at least 4 weeks may be considered if hemodynamically stable (AHA 2021, 2b). ESC 2023 differs after ischemic stroke: do not delay indicated surgery if the patient is not comatose and CT/MRI excludes hemorrhage (class I); after ICH, consider delaying surgery for more than 1 month if feasible (IIa).",
+    "summary": "Suspected endocarditis with stroke: do not give IV thrombolysis (ESC 2023, class III; thrombectomy may be considered, IIb) and involve cardiology, infectious diseases and cardiac surgery early. Recurrent emboli with persistent vegetations despite antibiotics: early surgery is reasonable if there is no ICH or extensive brain injury (AHA 2021, 2a); with a major ischemic stroke or ICH, delaying valve surgery for at least 4 weeks may be considered if hemodynamically stable (AHA 2021, 2b). ESC 2023 differs after ischemic stroke: do not delay indicated surgery if the patient is not comatose and CT/MRI excludes hemorrhage (class I). After ICH both favor waiting: ESC suggests delaying more than 1 month if feasible, with frequent clinical and imaging reassessment (IIa).",
     "consider": [
       "Assess whether the presentation warrants an endocarditis evaluation and multidisciplinary team involvement.",
       "Clarify the neurologic complication and any hemorrhage or infective aneurysm concern.",
@@ -1889,7 +1889,7 @@
       "mitral stenosis",
       "mechanical valve"
     ],
-    "summary": "After ischemic stroke or TIA with AF, anticoagulate regardless of AF pattern (paroxysmal, persistent or permanent); use a DOAC over warfarin unless there is moderate-to-severe mitral stenosis or a mechanical valve (AHA 2021, COR 1). Do not routinely add an antiplatelet without active coronary disease or a recent stent (AHA 2026, harm). Device-detected subclinical AF: apixaban reduced stroke and embolism but increased major bleeding (ARTESiA), while edoxaban did not help (NOAH-AFNET 6). Nonreversible contraindication to long-term anticoagulation (CHA₂DS₂-VASc ≥2): percutaneous left atrial appendage closure is reasonable (ACC/AHA 2023, 2a; AHA 2021 stroke guideline 2b if at least 45 days of anticoagulation can be tolerated); with high bleeding risk on anticoagulation it may be an alternative (ACC/AHA 2023, 2b). Postdating these (2026; AF populations not limited to stroke), device closure was not noninferior to physician-directed best medical care, including a DOAC if eligible, at high stroke and bleeding risk, with more primary events (16.8 vs 13.3 per 100 patient-years; CLOSURE-AF). In anticoagulation candidates without stroke or TIA in the prior 30 days, closure was noninferior to a DOAC for 3-year cardiovascular death, stroke or systemic embolism (5.7 vs 4.8%), with less non-procedural bleeding (10.9 vs 19.0%); its 5-year ischemic stroke or embolism endpoint is pending (CHAMPION-AF). Rheumatic AF: rivaroxaban was worse than a VKA (INVICTUS).",
+    "summary": "After ischemic stroke or TIA with AF, anticoagulate regardless of AF pattern (paroxysmal, persistent or permanent); use a DOAC over warfarin unless there is moderate-to-severe mitral stenosis or a mechanical valve (AHA 2021, COR 1). Do not routinely add an antiplatelet without active coronary disease or a recent stent (AHA 2026, harm). Device-detected subclinical AF: apixaban reduced stroke and embolism but increased major bleeding (ARTESiA), while edoxaban did not help (NOAH-AFNET 6). Nonreversible contraindication to long-term anticoagulation (CHA₂DS₂-VASc ≥2): percutaneous left atrial appendage closure is reasonable (ACC/AHA 2023, 2a; AHA 2021 stroke guideline 2b if at least 45 days of anticoagulation can be tolerated); with high bleeding risk on anticoagulation it may be an alternative (ACC/AHA 2023, 2b). Postdating these (2026; AF populations not limited to stroke), device closure was not noninferior to physician-directed best medical care, including a DOAC if eligible, at high stroke and bleeding risk, with more primary events (16.8 vs 13.3 per 100 patient-years; CLOSURE-AF). Also in 2026, in anticoagulation candidates without stroke or TIA in the prior 30 days, closure was noninferior to a DOAC for 3-year cardiovascular death, stroke or systemic embolism (5.7 vs 4.8%; margin 4.8 points), with less non-procedural bleeding (10.9 vs 19.0%); reviews report numerically more ischemic strokes with closure (HR 1.61), and its 5-year ischemic stroke or embolism endpoint is pending (CHAMPION-AF). Rheumatic AF: rivaroxaban was worse than a VKA (INVICTUS).",
     "consider": [
       "Confirm how AF was documented, its clinical context and the actual thromboembolic indication.",
       "Review valve disease, renal function, interactions, prior bleeding and concurrent antiplatelets.",
@@ -1927,7 +1927,15 @@
         "year": 2026,
         "type": "Randomized trial",
         "checkedAt": "2026-10-22",
-        "access": "Primary abstract and ClinicalTrials.gov record NCT04394546 re-read 2026-10-22: excludes stroke or TIA within 30 days and LVEF <30%; the 5-year ischemic stroke or systemic embolism endpoint is pending (active, not recruiting). Full report not reviewed, so ischemic stroke counts are not quoted."
+        "access": "Primary abstract (noninferiority margin 4.8 percentage points) and ClinicalTrials.gov record NCT04394546 re-read 2026-10-22: excludes stroke or TIA within 30 days and LVEF <30%; the 5-year ischemic stroke or systemic embolism endpoint is pending (active, not recruiting). Full report not reviewed; the ischemic stroke signal is quoted from the 2026 review below, not from the primary abstract."
+      },
+      {
+        "title": "Who can benefit from percutaneous left atrial appendage closure? Recent advances (narrative review of CHAMPION-AF and CLOSURE-AF).",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42747337/",
+        "year": 2026,
+        "type": "Report",
+        "checkedAt": "2026-10-22",
+        "access": "Abstract read 2026-10-22: \"Ischemic stroke alone, however, was numerically more frequent with LAAC (HR 1.61)\". A second 2026 review (PMID 42739532, abstract) agrees on direction. Secondary source; the CHAMPION-AF full report was not reachable."
       }
     ],
     "related": [

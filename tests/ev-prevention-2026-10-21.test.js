@@ -159,10 +159,11 @@ describe('prevention evidence cards (2026-10-21 review)', () => {
     expect(card.summary).toContain('Postdating these (2026; AF populations not limited to stroke), device closure was not noninferior to physician-directed best medical care, including a DOAC if eligible, at high stroke and bleeding risk, with more primary events (16.8 vs 13.3 per 100 patient-years; CLOSURE-AF).');
     // CHAMPION-AF (PMID 41910347): 3-year CV death, stroke or SE 5.7 vs 4.8%; non-procedure-related bleeding 10.9 vs 19.0%.
     // NCT04394546 excludes stroke or TIA within 30 days; its third primary endpoint (ischemic stroke + SE, 60 months) is
-    // pending, primary completion 2027-12 (r3 prev-b#0).
-    expect(card.summary).toContain('In anticoagulation candidates without stroke or TIA in the prior 30 days, closure was noninferior to a DOAC for 3-year cardiovascular death, stroke or systemic embolism (5.7 vs 4.8%), with less non-procedural bleeding (10.9 vs 19.0%); its 5-year ischemic stroke or embolism endpoint is pending (CHAMPION-AF).');
+    // pending, primary completion 2027-12 (r3 prev-b#0). Margin 4.8 points (primary abstract); ischemic stroke HR 1.61
+    // from the 2026 review PMID 42747337 (secondary; lead patch after r3 verification).
+    expect(card.summary).toContain('Also in 2026, in anticoagulation candidates without stroke or TIA in the prior 30 days, closure was noninferior to a DOAC for 3-year cardiovascular death, stroke or systemic embolism (5.7 vs 4.8%; margin 4.8 points), with less non-procedural bleeding (10.9 vs 19.0%); reviews report numerically more ischemic strokes with closure (HR 1.61), and its 5-year ischemic stroke or embolism endpoint is pending (CHAMPION-AF).');
     expect(card.sources.find(source => source.url === pubmed('41910347')).access).toContain('NCT04394546');
-    expect(urls(card)).toEqual(expect.arrayContaining([pubmed('41849741'), pubmed('41910347')]));
+    expect(urls(card)).toEqual(expect.arrayContaining([pubmed('41849741'), pubmed('41910347'), pubmed('42747337')]));
   });
 
   it('keeps guideline populations exact on the smaller prevention cards', () => {
@@ -175,7 +176,7 @@ describe('prevention evidence cards (2026-10-21 review)', () => {
     // patient is hemodynamically stable"; ESC 2023 t17-2 (I, B) and t17-3 (IIa, C) from the archived transcription (r3 prev-b#1).
     const endocarditis = topic('endocarditis').summary;
     expect(endocarditis).toContain('with a major ischemic stroke or ICH, delaying valve surgery for at least 4 weeks may be considered if hemodynamically stable (AHA 2021, 2b).');
-    expect(endocarditis).toContain('ESC 2023 differs after ischemic stroke: do not delay indicated surgery if the patient is not comatose and CT/MRI excludes hemorrhage (class I); after ICH, consider delaying surgery for more than 1 month if feasible (IIa).');
+    expect(endocarditis).toContain('ESC 2023 differs after ischemic stroke: do not delay indicated surgery if the patient is not comatose and CT/MRI excludes hemorrhage (class I). After ICH both favor waiting: ESC suggests delaying more than 1 month if feasible, with frequent clinical and imaging reassessment (IIa).');
     // secondary-prevention-2021-77 (IIa, C-LD): bypass "can be beneficial"; ESO 2023 (PMID 37021176): "For ischaemic adult
     // patients and children ... direct or combined ... 6-12 weeks"; "direct bypass surgery in adult patients with haemorrhagic
     // presentation" (low quality, r3 prev-b#8).
