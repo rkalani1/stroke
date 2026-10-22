@@ -126,7 +126,11 @@ The expanded-vascular edits are in-place string replacements; the file was not r
     - data/sources.json: +112 B raw (+33 B gzip);
     - data/calculators-index.json: +56 B raw (+33 B gzip).
   - src/supplementary-calculator-definitions.js: +28 B gzip, which is within the +40 B cap. This file is not bundled into the app's JS.
-- **Protocols tab locks (port 4340):** the results are in the final message to the lead. No shared module, CSS, app shell or JS output changed, so the locks are a confirmation rather than a requirement.
+- **Protocols tab locks (port 4340, on the built bundle above):**
+  - `STROKE_PROTOCOL_LOCK_PORT=4340 npm run test:protocol-tab`: PASS (46 fixture/sub-tab captures, desktop 1440x900).
+  - `STROKE_PROTOCOL_LOCK_PORT=4340 npm run test:protocol-tab:phone`: PASS (46 captures, phone 390x844).
+  - A first attempt was killed by my own 10-minute background limit after 38 of 46 desktop captures, all "ok". It was re-run in full.
+  - No shared module, CSS, app shell or JS output changed, so the locks are a confirmation rather than a requirement.
 
 ## 5. Protocols observations (report only)
 
