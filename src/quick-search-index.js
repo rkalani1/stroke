@@ -85,7 +85,7 @@ export function searchIndex(index, query, limit = 40) {
   if (!phrase) return [];
   // Filler words never have to match ("when to start anticoagulation").
   const terms = phrase.split(' ').filter((term, _, all) => all.length === 1 || !STOPWORDS.has(term));
-  const phraseCompact = phrase.replace(/ /g, '');
+  const phraseCompact = phrase.replace(/ /g, ''), wording = ` ${terms.join(' ')} `;
   const scored = [];
   for (const record of index) {
     let score = 0, exact = true;
@@ -105,7 +105,9 @@ export function searchIndex(index, query, limit = 40) {
     if (record._title === phrase || record._titleCompact === phraseCompact) { score += 20; exact = true; }
     else if (record._title.startsWith(phrase)) score += 8;
     if (record.group === 'Go to' || record.group === 'Protocols' || record.group === 'Calculators') score += 1;
-    scored.push([score + (exact ? 100 : 0), { ...record, exact, phrase: [record._title, record._keys].some(text => ` ${text} `.includes(` ${phrase} `)) }]);
+    // Named: the title is the query or begins with it as whole words ("DIRECT-MT", "CT perfusion").
+    // Phrase: the title or keywords hold the query's words in order, filler words aside.
+    scored.push([score + (exact ? 100 : 0), { ...record, exact, named: record._titleCompact === phraseCompact || `${record._title} `.startsWith(`${phrase} `), phrase: [record._title, record._keys].some(text => ` ${text} `.includes(wording)) }]);
   }
   return scored.sort((a, b) => b[0] - a[0] || a[1].title.localeCompare(b[1].title)).slice(0, limit).map(([, record]) => record);
 }
@@ -113,13 +115,15 @@ export function searchIndex(index, query, limit = 40) {
 // Groups keep the predictable SEARCH_GROUPS order. The lead group holds the best
 // navigation match (Go to, Protocols, Calculators) when there is one, otherwise the
 // best match overall, so Enter opens it. A navigation match never leads a better one:
-// partial words over exact ones, or scattered words over the whole phrase ("DIRECT-MT").
+// partial words over exact ones, or scattered words over a record the query names
+// ("DIRECT-MT"). A study or topic that only holds the query in its keywords ("ICH blood
+// pressure") does not displace a protocol that matches every word.
 // Long result sets show the top few per group and report how many are hidden
 // ([group, shown, hiddenCount]).
 const NAVIGATION_GROUPS = ['Go to', 'Protocols', 'Calculators'];
 export function groupResults(results, { perGroup = 5, expanded = [] } = {}) {
   const top = results[0];
-  const lead = (results.find(record => NAVIGATION_GROUPS.includes(record.group) && (record.exact || !top.exact) && (record.phrase || !top.phrase)) || top)?.group;
+  const lead = (results.find(record => NAVIGATION_GROUPS.includes(record.group) && (record.exact || !top.exact) && (record.phrase || !top.named)) || top)?.group;
   const capped = results.length > 12;
   return SEARCH_GROUPS.map(group => [group, results.filter(record => record.group === group)])
     .filter(([, items]) => items.length)

@@ -13,6 +13,7 @@ import { chromium } from 'playwright';
 import { normalizeSearch, searchReference, bottomLine, recommendationGroups, recommendationLabels, referenceText } from '../src/reference-search.js';
 import { buildSearchIndex, searchIndex, groupResults } from '../src/quick-search-index.js';
 import { ENCOUNTER_TOOLS, matchesCalculatorSearch } from '../src/calculator-utilities.js';
+import { SEARCH_TRIALS } from '../src/components/QuickSearch.jsx';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
@@ -96,6 +97,31 @@ describe('global search uses the Evidence aliases', () => {
     expect(lead('EXTEND')).toBe('study:extend');
     expect(lead('DIRECT-MT')).toBe('study:direct-mt');
     expect(lead('TRACE-2')).toBe('study:trace-2');
+  });
+  it('keeps the protocol first when a study or topic only holds the query among its words, not as its name', () => {
+    // Shipped data plus the Trials database records, as the search dialog builds them. Each protocol
+    // matches every word whole; INTERACT2, ENCHANTED2/MT, HOPE, RESCUE-Japan LIMIT and the reversal
+    // topic hold the words as a phrase and rank first, but none is named by the query.
+    const screened = buildSearchIndex({ ...data, trials: SEARCH_TRIALS });
+    const lead = query => groupResults(searchIndex(screened, query, Infinity))[0][1][0].id;
+    expect(searchIndex(screened, 'ICH blood pressure', 1)[0].id).toBe('study:interact2');
+    for (const [query, expected] of [
+      ['ICH blood pressure', 'protocol:qr-bp'], ['ICH reversal', 'protocol:qr-reversal'], ['post EVT BP', 'protocol:qr-bp'],
+      ['EVT BP', 'protocol:qr-bp'], ['blood pressure post EVT', 'protocol:post-evt'], ['ASPECTS EVT', 'protocol:evt'],
+      ['IVT hemorrhage', 'protocol:post-lytic'], ['extended window IVT', 'protocol:ivt-card'],
+      // Filler words aside, the MeVO protocol holds the topic's whole name among its keywords.
+      ['Medium and distal vessel occlusion', 'protocol:mevo']
+    ]) expect(lead(query), query).toBe(expected);
+    // A record whose title is the query, or begins with it, still leads.
+    expect(lead('DIRECT-MT')).toBe('study:direct-mt');
+    expect(lead('CT perfusion')).toBe('topic:ct-perfusion');
+    expect(lead('EXTEND')).toBe('study:extend');
+  });
+  it('lets a named record lead over a protocol, but not a record that holds the query elsewhere in its title or keywords', () => {
+    // Both synthetic studies outrank the BP card, which holds ICH and blood pressure apart.
+    const lead = study => groupResults(searchIndex(buildSearchIndex({ studies: [study] }), 'ICH blood pressure', Infinity))[0][1][0].id;
+    expect(lead({ id: 'keyword-phrase', title: 'ZETA-1 — acute ICH blood pressure lowering', keywords: ['ICH blood pressure'] })).toBe('protocol:qr-bp');
+    expect(lead({ id: 'named', title: 'ICH blood pressure registry', keywords: [] })).toBe('study:named');
   });
   it('matches short letter-only terms at word starts, so TIA skips "initiation" and AF skips "after"', () => {
     const synthetic = buildSearchIndex({ topics: [
