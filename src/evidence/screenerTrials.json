@@ -62,7 +62,7 @@
         {
           "operator": "or",
           "error": "Did not present to the enrolling hospital within 24 h of LKW",
-          "pendingLabel": "Confirm presentation to the enrolling hospital ≤ 24 h from LKW and arterial puncture ≤ 2 h from qualifying imaging",
+          "pendingLabel": "Confirm presentation to the enrolling hospital ≤ 24 h from LKW",
           "branches": [
             {
               "label": "Within 24 h of LKW at screening (registry: presentation ≤ 24 h; confirm arrival time)",
@@ -202,7 +202,7 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "Modeled here: age, timing, NIHSS, ASPECTS, pre-stroke mRS, IV thrombolysis, Xa or direct thrombin inhibitor within 48 h, and pregnancy. Perfusion imaging, EVT clot engagement and the other CT.gov exclusions (prior stroke or intracranial hemorrhage, recent surgery, trauma or systemic bleeding, suspected SAH, coagulation, hematocrit, aPTT, renal, BP and thrombosis criteria, LMWH, GP IIb/IIIa, prior TS23, other research drugs) are listed for confirmation, not modeled.",
+      "Perfusion imaging, EVT clot engagement and the remaining CT.gov exclusions are listed for confirmation, not modeled.",
       "Registry status rechecked 2026-10-21: RECRUITING; last update posted 2026-10-19 (recorded 2026-10-21). This is the overall study status; local site activation and recruitment availability have not been verified."
     ],
     "timeCategory": "hyperacute",
@@ -233,9 +233,9 @@
       "Stroke within 90 days; prior ICH, SAH, AVM or intracranial neoplasm",
       "Factor Xa inhibitor or direct thrombin inhibitor within 48 h; full-dose LMWH within 24 h; GP IIb/IIIa within 14 days; INR > 1.7; platelets < 100,000",
       "Persistent BP > 180/105 mm Hg despite treatment; pregnancy (or positive test if of childbearing potential), breastfeeding or planned breastfeeding within 3 months",
-      "Surgery or biopsy of a parenchymal organ, trauma with internal injuries or persistent ulcerative wounds, or serious systemic hemorrhage within 30 days; severe head trauma within 90 days; presentation suggestive of SAH even with a normal CT",
-      "Hemorrhagic diathesis or coagulation factor deficiency; hematocrit < 25%; aPTT above the laboratory upper limit of normal (UFH within 24 h requires a normal aPTT); creatinine > 4 mg/dL or dialysis; concurrent MI, PE, DVT or other thrombosis requiring anticoagulant or antiplatelet treatment",
-      "Prior TS23 or known allergy to antibody therapy; pre-existing neurological or psychiatric disease that would confound evaluation; current participation in another research drug protocol"
+      "Within 30 days: surgery or biopsy of a parenchymal organ, trauma with internal injuries or persistent ulcerative wounds, or serious systemic hemorrhage; severe head trauma within 90 days; presentation suggestive of SAH even with a normal CT",
+      "Hemorrhagic diathesis or coagulation factor deficiency; hematocrit < 25%; aPTT above normal (UFH within 24 h requires a normal aPTT); creatinine > 4 mg/dL or dialysis; concurrent MI, PE, DVT or other thrombosis requiring antithrombotic treatment",
+      "Prior TS23 or antibody-therapy allergy; confounding neurological or psychiatric disease; another research drug protocol"
     ],
     "eligibility": {
       "criteria": [
@@ -319,10 +319,9 @@
         "Confirm the patient is not a candidate for standard-of-care reperfusion therapy, IVT or EVT (registry primary objective)",
         "Confirm perfusion mismatch (ratio > 1.2, mismatch > 10 mL, core < 70 mL; with CT hypodensity, hypodensity plus core smaller than the penumbra) and anterior circulation",
         "Confirm no EVT clot engagement (groin puncture without engagement for spontaneous distal migration is permitted)",
-        "Confirm no stroke within 90 days, no prior ICH/SAH/AVM/intracranial neoplasm, no surgery/biopsy, trauma or serious systemic hemorrhage within 30 days, no severe head trauma within 90 days, no presentation suggestive of SAH, and no concurrent thrombosis requiring anticoagulant or antiplatelet treatment",
+        "Confirm no stroke within 90 days, prior ICH/SAH/AVM/intracranial neoplasm, surgery/biopsy, trauma or serious systemic hemorrhage within 30 days, severe head trauma within 90 days, suspected SAH, dialysis or concurrent thrombosis needing antithrombotics, and the INR, platelet, hematocrit, aPTT, creatinine, LMWH, GP IIb/IIIa and BP limits",
         "If NIHSS is 4–5, confirm a clearly disabling deficit",
-        "If ASPECTS was scored on MRI (DWI), confirm MRI ASPECTS ≥ 7",
-        "Confirm INR ≤ 1.7 if on an oral anticoagulant, platelets ≥ 100,000/mm³, hematocrit ≥ 25%, aPTT within normal limits, creatinine ≤ 4 mg/dL with no dialysis, no full-dose LMWH within 24 h, no GP IIb/IIIa inhibitor within 14 days, and BP not persistently > 180/105 mm Hg despite treatment"
+        "If ASPECTS was scored on MRI (DWI), confirm MRI ASPECTS ≥ 7"
       ]
     }
   },
@@ -786,7 +785,7 @@
       "manualPending": [
         "Confirm IVH limits (<2/3 of one lateral ventricle and <1/3 of both)",
         "Confirm CTA spot sign if treatment will be 90–120 min from LKW",
-        "Confirm no thrombotic/vaso-occlusive event within 90 days, no LMWH or pro-coagulant within 24 h, no UFH with abnormal PTT, no stenting/endarterectomy within 90 days, a documented platelet count >50,000/µL if thrombocytopenia is known or suspected, not lactating, and no planned comfort care"
+        "Confirm no thrombotic/vaso-occlusive event within 90 days, no LMWH or pro-coagulant within 24 h, no UFH with abnormal PTT, no stenting/endarterectomy within 90 days, platelets >50,000 if thrombocytopenia is known or suspected, not lactating, and no planned comfort care"
       ]
     }
   },
@@ -1441,7 +1440,7 @@
       "studyType": "INTERVENTIONAL",
       "registryAcronym": "SCOUTS3"
     },
-    "conciseBedsideSummary": "Ischemic stroke or ICH within 30 days, on inpatient rehabilitation admission: the study tests for obstructive sleep apnea (OSA) with a portable sleep study and randomizes those with OSA to intensive vs standard CPAP support. A prior OSA diagnosis is not an inclusion criterion; positive airway pressure use within 14 days before the stroke excludes.",
+    "conciseBedsideSummary": "Ischemic stroke or ICH ≤30 days, at inpatient rehabilitation admission: tests for obstructive sleep apnea (OSA), then randomizes those with OSA to intensive vs standard CPAP support. Known OSA is not required; positive airway pressure use within 14 days before the stroke excludes.",
     "pathway": "EPIC Chat Stroke Rehab Team / Stroke Research Coordinator",
     "noContactInfo": true,
     "exactInclusionCriteria": [
@@ -1457,10 +1456,7 @@
       "mechanical ventilation, tracheostomy, or supplemental oxygen > 4 L/min",
       "Positive airway pressure use (e.g., CPAP) within 14 days before the stroke",
       "CVA related to tumor, vascular malformation, or SAH",
-      "anticipated inpatient rehabilitation length of stay < 5 nights",
-      "History of pneumothorax, bullous emphysema or other serious comorbid condition limiting CPAP use; comorbid conditions limiting OSA testing or CPAP use (study-team judgement)",
-      "Benzodiazepine, barbiturate, general anesthesia or conscious sedation within 48 hours before the planned portable sleep apnea study",
-      "Cranial or spinal surgery with known or possible CSF leak or pneumocephalus within the past 3 months; significant aspiration risk with CPAP (site PI opinion)"
+      "anticipated inpatient rehabilitation length of stay < 5 nights"
     ],
     "eligibility": {
       "criteria": [
@@ -1536,7 +1532,7 @@
       ],
       "manualPending": [
         "Confirm the consent-giver (patient or legally authorized representative) can be consented in English or Spanish",
-        "Confirm no history of pneumothorax or bullous emphysema, no other comorbid condition limiting CPAP use or OSA testing, no benzodiazepine, barbiturate, general anesthesia or conscious sedation within 48 h before the planned sleep study, no cranial or spinal surgery with known or possible CSF leak or pneumocephalus within 3 months, and no significant aspiration risk"
+        "Confirm no history of pneumothorax or bullous emphysema, no comorbid condition limiting CPAP use or OSA testing, no benzodiazepine, barbiturate, general anesthesia or conscious sedation within 48 h before the planned sleep study, no cranial or spinal surgery with known or possible CSF leak or pneumocephalus within 3 months, and no significant aspiration risk"
       ]
     }
   },
@@ -1673,7 +1669,7 @@
           "operator": "==",
           "value": true,
           "error": "Excludes symptomatic stroke within 30 days prior",
-          "pendingLabel": "Confirm no symptomatic stroke (any location) within 30 days before the index stroke"
+          "pendingLabel": "Confirm no symptomatic stroke within 30 days before the index stroke"
         },
         {
           "field": "exVerifySeizure",
@@ -1839,7 +1835,7 @@
         "Confirm UEFM 25-45, corticospinal pathway preservation, and TMS motor output requirements",
         "Confirm current post-stroke mRS 3–4 separately from pre-stroke function; consent and surgical/device suitability require study-team review",
         "Shoulder subluxation, adhesive capsulitis or contracture requires pain/range-of-motion screening and enrolling-clinician approval, not automatic exclusion",
-        "Review: unable to stop antiplatelets from 7 days before to 3 days after surgery; bleeding disorder; other increased thrombosis risk; GDS > 10; Columbia suicide-scale ideation > 1; MoCA < 22 (unless attributable to aphasia and approved by the PI); severe neglect (NIHSS item 11 = 2); cardiac morbidity judged an increased safety risk; major active neurological, psychiatric or medical comorbidity; active infection requiring antimicrobial therapy; any other implanted device (e.g., cochlear implant, pacemaker); inability to take part in the study rehabilitation; and need for occupational, physical or speech therapy outside the protocol. All criteria are assessed within 90 days before implantation"
+        "Review: unable to stop antiplatelets 7 days before to 3 days after surgery; bleeding disorder or other increased thrombosis risk; GDS > 10; Columbia suicide-scale ideation > 1; MoCA < 22 (aphasia exception with PI approval); severe neglect (NIHSS item 11 = 2); cardiac morbidity judged an increased safety risk; major active neurological, psychiatric or medical comorbidity; active infection requiring antimicrobial therapy; other implanted devices; inability to take part in the study rehabilitation; occupational, physical or speech therapy outside the protocol. All are assessed within 90 days before implantation"
       ]
     }
   },

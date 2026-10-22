@@ -62,7 +62,7 @@ describe('a stale Encounter import is never presented as current (e2e#0)', () =>
     expect(current).not.toMatch(/Caution|at import/);
     expect(current).toMatch(/LKW 3\.0 h \(Encounter LKW \d{2}:\d{2}, as of 12:00\)/);
     const stale = evaluateAll(state, screenerTrials, now, { staleImport: true }).briefingNote;
-    expect(stale).toContain('Caution: the Encounter changed after its facts were imported; reapply them before relying on this screen.');
+    expect(stale).toContain('Caution: the Encounter changed after import; reapply before relying on this screen.');
     expect(stale).toMatch(/LKW 3\.0 h \(Encounter LKW at import \d{2}:\d{2}, as of 12:00\)/);
     // The tri-state is unchanged: a stale screen still has no definitive result.
     expect(evaluateAll(state, screenerTrials, now, { staleImport: true }).eligible).toEqual([]);
@@ -209,11 +209,11 @@ describe('registry wording re-read on 2026-10-22', () => {
   it('SISTER lists the bleeding-risk and thrombosis exclusions for confirmation (NCT05948566 exclusions 4, 9-12, 14-20, 24-26)', () => {
     const t = trial('SISTER');
     const exc = t.exactExclusionCriteria.join(' ');
-    for (const re of [/Surgery or biopsy of a parenchymal organ/, /severe head trauma within 90 days/, /serious systemic hemorrhage within 30 days/, /suggestive of SAH even with a normal CT/,
-      /hematocrit < 25%/, /aPTT above the laboratory upper limit of normal/, /creatinine > 4 mg\/dL or dialysis/, /concurrent MI, PE, DVT or other thrombosis/, /Prior TS23/, /another research drug protocol/]) expect(exc).toMatch(re);
+    for (const re of [/Within 30 days: surgery or biopsy of a parenchymal organ/, /severe head trauma within 90 days/, /or serious systemic hemorrhage; severe head trauma/, /suggestive of SAH even with a normal CT/,
+      /hematocrit < 25%/, /aPTT above normal/, /creatinine > 4 mg\/dL or dialysis/, /concurrent MI, PE, DVT or other thrombosis/, /Prior TS23/, /another research drug protocol/]) expect(exc).toMatch(re);
     const confirm = toConfirm(evaluate('SISTER', { classification: 'ischemic' })).join(' ');
-    for (const re of [/surgery\/biopsy, trauma or serious systemic hemorrhage within 30 days/, /hematocrit ≥ 25%/, /no dialysis/, /GP IIb\/IIIa/, /concurrent thrombosis/]) expect(confirm).toMatch(re);
-    expect(t.sourceGaps.find(g => g.startsWith('Modeled here'))).toMatch(/listed for confirmation, not modeled/);
+    for (const re of [/surgery\/biopsy, trauma or serious systemic hemorrhage within 30 days/, /severe head trauma within 90 days/, /dialysis or concurrent thrombosis needing antithrombotics/, /INR, platelet, hematocrit, aPTT, creatinine, LMWH, GP IIb\/IIIa and BP limits/]) expect(confirm).toMatch(re);
+    expect(t.sourceGaps).toContain('Perfusion imaging, EVT clot engagement and the remaining CT.gov exclusions are listed for confirmation, not modeled.');
   });
 
   it('SISTER and TESTED ask for the MRI ASPECTS threshold; SISTER asks for a disabling deficit at NIHSS 4–5', () => {
@@ -236,7 +236,9 @@ describe('registry wording re-read on 2026-10-22', () => {
     expect(evaluate('STEP', { ...facts, presentedWithin24h: false }).exclusionReasons).toContain('Did not present to the enrolling hospital within 24 h of LKW');
     const unknown = evaluate('STEP', facts);
     expect([unknown.status, unknown.completeness]).toEqual(['pending', 'insufficient-information']);
-    expect(toConfirm(unknown)).toContain('Confirm presentation to the enrolling hospital ≤ 24 h from LKW and arterial puncture ≤ 2 h from qualifying imaging');
+    expect(toConfirm(unknown)).toContain('Confirm presentation to the enrolling hospital ≤ 24 h from LKW');
+    // Puncture ≤ 2 h from qualifying imaging stays a to-confirm item whatever the timing.
+    expect(toConfirm(unknown)).toContain('Confirm enrolling-hospital presentation and arterial puncture timing per STEP protocol');
     expect(STUDY_FACTS.ischemic.find(([key]) => key === 'presentedWithin24h')[3]).toEqual(['STEP', 'TESTED']);
     // Within 24 h at screening still meets the timing criterion without the presentation fact.
     expect(evaluate('STEP', { ...facts, onsetVal: 3 }).matchedCriteria).toContain('Within 24 h of LKW at screening (registry: presentation ≤ 24 h; confirm arrival time)');
@@ -273,8 +275,8 @@ describe('registry wording re-read on 2026-10-22', () => {
   it('SCOUTS-3 tests for OSA itself and keeps its history and pneumocephalus exclusions (NCT06722755)', () => {
     // Description: patients "will be recruited upon IPR admission ... and tested for OSA through a simple, portable cardiorespiratory study".
     const t = trial('SCOUTS-3');
-    expect(t.conciseBedsideSummary).toMatch(/tests for obstructive sleep apnea \(OSA\) with a portable sleep study/);
-    expect(t.conciseBedsideSummary).toMatch(/A prior OSA diagnosis is not an inclusion criterion/);
+    expect(t.conciseBedsideSummary).toMatch(/at inpatient rehabilitation admission: tests for obstructive sleep apnea \(OSA\), then randomizes those with OSA/);
+    expect(t.conciseBedsideSummary).toMatch(/Known OSA is not required; positive airway pressure use within 14 days before the stroke excludes/);
     // Exclusions 6 and 11: "History of pneumothorax, bullous emphysema ..."; "... CSF leak or pneumocephalus within past 3 months".
     const confirm = toConfirm(evaluate('SCOUTS-3', { classification: 'ich' })).join(' ');
     expect(confirm).toMatch(/no history of pneumothorax or bullous emphysema/);
@@ -344,12 +346,12 @@ describe('Encounter import and global-search pick in a browser', () => {
       await setEncounter({ diagnosisCategory: 'ischemic', age: '70', lkwDate: '2026-10-21', lkwTime: '06:00' });
       await banner().getByRole('button', { name: 'Reapply Encounter facts', exact: true }).waitFor();
       const text = await banner().innerText();
-      expect(text).toContain('Encounter facts changed since they were applied; the screen still uses the earlier import. Reapply to update.');
+      expect(text).toContain('The Encounter changed after these facts were applied; the screen still uses the earlier import.');
       expect(text).not.toMatch(/Applied ✓|timing live/);
-      expect(await timingNote()).toBe('Counting from the LKW imported earlier; the Encounter LKW has changed since. Reapply the Encounter facts to update, or edit to replace it.');
+      expect(await timingNote()).toBe('Counting from the earlier imported LKW; the Encounter LKW has since changed.');
       expect(await page.getByRole('status').filter({ hasText: 'potential match' }).innerText()).toMatch(/ · based on an earlier Encounter import$/);
       const note = await copied();
-      expect(note).toContain('Caution: the Encounter changed after its facts were imported');
+      expect(note).toContain('Caution: the Encounter changed after import');
       expect(note).toContain('LKW 3.0 h (Encounter LKW at import 09:00, as of 12:00)');
       await banner().getByRole('button', { name: 'Reapply Encounter facts', exact: true }).click();
       expect(await banner().getByRole('button').innerText()).toBe('Applied ✓ · reapply');
@@ -370,7 +372,7 @@ describe('Encounter import and global-search pick in a browser', () => {
       await page.locator('summary', { hasText: 'Optional exclusion review' }).click();
       await page.getByLabel('Factor Xa inhibitor or direct thrombin inhibitor within 48 h', { exact: true }).selectOption('true');
       await banner().getByRole('button', { name: 'Use these facts', exact: true }).click();
-      expect(await banner().innerText()).toContain('Kept your screener entry that differs from the Encounter: Factor Xa inhibitor or direct thrombin inhibitor within 48 h.');
+      expect(await banner().innerText()).toContain('Kept your entry where the Encounter differs: Factor Xa inhibitor or direct thrombin inhibitor within 48 h.');
       expect(await page.getByLabel('Factor Xa inhibitor or direct thrombin inhibitor within 48 h', { exact: true }).inputValue()).toBe('true');
       await setEncounter({ diagnosisCategory: 'ischemic', age: '70', premorbidMRS: '0', lastDOACType: 'none' }, { nihssSource: 'reported', reportedNihss: '12' });
       await banner().getByRole('button', { name: 'Reapply Encounter facts', exact: true }).waitFor();

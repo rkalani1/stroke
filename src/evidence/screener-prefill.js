@@ -151,8 +151,8 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
 
 // What an import says, without the elapsed-time snapshot (the LKW anchor is kept),
 // so the passage of time alone never reads as a changed Encounter.
-const canonical = v => v && typeof v === 'object' ? Object.keys(v).filter(k => v[k] !== undefined).sort().map(k => [k, canonical(v[k])]) : v;
-const importSource = prefill => prefill?.patch ? JSON.stringify(canonical({ ...prefill.patch, onsetVal: null })) : 'none';
+// Keys are listed sorted, so insertion order never matters; undefined (cleared) values drop out.
+const importSource = ({ patch } = {}) => patch ? JSON.stringify(patch, [...Object.keys(patch), ...Object.keys(patch.exclusions || {})].filter(key => key !== 'onsetVal').sort()) : 'none';
 
 // True when facts were imported and the live Encounter prefill no longer matches them.
 export const importChanged = (state, prefill) => Boolean(state?.imported?.source) && Boolean(prefill) && state.imported.source !== importSource(prefill);
@@ -169,7 +169,7 @@ export function applyEncounterPrefill(state, prefill, initialState) {
   const cleared = { ...base, exclusions: { ...base.exclusions } };
   for (const [key, value] of Object.entries(base.imported?.fields || {})) if (Object.is(base[key], value)) cleared[key] = initialState[key];
   for (const [id, value] of Object.entries(base.imported?.exclusions || {})) if (cleared.exclusions[id] === value) delete cleared.exclusions[id];
-  const entered = v => typeof v === 'boolean' || (typeof v === 'string' && v !== 'unselected');
+  const entered = v => v != null && v !== 'unselected';
   const conflicts = [];
   const patch = { ...prefill.patch, exclusions: { ...prefill.patch.exclusions } };
   for (const key of Object.keys(patch)) if ((typeof patch[key] === 'boolean' || key === 'anticoagulant') && entered(patch[key]) && entered(cleared[key]) && cleared[key] !== patch[key]) { conflicts.push(key); delete patch[key]; }

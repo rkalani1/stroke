@@ -512,25 +512,16 @@ export const toConfirm = result => (result?.pendingCriteria || []).filter(line =
 // A study for a different stroke type is not a useful "not met" entry.
 export const relevantNotMet = excluded => (excluded || []).filter(item => !(item.failedFields || []).includes('classification'));
 
-const CLASSIFICATION_NOTE_LABELS = {
+// Classification names, shared with the screener's buttons.
+export const CLASSIFICATION_NOTE_LABELS = {
   ischemic: 'Ischemic stroke',
   tia: 'TIA',
   ich: 'Hemorrhage (ICH)'
 };
 
-const ONSET_NOTE_LABELS = [
-  { maxHours: 4.5, label: '< 4.5 h from LKW' },
-  { maxHours: 24, label: '4.5 – 24 h from LKW' },
-  { maxHours: 24 * 7, label: '24 h – 7 d from LKW' },
-  { maxHours: 24 * 30, label: '7 – 30 d from LKW' },
-  { maxHours: 24 * 180, label: '30 – 180 d from LKW' }
-];
-
-function onsetNoteLabel(onsetHours) {
-  if (onsetHours === null) return 'Not recorded';
-  const band = ONSET_NOTE_LABELS.find((b) => onsetHours <= b.maxHours);
-  return band ? band.label : '> 6 months from LKW';
-}
+// The preset band that holds onsetHours, spelled out ("24h – 7d" → "24 h – 7 d from LKW").
+const onsetNoteLabel = onsetHours => ONSET_PRESETS.find(b => b.rangeHours[1] === null || onsetHours <= b.rangeHours[1]).name
+  .replace(/(\d)([hd])\b/g, '$1 $2').replace('6mo', '6 months') + ' from LKW';
 
 // Local wall time as the notes print it ("YYYY-MM-DD HH:MM"); a UTC offset is
 // added when that local time repeats, or when its offset differs from the one
@@ -648,7 +639,6 @@ export function buildBriefingNote(state, buckets, nowMs = null, { staleImport = 
   // Only answers the refiner shows (assessments that can still affect a listed study) are reported.
   const asked = refinerItems(state, nowMs);
   const recorded = asked.filter(item => typeof state.exclusions?.[item.id] === 'boolean').map(item => `${item.label}: ${state.exclusions[item.id] ? 'present' : 'absent'}`);
-  const kept = keptEntries(state);
   const checkLabel = registryCheckLabel([...eligible, ...pending, ...soon].map(item => item.trial.externalMetadata?.verificationDate));
   const head = item => {
     const m = item.trial.externalMetadata || {};
@@ -656,11 +646,10 @@ export function buildBriefingNote(state, buckets, nowMs = null, { staleImport = 
   };
 
   const lines = ['TRIAL SCREEN — first pass' + (checkLabel ? ` (${checkLabel})` : '')];
-  if (staleImport) lines.push('Caution: the Encounter changed after its facts were imported; reapply them before relying on this screen.');
+  if (staleImport) lines.push('Caution: the Encounter changed after import; reapply before relying on this screen.');
   lines.push('Statuses are overall registry statuses at that check; local site activation is not confirmed.');
   lines.push('Inputs: ' + inputs.join(' · '));
   if (recorded.length) lines.push('Exclusions recorded: ' + recorded.join('; '));
-  if (kept.length) lines.push('Screener entries kept where the Encounter differs: ' + kept.join('; '));
   lines.push('Anything not listed was not entered and remains unknown.', '');
 
   const group = (title, detail, items, unknownCount) => {
