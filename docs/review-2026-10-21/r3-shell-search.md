@@ -117,21 +117,24 @@ Updated assertion: `tests/design-2026-10-21.test.jsx`, "says when it is offline�
 
 ## 8. Final check results
 
-Run on the final tree at `HEAD` (after the last source commit), with a fresh `npm run build`:
+Run on the final source tree (commit `db1df19` plus this report), after `git clean -fqX chunks && npm run build`. The build left `data/` unchanged.
 
-- `npx vitest run`: see the final run below.
+- `npx vitest run`: 126 files passed; 2552 tests passed, 3 skipped, 0 failed. The 4d13e0e baseline was 125 files and 2483 passed; the difference is the new 69-test file.
 - `npm run test:protocol-source`: PASS.
-- Validators: `check:clinical-claims` PASS (4 bounded groups, 31 occurrences, 0 exports). `content:validate` PASS (26 retained tools, 25 source/limits records, 16 trial profiles, 92 topics, 88 studies); its review-date notes are unchanged. `evidence:validate` PASS. `validate:citations` passed (43 rows). `validate:inline-citations` passed (15 PMIDs, 0 warnings). `check:leak-guard`: no institutional or PHI-adjacent content found.
-- Protocols tab locks (port 4310): see below.
-- Budget (`node scripts/check-asset-budget.mjs --json`, against the 4d13e0e outputs; every check within budget):
+- Protocols tab locks on the final build, port 4310:
+  - `test:protocol-tab`: PASS, 46 fixture/sub-tab captures at desktop 1440×900
+  - `test:protocol-tab:phone`: PASS, 46 fixture/sub-tab captures at phone 390×844
+  - Both also passed on the build of the preceding commit `a14339d`, at 46 captures each. The only later source change is the Tab-reveal check in `src/app.jsx` (`tagName`/`closest`).
+- Validators: `check:clinical-claims` PASS (4 bounded groups, 31 occurrences, 0 exports). `content:validate` PASS (26 retained tools, 25 source/limits records, 16 trial profiles, 92 topics, 88 studies; its "no genuine clinical review date" notes are pre-existing). `evidence:validate` PASS (43 citations, 12 claims, 10 recommendations, 4 guidelines, 9 topics). `validate:citations` passed (43 rows, 43 PMIDs consistent). `validate:inline-citations` passed (15 PMIDs, 0 warnings). `check:leak-guard`: no institutional or PHI-adjacent content found. I did not modify clinical content or data; these validators confirm nothing regressed.
+- Budget (`npm run check:asset-budget`: every check within budget). Deltas are measured against the committed 4d13e0e outputs:
 
-  | check | 4d13e0e | now | delta |
+  | check | 4d13e0e | final | delta |
   |---|---|---|---|
-  | initial gzip | 130536 | 130583 | +47 (cap +120: within) |
-  | initial raw | 384554 | 384562 | +8 |
-  | all JS gzip | 260509 | 261256 | +747 |
-  | all JS raw | 869427 | 871019 | +1592 |
-  | tailwind.css | 106849 | 106910 | +61 |
-  | SW precache | | | +1653 B (2137069 / 2411725) |
+  | initial gzip | 130536 | 130584 | +48 B (cap +120: within) |
+  | initial raw | 384554 | 384571 | +17 B |
+  | all offline JS gzip | 260509 | 261257 | +748 B |
+  | all offline JS raw | 869427 | 871028 | +1601 B |
+  | tailwind.css | 106849 | 106910 | +61 B |
+  | SW precache | 2135416 | 2137078 | +1662 B |
 
-  The lazy chunks add +700 B gzip (cap +600): the shared reference-search chunk +329, Reference +217, QuickSearch +136, the calculator-utilities chunk +21, Tools −1. Trims I tried in my own files saved too little to matter: a shorter heading expression (kept), and a plural helper (reverted, because it added 10 B gzip). The remaining bytes are the alias table, word-start matching, the exact tier, graded/ungraded counts, the precache fallback and the focus handlers. The lead decides whether to accept the overage.
+  The lazy chunks add +700 B gzip against a cap of +600, so they are over by about 100 B. By chunk: the shared reference-search chunk +329, Reference +217, QuickSearch +136, the calculator-utilities chunk +21, Tools −1. Trims I tried in my own files saved too little to matter: a shorter heading expression (kept), and a plural helper (reverted, because it added 10 B gzip). The remaining bytes are the alias table, word-start matching, the exact tier, the graded/ungraded counts, the precache fallback and the focus handlers. The lead decides whether to accept the overage.
