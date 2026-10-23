@@ -54,7 +54,7 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   const summary = [];
   if (diagnosis) summary.push(DIAGNOSIS_LABEL[diagnosis] || diagnosis);
   const timing = encounterTiming(note, nowMs);
-  const timed = typeof timing.hours === 'number' && Number.isFinite(timing.hours) && timing.hours >= 0;
+  const timed = Number.isFinite(timing.hours) && timing.hours >= 0;
   const anchor = timed ? new Date(timing.timestamp).getTime() : NaN;
   // The Encounter LKW anchor now (null when none), for every diagnosis, so an imported
   // anchor the Encounter no longer holds is never described as live.
@@ -131,7 +131,7 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
     const dose = kind !== 'none' && kind !== 'lmwh' ? validTimestamp(note.lastDOACDose, nowMs) : null;
     const hours = dose ? (nowMs - dose.getTime()) / 3600000 : null;
     // Last dose to onset: from the LKW when recorded; otherwise the time to now bounds it.
-    const lkw = typeof patch.onsetAnchorMs === 'number' ? patch.onsetAnchorMs : nowMs;
+    const lkw = lkwAnchorMs ?? nowMs;
     const beforeOnset = dose ? (lkw - dose.getTime()) / 3600000 : null;
     const drug = kind === 'doac' ? 'DOAC' : 'warfarin/VKA';
     if (dose) {
@@ -179,10 +179,7 @@ export function applyEncounterPrefill(state, prefill, initialState) {
   const cleared = { ...base, exclusions: { ...base.exclusions } };
   for (const [key, value] of Object.entries(base.imported?.fields || {})) if (Object.is(base[key], value)) cleared[key] = initialState[key];
   for (const [id, value] of Object.entries(base.imported?.exclusions || {})) if (cleared.exclusions[id] === value) delete cleared.exclusions[id];
-  for (const [key, entry] of Object.entries(base.imported?.conflicts || {})) {
-    if (!conflictStands(base, key)) continue;
-    if (key in initialState) cleared[key] = entry; else cleared.exclusions[key] = entry;
-  }
+  for (const [key, entry] of Object.entries(base.imported?.conflicts || {})) if (conflictStands(base, key)) (key in initialState ? cleared : cleared.exclusions)[key] = entry;
   const entered = v => v != null && v !== 'unselected';
   const { exclusions: found = {}, ...facts } = prefill.patch;
   const differs = key => entered(facts[key]) && entered(cleared[key]) && cleared[key] !== facts[key];

@@ -581,9 +581,9 @@ const KEY_FACTS = {
 export const VISIBLE_FACTS = Object.fromEntries(CLASSIFICATIONS.map(cls => [cls, [...KEY_FACTS[cls], ...STUDY_FACTS[cls].map(([key]) => key)]]));
 // An entry where an Encounter import met a conflicting answer (imported.conflicts: key →
 // the entry it replaced) stands while it keeps the value the import left: present for an
-// exclusion, unknown otherwise.
+// exclusion, unknown otherwise (exclusion ids are never top-level state keys).
 export function conflictStands(state, key) {
-  return key in (state.imported?.conflicts || {}) && (EXCLUSION_ITEMS.some(entry => entry.id === key) ? state.exclusions?.[key] === true : state[key] === 'unselected');
+  return key in (state.imported?.conflicts || {}) && (state[key] === 'unselected' || state.exclusions?.[key] === true);
 }
 // Standing conflicts this screen shows the fact for (an exclusion only while the refiner asks it).
 export function conflictNote(state, nowMs = null) {
