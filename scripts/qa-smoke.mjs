@@ -543,6 +543,9 @@ async function main() {
         await page.getByLabel('Suspected cardioembolic source', { exact: true }).selectOption('');
         await review.getByText(/Disposition assessment incomplete/).waitFor();
         for (const label of riskLabels) await page.getByLabel(label, { exact: true }).selectOption('no');
+        // A DWI "No" counts as reviewed only once the MRI is recorded as completed (unknown is not negative).
+        await review.getByText(/No recorded without a completed MRI/).waitFor();
+        await page.getByLabel('TIA MRI / DWI workup', { exact: true }).selectOption('Completed');
         await review.getByText(/Risk-feature assessment recorded/).waitFor();
         assert((await review.innerText()).includes('ABCD² alone cannot clear discharge'));
         await review.getByRole('heading', { name: 'Workup & follow-up gaps', exact: true }).waitFor();
