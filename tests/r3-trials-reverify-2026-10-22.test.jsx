@@ -15,7 +15,7 @@ import {
   buildScreenerParams, conflictNote, createInitialScreenerState, evaluateAll, evaluateTrialEligibility, EXCLUSION_ITEMS, insufficientInformation,
   ONSET_PRESETS, potentialMatches, refinerItems, STALE_UNMODELED_NOTE, toConfirm, withClassification
 } from '../src/evidence/screener-eval.js';
-import { applyEncounterPrefill, screenerPrefillFromEncounter } from '../src/evidence/screener-prefill.js';
+import { applyAnticoagulant, applyEncounterPrefill, screenerPrefillFromEncounter } from '../src/evidence/screener-prefill.js';
 
 const trial = acronym => screenerTrials.find(t => t.acronym === acronym);
 const S = patch => ({ ...createInitialScreenerState(), ...patch });
@@ -100,18 +100,39 @@ describe('STEP: the presentation pathway ends at the app\'s 30-h acute screening
 
 describe('an imported documented AF contradicts an entered "No" to AF or flutter (rv-behavior#1)', () => {
   // NCT03907046 (ASPIRE): "Non-valvular AF (defined as atrial fibrillation or atrial flutter), documented by
-  // electrocardiography or a physician-confirmed history of prior AF". Documented AF establishes the fact.
-  const ich = encounter({ diagnosisCategory: 'ich', age: '72' }, { details: { afDetected: 'yes' } });
-  it('sets the answer to unknown, lists it, and no longer reports ASPIRE as not met for AF', () => {
-    const state = applyEncounterPrefill(S({ classification: 'ich', afOrFlutterHistory: false }), screenerPrefillFromEncounter(ich, now), fresh());
-    expect(state.afibHistory).toBe(true);
-    expect(state.afOrFlutterHistory).toBe('unselected');
-    const note = `${CONFLICT_HEAD}atrial fibrillation or flutter${CONFLICT_TAIL}`;
-    expect(conflictNote(state, now)).toBe(note);
+  // electrocardiography or a physician-confirmed history of prior AF". Documented AF establishes the fact, so
+  // it contradicts a "No"; the screener's rule for any conflict is that the answer becomes unknown, so neither
+  // AF answer may take the Encounter's value and ASPIRE's AF criterion may not be met until it is answered.
+  const ich = encounter({ diagnosisCategory: 'ich', age: '72', ...lkwAt(now - 30 * 24 * HOUR) }, { details: { afDetected: 'yes' } });
+  // ASPIRE's three modeled exclusions answered absent, so only the AF answer decides its bucket.
+  const answered = { classification: 'ich', exclusions: { exPriorIch12m: false, exClearAnticoagulationIndication: false, exClearAntiplateletIndication: false } };
+  const AF_PENDING = 'Confirm non-valvular atrial fibrillation or atrial flutter by ECG or physician-confirmed history';
+  const NOTE = `${CONFLICT_HEAD}documented clinical atrial fibrillation; atrial fibrillation or flutter${CONFLICT_TAIL}`;
+  const imported = () => applyEncounterPrefill(S({ ...answered, afOrFlutterHistory: false }), screenerPrefillFromEncounter(ich, now), fresh());
+
+  it('leaves both AF answers unknown, lists both, and keeps ASPIRE at insufficient information', () => {
+    const state = imported();
+    expect([state.afibHistory, state.afOrFlutterHistory]).toEqual(['unselected', 'unselected']);
+    expect(buildScreenerParams(state, now).afOrFlutterHistory).toBe('unselected');
+    expect(conflictNote(state, now)).toBe(NOTE);
     const r = evaluateAll(state, screenerTrials, now);
-    expect(find(r, 'ASPIRE').exclusionReasons).not.toContain('Requires documented non-valvular atrial fibrillation or flutter');
-    expect(r.briefingNote).toContain(`\n${note}\n`);
-    expect(r.briefingNote).not.toContain('non-valvular AF or atrial flutter: No');
+    const aspire = find(r, 'ASPIRE');
+    expect([aspire.status, aspire.completeness]).toEqual(['pending', 'insufficient-information']);
+    expect(aspire.pendingCriteria).toContain(AF_PENDING);
+    expect(potentialMatches(r).map(i => i.trial.acronym)).not.toContain('ASPIRE');
+    expect(r.briefingNote).toContain(`\n${NOTE}\n`);
+    expect(r.briefingNote).not.toMatch(/POTENTIAL MATCH \(\d+\)[^\n]*\n- ASPIRE/);
+    expect(r.briefingNote).not.toMatch(/· atrial fibrillation|non-valvular AF or atrial flutter: No/);
+  });
+  it('does not derive AF or flutter from a confirmed AF while that conflict stands; an answer settles it', () => {
+    const confirmedAf = { ...imported(), afibHistory: true };
+    expect(conflictNote(confirmedAf, now)).toBe(`${CONFLICT_HEAD}atrial fibrillation or flutter${CONFLICT_TAIL}`);
+    expect(find(evaluateAll(confirmedAf, screenerTrials, now), 'ASPIRE').completeness).toBe('insufficient-information');
+    const answeredYes = { ...confirmedAf, afOrFlutterHistory: true };
+    expect(conflictNote(answeredYes, now)).toBe('');
+    expect(find(evaluateAll(answeredYes, screenerTrials, now), 'ASPIRE').completeness).toBe('potential-match');
+    // Without an import, a documented AF still establishes the criterion (unchanged rule).
+    expect(buildScreenerParams(S({ classification: 'ich', afibHistory: true })).afOrFlutterHistory).toBe(true);
   });
   it('documented absence of AF never contradicts a recorded flutter, and an agreeing answer is no conflict', () => {
     const noAf = encounter({ diagnosisCategory: 'ich', age: '72' }, { details: { afDetected: 'no' } });
@@ -120,6 +141,59 @@ describe('an imported documented AF contradicts an entered "No" to AF or flutter
       expect(state.afOrFlutterHistory).toBe(true);
       expect(state.imported.conflicts).not.toHaveProperty('afOrFlutterHistory');
     }
+  });
+  it('an Encounter AF the user already entered adds nothing, so their "No" to non-valvular AF or flutter stands', () => {
+    // AF entered as documented with "No" to non-valvular AF/flutter (e.g. valvular AF): the Encounter repeats a known fact.
+    const state = applyEncounterPrefill(S({ ...answered, afibHistory: true, afOrFlutterHistory: false }), screenerPrefillFromEncounter(ich, now), fresh());
+    expect([state.afibHistory, state.afOrFlutterHistory, conflictNote(state, now)]).toEqual([true, false, '']);
+    expect(find(evaluateAll(state, screenerTrials, now), 'ASPIRE').exclusionReasons).toContain('Requires documented non-valvular atrial fibrillation or flutter');
+  });
+});
+
+describe('a reapply never settles a standing conflict in the Encounter\'s favour (rv-behavior#1, probe4)', () => {
+  // The rule: a conflict leaves the entry unknown (an exclusion present) until the user answers it. Reapplying
+  // the same Encounter must therefore give the same screen and the same note as the first import.
+  const reapply = (state, e) => applyEncounterPrefill(state, screenerPrefillFromEncounter(e, now), fresh());
+  const af = value => encounter({ diagnosisCategory: 'ich', age: '72', ...lkwAt(now - 30 * 24 * HOUR) }, { details: value === undefined ? {} : { afDetected: value } });
+  const aspireAnswered = { exPriorIch12m: false, exClearAnticoagulationIndication: false, exClearAntiplateletIndication: false };
+  const sister = encounter({ diagnosisCategory: 'ischemic', age: '70', ...lkwAt(now - 8 * HOUR), lastDOACType: 'apixaban', lastDOACDose: localIso(now - 10 * HOUR) });
+  const minute = encounter({ diagnosisCategory: 'ich', age: '65', ...lkwAt(now - 1.5 * HOUR), lastDOACType: 'apixaban', lastDOACDose: localIso(now - 10 * HOUR) });
+  const view = state => ({ afibHistory: state.afibHistory, afOrFlutterHistory: state.afOrFlutterHistory, anticoagulant: state.anticoagulant, takingOac: state.takingOac, exclusions: state.exclusions, note: conflictNote(state, now) });
+
+  it.each([
+    ['AF documented "No" vs Encounter AF', S({ classification: 'ich', afibHistory: false, exclusions: aspireAnswered }), af('yes'), 'documented clinical atrial fibrillation'],
+    ['AF or flutter "No" vs Encounter AF', S({ classification: 'ich', afOrFlutterHistory: false, exclusions: aspireAnswered }), af('yes'), 'documented clinical atrial fibrillation; atrial fibrillation or flutter'],
+    ['Xa inhibitor ≤ 48 h "absent" vs an apixaban dose 10 h ago', S({ classification: 'ischemic', exclusions: { exXaDtiWithin48h: false } }), sister, 'Factor Xa inhibitor or direct thrombin inhibitor within 48 h'],
+    ['anticoagulant "None" vs Encounter apixaban', applyAnticoagulant(withClassification(fresh(), 'ich'), 'none'), minute, 'anticoagulant at onset; DOAC or LMWH at ICH onset; Oral anticoagulant (VKA or DOAC) within 7 days']
+  ])('%s: the second import gives the first import\'s screen and note', (label, manual, e, names) => {
+    const first = reapply(manual, e);
+    expect(conflictNote(first, now)).toBe(`${CONFLICT_HEAD}${names}${CONFLICT_TAIL}`);
+    const second = reapply(first, e);
+    expect(view(second)).toEqual(view(first));
+    expect(view(reapply(second, e))).toEqual(view(first));
+    expect(evaluateAll(second, screenerTrials, now).briefingNote).toContain(`${CONFLICT_HEAD}${names}${CONFLICT_TAIL}`);
+  });
+  it('ASPIRE stays at insufficient information through any number of reapplies', () => {
+    let state = S({ classification: 'ich', afOrFlutterHistory: false, exclusions: aspireAnswered });
+    for (let i = 0; i < 3; i += 1) {
+      state = reapply(state, af('yes'));
+      expect(find(evaluateAll(state, screenerTrials, now), 'ASPIRE').completeness).toBe('insufficient-information');
+    }
+  });
+  it('weighs the user\'s own entry again: an Encounter that now agrees or is silent gives it back, with no note', () => {
+    for (const later of [af('no'), af(undefined)]) {
+      const state = reapply(reapply(S({ classification: 'ich', afibHistory: false }), af('yes')), later);
+      expect([state.afibHistory, conflictNote(state, now)]).toEqual([false, '']);
+    }
+    // The excluded-present entry returns to the user's "absent" once the Encounter no longer records the dose.
+    const first = reapply(S({ classification: 'ischemic', exclusions: { exXaDtiWithin48h: false } }), sister);
+    const noDose = encounter({ ...sister.note, lastDOACType: '', lastDOACDose: '' });
+    expect(reapply(first, noDose).exclusions.exXaDtiWithin48h).toBe(false);
+  });
+  it('an answer given after the import is weighed as entered: agreeing settles the conflict', () => {
+    const first = reapply(S({ classification: 'ich', afibHistory: false }), af('yes'));
+    const settled = reapply({ ...first, afibHistory: true }, af('yes'));
+    expect([settled.afibHistory, conflictNote(settled, now)]).toEqual([true, '']);
   });
 });
 
@@ -224,6 +298,14 @@ describe('a stale import for a diagnosis the screener does not model (rv-behavio
     expect(note).not.toContain('reapply before relying');
     expect(note).toMatch(/Encounter LKW at import/);
   });
+  it('still reports the Encounter LKW, so a changed one is detectable without facts to reapply', () => {
+    const sah = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'sah', lkwDate: '2026-10-22', lkwTime: '05:00' }), now);
+    expect([sah.patch, sah.lkwAnchorMs]).toEqual([null, new Date(2026, 9, 22, 5).getTime()]);
+    expect(screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'sah' }), now).lkwAnchorMs).toBeNull();
+    // A modeled diagnosis reports the same anchor it imports.
+    const ischemic = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lkwDate: '2026-10-22', lkwTime: '09:00' }), now);
+    expect([ischemic.lkwAnchorMs, ischemic.patch.onsetAnchorMs]).toEqual([new Date(2026, 9, 22, 9).getTime(), new Date(2026, 9, 22, 9).getTime()]);
+  });
 });
 
 describe('Trials banner, timing note and database pick in a browser (rv-behavior#3, #4, #8)', () => {
@@ -283,6 +365,23 @@ describe('Trials banner, timing note and database pick in a browser (rv-behavior
       await page.getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).click();
       expect(await banner().innerText()).not.toContain('Caution');
       expect(await copied()).not.toContain('Caution');
+    } finally { await page.close(); }
+    expect(errors).toEqual([]);
+  }, 30000);
+
+  it('an Encounter diagnosis changed to SAH with a new LKW: the timing note says the imported LKW is no longer the Encounter\'s', async () => {
+    await open();
+    try {
+      await setEncounter({ diagnosisCategory: 'ischemic', lkwDate: '2026-10-22', lkwTime: '09:00', age: '70' });
+      await banner().getByRole('button', { name: 'Use these facts', exact: true }).click();
+      expect(await timingNote()).toBe('Live from the Encounter LKW time; updates as time passes. Editing replaces it.');
+      await setEncounter({ diagnosisCategory: 'sah', lkwDate: '2026-10-22', lkwTime: '05:00', age: '70' });
+      await banner().getByText(STALE_UNMODELED_NOTE).waitFor();
+      expect(await timingNote()).toBe('Counting from the earlier imported LKW; the Encounter LKW has since changed.');
+      expect(await timingNote()).not.toMatch(/Live from/);
+      // Still counted from the imported 09:00 (3 h at 12:00), and the summary names that LKW as the one at import.
+      expect(await page.locator('#trial-exact-onset').inputValue()).toBe('3');
+      expect(await copied()).toMatch(/Encounter LKW at import 09:00/);
     } finally { await page.close(); }
     expect(errors).toEqual([]);
   }, 30000);
