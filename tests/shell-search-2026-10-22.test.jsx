@@ -98,6 +98,9 @@ describe('global search uses the Evidence aliases', () => {
     expect(lead('DIRECT-MT')).toBe('study:direct-mt');
     expect(lead('TRACE-2')).toBe('study:trace-2');
   });
+  it('Calculators and Evidence give the same honest message when the reference cannot load (lead follow-up)', () => {
+    for (const file of ['src/Tools.jsx', 'src/Reference.jsx']) expect(read(file)).toContain('this browser has no offline copy of this version. If offline, reconnect, then retry; Encounter entries stay in this session.');
+  });
   it('opens the post-treatment card for "after" phrases and keeps in-word abbreviations findable (lead follow-up)', () => {
     const lead = query => groupResults(searchIndex(index, query, Infinity))[0][1][0].id;
     // 'after' is a filler word, so "after thrombolysis" tied the contraindications card on 'thrombolysis' alone.
