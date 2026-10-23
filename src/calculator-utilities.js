@@ -1,5 +1,6 @@
 import { supplementaryResult } from './supplementary-calculators.js';
 import { numericInput, reviewedGcs } from './encounter-clinical-review.js';
+import { normalizeSearch } from './reference-search.js';
 
 export const ENCOUNTER_TOOLS = [
   { id:'nihss', name:'NIHSS', aliases:'National Institutes of Health stroke scale neurologic exam' },
@@ -12,10 +13,13 @@ export const ENCOUNTER_TOOLS = [
   { id:'dapt', name:'Acute DAPT source screen', aliases:'dual antiplatelet therapy CHANCE POINT' }
 ];
 // Worksheet aliases live on their definitions, so the global quick search reads the same synonyms.
+// Both searches share one normalizer and alias table (afib, OSA, ABC/2…), applied to the whole
+// query and to the text; the raw text is kept too, so a partial abbreviation ("tn") still matches.
 const searchable = text => String(text || '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9]/g, '');
 export function matchesCalculatorSearch(item, query) {
-  const haystack = searchable([item.name, item.id, item.aliases, item.category].filter(Boolean).join(' '));
-  return String(query || '').trim().split(/\s+/).every(word => haystack.includes(searchable(word)));
+  const text = [item.name, item.id, item.aliases, item.category].filter(Boolean).join(' ');
+  const haystack = `${searchable(text)} ${normalizeSearch(text).replace(/ /g, '')}`;
+  return normalizeSearch(query).split(' ').every(word => haystack.includes(word));
 }
 // Non-blocking unit-plausibility cautions a result carries; shown beside it and copied with it.
 export const resultCautions = value => [value?.heightWarning, value?.neckWarning].filter(Boolean);

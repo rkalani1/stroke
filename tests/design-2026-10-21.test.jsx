@@ -352,12 +352,15 @@ describe('shell behaviour in Chromium', { timeout: 60000 }, () => {
       expect(fit.inside, fit.label).toBe(true);
     }
   });
-  it('says when it is offline that app content still works and links need internet', async () => {
+  it('says when it is offline what still works here and that links need internet', async () => {
     await open('#/encounter');
     const status = page.locator('.workspace-offline');
     expect(await status.textContent()).toBe('');
     await context.setOffline(true);
-    await poll(() => status.textContent()).toMatch(/Offline · the workspace still works; external and source links need internet/);
+    // Service workers are blocked in this harness, so this tab is not offline-ready: the banner
+    // repeats the More panel's offline status (r3 2026-10-22); a controlled tab says the workspace
+    // still works (tests/shell-search-2026-10-22.test.jsx).
+    await poll(() => status.textContent()).toBe(`Offline · ${await page.locator('.utility-panel p[role="status"]').textContent()}`);
     await context.setOffline(false);
     await poll(() => status.textContent()).toBe('');
   });

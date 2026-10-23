@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { CARE_SETTINGS, searchReference, referenceText, recommendationLabels, bottomLine, sectionId } from './reference-search.js';
+import { CARE_SETTINGS, searchReference, referenceText, recommendationLabels, recommendationGroups, bottomLine, sectionId } from './reference-search.js';
 import { useReferenceData } from './reference-resource.js';
 
 export default function Reference({ version, focusId, active = true }) {
@@ -30,7 +30,7 @@ export default function Reference({ version, focusId, active = true }) {
     try { await navigator.clipboard.writeText(text); if (epoch.current === request) setCopy({ id: record.id, failed: false }); }
     catch { if (epoch.current === request) setCopy({ id: record.id, text, failed: true }); }
   };
-  if (failed) return <section className="reference-surface" role="alert"><h2>Evidence unavailable</h2><p>The reference download is unavailable or out of date.</p><button className="workspace-secondary-action" onClick={retry}>Retry reference download</button></section>;
+  if (failed) return <section className="reference-surface" role="alert"><h2>Evidence unavailable</h2><p>The reference download failed or is out of date, and this browser has no offline copy of this version. If offline, reconnect, then retry; Encounter entries stay in this session.</p><button className="workspace-secondary-action" onClick={retry}>Retry reference download</button></section>;
   if (!data) return <p role="status">Loading evidence…</p>;
   const categories = [...new Set(data.topics.map(record => record.category))];
   const matchingStudies = searchReference(data.studies, query, setting);
@@ -40,24 +40,30 @@ export default function Reference({ version, focusId, active = true }) {
   const ungrouped = category === 'all' ? matchingStudies.filter(record => !record.relatedTopic) : [];
   const studyResults = query.trim() ? matchingStudies.filter(record => category === 'all' || results.some(topic => topic.id === record.relatedTopic)) : [];
   if (ungrouped.length) groups.push(['Other study summaries', ungrouped]);
-  const renderRecommendations = record => <section className="reference-recs" aria-label={`Guideline recommendations for ${record.title}`}><h3>Guideline recommendations</h3><ul>{record.recommendations.map(rec => {
+  const renderRecommendations = (record, { heading } = recommendationGroups(record.recommendations)) => <section className="reference-recs" aria-label={`${heading} for ${record.title}`}><h3>{heading}</h3><ul>{record.recommendations.map(rec => {
     const label = recommendationLabels(rec);
     return <li key={rec.id}><span className="reference-chips"><span className={`reference-chip ${label.tone}`}>{label.cor}</span>{label.loe && <span className="reference-chip reference-chip-loe">{label.loe}</span>}</span><span className="reference-rec-text">{rec.text}</span><span className="reference-rec-source">{rec.source}</span></li>;
   })}</ul></section>;
   const renderSources = record => <details className="reference-sources"><summary>Sources ({record.sources.length})</summary><ul>{record.sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a> <span>· {source.year} · {source.type}</span></li>)}</ul>
     <details className="reference-provenance"><summary>Source provenance</summary><ul>{record.sources.map(source => <li key={source.url}><span>{source.title}</span> — checked {source.checkedAt}. {source.access}</li>)}</ul></details></details>;
+  // Keyboard focus centres a collapsed row taller than the space between the case bar and the bottom
+  // chrome, which can leave its title under the case bar; such a row starts below the case bar instead.
+  const revealSummary = event => {
+    const summary = event.currentTarget, root = getComputedStyle(document.documentElement);
+    if (summary.matches(':focus-visible') && summary.offsetHeight > innerHeight - (parseFloat(root.scrollPaddingTop) || 0) - (parseFloat(root.scrollPaddingBottom) || 0)) summary.scrollIntoView({ block: 'start' });
+  };
   const renderCard = record => {
     const study = !record.summary;
     const relatedStudies = study ? [] : data.studies.filter(item => item.relatedTopic === record.id);
     // A collapsed topic shows its bottom line (the summary's first sentence, verbatim) and what it holds.
-    const recCount = record.recommendations?.length || 0;
-    const contents = study ? '' : [recCount && `${recCount} guideline recommendation${recCount === 1 ? '' : 's'}`, relatedStudies.length && `${relatedStudies.length} study ${relatedStudies.length === 1 ? 'summary' : 'summaries'}`].filter(Boolean).join(' · ');
+    const { graded, ungraded } = recommendationGroups(record.recommendations);
+    const contents = study ? '' : [graded && `${graded} guideline recommendation${graded === 1 ? '' : 's'}`, ungraded && `${ungraded} ungraded statement${ungraded === 1 ? '' : 's'}`, relatedStudies.length && `${relatedStudies.length} study ${relatedStudies.length === 1 ? 'summary' : 'summaries'}`].filter(Boolean).join(' · ');
     return <details className="reference-card" data-reference-id={record.id} key={record.id} open={Boolean(opened[record.id])} onToggle={event => {
       if (event.target !== event.currentTarget) return;
       const open = event.currentTarget.open; if (!open) clearCopy();
       setOpened(previous => previous[record.id] === open ? previous : { ...previous, [record.id]: open });
     }}>
-      <summary><span>{record.title}</span>{study && <span className="reference-year">{record.year}</span>}{study && record.headline && <span className="reference-headline">{record.headline}</span>}{!study && <span className="reference-bottom-line">{bottomLine(record.summary)}</span>}{contents && <span className="reference-contents">{contents}</span>}</summary>
+      <summary onFocus={revealSummary}><span>{record.title}</span>{study && <span className="reference-year">{record.year}</span>}{study && record.headline && <span className="reference-headline">{record.headline}</span>}{!study && <span className="reference-bottom-line">{bottomLine(record.summary)}</span>}{contents && <span className="reference-contents">{contents}</span>}</summary>
       {opened[record.id] && <div className="reference-body">{study ? <><p>{record.question}</p><dl>{[['Population', record.population], ['Comparison', record.comparison], ['Result', record.result]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></> : <><p className="reference-summary">{record.summary}</p>{record.recommendations?.length > 0 && renderRecommendations(record)}<ul>{record.consider.map(item => <li key={item}>{item}</li>)}</ul></>}
         <p className="reference-limits"><strong>Limits:</strong> {record.caution || record.limits}</p>
         {(record.related || []).length > 0 && <div className="reference-links">{record.related.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</div>}
