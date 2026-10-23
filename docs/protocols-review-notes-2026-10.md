@@ -156,6 +156,15 @@ The Protocols tab is still unchanged in 7.9.0: the rendered lock (46 synthetic s
 ## MINUTE pre-screen time limit (low)
 - `src/institutional-protocols.js` research screen "MINUTE screen" lists "Arrival <=15 hours since last known well". The ClinicalTrials.gov record NCT07260916 (read 2026-10-22, full registry record) has inclusion 8: "Randomization within 16 hours from LKW and within 2 hours of arrival to the randomizing center." The Trials-tab MINUTE profile follows the registry (≤16 h from LKW, within 2 h of arrival). A patient arriving 15–16 h after last known well and randomized by 16 h fits the registry but not the Protocols screen. The 15 h figure may be a deliberate local buffer; if so, the owner may want it labelled as a local operational cutoff. Found by the round-3 trials verifier; not changed.
 
+## Extended-window CTP gate rounds before comparing (low)
+- `protocolEncounter()` (`src/workspace-state.js`, about line 114; hash-locked) rounds the CTP ratio to 0.01 and the mismatch volume to 0.1 mL before the frozen extended-window pathway compares them inclusively (`ratio >= 1.2`, `mismatchVol >= 10` in `src/institutional-protocols.js`, about lines 387–388). Core 49.9 mL with total 59.86 mL projects as ratio 1.2 and mismatch 10 mL and meets both gates, although the true values are 1.1996 and 9.96 mL. The EXTEND registry (NCT01580839) uses strict "> 1.2" and "> 10 mL". Only values within rounding distance of the thresholds are affected. Encounter's own note now prints such edge values with two more decimals (7.9.0). Suggested fix if approved: compare unrounded values, and decide whether the local gate is meant to be inclusive. Found by the round-3 encounter unit; not changed.
+
+## Pocket-card premorbid mRS options include 6 (low)
+- The EVT pocket cards in `src/pocket-cards.jsx` (about lines 292, 335 and 362) offer premorbid mRS 6 (death), and the anterior card writes the value back into the Encounter. A premorbid mRS of 6 is not a meaningful input. Encounter displays a 6 that arrives this way rather than dropping it. Found by the round-3 encounter unit; not changed.
+
+## Safe Pause text at phone width (low)
+- At 390×844 the read-only Safe Pause text area sits partly under the docked navigation bar. The shell's Tab-reveal helper deliberately skips the Protocols panel. Extending it there (removing the `#tabpanel-protocols` exclusion in `src/app.jsx`) would change Protocols behaviour, so it was left for the owner. Found by the round-3 shell unit; the phone lock's clipping check passes because the text remains reachable by scrolling.
+
 ## Pediatric EVT wording (low)
 - `src/ProtectedProtocols.jsx` (about line 2079) says EVT for ages 28 days–6 years by an "experienced neurointerventionalist"; the AHA 2026 recommendation (archived transcription) says "with pediatric experience". Possibly intended; the owner may want the source wording. Found by the evidence-fixes unit; not changed.
 
