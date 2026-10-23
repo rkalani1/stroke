@@ -114,6 +114,8 @@ describe('global search uses the Evidence aliases', () => {
     expect(evidenceIds([...data.topics, ...data.studies], 'BNP')).toContain('arcadia');
     expect(evidenceIds([...data.topics, ...data.studies], 'MCA')).toEqual(expect.arrayContaining(['acute-reperfusion', 'large-core-evt']));
     expect(evidenceIds([...data.topics, ...data.studies], 'DCS')).toContain('aphasia');
+    // Basilar artery occlusion is a large vessel occlusion; an "LVO" search lists its card.
+    expect(evidenceIds(data.topics, 'LVO')).toContain('basilar-occlusion');
   });
   it('keeps the protocol first when a study or topic only holds the query among its words, not as its name', () => {
     // Shipped data plus the Trials database records, as the search dialog builds them. Each protocol
