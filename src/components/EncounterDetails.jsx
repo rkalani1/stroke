@@ -1,11 +1,12 @@
 import React from 'react';
-import { getEncounterDetailGroups } from '../encounter-details.js';
+import { getEncounterDetailGroups, worksheetCautions } from '../encounter-details.js';
 
 function DetailField({ field, value, onChange }) {
   const id = `encounter-detail-${field.key}`;
   if (field.type === 'worksheet') return <div className="workspace-field">
     <span id={`${id}-label`}>{field.label}</span>
     <output aria-labelledby={`${id}-label`}>{field.result ? `${field.result.score}/${field.result.max}` : 'Incomplete / review required'}</output>
+    {worksheetCautions(field.result).map(text => <p key={text} className="workspace-result" data-tone="caution">{text}</p>)}
     <a href={`#/tools/${field.calculator}`}>Open {field.name} worksheet</a>
   </div>;
   const props = { id, 'aria-label': field.label, value: value ?? '', onChange: event => onChange(event.target.value) };

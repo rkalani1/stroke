@@ -36,6 +36,9 @@ try {
  // An implausible height drives the obesity adjustment, so (as in Encounter) no adjusted-weight estimate is returned.
  const obeseShortHeight=await call('calc_crcl',{age:70,weight:150,sex:'male',creatinine:1,heightCm:66});assert.match(obeseShortHeight.heightWarning,/centimeters/);assert.equal(obeseShortHeight.result.adjBwValue,null);assert.equal(obeseShortHeight.result.rawAdjBwValue,null);assert.equal(obeseShortHeight.result.obesityWarning,null);
  const obese=(await call('calc_crcl',{age:70,weight:150,sex:'male',creatinine:1,heightCm:170})).result;assert.notEqual(obese.adjBwValue,null);assert.match(obese.obesityWarning,/BMI >30/);
+ // BMI and the obesity flag come from the same implausible height, so they are withheld too (150 kg at 170 cm: BMI 51.9).
+ for(const heightCm of [1.7,66]){const r=(await call('calc_crcl',{age:70,weight:150,sex:'male',creatinine:1,heightCm})).result;assert.equal(r.bmi,null);assert.equal(r.isObese,null);}
+ assert.equal(obese.bmi,51.9);assert.equal(obese.isObese,true);
  // MRI selection: the CT-perfusion NCCT ASPECTS <6 exclusion does not apply; CT is the default.
  assert.equal((await call('calc_defuse3_eligibility',{age:70,nihss:15,coreMl:60,penumbraMl:150,timeFromLKWh:10,aspects:5,perfusionModality:'mri'})).result.partialScreenMet,true);
  assert.equal((await call('calc_defuse3_eligibility',{age:70,nihss:15,coreMl:60,penumbraMl:150,timeFromLKWh:10,aspects:5,perfusionModality:'ct'})).result.partialScreenMet,false);

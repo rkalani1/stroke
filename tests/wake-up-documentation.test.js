@@ -26,7 +26,8 @@ describe('canonical wake-up screen documentation', () => {
     expect(text).toContain('DWI-positive lesion: yes.');
     expect(text).toContain('No marked corresponding FLAIR hyperintensity: yes.');
     expect(text).toContain('DWI lesion smaller than one-third MCA territory: yes.');
-    expect(text).toContain('Symptom discovery (date/time): 2026-10-01 / 10:00.');
+    // 2026-10-22 (r3 encounter-notes#6): the note's LKW line carries a recorded discovery time with its offset; the screen no longer repeats it.
+    expect(text).not.toContain('Symptom discovery');
     expect(text).not.toMatch(/WAKE-UP eligible|IV thrombolysis eligible|Age: Eligible|Meets WAKE-UP criteria/);
   });
 
@@ -153,7 +154,8 @@ describe('canonical wake-up screen documentation', () => {
     const note = { ...ctp, lkwUnknown: false, lkwDate: '2026-10-01', lkwTime: '06:00' };
     const text = formatWakeUpScreenForExport(note, now);
     expect(text).toContain('CTP (EXTEND): partial source screen met;');
-    expect(text).toContain('Last known well (date/time): 2026-10-01 / 06:00.');
+    // 2026-10-22 (r3 encounter-notes#6): the note's own LKW line carries the time, with its offset and flags.
+    expect(text).not.toContain('Last known well');
     expect(text).not.toContain('Sleep midpoint:');
   });
 

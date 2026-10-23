@@ -28,6 +28,8 @@ const reperfusionEntered = entered('reperfusionReview');
 const afterEvt = is('reperfusionReview', 'After EVT', 'After IV thrombolysis and EVT');
 const dischargeEntered = entered('dischargeReview');
 const worksheetResult = (state, id) => supplementaryReviewed(state, id) ? supplementaryResult(state, id) : null;
+// Unit-plausibility cautions a worksheet result carries; the Encounter field shows them as the note prints them.
+export const worksheetCautions = result => [result?.heightWarning, result?.neckWarning].filter(Boolean);
 const worksheet = (id, name) => ({ key: `${id}-worksheet`, type: 'worksheet', calculator: id, name, label: `Reviewed ${name} score` });
 const mrsOptions = [
   ['0', '0 — No symptoms'], ['1', '1 — Symptoms without significant disability'],
@@ -296,7 +298,7 @@ export function formatEncounterDetails(state, now = Date.now(), { omit = [] } = 
     id: group.id,
     title: group.title,
     lines: group.fields.filter(field => !omit.includes(field.key)).flatMap(field => {
-      if (field.type === 'worksheet') return field.result ? [`${field.label}: ${field.result.score}/${field.result.max}${[field.result.heightWarning, field.result.neckWarning].filter(Boolean).map(text => ` [${text}]`).join('')}`] : [];
+      if (field.type === 'worksheet') return field.result ? [`${field.label}: ${field.result.score}/${field.result.max}${worksheetCautions(field.result).map(text => ` [${text}]`).join('')}`] : [];
       return hasValue(values[field.key]) ? [`${field.label}: ${formatField(field, values[field.key], values, now)}${field.flag?.(state) || ''}`] : [];
     })
   })).filter(group => group.lines.length);
