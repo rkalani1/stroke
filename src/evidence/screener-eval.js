@@ -318,7 +318,8 @@ export function buildScreenerParams(state, nowMs = null) {
     presentedWithin24h: state.presentedWithin24h,
     afibHistory: state.afibHistory,
     // AF establishes this broader ASPIRE criterion; absent AF does not exclude flutter.
-    afOrFlutterHistory: typeof state.afOrFlutterHistory === 'boolean' ? state.afOrFlutterHistory : state.afibHistory === true ? true : 'unselected',
+    // Not while an Encounter import's conflict over it stands: it stays unknown until answered.
+    afOrFlutterHistory: typeof state.afOrFlutterHistory === 'boolean' ? state.afOrFlutterHistory : state.afibHistory === true && !conflictStands(state, 'afOrFlutterHistory') ? true : 'unselected',
     takingOac: state.takingOac,
     abcd2: state.abcd2,
     antithromboticSoc: state.antithromboticSoc
@@ -578,14 +579,18 @@ const KEY_FACTS = {
 // Facts each classification shows a control for. Facts outside this set are
 // neither shown nor printed, so the copied summary matches the screen.
 export const VISIBLE_FACTS = Object.fromEntries(CLASSIFICATIONS.map(cls => [cls, [...KEY_FACTS[cls], ...STUDY_FACTS[cls].map(([key]) => key)]]));
-// Entries where an Encounter import met a conflicting answer (imported.conflicts:
-// key → value it left), while that value stands and this screen shows the fact
-// (an exclusion only while the refiner asks it).
+// An entry where an Encounter import met a conflicting answer (imported.conflicts: key →
+// the entry it replaced) stands while it keeps the value the import left: present for an
+// exclusion, unknown otherwise.
+export function conflictStands(state, key) {
+  return key in (state.imported?.conflicts || {}) && (EXCLUSION_ITEMS.some(entry => entry.id === key) ? state.exclusions?.[key] === true : state[key] === 'unselected');
+}
+// Standing conflicts this screen shows the fact for (an exclusion only while the refiner asks it).
 export function conflictNote(state, nowMs = null) {
   const cls = state.classification, asked = refinerItems(state, nowMs);
-  const names = Object.entries(state.imported?.conflicts || {}).map(([key, value]) => {
+  const names = Object.keys(state.imported?.conflicts || {}).filter(key => conflictStands(state, key)).map(key => {
     const item = EXCLUSION_ITEMS.find(entry => entry.id === key);
-    return (item ? asked.includes(item) && state.exclusions?.[key] === value : VISIBLE_FACTS[cls]?.includes(key) && state[key] === value) && (item?.label || FIELD_TEXT[key]);
+    return (item ? asked.includes(item) : VISIBLE_FACTS[cls]?.includes(key)) && (item?.label || FIELD_TEXT[key]);
   }).filter(Boolean);
   return names.length ? `Encounter and screener entries differed: ${names.join('; ')}. Exclusions are set to present, other answers to unknown; confirm them.` : '';
 }

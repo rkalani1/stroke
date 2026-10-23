@@ -6,7 +6,7 @@
 
 import { encounterTiming, encounterNihss, encounterVolume, validTimestamp, nihssBulkZeroItems } from '../workspace-state.js';
 import { reviewedGcs, numericInput, documentedIvtContext } from '../encounter-clinical-review.js';
-import { untestableNote } from './screener-eval.js';
+import { untestableNote, conflictStands } from './screener-eval.js';
 
 const MODELED = { ischemic: 'ischemic', ich: 'ich', tia: 'tia' };
 const DIAGNOSIS_LABEL = { ischemic: 'Ischemic', ich: 'ICH', tia: 'TIA', sah: 'SAH', cvt: 'CVT', mimic: 'Stroke mimic', other: 'Other / uncertain' };
@@ -167,30 +167,37 @@ const OAC_KEYS = ['anticoagulant', 'takingOac'];
 // anticoagulant or exclusion differs from a definite Encounter value, the exclusion
 // is present (from either side) and any other answer unknown; an anticoagulant answer
 // the user contradicted supplies no absent exclusion. imported.conflicts maps each
-// conflict to the value it left.
+// conflict to the entry it replaced; a reapply puts back the entry of a conflict that
+// still stands and weighs it again, so it never settles a conflict for the Encounter.
 export function applyEncounterPrefill(state, prefill, initialState) {
   if (!prefill?.patch) return state;
   const base = prefill.patch.classification && prefill.patch.classification !== state.classification ? initialState : state;
   const cleared = { ...base, exclusions: { ...base.exclusions } };
   for (const [key, value] of Object.entries(base.imported?.fields || {})) if (Object.is(base[key], value)) cleared[key] = initialState[key];
   for (const [id, value] of Object.entries(base.imported?.exclusions || {})) if (cleared.exclusions[id] === value) delete cleared.exclusions[id];
+  for (const [key, entry] of Object.entries(base.imported?.conflicts || {})) {
+    if (!conflictStands(base, key)) continue;
+    if (key in initialState) cleared[key] = entry; else cleared.exclusions[key] = entry;
+  }
   const entered = v => v != null && v !== 'unselected';
   const { exclusions: found = {}, ...facts } = prefill.patch;
   const differs = key => entered(facts[key]) && entered(cleared[key]) && cleared[key] !== facts[key];
   const oacConflict = OAC_KEYS.some(differs);
   const conflicts = {}, patch = { exclusions: {} };
+  const contest = key => { conflicts[key] = cleared[key]; patch[key] = 'unselected'; };
   for (const [key, value] of Object.entries(facts)) {
     const oac = OAC_KEYS.includes(key);
     if (typeof value !== 'boolean' && !oac) patch[key] = value;
-    else if (differs(key)) patch[key] = conflicts[key] = 'unselected';
+    else if (differs(key)) contest(key);
     else if (entered(value) && !entered(cleared[key]) && !(oac && oacConflict)) patch[key] = value;
   }
-  // Documented AF establishes ASPIRE's AF-or-flutter fact, so it contradicts an entered "No" to it.
-  if (facts.afibHistory === true && cleared.afOrFlutterHistory === false) patch.afOrFlutterHistory = conflicts.afOrFlutterHistory = 'unselected';
+  // Documented AF establishes ASPIRE's AF-or-flutter fact, so it contradicts an entered "No" to it
+  // (unless AF was entered too); neither answer then takes the Encounter's value.
+  if (facts.afibHistory === true && cleared.afOrFlutterHistory === false && cleared.afibHistory !== true) ['afibHistory', 'afOrFlutterHistory'].forEach(contest);
   for (const [id, value] of Object.entries(found)) {
     const mine = cleared.exclusions[id];
     if (typeof value !== 'boolean' || mine === value) continue;
-    if (typeof mine === 'boolean') conflicts[id] = true;
+    if (typeof mine === 'boolean') conflicts[id] = mine;
     if (value || (mine === undefined && !(oacConflict && id in anticoagulantFacts().exclusions))) patch.exclusions[id] = value;
   }
   const fields = Object.fromEntries(Object.entries(patch).filter(([key]) => key !== 'exclusions'));
