@@ -282,7 +282,7 @@ Checks, run in this worktree on the final source (`6c59b8d`), with no source cha
 - `npm run evidence:validate`: PASS (43 citations).
 - `npm run validate:citations`: PASS (43 rows).
 - `npm run validate:inline-citations`: PASS (15 PMIDs).
-- Protocols tab locks on port 4350, on a clean build of this source: desktop 1440x900 PASS (46 fixture/sub-tab captures); phone 390x844 PHONE_RESULT.
+- Protocols tab locks on port 4350, on a clean build of this source: desktop 1440x900 PASS (46 fixture/sub-tab captures); phone 390x844 PASS (46 captures). `screener-eval.js` is also in the lazy QuickSearch chunk, so both were run. No file that Protocols imports was edited.
 
 Budget: `check:asset-budget:json` on clean builds of each commit, made in this session with the same toolchain. Bases were built from `git archive` copies. Per-chunk figures use gzip -9.
 
