@@ -98,6 +98,20 @@ describe('global search uses the Evidence aliases', () => {
     expect(lead('DIRECT-MT')).toBe('study:direct-mt');
     expect(lead('TRACE-2')).toBe('study:trace-2');
   });
+  it('opens the post-treatment card for "after" phrases and keeps in-word abbreviations findable (lead follow-up)', () => {
+    const lead = query => groupResults(searchIndex(index, query, Infinity))[0][1][0].id;
+    // 'after' is a filler word, so "after thrombolysis" tied the contraindications card on 'thrombolysis' alone.
+    expect(normalizeSearch('after tPA')).toBe('post alteplase');
+    expect(lead('after thrombolysis')).toBe('protocol:qr-sich');
+    expect(lead('after EVT')).toBe('protocol:post-evt');
+    // Protocol keywords carry the abbreviations clinicians type.
+    expect(lead('BAO')).toBe('protocol:posterior');
+    expect(['protocol:bp', 'protocol:qr-bp']).toContain(lead('SBP'));
+    // Word-start matching would miss NT-proBNP (ARCADIA), HMCAS and tDCS; the prefixed aliases keep them.
+    expect(evidenceIds([...data.topics, ...data.studies], 'BNP')).toContain('arcadia');
+    expect(evidenceIds([...data.topics, ...data.studies], 'MCA')).toEqual(expect.arrayContaining(['acute-reperfusion', 'large-core-evt']));
+    expect(evidenceIds([...data.topics, ...data.studies], 'DCS')).toContain('aphasia');
+  });
   it('keeps the protocol first when a study or topic only holds the query among its words, not as its name', () => {
     // Shipped data plus the Trials database records, as the search dialog builds them. Each protocol
     // matches every word whole; INTERACT2, ENCHANTED2/MT, HOPE, RESCUE-Japan LIMIT and the reversal

@@ -34,14 +34,14 @@ const EXTERNAL = [
 
 const PROTOCOL_KEYWORDS = {
   'qr-dose': 'tenecteplase alteplase TNK tPA thrombolytic dose weight table bolus infusion mL',
-  'qr-bp': 'blood pressure targets 185/110 180/105 labetalol nicardipine clevidipine post-EVT ICH SAH hypertension hypertensive HTN',
+  'qr-bp': 'blood pressure SBP DBP targets 185/110 180/105 labetalol nicardipine clevidipine post-EVT ICH SAH hypertension hypertensive HTN',
   'qr-reversal': 'anticoagulant reversal ICH DOAC NOAC INR 4F-PCC PCC Kcentra idarucizumab Praxbind protamine vitamin K warfarin Coumadin Jantoven apixaban Eliquis rivaroxaban Xarelto edoxaban Savaysa dabigatran Pradaxa heparin enoxaparin Lovenox dalteparin fondaparinux argatroban bivalirudin andexanet antiplatelet',
   'qr-sich': 'symptomatic hemorrhage after thrombolysis sICH tnk tenecteplase alteplase tpa lytic bleed bleeding cryoprecipitate tranexamic acid TXA aminocaproic Amicar fibrinogen headache vomiting nausea neurological neuro deterioration decline worsening acute hypertension',
   'qr-angioedema': 'orolingual angioedema tongue lip swelling intubation icatibant epinephrine methylprednisolone diphenhydramine airway ACE inhibitor',
   'qr-ich-surgery': 'ICH surgery neurosurgery evacuation craniotomy cerebellar hemorrhage EVD ventriculostomy IVH hydrocephalus minimally invasive MIS ENRICH deterioration decline worsening neurological',
   'qr-sah': 'subarachnoid hemorrhage SAH aneurysm thunderclap headache lumbar puncture xanthochromia nimodipine coil clip EVD',
   evt: 'thrombectomy EVT eligibility LVO ASPECTS anterior ICA M1 M2 DAWN DEFUSE',
-  posterior: 'basilar vertebral posterior circulation pc-ASPECTS ATTENTION BAOCHE thrombectomy EVT',
+  posterior: 'basilar BAO vertebral posterior circulation pc-ASPECTS ATTENTION BAOCHE thrombectomy EVT',
   'large-core': 'large core ASPECTS 3-5 SELECT2 ANGEL-ASPECT TENSION thrombectomy',
   mevo: 'medium distal vessel occlusion MeVO DISTAL ESCAPE-MeVO M3 ACA PCA',
   swallow: 'dysphagia swallow screen aspiration NPO',
@@ -54,7 +54,7 @@ const PROTOCOL_KEYWORDS = {
   reversal: 'anticoagulant reversal 4F-PCC PCC Kcentra idarucizumab Praxbind protamine vitamin K warfarin apixaban rivaroxaban dabigatran heparin',
   'post-lytic': 'symptomatic hemorrhage sICH cryoprecipitate tranexamic acid TXA bleeding after thrombolysis headache vomiting nausea neurological deterioration decline worsening',
   angioedema: 'orolingual angioedema airway icatibant',
-  bp: 'blood pressure targets labetalol nicardipine clevidipine 185/110 180/105 hypertension hypertensive HTN',
+  bp: 'blood pressure SBP DBP targets labetalol nicardipine clevidipine 185/110 180/105 hypertension hypertensive HTN',
   'post-evt': 'after thrombectomy blood pressure reperfusion TICI'
 };
 

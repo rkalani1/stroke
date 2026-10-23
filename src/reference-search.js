@@ -16,9 +16,10 @@ const ALIASES = [
   [/\bivt\b/g, 'thrombolysis'],
   [/\b(?:obstructive )?sleep apno?ea\b|\bosa\b/g, 'sleep apnea'],
   [/\babc 2\b/g, 'abc2'],
-  // Prefixed forms keep their own word and add the base one, so ICH, SAH, BP and CT (which match
-  // only at word starts) still find sICH, aSAH, SBP/DBP and NCCT, and "sICH" stays specific.
-  [/\b(?:s(ich)|a(sah)|[sd](bp)|nc(ct))\b/g, '$& $1$2$3$4']
+  [/\bafter (thromb(?:olysis|ectomy)|alteplase|tenecteplase)\b/g, 'post $1'],
+  // Prefixed forms keep their own word and add the base one, so ICH, SAH, BP, CT, BNP, MCA and DCS (which
+  // match only at word starts) still find sICH, aSAH, SBP/DBP, NCCT, NT-proBNP, HMCAS and tDCS, and "sICH" stays specific.
+  [/\b(?:s(ich)|a(sah)|[sd](bp)|nc(ct)|pro(bnp)|h(mca)s|t(dcs))\b/g, '$& $1$2$3$4$5$6$7']
 ];
 export const normalizeSearch = value => ALIASES.reduce((text, [pattern, replacement]) => text.replace(pattern, replacement), String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim());
 // A letter-only term of up to three letters ("TIA", "BP") matches only at a word start, so "TIA"
