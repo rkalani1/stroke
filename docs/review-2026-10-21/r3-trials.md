@@ -143,7 +143,7 @@ A second independent verification, with a behavior reviewer and a registry-fidel
 Method:
 - I reproduced every code item before changing anything. A node probe ran against the real modules (`r3rep2/probe.mjs` in the session scratchpad; output in `probe-before.txt` and `probe-after.txt`).
 - The browser-only items (#3, #4, #8) were reproduced with headless Chromium tests written first.
-- The new test file failed 24 of its 25 tests on the `5a91601` sources. I extracted those sources with `git archive` and ran the file against them. Every item, including the browser cases, failed for the reported reason: no `role=status` before the first import, and two `URI malformed` page errors. The one test that passed is the "24h – 7d with No" control: its "No" branch already gave "not met" before the repair.
+- The new test file failed 24 of its 25 tests on the `5a91601` sources. I extracted those sources with `git archive` and ran the file against them. Every item, including the browser cases, failed for the reported reason: no `role=status` before the first import, and two `URI malformed` page errors. The one test that passed is the control "documented absence of AF never contradicts a recorded flutter…". It pins behavior that was already correct.
 - I re-read five ClinicalTrials.gov records in full through the registry connector (API v2, full eligibility text): NCT06289985 (STEP), NCT05948566 (SISTER), NCT05338697 (VERIFY), NCT06682429 (TELE-REHAB-2, registry acronym TR-2) and NCT03907046 (ASPIRE). All five still read RECRUITING. As in §5, `verificationDate` and `registryLastUpdatePosted` were not re-dated. The access date below is the project date the lead gave, 2026-10-22. The container clock read 2026-10-23 UTC.
 
 Probe, before → after (TZ America/Los_Angeles). STEP inputs: ischemic, 66 y, NIHSS 2, ICA/M1, ASPECTS 9, pre-mRS 0, its six refiner items absent, "Presented ≤ 24 h" = Yes.
@@ -214,3 +214,38 @@ Existing tests updated, each because the text it pinned was the reported defect 
   - two boundary rows were added for STEP's app limit (30 h met, 30.01 h not met).
   - The presentation `or` rows are unchanged. They test the registry criterion on its own, which is still met at 30 h with "Yes".
 - `src/evidence/__tests__/screener-audit-2026-10.test.js` H3 needed no change: "24h – 7d" with "No" is still not met for presentation.
+
+### 8.5 Checks and budget
+
+Run in this worktree on the repaired source:
+- `npx vitest run`: 129 files, 2583 passed, 3 skipped, 0 failed. Run twice, before and after the locks, with the same result.
+- `npm run test:protocol-source`: PASS.
+- `npm run content:validate`: PASS (16 trial profiles).
+- `npm run check:clinical-claims`: PASS (4 bounded groups, 31 occurrences, 0 exports).
+- `npm run check:leak-guard`: no institutional or PHI-adjacent content.
+- `npm run evidence:validate`: PASS (43 citations).
+- `npm run validate:citations`: PASS (43 rows).
+- `npm run validate:inline-citations`: PASS (15 PMIDs).
+- Protocols tab locks on port 4350, run on the repaired build: desktop 1440x900 PASS (46 fixture/sub-tab captures); phone 390x844 PASS (46 captures). `screener-eval.js` is also loaded by the lazy QuickSearch chunk, so I ran both locks. No file that Protocols imports was edited.
+
+Budget, from a clean build (`npm run build` after cleaning the ignored chunk files) and `npm run check:asset-budget:json`, with per-chunk gzip level 9 measured on the same build. Base is `5a91601`.
+
+| measure | base `5a91601` | after repair | delta |
+|---|---|---|---|
+| initial module graph, gzip | 130,537 | 130,537 | **0** |
+| initial module graph, raw | 384,554 | 384,554 | 0 |
+| shared Trials/QuickSearch chunk (profiles + engine), gzip | 27,173 | 27,381 | +208 |
+| Trials chunk, gzip | 13,890 | 13,965 | +75 |
+| QuickSearch chunk, gzip | 5,342 | 5,342 | 0 |
+| all offline JS, gzip | 262,074 | 262,357 | **+283** (budget 262,144: **over by 213 B**; `check:asset-budget` fails this one check) |
+| all offline JS, raw | 873,204 | 874,364 | +1,160 (budget 876,544) |
+| tailwind.css | 106,849 | 106,849 | 0 (`sr-only` is already in the build) |
+| SW precache | 2,151,663 | 2,152,823 | +1,160 |
+
+- **Net addition.** +283 B is within the lead's +300 B target, and initial JS is unchanged.
+- **Breach.** The base build had 70 B of all-offline headroom, so this repair puts the all-offline JS budget over its limit. That is reported here, not hidden, and is left to the lead's budget decision at integration.
+- **Offsets**, all inside these files and none weakening a fix:
+  - the two SISTER reperfusion lines are now one;
+  - the STEP "presentation and puncture" line was replaced rather than added to, and "chronic occlusion" moved out of the remaining-exclusions list;
+  - the banner builds its status text once;
+  - the two new notes reuse wording from the existing ones, which gzip compresses.
