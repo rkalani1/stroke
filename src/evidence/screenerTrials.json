@@ -6,11 +6,11 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "CT.gov requires presentation to the enrolling hospital within 24 hours and arterial puncture within 2 hours of qualifying imaging; this screening summary does not encode every STEP domain exclusion.",
+      "CT.gov requires presentation to the enrolling hospital within 24 hours and arterial puncture within 2 hours of qualifying imaging, with no stated randomization deadline; the 30-hour screening limit is the app's, not the registry's. Not every STEP domain exclusion is encoded.",
       "Registry status rechecked 2026-10-21: RECRUITING; last update posted 2025-12-04 (recorded 2026-10-21). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "hyperacute",
-    "enrollmentWindowText": "EVT window (≤ 24 hours)",
+    "enrollmentWindowText": "Presentation ≤ 24 hours (app screens ≤ 30 h)",
     "externalMetadata": {
       "nct": "NCT06289985",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06289985",
@@ -85,6 +85,13 @@
               ]
             }
           ]
+        },
+        {
+          "field": "onsetHours",
+          "operator": "<=",
+          "value": 30,
+          "error": "Beyond the app's 30-h acute screening limit (not registry text; registry: presentation ≤ 24 h, puncture ≤ 2 h from qualifying imaging)",
+          "pendingLabel": "Confirm LKW is within the app's 30-h acute screening limit"
         },
         {
           "field": "aspects",
@@ -190,8 +197,8 @@
       ],
       "manualPending": [
         "Confirm non-dominant/co-dominant M2 or M3 anatomy and the MVO >6-hour infarct-core criterion; registry does not separately classify a dominant M3",
-        "Confirm enrolling-hospital presentation and arterial puncture timing per STEP protocol",
-        "Confirm CT versus MRI ASPECTS threshold, focal deficit when NIHSS is 0, and the remaining domain exclusions (chronic occlusion, dissection, vasculitis, septic embolus, platelets, mass effect, tumor, hemorrhage)"
+        "Confirm arterial puncture can start ≤ 2 h from qualifying CTA/MRA or CTP/MRP imaging and the occlusion is not suspected to be chronic",
+        "Confirm CT versus MRI ASPECTS threshold, focal deficit when NIHSS is 0, and the remaining domain exclusions (dissection, vasculitis, septic embolus, platelets, mass effect, tumor, hemorrhage)"
       ]
     }
   },
@@ -202,7 +209,7 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "Perfusion imaging, EVT clot engagement and the remaining CT.gov exclusions are listed for confirmation, not modeled.",
+      "Perfusion imaging, EVT clot engagement and the remaining CT.gov exclusions are listed for confirmation, not modeled, except prior TS23 or antibody allergy, confounding neurological or psychiatric disease and another research drug protocol (full criteria only).",
       "Registry status rechecked 2026-10-21: RECRUITING; last update posted 2026-10-19 (recorded 2026-10-21). This is the overall study status; local site activation and recruitment availability have not been verified."
     ],
     "timeCategory": "hyperacute",
@@ -316,10 +323,9 @@
         }
       ],
       "manualPending": [
-        "Confirm the patient is not a candidate for standard-of-care reperfusion therapy, IVT or EVT (registry primary objective)",
-        "Confirm perfusion mismatch (ratio > 1.2, mismatch > 10 mL, core < 70 mL; with CT hypodensity, hypodensity plus core smaller than the penumbra) and anterior circulation",
-        "Confirm no EVT clot engagement (groin puncture without engagement for spontaneous distal migration is permitted)",
-        "Confirm no stroke within 90 days, prior ICH/SAH/AVM/intracranial neoplasm, surgery/biopsy, trauma or serious systemic hemorrhage within 30 days, severe head trauma within 90 days, suspected SAH, dialysis or concurrent thrombosis needing antithrombotics, and the INR, platelet, hematocrit, aPTT, creatinine, LMWH, GP IIb/IIIa and BP limits",
+        "Confirm no standard-of-care reperfusion (registry primary objective): no EVT with clot engagement; groin puncture without engagement because of spontaneous distal migration is permitted",
+        "Confirm perfusion mismatch (ratio > 1.2, mismatch > 10 mL, core < 70 mL; with CT hypodensity, hypodensity plus core smaller than the penumbra), anterior circulation, and study drug ≤ 120 min from qualifying perfusion imaging",
+        "Confirm no stroke within 90 days, prior ICH/SAH/AVM/intracranial neoplasm, surgery/biopsy, trauma or serious systemic hemorrhage within 30 days, severe head trauma within 90 days, suspected SAH, hemorrhagic diathesis or coagulation factor deficiency, dialysis or concurrent thrombosis needing antithrombotics, and the INR, platelet, hematocrit, aPTT, creatinine, LMWH, GP IIb/IIIa and BP limits",
         "If NIHSS is 4–5, confirm a clearly disabling deficit",
         "If ASPECTS was scored on MRI (DWI), confirm MRI ASPECTS ≥ 7"
       ]
@@ -1665,7 +1671,7 @@
           "pendingLabel": "Confirm NIHSS sensory score is < 2 (not dense sensory loss)"
         },
         {
-          "field": "exRecentStroke30d",
+          "field": "exVerifyStroke30d",
           "operator": "==",
           "value": true,
           "error": "Excludes symptomatic stroke within 30 days prior",

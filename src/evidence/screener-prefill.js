@@ -185,6 +185,8 @@ export function applyEncounterPrefill(state, prefill, initialState) {
     else if (differs(key)) patch[key] = conflicts[key] = 'unselected';
     else if (entered(value) && !entered(cleared[key]) && !(oac && oacConflict)) patch[key] = value;
   }
+  // Documented AF establishes ASPIRE's AF-or-flutter fact, so it contradicts an entered "No" to it.
+  if (facts.afibHistory === true && cleared.afOrFlutterHistory === false) patch.afOrFlutterHistory = conflicts.afOrFlutterHistory = 'unselected';
   for (const [id, value] of Object.entries(found)) {
     const mine = cleared.exclusions[id];
     if (typeof value !== 'boolean' || mine === value) continue;
