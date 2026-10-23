@@ -53,16 +53,20 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   const patch = { exclusions: {} };
   const summary = [];
   if (diagnosis) summary.push(DIAGNOSIS_LABEL[diagnosis] || diagnosis);
+  const timing = encounterTiming(note, nowMs);
+  const timed = typeof timing.hours === 'number' && Number.isFinite(timing.hours) && timing.hours >= 0;
+  const anchor = timed ? new Date(timing.timestamp).getTime() : NaN;
+  // The Encounter LKW anchor now (null when none), for every diagnosis, so an imported
+  // anchor the Encounter no longer holds is never described as live.
+  const lkwAnchorMs = Number.isFinite(anchor) ? anchor : null;
   if (diagnosis && !classification) {
-    return { available: true, supported: false, classification: null, message: NO_MODELED_STUDIES, patch: null, summary };
+    return { available: true, supported: false, classification: null, message: NO_MODELED_STUDIES, patch: null, summary, lkwAnchorMs };
   }
   if (classification) patch.classification = classification;
 
-  const timing = encounterTiming(note, nowMs);
-  if (typeof timing.hours === 'number' && Number.isFinite(timing.hours) && timing.hours >= 0) {
+  if (timed) {
     // onsetVal is the snapshot at import; onsetAnchorMs keeps elapsed time live.
-    const anchor = new Date(timing.timestamp).getTime();
-    Object.assign(patch, { onsetVal: Math.round(timing.hours * 100) / 100, onsetUnit: 'hours', onsetRangeHours: null, onsetAnchorMs: Number.isFinite(anchor) ? anchor : null });
+    Object.assign(patch, { onsetVal: Math.round(timing.hours * 100) / 100, onsetUnit: 'hours', onsetRangeHours: null, onsetAnchorMs: lkwAnchorMs });
     summary.push(`LKW ${fmtHours(timing.hours)}`);
   }
 
@@ -146,7 +150,7 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   }
 
   const facts = Object.keys(patch).filter(key => key !== 'exclusions' && key !== 'onsetUnit' && key !== 'onsetRangeHours' && key !== 'onsetAnchorMs');
-  return { available: facts.length > 0, supported: Boolean(classification), classification, message: classification ? null : 'Diagnosis not recorded in Encounter', patch, summary };
+  return { available: facts.length > 0, supported: Boolean(classification), classification, message: classification ? null : 'Diagnosis not recorded in Encounter', patch, summary, lkwAnchorMs };
 }
 
 // What an import says, without the elapsed-time snapshot (the LKW anchor is kept),

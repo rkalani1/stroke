@@ -209,9 +209,9 @@ export function TrialScreener({ copyToClipboard, initialState, onStateChange, ac
   }, [active, encounter, anchored]);
   const nowMs = Math.max(typeof now === 'number' ? now : 0, tick);
   const prefill = useMemo(() => encounter ? screenerPrefillFromEncounter(encounter, nowMs) : null, [encounter, nowMs]);
-  // With no patch (a diagnosis the screener does not model) there is nothing to reapply and no Encounter LKW to compare.
+  // With no patch (a diagnosis the screener does not model) there is nothing to reapply; the Encounter LKW is still compared.
   const stale = importChanged(state, prefill) && (prefill.patch ? STALE_IMPORT_NOTE : STALE_UNMODELED_NOTE);
-  const lkwChanged = stale && anchored && prefill.patch && prefill.patch.onsetAnchorMs !== state.onsetAnchorMs;
+  const lkwChanged = stale && anchored && prefill.lkwAnchorMs !== state.onsetAnchorMs;
   const replace = updater => { onStateChange?.(); setApplied(null); setState(updater); };
   const change = patch => replace(prev => ({ ...prev, ...patch }));
   const importEncounter = () => {
