@@ -283,7 +283,8 @@ describe('registry wording re-read on 2026-10-22', () => {
     const r = evaluate('SISTER', { classification: 'ischemic', onsetVal: 8, age: 70, nihss: 14, aspects: 8, preMrs: 0, vessel: 'ica_m1',
       exclusions: { exXaDtiWithin48h: false, exIvtGivenOrPlanned: false, exPregnancy: false } });
     expect(r.completeness).toBe('potential-match');
-    expect(toConfirm(r)).toContain('Confirm the patient is not a candidate for standard-of-care reperfusion therapy, IVT or EVT (registry primary objective)');
+    // r3-trials second verification: the line keeps exclusion 1a's distal-migration allowance next to it.
+    expect(toConfirm(r)).toContain('Confirm no standard-of-care reperfusion (registry primary objective): no EVT with clot engagement; groin puncture without engagement because of spontaneous distal migration is permitted');
     // The card headline carries the restriction too, so it is visible without opening the list.
     expect(evaluateAll(S({ classification: 'ischemic', onsetVal: 8, age: 70, nihss: 14, aspects: 8, preMrs: 0, vessel: 'ica_m1' })).briefingNote).toContain('registry primary objective');
   });
@@ -295,7 +296,8 @@ describe('registry wording re-read on 2026-10-22', () => {
       /hematocrit < 25%/, /aPTT above normal/, /creatinine > 4 mg\/dL or dialysis/, /concurrent MI, PE, DVT or other thrombosis/, /Prior TS23/, /another research drug protocol/]) expect(exc).toMatch(re);
     const confirm = toConfirm(evaluate('SISTER', { classification: 'ischemic' })).join(' ');
     for (const re of [/surgery\/biopsy, trauma or serious systemic hemorrhage within 30 days/, /severe head trauma within 90 days/, /dialysis or concurrent thrombosis needing antithrombotics/, /INR, platelet, hematocrit, aPTT, creatinine, LMWH, GP IIb\/IIIa and BP limits/]) expect(confirm).toMatch(re);
-    expect(t.sourceGaps).toContain('Perfusion imaging, EVT clot engagement and the remaining CT.gov exclusions are listed for confirmation, not modeled.');
+    // Second verification: the sentence now names the exclusions the to-confirm list leaves to the full criteria.
+    expect(t.sourceGaps).toContain('Perfusion imaging, EVT clot engagement and the remaining CT.gov exclusions are listed for confirmation, not modeled, except prior TS23 or antibody allergy, confounding neurological or psychiatric disease and another research drug protocol (full criteria only).');
   });
 
   it('SISTER and TESTED ask for the MRI ASPECTS threshold; SISTER asks for a disabling deficit at NIHSS 4–5', () => {
@@ -320,7 +322,7 @@ describe('registry wording re-read on 2026-10-22', () => {
     expect([unknown.status, unknown.completeness]).toEqual(['pending', 'insufficient-information']);
     expect(toConfirm(unknown)).toContain('Confirm presentation to the enrolling hospital ≤ 24 h from LKW');
     // Puncture ≤ 2 h from qualifying imaging stays a to-confirm item whatever the timing.
-    expect(toConfirm(unknown)).toContain('Confirm enrolling-hospital presentation and arterial puncture timing per STEP protocol');
+    expect(toConfirm(unknown)).toContain('Confirm arterial puncture can start ≤ 2 h from qualifying CTA/MRA or CTP/MRP imaging and the occlusion is not suspected to be chronic');
     expect(STUDY_FACTS.ischemic.find(([key]) => key === 'presentedWithin24h')[3]).toEqual(['STEP', 'TESTED']);
     // Within 24 h at screening still meets the timing criterion without the presentation fact.
     expect(evaluate('STEP', { ...facts, onsetVal: 3 }).matchedCriteria).toContain('Within 24 h of LKW at screening (so presented ≤ 24 h)');
@@ -350,8 +352,9 @@ describe('registry wording re-read on 2026-10-22', () => {
     // VERIFY exclusion 1: "UE injury or conditions on paretic side that limited use prior to the stroke".
     expect(item('exPriorUeCondition').label).toBe('Prior paretic-side upper extremity condition limiting use');
     expect(trial('VERIFY').exactExclusionCriteria[0]).toBe('Upper extremity injury or condition on the paretic side that limited use before the stroke');
-    // TELE-REHAB-2 exclusion 9 ("a separate stroke occurred within 30 days prior to the index stroke") is not limited to symptomatic strokes.
-    expect(item('exRecentStroke30d').label).toBe('Separate stroke within the 30 days before the index stroke (VERIFY: symptomatic, any location)');
+    // TELE-REHAB-2 exclusion 9 ("a separate stroke occurred within 30 days prior to the index stroke") is not limited to symptomatic strokes;
+    // the second verification gave VERIFY's symptomatic-only exclusion 6 its own item.
+    expect(item('exRecentStroke30d').label).toBe('Separate stroke within the 30 days before the index stroke');
   });
 
   it('SCOUTS-3 tests for OSA itself and keeps its history and pneumocephalus exclusions (NCT06722755)', () => {
