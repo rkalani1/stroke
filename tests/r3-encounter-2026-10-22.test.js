@@ -173,6 +173,13 @@ describe('Note: entered lists keep their separators (encounter-notes#7)', () => 
     expect(text).toContain('— Drift. Disabling deficit');
     expect(text).not.toMatch(/\w\w\.;/);
   });
+  it('drops the doubled separator after a digit, a single letter or a closing parenthesis too (lead follow-up to the verifier)', () => {
+    const text = buildSummary(video({ note: { diagnosisCategory: 'ischemic', ctResults: 'No hemorrhage, ASPECTS 9.', ctaResults: 'Occlusion (M1).', vesselOcclusion: ['M1'], nihssDetails: 'Item 5a = 2.' } }), NOW);
+    expect(text).toContain('No hemorrhage, ASPECTS 9. CT hemorrhage review');
+    expect(text).toContain('Occlusion (M1). Vessel imaging: M1');
+    expect(text).toContain('— Item 5a = 2. Disabling deficit');
+    expect(text).not.toContain('.;');
+  });
 });
 
 describe('EVT screen for prestroke mRS 2–4 cites a tier only inside ais-2026-118/-119 (encounter-ui#0)', () => {

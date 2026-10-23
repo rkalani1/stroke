@@ -361,7 +361,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   else if (state.context === 'acute' && n.diagnosisCategory === 'ich') extraExam.push('GCS: not documented');
   // After entered text that ends a sentence, the template's own "; " drops its ";" (an abbreviation such as "b.i.d." keeps
   // it); entered text itself is never rewritten.
-  const joined = (text, rest) => text + (/\w\w\.$/.test(text) ? rest.slice(1) : rest);
+  const joined = (text, rest) => text + (/\.$/.test(text) && !/(?:^|[^\w.])(?:\w\.){2,}$/.test(text) ? rest.slice(1) : rest);
   const examLine = joined(`${examTextWithItems}${examDetails}`, `${disabling ? `; ${disabling}` : ''}${extraExam.length ? `; ${extraExam.join('; ')}` : ''}`);
   const aspects = acuteIschemic ? numericInput(state.aspects, { min: 0, max: 10, integer: true }) : null;
   const pcAspects = acuteIschemic ? numericInput(state.pcAspects, { min: 0, max: 10, integer: true }) : null;
