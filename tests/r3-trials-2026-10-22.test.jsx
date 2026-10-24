@@ -15,7 +15,7 @@ import {
   buildScreenerParams, conflictNote, createInitialScreenerState, evaluateAll, evaluateTrialEligibility, EXCLUSION_ITEMS, onsetSummary,
   potentialMatches, refinerItems, STUDY_FACTS, toConfirm, withClassification
 } from '../src/evidence/screener-eval.js';
-import { applyAnticoagulant, applyEncounterPrefill, importChanged, screenerPrefillFromEncounter } from '../src/evidence/screener-prefill.js';
+import { answerFacts, applyAnticoagulant, applyEncounterPrefill, importChanged, screenerPrefillFromEncounter } from '../src/evidence/screener-prefill.js';
 import { buildSearchIndex, searchIndex } from '../src/quick-search-index.js';
 import { SEARCH_TRIALS } from '../src/components/QuickSearch.jsx';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -258,10 +258,11 @@ describe('Encounter conflicts never make a screen less cautious (e2e#6 verificat
 
   it('drops a conflict from the note once its answer is changed (C)', () => {
     const state = applyEncounterPrefill(S({ classification: 'ischemic', takingOac: true, exclusions: { exXaDtiWithin48h: true } }), screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'none' }), now), fresh());
-    const agreed = { ...state, exclusions: { ...state.exclusions, exXaDtiWithin48h: false } };
+    // Edits go through answerFacts, the screener's only edit path (r3-trials §9).
+    const agreed = answerFacts(state, { exclusions: { exXaDtiWithin48h: false } });
     expect(conflictNote(agreed)).toBe(`${CONFLICT_HEAD}oral anticoagulant at the index stroke${CONFLICT_TAIL}`);
-    expect(conflictNote({ ...agreed, takingOac: false })).toBe('');
-    expect(evaluateAll({ ...agreed, takingOac: false }).briefingNote).not.toContain(CONFLICT_HEAD);
+    expect(conflictNote(answerFacts(agreed, { takingOac: false }))).toBe('');
+    expect(evaluateAll(answerFacts(agreed, { takingOac: false })).briefingNote).not.toContain(CONFLICT_HEAD);
   });
 
   it('never lets an Encounter "unknown" clear a recorded anticoagulant or present exclusion', () => {

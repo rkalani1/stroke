@@ -10,7 +10,7 @@ import {
   EXCLUSION_ITEMS, toConfirm, relevantNotMet, potentialMatches, insufficientInformation,
   registryCheckLabel, registryCheckAgeDays, registryCheckAgeText, enrollmentLabel
 } from '../screener-eval.js';
-import { screenerPrefillFromEncounter, applyEncounterPrefill } from '../screener-prefill.js';
+import { screenerPrefillFromEncounter, applyEncounterPrefill, answerFacts } from '../screener-prefill.js';
 import { trialClassifications } from '../../components/TrialScreener.jsx';
 
 const trial = acronym => screenerTrials.find(t => t.acronym === acronym);
@@ -77,7 +77,8 @@ describe('re-importing Encounter facts clears what the Encounter no longer suppo
 
   it('keeps values the user changed after the import', () => {
     const once = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(first, NOW), fresh());
-    const edited = { ...once, gcs: 9, exclusions: { ...once.exclusions, exPregnancy: false } };
+    // A user edit is recorded by answerFacts, the screener's edit path (r3-trials §9).
+    const edited = answerFacts(once, { gcs: 9, exclusions: { exPregnancy: false } });
     const twice = applyEncounterPrefill(edited, screenerPrefillFromEncounter(corrected, NOW), fresh());
     expect(twice.gcs).toBe(9);
     expect(twice.exclusions).toEqual({ exPregnancy: false });

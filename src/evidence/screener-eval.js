@@ -257,8 +257,8 @@ export function createInitialScreenerState() {
     abcd2: 'unselected',
     antithromboticSoc: 'unselected',
     exclusions: {},
-    // Values the last Encounter import wrote, so a reapply can clear what the
-    // Encounter no longer supports without discarding later manual edits.
+    // The last Encounter import: its source, the user's latest answers and the
+    // standing conflicts (applyEncounterPrefill, answerFacts).
     imported: null
   };
 }
@@ -579,16 +579,12 @@ const KEY_FACTS = {
 // Facts each classification shows a control for. Facts outside this set are
 // neither shown nor printed, so the copied summary matches the screen.
 export const VISIBLE_FACTS = Object.fromEntries(CLASSIFICATIONS.map(cls => [cls, [...KEY_FACTS[cls], ...STUDY_FACTS[cls].map(([key]) => key)]]));
-// An entry where an Encounter import met a conflicting answer (imported.conflicts: key →
-// the entry it replaced) stands while it keeps the value the import left: present for an
-// exclusion, unknown otherwise (exclusion ids are never top-level state keys).
-export function conflictStands(state, key) {
-  return key in (state.imported?.conflicts || {}) && (state[key] === 'unselected' || state.exclusions?.[key] === true);
-}
+// An Encounter import's conflict over a fact (imported.conflicts) stands until the user answers that fact.
+export const conflictStands = (state, key) => key in (state.imported?.conflicts || {});
 // Standing conflicts this screen shows the fact for (an exclusion only while the refiner asks it).
 export function conflictNote(state, nowMs = null) {
   const cls = state.classification, asked = refinerItems(state, nowMs);
-  const names = Object.keys(state.imported?.conflicts || {}).filter(key => conflictStands(state, key)).map(key => {
+  const names = Object.keys(state.imported?.conflicts || {}).map(key => {
     const item = EXCLUSION_ITEMS.find(entry => entry.id === key);
     return (item ? asked.includes(item) : VISIBLE_FACTS[cls]?.includes(key)) && (item?.label || FIELD_TEXT[key]);
   }).filter(Boolean);
@@ -597,11 +593,11 @@ export function conflictNote(state, nowMs = null) {
 
 // Choosing a classification restarts timing, exclusions and the anticoagulant
 // answer, and returns every fact the new screen hides to unknown. It also ends
-// the Encounter import: a value it wrote that is still unchanged returns to
+// the Encounter import: a value other than the user's own answer returns to
 // unknown, so nothing imported outlives its staleness tracking.
 export function withClassification(state, classification) {
-  const initial = createInitialScreenerState(), fields = state.imported?.fields || {};
-  const reset = [...new Set(Object.values(VISIBLE_FACTS).flat())].filter(key => !VISIBLE_FACTS[classification].includes(key) || (key in fields && Object.is(state[key], fields[key])));
+  const initial = createInitialScreenerState(), answers = state.imported?.answers;
+  const reset = [...new Set(Object.values(VISIBLE_FACTS).flat())].filter(key => !VISIBLE_FACTS[classification].includes(key) || (answers && !Object.is(state[key], answers[key])));
   return { ...state, ...Object.fromEntries(reset.map(key => [key, initial[key]])), ...(reset.includes('nihss') && { nihssUntestable: 0, nihssBulkZero: 0 }),
     classification, onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null, exclusions: {}, anticoagulant: 'unselected', takingOac: 'unselected', imported: null };
 }

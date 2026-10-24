@@ -15,7 +15,7 @@ import {
   buildScreenerParams, conflictNote, createInitialScreenerState, evaluateAll, evaluateTrialEligibility, EXCLUSION_ITEMS, insufficientInformation,
   ONSET_PRESETS, potentialMatches, refinerItems, STALE_UNMODELED_NOTE, toConfirm, withClassification
 } from '../src/evidence/screener-eval.js';
-import { applyAnticoagulant, applyEncounterPrefill, screenerPrefillFromEncounter } from '../src/evidence/screener-prefill.js';
+import { answerFacts, applyAnticoagulant, applyEncounterPrefill, screenerPrefillFromEncounter } from '../src/evidence/screener-prefill.js';
 
 const trial = acronym => screenerTrials.find(t => t.acronym === acronym);
 const S = patch => ({ ...createInitialScreenerState(), ...patch });
@@ -125,10 +125,11 @@ describe('an imported documented AF contradicts an entered "No" to AF or flutter
     expect(r.briefingNote).not.toMatch(/· atrial fibrillation|non-valvular AF or atrial flutter: No/);
   });
   it('does not derive AF or flutter from a confirmed AF while that conflict stands; an answer settles it', () => {
-    const confirmedAf = { ...imported(), afibHistory: true };
+    // Edits go through answerFacts, the screener's edit path (r3-trials §9).
+    const confirmedAf = answerFacts(imported(), { afibHistory: true });
     expect(conflictNote(confirmedAf, now)).toBe(`${CONFLICT_HEAD}atrial fibrillation or flutter${CONFLICT_TAIL}`);
     expect(find(evaluateAll(confirmedAf, screenerTrials, now), 'ASPIRE').completeness).toBe('insufficient-information');
-    const answeredYes = { ...confirmedAf, afOrFlutterHistory: true };
+    const answeredYes = answerFacts(confirmedAf, { afOrFlutterHistory: true });
     expect(conflictNote(answeredYes, now)).toBe('');
     expect(find(evaluateAll(answeredYes, screenerTrials, now), 'ASPIRE').completeness).toBe('potential-match');
     // Without an import, a documented AF still establishes the criterion (unchanged rule).
@@ -142,11 +143,16 @@ describe('an imported documented AF contradicts an entered "No" to AF or flutter
       expect(state.imported.conflicts).not.toHaveProperty('afOrFlutterHistory');
     }
   });
-  it('an Encounter AF the user already entered adds nothing, so their "No" to non-valvular AF or flutter stands', () => {
-    // AF entered as documented with "No" to non-valvular AF/flutter (e.g. valvular AF): the Encounter repeats a known fact.
+  it('an Encounter AF against a "No" to AF or flutter is a conflict even when AF was entered too (§8.6 refinement withdrawn, r3-trials §9)', () => {
+    // AF entered as documented with "No" to non-valvular AF/flutter (e.g. valvular AF). The Encounter AF still
+    // contradicts the "No" under the screener's derivation, so the answer becomes unknown and is listed; AF stays.
     const state = applyEncounterPrefill(S({ ...answered, afibHistory: true, afOrFlutterHistory: false }), screenerPrefillFromEncounter(ich, now), fresh());
-    expect([state.afibHistory, state.afOrFlutterHistory, conflictNote(state, now)]).toEqual([true, false, '']);
-    expect(find(evaluateAll(state, screenerTrials, now), 'ASPIRE').exclusionReasons).toContain('Requires documented non-valvular atrial fibrillation or flutter');
+    expect([state.afibHistory, state.afOrFlutterHistory, conflictNote(state, now)]).toEqual([true, 'unselected', `${CONFLICT_HEAD}atrial fibrillation or flutter${CONFLICT_TAIL}`]);
+    expect(find(evaluateAll(state, screenerTrials, now), 'ASPIRE').completeness).toBe('insufficient-information');
+    // Answering "No" again settles it; the next import weighs that answer again.
+    const answeredNo = answerFacts(state, { afOrFlutterHistory: false });
+    expect([answeredNo.afOrFlutterHistory, conflictNote(answeredNo, now)]).toEqual([false, '']);
+    expect(applyEncounterPrefill(answeredNo, screenerPrefillFromEncounter(ich, now), fresh()).afOrFlutterHistory).toBe('unselected');
   });
 });
 
@@ -192,7 +198,7 @@ describe('a reapply never settles a standing conflict in the Encounter\'s favour
   });
   it('an answer given after the import is weighed as entered: agreeing settles the conflict', () => {
     const first = reapply(S({ classification: 'ich', afibHistory: false }), af('yes'));
-    const settled = reapply({ ...first, afibHistory: true }, af('yes'));
+    const settled = reapply(answerFacts(first, { afibHistory: true }), af('yes'));
     expect([settled.afibHistory, conflictNote(settled, now)]).toEqual([true, '']);
   });
 });
@@ -210,7 +216,7 @@ describe('choosing a classification ends the Encounter import (rv-behavior#2)', 
   });
   it('keeps values the user entered or changed after the import', () => {
     const imported = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', age: '70', premorbidMRS: '1' }), now), fresh());
-    expect(withClassification({ ...imported, age: 71, afibHistory: true }, 'ich')).toMatchObject({ age: 71, afibHistory: true, preMrs: 'unselected' });
+    expect(withClassification(answerFacts(imported, { age: 71, afibHistory: true }), 'ich')).toMatchObject({ age: 71, afibHistory: true, preMrs: 'unselected' });
     // A screen without an import keeps its entries, as before.
     expect(withClassification(S({ classification: 'ischemic', age: 60, preMrs: 2 }), 'ich')).toMatchObject({ age: 60, preMrs: 2 });
   });
