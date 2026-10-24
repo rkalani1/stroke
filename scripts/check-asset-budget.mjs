@@ -162,6 +162,12 @@ const precache = corePrecacheBytes();
 // gzip / 820 KB raw.
 // 2026-10-03 v7.7.5: iOS launch screens are referenced again (12 images, ~370 KB, two new
 // sizes for current iPhones), taking the precache to 2.18 MB; ceiling 2.2 -> 2.3 MB.
+// 2026-10-22 v7.9.0 round-3 verification fixes: stale Encounter-import detection and
+// conflict-safe import in Trials, a shared search normalizer and ranking, the offline
+// reference fallback and Evidence recommendation counts add ~3.1 KB gzip, 2.7 KB of it
+// deferred (measured at release: all JS 257.5 KB gzip / 856.3 KB raw, both over the old
+// ceilings). The initial graph stays inside its 128 KB / 376 KB ceilings (127.8 KB /
+// 375.9 KB). Reviewed ceilings: all JS gzip 256 -> 260 KB, raw 856 -> 864 KB.
 const checks = [
   {
     id: 'app-js-gzip',
@@ -184,12 +190,12 @@ const checks = [
   {
     id: 'all-js-gzip', label: 'All offline JavaScript (gzip)',
     actual: sumSizes(manifest.files.map(file => file.path), gzipSizeOf),
-    budget: 256 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
+    budget: 260 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
   },
   {
     id: 'all-js-raw', label: 'All offline JavaScript (raw)',
     actual: sumSizes(manifest.files.map(file => file.path), sizeOf),
-    budget: 856 * KB, unit: MB, unitLabel: 'MB', note: '',
+    budget: 864 * KB, unit: MB, unitLabel: 'MB', note: '',
   },
   {
     id: 'tailwind-css',

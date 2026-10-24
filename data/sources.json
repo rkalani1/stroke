@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "sources",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.8.0",
-    "checksum": "sha256:a07c443d4a594d937aa7d4bd70f56a08",
+    "appVersion": "7.9.0",
+    "checksum": "sha256:1f9a9dbcc57ddda4a6e6d846b61d9ddd",
     "count": 4,
     "source": "Canonical clinical claims, source identities and retained primary-source projections",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -125,10 +125,10 @@
         "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/19762550/",
         "sourceLabel": "Lip et al., Chest 2010",
         "url": "https://pubmed.ncbi.nlm.nih.gov/19762550/",
-        "population": "For nonvalvular atrial fibrillation. Sex category follows the original instrument; no annual risk estimate or anticoagulant choice is generated.",
-        "limits": "For nonvalvular atrial fibrillation. Sex category follows the original instrument; no annual risk estimate or anticoagulant choice is generated.",
-        "reviewedAt": "2026-10-01",
-        "reviewScope": "Point assignments and score completeness only; no absolute risk, outcome prediction or treatment-selection review.",
+        "population": "For nonvalvular atrial fibrillation. Sex category follows the original instrument; no annual risk estimate or anticoagulant choice is generated. The 2023 ACC/AHA/ACCP/HRS AF guideline names CHA₂DS₂-VASc as a validated score; the 2024 ESC AF guideline uses CHA₂DS₂-VA, which omits the sex category and is not calculated here.",
+        "limits": "For nonvalvular atrial fibrillation. Sex category follows the original instrument; no annual risk estimate or anticoagulant choice is generated. The 2023 ACC/AHA/ACCP/HRS AF guideline names CHA₂DS₂-VASc as a validated score; the 2024 ESC AF guideline uses CHA₂DS₂-VA, which omits the sex category and is not calculated here.",
+        "reviewedAt": "2026-10-21",
+        "reviewScope": "Point assignments and score completeness only. Components and doubled age ≥75 and stroke/TIA weights rechecked on 2026-10-21 against the 2023 ACC/AHA/ACCP/HRS AF guideline (full text); the ESC 2024 change is from a secondary full-text report. No absolute risk, outcome prediction or treatment-selection review.",
         "verificationUrl": "https://academic.oup.com/europace/article/12/9/1349/530959"
       },
       {
@@ -167,8 +167,8 @@
         "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/34905030/",
         "sourceLabel": "Kent et al., JAMA 2021 / SCOPE study",
         "url": "https://pubmed.ncbi.nlm.nih.gov/34905030/",
-        "population": "Simplified three-category classification for the source population aged 18–60 with otherwise cryptogenic stroke and PFO. Shunt/ASA definitions require specialist review; category does not establish individual causality or closure benefit.",
-        "limits": "Simplified three-category classification for the source population aged 18–60 with otherwise cryptogenic stroke and PFO. Shunt/ASA definitions require specialist review; category does not establish individual causality or closure benefit.",
+        "population": "Simplified three-category classification for the source population aged 18–60 with otherwise cryptogenic stroke and PFO. Shunt/ASA definitions require specialist review; category does not establish individual causality or closure benefit. In pooled trial data, closure reduced stroke in possible/probable but not unlikely categories; AF after day 45 rose with closure in unlikely (+4.4%) and possible (+1.5%).",
+        "limits": "Simplified three-category classification for the source population aged 18–60 with otherwise cryptogenic stroke and PFO. Shunt/ASA definitions require specialist review; category does not establish individual causality or closure benefit. In pooled trial data, closure reduced stroke in possible/probable but not unlikely categories; AF after day 45 rose with closure in unlikely (+4.4%) and possible (+1.5%).",
         "reviewedAt": "2026-10-01",
         "reviewScope": "Point assignments and score completeness only; no absolute risk, outcome prediction or treatment-selection review.",
         "verificationUrl": "https://www.ncbi.nlm.nih.gov/books/NBK592989/table/tbl001/"
@@ -305,10 +305,10 @@
         "sourceUrl": "https://pubmed.ncbi.nlm.nih.gov/14583691/",
         "sourceLabel": "Kroenke et al., Medical Care 2003",
         "url": "https://pubmed.ncbi.nlm.nih.gov/14583691/",
-        "population": "Two-week symptom-frequency screening, not a depression diagnosis. Both responses must be entered; no management plan is generated.",
-        "limits": "Two-week symptom-frequency screening, not a depression diagnosis. Both responses must be entered; no management plan is generated.",
-        "reviewedAt": "2026-10-01",
-        "reviewScope": "Point assignments and score completeness only; no absolute risk, outcome prediction or treatment-selection review.",
+        "population": "Two-week symptom-frequency screening, not a depression diagnosis. Both responses must be entered; no management plan is generated. The source identified a score of 3 or more as the optimal screening cutpoint for major depression (sensitivity 83%, specificity 92%) in primary care and obstetrics-gynecology clinics, not a stroke population.",
+        "limits": "Two-week symptom-frequency screening, not a depression diagnosis. Both responses must be entered; no management plan is generated. The source identified a score of 3 or more as the optimal screening cutpoint for major depression (sensitivity 83%, specificity 92%) in primary care and obstetrics-gynecology clinics, not a stroke population.",
+        "reviewedAt": "2026-10-21",
+        "reviewScope": "Item scoring (0–3 each, total 0–6) and the 3-point cutpoint rechecked against the primary abstract on 2026-10-21. No diagnostic, management or post-stroke validation review.",
         "verificationUrl": "https://www.ihs.gov/sites/crs/themes/responsive2017/display_objects/documents/phq_2_medical_care.pdf"
       },
       {

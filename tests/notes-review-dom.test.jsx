@@ -48,7 +48,8 @@ describe('bulk NIHSS zero in the browser', () => {
       page.once('dialog', dialog => { messages.push(dialog.message()); dialog.dismiss(); });
       await page.getByRole('button', { name: 'Set unentered items to 0', exact: true }).click();
       expect(messages[0]).toMatch(/^Set 15 unentered NIHSS items to 0\? Only do this after examining each item/);
-      expect(await nihssResult(page)).toBe('0/15 items documented · partial sum 0');
+      // 2026-10-21: with no item scored there is no partial sum to show.
+      expect(await nihssResult(page)).toBe('0/15 items documented');
       // Score 5a = 2 first, then accept the bulk fill: 2 + 14 × 0 = 2.
       await page.getByRole('radiogroup', { name: '5a. Motor Arm-Left' }).getByRole('radio', { name: /Some effort against gravity/ }).check();
       page.once('dialog', dialog => { messages.push(dialog.message()); dialog.accept(); });

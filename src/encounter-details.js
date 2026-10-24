@@ -2,6 +2,7 @@
 // These fields record clinician observations and plans; none determine care.
 import { supplementaryResult, supplementaryReviewed } from './supplementary-calculators.js';
 import { numericInput } from './encounter-clinical-review.js';
+import { treatmentRecorded } from './encounter-timeline.js';
 
 const choice = (key, label, options, extra = {}) => ({ key, label, type: 'select', options: options.map(option => Array.isArray(option) ? option : [option, option]), ...extra });
 const text = (key, label, extra = {}) => ({ key, label, type: 'textarea', ...extra });
@@ -13,6 +14,7 @@ const diagnosis = (...values) => state => values.includes(state.note?.diagnosisC
 const acute = state => state.context === 'acute';
 const followUp = state => state.context === 'follow-up';
 const acuteIschemic = state => acute(state) && diagnosis('ischemic')(state);
+const treatment = state => acuteIschemic(state) || treatmentRecorded(state);
 const entered = key => state => hasValue(state.details?.[key]);
 const is = (key, ...values) => state => values.includes(state.details?.[key]);
 const and = (...conditions) => state => conditions.every(condition => condition(state));
@@ -26,6 +28,8 @@ const reperfusionEntered = entered('reperfusionReview');
 const afterEvt = is('reperfusionReview', 'After EVT', 'After IV thrombolysis and EVT');
 const dischargeEntered = entered('dischargeReview');
 const worksheetResult = (state, id) => supplementaryReviewed(state, id) ? supplementaryResult(state, id) : null;
+// Unit-plausibility cautions a worksheet result carries; the Encounter field shows them as the note prints them.
+export const worksheetCautions = result => [result?.heightWarning, result?.neckWarning].filter(Boolean);
 const worksheet = (id, name) => ({ key: `${id}-worksheet`, type: 'worksheet', calculator: id, name, label: `Reviewed ${name} score` });
 const mrsOptions = [
   ['0', '0 — No symptoms'], ['1', '1 — Symptoms without significant disability'],
@@ -50,8 +54,8 @@ export const ENCOUNTER_DETAIL_GROUPS = [
     choice('consultRole', 'Consultation requested by', ['Emergency clinician', 'Hospitalist', 'Neurologist', 'Intensivist', 'Advanced practice clinician', 'Other clinician']),
     choice('affectedSide', 'Affected side', ['Left', 'Right', 'Bilateral', 'Not lateralizing']),
     yesNo('weightEstimated', 'Weight estimated'),
-    text('preIvtBP', 'Documented pre-IVT blood pressure', { when: acuteIschemic }),
-    text('preIvtBPTime', 'Pre-IVT blood pressure measurement time', { when: acuteIschemic }),
+    text('preIvtBP', 'Documented pre-IVT blood pressure', { when: treatment }),
+    text('preIvtBPTime', 'Pre-IVT blood pressure measurement time', { when: treatment }),
     choice('symptomTrajectory', 'Symptom trajectory', ['Persistent', 'Improving', 'Resolved', 'Fluctuating', 'Progressive', 'Recurrent']),
     number('onsetNihss', 'Previously documented onset NIHSS', 0, 42, { when: acute }),
     text('onsetNihssSource', 'Onset NIHSS source / limitations', { when: and(acute, entered('onsetNihss')) }),
@@ -102,7 +106,7 @@ export const ENCOUNTER_DETAIL_GROUPS = [
     status('tiaCardiacWorkup', 'TIA ECG / rhythm workup', { when: isTia }),
     ...TIA_RISK_FIELDS.map(([key, , label]) => yesNo(key, label, { when: isTia })),
     yesNo('tiaWorkupComplete', 'Same-day TIA workup complete', { when: isTia }),
-    yesNo('tiaFollowupAccess', 'Prompt outpatient follow-up confirmed', { when: isTia }),
+    yesNo('tiaFollowupAccess', 'Rapid neurology or TIA-clinic follow-up confirmed (ideally ≤48 h)', { when: isTia }),
     text('tiaDispositionAssessment', 'TIA workup gaps / disposition assessment', { when: isTia }),
     choice('mimicDifferential', 'Alternative diagnosis under consideration', ['Seizure / postictal deficit', 'Migraine', 'Metabolic / toxic', 'Peripheral vestibular disorder', 'Functional neurologic disorder', 'Structural lesion', 'Infection', 'Other / uncertain'], { when: isMimicOrOther }),
     text('mimicEvidence', 'Findings supporting differential / unresolved concerns', { when: isMimicOrOther })
@@ -211,8 +215,8 @@ export const ENCOUNTER_DETAIL_GROUPS = [
     choice('familyCommunication', 'Family / support-person communication', ['Not yet completed', 'Completed', 'Unable to reach', 'Declined']),
     text('familyDiscussionTopics', 'Topics discussed / questions / next contact plan', { when: entered('familyCommunication') })
   ] },
-  { id: 'post-reperfusion', section: 'handoff', title: 'Post-reperfusion observations & procedure', when: acuteIschemic, fields: [
-    choice('reperfusionReview', 'Post-treatment review', ['After IV thrombolysis', 'After EVT', 'After IV thrombolysis and EVT']),
+  { id: 'post-reperfusion', section: 'handoff', title: 'Post-reperfusion observations & procedure', when: treatment, fields: [
+    choice('reperfusionReview', 'Post-treatment review', ['After IV thrombolysis', 'After EVT', 'After IV thrombolysis and EVT'], { flag: state => treatmentGaps(state).review && ` [no ${treatmentGaps(state).review} recorded; reconcile]` }),
     text('postReperfusionExam', 'Post-treatment examination / observations', { when: reperfusionEntered }),
     text('postReperfusionBp', 'Documented post-treatment BP plan', { when: reperfusionEntered }),
     status('postReperfusionImaging', 'Post-treatment imaging', { when: reperfusionEntered }),
@@ -245,6 +249,13 @@ export const ENCOUNTER_DETAIL_GROUPS = [
 
 function hasValue(value) {
   return value !== undefined && value !== null && String(value).trim() !== '';
+}
+// Proposed vs done: a post-treatment review that names IVT or EVT, or an EVT result, without the matching recorded
+// administration or puncture (review: what is missing; evt: what was recorded). Flagged, never inferred.
+export function treatmentGaps(state) {
+  const a = state.actions || {}, review = state.details?.reperfusionReview || '';
+  return { review: [/thrombolysis/.test(review) && !(a.administered && state.drug && a.administrationTime) && 'IVT administration', /EVT/.test(review) && !a.punctureTime && 'EVT puncture'].filter(Boolean).join(' or '),
+    evt: a.punctureTime ? '' : [a.reperfusionTime && 'reperfusion time', state.note?.ticiScore && `mTICI ${state.note.ticiScore}`].filter(Boolean).join(' and ') };
 }
 
 export function getEncounterDetailGroups(state, section) {
@@ -287,8 +298,8 @@ export function formatEncounterDetails(state, now = Date.now(), { omit = [] } = 
     id: group.id,
     title: group.title,
     lines: group.fields.filter(field => !omit.includes(field.key)).flatMap(field => {
-      if (field.type === 'worksheet') return field.result ? [`${field.label}: ${field.result.score}/${field.result.max}`] : [];
-      return hasValue(values[field.key]) ? [`${field.label}: ${formatField(field, values[field.key], values, now)}`] : [];
+      if (field.type === 'worksheet') return field.result ? [`${field.label}: ${field.result.score}/${field.result.max}${worksheetCautions(field.result).map(text => ` [${text}]`).join('')}`] : [];
+      return hasValue(values[field.key]) ? [`${field.label}: ${formatField(field, values[field.key], values, now)}${field.flag?.(state) || ''}`] : [];
     })
   })).filter(group => group.lines.length);
 }

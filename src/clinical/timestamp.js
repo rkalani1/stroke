@@ -33,16 +33,20 @@ export function parseTimestamp(value) {
 
 const pad2 = number => String(number).padStart(2, '0');
 // Exported clinical times are written as local wall time. A UTC offset is added
-// only when that local clock time repeats (daylight-saving fall-back), so the
-// recorded instant stays unambiguous. Invalid or ambiguous inputs are returned
-// unchanged; callers flag them separately.
-export function formatRecordedInstant(value) {
+// when that local clock time repeats (daylight-saving fall-back), or when its
+// offset differs from the one at `reference` (when the note is written), so a
+// note spanning a daylight-saving change is not read in one zone abbreviation.
+// Invalid or ambiguous inputs are returned unchanged; callers flag them separately.
+export function formatRecordedInstant(value, reference) {
   const candidates = timestampCandidates(value);
   if (candidates.length !== 1) return value;
   const date = candidates[0];
   const seconds = /T\d{2}:\d{2}:\d{2}/.test(value) ? `:${pad2(date.getSeconds())}` : '';
   const local = `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}T${pad2(date.getHours())}:${pad2(date.getMinutes())}${seconds}`;
-  if (timestampCandidates(local).length < 2) return local.replace('T', ' ');
+  const shifted = Number.isFinite(reference) && new Date(reference).getTimezoneOffset() !== date.getTimezoneOffset();
+  if (!shifted && timestampCandidates(local).length < 2) return local.replace('T', ' ');
   const offset = -date.getTimezoneOffset(), absolute = Math.abs(offset);
   return `${local.replace('T', ' ')} (UTC${offset < 0 ? '−' : '+'}${pad2(Math.floor(absolute / 60))}:${pad2(absolute % 60)})`;
 }
+// A flagged (invalid, future or ambiguous) entry keeps its written value in the note so it can be corrected.
+export const enteredTime = (value, reference) => String(formatRecordedInstant(value, reference)).replace(/^(\d{4}-\d{2}-\d{2})T/, '$1 ');

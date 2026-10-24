@@ -136,7 +136,7 @@ describe('evaluateAll — bucketing on representative patients', () => {
     const scouts = res.pending.find((i) => i.trial.acronym === 'SCOUTS-3');
     expect(scouts.matchedCriteria.length).toBeGreaterThan(0);
     // Every hard criterion is met, so the registry gate is the only thing left.
-    expect(scouts.pendingFields).toContain('Full registry/protocol confirmation');
+    expect(scouts.pendingCriteria).toContain('Full registry/protocol, local activation and consent confirmation required');
     expect(scouts.pendingCriteria.some(s => /pregnan/i.test(s))).toBe(true);
   });
 
@@ -175,8 +175,9 @@ describe('evaluateAll — bucketing on representative patients', () => {
     const pendingAcr = res.pending.map((i) => i.trial.acronym);
     expect(pendingAcr).toContain('SCOUTS-3');
     const scouts = res.pending.find((i) => i.trial.acronym === 'SCOUTS-3');
-    expect(scouts.pendingFields).toEqual(
-      expect.arrayContaining(['Age', 'Rehab unit placement'])
+    // The unanswered age (≥ 18) and rehab-placement criteria are listed to confirm.
+    expect(scouts.pendingCriteria).toEqual(
+      expect.arrayContaining(['Confirm age ≥ 18', 'Confirm inpatient rehabilitation placement and anticipated length of stay at least 5 nights'])
     );
     // Not double-counted.
     expect(res.eligible.map((i) => i.trial.acronym)).not.toContain('SCOUTS-3');
@@ -254,7 +255,7 @@ describe('screening summary generation', () => {
     state.anteriorCirculation = true;
     const res = evaluateAll(state);
     const text = res.briefingNote;
-    expect(text).toMatch(/^TRIAL SCREEN — first pass \(registry checked 2026-10-17\)\nStatuses are overall registry statuses at that check; local site activation is not confirmed\./);
+    expect(text).toMatch(/^TRIAL SCREEN — first pass \(registry checked 2026-10-21\)\nStatuses are overall registry statuses at that check; local site activation is not confirmed\./);
     expect(text).toContain('Inputs: Ischemic stroke · LKW 12.0 h · age 65 · NIHSS 8 · pre-mRS 0 · ASPECTS 8');
     expect(res.pending.length).toBeGreaterThan(0);
     // Every pending study still has an unknown modeled fact, so none is a potential match.

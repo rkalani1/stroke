@@ -51,11 +51,14 @@ describe('calculateGCS', () => {
 });
 
 describe('calculateICHScore', () => {
+  // 2026-10-21: every binary criterion is now an explicit boolean (absent = false), so these
+  // GCS-tier cases state the four negative answers instead of relying on omission.
+  const negatives = { age80: false, volume30: false, ivh: false, infratentorial: false };
   it('GCS 3-4 scores 2', () => {
-    expect(calculateICHScore({ gcs: 'gcs34', criteriaReviewed: true })).toBe(2);
+    expect(calculateICHScore({ gcs: 'gcs34', criteriaReviewed: true, ...negatives })).toBe(2);
   });
   it('GCS 5-12 scores 1', () => {
-    expect(calculateICHScore({ gcs: 'gcs512', criteriaReviewed: true })).toBe(1);
+    expect(calculateICHScore({ gcs: 'gcs512', criteriaReviewed: true, ...negatives })).toBe(1);
   });
   it('aggregates all positive factors (max = 6)', () => {
     const items = { gcs: 'gcs34', age80: true, volume30: true, ivh: true, infratentorial: true, criteriaReviewed: true };
@@ -65,7 +68,9 @@ describe('calculateICHScore', () => {
     expect(calculateICHScore({})).toBeNull();
     expect(calculateICHScore({ gcs: 'gcs1315' })).toBeNull();
     expect(calculateICHScore({ criteriaReviewed: true })).toBeNull();
-    expect(calculateICHScore({ gcs: 'gcs1315', criteriaReviewed: true })).toBe(0);
+    // An omitted criterion is unresolved, not a scored "no" (was 0 before 2026-10-21).
+    expect(calculateICHScore({ gcs: 'gcs1315', criteriaReviewed: true })).toBeNull();
+    expect(calculateICHScore({ gcs: 'gcs1315', criteriaReviewed: true, ...negatives })).toBe(0);
   });
 });
 

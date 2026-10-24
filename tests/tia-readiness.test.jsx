@@ -45,14 +45,16 @@ describe('TIA readiness from canonical encounter fields', () => {
   });
 
   it.each([undefined, null, '', true, false, 0, 1, 'false', 'true', 'NO', ' yes '])('does not coerce malformed or missing canonical values (%s) into review', value => {
-    const review = encounterTiaReadiness(tia({ ...negativeRisks, tiaSevereCarotid: value }));
+    // 2026-10-22 (r3 encounter-notes#0): a DWI "No" counts only with a completed MRI, so the fixture records one.
+    const review = encounterTiaReadiness(tia({ ...negativeRisks, tiaMri: 'Completed', tiaSevereCarotid: value }));
     expect(review.status).toBe('incomplete');
     expect(review.reviewedCount).toBe(4);
   });
 
   it('does not let risk review or overall completion conceal unresolved workup components', () => {
     const review = encounterTiaReadiness(tia({ ...negativeRisks, tiaWorkupComplete: 'yes', tiaFollowupAccess: 'yes' }));
-    expect(review.status).toBe('review');
+    // 2026-10-22 (r3 encounter-notes#0): with no completed MRI the DWI "No" is not established, so the review is incomplete.
+    expect(review.status).toBe('incomplete');
     expect(review.gaps).toHaveLength(3);
     expect(review.gaps.join(' ')).toContain('MRI / DWI');
     expect(review.gaps.join(' ')).toContain('vascular imaging');
@@ -61,14 +63,18 @@ describe('TIA readiness from canonical encounter fields', () => {
 
   it('distinguishes documented not-indicated components from missing or pending workup', () => {
     const review = encounterTiaReadiness(tia({ ...negativeRisks, ...completedWorkup, tiaMri: 'Not indicated', tiaVascularImaging: 'Ordered' }));
-    expect(review.gaps).toHaveLength(1);
-    expect(review.gaps[0]).toContain('Head / neck vascular imaging');
-    expect(review.status).toBe('review');
+    // 2026-10-22 (r3 encounter-notes#1): MRI "Not indicated" keeps a reason prompt (tia-ed-2023-12/-15 prefer MRI), and the
+    // DWI "No" without a completed MRI is not established (encounter-notes#0).
+    expect(review.gaps).toHaveLength(2);
+    expect(review.gaps[0]).toContain('MRI / DWI: recorded as not indicated');
+    expect(review.gaps[1]).toContain('Head / neck vascular imaging: completion');
+    expect(review.status).toBe('incomplete');
   });
 
   it('preserves negative and unknown overall workup/follow-up gaps without claiming clearance', () => {
     const review = encounterTiaReadiness(tia({ ...negativeRisks, ...completedWorkup, tiaWorkupComplete: 'no', tiaFollowupAccess: '' }));
-    expect(review.gaps).toEqual(['Same-day workup: not confirmed.', 'Prompt outpatient follow-up: confirmation not documented.']);
+    // 2026-10-21: the follow-up gap names its AHA 2023 timing anchor (tia-ed-2023-49/-30: preferably within 48 hours).
+    expect(review.gaps).toEqual(['Same-day workup: not confirmed.', 'Rapid follow-up (ideally ≤48 h): confirmation not documented.']);
     expect(review.status).toBe('review');
   });
 

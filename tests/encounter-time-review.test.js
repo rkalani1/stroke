@@ -36,7 +36,7 @@ describe('reconciled event timing in every documentation projection', () => {
     expect(computeNeurocheckSchedule(state.actions.administrationTime)).toBeNull();
     const text = buildSummary(state, now);
     expect(text).not.toContain('TNK at');
-    for (const label of ['EVT puncture', 'EVT reperfusion', 'IVT Consent time', 'EVT consent time']) expect(text).toContain(`${label}: ambiguous local time`);
+    for (const [label, clock] of [['EVT puncture', '01:32'], ['EVT reperfusion', '01:33'], ['IVT Consent time', '01:25'], ['EVT consent time', '01:26']]) expect(text).toContain(`${label}: 2026-11-01 ${clock} (ambiguous local time`);
     state.actions.administrationTime = '2026-11-01T01:31:00-08:00';
     expect(buildSummary(state, now)).toContain('TNK at 2026-11-01 01:31:00 (UTC−08:00)');
     expect(computeNeurocheckSchedule(state.actions.administrationTime).checks[0].at.toISOString()).toBe('2026-11-01T09:46:00.000Z');
@@ -67,13 +67,16 @@ describe('reconciled event timing in every documentation projection', () => {
     }
   });
 
-  it('does not export or flag retained acute EVT values in an incompatible context', () => {
+  it('keeps and flags recorded EVT times after a change of context or working diagnosis', () => {
     const state = acute('phone'); Object.assign(state.actions, { punctureTime: '2026-11-01T08:30:00Z', reperfusionTime: '2026-11-01T08:00:00Z' });
     for (const patch of [{ context: 'follow-up' }, { context: 'acute', note: { ...state.note, diagnosisCategory: 'ich' } }]) {
       const changed = updateEncounter(state, patch);
-      expect(evtReperfusionIssue(changed, now)).toBe('');
-      expect(buildSummary(changed, now)).not.toContain('EVT reperfusion');
-      expect(timelineIntervals(changed, now)).toEqual([]);
+      // Recorded procedure times are facts: still exported, still checked, and flagged for reconciliation.
+      expect(evtReperfusionIssue(changed, now)).toBe('EVT reperfusion precedes puncture; review the recorded dates and times.');
+      expect(buildSummary(changed, now)).toContain('EVT reperfusion: 2026-11-01 01:00:00 (UTC−07:00) (EVT reperfusion precedes puncture; review the recorded dates and times)');
+      expect(buildSummary(changed, now)).toContain('; reconcile]');
+      // Event intervals belong to the acute timeline only.
+      expect(timelineIntervals(changed, now).map(interval => interval.label)).toEqual(patch.context === 'follow-up' ? [] : ['Puncture to reperfusion']);
     }
   });
 });

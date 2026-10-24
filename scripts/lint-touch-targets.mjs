@@ -4,7 +4,7 @@
  * Drop-in: scripts/lint-touch-targets.mjs
  *
  * Walks the live DOM via Playwright at three mobile viewports (320/375/768)
- * across the retained Encounter, ischemic/ICH protocols and Tools surfaces and asserts that every interactive element has
+ * across the retained Encounter, ischemic/ICH protocols, Trials, Evidence and Tools surfaces and asserts that every interactive element has
  * getBoundingClientRect() ≥ 44 × 44.
  *
  * Interactive = button, [role=button], a[href], input:not(hidden), select,
@@ -14,7 +14,9 @@
  * grained controls like canvas-overlay handles). A label[for] whose bound
  * control itself meets the minimum is skipped — WCAG 2.5.8's equivalent-
  * target exception: the label duplicates a function already available on a
- * large-enough target.
+ * large-enough target. A link set inline in running text (display: inline,
+ * and its block also holds non-link text) is skipped — the inline exception
+ * of WCAG 2.5.8 and 2.5.5: its height is the line height of the sentence.
  *
  * Run with: node scripts/lint-touch-targets.mjs [--url URL]
  * A positional URL or LINT_URL environment variable is also accepted.
@@ -36,7 +38,7 @@ if (urlFlag !== -1 && (!args[urlFlag + 1] || args[urlFlag + 1].startsWith('-')))
 }
 const URL = process.env.LINT_URL || (urlFlag === -1 ? args[0] : args[urlFlag + 1]) || 'http://localhost:8080';
 const ROUTES = [
-  '/#/encounter', '/#/protocols/ischemic', '/#/protocols/ich', '/#/tools', '/#/trials', '/#/trials/tables', '/#/trials/database'
+  '/#/encounter', '/#/protocols/ischemic', '/#/protocols/ich', '/#/tools', '/#/trials', '/#/trials/tables', '/#/trials/database', '/#/evidence'
 ];
 const VIEWPORTS = [
   { name: '320', width: 320, height: 568 },
@@ -102,6 +104,14 @@ for (const route of ROUTES) {
         // Skip elements hidden via display:none or visibility:hidden
         const cs = window.getComputedStyle(el);
         if (cs.display === 'none' || cs.visibility === 'hidden') return;
+        // Inline exception (WCAG 2.5.8 / 2.5.5): a link in a sentence is as tall as its line.
+        if (el.tagName === 'A' && cs.display === 'inline') {
+          let block = el.parentElement;
+          while (block && window.getComputedStyle(block).display === 'inline') block = block.parentElement;
+          const own = (el.textContent || '').trim();
+          const around = block ? (block.textContent || '').replace(own, '').trim() : '';
+          if (around) return;
+        }
         const r = el.getBoundingClientRect();
         if (r.width === 0 && r.height === 0) return; // off-screen
         // WCAG 2.5.8 equivalent-target exception: a label whose bound

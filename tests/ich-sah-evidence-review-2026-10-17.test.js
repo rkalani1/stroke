@@ -16,7 +16,8 @@ const ich2022 = read('src/guidelines/ich-2022.json').recommendations;
 
 describe('ICH evidence cards (2026-10-17 review)', () => {
   it('still validates against the reference contract at the review date', () => {
-    expect(validateClinicalReference(data, { now: new Date('2026-10-17T23:59:59Z') })).toEqual([]);
+    // Latest review cutoff: sources re-read on 2026-10-22 (evidence-fixes pass) carry that checkedAt.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
   });
 
   it('defers ICH neuroprognostication 48–72 h and keeps the AHA second-day DNAR statement (NCS 2023 GPS 1; ich-2022-95)', () => {

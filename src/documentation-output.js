@@ -62,7 +62,7 @@ export function formatDocumentation(state, consultation, groups, timeline) {
   }[format];
   const ordered = [...groups.filter(group => focus.includes(group.id)), ...groups.filter(group => !focus.includes(group.id))];
   const focusTitle = { 'follow-up': 'Interval events, function and follow-up', progress: 'Interval course and current plan', discharge: 'Hospital course and discharge arrangements', transfer: 'Transfer arrangements and receiving-team handoff', procedure: 'Procedure observations and recorded outcome' }[format];
-  return [documentationLabel(state), 'Clinical context:', consultation,
+  return [documentationLabel(state), `Clinical context:\n${consultation}`,
     ...(!groups.some(group => focus.includes(group.id)) ? [`${focusTitle}: not documented`] : []),
     ...ordered.map(group => `${group.title}:\n${group.lines.join('\n')}`), timeline].filter(Boolean).join('\n\n');
 }

@@ -13,9 +13,9 @@ Arithmetic does not establish treatment eligibility or administration.
 |---|---|
 | `calc_tnk_dose` | Explicit guideline or US FDA-label authority; kg input; no eligibility inference |
 | `calc_alteplase_dose` | Strict adult AIS arithmetic, 0.9 mg/kg maximum 90 mg, 10% bolus and 90% infusion |
-| `calc_crcl` | Adult Cockcroft–Gault, raw threshold value and rounded display; stable creatinine and weight convention require review |
+| `calc_crcl` | Adult Cockcroft–Gault, raw threshold value and rounded display; stable creatinine and weight convention require review. An implausible height returns `heightWarning` and no adjusted-weight estimate |
 | `calc_dawn_eligibility` | Partial historical screen; never complete EVT eligibility |
-| `calc_defuse3_eligibility` | Partial historical screen; `penumbraMl` is legacy total hypoperfused volume including core |
+| `calc_defuse3_eligibility` | Partial historical screen; `penumbraMl` is legacy total hypoperfused volume including core; `perfusionModality` (`ct` default, `mri`) decides whether the CT-perfusion NCCT ASPECTS <6 exclusion applies |
 | `list_calculators` | 26 workspace tool contracts and reveal routes |
 | `get_sources` | Bounded source/claim records, original review scopes and unresolved correction limitations |
 | `search_reference` | Local Evidence topics and completed primary-study summaries, with source-access notes and card limitations |

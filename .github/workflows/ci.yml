@@ -135,12 +135,18 @@ jobs:
           set -o pipefail
           npm run test:protocol-tab 2>&1 | tee output/diagnostics/protocols-tab-lock.log
 
+      # Same baselines at 390 px: responsive CSS must not hide, reorder or clip protected content.
+      - name: Protocols tab rendered lock (phone width)
+        run: |
+          set -o pipefail
+          npm run test:protocol-tab:phone 2>&1 | tee output/diagnostics/protocols-tab-lock-phone.log
+
       - name: Upload lock output (on failure)
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: protocols-tab-lock
-          path: output/diagnostics/protocols-tab-lock.log
+          path: output/diagnostics/protocols-tab-lock*.log
           if-no-files-found: ignore
 
   mcp-smoke:

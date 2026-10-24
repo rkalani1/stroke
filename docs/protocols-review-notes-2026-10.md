@@ -124,3 +124,50 @@ Verification status: evidence items were raised by the clinical auditors from pr
 
 ## Not a Protocols change in 7.8.0
 - SAH encounters now open the ICH Protocols sub-tab from the header and search, matching the case bar. The Protocols content itself is unchanged; the rendered lock (46 states) and the source hash lock pass.
+
+# 7.9.0 review (2026-10-21): additional Protocols observations, report only
+
+The Protocols tab is still unchanged in 7.9.0: the rendered lock (46 synthetic states) passes at 1440 px and, new in this release, at 390 px, and the source hash lock and the example-protocols snapshot pass. Nothing below was changed or annotated in the app. Each item needs the protocol owner's decision; the first is a cross-surface conflict that could not be fixed without changing Protocols output.
+
+## Decision needed: reversal card and Encounter can disagree about a mistyped last-dose time
+- Where: `src/app.jsx` computes the quick-reference reversal input `lastDoseHours` with `Date.parse(state.note.lastDOACDose)`; Encounter uses its strict `validTimestamp`.
+- Observation: `Date.parse` (V8) rolls an impossible date forward (`2026-02-30T08:00` becomes 2 March), accepts a time skipped by the spring-forward change, and silently picks one occurrence of a repeated hour. Encounter rejects all three. For an acute ICH on apixaban with the mistyped dose `2026-02-30T08:00` at 2026-10-21 10:00 (Los Angeles), reproduced with `reversalDoseLine`: Encounter says "last-dose time unknown (treat as within the local <24 h trigger) — 4F-PCC 2000 units IV"; the Protocols card says "last dose 5593 h ago — beyond the local <24 h trigger; reverse only with renal impairment or an elevated anti-Xa level."
+- Why not fixed: the input feeds the frozen quick reference, so correcting it changes Protocols output (only for invalid, skipped or ambiguous dose times). Suggested fix if approved: compute `lastDoseHours` with `validTimestamp(state.note.lastDOACDose, now)` in `src/app.jsx`, as Encounter does, and add a lock fixture with an impossible dose date.
+- Source: the app's own local rule that unknown timing is treated as within the trigger (CHANGELOG 7.7.4). Found by the encounter review unit.
+
+## Decision needed: IVT card is not held when a checklist "No" is contradicted elsewhere in Encounter
+- Where: `protocolEncounter()` in `src/workspace-state.js` (hash-locked projection that drives the Protocols "IVT card held" banner).
+- Observation: an independent end-to-end review found that when the IVT checklist says "No" to an item that other Encounter entries contradict (reproduced with infective endocarditis recorded as the care context), Encounter already showed a critical conflict, but the IVT screen, the case-bar dose and the Protocols banner did not hold, as they would for "Yes". 7.9.0 holds the Encounter IVT screen and the case-bar dose (`contradictedAsYes` in `src/encounter-clinical-review.js`); the Protocols banner is unchanged because changing it alters Protocols output.
+- Suggested fix if approved (one line in `protocolEncounter`, plus importing `contradictedAsYes`): pass `{ ...contradictedAsYes(n, nowMs, state.details), nihss }` as the note to `evaluateVideoTreatment`. Tried in a scratch copy only: the card was held for the conflict and only for it, and the source lock still passed; the rendered lock was not run on that variant. Add a lock fixture for the conflict if approved.
+
+## Boundary wording (low)
+- Post-IVT: the local protocol says "treat if SBP >180 or DBP >105; maintain BP below 180/105" (`institutional-protocols.js`); ais-2026-74 (COR I, B-R) says "maintained below 180/105 mmHg", so exactly 180 or 105 is neither below target nor a treatment trigger. The Encounter case bar now flags ≥180/≥105.
+- Pre-IVT: the local exclusion list prints "SBP >185 or DBP >110 mmHg on repeated measures"; ais-2026-72 requires lowering "below 185 mmHg and DBP below 110 mmHg". The Encounter checklist label now reads ≥185/≥110, matching its long-standing logic. The two surfaces therefore word the same boundary differently until the owner decides.
+- Round-3 verification confirmed both items independently and proposed the same wording for the owner: "treat if SBP ≥180 or DBP ≥105" and "SBP ≥185 or DBP ≥110".
+
+## EVT tiers with institutional qualifiers (low)
+- The frozen EVT quick reference grades "0–6 h ASPECTS 3–5 with no significant mass effect: EVT, COR I / LOE A". ais-2026-114 (ASPECTS 3–10) has no mass-effect or age criterion. It also grades "ASPECTS 0–2, age <80, no significant mass effect, and CTP core ≤70 mL: COR IIa / LOE B-R"; ais-2026-117 has no CTP-core criterion. These may be intended local policy; if so, the owner may want them labelled "AHA grade with institutional qualifier". Encounter's EVT screen messages in 7.9.0 follow the AHA text.
+
+## Citations and wording to check (low)
+- The IVT exclusion list's DOAC detail cites the "AHA/ASA 2019 AIS guideline (PMID 31662037)"; the 2026 guideline (PMID 41582814) states that it replaces the 2018 guideline and the 2019 update.
+- Pediatric card: "In sickle cell disease, acute pediatric management centers on exchange transfusion (STOP-era protocols) rather than lysis." STOP was a primary-prevention transfusion trial; ASH 2020 acute-management text could not be read in this review, so no discrepancy is asserted.
+- Kcentra INR-tier dosing and idarucizumab 5 g in the locked reversal file could not be re-verified against the labels (DailyMed blocked). The quick-reference BP rows, glucose rows, TNK label bands and 3-h window, andexanet withdrawal note and nimodipine regimen were checked and agree with the sources read.
+
+## MINUTE pre-screen time limit (low)
+- `src/institutional-protocols.js` research screen "MINUTE screen" lists "Arrival <=15 hours since last known well". The ClinicalTrials.gov record NCT07260916 (read 2026-10-22, full registry record) has inclusion 8: "Randomization within 16 hours from LKW and within 2 hours of arrival to the randomizing center." The Trials-tab MINUTE profile follows the registry (≤16 h from LKW, within 2 h of arrival). A patient arriving 15–16 h after last known well and randomized by 16 h fits the registry but not the Protocols screen. The 15 h figure may be a deliberate local buffer; if so, the owner may want it labelled as a local operational cutoff. Found by the round-3 trials verifier; not changed.
+
+## Extended-window CTP gate rounds before comparing (low)
+- `protocolEncounter()` (`src/workspace-state.js`, about line 114; hash-locked) rounds the CTP ratio to 0.01 and the mismatch volume to 0.1 mL before the frozen extended-window pathway compares them inclusively (`ratio >= 1.2`, `mismatchVol >= 10` in `src/institutional-protocols.js`, about lines 387–388). Core 49.9 mL with total 59.86 mL projects as ratio 1.2 and mismatch 10 mL and meets both gates, although the true values are 1.1996 and 9.96 mL. The EXTEND registry (NCT01580839) uses strict "> 1.2" and "> 10 mL". Only values within rounding distance of the thresholds are affected. Encounter's own note now prints such edge values with two more decimals (7.9.0). Suggested fix if approved: compare unrounded values, and decide whether the local gate is meant to be inclusive. Found by the round-3 encounter unit; not changed.
+
+## Pocket-card premorbid mRS options include 6 (low)
+- The EVT pocket cards in `src/pocket-cards.jsx` (about lines 292, 335 and 362) offer premorbid mRS 6 (death), and the anterior card writes the value back into the Encounter. A premorbid mRS of 6 is not a meaningful input. Encounter displays a 6 that arrives this way rather than dropping it. Found by the round-3 encounter unit; not changed.
+
+## Safe Pause text at phone width (low)
+- At 390×844 the read-only Safe Pause text area sits partly under the docked navigation bar. The shell's Tab-reveal helper deliberately skips the Protocols panel. Extending it there (removing the `#tabpanel-protocols` exclusion in `src/app.jsx`) would change Protocols behaviour, so it was left for the owner. Found by the round-3 shell unit; the phone lock's clipping check passes because the text remains reachable by scrolling.
+
+## Pediatric EVT wording (low)
+- `src/ProtectedProtocols.jsx` (about line 2079) says EVT for ages 28 days–6 years by an "experienced neurointerventionalist"; the AHA 2026 recommendation (archived transcription) says "with pediatric experience". Possibly intended; the owner may want the source wording. Found by the evidence-fixes unit; not changed.
+
+## Presentation (low)
+- `ProtectedProtocols.jsx` scrolls with `behavior: 'smooth'` on sub-tab switch, section jumps and reveals; a script-requested smooth scroll ignores the reduced-motion preference.
+- The "IVT card held" banner is inserted together with its `role="status"`, a pattern that some screen readers do not announce; it sits inside the locked surface.

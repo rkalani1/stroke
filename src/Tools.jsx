@@ -5,7 +5,7 @@ import { ENCOUNTER_TOOLS, matchesCalculatorSearch } from './calculator-utilities
 
 export default function Tools(props) {
   const { data, failed, retry } = useReferenceData(props.version);
-  if (failed) return <section role="alert"><h1>Calculators unavailable</h1><p>The calculator download is unavailable or out of date.</p><button className="workspace-secondary-action" onClick={retry}>Retry calculator download</button></section>;
+  if (failed) return <section role="alert"><h1>Calculators unavailable</h1><p>The calculator download failed or is out of date, and this browser has no offline copy of this version. If offline, reconnect, then retry; Encounter entries stay in this session.</p><button className="workspace-secondary-action" onClick={retry}>Retry calculator download</button></section>;
   if (!data) return <p role="status">Loading calculators…</p>;
   return <CalculatorDirectory {...props} definitions={data.calculators} />;
 }

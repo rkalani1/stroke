@@ -177,8 +177,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/36762865/",
     "year": 2023,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here. PubMed lists 1 correction or notice; check it before applying results."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card. PubMed lists 1 correction or notice; check it before applying results."
   },
   {
     "id": "study-source-angel-aspect",
@@ -190,7 +190,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/36762852/",
     "year": 2023,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
@@ -203,7 +203,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/35138767/",
     "year": 2022,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
@@ -216,7 +216,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/37837989/",
     "year": 2023,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
@@ -228,7 +228,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/36239644/",
     "year": 2022,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
@@ -240,8 +240,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/36239645/",
     "year": 2022,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
     "id": "study-source-dawn",
@@ -252,8 +252,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/29129157/",
     "year": 2018,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
     "id": "study-source-defuse-3",
@@ -264,8 +264,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/29364767/",
     "year": 2018,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
     "id": "study-source-choice",
@@ -277,8 +277,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/35143603/",
     "year": 2022,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-theia",
@@ -537,7 +537,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/38718358/",
     "year": 2024,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
@@ -661,8 +661,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42107392/",
     "year": 2026,
     "type": "Meta-analysis",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-tapis",
@@ -687,8 +687,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42096239/",
     "year": 2026,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-distal",
@@ -698,9 +698,9 @@
     "title": "DISTAL — Endovascular Treatment for Stroke Due to Occlusion of Medium or Distal Vessels.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/39908430/",
     "year": 2025,
-    "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
     "id": "study-source-escape-mevo",
@@ -711,8 +711,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/39908448/",
     "year": 2025,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
     "id": "study-source-oriental-mevo",
@@ -723,21 +723,21 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42127389/",
     "year": 2026,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
     "id": "study-source-direct-angio",
     "topicIds": [
       "acute-reperfusion",
-      "stroke-program-quality"
+      "evt-selection"
     ],
     "title": "DIRECT ANGIO — Safety and efficacy of direct versus conventional transfer to angiography suite in patients with severe acute stroke treated with thrombectomy (DIRECT ANGIO) in France: a multicentre, open-label, blinded-endpoint, randomised controlled trial.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/41864232/",
     "year": 2026,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-stabled",
@@ -797,7 +797,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/40396577/",
     "year": 2025,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
@@ -858,7 +858,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/38768626/",
     "year": 2024,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card. PubMed lists 1 correction or notice; check it before applying results."
   },
   {
@@ -1088,7 +1088,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/37367978/",
     "year": 2023,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
@@ -1111,9 +1111,9 @@
     "title": "BEST-MSU — Prospective, Multicenter, Controlled Trial of Mobile Stroke Units.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/34496173/",
     "year": 2021,
-    "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here. PubMed lists 1 correction or notice; check it before applying results."
+    "type": "Observational study",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked. PubMed lists 1 correction or notice; check it before applying results."
   },
   {
     "id": "study-source-racecat",
@@ -1124,8 +1124,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/35510397/",
     "year": 2022,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here. PubMed lists 1 correction or notice; check it before applying results."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked. PubMed lists 1 correction or notice; check it before applying results."
   },
   {
     "id": "study-source-mr-clean-late",
@@ -1148,8 +1148,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/38914085/",
     "year": 2024,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-protect-mt",
@@ -1160,8 +1160,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/39579782/",
     "year": 2024,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-sps3",
@@ -1317,8 +1317,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/41269206/",
     "year": 2026,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "PubMed bibliographic record checked; PMC full text (PMC13148431) read 2026-10-21."
   },
   {
     "id": "study-source-ecst-2",
@@ -1527,8 +1527,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/26898852/",
     "year": 2016,
     "type": "Meta-analysis",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
     "id": "study-source-sammpris",
@@ -1551,9 +1551,9 @@
     "title": "TESLA — Thrombectomy for Stroke With Large Infarct on Noncontrast CT: The TESLA Randomized Clinical Trial.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/39374319/",
     "year": 2024,
-    "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-fastest",
@@ -1649,8 +1649,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/34010530/",
     "year": 2021,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-axiomatic-ssp",
@@ -1673,9 +1673,9 @@
     "title": "PEARL — Intra-Arterial Alteplase After Successful Endovascular Reperfusion in Acute Stroke: The PEARL Randomized Clinical Trial.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/42262770/",
     "year": 2025,
-    "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-angel-tnk",
@@ -1687,8 +1687,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/40616323/",
     "year": 2025,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-iat-top",
@@ -1700,8 +1700,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42026933/",
     "year": 2026,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-ia-tenecteplase-dose-escalation",
@@ -1713,8 +1713,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/40616333/",
     "year": 2025,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-ia-thrombolysis-dose-network-meta-analysis",
@@ -1725,9 +1725,9 @@
     "title": "IA Thrombolysis Dose Network Meta-analysis — Dose-Specific Intra-Arterial Thrombolysis After Endovascular Thrombectomy for Large-Vessel Occlusion Stroke: A Network Meta-Analysis of Randomized Trials.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/42088338/",
     "year": 2026,
-    "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read via PubMed on 2026-10-22: network meta-analysis of 7 randomized trials (2126 patients), hypothesis-generating per its authors; bibliographic record checked."
   },
   {
     "id": "study-source-attraction",
@@ -1897,9 +1897,9 @@
     "title": "GWTG-Stroke door-in-door-out — Door-in-Door-out Times for Interhospital Transfer of Patients With Stroke.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/37581671/",
     "year": 2023,
-    "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "type": "Observational study",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read via PubMed on 2026-10-22: US registry-based retrospective study; bibliographic record checked."
   },
   {
     "id": "study-source-target-stroke-phase-3-strategies",
@@ -1910,9 +1910,9 @@
     "title": "Target Stroke Phase III — Association of Component Strategies of the Target Stroke Phase 3 Nationwide Quality Improvement Program With Accelerated Door-to-Puncture and Door-In-Door-Out Times for Ischemic Stroke Endovascular Thrombectomy in the United States.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/41111412/",
     "year": 2025,
-    "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "type": "Observational study",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read via PubMed on 2026-10-22: retrospective observational cohort from the GWTG-Stroke registry; bibliographic record checked."
   },
   {
     "id": "study-source-ai-lvo-detection-accuracy-meta",
@@ -1923,9 +1923,9 @@
     "title": "AI LVO-detection accuracy meta-analysis — Diagnostic Test Accuracy of Artificial Intelligence in Large Vessel Occlusion: A Systematic Review and Meta-Analysis.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/42028301/",
     "year": 2026,
-    "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "type": "Meta-analysis",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read via PubMed on 2026-10-22: systematic review and diagnostic-accuracy meta-analysis of 11 studies; bibliographic record checked."
   },
   {
     "id": "study-source-catis",
@@ -2080,8 +2080,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/37640037/",
     "year": 2023,
     "type": "Meta-analysis",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-iris-time-dependency",
@@ -2092,8 +2092,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/38324409/",
     "year": 2024,
     "type": "Meta-analysis",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-direct-mt",
@@ -2104,7 +2104,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/32374959/",
     "year": 2020,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
@@ -2116,8 +2116,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/33464334/",
     "year": 2021,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here. PubMed lists 1 correction or notice; check it before applying results."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked. PubMed lists 1 correction or notice; check it before applying results."
   },
   {
     "id": "study-source-devt",
@@ -2128,8 +2128,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/33464335/",
     "year": 2021,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-mr-clean-no-iv",
@@ -2140,7 +2140,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/34758251/",
     "year": 2021,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
@@ -2152,7 +2152,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/35810756/",
     "year": 2022,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
@@ -2164,8 +2164,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/35810757/",
     "year": 2022,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-tnk-plus",
@@ -2177,8 +2177,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42099212/",
     "year": 2026,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-re-align",
@@ -2272,9 +2272,9 @@
     "title": "ARIES-HM3 — Aspirin and Hemocompatibility Events With a Left Ventricular Assist Device in Advanced Heart Failure: The ARIES-HM3 Randomized Clinical Trial.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/37950897/",
     "year": 2023,
-    "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "type": "Randomized trial",
+    "checkedAt": "2026-10-22",
+    "access": "PubMed bibliographic record, abstract and ClinicalTrials.gov record NCT04069156 re-read 2026-10-22: first durable HeartMate 3 implant; investigator-mandated antiplatelet therapy excluded; PMC copy has no body text."
   },
   {
     "id": "study-source-ecmo-lv-venting-brain-injury",
@@ -2346,8 +2346,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/28763550/",
     "year": 2017,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-compass-thrombectomy",
@@ -2358,8 +2358,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/30860055/",
     "year": 2019,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-aster2",
@@ -2370,8 +2370,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/34581737/",
     "year": 2021,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-vector",
@@ -2382,8 +2382,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/38876748/",
     "year": 2024,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-siesta",
@@ -2442,8 +2442,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42462185/",
     "year": 2026,
     "type": "Meta-analysis",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-ceres-tandem",
@@ -2478,7 +2478,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42485024/",
     "year": 2026,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
@@ -2490,8 +2490,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/39674187/",
     "year": 2025,
     "type": "Meta-analysis",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-interact-pooled",
@@ -2841,8 +2841,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/38739383/",
     "year": 2024,
     "type": "Meta-analysis",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "PubMed bibliographic record and abstract checked 2026-10-21."
   },
   {
     "id": "study-source-stop-cad",
@@ -3010,9 +3010,9 @@
     "title": "ORIENTAL-MeVO ACAo Registry — Endovascular Thrombectomy Versus Standard Medical Management in Acute Anterior Cerebral Artery Occlusion Stroke: The ORIENTAL-MeVO Registry Study.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/42017224/",
     "year": 2026,
-    "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "type": "Observational study",
+    "checkedAt": "2026-10-22",
+    "access": "Primary abstract re-read via PubMed on 2026-10-22; bibliographic record checked. Retrospective propensity-weighted registry analysis, not the randomized ORIENTAL-MeVO trial."
   },
   {
     "id": "study-source-tension-prior-antithrombotic",
@@ -3037,8 +3037,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/41979451/",
     "year": 2026,
     "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here. Ancillary analysis of the randomized trial population."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked. Ancillary analysis of the randomized trial population."
   },
   {
     "id": "study-source-angel-aspect-hmcas",
@@ -3088,7 +3088,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/41655588/",
     "year": 2026,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
@@ -3126,7 +3126,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42776543/",
     "year": 2026,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked; summarized in its study card."
   },
   {
@@ -3175,8 +3175,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/39804681/",
     "year": 2025,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-post-uk",
@@ -3188,8 +3188,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/39804674/",
     "year": 2025,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-attention-ia",
@@ -3201,8 +3201,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/39809509/",
     "year": 2025,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record checked; outcomes not reviewed here."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {
     "id": "study-source-optimistmain",
@@ -3239,8 +3239,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/39186280/",
     "year": 2024,
     "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record and notices checked; outcomes not reviewed here. Secondary follow-up analysis, not a new randomized trial. PubMed lists 1 correction or notice; check it before applying results."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked. Secondary follow-up analysis, not a new randomized trial. PubMed lists 1 correction or notice; check it before applying results."
   },
   {
     "id": "study-source-attention-3y-2026",
@@ -3251,8 +3251,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/41460644/",
     "year": 2026,
     "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record and notices checked; outcomes not reviewed here. Long-term follow-up of the original randomized population."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked. Long-term follow-up of the original randomized population."
   },
   {
     "id": "study-source-distal-12m-2026",
@@ -3263,8 +3263,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42105785/",
     "year": 2026,
     "type": "Report",
-    "checkedAt": "2026-10-01",
-    "access": "PubMed bibliographic record and notices checked; outcomes not reviewed here. Long-term follow-up of the original randomized population."
+    "checkedAt": "2026-10-21",
+    "access": "Primary abstract verified via PubMed; bibliographic record checked. Long-term follow-up of the original randomized population."
   },
   {
     "id": "study-source-restart-extended-2021",
@@ -3372,7 +3372,7 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/29998337/",
     "year": 2018,
     "type": "Randomized trial",
-    "checkedAt": "2026-10-03",
+    "checkedAt": "2026-10-21",
     "access": "Primary abstract verified via PubMed; bibliographic record checked."
   },
   {

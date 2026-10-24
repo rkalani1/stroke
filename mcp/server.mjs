@@ -84,6 +84,9 @@ server.registerTool('calc_crcl',
     // Cockcroft–Gault defines the estimate only; the legacy renal-category bands have no maintained source here,
     // so agents compare rawValue with the specific drug label's CrCl thresholds instead.
     const { label, renalCategory, isLow, isBorderline, ...result } = reviewed || {};
+    // As in Encounter: an implausible height drives the obesity adjustment, so no adjusted-weight estimate is returned;
+    // BMI and the obesity flag derive from the same height and are withheld with it.
+    if (reviewed?.heightWarning) Object.assign(result, { adjBwValue: null, rawAdjBwValue: null, obesityWarning: null, bmi: null, isObese: null });
     return ok({ tool: 'calc_crcl', result: reviewed && { ...result, thresholdNote: 'No renal-impairment category is assigned; compare rawValue with the specific drug label CrCl thresholds.' },
       ...(reviewed?.unitWarning ? { creatinineWarning: reviewed.unitWarning } : {}),
       ...(reviewed?.heightWarning ? { heightWarning: reviewed.heightWarning } : {}) });
@@ -102,6 +105,7 @@ server.registerTool('calc_defuse3_eligibility',
       coreMl: z.number().nonnegative(), penumbraMl: z.number().nonnegative(),
       timeFromLKWh: z.number().finite().nonnegative(), nihss: z.number().int().min(0).max(42), age: z.number().finite().positive().max(120),
       aspects: z.number().int().min(0).max(10).optional().describe('Reviewed NCCT ASPECTS; DEFUSE 3 excluded ASPECTS <6 when enrolled on CT perfusion'),
+      perfusionModality: z.enum(['ct', 'mri']).default('ct').describe('Selection imaging; mri does not apply the CT-perfusion NCCT ASPECTS <6 exclusion'),
     } },
   async (a) => a.penumbraMl < a.coreMl
     ? toolError('penumbraMl is the TOTAL Tmax>6s hypoperfused volume and includes the core, so it cannot be below coreMl. Check whether the mismatch (penumbra-only) volume was entered instead.')

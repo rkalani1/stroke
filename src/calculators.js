@@ -23,10 +23,14 @@ export const calculateGCS = (items) => {
   return values.reduce((total, value) => total + value, 0);
 };
 
+// Hemphill 2001: GCS 3–4 = 2, 5–12 = 1, 13–15 = 0; age ≥80, volume ≥30 cm³, IVH and
+// infratentorial origin = 1 each. Each binary criterion must be an explicit boolean:
+// a missing or string answer is unresolved, never a scored "no".
+const ICH_SCORE_CRITERIA = ['age80', 'volume30', 'ivh', 'infratentorial'];
 export const calculateICHScore = (items) => {
   if (!items || typeof items !== 'object') return null;
   if (!['gcs34', 'gcs512', 'gcs1315'].includes(items.gcs)) return null;
-  if (items.criteriaReviewed !== true) return null;
+  if (items.criteriaReviewed !== true || ICH_SCORE_CRITERIA.some(key => typeof items[key] !== 'boolean')) return null;
   let score = 0;
   if (items.gcs === 'gcs34') score += 2;
   else if (items.gcs === 'gcs512') score += 1;
