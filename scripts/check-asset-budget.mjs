@@ -164,10 +164,10 @@ const precache = corePrecacheBytes();
 // sizes for current iPhones), taking the precache to 2.18 MB; ceiling 2.2 -> 2.3 MB.
 // 2026-10-22 v7.9.0 round-3 verification fixes: stale Encounter-import detection and
 // conflict-safe import in Trials, a shared search normalizer and ranking, the offline
-// reference fallback and Evidence recommendation counts add ~2.8 KB gzip of deferred
-// code (measured before this raise: all JS 257.1 KB gzip / 0.83 MB raw). The initial
-// graph stays inside its 128 KB / 376 KB ceilings. Reviewed ceilings: all JS gzip
-// 256 -> 260 KB, raw 856 -> 864 KB.
+// reference fallback and Evidence recommendation counts add ~3.1 KB gzip, 2.7 KB of it
+// deferred (measured at release: all JS 257.5 KB gzip / 856.3 KB raw, both over the old
+// ceilings). The initial graph stays inside its 128 KB / 376 KB ceilings (127.8 KB /
+// 375.9 KB). Reviewed ceilings: all JS gzip 256 -> 260 KB, raw 856 -> 864 KB.
 const checks = [
   {
     id: 'app-js-gzip',
