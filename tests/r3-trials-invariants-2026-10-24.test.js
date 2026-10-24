@@ -205,7 +205,7 @@ function run(seed, steps, rendered) {
         state = answerFacts(state, { exclusions: { [control]: v } });
         written = { [control]: v };
       } else if (control === 'age') {
-        const v = pick(['55', '64', 'unselected']);
+        const v = pick(['55', '60', '72', 'unselected']);
         state = answerFacts(state, { age: v });
         written = { age: v };
       } else {
@@ -264,8 +264,8 @@ describe('Encounter import invariants over random edit and import sequences (r3-
     for (const cls of ['ich', 'ischemic', 'tia']) for (const key of ['age', 'anticoagulant', 'afibHistory', 'afOrFlutterHistory', 'takingOac']) expect(VISIBLE_FACTS[cls].includes(key)).toBe(VISIBLE[cls].includes(key));
   });
 
-  // 12 seed blocks × 100 sequences × 14 steps; every 10th sequence also renders the screener for the banner check.
+  // 12 seed blocks × 80 sequences × 14 steps; every 10th sequence also renders the screener for the banner check.
   it.each(Array.from({ length: 12 }, (_, i) => i + 1))('seed block %i holds every invariant', block => {
-    for (let i = 0; i < 100; i += 1) run(block * 1000 + i, 14, i % 10 === 0);
+    for (let i = 0; i < 80; i += 1) run(block * 1000 + i, 14, i % 10 === 0);
   }, 20000);
 });

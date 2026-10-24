@@ -160,6 +160,16 @@ describe('choosing a classification ends the import and keeps only the user\'s o
   });
 });
 
+describe('an entry equal to the Encounter\'s value stays the user\'s answer', () => {
+  it('pre-stroke mRS 0 entered, Encounter mRS 0, Encounter later cleared: the entry stays', () => {
+    const e = premorbidMRS => encounter({ diagnosisCategory: 'ich', ...lkwAt(now - HOUR), premorbidMRS });
+    const state = reapply(reapply(answerFacts(withClassification(fresh(), 'ich'), { preMrs: 0 }), e('0')), e(''));
+    expect(state.preMrs).toBe(0);
+    // A value only the Encounter supplied still returns to unknown (TA-F2).
+    expect(reapply(reapply(withClassification(fresh(), 'ich'), e('0')), e('')).preMrs).toBe('unselected');
+  });
+});
+
 describe('the same reproductions on the real controls in a browser', () => {
   let browser, page, script, css, errors;
   beforeAll(async () => {
@@ -237,7 +247,7 @@ describe('the same reproductions on the real controls in a browser', () => {
     expect(errors).toEqual([]);
   }, 30000);
 
-  it('refiner Absent then Present after the conflict survives the reapply (finding 1)', async () => {
+  it('refiner Absent then Present after the conflict survives the reapply, and a refiner reset is kept too (finding 1)', async () => {
     await open();
     try {
       const lkw = { diagnosisCategory: 'ich', lkwDate: '2026-10-22', lkwTime: '11:00' };
@@ -250,6 +260,10 @@ describe('the same reproductions on the real controls in a browser', () => {
       await useFacts();
       expect(await value('DOAC or LMWH at ICH onset')).toBe('true');
       expect(await card('MINUTE').count()).toBe(0);
+      // "Reset exclusions to unknown" is an answer too: a reapply does not bring the entries back.
+      await page.getByRole('button', { name: 'Reset exclusions to unknown', exact: true }).click();
+      await useFacts();
+      expect([await value('DOAC or LMWH at ICH onset'), await value('Pregnancy')]).toEqual(['', '']);
     } finally { await page.close(); }
     expect(errors).toEqual([]);
   }, 30000);
