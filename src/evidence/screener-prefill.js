@@ -181,14 +181,15 @@ const WEIGHED = ['afibHistory', 'afOrFlutterHistory', ...OAC];
 //   answer the user contradicted supplies nothing but present exclusions.
 // - Encounter AF against a "No" to AF or flutter is, on every import, a conflict over AF or flutter (and
 //   over AF unless the user answered AF Yes); documented absence of AF never contradicts flutter.
-// - every other fact is the Encounter's when it records one, otherwise U, so a value an import wrote
-//   that the user never answered returns to unknown. A different classification starts a clean screen.
+// - every other fact is the Encounter's when it records one (a different value replaces U), otherwise U,
+//   so a value an import wrote that the user never answered returns to unknown. A different
+//   classification starts a clean screen.
 export function applyEncounterPrefill(state, prefill, initialState) {
   if (!prefill?.patch) return state;
   const base = prefill.patch.classification && prefill.patch.classification !== state.classification ? initialState : state;
   const U = base.imported?.answers || flat(base), E = flat(prefill.patch);
   const answers = { ...U }, conflicts = {}, screen = { ...flat(initialState), ...U };
-  for (const key in E) if (!WEIGHED.includes(key)) { screen[key] = E[key]; delete answers[key]; }
+  for (const key in E) if (!WEIGHED.includes(key) && String(U[key]) !== String(E[key])) { screen[key] = E[key]; delete answers[key]; }
   const differs = key => entered(U[key]) && entered(E[key]) && U[key] !== E[key];
   const contradicted = differs('anticoagulant') || differs('takingOac');
   const afConflict = E.afibHistory === true && U.afOrFlutterHistory === false;
