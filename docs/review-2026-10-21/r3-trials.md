@@ -302,7 +302,7 @@ Budget: `check:asset-budget:json` on clean builds of each commit, made in this s
 
 ## 9. Third verification and repair
 
-A third independent verifier (session scratchpad `r3fix/trials-final-verify.json`; probes, harness and fuzzer in `r3v3-trials-keep/`) reported two blocking defects and two non-blocking items against `042f914`. Both blocking defects had one cause: the import decided that a conflict was "untouched since the import" from value equality. This round replaces that inference with an explicit record of the user's answers. Worktree `/home/user/stroke/.claude/worktrees/r3-trials-repair3`, branch `r3-trials-repair3`, started at `042f914`. I reproduced every item with the verifier's own probes (`p1`–`p6.mjs`, harness pointed at this worktree) before changing code. No locked file was touched.
+A third independent verifier (session scratchpad `r3fix/trials-final-verify.json`; probes, harness and fuzzer in `r3v3-trials-keep/`) reported two blocking defects and two non-blocking items against `042f914`. Both blocking defects had one cause: the import decided that a conflict was "untouched since the import" from value equality. This round replaces that inference with an explicit record of the user's answers. Worktree `/home/user/stroke/.claude/worktrees/r3-trials-repair3`, branch `r3-trials-repair3`, started at `042f914`. I reproduced every item with the verifier's own probes (`p1`–`p6.mjs`, harness pointed at this worktree) before changing code. No locked file was touched. No clinical content, registry wording or trial profile changed, so no source was re-read and there are no new ledger rows; the tests quote the registry passages read for §2 and §8.3.
 
 ### 9.1 The model
 
@@ -347,3 +347,83 @@ Unchanged: the engine's tri-state; numeric facts replaced by the import (§5, rv
 - The §8.6 refinement "an Encounter AF the user already entered adds nothing" is withdrawn (§9.2, item 2).
 
 ### 9.4 Tests
+
+New files:
+- **`tests/r3-trials-invariants-2026-10-24.test.js`** (13 tests, about 15 s). This is the verifier's fuzzer, ported.
+  - **Sequences.** Seeded (mulberry32), deterministic sequences on ICH, ischemic and TIA screens, 12 seed blocks × 80 sequences × 14 steps, 13,440 steps in all. The steps are:
+    - user edits through every control that writes an importable fact, made with the same calls TrialScreener makes: anticoagulant select, AF documented, AF or flutter, "On oral anticoagulant", age, refiner toggles, refiner reset;
+    - classification choices;
+    - Encounter edits: anticoagulant, last dose, AF, age, medication text, diagnosis changed to another modeled one, to none, or to SAH;
+    - imports and reapplies.
+  - **Reference model.** After every step the tracked screen values and the conflict set are compared with a reference model written in the test from the rule's statement (§9.1). The model keeps its own U, its own table of what each anticoagulant option states, and its own visibility table, which is checked against the screen's controls.
+  - **Other checks, after every step:**
+    - a second reapply with the Encounter unchanged changes nothing;
+    - an edit changes no key it does not write, and settles only conflicts over keys it writes;
+    - the conflict sentence names exactly the standing conflicts the screen shows, in rule order;
+    - the copied summary carries exactly the banner's stale and conflict sentences;
+    - AF or flutter is never derived from AF while its conflict stands;
+    - no potential match has a modeled fact unknown (every field it reads is known, and an `or` has one fully known branch);
+    - the summary, conflict sentence and prefill summary contain no "undefined", "null" or "NaN".
+  - **Rendered banner.** Every 10th sequence also renders `TrialScreener` (server-side, clock fixed) at its last step. The banner's status text must equal the summary's sentences, and the banner contains none of those words (96 renders).
+  - **Coverage of one run:** 4,534 imports, 4,434 edits (306 settling a listed conflict), 1,477 classification choices, 1,964 steps with a standing conflict (AF 1,135, OAC 447, anticoagulant 435, DOAC/LMWH 256, AF or flutter 159, of which 40 with AF answered Yes, OAC ≤ 7 d 135, Xa/DTI 121), and 186 steps with a potential match (68 of them with a standing conflict on another fact).
+- **`tests/r3-trials-reapply-2026-10-24.test.jsx`** (14 tests). These are the verifier's exact reproductions:
+  - MINUTE with DOAC;
+  - FASTEST-2 with VKA, Encounter cleared and Encounter "none";
+  - refiner Absent→Present;
+  - anticoagulant Unknown;
+  - AF documented Yes then reapply, with the same Encounter and after an age edit;
+  - "On oral anticoagulant" Yes, No and Unknown.
+
+  Each is checked against the first-import control where the verifier gave one. The file also tests the reclassification and equal-entry rules. Four Chromium tests repeat the UI-dependent cases on the real controls (built `src/Trials.jsx`, synthetic Encounter, fixed clock): MINUTE with DOAC; refiner Absent→Present, then "Reset exclusions to unknown" and a reapply; ASPIRE after AF documented Yes; "On oral anticoagulant" Yes.
+
+**Fail before, pass after.** Both files were run against the `042f914` sources in a `git archive` copy. That version has no `answerFacts`, so it was aliased to that version's `applyFacts`. That is the merge its key-fact and refiner controls performed, and it records nothing. The alias was added only in the scratch copy. Results:
+- **Fuzzer:** 12 of 13 fail, every seed block. The first failures are the reported defects: an edit that writes the value a conflict left does not settle it, and the AF-entered refinement. The visibility-table check passes.
+- **Reproductions:** 13 of 14 fail. The one that passes is the unit test for finding 3, because that defect was in the UI handler and the alias does not reproduce the handler. Its browser twin fails at `042f914`: Xa/DTI ≤ 48 h became "Not assessed".
+- **Reason for each failure.** With the post-edit note checks removed, each finding-1 and finding-2 test fails on the reapply outcome itself, for the reported reason:
+  - `exDoacLmwhAtOnset` false after the DOAC answer;
+  - `exOacWithin7d` false after VKA;
+  - refiner Present lost;
+  - "None" back after "Unknown";
+  - `[true, false, '']` for AF Yes, AF/flutter, note.
+- **After the repair:** both files pass, 27 of 27.
+
+**Mutations.** Each of these 11 mutations of the repaired code makes the final fuzzer fail in 6 to 12 of its 12 seed blocks:
+- restore the AF-entered refinement;
+- never contest AF;
+- import Encounter absences against a contradicted OAC answer;
+- ignore a contradicted OAC answer;
+- edits that do not settle, or do not record;
+- replaced facts that always drop the user's answer;
+- an exclusion conflict that takes the Encounter's value;
+- derive AF or flutter during its conflict;
+- reclassification that keeps imported values, or that resets conflicted facts.
+
+The source was restored after each run.
+
+### 9.5 Checks and budget
+
+Run in this worktree on the final source:
+- `npx vitest run`: 134 files, 2751 passed, 3 skipped, 0 failed. Baseline at `042f914`: 132 files, 2724 passed, 3 skipped. That was measured in the archive copy, where `committed-bundle-coherence` cannot read a git index, so its 4 tests, which pass in this worktree, were added to that copy's 2720. The change is +27 new tests, and 6 tests were updated (§9.2).
+- `npm run test:protocol-source`: PASS.
+- `npm run content:validate`: PASS (16 trial profiles).
+- `npm run check:clinical-claims`: PASS (4 bounded groups, 31 occurrences, 0 exports).
+- `npm run check:leak-guard`: no institutional or PHI-adjacent content.
+- `git clean -fqX chunks && npm run build`, then `npm run check:asset-budget`: all six checks pass.
+- Protocols tab locks, port 4360, on that build: desktop 1440x900 PASS (46 fixture/sub-tab captures); phone 390x844 PASS (46 captures). `screener-eval.js` is in the chunk QuickSearch shares, so both were run. No file that Protocols imports was edited.
+
+Budget: `check:asset-budget --json` on clean builds of `042f914` (a `git archive` copy) and of this source. Per-chunk figures use gzip -9.
+
+| measure | `042f914` | now | delta |
+|---|---|---|---|
+| initial module graph, gzip | 130,894 | 130,895 | +1 (renamed chunk hashes in `app.js`) |
+| initial module graph, raw | 384,937 | 384,937 | 0 |
+| all offline JS, gzip | 263,665 | 263,617 | **−48** (ceiling 266,240; 2,623 B left) |
+| all offline JS, raw | 876,804 | 876,483 | −321 |
+| Trials chunk, gzip -9 | 13,964 | 13,944 | −20 |
+| shared Trials/QuickSearch chunk, gzip -9 | 27,300 | 27,261 | −39 |
+| tailwind.css | 106,910 | 106,910 | 0 |
+| SW precache | 2,155,330 | 2,155,009 | −321 |
+
+The model is smaller than the inference it replaces. The reset and restore loops, `imported.fields` and `imported.exclusions`, the value test in `conflictStands`, the `withClassification` comparison and the old OAC handler are gone. No offset elsewhere was needed.
+
+Open for the lead: the withdrawn §8.6 refinement (§9.2, item 2) is a product choice in the cautious direction. Restoring it would need a record of answer order.
