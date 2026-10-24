@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useDialogChrome } from './use-dialog-chrome.js';
 import { screenerTrials } from '../evidence/screenerTrials.js';
 import { eligibilityTables } from '../evidence/eligibilityTables.js';
-import { evaluateAll, CLASSIFICATION_NOTE_LABELS, createInitialScreenerState, anchoredOnsetHours, onsetToHours, numericFact, ONSET_PRESETS, STUDY_FACTS, YES_NO, withClassification, NOT_MET_TEXT, phaseLabel, enrollmentLabel, toConfirm, relevantNotMet, potentialMatches, insufficientInformation, registryCheckAgeText, refinerItems, conflictNote, STALE_IMPORT_NOTE } from '../evidence/screener-eval.js';
+import { evaluateAll, CLASSIFICATION_NOTE_LABELS, createInitialScreenerState, anchoredOnsetHours, onsetToHours, numericFact, ONSET_PRESETS, STUDY_FACTS, YES_NO, withClassification, NOT_MET_TEXT, phaseLabel, enrollmentLabel, toConfirm, relevantNotMet, potentialMatches, insufficientInformation, registryCheckAgeText, refinerItems, conflictNote, STALE_IMPORT_NOTE, STALE_UNMODELED_NOTE } from '../evidence/screener-eval.js';
 import { screenerPrefillFromEncounter, applyEncounterPrefill, applyAnticoagulant, importChanged } from '../evidence/screener-prefill.js';
 
 const CLASSIFICATIONS = Object.entries(CLASSIFICATION_NOTE_LABELS);
@@ -102,13 +102,15 @@ function CandidateSubgroup({ title, label, description, items, empty, onDetails 
   return <section className="space-y-2" aria-label={label}><div className="flex items-center justify-between gap-3 pt-1"><h3 className="text-sm font-bold uppercase tracking-wide text-ink-2">{title}</h3><span className="rounded-pill border border-cobalt-600 px-2 py-0.5 font-mono text-xs">{items.length}</span></div><p className="text-xs text-mute">{description}</p>{items.length === 0 && <p className="text-sm text-mute">{empty}</p>}{items.map(item => <TrialCard key={item.trial.acronym} trial={item.trial} result={item} headingLevel={4} onDetails={() => onDetails(item.trial)} />)}</section>;
 }
 
-// A stale import (the Encounter changed after its facts were applied) is never shown as applied or live.
+// A stale import (the Encounter changed after its facts were applied; stale is its caution) is never shown as applied or live.
+// The status line is always rendered, so a screen reader announces each change of its text.
 function EncounterBanner({ prefill, onUse, applied, stale, conflict }) {
   if (!prefill?.available && !stale) return null;
+  const status = [stale || applied && `Encounter facts applied (${applied}). Every field can still be changed; anything not recorded stays unknown.`, conflict].filter(Boolean).join(' ');
   return <section aria-label="Encounter facts" className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-lg border border-cobalt-300/60 bg-cobalt-50 p-3 dark:bg-cobalt-900">
     <p className="min-w-0 flex-1 basis-60 text-sm"><span className="font-semibold">From Encounter:</span> {prefill.summary.length ? prefill.summary.map((fact, i) => <React.Fragment key={i}>{i > 0 && ' · '}<span className="whitespace-nowrap">{fact}</span></React.Fragment>) : 'no screening facts recorded'}{!prefill.supported && <> — <span className="font-semibold">{prefill.message}</span></>}</p>
     {prefill.patch && <button type="button" className={buttonClass} onClick={onUse}>{stale ? 'Reapply Encounter facts' : applied ? 'Applied ✓ · reapply' : 'Use these facts'}</button>}
-    {(stale || applied || conflict) && <p role="status" className="basis-full text-xs text-ink-2">{stale ? STALE_IMPORT_NOTE : applied && `Encounter facts applied (${applied}). Every field can still be changed; anything not recorded stays unknown.`} {conflict}</p>}
+    <p role="status" className={status ? 'basis-full text-xs text-ink-2' : 'sr-only'}>{status}</p>
   </section>;
 }
 
@@ -207,8 +209,9 @@ export function TrialScreener({ copyToClipboard, initialState, onStateChange, ac
   }, [active, encounter, anchored]);
   const nowMs = Math.max(typeof now === 'number' ? now : 0, tick);
   const prefill = useMemo(() => encounter ? screenerPrefillFromEncounter(encounter, nowMs) : null, [encounter, nowMs]);
-  const stale = importChanged(state, prefill);
-  const lkwChanged = stale && anchored && prefill?.patch?.onsetAnchorMs !== state.onsetAnchorMs;
+  // With no patch (a diagnosis the screener does not model) there is nothing to reapply; the Encounter LKW is still compared.
+  const stale = importChanged(state, prefill) && (prefill.patch ? STALE_IMPORT_NOTE : STALE_UNMODELED_NOTE);
+  const lkwChanged = stale && anchored && prefill.lkwAnchorMs !== state.onsetAnchorMs;
   const replace = updater => { onStateChange?.(); setApplied(null); setState(updater); };
   const change = patch => replace(prev => ({ ...prev, ...patch }));
   const importEncounter = () => {
@@ -229,7 +232,7 @@ export function TrialScreener({ copyToClipboard, initialState, onStateChange, ac
   const notMet = relevantNotMet(results.excluded);
   const picasso = screenerTrials.find(trial => trial.acronym === 'PICASSO' && trial.referenceOnly);
   return <div className="space-y-4">
-    <EncounterBanner prefill={prefill} onUse={importEncounter} applied={applied} stale={stale} conflict={conflictNote(state)} />
+    <EncounterBanner prefill={prefill} onUse={importEncounter} applied={applied} stale={stale} conflict={conflictNote(state, evalNow)} />
     <div className="trial-screening-workspace space-y-5 lg:grid lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:items-start lg:gap-6 lg:space-y-0">
       <div className="trial-screening-filters min-w-0 space-y-5 lg:sticky lg:top-[calc(var(--case-bar-h,0px)+1rem)] lg:max-h-[calc(100dvh-var(--case-bar-h,0px)-2rem)] lg:overflow-y-auto lg:overscroll-contain lg:pr-1">
         <section><h2 className="mb-2 text-lg font-bold">1. Stroke classification</h2><div className="flex flex-wrap gap-2">{CLASSIFICATIONS.map(([id, label]) => <button key={id} type="button" className={buttonClass} aria-pressed={state.classification === id} onClick={() => replace(prev => withClassification(prev, id))}>{label}</button>)}</div>
@@ -264,7 +267,8 @@ export function StudyDatabase({ active = true, now = null }) {
   useEffect(() => { if (!active) setModal(null); }, [active]);
   // A study picked in global search arrives as #/trials/database?q=ACRONYM and is shown on its own.
   useEffect(() => {
-    const pick = () => { const q = /[?&]q=([^&]*)/.exec(location.hash)?.[1]; if (q) { setQuery(decodeURIComponent(q)); setFilter('all'); setClassification('all'); } };
+    // Only the database route's query is read; a malformed one (e.g. a truncated "%") is ignored rather than thrown.
+    const pick = () => { const q = /^#\/?trials\/database\?(?:.*&)?q=([^&]*)/.exec(location.hash)?.[1]; if (q) try { setQuery(decodeURIComponent(q)); setFilter('all'); setClassification('all'); } catch {} };
     pick();
     addEventListener('hashchange', pick);
     return () => removeEventListener('hashchange', pick);

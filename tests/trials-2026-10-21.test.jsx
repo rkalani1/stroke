@@ -147,6 +147,8 @@ describe('criterion boundaries follow the registry wording', () => {
     // "Presentation to enrolling hospital within 24 hours of last known well/stroke onset" (r3-trials, 2026-10-22).
     ['STEP', 'onsetHours', 'or', { onsetVal: 24 }, 'met', '"within 24 hours"'], ['STEP', 'onsetHours', 'or', { onsetVal: 24.01 }, 'unknown', 'presentation time unknown'],
     ['STEP', 'onsetHours', 'or', { onsetVal: 24.01, presentedWithin24h: false }, 'not met', ''], ['STEP', 'onsetHours', 'or', { onsetVal: 30, presentedWithin24h: true }, 'met', ''],
+    // App acute screening limit (not registry text; r3-trials second verification): presentation ≤ 24 h meets STEP timing only within 30 h of LKW.
+    ['STEP', 'onsetHours', '<=', { onsetVal: 30 }, 'met', 'app limit'], ['STEP', 'onsetHours', '<=', { onsetVal: 30.01 }, 'not met', ''],
     ['STEP', 'aspects', '>=', { aspects: 6 }, 'met', '"CT ASPECT score <6" excluded'], ['STEP', 'aspects', '>=', { aspects: 5 }, 'not met', ''],
     ['STEP', 'preMrs', '<=', { preMrs: 2 }, 'met', '"Pre-stroke modified Rankin Scale score 0-2"'], ['STEP', 'preMrs', '<=', { preMrs: 3 }, 'not met', ''],
     ['STEP', 'vessel', 'or', { vessel: 'ica_m1', nihss: 5 }, 'met', '"NIHSS 0-5" + intracranial ICA/M1'], ['STEP', 'vessel', 'or', { vessel: 'ica_m1', nihss: 0 }, 'met', ''],
@@ -521,7 +523,7 @@ describe('answering every modeled fact with registry-consistent values (TR-11 fo
   // [study, facts at or inside the registry limits, contrary answers {fact: [value, error]}, registry item still to confirm]
   const studies = [
     ['VERIFY', { classification: 'ischemic', onsetVal: 24, onsetUnit: 'hours', age: 18, unilateralSymptomatic: true, ueWeakness: true, self_consent: true, language: 'spanish',
-      exclusions: absent('exPriorUeCondition', 'exLegallyBlind', 'exDenseSensoryLoss', 'exRecentStroke30d', 'exVerifySeizure', 'exPregnancy') },
+      exclusions: absent('exPriorUeCondition', 'exLegallyBlind', 'exDenseSensoryLoss', 'exVerifyStroke30d', 'exVerifySeizure', 'exPregnancy') },
     { unilateralSymptomatic: [false, 'Requires unilateral symptomatic AIS'], ueWeakness: [false, 'Requires upper extremity motor weakness'], self_consent: [false, 'Patient must be able to self-consent'], language: ['other', 'Must be English or Spanish speaking'] }, /SAFE score ≤8/],
     ['TELE-REHAB-2', { classification: 'ich', onsetVal: 150, onsetUnit: 'days', age: 80, preMrs: 2, ueWeakness: true, self_consent: true,
       exclusions: absent('exRecurrentStroke', 'exRecentStroke30d', 'exLifeExpectancy9m', 'exBotoxVns3m', 'exPregnancy') },

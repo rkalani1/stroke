@@ -6,7 +6,7 @@
 
 import { encounterTiming, encounterNihss, encounterVolume, validTimestamp, nihssBulkZeroItems } from '../workspace-state.js';
 import { reviewedGcs, numericInput, documentedIvtContext } from '../encounter-clinical-review.js';
-import { untestableNote } from './screener-eval.js';
+import { untestableNote, conflictStands } from './screener-eval.js';
 
 const MODELED = { ischemic: 'ischemic', ich: 'ich', tia: 'tia' };
 const DIAGNOSIS_LABEL = { ischemic: 'Ischemic', ich: 'ICH', tia: 'TIA', sah: 'SAH', cvt: 'CVT', mimic: 'Stroke mimic', other: 'Other / uncertain' };
@@ -53,16 +53,20 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   const patch = { exclusions: {} };
   const summary = [];
   if (diagnosis) summary.push(DIAGNOSIS_LABEL[diagnosis] || diagnosis);
+  const timing = encounterTiming(note, nowMs);
+  const timed = Number.isFinite(timing.hours) && timing.hours >= 0;
+  const anchor = timed ? new Date(timing.timestamp).getTime() : NaN;
+  // The Encounter LKW anchor now (null when none), for every diagnosis, so an imported
+  // anchor the Encounter no longer holds is never described as live.
+  const lkwAnchorMs = Number.isFinite(anchor) ? anchor : null;
   if (diagnosis && !classification) {
-    return { available: true, supported: false, classification: null, message: NO_MODELED_STUDIES, patch: null, summary };
+    return { available: true, supported: false, classification: null, message: NO_MODELED_STUDIES, patch: null, summary, lkwAnchorMs };
   }
   if (classification) patch.classification = classification;
 
-  const timing = encounterTiming(note, nowMs);
-  if (typeof timing.hours === 'number' && Number.isFinite(timing.hours) && timing.hours >= 0) {
+  if (timed) {
     // onsetVal is the snapshot at import; onsetAnchorMs keeps elapsed time live.
-    const anchor = new Date(timing.timestamp).getTime();
-    Object.assign(patch, { onsetVal: Math.round(timing.hours * 100) / 100, onsetUnit: 'hours', onsetRangeHours: null, onsetAnchorMs: Number.isFinite(anchor) ? anchor : null });
+    Object.assign(patch, { onsetVal: Math.round(timing.hours * 100) / 100, onsetUnit: 'hours', onsetRangeHours: null, onsetAnchorMs: lkwAnchorMs });
     summary.push(`LKW ${fmtHours(timing.hours)}`);
   }
 
@@ -127,7 +131,7 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
     const dose = kind !== 'none' && kind !== 'lmwh' ? validTimestamp(note.lastDOACDose, nowMs) : null;
     const hours = dose ? (nowMs - dose.getTime()) / 3600000 : null;
     // Last dose to onset: from the LKW when recorded; otherwise the time to now bounds it.
-    const lkw = typeof patch.onsetAnchorMs === 'number' ? patch.onsetAnchorMs : nowMs;
+    const lkw = lkwAnchorMs ?? nowMs;
     const beforeOnset = dose ? (lkw - dose.getTime()) / 3600000 : null;
     const drug = kind === 'doac' ? 'DOAC' : 'warfarin/VKA';
     if (dose) {
@@ -146,7 +150,7 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   }
 
   const facts = Object.keys(patch).filter(key => key !== 'exclusions' && key !== 'onsetUnit' && key !== 'onsetRangeHours' && key !== 'onsetAnchorMs');
-  return { available: facts.length > 0, supported: Boolean(classification), classification, message: classification ? null : 'Diagnosis not recorded in Encounter', patch, summary };
+  return { available: facts.length > 0, supported: Boolean(classification), classification, message: classification ? null : 'Diagnosis not recorded in Encounter', patch, summary, lkwAnchorMs };
 }
 
 // What an import says, without the elapsed-time snapshot (the LKW anchor is kept),
@@ -167,28 +171,34 @@ const OAC_KEYS = ['anticoagulant', 'takingOac'];
 // anticoagulant or exclusion differs from a definite Encounter value, the exclusion
 // is present (from either side) and any other answer unknown; an anticoagulant answer
 // the user contradicted supplies no absent exclusion. imported.conflicts maps each
-// conflict to the value it left.
+// conflict to the entry it replaced; a reapply puts back the entry of a conflict that
+// still stands and weighs it again, so it never settles a conflict for the Encounter.
 export function applyEncounterPrefill(state, prefill, initialState) {
   if (!prefill?.patch) return state;
   const base = prefill.patch.classification && prefill.patch.classification !== state.classification ? initialState : state;
   const cleared = { ...base, exclusions: { ...base.exclusions } };
   for (const [key, value] of Object.entries(base.imported?.fields || {})) if (Object.is(base[key], value)) cleared[key] = initialState[key];
   for (const [id, value] of Object.entries(base.imported?.exclusions || {})) if (cleared.exclusions[id] === value) delete cleared.exclusions[id];
+  for (const [key, entry] of Object.entries(base.imported?.conflicts || {})) if (conflictStands(base, key)) (key in initialState ? cleared : cleared.exclusions)[key] = entry;
   const entered = v => v != null && v !== 'unselected';
   const { exclusions: found = {}, ...facts } = prefill.patch;
   const differs = key => entered(facts[key]) && entered(cleared[key]) && cleared[key] !== facts[key];
   const oacConflict = OAC_KEYS.some(differs);
   const conflicts = {}, patch = { exclusions: {} };
+  const contest = key => { conflicts[key] = cleared[key]; patch[key] = 'unselected'; };
   for (const [key, value] of Object.entries(facts)) {
     const oac = OAC_KEYS.includes(key);
     if (typeof value !== 'boolean' && !oac) patch[key] = value;
-    else if (differs(key)) patch[key] = conflicts[key] = 'unselected';
+    else if (differs(key)) contest(key);
     else if (entered(value) && !entered(cleared[key]) && !(oac && oacConflict)) patch[key] = value;
   }
+  // Documented AF establishes ASPIRE's AF-or-flutter fact, so it contradicts an entered "No" to it
+  // (unless AF was entered too); neither answer then takes the Encounter's value.
+  if (facts.afibHistory === true && cleared.afOrFlutterHistory === false && cleared.afibHistory !== true) ['afibHistory', 'afOrFlutterHistory'].forEach(contest);
   for (const [id, value] of Object.entries(found)) {
     const mine = cleared.exclusions[id];
     if (typeof value !== 'boolean' || mine === value) continue;
-    if (typeof mine === 'boolean') conflicts[id] = true;
+    if (typeof mine === 'boolean') conflicts[id] = mine;
     if (value || (mine === undefined && !(oacConflict && id in anticoagulantFacts().exclusions))) patch.exclusions[id] = value;
   }
   const fields = Object.fromEntries(Object.entries(patch).filter(([key]) => key !== 'exclusions'));

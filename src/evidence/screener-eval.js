@@ -59,7 +59,9 @@ export const EXCLUSION_ITEMS = [
   { id: 'exPriorUeCondition', label: 'Prior paretic-side upper extremity condition limiting use', classifications: ['ischemic'], trials: ['VERIFY'] },
   { id: 'exLegallyBlind', label: 'Legally blind', classifications: ['ischemic'], trials: ['VERIFY'] },
   { id: 'exDenseSensoryLoss', label: 'Dense sensory loss (NIHSS sensory score = 2)', classifications: ['ischemic'], trials: ['VERIFY'] },
-  { id: 'exRecentStroke30d', label: 'Separate stroke within the 30 days before the index stroke (VERIFY: symptomatic, any location)', classifications: ['ischemic', 'ich'], trials: ['VERIFY', 'TELE-REHAB-2'] },
+  // VERIFY excludes only a symptomatic earlier stroke (NCT05338697 exclusion 6); TELE-REHAB-2 any separate one (NCT06682429 exclusion 9).
+  { id: 'exVerifyStroke30d', label: 'Symptomatic stroke (any location) within the 30 days before the index stroke', classifications: ['ischemic'], trials: ['VERIFY'] },
+  { id: 'exRecentStroke30d', label: 'Separate stroke within the 30 days before the index stroke', classifications: ['ischemic', 'ich'], trials: ['TELE-REHAB-2'] },
   { id: 'exVerifySeizure', label: 'Seizure after the index stroke, or seizure within 12 months while taking antiseizure medication', classifications: ['ischemic'], trials: ['VERIFY'] },
   { id: 'exSeizures', label: 'History of seizures or epilepsy', classifications: ['ischemic', 'ich'], trials: ['MR-PICS'] },
   { id: 'exBotoxVns3m', label: 'Botulinum toxin to paretic arm within past 3 months or expected by 8-month visit', classifications: ['ischemic', 'ich'], trials: ['TELE-REHAB-2'] },
@@ -84,7 +86,7 @@ const ALL_EXCLUSION_IDS = [
   'exSaptContraindication', 'exCarotidStenosis50', 'exPregnancy',
   'exIncarcerated', 'exTrach', 'exCpapUse14d', 'exSecondaryIchOrSah',
   'exPriorUeCondition', 'exLegallyBlind', 'exDenseSensoryLoss',
-  'exRecentStroke30d', 'exSeizures', 'exVerifySeizure', 'exSevereAphasiaCognitive', 'exBotoxVns3m',
+  'exRecentStroke30d', 'exVerifyStroke30d', 'exSeizures', 'exVerifySeizure', 'exSevereAphasiaCognitive', 'exBotoxVns3m',
   'exAnticoagulation', 'exHistoryDvtPe', 'exRecurrentStroke',
   'exCongestiveHeartFailure', 'exEgfr30',
   'exDoacLmwhAtOnset', 'exOacWithin7d', 'exBrainstemIch', 'exIvtGivenOrPlanned', 'exXaDtiWithin48h', 'exSeizureAtOnset', 'exSuspectedIcad', 'exSaturnSecondaryCause'
@@ -316,7 +318,8 @@ export function buildScreenerParams(state, nowMs = null) {
     presentedWithin24h: state.presentedWithin24h,
     afibHistory: state.afibHistory,
     // AF establishes this broader ASPIRE criterion; absent AF does not exclude flutter.
-    afOrFlutterHistory: typeof state.afOrFlutterHistory === 'boolean' ? state.afOrFlutterHistory : state.afibHistory === true ? true : 'unselected',
+    // Not while an Encounter import's conflict over it stands: it stays unknown until answered.
+    afOrFlutterHistory: typeof state.afOrFlutterHistory === 'boolean' ? state.afOrFlutterHistory : state.afibHistory === true && !conflictStands(state, 'afOrFlutterHistory') ? true : 'unselected',
     takingOac: state.takingOac,
     abcd2: state.abcd2,
     antithromboticSoc: state.antithromboticSoc
@@ -424,7 +427,7 @@ function sortListByTime(list, patientCategory) {
 
 // Reference-only profiles (criteria tables / Database) are never screened.
 // nowMs drives the live elapsed time of an Encounter-anchored onset; staleImport
-// marks a summary whose imported Encounter facts have since changed.
+// (true, or the caution to print) marks a summary whose imported Encounter facts have since changed.
 export function evaluateAll(state, trials = screenerTrials, nowMs = null, { staleImport = false } = {}) {
   const ready = CLASSIFICATIONS.includes(state.classification);
   const params = buildScreenerParams(state, nowMs);
@@ -452,8 +455,10 @@ export const insufficientInformation = results => (results?.pending || []).filte
 
 /* ── Display helpers shared by the UI and the copied summary ───────── */
 
-// Shown on the screen and in the copied summary once the imported Encounter facts have changed.
+// Shown on the screen and in the copied summary once the imported Encounter facts have changed;
+// the second when the Encounter diagnosis is now one with no screener facts to reapply.
 export const STALE_IMPORT_NOTE = 'Caution: the Encounter facts changed after import; reapply before relying on this screen.';
+export const STALE_UNMODELED_NOTE = 'Caution: the Encounter diagnosis changed after import to one this screener does not model; reset the screen or choose a classification.';
 export const SCREEN_CAVEAT = 'First-pass registry screen — confirm full criteria, local activation and consent.';
 export const NOT_MET_TEXT = 'Does not meet documented criteria';
 
@@ -574,23 +579,30 @@ const KEY_FACTS = {
 // Facts each classification shows a control for. Facts outside this set are
 // neither shown nor printed, so the copied summary matches the screen.
 export const VISIBLE_FACTS = Object.fromEntries(CLASSIFICATIONS.map(cls => [cls, [...KEY_FACTS[cls], ...STUDY_FACTS[cls].map(([key]) => key)]]));
-// Entries where an Encounter import met a conflicting answer (imported.conflicts:
-// key → value it left), while that value stands and this screen shows the fact.
-export function conflictNote(state) {
-  const cls = state.classification;
-  const names = Object.entries(state.imported?.conflicts || {}).map(([key, value]) => {
+// An entry where an Encounter import met a conflicting answer (imported.conflicts: key →
+// the entry it replaced) stands while it keeps the value the import left: present for an
+// exclusion, unknown otherwise (exclusion ids are never top-level state keys).
+export function conflictStands(state, key) {
+  return key in (state.imported?.conflicts || {}) && (state[key] === 'unselected' || state.exclusions?.[key] === true);
+}
+// Standing conflicts this screen shows the fact for (an exclusion only while the refiner asks it).
+export function conflictNote(state, nowMs = null) {
+  const cls = state.classification, asked = refinerItems(state, nowMs);
+  const names = Object.keys(state.imported?.conflicts || {}).filter(key => conflictStands(state, key)).map(key => {
     const item = EXCLUSION_ITEMS.find(entry => entry.id === key);
-    return (item ? item.classifications.includes(cls) && state.exclusions?.[key] === value : VISIBLE_FACTS[cls]?.includes(key) && state[key] === value) && (item?.label || FIELD_TEXT[key]);
+    return (item ? asked.includes(item) : VISIBLE_FACTS[cls]?.includes(key)) && (item?.label || FIELD_TEXT[key]);
   }).filter(Boolean);
   return names.length ? `Encounter and screener entries differed: ${names.join('; ')}. Exclusions are set to present, other answers to unknown; confirm them.` : '';
 }
 
 // Choosing a classification restarts timing, exclusions and the anticoagulant
-// answer, and returns every fact the new screen hides to unknown.
+// answer, and returns every fact the new screen hides to unknown. It also ends
+// the Encounter import: a value it wrote that is still unchanged returns to
+// unknown, so nothing imported outlives its staleness tracking.
 export function withClassification(state, classification) {
-  const initial = createInitialScreenerState();
-  const hidden = [...new Set(Object.values(VISIBLE_FACTS).flat())].filter(key => !VISIBLE_FACTS[classification].includes(key));
-  return { ...state, ...Object.fromEntries(hidden.map(key => [key, initial[key]])), ...(hidden.includes('nihss') && { nihssUntestable: 0, nihssBulkZero: 0 }),
+  const initial = createInitialScreenerState(), fields = state.imported?.fields || {};
+  const reset = [...new Set(Object.values(VISIBLE_FACTS).flat())].filter(key => !VISIBLE_FACTS[classification].includes(key) || (key in fields && Object.is(state[key], fields[key])));
+  return { ...state, ...Object.fromEntries(reset.map(key => [key, initial[key]])), ...(reset.includes('nihss') && { nihssUntestable: 0, nihssBulkZero: 0 }),
     classification, onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null, exclusions: {}, anticoagulant: 'unselected', takingOac: 'unselected', imported: null };
 }
 
@@ -645,7 +657,7 @@ export function buildBriefingNote(state, buckets, nowMs = null, { staleImport = 
     return `- ${item.trial.acronym} (${m.nct || 'no NCT'}) · ${enrollmentLabel(item.trial, item)}${phaseLabel(m) ? ' · ' + phaseLabel(m) : ''} · window ${item.trial.enrollmentWindowText}`;
   };
 
-  const lines = ['TRIAL SCREEN — first pass' + (checkLabel ? ` (${checkLabel})` : ''), staleImport && STALE_IMPORT_NOTE, conflictNote(state),
+  const lines = ['TRIAL SCREEN — first pass' + (checkLabel ? ` (${checkLabel})` : ''), staleImport === true ? STALE_IMPORT_NOTE : staleImport, conflictNote(state, nowMs),
     'Statuses are overall registry statuses at that check; local site activation is not confirmed.', 'Inputs: ' + inputs.join(' · ')].filter(Boolean);
   if (recorded.length) lines.push('Exclusions recorded: ' + recorded.join('; '));
   lines.push('Anything not listed was not entered and remains unknown.', '');
