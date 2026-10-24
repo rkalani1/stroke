@@ -1,6 +1,6 @@
 # 2026-10-21 review — baseline, inventory and process
 
-This folder holds the 7.9.0 review. Each unit report (`ev-evt.md`, `ev-prevention.md`, `ev-recovery.md`, `ev-acute.md`, `trials.md`, `calculators.md`, `encounter.md`, `design.md`) lists what the unit verified, changed and could not resolve, with evidence-ledger rows. The consolidated ledger is [../evidence-ledger-2026-10-21.md](../evidence-ledger-2026-10-21.md).
+This folder holds the 7.9.0 review. Each unit report (`ev-evt.md`, `ev-prevention.md`, `ev-recovery.md`, `ev-acute.md`, `trials.md`, `calculators.md`, `encounter.md`, `design.md`) lists what the unit verified, changed and could not resolve, with evidence-ledger rows. The fix units that acted on the independent verification rounds wrote `evidence-fixes.md` and `encounter-fixes.md` (rounds 1–2) and `r3-ev-evt.md`, `r3-ev-prevrec.md`, `r3-trials.md`, `r3-encounter.md` and `r3-shell-search.md` (round 3); each lists every finding with its decision, the source re-read and the test, and how its own independent verifier judged the fix. The consolidated ledger, with a summary of all verification rounds, is [../evidence-ledger-2026-10-21.md](../evidence-ledger-2026-10-21.md).
 
 ## Baseline (before any change)
 
@@ -34,4 +34,4 @@ Environment limits for this review: the container's network policy blocks publis
 
 ## Process
 
-Eight agents worked in parallel in separate git worktrees with disjoint file ownership: four clinical-evidence units (EVT/systems; prevention/mechanisms; recovery/inpatient/populations; IVT/hemorrhage second check and currency), trials, calculators, encounter workflow/notes, and design/accessibility/performance/PWA. The lead integrated their branches, applied cross-area patches, and commissioned independent reviewers who re-read the primary sources and the integrated code.
+Eight agents worked in parallel in separate git worktrees with disjoint file ownership: four clinical-evidence units (EVT/systems; prevention/mechanisms; recovery/inpatient/populations; IVT/hemorrhage second check and currency), trials, calculators, encounter workflow/notes, and design/accessibility/performance/PWA. The lead integrated their branches, applied cross-area patches, and commissioned independent reviewers who re-read the primary sources and the integrated code. Three verification rounds followed (the ledger's "Independent verification" section has the counts). Each round's findings went to fix units with the same ownership rules; every fix unit's work was reviewed by a separate verifier, blocking findings were repaired and the repairs reviewed again, and the lead re-checked the non-blocking suggestions against the sources before applying them.
