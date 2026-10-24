@@ -24,7 +24,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { newEncounter } from '../src/workspace-state.js';
 import { screenerTrials } from '../src/evidence/screenerTrials.js';
 import {
-  buildScreenerParams, conflictNote, createInitialScreenerState, evaluateAll, EXCLUSION_ITEMS, potentialMatches, refinerItems,
+  buildScreenerParams, conflictNote, createInitialScreenerState, evaluateAll, EXCLUSION_ITEMS, ONSET_PRESETS, potentialMatches, refinerItems,
   STALE_IMPORT_NOTE, STALE_UNMODELED_NOTE, VISIBLE_FACTS, withClassification
 } from '../src/evidence/screener-eval.js';
 import { answerFacts, applyAnticoagulant, applyEncounterPrefill, importChanged, screenerPrefillFromEncounter } from '../src/evidence/screener-prefill.js';
@@ -247,6 +247,14 @@ function run(seed, steps, rendered) {
       const to = rand() < 0.75 && screenCls !== 'unselected' ? screenCls : pick(['ich', 'ischemic', 'tia']);
       state = withClassification(state, to); refClassify(model, to);
       log.push(`classification → ${to}`);
+      // Often the user then re-enters what the click restarted (onset, age, the other facts, pregnancy and the
+      // other exclusions absent), so a fact the click showed as answered could reach a potential match (round 4).
+      if (rand() < 0.5) {
+        const preset = pick(ONSET_PRESETS), age = pick([60, 72]);
+        state = answerFacts(state, { ...OTHER_FACTS[to], age, onsetVal: preset.val, onsetUnit: preset.unit, onsetRangeHours: preset.rangeHours, onsetAnchorMs: null, exclusions: { ...otherExclusions(to), exPregnancy: false } });
+        refEdit(model, { age, exPregnancy: false }); answered.add('age').add('exPregnancy');
+        log.push(`user re-enters onset ${preset.name}, age ${age}, pregnancy absent and the other facts`);
+      }
     }
     checkScreen(state, model, trace);
     // Independent of the reference model: a weighed answer that the last import's Encounter contradicts is

@@ -17,8 +17,8 @@ import { fileURLToPath } from 'node:url';
 import { readFile } from 'node:fs/promises';
 import { newEncounter } from '../src/workspace-state.js';
 import { screenerTrials } from '../src/evidence/screenerTrials.js';
-import { conflictNote, createInitialScreenerState, evaluateAll, potentialMatches, withClassification } from '../src/evidence/screener-eval.js';
-import { answerFacts, applyAnticoagulant, applyEncounterPrefill, screenerPrefillFromEncounter } from '../src/evidence/screener-prefill.js';
+import { buildScreenerParams, conflictNote, createInitialScreenerState, evaluateAll, potentialMatches, refinerItems, withClassification } from '../src/evidence/screener-eval.js';
+import { answerFacts, applyAnticoagulant, applyEncounterPrefill, importChanged, screenerPrefillFromEncounter } from '../src/evidence/screener-prefill.js';
 
 const HOUR = 3600000;
 const now = new Date(2026, 9, 22, 12).getTime();
@@ -149,14 +149,64 @@ describe('the OAC control writes only its own fact (verifier finding 3)', () => 
 });
 
 describe('choosing a classification ends the import and keeps only the user\'s own answers', () => {
-  it('a fact in conflict shows the user\'s answer again, and the next import lists the conflict again', () => {
-    const e = encounter({ diagnosisCategory: 'ich', age: '72', ...lkwAt(now - 30 * 24 * HOUR) }, { details: { afDetected: 'yes' } });
-    const imported = reapply(answerFacts(withClassification(fresh(), 'ich'), { afibHistory: false }), e);
+  const AF_NOTE = `${HEAD}documented clinical atrial fibrillation${TAIL}`;
+  it('a fact in conflict stays unknown and listed, and the next import weighs the user\'s answer again', () => {
+    const e = afDetected => encounter({ diagnosisCategory: 'ich', age: '72', ...lkwAt(now - 30 * 24 * HOUR) }, { details: { afDetected } });
+    const imported = reapply(answerFacts(withClassification(fresh(), 'ich'), { afibHistory: false }), e('yes'));
     expect([imported.afibHistory, imported.age]).toEqual(['unselected', 72]);
     const restarted = withClassification(imported, 'ich');
-    expect([restarted.afibHistory, restarted.age, restarted.imported]).toEqual([false, 'unselected', null]);
-    const again = reapply(restarted, e);
-    expect([again.afibHistory, conflictNote(again, now)]).toEqual(['unselected', `${HEAD}documented clinical atrial fibrillation${TAIL}`]);
+    expect([restarted.afibHistory, restarted.age, conflictNote(restarted, null)]).toEqual(['unselected', 'unselected', AF_NOTE]);
+    // The import has ended: no source, so nothing on the screen is called stale.
+    expect(importChanged(restarted, screenerPrefillFromEncounter(e(''), now))).toBe(false);
+    const again = reapply(restarted, e('yes'));
+    expect([again.afibHistory, conflictNote(again, now)]).toEqual(['unselected', AF_NOTE]);
+    // The user's "No" is kept for that weighing: with the Encounter AF cleared, it is the only answer entered.
+    expect([reapply(restarted, e('')).afibHistory, conflictNote(reapply(restarted, e('')), now)]).toEqual([false, '']);
+    // Answering the fact after the click settles the conflict, as any edit does.
+    expect([answerFacts(restarted, { afibHistory: false }).afibHistory, conflictNote(answerFacts(restarted, { afibHistory: false }), null)]).toEqual([false, '']);
+  });
+
+  // Third verifier, round 4 (r1-reclassify, browser-r1): TIA, age 70, LKW 3 days, Encounter "no AF documented".
+  it.each(['tia', 'ischemic'])('AF documented Yes against the Encounter\'s "no AF", then %s chosen: AF stays unknown and listed, and INTERCEPT never becomes a potential match on it', to => {
+    const e = encounter({ diagnosisCategory: 'tia', age: '70', ...lkwAt(now - 72 * HOUR) }, { details: { afDetected: 'no' } });
+    let state = reapply(answerFacts(withClassification(fresh(), 'tia'), { afibHistory: true }), e);
+    expect([state.afibHistory, state.imported.conflicts, conflictNote(state, now)]).toEqual(['unselected', { afibHistory: true }, AF_NOTE]);
+    state = withClassification(state, to);
+    expect([state.afibHistory, conflictNote(state, null)]).toEqual(['unselected', AF_NOTE]);
+    // The user re-enters the facts the click restarted: age 70, onset "24h – 7d", every refiner item Absent.
+    state = answerFacts(state, { age: '70' });
+    state = answerFacts(state, { onsetVal: 3, onsetUnit: 'days', onsetRangeHours: [24, 168], onsetAnchorMs: null });
+    state = answerFacts(state, { exclusions: Object.fromEntries(refinerItems(state, null).map(item => [item.id, false])) });
+    expect([state.afibHistory, conflictNote(state, null)]).toEqual(['unselected', AF_NOTE]);
+    const r = evaluateAll(state, screenerTrials, null);
+    expect(potentialMatches(r).map(i => i.trial.acronym)).not.toContain('INTERCEPT');
+    expect(r.briefingNote.split('\n')).toContain(AF_NOTE);
+    expect(r.briefingNote).not.toMatch(/^Inputs: .*atrial fibrillation/m);
+    expect(r.briefingNote).toContain('Confirm documented clinical atrial fibrillation');
+    // Control: once the user answers AF documented, the same screen is a potential match, so AF was the only gate.
+    expect(potentialMatches(evaluateAll(answerFacts(state, { afibHistory: true }), screenerTrials, null)).map(i => i.trial.acronym)).toContain('INTERCEPT');
+  });
+
+  it('AF or flutter No against an Encounter AF, ICH chosen again: both stay unknown and listed, and AF or flutter is not derived', () => {
+    const e = encounter({ diagnosisCategory: 'ich', age: '72', ...lkwAt(now - 30 * 24 * HOUR) }, { details: { afDetected: 'yes' } });
+    const imported = reapply(answerFacts(withClassification(fresh(), 'ich'), { afOrFlutterHistory: false, exclusions: { exPriorIch12m: false, exClearAnticoagulationIndication: false, exClearAntiplateletIndication: false } }), e);
+    let state = withClassification(imported, 'ich');
+    expect([state.afibHistory, state.afOrFlutterHistory, conflictNote(state, null)]).toEqual(['unselected', 'unselected', `${HEAD}documented clinical atrial fibrillation; atrial fibrillation or flutter${TAIL}`]);
+    state = answerFacts(state, { afibHistory: true, exclusions: { exPriorIch12m: false, exClearAnticoagulationIndication: false, exClearAntiplateletIndication: false } });
+    expect(buildScreenerParams(state, null).afOrFlutterHistory).toBe('unselected');
+    expect(conflictNote(state, null)).toBe(`${HEAD}atrial fibrillation or flutter${TAIL}`);
+    expect(where(state, 'ASPIRE')).toEqual(['pending', 'insufficient-information']);
+    // On an ischemic screen AF or flutter is hidden and returns to unknown, so only AF stays listed.
+    const ischemic = withClassification(imported, 'ischemic');
+    expect([ischemic.afOrFlutterHistory, Object.keys(ischemic.imported.conflicts), conflictNote(ischemic, null)]).toEqual(['unselected', ['afibHistory'], AF_NOTE]);
+  });
+
+  it('a conflict over an answer the click restarts ends with it', () => {
+    const e = encounter({ diagnosisCategory: 'ich', ...lkwAt(now - HOUR), lastDOACType: 'apixaban' });
+    const imported = reapply(ichScreen(), e);
+    expect(Object.keys(imported.imported.conflicts)).toEqual(expect.arrayContaining(['anticoagulant', 'exDoacLmwhAtOnset', 'exOacWithin7d']));
+    const restarted = withClassification(imported, 'ich');
+    expect([restarted.anticoagulant, restarted.exclusions, restarted.imported, conflictNote(restarted, null)]).toEqual(['unselected', {}, null, '']);
   });
 });
 
@@ -306,6 +356,41 @@ describe('the same reproductions on the real controls in a browser', () => {
       expect(await status()).toContain(`${HEAD}Factor Xa inhibitor or direct thrombin inhibitor within 48 h${TAIL}`);
       expect(await card('SISTER').count()).toBe(0);
       expect(await copied()).toMatch(/\n- SISTER: Factor Xa inhibitor or direct thrombin inhibitor within 48 h\n/);
+    } finally { await page.close(); }
+    expect(errors).toEqual([]);
+  }, 30000);
+
+  it('a classification click does not settle a standing AF conflict: INTERCEPT stays insufficient information (round 4)', async () => {
+    await open();
+    try {
+      const AF_NOTE = `${HEAD}documented clinical atrial fibrillation${TAIL}`;
+      await setEncounter({ diagnosisCategory: 'tia', age: '70', lkwDate: '2026-10-19', lkwTime: '12:00' }, { details: { afDetected: 'no' } });
+      await page.getByRole('button', { name: 'TIA', exact: true }).click();
+      await select('Atrial fibrillation documented', 'true');
+      await useFacts();
+      const refiner = 'details:has(summary:has-text("Optional exclusion review")) select';
+      const allAbsent = async () => { for (const label of await page.locator(refiner).evaluateAll(els => els.map(el => el.getAttribute('aria-label')))) await select(label, 'false'); };
+      await open$('Optional exclusion review');
+      await allAbsent();
+      expect([await value('Atrial fibrillation documented'), await card('INTERCEPT').getAttribute('data-completeness')]).toEqual(['', 'insufficient-information']);
+      for (const name of ['TIA', 'Ischemic stroke']) {
+        await page.getByRole('button', { name, exact: true }).click();
+        expect(await value('Atrial fibrillation documented'), name).toBe('');
+        expect(await status(), name).toBe(AF_NOTE);
+      }
+      await page.getByRole('button', { name: 'TIA', exact: true }).click();
+      await page.getByLabel('Age (y)', { exact: true }).fill('70');
+      await page.getByRole('button', { name: /^24h – 7d/ }).click();
+      if (!(await page.locator('details:has(summary:has-text("Optional exclusion review"))').evaluate(d => d.open))) await open$('Optional exclusion review');
+      await allAbsent();
+      expect([await value('Atrial fibrillation documented'), await status(), await card('INTERCEPT').getAttribute('data-completeness')]).toEqual(['', AF_NOTE, 'insufficient-information']);
+      const note = await copied();
+      expect(note.split('\n')).toContain(AF_NOTE);
+      expect(note).not.toMatch(/^Inputs: .*atrial fibrillation/m);
+      expect(note).toMatch(/^POTENTIAL MATCH \(0\)/m);
+      // Answering AF documented settles the conflict, and only then is INTERCEPT a potential match.
+      await select('Atrial fibrillation documented', 'true');
+      expect([await status(), await card('INTERCEPT').getAttribute('data-completeness')]).toEqual(['', 'potential-match']);
     } finally { await page.close(); }
     expect(errors).toEqual([]);
   }, 30000);
