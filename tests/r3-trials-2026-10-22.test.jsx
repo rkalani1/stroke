@@ -295,7 +295,7 @@ describe('registry wording re-read on 2026-10-22', () => {
     for (const re of [/Within 30 days: surgery or biopsy of a parenchymal organ/, /severe head trauma within 90 days/, /or serious systemic hemorrhage; severe head trauma/, /suggestive of SAH even with a normal CT/,
       /hematocrit < 25%/, /aPTT above normal/, /creatinine > 4 mg\/dL or dialysis/, /concurrent MI, PE, DVT or other thrombosis/, /Prior TS23/, /another research drug protocol/]) expect(exc).toMatch(re);
     const confirm = toConfirm(evaluate('SISTER', { classification: 'ischemic' })).join(' ');
-    for (const re of [/surgery\/biopsy, trauma or serious systemic hemorrhage within 30 days/, /severe head trauma within 90 days/, /dialysis or concurrent thrombosis needing antithrombotics/, /INR, platelet, hematocrit, aPTT, creatinine, LMWH, GP IIb\/IIIa and BP limits/]) expect(confirm).toMatch(re);
+    for (const re of [/surgery\/biopsy, trauma, persistent ulcerative wounds or serious systemic hemorrhage within 30 days/, /severe head trauma within 90 days/, /dialysis or concurrent thrombosis needing antithrombotics/, /INR, platelet, hematocrit, aPTT, creatinine, LMWH, GP IIb\/IIIa and BP limits/]) expect(confirm).toMatch(re);
     // Second verification: the sentence now names the exclusions the to-confirm list leaves to the full criteria.
     expect(t.sourceGaps).toContain('Perfusion imaging, EVT clot engagement and the remaining CT.gov exclusions are listed for confirmation, not modeled, except prior TS23 or antibody allergy, confounding neurological or psychiatric disease and another research drug protocol (full criteria only).');
   });
