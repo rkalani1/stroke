@@ -593,12 +593,13 @@ export function conflictNote(state, nowMs = null) {
 
 // Choosing a classification restarts timing, exclusions and the anticoagulant
 // answer, and returns every fact the new screen hides to unknown. It also ends
-// the Encounter import: a value other than the user's own answer returns to
-// unknown, so nothing imported outlives its staleness tracking.
+// the Encounter import: every other fact shows the user's own answer
+// (imported.answers), so nothing imported outlives its staleness tracking.
+// NIHSS provenance follows the NIHSS.
 export function withClassification(state, classification) {
-  const initial = createInitialScreenerState(), answers = state.imported?.answers;
-  const reset = [...new Set(Object.values(VISIBLE_FACTS).flat())].filter(key => !VISIBLE_FACTS[classification].includes(key) || (answers && !Object.is(state[key], answers[key])));
-  return { ...state, ...Object.fromEntries(reset.map(key => [key, initial[key]])), ...(reset.includes('nihss') && { nihssUntestable: 0, nihssBulkZero: 0 }),
+  const initial = createInitialScreenerState(), own = state.imported?.answers || state;
+  const shown = key => VISIBLE_FACTS[classification].includes(key.startsWith('nihss') ? 'nihss' : key) && key in own;
+  return { ...state, ...Object.fromEntries([...new Set(Object.values(VISIBLE_FACTS).flat()), 'nihssUntestable', 'nihssBulkZero'].map(key => [key, shown(key) ? own[key] : initial[key]])),
     classification, onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null, exclusions: {}, anticoagulant: 'unselected', takingOac: 'unselected', imported: null };
 }
 

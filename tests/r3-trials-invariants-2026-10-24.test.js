@@ -11,7 +11,8 @@
 //   only present exclusions. Other facts (classification, age) take the Encounter's value when it has
 //   one, which replaces a different U; otherwise U, so an imported value the user never answered returns
 //   to unknown. An edit writes only its own keys and settles their conflicts. Choosing a classification
-//   ends the import and keeps only the user's answers.
+//   ends the import; each fact the new screen shows keeps the user's own answer, even one a conflict had
+//   set to unknown (the next import weighs it again).
 // Also checked after every step: an immediate second reapply changes nothing, the copied summary carries
 // exactly the banner's stale and conflict sentences, no text contains undefined/null/NaN, and no study is
 // a potential match while a fact it reads is unknown.
@@ -62,10 +63,13 @@ const SELECT = {
 const refNew = () => ({ screen: Object.fromEntries(TRACKED.map(key => [key, UNKNOWN(key)])), record: null });
 function refEdit(model, written) {
   Object.assign(model.screen, written);
-  if (model.record) for (const key of Object.keys(written)) { model.record.U[key] = written[key]; model.record.conflicts.delete(key); model.record.own.add(key); }
+  if (model.record) for (const key of Object.keys(written)) { model.record.U[key] = written[key]; model.record.conflicts.delete(key); }
 }
+// The import ends; each fact the new screen shows keeps the user's own answer, everything else is unknown.
 function refClassify(model, cls) {
-  for (const key of ['age', 'afibHistory', 'afOrFlutterHistory']) if (!VISIBLE[cls].includes(key) || (model.record && !model.record.own.has(key))) model.screen[key] = 'unselected';
+  for (const key of ['age', 'afibHistory', 'afOrFlutterHistory']) {
+    model.screen[key] = !VISIBLE[cls].includes(key) ? 'unselected' : !model.record ? model.screen[key] : key in model.record.U ? model.record.U[key] : 'unselected';
+  }
   Object.assign(model.screen, { classification: cls, anticoagulant: 'unselected', takingOac: 'unselected' });
   for (const key of TRACKED) if (isExclusion(key)) model.screen[key] = undefined;
   model.record = null;
@@ -75,12 +79,12 @@ const encounterFacts = prefill => { const { exclusions = {}, ...facts } = prefil
 function refImport(model, E) {
   if (E.classification && E.classification !== model.screen.classification) Object.assign(model, refNew());
   const U = model.record ? { ...model.record.U } : { ...model.screen };
-  const screen = {}, conflicts = new Set(), own = new Set();
+  const screen = {}, conflicts = new Set();
   for (const key of REPLACED) {
     if (E[key] !== undefined && String(E[key]) !== String(U[key])) { screen[key] = E[key]; delete U[key]; }
-    else { screen[key] = key in U ? U[key] : 'unselected'; own.add(key); }
+    else screen[key] = key in U ? U[key] : 'unselected';
   }
-  screen.exPregnancy = U.exPregnancy; own.add('exPregnancy');
+  screen.exPregnancy = U.exPregnancy;
   const differs = key => known(U[key]) && known(E[key]) && U[key] !== E[key];
   const contradicted = differs('anticoagulant') || differs('takingOac');
   for (const key of WEIGHED) {
@@ -88,10 +92,10 @@ function refImport(model, E) {
     if (differs(key) || afAgainstNo) { conflicts.add(key); screen[key] = isExclusion(key) ? true : 'unselected'; continue; }
     let e = E[key];
     if (contradicted && (key === 'anticoagulant' || key === 'takingOac' || (OAC_EXCLUSIONS.includes(key) && e !== true))) e = undefined;
-    if (known(U[key])) { screen[key] = U[key]; own.add(key); } else screen[key] = known(e) ? e : UNKNOWN(key);
+    screen[key] = known(U[key]) ? U[key] : known(e) ? e : UNKNOWN(key);
   }
   model.screen = screen;
-  model.record = { U, conflicts, own };
+  model.record = { U, conflicts };
 }
 
 /* ── The implementation, driven through the same calls as TrialScreener's controls ───────── */

@@ -41,7 +41,8 @@ export function answerFacts(state, patch) {
   }
   const next = { ...state, ...patch, exclusions }, record = state.imported;
   if (!record) return next;
-  const { exclusions: _, ...written } = { ...patch, ...patch.exclusions }, conflicts = { ...record.conflicts };
+  const written = { ...patch, ...patch.exclusions }, conflicts = { ...record.conflicts };
+  delete written.exclusions;
   for (const key in written) delete conflicts[key];
   return { ...next, imported: { ...record, answers: { ...record.answers, ...written }, conflicts } };
 }
