@@ -11,11 +11,13 @@
 //   only present exclusions. Other facts (classification, age) take the Encounter's value when it has
 //   one, which replaces a different U; otherwise U, so an imported value the user never answered returns
 //   to unknown. An edit writes only its own keys and settles their conflicts. Choosing a classification
-//   ends the import; each fact the new screen shows keeps the user's own answer, even one a conflict had
-//   set to unknown (the next import weighs it again).
+//   ends the import; each fact the new screen shows keeps the user's own answer, except that a conflict
+//   over a fact the new screen still shows is not settled by the click: the fact stays unknown and listed,
+//   and the next import weighs the user's answer again. The anticoagulant, OAC and exclusion answers restart.
 // Also checked after every step: an immediate second reapply changes nothing, the copied summary carries
-// exactly the banner's stale and conflict sentences, no text contains undefined/null/NaN, and no study is
-// a potential match while a fact it reads is unknown.
+// exactly the banner's stale and conflict sentences, no text contains undefined/null/NaN, no study is
+// a potential match while a fact it reads is unknown, and (independently of the reference model) no
+// weighed answer the last import's Encounter contradicts is shown unlisted unless the user answered it since.
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -65,14 +67,19 @@ function refEdit(model, written) {
   Object.assign(model.screen, written);
   if (model.record) for (const key of Object.keys(written)) { model.record.U[key] = written[key]; model.record.conflicts.delete(key); }
 }
+// Answers a classification choice restarts (the exclusions restart too).
+const RESTARTED = ['anticoagulant', 'takingOac'];
 // The import ends; each fact the new screen shows keeps the user's own answer, everything else is unknown.
+// A conflict over a shown fact that does not restart stands: unknown, listed, its U kept for the next import.
 function refClassify(model, cls) {
+  const U = model.record?.U;
+  const standing = [...(model.record?.conflicts || [])].filter(key => VISIBLE[cls].includes(key) && !RESTARTED.includes(key));
   for (const key of ['age', 'afibHistory', 'afOrFlutterHistory']) {
-    model.screen[key] = !VISIBLE[cls].includes(key) ? 'unselected' : !model.record ? model.screen[key] : key in model.record.U ? model.record.U[key] : 'unselected';
+    model.screen[key] = !VISIBLE[cls].includes(key) || standing.includes(key) ? 'unselected' : !U ? model.screen[key] : key in U ? U[key] : 'unselected';
   }
   Object.assign(model.screen, { classification: cls, anticoagulant: 'unselected', takingOac: 'unselected' });
   for (const key of TRACKED) if (isExclusion(key)) model.screen[key] = undefined;
-  model.record = null;
+  model.record = standing.length ? { U: { ...model.screen, ...Object.fromEntries(standing.map(key => [key, U[key]])) }, conflicts: new Set(standing) } : null;
 }
 // E: the tracked facts of the Encounter prefill (the Encounter → fact mapping is not under test here).
 const encounterFacts = prefill => { const { exclusions = {}, ...facts } = prefill.patch; return { ...facts, ...exclusions }; };
@@ -181,6 +188,8 @@ function run(seed, steps, rendered) {
   const log = [`seed ${seed}: ${cls}, LKW ${lkw ?? 'none'} h`];
   log.push(`before the first import: ${JSON.stringify(view(state))}; Encounter ${JSON.stringify({ lastDOACType: note.lastDOACType, afDetected: details.afDetected })}`);
   const trace = extra => [...log, extra].filter(Boolean).join('\n  ');
+  // The Encounter facts of the last import, and the keys the user has answered since it.
+  let lastE = null, answered = new Set();
   for (let step = 0; step < steps; step += 1) {
     const screenCls = state.classification;
     // An unclassified screen shows no fact controls, only the classification buttons.
@@ -215,6 +224,7 @@ function run(seed, steps, rendered) {
       }
       log.push(`user ${control} → ${JSON.stringify(written)}`);
       refEdit(model, written);
+      for (const key of Object.keys(written)) answered.add(key);
       // An edit changes no key it does not write, and settles only conflicts over keys it writes.
       for (const key of TRACKED) if (!(key in written)) expect(value(state, key), trace(`edit changed ${key}`)).toBe(before[key]);
       expect(conflictKeys(state), trace()).toEqual(beforeConflicts.filter(key => !(key in written)));
@@ -231,7 +241,7 @@ function run(seed, steps, rendered) {
     } else if (op === 'import') {
       const prefill = screenerPrefillFromEncounter(encounter(), now);
       state = applyEncounterPrefill(state, prefill, init());
-      if (prefill.patch) refImport(model, encounterFacts(prefill));
+      if (prefill.patch) { refImport(model, encounterFacts(prefill)); lastE = encounterFacts(prefill); answered = new Set(); }
       log.push(prefill.patch ? 'import' : 'import (no facts: unchanged)');
     } else {
       const to = rand() < 0.75 && screenCls !== 'unselected' ? screenCls : pick(['ich', 'ischemic', 'tia']);
@@ -239,6 +249,13 @@ function run(seed, steps, rendered) {
       log.push(`classification → ${to}`);
     }
     checkScreen(state, model, trace);
+    // Independent of the reference model: a weighed answer that the last import's Encounter contradicts is
+    // never shown as current without being listed, unless the user answered it since (a conflict stands until
+    // the user answers it or the next import weighs it; nothing in between settles it).
+    if (lastE) for (const key of WEIGHED) {
+      const shown = value(state, key);
+      if (known(shown) && known(lastE[key]) && shown !== lastE[key] && !answered.has(key)) expect(key in (state.imported?.conflicts || {}), trace(`${key} ${JSON.stringify(shown)} is shown unlisted; the last import's Encounter says ${JSON.stringify(lastE[key])}`)).toBe(true);
+    }
     // A reapply with the Encounter unchanged, repeated, changes nothing.
     const prefill = screenerPrefillFromEncounter(encounter(), now);
     const once = applyEncounterPrefill(state, prefill, init());

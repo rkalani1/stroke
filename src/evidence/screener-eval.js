@@ -591,16 +591,22 @@ export function conflictNote(state, nowMs = null) {
   return names.length ? `Encounter and screener entries differed: ${names.join('; ')}. Exclusions are set to present, other answers to unknown; confirm them.` : '';
 }
 
+const RESTARTED = { onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null, anticoagulant: 'unselected', takingOac: 'unselected' };
 // Choosing a classification restarts timing, exclusions and the anticoagulant
 // answer, and returns every fact the new screen hides to unknown. It also ends
 // the Encounter import: every other fact shows the user's own answer
 // (imported.answers), so nothing imported outlives its staleness tracking.
-// NIHSS provenance follows the NIHSS.
+// A conflict over a fact the new screen still shows is not settled by the click:
+// the fact stays unknown and listed, and a record with no source (never stale)
+// keeps the user's answer for the next import to weigh. NIHSS provenance follows the NIHSS.
 export function withClassification(state, classification) {
-  const initial = createInitialScreenerState(), own = state.imported?.answers || state;
-  const shown = key => VISIBLE_FACTS[classification].includes(key.startsWith('nihss') ? 'nihss' : key) && key in own;
-  return { ...state, ...Object.fromEntries([...new Set(Object.values(VISIBLE_FACTS).flat()), 'nihssUntestable', 'nihssBulkZero'].map(key => [key, shown(key) ? own[key] : initial[key]])),
-    classification, onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null, exclusions: {}, anticoagulant: 'unselected', takingOac: 'unselected', imported: null };
+  const initial = createInitialScreenerState(), own = state.imported?.answers || state, conflicts = state.imported?.conflicts || {};
+  const shown = key => VISIBLE_FACTS[classification].includes(key.startsWith('nihss') ? 'nihss' : key) && !(key in RESTARTED);
+  const standing = Object.keys(conflicts).filter(shown), keep = list => Object.fromEntries(standing.map(key => [key, list[key]]));
+  const next = { ...state, ...Object.fromEntries([...new Set(Object.values(VISIBLE_FACTS).flat()), 'nihssUntestable', 'nihssBulkZero'].map(key => [key, shown(key) && key in own && !standing.includes(key) ? own[key] : initial[key]])),
+    ...RESTARTED, classification, exclusions: {}, imported: null };
+  const { exclusions, imported, ...screen } = next;
+  return standing.length ? { ...next, imported: { source: null, answers: { ...screen, ...keep(own) }, conflicts: keep(conflicts) } } : next;
 }
 
 // "NIHSS 7 (excludes 2 untestable items; 3 items set to 0 by bulk entry, not individually
