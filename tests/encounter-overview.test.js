@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { encounterOverview } from '../src/encounter-overview.js';
+import { encounterHoldCue, encounterOverview } from '../src/encounter-overview.js';
 import { newEncounter } from '../src/workspace-state.js';
 import { NIHSS_ITEMS } from '../src/clinical/nihss-items.js';
 
@@ -36,6 +36,16 @@ describe('encounter navigation readout', () => {
     Object.assign(s.note, { discoveryDate: '2026-10-01', discoveryTime: '11:00' });
     expect(encounterOverview(s, now).timing).toBe('60 min elapsed');
     s.note.discoveryTime = '13:00'; expect(encounterOverview(s, now).timing).toBe('Invalid / future time');
+  });
+  it('points the next cue at the same field as an IVT hold', () => {
+    const s = newEncounter();
+    Object.assign(s.note, { diagnosisCategory: 'ischemic', age: '72', weight: '80', premorbidMRS: '1', lkwDate: '2026-10-01', lkwTime: '10:00', ctHemorrhageStatus: 'absent', glucose: '118', presentingBP: '168/92' });
+    expect(encounterHoldCue(s, now)).toEqual({ label: 'Anticoagulant exposure', target: 'input-anticoagulant' });
+    s.note.lastDOACType = 'none';
+    s.note.ctHemorrhageStatus = 'present';
+    expect(encounterHoldCue(s, now)).toEqual({ label: 'CT hemorrhage recorded', target: 'input-ct-review' });
+    s.note.diagnosisCategory = 'ich';
+    expect(encounterHoldCue(s, now)).toBeNull();
   });
   it('does not require acute-only entries for follow-up or mutate state', () => {
     const s = newEncounter(); s.context = 'follow-up'; const before = JSON.stringify(s);

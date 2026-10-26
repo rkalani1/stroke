@@ -1,5 +1,5 @@
 import React from 'react';
-import { encounterOverview, focusEncounterTarget } from '../encounter-overview.js';
+import { encounterHoldCue, encounterOverview, focusEncounterTarget } from '../encounter-overview.js';
 
 export const ENCOUNTER_SECTIONS = [['context', 'Context'], ['exam', 'Examination'], ['safety', 'Decision review'], ['handoff', 'Documentation']];
 
@@ -13,9 +13,9 @@ export function EncounterNavigation() {
 // The pinned case bar shows the entered values; this row only points to the
 // next missing core entry.
 export default function EncounterOverview({ state, now }) {
-  const overview = encounterOverview(state, now), next = overview.missing[0];
+  const overview = encounterOverview(state, now), hold = encounterHoldCue(state, now), next = hold || overview.missing[0];
   const total = overview.missing.length;
   return <aside className="encounter-overview" aria-label="Encounter at a glance" data-complete={next ? undefined : ''}>
-    <div className="encounter-next-entry">{next ? <><span><b>{total}</b> core {total === 1 ? 'entry' : 'entries'} missing</span><button type="button" onClick={() => focusEncounterTarget(next.target)}>Next: {next.label}<span aria-hidden="true"> →</span></button></> : <span>Core entries recorded</span>}</div>
+    <div className="encounter-next-entry">{hold && total === 0 ? <span>IVT held</span> : next ? <span><b>{total}</b> core {total === 1 ? 'entry' : 'entries'} missing</span> : <span>Core entries recorded</span>}{next && <button type="button" onClick={() => focusEncounterTarget(next.target)}>Next: {next.label}<span aria-hidden="true"> →</span></button>}</div>
   </aside>;
 }

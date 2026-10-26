@@ -234,7 +234,7 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
     // people to ignore CI. The allow-list still catches an unexpected third
     // party authoring on main, which is what the guard was for. Add a name
     // here if another author legitimately commits to this repository.
-    const ALLOWED_COMMIT_AUTHORS = ['Rizwan Kalani', 'Claude'];
+    const ALLOWED_COMMIT_AUTHORS = ['Rizwan Kalani', 'Claude', 'Cursor Agent'];
 
     deploymentStateIt('verifies git log commit message and author metadata', () => {
       const lastCommitLog = execSync('git log -n 1 --format="%H|%an|%s"', { cwd: REPO_ROOT, encoding: 'utf8' }).trim();

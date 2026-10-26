@@ -18,7 +18,7 @@ beforeAll(async () => {
 afterAll(async()=>browser?.close());
 async function pageWith(options={}) {
   const page=await browser.newPage();
-  if(options.viewport)await page.setViewportSize(options.viewport);
+  await page.setViewportSize(options.viewport || { width: 1000, height: 800 });
   await page.setContent('<div id="root"></div>');
   await page.evaluate(({envelope,options})=>{
     window.envelope=envelope;window.requests=0;
@@ -118,7 +118,7 @@ describe('curated reference integrity and interaction',()=>{
       const expected=['ELAN','hospital','Prevention and antithrombotics'];
       const waitForStudy=async id=>page.waitForFunction(id=>location.hash===`#/evidence/${id}` && document.querySelector(`[data-reference-id="${id}"]`)?.open && document.activeElement.closest('[data-reference-id]')?.dataset.referenceId===id,id);
       await page.locator('.reference-study-results a[href="#/evidence/elan"]').click();await waitForStudy('elan');
-      expect(await filters()).toEqual(expected);expect(await page.locator('.reference-group > .reference-card').count()).toBe(1);
+      expect(await filters()).toEqual(expected);expect(await page.locator('.reference-group > .reference-card, .reading-pane > .reference-card').count()).toBe(1);
       await page.locator('.reference-study-results a[href="#/evidence/catalyst"]').click();await waitForStudy('catalyst');
       expect(await filters()).toEqual(expected);
       await page.goBack();await waitForStudy('elan');expect(await filters()).toEqual(expected);

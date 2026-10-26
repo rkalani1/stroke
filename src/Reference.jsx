@@ -2,9 +2,27 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { CARE_SETTINGS, searchReference, referenceText, recommendationLabels } from './reference-search.js';
 import { useReferenceData } from './reference-resource.js';
 
+function useWideReadingPane() {
+  const query = '(min-width: 1100px)';
+  const [wide, setWide] = useState(() => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia(query).matches);
+  useEffect(() => {
+    if (typeof window.matchMedia !== 'function') return undefined;
+    const media = window.matchMedia(query);
+    const sync = () => setWide(media.matches);
+    sync();
+    media.addEventListener?.('change', sync);
+    return () => media.removeEventListener?.('change', sync);
+  }, []);
+  return wide;
+}
+
 export default function Reference({ version, focusId, active = true }) {
   const { data, failed, retry } = useReferenceData(version);
   const [query, setQuery] = useState(''), [setting, setSetting] = useState('all'), [category, setCategory] = useState('all'), [opened, setOpened] = useState({});
+  const [pickedId, setPickedId] = useState(null);
+  const seenFocus = useRef(focusId);
+  if (seenFocus.current !== focusId) { seenFocus.current = focusId; if (pickedId !== null) setPickedId(null); }
+  const wide = useWideReadingPane();
   const [focusRequest, requestFocus] = useState(0);
   const [copy, setCopy] = useState(null), epoch = useRef(0), fallback = useRef(null), container = useRef(null), searchInput = useRef(null), resultTargets = useRef(new Set());
   const clearCopy = () => { epoch.current++; setCopy(null); };
@@ -40,6 +58,10 @@ export default function Reference({ version, focusId, active = true }) {
   const ungrouped = category === 'all' ? matchingStudies.filter(record => !record.relatedTopic) : [];
   const studyResults = query.trim() ? matchingStudies.filter(record => category === 'all' || results.some(topic => topic.id === record.relatedTopic)) : [];
   if (ungrouped.length) groups.push(['Other study summaries', ungrouped]);
+  const flatTopics = groups.flatMap(([, entries]) => entries);
+  const focusTopicId = !focusId ? null : data.topics.some(record => record.id === focusId) ? focusId : data.studies.find(record => record.id === focusId)?.relatedTopic || null;
+  const chosen = flatTopics.find(record => record.id === (pickedId || focusTopicId)) || flatTopics[0] || null;
+  const widePane = wide && !query.trim() && setting === 'all' && category === 'all' && flatTopics.length > 0;
   const renderRecommendations = record => <section className="reference-recs" aria-label={`Guideline recommendations for ${record.title}`}><h3>Guideline recommendations</h3><ul>{record.recommendations.map(rec => {
     const label = recommendationLabels(rec);
     return <li key={rec.id}><span className="reference-chips"><span className={`reference-chip ${label.tone}`}>{label.cor}</span>{label.loe && <span className="reference-chip reference-chip-loe">{label.loe}</span>}</span><span className="reference-rec-text">{rec.text}</span><span className="reference-rec-source">{rec.source}</span></li>;
@@ -49,13 +71,17 @@ export default function Reference({ version, focusId, active = true }) {
   const renderCard = record => {
     const study = !record.summary;
     const relatedStudies = study ? [] : data.studies.filter(item => item.relatedTopic === record.id);
-    return <details className="reference-card" data-reference-id={record.id} key={record.id} open={Boolean(opened[record.id])} onToggle={event => {
+    const pinned = widePane && chosen?.id === record.id;
+    const shown = Boolean(opened[record.id]) || pinned;
+    return <details className="reference-card" data-reference-id={record.id} key={record.id} open={shown || undefined} onToggle={event => {
       if (event.target !== event.currentTarget) return;
+      // The open pane forces this card open. Recording that as a user choice would leave the nested studies mounted after the pane closes, so a section filter would count those studies as topics.
+      if (pinned) { if (!event.currentTarget.open) event.currentTarget.open = true; return; }
       const open = event.currentTarget.open; if (!open) clearCopy();
       setOpened(previous => previous[record.id] === open ? previous : { ...previous, [record.id]: open });
     }}>
       <summary><span>{record.title}</span>{study && <span className="reference-year">{record.year}</span>}{study && record.headline && <span className="reference-headline">{record.headline}</span>}</summary>
-      {opened[record.id] && <div className="reference-body">{study ? <><p>{record.question}</p><dl>{[['Population', record.population], ['Comparison', record.comparison], ['Result', record.result]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></> : <><p className="reference-summary">{record.summary}</p>{record.recommendations?.length > 0 && renderRecommendations(record)}<ul>{record.consider.map(item => <li key={item}>{item}</li>)}</ul></>}
+      {shown && <div className="reference-body">{study ? <><p>{record.question}</p><dl>{[['Population', record.population], ['Comparison', record.comparison], ['Result', record.result]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></> : <><p className="reference-summary">{record.summary}</p>{record.recommendations?.length > 0 && renderRecommendations(record)}<ul>{record.consider.map(item => <li key={item}>{item}</li>)}</ul></>}
         <p className="reference-limits"><strong>Limits:</strong> {record.caution || record.limits}</p>
         {(record.related || []).length > 0 && <div className="reference-links">{record.related.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</div>}
         {relatedStudies.length > 0 && <section aria-label={`Study summaries for ${record.title}`}><h3>Study summaries</h3>{relatedStudies.map(renderCard)}</section>}
@@ -71,7 +97,7 @@ export default function Reference({ version, focusId, active = true }) {
     <p role="status" className="workspace-help">{results.length === 0 && ungrouped.length === 0 ? 'No topics found. Try a drug, trial or condition, or clear the filters.' : <>{results.length} {results.length === 1 ? 'topic' : 'topics'} found.{ungrouped.length > 0 && ` ${ungrouped.length} additional study summaries.`}</>}</p>
     {studyResults.length > 0 && <nav className="reference-study-results" aria-label="Matching study summaries"><h2>Matching study summaries <span>({studyResults.length})</span></h2><ul>{studyResults.map(record => <li key={record.id}><a href={`#/evidence/${record.id}`} onClick={event => { if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) { resultTargets.current.add(record.id); if (focusId === record.id) requestFocus(value => value + 1); } }}>{record.title}<span className="reference-year">{record.year}</span>{record.headline && <span className="reference-headline">{record.headline}</span>}</a></li>)}</ul></nav>}
     {focusId && ![...data.topics, ...data.studies].some(record => record.id === focusId) && <p role="status">Reference not found. Browse below.</p>}
-    {groups.map(([name, entries]) => <section key={name} className="reference-group" aria-label={name}><h2>{name}<span>{entries.length}</span></h2>{entries.map(renderCard)}</section>)}
+    {widePane ? <div className="reading-split"><nav className="reading-index" aria-label="Evidence topics">{groups.map(([name, entries]) => <div key={name}><h2>{name}<span>{entries.length}</span></h2><ul>{entries.map(record => <li key={record.id}><button type="button" data-index-id={record.id} aria-current={chosen?.id === record.id ? 'true' : undefined} onClick={() => setPickedId(record.id)}>{record.title}</button></li>)}</ul></div>)}</nav><div className="reading-pane">{chosen && renderCard(chosen)}</div></div> : groups.map(([name, entries]) => <section key={name} className="reference-group" aria-label={name}><h2>{name}<span>{entries.length}</span></h2>{entries.map(renderCard)}</section>)}
     <p className="workspace-help">Summaries work offline; source links need internet.</p>
     <div className="reference-links"><a href="https://professional.heart.org/en/guidelines-statements" target="_blank" rel="noopener noreferrer">AHA guidelines and statements</a><a href="https://eso-stroke.org/guidelines/eso-guideline-directory/" target="_blank" rel="noopener noreferrer">ESO guideline directory</a></div>
   </section>;

@@ -178,7 +178,7 @@ describe('mounted calculator controls', () => {
       window.editShared=(key,value)=>{const previous=window.model;window.model=reconcileSupplementaryAppliedScores(previous,{...previous,note:{...previous.note,[key]:value}});flushSync(draw)};
     `}});script=bundled.outputFiles[0].text;browser=await chromium.launch({headless:true});
   },30000);
-  beforeEach(async()=>{page=await browser.newPage();await page.setContent('<div id="root"></div>');await page.addScriptTag({content:script});});
+  beforeEach(async()=>{page=await browser.newPage();await page.setViewportSize({width:1000,height:800});await page.setContent('<div id="root"></div>');await page.addScriptTag({content:script});});
   afterEach(async()=>{await page?.close();});afterAll(async()=>{await browser?.close();});
   it('mounts all definitions with no invented score or initialization callbacks',async()=>{
     await page.evaluate(state=>window.renderTools(state),caseState());
@@ -190,6 +190,18 @@ describe('mounted calculator controls', () => {
     expect(await page.locator('#calc-aspects-regions [role="status"]').textContent()).toContain('11 items unanswered');
     expect(await page.locator('#calc-mrs-descriptors [role="status"]').textContent()).toBe('Modified Rankin scale descriptors: mRS 0 — No symptoms.');
     expect(await page.locator('#calc-chadsvasc .calc-summary-score').count()).toBe(0);
+  });
+  it('lists every worksheet beside one open pane on a wide screen', async () => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.evaluate(state => window.renderTools(state), caseState());
+    expect(await page.locator('.calc-index button').count()).toBe(calculatorDefinitions.length);
+    expect(await page.locator('.calc-split .tool-target').count()).toBe(1);
+    await page.locator('.calc-index button', { hasText: 'CHA₂DS₂-VASc' }).click();
+    expect(await page.locator('#calc-chadsvasc').count()).toBe(1);
+    expect(await page.locator('.calc-split .tool-target').count()).toBe(1);
+    await page.evaluate(state => window.renderTools(state, 'bad]route'), caseState());
+    expect(await page.getByRole('status').textContent()).toBe('Calculator unavailable.');
+    expect(await page.locator('.calc-split').count()).toBe(0);
   });
   it('opens/focuses a lazy-mounted target, preserves input focus, and synchronously withdraws an applied result on shared clearing',async()=>{
     await page.evaluate(state=>window.renderTools(state,'abcd2'),caseState());

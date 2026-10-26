@@ -193,6 +193,9 @@ async function main() {
       await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)', { exact: true }).fill('80');
       await page.getByLabel('Baseline mRS', { exact: true }).selectOption('0');
       await page.getByLabel('Last known well is unknown', { exact: true }).check();
+      await page.getByRole('button', { name: 'Next: Anticoagulant exposure' }).click();
+      assert.equal(await page.evaluate(() => document.activeElement.id), 'input-anticoagulant');
+      await page.getByLabel('Anticoagulant exposure', { exact: true }).selectOption('none');
       await page.getByRole('button', { name: 'Next: NIHSS examination' }).click();
       assert((await page.evaluate(() => document.activeElement.id)).startsWith('nihss-'));
       assert.equal(await page.locator('#calc-nihss details').first().evaluate(el => el.open), true);
@@ -210,7 +213,8 @@ async function main() {
       await page.evaluate(() => { for (const d of document.querySelectorAll('#tabpanel-encounter details:not([open])')) d.open = true; });
       const discovery = await localStamp(page); await page.getByLabel('Discovery date (local)', { exact: true }).fill(discovery.split('T')[0]); await page.getByLabel('Discovery time (local)', { exact: true }).fill(discovery.split('T')[1]);
       for (const type of ['IVT', 'EVT']) await page.getByLabel(`${type} clinician decision`, { exact: true }).selectOption('Specialist review');
-      assert((await overview.innerText()).includes('Core entries recorded'));
+      assert((await overview.innerText()).includes('IVT held'));
+      assert((await overview.innerText()).includes('Next: CT hemorrhage review'));
       const nav = page.getByRole('navigation', { name: 'Encounter sections' });
       for (const [name, id] of [['Context', 'context'], ['Examination', 'exam'], ['Decision review', 'safety'], ['Documentation', 'handoff']]) {
         await nav.getByRole('button', { name, exact: true }).click();
@@ -382,6 +386,7 @@ async function main() {
     });
     await check('header references and all clinical sections remain reachable without sharing Encounter values', async () => {
       await reset(page); await setupIschemic(page);
+      await openDetails(page.getByLabel('Theme', { exact: true }));
       const links = page.getByRole('navigation', { name: 'External references', exact: true }).getByRole('link');
       assert.deepEqual(await links.allTextContents(), ['Telestroke Map', 'UpToDate', 'OpenEvidence']);
       for (const link of await links.all()) { assert.equal(await link.getAttribute('target'), '_blank'); assert((await link.getAttribute('rel')).includes('noopener')); assert(!(await link.getAttribute('href')).includes('83')); }
@@ -395,8 +400,13 @@ async function main() {
       for (const section of sections) {
         await evidence.getByLabel('Clinical section', { exact: true }).selectOption(section);
         const expected = reference.data.topics.filter(topic => topic.category === section).map(topic => topic.id).sort();
-        await page.waitForFunction(count => document.querySelectorAll('[aria-label="Evidence"] [data-reference-id]').length === count, expected.length);
-        assert.deepEqual((await evidence.locator('[data-reference-id]').evaluateAll(nodes => nodes.map(node => node.dataset.referenceId))).sort(), expected);
+        if (await evidence.locator('.reading-split').count()) {
+          await page.waitForFunction(count => document.querySelectorAll('[aria-label="Evidence"] .reading-index button').length === count, expected.length);
+          assert.deepEqual((await evidence.locator('.reading-index button').evaluateAll(nodes => nodes.map(node => node.dataset.indexId))).sort(), expected);
+        } else {
+          await page.waitForFunction(count => document.querySelectorAll('[aria-label="Evidence"] [data-reference-id]').length === count, expected.length);
+          assert.deepEqual((await evidence.locator('[data-reference-id]').evaluateAll(nodes => nodes.map(node => node.dataset.referenceId))).sort(), expected);
+        }
       }
       await evidence.getByLabel('Clinical section', { exact: true }).selectOption('all');
       await page.getByRole('link', { name: 'Calculators', exact: true }).click();
@@ -451,7 +461,7 @@ async function main() {
         await evidence.getByLabel('Clinical section', { exact: true }).selectOption('Stroke mechanisms and vascular disorders');
         await evidence.getByRole('searchbox', { name: 'Find a clinical question', exact: true }).fill('PFO');
         await evidence.locator('[data-reference-id="pfo"]').waitFor({ state: 'visible' });
-        const filteredIds = await evidence.locator('[data-reference-id]').evaluateAll(cards => cards.map(card => card.dataset.referenceId));
+        const filteredIds = await evidence.locator('.reading-pane > [data-reference-id], .reference-group > [data-reference-id]').evaluateAll(cards => cards.map(card => card.dataset.referenceId));
         assert(filteredIds.length < reference.data.topics.length);
         assert(filteredIds.every(id => reference.data.topics.find(topic => topic.id === id).settings.includes('clinic')));
         await evidence.getByRole('searchbox', { name: 'Find a clinical question', exact: true }).fill('unmatchableqareference');
@@ -650,7 +660,8 @@ async function main() {
       const restoredEvidence = page.getByRole('region', { name: 'Evidence', exact: true });
       await restoredEvidence.getByRole('heading', { name: 'Evidence', exact: true }).waitFor();
       await restoredEvidence.getByRole('searchbox', { name: 'Find a clinical question', exact: true }).waitFor();
-      assert.equal(await restoredEvidence.locator('[data-reference-id]').count(), reference.data.topics.length);
+      const restoredTopicCount = await restoredEvidence.locator('.reading-split').count() ? await restoredEvidence.locator('.reading-index button').count() : await restoredEvidence.locator('[data-reference-id]').count();
+      assert.equal(restoredTopicCount, reference.data.topics.length);
       for(const route of ['#/education','#/calculators/rcvs2','#/encounter/unknown-calc']) {await page.evaluate(hash=>location.hash=hash,route);await page.getByRole('heading',{name:/Retired/}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).isVisible(),false);}
       await page.evaluate(()=>location.hash='#/encounter/ich-score');await page.getByText('This calculator needs an ICH encounter.',{exact:false}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');await page.getByRole('link',{name:'Stroke',exact:true}).click();
     });
@@ -767,7 +778,7 @@ async function main() {
       await page.getByRole('link', {name:'Evidence',exact:true}).click();
       const evidence = page.getByRole('region', {name:'Evidence',exact:true});
       await evidence.getByLabel('Find a clinical question', {exact:true}).fill('AVERROES');
-      assert.equal(await evidence.locator('[data-reference-id]').count(), 1);
+      assert.equal(await evidence.locator('.reading-pane > [data-reference-id], .reference-group > [data-reference-id]').count(), 1);
       const af = evidence.locator('[data-reference-id="af-prevention"]'); await af.locator('summary').click();
       await af.locator(':scope > .reference-body > details.reference-sources > summary').click();
       await af.getByRole('link', {name:/AVERROES/}).waitFor();

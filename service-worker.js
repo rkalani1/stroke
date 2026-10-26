@@ -6,9 +6,9 @@
    Old app caches are retired only on activation. Fetch policy is independent.
 */
 
-const APP_VERSION = '7.8.0';
+const APP_VERSION = '7.8.1';
 const CACHE_PREFIX = 'stroke-cache-v';
-const CACHE_NAME  = 'stroke-cache-v7-8-0-utility-review-20261001';
+const CACHE_NAME  = 'stroke-cache-v7-8-1-utility-review-20261001';
 
 // Retired teaching figures must not be served from a stale browser cache or
 // a bookmarked URL after this worker takes control. Paths are scope-relative
@@ -94,10 +94,10 @@ const CDN_ASSETS = [];
 // BEGIN GENERATED APP CHUNKS
 const APP_CHUNKS = [
   "./chunks/chunk-3EH37YPU.js",
+  "./chunks/chunk-5CVPYEJX.js",
   "./chunks/chunk-6IG4POVN.js",
   "./chunks/chunk-BVAA575E.js",
   "./chunks/chunk-CCC5QWPU.js",
-  "./chunks/chunk-CVE5G7EA.js",
   "./chunks/chunk-DXV6LRZM.js",
   "./chunks/chunk-HOFJI2PN.js",
   "./chunks/chunk-KXBYGU7T.js",
@@ -109,12 +109,12 @@ const APP_CHUNKS = [
   "./chunks/chunk-UUVPNWCE.js",
   "./chunks/chunk-VBK5MHSV.js",
   "./chunks/InstallAppButton-NWUBLKJU.js",
-  "./chunks/ProtectedProtocols-D6RTNENP.js",
-  "./chunks/QuickReference-OQ6AATTM.js",
-  "./chunks/QuickSearch-VGWPKPQC.js",
-  "./chunks/Reference-OAN5TN5O.js",
-  "./chunks/Tools-BAFTAQK7.js",
-  "./chunks/Trials-UWNFDFXG.js"
+  "./chunks/ProtectedProtocols-ETQ27ETQ.js",
+  "./chunks/QuickReference-R7IA6NLL.js",
+  "./chunks/QuickSearch-IEO32KQZ.js",
+  "./chunks/Reference-O7A67OXP.js",
+  "./chunks/Tools-2PLYEPCU.js",
+  "./chunks/Trials-OXBCA225.js"
 ];
 // END GENERATED APP CHUNKS
 
