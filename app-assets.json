@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "appVersion": "7.8.1",
+  "appVersion": "7.8.2",
   "buildTarget": "public",
   "entry": "app.js",
   "initial": [
@@ -19,9 +19,9 @@
   "files": [
     {
       "path": "app.js",
-      "bytes": 104104,
-      "gzipBytes": 32583,
-      "sha256": "f726f81e43cc899e880997f657e57378c578b778dedbff4b623539d1bd89bf11"
+      "bytes": 104112,
+      "gzipBytes": 32581,
+      "sha256": "08461f45396b8f3caba14843cd51c5d0843d680b796b913068f12bec2137813d"
     },
     {
       "path": "chunks/chunk-3EH37YPU.js",

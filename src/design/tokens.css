@@ -318,6 +318,7 @@
 
   /* ─── 6. Motion (zeroed under prefers-reduced-motion below) ─── */
   --motion-scale:  1;
+  --header-h:      72px;   /* sticky title bar; measured and overwritten by App */
   --case-bar-h:    0px;    /* height of the pinned case bar; set by shell.css when present */
   --dur:           180ms;
   --ease:          cubic-bezier(.2,.7,.2,1);

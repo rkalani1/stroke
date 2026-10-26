@@ -386,10 +386,10 @@ async function main() {
     });
     await check('header references and all clinical sections remain reachable without sharing Encounter values', async () => {
       await reset(page); await setupIschemic(page);
-      await openDetails(page.getByLabel('Theme', { exact: true }));
       const links = page.getByRole('navigation', { name: 'External references', exact: true }).getByRole('link');
       assert.deepEqual(await links.allTextContents(), ['Telestroke Map', 'UpToDate', 'OpenEvidence']);
       for (const link of await links.all()) { assert.equal(await link.getAttribute('target'), '_blank'); assert((await link.getAttribute('rel')).includes('noopener')); assert(!(await link.getAttribute('href')).includes('83')); }
+      assert.equal(await page.locator('.workspace-utilities .utility-links').count(), 0);
       await page.getByRole('link', { name: 'Evidence', exact: true }).click();
       const evidence = page.getByRole('region', { name: 'Evidence', exact: true });
       await evidence.getByLabel('Clinical section', { exact: true }).waitFor();
