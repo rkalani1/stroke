@@ -99,6 +99,10 @@ describe('focus is never hidden by sticky chrome (WCAG 2.4.11)', () => {
     expect([paddings('encounter')[0] + shortScreen, paddings('encounter')[0] + phone, paddings('encounter')[1] + wide]).toEqual([8 + 72, 8 + 8, 8 + 72]);
     // The skip link's main region keeps its 8 px landing on both surfaces.
     expect(margins('#workspace-main')).toEqual([['encounter', -14], ['encounter', -74], ['protocols', -96]]);
+    // The two calculator targets without a field or tool class: 8 px where 7.8.3 shows them (phones and short
+    // screens); 82 px below the case bar on wider screens, where 7.8.3 left them under the section nav.
+    expect(margins(':is\\(#calc-defuse3, #calc-alteplase\\)')).toEqual([['encounter', -14], ['encounter', 0]]);
+    expect(paddings('encounter')[0] - 14).toBe(8);
     expect([paddings('encounter')[0] - 14, paddings('encounter')[1] - 74, paddings('protocols')[0] - 96]).toEqual([8, 8, 8]);
     expect(paddings('protocols')[0] + 0).toBe(8 + 96);
     expect(shell).toMatch(/#tabpanel-protocols :is\(h2, h3, details, \[id\]\) \{ scroll-margin-top: 0; \}/);
@@ -460,10 +464,10 @@ const revealLanding = (selector = null) => page.evaluate(selector => {
 }, selector);
 
 describe('reveals land below the sticky header and bars (WCAG 2.4.11), where 7.8.3 lands them', { timeout: 60000 }, () => {
-  // Clear of every stuck bar, ring included; when 7.8.3's landing is given, within 2 px of it.
-  const clear = (main = null, selector = null) => poll(async () => {
+  // Clear of every stuck bar, ring included (by at least `gap` px); when 7.8.3's landing is given, within 2 px of it.
+  const clear = (main = null, selector = null, gap = 0) => poll(async () => {
     const land = await revealLanding(selector);
-    return Boolean(land && land.hidden === 0 && land.top - land.ring >= land.chrome - 0.5 && (main === null || Math.abs(land.offset - main) <= 2)) || land;
+    return Boolean(land && land.hidden === 0 && land.top - land.ring >= land.chrome + gap && (main === null || Math.abs(land.offset - main) <= 2)) || land;
   }).toBe(true);
   // Synthetic weight only: enough for the case bar, its links and a Next cue to show.
   const openCase = async width => {
@@ -505,20 +509,24 @@ describe('reveals land below the sticky header and bars (WCAG 2.4.11), where 7.8
     // Within a date or time field Chrome reveals the focused segment, up to about 15 px below the box, and
     // ignores the field's scroll margin. From the second segment, tuck the field under the stuck bars, then
     // step back to the first segment.
-    for (const [kind, selector] of [['date', '#input-lkw-date'], ['date and time', '[data-probe="last-dose"]']]) {
+    for (const [kind, selector] of [['date', '#input-lkw-date'], ['date and time', '[data-probe="last-dose"]'], ['time', '[data-probe="ct-time"]']]) {
       it(`Shift+Tab between the segments of a ${kind} field partly under the sticky bars reveals its whole box and ring at ${width} px`, async () => {
         await openCase(width);
-        if (kind !== 'date') {
+        if (kind === 'date and time') {
           await page.locator('#input-anticoagulant').selectOption('apixaban');
           await page.getByLabel('Last anticoagulant dose (local)').evaluate(node => node.setAttribute('data-probe', 'last-dose'));
         }
+        if (kind === 'time') await page.getByLabel('Head CT time (local)').evaluate(node => {
+          node.setAttribute('data-probe', 'ct-time');
+          for (let details = node.closest('details'); details; details = details.parentElement?.closest('details')) details.open = true;
+        });
         for (const by of [1, 20]) {
           await page.locator(selector).focus();
           await page.keyboard.press('Tab');
           await tuckUnderBars(selector, by);
           await page.keyboard.press('Shift+Tab');
           await poll(() => page.evaluate(selector => document.activeElement === document.querySelector(selector), selector)).toBe(true);
-          await clear();
+          await clear(null, null, 1);
         }
       });
     }
@@ -537,6 +545,18 @@ describe('reveals land below the sticky header and bars (WCAG 2.4.11), where 7.8
           const root = getComputedStyle(document.documentElement), at = parseFloat(root.getPropertyValue('--header-h')) + parseFloat(root.getPropertyValue('--case-bar-h')) + 8;
           return Math.abs(document.getElementById('workspace-main').getBoundingClientRect().top - at) <= 2 || { top: document.getElementById('workspace-main').getBoundingClientRect().top, at, y: scrollY };
         })).toBe(true);
+      }
+    });
+    it(`the Alteplase and DEFUSE-3 calculator deep links land as on 7.8.3, or clear of the section nav, at ${width} px`, async () => {
+      await openCase(width);
+      await page.locator('#input-diagnosis').selectOption('ischemic');
+      for (const [tool, target] of [['alteplase', '#calc-alteplase'], ['defuse3', '#calc-defuse3']]) {
+        await page.evaluate(() => window.scrollTo(0, 0));
+        await page.evaluate(tool => { location.hash = `#/encounter/${tool}`; }, tool);
+        await page.locator(target).waitFor();
+        // 7.8.3 lands them 8 px below the case bar, which on wider screens is under the section nav.
+        await clear(width > 480 ? 82 : 8, target);
+        await page.evaluate(() => { location.hash = '#/encounter'; });
       }
     });
     // The case bar's links are hidden at 680 px and narrower.

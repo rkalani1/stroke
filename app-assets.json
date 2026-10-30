@@ -19,9 +19,9 @@
   "files": [
     {
       "path": "app.js",
-      "bytes": 109015,
-      "gzipBytes": 34233,
-      "sha256": "8e2f75d4239180f39c9091a87ec93b7a79f99f6838149ecdedc9ccca6ac63703"
+      "bytes": 109039,
+      "gzipBytes": 34240,
+      "sha256": "7bbd59f88aeb57a72228c3ca726b2ac6afa9e019530c865ead75d5c306096be0"
     },
     {
       "path": "chunks/chunk-3C5ZDFRN.js",

@@ -182,10 +182,10 @@ describe('a contradicted checklist "No" holds the Encounter screen and the case-
   });
 
   it('names a recorded or uncertain CT hemorrhage before anything else, on the cue and the case bar', () => {
-    for (const [status, label, detail] of [['present', 'CT hemorrhage recorded', 'CT hemorrhage'], ['uncertain', 'CT hemorrhage review', 'CT uncertain']]) {
+    for (const [status, label, detail, title] of [['present', 'CT hemorrhage recorded', 'CT hemorrhage', 'CT hemorrhage recorded; no dose shown'], ['uncertain', 'CT hemorrhage review', 'CT uncertain', 'CT hemorrhage review uncertain or conflicting; no dose shown']]) {
       const ct = candidate({ ...endocarditis, note: { ctHemorrhageStatus: status, lastDOACType: '' } });
       expect(encounterHoldCue(ct, at)).toEqual({ label, target: 'input-ct-review' });
-      expect(caseSummary(ct, at).dose).toMatchObject({ value: 'Held', detail });
+      expect(caseSummary(ct, at).dose).toMatchObject({ value: 'Held', detail, title });
     }
   });
 

@@ -97,16 +97,17 @@ export function caseSummary(state, nowMs) {
 
 // Why the case bar withholds dose arithmetic. The IVT-held reason is the Protocols banner's text for the answers as
 // read (a contradicted "No" read as "Yes"); the cause is shared with the Encounter next-entry cue (ivt-hold.js).
+const heldTitle = hold => `${hold.contradicted ? 'Entered values contradict a "No" safety answer; no dose shown.' : 'IVT card held.'} ${hold.reason}`;
 const HOLD_TEXT = {
   'ct-present': () => ({ detail: 'CT hemorrhage', title: 'CT hemorrhage recorded; no dose shown' }),
   'ct-uncertain': () => ({ detail: 'CT uncertain', title: 'CT hemorrhage review uncertain or conflicting; no dose shown' }),
-  contradicted: () => ({ detail: 'contradicted answer' }),
-  anticoagulant: () => ({ detail: 'anticoagulant not assessed' }),
-  review: () => ({ detail: 'safety review' })
+  contradicted: hold => ({ detail: 'contradicted answer', title: heldTitle(hold) }),
+  anticoagulant: hold => ({ detail: 'anticoagulant not assessed', title: heldTitle(hold) }),
+  review: hold => ({ detail: 'safety review', title: heldTitle(hold) })
 };
 function doseHold(state, nowMs, weight, age) {
   const hold = ivtHold(state, nowMs);
-  if (hold) return { value: 'Held', flag: 'caution', title: hold.reason && `${hold.contradicted ? 'Entered values contradict a "No" safety answer; no dose shown.' : 'IVT card held.'} ${hold.reason}`, ...HOLD_TEXT[hold.cause]() };
+  if (hold) return { value: 'Held', flag: 'caution', ...HOLD_TEXT[hold.cause](hold) };
   // Same limit as the MCP dose contract: below 30 kg is implausible for adult dosing (often a decimal slip).
   if (weight !== null && weight < 30) return { value: 'Check weight', flag: 'caution', title: 'Weight below 30 kg is implausible for adult IVT dosing; confirm kilograms and decimal placement. No dose shown.' };
   if (age !== null && age < 18) return { value: 'Not shown', flag: 'caution', title: 'Age under 18: adult dose arithmetic does not apply; use the pediatric specialist pathway.' };
