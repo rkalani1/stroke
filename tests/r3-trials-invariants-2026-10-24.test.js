@@ -70,7 +70,8 @@ function refEdit(model, written) {
 // Answers a classification choice restarts (the exclusions restart too).
 const RESTARTED = ['anticoagulant', 'takingOac'];
 // The import ends; each fact the new screen shows keeps the user's own answer, everything else is unknown.
-// A conflict over a shown fact that does not restart stands: unknown, listed, its U kept for the next import.
+// A conflict over a shown fact that does not restart stands: unknown, listed, its U kept for the next import
+// of the same classification (another classification starts a clean screen; see r3-trials.md §9.6.1).
 function refClassify(model, cls) {
   const U = model.record?.U;
   const standing = [...(model.record?.conflicts || [])].filter(key => VISIBLE[cls].includes(key) && !RESTARTED.includes(key));

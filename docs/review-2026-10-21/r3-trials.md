@@ -449,7 +449,7 @@ A fourth independent reviewer checked this round's commits at `0083b01` and repo
   - `answers`: the new screen, plus each kept conflict's U;
   - `conflicts`: the kept conflicts.
 - The banner and the copied summary therefore keep listing the conflict. Answering the fact settles it (`answerFacts`, unchanged).
-- The next import weighs U against E as any import does. It lists the conflict again if the Encounter still contradicts U, and shows the user's answer if not. The answer is never lost silently, which was the reason for the §9.2 change.
+- The next import weighs U against E as any import does, provided it keeps this screen's classification (an import with no classification, or the same one). It lists the conflict again if the Encounter still contradicts U, and shows the user's answer if not. An import whose Encounter classification differs from the screen's starts a clean screen of that classification, as every import does, so the kept answer is not carried into it (see the limits below).
 - `buildScreenerParams` still does not derive AF or flutter from AF while its conflict stands.
 
 After the fix, the reviewer's steps give:
@@ -458,9 +458,10 @@ After the fix, the reviewer's steps give:
 - INTERCEPT is at insufficient information, with "Confirm documented clinical atrial fibrillation". The summary reads "POTENTIAL MATCH (0)", and its inputs do not include "atrial fibrillation";
 - INTERCEPT becomes a potential match only after the user answers AF documented = Yes.
 
-**Limits, both in the cautious direction.**
-- Between the click and the next import, a kept conflict stays listed even if the Encounter has since changed to agree with the user's answer. Nothing re-weighs it before an import, and the banner offers the reapply.
-- An AF conflict can come only from a "No" to AF or flutter, with AF itself unanswered. If the user then switches ICH → ischemic, AF or flutter is hidden and returns to unknown, but AF stays listed until the next import. That import takes the Encounter's AF.
+**Limits (from the final independent verification; none is a regression, each outcome is identical at `0083b01` and `042f914`).**
+- Between the click and the next import, a kept conflict stays listed even if the Encounter has since changed to agree with the user's answer. Nothing re-weighs it before an import, and the banner offers the reapply. This one is in the cautious direction.
+- A classification click ends a conflict over a fact the new screen hides (for example AF or flutter after ICH → TIA) or restarts (the anticoagulant, OAC, timing and exclusion answers), and that answer is not kept in the record. An import whose classification differs from the screen's also starts a clean screen. In both cases a later import takes the Encounter's value with no note. That can become a potential match the user's earlier, contradicting answer would have excluded (reproduced: INTERCEPT after ICH → TIA with AF or flutter "No"; MINUTE and FASTEST-2 after a DOAC answer, a click and a re-import over an Encounter "none"). Each path needs the user to re-enter the screen's facts after the click and import again. The facts are unknown, so not a match, until that import.
+- A more cautious option the owner may prefer: keep the user's last answer for hidden or restarted facts in the record, and weigh it at the next import, including one that switches classification. It was not built here because it changes what a classification click means.
 
 #### 9.6.2 Tests
 

@@ -597,8 +597,8 @@ const RESTARTED = { onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', o
 // the Encounter import (no source, so never stale): every other fact shows the
 // user's own answer (imported.answers), so nothing imported outlives its staleness
 // tracking. The click answers nothing, so a conflict over a fact the new screen
-// still shows stands: unknown and listed, its answer kept for the next import to
-// weigh. NIHSS provenance follows the NIHSS.
+// still shows stands: unknown and listed, its answer kept for the next import of this
+// classification to weigh (an import of another classification starts a clean screen). NIHSS provenance follows the NIHSS.
 export function withClassification(state, classification) {
   const initial = createInitialScreenerState(), own = state.imported?.answers || state, conflicts = { ...state.imported?.conflicts };
   const shown = key => VISIBLE_FACTS[classification].includes(key.startsWith('nihss') ? 'nihss' : key) && !(key in RESTARTED);
