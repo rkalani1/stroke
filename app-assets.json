@@ -10,18 +10,18 @@
     "chunks/chunk-BVAA575E.js",
     "chunks/chunk-CCC5QWPU.js",
     "chunks/chunk-FPW5WEWF.js",
-    "chunks/chunk-HG75N4YE.js",
     "chunks/chunk-HOFJI2PN.js",
     "chunks/chunk-QPJ3MHXX.js",
     "chunks/chunk-RKNMGIFI.js",
-    "chunks/chunk-ROKRUQE4.js"
+    "chunks/chunk-ROKRUQE4.js",
+    "chunks/chunk-WGXEKBVS.js"
   ],
   "files": [
     {
       "path": "app.js",
-      "bytes": 109141,
-      "gzipBytes": 34254,
-      "sha256": "3056e0dde02176325e9df698d7d8fd49efcd3f85c61e9fc5662ac7faf8da6cc4"
+      "bytes": 109022,
+      "gzipBytes": 34225,
+      "sha256": "399c36f0dce791fd70d0168bfdd794f4bb93e8de364017fcbe90076cd29e3e9d"
     },
     {
       "path": "chunks/chunk-3C5ZDFRN.js",
@@ -66,12 +66,6 @@
       "sha256": "3af550e50c98df4b65cbd19a275ead630964be6eb1d8f96ac4aa674254ae9186"
     },
     {
-      "path": "chunks/chunk-HG75N4YE.js",
-      "bytes": 2938,
-      "gzipBytes": 1387,
-      "sha256": "9bc4ae6aae72a645579c9f03347b7e27d5afa27c8fc82d21bf3bb27ae87bd9d8"
-    },
-    {
       "path": "chunks/chunk-HOFJI2PN.js",
       "bytes": 134369,
       "gzipBytes": 43213,
@@ -108,6 +102,12 @@
       "sha256": "5f807ed9b52e252527922888728cd6fbf9c99b13320fede73900fcc2e8225995"
     },
     {
+      "path": "chunks/chunk-WGXEKBVS.js",
+      "bytes": 3491,
+      "gzipBytes": 1620,
+      "sha256": "9ff640b5dba6ca644a3d07b241d6bbf5a0c65e78a16ca6d894237e090d0e162a"
+    },
+    {
       "path": "chunks/chunk-WQJWBHBV.js",
       "bytes": 4774,
       "gzipBytes": 2375,
@@ -132,10 +132,10 @@
       "sha256": "ff145bc268974a401230ddeb90197be1f48fe4554994e58368c1423c7d576544"
     },
     {
-      "path": "chunks/QuickSearch-OM4OPMWU.js",
+      "path": "chunks/QuickSearch-ZEN47KNX.js",
       "bytes": 13663,
-      "gzipBytes": 5514,
-      "sha256": "6100d84558823ab4f5902812faa62926822675b55cbdb0eff11c7e0fa655315b"
+      "gzipBytes": 5513,
+      "sha256": "01ea2a6e145f5ddad5e1a4a54619901617cfed4ed73ebfd9c83567e6635ed5e2"
     },
     {
       "path": "chunks/Reference-7WXJYWKM.js",

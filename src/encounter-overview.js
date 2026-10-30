@@ -1,6 +1,7 @@
 import { NIHSS_ITEMS } from './clinical/nihss-items.js';
-import { contradictedAsYes, numericInput } from './encounter-clinical-review.js';
-import { DIAGNOSES, encounterTiming, encounterNihss, protocolEncounter } from './workspace-state.js';
+import { numericInput } from './encounter-clinical-review.js';
+import { ivtHold } from './ivt-hold.js';
+import { DIAGNOSES, encounterTiming, encounterNihss } from './workspace-state.js';
 
 // Navigation cues only. These do not gate documentation or determine eligibility.
 export function encounterOverview(state, now) {
@@ -37,18 +38,17 @@ export function encounterOverview(state, now) {
   };
 }
 
-// The case bar's IVT hold and this cue name the same next field.
+// The case bar's IVT hold and this cue name the same next field (ivt-hold.js).
+const HOLD_CUES = {
+  'ct-present': { label: 'CT hemorrhage recorded', target: 'input-ct-review' },
+  'ct-uncertain': { label: 'CT hemorrhage review', target: 'input-ct-review' },
+  contradicted: { label: 'Contradicted safety answer', target: 'safety-title' },
+  anticoagulant: { label: 'Anticoagulant exposure', target: 'input-anticoagulant' },
+  review: { label: 'Safety review', target: 'safety-title' }
+};
 export function encounterHoldCue(state, now) {
-  const n = state.note;
-  if (state.context !== 'acute' || n.diagnosisCategory !== 'ischemic') return null;
-  if (n.ctHemorrhageStatus === 'present') return { label: 'CT hemorrhage recorded', target: 'input-ct-review' };
-  if (n.ctHemorrhageStatus === 'uncertain') return { label: 'CT hemorrhage review', target: 'input-ct-review' };
-  // A "No" that an entered value contradicts holds exactly as the case bar's dose does.
-  const note = contradictedAsYes(n, now, state.details), protocol = protocolEncounter({ ...state, note }, now);
-  if (!protocol.safetyReviewRequired) return null;
-  if (note !== n) return { label: 'Contradicted safety answer', target: 'safety-title' };
-  if (!n.lastDOACType) return { label: 'Anticoagulant exposure', target: 'input-anticoagulant' };
-  return { label: 'Safety review', target: 'safety-title' };
+  const hold = ivtHold(state, now);
+  return hold ? HOLD_CUES[hold.cause] : null;
 }
 
 export function focusEncounterTarget(id) {

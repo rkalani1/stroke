@@ -130,6 +130,40 @@ describe('a contradicted checklist "No" holds the Encounter screen and the case-
     expect(protocolEncounter(candidate(answeredYes), at).safetyReviewRequired).toBe(true);
   });
 
+  it('names the field behind the hold: an unassessed anticoagulant first, then a contradicted answer that can hold IVT', () => {
+    const cue = state => encounterHoldCue(state, at), held = state => caseSummary(state, at).dose;
+    // Benefit-tier entries (an antiplatelet, an ACE inhibitor, seizure at onset) answered No never hold IVT.
+    for (const patch of [{ note: { medications: 'aspirin 81 mg daily' } }, { note: { medications: 'lisinopril 10 mg daily' } }, { details: { seizureAtOnset: 'yes' } }]) {
+      expect(cue(candidate(patch))).toBeNull();
+      expect(held(candidate(patch))).toMatchObject({ label: 'TNK', value: '21 mg' });
+      const unassessed = candidate({ ...patch, note: { ...patch.note, lastDOACType: '' } });
+      expect(cue(unassessed)).toEqual({ label: 'Anticoagulant exposure', target: 'input-anticoagulant' });
+      expect(held(unassessed)).toMatchObject({ value: 'Held', detail: 'anticoagulant not assessed', title: expect.stringMatching(/^IVT card held\./) });
+      const highBp = candidate({ ...patch, note: { ...patch.note, presentingBP: '200/100' } });
+      expect(cue(highBp)).toEqual({ label: 'Safety review', target: 'safety-title' });
+      expect(held(highBp)).toMatchObject({ value: 'Held', detail: 'safety review' });
+    }
+    // A real contradiction beside an unassessed anticoagulant: the anticoagulant field first (7.8.1), then the contradiction.
+    const both = candidate({ note: { glucose: '450', lastDOACType: '' } });
+    expect(cue(both)).toEqual({ label: 'Anticoagulant exposure', target: 'input-anticoagulant' });
+    expect(held(both)).toMatchObject({ value: 'Held', detail: 'anticoagulant not assessed' });
+    // Glucose 450 holds on its own; the contradicted "No" is still named.
+    const contradicted = candidate({ note: { glucose: '450' } });
+    expect(cue(contradicted)).toEqual({ label: 'Contradicted safety answer', target: 'safety-title' });
+    expect(held(contradicted)).toMatchObject({ value: 'Held', detail: 'contradicted answer' });
+  });
+
+  it('names no IVT hold after a recorded administration or a Not recommended decision', () => {
+    const given = candidate({ ...endocarditis, actions: { administered: true, administrationTime: '2026-10-21T13:30', agentConfirmed: 'TNK', administeredDose: '21' } });
+    expect(encounterHoldCue(given, at)).toBeNull();
+    expect(caseSummary(given, at).dose).toMatchObject({ label: 'TNK given', detail: '21 mg' });
+    const declined = candidate({ ...endocarditis, decisions: { ivt: 'Not recommended' } });
+    expect(encounterHoldCue(declined, at)).toBeNull();
+    expect(caseSummary(declined, at).dose).toBeNull();
+    // A hold recorded before either still names its field.
+    expect(encounterHoldCue(candidate(endocarditis), at)).toEqual({ label: 'Contradicted safety answer', target: 'safety-title' });
+  });
+
   it('a severe glucose answered No holds before the examination is complete, exactly as a "Yes"', () => {
     const conflict = candidate({ reportedNihss: '', note: { glucose: '450' } });
     const yes = candidate({ reportedNihss: '', note: { glucose: '450', tnkContraindicationChecklist: { ...allNo, highGlucose: true } } });

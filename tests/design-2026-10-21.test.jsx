@@ -74,17 +74,26 @@ describe('stylesheet weight and style-recalc guards', () => {
 });
 
 describe('focus is never hidden by sticky chrome (WCAG 2.4.11)', () => {
-  // The Encounter section nav is 61 px (8 + 44 + 8 + 1 border) under the case bar; the protocol
-  // breadcrumb and sub-tabs are 36 px + up to 62 px. Both bars stick below the sticky header and the
-  // case bar, so root scroll padding must cover the header, the case bar and each surface's bars.
-  const padding = surface => shell.match(new RegExp(`html\\[data-surface="${surface}"\\]\\s*\\{\\s*scroll-padding-top:\\s*calc\\(var\\(--header-h\\)\\s*\\+\\s*var\\(--case-bar-h\\)\\s*\\+\\s*(\\d+)px\\)`))?.[1];
+  // The Encounter section nav is 61 px (8 + 44 + 8 + 1 border) under the case bar, and Chrome reveals a
+  // date or time field by its inner segment about 14 px below the box; the protocol breadcrumb and
+  // sub-tabs are 36 px + up to 62 px. These bars stick below the sticky header and the case bar, so
+  // root scroll padding must cover the header, the case bar and each surface's bars.
+  const paddings = surface => [...shell.matchAll(new RegExp(`html\\[data-surface="${surface}"\\]\\s*\\{\\s*scroll-padding-top:\\s*calc\\(var\\(--header-h\\)\\s*\\+\\s*var\\(--case-bar-h\\)\\s*\\+\\s*(\\d+)px\\)`, 'g'))].map(match => Number(match[1]));
+  const fieldMargins = [...shell.matchAll(/html\[data-surface="encounter"\] \.encounter-workflow :is\(h2, h3, input, select, textarea, fieldset, \.tool-target, \.encounter-details\) \{ scroll-margin-top: (-?\d+)(?:px)?; \}/g)].map(match => Number(match[1]));
   it('pads the Encounter and Protocols scrollports past their sticky bars', () => {
-    expect(Number(padding('encounter'))).toBeGreaterThanOrEqual(61);
-    expect(Number(padding('protocols'))).toBeGreaterThanOrEqual(36 + 62);
+    // Encounter: a phone or short screen (section nav static), then the sticky section nav.
+    expect(paddings('encounter')).toEqual([22, 80]);
+    expect(paddings('encounter')[0]).toBeGreaterThanOrEqual(14 + 5);
+    expect(paddings('encounter')[1]).toBeGreaterThanOrEqual(61 + 14);
+    expect(paddings('protocols')).toEqual([104]);
+    expect(paddings('protocols')[0]).toBeGreaterThanOrEqual(36 + 62);
   });
-  it('keeps protocol reveal targets where they land on main (header + case bar + 8 px + 96 px margin)', () => {
+  it('keeps programmatic reveals where they land on main (header + case bar + 8 px + 72 or 96 px margin)', () => {
     expect(shell).toMatch(/html \{ scroll-padding-top: calc\(var\(--header-h\) \+ var\(--case-bar-h\) \+ 8px\); \}/);
-    expect(Number(padding('protocols')) + 0).toBe(8 + 96);
+    expect(shell).toMatch(/\n\.encounter-workflow :is\(h2, h3, input, select, textarea, fieldset, \.tool-target, \.encounter-details\) \{ scroll-margin-top: 72px; \}/);
+    expect(fieldMargins).toEqual([58, 0]);
+    expect(paddings('encounter').map((padding, index) => padding + fieldMargins[index])).toEqual([8 + 72, 8 + 72]);
+    expect(paddings('protocols')[0] + 0).toBe(8 + 96);
     expect(shell).toMatch(/#tabpanel-protocols :is\(h2, h3, details, \[id\]\) \{ scroll-margin-top: 0; \}/);
     expect(shell).toMatch(/\.quick-reference details\[id\] \{ scroll-margin-top: -96px; \}/);
   });
@@ -450,14 +459,46 @@ describe('reveals land below the sticky header and bars (WCAG 2.4.11)', { timeou
     await page.locator('.case-bar').waitFor();
     await page.evaluate(() => { document.activeElement?.blur(); window.scrollTo(0, 0); });
   };
-  for (const width of [1440, 820]) {
+  for (const width of [1440, 820, 390]) {
     it(`the overview Next cue focuses the first missing entry below the section nav at ${width} px`, async () => {
       await openCase(width);
-      await page.locator('.encounter-next-entry button', { hasText: 'Next:' }).click();
-      await poll(() => page.evaluate(() => document.activeElement?.matches('input, select, textarea, button, [tabindex]') && !document.activeElement.closest('.encounter-next-entry'))).toBe(true);
+      await page.locator('.encounter-next-entry button', { hasText: 'Next: Working diagnosis' }).click();
+      await poll(() => page.evaluate(() => document.activeElement?.id)).toBe('input-diagnosis');
       await clear();
     });
-    it(`the case-bar Dose table link focuses the quick-reference summary below the case bar at ${width} px`, async () => {
+    it(`the Next cue for a contradicted safety answer focuses the safety heading below the section nav at ${width} px`, async () => {
+      await openCase(width);
+      await page.locator('#input-diagnosis').selectOption('ischemic');
+      await page.locator('#input-anticoagulant').selectOption('none');
+      page.once('dialog', dialog => dialog.accept());
+      await page.locator('summary', { hasText: 'Review contraindications & concerns' }).click();
+      await page.getByRole('button', { name: 'Mark unanswered as No' }).click();
+      // Glucose 450 entered after "No" contradicts the glucose answer.
+      await page.locator('#input-glucose').fill('450');
+      await page.evaluate(() => { document.activeElement?.blur(); window.scrollTo(0, 0); });
+      await page.locator('.encounter-next-entry button', { hasText: 'Next: Contradicted safety answer' }).click();
+      await poll(() => page.evaluate(() => document.activeElement?.id)).toBe('safety-title');
+      await clear();
+    });
+    it(`Shift+Tab between the segments of a date field that sits partly under the sticky bars reveals its whole box at ${width} px`, async () => {
+      await openCase(width);
+      // Within a date field Chrome reveals the focused segment, about 14 px below the box, and ignores the
+      // field's scroll margin. From its day segment, put the field's top 20 px above the bottom of the
+      // stuck bars, then step back to the month segment.
+      await page.locator('#input-lkw-date').focus();
+      await page.keyboard.press('Tab');
+      await page.evaluate(() => {
+        const stuck = ['.workspace-header', '.case-bar', '.encounter-section-nav'].map(selector => document.querySelector(selector))
+          .filter(bar => bar && getComputedStyle(bar).position === 'sticky' && Math.abs(bar.getBoundingClientRect().top - parseFloat(getComputedStyle(bar).top)) < 1);
+        const bottom = Math.max(...stuck.map(bar => bar.getBoundingClientRect().bottom));
+        window.scrollBy(0, document.getElementById('input-lkw-date').getBoundingClientRect().top - (bottom - 20));
+      });
+      await page.keyboard.press('Shift+Tab');
+      await poll(() => page.evaluate(() => document.activeElement?.id)).toBe('input-lkw-date');
+      await clear();
+    });
+    // The case bar's links are hidden at 680 px and narrower.
+    if (width > 680) it(`the case-bar Dose table link focuses the quick-reference summary below the case bar at ${width} px`, async () => {
       await openCase(width);
       await page.locator('.case-bar__link', { hasText: 'Dose table' }).click();
       await poll(() => page.evaluate(() => Boolean(document.activeElement?.closest('#qr-dose')))).toBe(true);
