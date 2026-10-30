@@ -168,12 +168,15 @@ const precache = corePrecacheBytes();
 // deferred (measured at release: all JS 257.5 KB gzip / 856.3 KB raw, both over the old
 // ceilings). The initial graph stays inside its 128 KB / 376 KB ceilings (127.8 KB /
 // 375.9 KB). Reviewed ceilings: all JS gzip 256 -> 260 KB, raw 856 -> 864 KB.
+// 2026-10-30 v7.9.0 merge with main's 7.8.1-7.8.3 (header measurement, IVT-hold cue, case-bar hold labels,
+// elapsed-duration formatting): the initial graph measures 128.06 KB gzip / 376.9 KB raw, 62 B and 873 B over
+// the 7.8.0 ceilings. Reviewed ceilings: initial 128 -> 130 KB gzip, 376 -> 380 KB raw.
 const checks = [
   {
     id: 'app-js-gzip',
     label: 'Initial module graph (gzip)',
     actual: sumSizes(manifest.initial, gzipSizeOf),
-    budget: 128 * KB, // 7.8.0: +8 KB for verified safety/documentation logic, error boundaries and tri-state trials (measured 124.4 KB)
+    budget: 130 * KB, // 7.9.0: verified safety logic plus 7.8.1-7.8.3 shell code (measured 128.06 KB); 7.8.0 was 128 KB
     unit: KB,
     unitLabel: 'KB',
     note: 'route-level code splitting is the lever that moves this',
@@ -182,7 +185,7 @@ const checks = [
     id: 'app-js-raw',
     label: 'Initial module graph (raw)',
     actual: sumSizes(manifest.initial, sizeOf),
-    budget: 376 * KB, // 7.8.0 (measured 366.5 KB)
+    budget: 380 * KB, // 7.9.0 (measured 376.9 KB); 7.8.0 was 376 KB (measured 366.5 KB)
     unit: MB,
     unitLabel: 'MB',
     note: 'parse/execute cost scales with this, not the gzip figure',
