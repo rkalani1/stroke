@@ -80,7 +80,7 @@ describe.each(['index.html', 'offline.html'])('%s pre-paint theme', (file) => {
     // an explicit v7 choice wins over the legacy flag
     expect(run(script, { hostname: 'localhost', stored: 'light', prefersDark: false, legacyDark: true })).toBe('light');
     // public Pages ignores (and index.html removes) the legacy key
-    expect(run(script, { hostname: 'rkalani1.github.io', prefersDark: false, legacyDark: true })).toBe('light');
+    expect(run(script, { hostname: 'rkalani1.github.io', prefersDark: false, legacyDark: true })).toBe('dark');
   });
 });
 

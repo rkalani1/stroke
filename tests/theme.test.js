@@ -206,23 +206,23 @@ describe('runV7Migration', () => {
       expect(themeController.getThemePref()).toBe('auto');
     });
 
-    it('returns light if invalid theme on public pages', () => {
+    it('returns dark if invalid theme on public pages', () => {
       vi.stubGlobal('window', {
         location: { hostname: 'rkalani1.github.io' }
       });
       globalThis.localStorage.setItem('stroke.v7.theme', 'invalid');
-      expect(themeController.getThemePref()).toBe('light');
+      expect(themeController.getThemePref()).toBe('dark');
     });
 
     it('returns auto by default on non-public pages', () => {
       expect(themeController.getThemePref()).toBe('auto');
     });
 
-    it('returns light by default on public pages', () => {
+    it('returns dark by default on public pages', () => {
       vi.stubGlobal('window', {
         location: { hostname: 'rkalani1.github.io' }
       });
-      expect(themeController.getThemePref()).toBe('light');
+      expect(themeController.getThemePref()).toBe('dark');
     });
 
     it('saves theme preference and applies theme', () => {
@@ -240,18 +240,18 @@ describe('runV7Migration', () => {
 
     it('keeps System reachable on public pages', () => {
       // Regression: setThemePref('auto') used to delete the key, and
-      // getThemePref() reads an unset key on public Pages as 'light' — so
-      // choosing System snapped straight back to Light and the OS preference
+      // getThemePref() reads an unset key on public Pages as 'dark' — so
+      // choosing System snapped straight back to Dark and the OS preference
       // was never honored on the deployed site.
       globalThis.window.location.hostname = 'rkalani1.github.io';
       themeController.setThemePref('auto');
       expect(themeController.getThemePref()).toBe('auto');
     });
 
-    it('still defaults an unset public preference to light', () => {
+    it('still defaults an unset public preference to dark', () => {
       globalThis.window.location.hostname = 'rkalani1.github.io';
       globalThis.localStorage.removeItem('stroke.v7.theme');
-      expect(themeController.getThemePref()).toBe('light');
+      expect(themeController.getThemePref()).toBe('dark');
     });
 
     it('falls back to auto for an unrecognized preference value', () => {
@@ -307,9 +307,10 @@ describe('runV7Migration', () => {
       }
     });
 
-    it('defaults an unset or unknown preference to light on public Pages and to the OS elsewhere', () => {
+    it('defaults an unset or unknown preference to dark on public Pages and to the OS elsewhere', () => {
       for (const pref of [null, undefined, '', 'chartreuse']) {
-        expect(themeController.resolveTheme(pref, true, true)).toBe('light');
+        expect(themeController.resolveTheme(pref, true, true)).toBe('dark');
+        expect(themeController.resolveTheme(pref, false, true)).toBe('dark');
         expect(themeController.resolveTheme(pref, true, false)).toBe('dark');
         expect(themeController.resolveTheme(pref, false, false)).toBe('light');
       }
@@ -318,11 +319,13 @@ describe('runV7Migration', () => {
     it('is what effectiveTheme applies', () => {
       vi.stubGlobal('window', {
         location: { hostname: 'rkalani1.github.io' },
-        matchMedia: vi.fn(() => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() }))
+        matchMedia: vi.fn(() => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }))
       });
-      expect(themeController.effectiveTheme()).toBe('light');
-      globalThis.localStorage.setItem('stroke.v7.theme', 'auto');
       expect(themeController.effectiveTheme()).toBe('dark');
+      globalThis.localStorage.setItem('stroke.v7.theme', 'auto');
+      expect(themeController.effectiveTheme()).toBe('light');
+      globalThis.localStorage.setItem('stroke.v7.theme', 'light');
+      expect(themeController.effectiveTheme()).toBe('light');
     });
   });
 

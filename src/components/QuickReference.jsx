@@ -153,8 +153,8 @@ export default function QuickReference({ weightKg, sub = 'ischemic', reversal } 
   const ich = sub === 'ich';
   const dose = <DoseCard weightKg={weightKg} open={!ich} />;
   return (
-    <section aria-labelledby="quick-reference-heading" className="quick-reference space-y-2">
-      <h2 id="quick-reference-heading" className="text-base font-semibold text-ink">Bedside quick reference</h2>
+    <details className="quick-reference space-y-2">
+      <summary id="quick-reference-heading" className="text-base font-semibold text-ink">Bedside quick reference</summary>
       {!ich && dose}
 
       <Card id="qr-bp" title="BP targets by phase">
@@ -252,7 +252,7 @@ export default function QuickReference({ weightKg, sub = 'ischemic', reversal } 
         ]} />
         <Sources ids={['ais2026']} />
       </Card>
-    </section>
+    </details>
   );
 }
 

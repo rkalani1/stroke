@@ -133,7 +133,7 @@ const IVTEligibilityCard = ({ defaults = {}, encounter }) => {
   const colorByEligible = (e) => e === true ? 'border-ok-400 bg-ok-50 dark:bg-ok-950' : e === 'consider' ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-950' : e === 'pending' ? 'border-warn-400 bg-warn-50 dark:bg-warn-950' : e === false ? 'border-rose-400 bg-rose-50 dark:bg-rose-950' : 'border-slate-300 bg-slate-50 dark:border-strong dark:bg-paper-2';
 
   return (
-    <div id="pc-ivt" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
+    <div id="pc-ivt" className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
       <h4 className="font-bold text-cobalt-900 mb-2 flex items-center gap-2 dark:text-cobalt-300">
         <span className="inline-block px-2 py-0.5 bg-cobalt-900 text-white text-xs rounded">INST</span>
         IVT Eligibility Decision Algorithm
@@ -265,7 +265,7 @@ const EVTEligibilityCard = ({ defaults = {}, encounter }) => {
   const colorByEligible = (e) => e === true ? 'border-ok-400 bg-ok-50 dark:bg-ok-950' : e === 'consider' ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-950' : e === 'pending' ? 'border-warn-400 bg-warn-50 dark:bg-warn-950' : e === false ? 'border-rose-400 bg-rose-50 dark:bg-rose-950' : 'border-slate-200 dark:border-line';
 
   return (
-    <div id="pc-evt" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
+    <div id="pc-evt" className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] p-3 rounded-lg border border-cobalt-300 bg-white dark:border-cobalt-700 dark:bg-card">
       <div className="flex items-center justify-between mb-2">
         <h4 className="font-bold text-cobalt-900 flex items-center gap-2 dark:text-cobalt-300">
           <span className="inline-block px-2 py-0.5 bg-cobalt-700 text-white text-xs rounded">INST</span>
@@ -425,7 +425,7 @@ const BPProtocolCard = () => (
 // Contraindications card (3 columns)
 // ----------------------------------------------------------------------
 const ContraindicationsCard = () => (
-  <div id="pc-contraindications" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] p-3 rounded-lg border border-crit-300 bg-white dark:border-crit-800 dark:bg-card">
+  <div id="pc-contraindications" className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] p-3 rounded-lg border border-crit-300 bg-white dark:border-crit-800 dark:bg-card">
     <h4 className="font-bold text-crit-900 mb-2 flex items-center gap-2 dark:text-crit-300">
       <span className="inline-block px-2 py-0.5 bg-crit-700 text-white text-xs rounded">INST</span>
       IVT Contraindications
@@ -479,7 +479,7 @@ const SafePauseCard = ({ defaults = {}, encounter }) => {
     ? 'Completed attestation unavailable: dose confirmation, pause performance, required-role confirmation and documentation are not recorded in this workspace.'
     : getSafePauseText({ ...st, drug });
   return (
-    <div id="pc-safety-pause" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] p-3 rounded-lg border border-ok-300 bg-white dark:border-ok-800 dark:bg-card">
+    <div id="pc-safety-pause" className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] p-3 rounded-lg border border-ok-300 bg-white dark:border-ok-800 dark:bg-card">
       <h4 className="font-bold text-ok-900 mb-2 flex items-center gap-2 dark:text-ok-300">
         <span className="inline-block px-2 py-0.5 bg-ok-700 text-white text-xs rounded">INST</span>
         Safety Pause (pre-thrombolytic)

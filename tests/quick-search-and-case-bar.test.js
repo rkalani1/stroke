@@ -49,7 +49,7 @@ describe('case bar projection', () => {
     const c = caseSummary(base, now);
     expect(c.dx).toBe('Ischemic');
     expect(c.demographics).toBe('72 F');
-    expect(c.elapsed).toBe('3:00');
+    expect(c.elapsed).toBe('3 h');
     expect(c.window).toEqual({ text: '4.5 h in 1:30', tone: 'open' });
     expect(c.dose).toEqual({ label: 'TNK', value: '20 mg', detail: '4 mL' });
     expect(c.bpHigh).toBe(true);

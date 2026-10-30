@@ -110,6 +110,15 @@ function App() {
     document.addEventListener('keydown', close); document.addEventListener('pointerdown', close);
     return () => { document.removeEventListener('keydown', close); document.removeEventListener('pointerdown', close); };
   }, []);
+  useLayoutEffect(() => {
+    const header = document.querySelector('.workspace-header');
+    if (!header) return undefined;
+    const sync = () => document.documentElement.style.setProperty('--header-h', `${Math.ceil(header.getBoundingClientRect().height)}px`);
+    sync();
+    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(sync) : null;
+    observer?.observe(header);
+    return () => observer?.disconnect();
+  }, [navDocked]);
   // Browser chrome follows data-theme, which System mode also changes outside React on an OS scheme flip.
   useEffect(() => {
     const meta = document.querySelector('meta[name="theme-color"]');
@@ -130,6 +139,7 @@ function App() {
     // Each surface keeps its own scroll position (per sub-tab) unless the route names a target.
     const changed = () => {
       const next = parseWorkspaceRoute(location.hash), memory = scrollMemory.current, sub = next.sub || '';
+      if (utilitiesRef.current?.open) utilitiesRef.current.open = false;
       if (next.surface !== memory.surface) {
         memory.positions[memory.surface] = { sub: memory.sub, y: window.scrollY };
         const saved = memory.positions[next.surface];
@@ -308,6 +318,7 @@ function App() {
   const primaryNav = <nav key="nav" className="workspace-secondary" aria-label="Primary navigation">{[['encounter', '#/encounter', 'Encounter'], ['protocols', `#/protocols/${protocolSub}`, 'Protocols'], ['trials', '#/trials', 'Trials'], ['evidence', '#/evidence', 'Evidence'], ['tools', '#/tools', 'Calculators']].map(([surface, href, label]) => { const Icon = NAV_ICONS[surface]; return <a key={surface} href={href} aria-current={route.surface === surface ? 'page' : undefined}><Icon /><span>{label}</span></a>; })}</nav>;
   const failedUpdate = () => setUpdateReady({ message: 'Update failed. Current encounter remains open; try again when connected.' });
   const utilities = <details key="more" ref={utilitiesRef} className="workspace-utilities" onToggle={event => { if (event.currentTarget.open) setUtilitiesVisited(true); }}><summary aria-label={updateDeferred ? 'More utilities, update ready' : 'More utilities'}>More{updateDeferred && <span className="workspace-utilities__badge" aria-hidden="true">Update</span>}</summary><div className="utility-panel">{updateDeferred && <button type="button" className="utility-action utility-update" onClick={() => acceptUpdate().catch(failedUpdate)}>Update now · reloads and clears this session</button>}<label>Theme<select aria-label="Theme" value={theme} onChange={e => { setThemePref(e.target.value); setTheme(e.target.value); }}>{[['auto', 'System'], ['light', 'Light'], ['dark', 'Dark']].map(([v, t]) => <option key={v} value={v}>{t}</option>)}</select></label><button type="button" className="utility-action" onClick={() => { if (utilitiesRef.current) utilitiesRef.current.open = false; reset(); }}>Start new encounter</button>{utilitiesVisited && <SurfaceBoundary label="Install options"><Suspense fallback={<p role="status">Loading install options…</p>}><InstallAppButton className="w-full justify-center" installPrompt={installPrompt} isInstalled={isInstalled} onInstall={async () => { if (!installPrompt) return; try { await installPrompt.prompt(); const choice = await installPrompt.userChoice; if (choice.outcome === 'accepted') setInstalled(true); setInstallPrompt(null); } catch { setInstallPrompt(null); } }} /></Suspense></SurfaceBoundary>}<p className="utility-shortcuts"><kbd>Ctrl</kbd>/<kbd>⌘</kbd> <kbd>K</kbd> or <kbd>/</kbd> search</p><p>Version {APP_VERSION}</p><p role="status">{offlineStatus}</p></div></details>;
+  const externalReferences = <nav className="workspace-external" aria-label="External references"><a href={MAP_URL} target="_blank" rel="noopener noreferrer">Telestroke Map</a><a href="https://ai.uptodate.com/" target="_blank" rel="noopener noreferrer">UpToDate Expert AI</a><a href="https://www.openevidence.com/" target="_blank" rel="noopener noreferrer">OpenEvidence</a></nav>;
   // NIHSS, mRS, renal and GCS tools always render; ICH volume and severity need an ICH encounter, the rest acute ischemic stroke (DAPT also TIA).
   const ichTool = ['ich-volume', 'ich-score'].includes(route.tool);
   const targetUnavailable = route.tool && !['nihss', 'mrs', 'crcl', 'gcs'].includes(route.tool) && (ichTool ? state.note.diagnosisCategory !== 'ich' : !(state.context === 'acute' && (state.note.diagnosisCategory === 'ischemic' || route.tool === 'dapt' && state.note.diagnosisCategory === 'tia')));
@@ -320,7 +331,7 @@ function App() {
       {/* The visible "Search" starts the accessible name (WCAG 2.5.3); the shortcut hint is decoration. */}
       <button type="button" className="workspace-search" onClick={openSearch} aria-keyshortcuts="Control+K Meta+K /"><SearchIcon /><span className="workspace-search__text">Search</span><span className="sr-only"> protocols, calculators, evidence and trials</span><kbd aria-hidden="true">{MAC_LIKE ? '⌘K' : 'Ctrl K'}</kbd></button>
       {navDocked ? [utilities, primaryNav] : [primaryNav, utilities]}</header>
-    <nav className="workspace-external" aria-label="External references"><a href={MAP_URL} target="_blank" rel="noopener noreferrer">Telestroke Map</a><a href="https://www.uptodate.com/" target="_blank" rel="noopener noreferrer">UpToDate</a><a href="https://www.openevidence.com/" target="_blank" rel="noopener noreferrer">OpenEvidence</a></nav>
+    {externalReferences}
     {/* Only a tab the worker controls has every screen offline; otherwise (first visit, hard reload, no
         service worker) the banner repeats the More panel's status, which says this tab needs internet. */}
     <p className="workspace-offline" role="status">{online ? '' : `Offline · ${navigator.serviceWorker?.controller ? 'the workspace still works; external and source links need internet' : offlineStatus}`}</p>

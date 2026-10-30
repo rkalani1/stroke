@@ -301,8 +301,20 @@ describe('shell behaviour in Chromium', { timeout: 60000 }, () => {
     await page.waitForTimeout(300);
     expect(await page.locator('dialog.quick-search[open]').count()).toBe(1);
   });
+  it('keeps the chosen topic\'s bottom line in the wide reading pane (7.8.1 list plus one open pane)', async () => {
+    await open('#/evidence', { width: 1280, height: 900 });
+    const first = JSON.parse(reference).data.topics[0];
+    const pane = page.locator('.reading-pane > [data-reference-id]');
+    await pane.waitFor();
+    expect(await pane.getAttribute('data-reference-id')).toBe(first.id);
+    expect(await pane.locator('.reference-bottom-line').textContent()).toBe(bottomLine(first.summary));
+    expect(await pane.locator('.reference-summary').textContent()).toBe(first.summary);
+    // The index lists titles only, so no sentence is ever shown cut off.
+    expect(await page.locator('.reading-index .reference-bottom-line').count()).toBe(0);
+  });
   it('shows each collapsed topic with its bottom line and contents, and jumps between sections', async () => {
-    await open('#/evidence');
+    // Below the 1100 px wide reading pane, topics are a collapsed list.
+    await open('#/evidence', { width: 1024, height: 900 });
     const data = JSON.parse(reference).data;
     // The topic with the most guideline recommendations, whatever the content agents add.
     const topic = [...data.topics].sort((a, b) => (b.recommendations?.length || 0) - (a.recommendations?.length || 0))[0];

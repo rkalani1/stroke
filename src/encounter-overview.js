@@ -1,6 +1,6 @@
 import { NIHSS_ITEMS } from './clinical/nihss-items.js';
 import { numericInput } from './encounter-clinical-review.js';
-import { DIAGNOSES, encounterTiming, encounterNihss } from './workspace-state.js';
+import { DIAGNOSES, encounterTiming, encounterNihss, protocolEncounter } from './workspace-state.js';
 
 // Navigation cues only. These do not gate documentation or determine eligibility.
 export function encounterOverview(state, now) {
@@ -35,6 +35,18 @@ export function encounterOverview(state, now) {
     timing: timing.invalid ? 'Invalid / future time' : timing.clock ? `${timing.clock.elapsedMinutes} min elapsed` : n.lkwUnknown ? 'Onset unknown' : 'Not documented',
     missing
   };
+}
+
+// The case bar's IVT hold and this cue name the same next field.
+export function encounterHoldCue(state, now) {
+  const n = state.note;
+  if (state.context !== 'acute' || n.diagnosisCategory !== 'ischemic') return null;
+  if (n.ctHemorrhageStatus === 'present') return { label: 'CT hemorrhage recorded', target: 'input-ct-review' };
+  if (n.ctHemorrhageStatus === 'uncertain') return { label: 'CT hemorrhage review', target: 'input-ct-review' };
+  const protocol = protocolEncounter(state, now);
+  if (!protocol.safetyReviewRequired) return null;
+  if (!n.lastDOACType) return { label: 'Anticoagulant exposure', target: 'input-anticoagulant' };
+  return { label: 'Safety review', target: 'safety-title' };
 }
 
 export function focusEncounterTarget(id) {

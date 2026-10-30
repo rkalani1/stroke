@@ -15,6 +15,13 @@ const shortClock = at => { const d = new Date(at); return `${d.getHours() % 12 |
 // Named ACE inhibitors only (a bare '-pril' suffix also matches 'April').
 const ACE_INHIBITOR = /\b(?:benaze|capto|enala|fosino|lisino|moexi|perindo|quina|rami|trandola|zofeno|cilaza|imida)pril(?:at)?\b/i;
 export const hoursMinutes = ms => { const minutes = Math.max(0, Math.floor(ms / 60000)); return `${Math.floor(minutes / 60)}:${pad(minutes % 60)}`; };
+// A duration, not a clock face: "0:00" reads as midnight.
+export const formatElapsed = minutes => {
+  const whole = Math.max(0, Math.floor(minutes));
+  if (whole < 60) return `${whole} min`;
+  const hours = Math.floor(whole / 60), rest = whole % 60;
+  return rest ? `${hours} h ${rest} m` : `${hours} h`;
+};
 
 // Read-only projection of the current Encounter for the sticky case bar.
 // It never decides eligibility: window references are elapsed-time arithmetic.
@@ -64,7 +71,7 @@ export function caseSummary(state, nowMs) {
     dx: SHORT_DX[n.diagnosisCategory] || '', dxKey: n.diagnosisCategory || '',
     demographics: [age !== null ? String(age) : '', n.sex === 'M' || n.sex === 'F' ? n.sex : ''].filter(Boolean).join(' '),
     timeLabel: n.lkwUnknown ? 'Discovery' : 'LKW',
-    elapsed: timing.clock ? hoursMinutes(timing.clock.elapsedMinutes * 60000) : timing.invalid ? '!' : n.lkwUnknown && !timing.timestamp ? 'unknown' : '',
+    elapsed: timing.clock ? formatElapsed(timing.clock.elapsedMinutes) : timing.invalid ? '!' : n.lkwUnknown && !timing.timestamp ? 'unknown' : '',
     window,
     nihss: exam.complete ? String(exam.total) : exam.source === 'itemized' && exam.count ? String(exam.partial) : '',
     nihssPartial: !exam.complete && exam.source === 'itemized' && exam.count > 0,
@@ -80,7 +87,7 @@ export function caseSummary(state, nowMs) {
     doseNote: state.decisions?.ivt === 'Not recommended' ? 'IVT clinician decision is Not recommended; no dose shown' : `${!['TNK', 'Alteplase'].includes(state.drug) ? `Select the IV thrombolytic${weight === null ? ' and enter a valid weight (kg)' : ''}` : 'Enter a valid weight (kg)'} in Encounter for dose arithmetic; not an eligibility decision`,
     // An agent pre-filled from the dose calculation is not named until it is confirmed (as in the note).
     doseAboveMax: overMax,
-    dose: administered ? { label: unconfirmed ? 'IVT given' : state.drug === 'Alteplase' ? 'tPA given' : 'TNK given', value: clockTime(state.actions.administrationTime), detail: state.actions.administeredDose ? `${state.actions.administeredDose} mg` : '', title: `Recorded administration time${unconfirmed ? '; confirm the agent given in Encounter' : ''}${overMax ? `; administered dose above the ${overMax} mg maximum` : ''}`, flag: unconfirmed || overMax ? 'caution' : undefined } : hold ? { label: 'IVT dose', value: hold.value, title: hold.title, flag: hold.flag } : dose ? state.drug === 'Alteplase' ? { label: 'tPA', value: `${dose.totalDose} mg`, detail: `${dose.bolus} mg bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
+    dose: administered ? { label: unconfirmed ? 'IVT given' : state.drug === 'Alteplase' ? 'tPA given' : 'TNK given', value: clockTime(state.actions.administrationTime), detail: state.actions.administeredDose ? `${state.actions.administeredDose} mg` : '', title: `Recorded administration time${unconfirmed ? '; confirm the agent given in Encounter' : ''}${overMax ? `; administered dose above the ${overMax} mg maximum` : ''}`, flag: unconfirmed || overMax ? 'caution' : undefined } : hold ? { label: 'IVT dose', value: hold.value, detail: hold.detail, title: hold.title, flag: hold.flag } : dose ? state.drug === 'Alteplase' ? { label: 'tPA', value: `${dose.totalDose} mg`, detail: `${dose.bolus} mg bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
     anticoagulant: n.lastDOACType && n.lastDOACType !== 'none' ? ANTICOAGULANT_LABELS[n.lastDOACType] || 'Anticoagulant' : '',
     aceInhibitor: ACE_INHIBITOR.test(n.medications || ''),
     hasData: Boolean(n.diagnosisCategory || age !== null || timing.timestamp || n.lkwUnknown || exam.complete || exam.count || sbp !== null || glucose !== null || weight !== null)
@@ -91,9 +98,9 @@ export function caseSummary(state, nowMs) {
 // entered value contradicts holds the dose as a "Yes" would, although the Protocols card reads the answer as given.
 function doseHold(state, nowMs, weight, age) {
   const n = state.note;
-  if (['present', 'uncertain'].includes(n.ctHemorrhageStatus)) return { value: 'Held', flag: 'caution', title: n.ctHemorrhageStatus === 'present' ? 'CT hemorrhage recorded; no dose shown' : 'CT hemorrhage review uncertain or conflicting; no dose shown' };
+  if (['present', 'uncertain'].includes(n.ctHemorrhageStatus)) return { value: 'Held', flag: 'caution', detail: n.ctHemorrhageStatus === 'present' ? 'CT hemorrhage' : 'CT uncertain', title: n.ctHemorrhageStatus === 'present' ? 'CT hemorrhage recorded; no dose shown' : 'CT hemorrhage review uncertain or conflicting; no dose shown' };
   const note = contradictedAsYes(n, nowMs, state.details), protocol = protocolEncounter({ ...state, note }, nowMs);
-  if (protocol.safetyReviewRequired) return { value: 'Held', flag: 'caution', title: `${note === n ? 'IVT card held.' : 'Entered values contradict a "No" safety answer; no dose shown.'} ${protocol.safetyReviewReason}` };
+  if (protocol.safetyReviewRequired) return { value: 'Held', flag: 'caution', detail: note !== n ? 'contradicted answer' : !n.lastDOACType && /not yet assessed/i.test(protocol.safetyReviewReason) ? 'anticoagulant not assessed' : 'safety review', title: `${note === n ? 'IVT card held.' : 'Entered values contradict a "No" safety answer; no dose shown.'} ${protocol.safetyReviewReason}` };
   // Same limit as the MCP dose contract: below 30 kg is implausible for adult dosing (often a decimal slip).
   if (weight !== null && weight < 30) return { value: 'Check weight', flag: 'caution', title: 'Weight below 30 kg is implausible for adult IVT dosing; confirm kilograms and decimal placement. No dose shown.' };
   if (age !== null && age < 18) return { value: 'Not shown', flag: 'caution', title: 'Age under 18: adult dose arithmetic does not apply; use the pediatric specialist pathway.' };
@@ -157,7 +164,7 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
   return <HoldPositionOnMount shown><section ref={bar} className="case-bar" aria-label="Current encounter">
     <a className="case-bar__dx" data-dx={c.dxKey || undefined} href="#/encounter" aria-label={`Open Encounter: ${[c.dx || 'No diagnosis', c.demographics].filter(Boolean).join(' · ')}`}>{c.dx || 'No diagnosis'}{c.demographics && <span className="case-bar__demo">· {c.demographics}</span>}</a>
     {c.anticoagulant && <a className="case-bar__badge" href={badge.href} onClick={revealIfCurrent(badge.href, badge.target)} title={badge.title}><span className="sr-only">Anticoagulant: </span>{c.anticoagulant}<span className="sr-only">, {badge.action}</span></a>}
-    <div className="case-bar__time"><Item label={c.timeLabel} value={c.elapsed} pill={c.window} flag={c.window?.tone === 'critical' ? 'critical' : undefined} title="Elapsed time (h:mm)" /></div>
+    <div className="case-bar__time"><Item label={c.timeLabel} value={c.elapsed} pill={c.window} flag={c.window?.tone === 'critical' ? 'critical' : undefined} title="Elapsed time" /></div>
     <div className="case-bar__items">
       {c.gcs ? <Item label="GCS" value={c.gcs} /> : null}
       <Item label="NIHSS" value={c.nihss} detail={c.nihssPartial ? 'partial' : undefined} flag={c.nihssPartial ? 'partial' : undefined} title={c.nihssPartial ? `Partial itemized sum: ${c.nihssDocumented} of 15 items documented` : undefined} />
@@ -167,6 +174,7 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
       {(acuteIschemic || c.administered) && <Item label={c.dose?.label || 'Dose'} value={c.dose?.value} detail={c.dose?.detail} flag={c.dose?.flag} title={c.dose?.title || (c.dose ? 'Dose arithmetic only; not an eligibility decision' : c.doseNote)} />}
     </div>
     <div className="case-bar__actions">
+      <a className="case-bar__link" href={`#/protocols/${sub}/qr-dose`} onClick={revealIfCurrent(`#/protocols/${sub}/qr-dose`, 'qr-dose')}>Dose table</a>
       {bpLink && <a className="case-bar__link" href={bpHref} onClick={revealIfCurrent(bpHref, 'qr-bp')}>BP targets</a>}
       {c.administered && <a className="case-bar__link" href="#/protocols/ischemic/qr-sich" onClick={revealIfCurrent('#/protocols/ischemic/qr-sich', 'qr-sich')}>Post-lytic bleed</a>}
       {c.administered && c.aceInhibitor && <a className="case-bar__link" href="#/protocols/ischemic/qr-angioedema" onClick={revealIfCurrent('#/protocols/ischemic/qr-angioedema', 'qr-angioedema')}>Angioedema</a>}

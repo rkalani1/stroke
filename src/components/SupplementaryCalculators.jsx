@@ -3,6 +3,20 @@ import { reviewedGcs } from '../encounter-clinical-review.js';
 import { supplementaryResult, supplementaryReviewed, supplementarySourceKey, updateSupplementaryField, applySupplementaryScore, canApplySupplementaryScore, SUPPLEMENTARY_APPLY_IDS, MRS_DESCRIPTORS } from '../supplementary-calculators.js';
 import { matchesCalculatorSearch, reviewedCalculatorText, calculatorProgress, calculatorResultParts, resultCautions } from '../calculator-utilities.js';
 
+function useWideReadingPane() {
+  const query = '(min-width: 1100px)';
+  const [wide, setWide] = useState(() => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia(query).matches);
+  useEffect(() => {
+    if (typeof window.matchMedia !== 'function') return undefined;
+    const media = window.matchMedia(query);
+    const sync = () => setWide(media.matches);
+    sync();
+    media.addEventListener?.('change', sync);
+    return () => media.removeEventListener?.('change', sync);
+  }, []);
+  return wide;
+}
+
 // Worksheets whose result can reach the Encounter. Only these keep an explicit
 // attestation; every other worksheet scores live from explicit answers.
 const NOTE_IDS = ['phq2', 'stop-bang'];
@@ -88,7 +102,12 @@ function Card({ state, update, definition, selected, visible, copyContext }) {
 
 export default function SupplementaryCalculators({ state, update, tool, query = '', definitions: calculatorDefinitions }) {
   const root = useRef(null);
+  const wide = useWideReadingPane();
+  const [picked, setPicked] = useState(null);
   const visible = item => query.trim() ? matchesCalculatorSearch(item,query) : !tool || item.id === tool;
+  const listed = calculatorDefinitions.filter(item => query.trim() ? matchesCalculatorSearch(item, query) : true);
+  const activeId = listed.some(item => item.id === tool) ? tool : listed.some(item => item.id === picked) ? picked : listed[0]?.id;
+  const pane = wide && !query.trim() && (!tool || listed.some(item => item.id === tool));
   useEffect(() => {
     if (!tool) return;
     const target = [...(root.current?.querySelectorAll('details[id]') || [])].find(node => node.id === `calc-${tool}`);
@@ -96,7 +115,7 @@ export default function SupplementaryCalculators({ state, update, tool, query = 
   }, [tool]);
   return <div ref={root} className="encounter-workflow supplementary-calculators" role="group" aria-label="Worksheets">
     {tool && !query.trim() && !calculatorDefinitions.some(item => item.id === tool) && <p role="status">Calculator unavailable.</p>}
-    <h2 hidden={!calculatorDefinitions.some(visible)}>Scores and grading scales</h2>
-    {[...new Set(calculatorDefinitions.map(item => item.category))].map(category => <section key={category} aria-label={category} hidden={!calculatorDefinitions.some(item => item.category === category && visible(item))}><h3>{category}</h3>{calculatorDefinitions.filter(item => item.category === category).map(definition => <Card key={definition.id} state={state} update={update} definition={definition} selected={tool === definition.id} visible={visible(definition)} copyContext={`${tool || ''}\n${query}`} />)}</section>)}
+    <h2 hidden={!calculatorDefinitions.some(visible) && !pane}>Scores and grading scales</h2>
+    {pane ? <div className="calc-split"><nav className="calc-index" aria-label="Calculators">{[...new Set(listed.map(item => item.category))].map(category => <div key={category}><h3>{category}</h3><ul>{listed.filter(item => item.category === category).map(definition => <li key={definition.id}><button type="button" aria-current={definition.id === activeId ? 'true' : undefined} onClick={() => setPicked(definition.id)}>{definition.name}</button></li>)}</ul></div>)}</nav><div>{listed.filter(definition => definition.id === activeId).map(definition => <Card key={definition.id} state={state} update={update} definition={definition} selected visible copyContext={`${tool || ''}\n${query}`} />)}</div></div> : [...new Set(calculatorDefinitions.map(item => item.category))].map(category => <section key={category} aria-label={category} hidden={!calculatorDefinitions.some(item => item.category === category && visible(item))}><h3>{category}</h3>{calculatorDefinitions.filter(item => item.category === category).map(definition => <Card key={definition.id} state={state} update={update} definition={definition} selected={tool === definition.id} visible={visible(definition)} copyContext={`${tool || ''}\n${query}`} />)}</section>)}
   </div>;
 }

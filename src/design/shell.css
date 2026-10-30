@@ -45,8 +45,10 @@ button:disabled { opacity: .55; cursor: not-allowed; }
    bar first paints, so no CSS fallback is needed. The old :root:has(.case-bar) fallback
    made Chrome restyle the whole document (≈3,500 elements) on every Encounter keystroke
    once Calculators had been opened (2026-10-21, 4× CPU: median keystroke 232 → 88 ms). */
-html { scroll-padding-top: calc(var(--case-bar-h) + 8px); }
-.case-bar { position: sticky; top: 0; z-index: 45; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-8); min-height: 58px; margin: 0 -24px; padding: 7px var(--space-12); background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: 0 6px 18px -16px rgba(20, 51, 65, .45); font-variant-numeric: tabular-nums; }
+:root { --header-h: 72px; }
+html { scroll-padding-top: calc(var(--header-h) + var(--case-bar-h) + 8px); }
+.workspace-header { position: sticky; top: 0; z-index: 50; }
+.case-bar { position: sticky; top: var(--header-h); z-index: 45; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-8); min-height: 58px; margin: 0 -24px; padding: 7px var(--space-12); background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: 0 6px 18px -16px rgba(20, 51, 65, .45); font-variant-numeric: tabular-nums; }
 .case-bar__dx { flex-shrink: 0; display: inline-flex; align-items: center; min-height: 34px; padding: var(--space-2) var(--space-6); border-radius: var(--radius-pill); background: var(--accent-soft); color: var(--accent-ink); font: 700 var(--text-md)/var(--leading-tight) var(--font-display); text-decoration: none; white-space: nowrap; }
 .case-bar__dx { gap: 5px; }
 /* Public Sans 500 is already loaded; a Bricolage 500 face here was fetched on the first keystroke. */
@@ -86,7 +88,7 @@ a.case-bar__badge:hover { filter: brightness(1.08); }
 .case-bar__link:hover { background: var(--line); color: var(--ink); }
 .case-bar__copy { min-height: 36px; padding: var(--space-3) var(--space-7); border: 0; border-radius: var(--radius-md); background: rgb(var(--cobalt-600)); color: #fff; font-size: var(--text-sm); font-weight: 700; white-space: nowrap; box-shadow: var(--elev-1); }
 .case-bar__copy:hover { background: rgb(var(--cobalt-700)); }
-.encounter-section-nav { top: var(--case-bar-h); }
+.encounter-section-nav { top: calc(var(--header-h) + var(--case-bar-h)); z-index: 40; }
 /* html scroll-padding clears the case bar; margins below clear the in-page sticky bars. */
 .encounter-workflow :is(h2, h3, input, select, textarea, fieldset, .tool-target, .encounter-details) { scroll-margin-top: 72px; }
 #tabpanel-protocols :is(h2, h3, details, [id]) { scroll-margin-top: 96px; }
@@ -398,7 +400,7 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
   .workspace-secondary > a[aria-current="page"], html[data-theme="dark"] .workspace-secondary > a[aria-current="page"] { background: var(--accent-soft); color: var(--accent-ink); box-shadow: none; }
   html[data-theme="dark"] .workspace-secondary > a[aria-current="page"] { color: rgb(var(--c-accent-ink)); box-shadow: inset 0 0 0 1px rgb(var(--cobalt-500)); }
   .workspace-utilities > summary { padding: var(--space-4) var(--space-5); }
-  .workspace-external { margin: 0 -16px; padding: 0 var(--space-8); border-bottom: 1px solid var(--line); background: var(--surface); }
+  .workspace-external { margin: 0 -16px var(--space-4); padding: var(--space-3) var(--space-8); border-bottom: 1px solid var(--line); background: var(--surface); }
   .case-bar { margin: 0 -16px; padding: var(--space-3) var(--space-8); gap: var(--space-5); }
   .workflow-section, .retirement-message { padding: var(--space-8); }
   .workflow-section h2 { margin: -16px -16px var(--space-6); padding: var(--space-7) var(--space-8); }
@@ -411,7 +413,8 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
 @media (max-width: 480px) {
   .workspace-shell { padding: 0 var(--space-6) var(--space-10); }
   .workspace-header { margin: 0 -12px; padding: var(--space-4) var(--space-6); }
-  .workspace-external { margin: 0 -12px; padding: 0 var(--space-6); }
+  .workspace-external { margin: 0 -12px var(--space-4); padding: var(--space-3) var(--space-6); gap: var(--space-2); }
+  .workspace-external a { padding-inline: var(--space-2); font-size: var(--text-xs); }
   .utility-panel { width: min(320px, calc(100vw - 24px)); max-height: 60dvh; }
   .workspace-heading, :is(.reference-surface, .tools-surface) > h1:first-child { margin: var(--space-8) 0 var(--space-6); }
   .quick-reference { padding-top: var(--space-6); }
@@ -446,8 +449,8 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
 
 /* The reference collection uses the same disclosure and form language. */
-.workspace-external, .reference-links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-8); }
-.workspace-external a, .reference-links a, .reference-sources a, .reference-surface > p a, .workspace-details > a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: 3px; }
+.reference-links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-8); }
+.reference-links a, .reference-sources a, .reference-surface > p a, .workspace-details > a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: 3px; }
 .reference-surface { max-width: 100%; }
 :is(.reference-surface, .tools-surface, .trials-surface) h2 { font: 700 var(--display-sm)/var(--leading-snug) var(--font-display); letter-spacing: -.01em; }
 /* Cap prose width only; nested study cards and sources use the full card. */
@@ -475,16 +478,12 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
 .reference-body textarea { width: 100%; }
 @media (max-width: 639px) { .reference-filters { grid-template-columns: minmax(0, 1fr); } }
 
-/* Third-party references: a slim strip under the header on every surface. Each link keeps a
-   44px box, but the negative margins let the boxes overhang the header's bottom padding (8px or
-   more) and the space below the strip by 8px, so the strip itself is 28px tall. If the links wrap
-   (large text), the 16px row gap keeps their boxes from overlapping. The sticky case bar would
-   paint over the bottom of a focused link's outline, so it starts 8px lower (an offline note
-   between them brings its own 8px margin). */
-.workspace-external { min-height: 28px; gap: var(--space-8); font-size: var(--text-sm); }
-.workspace-external a { margin: -8px; padding-inline: var(--space-4); }
-.workspace-external a:focus-visible { outline-offset: -6px; }
-.workspace-offline:empty + .case-bar { margin-top: var(--space-4); }
+/* Three reference tiles under the title bar on every surface. */
+.workspace-external { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin: 0 0 var(--space-4); padding: var(--space-3) 0; }
+.workspace-external a { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: var(--space-3) var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface-2); color: var(--ink); font: 600 var(--text-sm)/var(--leading-snug) var(--font-sans); text-align: center; text-decoration: none; text-wrap: balance; }
+.workspace-external a:hover { background: var(--accent-soft); color: var(--accent-ink); }
+.workspace-external a:focus-visible { outline: 2px solid rgb(var(--c-focus)); outline-offset: 2px; }
+html[data-theme="dark"] .workspace-external a { background: var(--surface); }
 .reference-group { margin: var(--space-12) 0; }
 /* The topic count stays on the title's first line instead of wrapping under a long title. */
 .reference-group > h2 { display: flex; gap: var(--space-6); align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: var(--space-4); }
@@ -582,6 +581,12 @@ a.case-bar__badge::before { content: ''; position: absolute; inset: -8px -3px; }
 @media (max-width: 360px) {
   .case-bar__copy { width: min-content; min-width: 44px; padding-inline: var(--space-3); line-height: var(--leading-none); white-space: normal; }
 }
+.reading-split, .calc-split { display: grid; grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); gap: var(--space-8); align-items: start; }
+.reading-index, .calc-index { position: sticky; top: calc(var(--header-h) + var(--case-bar-h) + 12px); max-height: calc(100dvh - var(--header-h) - var(--case-bar-h) - 24px); overflow: auto; }
+.reading-index h2, .calc-index h3 { margin: var(--space-6) 0 var(--space-2); font: 700 var(--text-xs)/var(--leading-tight) var(--font-sans); letter-spacing: .04em; text-transform: uppercase; color: var(--mute); }
+.reading-index ul, .calc-index ul { margin: 0; padding: 0; list-style: none; }
+.reading-index button, .calc-index button { display: block; width: 100%; min-height: 44px; padding: var(--space-3) var(--space-4); border: 0; border-radius: var(--radius-md); background: transparent; color: var(--ink); text-align: left; font: 600 var(--text-sm)/var(--leading-snug) var(--font-sans); }
+.reading-index button[aria-current="true"], .calc-index button[aria-current="true"] { background: var(--accent-soft); color: var(--accent-ink); }
 @media (max-width: 340px) {
   .case-bar__value { font-size: var(--text-md); }
 }

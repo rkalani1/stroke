@@ -137,8 +137,11 @@ describe('elapsed time in the running app', { timeout: 40000 }, () => {
     await open({ time: '2026-10-21T01:00:00-07:00' });
     await ischemic({ lkwDate: '2026-10-20', lkwTime: '23:30' });
     await field('Baseline mRS').selectOption('0');
-    expect(await lkwResult()).toMatch(/^LKW: 90 min elapsed \(1:30\)/);
-    expect(await caseTime()).toContain('1:30');
+    // The next-entry cue names the field behind an IVT hold first (7.8.1); answer it so the time check leads.
+    await page.selectOption('#input-anticoagulant', 'none');
+    expect(await lkwResult()).toMatch(/^LKW: 90 min elapsed\. Remaining time is on the case bar\./);
+    // The case bar shows a duration, not a clock face ("1 h 30 m", 7.8.1).
+    expect(await caseTime()).toContain('1 h 30 m');
     await field('LKW date (local)').fill('2026-10-21');
     expect(await lkwResult()).toBe('Invalid, future, skipped or ambiguous local time: correct the timestamp or choose its clock occurrence.');
     expect(await caseTime()).toContain('Check time');
@@ -152,9 +155,9 @@ describe('elapsed time in the running app', { timeout: 40000 }, () => {
     const chooser = page.getByLabel('LKW clock occurrence');
     expect(await chooser.locator('option').allInnerTexts()).toEqual(['Choose which occurrence was recorded', 'First occurrence (UTC−07:00)', 'Second occurrence (UTC−08:00)']);
     await chooser.selectOption({ index: 1 });
-    expect(await lkwResult()).toMatch(/^LKW: 150 min elapsed \(2:30\)/);
+    expect(await lkwResult()).toMatch(/^LKW: 150 min elapsed\./);
     await chooser.selectOption({ index: 2 });
-    expect(await lkwResult()).toMatch(/^LKW: 90 min elapsed \(1:30\)/);
+    expect(await lkwResult()).toMatch(/^LKW: 90 min elapsed\. Remaining time is on the case bar\./);
   });
 
   it('runs no per-second clock for an encounter without a time, and one clock once a time is entered', async () => {
@@ -178,7 +181,9 @@ describe('elapsed time in the running app', { timeout: 40000 }, () => {
     await setHidden(true);
     await page.clock.fastForward(3 * 3600000);
     await setHidden(false);
-    expect(await lkwResult()).toMatch(/^LKW: 240 min elapsed \(4:00\) · 4\.5 h in 0:30:00/);
+    expect(await lkwResult()).toMatch(/^LKW: 240 min elapsed\./);
+    // Since 7.8.1 the remaining time to 4.5 h is shown once, on the case bar.
+    expect((await page.locator('.case-bar__time').innerText()).replace(/\s+/g, ' ')).toMatch(/LKW ?4 h ?4\.5 h in 0:30/);
     await page.clock.runFor(60000);
     expect(await lkwResult()).toMatch(/^LKW: 241 min elapsed/);
   });
@@ -203,6 +208,9 @@ describe('entries that cannot be used are named where they are entered', { timeo
     await open();
     await ischemic();
     await page.fill('#input-weight', '400');
+    // Since 7.8.1 the cue first names the field behind an IVT hold; record the anticoagulant answer so the
+    // invalid weight is the next entry.
+    await page.selectOption('#input-anticoagulant', 'none');
     const next = page.locator('.encounter-next-entry button');
     await field('Baseline mRS').selectOption('0');
     expect((await next.innerText()).replace(/\s+/g, ' ').trim()).toBe('Next: Weight (check entry) →');

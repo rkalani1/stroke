@@ -26,14 +26,18 @@ describe('round 9 remaining fixes', () => {
   it('counts down the 4.5 h-from-discovery limit for unknown-onset ischemic stroke', () => {
     const wake = make({ note: { diagnosisCategory: 'ischemic', lkwUnknown: true, discoveryDate: '2026-10-01', discoveryTime: '11:00' } });
     expect(caseSummary(wake, now).window).toMatchObject({ text: '4.5 h from discovery in 3:30', short: 'Disc 3:30' });
-    expect(render(wake)).toContain('WAKE-UP MRI limit (4.5 h from discovery) in 3:30');
+    expect(render(wake)).toContain('Discovery: 60 min elapsed. Remaining time is on the case bar.');
+    expect(render(wake)).not.toContain('WAKE-UP MRI limit');
     expect(caseSummary({ ...wake, note: { ...wake.note, diagnosisCategory: 'ich' } }, now).window.text).toBe('since discovery');
   });
   it('limits lytic countdowns and the AF-timing link to ischemic encounters', () => {
     const ich = render(make({ note: { diagnosisCategory: 'ich', lkwDate: '2026-10-01', lkwTime: '10:00' } }));
     expect(ich).not.toContain('· 4.5 h in');
     expect(ich).not.toContain('href="#/evidence/af-timing"');
-    expect(render(make({ note: { diagnosisCategory: 'ischemic', lkwDate: '2026-10-01', lkwTime: '10:00' } }))).toContain('· 4.5 h in');
+    const ischemic = make({ note: { diagnosisCategory: 'ischemic', lkwDate: '2026-10-01', lkwTime: '10:00' } });
+    expect(render(ischemic)).toContain('Remaining time is on the case bar.');
+    expect(render(ischemic)).not.toMatch(/\d:\d{2}:\d{2}/);
+    expect(caseSummary(ischemic, now).window.text).toMatch(/^4\.5 h in /);
   });
   it('drops the case-bar dose once IVT is not recommended', () => {
     const base = { note: { diagnosisCategory: 'ischemic', weight: '80', lkwDate: '2026-10-01', lkwTime: '10:00' } };

@@ -72,7 +72,8 @@ describe('mounted search and copy', () => {
     `}});
     script=bundled.outputFiles[0].text;browser=await chromium.launch({headless:true});
   },30000);
-  beforeEach(async()=>{page=await browser.newPage();await page.setContent('<div id="root"></div>');await page.addScriptTag({content:script});});
+  // Below the 1100 px list-plus-pane layout (7.8.1), where every worksheet is in one list.
+  beforeEach(async()=>{page=await browser.newPage();await page.setViewportSize({width:1000,height:800});await page.setContent('<div id="root"></div>');await page.addScriptTag({content:script});});
   afterEach(async()=>{await page?.close();});afterAll(async()=>{await browser?.close();});
   const mount = async (model=prepared(),tool) => page.evaluate(({model,tool})=>window.renderTools(model,tool),{model,tool});
   const copyButton = () => page.locator('#calc-abcd2').getByRole('button',{name:'Copy result'});

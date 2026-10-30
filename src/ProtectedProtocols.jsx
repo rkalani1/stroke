@@ -641,7 +641,7 @@ export default function ProtectedProtocols({
                       const activeLabel = subTabLabels[managementSubTab] || managementSubTab;
                       return (
                         <nav
-                          className="protocol-breadcrumb bg-paper-2 border border-line border-b-0 rounded-md rounded-b-none px-3 h-9 flex items-center sticky top-[var(--case-bar-h,0px)] z-40"
+                          className="protocol-breadcrumb bg-paper-2 border border-line border-b-0 rounded-md rounded-b-none px-3 h-9 flex items-center sticky top-[calc(var(--header-h,0px)+var(--case-bar-h,0px))] z-40"
                           aria-label="Protocols & Algorithms breadcrumb"
                         >
                           <p className="font-mono uppercase text-eyebrow text-mute">
@@ -650,7 +650,7 @@ export default function ProtectedProtocols({
                         </nav>
                       );
                     })()}
-                    <div className="protocol-subtabs !mt-0 bg-white border border-line rounded-md rounded-t-none p-2 flex flex-wrap gap-2 sticky top-[calc(var(--case-bar-h,0px)+2.25rem)] z-30 dark:bg-card " role="tablist" aria-label="Protocols & Algorithms sub-sections" onKeyDown={(e) => {
+                    <div className="protocol-subtabs !mt-0 bg-white border border-line rounded-md rounded-t-none p-2 flex flex-wrap gap-2 sticky top-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+2.25rem)] z-30 dark:bg-card " role="tablist" aria-label="Protocols & Algorithms sub-sections" onKeyDown={(e) => {
                       const subTabs = MANAGEMENT_SUBTABS;
                       const ci = subTabs.indexOf(managementSubTab);
                       let ni;
@@ -713,7 +713,7 @@ export default function ProtectedProtocols({
 
                         <div className="space-y-4">
                           {/* Key Principles */}
-                          <div className="border-l-4 border-crit-400 bg-slate-50 px-3 py-2 text-sm space-y-1 dark:bg-paper-2">
+                          <div className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] border-l-4 border-crit-400 bg-slate-50 px-3 py-2 text-sm space-y-1 dark:bg-paper-2">
                             <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide dark:text-ink">Key Principles</p>
                             <ul className="list-disc pl-4 text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
                               <li>Presenting SBP 150-219: target 140 and maintain 130-150. Presenting SBP &ge;220: reduce about 20%, never more than 25%, in the first hour, then gradually reduce to 140-160. Presenting SBP &lt;150: do not actively lower to 140.</li>
@@ -1716,7 +1716,7 @@ export default function ProtectedProtocols({
                           </div>
                         </div>
                         {/* Key Principles */}
-                        <div className="border-l-4 border-cobalt-400 bg-slate-50 px-3 py-2 text-sm space-y-1 dark:bg-paper-2">
+                        <div className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] border-l-4 border-cobalt-400 bg-slate-50 px-3 py-2 text-sm space-y-1 dark:bg-paper-2">
                           <p className="font-semibold text-slate-800 text-xs uppercase tracking-wide dark:text-ink">Key Principles</p>
                           <ul className="list-disc pl-4 text-xs text-slate-700 space-y-0.5 dark:text-ink-2">
                             <li>For IV thrombolysis, establish a disabling deficit, time from last known well, noncontrast CT findings, blood pressure, glucose, and the source-listed exclusions.</li>
@@ -1725,7 +1725,7 @@ export default function ProtectedProtocols({
                             <li>For every EVT, keep BP ≤180/105 during the procedure and for 24 hours afterward.</li>
                           </ul>
                         </div>
-                        <details id="isch-evt" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
+                        <details id="isch-evt" className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-100/50 rounded-t-lg flex flex-col md:flex-row md:items-center md:justify-between gap-2 dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">EVT Eligibility — Quick Reference</h2>
                           </summary>
@@ -2081,7 +2081,7 @@ export default function ProtectedProtocols({
                           </div>
                         </details>
 
-                        <details id="isch-bp" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
+                        <details id="isch-bp" className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-100/50 rounded-t-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Blood Pressure Management</h2>
                           </summary>
@@ -2176,7 +2176,7 @@ export default function ProtectedProtocols({
                           </div>
                         </details>
 
-                        <details id="isch-swallow" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
+                        <details id="isch-swallow" className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] bg-white border border-cobalt-200 rounded-lg dark:bg-card dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-50 rounded-t-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-900">
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Stroke-Specific Nursing Swallow Screen</h2>
                           </summary>
@@ -2192,7 +2192,7 @@ export default function ProtectedProtocols({
                           </div>
                         </details>
 
-                        <details id="isch-postlytic" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-crit-50 border border-crit-200 rounded-lg dark:bg-crit-950 dark:border-crit-800">
+                        <details id="isch-postlytic" className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] bg-crit-50 border border-crit-200 rounded-lg dark:bg-crit-950 dark:border-crit-800">
                           <summary className="cursor-pointer p-4 font-semibold text-crit-800 hover:bg-crit-100/50 rounded-t-lg flex items-center justify-between dark:text-crit-300 dark:hover:bg-crit-900">
                             <h2 className="text-lg font-semibold text-crit-800 dark:text-crit-300">Post-Lytic ICH Protocol</h2>
                           </summary>
@@ -2231,7 +2231,7 @@ export default function ProtectedProtocols({
                           </div>
                         </details>
 
-                        <details id="isch-angioedema" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-warn-50 border border-warn-300 rounded-lg dark:bg-warn-950 dark:border-warn-800">
+                        <details id="isch-angioedema" className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] bg-warn-50 border border-warn-300 rounded-lg dark:bg-warn-950 dark:border-warn-800">
                           <summary className="cursor-pointer p-4 font-semibold text-warn-800 hover:bg-warn-100/50 rounded-t-lg flex items-center justify-between dark:text-warn-300 dark:hover:bg-warn-900">
                             <h2 className="text-lg font-semibold text-warn-800 dark:text-warn-300">Orolingual Angioedema Protocol</h2>
                           </summary>
@@ -2262,7 +2262,7 @@ export default function ProtectedProtocols({
                           </div>
                         </details>
 
-                        <details id="isch-largecore" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
+                        <details id="isch-largecore" className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-100/50 rounded-t-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Large Core EVT Selection</h2>
                           </summary>
@@ -2289,7 +2289,7 @@ export default function ProtectedProtocols({
                           </div>
                         </details>
 
-                        <details id="isch-postevt" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
+                        <details id="isch-postevt" className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-100/50 rounded-t-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Post-EVT Management</h2>
                           </summary>
@@ -2306,7 +2306,7 @@ export default function ProtectedProtocols({
                           </div>
                         </details>
 
-                        <details id="isch-mevo" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-slate-50 border border-slate-300 rounded-lg dark:bg-paper-2 dark:border-strong">
+                        <details id="isch-mevo" className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] bg-slate-50 border border-slate-300 rounded-lg dark:bg-paper-2 dark:border-strong">
                           <summary className="cursor-pointer p-4 font-semibold text-slate-800 hover:bg-slate-100 rounded-t-lg flex items-center justify-between dark:text-ink dark:hover:bg-card">
                             <h2 className="text-lg font-semibold text-slate-800 dark:text-ink">Medium Vessel Occlusion (MeVO) EVT</h2>
                           </summary>
@@ -2323,7 +2323,7 @@ export default function ProtectedProtocols({
                           </div>
                         </details>
 
-                        <details id="isch-contrast" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-teal-50 border border-teal-200 rounded-lg dark:bg-teal-950 dark:border-teal-800">
+                        <details id="isch-contrast" className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] bg-teal-50 border border-teal-200 rounded-lg dark:bg-teal-950 dark:border-teal-800">
                           <summary className="cursor-pointer p-4 font-semibold text-teal-800 hover:bg-teal-100/50 rounded-t-lg flex items-center justify-between dark:text-teal-300 dark:hover:bg-teal-900">
                             <h2 className="text-lg font-semibold text-teal-800 dark:text-teal-300">Contrast Allergy + Suspected LVO Protocol</h2>
                           </summary>
@@ -2364,7 +2364,7 @@ export default function ProtectedProtocols({
                           </div>
                         </details>
 
-                        <details id="isch-posterior" className="scroll-mt-[calc(var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
+                        <details id="isch-posterior" className="scroll-mt-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+6rem)] bg-cobalt-50 border border-cobalt-200 rounded-lg dark:bg-cobalt-900 dark:border-cobalt-700">
                           <summary className="cursor-pointer p-4 font-semibold text-cobalt-800 hover:bg-cobalt-100/50 rounded-t-lg flex items-center justify-between dark:text-cobalt-300 dark:hover:bg-cobalt-800">
                             <h2 className="text-lg font-semibold text-cobalt-800 dark:text-cobalt-300">Posterior Circulation Stroke</h2>
                           </summary>

@@ -289,7 +289,8 @@ const go = hash => page.evaluate(value => { location.hash = value; }, hash);
 
 describe('shell fixes in Chromium', { timeout: 90000 }, () => {
   it('counts the TIA and CVT statements as ungraded, collapsed and open', async () => {
-    await open('#/evidence');
+    // The collapsed list (below the 1100 px wide reading pane).
+    await open('#/evidence', { viewport: { width: 1024, height: 900 } });
     const tia = page.locator('[data-reference-id="tia-evaluation"]');
     await tia.waitFor();
     expect(await tia.locator('.reference-contents').textContent()).toMatch(/^3 ungraded statements( · |$)/);
@@ -324,7 +325,7 @@ describe('shell fixes in Chromium', { timeout: 90000 }, () => {
   });
 
   it('uses the precached reference when the first-visit tab is offline, and says so when there is none', async () => {
-    await open('#/encounter', { reference: 'fail' });
+    await open('#/encounter', { reference: 'fail', viewport: { width: 1024, height: 900 } });
     await page.evaluate(async body => { const cache = await caches.open('stroke-cache-v-test'); await cache.put('./data/clinical-reference.json', new Response(body, { headers: { 'Content-Type': 'application/json' } })); }, JSON.stringify(envelope));
     await go('#/evidence');
     await page.locator('[data-reference-id="tia-evaluation"]').waitFor();
@@ -335,7 +336,7 @@ describe('shell fixes in Chromium', { timeout: 90000 }, () => {
     expect(await page.getByText('Calculators unavailable').count()).toBe(0);
     await context.close();
     // A cached copy of another version is never used.
-    await open('#/encounter', { reference: 'fail' });
+    await open('#/encounter', { reference: 'fail', viewport: { width: 1024, height: 900 } });
     await page.evaluate(async body => { const cache = await caches.open('stroke-cache-v-old'); await cache.put('./data/clinical-reference.json', new Response(body)); }, JSON.stringify({ ...envelope, _meta: { ...envelope._meta, appVersion: '0.0.1' } }));
     await go('#/evidence');
     const alert = page.locator('.reference-surface[role="alert"]');

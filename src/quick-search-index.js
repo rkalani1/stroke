@@ -28,7 +28,7 @@ const NAVIGATION = [
 
 const EXTERNAL = [
   { title: 'Telestroke Map', href: 'https://rkalani1.github.io/telestroke-expansion-map/', keywords: 'sites hospitals network map' },
-  { title: 'UpToDate', href: 'https://www.uptodate.com/', keywords: 'reference' },
+  { title: 'UpToDate Expert AI', href: 'https://ai.uptodate.com/', keywords: 'reference AI uptodate' },
   { title: 'OpenEvidence', href: 'https://www.openevidence.com/', keywords: 'reference AI' }
 ];
 

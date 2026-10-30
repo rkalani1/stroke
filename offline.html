@@ -197,7 +197,7 @@
                 if (legacy === 'true') pref = 'dark';
             }
             var prefersDark = !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-            var mode = pref || (isPublicPages ? 'light' : 'auto');
+            var mode = pref || (isPublicPages ? 'dark' : 'auto');
             var dark = mode === 'dark' || (mode === 'auto' && prefersDark);
             document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
         })();

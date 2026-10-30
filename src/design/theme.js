@@ -5,7 +5,7 @@
  * Owns the `data-theme` attribute on <html> — the ONLY dark-mode hook the
  * CSS reads (tokens.css `[data-theme="dark"]`, Tailwind's dark: variant,
  * shell.css). Reads preference from localStorage['stroke.v7.theme'] (one of:
- * 'auto' | 'light' | 'dark'). Defaults to light on public Pages.
+ * 'auto' | 'light' | 'dark'). Defaults to dark on public Pages.
  *
  * resolveTheme() is the single statement of the rule. The pre-paint scripts
  * in index.html and offline.html inline the same rule (they run before this
@@ -58,10 +58,7 @@ export function runV7Migration() {
 
 /* Read preference.
    - Public Pages: honor an EXPLICIT stored choice ('light'|'dark'|'auto'),
-     else default to 'light' (so existing public users — who have no stored
-     pref because runV7Migration removes it — see no change). This lets a user
-     reach Dark/System on public via an explicit selection, while keeping the
-     unset default light.
+     else default to 'dark'. Users who pick Light or System keep that choice.
    - Non-public: default to 'auto' so OS preference wins when unset. */
 export function getThemePref() {
   if (transientPref !== null) return transientPref;
@@ -69,7 +66,7 @@ export function getThemePref() {
   if (isPublicPages()) {
     return (stored === 'light' || stored === 'dark' || stored === 'auto')
       ? stored
-      : 'light';
+      : 'dark';
   }
   return stored || 'auto';
 }
@@ -79,10 +76,9 @@ export function getThemePref() {
 
    Deleting the key used to make 'System' unreachable on public Pages: the
    delete left the key unset, and getThemePref() reads unset-on-public as
-   'light', so choosing System silently snapped back to Light and the OS
-   dark-mode preference was never honored on the deployed site. Writing 'auto'
-   keeps "never chosen" (unset → light on public) and "chose System" as
-   distinct states, which is what the 3-way control needs. */
+   'dark', so choosing System silently snapped back to Dark and the OS
+   preference was never honored. Writing 'auto' keeps "never chosen"
+   (unset → dark on public) and "chose System" as distinct states. */
 export function setThemePref(value) {
   const next = (value === 'light' || value === 'dark' || value === 'auto') ? value : 'auto';
   // A blocked/quota-limited store must not make the visible control inert.
@@ -95,11 +91,11 @@ export function setThemePref(value) {
    offline.html pre-paint scripts):
      'light' | 'dark'  → that theme
      'auto'            → the OS preference
-     unset / unknown   → light on public Pages, the OS preference elsewhere */
+     unset / unknown   → dark on public Pages, the OS preference elsewhere */
 export function resolveTheme(pref, prefersDark, isPublic) {
   const mode = (pref === 'light' || pref === 'dark' || pref === 'auto')
     ? pref
-    : (isPublic ? 'light' : 'auto');
+    : (isPublic ? 'dark' : 'auto');
   if (mode === 'auto') return prefersDark ? 'dark' : 'light';
   return mode;
 }

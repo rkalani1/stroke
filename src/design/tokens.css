@@ -271,6 +271,7 @@
 
   /* ─── 6. Motion (zeroed under prefers-reduced-motion below) ─── */
   --motion-scale:  1;
+  --header-h:      72px;   /* sticky title bar; measured and overwritten by App */
   --case-bar-h:    0px;    /* height of the pinned case bar; CaseBar sets the measured value */
   --update-notice-h: 0px;  /* height of the floating update notice; the shell sets it while shown */
   --dur:           180ms;
