@@ -832,7 +832,6 @@ input placeholder=e.g. 3.6
 input placeholder=e.g. 5
 input placeholder=e.g. 6
 ## structure
-h2: Bedside quick reference
 a: AHA/ASA AIS 2026 -> https://doi.org/10.1161/STR.0000000000000513 [_blank]
 a: AHA/ASA ICH 2022 (PMID 35579034) -> https://pubmed.ncbi.nlm.nih.gov/35579034/ [_blank]
 a: AHA/ASA aSAH 2023 (PMID 37212182) -> https://pubmed.ncbi.nlm.nih.gov/37212182/ [_blank]
