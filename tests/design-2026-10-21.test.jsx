@@ -75,24 +75,31 @@ describe('stylesheet weight and style-recalc guards', () => {
 
 describe('focus is never hidden by sticky chrome (WCAG 2.4.11)', () => {
   // The Encounter section nav is 61 px (8 + 44 + 8 + 1 border) under the case bar, and Chrome reveals a
-  // date or time field by its inner segment about 14 px below the box; the protocol breadcrumb and
-  // sub-tabs are 36 px + up to 62 px. These bars stick below the sticky header and the case bar, so
-  // root scroll padding must cover the header, the case bar and each surface's bars.
+  // date or time field by its inner segment up to about 15 px below the box, whose focus ring extends
+  // 5 px (2 px outline at a 3 px offset); the protocol breadcrumb and sub-tabs are 36 px + up to 62 px.
+  // These bars stick below the sticky header and the case bar, so root scroll padding must cover the
+  // header, the case bar and each surface's bars.
   const paddings = surface => [...shell.matchAll(new RegExp(`html\\[data-surface="${surface}"\\]\\s*\\{\\s*scroll-padding-top:\\s*calc\\(var\\(--header-h\\)\\s*\\+\\s*var\\(--case-bar-h\\)\\s*\\+\\s*(\\d+)px\\)`, 'g'))].map(match => Number(match[1]));
-  const fieldMargins = [...shell.matchAll(/html\[data-surface="encounter"\] \.encounter-workflow :is\(h2, h3, input, select, textarea, fieldset, \.tool-target, \.encounter-details\) \{ scroll-margin-top: (-?\d+)(?:px)?; \}/g)].map(match => Number(match[1]));
+  const margins = target => [...shell.matchAll(new RegExp(`html\\[data-surface="(\\w+)"\\] ${target} \\{ scroll-margin-top: (-?\\d+)(?:px)?; \\}`, 'g'))].map(match => [match[1], Number(match[2])]);
+  const field = '\\.encounter-workflow :is\\(h2, h3, input, select, textarea, fieldset, \\.tool-target, \\.encounter-details\\)';
   it('pads the Encounter and Protocols scrollports past their sticky bars', () => {
-    // Encounter: a phone or short screen (section nav static), then the sticky section nav.
-    expect(paddings('encounter')).toEqual([22, 80]);
-    expect(paddings('encounter')[0]).toBeGreaterThanOrEqual(14 + 5);
-    expect(paddings('encounter')[1]).toBeGreaterThanOrEqual(61 + 14);
+    // Encounter: the section nav static (a phone or a short screen), then sticky.
+    expect(paddings('encounter')).toEqual([22, 82]);
+    expect(paddings('encounter')[0]).toBeGreaterThanOrEqual(15 + 5);
+    expect(paddings('encounter')[1]).toBeGreaterThanOrEqual(61 + 15 + 5);
     expect(paddings('protocols')).toEqual([104]);
     expect(paddings('protocols')[0]).toBeGreaterThanOrEqual(36 + 62);
   });
-  it('keeps programmatic reveals where they land on main (header + case bar + 8 px + 72 or 96 px margin)', () => {
+  it('keeps programmatic reveals where 7.8.3 lands them (header + case bar + 8 px + its margin)', () => {
     expect(shell).toMatch(/html \{ scroll-padding-top: calc\(var\(--header-h\) \+ var\(--case-bar-h\) \+ 8px\); \}/);
+    // 7.8.3's Encounter margins: 72 px, and 8 px on a phone.
     expect(shell).toMatch(/\n\.encounter-workflow :is\(h2, h3, input, select, textarea, fieldset, \.tool-target, \.encounter-details\) \{ scroll-margin-top: 72px; \}/);
-    expect(fieldMargins).toEqual([58, 0]);
-    expect(paddings('encounter').map((padding, index) => padding + fieldMargins[index])).toEqual([8 + 72, 8 + 72]);
+    expect(shell).toMatch(/\n  \.encounter-workflow :is\(h2, h3, input, select, textarea, fieldset, \.tool-target, \.encounter-details\) \{ scroll-margin-top: 8px; \}/);
+    const [shortScreen, phone, wide] = margins(field).map(([, margin]) => margin);
+    expect([paddings('encounter')[0] + shortScreen, paddings('encounter')[0] + phone, paddings('encounter')[1] + wide]).toEqual([8 + 72, 8 + 8, 8 + 72]);
+    // The skip link's main region keeps its 8 px landing on both surfaces.
+    expect(margins('#workspace-main')).toEqual([['encounter', -14], ['encounter', -74], ['protocols', -96]]);
+    expect([paddings('encounter')[0] - 14, paddings('encounter')[1] - 74, paddings('protocols')[0] - 96]).toEqual([8, 8, 8]);
     expect(paddings('protocols')[0] + 0).toBe(8 + 96);
     expect(shell).toMatch(/#tabpanel-protocols :is\(h2, h3, details, \[id\]\) \{ scroll-margin-top: 0; \}/);
     expect(shell).toMatch(/\.quick-reference details\[id\] \{ scroll-margin-top: -96px; \}/);
@@ -433,25 +440,31 @@ describe('shell behaviour in Chromium', { timeout: 60000 }, () => {
   });
 });
 
-// Where a reveal lands: the top row of the focused element must be visible, below every stuck
-// sticky bar (the header, the case bar, and the surface's own section nav or protocol bars).
-const revealLanding = () => page.evaluate(() => {
-  const focus = document.activeElement;
+// Where a reveal lands: the top row of the focused element, and its focus ring when one shows, must be
+// visible below every stuck sticky bar (the header, the case bar, and the surface's own section nav or
+// protocol bars). `offset` is the element's distance below the case bar, compared with 7.8.3's landing.
+const revealLanding = (selector = null) => page.evaluate(selector => {
+  const focus = selector ? document.querySelector(selector) : document.activeElement;
   if (!focus || focus === document.body) return null;
-  const box = focus.getBoundingClientRect();
-  const stuck = ['.workspace-header', '.case-bar', '.encounter-section-nav', '.protocol-breadcrumb', '.protocol-subtabs'].flatMap(selector => [...document.querySelectorAll(selector)])
-    .filter(bar => { const style = getComputedStyle(bar), rect = bar.getBoundingClientRect(); return style.position === 'sticky' && rect.height > 0 && Math.abs(rect.top - parseFloat(style.top)) < 1; });
+  const box = focus.getBoundingClientRect(), style = getComputedStyle(focus);
+  const ring = focus.matches(':focus-visible') && style.outlineStyle !== 'none' ? parseFloat(style.outlineWidth) + parseFloat(style.outlineOffset) : 0;
+  const stuck = ['.workspace-header', '.case-bar', '.encounter-section-nav', '.protocol-breadcrumb', '.protocol-subtabs'].flatMap(bar => [...document.querySelectorAll(bar)])
+    .filter(bar => { const barStyle = getComputedStyle(bar), rect = bar.getBoundingClientRect(); return barStyle.position === 'sticky' && rect.height > 0 && Math.abs(rect.top - parseFloat(barStyle.top)) < 1; });
   const chrome = Math.max(0, ...stuck.map(bar => bar.getBoundingClientRect().bottom));
   const y = box.top + 3;
   const hidden = [box.left + 4, box.left + Math.min(box.width, 200) / 2, Math.min(box.right, box.left + 200) - 4].filter(x => {
     const hit = y >= 0 && y < innerHeight ? document.elementFromPoint(x, y) : null;
     return !(hit && (hit === focus || focus.contains(hit) || hit.contains(focus)));
   }).length;
-  return { id: focus.id || focus.closest('[id]')?.id || focus.tagName, top: Math.round(box.top), chrome: Math.round(chrome), hidden };
-});
+  return { id: focus.id || focus.closest('[id]')?.id || focus.tagName, top: box.top, ring, chrome, hidden, offset: box.top - document.querySelector('.case-bar').getBoundingClientRect().bottom };
+}, selector);
 
-describe('reveals land below the sticky header and bars (WCAG 2.4.11)', { timeout: 60000 }, () => {
-  const clear = () => poll(async () => { const land = await revealLanding(); return land && land.hidden === 0 && land.top >= land.chrome; }).toBe(true);
+describe('reveals land below the sticky header and bars (WCAG 2.4.11), where 7.8.3 lands them', { timeout: 60000 }, () => {
+  // Clear of every stuck bar, ring included; when 7.8.3's landing is given, within 2 px of it.
+  const clear = (main = null, selector = null) => poll(async () => {
+    const land = await revealLanding(selector);
+    return Boolean(land && land.hidden === 0 && land.top - land.ring >= land.chrome - 0.5 && (main === null || Math.abs(land.offset - main) <= 2)) || land;
+  }).toBe(true);
   // Synthetic weight only: enough for the case bar, its links and a Next cue to show.
   const openCase = async width => {
     await open('#/encounter', { width, height: 900 });
@@ -459,12 +472,21 @@ describe('reveals land below the sticky header and bars (WCAG 2.4.11)', { timeou
     await page.locator('.case-bar').waitFor();
     await page.evaluate(() => { document.activeElement?.blur(); window.scrollTo(0, 0); });
   };
+  // Put a field's top `by` px above the bottom of the stuck bars.
+  const tuckUnderBars = (selector, by) => page.evaluate(([selector, by]) => {
+    const stuck = ['.workspace-header', '.case-bar', '.encounter-section-nav'].map(bar => document.querySelector(bar))
+      .filter(bar => bar && getComputedStyle(bar).position === 'sticky' && Math.abs(bar.getBoundingClientRect().top - parseFloat(getComputedStyle(bar).top)) < 1);
+    const bottom = Math.max(...stuck.map(bar => bar.getBoundingClientRect().bottom));
+    window.scrollBy(0, document.querySelector(selector).getBoundingClientRect().top - (bottom - by));
+  }, [selector, by]);
   for (const width of [1440, 820, 390]) {
+    // 7.8.3 lands an Encounter target 8 + 72 px below the case bar, or 8 + 8 px on a phone.
+    const encounterLanding = width > 480 ? 80 : 16;
     it(`the overview Next cue focuses the first missing entry below the section nav at ${width} px`, async () => {
       await openCase(width);
       await page.locator('.encounter-next-entry button', { hasText: 'Next: Working diagnosis' }).click();
       await poll(() => page.evaluate(() => document.activeElement?.id)).toBe('input-diagnosis');
-      await clear();
+      await clear(encounterLanding);
     });
     it(`the Next cue for a contradicted safety answer focuses the safety heading below the section nav at ${width} px`, async () => {
       await openCase(width);
@@ -478,37 +500,58 @@ describe('reveals land below the sticky header and bars (WCAG 2.4.11)', { timeou
       await page.evaluate(() => { document.activeElement?.blur(); window.scrollTo(0, 0); });
       await page.locator('.encounter-next-entry button', { hasText: 'Next: Contradicted safety answer' }).click();
       await poll(() => page.evaluate(() => document.activeElement?.id)).toBe('safety-title');
-      await clear();
+      await clear(encounterLanding);
     });
-    it(`Shift+Tab between the segments of a date field that sits partly under the sticky bars reveals its whole box at ${width} px`, async () => {
-      await openCase(width);
-      // Within a date field Chrome reveals the focused segment, about 14 px below the box, and ignores the
-      // field's scroll margin. From its day segment, put the field's top 20 px above the bottom of the
-      // stuck bars, then step back to the month segment.
-      await page.locator('#input-lkw-date').focus();
-      await page.keyboard.press('Tab');
-      await page.evaluate(() => {
-        const stuck = ['.workspace-header', '.case-bar', '.encounter-section-nav'].map(selector => document.querySelector(selector))
-          .filter(bar => bar && getComputedStyle(bar).position === 'sticky' && Math.abs(bar.getBoundingClientRect().top - parseFloat(getComputedStyle(bar).top)) < 1);
-        const bottom = Math.max(...stuck.map(bar => bar.getBoundingClientRect().bottom));
-        window.scrollBy(0, document.getElementById('input-lkw-date').getBoundingClientRect().top - (bottom - 20));
+    // Within a date or time field Chrome reveals the focused segment, up to about 15 px below the box, and
+    // ignores the field's scroll margin. From the second segment, tuck the field under the stuck bars, then
+    // step back to the first segment.
+    for (const [kind, selector] of [['date', '#input-lkw-date'], ['date and time', '[data-probe="last-dose"]']]) {
+      it(`Shift+Tab between the segments of a ${kind} field partly under the sticky bars reveals its whole box and ring at ${width} px`, async () => {
+        await openCase(width);
+        if (kind !== 'date') {
+          await page.locator('#input-anticoagulant').selectOption('apixaban');
+          await page.getByLabel('Last anticoagulant dose (local)').evaluate(node => node.setAttribute('data-probe', 'last-dose'));
+        }
+        for (const by of [1, 20]) {
+          await page.locator(selector).focus();
+          await page.keyboard.press('Tab');
+          await tuckUnderBars(selector, by);
+          await page.keyboard.press('Shift+Tab');
+          await poll(() => page.evaluate(selector => document.activeElement === document.querySelector(selector), selector)).toBe(true);
+          await clear();
+        }
       });
-      await page.keyboard.press('Shift+Tab');
-      await poll(() => page.evaluate(() => document.activeElement?.id)).toBe('input-lkw-date');
-      await clear();
+    }
+    it(`the skip link brings the main region to where 7.8.3 puts it on Encounter and Protocols at ${width} px`, async () => {
+      await openCase(width);
+      for (const [hash, loaded] of [['#/encounter', '#tabpanel-encounter h2'], ['#/protocols/ischemic', '.protocol-subtabs']]) {
+        await page.evaluate(hash => { location.hash = hash; }, hash);
+        await poll(() => page.evaluate(() => document.documentElement.dataset.surface)).toBe(hash.split('/')[1]);
+        await page.locator(loaded).first().waitFor();
+        await page.evaluate(() => window.scrollTo(0, 2000));
+        await page.locator('.workspace-skip').focus();
+        await page.keyboard.press('Enter');
+        await poll(() => page.evaluate(() => document.activeElement?.id)).toBe('workspace-main');
+        // 7.8.3 puts the main region's top 8 px below the header and case bar heights.
+        await poll(() => page.evaluate(() => {
+          const root = getComputedStyle(document.documentElement), at = parseFloat(root.getPropertyValue('--header-h')) + parseFloat(root.getPropertyValue('--case-bar-h')) + 8;
+          return Math.abs(document.getElementById('workspace-main').getBoundingClientRect().top - at) <= 2 || { top: document.getElementById('workspace-main').getBoundingClientRect().top, at, y: scrollY };
+        })).toBe(true);
+      }
     });
     // The case bar's links are hidden at 680 px and narrower.
     if (width > 680) it(`the case-bar Dose table link focuses the quick-reference summary below the case bar at ${width} px`, async () => {
       await openCase(width);
       await page.locator('.case-bar__link', { hasText: 'Dose table' }).click();
       await poll(() => page.evaluate(() => Boolean(document.activeElement?.closest('#qr-dose')))).toBe(true);
-      await clear();
+      await clear(8);
     });
     it(`a protocol deep link reveals the IVT contraindications card below the breadcrumb and sub-tabs at ${width} px`, async () => {
       await openCase(width);
       await page.evaluate(() => { location.hash = '#/protocols/ischemic/contraindications'; });
       await poll(() => page.evaluate(() => document.activeElement?.id)).toBe('pc-contraindications');
-      await clear();
+      // 7.8.3: 8 px padding plus the 96 px margin.
+      await clear(104);
     });
   }
 });

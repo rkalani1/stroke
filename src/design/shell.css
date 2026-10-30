@@ -94,20 +94,28 @@ a.case-bar__badge:hover { filter: brightness(1.08); }
 #tabpanel-protocols :is(h2, h3, details, [id]) { scroll-margin-top: 96px; }
 /* Keyboard focus never lands under sticky chrome (WCAG 2.4.11). Chrome reveals a focused text
    field from the root scroll padding and ignores its scroll margin (a date or time field by its
-   inner segment, about 14 px below the box), so the padding covers each surface's sticky bar; the
-   shell sets data-surface on <html>. Every value sits below the sticky header and case bar.
-   Encounter: the section nav (61 px under the case bar; static below 481 px wide or 501 px high).
-   Protocols: the breadcrumb and sub-tabs (36 px + up to 62 px). Margins are rebalanced so every
-   programmatic reveal lands where it did: Encounter 80 + 0 and 22 + 58 = the old 8 + 72; protocol
-   targets 104 + 0 = 8 + 96; quick-reference cards, above the sticky bars, 104 − 96 = 8. */
+   inner segment, up to about 15 px below the box, whose 5 px focus ring must clear too), so the
+   padding covers each surface's sticky bar; the shell sets data-surface on <html>. Every value sits
+   below the sticky header and case bar. Encounter: the section nav (61 px under the case bar;
+   static at 480 px wide or narrower and 500 px high or less). Protocols: the breadcrumb and
+   sub-tabs (36 px + up to 62 px). Margins are rebalanced so every programmatic reveal, the skip
+   link included, lands where it did: Encounter 82 − 2 and 22 + 58 = the old 8 + 72, phones
+   22 − 6 = 8 + 8; protocol targets 104 + 0 = 8 + 96; quick-reference cards, above the sticky bars,
+   104 − 96 = 8; the main region 22 − 14, 82 − 74 and 104 − 96 = 8. */
 html[data-surface="encounter"] { scroll-padding-top: calc(var(--header-h) + var(--case-bar-h) + 22px); }
 html[data-surface="encounter"] .encounter-workflow :is(h2, h3, input, select, textarea, fieldset, .tool-target, .encounter-details) { scroll-margin-top: 58px; }
+html[data-surface="encounter"] #workspace-main { scroll-margin-top: -14px; }
+@media (max-width: 480px) {
+  html[data-surface="encounter"] .encounter-workflow :is(h2, h3, input, select, textarea, fieldset, .tool-target, .encounter-details) { scroll-margin-top: -6px; }
+}
 @media (min-width: 481px) and (min-height: 501px) {
-  html[data-surface="encounter"] { scroll-padding-top: calc(var(--header-h) + var(--case-bar-h) + 80px); }
-  html[data-surface="encounter"] .encounter-workflow :is(h2, h3, input, select, textarea, fieldset, .tool-target, .encounter-details) { scroll-margin-top: 0; }
+  html[data-surface="encounter"] { scroll-padding-top: calc(var(--header-h) + var(--case-bar-h) + 82px); }
+  html[data-surface="encounter"] .encounter-workflow :is(h2, h3, input, select, textarea, fieldset, .tool-target, .encounter-details) { scroll-margin-top: -2px; }
+  html[data-surface="encounter"] #workspace-main { scroll-margin-top: -74px; }
 }
 @media (min-width: 481px) {
   html[data-surface="protocols"] { scroll-padding-top: calc(var(--header-h) + var(--case-bar-h) + 104px); }
+  html[data-surface="protocols"] #workspace-main { scroll-margin-top: -96px; }
   #tabpanel-protocols :is(h2, h3, details, [id]) { scroll-margin-top: 0; }
   .quick-reference details[id] { scroll-margin-top: -96px; }
 }

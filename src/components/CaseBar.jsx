@@ -95,18 +95,18 @@ export function caseSummary(state, nowMs) {
   };
 }
 
-// Why the case bar withholds dose arithmetic. The IVT-held reason is the Protocols banner's own text; the cause is
-// shared with the Encounter next-entry cue (ivt-hold.js).
+// Why the case bar withholds dose arithmetic. The IVT-held reason is the Protocols banner's text for the answers as
+// read (a contradicted "No" read as "Yes"); the cause is shared with the Encounter next-entry cue (ivt-hold.js).
 const HOLD_TEXT = {
   'ct-present': () => ({ detail: 'CT hemorrhage', title: 'CT hemorrhage recorded; no dose shown' }),
   'ct-uncertain': () => ({ detail: 'CT uncertain', title: 'CT hemorrhage review uncertain or conflicting; no dose shown' }),
-  contradicted: reason => ({ detail: 'contradicted answer', title: `Entered values contradict a "No" safety answer; no dose shown. ${reason}` }),
-  anticoagulant: reason => ({ detail: 'anticoagulant not assessed', title: `IVT card held. ${reason}` }),
-  review: reason => ({ detail: 'safety review', title: `IVT card held. ${reason}` })
+  contradicted: () => ({ detail: 'contradicted answer' }),
+  anticoagulant: () => ({ detail: 'anticoagulant not assessed' }),
+  review: () => ({ detail: 'safety review' })
 };
 function doseHold(state, nowMs, weight, age) {
   const hold = ivtHold(state, nowMs);
-  if (hold) return { value: 'Held', flag: 'caution', ...HOLD_TEXT[hold.cause](hold.reason) };
+  if (hold) return { value: 'Held', flag: 'caution', title: hold.reason && `${hold.contradicted ? 'Entered values contradict a "No" safety answer; no dose shown.' : 'IVT card held.'} ${hold.reason}`, ...HOLD_TEXT[hold.cause]() };
   // Same limit as the MCP dose contract: below 30 kg is implausible for adult dosing (often a decimal slip).
   if (weight !== null && weight < 30) return { value: 'Check weight', flag: 'caution', title: 'Weight below 30 kg is implausible for adult IVT dosing; confirm kilograms and decimal placement. No dose shown.' };
   if (age !== null && age < 18) return { value: 'Not shown', flag: 'caution', title: 'Age under 18: adult dose arithmetic does not apply; use the pediatric specialist pathway.' };

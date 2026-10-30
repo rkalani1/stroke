@@ -144,9 +144,11 @@ describe('a contradicted checklist "No" holds the Encounter screen and the case-
       expect(held(highBp)).toMatchObject({ value: 'Held', detail: 'safety review' });
     }
     // A real contradiction beside an unassessed anticoagulant: the anticoagulant field first (7.8.1), then the contradiction.
-    const both = candidate({ note: { glucose: '450', lastDOACType: '' } });
-    expect(cue(both)).toEqual({ label: 'Anticoagulant exposure', target: 'input-anticoagulant' });
-    expect(held(both)).toMatchObject({ value: 'Held', detail: 'anticoagulant not assessed' });
+    // The case-bar title still says the entered values contradict a "No".
+    for (const both of [candidate({ note: { glucose: '450', lastDOACType: '' } }), candidate({ ...endocarditis, note: { lastDOACType: '' } })]) {
+      expect(cue(both)).toEqual({ label: 'Anticoagulant exposure', target: 'input-anticoagulant' });
+      expect(held(both)).toMatchObject({ value: 'Held', detail: 'anticoagulant not assessed', title: expect.stringMatching(/^Entered values contradict a "No" safety answer; no dose shown\. .*Anticoagulant exposure not yet assessed in Encounter\.$/) });
+    }
     // Glucose 450 holds on its own; the contradicted "No" is still named.
     const contradicted = candidate({ note: { glucose: '450' } });
     expect(cue(contradicted)).toEqual({ label: 'Contradicted safety answer', target: 'safety-title' });
@@ -162,6 +164,29 @@ describe('a contradicted checklist "No" holds the Encounter screen and the case-
     expect(caseSummary(declined, at).dose).toBeNull();
     // A hold recorded before either still names its field.
     expect(encounterHoldCue(candidate(endocarditis), at)).toEqual({ label: 'Contradicted safety answer', target: 'safety-title' });
+    // Administration counts only with an agent selected and a valid past time, as on the case bar and the monitoring timer.
+    const pad2 = value => String(value).padStart(2, '0');
+    const local = ms => { const d = new Date(ms); return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`; };
+    for (const actions of [{ administrationTime: local(at + 3600000) }, { administrationTime: '2026-02-30T10:00' }, { administrationTime: local(at - 1800000), drug: '' }]) {
+      const { drug = 'TNK', ...recorded } = actions;
+      const pending = candidate({ ...endocarditis, drug, actions: { administered: true, agentConfirmed: 'TNK', administeredDose: '21', ...recorded } });
+      expect(encounterHoldCue(pending, at)).toEqual({ label: 'Contradicted safety answer', target: 'safety-title' });
+      expect(caseSummary(pending, at).dose).toMatchObject({ label: 'IVT dose', value: 'Held', detail: 'contradicted answer' });
+    }
+    // Any decision other than Not recommended keeps the hold.
+    for (const ivt of ['Specialist review', 'Recommended', '']) {
+      const decided = candidate({ ...endocarditis, decisions: { ivt } });
+      expect(encounterHoldCue(decided, at)).toEqual({ label: 'Contradicted safety answer', target: 'safety-title' });
+      expect(caseSummary(decided, at).dose).toMatchObject({ value: 'Held', detail: 'contradicted answer' });
+    }
+  });
+
+  it('names a recorded or uncertain CT hemorrhage before anything else, on the cue and the case bar', () => {
+    for (const [status, label, detail] of [['present', 'CT hemorrhage recorded', 'CT hemorrhage'], ['uncertain', 'CT hemorrhage review', 'CT uncertain']]) {
+      const ct = candidate({ ...endocarditis, note: { ctHemorrhageStatus: status, lastDOACType: '' } });
+      expect(encounterHoldCue(ct, at)).toEqual({ label, target: 'input-ct-review' });
+      expect(caseSummary(ct, at).dose).toMatchObject({ value: 'Held', detail });
+    }
   });
 
   it('a severe glucose answered No holds before the examination is complete, exactly as a "Yes"', () => {

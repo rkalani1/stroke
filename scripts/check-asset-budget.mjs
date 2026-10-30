@@ -176,7 +176,7 @@ const checks = [
     id: 'app-js-gzip',
     label: 'Initial module graph (gzip)',
     actual: sumSizes(manifest.initial, gzipSizeOf),
-    budget: 130 * KB, // 7.9.0: verified safety logic plus 7.8.1-7.8.3 shell code (measured 128.06 KB); 7.8.0 was 128 KB
+    budget: 130 * KB, // 7.9.0: verified safety logic plus 7.8.1-7.8.3 shell code (measured 128.06 KB; 128.33 KB at the final build); 7.8.0 was 128 KB
     unit: KB,
     unitLabel: 'KB',
     note: 'route-level code splitting is the lever that moves this',
@@ -185,7 +185,7 @@ const checks = [
     id: 'app-js-raw',
     label: 'Initial module graph (raw)',
     actual: sumSizes(manifest.initial, sizeOf),
-    budget: 380 * KB, // 7.9.0 (measured 376.9 KB); 7.8.0 was 376 KB (measured 366.5 KB)
+    budget: 380 * KB, // 7.9.0 (measured 376.9 KB; 377.4 KB at the final build); 7.8.0 was 376 KB (measured 366.5 KB)
     unit: MB,
     unitLabel: 'MB',
     note: 'parse/execute cost scales with this, not the gzip figure',
