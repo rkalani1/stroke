@@ -257,8 +257,8 @@ export function createInitialScreenerState() {
     abcd2: 'unselected',
     antithromboticSoc: 'unselected',
     exclusions: {},
-    // Values the last Encounter import wrote, so a reapply can clear what the
-    // Encounter no longer supports without discarding later manual edits.
+    // The last Encounter import: its source (none once a classification choice ended it),
+    // the user's latest answers and the standing conflicts (applyEncounterPrefill, answerFacts).
     imported: null
   };
 }
@@ -579,31 +579,35 @@ const KEY_FACTS = {
 // Facts each classification shows a control for. Facts outside this set are
 // neither shown nor printed, so the copied summary matches the screen.
 export const VISIBLE_FACTS = Object.fromEntries(CLASSIFICATIONS.map(cls => [cls, [...KEY_FACTS[cls], ...STUDY_FACTS[cls].map(([key]) => key)]]));
-// An entry where an Encounter import met a conflicting answer (imported.conflicts: key →
-// the entry it replaced) stands while it keeps the value the import left: present for an
-// exclusion, unknown otherwise (exclusion ids are never top-level state keys).
-export function conflictStands(state, key) {
-  return key in (state.imported?.conflicts || {}) && (state[key] === 'unselected' || state.exclusions?.[key] === true);
-}
+// An Encounter import's conflict over a fact (imported.conflicts) stands until the user answers that fact.
+export const conflictStands = (state, key) => key in (state.imported?.conflicts || {});
 // Standing conflicts this screen shows the fact for (an exclusion only while the refiner asks it).
 export function conflictNote(state, nowMs = null) {
   const cls = state.classification, asked = refinerItems(state, nowMs);
-  const names = Object.keys(state.imported?.conflicts || {}).filter(key => conflictStands(state, key)).map(key => {
+  const names = Object.keys(state.imported?.conflicts || {}).map(key => {
     const item = EXCLUSION_ITEMS.find(entry => entry.id === key);
     return (item ? asked.includes(item) : VISIBLE_FACTS[cls]?.includes(key)) && (item?.label || FIELD_TEXT[key]);
   }).filter(Boolean);
   return names.length ? `Encounter and screener entries differed: ${names.join('; ')}. Exclusions are set to present, other answers to unknown; confirm them.` : '';
 }
 
+const RESTARTED = { onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null, anticoagulant: 'unselected', takingOac: 'unselected' };
 // Choosing a classification restarts timing, exclusions and the anticoagulant
 // answer, and returns every fact the new screen hides to unknown. It also ends
-// the Encounter import: a value it wrote that is still unchanged returns to
-// unknown, so nothing imported outlives its staleness tracking.
+// the Encounter import (no source, so never stale): every other fact shows the
+// user's own answer (imported.answers), so nothing imported outlives its staleness
+// tracking. The click answers nothing, so a conflict over a fact the new screen
+// still shows stands: unknown and listed, its answer kept for the next import of this
+// classification to weigh (an import of another classification starts a clean screen). NIHSS provenance follows the NIHSS.
 export function withClassification(state, classification) {
-  const initial = createInitialScreenerState(), fields = state.imported?.fields || {};
-  const reset = [...new Set(Object.values(VISIBLE_FACTS).flat())].filter(key => !VISIBLE_FACTS[classification].includes(key) || (key in fields && Object.is(state[key], fields[key])));
-  return { ...state, ...Object.fromEntries(reset.map(key => [key, initial[key]])), ...(reset.includes('nihss') && { nihssUntestable: 0, nihssBulkZero: 0 }),
-    classification, onsetVal: null, onsetRangeHours: null, onsetUnit: 'hours', onsetAnchorMs: null, exclusions: {}, anticoagulant: 'unselected', takingOac: 'unselected', imported: null };
+  const initial = createInitialScreenerState(), own = state.imported?.answers || state, conflicts = { ...state.imported?.conflicts };
+  const shown = key => VISIBLE_FACTS[classification].includes(key.startsWith('nihss') ? 'nihss' : key) && !(key in RESTARTED);
+  for (const key in conflicts) if (!shown(key)) delete conflicts[key];
+  const next = { ...state, ...Object.fromEntries([...new Set(Object.values(VISIBLE_FACTS).flat()), 'nihssUntestable', 'nihssBulkZero'].map(key => [key, shown(key) && key in own && !(key in conflicts) ? own[key] : initial[key]])),
+    ...RESTARTED, classification, exclusions: {}, imported: null };
+  const { exclusions, imported, ...answers } = next;
+  for (const key in conflicts) answers[key] = own[key];
+  return Object.keys(conflicts).length ? { ...next, imported: { source: null, answers, conflicts } } : next;
 }
 
 // "NIHSS 7 (excludes 2 untestable items; 3 items set to 0 by bulk entry, not individually

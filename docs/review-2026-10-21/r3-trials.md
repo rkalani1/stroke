@@ -84,8 +84,8 @@ Results: see §6. The new file passes 45/45.
 - The ClinicalTrials.gov connector does not return "last update posted". The status (RECRUITING for all 11) and the full eligibility text were re-read today. `verificationDate` (2026-10-21) and `registryLastUpdatePosted` were left as they were and not re-dated.
 - SATURN: whether a coagulopathy-associated lobar ICH counts as a "suspected secondary cause" is not stated in the registry. The design paper's full text (doi 10.1159/000538195) was not available earlier. The SATURN item now uses the registry's own examples and leaves the judgement to the user.
 - The 48-h "use at onset" rule is a screening convention. It moves facts only from present to unknown, never to absent.
-- A conflict stays listed while the value the import left stands. Choosing an anticoagulant on the ICH screen rewrites the derived exclusions to the same present values, so after a conflict the DOAC/LMWH and 7-day lines stay listed until those answers are changed or reset, even if the new choice agrees with the Encounter. This errs toward asking for confirmation.
-- A second "reapply" after a conflict that left a yes/no fact unknown imports the Encounter's value, because nothing the user entered is left to contradict it. That is a deliberate second request to use the Encounter facts.
+- *(Superseded by §9: an answer to a listed fact, including an anticoagulant choice that writes the same present exclusions, now settles its conflict.)* A conflict stays listed while the value the import left stands. Choosing an anticoagulant on the ICH screen rewrites the derived exclusions to the same present values, so after a conflict the DOAC/LMWH and 7-day lines stay listed until those answers are changed or reset, even if the new choice agrees with the Encounter. This errs toward asking for confirmation.
+- *(Superseded since §8.6 and by §9: every import weighs the user's own answer again, so a second reapply gives the same conflict.)* A second "reapply" after a conflict that left a yes/no fact unknown imports the Encounter's value, because nothing the user entered is left to contradict it. That is a deliberate second request to use the Encounter facts.
 - Numeric facts (age, NIHSS, scores) are still replaced by "Use these facts". Only yes/no facts, exclusions and the anticoagulant choice are protected as user entries.
 - Second verification, documented and not changed (§8):
   - **rv-behavior#7, numeric and categorical differences.** Age, NIHSS, ASPECTS, GCS, pre-stroke mRS, ICH volume, vessel, ICH location and manual timing are still replaced by "Use these facts" without a notice. The conflict sentence covers only yes/no facts, the anticoagulant answer and exclusions, so it does not list every difference. Reasons: the replacement happens only on an explicit "Use these facts" or "Reapply" click, and the banner shows each imported value before that click. Listing numeric differences would need a new note format that carries both values. That adds bytes to the shared chunk, and the all-offline JS budget is already over its limit. No single rule is cautious in every case. Keeping the user's number and only listing the difference is more cautious in the reviewer's example: an entered pre-stroke mRS of 3 against an Encounter value of 0. It is less cautious when the Encounter holds the newer value, for example a NIHSS that has since risen. Which value wins is an owner decision on the import semantics.
@@ -267,8 +267,8 @@ Before → after. "Before" is `c9f4bff`, the repair as first committed. TZ Ameri
 
 | id | sev. | decision | change | test |
 |---|---|---|---|---|
-| rv-behavior#1, reopened: the AF conflict still left the fact met | medium | fixed | Three changes. (1) `applyEncounterPrefill`: when the Encounter introduces AF against an entered "No" to AF or flutter, the conflict now covers both AF answers. Both become unknown, and `imported.conflicts` records both, so the banner and the summary list "documented clinical atrial fibrillation; atrial fibrillation or flutter". (2) `buildScreenerParams`: AF-or-flutter is not derived from AF while an import conflict over it stands (`conflictStands`). If the user confirms AF documented = Yes, ASPIRE therefore stays insufficient information until AF/flutter itself is answered, which matches the note's "confirm them". Without an import, the derivation is unchanged. (3) **Refinement of the reviewer's reasoning:** a "No" to AF or flutter contradicts the Encounter only when the Encounter adds the AF. If the user had already entered AF documented = Yes, no conflict is raised and their "No" stands. ASPIRE's criterion is *non-valvular* AF or flutter (NCT03907046, §8.3), so "AF yes, non-valvular AF/flutter No" is a consistent entry, for example valvular AF, and an Encounter that repeats the AF adds nothing to it. The reviewer's case, AF not entered, is handled exactly as the reviewer asked. | "leaves both AF answers unknown, lists both, and keeps ASPIRE at insufficient information" (the reviewer's inputs, exclusions answered; params, bucket, pending line, absent from potential matches, summary note, no "· atrial fibrillation" input); "does not derive AF or flutter from a confirmed AF while that conflict stands; an answer settles it"; "an Encounter AF the user already entered adds nothing…"; the kept control "documented absence of AF never contradicts a recorded flutter…" |
-| rv-behavior#1, probe4: a reapply settled any yes/no conflict for the Encounter (also on `5a91601`) | medium | fixed | `imported.conflicts` now maps each conflict to the entry it replaced. Before, it held the value the conflict left, which is always unknown for an answer and present for an exclusion; `conflictStands(state, key)` now states that rule. A reapply puts back the replaced entry of every conflict that still stands, before it compares the entries with the Encounter. The same Encounter therefore gives the same conflict, the same cautious value and the same note. If the Encounter now agrees with the entry, or no longer records the fact, the user's own entry comes back without a note. An answer the user gave after the import is weighed as entered, as before. This covers yes/no answers, the anticoagulant answer and exclusions alike. | "a reapply never settles a standing conflict…": four cases (AF documented No, AF/flutter No, Xa/DTI ≤ 48 h absent vs an apixaban dose 10 h ago, anticoagulant None vs apixaban). In each, the second and third imports equal the first in state and note, and the summary lists the conflict. "ASPIRE stays at insufficient information through any number of reapplies"; "weighs the user's own entry again…" (agreeing and silent Encounter; the exclusion returns to absent once the dose is gone); "an answer given after the import is weighed as entered…" |
+| rv-behavior#1, reopened: the AF conflict still left the fact met | medium | fixed | Three changes. (1) `applyEncounterPrefill`: when the Encounter introduces AF against an entered "No" to AF or flutter, the conflict now covers both AF answers. Both become unknown, and `imported.conflicts` records both, so the banner and the summary list "documented clinical atrial fibrillation; atrial fibrillation or flutter". (2) `buildScreenerParams`: AF-or-flutter is not derived from AF while an import conflict over it stands (`conflictStands`). If the user confirms AF documented = Yes, ASPIRE therefore stays insufficient information until AF/flutter itself is answered, which matches the note's "confirm them". **Inaccurate, corrected in §9.3:** that held only until the next import. A reapply after the AF answer dropped the conflict and put back AF/flutter = No, so ASPIRE moved to not met (third verification, finding 2). Without an import, the derivation is unchanged. (3) **Refinement of the reviewer's reasoning:** a "No" to AF or flutter contradicts the Encounter only when the Encounter adds the AF. If the user had already entered AF documented = Yes, no conflict is raised and their "No" stands. ASPIRE's criterion is *non-valvular* AF or flutter (NCT03907046, §8.3), so "AF yes, non-valvular AF/flutter No" is a consistent entry, for example valvular AF, and an Encounter that repeats the AF adds nothing to it. The reviewer's case, AF not entered, is handled exactly as the reviewer asked. **Withdrawn in §9.2:** this refinement is what let the reapply drop the conflict once AF was answered; an Encounter AF against a "No" to AF or flutter is now always a conflict. | "leaves both AF answers unknown, lists both, and keeps ASPIRE at insufficient information" (the reviewer's inputs, exclusions answered; params, bucket, pending line, absent from potential matches, summary note, no "· atrial fibrillation" input); "does not derive AF or flutter from a confirmed AF while that conflict stands; an answer settles it"; "an Encounter AF the user already entered adds nothing…"; the kept control "documented absence of AF never contradicts a recorded flutter…" |
+| rv-behavior#1, probe4: a reapply settled any yes/no conflict for the Encounter (also on `5a91601`) | medium | fixed | `imported.conflicts` now maps each conflict to the entry it replaced. Before, it held the value the conflict left, which is always unknown for an answer and present for an exclusion; `conflictStands(state, key)` now states that rule. A reapply puts back the replaced entry of every conflict that still stands, before it compares the entries with the Encounter. The same Encounter therefore gives the same conflict, the same cautious value and the same note. If the Encounter now agrees with the entry, or no longer records the fact, the user's own entry comes back without a note. An answer the user gave after the import is weighed as entered, as before. This covers yes/no answers, the anticoagulant answer and exclusions alike. **Inaccurate, corrected in §9.3:** an answer that wrote the value the conflict had left (an anticoagulant choice writing a present exclusion, a refiner "Present", an explicit "Unknown") could not be told from no answer, and the reapply put back the pre-import entry over it (third verification, finding 1). | "a reapply never settles a standing conflict…": four cases (AF documented No, AF/flutter No, Xa/DTI ≤ 48 h absent vs an apixaban dose 10 h ago, anticoagulant None vs apixaban). In each, the second and third imports equal the first in state and note, and the summary lists the conflict. "ASPIRE stays at insufficient information through any number of reapplies" (true only with no AF answer between the reapplies; §9.3); "weighs the user's own entry again…" (agreeing and silent Encounter; the exclusion returns to absent once the dose is gone); "an answer given after the import is weighed as entered…" |
 | rv-behavior#3, reopened: a stale import with no patch was described as live | low | fixed | `screenerPrefillFromEncounter` now returns `lkwAnchorMs`, the Encounter's current LKW anchor or `null`, for every diagnosis, including those with no patch. `TrialScreener` compares it with the imported anchor: `lkwChanged = stale && anchored && prefill.lkwAnchorMs !== state.onsetAnchorMs`. I chose this comparison over neutral wording. It keeps "Live from the Encounter LKW…" when the LKW is unchanged (the original rv-behavior#3 case) and says "has since changed" when it changed, so neither statement can be false. The banner's no-reapply caution is unchanged. | unit "still reports the Encounter LKW, so a changed one is detectable without facts to reapply" (SAH 05:00 anchor, `null` without LKW, the same anchor as the patch for a modeled diagnosis); browser "an Encounter diagnosis changed to SAH with a new LKW…" (the reviewer's sequence: note text, no "Live from", field 3, summary "Encounter LKW at import 09:00"). The earlier browser case with an unchanged LKW still passes |
 
 Tests: `tests/r3-trials-reverify-2026-10-22.test.jsx` now has 36 tests. The earlier test "sets the answer to unknown, lists it, and no longer reports ASPIRE as not met for AF" was replaced, because it asserted `afibHistory === true` after the conflict, which was the defect. Checked against the reviewer's point: it also tested only the absence of an AF exclusion reason, not ASPIRE's bucket. Against the `c9f4bff` sources (the three source files checked out temporarily, then restored), 11 of the 36 fail, each for the reported reason. The 25 that pass include two controls that pin behavior already correct: "documented absence of AF…" and "an answer given after the import…". With the repair, all 36 pass. Expected values follow the screener's rules (a conflict leaves an answer unknown and an exclusion present until the user answers it, and the summary matches the screen) and the ASPIRE registry criterion. None were copied from implementation output.
@@ -299,3 +299,240 @@ Budget: `check:asset-budget:json` on clean builds of each commit, made in this s
 
 - **Over budget.** The all-offline JS budget was already 213 B over after the first repair, and it is now 317 B over. `check:asset-budget` fails that one check, and every other check passes. This is left to the lead's budget decision.
 - **Offsets in this round.** `conflictStands` reads the cautious value directly rather than looking up the exclusion list, which is safe because exclusion ids are never top-level state keys. The prefill computes the LKW anchor once and reuses it for the dose-to-onset bound (`lkwAnchorMs ?? nowMs`). A redundant `typeof` test was dropped.
+
+## 9. Third verification and repair
+
+A third independent verifier (session scratchpad `r3fix/trials-final-verify.json`; probes, harness and fuzzer in `r3v3-trials-keep/`) reported two blocking defects and two non-blocking items against `042f914`. Both blocking defects had one cause: the import decided that a conflict was "untouched since the import" from value equality. This round replaces that inference with an explicit record of the user's answers. Worktree `/home/user/stroke/.claude/worktrees/r3-trials-repair3`, branch `r3-trials-repair3`, started at `042f914`. I reproduced every item with the verifier's own probes (`p1`–`p6.mjs`, harness pointed at this worktree) before changing code. No locked file was touched. No clinical content, registry wording or trial profile changed, so no source was re-read and there are no new ledger rows; the tests quote the registry passages read for §2 and §8.3.
+
+### 9.1 The model
+
+This is also the comment on `applyEncounterPrefill` and `answerFacts` (`src/evidence/screener-prefill.js`).
+
+- **U, the user's answers.** `imported.answers` holds the user's latest explicit answer to every fact the import can write. At the first import it is what the screen held. After that, every edit goes through `answerFacts(state, patch)`, which records exactly the keys the patch writes, and no other key, and removes those keys from `imported.conflicts`. This covers every control: key facts, study facts, timing, refiner toggles and "Reset exclusions to unknown", the anticoagulant select (`applyAnticoagulant`, whose derived OAC and exclusion writes count as the user's answer because the user's own choice wrote them) and "On oral anticoagulant". "Reset screen" ends the import (`imported: null`), and the next import then takes the screen as U. A classification button also ends it, but keeps the standing conflicts over facts the new screen shows (§9.6).
+- **E, the Encounter.** E is what the Encounter says now (the prefill patch).
+- **Each import computes the screen from U and E alone.** Earlier screen values are never restored by guessing.
+  - Yes/no facts, the anticoagulant choice and its three exclusions: if U and E are both entered and differ, that is a conflict. The exclusion is present, any other fact is unknown, and the key is listed until the user answers it. Otherwise the screen takes the entered value, or unknown if neither is entered. Rule (B) of §7 is kept: once the user's anticoagulant or OAC answer contradicts the Encounter's, the Encounter's anticoagulant answer supplies nothing except present exclusions.
+  - AF: an Encounter AF against a "No" to AF or flutter is a conflict over AF or flutter on every import. It is also a conflict over AF unless the user answered AF Yes. Documented absence of AF never contradicts a recorded flutter. `buildScreenerParams` does not derive AF or flutter from AF while that conflict stands (unchanged).
+  - Every other fact (classification, numbers, timing): the Encounter's value when it records one, and a different value replaces U. Otherwise U applies. So a value an import wrote that the user never answered returns to unknown (the TA-F2 rule), and an entry equal to the Encounter's stays the user's.
+- **Choosing a classification** ends the import. The record loses its source, so nothing is called stale. Every fact the new screen shows keeps the user's own answer (U), and everything the Encounter supplied returns to unknown. The click answers nothing, so it settles no conflict. A fact in conflict that the new screen still shows stays unknown and listed, and the record keeps its U for the next import to weigh. Timing, the anticoagulant answer, "On oral anticoagulant" and the exclusions restart, and their conflicts end with them. NIHSS provenance follows the NIHSS. (Corrected in §9.6. As first committed in this round, the click showed U for a fact in conflict and dropped the conflict.)
+
+Removed, because the model makes it unnecessary: `imported.fields` and `imported.exclusions`; the value-equality reset and restore loops; the "value still cautious" test in `conflictStands`, which is now just membership in `imported.conflicts`; `applyFacts`, now part of `answerFacts`; the `withClassification` value comparison; and the "On oral anticoagulant" handler that called `applyAnticoagulant(prev, 'unselected')`.
+
+### 9.2 Findings and decisions
+
+| item | sev. | reproduced (042f914) | decision | change | test |
+|---|---|---|---|---|---|
+| 1. A user answer that writes the value a conflict left (DOAC/VKA/LMWH writing a present exclusion, refiner "Present", explicit "Unknown") is overwritten on reapply by the pre-import entry. MINUTE and FASTEST-2 then become potential matches while the user's answer is DOAC or VKA | blocking | yes. `p3`: user DOAC, Encounter cleared, reapply → `exDoacLmwhAtOnset` absent, MINUTE potential match. `p2`: VKA, Encounter cleared or "none" → `exOacWithin7d` absent, FASTEST-2 potential match. `p3` step 4: refiner Absent→Present lost. `p6`: "Unknown" replaced by "None". After the DOAC/VKA answer the note still listed exclusions both sides now called present | fixed | §9.1. The answer is recorded and settles the conflict. Every reapply weighs it as U. After the fix: DOAC → present, MINUTE not met; VKA with the Encounter cleared → present, FASTEST-2 not met, no note. VKA with Encounter "none" → anticoagulant unknown, `exOacWithin7d` present, both listed. Each is identical to a first import of the same entries. Refiner "Present" is kept. "Unknown" stays unknown and MINUTE is insufficient information. A DOAC or VKA choice clears the note | reapply file: the four finding-1 tests; browser: MINUTE DOAC, refiner Absent→Present |
+| 2. AF/flutter No; Encounter AF; the user answers only AF documented = Yes; reapply puts back AF/flutter = No, drops the conflict and ASPIRE becomes not met | blocking | yes. `p1`: `imported.conflicts` became `{}`, and ASPIRE moved to "Requires documented non-valvular atrial fibrillation or flutter". The same happens after an unrelated Encounter edit (age 72→73) | fixed | The AF special case no longer depends on the AF answer. An Encounter AF against "No" to AF or flutter contests AF or flutter on every import until the user answers that fact. Once answered, the next import weighs the new answer. **The §8.6 refinement is withdrawn.** It said "AF entered too → no conflict", and with an order-free record of answers it is exactly what lets a later AF answer drop the conflict. Keeping it would need a memory of answer order, and it would still fail when the Encounter drops the AF and then records it again. Cost: a user who enters AF Yes with non-valvular AF/flutter No (valvular AF) sees AF/flutter listed on import and re-listed on each reapply after answering No again. That is the cautious direction: ASPIRE shows insufficient information, never a potential match | reapply file: finding-2 tests (same Encounter; age edit; three reapplies each); browser ASPIRE; reverify test renamed "an Encounter AF against a 'No' to AF or flutter is a conflict even when AF was entered too…" (it pinned the withdrawn refinement) |
+| 3. "On oral anticoagulant" = Yes clears a conflicting present Xa/DTI ≤ 48 h (SISTER excluded → insufficient information), with no notice | non-blocking (pre-existing since `5a91601`) | yes (`p5`) | fixed | The control writes only `takingOac`. It no longer clears the anticoagulant display value or its exclusions. That value is hidden on ischemic and TIA screens and nothing reads it there: the import weighs U, and choosing a classification resets it. No edit now changes a key it does not write (checked after every fuzzer edit) | reapply file: finding-3 test (Yes, No and Unknown each leave Xa present and listed; a reapply keeps it); browser takingOac |
+| 4. §8.6 states two things that the probes disprove | non-blocking | yes | corrected | The §8.6 statements are marked inaccurate in place and point to §9.3 | — |
+
+Behaviour changed beyond the findings, as the model requires:
+- **Reclassification (corrected in §9.6).** As first committed in this round, choosing a classification showed a fact's user answer even when a conflict had made it unknown. It also dropped the conflict. So until the next import, an answer the Encounter contradicted was shown as current, with no note in the banner or the summary. This paragraph did not say so. The fourth review found it blocking (§9.6). Now the fact stays unknown and listed, and the record keeps the user's answer for the next import. At `042f914` the fact stayed unknown with no note, and the next import silently took the Encounter's value, so the user's answer was lost. Now the next import lists the conflict again if the Encounter still contradicts the answer, and shows the user's answer if it does not. Test: "a fact in conflict stays unknown and listed, and the next import weighs the user's answer again".
+- **Equal replaced facts.** An Encounter value equal to the user's entry for a replaced fact (age, NIHSS, classification, timing) leaves it the user's answer. Before, value equality made it count as imported, so it was cleared when the Encounter later dropped it.
+- **Edits must use the edit path.** Six existing tests were updated. Five simulated a UI edit by spreading state, which bypasses the record. They now call `answerFacts`, as the controls do, and keep their expected values:
+  - `r3-trials-2026-10-22` (C) "drops a conflict from the note once its answer is changed";
+  - `trials-review-2026-10-17` TA-F2 "keeps values the user changed after the import";
+  - `r3-trials-reverify-2026-10-22` "does not derive AF or flutter from a confirmed AF…", "an answer given after the import is weighed as entered…" and "keeps values the user entered or changed after the import".
+
+  The sixth, in the same reverify file, pinned the withdrawn refinement and now pins its replacement (item 2).
+
+Unchanged: the engine's tri-state; numeric facts replaced by the import (§5, rv-behavior#7); stale detection (`imported.source`); conflict-sentence wording.
+
+### 9.3 Corrections to §8.6
+
+- "If the user confirms AF documented = Yes, ASPIRE therefore stays insufficient information until AF/flutter itself is answered." This held only until the next import. At `042f914` a reapply after the AF answer dropped the conflict and ASPIRE became not met (finding 2). It holds now on every import.
+- "An answer the user gave after the import is weighed as entered … yes/no answers, the anticoagulant answer and exclusions alike." At `042f914` it was not weighed when it wrote the value the conflict had left (finding 1). It is now, because the edit is recorded rather than inferred.
+- The test "ASPIRE stays at insufficient information through any number of reapplies" covered reapplies with no answer in between. The new finding-2 tests cover an AF answer between reapplies.
+- The §8.6 refinement "an Encounter AF the user already entered adds nothing" is withdrawn (§9.2, item 2).
+
+### 9.4 Tests
+
+Counts and results in §9.4 and §9.5 are this round's as first committed (`0083b01`). §9.6 gives the final ones.
+
+New files:
+- **`tests/r3-trials-invariants-2026-10-24.test.js`** (13 tests, about 15 s). This is the verifier's fuzzer, ported.
+  - **Sequences.** Seeded (mulberry32), deterministic sequences on ICH, ischemic and TIA screens, 12 seed blocks × 80 sequences × 14 steps, 13,440 steps in all. The steps are:
+    - user edits through every control that writes an importable fact, made with the same calls TrialScreener makes: anticoagulant select, AF documented, AF or flutter, "On oral anticoagulant", age, refiner toggles, refiner reset;
+    - classification choices;
+    - Encounter edits: anticoagulant, last dose, AF, age, medication text, diagnosis changed to another modeled one, to none, or to SAH;
+    - imports and reapplies.
+  - **Reference model.** After every step the tracked screen values and the conflict set are compared with a reference model written in the test from the rule's statement (§9.1). The model keeps its own U, its own table of what each anticoagulant option states, and its own visibility table, which is checked against the screen's controls.
+  - **Other checks, after every step:**
+    - a second reapply with the Encounter unchanged changes nothing;
+    - an edit changes no key it does not write, and settles only conflicts over keys it writes;
+    - the conflict sentence names exactly the standing conflicts the screen shows, in rule order;
+    - the copied summary carries exactly the banner's stale and conflict sentences;
+    - AF or flutter is never derived from AF while its conflict stands;
+    - no potential match has a modeled fact unknown (every field it reads is known, and an `or` has one fully known branch);
+    - the summary, conflict sentence and prefill summary contain no "undefined", "null" or "NaN".
+  - **Rendered banner.** Every 10th sequence also renders `TrialScreener` (server-side, clock fixed) at its last step. The banner's status text must equal the summary's sentences, and the banner contains none of those words (96 renders).
+  - **Coverage of one run:** 4,534 imports, 4,434 edits (306 settling a listed conflict), 1,477 classification choices, 1,964 steps with a standing conflict (AF 1,135, OAC 447, anticoagulant 435, DOAC/LMWH 256, AF or flutter 159, of which 40 with AF answered Yes, OAC ≤ 7 d 135, Xa/DTI 121), and 186 steps with a potential match (68 of them with a standing conflict on another fact).
+- **`tests/r3-trials-reapply-2026-10-24.test.jsx`** (14 tests). These are the verifier's exact reproductions:
+  - MINUTE with DOAC;
+  - FASTEST-2 with VKA, Encounter cleared and Encounter "none";
+  - refiner Absent→Present;
+  - anticoagulant Unknown;
+  - AF documented Yes then reapply, with the same Encounter and after an age edit;
+  - "On oral anticoagulant" Yes, No and Unknown.
+
+  Each is checked against the first-import control where the verifier gave one. The file also tests the reclassification and equal-entry rules. Four Chromium tests repeat the UI-dependent cases on the real controls (built `src/Trials.jsx`, synthetic Encounter, fixed clock): MINUTE with DOAC; refiner Absent→Present, then "Reset exclusions to unknown" and a reapply; ASPIRE after AF documented Yes; "On oral anticoagulant" Yes.
+
+**Fail before, pass after.** Both files were run against the `042f914` sources in a `git archive` copy. That version has no `answerFacts`, so it was aliased to that version's `applyFacts`. That is the merge its key-fact and refiner controls performed, and it records nothing. The alias was added only in the scratch copy. Results:
+- **Fuzzer:** 12 of 13 fail, every seed block. The first failures are the reported defects: an edit that writes the value a conflict left does not settle it, and the AF-entered refinement. The visibility-table check passes.
+- **Reproductions:** 13 of 14 fail. The one that passes is the unit test for finding 3, because that defect was in the UI handler and the alias does not reproduce the handler. Its browser twin fails at `042f914`: Xa/DTI ≤ 48 h became "Not assessed".
+- **Reason for each failure.** With the post-edit note checks removed, each finding-1 and finding-2 test fails on the reapply outcome itself, for the reported reason:
+  - `exDoacLmwhAtOnset` false after the DOAC answer;
+  - `exOacWithin7d` false after VKA;
+  - refiner Present lost;
+  - "None" back after "Unknown";
+  - `[true, false, '']` for AF Yes, AF/flutter, note.
+- **After the repair:** both files pass, 27 of 27.
+
+**Mutations.** Each of these 11 mutations of the repaired code makes the final fuzzer fail in 6 to 12 of its 12 seed blocks:
+- restore the AF-entered refinement;
+- never contest AF;
+- import Encounter absences against a contradicted OAC answer;
+- ignore a contradicted OAC answer;
+- edits that do not settle, or do not record;
+- replaced facts that always drop the user's answer;
+- an exclusion conflict that takes the Encounter's value;
+- derive AF or flutter during its conflict;
+- reclassification that keeps imported values, or that resets conflicted facts.
+
+The source was restored after each run.
+
+### 9.5 Checks and budget
+
+Run in this worktree on the final source:
+- `npx vitest run`: 134 files, 2751 passed, 3 skipped, 0 failed. Baseline at `042f914`: 132 files, 2724 passed, 3 skipped. That was measured in the archive copy, where `committed-bundle-coherence` cannot read a git index, so its 4 tests, which pass in this worktree, were added to that copy's 2720. The change is +27 new tests, and 6 tests were updated (§9.2).
+- `npm run test:protocol-source`: PASS.
+- `npm run content:validate`: PASS (16 trial profiles).
+- `npm run check:clinical-claims`: PASS (4 bounded groups, 31 occurrences, 0 exports).
+- `npm run check:leak-guard`: no institutional or PHI-adjacent content.
+- `git clean -fqX chunks && npm run build`, then `npm run check:asset-budget`: all six checks pass.
+- Protocols tab locks, port 4360, on that build: desktop 1440x900 PASS (46 fixture/sub-tab captures); phone 390x844 PASS (46 captures). `screener-eval.js` is in the chunk QuickSearch shares, so both were run. No file that Protocols imports was edited.
+
+Budget: `check:asset-budget --json` on clean builds of `042f914` (a `git archive` copy) and of this source. Per-chunk figures use gzip -9.
+
+| measure | `042f914` | now | delta |
+|---|---|---|---|
+| initial module graph, gzip | 130,894 | 130,895 | +1 (renamed chunk hashes in `app.js`) |
+| initial module graph, raw | 384,937 | 384,937 | 0 |
+| all offline JS, gzip | 263,665 | 263,617 | **−48** (ceiling 266,240; 2,623 B left) |
+| all offline JS, raw | 876,804 | 876,483 | −321 |
+| Trials chunk, gzip -9 | 13,964 | 13,944 | −20 |
+| shared Trials/QuickSearch chunk, gzip -9 | 27,300 | 27,261 | −39 |
+| tailwind.css | 106,910 | 106,910 | 0 |
+| SW precache | 2,155,330 | 2,155,009 | −321 |
+
+The model is smaller than the inference it replaces. The reset and restore loops, `imported.fields` and `imported.exclusions`, the value test in `conflictStands`, the `withClassification` comparison and the old OAC handler are gone. No offset elsewhere was needed.
+
+Open for the lead: the withdrawn §8.6 refinement (§9.2, item 2) is a product choice in the cautious direction. Restoring it would need a record of answer order.
+
+### 9.6 Fourth verification and repair: a classification choice settled a standing conflict
+
+A fourth independent reviewer checked this round's commits at `0083b01` and reported one blocking defect. Their probes, browser script and fuzzer are in the session scratchpad under `r3v4-trials/`. The worktree and branch are unchanged, and this repair starts at `0083b01`. Before changing code I reproduced the defect with the reviewer's unit probe (`probes/r1-reclassify.mjs`, all three variants) and their headless Chromium script on the real controls (`fuzz/browser-r1.mjs`). No locked file was touched. No clinical content, registry wording or trial profile changed, so no source was re-read and there are no new ledger rows.
+
+#### 9.6.1 Finding and decision
+
+| item | sev. | reproduced | decision | change | test |
+|---|---|---|---|---|---|
+| R1. A classification click settles a standing conflict. Setup: `TZ=America/Los_Angeles`, now 2026-10-22 12:00, synthetic Encounter TIA, age 70, LKW 2026-10-19 12:00, "no AF documented". The user sets AF documented = Yes and clicks "Use these facts". AF is unknown and listed, and INTERCEPT shows insufficient information. Then the user clicks "TIA" again (or "Ischemic stroke") and re-enters age 70, onset "24h – 7d" and every refiner item Absent. Result: the AF control shows Yes, the banner status is empty, and the summary reads "POTENTIAL MATCH (1) … INTERCEPT (NCT05723926)" with the input "atrial fibrillation". `withClassification` had set `imported: null`, which dropped the conflict, and it showed the contradicted answer as current | blocking | yes, at `0083b01`, by the unit probe (default, `TO=ischemic`, `DIAG= CLS=ischemic TO=ischemic`) and in Chromium. At `042f914` the same steps leave AF unknown and INTERCEPT at insufficient information | fixed | `withClassification` keeps each conflict over a fact the new screen shows that the click does not restart. Details below | reapply file: rewritten reclassification test; the reviewer's reproduction for TIA → TIA and TIA → ischemic; ICH → ICH with AF or flutter; a restarted answer's conflict ends; browser reproduction. Invariant file: independent contradicted-answer check, re-entry after a classification |
+| R1a. The same click drops a stale-import caution | non-blocking (unchanged since `042f914`) | yes | kept as is; documented | After the click the screen shows only the user's own answers and nothing the Encounter supplied, as on a screen that was never imported. Nothing on it can be stale, and the banner still offers the live Encounter facts and "Use these facts" | reapply file: no stale caution after the click (`importChanged` false) |
+
+**The change.** This is the reviewer's proposed fix, and it follows the model's own rule: a conflict stands until the user answers that fact or the next import weighs it. No special case was added.
+- Only AF documented (on every screen) and AF or flutter (ICH to ICH) can carry a conflict through the click. Timing, the anticoagulant answer, "On oral anticoagulant" and every exclusion restart, and their conflicts end with them.
+- The fact keeps its cautious value, unknown.
+- The record stays with:
+  - `source: null`, so `importChanged` stays false and no stale caution appears;
+  - `answers`: the new screen, plus each kept conflict's U;
+  - `conflicts`: the kept conflicts.
+- The banner and the copied summary therefore keep listing the conflict. Answering the fact settles it (`answerFacts`, unchanged).
+- The next import weighs U against E as any import does, provided it keeps this screen's classification (an import with no classification, or the same one). It lists the conflict again if the Encounter still contradicts U, and shows the user's answer if not. An import whose Encounter classification differs from the screen's starts a clean screen of that classification, as every import does, so the kept answer is not carried into it (see the limits below).
+- `buildScreenerParams` still does not derive AF or flutter from AF while its conflict stands.
+
+After the fix, the reviewer's steps give:
+- the AF control is unknown;
+- the banner status and the summary carry "Encounter and screener entries differed: documented clinical atrial fibrillation. Exclusions are set to present, other answers to unknown; confirm them.";
+- INTERCEPT is at insufficient information, with "Confirm documented clinical atrial fibrillation". The summary reads "POTENTIAL MATCH (0)", and its inputs do not include "atrial fibrillation";
+- INTERCEPT becomes a potential match only after the user answers AF documented = Yes.
+
+**Limits (from the final independent verification; none is a regression, each outcome is identical at `0083b01` and `042f914`).**
+- Between the click and the next import, a kept conflict stays listed even if the Encounter has since changed to agree with the user's answer. Nothing re-weighs it before an import, and the banner offers the reapply. This one is in the cautious direction.
+- A classification click ends a conflict over a fact the new screen hides (for example AF or flutter after ICH → TIA) or restarts (the anticoagulant, OAC, timing and exclusion answers), and that answer is not kept in the record. An import whose classification differs from the screen's also starts a clean screen. In both cases a later import takes the Encounter's value with no note. That can become a potential match the user's earlier, contradicting answer would have excluded (reproduced: INTERCEPT after ICH → TIA with AF or flutter "No"; MINUTE and FASTEST-2 after a DOAC answer, a click and a re-import over an Encounter "none"). Each path needs the user to re-enter the screen's facts after the click and import again. The facts are unknown, so not a match, until that import.
+- A more cautious option the owner may prefer: keep the user's last answer for hidden or restarted facts in the record, and weigh it at the next import, including one that switches classification. It was not built here because it changes what a classification click means.
+
+#### 9.6.2 Tests
+
+Updated, because each pinned the defect:
+- **Reapply file, the reclassification test.** "a fact in conflict shows the user's answer again, and the next import lists the conflict again" is now "a fact in conflict stays unknown and listed, and the next import weighs the user's answer again". It expected `[false, 'unselected', null]` after the click. It now expects:
+  - AF unknown and listed after the click, with no stale caution;
+  - the conflict listed again on the next import with the same Encounter;
+  - the user's "No" back when the Encounter's AF is cleared;
+  - the conflict settled by answering.
+- **Invariant file, the reference model's `refClassify`.** It is now written from the corrected statement: a standing conflict over a shown, non-restarted fact stays (unknown, listed, U kept). The header comment is updated.
+
+Added to `tests/r3-trials-reapply-2026-10-24.test.jsx` (now 19 tests):
+- **The reviewer's reproduction as unit tests,** TIA → TIA and TIA → ischemic. AF stays unknown and listed after the click, and after age 70, onset "24h – 7d" and every refiner item Absent are re-entered. INTERCEPT is not a potential match. The summary carries the conflict sentence and "Confirm documented clinical atrial fibrillation", and its inputs do not include AF. Control: answering AF documented = Yes makes INTERCEPT a potential match, so AF was the only gate.
+- **ICH → ICH with AF or flutter No against an Encounter AF.** Both stay unknown and listed. After AF is answered Yes, AF or flutter is still not derived and stays listed, and ASPIRE stays at insufficient information. Choosing ischemic instead drops the hidden AF-or-flutter conflict and keeps AF's.
+- **A conflict over a restarted answer** (anticoagulant at onset, DOAC/LMWH at onset, OAC ≤ 7 days) ends with it: no record and no note.
+- **Browser** (Chromium, built `src/Trials.jsx`, real controls). This is the reviewer's `browser-r1` sequence: the TIA and Ischemic stroke clicks, the re-entry and the copied summary. Then the user answers AF documented = Yes, the note clears, and INTERCEPT becomes a potential match.
+
+Changed in `tests/r3-trials-invariants-2026-10-24.test.js` (still 13 tests), for the gaps the finding showed:
+- **A check that does not use the reference model.** The model had encoded the defect, so comparing against it could not catch the defect. The new invariant: take E, the facts of the last import's Encounter. A weighed fact must be listed in `imported.conflicts` when three things hold: its screen value is known, it differs from E's known value, and the user has not answered it since that import. The reviewer's version compared with the live Encounter, so it also counted R1a cases where the Encounter changed after the click. Those are left out here, because no import has weighed the new value.
+- **Re-entry after a classification.** The generator never re-entered what a classification restarts, so a reclassified screen almost never reached a potential match. After a classification choice, half the time the user now re-enters onset (a random preset), age, the other facts, and every other exclusion absent, pregnancy included.
+- **Coverage of one run** (instrumented scratch copy):
+  - 1,476 classification choices, 142 of which keep a conflict: AF 130, AF or flutter 1, both 11;
+  - 296 steps with a kept record, with 89 edits and 90 imports on one.
+  - At `0083b01`, with the old reference model, the new generator reaches 255 steps with an unlisted contradicted AF, 27 of them with INTERCEPT a potential match that reads it.
+
+**Fail before, pass after.** Both files were copied into a `git archive` copy of `0083b01`:
+- Invariant file: 12 of 13 fail, every seed block. The visibility-table test passes.
+- Reapply file: 5 of 19 fail, namely the rewritten test, the two reproductions, the ICH → ICH test and the browser test. The browser test fails with the AF control at "true" after the TIA click. The test for a restarted answer's conflict passes there, as it should: it guards against keeping too much.
+- With the old reference model put back in that copy, the independent invariant alone fails every seed block ("afibHistory true is shown unlisted; the last import's Encounter says false").
+- After the repair, all 32 tests pass.
+
+**The reviewer's own fuzzer** (`fuzz/v4fuzz2.jsx`), run against this source:
+- Two adjustments: its classification model was updated to the rule above, and its contradiction check was limited to an Encounter unchanged since the last import.
+- Results: 2 × 3,000 sequences × 20 steps (seeds from 40000001 and from 1), no violations. The two runs made 455 and 423 classification choices with a standing conflict.
+- Control: the same harness against the `0083b01` source reports 304 unlisted contradicted AF answers after a classification.
+- Their browser script and all three unit-probe variants give the results above.
+
+**Mutations.** Each of these 5 mutations of the final `withClassification` makes the new tests fail:
+- show the user's answer for a standing conflict: 12/12 seed blocks, 5 reproduction tests;
+- the kept record loses the answer it replaced: 12/12, 1;
+- keep conflicts over facts the new screen hides: 4/12, 1;
+- keep conflicts over restarted answers: 12/12, 1;
+- drop every conflict (the defect): 12/12, 5.
+
+The source was restored after each run.
+
+#### 9.6.3 Checks and budget
+
+Run in this worktree on the final source:
+- `npx vitest run`: 134 files, 2756 passed, 3 skipped, 0 failed. That is 5 tests more than §9.5 (2751), and 2 tests were updated (§9.6.2). The first full run of this repair had one transient failure: "executes production build pipeline (build:prod) cleanly" (`tests/adversarial-m4-challenger.test.js`) exited 1, with only a Node module-type warning on stderr. It passed alone and on two later full runs, the last on the final source. Several test files run builds into the same tree at the same time.
+- `npm run test:protocol-source`: PASS.
+- `npm run content:validate`: PASS (16 trial profiles).
+- `npm run check:clinical-claims`: PASS (4 bounded groups, 31 occurrences, 0 exports).
+- `npm run check:leak-guard`: no institutional or PHI-adjacent content.
+- `npm run evidence:validate`, `npm run validate:citations`, `npm run validate:inline-citations`: PASS.
+- `git clean -fqX chunks && npm run build`, then `npm run check:asset-budget`: all six checks pass.
+- Protocols tab locks, port 4360, on that build: desktop 1440x900 PASS (46 fixture/sub-tab captures); phone 390x844 PASS (46 captures). `screener-eval.js` is in the chunk QuickSearch shares, so both were run. No file that Protocols imports was edited.
+
+Budget: `check:asset-budget --json` on clean builds of `0083b01` (a `git archive` copy) and of this source. Per-chunk figures use gzip -9. The `042f914` column is from §9.5.
+
+| measure | `042f914` | `0083b01` | now | delta vs `0083b01` |
+|---|---|---|---|---|
+| initial module graph, gzip | 130,894 | 130,895 | 130,895 | 0 |
+| initial module graph, raw | 384,937 | 384,937 | 384,937 | 0 |
+| all offline JS, gzip | 263,665 | 263,617 | 263,711 | **+94** (+46 vs `042f914`; ceiling 266,240, 2,529 B left) |
+| all offline JS, raw | 876,804 | 876,483 | 876,721 | +238 |
+| Trials chunk, gzip -9 | 13,964 | 13,944 | 13,943 | −1 |
+| shared Trials/QuickSearch chunk, gzip -9 | 27,300 | 27,261 | 27,363 | +102 |
+| tailwind.css | 106,910 | 106,910 | 106,910 | 0 |
+| SW precache | 2,155,330 | 2,155,009 | 2,155,247 | +238 |
+
+The whole addition is in `withClassification`. A tighter equivalent form saved 4 B gzip and is the one committed. No offset elsewhere was taken.
+
+Open for the lead: unchanged from §9.5 (the withdrawn §8.6 refinement). R1a, the stale caution that a classification click drops, is kept as at `042f914` and is documented in §9.6.1.

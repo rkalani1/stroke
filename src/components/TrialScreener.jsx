@@ -4,7 +4,7 @@ import { useDialogChrome } from './use-dialog-chrome.js';
 import { screenerTrials } from '../evidence/screenerTrials.js';
 import { eligibilityTables } from '../evidence/eligibilityTables.js';
 import { evaluateAll, CLASSIFICATION_NOTE_LABELS, createInitialScreenerState, anchoredOnsetHours, onsetToHours, numericFact, ONSET_PRESETS, STUDY_FACTS, YES_NO, withClassification, NOT_MET_TEXT, phaseLabel, enrollmentLabel, toConfirm, relevantNotMet, potentialMatches, insufficientInformation, registryCheckAgeText, refinerItems, conflictNote, STALE_IMPORT_NOTE, STALE_UNMODELED_NOTE } from '../evidence/screener-eval.js';
-import { screenerPrefillFromEncounter, applyEncounterPrefill, applyAnticoagulant, importChanged } from '../evidence/screener-prefill.js';
+import { screenerPrefillFromEncounter, applyEncounterPrefill, applyAnticoagulant, answerFacts, importChanged } from '../evidence/screener-prefill.js';
 
 const CLASSIFICATIONS = Object.entries(CLASSIFICATION_NOTE_LABELS);
 const CLASS_SHORT = { ischemic: 'Ischemic', tia: 'TIA', ich: 'ICH' };
@@ -154,7 +154,7 @@ function KeyFacts({ state, change, replace }) {
       <SelectFact label="Statin at onset" value={state.statin} onChange={setBoolean('statin')} options={YES_NO} />
     </>}
     <SelectFact label="Atrial fibrillation documented" value={state.afibHistory} onChange={setBoolean('afibHistory')} options={YES_NO} />
-    {cls !== 'ich' && <SelectFact label="On oral anticoagulant at index stroke" value={state.takingOac} onChange={v => replace(prev => ({ ...(prev.anticoagulant && prev.anticoagulant !== 'unselected' ? applyAnticoagulant(prev, 'unselected') : prev), takingOac: asBoolean(v) }))} options={YES_NO} />}
+    {cls !== 'ich' && <SelectFact label="On oral anticoagulant at index stroke" value={state.takingOac} onChange={setBoolean('takingOac')} options={YES_NO} />}
   </div></section>;
 }
 
@@ -213,7 +213,8 @@ export function TrialScreener({ copyToClipboard, initialState, onStateChange, ac
   const stale = importChanged(state, prefill) && (prefill.patch ? STALE_IMPORT_NOTE : STALE_UNMODELED_NOTE);
   const lkwChanged = stale && anchored && prefill.lkwAnchorMs !== state.onsetAnchorMs;
   const replace = updater => { onStateChange?.(); setApplied(null); setState(updater); };
-  const change = patch => replace(prev => ({ ...prev, ...patch }));
+  // Every edit goes through answerFacts, which records the keys it writes as the user's answers.
+  const change = patch => replace(prev => answerFacts(prev, patch));
   const importEncounter = () => {
     const at = Date.now();
     const fresh = screenerPrefillFromEncounter(encounter, at);
@@ -237,8 +238,8 @@ export function TrialScreener({ copyToClipboard, initialState, onStateChange, ac
       <div className="trial-screening-filters min-w-0 space-y-5 lg:sticky lg:top-[calc(var(--header-h,0px)+var(--case-bar-h,0px)+1rem)] lg:max-h-[calc(100dvh-var(--header-h,0px)-var(--case-bar-h,0px)-2rem)] lg:overflow-y-auto lg:overscroll-contain lg:pr-1">
         <section><h2 className="mb-2 text-lg font-bold">1. Stroke classification</h2><div className="flex flex-wrap gap-2">{CLASSIFICATIONS.map(([id, label]) => <button key={id} type="button" className={buttonClass} aria-pressed={state.classification === id} onClick={() => replace(prev => withClassification(prev, id))}>{label}</button>)}</div>
           {results.ready && <a href="#trial-results" className="mt-1 text-sm font-semibold text-link-600 underline lg:!hidden">View {candidates.length} possible candidate{candidates.length === 1 ? '' : 's'} ↓</a>}</section>
-        {results.ready && <><TimingSection state={state} change={change} nowMs={nowMs} lkwChanged={lkwChanged} /><KeyFacts state={state} change={change} replace={replace} /><StudyFacts state={state} change={change} /><ExclusionRefiner summaryRef={refinerRef} items={exclusions} checked={state.exclusions} onToggle={(id, value) => replace(prev => { const next = { ...prev.exclusions }; if (typeof value === 'boolean') next[id] = value; else delete next[id]; return { ...prev, exclusions: next }; })} onClear={() => { change({ exclusions: {} }); requestAnimationFrame(() => refinerRef.current?.focus()); }} /></>}
-        <button type="button" className={buttonClass} onClick={() => { setApplied(null); change(createInitialScreenerState()); }}>Reset screen</button>
+        {results.ready && <><TimingSection state={state} change={change} nowMs={nowMs} lkwChanged={lkwChanged} /><KeyFacts state={state} change={change} replace={replace} /><StudyFacts state={state} change={change} /><ExclusionRefiner summaryRef={refinerRef} items={exclusions} checked={state.exclusions} onToggle={(id, value) => change({ exclusions: { [id]: value } })} onClear={() => { replace(prev => answerFacts(prev, { exclusions: Object.fromEntries(Object.keys(prev.exclusions).map(id => [id])) })); requestAnimationFrame(() => refinerRef.current?.focus()); }} /></>}
+        <button type="button" className={buttonClass} onClick={() => replace(createInitialScreenerState)}>Reset screen</button>
       </div>
       <div id="trial-results" className="min-w-0 scroll-mt-4 space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-2"><p role="status" className="text-sm text-mute">{results.ready ? `${matches.length} potential match${matches.length === 1 ? '' : 'es'} · ${insufficient.length} insufficient information · ${later.length} later · ${notMet.length} not met${stale ? ' · based on an earlier Encounter import' : ''}` : 'Choose a classification to see possible study profiles.'}</p>{results.ready && <button type="button" className={buttonClass} onClick={() => copyToClipboard?.(results.briefingNote, 'Screening summary')}>Copy screening summary</button>}</div>
