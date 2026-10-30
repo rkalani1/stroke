@@ -162,12 +162,21 @@ const precache = corePrecacheBytes();
 // gzip / 820 KB raw.
 // 2026-10-03 v7.7.5: iOS launch screens are referenced again (12 images, ~370 KB, two new
 // sizes for current iPhones), taking the precache to 2.18 MB; ceiling 2.2 -> 2.3 MB.
+// 2026-10-22 v7.9.0 round-3 verification fixes: stale Encounter-import detection and
+// conflict-safe import in Trials, a shared search normalizer and ranking, the offline
+// reference fallback and Evidence recommendation counts add ~3.1 KB gzip, 2.7 KB of it
+// deferred (measured at release: all JS 257.5 KB gzip / 856.3 KB raw, both over the old
+// ceilings). The initial graph stays inside its 128 KB / 376 KB ceilings (127.8 KB /
+// 375.9 KB). Reviewed ceilings: all JS gzip 256 -> 260 KB, raw 856 -> 864 KB.
+// 2026-10-30 v7.9.0 merge with main's 7.8.1-7.8.3 (header measurement, IVT-hold cue, case-bar hold labels,
+// elapsed-duration formatting): the initial graph measures 128.06 KB gzip / 376.9 KB raw, 62 B and 873 B over
+// the 7.8.0 ceilings. Reviewed ceilings: initial 128 -> 130 KB gzip, 376 -> 380 KB raw.
 const checks = [
   {
     id: 'app-js-gzip',
     label: 'Initial module graph (gzip)',
     actual: sumSizes(manifest.initial, gzipSizeOf),
-    budget: 128 * KB, // 7.8.0: +8 KB for verified safety/documentation logic, error boundaries and tri-state trials (measured 124.4 KB)
+    budget: 130 * KB, // 7.9.0: verified safety logic plus 7.8.1-7.8.3 shell code (measured 128.06 KB; 128.33 KB at the final build); 7.8.0 was 128 KB
     unit: KB,
     unitLabel: 'KB',
     note: 'route-level code splitting is the lever that moves this',
@@ -176,7 +185,7 @@ const checks = [
     id: 'app-js-raw',
     label: 'Initial module graph (raw)',
     actual: sumSizes(manifest.initial, sizeOf),
-    budget: 376 * KB, // 7.8.0 (measured 366.5 KB)
+    budget: 380 * KB, // 7.9.0 (measured 376.9 KB; 377.4 KB at the final build); 7.8.0 was 376 KB (measured 366.5 KB)
     unit: MB,
     unitLabel: 'MB',
     note: 'parse/execute cost scales with this, not the gzip figure',
@@ -184,12 +193,12 @@ const checks = [
   {
     id: 'all-js-gzip', label: 'All offline JavaScript (gzip)',
     actual: sumSizes(manifest.files.map(file => file.path), gzipSizeOf),
-    budget: 256 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
+    budget: 260 * KB, unit: KB, unitLabel: 'KB', note: 'Deferred modules still count toward the whole payload',
   },
   {
     id: 'all-js-raw', label: 'All offline JavaScript (raw)',
     actual: sumSizes(manifest.files.map(file => file.path), sizeOf),
-    budget: 856 * KB, unit: MB, unitLabel: 'MB', note: '',
+    budget: 864 * KB, unit: MB, unitLabel: 'MB', note: '',
   },
   {
     id: 'tailwind-css',

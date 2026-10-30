@@ -10,7 +10,7 @@ import {
   EXCLUSION_ITEMS, toConfirm, relevantNotMet, potentialMatches, insufficientInformation,
   registryCheckLabel, registryCheckAgeDays, registryCheckAgeText, enrollmentLabel
 } from '../screener-eval.js';
-import { screenerPrefillFromEncounter, applyEncounterPrefill } from '../screener-prefill.js';
+import { screenerPrefillFromEncounter, applyEncounterPrefill, answerFacts } from '../screener-prefill.js';
 import { trialClassifications } from '../../components/TrialScreener.jsx';
 
 const trial = acronym => screenerTrials.find(t => t.acronym === acronym);
@@ -77,7 +77,8 @@ describe('re-importing Encounter facts clears what the Encounter no longer suppo
 
   it('keeps values the user changed after the import', () => {
     const once = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(first, NOW), fresh());
-    const edited = { ...once, gcs: 9, exclusions: { ...once.exclusions, exPregnancy: false } };
+    // A user edit is recorded by answerFacts, the screener's edit path (r3-trials §9).
+    const edited = answerFacts(once, { gcs: 9, exclusions: { exPregnancy: false } });
     const twice = applyEncounterPrefill(edited, screenerPrefillFromEncounter(corrected, NOW), fresh());
     expect(twice.gcs).toBe(9);
     expect(twice.exclusions).toEqual({ exPregnancy: false });
@@ -250,17 +251,19 @@ describe('registry wording restored in to-confirm prompts', () => {
     expect(evaluate('TESTED', { classification: 'ischemic', vessel: 'ica_m1' }).matchedCriteria).toContain('Vessel is intracranial ICA/M1');
   });
 
-  it('SATURN prompts its registry secondary causes even after the shared answer is Absent (TO-9)', () => {
+  it('SATURN prompts its registry secondary causes and reads its own answer, not the shared one (TO-9, r3 2026-10-22)', () => {
     // NCT03936361 exclusion 1: "... vascular abnormality or tumor, trauma, venous infarction, or hemorrhagic transformation of an ischemic infarct."
+    // Since r3-trials SATURN has its own refiner item (exSaturnSecondaryCause): the shared item adds SAH and coagulopathy,
+    // which this list does not name, so the shared answer no longer decides SATURN.
     const un = toConfirm(evaluate('SATURN', { classification: 'ich' })).join(' ');
     for (const re of [/vascular abnormality/, /tumor/, /trauma/, /venous infarction/, /hemorrhagic transformation of an ischemic infarct/]) expect(un).toMatch(re);
-    expect(trial('SATURN').eligibility.exclusions.find(e => e.field === 'exSecondaryIch').pendingLabel).not.toMatch(/\bSAH\b/);
-    const absent = evaluate('SATURN', { classification: 'ich', exclusions: { exSecondaryIch: false } });
+    expect(trial('SATURN').eligibility.exclusions.find(e => e.field === 'exSaturnSecondaryCause').pendingLabel).not.toMatch(/\bSAH\b/);
+    const absent = evaluate('SATURN', { classification: 'ich', exclusions: { exSaturnSecondaryCause: false } });
     expect(absent.status).toBe('pending');
-    expect(toConfirm(absent).filter(l => /venous infarction/.test(l))).toHaveLength(1);
-    const present = evaluate('SATURN', { classification: 'ich', exclusions: { exSecondaryIch: true } });
+    expect(toConfirm(absent).some(l => /venous infarction/.test(l))).toBe(false);
+    const present = evaluate('SATURN', { classification: 'ich', exclusions: { exSaturnSecondaryCause: true } });
     expect(present.status).toBe('excluded');
-    expect(toConfirm(present).some(l => /venous infarction/.test(l))).toBe(false);
+    expect(evaluate('SATURN', { classification: 'ich', exclusions: { exSecondaryIch: true } }).status).toBe('pending');
   });
 
   it('SCOUTS-3 asks about the consent-giver language, never the patient language (TO-10)', () => {
@@ -374,8 +377,10 @@ describe('registry check dates are truthful per profile (TO-2, TO-3, TO-4)', () 
   });
 
   it('records each profile recheck consistently with its metadata', () => {
-    // Exact-day LastUpdatePostDate queries on 2026-10-17 (registry search index).
-    const expected = { STEP: '2025-12-04', SISTER: '2026-10-02', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', 'FASTEST-2': '2026-08-20', CLARITY: '2026-10-15', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-09-18', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-09', CAPTIVA: '2026-10-13' };
+    // Exact-day LastUpdatePostDate queries (registry search index), first run on 2026-10-17 and
+    // repeated on 2026-10-21: SISTER (2026-10-19), CAPPRICORN-1 and CAPTIVA (2026-10-20) were
+    // updated in between; the other 13 dates were re-established unchanged.
+    const expected = { STEP: '2025-12-04', SISTER: '2026-10-19', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', 'FASTEST-2': '2026-08-20', CLARITY: '2026-10-15', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-09', CAPTIVA: '2026-10-20' };
     expect(screenerTrials.map(t => t.acronym).sort()).toEqual(Object.keys(expected).sort());
     for (const t of screenerTrials) {
       const m = t.externalMetadata;

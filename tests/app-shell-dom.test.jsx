@@ -76,7 +76,7 @@ describe('a failed lazy download keeps the encounter', { timeout: 30000 }, () =>
   });
   it('renders the same quick reference when the download succeeds', async () => {
     await open('#/protocols/ich');
-    await page.locator('#qr-sah').waitFor();
+    await page.locator('#qr-sah').waitFor({ state: 'attached' }); // inside the closed quick reference since 7.8.1
     expect(await page.locator('[role="alert"]').count()).toBe(0);
   });
 });
@@ -90,7 +90,7 @@ describe('protocol tab for the working diagnosis', { timeout: 30000 }, () => {
     expect(await navHref()).toBe('#/protocols/ich');
     expect(await page.locator('.case-bar a', { hasText: 'Reversal' }).getAttribute('href')).toBe('#/protocols/ich/qr-reversal');
     await page.locator('nav[aria-label="Primary navigation"] a', { hasText: 'Protocols' }).click();
-    await page.locator('#qr-sah').waitFor();
+    await page.locator('#qr-sah').waitFor({ state: 'attached' }); // inside the closed quick reference since 7.8.1
     expect(await page.title()).toBe('Stroke · ICH protocols');
     await page.locator('.workspace-search').click();
     expect(await page.locator('.quick-search__chips a', { hasText: 'Reversal' }).getAttribute('href')).toBe('#/protocols/ich/qr-reversal');

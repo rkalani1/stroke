@@ -23,10 +23,11 @@ describe('canonical wake-up screen documentation', () => {
     const text = formatWakeUpScreenForExport(mri, now);
     expect(text).toContain('MRI (WAKE-UP): partial source screen met; complete eligibility and drug-specific treatment decision require review.');
     expect(text).toContain('Documented age: 60; NIHSS: 10.');
-    expect(text).toContain('DWI-positive lesion: documented.');
-    expect(text).toContain('No marked corresponding FLAIR hyperintensity: documented.');
+    expect(text).toContain('DWI-positive lesion: yes.');
+    expect(text).toContain('No marked corresponding FLAIR hyperintensity: yes.');
     expect(text).toContain('DWI lesion smaller than one-third MCA territory: yes.');
-    expect(text).toContain('Symptom discovery (date/time): 2026-10-01 / 10:00.');
+    // 2026-10-22 (r3 encounter-notes#6): the note's LKW line carries a recorded discovery time with its offset; the screen no longer repeats it.
+    expect(text).not.toContain('Symptom discovery');
     expect(text).not.toMatch(/WAKE-UP eligible|IV thrombolysis eligible|Age: Eligible|Meets WAKE-UP criteria/);
   });
 
@@ -38,7 +39,7 @@ describe('canonical wake-up screen documentation', () => {
     expect(evaluateWakeUpScreen(note, now).wakeUpEligible).toBe(false);
     const text = formatWakeUpScreenForExport(note, now);
     expect(text).toContain('MRI (WAKE-UP): incomplete or not met;');
-    expect(text).toContain('MRI lesion extent reviewed: documented.');
+    expect(text).toContain('MRI lesion extent reviewed: yes.');
     expect(text).toContain(`DWI lesion smaller than one-third MCA territory: ${finding === false ? 'no' : 'not documented'}.`);
   });
 
@@ -60,7 +61,8 @@ describe('canonical wake-up screen documentation', () => {
     const text = formatWakeUpScreenForExport(note, now);
     expect(text).toContain(`Recorded MRI lesion volume: ${lesionVolume} mL.`);
     expect(text).toContain('incomplete or not met;');
-    expect(text).toContain('MRI lesion extent reviewed: not documented.');
+    // Extent review answered No is printed as "no" (the volume does not imply a review).
+    expect(text).toContain('MRI lesion extent reviewed: no.');
   });
 
   it.each([
@@ -76,16 +78,18 @@ describe('canonical wake-up screen documentation', () => {
     expect(status(note)).toContain('MRI (WAKE-UP): incomplete or not met;');
   });
 
-  it.each([false, undefined, null, 'true'])('does not turn unconfirmed MRI checks (%j) into negative findings', value => {
+  // The Encounter records these as Yes / No / Not assessed selects: an explicit No (false) is a finding and prints
+  // "no"; only an unanswered or malformed value prints "not documented" (never a negative finding).
+  it.each([[false, 'no'], [undefined, 'not documented'], [null, 'not documented'], ['true', 'not documented']])('prints an MRI answer %j as "%s"', (value, printed) => {
     const note = { ...mri, wakeUpStrokeWorkflow: {
       ...mri.wakeUpStrokeWorkflow, dwi: { positiveForLesion: value },
       flair: { noMarkedHyperintensity: value }, mriLesionExtentReviewed: value
     } };
     const text = formatWakeUpScreenForExport(note, now);
     expect(text).toContain('incomplete or not met;');
-    expect(text).toContain('DWI-positive lesion: not documented.');
-    expect(text).toContain('No marked corresponding FLAIR hyperintensity: not documented.');
-    expect(text).toContain('MRI lesion extent reviewed: not documented.');
+    expect(text).toContain(`DWI-positive lesion: ${printed}.`);
+    expect(text).toContain(`No marked corresponding FLAIR hyperintensity: ${printed}.`);
+    expect(text).toContain(`MRI lesion extent reviewed: ${printed}.`);
     expect(text).not.toMatch(/DWI: Negative|FLAIR: Hyperintense|DWI negative|FLAIR positive/);
   });
 
@@ -150,7 +154,8 @@ describe('canonical wake-up screen documentation', () => {
     const note = { ...ctp, lkwUnknown: false, lkwDate: '2026-10-01', lkwTime: '06:00' };
     const text = formatWakeUpScreenForExport(note, now);
     expect(text).toContain('CTP (EXTEND): partial source screen met;');
-    expect(text).toContain('Last known well (date/time): 2026-10-01 / 06:00.');
+    // 2026-10-22 (r3 encounter-notes#6): the note's own LKW line carries the time, with its offset and flags.
+    expect(text).not.toContain('Last known well');
     expect(text).not.toContain('Sleep midpoint:');
   });
 

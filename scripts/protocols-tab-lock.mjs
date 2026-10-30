@@ -17,6 +17,12 @@
 //   node scripts/protocols-tab-lock.mjs                 # check (exit 1 on drift)
 //   node scripts/protocols-tab-lock.mjs --only=<id>     # check one fixture
 //   node scripts/protocols-tab-lock.mjs --update        # rewrite baselines (review the git diff)
+//   node scripts/protocols-tab-lock.mjs --viewport=phone # same baselines at 390x844 (also tablet)
+//
+// Baselines are captured at the 1440 px desktop width. A phone or tablet run must
+// reproduce the same corpus exactly (so responsive CSS cannot hide, reorder or
+// relabel protected content) and, in addition, no protected text may be clipped
+// out of reach by an overflow-hidden ancestor or pushed off-screen horizontally.
 //
 // --update is legitimate only for an owner-approved Protocols change. A
 // presentation-only change must pass this lock unchanged.
@@ -33,6 +39,10 @@ const BASE_URL = `http://127.0.0.1:${PORT}/`;
 const SNAPSHOT_DIR = path.join(process.cwd(), 'tests', 'snapshots', 'protocols-tab');
 const SUBTABS = ['ischemic', 'ich'];
 const update = process.argv.includes('--update');
+const VIEWPORTS = { desktop: { width: 1440, height: 900 }, tablet: { width: 820, height: 1180 }, phone: { width: 390, height: 844 } };
+const viewportName = process.argv.find(arg => arg.startsWith('--viewport='))?.slice(11) || 'desktop';
+if (!VIEWPORTS[viewportName]) throw new Error(`Unknown viewport ${viewportName}; use ${Object.keys(VIEWPORTS).join(', ')}`);
+if (update && viewportName !== 'desktop') throw new Error('Baselines are desktop captures; --update cannot be combined with --viewport');
 const only = process.argv.find(arg => arg.startsWith('--only='))?.slice(7);
 const debug = process.env.STROKE_LOCK_DEBUG ? (...parts) => console.log('[debug]', ...parts) : () => {};
 
@@ -138,6 +148,37 @@ async function surfaceCorpus(page) {
   }, `(${SURFACE.toString()})`);
 }
 
+// Protected text the reader cannot reach at this width: a text node whose box lies
+// entirely outside an ancestor that clips overflow (hidden/clip, not a scroll
+// container), or entirely beyond the right edge of a page that cannot scroll there.
+async function clippedText(page) {
+  return page.evaluate(surfaceSource => {
+    const surface = (0, eval)(surfaceSource)();
+    if (!surface) return [];
+    const clipped = [];
+    const pageWidth = document.documentElement.scrollWidth;
+    const walker = document.createTreeWalker(surface, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      const node = walker.currentNode, value = node.textContent.replace(/\s+/g, ' ').trim();
+      const parent = node.parentElement;
+      if (!value || !parent || !parent.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })) continue;
+      const range = document.createRange(); range.selectNodeContents(node);
+      const box = range.getBoundingClientRect();
+      if (!box.width && !box.height) continue;
+      const left = box.left + window.scrollX, right = box.right + window.scrollX;
+      if (left >= pageWidth || right <= 0) { clipped.push(value); continue; }
+      for (let el = parent; el && el !== document.body; el = el.parentElement) {
+        const style = getComputedStyle(el);
+        const clipsX = ['hidden', 'clip'].includes(style.overflowX), clipsY = ['hidden', 'clip'].includes(style.overflowY);
+        if (!clipsX && !clipsY) continue;
+        const r = el.getBoundingClientRect();
+        if ((clipsX && (box.left >= r.right || box.right <= r.left)) || (clipsY && (box.top >= r.bottom || box.bottom <= r.top))) { clipped.push(value); break; }
+      }
+    }
+    return clipped;
+  }, `(${SURFACE.toString()})`);
+}
+
 async function modalCorpus(page) {
   const count = await page.evaluate(surfaceSource => {
     const surface = (0, eval)(surfaceSource)();
@@ -167,7 +208,7 @@ async function modalCorpus(page) {
 }
 
 async function capture(browser, fixture, subtab) {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, timezoneId: TIMEZONE, locale: LOCALE, serviceWorkers: 'block' });
+  const context = await browser.newContext({ viewport: VIEWPORTS[viewportName], timezoneId: TIMEZONE, locale: LOCALE, serviceWorkers: 'block' });
   context.setDefaultTimeout(10000);
   const page = await context.newPage();
   const errors = [];
@@ -185,6 +226,10 @@ async function capture(browser, fixture, subtab) {
     debug('corpus');
     const corpus = await surfaceCorpus(page);
     if (!corpus || corpus.text.length < 40) throw new Error(`${fixture.id}/${subtab}: Protocols surface missing or nearly empty`);
+    if (viewportName !== 'desktop') {
+      const clipped = await clippedText(page);
+      if (clipped.length) throw new Error(`${fixture.id}/${subtab} @${viewportName}: ${clipped.length} protected text node(s) clipped out of reach, e.g. ${JSON.stringify(clipped.slice(0, 3))}`);
+    }
     debug('modals'); const modals = await modalCorpus(page);
     if (errors.length) throw new Error(`${fixture.id}/${subtab}: page errors: ${errors.join('; ')}`);
     return [
@@ -228,7 +273,7 @@ async function main() {
         try { expected = (await fs.readFile(file, 'utf8')).replace(/\r\n/g, '\n'); } catch { failures.push(`${fixture.id}/${subtab}: baseline missing`); continue; }
         checked += 1;
         if (expected === corpus) console.log(`ok ${fixture.id}/${subtab} (${expected.split('\n').length - 1} lines)`);
-        else { const d = firstDifference(expected, corpus); failures.push(`${fixture.id}/${subtab}: drift at line ${d.line}\n  baseline: ${JSON.stringify(d.expected).slice(0, 240)}\n  rendered: ${JSON.stringify(d.actual).slice(0, 240)}`); }
+        else { const d = firstDifference(expected, corpus); failures.push(`${fixture.id}/${subtab}${viewportName === 'desktop' ? '' : ` @${viewportName}`}: drift at line ${d.line}\n  baseline: ${JSON.stringify(d.expected).slice(0, 240)}\n  rendered: ${JSON.stringify(d.actual).slice(0, 240)}`); }
       }
     };
     await Promise.all(Array.from({ length: Math.min(concurrency, jobs.length) }, worker));
@@ -242,7 +287,7 @@ async function main() {
     for (const failure of failures) console.error(`- ${failure}`);
     process.exit(1);
   }
-  console.log(update ? '\nProtocols tab baselines written; review the git diff line by line.' : `\nProtocols tab preservation lock: PASS (${checked} fixture/sub-tab captures)`);
+  console.log(update ? '\nProtocols tab baselines written; review the git diff line by line.' : `\nProtocols tab preservation lock: PASS (${checked} fixture/sub-tab captures, ${viewportName} ${VIEWPORTS[viewportName].width}x${VIEWPORTS[viewportName].height})`);
 }
 
 main().catch(error => { console.error(error); process.exit(1); });

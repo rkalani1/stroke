@@ -14,7 +14,8 @@ const urls = record => record.sources.map(source => source.url);
 
 describe('thrombolysis Evidence cards', () => {
   it('stays inside the structural contract on the review date', () => {
-    expect(validateClinicalReference(data, { now: new Date('2026-10-17T23:59:59Z') })).toEqual([]);
+    // Latest review cutoff: sources re-read on 2026-10-22 (evidence-fixes pass) carry that checkedAt.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
   });
 
   it('separates the AHA 2026 imaging grade from the perfusion-selected IVT treatment grades', () => {
@@ -93,7 +94,9 @@ describe('acute blood pressure Evidence cards', () => {
     // ais-2026-73 (2a, B-NR): EVT planned without IVT, ≤185/110 before the procedure.
     expect(card.summary).toContain('EVT without IVT: ≤185/110 before the procedure (AHA 2026, 2a)');
     // ais-2026-77: anterior LVO, mTICI 2b–3, first 72 h; ESO 2025 update: not <140 in first 24 h (high certainty).
-    expect(card.summary).toContain('After successful EVT for anterior LVO (mTICI 2b–3), do not target SBP <140 for 72 h (AHA 2026, COR 3: Harm');
+    // Evidence-fixes 2026-10-22 (BL-35): the harm clause moved into the bottom line with its population.
+    expect(card.summary).toContain('but do not target SBP <140 for 72 h after successful (mTICI 2b–3) anterior-LVO EVT (COR 3: Harm).');
+    expect(card.summary).toContain('The ESO 2025 update also advises against SBP <140 in the first 24 h after successful EVT (high certainty)');
     expect(card.summary).toContain('ESO 2025 update: <180/105');
     expect(card.summary).not.toContain('ESO 2026');
     // Cochrane 2026: mortality RR 1.19 (1.08–1.32).
@@ -108,7 +111,8 @@ describe('acute blood pressure Evidence cards', () => {
   it('keeps review points graded', () => {
     const card = topic('acute-bp');
     // ENCHANTED: any ICH 14.8 vs 18.7%; ais-2026-75 is COR 3: No Benefit.
-    expect(card.consider[0]).toContain('(14.8 vs 18.7%) (ENCHANTED; AHA 2026 COR 3: No Benefit)');
+    // Evidence-fixes 2026-10-22 (R1-67): the No Benefit grade, not the trial, is limited to mild-to-moderate stroke.
+    expect(card.consider[0]).toContain('(14.8 vs 18.7%) (ENCHANTED; AHA 2026 COR 3: No Benefit, graded for mild-to-moderate stroke)');
     // ais-2026-69 has no "only"; ESO 2025 discourages routine vasopressors without reperfusion (low certainty).
     expect(card.consider[1]).not.toMatch(/only when a comorbidity/);
     expect(card.consider[1]).toMatch(/Treat hypertension early when a comorbid condition requires it .*AHA 2026 COR 1\)/);

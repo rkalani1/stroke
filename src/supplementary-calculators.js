@@ -76,8 +76,9 @@ export const MRS_DESCRIPTORS = [
   'Severe disability; bedridden and requiring continual care.',
   'Death (recorded outcome; do not infer from disability).'
 ];
+// Describes the baseline (pre-stroke) mRS, so grade 6 (death) is not a valid entry; the list above keeps the full scale.
 export function describeReviewedMRS(value) {
-  const score = numericInput(value, { min: 0, max: 6, integer: true });
+  const score = numericInput(value, { min: 0, max: 5, integer: true });
   return score === null ? null : { score, description: MRS_DESCRIPTORS[score] };
 }
 export const HUNT_HESS_DESCRIPTORS = [
@@ -161,11 +162,14 @@ export function calculateReviewedSTOPBANG(input = {}) {
   const age = ageValue(input.age), weight = numericInput(input.weight, { min:Number.MIN_VALUE, max:350 }), height = numericInput(input.heightCm, { min:50, max:250 });
   const neck = numericInput(input.neckCm, { min:10, max:100 }), keys = ['sb_snoring','sb_tired','sb_observed','sb_pressure'];
   if (age === null || weight === null || height === null || neck === null || !['M','F'].includes(input.sex) || !complete(input,keys)) return null;
-  const bmi = weight / (height / 100) ** 2;
+  // Float noise is snapped before the strict >35 kg/m² comparison (101.15 kg at 170 cm is 35.0, not above it).
+  const bmi = Math.round(weight / (height / 100) ** 2 * 1e9) / 1e9;
   const score = reviewedStopBang({ ...input, stopBangAssessed:true, sb_bmi:bmi > 35, sb_age:age > 50, sb_neck:neck > 40, sb_gender:input.sex === 'M' });
-  // Non-blocking: an inch value typed as centimeters silently scores the BMI item.
+  // Non-blocking: an inch value typed as centimeters silently scores the BMI or neck item "no"
+  // (16 in = 40.64 cm). The 120 cm and 25 cm adult plausibility limits are heuristics, not source values.
   const heightWarning = height < 120 || height > 230 ? 'Height outside 120–230 cm is unusual for an adult and drives the BMI item; confirm centimeters, not inches.' : null;
-  return score === null ? null : { ...result(score,8), bmi, bang:{ bmi:bmi > 35, age:age > 50, neck:neck > 40, male:input.sex === 'M' }, ...(heightWarning ? { heightWarning } : {}) };
+  const neckWarning = neck < 25 ? 'Neck circumference under 25 cm is unusual for an adult and drives the neck item; confirm centimeters, not inches (16 in ≈ 40.6 cm).' : null;
+  return score === null ? null : { ...result(score,8), bmi, bang:{ bmi:bmi > 35, age:age > 50, neck:neck > 40, male:input.sex === 'M' }, ...(heightWarning ? { heightWarning } : {}), ...(neckWarning ? { neckWarning } : {}) };
 }
 
 const engines = { abcd2:calculateReviewedABCD2, chadsvasc:calculateReviewedCHADS2VASc, 'has-bled':calculateReviewedHASBLED, rope:calculateReviewedRoPE, pascal:classifyReviewedPASCAL, phases:calculateReviewedPHASES, 'mrs-descriptors':describeReviewedMRS, 'hunt-hess':describeReviewedHuntHess, wfns:calculateReviewedWFNS, 'modified-fisher':calculateReviewedModifiedFisher, mtici:describeReviewedMTICI, nascet:calculateReviewedNASCET, 'aspects-regions':calculateReviewedRegionalASPECTS, 'pc-aspects-regions':calculateReviewedRegionalPCASPECTS, phq2:calculateReviewedPHQ2, 'stop-bang':calculateReviewedSTOPBANG };

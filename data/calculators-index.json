@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "calculators",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.8.3",
-    "checksum": "sha256:a53de86fcec88264cb33851022c09665",
+    "appVersion": "7.9.0",
+    "checksum": "sha256:2d4725b4b8b8c8336e595b33a4898aec",
     "count": 26,
     "source": "Canonical retained tool registry",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -178,7 +178,7 @@
         "chadsvasc-instrument"
       ],
       "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
-      "limits": "For nonvalvular atrial fibrillation. Sex category follows the original instrument; no annual risk estimate or anticoagulant choice is generated."
+      "limits": "For nonvalvular atrial fibrillation. Sex category follows the original instrument; no annual risk estimate or anticoagulant choice is generated. The 2023 ACC/AHA/ACCP/HRS AF guideline names CHA₂DS₂-VASc as a validated score; the 2024 ESC AF guideline uses CHA₂DS₂-VA, which omits the sex category and is not calculated here."
     },
     {
       "id": "has-bled",
@@ -220,7 +220,7 @@
         "pascal-instrument"
       ],
       "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
-      "limits": "Simplified three-category classification for the source population aged 18–60 with otherwise cryptogenic stroke and PFO. Shunt/ASA definitions require specialist review; category does not establish individual causality or closure benefit."
+      "limits": "Simplified three-category classification for the source population aged 18–60 with otherwise cryptogenic stroke and PFO. Shunt/ASA definitions require specialist review; category does not establish individual causality or closure benefit. In pooled trial data, closure reduced stroke in possible/probable but not unlikely categories; AF after day 45 rose with closure in unlikely (+4.4%) and possible (+1.5%)."
     },
     {
       "id": "phases",
@@ -318,7 +318,7 @@
         "phq2-instrument"
       ],
       "scope": "Reviewed instrument score or grade only; no treatment selection or individualized prognosis",
-      "limits": "Two-week symptom-frequency screening, not a depression diagnosis. Both responses must be entered; no management plan is generated."
+      "limits": "Two-week symptom-frequency screening, not a depression diagnosis. Both responses must be entered; no management plan is generated. The source identified a score of 3 or more as the optimal screening cutpoint for major depression (sensitivity 83%, specificity 92%) in primary care and obstetrics-gynecology clinics, not a stroke population."
     },
     {
       "id": "stop-bang",

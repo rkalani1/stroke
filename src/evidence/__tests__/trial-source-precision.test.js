@@ -29,10 +29,11 @@ describe('source-specific registry criteria', () => {
   it('ASPIRE includes atrial flutter without treating absent AF as absent flutter', () => {
     const unknown = result('ASPIRE', {}, { classification: 'ich', afibHistory: false });
     expect(unknown.exclusionReasons).toEqual([]);
-    expect(unknown.pendingFields).toContain('afOrFlutterHistory');
+    const confirmAf = 'Confirm non-valvular atrial fibrillation or atrial flutter by ECG or physician-confirmed history';
+    expect(unknown.pendingCriteria).toContain(confirmAf);
     const flutter = result('ASPIRE', {}, { classification: 'ich', afibHistory: false, afOrFlutterHistory: true });
     expect(flutter.exclusionReasons).toEqual([]);
-    expect(flutter.pendingFields).not.toContain('afOrFlutterHistory');
+    expect(flutter.pendingCriteria).not.toContain(confirmAf);
     expect(result('ASPIRE', {}, { classification: 'ich', afOrFlutterHistory: false }).exclusionReasons.join(' ')).toMatch(/atrial fibrillation or flutter/i);
   });
 

@@ -44,9 +44,13 @@ describe('quick reference rendering', () => {
     expect(QuickReferenceDefault).toBe(QuickReference);
     const html = render({});
     const details = html.match(/<details[^>]*>/g);
-    expect(details).toHaveLength(7);
-    expect(details[0]).toContain('open');
-    expect(details.slice(1).every(tag => !/\sopen/.test(tag))).toBe(true);
+    // Since 7.8.1 (owner change) the whole quick reference is one disclosure that starts closed; inside it the
+    // dose card opens first and the other six cards are collapsible.
+    expect(details).toHaveLength(8);
+    expect(details[0]).toMatch(/class="quick-reference/);
+    expect(details[0]).not.toMatch(/\sopen/);
+    expect(details[1]).toContain('open');
+    expect(details.slice(2).every(tag => !/\sopen/.test(tag))).toBe(true);
     for (const title of ['Thrombolytic dose by weight', 'BP targets by phase', 'Anticoagulant reversal (ICH)', 'Post-thrombolysis symptomatic ICH', 'Orolingual angioedema', 'Malignant edema and decompression', 'AIS supportive care']) expect(html).toContain(title);
     expect(text(html)).toContain('Enter weight in Encounter to see the exact dose.');
     expect(html).not.toContain('aria-current');
@@ -93,7 +97,7 @@ describe('quick reference rendering', () => {
   });
   it('links every card to 1-3 sources and never recommends ranitidine', () => {
     const html = render({});
-    const cards = html.split('<details').slice(1);
+    const cards = html.split('<details').slice(2); // the first part is the closed quick-reference wrapper (7.8.1)
     for (const card of cards) {
       const links = card.match(/<a href="https:\/\//g) || [];
       expect(links.length).toBeGreaterThanOrEqual(1);

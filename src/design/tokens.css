@@ -16,31 +16,13 @@
    • Themes change ramp steps, --c-* triplets and a few effects only.
    ───────────────────────────────────────────────────────────── */
 
-/* ─── SELF-HOSTED FONTS ─── */
-@font-face {
-  font-family: 'Bricolage Grotesque';
-  font-style: normal;
-  font-weight: 400;
-  font-stretch: normal;
-  font-display: swap;
-  src: url('assets/fonts/bricolage-400.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Bricolage Grotesque';
-  font-style: normal;
-  font-weight: 500;
-  font-stretch: normal;
-  font-display: swap;
-  src: url('assets/fonts/bricolage-500.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Bricolage Grotesque';
-  font-style: normal;
-  font-weight: 600;
-  font-stretch: normal;
-  font-display: swap;
-  src: url('assets/fonts/bricolage-600.woff2') format('woff2');
-}
+/* ─── SELF-HOSTED FONTS ───
+   Only the faces some text requests: display 700, mono 400/600, sans
+   400–700 and sans italic 400 (protocol notes). Every face here is also in
+   the service-worker precache; tests/design-2026-10-21.test.jsx keeps the
+   two lists equal. A rendered audit of every route (2026-10-21) found no
+   text asking for the dropped faces (display 400/500/600/800, mono 500,
+   italic 500/600); each was 25–38 KB of every install. */
 @font-face {
   font-family: 'Bricolage Grotesque';
   font-style: normal;
@@ -49,14 +31,6 @@
   font-display: swap;
   src: url('assets/fonts/bricolage-700.woff2') format('woff2');
 }
-@font-face {
-  font-family: 'Bricolage Grotesque';
-  font-style: normal;
-  font-weight: 800;
-  font-stretch: normal;
-  font-display: swap;
-  src: url('assets/fonts/bricolage-800.woff2') format('woff2');
-}
 
 @font-face {
   font-family: 'IBM Plex Mono';
@@ -64,13 +38,6 @@
   font-weight: 400;
   font-display: swap;
   src: url('assets/fonts/ibmplexmono-400.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('assets/fonts/ibmplexmono-500.woff2') format('woff2');
 }
 @font-face {
   font-family: 'IBM Plex Mono';
@@ -86,20 +53,6 @@
   font-weight: 400;
   font-display: swap;
   src: url('assets/fonts/publicsans-italic-400.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Public Sans';
-  font-style: italic;
-  font-weight: 500;
-  font-display: swap;
-  src: url('assets/fonts/publicsans-italic-500.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Public Sans';
-  font-style: italic;
-  font-weight: 600;
-  font-display: swap;
-  src: url('assets/fonts/publicsans-italic-600.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Public Sans';
@@ -319,7 +272,8 @@
   /* ─── 6. Motion (zeroed under prefers-reduced-motion below) ─── */
   --motion-scale:  1;
   --header-h:      72px;   /* sticky title bar; measured and overwritten by App */
-  --case-bar-h:    0px;    /* height of the pinned case bar; set by shell.css when present */
+  --case-bar-h:    0px;    /* height of the pinned case bar; CaseBar sets the measured value */
+  --update-notice-h: 0px;  /* height of the floating update notice; the shell sets it while shown */
   --dur:           180ms;
   --ease:          cubic-bezier(.2,.7,.2,1);
 
@@ -334,8 +288,9 @@
      takes every font size from here. --text-2xs is the legibility floor:
      no clinical label or value is set smaller. UI text uses the --text-*
      steps (Public Sans / Plex Mono); titles and figures use --display-*
-     (Bricolage Grotesque). Shipped weights: sans 400–700, display 400–800,
-     mono 400–600; use only those (a 650 has no face and renders as 700). */
+     (Bricolage Grotesque). Shipped weights: sans 400–700 (italic 400),
+     display 700, mono 400 and 600; use only those (a missing weight has no
+     face: 650 renders as 700, and a display 500 would fall back to 700). */
   --text-2xs:      .6875rem;  /* 11px: floor; uppercase labels, kbd, NIHSS anchors */
   --text-xs:       .75rem;    /* 12px: pills, chips, meta */
   --text-sm:       .8125rem;  /* 13px: secondary UI, help, compact buttons */
@@ -372,6 +327,10 @@
   --space-10:      20px;
   --space-12:      24px;
   --space-16:      32px;
+
+  /* Icon masks (drawn in currentColor through mask-image, so never read aloud). */
+  --icon-external: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M8 7h9v9'/%3E%3C/svg%3E");
+  --icon-arrow:    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E");
 
   /* ─── 8. Legacy aliases — declared ONCE, here ───────────────────
      Every older name resolves through the semantic layer above, so a

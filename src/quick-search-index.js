@@ -3,14 +3,13 @@
 // stay in memory; nothing here reads or writes Encounter values.
 import { ENCOUNTER_TOOLS } from './calculator-utilities.js';
 import { PROTOCOL_TARGETS } from './protocol-navigation.js';
-import { STOPWORDS } from './reference-search.js';
+import { STOPWORDS, normalizeSearch as normalize, hasTerm, wordStart } from './reference-search.js';
 
-const normalize = value => String(value || '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase()
-  .replace(/₂/g, '2').replace(/²/g, '2').replace(/[^a-z0-9]+/g, ' ').trim()
-  .replace(/\bafib\b/g, 'atrial fibrillation').replace(/\btpa\b/g, 'alteplase');
+// The Evidence normalizer and alias table (afib, rt-PA, DOAC, LVO, ABC/2…), so both searches agree.
 const compact = value => normalize(value).replace(/ /g, '');
 
 export const SEARCH_GROUPS = ['Go to', 'Protocols', 'Calculators', 'Evidence', 'Studies', 'Trials', 'External'];
+const NAVIGATION_GROUPS = SEARCH_GROUPS.slice(0, 3);
 
 const NAVIGATION = [
   { title: 'Encounter', href: '#/encounter', keywords: 'consult case workspace note' },
@@ -35,14 +34,14 @@ const EXTERNAL = [
 
 const PROTOCOL_KEYWORDS = {
   'qr-dose': 'tenecteplase alteplase TNK tPA thrombolytic dose weight table bolus infusion mL',
-  'qr-bp': 'blood pressure targets 185/110 180/105 labetalol nicardipine clevidipine post-EVT ICH SAH hypertension hypertensive HTN',
+  'qr-bp': 'blood pressure SBP DBP targets 185/110 180/105 labetalol nicardipine clevidipine post-EVT ICH SAH hypertension hypertensive HTN',
   'qr-reversal': 'anticoagulant reversal ICH DOAC NOAC INR 4F-PCC PCC Kcentra idarucizumab Praxbind protamine vitamin K warfarin Coumadin Jantoven apixaban Eliquis rivaroxaban Xarelto edoxaban Savaysa dabigatran Pradaxa heparin enoxaparin Lovenox dalteparin fondaparinux argatroban bivalirudin andexanet antiplatelet',
   'qr-sich': 'symptomatic hemorrhage after thrombolysis sICH tnk tenecteplase alteplase tpa lytic bleed bleeding cryoprecipitate tranexamic acid TXA aminocaproic Amicar fibrinogen headache vomiting nausea neurological neuro deterioration decline worsening acute hypertension',
   'qr-angioedema': 'orolingual angioedema tongue lip swelling intubation icatibant epinephrine methylprednisolone diphenhydramine airway ACE inhibitor',
   'qr-ich-surgery': 'ICH surgery neurosurgery evacuation craniotomy cerebellar hemorrhage EVD ventriculostomy IVH hydrocephalus minimally invasive MIS ENRICH deterioration decline worsening neurological',
   'qr-sah': 'subarachnoid hemorrhage SAH aneurysm thunderclap headache lumbar puncture xanthochromia nimodipine coil clip EVD',
   evt: 'thrombectomy EVT eligibility LVO ASPECTS anterior ICA M1 M2 DAWN DEFUSE',
-  posterior: 'basilar vertebral posterior circulation pc-ASPECTS ATTENTION BAOCHE thrombectomy EVT',
+  posterior: 'basilar BAO vertebral posterior circulation pc-ASPECTS ATTENTION BAOCHE thrombectomy EVT',
   'large-core': 'large core ASPECTS 3-5 SELECT2 ANGEL-ASPECT TENSION thrombectomy',
   mevo: 'medium distal vessel occlusion MeVO DISTAL ESCAPE-MeVO M3 ACA PCA',
   swallow: 'dysphagia swallow screen aspiration NPO',
@@ -55,7 +54,7 @@ const PROTOCOL_KEYWORDS = {
   reversal: 'anticoagulant reversal 4F-PCC PCC Kcentra idarucizumab Praxbind protamine vitamin K warfarin apixaban rivaroxaban dabigatran heparin',
   'post-lytic': 'symptomatic hemorrhage sICH cryoprecipitate tranexamic acid TXA bleeding after thrombolysis headache vomiting nausea neurological deterioration decline worsening',
   angioedema: 'orolingual angioedema airway icatibant',
-  bp: 'blood pressure targets labetalol nicardipine clevidipine 185/110 180/105 hypertension hypertensive HTN',
+  bp: 'blood pressure SBP DBP targets labetalol nicardipine clevidipine 185/110 180/105 hypertension hypertensive HTN',
   'post-evt': 'after thrombectomy blood pressure reperfusion TICI'
 };
 
@@ -73,48 +72,59 @@ export function buildSearchIndex(reference, { protocolSub = 'ischemic' } = {}) {
   (reference?.calculators || []).forEach(calc => records.push({ id: `calc:${calc.id}`, group: 'Calculators', title: calc.name, subtitle: calc.category, href: `#/tools/${calc.id}`, keywords: [calc.id, calc.category, ...(calc.aliases ? [calc.aliases] : [])].join(' ') }));
   (reference?.topics || []).forEach(topic => records.push({ id: `topic:${topic.id}`, group: 'Evidence', title: topic.title, subtitle: topic.category, href: `#/evidence/${topic.id}`, keywords: [topic.id, ...(topic.keywords || [])].join(' '), body: topic.summary }));
   (reference?.studies || []).forEach(study => records.push({ id: `study:${study.id}`, group: 'Studies', title: study.title, subtitle: String(study.year || ''), href: `#/evidence/${study.id}`, keywords: [study.id, ...(study.keywords || [])].join(' '), body: [study.question, study.population, study.result].join(' ') }));
-  (reference?.trials || []).forEach(trial => records.push({ id: `trial:${trial.acronym}`, group: 'Trials', title: trial.acronym, subtitle: trial.subtitle || '', href: '#/trials/database', keywords: [trial.nct, trial.keywords].filter(Boolean).join(' '), body: trial.body }));
+  // A trial opens the Database filtered to it.
+  (reference?.trials || []).forEach(trial => records.push({ id: `trial:${trial.acronym}`, group: 'Trials', title: trial.acronym, subtitle: trial.subtitle || '', href: `#/trials/database?q=${encodeURIComponent(trial.acronym)}`, keywords: [trial.nct, trial.keywords].filter(Boolean).join(' '), body: trial.body }));
   EXTERNAL.forEach(item => records.push({ ...item, group: 'External', id: `ext:${item.title}`, external: true }));
   return records.map(record => ({ ...record, _title: normalize(record.title), _titleCompact: compact(record.title), _keys: normalize(record.keywords), _keysCompact: compact(record.keywords), _body: normalize(record.body) }));
 }
 
-// Every term must match the title, keywords or summary text. Ranking favours
-// exact names, then title prefixes, title words, keywords and body text.
+// Every term must match the title, keywords or summary text. Records whose every
+// term is a whole word of the name or an alias ("ABC/2" for ICH volume) come first
+// (exact), then the score favours exact names, title prefixes, title words, keywords
+// and body text. Short letter-only terms match at word starts (hasTerm).
 export function searchIndex(index, query, limit = 40) {
   const phrase = normalize(query);
   if (!phrase) return [];
   // Filler words never have to match ("when to start anticoagulation").
   const terms = phrase.split(' ').filter((term, _, all) => all.length === 1 || !STOPWORDS.has(term));
-  const phraseCompact = phrase.replace(/ /g, '');
+  const phraseCompact = phrase.replace(/ /g, ''), wording = ` ${terms.join(' ')} `;
   const scored = [];
   for (const record of index) {
-    let score = 0;
+    let score = 0, exact = true;
     for (const term of terms) {
+      const anywhere = !wordStart(term);
       const termScore = ` ${record._title} `.includes(` ${term} `) ? 6
-        : record._title.startsWith(term) || record._title.includes(` ${term}`) ? 5
-          : record._title.includes(term) || record._titleCompact.includes(term) ? 3
-            : ` ${record._keys} `.includes(` ${term} `) || record._keysCompact.includes(term) ? 3
-              : record._keys.includes(term) ? 2
-                : record._body.includes(term) ? 1 : 0;
+        : ` ${record._title}`.includes(` ${term}`) ? 5
+          : anywhere && (record._title.includes(term) || record._titleCompact.includes(term)) ? 3
+            : ` ${record._keys} `.includes(` ${term} `) || anywhere && record._keysCompact.includes(term) ? 3
+              : hasTerm(record._keys, term) ? 2
+                : hasTerm(record._body, term) ? 1 : 0;
       if (!termScore) { score = 0; break; }
+      exact &&= ` ${record._title} ${record._keys} `.includes(` ${term} `);
       score += termScore;
     }
     if (!score) continue;
-    if (record._title === phrase || record._titleCompact === phraseCompact) score += 20;
+    if (record._title === phrase || record._titleCompact === phraseCompact) { score += 20; exact = true; }
     else if (record._title.startsWith(phrase)) score += 8;
-    if (record.group === 'Go to' || record.group === 'Protocols' || record.group === 'Calculators') score += 1;
-    scored.push([score, record]);
+    if (NAVIGATION_GROUPS.includes(record.group)) score += 1;
+    // Named: the title is the query or begins with it as whole words ("DIRECT-MT", "CT perfusion").
+    // Phrase: the title or keywords hold the query's words in order, filler words aside.
+    scored.push([score + (exact ? 100 : 0), { ...record, exact, named: record._titleCompact === phraseCompact || `${record._title} `.startsWith(`${phrase} `), phrase: [record._title, record._keys].some(text => ` ${text} `.includes(wording)) }]);
   }
   return scored.sort((a, b) => b[0] - a[0] || a[1].title.localeCompare(b[1].title)).slice(0, limit).map(([, record]) => record);
 }
 
 // Groups keep the predictable SEARCH_GROUPS order. The lead group holds the best
 // navigation match (Go to, Protocols, Calculators) when there is one, otherwise the
-// best match overall, so Enter opens it. Long result sets show the top few per
-// group and report how many are hidden ([group, shown, hiddenCount]).
-const NAVIGATION_GROUPS = ['Go to', 'Protocols', 'Calculators'];
+// best match overall, so Enter opens it. A navigation match never leads a better one:
+// partial words over exact ones, or scattered words over a record the query names
+// ("DIRECT-MT"). A study or topic that only holds the query in its keywords ("ICH blood
+// pressure") does not displace a protocol that matches every word.
+// Long result sets show the top few per group and report how many are hidden
+// ([group, shown, hiddenCount]).
 export function groupResults(results, { perGroup = 5, expanded = [] } = {}) {
-  const lead = (results.find(record => NAVIGATION_GROUPS.includes(record.group)) || results[0])?.group;
+  const top = results[0];
+  const lead = (results.find(record => NAVIGATION_GROUPS.includes(record.group) && (record.exact || !top.exact) && (record.phrase || !top.named)) || top)?.group;
   const capped = results.length > 12;
   return SEARCH_GROUPS.map(group => [group, results.filter(record => record.group === group)])
     .filter(([, items]) => items.length)

@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0A6571">
   <meta name="description" content="Encounter workspace with embedded calculations, protocols, Pulsara summaries and Epic note templates.">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="manifest" href="manifest.json?v=7.8.3">
+  <link rel="manifest" href="manifest.json?v=7.9.0">
   <link rel="icon" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
   <!-- iOS launch screens for the installed app (exact device matches; precached by the service worker). -->
@@ -35,25 +35,25 @@
   <link rel="apple-touch-startup-image" href="assets/splash/splash-ipad-mini.png"
         media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
   <title>Stroke · Encounter workspace</title>
-  <link rel="modulepreload" href="app.js?v=7.8.3">
+  <link rel="modulepreload" href="app.js?v=7.9.0">
   <!-- BEGIN GENERATED INITIAL MODULE PRELOADS -->
+  <link rel="modulepreload" href="chunks/chunk-3C5ZDFRN.js">
   <link rel="modulepreload" href="chunks/chunk-3EH37YPU.js">
-  <link rel="modulepreload" href="chunks/chunk-5CVPYEJX.js">
   <link rel="modulepreload" href="chunks/chunk-BVAA575E.js">
   <link rel="modulepreload" href="chunks/chunk-CCC5QWPU.js">
+  <link rel="modulepreload" href="chunks/chunk-FPW5WEWF.js">
   <link rel="modulepreload" href="chunks/chunk-HOFJI2PN.js">
+  <link rel="modulepreload" href="chunks/chunk-HXREWURP.js">
   <link rel="modulepreload" href="chunks/chunk-QPJ3MHXX.js">
   <link rel="modulepreload" href="chunks/chunk-RKNMGIFI.js">
-  <link rel="modulepreload" href="chunks/chunk-USXDLG6G.js">
-  <link rel="modulepreload" href="chunks/chunk-UUVPNWCE.js">
-  <link rel="modulepreload" href="chunks/chunk-VBK5MHSV.js">
+  <link rel="modulepreload" href="chunks/chunk-ROKRUQE4.js">
   <!-- END GENERATED INITIAL MODULE PRELOADS -->
-  <link rel="stylesheet" href="tailwind.css?v=7.8.3">
+  <link rel="stylesheet" href="tailwind.css?v=7.9.0">
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/publicsans-normal-400.woff2">
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/bricolage-700.woff2">
   <script>
     (function () {
-      const APP_VERSION = '7.8.3';
+      const APP_VERSION = '7.9.0';
       let pref = null;
       try { pref = localStorage.getItem('stroke.v7.theme'); } catch (_) {}
       const isPublicPages = /(^|\.)github\.io$/i.test(location.hostname || '');
@@ -65,6 +65,11 @@
       try { for (const key of Object.keys(localStorage)) if (key.startsWith('strokeApp:') || legacy.includes(key)) localStorage.removeItem(key); } catch (_) {}
       try { for (const key of Object.keys(sessionStorage)) if (key.startsWith('strokeApp:') || legacy.includes(key)) sessionStorage.removeItem(key); } catch (_) {}
     })();
+  </script>
+  <script>
+    // Browser chrome matches the first paint: the theme's surface colour (--c-surface in tokens.css),
+    // so it does not flash the manifest teal until app.js syncs it.
+    (function () { var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.setAttribute('content', document.documentElement.getAttribute('data-theme') === 'dark' ? '#172731' : '#FFFFFF'); })();
   </script>
 </head>
 <body>
@@ -93,6 +98,6 @@
         };
 
   </script>
-  <script type="module" src="app.js?v=7.8.3"></script>
+  <script type="module" src="app.js?v=7.9.0"></script>
 </body>
 </html>

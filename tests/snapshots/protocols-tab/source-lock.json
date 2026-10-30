@@ -1,9 +1,9 @@
 {
   "note": "Protocols-tab source lock. Update only for an owner-approved Protocols change; see scripts/protocols-source-lock.mjs.",
   "files": {
-    "src/ProtectedProtocols.jsx": "48e401131bb10e4ab5e475c56f91a0f0f8f4a0976cc9c5b377065d77a96d64be",
-    "src/components/QuickReference.jsx": "a47c949d56307453725e0dcf23511233c6091c829f40f09d93032a0c10c9b137",
-    "src/pocket-cards.jsx": "cbe3b8fd9b38dc3f9fc44d5775f3d2b840f8f177722b821db0cbb2147e1b5b51",
+    "src/ProtectedProtocols.jsx": "a82b2b125509259b6476b99e66aad5b91c8c3464cb7596e306f5081cbe4570e3",
+    "src/components/QuickReference.jsx": "2b19b6922699455c4ab01dacb16a83fd146b87d38592c28cfc173eb1b36a48b9",
+    "src/pocket-cards.jsx": "e17e171cd1cc038002309025068a2d25486a63cb5ba03279e41e79c5eb8cecd4",
     "src/institutional-protocols.js": "a2b5516f9879fe28df6506732ce7b134d8fe7f99db755392cc743c0bac4c2755",
     "src/management-guidance.js": "4ea3776064a8e85c6dc054be7c43d59f5237295b4ff5c5747beefa4ca42fd5e7",
     "src/clinical/reversal-dose.js": "6c8aa3e1d9009f108889013f438833d2a0ed12ae1cb3b950fd831a067b558563",

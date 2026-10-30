@@ -553,11 +553,14 @@ async function main() {
         await page.getByLabel('Suspected cardioembolic source', { exact: true }).selectOption('');
         await review.getByText(/Disposition assessment incomplete/).waitFor();
         for (const label of riskLabels) await page.getByLabel(label, { exact: true }).selectOption('no');
+        // A DWI "No" counts as reviewed only once the MRI is recorded as completed (unknown is not negative).
+        await review.getByText(/No recorded without a completed MRI/).waitFor();
+        await page.getByLabel('TIA MRI / DWI workup', { exact: true }).selectOption('Completed');
         await review.getByText(/Risk-feature assessment recorded/).waitFor();
         assert((await review.innerText()).includes('ABCD² alone cannot clear discharge'));
         await review.getByRole('heading', { name: 'Workup & follow-up gaps', exact: true }).waitFor();
         for (const label of ['TIA MRI / DWI workup', 'TIA head / neck vascular imaging workup', 'TIA ECG / rhythm workup']) await page.getByLabel(label, { exact: true }).selectOption('Completed');
-        for (const label of ['Same-day TIA workup complete', 'Prompt outpatient follow-up confirmed']) await page.getByLabel(label, { exact: true }).selectOption('yes');
+        for (const label of ['Same-day TIA workup complete', 'Rapid neurology or TIA-clinic follow-up confirmed (ideally ≤48 h)']) await page.getByLabel(label, { exact: true }).selectOption('yes');
         await review.getByRole('heading', { name: 'Workup & follow-up gaps', exact: true }).waitFor({ state: 'hidden' });
         await page.getByLabel('Presumed symptomatic extracranial or intracranial stenosis >50%', { exact: true }).selectOption('');
         await review.getByText(/Disposition assessment incomplete/).waitFor();

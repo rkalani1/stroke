@@ -1144,7 +1144,6 @@ div aria-label=Scrollable table: blood pressure management targets
 input placeholder=e.g. 178/96
 textarea aria-label=Safe Pause reference checklist (read-only)
 ## structure
-h2: Bedside quick reference
 table: 19 rows; header kg | TNK mg | mL | Alteplase total | Bolus | Infusion (60 min)
 a: AHA/ASA AIS 2026 -> https://doi.org/10.1161/STR.0000000000000513 [_blank]
 a: US TNKase label -> https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=e647640d-c395-4b4b-a0be-1162f9c21d84 [_blank]

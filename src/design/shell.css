@@ -19,7 +19,7 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .workspace-search { grid-area: search; justify-self: start; display: inline-flex; align-items: center; gap: var(--space-5); width: min(340px, 100%); min-height: 44px; padding: var(--space-4) var(--space-5) var(--space-4) var(--space-7); border: 1px solid var(--line); border-radius: var(--radius-pill); background: var(--surface-2); color: var(--mute); font-size: var(--text-md); text-align: left; transition: border-color calc(var(--dur) * var(--motion-scale)) var(--ease), background-color calc(var(--dur) * var(--motion-scale)) var(--ease); }
 .workspace-search:hover { border-color: rgb(var(--c-line-control)); background: var(--surface); color: var(--ink-2); }
 .workspace-search__text { flex: 1; }
-.workspace-search kbd, .utility-shortcuts kbd, .quick-search kbd { display: inline-flex; align-items: center; min-height: 22px; padding: 0 var(--space-3); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: var(--radius-sm); background: var(--surface); font: 500 var(--text-2xs)/var(--leading-none) var(--mono-font); color: var(--ink-2); }
+.workspace-search kbd, .utility-shortcuts kbd, .quick-search kbd { display: inline-flex; align-items: center; min-height: 22px; padding: 0 var(--space-3); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: var(--radius-sm); background: var(--surface); font: 400 var(--text-2xs)/var(--leading-none) var(--mono-font); color: var(--ink-2); }
 .search-ico { width: 18px; height: 18px; flex-shrink: 0; }
 .nav-ico { display: none; width: 18px; height: 18px; flex-shrink: 0; }
 .workspace-secondary { grid-area: nav; display: flex; flex-wrap: nowrap; align-items: center; gap: var(--space-2); padding: var(--space-2); background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius-card); font-size: var(--text-md); }
@@ -40,8 +40,11 @@ button:disabled { opacity: .55; cursor: not-allowed; }
 .utility-panel .utility-action { width: 100%; font-weight: 600; color: var(--ink); }
 .utility-shortcuts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 @media (pointer: coarse) { .utility-shortcuts { display: none; } }
-/* ── Case bar: the current encounter, pinned on every tab ── */
-:root:has(.case-bar) { --case-bar-h: 58px; }
+/* ── Case bar: the current encounter, pinned on every tab ──
+   CaseBar publishes its measured height as --case-bar-h in a layout effect, before the
+   bar first paints, so no CSS fallback is needed. The old :root:has(.case-bar) fallback
+   made Chrome restyle the whole document (≈3,500 elements) on every Encounter keystroke
+   once Calculators had been opened (2026-10-21, 4× CPU: median keystroke 232 → 88 ms). */
 :root { --header-h: 72px; }
 html { scroll-padding-top: calc(var(--header-h) + var(--case-bar-h) + 8px); }
 .workspace-header { position: sticky; top: 0; z-index: 50; }
@@ -71,10 +74,11 @@ html { scroll-padding-top: calc(var(--header-h) + var(--case-bar-h) + 8px); }
 .workspace-trigger-list { margin: var(--space-2) 0 0; padding-left: var(--space-9); list-style: disc; }
 .workspace-trigger-list li + li { margin-top: 3px; }
 /* Flagged values carry a glyph as well as colour; the value is a flex row, so the glyph pulls in and rides high. */
-.case-bar__flag { margin-left: -4px; align-self: flex-start; font: 800 .75em/var(--leading-none) var(--font-sans); font-size: max(.75em, var(--text-2xs)); color: var(--caution); }
+.case-bar__flag { margin-left: -4px; align-self: flex-start; font: 700 .75em/var(--leading-none) var(--font-sans); font-size: max(.75em, var(--text-2xs)); color: var(--caution); }
 a.case-bar__badge { text-decoration: none; }
 a.case-bar__badge:hover { filter: brightness(1.08); }
-.case-bar__item[data-empty] .case-bar__value { color: var(--faint); font-weight: 500; }
+/* The empty-value dash uses the already-loaded Public Sans 500; Bricolage ships only 700. */
+.case-bar__item[data-empty] .case-bar__value { color: var(--faint); font-family: var(--font-sans); font-weight: 500; }
 .case-bar__item[data-flag="caution"] .case-bar__value, .case-bar__item[data-flag="caution"] .case-bar__value small { color: var(--caution); }
 .case-bar__item[data-flag="critical"] .case-bar__value, .case-bar__item[data-flag="critical"] .case-bar__value small { color: var(--critical); }
 /* A partial itemized NIHSS reads "12 partial" in text; the softer ink is only a second cue. */
@@ -88,6 +92,37 @@ a.case-bar__badge:hover { filter: brightness(1.08); }
 /* html scroll-padding clears the case bar; margins below clear the in-page sticky bars. */
 .encounter-workflow :is(h2, h3, input, select, textarea, fieldset, .tool-target, .encounter-details) { scroll-margin-top: 72px; }
 #tabpanel-protocols :is(h2, h3, details, [id]) { scroll-margin-top: 96px; }
+/* Keyboard focus never lands under sticky chrome (WCAG 2.4.11). Chrome scrolls a focused field only
+   when its box (or caret, or a date or time field's inner segment) is outside the root scroll padding;
+   when it scrolls, fields and selects honour their scroll margin, but a date or time segment, up to
+   about 15 px below the box, does not, and its 5 px focus ring must clear too. So the padding covers
+   each surface's sticky bars; the shell sets data-surface on <html>. Every value sits below the sticky
+   header and case bar. Encounter: the section nav (61 px under the case bar; static at 480 px wide or
+   narrower, or 500 px high or less). Protocols: the breadcrumb and sub-tabs (36 px + up to 62 px).
+   Margins are rebalanced so every programmatic reveal, the skip link included, lands where it did:
+   Encounter 82 − 2 and 22 + 58 = the old 8 + 72, phones 22 − 6 = 8 + 8; the two untagged calculator
+   targets 22 − 14 = 8 (on wider screens 82 + 0, which 7.8.3 left under the section nav); protocol
+   targets 104 + 0 = 8 + 96; quick-reference cards, above the sticky bars, 104 − 96 = 8; the main
+   region 22 − 14, 82 − 74 and 104 − 96 = 8. */
+html[data-surface="encounter"] { scroll-padding-top: calc(var(--header-h) + var(--case-bar-h) + 22px); }
+html[data-surface="encounter"] .encounter-workflow :is(h2, h3, input, select, textarea, fieldset, .tool-target, .encounter-details) { scroll-margin-top: 58px; }
+html[data-surface="encounter"] #workspace-main { scroll-margin-top: -14px; }
+html[data-surface="encounter"] :is(#calc-defuse3, #calc-alteplase) { scroll-margin-top: -14px; }
+@media (max-width: 480px) {
+  html[data-surface="encounter"] .encounter-workflow :is(h2, h3, input, select, textarea, fieldset, .tool-target, .encounter-details) { scroll-margin-top: -6px; }
+}
+@media (min-width: 481px) and (min-height: 501px) {
+  html[data-surface="encounter"] { scroll-padding-top: calc(var(--header-h) + var(--case-bar-h) + 82px); }
+  html[data-surface="encounter"] .encounter-workflow :is(h2, h3, input, select, textarea, fieldset, .tool-target, .encounter-details) { scroll-margin-top: -2px; }
+  html[data-surface="encounter"] #workspace-main { scroll-margin-top: -74px; }
+  html[data-surface="encounter"] :is(#calc-defuse3, #calc-alteplase) { scroll-margin-top: 0; }
+}
+@media (min-width: 481px) {
+  html[data-surface="protocols"] { scroll-padding-top: calc(var(--header-h) + var(--case-bar-h) + 104px); }
+  html[data-surface="protocols"] #workspace-main { scroll-margin-top: -96px; }
+  #tabpanel-protocols :is(h2, h3, details, [id]) { scroll-margin-top: 0; }
+  .quick-reference details[id] { scroll-margin-top: -96px; }
+}
 html[data-theme="dark"] .case-bar { box-shadow: 0 6px 18px -14px rgba(0, 0, 0, .8); }
 
 /* ── Quick search (⌘K) ── */
@@ -99,7 +134,7 @@ html[data-theme="dark"] .case-bar { box-shadow: 0 6px 18px -14px rgba(0, 0, 0, .
 .quick-search__field input { flex: 1; min-width: 0; min-height: 44px; border: 0; background: transparent; color: var(--ink); font-size: var(--text-2xl); outline: none; }
 .quick-search__field input:focus-visible { outline: none; }
 .quick-search__field input::-webkit-search-cancel-button { display: none; }
-.quick-search__close { min-height: 32px !important; padding: var(--space-1) var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-2); font: 500 var(--text-xs) var(--mono-font); color: var(--ink-2); }
+.quick-search__close { min-height: 32px !important; padding: var(--space-1) var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-2); font: 400 var(--text-xs) var(--mono-font); color: var(--ink-2); }
 .quick-search__results { overflow-y: auto; padding: var(--space-3) var(--space-4) var(--space-5); overscroll-behavior: contain; }
 .quick-search__group { margin: var(--space-5) var(--space-4) var(--space-2); font: 600 var(--text-2xs)/var(--leading-tight) var(--font-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
 .quick-search__results a[role="option"] { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-6); min-height: 44px; padding: var(--space-5) var(--space-6); border-radius: var(--radius-md); color: var(--ink); text-decoration: none; }
@@ -187,11 +222,12 @@ html[data-theme="dark"] .workspace-result[data-tone="value"] { color: var(--ink)
 :is(.encounter-workflow, .reference-surface, .trials-surface, .quick-reference, .tools-surface) summary::after { content: ''; flex-shrink: 0; width: 7px; height: 7px; margin: 0 var(--space-2) 0 auto; border-right: 2px solid var(--mute); border-bottom: 2px solid var(--mute); transform: rotate(45deg) translate(-2px, -2px); transition: transform calc(var(--dur) * var(--motion-scale)) var(--ease); }
 :is(.encounter-workflow, .reference-surface, .trials-surface, .quick-reference, .tools-surface) details[open] > summary::after { transform: rotate(-135deg) translate(-2px, -2px); }
 :is(.reference-surface, .trials-surface, .quick-reference, .tools-surface) summary { display: flex; align-items: center; gap: var(--space-4); }
-/* Study summaries: title, year and marker on one line; the headline below. */
-.reference-surface summary:has(> .reference-year) { flex-wrap: wrap; }
-.reference-surface summary:has(> .reference-year) > span:first-child { flex: 1 1 0; min-width: 0; }
+/* Evidence rows: title (and a study's year) beside the marker on the first line; a study's headline,
+   or a topic's bottom line and contents, on full-width lines below. */
+.reference-card > summary { flex-wrap: wrap; }
+.reference-card > summary > span:first-child { flex: 1 1 0; min-width: 0; }
 .reference-surface summary > .reference-year { flex-shrink: 0; margin-left: 0; white-space: nowrap; }
-.reference-surface summary > .reference-headline { order: 3; flex-basis: 100%; }
+.reference-surface summary > :is(.reference-headline, .reference-bottom-line, .reference-contents) { order: 3; flex-basis: 100%; }
 .safety-group { margin: var(--space-6) 0; padding: 0; border: 0; min-width: 0; }
 .safety-group > legend { margin-bottom: var(--space-2); font-size: var(--text-sm); font-weight: 700; letter-spacing: .02em; text-transform: uppercase; color: var(--ink-2); }
 .safety-group[data-tier="absolute"] > legend { color: var(--critical); }
@@ -262,7 +298,7 @@ h1 { font-family: var(--font-display); font-size: var(--display-2xl); font-weigh
 .workflow-section { margin: var(--space-8) 0; padding: var(--space-10); background: var(--card); border: 1px solid var(--panel-border); border-radius: var(--radius-lg); box-shadow: var(--elev-1); }
 .workflow-section h2, .tools-surface h2 { font-family: var(--font-display); font-weight: 700; font-size: var(--display-sm); letter-spacing: -.01em; }
 .workflow-section h2 { display: flex; align-items: center; gap: var(--space-5); margin: -20px -20px var(--space-8); padding: var(--space-8) var(--space-10); border-bottom: 1px solid var(--line); }
-.workflow-section h2 > span { display: inline-grid; place-items: center; flex-shrink: 0; width: 28px; height: 28px; border-radius: var(--radius-sm); background: var(--teal-wash); color: var(--tag-teal); font: 500 var(--text-xs) var(--mono-font); }
+.workflow-section h2 > span { display: inline-grid; place-items: center; flex-shrink: 0; width: 28px; height: 28px; border-radius: var(--radius-sm); background: var(--teal-wash); color: var(--tag-teal); font: 600 var(--text-xs) var(--mono-font); }
 h3 { font-family: var(--font-sans); font-weight: 700; margin: var(--space-6) 0; }
 .field-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-8); }
 .workspace-field { display: flex; flex-direction: column; gap: var(--space-3); margin: var(--space-4) 0; font-size: var(--text-md); min-width: 0; }
@@ -296,8 +332,12 @@ h3 { font-family: var(--font-sans); font-weight: 700; margin: var(--space-6) 0; 
 /* The update notice floats above the content so it never pushes the form while someone is tapping. */
 .workspace-update { position: fixed; z-index: 55; right: 16px; bottom: 16px; max-width: 420px; padding: var(--space-8); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--card); box-shadow: var(--elev-2, var(--elev-1)); font-size: var(--text-md); }
 @media (max-width: 768px) { .workspace-update { left: 12px; right: 12px; margin: 0 auto; bottom: calc(76px + env(safe-area-inset-bottom)); } }
-/* While the notice shows, reserve scroll room so it never covers the note's Copy and Generate buttons. */
-.workspace-update + #workspace-main { padding-bottom: 176px; }
+/* While the notice shows, reserve scroll room so it never covers the note's Copy and Generate buttons,
+   and pad the root scrollport past it so Tab never moves focus underneath it (WCAG 2.4.11). The
+   shell publishes the notice's measured height as --update-notice-h (it grows with larger text). */
+.workspace-update + #workspace-main { padding-bottom: max(176px, calc(var(--update-notice-h) + 48px)); }
+html[data-update-notice] { scroll-padding-bottom: calc(var(--update-notice-h) + 16px + var(--space-4)); }
+@media (max-width: 768px) { html[data-update-notice] { scroll-padding-bottom: calc(var(--update-notice-h) + 76px + var(--space-4) + env(safe-area-inset-bottom)); } }
 .workspace-update button { padding: var(--space-4) var(--space-6); margin: var(--space-4) var(--space-4) 0 0; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--paper-2); }
 .tools-surface { margin: 0 0 var(--space-12); }
 /* Every surface starts the same distance below the case bar. */
@@ -319,6 +359,8 @@ h3 { font-family: var(--font-sans); font-weight: 700; margin: var(--space-6) 0; 
 .trials-surface [role="tab"] { overflow-wrap: anywhere; transition: background-color calc(var(--dur) * var(--motion-scale)) var(--ease), color calc(var(--dur) * var(--motion-scale)) var(--ease); }
 .trials-surface article { overflow-wrap: anywhere; border-color: var(--panel-border); border-radius: var(--radius-lg); box-shadow: var(--elev-1); }
 [id^="trials-"][role="tabpanel"] a[href] { display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; }
+/* A short acronym ("STEP") still gets a 44 px wide target. */
+.trials-surface button { min-width: 44px; }
 html[data-theme="dark"] :is(a:not([class]), .workspace-skip, .text-link-600) { color: rgb(var(--link-400)); }
 html[data-theme="dark"] .workspace-brand { color: var(--ink); }
 html[data-theme="dark"] .encounter-next-entry button { color: rgb(var(--link-400)); }
@@ -333,10 +375,8 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
   .workspace-search__text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
 /* Below the full shell width the bar wraps instead of clipping: identity, time and
-   actions first (actions drop to their own row when needed), measurements below.
-   CaseBar publishes its measured height as --case-bar-h; these are first-paint fallbacks. */
+   actions first (actions drop to their own row when needed), measurements below. */
 @media (max-width: 1231px) {
-  :root:has(.case-bar) { --case-bar-h: 100px; }
   .case-bar { flex-wrap: wrap; gap: var(--space-3) var(--space-7); }
   .case-bar__actions { order: 2; }
   .case-bar__items { order: 3; flex: 1 0 100%; min-width: 0; flex-wrap: wrap; gap: var(--space-1) var(--space-10); overflow: visible; }
@@ -570,3 +610,70 @@ a.case-bar__badge::before { content: ''; position: absolute; inset: -8px -3px; }
 @media (max-width: 374px) {
   .workspace-secondary > a { font-size: var(--text-2xs); letter-spacing: 0; }
 }
+
+/* ── 2026-10-21 review ── */
+/* Evidence: a collapsed topic shows its bottom line (the summary's opening sentence, in full: a
+   clamped clinical sentence can lose its population or "only if" qualifier) and what it holds.
+   Open, the summary paragraph repeats the sentence, so the preview steps aside. */
+.reference-bottom-line { display: block; margin-top: var(--space-1); color: var(--ink-2); font-size: var(--text-md); font-weight: 400; line-height: var(--leading-normal); }
+.reference-card[open] > summary > .reference-bottom-line { display: none; }
+.reference-contents { margin-top: var(--space-2); color: var(--mute); font-size: var(--text-xs); font-weight: 600; }
+/* Section index: jump buttons with counts; one sideways-scrolling row below 1024 px. */
+.reference-index ul { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-6) 0 0; padding: 0; list-style: none; }
+.reference-index button { display: inline-flex; align-items: center; gap: var(--space-4); min-height: 44px; padding: var(--space-3) var(--space-6); border: 1px solid var(--line); border-radius: var(--radius-pill); background: var(--surface); color: var(--ink-2); font-size: var(--text-sm); font-weight: 600; white-space: nowrap; }
+.reference-index button:hover { border-color: rgb(var(--c-line-control)); color: var(--ink); }
+.reference-index button > span, .reference-group > h2 > span { font: 400 var(--text-xs)/var(--leading-none) var(--mono-font); color: var(--mute); }
+.reference-group > h2 > span { padding: var(--space-1) var(--space-4); border-radius: var(--radius-pill); background: var(--paper-2); color: var(--ink-2); }
+.reference-group > h2:focus-visible { outline-offset: 4px; }
+@media (max-width: 1023px) {
+  .reference-index ul { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--space-6)); padding: 0 var(--space-6) var(--space-2); overscroll-behavior-x: contain; scroll-padding-inline: var(--space-6); }
+  .reference-index li { flex: 0 0 auto; }
+}
+
+/* Calculators: each category reads as one grouped list under a section label; a row opens in place.
+   Encounter-tool links say where they go with an arrow. */
+.supplementary-calculators > section > h3 { margin: var(--space-12) 0 var(--space-4); font: 600 var(--text-xs)/var(--leading-tight) var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); }
+.supplementary-calculators details.calc-card { margin: 0; border-radius: 0; background: var(--surface); box-shadow: none; }
+.supplementary-calculators .calc-card:not([hidden]) ~ .calc-card { border-top-width: 0; }
+.supplementary-calculators .calc-card:first-of-type { border-top-left-radius: var(--radius-lg); border-top-right-radius: var(--radius-lg); }
+.supplementary-calculators .calc-card:last-of-type { border-bottom-left-radius: var(--radius-lg); border-bottom-right-radius: var(--radius-lg); }
+.supplementary-calculators details.calc-card[open] { background: var(--surface-2); }
+.supplementary-calculators .calc-card > summary { font-weight: 700; }
+.tool-links a::after { content: ''; flex-shrink: 0; width: 14px; height: 14px; margin-left: var(--space-4); background: currentColor; -webkit-mask: var(--icon-arrow) center / contain no-repeat; mask: var(--icon-arrow) center / contain no-repeat; }
+@media (max-width: 639px) {
+  .tools-surface .tool-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+  .tools-surface .tool-links li { margin: 0; }
+  .tools-surface .tool-links a { width: 100%; justify-content: space-between; }
+}
+
+/* Contraindication review: a tier rule beside each group, so 42 items read as four groups. Recorded
+   answers stand out from unanswered ones; the select's own word (Yes, No, Not assessed) carries the
+   meaning and the colour only repeats it. */
+.safety-group { padding: var(--space-2) 0 var(--space-2) var(--space-7); border-left: 3px solid rgb(var(--c-line-strong)); }
+.safety-group[data-tier="absolute"] { border-left-color: rgb(var(--c-critical)); }
+.safety-group[data-tier="relative"] { border-left-color: rgb(var(--c-caution)); }
+.safety-group[data-tier="correctable"] { border-left-color: rgb(var(--c-accent)); }
+.encounter-workflow .workspace-field select:has(> option[value=""]:checked) { color: var(--mute); }
+.encounter-workflow .workspace-field select option { color: var(--ink); }
+.safety-group[data-tier="absolute"] select:has(> option[value="true"]:checked) { border-color: rgb(var(--c-critical)); box-shadow: inset 4px 0 0 rgb(var(--c-critical)); }
+.safety-group[data-tier="relative"] select:has(> option[value="true"]:checked) { border-color: rgb(var(--c-caution)); box-shadow: inset 4px 0 0 rgb(var(--c-caution)); }
+.safety-group[data-tier="correctable"] select:has(> option[value="true"]:checked) { border-color: rgb(var(--c-accent)); box-shadow: inset 4px 0 0 rgb(var(--c-accent)); }
+
+/* Links that leave the app need internet: an arrow-out marker (decorative mask, never read aloud).
+   Protocols keep their own link styling. */
+:is(.workspace-external, .reference-surface, .tools-surface, .trials-surface, .encounter-workflow) a[target="_blank"]::after { content: ''; display: inline-block; flex-shrink: 0; width: .8em; height: .8em; margin-left: var(--space-2); vertical-align: -.05em; background: currentColor; -webkit-mask: var(--icon-external) center / contain no-repeat; mask: var(--icon-external) center / contain no-repeat; }
+.workspace-offline { margin: 0; }
+.workspace-offline:not(:empty) { width: fit-content; margin: var(--space-4) 0 0; padding: var(--space-2) var(--space-6); border-radius: var(--radius-pill); background: var(--caution-soft); color: var(--caution); font-size: var(--text-sm); font-weight: 600; }
+
+/* A deferred app update keeps a marker on More until it is accepted. */
+.workspace-utilities__badge { padding: var(--space-1) var(--space-3); border-radius: var(--radius-pill); background: rgb(var(--c-accent-2)); color: rgb(var(--c-on-accent)); font: 700 var(--text-2xs)/var(--leading-normal) var(--font-sans); }
+.utility-panel > .utility-update { border-color: transparent; background: rgb(var(--c-accent-2)); }
+.utility-panel .utility-update { color: rgb(var(--c-on-accent)); }
+
+/* Six motor scores keep 44 px tiles down to 360 px: the score disclosure and rows give up some inset
+   on narrow phones, and below 360 px a row of five or more scores wraps to three per line. */
+@media (max-width: 389px) {
+  #calc-nihss > details:not(.source-limits) { padding-inline: var(--space-3); }
+  .nihss-row { padding-inline: var(--space-2); }
+}
+@media (max-width: 359px) { .nihss-options:has(> :nth-child(5)) { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); } }

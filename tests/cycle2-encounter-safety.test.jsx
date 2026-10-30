@@ -217,7 +217,11 @@ describe('shared anticoagulant history and compact handoff continuity', () => {
     state.context = 'follow-up';
     const followup = buildSummary(state, now);
     expect(followup).not.toContain('Core: 10 mL');
-    expect(followup).not.toContain('New tongue swelling observed');
+    // Recorded post-treatment observations stay after a context change (2026-10-22), flagged for reconciliation;
+    // the review names IV thrombolysis while no administration is recorded.
+    expect(followup).toContain('Post-treatment examination / observations: New tongue swelling observed.');
+    expect(followup).toContain('Post-treatment review: After IV thrombolysis [no IVT administration recorded; reconcile]');
+    expect(followup).toContain('Recorded reperfusion treatment: [follow-up / review context, not acute ischemic stroke; reconcile]');
     expect(followup).toContain('CTP: Perfusion report reviewed.');
   });
   it('does not fabricate perfusion or post-treatment findings when not entered', () => {

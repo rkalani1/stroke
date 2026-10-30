@@ -6,9 +6,9 @@
    Old app caches are retired only on activation. Fetch policy is independent.
 */
 
-const APP_VERSION = '7.8.3';
+const APP_VERSION = '7.9.0';
 const CACHE_PREFIX = 'stroke-cache-v';
-const CACHE_NAME  = 'stroke-cache-v7-8-3-utility-review-20261001';
+const CACHE_NAME  = 'stroke-cache-v7-9-0-utility-review-20261001';
 
 // Retired teaching figures must not be served from a stale browser cache or
 // a bookmarked URL after this worker takes control. Paths are scope-relative
@@ -57,17 +57,11 @@ const CORE_ASSETS = [
   './tailwind.css',
   './offline.html',
   './data/clinical-reference.json',
-  './assets/fonts/bricolage-400.woff2',
-  './assets/fonts/bricolage-500.woff2',
-  './assets/fonts/bricolage-600.woff2',
+  // Exactly the @font-face set in src/design/tokens.css (a test keeps them equal).
   './assets/fonts/bricolage-700.woff2',
-  './assets/fonts/bricolage-800.woff2',
   './assets/fonts/ibmplexmono-400.woff2',
-  './assets/fonts/ibmplexmono-500.woff2',
   './assets/fonts/ibmplexmono-600.woff2',
   './assets/fonts/publicsans-italic-400.woff2',
-  './assets/fonts/publicsans-italic-500.woff2',
-  './assets/fonts/publicsans-italic-600.woff2',
   './assets/fonts/publicsans-normal-400.woff2',
   './assets/fonts/publicsans-normal-500.woff2',
   './assets/fonts/publicsans-normal-600.woff2',
@@ -93,33 +87,33 @@ const CDN_ASSETS = [];
 // not execute deferred protocols, trials, calculators or reference modules.
 // BEGIN GENERATED APP CHUNKS
 const APP_CHUNKS = [
+  "./chunks/chunk-3C5ZDFRN.js",
   "./chunks/chunk-3EH37YPU.js",
-  "./chunks/chunk-5CVPYEJX.js",
-  "./chunks/chunk-6IG4POVN.js",
   "./chunks/chunk-BVAA575E.js",
+  "./chunks/chunk-C57FPW72.js",
   "./chunks/chunk-CCC5QWPU.js",
   "./chunks/chunk-DXV6LRZM.js",
+  "./chunks/chunk-FPW5WEWF.js",
   "./chunks/chunk-HOFJI2PN.js",
-  "./chunks/chunk-KXBYGU7T.js",
+  "./chunks/chunk-HXREWURP.js",
+  "./chunks/chunk-NIDKKCR2.js",
   "./chunks/chunk-QPJ3MHXX.js",
   "./chunks/chunk-RKNMGIFI.js",
-  "./chunks/chunk-ROT5RF3S.js",
-  "./chunks/chunk-RZXX55EJ.js",
-  "./chunks/chunk-USXDLG6G.js",
-  "./chunks/chunk-UUVPNWCE.js",
-  "./chunks/chunk-VBK5MHSV.js",
+  "./chunks/chunk-ROKRUQE4.js",
+  "./chunks/chunk-SQ3QWPC3.js",
+  "./chunks/chunk-WQJWBHBV.js",
   "./chunks/InstallAppButton-NWUBLKJU.js",
-  "./chunks/ProtectedProtocols-ETQ27ETQ.js",
-  "./chunks/QuickReference-R7IA6NLL.js",
-  "./chunks/QuickSearch-GX67EAHQ.js",
-  "./chunks/Reference-O7A67OXP.js",
-  "./chunks/Tools-2PLYEPCU.js",
-  "./chunks/Trials-OXBCA225.js"
+  "./chunks/ProtectedProtocols-6MFHWK7D.js",
+  "./chunks/QuickReference-UKRUSEBK.js",
+  "./chunks/QuickSearch-I2I4JR6E.js",
+  "./chunks/Reference-7WXJYWKM.js",
+  "./chunks/Tools-JDNJXZ5B.js",
+  "./chunks/Trials-OUIBEP2O.js"
 ];
 // END GENERATED APP CHUNKS
 
 // BEGIN GENERATED REFERENCE VALIDATION
-var ReferenceValidation=(()=>{var o=Object.defineProperty;var c=Object.getOwnPropertyDescriptor;var g=Object.getOwnPropertyNames;var h=Object.prototype.hasOwnProperty;var b=(t,s)=>{for(var e in s)o(t,e,{get:s[e],enumerable:!0})},$=(t,s,e,i)=>{if(s&&typeof s=="object"||typeof s=="function")for(let n of g(s))!h.call(t,n)&&n!==e&&o(t,n,{get:()=>s[n],enumerable:!(i=c(s,n))||i.enumerable});return t};var f=t=>$(o({},"__esModule",{value:!0}),t);var w={};b(w,{validReferenceData:()=>y});var a=t=>typeof t=="string"&&t.trim().length>0,r=t=>Array.isArray(t)&&t.every(a),m=t=>a(t)&&/^[a-z0-9-]+$/.test(t),p=t=>typeof t=="string"&&/^https:\/\/[^\s]+$/.test(t),A=t=>t===void 0||Array.isArray(t)&&t.length>0&&t.every(s=>s&&["text","cor","loe","source","id"].every(e=>a(s[e])))&&new Set(t.map(s=>s.id)).size===t.length;function v(t){return Array.isArray(t)&&t.length>0&&new Set(t.map(s=>s?.id)).size===t.length&&t.every(s=>s&&m(s.id)&&["name","category","limits","sourceLabel","reviewScope"].every(e=>a(s[e]))&&p(s.sourceUrl)&&(!s.verificationUrl||p(s.verificationUrl))&&Array.isArray(s.fields)&&s.fields.every(e=>e&&a(e.key)&&a(e.label)&&["truth","select","number"].includes(e.type)&&(e.type!=="select"?e.options===void 0:Array.isArray(e.options)&&e.options.length>0&&e.options.every(i=>Array.isArray(i)&&i.length===2&&i.every(a))))&&(!s.shared||Array.isArray(s.shared)&&s.shared.every(e=>["age","sex","bp","mrs","gcs","weight","height","mtici","sahCause"].includes(e)))&&(!s.regions||Array.isArray(s.regions)&&s.regions.every(e=>e&&a(e.key)&&a(e.label)&&[1,2].includes(e.weight))))}function y(t,s){let e=t?.data;return t?._meta?.appVersion===s&&t?._meta?.schemaVersion==="2.0.0"&&v(e?.calculators)&&["topics","studies"].every(i=>Array.isArray(e?.[i])&&e[i].length>0&&new Set(e[i].map(n=>n?.id)).size===e[i].length&&e[i].every(n=>n&&m(n.id)&&a(n.title)&&r(n.keywords)&&r(n.settings)&&n.settings.length&&n.settings.every(l=>["on-call","hospital","clinic"].includes(l))&&Array.isArray(n.sources)&&n.sources.length&&n.sources.every(l=>l&&["title","type","checkedAt","access"].every(u=>a(l[u]))&&Number.isInteger(l.year)&&typeof l.url=="string"&&/^https:\/\/[^\s]+$/.test(l.url))&&(i==="topics"?a(n.category)&&["summary","caution"].every(l=>a(n[l]))&&r(n.consider)&&n.consider.length&&A(n.recommendations)&&Array.isArray(n.related)&&n.related.every(l=>a(l.label)&&/^#\/(?:encounter|tools|protocols|evidence|trials)(?:\/[a-z0-9-]+){0,2}$/.test(l.href)):["question","population","comparison","result","limits"].every(l=>a(n[l]))&&(n.headline===void 0||a(n.headline))&&Number.isInteger(n.year)&&(n.relatedTopic===""||m(n.relatedTopic)))))&&e.studies.every(i=>!e.topics.some(n=>n.id===i.id))&&e.studies.every(i=>i.relatedTopic===""||e.topics.some(n=>n.id===i.relatedTopic))}return f(w);})();
+var ReferenceValidation=(()=>{var l=Object.defineProperty;var g=Object.getOwnPropertyDescriptor;var h=Object.getOwnPropertyNames;var y=Object.prototype.hasOwnProperty;var b=(t,s)=>{for(var e in s)l(t,e,{get:s[e],enumerable:!0})},$=(t,s,e,a)=>{if(s&&typeof s=="object"||typeof s=="function")for(let n of h(s))!y.call(t,n)&&n!==e&&l(t,n,{get:()=>s[n],enumerable:!(a=g(s,n))||a.enumerable});return t};var f=t=>$(l({},"__esModule",{value:!0}),t);var v={};b(v,{validReferenceData:()=>m});var i=t=>typeof t=="string"&&t.trim().length>0,r=t=>Array.isArray(t)&&t.every(i),c=t=>i(t)&&/^[a-z0-9-]+$/.test(t),p=t=>typeof t=="string"&&/^https:\/\/[^\s]+$/.test(t),d=t=>t===void 0||Array.isArray(t)&&t.length>0&&t.every(s=>s&&["text","cor","loe","source","id"].every(e=>i(s[e])))&&new Set(t.map(s=>s.id)).size===t.length;function A(t){return Array.isArray(t)&&t.length>0&&new Set(t.map(s=>s?.id)).size===t.length&&t.every(s=>s&&c(s.id)&&["name","category","limits","sourceLabel","reviewScope"].every(e=>i(s[e]))&&p(s.sourceUrl)&&(!s.verificationUrl||p(s.verificationUrl))&&Array.isArray(s.fields)&&s.fields.every(e=>e&&i(e.key)&&i(e.label)&&["truth","select","number"].includes(e.type)&&(e.type!=="select"?e.options===void 0:Array.isArray(e.options)&&e.options.length>0&&e.options.every(a=>Array.isArray(a)&&a.length===2&&a.every(i))))&&(!s.shared||Array.isArray(s.shared)&&s.shared.every(e=>["age","sex","bp","mrs","gcs","weight","height","mtici","sahCause"].includes(e)))&&(!s.regions||Array.isArray(s.regions)&&s.regions.every(e=>e&&i(e.key)&&i(e.label)&&[1,2].includes(e.weight))))}function m(t,s){let e=t?.data;return t?._meta?.appVersion===s&&t?._meta?.schemaVersion==="2.0.0"&&A(e?.calculators)&&["topics","studies"].every(a=>Array.isArray(e?.[a])&&e[a].length>0&&new Set(e[a].map(n=>n?.id)).size===e[a].length&&e[a].every(n=>n&&c(n.id)&&i(n.title)&&r(n.keywords)&&r(n.settings)&&n.settings.length&&n.settings.every(o=>["on-call","hospital","clinic"].includes(o))&&Array.isArray(n.sources)&&n.sources.length&&n.sources.every(o=>o&&["title","type","checkedAt","access"].every(u=>i(o[u]))&&Number.isInteger(o.year)&&typeof o.url=="string"&&/^https:\/\/[^\s]+$/.test(o.url))&&(a==="topics"?i(n.category)&&["summary","caution"].every(o=>i(n[o]))&&r(n.consider)&&n.consider.length&&d(n.recommendations)&&Array.isArray(n.related)&&n.related.every(o=>i(o.label)&&/^#\/(?:encounter|tools|protocols|evidence|trials)(?:\/[a-z0-9-]+){0,2}$/.test(o.href)):["question","population","comparison","result","limits"].every(o=>i(n[o]))&&(n.headline===void 0||i(n.headline))&&Number.isInteger(n.year)&&(n.relatedTopic===""||c(n.relatedTopic)))))&&e.studies.every(a=>!e.topics.some(n=>n.id===a.id))&&e.studies.every(a=>a.relatedTopic===""||e.topics.some(n=>n.id===a.relatedTopic))}return f(v);})();
 // END GENERATED REFERENCE VALIDATION
 const validReferenceEnvelope = reference => ReferenceValidation.validReferenceData(reference, APP_VERSION);
 
