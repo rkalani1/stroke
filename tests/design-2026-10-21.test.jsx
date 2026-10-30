@@ -75,13 +75,15 @@ describe('stylesheet weight and style-recalc guards', () => {
 
 describe('focus is never hidden by sticky chrome (WCAG 2.4.11)', () => {
   // The Encounter section nav is 61 px (8 + 44 + 8 + 1 border) under the case bar; the protocol
-  // breadcrumb and sub-tabs are 36 px + up to 62 px. Root scroll padding must cover each one.
-  const padding = surface => shell.match(new RegExp(`html\\[data-surface="${surface}"\\]\\s*\\{\\s*scroll-padding-top:\\s*calc\\(var\\(--case-bar-h\\)\\s*\\+\\s*(\\d+)px\\)`))?.[1];
+  // breadcrumb and sub-tabs are 36 px + up to 62 px. Both bars stick below the sticky header and the
+  // case bar, so root scroll padding must cover the header, the case bar and each surface's bars.
+  const padding = surface => shell.match(new RegExp(`html\\[data-surface="${surface}"\\]\\s*\\{\\s*scroll-padding-top:\\s*calc\\(var\\(--header-h\\)\\s*\\+\\s*var\\(--case-bar-h\\)\\s*\\+\\s*(\\d+)px\\)`))?.[1];
   it('pads the Encounter and Protocols scrollports past their sticky bars', () => {
     expect(Number(padding('encounter'))).toBeGreaterThanOrEqual(61);
     expect(Number(padding('protocols'))).toBeGreaterThanOrEqual(36 + 62);
   });
-  it('keeps protocol reveal targets where they landed before (8 px + 96 px margin)', () => {
+  it('keeps protocol reveal targets where they land on main (header + case bar + 8 px + 96 px margin)', () => {
+    expect(shell).toMatch(/html \{ scroll-padding-top: calc\(var\(--header-h\) \+ var\(--case-bar-h\) \+ 8px\); \}/);
     expect(Number(padding('protocols')) + 0).toBe(8 + 96);
     expect(shell).toMatch(/#tabpanel-protocols :is\(h2, h3, details, \[id\]\) \{ scroll-margin-top: 0; \}/);
     expect(shell).toMatch(/\.quick-reference details\[id\] \{ scroll-margin-top: -96px; \}/);
@@ -420,4 +422,52 @@ describe('shell behaviour in Chromium', { timeout: 60000 }, () => {
     // ...and More keeps the deferred update reachable.
     expect(await page.locator('.workspace-utilities > summary').getAttribute('aria-label')).toBe('More utilities, update ready');
   });
+});
+
+// Where a reveal lands: the top row of the focused element must be visible, below every stuck
+// sticky bar (the header, the case bar, and the surface's own section nav or protocol bars).
+const revealLanding = () => page.evaluate(() => {
+  const focus = document.activeElement;
+  if (!focus || focus === document.body) return null;
+  const box = focus.getBoundingClientRect();
+  const stuck = ['.workspace-header', '.case-bar', '.encounter-section-nav', '.protocol-breadcrumb', '.protocol-subtabs'].flatMap(selector => [...document.querySelectorAll(selector)])
+    .filter(bar => { const style = getComputedStyle(bar), rect = bar.getBoundingClientRect(); return style.position === 'sticky' && rect.height > 0 && Math.abs(rect.top - parseFloat(style.top)) < 1; });
+  const chrome = Math.max(0, ...stuck.map(bar => bar.getBoundingClientRect().bottom));
+  const y = box.top + 3;
+  const hidden = [box.left + 4, box.left + Math.min(box.width, 200) / 2, Math.min(box.right, box.left + 200) - 4].filter(x => {
+    const hit = y >= 0 && y < innerHeight ? document.elementFromPoint(x, y) : null;
+    return !(hit && (hit === focus || focus.contains(hit) || hit.contains(focus)));
+  }).length;
+  return { id: focus.id || focus.closest('[id]')?.id || focus.tagName, top: Math.round(box.top), chrome: Math.round(chrome), hidden };
+});
+
+describe('reveals land below the sticky header and bars (WCAG 2.4.11)', { timeout: 60000 }, () => {
+  const clear = () => poll(async () => { const land = await revealLanding(); return land && land.hidden === 0 && land.top >= land.chrome; }).toBe(true);
+  // Synthetic weight only: enough for the case bar, its links and a Next cue to show.
+  const openCase = async width => {
+    await open('#/encounter', { width, height: 900 });
+    await page.locator('#input-weight').fill('70');
+    await page.locator('.case-bar').waitFor();
+    await page.evaluate(() => { document.activeElement?.blur(); window.scrollTo(0, 0); });
+  };
+  for (const width of [1440, 820]) {
+    it(`the overview Next cue focuses the first missing entry below the section nav at ${width} px`, async () => {
+      await openCase(width);
+      await page.locator('.encounter-next-entry button', { hasText: 'Next:' }).click();
+      await poll(() => page.evaluate(() => document.activeElement?.matches('input, select, textarea, button, [tabindex]') && !document.activeElement.closest('.encounter-next-entry'))).toBe(true);
+      await clear();
+    });
+    it(`the case-bar Dose table link focuses the quick-reference summary below the case bar at ${width} px`, async () => {
+      await openCase(width);
+      await page.locator('.case-bar__link', { hasText: 'Dose table' }).click();
+      await poll(() => page.evaluate(() => Boolean(document.activeElement?.closest('#qr-dose')))).toBe(true);
+      await clear();
+    });
+    it(`a protocol deep link reveals the IVT contraindications card below the breadcrumb and sub-tabs at ${width} px`, async () => {
+      await openCase(width);
+      await page.evaluate(() => { location.hash = '#/protocols/ischemic/contraindications'; });
+      await poll(() => page.evaluate(() => document.activeElement?.id)).toBe('pc-contraindications');
+      await clear();
+    });
+  }
 });

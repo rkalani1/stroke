@@ -94,16 +94,17 @@ a.case-bar__badge:hover { filter: brightness(1.08); }
 #tabpanel-protocols :is(h2, h3, details, [id]) { scroll-margin-top: 96px; }
 /* Keyboard focus never lands under sticky chrome (WCAG 2.4.11). Chrome reveals a focused text
    field from the root scroll padding and ignores its scroll margin, so the padding covers each
-   surface's sticky bar; the shell sets data-surface on <html>. Encounter: the section nav
-   (61 px under the case bar). Protocols: the breadcrumb and sub-tabs (36 px + up to 62 px).
-   Margins are rebalanced so every reveal lands where it did: Encounter 69 + 8 ≈ the old 8 + 72;
-   protocol targets 104 + 0 = 8 + 96; quick-reference cards, above the sticky bars, 104 − 96 = 8. */
+   surface's sticky bar; the shell sets data-surface on <html>. Every value sits below the sticky
+   header and case bar. Encounter: the section nav (61 px under the case bar). Protocols: the
+   breadcrumb and sub-tabs (36 px + up to 62 px). Margins are rebalanced so every reveal lands
+   where it did: Encounter 69 + 8 ≈ the old 8 + 72; protocol targets 104 + 0 = 8 + 96;
+   quick-reference cards, above the sticky bars, 104 − 96 = 8. */
 @media (min-width: 481px) and (min-height: 501px) {
-  html[data-surface="encounter"] { scroll-padding-top: calc(var(--case-bar-h) + 69px); }
+  html[data-surface="encounter"] { scroll-padding-top: calc(var(--header-h) + var(--case-bar-h) + 69px); }
   .encounter-workflow :is(h2, h3, input, select, textarea, fieldset, .tool-target, .encounter-details) { scroll-margin-top: var(--space-4); }
 }
 @media (min-width: 481px) {
-  html[data-surface="protocols"] { scroll-padding-top: calc(var(--case-bar-h) + 104px); }
+  html[data-surface="protocols"] { scroll-padding-top: calc(var(--header-h) + var(--case-bar-h) + 104px); }
   #tabpanel-protocols :is(h2, h3, details, [id]) { scroll-margin-top: 0; }
   .quick-reference details[id] { scroll-margin-top: -96px; }
 }

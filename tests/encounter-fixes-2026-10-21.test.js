@@ -10,6 +10,7 @@ import CaseBar, { caseSummary } from '../src/components/CaseBar.jsx';
 import { buildSummary, newEncounter, protocolEncounter, DIAGNOSES } from '../src/workspace-state.js';
 import { formatTimeline, localTimestamp } from '../src/encounter-timeline.js';
 import { safetyChecklistSignals } from '../src/encounter-clinical-review.js';
+import { encounterHoldCue } from '../src/encounter-overview.js';
 import { DOCUMENT_FORMATS } from '../src/documentation-output.js';
 import { SAFETY_ITEMS } from '../src/clinical/safety-items.js';
 
@@ -120,6 +121,10 @@ describe('a contradicted checklist "No" holds the Encounter screen and the case-
     expect(dose).toMatchObject({ label: 'IVT dose', value: 'Held', flag: 'caution' });
     expect(dose.title).toMatch(/^Entered values contradict a "No" safety answer; no dose shown\. A recorded contraindication/);
     expect(caseSummary(candidate(answeredYes), at).dose).toMatchObject({ value: 'Held', title: expect.stringMatching(/^IVT card held\./) });
+    // The overview's Next cue names the same hold as the case bar.
+    expect(encounterHoldCue(candidate(), at)).toBeNull();
+    expect(encounterHoldCue(state, at)).toEqual({ label: 'Contradicted safety answer', target: 'safety-title' });
+    expect(encounterHoldCue(candidate(answeredYes), at)).toEqual({ label: 'Safety review', target: 'safety-title' });
     // Remaining divergence (owner decision): the frozen Protocols projection reads the answer as given.
     expect(protocolEncounter(state, at).safetyReviewRequired).toBe(false);
     expect(protocolEncounter(candidate(answeredYes), at).safetyReviewRequired).toBe(true);
