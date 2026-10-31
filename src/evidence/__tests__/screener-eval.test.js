@@ -94,15 +94,17 @@ describe('evaluateTrialEligibility — placeholder / soon handling', () => {
     expect(r.exclusionReasons[0]).toMatch(/Incomplete study profile/);
   });
 
-  it('marks NOT_YET_RECRUITING trials (CLARITY) as soon, never eligible', () => {
+  it('marks NOT_YET_RECRUITING trials as soon, never eligible; CLARITY now screens as recruiting', () => {
     const state = createInitialScreenerState();
     state.classification = 'ischemic';
     state.onsetVal = 30;
     state.onsetUnit = 'days';
     state.age = 60;
     const p = buildScreenerParams(state);
-    const r = evaluateTrialEligibility(trialByAcronym('CLARITY'), p);
-    expect(r.status).toBe('soon');
+    // A not-yet-recruiting profile (CLARITY as stored before 2026-10-31) is listed under Later, never as a match.
+    expect(evaluateTrialEligibility({ ...trialByAcronym('CLARITY'), status: 'soon' }, p).status).toBe('soon');
+    // CLARITY is marked recruiting on the maintainer's report, ahead of its registry record.
+    expect(evaluateTrialEligibility(trialByAcronym('CLARITY'), p).status).toBe('pending');
   });
 });
 
@@ -255,7 +257,9 @@ describe('screening summary generation', () => {
     state.anteriorCirculation = true;
     const res = evaluateAll(state);
     const text = res.briefingNote;
-    expect(text).toMatch(/^TRIAL SCREEN — first pass \(registry checked 2026-10-31\)\nStatuses are overall registry statuses at that check; local site activation is not confirmed\./);
+    // CLARITY is listed and marked recruiting ahead of its registry record, so the status line names that exception.
+    expect(text).toMatch(/^TRIAL SCREEN — first pass \(registry checked 2026-10-31\)\nStatuses are overall registry statuses at that check, except where marked "registry not yet updated"; local site activation is not confirmed\./);
+    expect(text).toContain('- CLARITY (NCT07174414) · Recruiting (registry not yet updated)');
     expect(text).toContain('Inputs: Ischemic stroke · LKW 12.0 h · age 65 · NIHSS 8 · pre-mRS 0 · ASPECTS 8');
     expect(res.pending.length).toBeGreaterThan(0);
     // Every pending study still has an unknown modeled fact, so none is a potential match.

@@ -123,9 +123,12 @@ describe('tri-state: potential match / insufficient information / does not meet 
 
   it('labels registry status as overall registry status, not local availability', () => {
     expect(enrollmentLabel(trial('STEP'))).toBe('Recruiting (registry)');
-    expect(enrollmentLabel(trial('CLARITY'))).toBe('Not yet recruiting (registry)');
+    expect(enrollmentLabel({ ...trial('CLARITY'), status: 'soon' })).toBe('Not yet recruiting (registry)');
+    // CLARITY is marked recruiting (maintainer's report, 2026-10-31) while its registry record still reads NOT_YET_RECRUITING.
+    expect(enrollmentLabel(trial('CLARITY'))).toBe('Recruiting (registry not yet updated)');
+    expect(evaluateAll(S({ classification: 'ich' })).briefingNote.split('\n')[1]).toBe('Statuses are overall registry statuses at that check; local site activation is not confirmed.');
     const note = evaluateAll(S({ classification: 'ischemic' })).briefingNote;
-    expect(note.split('\n')[1]).toBe('Statuses are overall registry statuses at that check; local site activation is not confirmed.');
+    expect(note.split('\n')[1]).toBe('Statuses are overall registry statuses at that check, except where marked "registry not yet updated"; local site activation is not confirmed.');
   });
 });
 
@@ -319,7 +322,7 @@ describe('CLARITY follows the 2026-10-15 registry version (TO-1)', () => {
   });
   it('keeps the valve/LVAD prompt when AF is absent and the full prompt when AF is unknown', () => {
     expect(evaluate('CLARITY', { ...base, afibHistory: false }).pendingCriteria).toContain('Confirm no mechanical heart valve or left ventricular assist device');
-    expect(find(evaluateAll(S({ ...base, afibHistory: false })), 'CLARITY')[0]).toBe('soon');
+    expect(find(evaluateAll(S({ ...base, afibHistory: false })), 'CLARITY')[0]).toBe('pending');
     expect(evaluate('CLARITY', base).pendingCriteria).toContain('Confirm no atrial fibrillation, mechanical heart valve or left ventricular assist device');
   });
   it('asks for ABCD2 ≥ 6 only for TIA', () => {

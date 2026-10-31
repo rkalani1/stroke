@@ -68,7 +68,9 @@ describe('registry re-verification on 2026-10-21 (statuses and dates rechecked 2
   });
 
   it('keeps the recruiting statuses as registry statuses, never local availability', () => {
-    for (const t of screenerTrials.filter(screenable)) expect(enrollmentLabel(t), t.acronym).toMatch(/\(registry\)$/);
+    // CLARITY is marked recruiting (2026-10-31, maintainer's report) while its registry record still reads NOT_YET_RECRUITING.
+    for (const t of screenerTrials.filter(screenable)) expect(enrollmentLabel(t), t.acronym).toMatch(t.acronym === 'CLARITY' ? /^Recruiting \(registry not yet updated\)$/ : /\(registry\)$/);
+    expect(trial('CLARITY').externalMetadata.registryStatus).toBe('NOT_YET_RECRUITING');
     expect(enrollmentLabel(trial('CAPPRICORN-1'))).toBe('Not enrolling (active, not recruiting)');
     const html = renderToStaticMarkup(<TrialSourceContext trial={trial('SISTER')} now={new Date(2026, 9, 31, 9).getTime()} />);
     expect(html).toMatch(/Recorded registry check: <time [^>]*>2026-10-31<\/time> \(today\)/);
@@ -261,9 +263,10 @@ describe('copied screening summary is truthful about what was used', () => {
       { presentedWithin24h: false, unilateralSymptomatic: true, ueWeakness: false, self_consent: true, language: 'other', currentMrs: '9', availability_54w: false, rehab: 'yes', abcd2: '7', antithromboticSoc: false, nihss: 7, nihssUntestable: 1 }];
     for (const classification of ['ischemic', 'tia', 'ich']) for (const preset of [null, ...ONSET_PRESETS]) for (const extra of facts) {
       const timing = preset ? { onsetVal: preset.val, onsetUnit: preset.unit, onsetRangeHours: preset.rangeHours } : { onsetVal: 3, onsetUnit: 'hours' };
-      const note = evaluateAll(S({ classification, ...timing, ...extra })).briefingNote;
+      const r = evaluateAll(S({ classification, ...timing, ...extra })), note = r.briefingNote;
       expect(note, `${classification} ${preset?.name}`).not.toMatch(/undefined|null|NaN|\[object|\{value\}/);
-      expect(note.split('\n')[1]).toBe('Statuses are overall registry statuses at that check; local site activation is not confirmed.');
+      const ahead = [...r.eligible, ...r.pending, ...r.soon].some(item => item.trial.acronym === 'CLARITY');
+      expect(note.split('\n')[1]).toBe(ahead ? 'Statuses are overall registry statuses at that check, except where marked "registry not yet updated"; local site activation is not confirmed.' : 'Statuses are overall registry statuses at that check; local site activation is not confirmed.');
     }
   });
 });

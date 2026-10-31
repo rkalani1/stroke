@@ -12,6 +12,7 @@ const buttonClass = 'min-h-[44px] rounded-md border border-line bg-card px-3 py-
 const chipClass = 'inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold';
 const STATUS_TONE = {
   'Recruiting (registry)': 'bg-ok-50 text-ok-800 dark:bg-ok-950 dark:text-ok-200',
+  'Recruiting (registry not yet updated)': 'bg-ok-50 text-ok-800 dark:bg-ok-950 dark:text-ok-200',
   'Before study window': 'bg-warn-50 text-warn-800 dark:bg-warn-950 dark:text-warn-200',
   'Not yet recruiting (registry)': 'bg-info-50 text-info-800 dark:bg-info-950 dark:text-info-200'
 };

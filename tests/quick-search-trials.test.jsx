@@ -56,7 +56,7 @@ const options = () => page.locator('#quick-search-results [role="option"]').eval
 describe('global search reaches study profiles', () => {
   it('finds CLARITY by NCT number with its registry status first', async () => {
     await page.fill('dialog.quick-search input', 'NCT07174414');
-    expect(await options()).toEqual([{ group: 'Trials', title: 'CLARITY', meta: 'Not yet recruiting (registry) · Cilostazol for Prevention of Recurrent Stroke Trial', href: '#/trials/database?q=CLARITY' }]);
+    expect(await options()).toEqual([{ group: 'Trials', title: 'CLARITY', meta: 'Recruiting (registry not yet updated) · Cilostazol for Prevention of Recurrent Stroke Trial', href: '#/trials/database?q=CLARITY' }]);
   });
   // Registry statuses read on ClinicalTrials.gov 2026-10-17: NCT05948566 RECRUITING,
   // NCT07174414 NOT_YET_RECRUITING, NCT05047172 ACTIVE_NOT_RECRUITING, NCT06682429 RECRUITING.

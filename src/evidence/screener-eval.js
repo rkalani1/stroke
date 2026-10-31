@@ -498,11 +498,14 @@ export function phaseLabel(metadata = {}) {
   return 'Phase ' + phase.replace(/PHASE/g, '').split(/[/,\s]+/).filter(Boolean).join('/');
 }
 
+// A profile the maintainer marked recruiting before its registry record says so (noted in its sourceGaps).
+const aheadOfRegistry = trial => trial.status === 'enrolling' && Boolean(trial.externalMetadata?.registryStatus) && trial.externalMetadata.registryStatus !== 'RECRUITING';
+
 export function enrollmentLabel(trial, result) {
   // Registry status is the overall study status, never local site availability.
   if (result?.notYetEnrolling || trial.status === 'soon') return 'Not yet recruiting (registry)';
   if (result?.beforeWindow) return 'Before study window';
-  if (trial.status === 'enrolling') return 'Recruiting (registry)';
+  if (trial.status === 'enrolling') return aheadOfRegistry(trial) ? 'Recruiting (registry not yet updated)' : 'Recruiting (registry)';
   if (trial.status === 'closed') return trial.externalMetadata?.registryStatus === 'ACTIVE_NOT_RECRUITING' ? 'Not enrolling (active, not recruiting)' : 'Not enrolling';
   return 'Status unverified';
 }
@@ -662,7 +665,9 @@ export function buildBriefingNote(state, buckets, nowMs = null, { staleImport = 
   };
 
   const lines = ['TRIAL SCREEN — first pass' + (checkLabel ? ` (${checkLabel})` : ''), staleImport === true ? STALE_IMPORT_NOTE : staleImport, conflictNote(state, nowMs),
-    'Statuses are overall registry statuses at that check; local site activation is not confirmed.', 'Inputs: ' + inputs.join(' · ')].filter(Boolean);
+    [...eligible, ...pending, ...soon].some(item => aheadOfRegistry(item.trial))
+      ? 'Statuses are overall registry statuses at that check, except where marked "registry not yet updated"; local site activation is not confirmed.'
+      : 'Statuses are overall registry statuses at that check; local site activation is not confirmed.', 'Inputs: ' + inputs.join(' · ')].filter(Boolean);
   if (recorded.length) lines.push('Exclusions recorded: ' + recorded.join('; '));
   lines.push('Anything not listed was not entered and remains unknown.', '');
 

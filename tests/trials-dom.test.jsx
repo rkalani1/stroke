@@ -158,14 +158,16 @@ describe('restored independent Trials workspace', () => {
     expect(await later.isVisible()).toBe(true);
     expect(await later.locator('article').count()).toBeGreaterThan(1);
     expect(await later.innerText()).toContain('Before study window');
-    expect(await later.locator('article[data-trial="CLARITY"]').innerText()).toContain('Not yet recruiting');
+    // CLARITY is marked recruiting ahead of its registry record, so it is screened now, not listed under Later.
+    expect(await later.locator('article[data-trial="CLARITY"]').count()).toBe(0);
+    expect(await page.locator('#trials-screener-panel article[data-trial="CLARITY"]').innerText()).toContain('Recruiting (registry not yet updated)');
     const excluded = page.locator('#trials-screener-panel details').filter({ has: page.locator('summary', { hasText: /^Does not meet documented criteria/ }) });
     expect(await excluded.count()).toBe(0); // no informative miss yet; other stroke types are not listed
     expect(await page.locator('#trials-screener-panel').innerText()).not.toMatch(/Requires ICH/);
     await page.getByRole('button', { name: 'Copy screening summary', exact: true }).click();
     const copied = await page.evaluate(() => window.copies[0]);
     expect(copied).toContain('LATER (');
-    expect(copied).toContain('CLARITY (NCT07174414) · Not yet recruiting');
+    expect(copied).toContain('CLARITY (NCT07174414) · Recruiting (registry not yet updated)');
     expect(copied).toBe(await page.locator('[aria-label="Screening summary preview"]').textContent());
     await page.getByRole('button', { name: 'Clear onset to unknown', exact: true }).click();
     expect(await page.locator('#trials-screener-panel article[data-trial="SISTER"]').innerText()).toContain('Recruiting');
@@ -177,8 +179,10 @@ describe('restored independent Trials workspace', () => {
     await page.getByRole('group', { name: 'Filter studies by classification', exact: true }).getByRole('button', { name: 'TIA', exact: true }).click();
     expect(await page.locator('#trials-database-panel article').count()).toBe(2);
     expect(await page.locator('#trials-database-panel article').allInnerTexts()).toEqual([expect.stringContaining('CLARITY'), expect.stringContaining('INTERCEPT')]);
+    await page.getByRole('group', { name: 'Filter studies by status', exact: true }).getByRole('button', { name: /^Recruiting/ }).click();
+    expect(await page.locator('#trials-database-panel article').count()).toBe(2);
     await page.getByRole('group', { name: 'Filter studies by status', exact: true }).getByRole('button', { name: /^Not yet recruiting/ }).click();
-    expect(await page.locator('#trials-database-panel article').count()).toBe(1);
+    expect(await page.locator('#trials-database-panel article').count()).toBe(0);
     await page.getByRole('group', { name: 'Filter studies by status', exact: true }).getByRole('button', { name: /^Not enrolling/ }).click();
     expect(await page.locator('#trials-database-panel article').count()).toBe(0);
     await page.getByRole('button', { name: 'Clear search and filters', exact: true }).click();
