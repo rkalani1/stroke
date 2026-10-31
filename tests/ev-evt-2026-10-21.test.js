@@ -33,8 +33,8 @@ const CARD_RECOMMENDATIONS = {
 
 describe('EVT and systems-of-care Evidence cards (2026-10-21 review)', () => {
   it('validates against the reference contract on the review date', () => {
-    // Review cutoff moved to 2026-10-22: the evidence-fixes pass re-read and re-dated sources that day.
-    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
   });
 
   it('keeps the exact AHA/ASA 2026 grades on each EVT card', () => {
@@ -71,7 +71,11 @@ describe('EVT and systems-of-care Evidence cards (2026-10-21 review)', () => {
     expect(selection.consider[1]).toContain('flat-panel CT');
     expect(text(selection)).not.toContain('go straight to angiography');
     // ais-2026-20 (COR 1, LOE A): thrombolytic-eligible patients, where available.
-    expect(topic('code-stroke-activation').consider).toContain('Where available, mobile stroke units are recommended over conventional EMS for thrombolytic-eligible patients: faster treatment and better outcome (COR 1, LOE A).');
+    // Currency 2026-10-31: MSU-TELEMED (PMID 41429047, single Melbourne MSU) appended after the unchanged graded
+    // sentence, labelled as postdating the AHA 2026 literature cutoff so it cannot read as support for the grade.
+    const msu = topic('code-stroke-activation').consider.find(item => item.startsWith('Where available, mobile stroke units'));
+    expect(msu.startsWith('Where available, mobile stroke units are recommended over conventional EMS for thrombolytic-eligible patients: faster treatment and better outcome (COR 1, LOE A). ')).toBe(true);
+    expect(msu).toContain('(MSU-TELEMED, n=275, randomized by day; published after the AHA 2026 literature cutoff, not graded)');
     // ais-2026-16 (2a) needs local thrombectomy access; ais-2026-18 is COR 3: No Benefit only in a well-coordinated
     // system (round 3, 2026-10-22: setting restored and the 2b ais-2026-17 added; see r3-ev-evt-2026-10-22.test.js).
     const rural = topic('rural-telestroke').summary;

@@ -7,8 +7,8 @@ import { searchReference } from '../src/reference-search.js';
 import { readClinicalReference } from '../scripts/reference-data.mjs';
 const read = path => JSON.parse(fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8'));
 const canonical = readClinicalReference();
-// Review cutoff: source checkedAt dates may not postdate the latest evidence review (2026-10-22).
-const now = new Date('2026-10-22T23:59:59Z');
+// Review cutoff: source checkedAt dates may not postdate the latest evidence review (2026-10-31).
+const now = new Date('2026-10-31T23:59:59Z');
 const validate = data => validateClinicalReference(data, { now });
 const changed = change => { const data = structuredClone(canonical); change(data); return data; };
 
@@ -17,13 +17,20 @@ describe('bounded clinical-reference data', () => {
     expect(canonical.topics).toHaveLength(92);
     expect(new Set(canonical.topics.map(topic => topic.category)).size).toBe(9);
     expect(canonical.calculators).toHaveLength(16);
-    expect(canonical.studies).toHaveLength(88);
+    // Currency 2026-10-31 (evt-acute-bp): + MILD-MT and LATE-MT study cards.
+    expect(canonical.studies).toHaveLength(90);
     expect(validate(canonical)).toEqual([]);
   });
 
   it('maps every archived guideline identity to a visible topic and retains its source access limits', () => {
     const coverage=read('src/reference/coverage.json');
-    expect(coverage).toHaveLength(110);expect(new Set(coverage.map(source=>source.id)).size).toBe(110);
+    // Currency 2026-10-31 (ivt-acute): + ESO annual evidence update 2025 and the WSO telestroke statement;
+    // (evt-acute-bp): + CSBPR EVT interim update 2025 (abstract only, nothing quoted);
+    // (hemorrhagic): + ERA Working Group commentary on KDIGO 2025 ADPKD aneurysm screening;
+    // (cardioembolic): + AHA 2026 endocarditis statement (abstract only), 2025 SCAI/HRS LAAO guideline and WSO 2025 AF statement;
+    // (recovery-populations): + CSBPR 2025 rehabilitation Parts One and Three, WSO 2025 sex/gender statement, IPSO pediatric ICH
+    // Parts 1 and 2, VasCog-2-WSO criteria and the AHA 2026 health literacy statement.
+    expect(coverage).toHaveLength(124);expect(new Set(coverage.map(source=>source.id)).size).toBe(124);
     for(const source of coverage){
       expect(source.topicIds.length).toBeGreaterThan(0);
       for(const id of source.topicIds){const topic=canonical.topics.find(topic=>topic.id===id);expect(topic).toBeTruthy();expect(topic.sources.some(record=>record.url===source.url)).toBe(true);}
@@ -32,9 +39,20 @@ describe('bounded clinical-reference data', () => {
 
   it('restores historical study source access without importing archived outcome claims', () => {
     const sources = read('src/reference/study-sources.json');
-    expect(sources).toHaveLength(282);
-    expect(new Set(sources.map(source => source.url)).size).toBe(282);
-    expect(new Set(sources.map(source => source.id)).size).toBe(282);
+    // Currency 2026-10-31 (ivt-acute): 11 abstract- or full-text-read study records added;
+    // (evt-acute-bp): + 8 (MILD-MT, LATE-MT, SELECT2 1-year, ANGEL-ASPECT 1-year, TESLA 1-year record only,
+    // DISTAL NIHSS and ESCAPE-MeVO perfusion secondary analyses, EDESTROKE);
+    // (hemorrhagic): + 9 (OAC-after-ICH meta-analysis, ICH BP by location, TXA IPD meta-analysis,
+    // de novo aneurysms, SAH decision rules, SAH LP audit, MARS, Scottish CCM cohort, CVT DOAC vs VKA meta-analysis);
+    // (secondary-prevention): + 6 (CREST-2 cognitive outcomes, CREST-H, aspirin-switch network meta-analysis, LAMP, STAREE, T3CAD);
+    // (cardioembolic): + 11 (ARTESiA prior-stroke and bleeding subanalyses, NOAH-AFNET 6 prior-stroke analysis, two 2026 LAAO
+    // meta-analyses, ALONE-AF, OCEAN, OPTIMAS infarct volume, ELAN prior reperfusion, ARCADIA hemorrhage, aPL meta-analysis);
+    // (recovery-populations): + 6 (ESTREL, Walk 'n Watch, FAST, eslicarbazepine phase 2a, acute imbalance syndrome cohort, GOLDEN BRIDGE II);
+    // (missed items): + 2 (early GLP-1RA meta-analysis, DOAC network meta-analysis in AF with prior stroke); the ICH BP-by-location
+    // record (PMID 42848972) was replaced in place as study-source-ich-bp-location-ipd, not added twice.
+    expect(sources).toHaveLength(335);
+    expect(new Set(sources.map(source => source.url)).size).toBe(335);
+    expect(new Set(sources.map(source => source.id)).size).toBe(335);
     for (const source of sources) {
       expect(source.topicIds.length).toBeGreaterThan(0);
       expect(source.access).toContain('bibliographic');
@@ -48,9 +66,11 @@ describe('bounded clinical-reference data', () => {
     expect(sources.find(source => source.id === 'study-source-avert-dose-response')).toMatchObject({ type: 'Report', access: expect.stringContaining('observational secondary dose-response analysis') });
     expect(searchReference(canonical.topics, 'BEST-MSU').some(topic => topic.id === 'acute-bp')).toBe(false);
     // Unresolved historical interpretations stay summary-free; HOPE is now abstract-verified.
-    for (const id of ['tnk-vs-alteplase-rwe','enrich-af','actisave']) {
+    for (const id of ['tnk-vs-alteplase-rwe','enrich-af']) {
       expect(sources.find(source => source.id === `study-source-${id}`).access).toContain('unresolved');
     }
+    // ACTISAVE (PMID 42044230) abstract read 2026-10-31; research-adjuncts now summarizes it as not improving outcome.
+    expect(sources.find(source => source.id === 'study-source-actisave')).toMatchObject({ checkedAt: '2026-10-31', access: expect.stringContaining('PubMed abstract read 2026-10-31') });
     expect(sources.find(source => source.id === 'study-source-hope-bp-2026').access).toContain('verified');
     for (const id of ['original','attention-late','lais-2026']) expect(sources.find(source => source.id === `study-source-${id}`).type).toBe('Randomized trial');
   });

@@ -33,7 +33,8 @@ describe('preset onset bands that only touch a study limit at an endpoint (H3)',
     ['ischemic', '30 – 180d', 'SCOUTS-3', /> 30 days ago/],
     ['ich', '30 – 180d', 'SCOUTS-3', /> 30 days ago/],
     ['ischemic', '> 6mo', 'CLARITY', /> 180 days ago/],
-    ['ischemic', '> 6mo', 'TELE-REHAB-2', /90-150 days/],
+    // TELE-REHAB-2 left this list on 2026-10-31: its registry window widened to 90-270 days (NCT06682429
+    // inclusion 2), which the open-ended '> 6mo' band now overlaps (see the overlapping-band list below).
     ['ischemic', '7 – 30d', 'VERIFY', /24-96h/]
   ])('%s %s resolves %s as not met', (classification, band, acronym, reason, extra = {}) => {
     const r = evaluateAll(withPreset(classification, band, extra));
@@ -53,12 +54,16 @@ describe('preset onset bands that only touch a study limit at an endpoint (H3)',
   it('keeps genuinely overlapping bands unknown instead of resolving them', () => {
     for (const [classification, band, acronym] of [
       ['ich', '7 – 30d', 'ASPIRE'], ['ich', '< 4.5h', 'FASTEST-2'], ['ischemic', '30 – 180d', 'TELE-REHAB-2'],
+      ['ischemic', '> 6mo', 'TELE-REHAB-2'], ['ich', '> 6mo', 'TELE-REHAB-2'],
       ['ischemic', '30 – 180d', 'INTERCEPT'], ['ischemic', '> 6mo', 'INTERCEPT'], ['tia', '30 – 180d', 'CLARITY']
     ]) {
       const r = evaluate(acronym, withPreset(classification, band));
       expect(r.status, `${acronym} ${band}`).not.toBe('excluded');
     }
     expect(evaluate('ASPIRE', withPreset('ich', '7 – 30d')).pendingCriteria.join(' ')).toMatch(/days from LKW 14–180/);
+    const tr2 = evaluate('TELE-REHAB-2', withPreset('ischemic', '> 6mo'));
+    expect(tr2.pendingCriteria.join(' ')).toMatch(/days from LKW 90–270/);
+    expect(tr2.matchedCriteria).not.toContain('Onset within 90-270 days window');
   });
 
   it('resolves bands fully inside a window as met', () => {
@@ -200,6 +205,8 @@ describe('registry criteria added to stored profiles (M1, M2, M4, M5)', () => {
     const text = JSON.stringify(trial('CAPTIVA'));
     expect(text).not.toMatch(/terminat/i);
     expect(text).toMatch(/arm-level changes are not verified/);
+    // 2026-10-31: reports of a rivaroxaban-arm change were seen only as search excerpts, so nothing is asserted.
+    expect(text).not.toMatch(/was stopped|halted|discontinu/i);
   });
   it('labels phase and study type for every profile', () => {
     const labels = Object.fromEntries(screenerTrials.map(t => [t.acronym, phaseLabel(t.externalMetadata)]));

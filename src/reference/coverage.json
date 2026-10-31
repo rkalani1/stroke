@@ -113,8 +113,8 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/38033089/",
     "year": 2023,
     "type": "Guideline",
-    "checkedAt": "2026-10-02",
-    "access": "Primary NLM identity and abstract checked; complete recommendations not reviewed. Publisher-indexed text of corrections 38153996, 38408149 and 38857333 checked on 2026-10-02: trial names/disclosures, ATRIA hypertension entry and a rate-control figure footnote. None changes this overview. Direct correction PDFs unavailable.",
+    "checkedAt": "2026-10-31",
+    "access": "Primary NLM identity and abstract checked. PMC full text (PMC11095842) read 2026-10-31 for section 6.4.1 (device-detected atrial high-rate episodes without a previous AF diagnosis: recommendation table, grades as published) and the literature-search dates (May 12 to November 3, 2022, before NOAH-AFNET 6 and ARTESiA); other recommendations not reviewed. Publisher-indexed text of corrections 38153996, 38408149 and 38857333 checked on 2026-10-02: trial names/disclosures, ATRIA hypertension entry and a rate-control figure footnote. None changes this overview. Direct correction PDFs unavailable.",
     "topicIds": [
       "af-prevention"
     ]
@@ -273,6 +273,30 @@
     "access": "NLM title, PMID and DOI checked; section 4.2.6 (secondary prevention LDL-C goals) checked against the archived full-text transcription on 2026-10-03. Indexed correction(s) 42330109, 42709919 not reconciled.",
     "topicIds": [
       "lipid-management"
+    ]
+  },
+  {
+    "id": "aha-endocarditis-2026",
+    "title": "Infective Endocarditis: Diagnosis, Antibiotic Therapy, and Management: A Scientific Statement From the American Heart Association",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42708190/",
+    "year": 2026,
+    "type": "Scientific statement",
+    "checkedAt": "2026-10-31",
+    "access": "Abstract read 2026-10-31 (updates the 2015 AHA statement); full text not read, so its neurologic-complication, thrombolysis/thrombectomy and surgical-timing content and any recommendation grading were not reviewed; correction 42862916 (Oct 2026) not reconciled.",
+    "topicIds": [
+      "endocarditis"
+    ]
+  },
+  {
+    "id": "aha-health-literacy-communication-2026",
+    "title": "Health Literacy and Communication in Stroke Prevention, Management, and Recovery: A Scientific Statement From the American Heart Association",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42877955/",
+    "year": 2026,
+    "type": "Scientific statement",
+    "checkedAt": "2026-10-31",
+    "access": "Primary abstract read 2026-10-31 (ungraded scientific statement); full text not read.",
+    "topicIds": [
+      "transitions-care"
     ]
   },
   {
@@ -485,12 +509,14 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/42657476/",
     "year": 2026,
     "type": "Guideline",
-    "checkedAt": "2026-10-22",
-    "access": "PubMed record and abstract read: published online 2026-08-27 (Stroke 2026;57(10):e514–e658); replaces the 2016 guideline; literature since 2016 searched June–October 2025, so later evidence is not reflected. No PMC copy; recommendations not reviewed or quoted. Archive held only an access placeholder.",
+    "checkedAt": "2026-10-31",
+    "access": "PubMed record and abstract read: published online 2026-08-27 (Stroke 2026;57(10):e514–e658); replaces the 2016 guideline; literature since 2016 searched June–October 2025, so later evidence is not reflected. No PMC copy; recommendations not reviewed or quoted. A correction was published 2026-10-26 (PMID 42932410; Stroke 2026;57(11):e700–e701); its content was not reviewed. Archive held only an access placeholder.",
     "topicIds": [
       "recovery",
       "motor-recovery",
-      "driving-work"
+      "driving-work",
+      "psychosocial-recovery",
+      "poststroke-primary-care"
     ]
   },
   {
@@ -625,6 +651,45 @@
     ]
   },
   {
+    "id": "csbpr-evt-interim-2025",
+    "title": "Canadian Stroke Best Practice Recommendations: Endovascular Thrombectomy for Acute Ischemic Stroke, Interim Update 2025",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41340372/",
+    "year": 2025,
+    "type": "Guideline",
+    "checkedAt": "2026-10-31",
+    "access": "PubMed abstract only. The update addresses posterior circulation stroke, large core and MeVO, and supersedes the EVT recommendations in the 2022 CSBPR acute stroke management module; recommendation wording and evidence levels were not read (publisher and strokebestpractices.ca not reached), so nothing is quoted on the cards.",
+    "topicIds": [
+      "evt-selection",
+      "large-core-evt",
+      "basilar-occlusion",
+      "medium-distal-evt"
+    ]
+  },
+  {
+    "id": "csbpr-rehab-part-one-2025",
+    "title": "Canadian Stroke Best Practice Recommendations: Rehabilitation, Recovery and Community Participation Following Stroke. Part One: Stroke Rehabilitation Planning for Optimal Care Delivery, 7th Edition Update 2025",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41257448/",
+    "year": 2025,
+    "type": "Guideline",
+    "checkedAt": "2026-10-31",
+    "access": "PMC full text (PMC12871428) read 2026-10-31; only the mobilization-timing recommendations (section 3) are used, with strength and evidence quality as published.",
+    "topicIds": [
+      "recovery"
+    ]
+  },
+  {
+    "id": "csbpr-rehab-part-three-2025",
+    "title": "Canadian Stroke Best Practice Recommendations Rehabilitation, Recovery, and Community Participation Following Stroke, Part Three: Optimizing Activity and Community Participation Following Stroke, 7th Edition Update, 2025",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41258868/",
+    "year": 2025,
+    "type": "Guideline",
+    "checkedAt": "2026-10-31",
+    "access": "PMC full text (PMC12928792) read 2026-10-31, including section 2 (sleep health and post-stroke fatigue: screening and management); only the prophylactic-antidepressant, supervised-exercise and fatigue recommendations are used, with strength and evidence quality as published.",
+    "topicIds": [
+      "psychosocial-recovery"
+    ]
+  },
+  {
     "id": "cvt-2024",
     "title": "Diagnosis and Management of Cerebral Venous Thrombosis: A Scientific Statement From the American Heart Association",
     "url": "https://pubmed.ncbi.nlm.nih.gov/38284265/",
@@ -635,6 +700,18 @@
     "topicIds": [
       "cvt",
       "imaging-follow-up"
+    ]
+  },
+  {
+    "id": "era-kdigo-adpkd-aneurysms-2026",
+    "title": "KDIGO 2025 Clinical Practice Guideline for ADPKD: a commentary on intracranial aneurysms and other vascular manifestations from the ERA Working Group Genes & Kidney",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42065712/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-31",
+    "access": "PubMed abstract and PMC full text (PMC13719708) read 2026-10-31; its recommendation boxes are images absent from the text, and the KDIGO 2025 guideline itself (PMID 39848759) was not read, so the card avoids the graded wording of recommendation 6.1.2 and labels the imaging and rescreening items as practice points.",
+    "topicIds": [
+      "unruptured-aneurysms"
     ]
   },
   {
@@ -659,6 +736,21 @@
     "access": "Primary abstract read 2026-10-21; full recommendations not reviewed. Interpret with newer evidence.",
     "topicIds": [
       "af-prevention"
+    ]
+  },
+  {
+    "id": "eso-annual-evidence-update-2025",
+    "title": "ESO annual stroke evidence update 2025",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41706824/",
+    "year": 2026,
+    "type": "Report",
+    "checkedAt": "2026-10-31",
+    "access": "PMC full text (PMC12915583) read 2026-10-31. ESO Guideline Board evidence review; its practice implications are the authors' interpretation, not guideline recommendations.",
+    "topicIds": [
+      "retinal-ischemia",
+      "extended-window-ivt",
+      "ct-perfusion",
+      "research-adjuncts"
     ]
   },
   {
@@ -826,10 +918,11 @@
     "url": "https://pubmed.ncbi.nlm.nih.gov/40401775/",
     "year": 2025,
     "type": "Guideline",
-    "checkedAt": "2026-10-22",
-    "access": "NLM title, PMID, DOI and abstract checked; PMC copy returned no body text; the BP consensus on the ICH card (>70 mm Hg, 110, >220, >30 mL, evacuation) is from the archived transcription. Interpret with newer evidence.",
+    "checkedAt": "2026-10-31",
+    "access": "NLM title, PMID, DOI and abstract checked; abstract and plain-language summary re-read 2026-10-31 from the PMC record (PMC12098356), whose body is empty, so recommendation tables and individual strengths were not read; the ICH surgery line uses the abstract's list of interventions with weaker evidence. The BP consensus on the ICH card (>70 mm Hg, 110, >220, >30 mL, evacuation) is from the archived transcription. Interpret with newer evidence.",
     "topicIds": [
-      "ich-management"
+      "ich-management",
+      "ich-surgery"
     ]
   },
   {
@@ -1121,6 +1214,30 @@
     ]
   },
   {
+    "id": "ipso-pediatric-ich-part-1-2025",
+    "title": "Pediatric Intracerebral Hemorrhage Management-Consensus Statement of the International Pediatric Stroke Organization-Part 1: Acute Phase and Workup",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41467366/",
+    "year": 2025,
+    "type": "Consensus statement",
+    "checkedAt": "2026-10-31",
+    "access": "Primary abstract and PMC methods read 2026-10-31 (PMC12909056): modified Delphi, statements approved at >80% agreement, ungraded; last literature search March 2022. Individual statements not summarized here.",
+    "topicIds": [
+      "pediatric-stroke"
+    ]
+  },
+  {
+    "id": "ipso-pediatric-ich-part-2-2025",
+    "title": "Pediatric Intracerebral Hemorrhage Management-Consensus Statement of the International Pediatric Stroke Organization-Part 2: Outcomes, Rehabilitation, and Transition to Adulthood",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41467378/",
+    "year": 2025,
+    "type": "Consensus statement",
+    "checkedAt": "2026-10-31",
+    "access": "Primary abstract read 2026-10-31; PMC full text (PMC12909026) not read.",
+    "topicIds": [
+      "pediatric-stroke"
+    ]
+  },
+  {
     "id": "maternal-stroke-2026",
     "title": "Prevention and Treatment of Maternal Stroke in Pregnancy and Postpartum: A Scientific Statement From the American Heart Association",
     "url": "https://pubmed.ncbi.nlm.nih.gov/41603019/",
@@ -1295,6 +1412,18 @@
     ]
   },
   {
+    "id": "scai-hrs-laao-2025",
+    "title": "2025 SCAI/HRS Clinical Practice Guidelines on Transcatheter Left Atrial Appendage Occlusion",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41040442/",
+    "year": 2025,
+    "type": "Guideline",
+    "checkedAt": "2026-10-31",
+    "access": "PMC full text (PMC12485513) read 2026-10-31: recommendations 1.1 and 2.1 with their remarks and evidence certainty, and the statement that LAAO without a contraindication to anticoagulation is outside its scope; other recommendations not reviewed. Co-published in Heart Rhythm (PMID 40758072). Evidence search through January 5, 2024, per the companion SCAI/HRS technical review abstract (PMID 40758073).",
+    "topicIds": [
+      "af-prevention"
+    ]
+  },
+  {
     "id": "secondary-prevention-2021",
     "title": "2021 Guideline for the Prevention of Stroke in Patients With Stroke and Transient Ischemic Attack: A Guideline From the American Heart Association/American Stroke Association",
     "url": "https://pubmed.ncbi.nlm.nih.gov/34024117/",
@@ -1394,6 +1523,55 @@
       "tia-evaluation",
       "stroke-classification",
       "imaging-follow-up"
+    ]
+  },
+  {
+    "id": "vascog-2-wso-2025",
+    "title": "Revised Diagnostic Criteria for Vascular Cognitive Impairment and Dementia-The VasCog-2-WSO Criteria",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/40955506/",
+    "year": 2025,
+    "type": "Consensus statement",
+    "checkedAt": "2026-10-31",
+    "access": "Primary abstract read 2026-10-31 (three Delphi survey rounds, 49–54 participants; WSO-endorsed); PMC full text (PMC12441927) not read.",
+    "topicIds": [
+      "poststroke-cognition"
+    ]
+  },
+  {
+    "id": "wso-af-recent-stroke-2025",
+    "title": "Ischemic stroke prevention in patients with atrial fibrillation and a recent ischemic stroke, TIA, or intracranial hemorrhage: A World Stroke Organization (WSO) scientific statement",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/39719823/",
+    "year": 2025,
+    "type": "Scientific statement",
+    "checkedAt": "2026-10-31",
+    "access": "PMC full text (PMC11951358) read 2026-10-31. It grades the strength of evidence for each statement (for example B2, C1) instead of making clinical recommendations; the AF prevention card uses its device-detected AF (statement 11) and breakthrough-stroke (statements 16–19) evidence statements. The CAA and ICH recurrence card uses its ENRICH-AF DSMB paragraph, the 412-patient meta-analysis paragraph and statements 23–25.",
+    "topicIds": [
+      "af-prevention",
+      "caa-ich-recurrence"
+    ]
+  },
+  {
+    "id": "wso-sex-gender-2025",
+    "title": "Addressing sex and gender differences in stroke risk and management: A scientific statement from the World Stroke Organization",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/41131690/",
+    "year": 2025,
+    "type": "Scientific statement",
+    "checkedAt": "2026-10-31",
+    "access": "Primary abstract read 2026-10-31 (Int J Stroke, online 2025-10-23); full text not read.",
+    "topicIds": [
+      "sex-gender-stroke"
+    ]
+  },
+  {
+    "id": "wso-telestroke-resource-limited-2026",
+    "title": "Telestroke care in resource-limited settings: A World Stroke Organization scientific statement",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42630091/",
+    "year": 2026,
+    "type": "Scientific statement",
+    "checkedAt": "2026-10-31",
+    "access": "PubMed abstract read 2026-10-31: systematic literature review combined with a structured survey and consensus process (WSO Telestroke Committee); recommendations not reviewed.",
+    "topicIds": [
+      "rural-telestroke"
     ]
   }
 ]

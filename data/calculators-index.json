@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "calculators",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.9.0",
+    "appVersion": "7.10.0",
     "checksum": "sha256:2d4725b4b8b8c8336e595b33a4898aec",
     "count": 26,
     "source": "Canonical retained tool registry",

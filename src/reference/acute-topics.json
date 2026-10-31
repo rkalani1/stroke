@@ -56,7 +56,7 @@
     "consider": [
       "Is the deficit disabling regardless of the NIHSS total? If not (e.g., isolated sensory symptoms), IVT is not recommended (COR 3: No Benefit); use antithrombotics instead: DAPT is COR 1 for noncardioembolic minor stroke (NIHSS ≤3) within 24 h, and NIHSS 4–5 options carry lower grades (see the minor-stroke card).",
       "Do not wait for coagulation results unless an abnormality is suspected, or for MRI to count microbleeds (AHA 2026).",
-      "Minor stroke with a visible occlusion: TEMPO-2 found no benefit from tenecteplase and more deaths (5 vs 1%).",
+      "Minor stroke with a visible occlusion: TEMPO-2 found no benefit from tenecteplase and more deaths (5 vs 1%). A 2025 meta-analysis of 4 RCTs limited to minor stroke (NIHSS ≤5, mostly non-disabling; published after the AHA 2026 literature cutoff) also found no gain in mRS 0–1 with IVT (OR 0.85, 0.70–1.03) and higher odds of sICH and death; its authors call for trials in mildly disabling deficits.",
       "Wake-up stroke, large core, basilar, MeVO and the late window have dedicated cards."
     ],
     "caution": "Use the ischemic protocol for contraindications and dosing, including recent DOAC intake (IVT after DOAC intake within 48 h: observational cohorts only); this overview is not an eligibility checklist.",
@@ -150,7 +150,7 @@
     "consider": [
       "Aim to image as fast as possible (for example within 25 minutes).",
       "Children: suspect stroke with any sudden focal deficit, including a first seizure.",
-      "Where available, mobile stroke units are recommended over conventional EMS for thrombolytic-eligible patients: faster treatment and better outcome (COR 1, LOE A).",
+      "Where available, mobile stroke units are recommended over conventional EMS for thrombolytic-eligible patients: faster treatment and better outcome (COR 1, LOE A). On one Melbourne MSU (MSU-TELEMED, n=275, randomized by day; published after the AHA 2026 literature cutoff, not graded), a telemedicine neurologist versus an onboard neurologist had similar safety events (13 vs 12%) and a longer scene-to-decision time (median 19 vs 13 min; adjusted difference 4 min); the prespecified composite of safety, decision time and neurologist time favored telemedicine (win odds 3.5).",
       "A seizure, hypoglycemia or apparent mimic can coexist with stroke; keep the stroke pathway open until a clinician has reassessed."
     ],
     "caution": "Prehospital scales triage; they neither exclude LVO nor decide treatment.",
@@ -397,7 +397,8 @@
       "collaterals",
       "MR CLEAN-LATE",
       "DAWN",
-      "DEFUSE 3"
+      "DEFUSE 3",
+      "PRACTISE"
     ],
     "summary": "Perfusion maps estimate hypoperfused tissue (Tmax >6 s) and core (markedly reduced relative CBF; below about 31% of the contralateral side best matched DWI in the derivation study), but within 4.5 h IVT must not wait for them (AHA 2026, COR 1). DEFUSE 3 target mismatch at 6–16 h: core <70 mL, hypoperfused-to-core ratio ≥1.8 and mismatch volume ≥15 mL. DAWN used clinical–core mismatch instead: core <21 mL at age ≥80 with NIHSS ≥10; <31 mL under 80 with NIHSS ≥10; <51 mL under 80 with NIHSS ≥20. Collateral flow on CTA alone selected patients who still benefited from EVT at 6–24 h in MR CLEAN-LATE (cOR 1.67; sICH 7 vs 2%).",
     "recommendations": [
@@ -419,7 +420,8 @@
     "consider": [
       "Check for artifact: a poor contrast bolus or leukoaraiosis can make non-infarcted white matter look like core.",
       "EVT at 6–24 h can be selected on NCCT ASPECTS (AHA 2026, COR 1); perfusion is adjunctive when immediately available (2a).",
-      "AHA 2026 grades perfusion-selected IVT for EVT-ineligible patients at 4.5–9 h from LKW or within 9 h of the sleep midpoint (2a, ais-2026-101); up to 24 h from onset or LKW, wake-up included, only LVO with salvageable penumbra that cannot receive EVT is graded (2b, ais-2026-102; TRACE-III). The 2a for CTP or DWI-PWI after wake-up or unknown onset (ais-2026-53) grades imaging selection, not IVT itself. Large-core trials also accepted CTP cores (e.g., SELECT2 ≥50 mL)."
+      "AHA 2026 grades perfusion-selected IVT for EVT-ineligible patients at 4.5–9 h from LKW or within 9 h of the sleep midpoint (2a, ais-2026-101); up to 24 h from onset or LKW, wake-up included, only LVO with salvageable penumbra that cannot receive EVT is graded (2b, ais-2026-102; TRACE-III). The 2a for CTP or DWI-PWI after wake-up or unknown onset (ais-2026-53) grades imaging selection, not IVT itself. Large-core trials also accepted CTP cores (e.g., SELECT2 ≥50 mL).",
+      "Within 4.5 h, adding CTA and CTP to non-contrast CT (PRACTISE: 11 UK sites, 2015–2018, stopped at 271 of 400 planned; published after the AHA 2026 literature cutoff) lowered thrombolysis use (49.1 vs 67.6% of patients without a CT contraindication). Among treated patients, decision and needle times did not differ (decisions not to treat took longer); 90-day outcomes did not differ significantly, but the trial was not powered for them, and whether untreated patients were mimics or missed strokes is uncertain."
     ],
     "caution": "Software thresholds estimate tissue fate; they are not exact infarct volumes or stand-alone exclusions.",
     "sources": [
@@ -595,10 +597,10 @@
       }
     ],
     "consider": [
-      "Repeat CT within 24 h, sooner if the GCS falls, for expansion, hydrocephalus or swelling; early CTA can flag expansion risk.",
-      "Vascular imaging (CTA ± venography) for lobar ICH <70 y, deep/posterior fossa ICH <45 y, or 45–70 y without hypertension (AHA 2022, COR 1).",
+      "Repeat CT within 24 h, sooner if the GCS falls, for expansion, hydrocephalus or swelling; early CTA can flag expansion risk. Vascular imaging (CTA ± venography) for lobar ICH <70 y, deep/posterior fossa ICH <45 y, or 45–70 y without hypertension (AHA 2022, COR 1).",
       "Cerebellar ICH, hydrocephalus or a large hematoma: call neurosurgery now (see the ICH surgery card).",
-      "No prophylactic antiseizure drugs; continuous EEG for unexplained or fluctuating mental status."
+      "No prophylactic antiseizure drugs; continuous EEG for unexplained or fluctuating mental status.",
+      "Post-guideline pooled analyses (hypothesis-generating; AHA 2022 grades unchanged): in INTERACT1–4 (11,312 patients; INTERACT3 tested a care bundle), intensive SBP lowering (<140 within 1 h) reduced mRS 3–6 (OR 0.85); in its CT substudy (2,921) the effect declined with time from onset and crossed no effect at 3 h. Whether the effect differs by hematoma location is unsettled: an individual-patient pool of INTERACT1–4 and ATACH-2 (11,288; 81.5% deep, 10.1% lobar) found effect modification by location (interaction P=0.033), with clear benefit only in deep ICH (aOR 0.81, 0.74–0.89), whereas a study-level meta-analysis of ATACH-2, INTERACT2 and INTERACT3 (7,917 deep, 1,105 lobar) found no significant benefit in deep (OR 0.82, 0.57–1.18; I² 60%) or lobar ICH (OR 0.97, 0.76–1.24). Neither tested location-specific BP targets, and the AHA 2022 recommendations above do not differ by location."
     ],
     "caution": "Intensive targets are less certain with SBP >220 mm Hg, hematomas >30 mL or planned evacuation; avoid SBP drops >70 mm Hg or below 110 (ESO 2025 consensus).",
     "sources": [
@@ -673,10 +675,10 @@
       }
     ],
     "consider": [
-      "Location, volume, GCS, premorbid function and hours from onset decide which trial applies.",
+      "Location, volume, GCS, premorbid function and hours from onset decide which trial applies. Agree on realistic goals with the family before surgery.",
       "Craniotomy is a lifesaving option for deteriorating supratentorial ICH (2b); decompressive craniectomy may be considered to reduce mortality in supratentorial ICH with coma, a large hematoma with significant midline shift, or refractory ICP (2b).",
-      "Agree on realistic goals with the family before surgery.",
-      "Cochrane 2025 (24 RCTs): minimally invasive evacuation may improve good function (RR 1.36, low certainty) and probably lowers mortality (RR 0.71, moderate certainty); most trials had high risk of bias."
+      "Cochrane 2025 (24 RCTs): minimally invasive evacuation may improve good function (RR 1.36, low certainty) and probably lowers mortality (RR 0.71, moderate certainty); most trials had high risk of bias.",
+      "ESO/EANS 2025 (GRADE-based) places craniotomy or minimally invasive surgery for supratentorial ICH, decompressive surgery for deep supratentorial ICH and evacuation of cerebellar ICH >15 mL among treatments with weaker supporting evidence; it made strong recommendations for only a few interventions. Individual recommendation strengths are in the full guideline."
     ],
     "caution": "Lower mortality is not the same as better function; do not extend lobar-ICH results to deep or infratentorial bleeds.",
     "sources": [
@@ -768,7 +770,8 @@
     "consider": [
       "New decline: think rebleeding, hydrocephalus, DCI/vasospasm or seizures — urgent CT ± CTA/CTP.",
       "Seizure prophylaxis: AHA 2023 allows it only with high-risk features (MCA aneurysm, high grade, ICH, hydrocephalus, cortical infarct; 2b) and lists phenytoin as harmful; NCS 2026 is conditional (ASM or no ASM; either agent and duration), its expert guidance favoring levetiracetam for ≤3 days unless seizures or EEG features suggest ongoing risk. Seizure at onset: AHA 2023 supports treatment for no more than 7 days (2a).",
-      "Keep euvolemia; liberal transfusion (Hb ≤10 g/dL) did not improve 12-month outcome (SAHaRA)."
+      "Keep euvolemia; liberal transfusion (Hb ≤10 g/dL) did not improve 12-month outcome (SAHaRA).",
+      "In a Stockholm register cohort of 544 aSAH survivors younger than 40 (index events 1967–2014; observational), de novo aneurysms reached a cumulative incidence of 30% at 40 years without a plateau; female sex, smoking and family history raised the risk, and stopping smoking was associated with lower risk. Of 158 de novo aneurysms, 23 ruptured, none under systematic surveillance."
     ],
     "caution": "Prophylactic hemodynamic augmentation and induced hypervolemia are harmful.",
     "sources": [
@@ -818,7 +821,7 @@
       "papilledema",
       "venography"
     ],
-    "summary": "Anticoagulate on diagnosis, even with venous hemorrhage: parenteral heparin (LMWH favored; nonheparin agents if VITT is suspected), then oral anticoagulation for 3–12 months, or indefinitely with chronic major risk factors or recurrent VTE (AHA 2024); in pregnancy, LMWH only. DOACs are a reasonable alternative to warfarin after the lead-in: RE-SPECT CVT (dabigatran) had no recurrent VTE and major bleeding 1.7 vs 3.3%; ACTION-CVT (observational) found similar recurrence and less major hemorrhage (aHR 0.35). Endovascular therapy is rescue only (TO-ACT: no benefit); decompressive craniectomy is lifesaving with impending herniation.",
+    "summary": "Anticoagulate on diagnosis, even with venous hemorrhage: parenteral heparin (LMWH favored; nonheparin agents if VITT is suspected), then oral anticoagulation for 3–12 months, or indefinitely with chronic major risk factors or recurrent VTE (AHA 2024); in pregnancy, LMWH only. DOACs are a reasonable alternative to warfarin after the lead-in: RE-SPECT CVT (dabigatran) had no recurrent VTE and major bleeding 1.7 vs 3.3%; ACTION-CVT (observational) found similar recurrence and less major hemorrhage (aHR 0.35). A 2026 meta-analysis (8 RCTs and 6 observational studies; 3,698 patients) found no significant difference between DOACs and VKAs in recurrent VTE (RR 0.92, 95% CI 0.55–1.53) or major bleeding (RR 0.74, 0.44–1.25). Endovascular therapy is rescue only (TO-ACT: no benefit); decompressive craniectomy is lifesaving with impending herniation.",
     "recommendations": [
       {
         "text": "The mainstream initial treatment of cerebral venous thrombosis includes parenteral heparin followed by transition to oral vitamin K antagonists for 3 to 12 months, depending on the underlying cause, or indefinitely in the presence of chronic major risk factors or recurrent venous thromboembolism. [Editorial note: the statement's abbreviated key point refers broadly to thrombophilia; its treatment section specifies chronic major risk factors. An isolated thrombophilia result is not, by itself, a universal indication for indefinite treatment.]",
@@ -901,7 +904,7 @@
       "Test of skew (cross-cover): any vertical misalignment is central and points to the brainstem.",
       "Hearing: new hearing loss is the \"plus\" that raises sensitivity for central causes; triggered positional episodes are not a HINTS situation."
     ],
-    "caution": "HINTS needs continuous vertigo with nystagmus and a trained examiner; routine CT is not the GRACE-3 way to exclude a central cause.",
+    "caution": "HINTS needs continuous vertigo with nystagmus and a trained examiner; routine CT is not the GRACE-3 way to exclude a central cause. Not every stroke causing dizziness shows nystagmus: in a prospective single-centre ED cohort of 75 patients with MRI-proven stroke causing vertigo, dizziness or imbalance, 59% had no spontaneous nystagmus but postural or gait imbalance (acute imbalance syndrome), a presentation HINTS was not designed for.",
     "sources": [
       {
         "title": "SAEM GRACE-3 acute dizziness and vertigo — official recommendations",
@@ -960,7 +963,10 @@
       "VTE",
       "pressure injury",
       "urinary retention",
-      "post-thrombectomy"
+      "post-thrombectomy",
+      "HeadSOAR",
+      "ZODIAC",
+      "head position"
     ],
     "summary": "Stroke-unit care with protocols: bedside swallow screen before any oral intake; treat fever to normothermia and look for its source; treat glucose <60 mg/dL and keep persistent hyperglycemia at 140–180 mg/dL (not 80–130); oxygen only for hypoxia, to keep SpO2 >94%; intermittent pneumatic compression for immobile patients and no elastic stockings; no routine bladder catheters or prophylactic antibiotics; no high-dose very early mobilization within 24 h (AHA 2026).",
     "recommendations": [
@@ -1003,7 +1009,8 @@
     "consider": [
       "After IVT: BP <180/105 for at least 24 h; antiplatelets in the first 24 h only when a strong indication outweighs the uncertain risk.",
       "Screen nutrition within 48 h and depression with a structured tool; start enteral feeding within 7 days if the patient cannot swallow.",
-      "After EVT: neurological checks, access site, the BP plan and urgent imaging for any decline."
+      "After EVT: neurological checks, access site, the BP plan and urgent imaging for any decline.",
+      "Awaiting thrombectomy for LVO: in ZODIAC (12 US hospitals; 92 of 182 planned, enrollment halted by the DSMB at the second interim analysis; published after the AHA 2026 literature cutoff), a 0° vs 30° head position reduced ≥2-point NIHSS worsening before EVT (1 vs 26 patients); 90-day deaths were 2 vs 10, but 90-day mRS did not differ significantly. AHA 2026's COR 3: No Benefit for routine 24-h flat positioning (ais-2026-66) addresses AIS patients overall, not LVO awaiting EVT. Head position after successful EVT (anterior LVO, eTICI ≥2b): in HeadSOAR (BMJ 2026; 67 centres in China; 1,368 patients), 72 h at 30–40° vs flat at 0–10° did not significantly improve 90-day mRS (adjusted generalized OR 1.12, 95% CI 0.97–1.29); 90-day mortality was 18.3 vs 20.3% (aRR 0.86, 0.69–1.07), and the authors could not exclude a modest benefit of elevation. ZODIAC's flat-positioning result before EVT should not be extended to the period after reperfusion, where flat positioning showed no advantage."
     ],
     "caution": "Intensive targets backfire here: targeting SBP <140 for 72 h after successful anterior-LVO EVT is harmful (AHA 2026, COR 3: Harm); after successful LVO EVT, a 24-h <140 target also lowered functional independence (OPTIMAL-BP 39.4 vs 54.4%), and ESO 2025 recommends against intensive lowering below 140 in the first 24 h; IV insulin to 80–130 mg/dL adds hypoglycemia without benefit.",
     "sources": [
@@ -1038,6 +1045,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-22",
         "access": "Primary abstract re-read 2026-10-22: LVO with mTICI ≥2b after EVT; SBP <140 vs 140–180 for 24 h; stopped early for safety."
+      },
+      {
+        "title": "HeadSOAR — head positioning after endovascular thrombectomy (BMJ 2026)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42624516/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-31",
+        "access": "Primary abstract read via PubMed on 2026-10-31; full text and registry NCT06115707 not reviewed."
       }
     ],
     "related": [
