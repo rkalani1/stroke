@@ -14,8 +14,8 @@ const urls = record => record.sources.map(source => source.url);
 
 describe('thrombolysis Evidence cards', () => {
   it('stays inside the structural contract on the review date', () => {
-    // Latest review cutoff: sources re-read on 2026-10-22 (evidence-fixes pass) carry that checkedAt.
-    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
   });
 
   it('separates the AHA 2026 imaging grade from the perfusion-selected IVT treatment grades', () => {

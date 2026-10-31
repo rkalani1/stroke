@@ -16,8 +16,8 @@ const ich2022 = read('src/guidelines/ich-2022.json').recommendations;
 
 describe('ICH evidence cards (2026-10-17 review)', () => {
   it('still validates against the reference contract at the review date', () => {
-    // Latest review cutoff: sources re-read on 2026-10-22 (evidence-fixes pass) carry that checkedAt.
-    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
   });
 
   it('defers ICH neuroprognostication 48–72 h and keeps the AHA second-day DNAR statement (NCS 2023 GPS 1; ich-2022-95)', () => {
@@ -161,7 +161,8 @@ describe('SAH, CVT and other vascular cards (2026-10-17 review)', () => {
     expect(card.summary).toContain('should not preclude needed antithrombotics (Class 2a, B-NR)');
     // Recommendation 11: risk not well established; "may be considered if indicated for acute ischemic stroke". Class 2B, C-LD.
     expect(card.summary).toContain('IV alteplase may be considered if otherwise indicated for AIS; its risk is not well established (Class 2b, C-LD)');
-    expect(card.sources.filter(source => /cavernous malformations/i.test(source.title))).toHaveLength(1);
+    // One guideline record; the 2026 Scottish CCM cohort title also names cavernous malformations.
+    expect(card.sources.filter(source => /guidelines for cavernous malformations/i.test(source.title))).toHaveLength(1);
   });
 
   it('adds the ARUBA final result (PMID 32562682)', () => {

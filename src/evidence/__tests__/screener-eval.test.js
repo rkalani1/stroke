@@ -255,7 +255,7 @@ describe('screening summary generation', () => {
     state.anteriorCirculation = true;
     const res = evaluateAll(state);
     const text = res.briefingNote;
-    expect(text).toMatch(/^TRIAL SCREEN — first pass \(registry checked 2026-10-21\)\nStatuses are overall registry statuses at that check; local site activation is not confirmed\./);
+    expect(text).toMatch(/^TRIAL SCREEN — first pass \(registry checked 2026-10-31\)\nStatuses are overall registry statuses at that check; local site activation is not confirmed\./);
     expect(text).toContain('Inputs: Ischemic stroke · LKW 12.0 h · age 65 · NIHSS 8 · pre-mRS 0 · ASPECTS 8');
     expect(res.pending.length).toBeGreaterThan(0);
     // Every pending study still has an unknown modeled fact, so none is a potential match.

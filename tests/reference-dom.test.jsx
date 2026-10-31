@@ -98,7 +98,8 @@ describe('curated reference integrity and interaction',()=>{
       expect(await matches.count()).toBe(0);
       expect(await page.getByLabel('Find a clinical question').evaluate(input=>document.activeElement===input)).toBe(true);
       await page.getByLabel('Find a clinical question').fill('ELAN');
-      expect(await page.getByRole('status').innerText()).toBe('1 topic found.');
+      // 2: af-timing plus thunderclap-sah-evaluation, whose 2026-10-31 audit line says "Ireland" (4+ letter terms match inside words).
+      expect(await page.getByRole('status').innerText()).toBe('2 topics found.');
       expect(await matches.getByRole('link').first().getAttribute('href')).toBe('#/evidence/elan');
       expect(await matches.getByRole('link').count()).toBe(2);
       await page.evaluate(()=>window.renderReference({focusId:'elan'}));

@@ -179,3 +179,76 @@ Verification status: evidence items were raised by the clinical auditors from pr
 - Reveals at larger browser text sizes (found by the 7.9.0 pre-merge verification, 2026-10-30). Case-bar links, search results and deep links land a Protocols target 104 px below the case bar, exactly where 7.8.3 lands it (8 px padding plus a 96 px margin). That space fits the stuck breadcrumb and sub-tabs at the default text size only. With Chrome's text size set to Large (20 px), the top 7.8 px of the focused card (its border, the top of its focus ring and part of the INST badge) sits under the sub-tabs. At Very large (24 px) it is about 30 px, and at 200% text about 74 px. The card heading stays visible at Large and Very large. 7.8.3 lands on the same pixel in every case, so this is not a 7.9.0 change. Suggested fix if wanted: have `src/app.jsx` measure the stuck breadcrumb and sub-tab heights, as it already does for `--header-h`, and pad by the larger of 104 px and that height plus 6 px. That leaves today's landing unchanged at the default text size. It is not done here because it changes where the Protocols surface lands content.
 - Keyboard paging on Protocols (7.9.0 shell change; no Protocols file or text changed). The root scroll padding now covers the stuck breadcrumb and sub-tabs, so keyboard focus is never left under them. Page Down and Space therefore scroll about 84 px less than on 7.8.3 at 481 px wide and above, because Chrome pages by 0.875 × (viewport height − scroll padding). For example, a page step is 576 px instead of 660 px at 1440×900, and 281 px instead of 365 px at 481×700. On 481–768 px screens the 7.8.3 step was longer than the band visible under the bars, so each page skipped 22–37 px of protocol text unseen; the new step skips none. When Tab reaches a control that is off screen, Chrome now places it about 48 px lower than on 7.8.3. At 390 px both behave the same.
 - The "IVT card held" banner is inserted together with its `role="status"`, a pattern that some screen readers do not announce; it sits inside the locked surface.
+
+# Evidence-currency findings for the owner (2026-10-31)
+
+The evidence-currency update of 2026-10-31 changed only Evidence-tab and Trials content; its ledger is [evidence-ledger-2026-10-31.md](evidence-ledger-2026-10-31.md). No Protocols file was changed or annotated, and the Protocols source lock (`test:protocol-source`) passes.
+
+Each item below was raised by a domain sweep and checked by an independent verifier, who confirmed the quoted Protocols lines by reading the files. The line numbers were re-checked against the working tree on 2026-10-31. The sources were read as stated (PubMed abstract, PMC full text or registry record). These are report-only findings for the owner, not adjudicated errors.
+
+## CRAO branch: newer trial evidence agrees with it; consent wording could mention it (low)
+- **Where:** `src/institutional-protocols.js` lines 351–353 (hash-locked). The branch reads "CRAO — consider IVT in select cases with informed consent and shared decision-making." The rationale reads "The institutional source states that trial evidence does not support efficacy."
+- **Observation:** The protected branch is still consistent with the newest evidence. The ESO February 2026 evidence update says THEIA and TenCRAOS do not support routine IVT. TenCRAOS (NEJM 2026) reported more adverse events with tenecteplase, including one fatal intracranial hemorrhage. The Evidence card (`retinal-ischemia`) now carries the ESO statement, labelled as the authors' interpretation, not a recommendation.
+- **Source:**
+  - TenCRAOS, N Engl J Med 2026;394:442-450 (PMID 41604638; doi 10.1056/NEJMoa2508515; PubMed abstract): "There was a greater incidence of adverse events in the tenecteplase group, including one fatal intracranial hemorrhage."
+  - ESO annual stroke evidence update 2025, Eur Stroke J 2026 (PMID 41706824; PMC12915583 full text): "Recent randomised trials (THEIA, TenCRAOS) do not support routine use of intravenous thrombolysis for acute CRAO; enrolment into ongoing RCTs is encouraged."
+- **Suggested change:** none required. Optionally, the consent discussion could mention these two points.
+
+## EVT pathway gates: new randomized evidence outside the NIHSS ≥6 gate and the 24-hour window (medium)
+- **Where:**
+  - `src/ProtectedProtocols.jsx` line 420: "The entered NIHSS does not meet the institutional NIHSS ≥6 gate."
+  - Lines 329–330: the '0-6' and '6-24' time-window tiers.
+  - `src/institutional-protocols.js` line 526: "NIHSS <6 does not meet the source-listed anterior-circulation flowchart gate."
+  - The post-EVT SBP floor of 140 after mTICI ≥2b (`src/ProtectedProtocols.jsx` line 154, `systolicLow: 140`).
+- **Observation:** Two NEJM trials published 2026-10-23 are randomized evidence outside the pathway's NIHSS ≥6 gate and 24-hour window:
+  - MILD-MT: NIHSS <6, ICA/M1/M2, core ≤50 mL and mismatch ≥50 mL, ≤24 h. mRS 0–1 was 69.4 vs 50.0%, and serious procedural complications occurred in 13.2%.
+  - LATE-MT: anterior LVO, NIHSS ≥6 and CTP-selected per the registry, 24–72 h. mRS shift cOR 1.74, with sICH 4.8 vs 0% and 90-day mortality 6.0 vs 1.8%.
+
+  Both trials are Chinese and open-label, postdate AHA/ASA 2026 and carry no guideline grade. Separately, the OPTIMAL-BP 1-year results (Stroke 2026; ITT mRS 0–2 40.5 vs 52.7%, aOR 0.59, 95% CI 0.34–1.00) are consistent with the existing post-EVT SBP floor of 140. Note that OPTIMAL-BP tested a lowering target (<140 vs 140–180). It does not address raising a spontaneously lower SBP, so the 7.8.0 observation above about the floor still stands.
+- **Source:**
+  - MILD-MT (PMID 42929671; doi 10.1056/NEJMoa2609149; PubMed abstract; nejm.org unreachable): "without an increase in the risk of symptomatic intracranial hemorrhage but with a high incidence of serious procedural complications."
+  - LATE-MT (PMID 42929656; doi 10.1056/NEJMoa2609362; PubMed abstract): "Symptomatic intracranial hemorrhage occurred in 4.8% of the patients in the intervention group and in no patients in the control group, and the 90-day case fatality rate was 6.0% and 1.8%, respectively."
+  - OPTIMAL-BP 1-year, Stroke 2026;57(8) (PMID 42212393; PubMed abstract): "functional independence at 1 year was numerically lower in the intensive BP management group than in the conventional group (40.5% versus 52.7%; adjusted odds ratios, 0.59 [95% CI, 0.34-1.00]".
+- **Suggested change:** the owner may add an informational line, for example: "NIHSS <6 or 24–72 h: new single-country RCTs, not graded, with procedural/hemorrhage harms — discuss with neurointervention". Or the owner may leave the pathway unchanged. No change to the SBP floor is proposed on the basis of OPTIMAL-BP.
+
+## ICH BP branches and ENRICH-AF: post-guideline analyses for awareness (low)
+- **Where:**
+  - `src/ProtectedProtocols.jsx` lines 719, 830, 1178 and 1377: the presenting-SBP branches (150–219: target 140 and maintain 130–150; ≥220: reduce by about 20%).
+  - Line 1293: the andexanet "no longer marketed in the US (withdrawn December 2025)" text. Line 940 also mentions andexanet.
+- **Observation:**
+  - Pooled individual-patient analyses that postdate AHA 2022 suggest the benefit of intensive acute SBP lowering declines with time from onset. In the INTERACT1–4 CT substudy (n=2,921), the effect crossed no effect at 3 h; the overall pool of 11,312 includes the INTERACT3 care bundle.
+  - They also suggest the benefit may be confined to deep ICH (aOR 0.81; interaction P=0.033; INTERACT1–4 plus ATACH-2, n=11,288; lobar 10%). A study-level meta-analysis of ATACH-2, INTERACT2 and INTERACT3 (Neurology 2026) found no significant benefit in either deep or lobar ICH.
+  - These analyses are hypothesis-generating and do not alter the AHA 2022 or ESO 2025 positions behind the branches.
+  - ENRICH-AF (edoxaban after intracranial hemorrhage in AF) completed in July 2026 with 948 enrolled, and its results are not peer-reviewed. A DSMB safety review had halted enrollment of patients with lobar ICH or convexity SAH and advised stopping study drug in that subgroup. A 2025 meta-analysis attributes this to excess recurrent intracranial bleeding, and the WSO statement notes that the underlying data are unpublished. The ESC 2026 presented results could not be read verbatim and are not used.
+  - The Protocols tab has no anticoagulation-restart content, so ENRICH-AF is for awareness only. The currency of the andexanet text was not re-verified in this check.
+- **Source:**
+  - INTERACT1–4 pooled analysis, Lancet Neurol 2025;24(7) (PMID 40541207; abstract): "In the CT substudy involving 2921 patients ... the treatment effects on functional recovery and relative haematoma growth decreased with increasing time from onset to randomisation, with a cutoff point in the effect crossing unity at 3 h".
+  - Location IPD analysis, Neurology 2026;107(9) (PMID 42848972; abstract): "A clear benefit was only seen in deep ICH (adjusted odds ratio 0.81, 95% CI 0.74-0.89".
+  - Study-level meta-analysis, Neurology 2026;106(9) (PMID 41962119; abstract): "intensive BP reduction was not associated with a significant difference in poor outcome in both deep (OR 0.82; 95% CI 0.57-1.18 ...) and lobar (OR 0.97; 95% CI 0.76-1.24 ...) ICH."
+  - ENRICH-AF registry NCT03950076 (connector): "status COMPLETED; enrollment 948; primary_completion_date 2026-07-22".
+  - WSO statement, Int J Stroke 2025 (PMC11951358 full text): "They additionally recommended discontinuing the study drug immediately in this subgroup of patients. The data leading to this recommendation have yet to be published".
+- **Suggested change:** none proposed. Re-verify the andexanet line at the next review.
+
+## Antiamyloid therapy listed as an absolute IVT exclusion; the 2026 AHA summit advises a relative contraindication (medium)
+- **Where:**
+  - `src/institutional-protocols.js` line 734 (hash-locked): IVT exclusion "Amyloid immunotherapy / ARIA", detail "ICH risk unknown — IV fibrinolysis should be avoided. The current pocket-card eligibility table lists this in the absolute tier …".
+  - The display tier `lecanemab: 'absolute'` is at `src/clinical/safety-items.js` line 59. That file is not in `source-lock.json`. The Encounter checklist uses it, and it mirrors the frozen list, so any change belongs with the owner's decision.
+- **Observation:** The local IVT list places antiamyloid therapy in the absolute tier. The 2026 AHA ARIA Summit consensus (JAHA, August 2026; ungraded) advises that thrombolytic order sets list antiamyloid therapy as a relative contraindication. It also:
+  - says thrombolysis should generally be withheld when MRI cannot exclude ARIA or shows ARIA;
+  - allows specialist-guided exceptions without MRI;
+  - sends LVO patients directly to thrombectomy without bridging thrombolysis.
+
+  The Evidence card `antiamyloid-vascular-risk` now carries this guidance and still states that the Encounter checklist lists antiamyloid therapy as generally contraindicated.
+- **Source:** ARIA Summit Special Proceedings, J Am Heart Assoc 2026;15(17):e048108 (PMID 42622140; doi 10.1161/JAHA.125.048108; PMC13695822 full text): "thrombolysis should generally not be administered when MRI is not available (ie, when ARIA cannot be excluded), or when ARIA is present on MRI, and thrombolytic order sets should include AAT as a relative contraindication."
+- **Suggested change:** the owner may wish to review the tier placement, for example relative with MRI-based gating and direct thrombectomy for LVO. No edit to Protocols files is proposed.
+
+## Post-IVT monitoring schedule: a low-intensity option for a defined subgroup (low)
+- **Where:** `src/ProtectedProtocols.jsx`:
+  - line 1049: "Neuro checks q15 min x 2h → q30 min x 6h → q1h x 16h; notify provider for new deficits or GCS drop ≥2 points"
+  - line 2226: "Neurologic checks and vital signs every 15 minutes for 2 hours, every 30 minutes for 6 hours, then every hour for 16 hours"
+- **Observation:** Both lines give the standard post-IVT schedule. OPTIMISTmain (Lancet 2025; 4,922 patients; stepped-wedge cluster RCT) tested a low-intensity schedule only in patients clinically stable with NIHSS <10 within 2 h of starting IVT:
+  - Schedule: q15 min × 2 h, q2h × 8 h, then q4h to 24 h.
+  - Result: 90-day mRS 2–6 was 31.7 vs 30.9% (RR 1.03, 95% CI 0.92–1.15; noninferiority margin 1.15; p=0.057).
+  - The investigators call this weak evidence of noninferiority. The standard schedule remains appropriate for unselected patients. The Evidence card `stroke-unit-nursing` now summarizes the trial.
+- **Source:** OPTIMISTmain, Lancet 2025 (PMID 40412428; doi 10.1016/S0140-6736(25)00549-5; PubMed abstract): "(RR 1·03 [95% CI 0·92-1·15], p=0·057) ... OPTIMISTmain provides weak evidence that low-intensity monitoring is non-inferior to standard monitoring in patients with a mild or moderate level of neurological impairment who receive thrombolysis treatment for acute ischaemic stroke."
+- **Suggested change:** none required. At the next unfreeze, the owner may note the option for that subgroup.

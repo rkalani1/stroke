@@ -333,7 +333,9 @@ describe('CLARITY follows the 2026-10-15 registry version (TO-1)', () => {
     expect(t.exactExclusionCriteria[0]).toBe('Atrial fibrillation, mechanical heart valve, or left ventricular assist device');
     expect(t.exactExclusionCriteria).toContain('Modified Rankin Scale 5');
     expect(evaluate('CLARITY', base).pendingCriteria).toContain('Confirm single or dual antithrombotic therapy with aspirin, clopidogrel and/or ticagrelor per guidelines');
-    expect(t.externalMetadata.registryLastUpdatePosted).toBe('2026-10-15');
+    // Re-read 2026-10-31 (last update posted 2026-10-26): inclusion 4 and exclusion 1 still read as stored.
+    expect(t.externalMetadata.registryLastUpdatePosted).toBe('2026-10-26');
+    expect(t.sourceGaps.find(g => g.startsWith('CT.gov eligibility'))).toMatch(/^CT\.gov eligibility \(re-read 2026-10-31; last update posted 2026-10-26; criteria still match the stored wording\)/);
   });
   it('labels the heart-failure and ICH exclusions as the registry does', () => {
     expect(EXCLUSION_ITEMS.find(i => i.id === 'exCongestiveHeartFailure').label).not.toMatch(/moderate|severe/i);
@@ -379,8 +381,9 @@ describe('registry check dates are truthful per profile (TO-2, TO-3, TO-4)', () 
   it('records each profile recheck consistently with its metadata', () => {
     // Exact-day LastUpdatePostDate queries (registry search index), first run on 2026-10-17 and
     // repeated on 2026-10-21: SISTER (2026-10-19), CAPPRICORN-1 and CAPTIVA (2026-10-20) were
-    // updated in between; the other 13 dates were re-established unchanged.
-    const expected = { STEP: '2025-12-04', SISTER: '2026-10-19', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', 'FASTEST-2': '2026-08-20', CLARITY: '2026-10-15', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-09', CAPTIVA: '2026-10-20' };
+    // updated in between; the other 13 dates were re-established unchanged. Repeated on 2026-10-31:
+    // CLARITY, TELE-REHAB-2 and CAPTIVA were updated on 2026-10-26; the other 13 dates matched exactly.
+    const expected = { STEP: '2025-12-04', SISTER: '2026-10-19', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', 'FASTEST-2': '2026-08-20', CLARITY: '2026-10-26', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-26', CAPTIVA: '2026-10-26' };
     expect(screenerTrials.map(t => t.acronym).sort()).toEqual(Object.keys(expected).sort());
     for (const t of screenerTrials) {
       const m = t.externalMetadata;

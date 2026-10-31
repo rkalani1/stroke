@@ -19,8 +19,8 @@ const labelDose = kg => LABEL_BANDS.find(([low, high]) => kg >= low && kg < high
 
 describe('ev-acute Evidence cards (2026-10-21)', () => {
   it('still validates against the reference contract on the review date', () => {
-    // Review cutoff moved to 2026-10-22: the evidence-fixes pass re-read and re-dated sources that day.
-    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
   });
 
   it('separates the US label scope and weight bands from the guideline dose on the thrombolytic-choice card', () => {

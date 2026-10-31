@@ -247,7 +247,7 @@
     "population": "352 patients with ICA/M1 occlusion within 24 hours and ASPECTS 3–5 or imaging core ≥50 mL.",
     "comparison": "Thrombectomy plus medical care versus medical care alone.",
     "result": "The 90-day mRS distribution favored thrombectomy (generalized OR 1.51; 95% CI 1.20–1.89). Functional independence, a secondary outcome, was 20% versus 7%.",
-    "limits": "Stopped early for efficacy; vascular complications occurred. Review complete selection criteria. The 2024 correction clarified core-volume measurement substitutions and stated that outcome direction and significance were unchanged.",
+    "limits": "Stopped early for efficacy; vascular complications occurred. Review complete selection criteria. The 2024 correction clarified core-volume measurement substitutions and stated that outcome direction and significance were unchanged. At 1 year (Lancet 2024), the mRS distribution still favored thrombectomy (generalized OR 1.43; 95% CI 1.14–1.78); 1-year mortality was 45% vs 52% (RR 0.89; 95% CI 0.71–1.11).",
     "sources": [
       {
         "title": "SELECT2 primary report",
@@ -256,6 +256,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract and January 2024 publisher correction read; full trial report and supplements not reviewed."
+      },
+      {
+        "title": "SELECT2 1-year outcomes",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/38346442/",
+        "year": 2024,
+        "type": "Report",
+        "checkedAt": "2026-10-31",
+        "access": "PubMed abstract read 2026-10-31; 1-year follow-up of the original randomized population."
       }
     ],
     "relatedTopic": "large-core-evt"
@@ -279,7 +287,7 @@
     "population": "456 patients in China; about 28% received IVT.",
     "comparison": "EVT plus medical management versus medical management alone.",
     "result": "The 90-day mRS shifted toward better outcomes with EVT (generalized OR 1.37; 95% CI 1.11–1.69). Symptomatic ICH 6.1% vs 2.7%; any ICH 49.1% vs 17.3%.",
-    "limits": "Stopped early for efficacy; open-label, single-country trial.",
+    "limits": "Stopped early for efficacy; open-label, single-country trial. At 1 year (Stroke 2025; 425 of 455 analyzed), the mRS shift still favored EVT (generalized OR 1.25; 95% CI 1.01–1.56; mRS 0–2 30.4 vs 17.1%), with mortality 31.3 vs 26.5% (RR 1.12; 95% CI 0.82–1.53); the mRS 0–2 difference narrowed from 18.5 to 13.3 points as the medical arm improved.",
     "sources": [
       {
         "title": "ANGEL-ASPECT primary report",
@@ -288,6 +296,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "ANGEL-ASPECT 1-year outcomes",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40854041/",
+        "year": 2025,
+        "type": "Report",
+        "checkedAt": "2026-10-31",
+        "access": "PubMed abstract read 2026-10-31; prespecified 1-year analysis of the original randomized population (complete-case, 425 of 455)."
       }
     ],
     "relatedTopic": "large-core-evt"
@@ -506,7 +522,7 @@
     "population": "340 patients at 36 Chinese centers; about one third received IVT.",
     "comparison": "EVT versus best medical care (2:1 randomization).",
     "result": "mRS 0–3 at 90 days occurred in 46% vs 23% (adjusted rate ratio 2.06; 95% CI 1.46–2.91). Mortality 37% vs 55%; symptomatic ICH 5% vs 0%; procedural complications 14%.",
-    "limits": "Single-country trial; it required NIHSS ≥10, PC-ASPECTS ≥6 and prestroke mRS 0–2, and for age ≥80 PC-ASPECTS ≥8 and prestroke mRS 0 (registry NCT04751708).",
+    "limits": "Single-country trial; it required NIHSS ≥10, PC-ASPECTS ≥6 and prestroke mRS 0–2, and for age ≥80 PC-ASPECTS ≥8 and prestroke mRS 0 (registry NCT04751708). At 3 years (JAMA Neurol 2026; 307 of 340 followed), mRS 0–3 was 38.4% vs 18.3% (adjusted RR 2.05; 95% CI 1.35–3.11) and cumulative mortality 55.7% vs 73.1%; in a prespecified subgroup, no treatment effect was demonstrated at age ≥70.",
     "sources": [
       {
         "title": "ATTENTION primary report",
@@ -515,6 +531,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "ATTENTION 3-year outcomes",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41460644/",
+        "year": 2026,
+        "type": "Report",
+        "checkedAt": "2026-10-31",
+        "access": "PubMed abstract read 2026-10-31; 3-year follow-up of the original randomized population (307 of 340 completed)."
       }
     ],
     "relatedTopic": "basilar-occlusion"
@@ -1137,7 +1161,7 @@
     "population": "1,015 patients with cryptogenic stroke and atrial cardiopathy defined by ECG, NT-proBNP or indexed left-atrial diameter; no AF at randomization.",
     "comparison": "Apixaban, with dose reduction when indicated, versus aspirin 81 mg daily.",
     "result": "Recurrent stroke was 4.4% per year in both groups (HR 1.00; 95% CI 0.64–1.55). Symptomatic intracranial hemorrhage occurred in 0 versus 7 patients; other major hemorrhage in 5 versus 5.",
-    "limits": "Stopped for futility; mean follow-up 1.8 years. Small bleeding counts do not establish a safety advantage. Biomarker-defined atrial cardiopathy is distinct from documented AF.",
+    "limits": "Stopped for futility; mean follow-up 1.8 years. A 2026 secondary bleeding analysis reported fewer intracranial hemorrhages with apixaban than aspirin (annualized difference −1.4% in the on-treatment safety sample; −1.0% by intention to treat); the symptomatic ICH difference was not significant by intention to treat, other major and minor bleeding did not differ, and event counts were small, so this does not establish a safety advantage or change the neutral efficacy result. Biomarker-defined atrial cardiopathy is distinct from documented AF.",
     "sources": [
       {
         "title": "ARCADIA primary report",
@@ -1146,6 +1170,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-21",
         "access": "Primary abstract checked."
+      },
+      {
+        "title": "ARCADIA hemorrhage analysis",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41741942/",
+        "year": 2026,
+        "type": "Report",
+        "checkedAt": "2026-10-31",
+        "access": "PubMed abstract read 2026-10-31; secondary analysis (primary safety sample censored at permanent study-drug discontinuation; intention-to-treat sensitivity analysis)."
       }
     ],
     "relatedTopic": "stroke-workup"
@@ -1202,7 +1234,7 @@
     "question": "Did adding revascularization improve outcomes on intensive medical therapy?",
     "population": "Two parallel trials of ≥70% stenosis without carotid-territory stroke, TIA or amaurosis fugax for 180 days: 1,245 in the stenting trial and 1,240 in the endarterectomy trial.",
     "comparison": "Each procedure plus intensive medical management versus intensive medical management alone.",
-    "result": "The four-year composite of stroke/death through day 44 or later ipsilateral ischemic stroke was 2.8% versus 6.0% with stenting (P=0.02), and 3.7% versus 5.3% with endarterectomy (P=0.24). Early events included seven strokes and one death with stenting versus none medically; nine versus three strokes in the endarterectomy trial.",
+    "result": "The four-year composite of stroke/death through day 44 or later ipsilateral ischemic stroke was 2.8% versus 6.0% with stenting (P=0.02), and 3.7% versus 5.3% with endarterectomy (P=0.24). Early events included seven strokes and one death with stenting versus none medically; nine versus three strokes in the endarterectomy trial. Prespecified cognitive outcomes (2,165 US patients, up to 4 years) did not differ with either procedure (composite z-score differences 0.03 and 0.02).",
     "limits": "Separate trials did not compare stenting directly with endarterectomy. Only certified high-volume operators took part, and 17–18% of medical-therapy patients later underwent revascularization. Results concern selected asymptomatic disease and include procedural harms; they do not establish a universal procedure choice.",
     "sources": [
       {
@@ -1212,6 +1244,22 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-21",
         "access": "PMC full text (PMC13148431) read 2026-10-21; online publication 2025, print issue 2026. Supplement not reviewed."
+      },
+      {
+        "title": "CREST-2 cognitive outcomes",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42747844/",
+        "year": 2026,
+        "type": "Report",
+        "checkedAt": "2026-10-31",
+        "access": "Primary abstract read 2026-10-31; prespecified secondary outcomes of both randomized trials."
+      },
+      {
+        "title": "CREST-H hemodynamic-impairment substudy",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42747834/",
+        "year": 2026,
+        "type": "Report",
+        "checkedAt": "2026-10-31",
+        "access": "Primary abstract read 2026-10-31; randomized substudy of CREST-2."
       }
     ],
     "relatedTopic": "carotid"
@@ -1553,6 +1601,84 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
+      }
+    ],
+    "relatedTopic": "evt-selection"
+  },
+  {
+    "id": "mild-mt",
+    "title": "MILD-MT — thrombectomy for mild stroke with large-vessel occlusion",
+    "headline": "NIHSS <6 LVO (China): mRS 0–1 69.4 vs 50.0%; serious procedural complications 13.2%",
+    "year": 2026,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "EVT",
+      "thrombectomy",
+      "mild stroke",
+      "low NIHSS",
+      "LVO",
+      "perfusion mismatch",
+      "MILD-MT"
+    ],
+    "question": "Does EVT help mild (NIHSS <6) anterior-circulation LVO stroke with a small core and a large perfusion mismatch within 24 hours?",
+    "population": "304 randomized in China (300 in the modified intention-to-treat analysis: 144 EVT, 156 medical) within 24 hours of onset or last known well, with NIHSS <6 and ICA, M1 or M2 occlusion, core ≤50 mL and perfusion mismatch ≥50 mL (protocol); the registry also lists age 18–80, prestroke mRS 0 and ASPECTS ≥6.",
+    "comparison": "EVT plus medical management versus medical management alone.",
+    "result": "mRS 0–1 at 90 days occurred in 69.4% vs 50.0% (OR 2.32; 95% CI 1.41–3.81). Symptomatic ICH within 48 h occurred in 3 patients in each group; serious procedure-related complications occurred in 19 EVT patients (13.2%); one death overall (EVT group).",
+    "limits": "Open-label (blinded endpoint per protocol), single-country and perfusion-selected. It postdates AHA/ASA 2026, whose graded anterior-circulation EVT recommendations require NIHSS ≥6, so it is not a graded recommendation. Serious procedural complications were frequent. Eligibility is from the registry and protocol abstract; the full NEJM report was not reviewed.",
+    "sources": [
+      {
+        "title": "MILD-MT primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42929671/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-31",
+        "access": "PubMed abstract read 2026-10-31; NEJM full text not reachable. Registry eligibility (NCT06179017) read 2026-10-31."
+      },
+      {
+        "title": "MILD-MT protocol",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41974578/",
+        "year": 2026,
+        "type": "Report",
+        "checkedAt": "2026-10-31",
+        "access": "PubMed abstract read 2026-10-31."
+      }
+    ],
+    "relatedTopic": "evt-selection"
+  },
+  {
+    "id": "late-mt",
+    "title": "LATE-MT — thrombectomy 24 to 72 hours after onset",
+    "headline": "24–72 h LVO (China): mRS cOR 1.74; sICH 4.8 vs 0%; 90-day mortality 6.0 vs 1.8%",
+    "year": 2026,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "EVT",
+      "thrombectomy",
+      "very late window",
+      "beyond 24 hours",
+      "CT perfusion",
+      "LVO",
+      "LATE-MT"
+    ],
+    "question": "Does EVT help anterior-circulation LVO with salvageable tissue 24–72 hours after onset or last known well?",
+    "population": "336 patients in the intention-to-treat population (168 per group) at comprehensive stroke centers in China with anterior-circulation LVO and imaging-identified salvageable tissue at 24–72 h (median 38.5 h to randomization). Registry: age ≥18, ICA (including extracranial segment) to M1/M2, NIHSS ≥6 at randomization, major prestroke disability (mRS ≥2) excluded, CTP core <50 mL with mismatch ratio ≥1.8 and mismatch volume ≥15 mL.",
+    "comparison": "EVT plus standard medical care versus standard medical care alone.",
+    "result": "The 90-day mRS distribution favored EVT (common OR 1.74; 95% CI 1.19–2.55). Symptomatic ICH 4.8% vs 0%; 90-day case fatality 6.0% vs 1.8%.",
+    "limits": "Open-label with blinded outcome assessment; single country; CTP selection required. Benefit came with more intracranial hemorrhage and death. Postdates AHA/ASA 2026, whose graded EVT recommendations extend only to 24 h; not a graded recommendation. Eligibility is from the registry; the full NEJM report was not reviewed.",
+    "sources": [
+      {
+        "title": "LATE-MT primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42929656/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-31",
+        "access": "PubMed abstract read 2026-10-31; NEJM full text not reachable. Registry eligibility (NCT05326932) read 2026-10-31."
       }
     ],
     "relatedTopic": "evt-selection"
@@ -1913,7 +2039,7 @@
     "population": "12,327 patients within 72 hours of noncardioembolic ischemic stroke or high-risk TIA with atherosclerosis or nonlacunar infarct.",
     "comparison": "Asundexian 50 mg daily versus placebo, on top of single or dual antiplatelet therapy.",
     "result": "Ischemic stroke 6.2% vs 8.4% (cause-specific HR 0.74; 95% CI 0.65–0.84). Major bleeding 1.9% vs 1.7% (HR 1.10; 95% CI 0.85–1.44); lower gastrointestinal bleeding 1.7% vs 1.0% (csHR 1.75).",
-    "limits": "Industry-funded; regulatory status and availability are separate questions. Asundexian was inferior to apixaban in AF (OCEANIC-AF).",
+    "limits": "Industry-funded; regulatory status and availability are separate questions. Asundexian was inferior to apixaban in AF (OCEANIC-AF). Milvexian, a different factor XIa inhibitor, was stopped for futility after acute coronary syndrome (LIBREXIA-ACS: cardiovascular death, MI or ischemic stroke 5.4 vs 5.1%; HR 1.05). Its stroke trial (LIBREXIA-STROKE) had not reported as of October 2026.",
     "sources": [
       {
         "title": "OCEANIC-STROKE primary report",
@@ -1930,6 +2056,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "LIBREXIA-ACS (milvexian after acute coronary syndrome)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42670965/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-31",
+        "access": "Primary abstract read 2026-10-31; ACS population, not stroke. LIBREXIA-STROKE registry NCT05702034 checked 2026-10-31: active, not recruiting, no results."
       }
     ],
     "relatedTopic": "research-adjuncts"
@@ -1953,7 +2087,7 @@
     "population": "514 patients given IVT within 3 hours at 57 US sites; 44% had EVT.",
     "comparison": "Argatroban or eptifibatide versus placebo, within 75 minutes of thrombolysis.",
     "result": "Neither improved utility-weighted mRS (0–10): 5.2 with argatroban, 6.3 with eptifibatide, 6.8 with placebo. Symptomatic ICH 4%, 3% and 2%; mortality 24%, 12% and 8%.",
-    "limits": "Adaptive design with a small argatroban arm; results do not support routine adjunctive antithrombotics.",
+    "limits": "Adaptive design with a small argatroban arm; results do not support routine adjunctive antithrombotics. In the prespecified thrombectomy cohort (254 planned for EVT), neither agent improved reperfusion or 90-day outcome.",
     "sources": [
       {
         "title": "MOST primary report",
@@ -1962,6 +2096,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-21",
         "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "MOST thrombectomy-cohort analysis (preplanned)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/40824660/",
+        "year": 2025,
+        "type": "Report",
+        "checkedAt": "2026-10-31",
+        "access": "PubMed abstract read 2026-10-31 (PMC12362272 not read)."
       }
     ],
     "relatedTopic": "research-adjuncts"
@@ -2052,7 +2194,7 @@
     "population": "886 patients with NIHSS 0–5 and intracranial occlusion or focal perfusion abnormality at 48 hospitals in 10 countries, enrolled within 12 hours.",
     "comparison": "Tenecteplase 0.25 mg/kg versus non-thrombolytic standard care.",
     "result": "Return to baseline mRS at 90 days occurred in 72% vs 75% (RR 0.96; 95% CI 0.88–1.04). Deaths 5% vs 1% (adjusted HR 3.8; 1.4–10.2); symptomatic ICH 2% vs <1%.",
-    "limits": "Stopped early for futility; open-label.",
+    "limits": "Stopped early for futility; open-label. In a secondary analysis (JAMA Neurol 2025), the 100 patients with disabling deficits (TREAT Task Force definition) showed no benefit either (return to baseline 54.7 vs 68.1%; aRR 0.81, 0.60–1.10; interaction P=.32), but most were treated after 4.5 h (median onset to treatment 411 min), so it says little about disabling deficits within 4.5 h. A prespecified analysis by baseline occlusion (Eur Stroke J 2026; 881 patients) found no benefit with complete occlusion (aRR 1.00, 0.89–1.12), near occlusion (0.85, 0.71–1.01) or a perfusion deficit without visible occlusion (1.03, 0.90–1.18); it was not powered for subgroups, and most occlusions were medium-vessel (LVO about 1 in 6), so it says little about minor stroke with LVO.",
     "sources": [
       {
         "title": "TEMPO-2 primary report",
@@ -2061,6 +2203,22 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-17",
         "access": "Primary abstract verified via PubMed."
+      },
+      {
+        "title": "TEMPO-2 secondary analysis by disabling deficit (TREAT Task Force definition)",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41143808/",
+        "year": 2025,
+        "type": "Report",
+        "checkedAt": "2026-10-31",
+        "access": "Primary abstract read via PubMed on 2026-10-31; secondary analysis of the original randomized population (884 analyzed), not a new trial; PMC full text (PMC12560024) not reviewed."
+      },
+      {
+        "title": "TEMPO-2 secondary analysis by baseline occlusion status",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42734928/",
+        "year": 2026,
+        "type": "Report",
+        "checkedAt": "2026-10-31",
+        "access": "PMC full text (PMC13573578) read 2026-10-31; prespecified secondary analysis of the original randomized population, not a new trial."
       }
     ],
     "relatedTopic": "minor-stroke-antiplatelets"
@@ -2117,7 +2275,7 @@
     "question": "How did anticoagulation affect stroke and bleeding in subclinical AF?",
     "population": "4,012 participants with subclinical AF lasting six minutes to 24 hours; mean CHA₂DS₂-VASc 3.9.",
     "comparison": "Apixaban versus aspirin; trial therapy stopped and anticoagulation begun if AF exceeded 24 hours or clinical AF developed.",
-    "result": "Over mean follow-up of 3.5 years, stroke or systemic embolism was 0.78% versus 1.24% per patient-year (hazard ratio 0.63; 95% CI 0.45–0.88; intention-to-treat). Major bleeding was 1.71% versus 0.94% per patient-year (hazard ratio 1.80; 95% CI 1.26–2.57; on-treatment).",
+    "result": "Over mean follow-up of 3.5 years, stroke or systemic embolism was 0.78% versus 1.24% per patient-year (hazard ratio 0.63; 95% CI 0.45–0.88; intention-to-treat). Major bleeding was 1.71% versus 0.94% per patient-year (hazard ratio 1.80; 95% CI 1.26–2.57; on-treatment). Prespecified subanalyses: with prior stroke or TIA (346 patients; intention to treat), stroke or systemic embolism was 1.20 vs 3.14% per year (HR 0.40; 95% CI 0.17–0.95) and major bleeding 2.26 vs 1.16% per year (HR 1.94; 95% CI 0.77–4.87). In the on-treatment bleeding analysis, intracranial (0.33 vs 0.40 per 100 patient-years; HR 0.82) and fatal bleeding were similar, gastrointestinal bleeding was higher with apixaban (0.89 vs 0.40; HR 2.23), and most major bleeds were nonemergency hemoglobin drops of ≥2 g/dL.",
     "limits": "Benefit and harm use different analysis populations. These are annualized rates, not cumulative risks; findings concern selected subclinical AF and require individualized risk assessment.",
     "sources": [
       {
@@ -2127,6 +2285,22 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract and indexed notices checked."
+      },
+      {
+        "title": "ARTESiA prior stroke or TIA subgroup",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39862882/",
+        "year": 2025,
+        "type": "Report",
+        "checkedAt": "2026-10-31",
+        "access": "PubMed abstract read 2026-10-31; prespecified subgroup (346 participants), intention to treat."
+      },
+      {
+        "title": "ARTESiA major bleeding subanalysis",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/41222953/",
+        "year": 2025,
+        "type": "Report",
+        "checkedAt": "2026-10-31",
+        "access": "PubMed abstract read 2026-10-31 (PMC12613090 not read); prespecified on-treatment subanalysis (3,961 patients)."
       }
     ],
     "relatedTopic": "af-prevention"
@@ -2460,7 +2634,7 @@
     "population": "306 randomized patients with large-vessel ischemic stroke, mTICI ≥2b reperfusion and SBP ≥140 mmHg on two readings within 2 h of recanalization, at 19 South Korean centers; 305 were confirmed eligible.",
     "comparison": "SBP <140 versus 140–180 mmHg for 24 hours after enrollment.",
     "result": "Three-month independence (mRS 0–2) was 39.4% versus 54.4% (adjusted OR 0.56; 95% CI 0.33–0.96). Symptomatic ICH was 9.0% versus 8.1%; the difference was not significant. Stroke-related death was 7.7% versus 5.4%, also not significantly different.",
-    "limits": "Stopped early for safety concerns. The result concerns the tested lowering strategy after successful reperfusion; it does not establish a universal target for unsuccessful EVT or individualized reperfusion-guided management.",
+    "limits": "Stopped early for safety concerns. The result concerns the tested lowering strategy after successful reperfusion; it does not establish a universal target for unsuccessful EVT or individualized reperfusion-guided management. At 1 year (Stroke 2026; 294 of 306 followed), mRS 0–2 was 40.5% with SBP <140 vs 52.7% with 140–180 (adjusted OR 0.59; 95% CI 0.34–1.00; P=.051; per-protocol 41.1 vs 54.7%, adjusted OR 0.56; 95% CI 0.32–0.97); 1-year mortality did not differ.",
     "sources": [
       {
         "title": "OPTIMAL-BP primary report",
@@ -2469,6 +2643,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract and indexed notices checked."
+      },
+      {
+        "title": "OPTIMAL-BP 1-year outcomes",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42212393/",
+        "year": 2026,
+        "type": "Report",
+        "checkedAt": "2026-10-31",
+        "access": "PubMed abstract read 2026-10-31; 1-year follow-up extension of the original randomized population (294 of 306 completed)."
       }
     ],
     "relatedTopic": "acute-bp"
@@ -2728,7 +2910,7 @@
     "population": "537 ICH survivors previously taking antithrombotic therapy for occlusive vascular disease; randomized a median of 76 days after ICH.",
     "comparison": "Start versus avoid antiplatelet therapy.",
     "result": "Over a median two years, recurrent symptomatic ICH occurred in 12/268 (4%) versus 23/268 (9%) (adjusted HR 0.51; 95% CI 0.25–1.03). Major hemorrhagic events were 7% versus 9%; major occlusive events were 15% versus 14%, without significant differences.",
-    "limits": "The confidence interval does not prove antiplatelets prevent recurrent ICH. This selected survivor cohort does not establish immediate restart timing, safety for every CAA phenotype, or anticoagulant resumption.",
+    "limits": "The confidence interval does not prove antiplatelets prevent recurrent ICH. This selected survivor cohort does not establish immediate restart timing, safety for every CAA phenotype, or anticoagulant resumption. The smaller STATICH-Antiplatelets trial (Stroke 2026; 69 ICH survivors with an antiplatelet indication; stopped early for slow recruitment) had numerically more recurrent ICH with antiplatelets (5/34 [15%] vs 1/35 [3%]) and fewer major ischemic events (3/34 [9%] vs 7/35 [20%]), with wide confidence intervals.",
     "sources": [
       {
         "title": "RESTART primary report",
@@ -2737,6 +2919,14 @@
         "type": "Randomized trial",
         "checkedAt": "2026-10-01",
         "access": "Primary abstract and indexed notices checked."
+      },
+      {
+        "title": "STATICH-Antiplatelets randomized trial",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42312355/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-10-31",
+        "access": "PubMed abstract read 2026-10-31; full text not read. Stopped early for slow recruitment (69 of 500 planned)."
       }
     ],
     "relatedTopic": "caa-ich-recurrence"

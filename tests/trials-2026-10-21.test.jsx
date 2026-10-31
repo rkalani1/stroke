@@ -47,30 +47,31 @@ const crit = (acronym, field, operator) => {
   return found;
 };
 
-describe('registry re-verification on 2026-10-21', () => {
-  // Overall status of each full record read with get_trial_details on 2026-10-21.
+describe('registry re-verification on 2026-10-21 (statuses and dates rechecked 2026-10-31)', () => {
+  // Overall status of each full record read with get_trial_details on 2026-10-21; unchanged at the 2026-10-31 recheck.
   const status = { STEP: 'RECRUITING', SISTER: 'RECRUITING', PICASSO: 'RECRUITING', TESTED: 'RECRUITING', MINUTE: 'RECRUITING', 'FASTEST-2': 'RECRUITING', CLARITY: 'NOT_YET_RECRUITING', INTERCEPT: 'RECRUITING', ASPIRE: 'RECRUITING', SATURN: 'RECRUITING', 'CAPPRICORN-1': 'ACTIVE_NOT_RECRUITING', 'SCOUTS-3': 'RECRUITING', VERIFY: 'RECRUITING', 'MR-PICS': 'RECRUITING', 'TELE-REHAB-2': 'RECRUITING', CAPTIVA: 'ACTIVE_NOT_RECRUITING' };
-  // Exact-day AREA[LastUpdatePostDate] queries on 2026-10-21: three records changed after 2026-10-17.
-  const lastUpdate = { STEP: '2025-12-04', SISTER: '2026-10-19', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', 'FASTEST-2': '2026-08-20', CLARITY: '2026-10-15', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-09', CAPTIVA: '2026-10-20' };
+  // Exact-day AREA[LastUpdatePostDate] queries rerun on 2026-10-31: a RANGE[2026-10-21,MAX] query over all 16 NCT IDs
+  // returned only CLARITY, TELE-REHAB-2 and CAPTIVA (each last updated 2026-10-26); the other 13 dates matched exactly.
+  const lastUpdate = { STEP: '2025-12-04', SISTER: '2026-10-19', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', 'FASTEST-2': '2026-08-20', CLARITY: '2026-10-26', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-26', CAPTIVA: '2026-10-26' };
 
   it('records the re-read date, status and last update of all 16 profiles consistently', () => {
     expect(screenerTrials.map(t => t.acronym).sort()).toEqual(Object.keys(status).sort());
     for (const t of screenerTrials) {
       const m = t.externalMetadata;
-      expect(m.verificationDate, t.acronym).toBe('2026-10-21');
+      expect(m.verificationDate, t.acronym).toBe('2026-10-31');
       expect(m.registryStatus, t.acronym).toBe(status[t.acronym]);
       expect(m.registryLastUpdatePosted, t.acronym).toBe(lastUpdate[t.acronym]);
-      expect(t.sourceGaps.filter(g => g.startsWith('Registry status rechecked 2026-10-21: ' + status[t.acronym] + '; last update posted ' + lastUpdate[t.acronym] + ' (recorded 2026-10-21).')), t.acronym).toHaveLength(1);
+      expect(t.sourceGaps.filter(g => g.startsWith('Registry status rechecked 2026-10-31: ' + status[t.acronym] + '; last update posted ' + lastUpdate[t.acronym] + ' (recorded 2026-10-31).')), t.acronym).toHaveLength(1);
       expect(JSON.stringify(t), t.acronym).not.toMatch(/2026-10-17/);
     }
-    expect(registryCheckLabel(screenerTrials.map(t => t.externalMetadata.verificationDate))).toBe('registry checked 2026-10-21');
+    expect(registryCheckLabel(screenerTrials.map(t => t.externalMetadata.verificationDate))).toBe('registry checked 2026-10-31');
   });
 
   it('keeps the recruiting statuses as registry statuses, never local availability', () => {
     for (const t of screenerTrials.filter(screenable)) expect(enrollmentLabel(t), t.acronym).toMatch(/\(registry\)$/);
     expect(enrollmentLabel(trial('CAPPRICORN-1'))).toBe('Not enrolling (active, not recruiting)');
-    const html = renderToStaticMarkup(<TrialSourceContext trial={trial('SISTER')} now={new Date(2026, 9, 21, 9).getTime()} />);
-    expect(html).toMatch(/Recorded registry check: <time [^>]*>2026-10-21<\/time> \(today\)/);
+    const html = renderToStaticMarkup(<TrialSourceContext trial={trial('SISTER')} now={new Date(2026, 9, 31, 9).getTime()} />);
+    expect(html).toMatch(/Recorded registry check: <time [^>]*>2026-10-31<\/time> \(today\)/);
     expect(html).toContain('Last update posted, as recorded at that check: 2026-10-19; the live record may be newer.');
     expect(html).toContain('Local activation: not confirmed here.');
   });
@@ -93,7 +94,7 @@ describe('profile corrections from the registry text read on 2026-10-21', () => 
   });
 
   it('TELE-REHAB-2 lists its baseline tests and remaining exclusions to confirm (NCT06682429)', () => {
-    // Inclusion 3-6: "Action Research Arm Test score 18-44"; "Box & Block Test score with affected arm is ≥1 block in 60 seconds";
+    // Inclusion 3-6 (record read 2026-10-31): "Action Research Arm Test score 14-44 (out of 57) at Baseline Visit 1"; "Box & Block Test score with affected arm is ≥1 block in 60 seconds";
     // exclusions 4, 5, 15-18: "Geriatric Depression Scale Score >10/15", "Montreal Cognitive Assessment score <22",
     // "lacks sufficient English or Spanish", "within 1.5-hr drive of the central study site", "Contraindication to MRI", "isolation precautions".
     const facts = { classification: 'ischemic', onsetVal: 120, onsetUnit: 'days', age: 60, preMrs: 1, ueWeakness: true, self_consent: true,
@@ -102,7 +103,7 @@ describe('profile corrections from the registry text read on 2026-10-21', () => 
     expect(r.status).toBe('pending');
     expect(r.completeness).toBe('potential-match');
     const c = toConfirm(r).join(' ');
-    for (const re of [/ARAT 18–44/, /Box & Block ≥ 1 block in 60 s/, /no surrogate consent/, /GDS > 10\/15/, /MoCA < 22/, /English or Spanish/, /1\.5-hour drive/, /MRI contraindication/, /isolation precautions/, /Negative pregnancy test required if of child-bearing potential/]) expect(c).toMatch(re);
+    for (const re of [/ARAT 14–44/, /Box & Block ≥ 1 block in 60 s/, /no surrogate consent/, /GDS > 10\/15/, /MoCA < 22/, /English or Spanish/, /1\.5-hour drive/, /MRI contraindication/, /isolation precautions/, /Negative pregnancy test required if of child-bearing potential/]) expect(c).toMatch(re);
     expect(trial('TELE-REHAB-2').exactExclusionCriteria.join(' ')).toMatch(/pregnant/);
   });
 
@@ -193,9 +194,13 @@ describe('criterion boundaries follow the registry wording', () => {
     ['MR-PICS', 'currentMrs', 'in', { currentMrs: 3 }, 'met', '"between 3 and 4 on the modified Rankin Scale"'], ['MR-PICS', 'currentMrs', 'in', { currentMrs: 5 }, 'not met', ''],
     ['MR-PICS', 'onsetDays', '>=', { onsetVal: 184, onsetUnit: 'days' }, 'met', '"Minimum 6 months" (≥ 184 days covers any 6 calendar months)'],
     ['MR-PICS', 'onsetDays', '>=', { onsetVal: 183.9, onsetUnit: 'days' }, 'before window', ''],
-    ['TELE-REHAB-2', 'onsetDays', 'between', { onsetVal: 90, onsetUnit: 'days' }, 'met', '"120±30 days prior to randomization"'], ['TELE-REHAB-2', 'onsetDays', 'between', { onsetVal: 150, onsetUnit: 'days' }, 'met', ''],
-    ['TELE-REHAB-2', 'onsetDays', 'between', { onsetVal: 89, onsetUnit: 'days' }, 'before window', ''], ['TELE-REHAB-2', 'onsetDays', 'between', { onsetVal: 151, onsetUnit: 'days' }, 'not met', ''],
-    ['TELE-REHAB-2', 'age', 'between', { age: 80 }, 'met', '"Age 18-80 years"'], ['TELE-REHAB-2', 'age', 'between', { age: 81 }, 'not met', ''],
+    // TELE-REHAB-2 limits from the record read 2026-10-31 (last update posted 2026-10-26); earlier record: 120±30 days, age 18-80.
+    ['TELE-REHAB-2', 'onsetDays', 'between', { onsetVal: 90, onsetUnit: 'days' }, 'met', '"onset 90-270 days prior to randomization"'], ['TELE-REHAB-2', 'onsetDays', 'between', { onsetVal: 270, onsetUnit: 'days' }, 'met', ''],
+    ['TELE-REHAB-2', 'onsetDays', 'between', { onsetVal: 89, onsetUnit: 'days' }, 'before window', ''], ['TELE-REHAB-2', 'onsetDays', 'between', { onsetVal: 271, onsetUnit: 'days' }, 'not met', ''],
+    ['TELE-REHAB-2', 'onsetDays', 'between', { onsetVal: 151, onsetUnit: 'days' }, 'met', 'inside the widened window'],
+    ['TELE-REHAB-2', 'age', 'between', { age: 85 }, 'met', '"Age 18-85 years at the time of randomization"'], ['TELE-REHAB-2', 'age', 'between', { age: 86 }, 'not met', ''],
+    ['TELE-REHAB-2', 'age', 'between', { age: 17 }, 'not met', ''], ['TELE-REHAB-2', 'age', 'between', {}, 'unknown', 'age not entered'],
+    ['TELE-REHAB-2', 'onsetDays', 'between', {}, 'unknown', 'onset not entered'],
     ['TELE-REHAB-2', 'preMrs', '<=', { preMrs: 2 }, 'met', '"Modified Rankin Scale score was >2" excluded'], ['TELE-REHAB-2', 'preMrs', '<=', { preMrs: 3 }, 'not met', '']
   ];
   it.each(cases)('%s %s %s %j → %s %s', (acronym, field, operator, facts, expected) => {
@@ -527,7 +532,7 @@ describe('answering every modeled fact with registry-consistent values (TR-11 fo
     { unilateralSymptomatic: [false, 'Requires unilateral symptomatic AIS'], ueWeakness: [false, 'Requires upper extremity motor weakness'], self_consent: [false, 'Patient must be able to self-consent'], language: ['other', 'Must be English or Spanish speaking'] }, /SAFE score ≤8/],
     ['TELE-REHAB-2', { classification: 'ich', onsetVal: 150, onsetUnit: 'days', age: 80, preMrs: 2, ueWeakness: true, self_consent: true,
       exclusions: absent('exRecurrentStroke', 'exRecentStroke30d', 'exLifeExpectancy9m', 'exBotoxVns3m', 'exPregnancy') },
-    { ueWeakness: [false, 'Requires moderate upper extremity weakness'], self_consent: [false, 'Patient must be able to self-consent'] }, /ARAT 18–44/],
+    { ueWeakness: [false, 'Requires moderate upper extremity weakness'], self_consent: [false, 'Patient must be able to self-consent'] }, /ARAT 14–44/],
     ['MR-PICS', { classification: 'ischemic', onsetVal: 184, onsetUnit: 'days', age: 75, currentMrs: '4', ueWeakness: true, availability_54w: true,
       exclusions: absent('exTherapeuticAnticoagulation', 'exHistoryDvtPe', 'exSeizures', 'exSpontaneousHemorrhagicStroke', 'exPregnancy', 'exMrPicsCommunication') },
     { currentMrs: ['2', 'Current (post-stroke) mRS must be 3 or 4'], ueWeakness: [false, 'Requires moderate unilateral upper extremity weakness'], availability_54w: [false, 'Requires availability for 54 weeks of visits'] }, /UEFM 25-45/],
