@@ -799,11 +799,11 @@
     "acronym": "CLARITY",
     "exactFullStudyName": "Cilostazol for Prevention of Recurrent Stroke Trial",
     "sourceHypothesisText": "A Phase 3 randomized, placebo-controlled trial testing whether cilostazol 100 mg added to usual antithrombotic therapy reduces ischemic stroke, acute myocardial infarction or ischemic vascular death after ischemic stroke or high-risk TIA (ABCD2 score ≥ 6) within 180 days.",
-    "status": "soon",
+    "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
       "CT.gov eligibility (re-read 2026-10-31; last update posted 2026-10-26; criteria still match the stored wording) requires high-risk TIA (ABCD2 score ≥ 6) and ≥ 2 listed vascular risk factors; ABCD2 is asked as a confirmation question and the risk factors are listed for confirmation, not modeled.",
-      "Registry status rechecked 2026-10-31: NOT_YET_RECRUITING; last update posted 2026-10-26 (recorded 2026-10-31). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified.",
+      "Registry status rechecked 2026-10-31: NOT_YET_RECRUITING; last update posted 2026-10-26 (recorded 2026-10-31). The app shows the study as recruiting from 2026-10-31 on the maintainer's report, ahead of the registry record (start date 2026-10); confirm current recruitment, local site activation and consent requirements with the study team.",
       "Before this update the profile recorded the registry version first posted 2025-09-16 (aspirin or clopidogrel, not both; no atrial fibrillation exclusion). Version history was not accessible, so when the eligibility text changed is unverified. Confirm current antithrombotic eligibility with the study team."
     ],
     "timeCategory": "subacute_chronic",

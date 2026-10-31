@@ -23,7 +23,7 @@ const Reference = lazy(() => import('./Reference.jsx').then(module => ({ default
 const Tools = lazy(() => import('./Tools.jsx'));
 const QuickSearch = lazy(() => import('./components/QuickSearch.jsx'));
 const QuickReference = lazy(() => import('./components/QuickReference.jsx'));
-const APP_VERSION = '7.10.0';
+const APP_VERSION = '7.10.1';
 const getPublicDemoMode = () => {
   if (BUILD_PUBLIC_DEMO) return true;
   return /(^|\.)github\.io$/i.test(window.location.hostname || '');

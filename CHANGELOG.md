@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v7.10.1 — 2026-10-31 — CLARITY shown as recruiting
+
+- **Trials screener:** CLARITY (NCT07174414, cilostazol after ischemic stroke or high-risk TIA) is shown as recruiting on the maintainer's report, so it is now screened rather than listed under Later. ClinicalTrials.gov still listed the study as NOT_YET_RECRUITING (start date 2026-10; last update posted 2026-10-26) when rechecked on 2026-10-31, so its status reads "Recruiting (registry not yet updated)", the card keeps the registry status, and the copied screening summary names the exception. Eligibility criteria are unchanged; confirm current recruitment, local site activation and consent requirements with the study team.
+
 ## v7.10.0 — 2026-10-31 — Evidence-currency update (outside the Protocols tab)
 
 Seven domain sweeps searched for guidelines, trials and label changes published or presented from January 2025 to 31 October 2026 that the Evidence and Trials content did not yet reflect. An independent verifier re-read every source and accepted, corrected or rejected each proposal; a further verified pass covered items the verifiers said were missed, and two independent reviews checked the applied diff. Every change, its source, the access level and the supporting passage is in [docs/evidence-ledger-2026-10-31.md](docs/evidence-ledger-2026-10-31.md). The Protocols tab is unchanged; findings that bear on it are reported for the owner in [docs/protocols-review-notes-2026-10.md](docs/protocols-review-notes-2026-10.md). Guideline grades are unchanged; evidence newer than a guideline is labelled as postdating it and carries no grade; no conference-only result is used.
