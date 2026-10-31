@@ -22,8 +22,8 @@ const SCOPE = ['af-timing', 'secondary-prevention', 'pfo', 'carotid', 'sicas', '
 
 describe('prevention evidence cards (2026-10-21 review)', () => {
   it('still validates against the reference contract at the review date', () => {
-    // Review cutoff moved to 2026-10-22: the evidence-fixes pass re-read and re-dated sources that day.
-    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
   });
 
   it('keeps every quoted recommendation on its archived class and level of evidence', () => {
@@ -199,7 +199,8 @@ describe('prevention evidence cards (2026-10-21 review)', () => {
     const oceanic = study('oceanic-stroke');
     expect(oceanic.result).toContain('Ischemic stroke 6.2% vs 8.4%');
     expect(oceanic.result).toContain('lower gastrointestinal bleeding 1.7% vs 1.0% (csHR 1.75)');
-    expect(urls(oceanic)).toEqual([pubmed('41985132'), pubmed('42866879')]);
+    // Currency 2026-10-31 (secondary-prevention#8): + LIBREXIA-ACS (PMID 42670965) for the milvexian limits sentence.
+    expect(urls(oceanic)).toEqual([pubmed('41985132'), pubmed('42866879'), pubmed('42670965')]);
   });
 
   it('dates only re-read sources to the review day and says what was read', () => {

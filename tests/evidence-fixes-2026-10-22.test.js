@@ -33,7 +33,8 @@ function innerSentenceEnds(text) {
 
 describe('evidence-fixes 2026-10-22: structure', () => {
   it('validates against the reference contract on the review date', () => {
-    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
   });
 
   it('keeps every Evidence bottom line a single sentence that ends cleanly', () => {
@@ -63,7 +64,8 @@ describe('evidence-fixes 2026-10-22: high-severity items', () => {
     expect(topic('ich-management').summary).toContain('Do not acutely lower SBP below 130 in mild-to-moderate ICH presenting with SBP >150 (AHA 2022, harm;');
     // ESO/EANS 2025 PICO 2 consensus (archive): caution with SBP >220, hematoma >30 mL or planned evacuation (R1-60/61).
     expect(topic('ich-management').caution).toBe('Intensive targets are less certain with SBP >220 mm Hg, hematomas >30 mL or planned evacuation; avoid SBP drops >70 mm Hg or below 110 (ESO 2025 consensus).');
-    expect(coverage('eso-ich-2025')).toMatchObject({ checkedAt: '2026-10-22' });
+    // Re-dated 2026-10-31: abstract and plain-language summary re-read for the ICH surgery card; BP consensus still from the archive.
+    expect(coverage('eso-ich-2025')).toMatchObject({ checkedAt: '2026-10-31' });
     expect(coverage('eso-ich-2025').access).toContain('from the archived transcription');
   });
 
@@ -235,6 +237,11 @@ describe('evidence-fixes 2026-10-22: medium-severity card content', () => {
     expect(source(topic('preexisting-disability'), '35343235').access).toContain('proposes principles rather than COR/LOE-graded recommendations');
     expect(topic('visual-recovery').related.map(link => link.href)).toContain('#/evidence/retinal-ischemia');
     expect(topic('cancer-stroke').keywords).toContain('cancer evaluation');
-    expect(read('src/reference/coverage.json')).toHaveLength(110);
+    // Currency 2026-10-31 (ivt-acute) added the ESO annual evidence update 2025 and the WSO telestroke statement;
+    // (evt-acute-bp) added the CSBPR EVT interim update 2025; (hemorrhagic) added the ERA KDIGO ADPKD commentary;
+    // (cardioembolic) added the AHA 2026 endocarditis statement, the 2025 SCAI/HRS LAAO guideline and the WSO 2025 AF statement;
+    // (recovery-populations) added CSBPR 2025 rehabilitation Parts One and Three, the WSO 2025 sex/gender statement, IPSO pediatric
+    // ICH Parts 1 and 2, the VasCog-2-WSO criteria and the AHA 2026 health literacy statement.
+    expect(read('src/reference/coverage.json')).toHaveLength(124);
   });
 });

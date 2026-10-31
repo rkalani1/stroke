@@ -19,8 +19,8 @@ const ais2026 = id => read('src/guidelines/ais-2026.json').recommendations.find(
 
 describe('rehabilitation and recovery cards (2026-10-21 review)', () => {
   it('validates against the reference contract at the review date', () => {
-    // Review cutoff moved to 2026-10-22: the evidence-fixes pass re-read and re-dated sources that day.
-    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
   });
 
   it('attributes recovery grades to AIS 2026 and keeps the SSRI grade as No Benefit', () => {
@@ -37,8 +37,10 @@ describe('rehabilitation and recovery cards (2026-10-21 review)', () => {
     // PMID 42657476 abstract: published 2026-08-27; no PMC copy, so its recommendations are not quoted.
     expect(card.caution).toContain('the August 2026 AHA/ASA rehabilitation guideline was not reviewed');
     const coverage = read('src/reference/coverage.json').find(entry => entry.id === 'aha-stroke-rehabilitation-2026');
-    // PubMed record and abstract re-read on 2026-10-22 (evidence-fixes R1-04/05).
-    expect(coverage).toMatchObject({ checkedAt: '2026-10-22', url: pubmed('42657476') });
+    // PubMed record and abstract re-read on 2026-10-22 (evidence-fixes R1-04/05); re-checked 2026-10-31 (currency
+    // recovery-populations#9), when the 2026-10-26 correction (PMID 42932410, content not reviewed) was recorded.
+    expect(coverage).toMatchObject({ checkedAt: '2026-10-31', url: pubmed('42657476') });
+    expect(coverage.access).toContain('A correction was published 2026-10-26 (PMID 42932410');
     expect(coverage.access).toContain('replaces the 2016 guideline');
     expect(coverage.access).toContain('recommendations not reviewed or quoted');
   });
@@ -185,8 +187,8 @@ describe('specific-population cards (2026-10-21 review)', () => {
     expect(card.caution).toContain('the lecanemab AUR advises stopping infusions');
     expect(source(card, '37357276').access).toContain('PMC10313141');
     expect(source(card, '40155270').access).toContain('PMC12180672');
-    // The 2026 AHA ARIA Summit proceedings were read at abstract scope only.
-    expect(source(card, '42622140').access).toBe('Abstract only; full text not accessible.');
+    // Currency 2026-10-31 (secondary-prevention#0): the 2026 AHA ARIA Summit proceedings are now read in PMC full text.
+    expect(source(card, '42622140')).toMatchObject({ checkedAt: '2026-10-31', access: expect.stringContaining('PMC full text (PMC13695822) read 2026-10-31') });
   });
 
   it('keeps the sickle cell IVT grade and links goals of care to neuroprognostication', () => {

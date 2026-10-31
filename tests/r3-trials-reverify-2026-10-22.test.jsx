@@ -254,7 +254,7 @@ describe('VERIFY and TELE-REHAB-2 read their own earlier-stroke items (rv-regist
     expect(reads('TELE-REHAB-2')).not.toContain('exVerifyStroke30d');
   });
   it('at 48 h, an earlier asymptomatic stroke recorded for TELE-REHAB-2 does not exclude VERIFY', () => {
-    // Both studies are active at 48 h: VERIFY inside 24-96 h, TELE-REHAB-2 before its 90-150 day window.
+    // Both studies are active at 48 h: VERIFY inside 24-96 h, TELE-REHAB-2 before its 90-270 day window.
     const state = S({ classification: 'ischemic', onsetVal: 48, age: 60, unilateralSymptomatic: true, ueWeakness: true, self_consent: true, language: 'english',
       exclusions: { exRecentStroke30d: true, exVerifyStroke30d: false } });
     expect(refinerItems(state).map(i => i.id)).toEqual(expect.arrayContaining(['exVerifyStroke30d', 'exRecentStroke30d']));

@@ -19,7 +19,8 @@ const coverage = id => read('src/reference/coverage.json').find(entry => entry.i
 
 describe('r3 ev-prevrec: reference contract', () => {
   it('validates on the review date', () => {
-    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
   });
 });
 
@@ -105,7 +106,7 @@ describe('r3 ev-prevrec: recovery, inpatient and antiamyloid cards', () => {
     expect(card.related).toContainEqual({ label: 'Acute BP context', href: '#/evidence/acute-bp' });
   });
 
-  it('limits the antiplatelet allowance to monotherapy and discloses the checklist tier and the unread AHA summit', () => {
+  it('limits the antiplatelet allowance to monotherapy and discloses the checklist tier and the AHA summit guidance', () => {
     const card = topic('antiamyloid-vascular-risk');
     // Donanemab AUR (PMC12180672) 5.2: "standard doses of monotherapy ..."; "insufficient safety data ... dual anti-platelet therapy".
     expect(card.caution).toContain('standard-dose antiplatelet monotherapy is allowed, but the donanemab AUR makes no recommendation on dual antiplatelet therapy (insufficient safety data)');
@@ -116,8 +117,12 @@ describe('r3 ev-prevrec: recovery, inpatient and antiamyloid cards', () => {
     const absolute = SAFETY_TIERS.find(([tier]) => tier === 'absolute')[1].map(item => item.id);
     expect(absolute).toContain('lecanemab');
     expect(fs.readFileSync(new URL('../src/Encounter.jsx', import.meta.url), 'utf8')).toContain("absolute: 'Generally contraindicated'");
-    // PMID 42622140: no PMCID; abstract only.
-    expect(card.caution).toContain('The August 2026 AHA ARIA Summit statement was read at abstract level only and is not reflected here.');
+    // Currency 2026-10-31 (secondary-prevention#0): PMID 42622140 full text now read (PMC13695822); the summit's
+    // consensus-based, ungraded guidance replaces the abstract-only disclosure.
+    expect(card.caution).not.toContain('read at abstract level only');
+    expect(card.caution).toContain('The AHA ARIA Summit proceedings (JAHA, August 2026; consensus-based, ungraded)');
+    expect(card.caution).toContain('Thrombolytic order sets should list antiamyloid therapy as a relative contraindication.');
+    expect(card.caution).toContain('thrombolysis without MRI may be considered in consultation with neurology and radiology, although its safety is not established');
     expect(source(card, '40155270').access).toContain('no recommendation on dual therapy');
   });
 
@@ -125,7 +130,9 @@ describe('r3 ev-prevrec: recovery, inpatient and antiamyloid cards', () => {
     // PMID 42657476 abstract: "Key updates include new and revised recommendations ... safe return to work and driving."
     expect(topic('motor-recovery').caution).toContain('The August 2026 AHA/ASA rehabilitation guideline was not reviewed.');
     expect(topic('driving-work').caution).toContain('The August 2026 AHA/ASA rehabilitation guideline, which revises return-to-work and driving recommendations, was not reviewed.');
-    expect(coverage('aha-stroke-rehabilitation-2026').topicIds).toEqual(['recovery', 'motor-recovery', 'driving-work']);
+    // Currency 2026-10-31 (recovery-populations#9): the abstract lists fall prevention, comorbidities and caregiver support among
+    // key updates, so the unreviewed-guideline access note now also shows on the psychosocial and primary-care cards.
+    expect(coverage('aha-stroke-rehabilitation-2026').topicIds).toEqual(['recovery', 'motor-recovery', 'driving-work', 'psychosocial-recovery', 'poststroke-primary-care']);
     for (const id of ['motor-recovery', 'driving-work']) expect(source(topic(id), '42657476'), id).toBeTruthy();
   });
 });

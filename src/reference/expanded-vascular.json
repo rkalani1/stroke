@@ -22,7 +22,8 @@
       "HOPE",
       "EXPECTS",
       "tenecteplase",
-      "alteplase"
+      "alteplase",
+      "ETERNAL-LVO"
     ],
     "summary": "Unknown onset within 4.5 h of symptom recognition with DWI–FLAIR mismatch and a DWI lesion <1/3 of the MCA territory: IVT can be beneficial (AHA 2026, 2a; WAKE-UP: mRS 0–1 53.3 vs 41.8%). Perfusion mismatch at 4.5–9 h, or within 9 h of the sleep midpoint, in patients ineligible for EVT: IVT can be beneficial (2a; EXTEND: 35.4 vs 29.5%, sICH 6.2 vs 0.9%). LVO at 4.5–24 h with salvageable tissue and no EVT access: IVT may be beneficial (2b; TRACE-III tenecteplase 33.0 vs 24.2%, sICH 3.0 vs 0.8%). With EVT planned, late tenecteplase added nothing (TIMELESS; TNK-PLUS; basilar: ATTENTION LATE).",
     "recommendations": [
@@ -49,12 +50,12 @@
       }
     ],
     "consider": [
-      "Perfusion mismatch at 4.5–24 h without planned EVT (China): OPTION (non-LVO, tenecteplase; mRS 0–1 43.6 vs 34.2%, sICH 2.8 vs 0%) and HOPE (with or without LVO, alteplase; 40 vs 26%, sICH 3.8 vs 0.5%) were positive; both postdate the AHA 2026 evidence review (to March 2025) and are not graded there.",
-      "Posterior circulation at 4.5–24 h, mostly mild, no EVT: EXPECTS (alteplase) functional independence 89.6 vs 72.6%.",
-      "Pin down last known well, symptom discovery and the imaging route (MRI mismatch vs automated perfusion).",
-      "Wake-up stroke selected by non-contrast CT alone: tenecteplase did not improve mRS (TWIST, aOR 1.18; 95% CI 0.88–1.58); ESO 2023 recommends against it (strong recommendation, low-quality evidence)."
+      "Perfusion mismatch at 4.5–24 h without planned EVT (China): OPTION (non-LVO, tenecteplase; mRS 0–1 43.6 vs 34.2%, sICH 2.8 vs 0%) and HOPE (with or without LVO, alteplase; 40 vs 26%, sICH 3.8 vs 0.5%) were positive; both postdate the AHA 2026 evidence review (to March 2025) and are not graded there. Posterior circulation at 4.5–24 h, mostly mild, no EVT: EXPECTS (alteplase) functional independence 89.6 vs 72.6%.",
+      "ESO Annual Stroke Evidence Update (February 2026; the authors' interpretation, not a guideline recommendation): late-window (4.5–24 h) tenecteplase 'may be considered in carefully selected patients' with perfusion or MRI mismatch and limited established infarction; it notes that these trials enrolled highly selected patients, mostly with advanced imaging and often confirmed LVO.",
+      "Pin down last known well, symptom discovery and the imaging route (MRI mismatch vs automated perfusion). Wake-up stroke selected by non-contrast CT alone: tenecteplase did not improve mRS (TWIST, aOR 1.18; 95% CI 0.88–1.58); ESO 2023 recommends against it (strong recommendation, low-quality evidence).",
+      "ETERNAL-LVO (Australia; EVT-eligible hemispheric LVO with CT-perfusion mismatch within 24 h of onset, so the early window was included; controls had standard care, which could include IV alteplase; 79% had EVT; stopped early, n=242; postdates the AHA 2026 literature cutoff): tenecteplase did not improve mRS 0–1 or return to baseline (37 vs 43%; aRR 0.90, 0.66–1.21); sICH 4 vs 1%."
     ],
-    "caution": "Benefit beyond 9 h comes from imaging-selected trials in China (TRACE-III, OPTION, HOPE, EXPECTS); the 2a grades rest on WAKE-UP and EXTEND. Late IVT costs more sICH.",
+    "caution": "Benefit beyond 9 h comes from imaging-selected trials in China (TRACE-III, OPTION, HOPE, EXPECTS); the 2a grades rest on WAKE-UP and EXTEND. Late IVT costs more sICH: in a 2026 meta-analysis of 18 RCTs beyond 4.5 h (11 perfusion- or MRI-selected, 7 allowing NCCT/CTA selection), sICH 3.2 vs 1.4% without higher 90-day mortality (13.7 vs 13.0%); in trial-level meta-regression, benefit was smaller where more patients had EVT.",
     "sources": [
       {
         "title": "European Stroke Organisation (ESO) guidelines on intravenous thrombolysis for acute ischaemic stroke",
@@ -364,9 +365,13 @@
       "MR CLEAN-NO IV",
       "DIRECT-MT",
       "BRIDGE-TNK",
-      "drip and ship"
+      "drip and ship",
+      "MILD-MT",
+      "LATE-MT",
+      "mild stroke",
+      "beyond 24 hours"
     ],
-    "summary": "Anterior LVO (ICA or M1), NIHSS ≥6, prestroke mRS 0–1: EVT within 6 h if ASPECTS 3–10, and at 6–24 h if ASPECTS ≥6, or ASPECTS 3–5 with age <80 and no significant mass effect (AHA 2026, COR 1). HERMES (5 RCTs, ≤12 h): mRS shift cOR 2.49; DAWN (6–24 h, clinical–core mismatch): mRS 0–2 49 vs 13%; DEFUSE 3 (6–16 h, perfusion mismatch): 45 vs 17%. Give IVT first when eligible and do not delay EVT; BRIDGE-TNK (China, ≤4.5 h) favored tenecteplase first (mRS 0–2 52.9 vs 44.1%).",
+    "summary": "Anterior LVO (ICA or M1), NIHSS ≥6, prestroke mRS 0–1: EVT within 6 h if ASPECTS 3–10, and at 6–24 h if ASPECTS ≥6, or ASPECTS 3–5 with age <80 and no significant mass effect (AHA 2026, COR 1). HERMES (5 RCTs, ≤12 h): mRS shift cOR 2.49; DAWN (6–24 h, clinical–core mismatch): mRS 0–2 49 vs 13%; DEFUSE 3 (6–16 h, perfusion mismatch): 45 vs 17%. Give IVT first when eligible and do not delay EVT; BRIDGE-TNK (China, ≤4.5 h) favored tenecteplase first (mRS 0–2 52.9 vs 44.1%). Outside these criteria, two open-label, perfusion-selected Chinese RCTs postdating AHA 2026 (not graded) found benefit with harms: MILD-MT (NIHSS <6, ≤24 h; mRS 0–1 69.4 vs 50.0%; serious procedural complications 13.2%) and LATE-MT (24–72 h; mRS shift cOR 1.74; sICH 4.8 vs 0%; 90-day mortality 6.0 vs 1.8%).",
     "recommendations": [
       {
         "text": "In AIS patients with anterior circulation proximal LVO (ICA or M1), presenting within 6 hours of symptom onset, with NIHSS 6 or greater, prestroke mRS 0-1, and ASPECTS 3-10, EVT (endovascular thrombectomy) is recommended to improve functional outcomes and reduce mortality.",
@@ -400,7 +405,8 @@
     "consider": [
       "Prestroke mRS 2 (2a) or 3–4 (2b): graded only for ICA/M1 within 6 h with NIHSS ≥6 and ASPECTS ≥6.",
       "Direct to angiography may be considered (2b each): transfers without repeat imaging unless the exam changed or transfer was delayed; EMS arrivals with a positive LVO scale, imaged by flat-panel CT. DIRECT ANGIO (France, 2026; postdates AHA 2026; direct arrivals ≤85 y within 5 h selected by neurologist exam, not a prehospital scale) stopped early for safety: more sICH (15 vs 0%), no evidence of functional benefit (small and imprecise).",
-      "ASPECTS ≥6 at 6–24 h keeps COR 1: in July 2026 the writing group declined a request from DAWN/DEFUSE investigators to downgrade it to 2b, while noting an unresolved observational mortality signal favoring perfusion selection (NO-SELECT trial ongoing)."
+      "ASPECTS ≥6 at 6–24 h keeps COR 1: in July 2026 the writing group declined a request from DAWN/DEFUSE investigators to downgrade it to 2b, while noting an unresolved observational mortality signal favoring perfusion selection (NO-SELECT trial ongoing).",
+      "MILD-MT and LATE-MT (NEJM 2026; postdate AHA 2026; no grade) selection: MILD-MT ICA/M1/M2, NIHSS <6 at randomization, core ≤50 mL and mismatch ≥50 mL, ≤24 h (registry also: age 18–80, prestroke mRS 0, ASPECTS ≥6); sICH 3 patients per arm. LATE-MT (registry) ICA–M2, NIHSS ≥6, prestroke mRS ≥2 excluded, CTP core <50 mL with mismatch ratio ≥1.8 and volume ≥15 mL, 24–72 h (median 38.5 h). Single-country and open-label; decide case by case with the neurointerventional team."
     ],
     "caution": "Only DIRECT-MT and DEVT (both China) found EVT alone noninferior; SWIFT DIRECT, MR CLEAN-NO IV, SKIP, DIRECT-SAFE and the IRIS meta-analysis did not. Give IVT whenever eligible.",
     "sources": [
@@ -474,7 +480,7 @@
       "LASTE",
       "TESLA"
     ],
-    "summary": "Large cores still benefit (AHA 2026): in anterior LVO (ICA or M1) with NIHSS ≥6 and prestroke mRS 0–1, EVT is COR 1 for ASPECTS 3–5 within 6 h (no age criterion) and at 6–24 h (age <80, no significant mass effect), and reasonable (2a) for ASPECTS 0–2 within 6 h (age <80, no significant mass effect). SELECT2: generalized OR 1.51 (mRS 0–2 20 vs 7%); ANGEL-ASPECT: GOR 1.37; RESCUE-Japan LIMIT: mRS 0–3 31.0 vs 12.7%; TENSION: cOR 2.58 with lower mortality; LASTE (ASPECTS ≤5 within 6.5 h): mortality 36.1 vs 55.5%; TESLA (NCCT ASPECTS 2–5, ≤24 h) missed its 90-day primary endpoint (posterior probability 0.96; 0.975 required), though SVIN 2025 reports benefit at 1 year. Expect more hemorrhage (ANGEL-ASPECT sICH 6.1 vs 2.7%).",
+    "summary": "Large cores still benefit (AHA 2026): in anterior LVO (ICA or M1) with NIHSS ≥6 and prestroke mRS 0–1, EVT is COR 1 for ASPECTS 3–5 within 6 h (no age criterion) and at 6–24 h (age <80, no significant mass effect), and reasonable (2a) for ASPECTS 0–2 within 6 h (age <80, no significant mass effect). SELECT2: generalized OR 1.51 (mRS 0–2 20 vs 7%); ANGEL-ASPECT: GOR 1.37; RESCUE-Japan LIMIT: mRS 0–3 31.0 vs 12.7%; TENSION: cOR 2.58 with lower mortality; LASTE (ASPECTS ≤5 within 6.5 h): mortality 36.1 vs 55.5%; TESLA (NCCT ASPECTS 2–5, ≤24 h) missed its 90-day primary endpoint (posterior probability 0.96; 0.975 required), though at 1 year the utility-weighted mRS favored EVT (difference 1.18; 95% CI 0.42–1.93; reported by SVIN 2025). Expect more hemorrhage (ANGEL-ASPECT sICH 6.1 vs 2.7%).",
     "recommendations": [
       {
         "text": "In AIS patients with anterior circulation proximal LVO (ICA or M1), presenting within 6 hours of symptom onset, with NIHSS 6 or greater, prestroke mRS 0-1, and ASPECTS 3-10, EVT (endovascular thrombectomy) is recommended to improve functional outcomes and reduce mortality.",
@@ -511,8 +517,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/41573174/",
         "year": 2025,
         "type": "Guideline",
-        "checkedAt": "2026-10-21",
-        "access": "PMC full text (PMC12671639) re-read: 0–6 h Class I table and trial age/mRS limits. The 6–24 h table did not render, so its 2b wording is from the archived transcription."
+        "checkedAt": "2026-10-31",
+        "access": "PMC full text (PMC12671639) re-read: 0–6 h Class I table and trial age/mRS limits; on 2026-10-31 also the TESLA 1-year utility-weighted mRS result and the Table 2 SELECT2 1-year mortality (45.3 vs 52.2%). The 6–24 h table did not render, so its 2b wording is from the archived transcription."
       }
     ],
     "related": [
@@ -654,7 +660,8 @@
     "consider": [
       "Confirm the segment (dominant vs codominant/nondominant M2, M3, ACA, PCA), a disabling deficit and IVT eligibility; give IVT if eligible.",
       "SVIN 2026: routine EVT is not recommended for distal ACA (A2/A3) or isolated PCA occlusion (COR 3: No Benefit, B-NR) and is not standard for M3/M4 (COR 3: No Benefit, B-R); it may be considered case by case for ACA occlusion with disabling deficits, large territory at risk, favorable imaging and good baseline function (2b, B-NR), and in selected patients with P1–P3 occlusion who present early, have severe deficits or cannot receive IVT (2b, B-R).",
-      "Review ORIENTAL-MeVO's population limits with the intervention team."
+      "Review ORIENTAL-MeVO's population limits with the intervention team.",
+      "Secondary analyses (2026; hypothesis-generating): in DISTAL, EVT was associated with a worse 90-day mRS when admission NIHSS was ≤4 (cOR 0.47; 95% CI 0.25–0.89) but not above 4 (cOR 1.05; 95% CI 0.75–1.47); in ESCAPE-MeVO (309 of 530 with baseline perfusion imaging), perfusion mismatch volume or ratio did not modify the EVT effect."
     ],
     "caution": "The AHA 2026 grading predates ORIENTAL-MeVO and DISCOUNT; one positive Chinese trial does not establish benefit for every M2 or distal lesion.",
     "sources": [
@@ -729,9 +736,9 @@
       "Confirm the ophthalmic diagnosis and onset; coordinate stroke and ophthalmology assessment.",
       "Both trials studied nonarteritic CRAO; suspected arteritis needs its own pathway.",
       "THEIA measured visual acuity and TenCRAOS a vision-recovery threshold; weigh safety alongside benefit.",
-      "ESO 2025 suggests IVT within 4.5 h for CRAO (weak wording; very low-quality nonrandomized evidence through 2023, before THEIA and TenCRAOS)."
+      "ESO 2025 suggests IVT within 4.5 h for CRAO (weak wording; very low-quality nonrandomized evidence through 2023, before THEIA and TenCRAOS). The ESO Annual Stroke Evidence Update (February 2026; the authors' interpretation, not a guideline recommendation) states that THEIA and TenCRAOS do not support routine IVT for acute CRAO and encourages trial enrolment."
     ],
-    "caution": "Small neutral trials do not prove equivalence, and the 2021 AHA statement predates them.",
+    "caution": "Small neutral trials do not prove equivalence, and the 2021 AHA statement predates them. A 2025 individual-participant meta-analysis of nonrandomized studies (searched to June 2023; nonarteritic CRAO with severe vision loss; published after the AHA 2026 literature cutoff) associated IVT within 4.5 h with more recovery from severe vision loss than conservative care (28.8 vs 11.1%); its authors call for powered RCTs, and THEIA and TenCRAOS did not show benefit.",
     "sources": [
       {
         "title": "Management of Central Retinal Artery Occlusion: A Scientific Statement From the American Heart Association",
@@ -784,13 +791,14 @@
       "rescue stenting",
       "angioplasty",
       "intra arterial thrombolysis",
-      "adjuncts"
+      "adjuncts",
+      "EDESTROKE"
     ],
     "summary": "Aim for eTICI 2b–3 as early as possible with a stent retriever, aspiration or both (AHA 2026, COR 1); general anesthesia or procedural sedation are both acceptable (COR 1). Tandem lesions: treating both may be reasonable (2b). Intra-arterial thrombolytic after mTICI ≥2b may be reasonable (2b); preprocedural tirofiban is not useful (COR 3: No Benefit). Rescue angioplasty or stenting after failed EVT remains uncertain (2b); in ANGEL-REBOOT (China; eTICI 0–2a or >70% residual stenosis after EVT, tirofiban in 96%) it did not improve 90-day mRS (cOR 0.86) and raised sICH (5 vs 1%); a later 1-year report (2025, after the AHA 2026 literature window) found a better mRS distribution (generalized OR 1.34), less same-artery recurrence (4 vs 13%) and similar mortality (15 vs 17%).",
     "consider": [
-      "Document final eTICI, complications, access site and the BP plan for the receiving team.",
-      "Tandem stenting or rescue stenting commits the patient to antiplatelets — weigh hemorrhage risk.",
+      "Document final eTICI, complications, access site and the BP plan for the receiving team. Tandem stenting or rescue stenting commits the patient to antiplatelets — weigh hemorrhage risk.",
       "Avoid SBP drops during the procedure (prior ESO advice; the ESO 2025 BP update notes no study defines a safe drop).",
+      "Extubation timing after successful EVT under general anesthesia (EDESTROKE, JAMA Neurol 2026; single center in Spain; n=174, anterior-circulation LVO): early (<6 h) vs delayed (6–12 h) extubation did not improve 90-day mRS 0–2 (47.7 vs 45.9%; RR 1.04, 95% CI 0.76–1.43); pneumonia 21.8 vs 29.9% (RR 0.73, 95% CI 0.44–1.22) and reintubation 4.6 vs 2.3% were imprecise.",
       "IA lytic after successful EVT: ANGEL-TNK, PEARL and CHOICE-2 improved mRS 0–1 (CHOICE-2 57.5 vs 42.5%), but 90-day mortality was higher with IA alteplase in CHOICE-2 (12.1 vs 6.4%, P=.03) and PEARL (17.1 vs 11.3%, not significant); POST-UK, POST-TNK and, in the posterior circulation, ATTENTION-IA and IAT-TOP were neutral. ANGEL-TNK and PEARL (2025) appeared after the AHA 2026 literature window (through March 2025), CHOICE-2 and IAT-TOP after the guideline itself."
     ],
     "caution": "Technique choices depend on operator expertise and devices; this card is not a procedural protocol.",
@@ -1155,11 +1163,12 @@
       "CAA-ri",
       "anticoagulation after ICH"
     ],
-    "summary": "In patients aged 50 or older, suspect CAA with lobar ICH, convexity SAH or transient focal episodes; MRI with blood-sensitive sequences looks for lobar microbleeds and cortical superficial siderosis (ICAA/WSO 2025). Recurrence risk rises with lobar location, older age, more lobar microbleeds, disseminated superficial siderosis, poor BP control, Asian or Black race and APOE ε2/ε4 (AHA 2022, 2a). Restarting antiplatelets may be reasonable (2b; RESTART: recurrent ICH 4 vs 9%, not significant). In AF after ICH, PRESTIGE-AF found fewer ischemic strokes but more recurrent ICH with DOACs — individualize; if anticoagulation is restarted, starting 7–8 weeks after ICH may be considered after weighing individual factors (AHA 2022, 2b); left atrial appendage closure may be considered if anticoagulation is not possible (2b).",
+    "summary": "In patients aged 50 or older, suspect CAA with lobar ICH, convexity SAH or transient focal episodes; MRI with blood-sensitive sequences looks for lobar microbleeds and cortical superficial siderosis (ICAA/WSO 2025). Recurrence risk rises with lobar location, older age, more lobar microbleeds, disseminated superficial siderosis, poor BP control, Asian or Black race and APOE ε2/ε4 (AHA 2022, 2a). Restarting antiplatelets may be reasonable (2b; RESTART: recurrent ICH 4 vs 9%, not significant). In AF after ICH, PRESTIGE-AF found fewer ischemic strokes but more recurrent ICH with DOACs; a 2025 meta-analysis of six RCTs (798 patients, including PRESTIGE-AF; postdates AHA 2022) found the same trade-off (ischemic stroke RR 0.20; recurrent ICH RR 3.14; all-cause mortality not different) — individualize; if anticoagulation is restarted, starting 7–8 weeks after ICH may be considered after weighing individual factors (AHA 2022, 2b); left atrial appendage closure may be considered if anticoagulation is not possible (2b).",
     "consider": [
       "Transient focal episodes may be CAA rather than TIA — avoid reflex antithrombotics.",
-      "Long-term BP <130/80 is reasonable after ICH (AHA 2022, 2a).",
-      "Ask about antiamyloid therapy; CAA changes those decisions."
+      "Long-term BP <130/80 is reasonable after ICH (AHA 2022, 2a). RECAP-ICH (individual-participant meta-analysis of 4 trials; 2,944 ICH survivors, 75% Asian; postdates AHA 2022): BP-lowering treatment vs placebo or standard care (mean SBP difference 11.2 mm Hg) reduced recurrent stroke (6.5 vs 10.4%; HR 0.62), driven by fewer recurrent ICH (2.2 vs 5.6%; HR 0.39), without excess serious adverse events.",
+      "Ask about antiamyloid therapy; CAA changes those decisions.",
+      "ENRICH-AF (edoxaban vs no anticoagulation, antiplatelet monotherapy allowed, in AF after intracranial hemorrhage; 948 enrolled; completed July 2026; no peer-reviewed report as of October 2026): after a safety review of the first 699 patients, its DSMB advised halting enrollment of patients with lobar ICH (174) or isolated convexity SAH (34), subtypes typically caused by CAA and now excluded in the registry criteria, and stopping study drug in that subgroup (WSO 2025). A 2025 meta-analysis attributes this to excess recurrent intracranial bleeding; WSO 2025 notes that the data behind the recommendation were unpublished, and that an earlier individual-patient meta-analysis of four trials (412 patients) found no treatment interaction with lobar ICH or convexity SAH."
     ],
     "caution": "Recurrence estimates are population averages, not an individual prognosis.",
     "sources": [
@@ -1206,7 +1215,8 @@
     "consider": [
       "Review aneurysm size, location, morphology, growth and prior hemorrhage alongside patient factors.",
       "Clarify the purpose and interval of surveillance with the treating team.",
-      "Discuss treatment alternatives, smoking/BP review and preferences in a multidisciplinary setting."
+      "Discuss treatment alternatives, smoking/BP review and preferences in a multidisciplinary setting.",
+      "ADPKD (KDIGO 2025, per an ERA Working Group commentary): screening for unruptured aneurysms is selective, centered on a family history of aneurysm, SAH or unexplained sudden death; contrast-free time-of-flight MR angiography is the preferred test, and high-risk people with a negative first screen may be rescreened every 5–10 years (practice points)."
     ],
     "caution": "Scores support discussion; they do not choose a procedure or capture every relevant feature.",
     "sources": [
@@ -1264,6 +1274,7 @@
     "consider": [
       "After an unprovoked poststroke seizure, choose the antiseizure drug by patient factors (AHA 2026, COR 1).",
       "Document the indication and a review date for any antiseizure drug continued at discharge.",
+      "High seizure risk (SeLECT ≥5 after ischemic stroke or CAVE ≥2 after ICH) is not an indication for prophylaxis outside trials: in a phase 2a trial (125 patients, underpowered), eslicarbazepine 800 mg/day for 30 days, started within 96–120 h, did not significantly reduce first unprovoked seizure, death or discontinuation at 6 months (28 vs 37%; OR 0.66, 95% CI 0.31–1.40); all 5 deaths were in the drug arm (judged unrelated).",
       "aSAH with a seizure at onset: treat for no more than 7 days; longer courses do not reduce later seizures."
     ],
     "caution": "Permissive prophylaxis recommendations do not justify indefinite treatment.",
@@ -1687,7 +1698,8 @@
     "consider": [
       "Review the age, family history, clinical pattern and imaging phenotype together.",
       "Consider genetic counseling and the implications of testing for the patient and relatives.",
-      "Address modifiable vascular factors while distinguishing established care from unproven disease-modifying treatment."
+      "Address modifiable vascular factors while distinguishing established care from unproven disease-modifying treatment.",
+      "A tocotrienol-rich vitamin E complex did not slow CADASIL: in a 51-patient double-blind, placebo-controlled RCT in genetically confirmed CADASIL (T3CAD, 2026), treatment failure (stroke, disability progression or cognitive decline) over 24 months was 68.0 vs 61.5%, meeting predefined futility criteria."
     ],
     "caution": "A suggestive MRI pattern is not a molecular diagnosis.",
     "sources": [
@@ -1850,13 +1862,16 @@
       "smoking",
       "exercise",
       "diet",
-      "Life Essential 8"
+      "Life Essential 8",
+      "STAREE",
+      "VESALIUS-CV"
     ],
     "summary": "Prevention without prior stroke: control BP, lipids and glucose, stop tobacco, and address activity, diet, weight and sleep (AHA/ASA 2024), including sex-specific risk factors.",
     "consider": [
-      "Review BP, lipids, glycemia, tobacco exposure, activity, diet, weight and sleep in context.",
-      "Clarify sex-specific and other risk factors that affect the prevention discussion.",
-      "Assess medication indications, access and adherence using the relevant disease-specific guidance."
+      "Review BP, lipids, glycemia, tobacco exposure, activity, diet, weight and sleep in context. Clarify sex-specific and other risk factors that affect the prevention discussion.",
+      "Assess medication indications, access and adherence using the relevant disease-specific guidance.",
+      "Age ≥70 without cardiovascular disease, diabetes or dementia: in STAREE (Australia, 9,971 adults, median 5.9 years), atorvastatin 40 mg vs placebo lowered major cardiovascular events (CV death, nonfatal MI or stroke, or coronary revascularization; 10.9 vs 15.5 per 1,000 person-years; HR 0.70) but did not extend disability-free survival (HR 0.94). Musculoskeletal, hepatobiliary and diabetes-related adverse events were more common. It postdates AHA/ASA 2024.",
+      "Atherosclerosis or diabetes without prior MI or stroke and LDL ≥90 mg/dL: evolocumab vs placebo lowered CHD death, MI or ischemic stroke (VESALIUS-CV, 12,257 patients; 5-year estimate 6.2 vs 8.0%; HR 0.75). Patients with prior stroke were excluded. It postdates AHA/ASA 2024."
     ],
     "caution": "Evidence for a metabolic drug in one population does not establish an indication in every stroke-risk group.",
     "sources": [
@@ -1888,13 +1903,16 @@
       "Watchman",
       "rheumatic",
       "mitral stenosis",
-      "mechanical valve"
+      "mechanical valve",
+      "ALONE-AF",
+      "OCEAN"
     ],
-    "summary": "After ischemic stroke or TIA with AF, anticoagulate regardless of AF pattern (paroxysmal, persistent or permanent); use a DOAC over warfarin unless there is moderate-to-severe mitral stenosis or a mechanical valve (AHA 2021, COR 1). Do not routinely add an antiplatelet without active coronary disease or a recent stent (AHA 2026, harm). Device-detected subclinical AF: apixaban reduced stroke and embolism but increased major bleeding (ARTESiA), while edoxaban did not help (NOAH-AFNET 6). Nonreversible contraindication to long-term anticoagulation (CHA₂DS₂-VASc ≥2): percutaneous left atrial appendage closure is reasonable (ACC/AHA 2023, 2a; AHA 2021 stroke guideline 2b if at least 45 days of anticoagulation can be tolerated); with high bleeding risk on anticoagulation it may be an alternative (ACC/AHA 2023, 2b). Postdating these (2026; AF populations not limited to stroke), device closure was not noninferior to physician-directed best medical care, including a DOAC if eligible, at high stroke and bleeding risk, with more primary events (16.8 vs 13.3 per 100 patient-years; CLOSURE-AF). Also in 2026, in anticoagulation candidates without stroke or TIA in the prior 30 days, closure was noninferior to a DOAC for 3-year cardiovascular death, stroke or systemic embolism (5.7 vs 4.8%; margin 4.8 points), with less non-procedural bleeding (10.9 vs 19.0%); reviews report numerically more ischemic strokes with closure (HR 1.61), and its 5-year ischemic stroke or embolism endpoint is pending (CHAMPION-AF). Rheumatic AF: rivaroxaban was worse than a VKA (INVICTUS).",
+    "summary": "After ischemic stroke or TIA with AF, anticoagulate regardless of AF pattern (paroxysmal, persistent or permanent); use a DOAC over warfarin unless there is moderate-to-severe mitral stenosis or a mechanical valve (AHA 2021, COR 1). Do not routinely add an antiplatelet without active coronary disease or a recent stent (AHA 2026, harm). Device-detected subclinical AF: apixaban reduced stroke and embolism but increased major bleeding (ARTESiA), while edoxaban did not help (NOAH-AFNET 6). ACC/AHA 2023 (device-detected atrial high-rate episodes without a previous AF diagnosis, within shared decision-making; literature search May–November 2022, before NOAH-AFNET 6 and ARTESiA): anticoagulation is reasonable for episodes ≥24 h with CHA₂DS₂-VASc ≥2 (2a, B-NR), may be reasonable for 5 min–24 h with CHA₂DS₂-VASc ≥3 (2b, B-NR), and should not be given for episodes <5 min without another indication (3: No Benefit, B-NR). History of stroke or TIA (remote events per WSO 2025), in prespecified subgroups postdating the ACC/AHA 2023 and AHA 2021 guidelines: in ARTESiA (346 patients, 8.6%; 2025), stroke or systemic embolism was 1.20 vs 3.14% per year with apixaban vs aspirin (HR 0.40; 95% CI 0.17–0.95) and major bleeding 2.26 vs 1.16% per year (HR 1.94; 95% CI 0.77–4.87); NOAH-AFNET 6's subgroup (253 patients; edoxaban vs placebo) was inconclusive. Data are lacking for device-detected AF lasting <24 h and not confirmed on 12-lead ECG that is found after a recent stroke or TIA (WSO 2025, evidence statement, not a recommendation). Nonreversible contraindication to long-term anticoagulation (CHA₂DS₂-VASc ≥2): percutaneous left atrial appendage closure is reasonable (ACC/AHA 2023, 2a; AHA 2021 stroke guideline 2b if at least 45 days of anticoagulation can be tolerated); with high bleeding risk on anticoagulation it may be an alternative (ACC/AHA 2023, 2b). Postdating these (2026; AF populations not limited to stroke), device closure was not noninferior to physician-directed best medical care, including a DOAC if eligible, at high stroke and bleeding risk, with more primary events (16.8 vs 13.3 per 100 patient-years; CLOSURE-AF). Also in 2026, in anticoagulation candidates without stroke or TIA in the prior 30 days, closure was noninferior to a DOAC for 3-year cardiovascular death, stroke or systemic embolism (5.7 vs 4.8%; margin 4.8 points), with less non-procedural bleeding (10.9 vs 19.0%); reviews report numerically more ischemic strokes with closure (HR 1.61), and its 5-year ischemic stroke or embolism endpoint is pending (CHAMPION-AF). Pooling 6 RCTs of closure vs anticoagulation (7,004 patients with AF, not stroke-specific; 2026), closure had more ischemic strokes (3.2 vs 2.1%; RR 1.41, 95% CI 1.04–1.91) and less nonprocedural major bleeding (6.2 vs 10.7%), with no difference in any stroke, mortality or total major bleeding including procedural events; a second analysis of the same 6 trials rated the ischemic-stroke excess low certainty, sensitive to excluding single trials and short of the required information size. Rheumatic AF: rivaroxaban was worse than a VKA (INVICTUS).",
     "consider": [
-      "Confirm how AF was documented, its clinical context and the actual thromboembolic indication.",
-      "Review valve disease, renal function, interactions, prior bleeding and concurrent antiplatelets.",
-      "For LAAO or device-detected AF, check the specific trial population and follow-up."
+      "Confirm how AF was documented, its clinical context and the actual thromboembolic indication. Review valve disease, renal function, interactions, prior bleeding and concurrent antiplatelets. For LAAO or device-detected AF, check the specific trial population and follow-up.",
+      "2025 SCAI/HRS LAAO guideline (GRADE; AF populations, not stroke-specific; evidence review searched to January 2024, before CHAMPION-AF and CLOSURE-AF): suggests LAAO over no therapy when anticoagulation is contraindicated (conditional recommendation, very low certainty), and suggests anticoagulation or LAAO as options for patients pursuing stroke prevention (moderate-certainty evidence from 3 RCTs), naming elevated bleeding risk, prior bleeding or a strong wish to avoid long-term anticoagulation as reasons to choose LAAO; it left LAAO for patients without a contraindication to anticoagulation outside its scope pending trials.",
+      "Stroke despite anticoagulation: check adherence, dose and interactions and look for a competing mechanism (large- or small-artery disease, cancer) before calling it anticoagulant failure. WSO 2025 (evidence review, not graded recommendations) found no definite evidence that switching anticoagulants changes recurrence, and adding a long-term antiplatelet can raise ICH risk without added protection; LAAO after a breakthrough stroke rests on one retrospective study with substantial bias, and RCTs are ongoing.",
+      "Rhythm control after stroke: in STABLED (249 patients in Japan with ECG-documented nonvalvular AF and ischemic stroke within 6 months, all on edoxaban), adding catheter ablation 1–6 months after the stroke did not reduce recurrent ischemic stroke, systemic embolism, death or heart-failure hospitalization (5.6 with ablation vs 4.9 per 100 person-years with standard therapy; HR 1.11, 95% CI 0.62–2.01). Safety signals were imprecise but went against ablation: deaths 2.8 vs 1.0 per 100 person-years (HR 2.79, 0.98–7.92), ISTH major bleeding 1.9 vs 0.6 (HR 2.99, 0.79–11.3) and hemorrhagic stroke in 3 vs 0 patients. 14% crossed over, and the trial was underpowered. Stopping anticoagulation after successful ablation: ALONE-AF (840 patients in Korea, arrhythmia-free ≥1 year after ablation; mean CHA₂DS₂-VASc 2.1) found fewer 2-year stroke, embolism or major bleeding events after stopping a DOAC (0.3 vs 2.2%), driven mainly by less major bleeding (0 vs 1.4%); OCEAN (1,284 patients ≥1 year after successful ablation) found no significant difference between rivaroxaban and aspirin in stroke, embolism or new covert embolic infarcts (0.31 vs 0.66 per 100 patient-years). Neither was restricted to patients with prior stroke, and neither establishes stopping anticoagulation after a stroke."
     ],
     "caution": "Valve- and device-specific evidence overrides general AF risk scores.",
     "sources": [
@@ -1903,8 +1921,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/38033089/",
         "year": 2023,
         "type": "Guideline",
-        "checkedAt": "2026-10-02",
-        "access": "Primary NLM identity and abstract checked; complete recommendations not reviewed. Publisher-indexed text of corrections 38153996, 38408149 and 38857333 checked on 2026-10-02: trial names/disclosures, ATRIA hypertension entry and a rate-control figure footnote. None changes this overview. Direct correction PDFs unavailable."
+        "checkedAt": "2026-10-31",
+        "access": "Primary NLM identity and abstract checked. PMC full text (PMC11095842) read 2026-10-31 for section 6.4.1 (device-detected atrial high-rate episodes without a previous AF diagnosis: recommendation table, grades as published) and the literature-search dates (May 12 to November 3, 2022, before NOAH-AFNET 6 and ARTESiA); other recommendations not reviewed. Publisher-indexed text of corrections 38153996, 38408149 and 38857333 checked on 2026-10-02: trial names/disclosures, ATRIA hypertension entry and a rate-control figure footnote. None changes this overview. Direct correction PDFs unavailable."
       },
       {
         "title": "2024 ESC/EACTS atrial fibrillation guideline",
@@ -1972,7 +1990,8 @@
     "consider": [
       "Clarify the vascular indication, lipid profile, prior treatment and adherence.",
       "Triglycerides 135–499 mg/dL on a statin: icosapent ethyl is reasonable in selected patients (2a).",
-      "After ICH, weigh statin benefit against hemorrhage risk individually (AHA 2022, 2b)."
+      "After ICH, weigh statin benefit against hemorrhage risk individually (AHA 2022, 2b).",
+      "Published after the ACC/AHA 2026 guideline (evidence search Oct–Dec 2024): in Ez-PAVE (South Korea, open-label; 3,048 adults aged 19–80 with ASCVD, stroke or TIA eligible), targeting LDL-C <55 rather than <70 mg/dL (achieved median 56 vs 66) lowered the 3-year composite of cardiovascular death, nonfatal MI, nonfatal stroke, any revascularization or unstable-angina admission (6.6 vs 9.7%; HR 0.67). The share with prior stroke and stroke-specific results were not reviewed."
     ],
     "caution": "The AHA 2021 <70 mg/dL goal predates the 2026 dyslipidemia guideline, which sets <55 mg/dL for very-high-risk ASCVD.",
     "sources": [
@@ -2003,11 +2022,12 @@
       "adherence",
       "secondary prevention"
     ],
-    "summary": "For long-term prevention after stroke or TIA (not the acute phase), target office BP <130/80 for most (AHA 2021, COR 1), and treat an average office BP ≥130/80 even without prior hypertension (2a). PROGRESS: perindopril plus indapamide lowered BP by 12/5 mm Hg and stroke by 43%, whereas perindopril alone (5/3 mm Hg) gave no clear reduction. After ICH, long-term SBP <130 and DBP <80 is reasonable (AHA 2022, 2a); the TRIDENT low-dose triple pill reduced recurrent stroke (4.6 vs 7.4%; HR 0.61). Lacunar stroke: SPS3 (<130) reduced ICH.",
+    "summary": "For long-term prevention after stroke or TIA (not the acute phase), target office BP <130/80 for most (AHA 2021, COR 1), and treat an average office BP ≥130/80 even without prior hypertension (2a). PROGRESS: perindopril plus indapamide lowered BP by 12/5 mm Hg and stroke by 43%, whereas perindopril alone (5/3 mm Hg) gave no clear reduction. After ICH, long-term SBP <130 and DBP <80 is reasonable (AHA 2022, 2a). Postdating it, the TRIDENT low-dose triple pill reduced recurrent stroke (4.6 vs 7.4%; HR 0.61). The RECAP-ICH individual-participant meta-analysis (4 trials, 2,944 patients, 75% Asian) compared fixed-dose or target-based BP lowering with placebo or standard care (mean SBP difference 11 mm Hg). It found fewer recurrent strokes (6.5 vs 10.4%; HR 0.62), mainly through fewer recurrent ICH (2.2 vs 5.6%; HR 0.39). Lacunar stroke: SPS3 (<130) reduced ICH.",
     "consider": [
       "Confirm measurement technique, home readings and possible orthostatic symptoms.",
       "Review adherence, reversible contributors and access to treatment.",
-      "Individualize the follow-up and medication plan using current guidance and comorbidities."
+      "Individualize the follow-up and medication plan using current guidance and comorbidities.",
+      "Lower targets: in ESPRIT (China, open-label; 11,255 high-risk hypertensive adults, 3,022 with prior stroke), an SBP target <120 vs <140 mm Hg (achieved 119 vs 135) reduced major vascular events (9.7 vs 11.1%; HR 0.88), with more serious syncope. Stroke, a secondary outcome, was not significantly reduced (4.7 vs 5.4%; HR 0.86). Fewer hemorrhagic strokes (0.4 vs 0.8%) came from a post hoc analysis."
     ],
     "caution": "Long-term targets do not apply in the acute phase.",
     "sources": [
@@ -2045,7 +2065,7 @@
       "embolization",
       "radiosurgery"
     ],
-    "summary": "Separate ruptured from unruptured AVMs and decide with a multidisciplinary vascular team, weighing natural history against surgical, endovascular and radiosurgical risks (AHA/ASA 2017). In ARUBA (226 adults with unruptured AVMs judged suitable for intervention; non-blinded, mixed interventions), medical management alone had fewer deaths or symptomatic strokes over a mean 50 months (3.39 vs 12.32 per 100 patient-years; HR 0.31).",
+    "summary": "Separate ruptured from unruptured AVMs and decide with a multidisciplinary vascular team, weighing natural history against surgical, endovascular and radiosurgical risks (AHA/ASA 2017). In ARUBA (226 adults with unruptured AVMs judged suitable for intervention; non-blinded, mixed interventions), medical management alone had fewer deaths or symptomatic strokes over a mean 50 months (3.39 vs 12.32 per 100 patient-years; HR 0.31). In MARS (9 cohorts, 2 population-based; 3,030 people with unruptured brain AVMs; observational, censored at first treatment), first ICH occurred at 1.40 per 100 person-years, lower than the commonly quoted 2–4% per year; risk was higher with age 60+ at diagnosis (HR 2.01 vs <20 years), associated arterial aneurysms (HR 1.66) and deep or cerebellar location (HR 1.87).",
     "consider": [
       "Clarify rupture status, anatomy, symptoms and associated lesions.",
       "Review expected natural history and treatment risks with a multidisciplinary vascular team.",
@@ -2093,7 +2113,8 @@
     "consider": [
       "Clarify lesion location, prior symptomatic hemorrhage, seizures and whether lesions are familial or multiple.",
       "Review imaging, genetic counseling and follow-up needs in the appropriate specialty setting.",
-      "Compare intervention risks with the clinical history and the outcomes the patient values."
+      "Compare intervention risks with the clinical history and the outcomes the patient values.",
+      "In a Scottish population-based cohort (190 people aged 16+ with symptomatic CCM; median 16-year follow-up; observational), the 37 who had intervention (35 resections) were younger and more often presented with ICH. Intervention was not associated with the primary outcome (OHS ≥2) but was associated with dependence or death (OHS ≥3; aHR 2.66) and with CCM- or intervention-related ICH or new focal deficit (aHR 3.59); the authors call for an RCT."
     ],
     "caution": "Many recommendations rely on limited evidence, and incidental and symptomatic brainstem or spinal lesions need different discussions.",
     "sources": [
@@ -2184,13 +2205,24 @@
       "remote ischemic conditioning",
       "RESIST",
       "SERIC-EVT",
-      "tirofiban"
+      "tirofiban",
+      "cytoprotection",
+      "minocycline",
+      "EMPHASIS",
+      "MIST-A",
+      "loberamisal",
+      "LAIS",
+      "edaravone",
+      "ERASE-STROKE",
+      "TASTE-2",
+      "glenzocimab",
+      "ACTISAVE"
     ],
-    "summary": "Asundexian (factor XIa inhibitor; confirm regulatory status), added to antiplatelets within 72 h of noncardioembolic ischemic stroke or high-risk TIA with a nonlacunar infarct or atherosclerosis, reduced ischemic stroke (OCEANIC-STROKE 6.2 vs 8.4%; major bleeding 1.9 vs 1.7%) but was worse than apixaban in AF (OCEANIC-AF). Adjunctive IV argatroban or eptifibatide after IVT did not help and increased mortality (MOST: 24% and 12% vs 8%). Nerinetide (ESCAPE-NEXT), prehospital remote ischemic conditioning (RESIST) and colchicine (CONVINCE, CHANCE-3) were neutral; SERIC-EVT (conditioning after EVT) was positive, but EnTRIPS (postconditioning after EVT) was neutral.",
+    "summary": "Asundexian (factor XIa inhibitor; confirm regulatory status), added to antiplatelets within 72 h of noncardioembolic ischemic stroke or high-risk TIA with a nonlacunar infarct or atherosclerosis, reduced ischemic stroke (OCEANIC-STROKE 6.2 vs 8.4%; major bleeding 1.9 vs 1.7%) but was worse than apixaban in AF (OCEANIC-AF). Adjunctive IV argatroban or eptifibatide after IVT did not help and increased mortality (MOST: 24% and 12% vs 8%). Nerinetide (ESCAPE-NEXT; post hoc signals of benefit when given within 3 h, at 90 days in a pooled 3-trial analysis and at 1 year, are hypothesis-generating), prehospital remote ischemic conditioning (RESIST) and colchicine (CONVINCE, CHANCE-3) were neutral; SERIC-EVT (conditioning after EVT) was positive, but EnTRIPS (postconditioning after EVT) was neutral.",
     "consider": [
-      "Compare the population, background therapy and primary endpoint with your patient before applying a new result.",
-      "Separate confirmatory results from subgroup signals, and look for independent replication.",
+      "Compare the population, background therapy and primary endpoint with your patient before applying a new result. Separate confirmatory results from subgroup signals, and look for independent replication.",
       "Confirm regulatory approval and local availability before using any new agent.",
+      "Cytoprotection RCTs published after the AHA 2026 literature cutoff (March 2025), all double-blind, placebo-controlled and run only in China (replication awaited): minocycline orally within 72 h, NIHSS 4–25 (EMPHASIS: mRS 0–1 52.6 vs 47.4%); IV loberamisal within 48 h, NIHSS 7–20 (LAIS: 69.7 vs 56.3%); oral edaravone (TTYP01) within 24 h for disabling anterior-circulation stroke without reperfusion therapy (ERASE-STROKE: 65.4 vs 47.1%); edaravone dexborneol started before EVT for anterior LVO was borderline (TASTE-2: mRS 0–2 55.0 vs 49.6%; RR 1.11, 1.00–1.23; P=0.05). Minocycline after successful EVT did not reduce infarct growth (MIST-A, open-label phase 2), and the antiplatelet glenzocimab added to IVT did not improve outcome (ACTISAVE, international phase 2/3). AHA 2026 does not grade these trials.",
       "Tirofiban (Chinese RCTs) improved 90-day function as an IV infusion after IVT in noncardioembolic stroke without EVT (ASSET-IT, mRS 0–1 65.9 vs 54.9%; sICH 1.7 vs 0%) or after inadequate response to tenecteplase without LVO, MeVO or cardioembolism (INSTANT, 63.8 vs 52.2%), and as an intra-arterial bolus plus IV infusion after successful EVT (ATTRACTION, mRS 0–2 49 vs 43%; sICH 12 vs 9%, not significant); IV tirofiban before EVT was neutral (RESCUE BT), and AHA 2026 rates preprocedural tirofiban before EVT as not useful (COR 3: No Benefit, B-R). With literature through March 2025, before ASSET-IT, INSTANT and ATTRACTION, AHA 2026 rates IV tirofiban efficacy as not well established (COR 2b, B-R)."
     ],
     "caution": "AHA 2026 does not recommend neuroprotective agents to improve function (COR 3: No Benefit, LOE A), adjunctive argatroban with IVT (COR 3: No Benefit, LOE A) or adjunctive IV eptifibatide in patients given IVT within 3 h of onset (COR 3: No Benefit, LOE B-R).",
@@ -2362,7 +2394,7 @@
       "factor VIIa",
       "hemostatic"
     ],
-    "summary": "In ICH without anticoagulant use, no hemostatic drug has been shown to improve function (anticoagulant-associated ICH still needs rapid reversal: AHA 2022, COR 1). Recombinant factor VIIa within 2 h (FASTEST) slowed growth by 3.7 mL but did not change 180-day mRS (cOR 1.09) and increased life-threatening thromboembolism (RR 3.41); tranexamic acid (TICH-2) also gave no functional benefit (aOR 0.88). Hydrocephalus contributing to reduced consciousness: ventricular drainage (AHA 2022, COR 1); large IVH with impaired consciousness: EVD rather than medical management alone (COR 1). CLEAR III (stable supratentorial ICH <30 mL or primary IVH; IVH obstructing the third or fourth ventricle; routine EVD): intraventricular alteplase lowered 180-day mortality (18 vs 29%) without improving mRS ≤3 and increased mRS 5 (17 vs 9%). AHA 2022, for GCS >3 with primary IVH or IVH extension from supratentorial ICH <30 mL requiring EVD: reasonable to reduce mortality (2a); functional benefit uncertain (2b).",
+    "summary": "In ICH without anticoagulant use, no hemostatic drug has been shown to improve function (anticoagulant-associated ICH still needs rapid reversal: AHA 2022, COR 1). Recombinant factor VIIa within 2 h (FASTEST) slowed growth by 3.7 mL but did not change 180-day mRS (cOR 1.09) and increased life-threatening thromboembolism (RR 3.41); tranexamic acid (TICH-2) also gave no functional benefit (aOR 0.88). A 2026 individual-patient meta-analysis (5 trials, 2,860 patients treated within 12 h) confirmed no 90-day functional benefit (cOR 0.93) but found small reductions in hematoma expansion (OR 0.81) and 7-day mortality (aOR 0.70). Hydrocephalus contributing to reduced consciousness: ventricular drainage (AHA 2022, COR 1); large IVH with impaired consciousness: EVD rather than medical management alone (COR 1). CLEAR III (stable supratentorial ICH <30 mL or primary IVH; IVH obstructing the third or fourth ventricle; routine EVD): intraventricular alteplase lowered 180-day mortality (18 vs 29%) without improving mRS ≤3 and increased mRS 5 (17 vs 9%). AHA 2022, for GCS >3 with primary IVH or IVH extension from supratentorial ICH <30 mL requiring EVD: reasonable to reduce mortality (2a); functional benefit uncertain (2b).",
     "consider": [
       "Is the problem expansion, ventricular obstruction, hydrocephalus or mass effect?",
       "Repeat CT within 24 h, sooner with any decline, to catch expansion.",
@@ -2418,7 +2450,7 @@
       "DOAC",
       "recurrent thrombosis"
     ],
-    "summary": "APS assessment connects the clinical thrombotic history with persistent antiphospholipid antibodies. An isolated positive test does not establish APS; acute illness and anticoagulants can distort lupus-anticoagulant testing.",
+    "summary": "APS assessment connects the clinical thrombotic history with persistent antiphospholipid antibodies. An isolated positive test does not establish APS; acute illness and anticoagulants can distort lupus-anticoagulant testing. In a 2026 meta-analysis of mostly hospital-based case-control studies (single-time testing; diagnosed APS excluded; most studies before 2010), about 1 in 5 ischemic stroke patients had at least one positive antiphospholipid antibody (19.1%; highly heterogeneous, possibly overestimated). Seropositivity was associated with first ischemic stroke (OR 2.93; strongest for lupus anticoagulant) but not significantly with recurrence in 9 cohorts (OR 1.20; 95% CI 0.87–1.67; not adjusted for post-stroke treatment), which the authors say is not evidence against its relevance.",
     "consider": [
       "Does the stroke mechanism, age, vascular-risk profile or prior thrombotic/obstetric history justify targeted testing?",
       "Review the antibody profile, assay conditions and repeat testing at least 12 weeks apart with hematology and the laboratory.",
@@ -2474,7 +2506,8 @@
     "consider": [
       "Establish time to peak pain, onset time, examination findings and whether the presentation fits the source population.",
       "AHA/ASA 2023 recommends LP after a negative CT when presentation is more than 6 hours after onset or there is a new neurologic deficit; early CT-only assessment has specific quality and examination requirements.",
-      "ACEP 2019 allows LP or CTA when SAH risk remains after negative CT, with shared discussion of limitations. Review these differing recommendations with the local diagnostic pathway."
+      "ACEP 2019 allows LP or CTA when SAH risk remains after negative CT, with shared discussion of limitations. Review these differing recommendations with the local diagnostic pathway.",
+      "In ED patients with non-traumatic acute headache, the Ottawa and Emerald SAH rules had pooled sensitivity of 99% but specificity of only 23–27%, and the Ottawa rule did not significantly reduce CT use (2025 meta-analysis). In a UK and Ireland neurosurgical-referral audit (10,187 spontaneous SAH), 55 aneurysmal SAHs had a CT reported negative within 6 h of onset and a positive LP; these were real-world reports, often not by neuroradiologists."
     ],
     "caution": "A negative CT is not universal clearance, and CTA can find an incidental aneurysm.",
     "sources": [

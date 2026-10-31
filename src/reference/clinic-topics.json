@@ -42,8 +42,8 @@
       }
     ],
     "consider": [
-      "Size the infarct on imaging (ELAN categories), not by NIHSS alone; brain imaging before starting may be considered (AHA 2021, 2b).",
-      "ELAN infarct size: minor ≤1.5 cm; moderate involves a cortical superficial branch of the MCA, ACA or PCA, a deep MCA branch or the internal border zone; major involves an entire MCA, ACA or PCA territory, two or more MCA cortical branches, cortical plus deep MCA branches, or a brainstem or cerebellar lesion >1.5 cm (ELAN, NEJM 2023).",
+      "Size the infarct on imaging (ELAN categories), not by NIHSS alone; brain imaging before starting may be considered (AHA 2021, 2b). ELAN infarct size: minor ≤1.5 cm; moderate involves a cortical superficial branch of the MCA, ACA or PCA, a deep MCA branch or the internal border zone; major involves an entire MCA, ACA or PCA territory, two or more MCA cortical branches, cortical plus deep MCA branches, or a brainstem or cerebellar lesion >1.5 cm (ELAN, NEJM 2023).",
+      "Larger infarcts: in a prespecified OPTIMAS analysis (3,572 participants; segmented infarct volume), the effect of starting a DOAC within 4 days vs days 7–14 did not vary with infarct volume, and sICH with infarcts >25 mL was 3/238 early vs 5/239 delayed; only 187 had infarcts >50 mL. In ELAN, prior IVT or thrombectomy did not modify the early-vs-late effect. Both are secondary analyses within each trial's selected patients.",
       "Hemorrhagic transformation: starting or continuing anticoagulation may be considered case by case (AHA 2026, 2b).",
       "TIA with nonvalvular AF: starting anticoagulation immediately is reasonable (AHA 2021, 2a, expert opinion)."
     ],
@@ -258,7 +258,8 @@
       "revascularization",
       "timing",
       "within 2 weeks",
-      "symptomatic stenosis"
+      "symptomatic stenosis",
+      "CREST-H"
     ],
     "summary": "TIA or nondisabling stroke within 6 months with ipsilateral 70–99% stenosis: endarterectomy if perioperative stroke or death risk is <6% (AHA 2021, COR 1), ideally within 2 weeks (2a); 50–69%: endarterectomy depending on patient factors (COR 1); <50%: no revascularization (COR 3: No Benefit). At age ≥70 or within the first week, endarterectomy is preferred over stenting (2a). Asymptomatic: for >70% stenosis, AHA 2024 recommends shared decision-making on revascularization versus medical management (COR 1); at low perioperative risk, adding revascularization to intensive medical therapy may be reasonable (2b). ESO 2021 recommends endarterectomy for 60–99% stenosis at increased stroke risk on best medical therapy (moderate-quality evidence). Postdating both, CREST-2 (≥70%) found fewer 4-year events with stenting plus intensive medical management (2.8 vs 6.0%) but no significant benefit from endarterectomy (3.7 vs 5.3%); ACST-2 (2021) found stenting and endarterectomy similar (5-year non-procedural stroke 5.3 vs 4.5%).",
     "recommendations": [
@@ -280,7 +281,8 @@
     "consider": [
       "How was the stenosis measured (NASCET), and does the lesion explain the event?",
       "Large or disabling infarct, hemorrhage or near-occlusion: individualize timing with vascular surgery.",
-      "Everyone gets intensive medical therapy: antiplatelet, statin and BP control (COR 1)."
+      "Everyone gets intensive medical therapy: antiplatelet, statin and BP control (COR 1).",
+      "Revascularizing to improve cognition: in CREST-2 (≥70% asymptomatic stenosis), neither stenting nor endarterectomy added to intensive medical management improved cognition over up to 4 years (prespecified secondary outcome; 2,165 US patients). In the CREST-H substudy (51 patients with reduced baseline cognition), revascularization did not improve 1-year cognition, and the effect did not differ by baseline hemodynamic impairment (JAMA 2026)."
     ],
     "caution": "CREST-2 ran two separate trials, so it does not compare stenting directly with endarterectomy.",
     "sources": [
@@ -444,9 +446,10 @@
       }
     ],
     "consider": [
-      "Is the mechanism settled, and does it change the drug (AF, PFO, dissection, intracranial stenosis)?",
+      "Is the mechanism settled, and does it change the drug (AF, PFO, dissection, intracranial stenosis)? Check adherence, cost, smoking, diet and activity at every visit.",
       "Very high risk (stroke plus another major ASCVD event, or ≥2 high-risk conditions): ACC/AHA 2026 goal LDL-C <55 mg/dL; add ezetimibe and/or a PCSK9 antibody as needed (COR 1).",
-      "Check adherence, cost, smoking, diet and activity at every visit."
+      "Noncardioembolic stroke while taking aspirin: over a median of about 19 months, switching to another antithrombotic was not clearly better than continuing aspirin (network meta-analysis of 9 RCTs, 5,459 patients; recurrent ischemic stroke RR 0.88, 95% CI 0.76–1.03). Trials with only ≤90-day outcomes were excluded, so this does not address short-term DAPT after minor stroke or high-risk TIA.",
+      "Type 2 diabetes with minor stroke (NIHSS ≤3) or high-risk TIA (ABCD2 ≥4): in LAMP (China, open-label with blinded end points; 636 patients randomized within 24 h), 90 days of liraglutide reduced 90-day stroke recurrence (7.9 vs 13.8%; HR 0.56); its authors call the trial underpowered. It postdates AHA 2021 and does not establish an acute indication. A 2026 meta-analysis of four randomized trials of early GLP-1 receptor agonists after ischemic stroke or high-risk TIA (LAMP, GALLOP-1, GALLOP-2, TEXAIS; 1,514 patients) found only a fragile gain in 90-day mRS 0–2 (RR 1.06, 1.01–1.11) that was not significant without LAMP (RR 1.07, 0.92–1.24)."
     ],
     "caution": "Avoid indefinite DAPT or antiplatelet-plus-anticoagulant combinations without a separate indication.",
     "sources": [
@@ -496,13 +499,13 @@
       "participation",
       "telehealth"
     ],
-    "summary": "AHA/ASA AIS 2026: formal inpatient interdisciplinary assessment and rehabilitation matched to the patient (COR 1); no high-dose, very early mobilization within 24 h of stroke onset (COR 3: Harm); screen for depression with a structured inventory and treat diagnosed depression (COR 1). SSRIs are not recommended for motor or functional recovery (COR 3: No Benefit): fluoxetine 20 mg daily for 6 months did not improve mRS and increased fractures (FOCUS, AFFINITY, EFFECTS), when started 2–15 days after stroke; this does not apply to treating diagnosed depression. Reassess function, mood and goals at follow-up.",
+    "summary": "AHA/ASA AIS 2026: formal inpatient interdisciplinary assessment and rehabilitation matched to the patient (COR 1); no high-dose, very early mobilization within 24 h of stroke onset (COR 3: Harm); screen for depression with a structured inventory and treat diagnosed depression (COR 1). CSBPR 2025 (Canada) adds: begin mobilization once medically stable, ideally 24–48 h after stroke, with caution and clinical judgment (strong recommendation; moderate-quality evidence). SSRIs are not recommended for motor or functional recovery (COR 3: No Benefit): fluoxetine 20 mg daily for 6 months did not improve mRS and increased fractures (FOCUS, AFFINITY, EFFECTS), when started 2–15 days after stroke; this does not apply to treating diagnosed depression. Levodopa/carbidopa 100/25 mg three times daily for 39 days, added to task-oriented inpatient rehabilitation after acute ischemic or hemorrhagic stroke with hemiparesis, did not improve 3-month Fugl-Meyer scores, with similar serious adverse events (ESTREL RCT, Switzerland, 610 patients: −0.9 points, 95% CI −3.8 to 2.0; postdates the AIS 2026 evidence review, not graded). Reassess function, mood and goals at follow-up.",
     "consider": [
       "Which impairments, daily activities and participation goals need assessment or renewed therapy?",
       "Have the patient and care partner received education, training and support?",
       "Is follow-up feasible (transport, access, telehealth), and who reassesses progress?"
     ],
-    "caution": "A screening score is not a diagnosis, and this card gives no driving, work or travel clearance. Grades are from AHA/ASA AIS 2026 (acute ischemic stroke); the August 2026 AHA/ASA rehabilitation guideline was not reviewed.",
+    "caution": "A screening score is not a diagnosis, and this card gives no driving, work or travel clearance. Grades are from AHA/ASA AIS 2026 (acute ischemic stroke) unless labelled CSBPR 2025; the August 2026 AHA/ASA rehabilitation guideline was not reviewed.",
     "sources": [
       {
         "title": "2026 AHA/ASA adult stroke rehabilitation and recovery guideline: overview",

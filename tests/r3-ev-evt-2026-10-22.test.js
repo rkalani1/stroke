@@ -19,7 +19,8 @@ const studySources = () => Object.fromEntries(read('src/reference/study-sources.
 
 describe('r3 ev-evt: systems of care and reperfusion overview', () => {
   it('validates against the reference contract on the review date', () => {
-    expect(validateClinicalReference(data, { now: new Date('2026-10-22T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
+    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
   });
 
   it('rural-telestroke keeps each EMS destination grade inside its own setting (evt-a-systems#0)', () => {
@@ -65,9 +66,10 @@ describe('r3 ev-evt: large core and thrombectomy selection', () => {
 
   it('large-core summary gives TESLA its threshold and 1-year report (evt-b-selection-largecore#1)', () => {
     // TESLA (PMID 39374319): posterior probability .96 against a required .975. SVIN 2025 (PMC12671639):
-    // "did not meet its primary end point at 3 months but showed clinical benefit at the 1-year mark".
+    // "did not meet its primary end point at 3 months but showed clinical benefit at the 1-year mark"; re-read 2026-10-31:
+    // "treatment benefit 1.18 [95% CI: 0.42–1.93]" in utility-weighted mRS at 1 year (missed#10).
     const summary = topic('large-core-evt').summary;
-    expect(summary).toContain('TESLA (NCCT ASPECTS 2–5, ≤24 h) missed its 90-day primary endpoint (posterior probability 0.96; 0.975 required), though SVIN 2025 reports benefit at 1 year.');
+    expect(summary).toContain('TESLA (NCCT ASPECTS 2–5, ≤24 h) missed its 90-day primary endpoint (posterior probability 0.96; 0.975 required), though at 1 year the utility-weighted mRS favored EVT (difference 1.18; 95% CI 0.42–1.93; reported by SVIN 2025).');
   });
 
   it('evt-selection gives DIRECT ANGIO its population and its imprecision (evt-b-selection-largecore#2)', () => {
@@ -138,7 +140,8 @@ describe('r3 ev-evt: study cards and source design labels', () => {
 
   it('attention limits state the registry age-specific imaging and baseline limits (evt-d-studies#1)', () => {
     // NCT04751708: NIHSS ≥10; exclude mRS ≥3 if <80 and mRS ≥1 if ≥80; exclude PC-ASPECTS <6 if <80 (<8 if ≥80).
-    expect(study('attention').limits).toBe('Single-country trial; it required NIHSS ≥10, PC-ASPECTS ≥6 and prestroke mRS 0–2, and for age ≥80 PC-ASPECTS ≥8 and prestroke mRS 0 (registry NCT04751708).');
+    // Currency 2026-10-31 (evt-acute-bp): 3-year outcomes (JAMA Neurol 2026, PMID 41460644 abstract) appended; registry limits unchanged.
+    expect(study('attention').limits).toBe('Single-country trial; it required NIHSS ≥10, PC-ASPECTS ≥6 and prestroke mRS 0–2, and for age ≥80 PC-ASPECTS ≥8 and prestroke mRS 0 (registry NCT04751708). At 3 years (JAMA Neurol 2026; 307 of 340 followed), mRS 0–3 was 38.4% vs 18.3% (adjusted RR 2.05; 95% CI 1.35–3.11) and cumulative mortality 55.7% vs 73.1%; in a prespecified subgroup, no treatment effect was demonstrated at age ≥70.');
   });
 
   it('labels the two meta-analyses and three observational studies by their stated design (evt-d-studies#2, #3)', () => {
