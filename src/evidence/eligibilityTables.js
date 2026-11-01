@@ -12,7 +12,6 @@ const groups = [
     "title": "Ischemic Stroke — Acute (Onset ≤ 24 Hours)",
     "trials": [
       "STEP",
-      "SISTER",
       "PICASSO"
     ]
   },
@@ -47,7 +46,6 @@ const groups = [
     "phase": "acute",
     "title": "Intracerebral Hemorrhage (ICH) — Acute (Onset ≤ 24 Hours)",
     "trials": [
-      "FASTEST-2",
       "MINUTE",
       "SATURN"
     ]

@@ -25,7 +25,6 @@ describe('preset onset bands that only touch a study limit at an endpoint (H3)',
     // STEP reads presentation to the enrolling hospital ≤ 24 h (NCT06289985), so the band alone leaves it
     // unknown; with presentation after 24 h recorded it is not met (r3-trials, 2026-10-22).
     ['ischemic', '24h – 7d', 'STEP', /Did not present to the enrolling hospital within 24 h of LKW/, { presentedWithin24h: false }],
-    ['ischemic', '24h – 7d', 'SISTER', /Outside 4\.5–24 h/],
     ['ich', '24h – 7d', 'MINUTE', /16 hours/],
     ['ich', '7 – 30d', 'SATURN', /> 7 days/],
     ['ich', '> 6mo', 'ASPIRE', /14-180 days/],
@@ -48,12 +47,11 @@ describe('preset onset bands that only touch a study limit at an endpoint (H3)',
     expect(evaluate('MR-PICS', withPreset('ischemic', '30 – 180d')).beforeWindow).toBe(true);
     expect(groupOf(withPreset('ischemic', '4.5 – 24h'), 'VERIFY')).toBe('soon');
     expect(evaluate('VERIFY', withPreset('ischemic', '4.5 – 24h')).beforeWindow).toBe(true);
-    expect(groupOf(withPreset('ischemic', '< 4.5h'), 'SISTER')).toBe('soon');
   });
 
   it('keeps genuinely overlapping bands unknown instead of resolving them', () => {
     for (const [classification, band, acronym] of [
-      ['ich', '7 – 30d', 'ASPIRE'], ['ich', '< 4.5h', 'FASTEST-2'], ['ischemic', '30 – 180d', 'TELE-REHAB-2'],
+      ['ich', '7 – 30d', 'ASPIRE'], ['ich', '4.5 – 24h', 'MINUTE'], ['ischemic', '30 – 180d', 'TELE-REHAB-2'],
       ['ischemic', '> 6mo', 'TELE-REHAB-2'], ['ich', '> 6mo', 'TELE-REHAB-2'],
       ['ischemic', '30 – 180d', 'INTERCEPT'], ['ischemic', '> 6mo', 'INTERCEPT'], ['tia', '30 – 180d', 'CLARITY']
     ]) {
@@ -142,7 +140,7 @@ describe('MINUTE anticoagulant and pregnancy exclusions (H2)', () => {
   it('lists the anticoagulant exclusion separately in the stored registry criteria', () => {
     expect(trial('MINUTE').exactExclusionCriteria).toContain('Concurrent use of DOAC or LMWH at ICH onset');
     expect(EXCLUSION_ITEMS.find(i => i.id === 'exDoacLmwhAtOnset').trials).toEqual(['MINUTE']);
-    expect(EXCLUSION_ITEMS.find(i => i.id === 'exPregnancy').trials).toEqual(expect.arrayContaining(['MINUTE', 'STEP', 'VERIFY', 'FASTEST-2', 'SISTER']));
+    expect(EXCLUSION_ITEMS.find(i => i.id === 'exPregnancy').trials).toEqual(expect.arrayContaining(['MINUTE', 'STEP', 'VERIFY']));
   });
 });
 
@@ -210,27 +208,28 @@ describe('registry criteria added to stored profiles (M1, M2, M4, M5)', () => {
   });
   it('labels phase and study type for every profile', () => {
     const labels = Object.fromEntries(screenerTrials.map(t => [t.acronym, phaseLabel(t.externalMetadata)]));
-    expect(labels).toMatchObject({ STEP: 'Phase N/A', TESTED: 'Observational', MINUTE: 'Phase N/A', CLARITY: 'Phase 3', INTERCEPT: 'Phase N/A', ASPIRE: 'Phase 3', SATURN: 'Phase 3', 'CAPPRICORN-1': 'Phase 2', 'SCOUTS-3': 'Phase N/A', VERIFY: 'Observational', 'MR-PICS': 'Phase N/A', 'TELE-REHAB-2': 'Phase N/A', PICASSO: 'Phase 3', CAPTIVA: 'Phase 3', 'FASTEST-2': 'Phase 3', SISTER: 'Phase 2' });
+    expect(labels).toMatchObject({ STEP: 'Phase N/A', TESTED: 'Observational', MINUTE: 'Phase N/A', CLARITY: 'Phase 3', INTERCEPT: 'Phase N/A', ASPIRE: 'Phase 3', SATURN: 'Phase 3', 'CAPPRICORN-1': 'Phase 2', 'SCOUTS-3': 'Phase N/A', VERIFY: 'Observational', 'MR-PICS': 'Phase N/A', 'TELE-REHAB-2': 'Phase N/A', PICASSO: 'Phase 3', CAPTIVA: 'Phase 3' });
     expect(phaseLabel({ phase: 'PHASE2/PHASE3', studyType: 'INTERVENTIONAL' })).toBe('Phase 2/3');
   });
 });
 
-describe('new StrokeNet profiles (FASTEST Part 2, SISTER)', () => {
-  it('screens FASTEST Part 2 on time, volume, GCS and recent oral anticoagulant', () => {
-    const base = { classification: 'ich', onsetVal: 1.5, onsetUnit: 'hours', age: 60, gcs: 13, preMrs: 0, ichVolume: 25 };
-    expect(evaluate('FASTEST-2', base).status).toBe('pending');
-    expect(evaluate('FASTEST-2', { ...base, onsetVal: 3 }).exclusionReasons).toEqual(['Beyond 120 minutes from onset/LKW']);
-    expect(evaluate('FASTEST-2', { ...base, ichVolume: 60 }).exclusionReasons).toEqual(['ICH volume <2 mL or ≥60 mL']);
-    expect(evaluate('FASTEST-2', { ...base, gcs: 7 }).exclusionReasons).toEqual(['GCS 3–7']);
-    expect(evaluate('FASTEST-2', { ...base, exclusions: { exOacWithin7d: true } }).exclusionReasons).toEqual(['Oral anticoagulant (VKA or DOAC) within 7 days']);
-    expect(trial('FASTEST-2').externalMetadata).toMatchObject({ nct: 'NCT07227246', registryStatus: 'RECRUITING', localActivationStatus: 'not_assessed' });
+// SISTER and FASTEST-2 left the catalog on 2026-11-01; these engine paths (an exact onset past an
+// upper limit or before a window, a present exclusion and a numeric floor) are kept on MINUTE and VERIFY.
+describe('exact onset, answered exclusions and numeric floors on acute profiles', () => {
+  it('screens MINUTE on time, GCS and a present exclusion', () => {
+    const base = { classification: 'ich', onsetVal: 1.5, onsetUnit: 'hours', age: 60, gcs: 13, preMrs: 0, ichVolume: 25, ichLocation: 'bg', nihss: 10 };
+    expect(evaluate('MINUTE', base).status).toBe('pending');
+    expect(evaluate('MINUTE', { ...base, onsetVal: 17 }).exclusionReasons).toEqual(['More than 16 hours from LKW at screening (registry: randomization ≤ 16 hours from LKW)']);
+    expect(evaluate('MINUTE', { ...base, gcs: 6 }).exclusionReasons).toEqual(['GCS < 7 at presentation']);
+    expect(evaluate('MINUTE', { ...base, exclusions: { exSecondaryIch: true } }).exclusionReasons).toEqual(['Excludes suspected secondary cause']);
   });
-  it('screens SISTER on the 4.5–24 h window, NIHSS, ASPECTS and thrombolysis', () => {
-    const base = { classification: 'ischemic', onsetVal: 10, onsetUnit: 'hours', age: 70, nihss: 8, aspects: 8, preMrs: 1 };
-    expect(evaluate('SISTER', base).status).toBe('pending');
-    expect(evaluate('SISTER', { ...base, onsetVal: 3 }).beforeWindow).toBe(true);
-    expect(evaluate('SISTER', { ...base, exclusions: { exIvtGivenOrPlanned: true } }).exclusionReasons).toEqual(['Received or planned IV thrombolysis']);
-    expect(evaluate('SISTER', { ...base, nihss: 3 }).exclusionReasons).toEqual(['NIHSS < 4']);
+  it('holds VERIFY before its 24–96 h window on an exact onset, and screens it once the window opens', () => {
+    const base = { classification: 'ischemic', onsetVal: 30, onsetUnit: 'hours', age: 70 };
+    expect(evaluate('VERIFY', base).status).toBe('pending');
+    const early = evaluate('VERIFY', { ...base, onsetVal: 10 });
+    expect(early.beforeWindow).toBe(true);
+    expect(early.status).toBe('soon');
+    expect(evaluate('VERIFY', { ...base, onsetVal: 97 }).exclusionReasons).toEqual(['LKW-to-consent window not 24-96h']);
   });
 });
 
@@ -246,7 +245,7 @@ describe('exclusion review items and not-met reporting', () => {
   it('omits studies for another stroke type from not-met lists', () => {
     const r = evaluateAll({ ...createInitialScreenerState(), classification: 'ich', onsetVal: 2, onsetUnit: 'hours', gcs: 6 });
     expect(r.excluded.some(i => i.trial.acronym === 'STEP')).toBe(true);
-    expect(relevantNotMet(r.excluded).map(i => i.trial.acronym).sort()).toEqual(['FASTEST-2', 'MINUTE']);
+    expect(relevantNotMet(r.excluded).map(i => i.trial.acronym).sort()).toEqual(['MINUTE']);
   });
   it('records explicitly assessed exclusions in the copied summary', () => {
     const r = evaluateAll({ ...createInitialScreenerState(), classification: 'ich', onsetVal: 2, onsetUnit: 'hours', anticoagulant: 'doac', takingOac: true, exclusions: { exDoacLmwhAtOnset: true, exPregnancy: false } });

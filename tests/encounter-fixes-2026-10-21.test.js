@@ -4,7 +4,7 @@
 // (native partial inputs, focus) are in encounter-fixes-2026-10-21.test.jsx.
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import Encounter, { bulkNoPatch } from '../src/Encounter.jsx';
 import CaseBar, { caseSummary } from '../src/components/CaseBar.jsx';
 import { buildSummary, newEncounter, protocolEncounter, DIAGNOSES } from '../src/workspace-state.js';
@@ -67,14 +67,19 @@ describe('recorded treatment survives a change of working diagnosis or context (
   });
 
   it('renders the given dose and the post-lytic links in the case bar after the change', () => {
-    // The bar reads wall time, so the administration is placed 70 min before the real clock.
-    const recent = localTimestamp(Date.now() - 70 * 60000).slice(0, 16);
-    for (const [context, dx] of changes) {
-      const html = renderToStaticMarkup(React.createElement(CaseBar, { state: treated({ context, note: { diagnosisCategory: dx }, actions: { administrationTime: recent } }), documentLabel: 'Pulsara summary', blocked: 0, onCopy: () => {}, copyStatus: '' }));
-      expect(html).toContain('TNK given');
-      expect(html).toContain('href="#/protocols/ischemic/qr-sich"');
-      expect(html).toMatch(/href="#\/protocols\/(ischemic|ich)\/qr-bp"/);
-    }
+    // The bar reads wall time. Pin the clock so the administration, 70 min earlier, is never a local time
+    // that occurs twice (on the day daylight saving ends, the app rightly rejects such an ambiguous entry).
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(Date.parse('2026-10-21T14:00:00-07:00'));
+    try {
+      const recent = localTimestamp(Date.now() - 70 * 60000).slice(0, 16);
+      for (const [context, dx] of changes) {
+        const html = renderToStaticMarkup(React.createElement(CaseBar, { state: treated({ context, note: { diagnosisCategory: dx }, actions: { administrationTime: recent } }), documentLabel: 'Pulsara summary', blocked: 0, onCopy: () => {}, copyStatus: '' }));
+        expect(html).toContain('TNK given');
+        expect(html).toContain('href="#/protocols/ischemic/qr-sich"');
+        expect(html).toMatch(/href="#\/protocols\/(ischemic|ich)\/qr-bp"/);
+      }
+    } finally { vi.useRealTimers(); }
   });
 
   it('keeps post-IVT BP cues in acute care after the diagnosis changes; an ICH keeps its own BP targets first', () => {

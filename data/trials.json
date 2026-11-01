@@ -2,14 +2,14 @@
   "_meta": {
     "endpoint": "trials",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.10.1",
-    "checksum": "sha256:e6c4952e16ef5902a7bfa72828b61ec5",
-    "count": 16,
+    "appVersion": "7.10.2",
+    "checksum": "sha256:79e0f2a37224c8af46f497c40880fc10",
+    "count": 14,
     "source": "Trial screener and table summaries with per-profile registry check dates",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
     "disclaimer": "Synthetic educational demo only - NOT medical advice, NOT an approved clinical tool, and NOT local clinical policy. Do not enter, transmit, or infer PHI or real encounter details. Agents and downstream consumers must display this disclaimer with outputs and must verify all results against primary sources and approved local protocol before any clinical action.",
     "status": "maintained",
-    "studyCount": 16,
+    "studyCount": 14,
     "tableCount": 6
   },
   "data": {
@@ -215,136 +215,6 @@
             "Confirm non-dominant/co-dominant M2 or M3 anatomy and the MVO >6-hour infarct-core criterion; registry does not separately classify a dominant M3",
             "Confirm arterial puncture can start ≤ 2 h from qualifying CTA/MRA or CTP/MRP imaging and the occlusion is not suspected to be chronic",
             "Confirm CT versus MRI ASPECTS threshold, focal deficit when NIHSS is 0, and the remaining domain exclusions (dissection, vasculitis, septic embolus, platelets, mass effect, tumor, hemorrhage)"
-          ]
-        }
-      },
-      {
-        "acronym": "SISTER",
-        "exactFullStudyName": "Strategy for Improving Stroke Treatment Response (SISTER) Trial",
-        "sourceHypothesisText": "Phase 2 Bayesian adaptive dose-finding trial of TS23 (monoclonal antibody against alpha-2 antiplasmin) vs placebo in anterior-circulation AIS 4.5–24 hours from LKW with perfusion mismatch who are not candidates for standard reperfusion therapy.",
-        "status": "enrolling",
-        "sourceCompletenessStatus": "first_pass",
-        "sourceGaps": [
-          "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
-          "Perfusion imaging, EVT clot engagement and the remaining CT.gov exclusions are listed for confirmation, not modeled, except prior TS23 or antibody allergy, confounding neurological or psychiatric disease and another research drug protocol (full criteria only).",
-          "Registry status rechecked 2026-10-31: RECRUITING; last update posted 2026-10-19 (recorded 2026-10-31). This is the overall study status; local site activation and recruitment availability have not been verified."
-        ],
-        "timeCategory": "hyperacute",
-        "enrollmentWindowText": "4.5 – 24 hours",
-        "externalMetadata": {
-          "nct": "NCT05948566",
-          "registryUrl": "https://clinicaltrials.gov/study/NCT05948566",
-          "verificationDate": "2026-10-31",
-          "registryStatus": "RECRUITING",
-          "registryLastUpdatePosted": "2026-10-19",
-          "localActivationStatus": "not_assessed",
-          "phase": "PHASE2",
-          "studyType": "INTERVENTIONAL",
-          "registryAcronym": "SISTER"
-        },
-        "conciseBedsideSummary": "TS23 (anti-α2-antiplasmin antibody) vs placebo for anterior-circulation AIS 4.5–24 h with perfusion mismatch in patients who are not candidates for standard reperfusion (no IV thrombolysis given or planned; no EVT with clot engagement), NIHSS ≥4 (disabling if 4–5).",
-        "pathway": "Consult Stroke Research Coordinator / On-Call Stroke Neurology",
-        "noContactInfo": true,
-        "exactInclusionCriteria": [
-          "Age ≥ 18 years; suspected anterior-circulation AIS",
-          "NIHSS ≥ 4 (clearly disabling deficit if NIHSS 4–5)",
-          "CT ASPECTS ≥ 6 (MRI ≥ 7); perfusion mismatch ratio > 1.2, mismatch volume > 10 mL, core < 70 mL; if CT hypodensity is present, hypodensity plus perfusion core (CBF < 30%) smaller than the penumbra (Tmax > 6 s minus CBF < 30%) on visual assessment",
-          "Study drug 4.5–24 hours from LKW and within 120 minutes of qualifying perfusion imaging"
-        ],
-        "exactExclusionCriteria": [
-          "EVT with clot engagement; received or planned IV thrombolysis",
-          "Pre-stroke mRS > 2",
-          "Stroke within 90 days; prior ICH, SAH, AVM or intracranial neoplasm",
-          "Factor Xa inhibitor or direct thrombin inhibitor within 48 h; full-dose LMWH within 24 h; GP IIb/IIIa within 14 days; INR > 1.7; platelets < 100,000",
-          "Persistent BP > 180/105 mm Hg despite treatment; pregnancy (or positive test if of childbearing potential), breastfeeding or planned breastfeeding within 3 months",
-          "Within 30 days: surgery or biopsy of a parenchymal organ, trauma with internal injuries or persistent ulcerative wounds, or serious systemic hemorrhage; severe head trauma within 90 days; presentation suggestive of SAH even with a normal CT",
-          "Hemorrhagic diathesis or coagulation factor deficiency; hematocrit < 25%; aPTT above normal (UFH within 24 h requires a normal aPTT); creatinine > 4 mg/dL or dialysis; concurrent MI, PE, DVT or other thrombosis requiring antithrombotic treatment",
-          "Prior TS23 or antibody-therapy allergy; confounding neurological or psychiatric disease; another research drug protocol"
-        ],
-        "eligibility": {
-          "criteria": [
-            {
-              "field": "classification",
-              "operator": "==",
-              "value": "ischemic",
-              "error": "Requires Ischemic Stroke",
-              "matchedLabel": "Ischemic Stroke classification selected"
-            },
-            {
-              "field": "age",
-              "operator": ">=",
-              "value": 18,
-              "error": "Age < 18 years",
-              "matchedLabel": "Age is {value} (meets ≥ 18)",
-              "pendingLabel": "Confirm age ≥ 18"
-            },
-            {
-              "field": "onsetHours",
-              "operator": "between",
-              "value": [
-                4.5,
-                24
-              ],
-              "error": "Outside 4.5–24 h from LKW",
-              "matchedLabel": "Within 4.5–24 h from LKW",
-              "pendingLabel": "Confirm study drug 4.5–24 h from LKW and ≤120 min from perfusion imaging"
-            },
-            {
-              "field": "nihss",
-              "operator": ">=",
-              "value": 4,
-              "error": "NIHSS < 4",
-              "matchedLabel": "NIHSS is {value} (meets ≥ 4; disabling if 4–5)",
-              "pendingLabel": "Confirm NIHSS ≥ 4 (disabling if 4–5)"
-            },
-            {
-              "field": "aspects",
-              "operator": ">=",
-              "value": 6,
-              "error": "CT ASPECTS < 6 / MRI ASPECTS < 7",
-              "matchedLabel": "ASPECTS is {value} (meets CT ≥ 6)",
-              "pendingLabel": "Confirm CT ASPECTS ≥ 6 (MRI ≥ 7)"
-            },
-            {
-              "field": "preMrs",
-              "operator": "<=",
-              "value": 2,
-              "error": "Pre-stroke mRS > 2",
-              "matchedLabel": "Pre-stroke mRS is {value} (meets ≤ 2)",
-              "pendingLabel": "Confirm pre-stroke mRS ≤ 2"
-            }
-          ],
-          "exclusions": [
-            {
-              "field": "exXaDtiWithin48h",
-              "operator": "==",
-              "value": true,
-              "error": "Factor Xa inhibitor or direct thrombin inhibitor within 48 h",
-              "pendingLabel": "Confirm no Xa inhibitor or direct thrombin inhibitor within 48 h (and INR ≤ 1.7 if on VKA)",
-              "residualPending": "Confirm INR ≤ 1.7 if on warfarin/VKA"
-            },
-            {
-              "field": "exIvtGivenOrPlanned",
-              "operator": "==",
-              "value": true,
-              "error": "Received or planned IV thrombolysis",
-              "pendingLabel": "Confirm no IV thrombolysis given or planned"
-            },
-            {
-              "field": "exPregnancy",
-              "operator": "==",
-              "value": true,
-              "error": "Pregnancy or breastfeeding",
-              "pendingLabel": "Confirm not pregnant (negative test if of childbearing potential) and not breastfeeding or planning to within 3 months",
-              "residualPending": "Confirm not breastfeeding or planning to within 3 months; negative pregnancy test if of childbearing potential"
-            }
-          ],
-          "manualPending": [
-            "Confirm no standard-of-care reperfusion (registry primary objective): no EVT with clot engagement; groin puncture without engagement because of spontaneous distal migration is permitted",
-            "Confirm perfusion mismatch (ratio > 1.2, mismatch > 10 mL, core < 70 mL; with CT hypodensity, hypodensity plus core smaller than the penumbra), anterior circulation, and study drug ≤ 120 min from qualifying perfusion imaging",
-            "Confirm no stroke within 90 days, prior ICH/SAH/AVM/intracranial neoplasm, surgery/biopsy, trauma, persistent ulcerative wounds or serious systemic hemorrhage within 30 days, severe head trauma within 90 days, suspected SAH, hemorrhagic diathesis or coagulation factor deficiency, dialysis or concurrent thrombosis needing antithrombotics, and the INR, platelet, hematocrit, aPTT, creatinine, LMWH, GP IIb/IIIa and BP limits",
-            "If NIHSS is 4–5, confirm a clearly disabling deficit",
-            "If ASPECTS was scored on MRI (DWI), confirm MRI ASPECTS ≥ 7"
           ]
         }
       },
@@ -671,148 +541,6 @@
             "Confirm CTA/MRA excludes an underlying vascular lesion, randomization within 2 hours of arrival at the randomizing center, surgery can start <120 minutes after randomization, and goals of care meet the protocol",
             "Confirm coagulation criteria (INR ≤1.4, aPTT ≤40 s, platelets ≥100,000; reversal not allowed), registry details, activation rules and consent requirements through the active protocol",
             "Confirm no active infection (fever ≥100.7 °F or open draining wound) and no comorbidity expected to compromise survival or follow-up through 365 days"
-          ]
-        }
-      },
-      {
-        "acronym": "FASTEST-2",
-        "exactFullStudyName": "Recombinant Factor VIIa (rFVIIa) for Acute Hemorrhagic Stroke Administered at Earliest Time (FASTEST) Trial - Part 2",
-        "sourceHypothesisText": "Phase 3, double-blind, placebo-controlled trial of rFVIIa (80 µg/kg, max 10 mg) plus best standard therapy for spontaneous ICH treated within 120 minutes of onset with a positive CTA spot sign, or within 90 minutes regardless of spot sign. Uses emergency research consent (EFIC in the US).",
-        "status": "enrolling",
-        "sourceCompletenessStatus": "first_pass",
-        "sourceGaps": [
-          "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
-          "CT.gov excludes oral anticoagulant (VKA or DOAC) use within 7 days, LMWH within 24 hours, pro-coagulant drugs within 24 hours, symptomatic thrombotic/vaso-occlusive disease within 90 days, recent carotid/coronary/cerebrovascular stenting, and planned comfort care; not all are encoded here.",
-          "Registry status rechecked 2026-10-31: RECRUITING; last update posted 2026-08-20 (recorded 2026-10-31). This is the overall study status; local site activation, EFIC community consultation and recruitment availability have not been verified.",
-          "FASTEST Part 1 (NCT03496883; ACTIVE_NOT_RECRUITING on 2026-10-21) was reported in Lancet 2026 (PMID 41653933; doi:10.1016/S0140-6736(26)00097-8): stopped for futility, with no 180-day mRS difference (adjusted common OR 1.09, 95% CI 0.79–1.51); life-threatening thromboembolic complications within 4 days in 15 (<5%) vs 4 (1%) participants (RR 3.41, 95% CI 1.14–10.15); ICH growth 3.7 mL lower at 24 h. Part 2 is a separate registry record (which describes it as an extension of the FASTEST Trial) restricted to spot-sign-positive ≤ 120 min or any ≤ 90 min. Emerging evidence, not a guideline recommendation."
-        ],
-        "timeCategory": "hyperacute",
-        "enrollmentWindowText": "≤ 120 min (spot sign +) or ≤ 90 min (any)",
-        "externalMetadata": {
-          "nct": "NCT07227246",
-          "registryUrl": "https://clinicaltrials.gov/study/NCT07227246",
-          "verificationDate": "2026-10-31",
-          "registryStatus": "RECRUITING",
-          "registryLastUpdatePosted": "2026-08-20",
-          "localActivationStatus": "not_assessed",
-          "phase": "PHASE3",
-          "studyType": "INTERVENTIONAL",
-          "registryAcronym": "FASTEST Part 2"
-        },
-        "conciseBedsideSummary": "rFVIIa vs placebo for spontaneous ICH 2 to <60 mL: study drug ≤120 min from onset with CTA spot sign, or ≤90 min regardless; age 18–80, GCS ≥8, no oral anticoagulant within 7 days.",
-        "pathway": "Consult Stroke Research Coordinator / On-Call Stroke Neurology (time-critical; emergency research consent study)",
-        "noContactInfo": true,
-        "exactInclusionCriteria": [
-          "Age 18–80 years",
-          "Spontaneous ICH",
-          "Study drug within 120 minutes of onset/LKW with positive CTA spot sign, or within 90 minutes with or without spot sign",
-          "Emergency research consent (EFIC in the US) per protocol"
-        ],
-        "exactExclusionCriteria": [
-          "GCS 3–7",
-          "Secondary ICH (trauma, aneurysm, AVM, coagulopathy) or oral anticoagulant (VKA or DOAC) use within 7 days",
-          "ICH volume < 2 mL or ≥ 60 mL; IVH filling ≥ 2/3 of one lateral ventricle or ≥ 1/3 of both",
-          "Pre-existing disability mRS > 2",
-          "Symptomatic thrombotic or vaso-occlusive event within 90 days (infarct, MI, PE, DVT, unstable angina); acute ST elevation",
-          "Brainstem hemorrhage (cerebellar permitted)",
-          "LMWH or pro-coagulant drug within 24 hours; unfractionated heparin with abnormal PTT; known or suspected thrombocytopenia unless a current platelet count above 50,000/µL is documented; planned comfort care; known pregnancy, ≤ 12 weeks post-partum and/or lactating"
-        ],
-        "eligibility": {
-          "criteria": [
-            {
-              "field": "classification",
-              "operator": "==",
-              "value": "ich",
-              "error": "Requires ICH",
-              "matchedLabel": "ICH classification selected"
-            },
-            {
-              "field": "age",
-              "operator": "between",
-              "value": [
-                18,
-                80
-              ],
-              "error": "Age must be 18-80 years",
-              "matchedLabel": "Age is {value} (meets 18-80)",
-              "pendingLabel": "Confirm age 18–80"
-            },
-            {
-              "field": "onsetHours",
-              "operator": "<=",
-              "value": 2,
-              "error": "Beyond 120 minutes from onset/LKW",
-              "matchedLabel": "Within 120 minutes of onset/LKW; ≤90 min or spot sign required",
-              "pendingLabel": "Confirm study drug can start ≤120 min from LKW (≤90 min without spot sign)"
-            },
-            {
-              "field": "gcs",
-              "operator": ">=",
-              "value": 8,
-              "error": "GCS 3–7",
-              "matchedLabel": "GCS is {value} (meets ≥ 8)",
-              "pendingLabel": "Confirm GCS ≥ 8"
-            },
-            {
-              "field": "preMrs",
-              "operator": "<=",
-              "value": 2,
-              "error": "Pre-stroke mRS > 2",
-              "matchedLabel": "Pre-stroke mRS is {value} (meets ≤ 2)",
-              "pendingLabel": "Confirm pre-stroke mRS ≤ 2"
-            },
-            {
-              "field": "ichVolume",
-              "operator": ">=",
-              "value": 2,
-              "error": "ICH volume <2 mL or ≥60 mL",
-              "matchedLabel": "Volume {value} mL (meets ≥2 mL)",
-              "pendingLabel": "Confirm ICH volume 2 to <60 mL"
-            },
-            {
-              "field": "ichVolume",
-              "operator": "<",
-              "value": 60,
-              "error": "ICH volume <2 mL or ≥60 mL",
-              "matchedLabel": "Volume {value} mL (meets <60 mL)",
-              "pendingLabel": "Confirm ICH volume 2 to <60 mL"
-            }
-          ],
-          "exclusions": [
-            {
-              "field": "exOacWithin7d",
-              "operator": "==",
-              "value": true,
-              "error": "Oral anticoagulant (VKA or DOAC) within 7 days",
-              "pendingLabel": "Confirm no VKA or DOAC within 7 days"
-            },
-            {
-              "field": "exSecondaryIch",
-              "operator": "==",
-              "value": true,
-              "error": "Secondary ICH cause",
-              "pendingLabel": "Confirm no secondary cause (trauma, aneurysm, AVM, coagulopathy)"
-            },
-            {
-              "field": "exBrainstemIch",
-              "operator": "==",
-              "value": true,
-              "error": "Brainstem hemorrhage",
-              "pendingLabel": "Confirm not a brainstem hemorrhage (cerebellar permitted)"
-            },
-            {
-              "field": "exPregnancy",
-              "operator": "==",
-              "value": true,
-              "error": "Pregnancy, ≤12 weeks post-partum or lactating",
-              "pendingLabel": "Confirm not pregnant, ≤12 weeks post-partum or lactating",
-              "residualPending": "Confirm not ≤12 weeks post-partum"
-            }
-          ],
-          "manualPending": [
-            "Confirm IVH limits (<2/3 of one lateral ventricle and <1/3 of both)",
-            "Confirm CTA spot sign if treatment will be 90–120 min from LKW",
-            "Confirm no thrombotic/vaso-occlusive event within 90 days, no LMWH or pro-coagulant within 24 h, no UFH with abnormal PTT, no stenting/endarterectomy within 90 days, platelets >50,000 if thrombocytopenia is known or suspected, not lactating, and no planned comfort care"
           ]
         }
       },
@@ -2114,38 +1842,6 @@
             ]
           },
           {
-            "acronym": "SISTER",
-            "nct": "NCT05948566",
-            "href": "https://clinicaltrials.gov/study/NCT05948566",
-            "status": "enrolling",
-            "referenceOnly": false,
-            "summary": "TS23 (anti-α2-antiplasmin antibody) vs placebo for anterior-circulation AIS 4.5–24 h with perfusion mismatch in patients who are not candidates for standard reperfusion (no IV thrombolysis given or planned; no EVT with clot engagement), NIHSS ≥4 (disabling if 4–5).",
-            "eligibility": [
-              "Age ≥ 18 years; suspected anterior-circulation AIS",
-              "NIHSS ≥ 4 (clearly disabling deficit if NIHSS 4–5)",
-              "CT ASPECTS ≥ 6 (MRI ≥ 7); perfusion mismatch ratio > 1.2, mismatch volume > 10 mL, core < 70 mL; if CT hypodensity is present, hypodensity plus perfusion core (CBF < 30%) smaller than the penumbra (Tmax > 6 s minus CBF < 30%) on visual assessment",
-              "Study drug 4.5–24 hours from LKW and within 120 minutes of qualifying perfusion imaging"
-            ],
-            "exclusions": [
-              "EVT with clot engagement; received or planned IV thrombolysis",
-              "Pre-stroke mRS > 2",
-              "Stroke within 90 days; prior ICH, SAH, AVM or intracranial neoplasm",
-              "Factor Xa inhibitor or direct thrombin inhibitor within 48 h; full-dose LMWH within 24 h; GP IIb/IIIa within 14 days; INR > 1.7; platelets < 100,000",
-              "Persistent BP > 180/105 mm Hg despite treatment; pregnancy (or positive test if of childbearing potential), breastfeeding or planned breastfeeding within 3 months",
-              "Within 30 days: surgery or biopsy of a parenchymal organ, trauma with internal injuries or persistent ulcerative wounds, or serious systemic hemorrhage; severe head trauma within 90 days; presentation suggestive of SAH even with a normal CT",
-              "Hemorrhagic diathesis or coagulation factor deficiency; hematocrit < 25%; aPTT above normal (UFH within 24 h requires a normal aPTT); creatinine > 4 mg/dL or dialysis; concurrent MI, PE, DVT or other thrombosis requiring antithrombotic treatment",
-              "Prior TS23 or antibody-therapy allergy; confounding neurological or psychiatric disease; another research drug protocol"
-            ],
-            "sourceDate": "2026-10-31",
-            "phase": "PHASE2",
-            "studyType": "INTERVENTIONAL",
-            "sourceGaps": [
-              "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
-              "Perfusion imaging, EVT clot engagement and the remaining CT.gov exclusions are listed for confirmation, not modeled, except prior TS23 or antibody allergy, confounding neurological or psychiatric disease and another research drug protocol (full criteria only).",
-              "Registry status rechecked 2026-10-31: RECRUITING; last update posted 2026-10-19 (recorded 2026-10-31). This is the overall study status; local site activation and recruitment availability have not been verified."
-            ]
-          },
-          {
             "acronym": "PICASSO",
             "nct": "NCT05611242",
             "href": "https://clinicaltrials.gov/study/NCT05611242",
@@ -2523,38 +2219,6 @@
         "phase": "acute",
         "title": "Intracerebral Hemorrhage (ICH) — Acute (Onset ≤ 24 Hours)",
         "trials": [
-          {
-            "acronym": "FASTEST-2",
-            "nct": "NCT07227246",
-            "href": "https://clinicaltrials.gov/study/NCT07227246",
-            "status": "enrolling",
-            "referenceOnly": false,
-            "summary": "rFVIIa vs placebo for spontaneous ICH 2 to <60 mL: study drug ≤120 min from onset with CTA spot sign, or ≤90 min regardless; age 18–80, GCS ≥8, no oral anticoagulant within 7 days.",
-            "eligibility": [
-              "Age 18–80 years",
-              "Spontaneous ICH",
-              "Study drug within 120 minutes of onset/LKW with positive CTA spot sign, or within 90 minutes with or without spot sign",
-              "Emergency research consent (EFIC in the US) per protocol"
-            ],
-            "exclusions": [
-              "GCS 3–7",
-              "Secondary ICH (trauma, aneurysm, AVM, coagulopathy) or oral anticoagulant (VKA or DOAC) use within 7 days",
-              "ICH volume < 2 mL or ≥ 60 mL; IVH filling ≥ 2/3 of one lateral ventricle or ≥ 1/3 of both",
-              "Pre-existing disability mRS > 2",
-              "Symptomatic thrombotic or vaso-occlusive event within 90 days (infarct, MI, PE, DVT, unstable angina); acute ST elevation",
-              "Brainstem hemorrhage (cerebellar permitted)",
-              "LMWH or pro-coagulant drug within 24 hours; unfractionated heparin with abnormal PTT; known or suspected thrombocytopenia unless a current platelet count above 50,000/µL is documented; planned comfort care; known pregnancy, ≤ 12 weeks post-partum and/or lactating"
-            ],
-            "sourceDate": "2026-10-31",
-            "phase": "PHASE3",
-            "studyType": "INTERVENTIONAL",
-            "sourceGaps": [
-              "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
-              "CT.gov excludes oral anticoagulant (VKA or DOAC) use within 7 days, LMWH within 24 hours, pro-coagulant drugs within 24 hours, symptomatic thrombotic/vaso-occlusive disease within 90 days, recent carotid/coronary/cerebrovascular stenting, and planned comfort care; not all are encoded here.",
-              "Registry status rechecked 2026-10-31: RECRUITING; last update posted 2026-08-20 (recorded 2026-10-31). This is the overall study status; local site activation, EFIC community consultation and recruitment availability have not been verified.",
-              "FASTEST Part 1 (NCT03496883; ACTIVE_NOT_RECRUITING on 2026-10-21) was reported in Lancet 2026 (PMID 41653933; doi:10.1016/S0140-6736(26)00097-8): stopped for futility, with no 180-day mRS difference (adjusted common OR 1.09, 95% CI 0.79–1.51); life-threatening thromboembolic complications within 4 days in 15 (<5%) vs 4 (1%) participants (RR 3.41, 95% CI 1.14–10.15); ICH growth 3.7 mL lower at 24 h. Part 2 is a separate registry record (which describes it as an extension of the FASTEST Trial) restricted to spot-sign-positive ≤ 120 min or any ≤ 90 min. Emerging evidence, not a guideline recommendation."
-            ]
-          },
           {
             "acronym": "MINUTE",
             "nct": "NCT07260916",

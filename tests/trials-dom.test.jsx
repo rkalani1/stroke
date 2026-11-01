@@ -170,7 +170,8 @@ describe('restored independent Trials workspace', () => {
     expect(copied).toContain('CLARITY (NCT07174414) · Recruiting (registry not yet updated)');
     expect(copied).toBe(await page.locator('[aria-label="Screening summary preview"]').textContent());
     await page.getByRole('button', { name: 'Clear onset to unknown', exact: true }).click();
-    expect(await page.locator('#trials-screener-panel article[data-trial="SISTER"]').innerText()).toContain('Recruiting');
+    // VERIFY (24–96 h) was before its window at < 4.5 h; with onset unknown it is a candidate again.
+    expect(await page.locator('#trials-screener-panel article[data-trial="VERIFY"]').innerText()).toContain('Recruiting');
     expect(await page.locator('[aria-label="Screening summary preview"]').textContent()).toContain('LKW unknown');
   });
 
@@ -186,7 +187,7 @@ describe('restored independent Trials workspace', () => {
     await page.getByRole('group', { name: 'Filter studies by status', exact: true }).getByRole('button', { name: /^Not enrolling/ }).click();
     expect(await page.locator('#trials-database-panel article').count()).toBe(0);
     await page.getByRole('button', { name: 'Clear search and filters', exact: true }).click();
-    expect(await page.locator('#trials-database-panel article').count()).toBe(16);
+    expect(await page.locator('#trials-database-panel article').count()).toBe(14);
     expect(await page.getByRole('searchbox').evaluate(el => el === document.activeElement)).toBe(true);
     await page.getByRole('group', { name: 'Filter studies by status', exact: true }).getByRole('button', { name: /^Not enrolling/ }).click();
     const closed = await page.locator('#trials-database-panel article').allInnerTexts();
@@ -202,13 +203,13 @@ describe('restored independent Trials workspace', () => {
     expect(await table.isVisible()).toBe(true);
     expect(await table.getByRole('columnheader').allTextContents()).toEqual(['Study', 'Summary', 'Inclusion criteria', 'Exclusion criteria']);
     expect(await table.innerText()).toContain('Recorded registry check: 2026-10-31');
-    expect(await table.innerText()).toContain('Recruiting at recorded check · Phase 2');
+    expect(await table.innerText()).toContain('Recruiting at recorded check · Phase N/A');
     expect(await table.innerText()).toContain('Local activation is not confirmed');
     await page.setViewportSize({ width: 390, height: 844 });
     const cards = page.locator(`[aria-label="${title} study cards"]`);
     expect(await cards.isVisible()).toBe(true);
     expect(await page.getByRole('table', { name: title, exact: true }).count()).toBe(0);
-    expect(await cards.locator('article').count()).toBe(3);
+    expect(await cards.locator('article').count()).toBe(2);
     expect(await cards.innerText()).toContain('STEP');
     expect(await cards.innerText()).toContain('PICASSO');
     expect(await cards.innerText()).toContain('not modeled in the screener');
@@ -221,11 +222,14 @@ describe('restored independent Trials workspace', () => {
     const overview = page.getByRole('region', { name: 'Studies in this screener', exact: true });
     expect(await overview.isVisible()).toBe(true);
     const text = await overview.innerText();
-    for (const acronym of ['STEP', 'SISTER', 'FASTEST-2', 'MINUTE', 'CLARITY']) expect(text).toContain(acronym);
+    for (const acronym of ['STEP', 'MINUTE', 'CLARITY', 'ASPIRE', 'VERIFY']) expect(text).toContain(acronym);
+    // Removed from the catalog on 2026-11-01.
+    for (const acronym of ['SISTER', 'FASTEST-2']) expect(text).not.toContain(acronym);
+    expect(await overview.getByRole('button', { name: /^Full criteria for / }).count()).toBe(11);
     expect(text).toContain('Criteria-table reference only (not screened): PICASSO');
     expect(text).toContain('Not enrolling: CAPPRICORN-1, CAPTIVA');
-    await overview.getByRole('button', { name: 'Full criteria for FASTEST-2', exact: true }).click();
-    expect(await page.getByRole('dialog').innerText()).toContain('Recombinant Factor VIIa');
+    await overview.getByRole('button', { name: 'Full criteria for MINUTE', exact: true }).click();
+    expect(await page.getByRole('dialog').innerText()).toContain('Minimally Invasive Neuroendoscopic Ultra-Early Targeted ICH Evacuation');
   });
 
   it('imports Encounter facts only on request and still allows every field to be changed', async () => {
@@ -253,12 +257,10 @@ describe('restored independent Trials workspace', () => {
     const notMet = page.locator('#trials-screener-panel details').filter({ has: page.locator('summary', { hasText: /^Does not meet documented criteria/ }) });
     await notMet.locator('summary').click();
     expect(await notMet.innerText()).toContain('Concurrent DOAC or LMWH at ICH onset');
-    expect(await notMet.innerText()).toContain('Oral anticoagulant (VKA or DOAC) within 7 days');
-    // Override: no anticoagulant and a basal ganglia location make both studies possible again.
+    // Override: no anticoagulant and a basal ganglia location make MINUTE possible again.
     await page.getByLabel('Anticoagulant at onset').selectOption('none');
     await page.getByLabel('ICH location').selectOption('bg');
     const candidates = page.getByRole('region', { name: 'Possible candidates', exact: true });
-    expect(await candidates.locator('article[data-trial="FASTEST-2"]').count()).toBe(1);
     expect(await candidates.locator('article[data-trial="MINUTE"]').count()).toBe(1);
     await page.getByLabel('Anticoagulant at onset').selectOption('');
     expect(await page.getByLabel('DOAC or LMWH at ICH onset').inputValue()).toBe('');
@@ -296,12 +298,18 @@ describe('restored independent Trials workspace', () => {
 
   it('finds registry acronyms and table-only studies in Database search', async () => {
     await page.getByRole('tab', { name: 'Database', exact: true }).click();
-    for (const [query, acronym] of [['TR-2', 'TELE-REHAB-2'], ['tr2', 'TELE-REHAB-2'], ['SCOUTS3', 'SCOUTS-3'], ['MRPICS', 'MR-PICS'], ['cAPPricorn-1', 'CAPPRICORN-1'], ['PICASSO', 'PICASSO'], ['FASTEST Part 2', 'FASTEST-2'], ['captiva', 'CAPTIVA']]) {
+    for (const [query, acronym] of [['TR-2', 'TELE-REHAB-2'], ['tr2', 'TELE-REHAB-2'], ['SCOUTS3', 'SCOUTS-3'], ['MRPICS', 'MR-PICS'], ['cAPPricorn-1', 'CAPPRICORN-1'], ['PICASSO', 'PICASSO'], ['captiva', 'CAPTIVA']]) {
       await page.getByRole('searchbox').fill(query);
       const cards = page.locator('#trials-database-panel article');
       expect(await cards.count(), query).toBe(1);
       expect(await cards.getAttribute('data-trial'), query).toBe(acronym);
     }
+    // The SISTER and FASTEST Part 2 profiles were removed on 2026-11-01.
+    for (const query of ['SISTER', 'NCT05948566', 'FASTEST Part 2', 'FASTEST-2', 'NCT07227246']) {
+      await page.getByRole('searchbox').fill(query);
+      expect(await page.locator('#trials-database-panel article').count(), query).toBe(0);
+    }
+    await page.getByRole('searchbox').fill('captiva');
     expect(await page.locator('#trials-database-panel article').innerText()).toContain('Not enrolling');
     await page.getByRole('searchbox').fill('PICASSO');
     expect(await page.locator('#trials-database-panel article').innerText()).toContain('Not screened');

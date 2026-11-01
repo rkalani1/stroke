@@ -1,7 +1,8 @@
 // Second independent verification of the round-3 Trials fixes (14 items), repaired 2026-10-22.
 // Registry expectations quote the ClinicalTrials.gov records re-read on 2026-10-22 through the
-// registry API (full eligibility text): STEP NCT06289985, SISTER NCT05948566, VERIFY NCT05338697,
-// TELE-REHAB-2 NCT06682429. The STEP 30-h limit is an app screening limit, not registry text.
+// registry API (full eligibility text): STEP NCT06289985, VERIFY NCT05338697, TELE-REHAB-2 NCT06682429
+// (and SISTER NCT05948566, whose checks left with it on 2026-11-01; MINUTE NCT07260916 now carries the
+// anticoagulant-exclusion checks). The STEP 30-h limit is an app screening limit, not registry text.
 // Import and display expectations follow the screener's own rules (tri-state, unknown stays
 // unknown, the copied summary matches the screen). None are copied from implementation output.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -162,15 +163,14 @@ describe('a reapply never settles a standing conflict in the Encounter\'s favour
   const reapply = (state, e) => applyEncounterPrefill(state, screenerPrefillFromEncounter(e, now), fresh());
   const af = value => encounter({ diagnosisCategory: 'ich', age: '72', ...lkwAt(now - 30 * 24 * HOUR) }, { details: value === undefined ? {} : { afDetected: value } });
   const aspireAnswered = { exPriorIch12m: false, exClearAnticoagulationIndication: false, exClearAntiplateletIndication: false };
-  const sister = encounter({ diagnosisCategory: 'ischemic', age: '70', ...lkwAt(now - 8 * HOUR), lastDOACType: 'apixaban', lastDOACDose: localIso(now - 10 * HOUR) });
   const minute = encounter({ diagnosisCategory: 'ich', age: '65', ...lkwAt(now - 1.5 * HOUR), lastDOACType: 'apixaban', lastDOACDose: localIso(now - 10 * HOUR) });
   const view = state => ({ afibHistory: state.afibHistory, afOrFlutterHistory: state.afOrFlutterHistory, anticoagulant: state.anticoagulant, takingOac: state.takingOac, exclusions: state.exclusions, note: conflictNote(state, now) });
 
   it.each([
     ['AF documented "No" vs Encounter AF', S({ classification: 'ich', afibHistory: false, exclusions: aspireAnswered }), af('yes'), 'documented clinical atrial fibrillation'],
     ['AF or flutter "No" vs Encounter AF', S({ classification: 'ich', afOrFlutterHistory: false, exclusions: aspireAnswered }), af('yes'), 'documented clinical atrial fibrillation; atrial fibrillation or flutter'],
-    ['Xa inhibitor ≤ 48 h "absent" vs an apixaban dose 10 h ago', S({ classification: 'ischemic', exclusions: { exXaDtiWithin48h: false } }), sister, 'Factor Xa inhibitor or direct thrombin inhibitor within 48 h'],
-    ['anticoagulant "None" vs Encounter apixaban', applyAnticoagulant(withClassification(fresh(), 'ich'), 'none'), minute, 'anticoagulant at onset; DOAC or LMWH at ICH onset; Oral anticoagulant (VKA or DOAC) within 7 days']
+    ['DOAC or LMWH at ICH onset "absent" vs an apixaban dose 10 h ago', S({ classification: 'ich', exclusions: { exDoacLmwhAtOnset: false } }), minute, 'DOAC or LMWH at ICH onset'],
+    ['anticoagulant "None" vs Encounter apixaban', applyAnticoagulant(withClassification(fresh(), 'ich'), 'none'), minute, 'anticoagulant at onset; DOAC or LMWH at ICH onset']
   ])('%s: the second import gives the first import\'s screen and note', (label, manual, e, names) => {
     const first = reapply(manual, e);
     expect(conflictNote(first, now)).toBe(`${CONFLICT_HEAD}${names}${CONFLICT_TAIL}`);
@@ -192,9 +192,10 @@ describe('a reapply never settles a standing conflict in the Encounter\'s favour
       expect([state.afibHistory, conflictNote(state, now)]).toEqual([false, '']);
     }
     // The excluded-present entry returns to the user's "absent" once the Encounter no longer records the dose.
-    const first = reapply(S({ classification: 'ischemic', exclusions: { exXaDtiWithin48h: false } }), sister);
-    const noDose = encounter({ ...sister.note, lastDOACType: '', lastDOACDose: '' });
-    expect(reapply(first, noDose).exclusions.exXaDtiWithin48h).toBe(false);
+    const first = reapply(S({ classification: 'ich', exclusions: { exDoacLmwhAtOnset: false } }), minute);
+    expect(first.exclusions.exDoacLmwhAtOnset).toBe(true);
+    const noDose = encounter({ ...minute.note, lastDOACType: '', lastDOACDose: '' });
+    expect(reapply(first, noDose).exclusions.exDoacLmwhAtOnset).toBe(false);
   });
   it('an answer given after the import is weighed as entered: agreeing settles the conflict', () => {
     const first = reapply(S({ classification: 'ich', afibHistory: false }), af('yes'));
@@ -223,20 +224,23 @@ describe('choosing a classification ends the Encounter import (rv-behavior#2)', 
 });
 
 describe('the conflict note lists only what the screen shows (rv-behavior#5)', () => {
-  // SISTER (NCT05948566) exclusion 21: "Received Factor Xa inhibitors (such as Fondaparinux, apixaban or rivaroxaban)
-  // within the past 48 hours"; inclusion 5: study drug 4.5 to 24 hours from LKW. The item serves SISTER only.
-  const manual = S({ classification: 'ischemic', exclusions: { exXaDtiWithin48h: false } });
-  const importAt = lkwHours => applyEncounterPrefill(manual, screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', ...lkwAt(now - lkwHours * HOUR), lastDOACType: 'apixaban', lastDOACDose: localIso(now - 32 * HOUR) }), now), fresh());
+  // MINUTE (NCT07260916) exclusion 6: "Concurrent use of direct oral anticoagulants or low molecular weight heparin
+  // at ICH onset"; randomization ≤ 16 h from LKW. The item serves MINUTE only. (Checked on SISTER's Xa/DTI item,
+  // 4.5–24 h, until SISTER left the catalog on 2026-11-01.) The dose is 2 h (30-h LKW) or 22 h (10-h LKW) before LKW.
+  const manual = S({ classification: 'ich', exclusions: { exDoacLmwhAtOnset: false } });
+  const importAt = lkwHours => applyEncounterPrefill(manual, screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ich', ...lkwAt(now - lkwHours * HOUR), lastDOACType: 'apixaban', lastDOACDose: localIso(now - 32 * HOUR) }), now), fresh());
   it('omits an exclusion conflict once its only study is out of window, and lists it while the refiner asks it', () => {
     const late = importAt(30);
-    expect(late.exclusions.exXaDtiWithin48h).toBe(true);
-    expect(refinerItems(late, now).map(i => i.id)).not.toContain('exXaDtiWithin48h');
+    expect(late.exclusions.exDoacLmwhAtOnset).toBe(true);
+    expect(refinerItems(late, now).map(i => i.id)).not.toContain('exDoacLmwhAtOnset');
     expect(conflictNote(late, now)).toBe('');
-    // SISTER stays listed as not met for the recorded exclusion; only the confirm request is withdrawn.
-    const note = evaluateAll(late, screenerTrials, now).briefingNote;
+    // MINUTE stays listed as not met; only the confirm request is withdrawn.
+    const r = evaluateAll(late, screenerTrials, now);
+    expect(find(r, 'MINUTE').status).toBe('excluded');
+    const note = r.briefingNote;
     expect(note).not.toContain(CONFLICT_HEAD);
     expect(note).not.toContain('Exclusions recorded');
-    expect(conflictNote(importAt(10), now)).toBe(`${CONFLICT_HEAD}Factor Xa inhibitor or direct thrombin inhibitor within 48 h${CONFLICT_TAIL}`);
+    expect(conflictNote(importAt(10), now)).toBe(`${CONFLICT_HEAD}DOAC or LMWH at ICH onset${CONFLICT_TAIL}`);
   });
 });
 
@@ -272,29 +276,7 @@ describe('VERIFY and TELE-REHAB-2 read their own earlier-stroke items (rv-regist
   });
 });
 
-describe('SISTER to-confirm wording (rv-registry#2, rv-registry#3)', () => {
-  const potential = { classification: 'ischemic', onsetVal: 10, age: 60, nihss: 14, aspects: 8, preMrs: 0, vessel: 'ica_m1', exclusions: { exIvtGivenOrPlanned: false, exXaDtiWithin48h: false, exPregnancy: false } };
-  it('keeps the registry\'s distal-migration allowance in the one reperfusion line', () => {
-    // Exclusion 1: "Received endovascular treatment with clot engagement." 1a: "Patients who undergo groin puncture
-    // but clot engagement is not attempted due to spontaneous distal migration are permitted".
-    const r = evaluate('SISTER', potential);
-    expect(r.completeness).toBe('potential-match');
-    const confirm = toConfirm(r);
-    expect(confirm).toContain('Confirm no standard-of-care reperfusion (registry primary objective): no EVT with clot engagement; groin puncture without engagement because of spontaneous distal migration is permitted');
-    expect(confirm.filter(line => /clot engagement/.test(line))).toHaveLength(1);
-    expect(confirm.join(' ')).not.toMatch(/not a candidate for standard-of-care reperfusion therapy, IVT or EVT/);
-  });
-  it('the source-gap sentence names exactly what the to-confirm list leaves out', () => {
-    // Inclusion 6: "within 120 minutes of qualifying perfusion imaging"; exclusion 15: "Known hereditary or acquired
-    // hemorrhagic diathesis, coagulation factor deficiency"; exclusions 4, 24, 25 stay in the full criteria only.
-    const confirm = toConfirm(evaluate('SISTER', potential)).join(' ');
-    expect(confirm).toMatch(/study drug ≤ 120 min from qualifying perfusion imaging/);
-    expect(confirm).toMatch(/hemorrhagic diathesis or coagulation factor deficiency/);
-    const full = trial('SISTER').exactExclusionCriteria.join(' ');
-    for (const re of [/TS23/, /antibody/, /confounding/, /research drug/]) { expect(confirm).not.toMatch(re); expect(full).toMatch(re); }
-    expect(trial('SISTER').sourceGaps).toContain('Perfusion imaging, EVT clot engagement and the remaining CT.gov exclusions are listed for confirmation, not modeled, except prior TS23 or antibody allergy, confounding neurological or psychiatric disease and another research drug protocol (full criteria only).');
-  });
-});
+// The SISTER to-confirm wording checks (rv-registry#2, rv-registry#3) left with SISTER on 2026-11-01.
 
 describe('a stale import for a diagnosis the screener does not model (rv-behavior#3, summary)', () => {
   it('prints the unmodeled caution instead of an instruction to reapply', () => {

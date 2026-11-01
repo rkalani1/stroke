@@ -49,12 +49,13 @@ const crit = (acronym, field, operator) => {
 
 describe('registry re-verification on 2026-10-21 (statuses and dates rechecked 2026-10-31)', () => {
   // Overall status of each full record read with get_trial_details on 2026-10-21; unchanged at the 2026-10-31 recheck.
-  const status = { STEP: 'RECRUITING', SISTER: 'RECRUITING', PICASSO: 'RECRUITING', TESTED: 'RECRUITING', MINUTE: 'RECRUITING', 'FASTEST-2': 'RECRUITING', CLARITY: 'NOT_YET_RECRUITING', INTERCEPT: 'RECRUITING', ASPIRE: 'RECRUITING', SATURN: 'RECRUITING', 'CAPPRICORN-1': 'ACTIVE_NOT_RECRUITING', 'SCOUTS-3': 'RECRUITING', VERIFY: 'RECRUITING', 'MR-PICS': 'RECRUITING', 'TELE-REHAB-2': 'RECRUITING', CAPTIVA: 'ACTIVE_NOT_RECRUITING' };
+  // SISTER and FASTEST-2 were removed from the catalog on 2026-11-01.
+  const status = { STEP: 'RECRUITING', PICASSO: 'RECRUITING', TESTED: 'RECRUITING', MINUTE: 'RECRUITING', CLARITY: 'NOT_YET_RECRUITING', INTERCEPT: 'RECRUITING', ASPIRE: 'RECRUITING', SATURN: 'RECRUITING', 'CAPPRICORN-1': 'ACTIVE_NOT_RECRUITING', 'SCOUTS-3': 'RECRUITING', VERIFY: 'RECRUITING', 'MR-PICS': 'RECRUITING', 'TELE-REHAB-2': 'RECRUITING', CAPTIVA: 'ACTIVE_NOT_RECRUITING' };
   // Exact-day AREA[LastUpdatePostDate] queries rerun on 2026-10-31: a RANGE[2026-10-21,MAX] query over all 16 NCT IDs
   // returned only CLARITY, TELE-REHAB-2 and CAPTIVA (each last updated 2026-10-26); the other 13 dates matched exactly.
-  const lastUpdate = { STEP: '2025-12-04', SISTER: '2026-10-19', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', 'FASTEST-2': '2026-08-20', CLARITY: '2026-10-26', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-26', CAPTIVA: '2026-10-26' };
+  const lastUpdate = { STEP: '2025-12-04', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', CLARITY: '2026-10-26', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-26', CAPTIVA: '2026-10-26' };
 
-  it('records the re-read date, status and last update of all 16 profiles consistently', () => {
+  it('records the re-read date, status and last update of all 14 profiles consistently', () => {
     expect(screenerTrials.map(t => t.acronym).sort()).toEqual(Object.keys(status).sort());
     for (const t of screenerTrials) {
       const m = t.externalMetadata;
@@ -72,21 +73,10 @@ describe('registry re-verification on 2026-10-21 (statuses and dates rechecked 2
     for (const t of screenerTrials.filter(screenable)) expect(enrollmentLabel(t), t.acronym).toMatch(t.acronym === 'CLARITY' ? /^Recruiting \(registry not yet updated\)$/ : /\(registry\)$/);
     expect(trial('CLARITY').externalMetadata.registryStatus).toBe('NOT_YET_RECRUITING');
     expect(enrollmentLabel(trial('CAPPRICORN-1'))).toBe('Not enrolling (active, not recruiting)');
-    const html = renderToStaticMarkup(<TrialSourceContext trial={trial('SISTER')} now={new Date(2026, 9, 31, 9).getTime()} />);
+    const html = renderToStaticMarkup(<TrialSourceContext trial={trial('STEP')} now={new Date(2026, 9, 31, 9).getTime()} />);
     expect(html).toMatch(/Recorded registry check: <time [^>]*>2026-10-31<\/time> \(today\)/);
-    expect(html).toContain('Last update posted, as recorded at that check: 2026-10-19; the live record may be newer.');
+    expect(html).toContain('Last update posted, as recorded at that check: 2025-12-04; the live record may be newer.');
     expect(html).toContain('Local activation: not confirmed here.');
-  });
-
-  it('distinguishes FASTEST Part 1 and its published result from the Part 2 record', () => {
-    // NCT07227246 brief summary: "FASTEST Part 2 is an extension of the FASTEST Trial ...";
-    // NCT03496883 status ACTIVE_NOT_RECRUITING; Lancet 2026 (PMID 41653933) abstract: futility,
-    // "adjusted common odds ratio 1·09 [95% CI 0·79-1·51]", RR 3·41 (1·14-10·15).
-    const gap = trial('FASTEST-2').sourceGaps.find(g => g.startsWith('FASTEST Part 1'));
-    expect(gap).toContain('NCT03496883; ACTIVE_NOT_RECRUITING on 2026-10-21');
-    expect(gap).toContain('extension of the FASTEST Trial');
-    for (const fact of ['PMID 41653933', '1.09, 95% CI 0.79–1.51', 'RR 3.41, 95% CI 1.14–10.15', 'Emerging evidence, not a guideline recommendation']) expect(gap).toContain(fact);
-    expect(trial('FASTEST-2').externalMetadata.nct).toBe('NCT07227246');
   });
 });
 
@@ -107,17 +97,6 @@ describe('profile corrections from the registry text read on 2026-10-21', () => 
     const c = toConfirm(r).join(' ');
     for (const re of [/ARAT 14–44/, /Box & Block ≥ 1 block in 60 s/, /no surrogate consent/, /GDS > 10\/15/, /MoCA < 22/, /English or Spanish/, /1\.5-hour drive/, /MRI contraindication/, /isolation precautions/, /Negative pregnancy test required if of child-bearing potential/]) expect(c).toMatch(re);
     expect(trial('TELE-REHAB-2').exactExclusionCriteria.join(' ')).toMatch(/pregnant/);
-  });
-
-  it('SISTER prompts the CT-hypodensity imaging rule and the full pregnancy/breastfeeding exclusion (NCT05948566)', () => {
-    // Inclusion 4c: hypodensity plus perfusion core "should be smaller than perfusion-based volume (area of Tmax>6s minus CBF<30%)".
-    // Exclusion 5: "breastfeeding or plan to breastfeed within 3 months ... or have a positive urine or serum pregnancy test".
-    const base = { classification: 'ischemic', onsetVal: 10, age: 60, nihss: 8, aspects: 8, preMrs: 0 };
-    expect(toConfirm(evaluate('SISTER', base)).join(' ')).toMatch(/with CT hypodensity, hypodensity plus core smaller than the penumbra/);
-    expect(trial('SISTER').exactInclusionCriteria.join(' ')).toMatch(/Tmax > 6 s minus CBF < 30%/);
-    const absent = toConfirm(evaluate('SISTER', { ...base, exclusions: { exPregnancy: false } }));
-    expect(absent).toContain('Confirm not breastfeeding or planning to within 3 months; negative pregnancy test if of childbearing potential');
-    expect(evaluate('SISTER', { ...base, exclusions: { exPregnancy: true } }).exclusionReasons).toContain('Pregnancy or breastfeeding');
   });
 
   it('ASPIRE, SCOUTS-3, VERIFY and MR-PICS carry registry exclusions that were missing from the prompts', () => {
@@ -157,25 +136,18 @@ describe('criterion boundaries follow the registry wording', () => {
     ['STEP', 'vessel', 'or', { vessel: 'ica_m1', nihss: 5 }, 'met', '"NIHSS 0-5" + intracranial ICA/M1'], ['STEP', 'vessel', 'or', { vessel: 'ica_m1', nihss: 0 }, 'met', ''],
     ['STEP', 'vessel', 'or', { vessel: 'ica_m1', nihss: 6 }, 'not met', ''], ['STEP', 'vessel', 'or', { vessel: 'm2_m3_nd', nihss: 8 }, 'met', '"NIHSS > =8" + non-dominant M2/M3'],
     ['STEP', 'vessel', 'or', { vessel: 'm2_m3_nd', nihss: 7 }, 'not met', ''], ['STEP', 'vessel', 'or', { vessel: 'ica_m1' }, 'unknown', ''],
-    ['SISTER', 'onsetHours', 'between', { onsetVal: 4.5 }, 'met', '"within 4.5 to 24 hours"'], ['SISTER', 'onsetHours', 'between', { onsetVal: 24 }, 'met', ''],
-    ['SISTER', 'onsetHours', 'between', { onsetVal: 4.4 }, 'before window', ''], ['SISTER', 'onsetHours', 'between', { onsetVal: 24.1 }, 'not met', ''],
-    ['SISTER', 'nihss', '>=', { nihss: 4 }, 'met', '"NIH Stroke Scale score ≥4"'], ['SISTER', 'nihss', '>=', { nihss: 3 }, 'not met', ''],
-    ['SISTER', 'preMrs', '<=', { preMrs: 2 }, 'met', '"Pre-stroke modified Rankin score >2" excluded'], ['SISTER', 'preMrs', '<=', { preMrs: 3 }, 'not met', ''],
     ['TESTED', 'preMrs', 'in', { preMrs: 3 }, 'met', '"mRS 3-4"'], ['TESTED', 'preMrs', 'in', { preMrs: 4 }, 'met', ''],
     ['TESTED', 'preMrs', 'in', { preMrs: 2 }, 'not met', ''], ['TESTED', 'preMrs', 'in', { preMrs: 5 }, 'not met', ''],
     ['TESTED', 'aspects', '>=', { aspects: 3 }, 'met', '"CT ... ASPECT score ≥3"'], ['TESTED', 'aspects', '>=', { aspects: 2 }, 'not met', ''],
     ['TESTED', 'nihss', '>=', { nihss: 6 }, 'met', '"NIH Stroke Scale score ≥6"'], ['TESTED', 'nihss', '>=', { nihss: 5 }, 'not met', ''],
     ['TESTED', 'vessel', 'in', { vessel: 'dominant_m2' }, 'met', '"M1 or dominant M2"'], ['TESTED', 'vessel', 'in', { vessel: 'm2_m3_nd' }, 'not met', ''],
     ['MINUTE', 'age', 'between', { age: 80 }, 'met', '"Age ≥ 18 and ≤ 80 years"'], ['MINUTE', 'age', 'between', { age: 81 }, 'not met', ''],
+    ['MINUTE', 'age', 'between', { age: 18 }, 'met', ''], ['MINUTE', 'age', 'between', { age: 17 }, 'not met', ''],
     ['MINUTE', 'ichVolume', '>=', { ichVolume: 20 }, 'met', '"BGH of volume ≥ 20 mL"'], ['MINUTE', 'ichVolume', '>=', { ichVolume: '19.9' }, 'not met', ''],
+    ['MINUTE', 'ichVolume', '>=', { ichVolume: 19.9 }, 'not met', ''],
     ['MINUTE', 'gcs', '>=', { gcs: 7 }, 'met', '"GCS score <7" excluded'], ['MINUTE', 'gcs', '>=', { gcs: 6 }, 'not met', ''],
     ['MINUTE', 'onsetHours', '<=', { onsetVal: 16 }, 'met', '"within 16 hours from LKW"'], ['MINUTE', 'onsetHours', '<=', { onsetVal: 16.1 }, 'not met', ''],
     ['MINUTE', 'ichLocation', '==', { ichLocation: 'thalamic' }, 'not met', '"non-thalamic, BGH"'],
-    ['FASTEST-2', 'age', 'between', { age: 18 }, 'met', '"18-80 years, inclusive"'], ['FASTEST-2', 'age', 'between', { age: 17 }, 'not met', ''],
-    ['FASTEST-2', 'onsetHours', '<=', { onsetVal: 2 }, 'met', '"within 120 minutes"'], ['FASTEST-2', 'onsetHours', '<=', { onsetVal: 2.01 }, 'not met', ''],
-    ['FASTEST-2', 'gcs', '>=', { gcs: 8 }, 'met', '"Score of 3 to 7 on the Glasgow Coma Scale" excluded'], ['FASTEST-2', 'gcs', '>=', { gcs: 7 }, 'not met', ''],
-    ['FASTEST-2', 'ichVolume', '>=', { ichVolume: 2 }, 'met', '"ICH volume < 2 cc or ≥ 60 cc" excluded'], ['FASTEST-2', 'ichVolume', '>=', { ichVolume: 1.9 }, 'not met', ''],
-    ['FASTEST-2', 'ichVolume', '<', { ichVolume: 59.9 }, 'met', ''], ['FASTEST-2', 'ichVolume', '<', { ichVolume: 60 }, 'not met', ''],
     ['CLARITY', 'age', '>=', { age: 40 }, 'met', '"≥40 years"'], ['CLARITY', 'age', '>=', { age: 39 }, 'not met', ''],
     ['CLARITY', 'onsetDays', '<=', { onsetVal: 180, onsetUnit: 'days' }, 'met', '"within 180 days"'], ['CLARITY', 'onsetDays', '<=', { onsetVal: 181, onsetUnit: 'days' }, 'not met', ''],
     ['INTERCEPT', null, 'or', { onsetVal: 41, onsetUnit: 'days' }, 'met', '"< 6 week" (any OAC status)'],
@@ -236,7 +208,7 @@ describe('missing, malformed and implausible entries stay unknown', () => {
   it('treats a negative, non-numeric or overflowing onset as unknown time, not as hour 0', () => {
     for (const onsetVal of ['', null, '-1', 'abc', '1e400', NaN, -0.5]) {
       expect(buildScreenerParams(S({ onsetVal, onsetUnit: 'hours' })).onsetHours, String(onsetVal)).toBeNull();
-      expect(verdict(crit('FASTEST-2', 'onsetHours'), { onsetVal, onsetUnit: 'hours' }), String(onsetVal)).toBe('unknown');
+      expect(verdict(crit('MINUTE', 'onsetHours'), { onsetVal, onsetUnit: 'hours' }), String(onsetVal)).toBe('unknown');
     }
   });
 });
@@ -280,9 +252,11 @@ describe('Encounter LKW import across midnight, daylight saving and invalid time
     expect(onsetSummary(state, now)).toBe('LKW 1.3 h (Encounter LKW 2026-10-20 23:30, as of 2026-10-21 00:45)');
     // Same local day: clock times only.
     expect(onsetSummary(state, new Date(2026, 9, 20, 23, 50).getTime())).toBe('LKW 0.3 h (Encounter LKW 23:30, as of 23:50)');
-    // FASTEST-2 (study drug ≤ 120 min) closes 2 h after the 23:30 LKW, after midnight.
-    const r = evaluateAll(state, screenerTrials, new Date(2026, 9, 21, 1, 31).getTime());
-    expect(r.excluded.find(i => i.trial.acronym === 'FASTEST-2').exclusionReasons).toContain('Beyond 120 minutes from onset/LKW');
+    // MINUTE (≤ 16 h from LKW) closes at 15:30 the day after the 23:30 LKW; the live interval spans midnight.
+    const open = evaluateAll(state, screenerTrials, new Date(2026, 9, 21, 15, 29).getTime());
+    expect(open.excluded.some(i => i.trial.acronym === 'MINUTE')).toBe(false);
+    const r = evaluateAll(state, screenerTrials, new Date(2026, 9, 21, 15, 31).getTime());
+    expect(r.excluded.find(i => i.trial.acronym === 'MINUTE').exclusionReasons).toContain('More than 16 hours from LKW at screening (registry: randomization ≤ 16 hours from LKW)');
   }));
 
   it('imports a repeated daylight-saving hour only with an explicit occurrence, and prints its offset', () => inZone('America/Los_Angeles', () => {

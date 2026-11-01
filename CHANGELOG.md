@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v7.10.2 — 2026-11-01 — SISTER and FASTEST Part 2 removed from the Trials screener
+
+- **Trials screener:** at the owner's request, SISTER (NCT05948566) and FASTEST Part 2 (NCT07227246) are removed from the screener, the criteria tables, the Database and global search. 14 profiles remain (12 screened, 2 reference-only); no other study's criteria changed, and an independent differential check of about 80,000 randomized screening states found identical results for the remaining studies before and after the change.
+- **Questions removed with them:** the four exclusion questions that only these two studies asked (IV thrombolysis given or planned, factor Xa or direct thrombin inhibitor within 48 h, oral anticoagulant within 7 days, brainstem hemorrhage). The anticoagulant answer and its Encounter import still set DOAC or LMWH at ICH onset (MINUTE) and oral anticoagulant at the index stroke (INTERCEPT); an Encounter last-dose time still only bounds use at onset. The "None" anticoagulant option no longer adds "or in the past 7 days", since no listed study reads that window.
+- **Unchanged:** the FASTEST Part 1 result remains an Evidence study summary. The Protocols tab is unchanged. The change is recorded in [docs/source-limits.md](docs/source-limits.md).
+- **Tests:** coverage that used the two studies now uses the remaining ones; a case-bar test pins its clock so it no longer fails during the repeated hour when daylight saving ends. The browser smoke's theme loop now waits for the Encounter route after each run, so the More panel's close-on-navigation can no longer undo the next run's open (an intermittent CI failure since 7.8.1).
+
 ## v7.10.1 — 2026-10-31 — CLARITY shown as recruiting
 
 - **Trials screener:** CLARITY (NCT07174414, cilostazol after ischemic stroke or high-risk TIA) is shown as recruiting on the maintainer's report, so it is now screened rather than listed under Later. ClinicalTrials.gov still listed the study as NOT_YET_RECRUITING (start date 2026-10; last update posted 2026-10-26) when rechecked on 2026-10-31, so its status reads "Recruiting (registry not yet updated)", the card keeps the registry status, and the copied screening summary names the exception. Eligibility criteria are unchanged; confirm current recruitment, local site activation and consent requirements with the study team.

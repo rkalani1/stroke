@@ -151,7 +151,7 @@ function KeyFacts({ state, change, replace }) {
       <SelectFact label="Pre-stroke mRS" value={state.preMrs} onChange={setNumber('preMrs')} options={range(0, 5)} />
       <SelectFact label="ICH location" value={state.ichLocation} onChange={set('ichLocation')} options={[['bg', 'Basal ganglia'], ['lobar', 'Lobar'], ['thalamic', 'Thalamic'], ['infratentorial', 'Infratentorial'], ['other', 'Other']]} />
       <NumberFact label="Volume" unit="mL" field="ichVolume" rule="0–300 mL" min={0} max={300} step={0.1} value={state.ichVolume} onChange={set('ichVolume')} />
-      <div className="col-span-2"><SelectFact label="Anticoagulant at onset" value={state.anticoagulant} onChange={v => replace(prev => applyAnticoagulant(prev, v))} options={[['none', 'None (none at onset or in the past 7 days)'], ['doac', 'DOAC (apixaban, rivaroxaban, dabigatran, edoxaban)'], ['lmwh', 'LMWH'], ['vka', 'Warfarin / VKA']]} /></div>
+      <div className="col-span-2"><SelectFact label="Anticoagulant at onset" value={state.anticoagulant} onChange={v => replace(prev => applyAnticoagulant(prev, v))} options={[['none', 'None'], ['doac', 'DOAC (apixaban, rivaroxaban, dabigatran, edoxaban)'], ['lmwh', 'LMWH'], ['vka', 'Warfarin / VKA']]} /></div>
       <SelectFact label="Statin at onset" value={state.statin} onChange={setBoolean('statin')} options={YES_NO} />
     </>}
     <SelectFact label="Atrial fibrillation documented" value={state.afibHistory} onChange={setBoolean('afibHistory')} options={YES_NO} />

@@ -5,11 +5,10 @@
 // Encounter on every import; a conflict leaves an exclusion present and any other answer unknown until the
 // user answers it; an edit writes only its own facts) and the registry criteria quoted below, read for
 // §2 and §8.3: NCT07260916 (MINUTE) exclusion 6 "Concurrent use of direct oral anticoagulants or low
-// molecular weight heparin at ICH onset"; NCT07227246 (FASTEST-2) exclusion 2 "oral anticoagulant use
-// (vitamin K antagonists or novel oral anticoagulants) within the past 7 days"; NCT05948566 (SISTER)
-// exclusion 21 "Received Factor Xa inhibitors (such as Fondaparinux, apixaban or rivaroxaban) within the
-// past 48 hours"; NCT03907046 (ASPIRE) "Non-valvular AF (defined as atrial fibrillation or atrial flutter),
-// documented by electrocardiography or a physician-confirmed history of prior AF".
+// molecular weight heparin at ICH onset"; NCT03907046 (ASPIRE) "Non-valvular AF (defined as atrial fibrillation
+// or atrial flutter), documented by electrocardiography or a physician-confirmed history of prior AF".
+// The FASTEST-2 (OAC within 7 days) and SISTER (Xa/DTI within 48 h) reproductions were moved to MINUTE's
+// DOAC/LMWH item and the AF facts when those studies left the catalog on 2026-11-01.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { build } from 'esbuild';
 import { chromium } from 'playwright';
@@ -38,11 +37,10 @@ function where(state, acronym) {
 }
 const view = state => ({ anticoagulant: state.anticoagulant, takingOac: state.takingOac, afibHistory: state.afibHistory, afOrFlutterHistory: state.afOrFlutterHistory, exclusions: state.exclusions, note: conflictNote(state, now) });
 
-// ICH at 1 h with every MINUTE and FASTEST-2 fact answered and anticoagulant "None" (the verifier's p2/p3 screen).
-const ichScreen = () => applyAnticoagulant(answerFacts(withClassification(fresh(), 'ich'), { age: 60, nihss: 10, gcs: 12, preMrs: 0, ichLocation: 'bg', ichVolume: 25, exclusions: { exSecondaryIch: false, exBrainstemIch: false, exMidbrain: false, exPregnancy: false } }), 'none');
+// ICH at 1 h with every MINUTE fact answered and anticoagulant "None" (the verifier's p2/p3 screen).
+const ichScreen = () => applyAnticoagulant(answerFacts(withClassification(fresh(), 'ich'), { age: 60, nihss: 10, gcs: 12, preMrs: 0, ichLocation: 'bg', ichVolume: 25, exclusions: { exSecondaryIch: false, exMidbrain: false, exPregnancy: false } }), 'none');
 const ich = lastDOACType => encounter({ diagnosisCategory: 'ich', ...lkwAt(now - HOUR), lastDOACType });
 const MINUTE_OUT = ['excluded', ['Concurrent DOAC or LMWH at ICH onset']];
-const FASTEST_OUT = ['excluded', ['Oral anticoagulant (VKA or DOAC) within 7 days']];
 
 describe('an answer that writes the value a conflict left is kept on reapply (verifier finding 1)', () => {
   it('MINUTE: None, Encounter LMWH, user DOAC, Encounter cleared, reapply: DOAC/LMWH at onset stays present', () => {
@@ -53,7 +51,7 @@ describe('an answer that writes the value a conflict left is kept on reapply (ve
     // Both sides now say present: the user's DOAC answer settles both conflicts.
     expect(conflictNote(state, now)).toBe('');
     state = reapply(state, ich(''));
-    expect([state.anticoagulant, state.exclusions.exDoacLmwhAtOnset, state.exclusions.exOacWithin7d]).toEqual(['doac', true, true]);
+    expect([state.anticoagulant, state.exclusions.exDoacLmwhAtOnset]).toEqual(['doac', true]);
     expect(where(state, 'MINUTE')).toEqual(MINUTE_OUT);
     const r = evaluateAll(state, screenerTrials, now);
     expect(potentialMatches(r).map(i => i.trial.acronym)).not.toContain('MINUTE');
@@ -64,19 +62,19 @@ describe('an answer that writes the value a conflict left is kept on reapply (ve
     expect(view(state)).toEqual(view(reapply(applyAnticoagulant(ichScreen(), 'doac'), ich(''))));
   });
 
+  // Until 2026-11-01 this also checked that FASTEST-2's OAC-within-7-days exclusion stayed present; that item left
+  // with FASTEST-2. The Warfarin/VKA answer is still weighed as entered on every reapply.
   it.each([
     ['cleared', '', { anticoagulant: 'vka', takingOac: true, note: '' }],
-    ['"none"', 'none', { anticoagulant: 'unselected', takingOac: 'unselected', note: `${HEAD}anticoagulant at onset; Oral anticoagulant (VKA or DOAC) within 7 days${TAIL}` }]
-  ])('FASTEST-2: None, Encounter apixaban, user Warfarin/VKA, Encounter anticoagulant %s, reapply: OAC within 7 days stays present', (label, type, expected) => {
+    ['"none"', 'none', { anticoagulant: 'unselected', takingOac: 'unselected', note: `${HEAD}anticoagulant at onset${TAIL}` }]
+  ])('None, Encounter apixaban, user Warfarin/VKA, Encounter anticoagulant %s, reapply: the VKA answer is weighed as entered', (label, type, expected) => {
     const answered = applyAnticoagulant(reapply(ichScreen(), ich('apixaban')), 'vka');
     expect(conflictNote(answered, now)).toBe('');
     const state = reapply(answered, ich(type));
     expect({ anticoagulant: state.anticoagulant, takingOac: state.takingOac, note: conflictNote(state, now) }).toEqual(expected);
-    expect(state.exclusions.exOacWithin7d).toBe(true);
-    expect(where(state, 'FASTEST-2')).toEqual(FASTEST_OUT);
-    const note = evaluateAll(state, screenerTrials, now).briefingNote;
-    expect(note).toMatch(/\n- FASTEST-2: Oral anticoagulant \(VKA or DOAC\) within 7 days\n/);
-    expect(note).not.toContain('within 7 days: absent');
+    // VKA is neither a DOAC nor LMWH; the Encounter's "none" (when given) agrees.
+    expect(state.exclusions.exDoacLmwhAtOnset).toBe(false);
+    expect(evaluateAll(state, screenerTrials, now).briefingNote).toContain('DOAC or LMWH at ICH onset: absent');
     expect(view(state)).toEqual(view(reapply(applyAnticoagulant(ichScreen(), 'vka'), ich(type))));
   });
 
@@ -96,7 +94,7 @@ describe('an answer that writes the value a conflict left is kept on reapply (ve
     expect(conflictNote(state, now)).toBe('');
     expect(where(state, 'MINUTE')).toEqual(['pending', 'insufficient-information']);
     const cleared = reapply(state, ich(''));
-    expect([cleared.anticoagulant, cleared.takingOac, cleared.exclusions.exDoacLmwhAtOnset, cleared.exclusions.exOacWithin7d]).toEqual(['unselected', 'unselected', undefined, undefined]);
+    expect([cleared.anticoagulant, cleared.takingOac, cleared.exclusions.exDoacLmwhAtOnset]).toEqual(['unselected', 'unselected', undefined]);
     expect(where(cleared, 'MINUTE')).toEqual(['pending', 'insufficient-information']);
     expect(evaluateAll(cleared, screenerTrials, now).briefingNote).not.toContain('anticoagulant at onset: none');
     // With the Encounter still documenting apixaban, its value is the only one entered.
@@ -131,20 +129,20 @@ describe('answering AF documented does not settle the conflict over AF or flutte
 });
 
 describe('the OAC control writes only its own fact (verifier finding 3)', () => {
-  it('Xa inhibitor ≤ 48 h Absent, Encounter apixaban 10 h ago, user "On oral anticoagulant" Yes: the exclusion stays present and listed', () => {
-    const screen = answerFacts(withClassification(fresh(), 'ischemic'), { nihss: 10, aspects: 8, preMrs: 0, exclusions: { exXaDtiWithin48h: false, exIvtGivenOrPlanned: false, exPregnancy: false } });
-    const e = encounter({ diagnosisCategory: 'ischemic', age: '70', ...lkwAt(now - 8 * HOUR), lastDOACType: 'apixaban', lastDOACDose: localIso(now - 10 * HOUR) });
-    const XA_NOTE = `${HEAD}Factor Xa inhibitor or direct thrombin inhibitor within 48 h${TAIL}`;
-    const SISTER_OUT = ['excluded', ['Factor Xa inhibitor or direct thrombin inhibitor within 48 h']];
+  // Reproduced on SISTER's Xa/DTI item until SISTER left the catalog (2026-11-01); MINUTE's DOAC/LMWH item keeps it.
+  it('DOAC/LMWH at onset Absent, Encounter apixaban 10 h ago, an "On oral anticoagulant" answer: the exclusion stays present and listed', () => {
+    const screen = answerFacts(withClassification(fresh(), 'ich'), { age: 60, nihss: 10, gcs: 12, preMrs: 0, ichLocation: 'bg', ichVolume: 25, exclusions: { exDoacLmwhAtOnset: false, exSecondaryIch: false, exMidbrain: false, exPregnancy: false } });
+    const e = encounter({ diagnosisCategory: 'ich', age: '60', ...lkwAt(now - HOUR), lastDOACType: 'apixaban', lastDOACDose: localIso(now - 10 * HOUR) });
+    const DOAC_NOTE = `${HEAD}DOAC or LMWH at ICH onset${TAIL}`;
     let state = reapply(screen, e);
-    expect([state.exclusions.exXaDtiWithin48h, conflictNote(state, now), where(state, 'SISTER')]).toEqual([true, XA_NOTE, SISTER_OUT]);
+    expect([state.exclusions.exDoacLmwhAtOnset, conflictNote(state, now), where(state, 'MINUTE')]).toEqual([true, DOAC_NOTE, MINUTE_OUT]);
     for (const answer of [true, false, 'unselected']) {
       const edited = answerFacts(state, { takingOac: answer });
-      expect([edited.takingOac, edited.exclusions.exXaDtiWithin48h, where(edited, 'SISTER')]).toEqual([answer, true, SISTER_OUT]);
-      expect(conflictNote(edited, now)).toBe(XA_NOTE);
+      expect([edited.takingOac, edited.exclusions, where(edited, 'MINUTE')]).toEqual([answer, state.exclusions, MINUTE_OUT]);
+      expect(conflictNote(edited, now)).toBe(DOAC_NOTE);
     }
     state = reapply(answerFacts(state, { takingOac: true }), e);
-    expect([state.takingOac, state.exclusions.exXaDtiWithin48h, conflictNote(state, now)]).toEqual([true, true, XA_NOTE]);
+    expect([state.takingOac, state.exclusions.exDoacLmwhAtOnset, conflictNote(state, now)]).toEqual([true, true, DOAC_NOTE]);
   });
 });
 
@@ -204,7 +202,7 @@ describe('choosing a classification ends the import and keeps only the user\'s o
   it('a conflict over an answer the click restarts ends with it', () => {
     const e = encounter({ diagnosisCategory: 'ich', ...lkwAt(now - HOUR), lastDOACType: 'apixaban' });
     const imported = reapply(ichScreen(), e);
-    expect(Object.keys(imported.imported.conflicts)).toEqual(expect.arrayContaining(['anticoagulant', 'exDoacLmwhAtOnset', 'exOacWithin7d']));
+    expect(Object.keys(imported.imported.conflicts)).toEqual(expect.arrayContaining(['anticoagulant', 'exDoacLmwhAtOnset']));
     const restarted = withClassification(imported, 'ich');
     expect([restarted.anticoagulant, restarted.exclusions, restarted.imported, conflictNote(restarted, null)]).toEqual(['unselected', {}, null, '']);
   });
@@ -271,7 +269,7 @@ describe('the same reproductions on the real controls in a browser', () => {
     await page.getByLabel('Volume (mL)', { exact: true }).fill('25');
     await select('Anticoagulant at onset', 'none');
     await open$('Optional exclusion review');
-    for (const label of ['Suspected secondary cause for ICH (AVM, aneurysm, tumor, SAH, trauma, coagulopathy)', 'Midbrain extension or infratentorial/thalamic location', 'Brainstem hemorrhage (cerebellar is not brainstem)', 'Pregnancy']) await select(label, 'false');
+    for (const label of ['Suspected secondary cause for ICH (AVM, aneurysm, tumor, SAH, trauma, coagulopathy)', 'Midbrain extension or infratentorial/thalamic location', 'Pregnancy']) await select(label, 'false');
   };
 
   it('MINUTE: the DOAC answer keeps DOAC/LMWH at onset present after the Encounter clears its LMWH (finding 1)', async () => {
@@ -340,22 +338,31 @@ describe('the same reproductions on the real controls in a browser', () => {
     expect(errors).toEqual([]);
   }, 30000);
 
-  it('"On oral anticoagulant" = Yes leaves the conflicting Xa inhibitor ≤ 48 h present (finding 3)', async () => {
+  // Ran on the ischemic SISTER Xa/DTI item until SISTER left the catalog (2026-11-01). The only Encounter-derived
+  // exclusion left (DOAC/LMWH at ICH onset) is asked on the ICH screen, which has no OAC control, so the control
+  // is now checked against a standing AF conflict that gates INTERCEPT.
+  it('"On oral anticoagulant" = Yes leaves a standing conflict unknown and listed (finding 3)', async () => {
     await open();
     try {
-      await setEncounter({ diagnosisCategory: 'ischemic', age: '70', lkwDate: '2026-10-22', lkwTime: '04:00', lastDOACType: 'apixaban', lastDOACDose: '2026-10-22T02:00' });
+      const AF_NOTE = `${HEAD}documented clinical atrial fibrillation${TAIL}`;
+      await setEncounter({ diagnosisCategory: 'ischemic', age: '70', lkwDate: '2026-10-19', lkwTime: '12:00' }, { details: { afDetected: 'no' } });
       await page.getByRole('button', { name: 'Ischemic stroke', exact: true }).click();
-      await page.getByLabel('NIHSS', { exact: true }).fill('10');
-      await select('ASPECTS', '8'); await select('Pre-stroke mRS', '0');
-      await open$('Optional exclusion review');
-      for (const label of ['Factor Xa inhibitor or direct thrombin inhibitor within 48 h', 'IV thrombolysis given or planned', 'Pregnancy']) await select(label, 'false');
+      await select('Atrial fibrillation documented', 'true');
       await useFacts();
-      expect(await value('Factor Xa inhibitor or direct thrombin inhibitor within 48 h')).toBe('true');
-      await select('On oral anticoagulant at index stroke', 'true');
-      expect(await value('Factor Xa inhibitor or direct thrombin inhibitor within 48 h')).toBe('true');
-      expect(await status()).toContain(`${HEAD}Factor Xa inhibitor or direct thrombin inhibitor within 48 h${TAIL}`);
-      expect(await card('SISTER').count()).toBe(0);
-      expect(await copied()).toMatch(/\n- SISTER: Factor Xa inhibitor or direct thrombin inhibitor within 48 h\n/);
+      await open$('Optional exclusion review');
+      const refiner = 'details:has(summary:has-text("Optional exclusion review")) select';
+      for (const label of await page.locator(refiner).evaluateAll(els => els.map(el => el.getAttribute('aria-label')))) await select(label, 'false');
+      expect([await value('Atrial fibrillation documented'), await status(), await card('INTERCEPT').getAttribute('data-completeness')]).toEqual(['', AF_NOTE, 'insufficient-information']);
+      for (const answer of ['true', 'false']) {
+        await select('On oral anticoagulant at index stroke', answer);
+        expect([await value('Atrial fibrillation documented'), await status(), await card('INTERCEPT').getAttribute('data-completeness')], answer).toEqual(['', AF_NOTE, 'insufficient-information']);
+      }
+      const note = await copied();
+      expect(note.split('\n')).toContain(AF_NOTE);
+      expect(note).not.toMatch(/POTENTIAL MATCH \(\d+\)[^\n]*\n- INTERCEPT/);
+      // Answering AF documented itself settles it.
+      await select('Atrial fibrillation documented', 'true');
+      expect([await status(), await card('INTERCEPT').getAttribute('data-completeness')]).toEqual(['', 'potential-match']);
     } finally { await page.close(); }
     expect(errors).toEqual([]);
   }, 30000);

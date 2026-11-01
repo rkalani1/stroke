@@ -30,17 +30,13 @@ export const EXCLUSION_ITEMS = [
   { id: 'exTandem', label: 'Tandem occlusions (cervical + intracranial)', classifications: ['ischemic'], trials: ['STEP'] },
   { id: 'exSeizureAtOnset', label: 'Seizure at stroke onset or before enrollment', classifications: ['ischemic'], trials: ['STEP'] },
   { id: 'exSuspectedIcad', label: 'Known or highly suspected underlying intracranial atherosclerosis (ICAD) at the occlusion', classifications: ['ischemic'], trials: ['STEP'] },
-  { id: 'exIvtGivenOrPlanned', label: 'IV thrombolysis given or planned', classifications: ['ischemic'], trials: ['SISTER'] },
-  { id: 'exXaDtiWithin48h', label: 'Factor Xa inhibitor or direct thrombin inhibitor within 48 h', classifications: ['ischemic'], trials: ['SISTER'] },
   { id: 'exTerminalIllness', label: 'Known terminal cancer or terminal illness at stroke onset', classifications: ['ischemic'], trials: ['TESTED'] },
   { id: 'exTerminalComorbidity2y', label: 'Life expectancy <24 months due to comorbid terminal conditions', classifications: ['ich'], trials: ['SATURN'] },
-  { id: 'exSecondaryIch', label: 'Suspected secondary cause for ICH (AVM, aneurysm, tumor, SAH, trauma, coagulopathy)', classifications: ['ich'], trials: ['MINUTE', 'FASTEST-2'] },
+  { id: 'exSecondaryIch', label: 'Suspected secondary cause for ICH (AVM, aneurysm, tumor, SAH, trauma, coagulopathy)', classifications: ['ich'], trials: ['MINUTE'] },
   // SATURN's own list (NCT03936361 exclusion 1) names no coagulopathy, so it has its own item.
   { id: 'exSaturnSecondaryCause', label: 'Suspected secondary cause per SATURN (e.g., vascular abnormality, tumor, trauma, venous infarction, hemorrhagic transformation of an infarct)', classifications: ['ich'], trials: ['SATURN'] },
   { id: 'exMidbrain', label: 'Midbrain extension or infratentorial/thalamic location', classifications: ['ich'], trials: ['MINUTE'] },
   { id: 'exDoacLmwhAtOnset', label: 'DOAC or LMWH at ICH onset', classifications: ['ich'], trials: ['MINUTE'] },
-  { id: 'exOacWithin7d', label: 'Oral anticoagulant (VKA or DOAC) within 7 days', classifications: ['ich'], trials: ['FASTEST-2'] },
-  { id: 'exBrainstemIch', label: 'Brainstem hemorrhage (cerebellar is not brainstem)', classifications: ['ich'], trials: ['FASTEST-2'] },
   { id: 'exPriorIch12m', label: 'Earlier ICH within the 12 months before the index ICH', classifications: ['ich'], trials: ['ASPIRE'] },
   { id: 'exClearAnticoagulationIndication', label: 'Separate mandatory anticoagulation indication (e.g., DVT/PE)', classifications: ['ich'], trials: ['ASPIRE'] },
   { id: 'exClearAntiplateletIndication', label: 'Clear baseline indication for antiplatelet therapy', classifications: ['ich'], trials: ['ASPIRE'] },
@@ -51,7 +47,7 @@ export const EXCLUSION_ITEMS = [
   { id: 'exBrainBleed2y', label: 'Symptomatic non-traumatic ICH within past 2 years', classifications: ['ischemic', 'tia'], trials: ['CLARITY'] },
   { id: 'exSaptContraindication', label: 'Contraindication to additional SAPT for 6 months', classifications: ['ischemic', 'tia'], trials: ['INTERCEPT'] },
   { id: 'exUntreatedStenosisPlaque', label: 'Untreated ≥50% stenosis or investigator-defined high-risk plaque: carotid, subclavian, vertebral or intracranial artery', classifications: ['ischemic', 'tia'], trials: ['INTERCEPT'] },
-  { id: 'exPregnancy', label: 'Pregnancy', classifications: ['ischemic', 'ich', 'tia'], trials: ['STEP', 'SISTER', 'MINUTE', 'FASTEST-2', 'SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2', 'INTERCEPT', 'VERIFY'] },
+  { id: 'exPregnancy', label: 'Pregnancy', classifications: ['ischemic', 'ich', 'tia'], trials: ['STEP', 'MINUTE', 'SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2', 'INTERCEPT', 'VERIFY'] },
   { id: 'exIncarcerated', label: 'Patient is incarcerated (prisoner)', classifications: ['ischemic', 'ich'], trials: ['STEP', 'SCOUTS-3'] },
   { id: 'exTrach', label: 'Mechanical ventilation, tracheostomy, or oxygen > 4 L/min', classifications: ['ischemic', 'ich'], trials: ['SCOUTS-3'] },
   { id: 'exCpapUse14d', label: 'Positive airway pressure (e.g., CPAP) use within 14 days before the stroke', classifications: ['ischemic', 'ich'], trials: ['SCOUTS-3'] },
@@ -89,7 +85,7 @@ const ALL_EXCLUSION_IDS = [
   'exRecentStroke30d', 'exVerifyStroke30d', 'exSeizures', 'exVerifySeizure', 'exSevereAphasiaCognitive', 'exBotoxVns3m',
   'exAnticoagulation', 'exHistoryDvtPe', 'exRecurrentStroke',
   'exCongestiveHeartFailure', 'exEgfr30',
-  'exDoacLmwhAtOnset', 'exOacWithin7d', 'exBrainstemIch', 'exIvtGivenOrPlanned', 'exXaDtiWithin48h', 'exSeizureAtOnset', 'exSuspectedIcad', 'exSaturnSecondaryCause'
+  'exDoacLmwhAtOnset', 'exSeizureAtOnset', 'exSuspectedIcad', 'exSaturnSecondaryCause'
 ];
 
 /* ── Evaluation Engine ─────────────────────────────────────────────── */

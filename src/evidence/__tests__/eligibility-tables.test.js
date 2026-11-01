@@ -36,10 +36,10 @@ describe('eligibilityTables — structure & integrity', () => {
   it('has the expected trial count per table', () => {
     const counts = Object.fromEntries(eligibilityTables.map((t) => [`${t.category}-${t.phase}`, t.trials.length]));
     expect(counts).toEqual({
-      'ischemic-acute': 3,
+      'ischemic-acute': 2,
       'ischemic-inpatient': 5,
       'ischemic-outpatient': 4,
-      'ich-acute': 3,
+      'ich-acute': 2,
       'ich-inpatient': 3,
       'ich-outpatient': 2
     });
@@ -90,13 +90,14 @@ describe('eligibilityTables — recruitment status (2026-10-03 registry audit)',
   const allTrials = eligibilityTables.flatMap((t) => t.trials);
   const acronyms = new Set(allTrials.map(t => t.acronym));
 
-  it('omits not-enrolling profiles and removed placeholders from the phase tables', () => {
-    for (const acronym of ['CAPPRICORN-1', 'CAPTIVA', 'ESUS-MRI', 'ESUS', 'MOCHA']) expect(acronyms.has(acronym), acronym).toBe(false);
+  it('omits not-enrolling profiles, removed placeholders and removed studies from the phase tables', () => {
+    // SISTER and FASTEST-2 were removed from the catalog at the owner's request (2026-11-01).
+    for (const acronym of ['CAPPRICORN-1', 'CAPTIVA', 'ESUS-MRI', 'ESUS', 'MOCHA', 'SISTER', 'FASTEST-2']) expect(acronyms.has(acronym), acronym).toBe(false);
   });
 
-  it('adds the verified StrokeNet profiles and keeps PICASSO as a flagged criteria reference', () => {
-    expect(eligibilityTables.find(t => t.id === 'ich-acute').trials.map(t => t.acronym)).toContain('FASTEST-2');
-    expect(eligibilityTables.find(t => t.id === 'ischemic-acute').trials.map(t => t.acronym)).toEqual(['STEP', 'SISTER', 'PICASSO']);
+  it('lists the acute profiles and keeps PICASSO as a flagged criteria reference', () => {
+    expect(eligibilityTables.find(t => t.id === 'ich-acute').trials.map(t => t.acronym)).toEqual(['MINUTE', 'SATURN']);
+    expect(eligibilityTables.find(t => t.id === 'ischemic-acute').trials.map(t => t.acronym)).toEqual(['STEP', 'PICASSO']);
     expect(allTrials.filter(t => t.referenceOnly).map(t => t.acronym)).toEqual(['PICASSO']);
     expect(allTrials.some(t => t.unverified)).toBe(false);
   });

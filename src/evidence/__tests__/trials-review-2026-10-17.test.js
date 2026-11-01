@@ -25,25 +25,28 @@ const fresh = () => createInitialScreenerState();
 describe('Encounter onset is anchored to the LKW instant (TA-F1)', () => {
   const ich = encounter({ diagnosisCategory: 'ich', age: '60', lkwDate: '2026-10-17', lkwTime: '11:00' });
 
-  it('re-evaluates FASTEST-2 (≤120 min from LKW) as time passes instead of freezing the import', () => {
-    const state = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(ich, NOW), fresh());
-    expect(state.onsetAnchorMs).toBe(new Date('2026-10-17T11:00:00').getTime());
-    const [atImport] = find(evaluateAll(state, screenerTrials, NOW), 'FASTEST-2');
-    expect(atImport).toBe('pending'); // 1 h ≤ 2 h
-    const later = evaluateAll(state, screenerTrials, NOW + 2 * HOUR); // 3 h from LKW
-    const [group, item] = find(later, 'FASTEST-2');
+  // FASTEST-2 (≤ 120 min) and SISTER (4.5–24 h) carried these two checks until they left the catalog
+  // on 2026-11-01; MINUTE (≤ 16 h, NCT07260916) and VERIFY (24–96 h, NCT05338697) keep them.
+  it('re-evaluates MINUTE (≤16 h from LKW) as time passes instead of freezing the import', () => {
+    const early = encounter({ diagnosisCategory: 'ich', age: '60', lkwDate: '2026-10-17', lkwTime: '00:30' });
+    const state = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(early, NOW), fresh());
+    expect(state.onsetAnchorMs).toBe(new Date('2026-10-17T00:30:00').getTime());
+    const [atImport] = find(evaluateAll(state, screenerTrials, NOW), 'MINUTE');
+    expect(atImport).toBe('pending'); // 11.5 h ≤ 16 h
+    const later = evaluateAll(state, screenerTrials, NOW + 5 * HOUR); // 16.5 h from LKW
+    const [group, item] = find(later, 'MINUTE');
     expect(group).toBe('excluded');
-    expect(item.exclusionReasons).toContain('Beyond 120 minutes from onset/LKW');
-    expect(later.briefingNote).toContain('Inputs: Hemorrhage (ICH) · LKW 3.0 h (Encounter LKW 11:00, as of 14:00)');
+    expect(item.exclusionReasons).toContain('More than 16 hours from LKW at screening (registry: randomization ≤ 16 hours from LKW)');
+    expect(later.briefingNote).toContain('Inputs: Hemorrhage (ICH) · LKW 16.5 h (Encounter LKW 00:30, as of 17:00)');
   });
 
-  it('moves SISTER (4.5–24 h) from before-window to a candidate once its window opens', () => {
+  it('moves VERIFY (24–96 h) from before-window to a candidate once its window opens', () => {
     const isch = encounter({ diagnosisCategory: 'ischemic', lkwDate: '2026-10-17', lkwTime: '09:00' });
     const state = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(isch, NOW), fresh());
-    const [g1, at3h] = find(evaluateAll(state, screenerTrials, NOW), 'SISTER');
+    const [g1, at3h] = find(evaluateAll(state, screenerTrials, NOW), 'VERIFY');
     expect(g1).toBe('soon');
     expect(at3h.beforeWindow).toBe(true);
-    expect(find(evaluateAll(state, screenerTrials, NOW + 2 * HOUR), 'SISTER')[0]).toBe('pending'); // 5 h
+    expect(find(evaluateAll(state, screenerTrials, NOW + 22 * HOUR), 'VERIFY')[0]).toBe('pending'); // 25 h
   });
 
   it('keeps a manual onset fixed and falls back to the import snapshot without a clock', () => {
@@ -62,12 +65,13 @@ describe('re-importing Encounter facts clears what the Encounter no longer suppo
 
   it('returns stale onset, GCS, volume and anticoagulant facts to unknown', () => {
     const once = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(first, NOW), fresh());
-    expect(once).toMatchObject({ gcs: 15, ichVolume: 24, anticoagulant: 'doac', takingOac: true, exclusions: { exDoacLmwhAtOnset: true, exOacWithin7d: true } });
+    expect(once).toMatchObject({ gcs: 15, ichVolume: 24, anticoagulant: 'doac', takingOac: true });
+    expect(once.exclusions).toEqual({ exDoacLmwhAtOnset: true });
     const twice = applyEncounterPrefill(once, screenerPrefillFromEncounter(corrected, NOW), fresh());
     expect(twice).toMatchObject({ classification: 'ich', age: 60, preMrs: 0, onsetVal: null, onsetAnchorMs: null, gcs: 'unselected', ichVolume: 'unselected', anticoagulant: 'unselected', takingOac: 'unselected' });
     expect(twice.exclusions).toEqual({});
     const r = evaluateAll(twice, screenerTrials, NOW);
-    for (const acronym of ['MINUTE', 'FASTEST-2']) {
+    for (const acronym of ['MINUTE']) {
       const [group, item] = find(r, acronym);
       expect(group).toBe('pending');
       expect(item.exclusionReasons).toEqual([]);
@@ -96,15 +100,19 @@ describe('tri-state: potential match / insufficient information / does not meet 
     expect(r.eligible).toEqual([]);
   });
 
-  it('only a study with every modeled FASTEST-2 criterion and exclusion answered is a potential match', () => {
-    const state = S({ classification: 'ich', age: 70, onsetVal: 1, onsetUnit: 'hours', gcs: 14, preMrs: 0, ichVolume: 20, ichLocation: 'lobar', exclusions: { exOacWithin7d: false, exSecondaryIch: false, exBrainstemIch: false, exPregnancy: false } });
+  it('only a study with every modeled MINUTE criterion and exclusion answered is a potential match', () => {
+    const state = S({ classification: 'ich', age: 70, onsetVal: 1, onsetUnit: 'hours', nihss: 10, gcs: 14, preMrs: 0, ichVolume: 20, ichLocation: 'bg', exclusions: { exDoacLmwhAtOnset: false, exSecondaryIch: false, exMidbrain: false, exPregnancy: false } });
     const r = evaluateAll(state);
-    expect(potentialMatches(r).map(i => i.trial.acronym)).toEqual(['FASTEST-2']);
-    expect(insufficientInformation(r).map(i => i.trial.acronym)).not.toContain('FASTEST-2');
+    expect(potentialMatches(r).map(i => i.trial.acronym)).toEqual(['MINUTE']);
+    expect(insufficientInformation(r).map(i => i.trial.acronym)).not.toContain('MINUTE');
     expect(r.eligible).toEqual([]);
-    expect(r.briefingNote).toContain('POTENTIAL MATCH (1) — every modeled criterion met; not a definitive match\n- FASTEST-2 (NCT07227246)');
+    expect(r.briefingNote).toContain('POTENTIAL MATCH (1) — every modeled criterion met; not a definitive match\n- MINUTE (NCT07260916)');
     // Unmodeled registry items still remain to confirm.
-    expect(toConfirm(find(r, 'FASTEST-2')[1]).join(' ')).toMatch(/spot sign/);
+    expect(toConfirm(find(r, 'MINUTE')[1]).join(' ')).toMatch(/randomization within 2 hours of arrival/);
+    // One modeled fact left unknown keeps it insufficient information.
+    const partial = evaluateAll(S({ ...state, exclusions: { ...state.exclusions, exPregnancy: undefined } }));
+    expect(potentialMatches(partial)).toEqual([]);
+    expect(insufficientInformation(partial).map(i => i.trial.acronym)).toContain('MINUTE');
   });
 
   it('partial Encounter data alone never produces a potential match', () => {
@@ -133,7 +141,7 @@ describe('tri-state: potential match / insufficient information / does not meet 
 });
 
 describe('Encounter anticoagulant "none" contradicted by the medication list (TA-F4)', () => {
-  // NCT07227246 exclusion 2: OAC use within the past 7 days; NCT07260916 exclusion 6: DOAC/LMWH at ICH onset.
+  // NCT07260916 exclusion 6: DOAC/LMWH at ICH onset.
   it('is not imported, so the OAC prompts stay open', () => {
     const e = encounter({ diagnosisCategory: 'ich', lastDOACType: 'none', medications: 'apixaban 5 mg twice daily' });
     const p = screenerPrefillFromEncounter(e, NOW);
@@ -142,12 +150,12 @@ describe('Encounter anticoagulant "none" contradicted by the medication list (TA
     expect(p.patch.exclusions).toEqual({});
     expect(p.summary.join(' ')).toContain('conflicts with medication list');
     const r = evaluateAll(applyEncounterPrefill(fresh(), p, fresh()));
-    expect(toConfirm(find(r, 'FASTEST-2')[1])).toContain('Confirm no VKA or DOAC within 7 days');
     expect(toConfirm(find(r, 'MINUTE')[1])).toContain('Confirm no DOAC or LMWH at ICH onset');
   });
   it('is still imported when the medication list does not mention an anticoagulant', () => {
     const p = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ich', lastDOACType: 'none', medications: 'atorvastatin' }), NOW);
-    expect(p.patch).toMatchObject({ anticoagulant: 'none', takingOac: false, exclusions: { exDoacLmwhAtOnset: false, exOacWithin7d: false, exXaDtiWithin48h: false } });
+    expect(p.patch).toMatchObject({ anticoagulant: 'none', takingOac: false });
+    expect(p.patch.exclusions).toEqual({ exDoacLmwhAtOnset: false });
   });
 });
 
@@ -186,13 +194,17 @@ describe('the copied summary prints only facts the classification shows (TA-F5)'
 });
 
 describe('registry wording restored in to-confirm prompts', () => {
-  it('SISTER keeps the INR ≤ 1.7 prompt after the Xa/DTI question is answered (TA-F6)', () => {
-    // NCT05948566 exclusion 15: "oral anticoagulant therapy with International Normalized Ratio (INR) >1.7".
-    const answered = toConfirm(evaluate('SISTER', { classification: 'ischemic', onsetVal: 10, age: 60, nihss: 6, aspects: 8, preMrs: 1, exclusions: { exXaDtiWithin48h: false } }));
-    expect(answered).toContain('Confirm INR ≤ 1.7 if on warfarin/VKA');
-    const unknown = toConfirm(evaluate('SISTER', { classification: 'ischemic', onsetVal: 10, age: 60, nihss: 6, aspects: 8, preMrs: 1 }));
-    expect(unknown).not.toContain('Confirm INR ≤ 1.7 if on warfarin/VKA');
-    expect(unknown).toContain('Confirm no Xa inhibitor or direct thrombin inhibitor within 48 h (and INR ≤ 1.7 if on VKA)');
+  // TA-F6 was checked on SISTER's INR prompt until SISTER left the catalog (2026-11-01); MINUTE's
+  // secondary-cause exclusion keeps the same rule: a shared answer leaves the study-specific part open.
+  it('MINUTE keeps its own secondary-cause prompt after the shared question is answered (TA-F6)', () => {
+    // NCT07260916 exclusions 1, 10 and 11: vascular malformation incl. cavernous, hemorrhagic transformation, venous infarct.
+    const residual = 'Confirm no cavernous or other vascular malformation, hemorrhagic transformation of an underlying ischemic infarct, or venous infarct; the shared secondary-cause answer does not cover these MINUTE exclusions';
+    const base = { classification: 'ich', onsetVal: 3, age: 60, nihss: 8, gcs: 13, preMrs: 0, ichVolume: 25, ichLocation: 'bg' };
+    const answered = toConfirm(evaluate('MINUTE', { ...base, exclusions: { exSecondaryIch: false } }));
+    expect(answered).toContain(residual);
+    const unknown = toConfirm(evaluate('MINUTE', base));
+    expect(unknown).not.toContain(residual);
+    expect(unknown).toContain('Confirm no suspected secondary cause (vascular malformation incl. cavernous malformation/AVM, aneurysm, neoplasm, hemorrhagic transformation of an infarct, venous infarct)');
   });
 
   it('the ICA chip alone is not an intracranial ICA/M1 match (TA-F7)', () => {
@@ -205,20 +217,6 @@ describe('registry wording restored in to-confirm prompts', () => {
     const step = evaluate('STEP', { classification: 'ischemic', onsetVal: 3, age: 70, nihss: 3, aspects: 8, preMrs: 0 });
     expect(step.matchedCriteria.join(' ')).not.toMatch(/Branch 1/);
     expect(step.pendingCriteria.some(line => line.startsWith('Confirm one pathway'))).toBe(true);
-  });
-
-  it('FASTEST-2 carries the FASTEST Part 1 result and the full registry exclusions (TA-F9)', () => {
-    const t = trial('FASTEST-2');
-    const gap = t.sourceGaps.find(g => g.includes('NCT03496883'));
-    expect(gap).toBeTruthy();
-    for (const fact of ['PMID 41653933', 'futility', '1.09', '3.41', '1.14–10.15']) expect(gap).toContain(fact);
-    // NCT07227246 exclusions 11 and 22.
-    expect(t.exactExclusionCriteria.join(' ')).toMatch(/unfractionated heparin with abnormal PTT/);
-    expect(t.exactExclusionCriteria.join(' ')).toMatch(/lactating/);
-    const pending = toConfirm(evaluate('FASTEST-2', { classification: 'ich', exclusions: { exPregnancy: false } })).join(' ');
-    expect(pending).toMatch(/not lactating/);
-    expect(pending).toMatch(/no UFH with abnormal PTT/);
-    expect(t.externalMetadata.registryLastUpdatePosted).toBe('2026-08-20');
   });
 
   it('MINUTE prompts randomization within 2 h of arrival and the full secondary-cause list (TA-F10)', () => {
@@ -386,7 +384,8 @@ describe('registry check dates are truthful per profile (TO-2, TO-3, TO-4)', () 
     // repeated on 2026-10-21: SISTER (2026-10-19), CAPPRICORN-1 and CAPTIVA (2026-10-20) were
     // updated in between; the other 13 dates were re-established unchanged. Repeated on 2026-10-31:
     // CLARITY, TELE-REHAB-2 and CAPTIVA were updated on 2026-10-26; the other 13 dates matched exactly.
-    const expected = { STEP: '2025-12-04', SISTER: '2026-10-19', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', 'FASTEST-2': '2026-08-20', CLARITY: '2026-10-26', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-26', CAPTIVA: '2026-10-26' };
+    // SISTER and FASTEST-2 were removed from the catalog on 2026-11-01.
+    const expected = { STEP: '2025-12-04', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', CLARITY: '2026-10-26', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-26', CAPTIVA: '2026-10-26' };
     expect(screenerTrials.map(t => t.acronym).sort()).toEqual(Object.keys(expected).sort());
     for (const t of screenerTrials) {
       const m = t.externalMetadata;
@@ -427,7 +426,7 @@ describe('profile metadata hygiene (TO-5, TO-6, TO-7)', () => {
     const { trialsEnvelopeCounts } = await import('../../../scripts/generate-agent-assets.mjs');
     const { eligibilityTables } = await import('../eligibilityTables.js');
     const counts = trialsEnvelopeCounts(screenerTrials, eligibilityTables);
-    expect(counts).toEqual({ count: 16, studyCount: 16, tableCount: eligibilityTables.length });
+    expect(counts).toEqual({ count: 14, studyCount: 14, tableCount: eligibilityTables.length });
     expect(counts.count).not.toBe(4); // studies, tables, scope, statusCurrency
   });
 });

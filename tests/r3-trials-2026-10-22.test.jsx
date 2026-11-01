@@ -140,13 +140,17 @@ describe('MR-PICS reports only what was answered (trials-code#3)', () => {
 });
 
 describe('the copied summary reports only exclusion answers the refiner shows (trials-code#4)', () => {
+  // Checked on SISTER's thrombolysis item until SISTER left the catalog (2026-11-01); MINUTE is now the
+  // only study asking the shared secondary-cause item.
   it('drops an answer once its only study is excluded by timing, and restores it when the study returns', () => {
-    const at = hours => S({ classification: 'ischemic', onsetVal: hours, onsetUnit: 'hours', exclusions: { exIvtGivenOrPlanned: true } });
-    expect(refinerItems(at(10)).map(i => i.id)).toContain('exIvtGivenOrPlanned');
-    expect(evaluateAll(at(10)).briefingNote).toContain('Exclusions recorded: IV thrombolysis given or planned: present');
-    // SISTER (the item's only study) is outside 4.5–24 h at 30 h, so the refiner no longer asks.
-    expect(refinerItems(at(30)).map(i => i.id)).not.toContain('exIvtGivenOrPlanned');
-    expect(evaluateAll(at(30)).briefingNote).not.toContain('IV thrombolysis given or planned');
+    const label = 'Suspected secondary cause for ICH (AVM, aneurysm, tumor, SAH, trauma, coagulopathy)';
+    const at = hours => S({ classification: 'ich', onsetVal: hours, onsetUnit: 'hours', exclusions: { exSecondaryIch: true } });
+    expect(refinerItems(at(10)).map(i => i.id)).toContain('exSecondaryIch');
+    expect(evaluateAll(at(10)).briefingNote).toContain(`Exclusions recorded: ${label}: present`);
+    // MINUTE (the item's only study) is outside ≤ 16 h at 30 h, so the refiner no longer asks.
+    expect(refinerItems(at(30)).map(i => i.id)).not.toContain('exSecondaryIch');
+    expect(evaluateAll(at(30)).briefingNote).not.toContain(label);
+    expect(refinerItems(at(15)).map(i => i.id)).toContain('exSecondaryIch');
   });
 });
 
@@ -170,7 +174,8 @@ describe('Encounter anticoagulant facts (e2e#5, e2e#6)', () => {
     // NCT07260916 (MINUTE) exclusion 6: "Concurrent use of direct oral anticoagulants or low molecular weight heparin at ICH onset".
     const e = encounter({ diagnosisCategory: 'ich', age: '65', ...lkwAt(now - 1.5 * HOUR), lastDOACType: 'apixaban', lastDOACDose: localIso(now - 72 * HOUR) });
     const p = screenerPrefillFromEncounter(e, now);
-    expect(p.patch.exclusions).toMatchObject({ exOacWithin7d: true, exXaDtiWithin48h: false });
+    // No exclusion is answered from the dose time alone.
+    expect(Object.entries(p.patch.exclusions).filter(([, value]) => value !== undefined)).toEqual([]);
     expect(p.patch.exclusions.exDoacLmwhAtOnset).toBeUndefined();
     expect(p.summary).toContain('DOAC, last dose 71 h before LKW (use at onset unknown)');
     const state = applyEncounterPrefill(fresh(), p, fresh());
@@ -181,17 +186,19 @@ describe('Encounter anticoagulant facts (e2e#5, e2e#6)', () => {
     expect(recent.patch.exclusions.exDoacLmwhAtOnset).toBe(true);
   });
 
+  // Checked on SISTER's Xa/DTI item until SISTER left the catalog (2026-11-01); MINUTE's DOAC/LMWH item keeps it.
   it('keeps a recorded present exclusion the Encounter contradicts, and lists the conflict', () => {
-    const manual = S({ classification: 'ischemic', takingOac: true, exclusions: { exXaDtiWithin48h: true } });
-    const prefill = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'none' }), now);
-    expect(prefill.patch.exclusions.exXaDtiWithin48h).toBe(false);
+    const manual = S({ classification: 'ich', anticoagulant: 'doac', takingOac: true, exclusions: { exDoacLmwhAtOnset: true } });
+    const prefill = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ich', lastDOACType: 'none' }), now);
+    expect(prefill.patch.exclusions.exDoacLmwhAtOnset).toBe(false);
     const state = applyEncounterPrefill(manual, prefill, fresh());
-    expect(state.exclusions.exXaDtiWithin48h).toBe(true);
-    // A contradicted yes/no answer is neither kept nor overwritten: it becomes unknown.
+    expect(state.exclusions.exDoacLmwhAtOnset).toBe(true);
+    // A contradicted answer is neither kept nor overwritten: it becomes unknown.
+    expect(state.anticoagulant).toBe('unselected');
     expect(state.takingOac).toBe('unselected');
-    expect(conflictNote(state)).toBe(`${CONFLICT_HEAD}oral anticoagulant at the index stroke; Factor Xa inhibitor or direct thrombin inhibitor within 48 h${CONFLICT_TAIL}`);
-    // SISTER stays not met for the recorded Xa inhibitor.
-    expect(evaluateAll(state).excluded.find(i => i.trial.acronym === 'SISTER').exclusionReasons).toContain('Factor Xa inhibitor or direct thrombin inhibitor within 48 h');
+    expect(conflictNote(state)).toBe(`${CONFLICT_HEAD}anticoagulant at onset; DOAC or LMWH at ICH onset${CONFLICT_TAIL}`);
+    // MINUTE stays not met for the recorded DOAC.
+    expect(evaluateAll(state).excluded.find(i => i.trial.acronym === 'MINUTE').exclusionReasons).toContain('Concurrent DOAC or LMWH at ICH onset');
     // The conflicts do not make the import look stale.
     expect(importChanged(state, prefill)).toBe(false);
   });
@@ -199,12 +206,10 @@ describe('Encounter anticoagulant facts (e2e#5, e2e#6)', () => {
 
 // Independent verification of the e2e#6 repair (2026-10-22). A conflict between an entry and a
 // definite Encounter value never yields the less cautious answer: an exclusion is present if
-// either side records it present (NCT05948566 SISTER exclusion 21 "Received Factor Xa inhibitors
-// (such as Fondaparinux, apixaban or rivaroxaban) within the past 48 hours"; NCT07260916 MINUTE
-// exclusion 6 "Concurrent use of direct oral anticoagulants or low molecular weight heparin at ICH
-// onset"; NCT07227246 FASTEST-2 exclusion 2 "oral anticoagulant use (vitamin K antagonists or novel
-// oral anticoagulants) within the past 7 days"), any other answer becomes unknown, and the copied
-// summary lists every conflict.
+// either side records it present (NCT07260916 MINUTE exclusion 6 "Concurrent use of direct oral
+// anticoagulants or low molecular weight heparin at ICH onset"), any other answer becomes unknown,
+// and the copied summary lists every conflict. Until 2026-11-01 these checks also covered the SISTER
+// Xa/DTI-within-48-h and FASTEST-2 OAC-within-7-days exclusions, which left with those studies.
 const CONFLICT_HEAD = 'Encounter and screener entries differed: ';
 const CONFLICT_TAIL = '. Exclusions are set to present, other answers to unknown; confirm them.';
 describe('Encounter conflicts never make a screen less cautious (e2e#6 verification)', () => {
@@ -212,31 +217,31 @@ describe('Encounter conflicts never make a screen less cautious (e2e#6 verificat
   const find = (r, acronym) => [...r.eligible, ...r.pending, ...r.soon, ...r.excluded].find(i => i.trial.acronym === acronym);
   const apixaban = { lastDOACType: 'apixaban', lastDOACDose: localIso(now - 10 * HOUR) };
 
-  it('a documented Xa inhibitor 10 h ago overrides an earlier "absent" and excludes SISTER (H)', () => {
-    const manual = { ...withClassification(fresh(), 'ischemic'), onsetVal: 8, onsetUnit: 'hours', age: 70, nihss: 14, aspects: 8, preMrs: 0, vessel: 'ica_m1', exclusions: { exXaDtiWithin48h: false, exIvtGivenOrPlanned: false, exPregnancy: false } };
-    expect(find(evaluateAll(manual, screenerTrials), 'SISTER').completeness).toBe('potential-match');
-    const e = encounter({ diagnosisCategory: 'ischemic', age: '70', ...lkwAt(now - 8 * HOUR), premorbidMRS: '0', vesselOcclusion: ['M1'], ...apixaban }, { nihssSource: 'reported', reportedNihss: '14', aspects: '8' });
+  it('a documented DOAC 10 h ago overrides an earlier "absent" and excludes MINUTE (H)', () => {
+    const manual = { ...withClassification(fresh(), 'ich'), onsetVal: 1.5, onsetUnit: 'hours', age: 65, nihss: 10, gcs: 14, preMrs: 0, ichVolume: 24, ichLocation: 'bg',
+      exclusions: { exDoacLmwhAtOnset: false, exSecondaryIch: false, exMidbrain: false, exPregnancy: false } };
+    expect(find(evaluateAll(manual, screenerTrials), 'MINUTE').completeness).toBe('potential-match');
+    const e = encounter({ diagnosisCategory: 'ich', age: '65', ...lkwAt(now - 1.5 * HOUR), premorbidMRS: '0', ...apixaban });
     const state = applyEncounterPrefill(manual, screenerPrefillFromEncounter(e, now), fresh());
-    expect(state.exclusions).toMatchObject({ exXaDtiWithin48h: true, exIvtGivenOrPlanned: false, exPregnancy: false });
+    expect(state.exclusions).toEqual({ exDoacLmwhAtOnset: true, exSecondaryIch: false, exMidbrain: false, exPregnancy: false });
     const r = evaluateAll(state, screenerTrials, now);
-    expect(r.excluded.find(i => i.trial.acronym === 'SISTER')?.exclusionReasons).toContain('Factor Xa inhibitor or direct thrombin inhibitor within 48 h');
-    expect(potentialMatches(r).map(i => i.trial.acronym)).not.toContain('SISTER');
-    expect(r.briefingNote).toContain('Factor Xa inhibitor or direct thrombin inhibitor within 48 h: present');
-    expect(r.briefingNote).not.toContain('within 48 h: absent');
-    expect(r.briefingNote).toContain(`\n${CONFLICT_HEAD}Factor Xa inhibitor or direct thrombin inhibitor within 48 h${CONFLICT_TAIL}\n`);
+    expect(r.excluded.find(i => i.trial.acronym === 'MINUTE')?.exclusionReasons).toContain('Concurrent DOAC or LMWH at ICH onset');
+    expect(potentialMatches(r).map(i => i.trial.acronym)).not.toContain('MINUTE');
+    expect(r.briefingNote).toContain('DOAC or LMWH at ICH onset: present');
+    expect(r.briefingNote).not.toContain('ICH onset: absent');
+    expect(r.briefingNote).toContain(`\n${CONFLICT_HEAD}DOAC or LMWH at ICH onset${CONFLICT_TAIL}\n`);
   });
 
-  it('a documented DOAC overrides an earlier anticoagulant "None" and excludes MINUTE and FASTEST-2 (I)', () => {
+  it('a documented DOAC overrides an earlier anticoagulant "None" and excludes MINUTE (I)', () => {
     const manual = { ...applyAnticoagulant(withClassification(fresh(), 'ich'), 'none'), onsetVal: 1.5, onsetUnit: 'hours' };
     const e = encounter({ diagnosisCategory: 'ich', age: '65', ...lkwAt(now - 1.5 * HOUR), ...apixaban });
     const state = applyEncounterPrefill(manual, screenerPrefillFromEncounter(e, now), fresh());
     expect(state.anticoagulant).toBe('unselected');
-    expect(state.exclusions).toMatchObject({ exDoacLmwhAtOnset: true, exOacWithin7d: true });
+    expect(state.exclusions).toEqual({ exDoacLmwhAtOnset: true });
     const r = evaluateAll(state, screenerTrials, now);
     expect(r.excluded.find(i => i.trial.acronym === 'MINUTE')?.exclusionReasons).toContain('Concurrent DOAC or LMWH at ICH onset');
-    expect(r.excluded.find(i => i.trial.acronym === 'FASTEST-2')?.exclusionReasons).toContain('Oral anticoagulant (VKA or DOAC) within 7 days');
-    expect(r.briefingNote).not.toMatch(/anticoagulant at onset: none|ICH onset: absent|within 7 days: absent/);
-    expect(r.briefingNote).toContain(`${CONFLICT_HEAD}anticoagulant at onset; DOAC or LMWH at ICH onset; Oral anticoagulant (VKA or DOAC) within 7 days${CONFLICT_TAIL}`);
+    expect(r.briefingNote).not.toMatch(/anticoagulant at onset: none|ICH onset: absent/);
+    expect(r.briefingNote).toContain(`${CONFLICT_HEAD}anticoagulant at onset; DOAC or LMWH at ICH onset${CONFLICT_TAIL}`);
   });
 
   it('imports no absence derived from an anticoagulant answer the user contradicted (B)', () => {
@@ -244,9 +249,14 @@ describe('Encounter conflicts never make a screen less cautious (e2e#6 verificat
     const state = applyEncounterPrefill(manual, screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'none' }), now), fresh());
     expect(state.takingOac).toBe('unselected');
     expect(state.anticoagulant).toBe('unselected');
-    expect(state.exclusions.exXaDtiWithin48h).toBeUndefined();
+    expect(state.exclusions.exDoacLmwhAtOnset).toBeUndefined();
     // Without a contradiction, the Encounter's "none" still answers it.
-    expect(applyEncounterPrefill(S({ classification: 'ischemic' }), screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'none' }), now), fresh()).exclusions.exXaDtiWithin48h).toBe(false);
+    expect(applyEncounterPrefill(S({ classification: 'ischemic' }), screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'none' }), now), fresh()).exclusions.exDoacLmwhAtOnset).toBe(false);
+    // The same on the ICH screen, where MINUTE reads it: a contradicted anticoagulant answer leaves the exclusion unknown.
+    const ich = applyEncounterPrefill(S({ classification: 'ich', anticoagulant: 'vka' }), screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ich', lastDOACType: 'none' }), now), fresh());
+    expect(ich.anticoagulant).toBe('unselected');
+    expect(ich.exclusions.exDoacLmwhAtOnset).toBeUndefined();
+    expect(toConfirm(evaluateAll(ich).pending.find(i => i.trial.acronym === 'MINUTE'))).toContain('Confirm no DOAC or LMWH at ICH onset');
   });
 
   it('turns a contradicted inclusion fact into unknown, and agreeing entries into no conflict', () => {
@@ -257,12 +267,13 @@ describe('Encounter conflicts never make a screen less cautious (e2e#6 verificat
   });
 
   it('drops a conflict from the note once its answer is changed (C)', () => {
-    const state = applyEncounterPrefill(S({ classification: 'ischemic', takingOac: true, exclusions: { exXaDtiWithin48h: true } }), screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'none' }), now), fresh());
+    const state = applyEncounterPrefill(S({ classification: 'ich', anticoagulant: 'doac', exclusions: { exDoacLmwhAtOnset: true } }), screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ich', lastDOACType: 'none' }), now), fresh());
+    expect(conflictNote(state)).toBe(`${CONFLICT_HEAD}anticoagulant at onset; DOAC or LMWH at ICH onset${CONFLICT_TAIL}`);
     // Edits go through answerFacts, the screener's only edit path (r3-trials §9).
-    const agreed = answerFacts(state, { exclusions: { exXaDtiWithin48h: false } });
-    expect(conflictNote(agreed)).toBe(`${CONFLICT_HEAD}oral anticoagulant at the index stroke${CONFLICT_TAIL}`);
-    expect(conflictNote(answerFacts(agreed, { takingOac: false }))).toBe('');
-    expect(evaluateAll(answerFacts(agreed, { takingOac: false })).briefingNote).not.toContain(CONFLICT_HEAD);
+    const agreed = answerFacts(state, { exclusions: { exDoacLmwhAtOnset: false } });
+    expect(conflictNote(agreed)).toBe(`${CONFLICT_HEAD}anticoagulant at onset${CONFLICT_TAIL}`);
+    expect(conflictNote(answerFacts(agreed, { anticoagulant: 'none' }))).toBe('');
+    expect(evaluateAll(answerFacts(agreed, { anticoagulant: 'none' })).briefingNote).not.toContain(CONFLICT_HEAD);
   });
 
   it('never lets an Encounter "unknown" clear a recorded anticoagulant or present exclusion', () => {
@@ -277,39 +288,13 @@ describe('Encounter conflicts never make a screen less cautious (e2e#6 verificat
 });
 
 describe('registry wording re-read on 2026-10-22', () => {
-  it('SISTER targets patients who are not standard reperfusion candidates (NCT05948566)', () => {
-    // Detailed description: "... and are not a candidate for standard of care reperfusion therapies."
-    const t = trial('SISTER');
-    expect(t.conciseBedsideSummary).toContain('who are not candidates for standard reperfusion (no IV thrombolysis given or planned; no EVT with clot engagement)');
-    const r = evaluate('SISTER', { classification: 'ischemic', onsetVal: 8, age: 70, nihss: 14, aspects: 8, preMrs: 0, vessel: 'ica_m1',
-      exclusions: { exXaDtiWithin48h: false, exIvtGivenOrPlanned: false, exPregnancy: false } });
-    expect(r.completeness).toBe('potential-match');
-    // r3-trials second verification: the line keeps exclusion 1a's distal-migration allowance next to it.
-    expect(toConfirm(r)).toContain('Confirm no standard-of-care reperfusion (registry primary objective): no EVT with clot engagement; groin puncture without engagement because of spontaneous distal migration is permitted');
-    // The card headline carries the restriction too, so it is visible without opening the list.
-    expect(evaluateAll(S({ classification: 'ischemic', onsetVal: 8, age: 70, nihss: 14, aspects: 8, preMrs: 0, vessel: 'ica_m1' })).briefingNote).toContain('registry primary objective');
-  });
-
-  it('SISTER lists the bleeding-risk and thrombosis exclusions for confirmation (NCT05948566 exclusions 4, 9-12, 14-20, 24-26)', () => {
-    const t = trial('SISTER');
-    const exc = t.exactExclusionCriteria.join(' ');
-    for (const re of [/Within 30 days: surgery or biopsy of a parenchymal organ/, /severe head trauma within 90 days/, /or serious systemic hemorrhage; severe head trauma/, /suggestive of SAH even with a normal CT/,
-      /hematocrit < 25%/, /aPTT above normal/, /creatinine > 4 mg\/dL or dialysis/, /concurrent MI, PE, DVT or other thrombosis/, /Prior TS23/, /another research drug protocol/]) expect(exc).toMatch(re);
-    const confirm = toConfirm(evaluate('SISTER', { classification: 'ischemic' })).join(' ');
-    for (const re of [/surgery\/biopsy, trauma, persistent ulcerative wounds or serious systemic hemorrhage within 30 days/, /severe head trauma within 90 days/, /dialysis or concurrent thrombosis needing antithrombotics/, /INR, platelet, hematocrit, aPTT, creatinine, LMWH, GP IIb\/IIIa and BP limits/]) expect(confirm).toMatch(re);
-    // Second verification: the sentence now names the exclusions the to-confirm list leaves to the full criteria.
-    expect(t.sourceGaps).toContain('Perfusion imaging, EVT clot engagement and the remaining CT.gov exclusions are listed for confirmation, not modeled, except prior TS23 or antibody allergy, confounding neurological or psychiatric disease and another research drug protocol (full criteria only).');
-  });
-
-  it('SISTER and TESTED ask for the MRI ASPECTS threshold; SISTER asks for a disabling deficit at NIHSS 4–5', () => {
-    // SISTER: "ASPECTS of 6 or more on CT (or ASPECTS of ≥7 on MRI)"; "clearly disabling deficit if NIHSS is 4-5".
+  // The SISTER wording checks (reperfusion candidacy, bleeding-risk exclusions, MRI ASPECTS ≥ 7, NIHSS 4–5)
+  // left with SISTER on 2026-11-01; TESTED keeps the MRI ASPECTS check, in the prompts and the copied summary.
+  it('TESTED asks for the MRI ASPECTS threshold', () => {
     // TESTED (NCT05911568): "CT ... ASPECT score ≥3 or MRI ASPECT score ≥4".
-    const sister = toConfirm(evaluate('SISTER', { classification: 'ischemic', nihss: 4, aspects: 6 }));
-    expect(sister).toContain('If ASPECTS was scored on MRI (DWI), confirm MRI ASPECTS ≥ 7');
-    expect(sister).toContain('If NIHSS is 4–5, confirm a clearly disabling deficit');
     expect(toConfirm(evaluate('TESTED', { classification: 'ischemic', aspects: 3 }))).toContain('If ASPECTS was scored on MRI (DWI), confirm MRI ASPECTS ≥ 4');
-    const note = evaluateAll(S({ classification: 'ischemic', onsetVal: 10, age: 60, nihss: 4, aspects: 8, preMrs: 0, exclusions: { exIvtGivenOrPlanned: false, exXaDtiWithin48h: false, exPregnancy: false } })).briefingNote;
-    expect(note).toContain('If NIHSS is 4–5, confirm a clearly disabling deficit');
+    const note = evaluateAll(S({ classification: 'ischemic', onsetVal: 10, age: 60, nihss: 8, aspects: 8, preMrs: 3 })).briefingNote;
+    expect(note).toContain('If ASPECTS was scored on MRI (DWI), confirm MRI ASPECTS ≥ 4');
   });
 
   it('STEP reads presentation to the enrolling hospital, not hours at screening (NCT06289985)', () => {
@@ -327,12 +312,6 @@ describe('registry wording re-read on 2026-10-22', () => {
     expect(STUDY_FACTS.ischemic.find(([key]) => key === 'presentedWithin24h')[3]).toEqual(['STEP', 'TESTED']);
     // Within 24 h at screening still meets the timing criterion without the presentation fact.
     expect(evaluate('STEP', { ...facts, onsetVal: 3 }).matchedCriteria).toContain('Within 24 h of LKW at screening (so presented ≤ 24 h)');
-  });
-
-  it('FASTEST-2 states the thrombocytopenia exclusion as registered (NCT07227246 exclusion 10)', () => {
-    // "Known or suspected thrombocytopenia (unless current platelet count documented above 50,000/μL)".
-    expect(trial('FASTEST-2').exactExclusionCriteria.join(' ')).toContain('known or suspected thrombocytopenia unless a current platelet count above 50,000/µL is documented');
-    expect(trial('FASTEST-2').exactExclusionCriteria.join(' ')).not.toContain('platelets < 50,000');
   });
 
   it('INTERCEPT does not call a TIA imaging-positive before imaging is entered (NCT05723926 inclusion 2)', () => {
@@ -395,27 +374,26 @@ describe('further checks of the round-3 fixes', () => {
   });
   it('with no LKW recorded, a DOAC dose more than 48 h before now leaves use at onset unknown', () => {
     const p = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ich', lastDOACType: 'apixaban', lastDOACDose: localIso(now - 76 * HOUR) }), now);
-    expect(p.patch).toMatchObject({ takingOac: 'unselected', anticoagulant: 'unselected', exclusions: { exOacWithin7d: true, exXaDtiWithin48h: false } });
+    expect(p.patch).toMatchObject({ takingOac: 'unselected', anticoagulant: 'unselected' });
+    expect(Object.entries(p.patch.exclusions).filter(([, value]) => value !== undefined)).toEqual([]);
     expect(p.patch.exclusions.exDoacLmwhAtOnset).toBeUndefined();
     expect(p.summary).toContain('DOAC, last dose 76 h before now (use at onset unknown)');
   });
   it('treats a time-derived Encounter fact that has since changed as a changed import', () => {
-    // SISTER's Xa/DTI window is "within the past 48 hours"; a dose 47 h old at import is 49 h old two hours later.
-    const e = encounter({ diagnosisCategory: 'ischemic', ...lkwAt(now - 2 * HOUR), lastDOACType: 'apixaban', lastDOACDose: localIso(now - 47 * HOUR) });
+    // With no LKW recorded, use at onset is bounded by the time to now (≤ 48 h); a dose 47 h old at import
+    // is 49 h old two hours later. (Checked on SISTER's 48-h Xa/DTI item until 2026-11-01.)
+    const e = encounter({ diagnosisCategory: 'ich', lastDOACType: 'apixaban', lastDOACDose: localIso(now - 47 * HOUR) });
     const state = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(e, now), fresh());
-    expect(state.exclusions.exXaDtiWithin48h).toBe(true);
+    expect(state.exclusions.exDoacLmwhAtOnset).toBe(true);
     expect(importChanged(state, screenerPrefillFromEncounter(e, now + 2 * HOUR))).toBe(true);
   });
-  it('FASTEST-2 asks for a documented platelet count only when thrombocytopenia is known or suspected', () => {
-    expect(toConfirm(evaluate('FASTEST-2', { classification: 'ich' })).join(' ')).toContain('platelets >50,000 if thrombocytopenia is known or suspected');
-  });
-  it('asks only SATURN\'s own secondary-cause question once MINUTE and FASTEST-2 are out of their windows', () => {
+  it('asks only SATURN\'s own secondary-cause question once MINUTE is out of its window', () => {
     const ids = refinerItems(S({ classification: 'ich', onsetVal: 3, onsetUnit: 'days' })).map(i => i.id);
     expect(ids).toContain('exSaturnSecondaryCause');
     expect(ids).not.toContain('exSecondaryIch');
   });
   it('counts only the shown refiner answers as present', () => {
-    const html = renderToStaticMarkup(<ExclusionRefiner items={[item('exPregnancy')]} checked={{ exPregnancy: true, exIvtGivenOrPlanned: true }} onToggle={() => {}} onClear={() => {}} />);
+    const html = renderToStaticMarkup(<ExclusionRefiner items={[item('exPregnancy')]} checked={{ exPregnancy: true, exTandem: true }} onToggle={() => {}} onClear={() => {}} />);
     expect(html).toContain('>1 present<');
   });
 });
@@ -478,9 +456,10 @@ describe('Encounter import and global-search pick in a browser', () => {
       await banner().getByRole('button', { name: 'Reapply Encounter facts', exact: true }).click();
       expect(await banner().getByRole('button').innerText()).toBe('Applied ✓ · reapply');
       expect(Number(await page.getByLabel('Exact hours from LKW').inputValue())).toBeCloseTo(30, 1);
-      const notMet = page.locator('#trials-screener-panel details').filter({ has: page.locator('summary', { hasText: /^Does not meet documented criteria/ }) });
-      await notMet.locator('summary').click();
-      expect(await notMet.innerText()).toContain('Outside 4.5–24 h from LKW');
+      // Re-screened at 30 h: VERIFY (24–96 h) was before its window at 3 h and is now a candidate.
+      // (SISTER's 4.5–24 h miss carried this check until SISTER left the catalog on 2026-11-01.)
+      expect(await page.locator('[aria-label="Possible candidates"] article[data-trial="VERIFY"]').count()).toBe(1);
+      expect(await page.getByRole('region', { name: 'Later', exact: true }).locator('article[data-trial="VERIFY"]').count()).toBe(0);
       expect(await copied()).not.toMatch(/Caution|at import/);
     } finally { await page.close(); }
   }, 30000);
@@ -488,23 +467,25 @@ describe('Encounter import and global-search pick in a browser', () => {
   it('flags changed NIHSS and pre-stroke mRS, and lists kept screener answers', async () => {
     await open();
     try {
-      // Pre-stroke mRS 1 keeps SISTER (mRS ≤ 2) possible, so its Xa/DTI refiner item stays on screen.
-      await setEncounter({ diagnosisCategory: 'ischemic', age: '70', premorbidMRS: '1', lastDOACType: 'none' }, { nihssSource: 'reported', reportedNihss: '4' });
-      await page.getByRole('button', { name: 'Ischemic stroke', exact: true }).click();
+      // Pre-stroke mRS 1 and NIHSS 8 keep MINUTE (mRS ≤ 2, NIHSS ≥ 6) possible, so its DOAC/LMWH refiner item stays on screen.
+      // (Checked on SISTER's Xa/DTI item until SISTER left the catalog on 2026-11-01.)
+      const label = 'DOAC or LMWH at ICH onset';
+      await setEncounter({ diagnosisCategory: 'ich', age: '70', premorbidMRS: '1', lastDOACType: 'none' }, { nihssSource: 'reported', reportedNihss: '8' });
+      await page.getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).click();
       await page.locator('summary', { hasText: 'Optional exclusion review' }).click();
-      await page.getByLabel('Factor Xa inhibitor or direct thrombin inhibitor within 48 h', { exact: true }).selectOption('true');
+      await page.getByLabel(label, { exact: true }).selectOption('true');
       await banner().getByRole('button', { name: 'Use these facts', exact: true }).click();
-      const conflict = `${CONFLICT_HEAD}Factor Xa inhibitor or direct thrombin inhibitor within 48 h${CONFLICT_TAIL}`;
+      const conflict = `${CONFLICT_HEAD}${label}${CONFLICT_TAIL}`;
       expect(await banner().innerText()).toContain(conflict);
-      expect(await page.getByLabel('Factor Xa inhibitor or direct thrombin inhibitor within 48 h', { exact: true }).inputValue()).toBe('true');
+      expect(await page.getByLabel(label, { exact: true }).inputValue()).toBe('true');
       expect(await copied()).toContain(conflict);
       // Answering it again (here: agreeing with the Encounter) withdraws the notice.
-      await page.getByLabel('Factor Xa inhibitor or direct thrombin inhibitor within 48 h', { exact: true }).selectOption('false');
+      await page.getByLabel(label, { exact: true }).selectOption('false');
       expect(await banner().innerText()).not.toContain(CONFLICT_HEAD);
-      await page.getByLabel('Factor Xa inhibitor or direct thrombin inhibitor within 48 h', { exact: true }).selectOption('true');
-      await setEncounter({ diagnosisCategory: 'ischemic', age: '70', premorbidMRS: '0', lastDOACType: 'none' }, { nihssSource: 'reported', reportedNihss: '12' });
+      await page.getByLabel(label, { exact: true }).selectOption('true');
+      await setEncounter({ diagnosisCategory: 'ich', age: '70', premorbidMRS: '0', lastDOACType: 'none' }, { nihssSource: 'reported', reportedNihss: '12' });
       await banner().getByRole('button', { name: 'Reapply Encounter facts', exact: true }).waitFor();
-      expect(await copied()).toMatch(/NIHSS 4 · pre-mRS 1/);
+      expect(await copied()).toMatch(/NIHSS 8 · pre-mRS 1/);
       await banner().getByRole('button', { name: 'Reapply Encounter facts', exact: true }).click();
       expect(await copied()).toMatch(/NIHSS 12 · pre-mRS 0/);
     } finally { await page.close(); }

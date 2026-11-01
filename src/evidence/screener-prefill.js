@@ -23,11 +23,11 @@ const ANTICOAGULANT_TEXT = { doac: 'on DOAC', vka: 'on warfarin/VKA', lmwh: 'on 
 // LMWH is parenteral, so it says nothing about oral anticoagulant use.
 export function anticoagulantFacts(kind) {
   switch (kind) {
-    case 'none': return { takingOac: false, exclusions: { exDoacLmwhAtOnset: false, exOacWithin7d: false, exXaDtiWithin48h: false } };
-    case 'doac': return { takingOac: true, exclusions: { exDoacLmwhAtOnset: true, exOacWithin7d: true, exXaDtiWithin48h: undefined } };
-    case 'vka': return { takingOac: true, exclusions: { exDoacLmwhAtOnset: false, exOacWithin7d: true, exXaDtiWithin48h: false } };
-    case 'lmwh': return { takingOac: 'unselected', exclusions: { exDoacLmwhAtOnset: true, exOacWithin7d: undefined, exXaDtiWithin48h: undefined } };
-    default: return { takingOac: 'unselected', exclusions: { exDoacLmwhAtOnset: undefined, exOacWithin7d: undefined, exXaDtiWithin48h: undefined } };
+    case 'none': return { takingOac: false, exclusions: { exDoacLmwhAtOnset: false } };
+    case 'doac': return { takingOac: true, exclusions: { exDoacLmwhAtOnset: true } };
+    case 'vka': return { takingOac: true, exclusions: { exDoacLmwhAtOnset: false } };
+    case 'lmwh': return { takingOac: 'unselected', exclusions: { exDoacLmwhAtOnset: true } };
+    default: return { takingOac: 'unselected', exclusions: { exDoacLmwhAtOnset: undefined } };
   }
 }
 
@@ -133,17 +133,13 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
     // Import only what is known; it never clears an assessment already entered.
     if (typeof facts.takingOac === 'boolean') patch.takingOac = facts.takingOac;
     for (const [id, value] of Object.entries(facts.exclusions)) if (typeof value === 'boolean') patch.exclusions[id] = value;
-    // A valid last-dose time answers the dose-interval exclusions directly.
+    // A valid last-dose time bounds use at onset (below) and is described in the summary.
     const dose = kind !== 'none' && kind !== 'lmwh' ? validTimestamp(note.lastDOACDose, nowMs) : null;
     const hours = dose ? (nowMs - dose.getTime()) / 3600000 : null;
     // Last dose to onset: from the LKW when recorded; otherwise the time to now bounds it.
     const lkw = lkwAnchorMs ?? nowMs;
     const beforeOnset = dose ? (lkw - dose.getTime()) / 3600000 : null;
     const drug = kind === 'doac' ? 'DOAC' : 'warfarin/VKA';
-    if (dose) {
-      patch.exclusions.exOacWithin7d = hours <= 168;
-      if (kind === 'doac') patch.exclusions.exXaDtiWithin48h = hours <= 48;
-    }
     if (beforeOnset !== null && beforeOnset > 48) {
       // A last dose more than 48 h (two daily dosing intervals) before onset does not establish
       // use at onset or at the index stroke; leave both unknown. Clear explicitly (not omit) so
