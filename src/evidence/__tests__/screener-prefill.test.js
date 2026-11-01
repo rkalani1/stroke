@@ -64,23 +64,37 @@ describe('screenerPrefillFromEncounter', () => {
 
   it('maps anticoagulant exposure to OAC and exclusion facts', () => {
     const facts = (lastDOACType, extra = {}) => screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ich', lastDOACType, ...extra }), NOW).patch;
+    // Only exclusions a listed study reads are mapped (the 7-day OAC and 48-h Xa/DTI items left with
+    // FASTEST-2 and SISTER on 2026-11-01), so each exclusion set is compared exactly.
     for (const drug of ['apixaban', 'rivaroxaban', 'dabigatran', 'edoxaban']) {
-      expect(facts(drug)).toMatchObject({ anticoagulant: 'doac', takingOac: true, exclusions: { exDoacLmwhAtOnset: true, exOacWithin7d: true } });
-      expect(facts(drug).exclusions.exXaDtiWithin48h).toBeUndefined();
+      expect(facts(drug)).toMatchObject({ anticoagulant: 'doac', takingOac: true });
+      expect(facts(drug).exclusions).toEqual({ exDoacLmwhAtOnset: true });
     }
-    expect(facts('warfarin')).toMatchObject({ anticoagulant: 'vka', takingOac: true, exclusions: { exDoacLmwhAtOnset: false, exOacWithin7d: true } });
-    expect(facts('lmwh')).toMatchObject({ anticoagulant: 'lmwh', exclusions: { exDoacLmwhAtOnset: true } });
+    expect(facts('warfarin')).toMatchObject({ anticoagulant: 'vka', takingOac: true });
+    expect(facts('warfarin').exclusions).toEqual({ exDoacLmwhAtOnset: false });
+    expect(facts('lmwh')).toMatchObject({ anticoagulant: 'lmwh' });
+    expect(facts('lmwh').exclusions).toEqual({ exDoacLmwhAtOnset: true });
     expect(facts('lmwh').takingOac).toBeUndefined();
-    expect(facts('none')).toMatchObject({ anticoagulant: 'none', takingOac: false, exclusions: { exDoacLmwhAtOnset: false, exOacWithin7d: false, exXaDtiWithin48h: false } });
+    expect(facts('none')).toMatchObject({ anticoagulant: 'none', takingOac: false });
+    expect(facts('none').exclusions).toEqual({ exDoacLmwhAtOnset: false });
     expect(facts('')).toEqual({ classification: 'ich', exclusions: {} });
     expect(facts('heparin')).toEqual({ classification: 'ich', exclusions: {} });
   });
 
-  it('answers dose-interval exclusions from a valid last-dose time', () => {
-    const at = lastDOACDose => screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'apixaban', lastDOACDose }), NOW).patch.exclusions;
-    expect(at('2026-10-02T20:00')).toMatchObject({ exXaDtiWithin48h: true, exOacWithin7d: true });
-    expect(at('2026-09-30T08:00')).toMatchObject({ exXaDtiWithin48h: false, exOacWithin7d: true });
-    expect(at('2026-09-20T08:00')).toMatchObject({ exXaDtiWithin48h: false, exOacWithin7d: false });
+  // The dose-interval exclusions (OAC ≤ 7 days, Xa/DTI ≤ 48 h) left with FASTEST-2 and SISTER; a valid
+  // last-dose time now only bounds use at onset, and never answers an exclusion as absent.
+  it('uses a valid last-dose time only to bound use at onset', () => {
+    const at = lastDOACDose => screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'apixaban', lastDOACDose }), NOW);
+    const recent = at('2026-10-02T20:00');
+    expect(recent.patch).toMatchObject({ anticoagulant: 'doac', takingOac: true });
+    expect(recent.patch.exclusions).toEqual({ exDoacLmwhAtOnset: true });
+    expect(recent.summary).toContain('on DOAC');
+    for (const [dose, text] of [['2026-09-30T08:00', 'DOAC, last dose 76 h before now (use at onset unknown)'], ['2026-09-20T08:00', 'DOAC, last dose >7 d']]) {
+      const { patch, summary } = at(dose);
+      expect(patch).toMatchObject({ anticoagulant: 'unselected', takingOac: 'unselected' });
+      expect(Object.entries(patch.exclusions).filter(([, value]) => value !== undefined)).toEqual([]);
+      expect(summary).toContain(text);
+    }
   });
 });
 
@@ -91,17 +105,16 @@ describe('applying a prefill', () => {
     const before = { ...createInitialScreenerState(), classification: 'ischemic', nihss: 3, exclusions: { exTandem: true } };
     const next = applyEncounterPrefill(before, screenerPrefillFromEncounter(ich, NOW), createInitialScreenerState());
     expect(next).toMatchObject({ classification: 'ich', onsetVal: 1.5, age: 60, gcs: 14, nihss: 'unselected', anticoagulant: 'doac', takingOac: true });
-    expect(next.exclusions).toEqual({ exDoacLmwhAtOnset: true, exOacWithin7d: true });
+    expect(next.exclusions).toEqual({ exDoacLmwhAtOnset: true });
     const results = evaluateAll(next);
     expect(results.excluded.find(i => i.trial.acronym === 'MINUTE').exclusionReasons).toEqual(['Concurrent DOAC or LMWH at ICH onset']);
-    expect(results.excluded.find(i => i.trial.acronym === 'FASTEST-2').exclusionReasons).toEqual(['Oral anticoagulant (VKA or DOAC) within 7 days']);
   });
 
   it('keeps facts already entered for the same classification unless the Encounter supplies them', () => {
     const before = { ...createInitialScreenerState(), classification: 'ich', ichLocation: 'bg', exclusions: { exPregnancy: false } };
     const next = applyEncounterPrefill(before, screenerPrefillFromEncounter(ich, NOW), createInitialScreenerState());
     expect(next.ichLocation).toBe('bg');
-    expect(next.exclusions).toEqual({ exPregnancy: false, exDoacLmwhAtOnset: true, exOacWithin7d: true });
+    expect(next.exclusions).toEqual({ exPregnancy: false, exDoacLmwhAtOnset: true });
   });
 
   it('leaves state untouched for an unmodeled diagnosis', () => {
@@ -111,7 +124,8 @@ describe('applying a prefill', () => {
 
   it('lets the anticoagulant fact be changed back to unknown', () => {
     const doac = applyAnticoagulant({ ...createInitialScreenerState(), exclusions: { exPregnancy: false } }, 'doac');
-    expect(doac).toMatchObject({ anticoagulant: 'doac', takingOac: true, exclusions: { exPregnancy: false, exDoacLmwhAtOnset: true, exOacWithin7d: true } });
+    expect(doac).toMatchObject({ anticoagulant: 'doac', takingOac: true });
+    expect(doac.exclusions).toEqual({ exPregnancy: false, exDoacLmwhAtOnset: true });
     const unknown = applyAnticoagulant(doac, 'unselected');
     expect(unknown).toMatchObject({ anticoagulant: 'unselected', takingOac: 'unselected', exclusions: { exPregnancy: false } });
     expect(Object.keys(unknown.exclusions)).toEqual(['exPregnancy']);

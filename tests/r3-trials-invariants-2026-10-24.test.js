@@ -40,8 +40,10 @@ const CONFLICT_HEAD = 'Encounter and screener entries differed: ';
 const CONFLICT_TAIL = '. Exclusions are set to present, other answers to unknown; confirm them.';
 
 // The facts the rule weighs, in the order the conflict sentence lists them, and the other tracked keys.
-const WEIGHED = ['afibHistory', 'afOrFlutterHistory', 'anticoagulant', 'takingOac', 'exDoacLmwhAtOnset', 'exOacWithin7d', 'exXaDtiWithin48h'];
-const OAC_EXCLUSIONS = ['exDoacLmwhAtOnset', 'exOacWithin7d', 'exXaDtiWithin48h'];
+// (The OAC-within-7-days and Xa/DTI-within-48-h exclusions left with FASTEST-2 and SISTER on 2026-11-01;
+// DOAC/LMWH at ICH onset is the one anticoagulant exclusion the Encounter still answers.)
+const WEIGHED = ['afibHistory', 'afOrFlutterHistory', 'anticoagulant', 'takingOac', 'exDoacLmwhAtOnset'];
+const OAC_EXCLUSIONS = ['exDoacLmwhAtOnset'];
 const REPLACED = ['classification', 'age'];
 const TRACKED = [...WEIGHED, ...REPLACED, 'exPregnancy'];
 const isExclusion = key => key.startsWith('ex');
@@ -51,14 +53,15 @@ const known = v => v === true || v === false || typeof v === 'number' || (typeof
 const FACT_NAME = { afibHistory: 'documented clinical atrial fibrillation', afOrFlutterHistory: 'atrial fibrillation or flutter', anticoagulant: 'anticoagulant at onset', takingOac: 'oral anticoagulant at the index stroke' };
 // Tracked facts each screen shows a control for (key facts plus ASPIRE's AF-or-flutter study fact on ICH).
 const VISIBLE = { ich: ['age', 'anticoagulant', 'afibHistory', 'afOrFlutterHistory'], ischemic: ['age', 'afibHistory', 'takingOac'], tia: ['age', 'afibHistory', 'takingOac'] };
-// What each "Anticoagulant at onset" option states, from its label: None means none at onset or in the past
-// 7 days; DOAC is oral anticoagulation at onset; LMWH is parenteral and says nothing about oral use.
+// What each "Anticoagulant at onset" option states, from its label: None means no anticoagulant at onset;
+// DOAC is oral anticoagulation at onset; VKA is oral but neither DOAC nor LMWH; LMWH is parenteral and says
+// nothing about oral use.
 const SELECT = {
-  none: { takingOac: false, exDoacLmwhAtOnset: false, exOacWithin7d: false, exXaDtiWithin48h: false },
-  doac: { takingOac: true, exDoacLmwhAtOnset: true, exOacWithin7d: true, exXaDtiWithin48h: undefined },
-  vka: { takingOac: true, exDoacLmwhAtOnset: false, exOacWithin7d: true, exXaDtiWithin48h: false },
-  lmwh: { takingOac: 'unselected', exDoacLmwhAtOnset: true, exOacWithin7d: undefined, exXaDtiWithin48h: undefined },
-  unselected: { takingOac: 'unselected', exDoacLmwhAtOnset: undefined, exOacWithin7d: undefined, exXaDtiWithin48h: undefined }
+  none: { takingOac: false, exDoacLmwhAtOnset: false },
+  doac: { takingOac: true, exDoacLmwhAtOnset: true },
+  vka: { takingOac: true, exDoacLmwhAtOnset: false },
+  lmwh: { takingOac: 'unselected', exDoacLmwhAtOnset: true },
+  unselected: { takingOac: 'unselected', exDoacLmwhAtOnset: undefined }
 };
 
 /* ── Reference model ─────────────────────────────────────────────── */
@@ -174,7 +177,9 @@ function run(seed, steps, rendered) {
   const tri = () => pick([true, false, 'unselected']);
   const early = {
     ich: () => ({ ...(rand() < 0.6 && { afOrFlutterHistory: tri() }), exclusions: { exPregnancy: pick([false, false, undefined]) } }),
-    ischemic: () => ({ takingOac: tri(), exclusions: { exXaDtiWithin48h: pick([true, false, undefined]), exPregnancy: pick([false, false, undefined]) } }),
+    // The ischemic screen asks no Encounter-answered exclusion since SISTER's Xa/DTI item left (2026-11-01);
+    // its OAC answer is still weighed, and the Encounter's DOAC/LMWH answer is still held (hidden) and weighed.
+    ischemic: () => ({ takingOac: tri(), exclusions: { exPregnancy: pick([false, false, undefined]) } }),
     tia: () => ({ takingOac: tri(), exclusions: { exPregnancy: pick([false, false, undefined]) } })
   }[cls];
   if (rand() < 0.7) {
@@ -198,7 +203,9 @@ function run(seed, steps, rendered) {
     if (op === 'edit' && !['ich', 'ischemic', 'tia'].includes(screenCls)) log.push('(no controls on an unclassified screen)');
     else if (op === 'edit') {
       const before = view(state), beforeConflicts = conflictKeys(state);
-      const controls = { ich: ['anticoagulant', 'afibHistory', 'afOrFlutterHistory', 'exDoacLmwhAtOnset', 'exOacWithin7d', 'exPregnancy', 'reset', 'age'], ischemic: ['afibHistory', 'takingOac', 'exXaDtiWithin48h', 'exPregnancy', 'reset', 'age'], tia: ['afibHistory', 'takingOac', 'exPregnancy', 'reset', 'age'] }[screenCls];
+      // DOAC/LMWH at onset (ICH) and the OAC answer (ischemic) are listed twice: they take the draws of the removed
+      // FASTEST-2 OAC-within-7-days and SISTER Xa/DTI items, so anticoagulant conflicts are edited as often as before.
+      const controls = { ich: ['anticoagulant', 'afibHistory', 'afOrFlutterHistory', 'exDoacLmwhAtOnset', 'exDoacLmwhAtOnset', 'exPregnancy', 'reset', 'age'], ischemic: ['afibHistory', 'takingOac', 'takingOac', 'exPregnancy', 'reset', 'age'], tia: ['afibHistory', 'takingOac', 'exPregnancy', 'reset', 'age'] }[screenCls];
       // Often the user answers a fact the conflict sentence lists, as it asks.
       const listed = conflictKeys(state).filter(key => controls.includes(key));
       const control = listed.length && rand() < 0.4 ? pick(listed) : pick(controls);

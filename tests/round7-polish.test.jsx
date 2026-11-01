@@ -43,16 +43,19 @@ describe('evidence corrections', () => {
 describe('trial screener', () => {
   it('does not import a DOAC last taken more than 7 days ago as use at onset', () => {
     const r = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ich', lastDOACType: 'apixaban', lastDOACDose: '2026-09-23T08:00' }), NOW);
-    expect(r.patch.exclusions).toEqual({ exDoacLmwhAtOnset: undefined, exOacWithin7d: false, exXaDtiWithin48h: false });
+    // No exclusion is answered from the dose time alone (the 7-day OAC and 48-h Xa/DTI items left with FASTEST-2 and SISTER on 2026-11-01).
+    expect(r.patch.exclusions).toEqual({ exDoacLmwhAtOnset: undefined });
+    expect(Object.values(r.patch.exclusions).filter(value => value !== undefined)).toEqual([]);
     expect(r.patch).toMatchObject({ takingOac: 'unselected', anticoagulant: 'unselected' });
     expect(r.summary).toContain('DOAC, last dose >7 d');
     const warfarin = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'warfarin', lastDOACDose: '2026-09-23T08:00' }), NOW);
     expect(warfarin.summary).toContain('warfarin/VKA, last dose >7 d');
-    expect(warfarin.patch.exclusions).toMatchObject({ exDoacLmwhAtOnset: undefined, exOacWithin7d: false });
+    expect(warfarin.patch.exclusions).toEqual({ exDoacLmwhAtOnset: undefined });
     // Since r3-trials (2026-10-22) use at onset needs a last dose ≤ 48 h before the LKW (or before now when no LKW
     // is recorded); this dose is 2 h before the LKW and 76 h before now.
     const recent = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ich', lastDOACType: 'apixaban', lastDOACDose: '2026-09-30T08:00', lkwDate: '2026-09-30', lkwTime: '10:00' }), NOW);
-    expect(recent.patch).toMatchObject({ anticoagulant: 'doac', takingOac: true, exclusions: { exDoacLmwhAtOnset: true, exOacWithin7d: true, exXaDtiWithin48h: false } });
+    expect(recent.patch).toMatchObject({ anticoagulant: 'doac', takingOac: true });
+    expect(recent.patch.exclusions).toEqual({ exDoacLmwhAtOnset: true });
     expect(recent.summary).toContain('on DOAC');
   });
   it('maps ACA, PCA and vertebral occlusions and keeps the dominance note to M2', () => {
@@ -79,11 +82,12 @@ describe('trial screener', () => {
     const state = { ...createInitialScreenerState(), classification: 'ich', exclusions: { exPregnancy: false } };
     const p = buildScreenerParams(state);
     const pending = acronym => evaluateTrialEligibility(screenerTrials.find(trial => trial.acronym === acronym), p).pendingCriteria;
-    expect(pending('FASTEST-2')).toContain('Confirm not ≤12 weeks post-partum');
-    expect(pending('FASTEST-2')).not.toContain('Confirm not pregnant or ≤12 weeks post-partum');
+    // TELE-REHAB-2 replaced FASTEST-2 here when FASTEST-2 left the catalog (2026-11-01).
+    expect(pending('TELE-REHAB-2')).toContain('Negative pregnancy test required if of child-bearing potential');
+    expect(pending('TELE-REHAB-2')).not.toContain('Confirm not pregnant (negative test if of child-bearing potential)');
     expect(pending('MINUTE')).toContain('Negative pregnancy test required if of childbearing potential');
     const unanswered = buildScreenerParams({ ...state, exclusions: {} });
-    expect(evaluateTrialEligibility(screenerTrials.find(trial => trial.acronym === 'FASTEST-2'), unanswered).pendingCriteria).not.toContain('Confirm not ≤12 weeks post-partum');
+    expect(evaluateTrialEligibility(screenerTrials.find(trial => trial.acronym === 'TELE-REHAB-2'), unanswered).pendingCriteria).not.toContain('Negative pregnancy test required if of child-bearing potential');
   });
   it('gives every fact a modeled criterion uses a control', () => {
     const render = classification => renderToStaticMarkup(<TrialScreener initialState={{ ...createInitialScreenerState(), classification }} />);

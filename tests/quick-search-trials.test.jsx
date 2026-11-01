@@ -58,11 +58,18 @@ describe('global search reaches study profiles', () => {
     await page.fill('dialog.quick-search input', 'NCT07174414');
     expect(await options()).toEqual([{ group: 'Trials', title: 'CLARITY', meta: 'Recruiting (registry not yet updated) · Cilostazol for Prevention of Recurrent Stroke Trial', href: '#/trials/database?q=CLARITY' }]);
   });
-  // Registry statuses read on ClinicalTrials.gov 2026-10-17: NCT05948566 RECRUITING,
-  // NCT07174414 NOT_YET_RECRUITING, NCT05047172 ACTIVE_NOT_RECRUITING, NCT06682429 RECRUITING.
-  it('finds SISTER by acronym as a recruiting study', async () => {
-    await page.fill('dialog.quick-search input', 'SISTER');
-    expect((await options())[0]).toEqual({ group: 'Trials', title: 'SISTER', meta: 'Recruiting (registry) · Strategy for Improving Stroke Treatment Response (SISTER) Trial', href: '#/trials/database?q=SISTER' });
+  // Registry statuses read on ClinicalTrials.gov 2026-10-17: NCT07174414 NOT_YET_RECRUITING,
+  // NCT05047172 ACTIVE_NOT_RECRUITING, NCT06682429 RECRUITING; NCT03936361 (SATURN) RECRUITING
+  // at its recorded 2026-10-31 check. SATURN replaced SISTER here when SISTER left the catalog (2026-11-01).
+  it('finds SATURN by acronym as a recruiting study', async () => {
+    await page.fill('dialog.quick-search input', 'SATURN');
+    expect((await options())[0]).toEqual({ group: 'Trials', title: 'SATURN', meta: 'Recruiting (registry) · Statins Use in Intracerebral Hemorrhage Patients', href: '#/trials/database?q=SATURN' });
+  });
+  it('no longer offers the removed SISTER and FASTEST Part 2 profiles', async () => {
+    for (const query of ['SISTER', 'NCT05948566', 'FASTEST-2', 'FASTEST Part 2', 'NCT07227246']) {
+      await page.fill('dialog.quick-search input', query);
+      expect((await options()).filter(option => option.group === 'Trials'), query).toEqual([]);
+    }
   });
   it('finds TELE-REHAB-2 by its registry acronym and opens the study database', async () => {
     await page.fill('dialog.quick-search input', 'tr2');

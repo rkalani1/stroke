@@ -25,8 +25,9 @@ describe('screenerTrials — data integrity & compliance', () => {
   // were removed; FASTEST Part 2 and SISTER were added as screenable profiles;
   // PICASSO (recruiting) and CAPTIVA (active, not recruiting) moved from
   // table-only rows into reference-only profiles so Database can find them.
-  it('stores 16 study profiles: 14 screenable plus 2 reference-only', () => {
-    expect(screenerTrials.length).toBe(16);
+  // 2026-11-01: SISTER and FASTEST Part 2 were removed at the owner's request.
+  it('stores 14 study profiles: 12 screenable plus 2 reference-only', () => {
+    expect(screenerTrials.length).toBe(14);
     expect(screenerTrials.filter(t => t.referenceOnly).map(t => t.acronym).sort()).toEqual(['CAPTIVA', 'PICASSO']);
   });
 
@@ -34,10 +35,12 @@ describe('screenerTrials — data integrity & compliance', () => {
     const acronyms = screenerTrials.map((t) => t.acronym);
     [
       'STEP', 'TESTED', 'VERIFY', 'ASPIRE', 'SATURN', 'MINUTE', 'CLARITY', 'INTERCEPT',
-      'CAPPRICORN-1', 'SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2', 'FASTEST-2', 'SISTER', 'PICASSO', 'CAPTIVA'
+      'CAPPRICORN-1', 'SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2', 'PICASSO', 'CAPTIVA'
     ].forEach((acr) => expect(acronyms).toContain(acr));
     expect(acronyms).not.toContain('ESUS');
     expect(acronyms).not.toContain('MOCHA');
+    expect(acronyms).not.toContain('SISTER');
+    expect(acronyms).not.toContain('FASTEST-2');
     expect(screenerTrials.filter(t => t.status === 'placeholder')).toEqual([]);
   });
 
@@ -266,7 +269,7 @@ describe('screening summary generation', () => {
     expect(res.pending.every(item => item.completeness === 'insufficient-information')).toBe(true);
     expect(text).toContain('POTENTIAL MATCH (0) — every modeled criterion met; not a definitive match\n- None under the entered facts.');
     expect(text).toMatch(new RegExp(`INSUFFICIENT INFORMATION \\(${res.pending.length}\\) — at least one modeled fact unknown`));
-    expect(text).toMatch(/- SISTER \(NCT05948566\) · Recruiting \(registry\) · Phase 2 · window 4\.5 – 24 hours · \d+ modeled facts? unknown/);
+    expect(text).toMatch(/- STEP \(NCT06289985\) · Recruiting \(registry\) · Phase N\/A · window Presentation ≤ 24 hours \(app screens ≤ 30 h\) · \d+ modeled facts? unknown/);
     expect(text).toContain('Pathway: Consult Stroke Research Coordinator');
     // Studies for another stroke type are omitted; only informative misses remain.
     expect(text).toContain('DOES NOT MEET DOCUMENTED CRITERIA (1)\n- TESTED: Pre-stroke mRS must be exactly 3 or 4');
