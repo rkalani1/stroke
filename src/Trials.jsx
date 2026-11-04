@@ -45,7 +45,7 @@ export default function Trials({ sub = 'screener', onNavigate, active = true, en
     }
   }, []);
   return <section className="trials-surface space-y-5" aria-labelledby="trials-title">
-    <header className="workspace-heading"><h1 id="trials-title">Trials</h1><span className="text-sm text-mute">{RECRUITING} recruiting at recorded registry check · {screenerTrials.length} study profiles</span></header>
+    <header className="workspace-heading"><h1 id="trials-title">Trials</h1><span className="text-sm text-mute">{RECRUITING} marked recruiting · {screenerTrials.length} study profiles</span></header>
     <p className="workspace-help">{pageCaveat(now)} Screening does not determine treatment eligibility.</p>
     <div role="tablist" aria-label="Trials sub-view" onKeyDown={moveTab} className="grid grid-cols-3 gap-1 rounded-lg border border-line bg-paper-2 p-1">
       {VIEWS.map(([id, label]) => <button key={id} type="button" id={`trials-${id}-tab`} role="tab" tabIndex={view === id ? 0 : -1} aria-selected={view === id} aria-controls={`trials-${id}-panel`} className={`min-h-[44px] rounded-md px-2 sm:px-4 text-sm font-semibold ${view === id ? 'bg-card text-ink shadow-card' : 'text-mute hover:text-ink-2'}`} onClick={() => navigate(id)}>{label}</button>)}

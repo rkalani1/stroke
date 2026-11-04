@@ -21,7 +21,7 @@
       "path": "app.js",
       "bytes": 109040,
       "gzipBytes": 34242,
-      "sha256": "6f056ce3b80c96fbff8b7006e185be15266a2dea92e929e500fccbf13ae7bcc4"
+      "sha256": "e39021eaa520ef2f77dc88fa2e6e7bcc829d21cb937ddbd05677ea5c4311d7aa"
     },
     {
       "path": "chunks/chunk-3C5ZDFRN.js",
@@ -150,10 +150,10 @@
       "sha256": "07dbc96f3e5c814072115d545e1a7d323a3c7db0bddc42e481e48afeae65db99"
     },
     {
-      "path": "chunks/Trials-QJHOII4W.js",
-      "bytes": 46519,
-      "gzipBytes": 13957,
-      "sha256": "eda3b0a1d3a83ed0e6ec56880c856d8730c50b55565b4e18023439694b11ec27"
+      "path": "chunks/Trials-77TYFJUU.js",
+      "bytes": 46499,
+      "gzipBytes": 13956,
+      "sha256": "6605fb2f8e022e954527e5f29aa035fd74e8e896513727554b63f623a32a5dd7"
     }
   ]
 }
