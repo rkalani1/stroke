@@ -8,7 +8,7 @@
     "sourceGaps": [
       "CT.gov requires presentation to the enrolling hospital within 24 hours and arterial puncture within 2 hours of qualifying imaging, with no stated randomization deadline; the 30-hour screening limit is the app's, not the registry's. Not every STEP domain exclusion is encoded.",
       "Registry status rechecked 2026-11-04: RECRUITING; last update posted 2025-12-04 (recorded 2026-11-04). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified.",
-      "The 2026-08-11 screening summary uses ≤50% for M2 territory, while the registry record uses <50%; confirm the current domain protocol for the 50% boundary."
+      "Vessel-dominance definitions and the diffusion-MRI threshold require confirmation from the current approved STEP domain protocol; these details are not modeled in this screen."
     ],
     "timeCategory": "hyperacute",
     "enrollmentWindowText": "Presentation ≤ 24 hours (app screens ≤ 30 h)",
@@ -30,8 +30,8 @@
       "Presentation to enrolling hospital within 24 hours and arterial puncture within 2 hours of qualifying CTA/MRA or CTP/MRP imaging",
       "Repeat CT/MR and qualifying imaging if >120 minutes have elapsed since qualifying imaging and randomization has not yet occurred; in the NIHSS 0-5 cohort, repeat imaging is required only with significant NIHSS improvement",
       "Branch 1: LVO patients with mild deficits/low NIHSS; NIHSS 0-5 and complete occlusion of the intracranial ICA or M1 MCA; NIHSS 0 requires an attributable focal deficit",
-      "Branch 2: visualized complete occlusion or perfusion deficit (Tmax >4 seconds) supportive of a cortical branch occlusion in non-dominant/co-dominant M2 (serving <50% of the entire MCA territory) or M3; NIHSS ≥ 8",
-      "MVO beyond 6 hours: infarct core <50% of the occluded vessel territory, assessed by NCCT hypodensity/loss of gray-white border, ADC <620 on diffusion MRI (registry-reported threshold; confirm protocol units) or rCBF <30% on CTP"
+      "Branch 2: visualized complete occlusion or perfusion deficit (Tmax >4 seconds) supportive of a cortical branch occlusion in non-dominant/co-dominant M2 or M3; NIHSS ≥ 8",
+      "MVO beyond 6 hours: infarct core <50% of the occluded vessel territory; confirm on protocol-specified imaging"
     ],
     "exactExclusionCriteria": [
       "CT ASPECTS <6 or MRI ASPECTS <7",
@@ -198,8 +198,8 @@
         }
       ],
       "manualPending": [
-        "Confirm visualized complete occlusion or perfusion deficit (Tmax >4 seconds) supportive of a cortical branch occlusion for either M2 or M3; non-dominant/co-dominant M2 must serve <50% of the entire MCA territory per the registry; resolve the screening summary’s ≤50% boundary with the current domain protocol",
-        "If onset is >6 hours, confirm infarct core <50% of the occluded territory by NCCT hypodensity/loss of gray-white border, ADC <620 on diffusion MRI (confirm the registry-reported threshold and protocol units) or rCBF <30% on CTP",
+        "Confirm visualized complete occlusion or perfusion deficit (Tmax >4 seconds) supportive of a cortical branch occlusion for either M2 or M3; confirm vessel-dominance definitions with the current approved domain protocol",
+        "If onset is >6 hours, confirm infarct core <50% of the occluded territory on protocol-specified imaging; confirm the diffusion-MRI threshold with the current approved domain protocol",
         "If >120 minutes elapse since qualifying imaging and randomization has not yet occurred, confirm repeat CT/MR and qualifying imaging; for NIHSS 0-5, repeat only with significant NIHSS improvement",
         "Confirm arterial puncture can start ≤ 2 h from qualifying CTA/MRA or CTP/MRP imaging and the occlusion is not suspected to be chronic",
         "Confirm CT versus MRI ASPECTS threshold, focal deficit when NIHSS is 0, and the remaining domain exclusions (dissection, vasculitis, septic embolus, platelets, mass effect, tumor, hemorrhage)"
@@ -387,8 +387,8 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "CT.gov requires spontaneous non-traumatic basal ganglia ICH >=20 mL by ABC/2, pre-ICH mRS 0-2, randomization <=16 hours from LKW, and surgery initiated <120 min from randomization.",
-      "CTA/MRA without underlying vascular lesion and goals of care to pursue life-saving therapies (no early withdrawal of care <7 days); detailed registry criteria, coagulation labs (INR <=1.4, aPTT <=40s, platelets >=100k), and consent requirements must be verified through the active protocol.",
+      "The full stored lists include all 8 inclusion and 17 exclusion items from the public registry record. The platelet-count item retains the source notation with an explicit protocol-confirmation note. The modeled first-pass screen encodes only a subset; review every criterion and the current approved protocol before enrollment.",
+      "Formal source: ClinicalTrials.gov NCT07260916, https://clinicaltrials.gov/study/NCT07260916 (reviewed 2026-11-04). Protocol training v1.1, current May 15, 2026 deck: https://dcu.musc.edu/campus/ProjectTraining/MINUTE_Protocol_Training_v1.1_Short_05_15_2026.pptx ; corroborating April 23, 2026 PDF, pages 8-10: https://dcu.musc.edu/campus/ProjectTraining/MINUTE_Protocol_Training_v1.1_Short_04_23_2026.pdf (reviewed 2026-11-04). The inclusion/exclusion lists agree; flattened platelet-count notation is not silently reinterpreted.",
       "Registry status rechecked 2026-11-04: RECRUITING; last update posted 2026-09-15 (recorded 2026-11-04). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "hyperacute",
@@ -407,25 +407,33 @@
     "pathway": "Consult Stroke Research Coordinator / On-Call Neurosurgery Service",
     "noContactInfo": true,
     "exactInclusionCriteria": [
-      "Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH",
-      "Volume >=20 mL by ABC/2",
-      "Randomization ≤16 hours from last known well and within 2 hours of arrival at the randomizing center (surgery anticipated <120 min from randomization)",
-      "NIHSS >=6",
-      "Age 18-80 years",
-      "CTA or MRA performed without an underlying vascular lesion",
+      "Age ≥ 18 and ≤ 80 years",
+      "Non-traumatic, spontaneous, supratentorial, non-thalamic, BGH of volume ≥ 20 mL, as determined by the treating physician using ABC/2 method",
+      "NIHSS ≥ 6 at presentation",
+      "CTA or MRA is performed and does not show an underlying vascular lesion",
       "Pre-ICH mRS 0-2",
-      "Patient/LAR goals of care to pursue life-saving therapies (no early withdrawal of care <7 days)"
+      "Informed consent from patient or LAR to participate in the trial, wherein patient/LAR's stated wishes are to pursue lifesaving therapies as opposed to early withdrawal of care (explicitly explained as <7 days following ictus)",
+      "The treating physician anticipates that surgery can be initiated <120 min from randomization",
+      "Randomization within 16 hours from LKW and within 2 hours of arrival to the randomizing center."
     ],
     "exactExclusionCriteria": [
-      "Suspected secondary cause for ICH",
+      "Suspected secondary cause for the ICH, such as an underlying vascular malformation (cavernous malformation, arteriovenous malformation, etc.), aneurysm, neoplasm, hemorrhagic transformation of an underlying ischemic infarct; or venous infarct",
       "Infratentorial or thalamic hemorrhage",
       "Midbrain extension/involvement",
-      "Concurrent use of DOAC or LMWH at ICH onset",
-      "Coagulopathy: INR > 1.4, aPTT > 40 s, platelets < 100,000 or known platelet dysfunction (reversal of coagulopathy not allowed)",
-      "GCS < 7 at presentation",
-      "Intraventricular blood occupying >50% of either lateral ventricle",
-      "Pregnancy (negative test required if of childbearing potential)",
-      "Pre-existing DNR/DNI status or history of severe dementia; remaining registry exclusions require confirmation"
+      "Coagulopathy defined as international normalized ratio (INR) > 1.4",
+      "Elevated activated Partial Thromboplastin Time (aPTT) > 40 s",
+      "Concurrent use of direct oral anticoagulants or low molecular weight heparin at ICH onset",
+      "Known hereditary or acquired hemorrhagic diathesis or coagulation factor deficiency",
+      "Platelet count <100 x 103 cells/mm3, or known platelet dysfunction (reversal of coagulopathy is not allowed). The registry and training use this platelet-count notation; confirm its magnitude and units in the approved protocol.",
+      "GCS score <7 at presentation",
+      "Evidence of active infection indicated by fever ≥100.7 °F and/or open draining wound at the time of enrollment",
+      "Any comorbid disease or condition expected to compromise survival or ability to complete follow-up assessments through 365 days",
+      "Intraventricular extension of the hemorrhage is visually estimated to involve > 50% of either of the lateral ventricles",
+      "Pregnancy (women of childbearing potential must have a negative pregnancy test to participate)",
+      "Based on investigator's judgment, the patient does not have the necessary mental capacity to participate or is unwilling to comply with the protocol follow-up schedule",
+      "Current participation in another interventional (drug or device) trial",
+      "Pre-existing Do Not Resuscitate (DNR)/Do Not Intubate (DNI) status",
+      "History of severe dementia"
     ],
     "eligibility": {
       "criteria": [
@@ -524,7 +532,7 @@
       ],
       "manualPending": [
         "Confirm CTA/MRA excludes an underlying vascular lesion, randomization within 2 hours of arrival at the randomizing center, surgery can start <120 minutes after randomization, and goals of care meet the protocol",
-        "Confirm coagulation criteria (INR ≤1.4, aPTT ≤40 s, platelets ≥100,000; reversal not allowed), registry details, activation rules and consent requirements through the active protocol",
+        "Confirm coagulation criteria (INR ≤1.4, aPTT ≤40 s), platelet-count magnitude and units, known platelet dysfunction and the no-reversal requirement through the approved protocol; confirm registry details, activation rules and consent requirements",
         "Confirm no active infection (fever ≥100.7 °F or open draining wound) and no comorbidity expected to compromise survival or follow-up through 365 days"
       ]
     }
@@ -537,7 +545,7 @@
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
       "CT.gov eligibility (re-read 2026-11-04; last update posted 2026-10-26; criteria still match the stored wording) requires high-risk TIA (ABCD2 score ≥ 6) and ≥ 2 listed vascular risk factors; ABCD2 is asked as a confirmation question and the risk factors are listed for confirmation, not modeled.",
-      "Registry status rechecked 2026-11-04: NOT_YET_RECRUITING; last update posted 2026-10-26 (recorded 2026-11-04). The app shows the study as recruiting from 2026-10-31 on the maintainer's report, ahead of the registry record (start date 2026-10); confirm current recruitment, local site activation and consent requirements with the study team.",
+      "Registry status rechecked 2026-11-04: NOT_YET_RECRUITING; last update posted 2026-10-26 (recorded 2026-11-04). The maintainer confirmed the study is actively enrolling on 2026-11-04; the app retains recruiting status ahead of the registry record (start date 2026-10); confirm current recruitment, local site activation and consent requirements with the study team.",
       "Before this update the profile recorded the registry version first posted 2025-09-16 (aspirin or clopidogrel, not both; no atrial fibrillation exclusion). Version history was not accessible, so when the eligibility text changed is unverified. Confirm current antithrombotic eligibility with the study team."
     ],
     "timeCategory": "subacute_chronic",

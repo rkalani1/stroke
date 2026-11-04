@@ -1,11 +1,12 @@
 # CHANGELOG
 
-## v7.10.3 — 2026-11-04 — Study update candidate
+## v7.10.3 — 2026-11-04 — Trial criteria and registry-reference update
 
-- Adds DISCOVERY (NCT04916210), a prospective observational post-stroke cognition study, as a reference-only profile; it is not evaluated by the automated screener.
-- Adds STEP repeat-imaging, vessel/perfusion and late-window core checks as manual confirmations. The screening summary’s ≤50% M2 territory wording conflicts with the registry’s <50%; the source gap remains explicit for owner/study-team adjudication before release. No automated eligibility rule changes.
-- Rechecks STEP, MINUTE and CLARITY registry records on November 4. CLARITY retains the existing maintainer-reported recruitment override while its registry remains not yet recruiting. Other study review dates are preserved.
-- No patient information, private contacts, email copies or institutional identifiers are included. Local participation records remain private. The STEP boundary requires review before release.
+- **MINUTE:** the stored full criteria now include all eight registry inclusions and 17 exclusions, checked against the official protocol-training materials. Consent, bleeding diathesis, active infection, follow-up-limiting conditions and concurrent interventional trials remain explicit manual confirmations; no automated eligibility rule changes.
+- **DISCOVERY:** adds NCT04916210 as an observational reference-only profile with core and tier-specific criteria. It appears in the Database and relevant criteria tables, and is never an automated screening candidate.
+- **CLARITY:** remains actively recruiting on the maintainer’s November 4 confirmation. The app retains the separate dated registry record, which still says NOT_YET_RECRUITING, rather than claiming the registry has changed. No participating-site details are published.
+- **STEP:** adds corroborated imaging-confirmation and repeat-imaging details. Unresolved M2 territory-boundary and numeric ADC thresholds are omitted pending the current approved domain protocol. No disputed numerical rule is introduced.
+- **Sources and privacy:** STEP, MINUTE, CLARITY and DISCOVERY registry records were read November 4; other review dates are preserved. Local participation, contacts, emails and patient information remain private. Protected protocols and their snapshots are unchanged.
 
 ## v7.10.2 — 2026-11-01 — SISTER and FASTEST Part 2 removed from the Trials screener
 

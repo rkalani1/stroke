@@ -95,7 +95,7 @@ const APP_CHUNKS = [
   "./chunks/chunk-FPW5WEWF.js",
   "./chunks/chunk-HOFJI2PN.js",
   "./chunks/chunk-HXREWURP.js",
-  "./chunks/chunk-IBDDHQP2.js",
+  "./chunks/chunk-KD3VTOJV.js",
   "./chunks/chunk-NIDKKCR2.js",
   "./chunks/chunk-QPJ3MHXX.js",
   "./chunks/chunk-RKNMGIFI.js",
@@ -105,10 +105,10 @@ const APP_CHUNKS = [
   "./chunks/InstallAppButton-NWUBLKJU.js",
   "./chunks/ProtectedProtocols-6MFHWK7D.js",
   "./chunks/QuickReference-UKRUSEBK.js",
-  "./chunks/QuickSearch-Z6FJIXXE.js",
+  "./chunks/QuickSearch-YN2Q4K7N.js",
   "./chunks/Reference-7WXJYWKM.js",
   "./chunks/Tools-JDNJXZ5B.js",
-  "./chunks/Trials-P2IHDKCJ.js"
+  "./chunks/Trials-QJHOII4W.js"
 ];
 // END GENERATED APP CHUNKS
 
