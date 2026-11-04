@@ -37,11 +37,11 @@ describe('eligibilityTables — structure & integrity', () => {
     const counts = Object.fromEntries(eligibilityTables.map((t) => [`${t.category}-${t.phase}`, t.trials.length]));
     expect(counts).toEqual({
       'ischemic-acute': 2,
-      'ischemic-inpatient': 5,
-      'ischemic-outpatient': 4,
+      'ischemic-inpatient': 6,
+      'ischemic-outpatient': 5,
       'ich-acute': 2,
-      'ich-inpatient': 3,
-      'ich-outpatient': 2
+      'ich-inpatient': 4,
+      'ich-outpatient': 3
     });
   });
 
@@ -98,7 +98,7 @@ describe('eligibilityTables — recruitment status (2026-10-03 registry audit)',
   it('lists the acute profiles and keeps PICASSO as a flagged criteria reference', () => {
     expect(eligibilityTables.find(t => t.id === 'ich-acute').trials.map(t => t.acronym)).toEqual(['MINUTE', 'SATURN']);
     expect(eligibilityTables.find(t => t.id === 'ischemic-acute').trials.map(t => t.acronym)).toEqual(['STEP', 'PICASSO']);
-    expect(allTrials.filter(t => t.referenceOnly).map(t => t.acronym)).toEqual(['PICASSO']);
+    expect([...new Set(allTrials.filter(t => t.referenceOnly).map(t => t.acronym))].sort()).toEqual(['DISCOVERY', 'PICASSO']);
     expect(allTrials.some(t => t.unverified)).toBe(false);
   });
 });

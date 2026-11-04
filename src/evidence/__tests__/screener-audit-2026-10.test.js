@@ -138,7 +138,7 @@ describe('MINUTE anticoagulant and pregnancy exclusions (H2)', () => {
     expect(evaluate('MINUTE', { ...base, ichVolume: 'unselected' }).pendingCriteria).toContain('Confirm hematoma volume ≥20 mL by ABC/2');
   });
   it('lists the anticoagulant exclusion separately in the stored registry criteria', () => {
-    expect(trial('MINUTE').exactExclusionCriteria).toContain('Concurrent use of DOAC or LMWH at ICH onset');
+    expect(trial('MINUTE').exactExclusionCriteria).toContain('Concurrent use of direct oral anticoagulants or low molecular weight heparin at ICH onset');
     expect(EXCLUSION_ITEMS.find(i => i.id === 'exDoacLmwhAtOnset').trials).toEqual(['MINUTE']);
     expect(EXCLUSION_ITEMS.find(i => i.id === 'exPregnancy').trials).toEqual(expect.arrayContaining(['MINUTE', 'STEP', 'VERIFY']));
   });
