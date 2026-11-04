@@ -24,6 +24,7 @@ const groups = [
       "VERIFY",
       "TESTED",
       "SCOUTS-3",
+      "DISCOVERY",
       "CLARITY",
       "INTERCEPT"
     ]
@@ -35,6 +36,7 @@ const groups = [
     "title": "Ischemic Stroke — Outpatient (Day 14 Onward)",
     "trials": [
       "CLARITY",
+      "DISCOVERY",
       "TELE-REHAB-2",
       "MR-PICS",
       "INTERCEPT"
@@ -58,6 +60,7 @@ const groups = [
     "trials": [
       "SATURN",
       "SCOUTS-3",
+      "DISCOVERY",
       "ASPIRE"
     ]
   },
@@ -68,6 +71,7 @@ const groups = [
     "title": "Intracerebral Hemorrhage (ICH) — Outpatient (Day 14 Onward)",
     "trials": [
       "ASPIRE",
+      "DISCOVERY",
       "TELE-REHAB-2"
     ]
   }

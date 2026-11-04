@@ -95,7 +95,7 @@ describe('STEP: the presentation pathway ends at the app\'s 30-h acute screening
     const step = trial('STEP');
     expect(step.eligibility.criteria.filter(c => c.field === 'onsetHours')).toEqual([expect.objectContaining({ operator: '<=', value: 30 })]);
     expect(step.sourceGaps.join(' ')).toContain('with no stated randomization deadline; the 30-hour screening limit is the app\'s, not the registry\'s');
-    expect(step.exactInclusionCriteria.join(' ')).not.toMatch(/30/);
+    expect(step.exactInclusionCriteria.join(' ')).not.toMatch(/\b30\s*(?:h|hours)\b/);
   });
 });
 

@@ -177,3 +177,16 @@ Protected protocol text is unchanged. Source-checked corrections:
 ## Trials catalog change — 2026-11-01
 
 At the owner's request, the SISTER (NCT05948566) and FASTEST Part 2 (NCT07227246) profiles were removed from the screener, criteria tables, Database and global search. 14 profiles remain (12 screened, 2 reference-only). The exclusion questions that only these two studies asked were removed with them: IV thrombolysis given or planned, factor Xa or direct thrombin inhibitor within 48 h, oral anticoagulant within 7 days, and brainstem hemorrhage. The anticoagulant-at-onset answer and its Encounter import still set DOAC or LMWH at ICH onset (MINUTE) and oral anticoagulant at the index stroke (INTERCEPT) as before; an Encounter last-dose time still only bounds use at onset (48 h) and no longer answers a 7-day or 48-hour exclusion. The screener's "None" anticoagulant option no longer adds "or in the past 7 days", since no listed study reads that window. No other study's criteria changed. Earlier dated sections that name SISTER or FASTEST-2 describe the catalog at that time. The FASTEST Part 1 result remains an Evidence study summary.
+
+
+## Trial update candidate — 2026-11-04
+
+Full ClinicalTrials.gov API v2 records for STEP (NCT06289985), MINUTE (NCT07260916), CLARITY (NCT07174414) and DISCOVERY (NCT04916210) were read on November 4. Their recorded last-update-posted dates are December 4, 2025; September 15, 2026; October 26, 2026; and September 14, 2026, respectively. A registry read does not establish current local activation.
+
+Local participation and operational records are deliberately absent from the public candidate. Profiles retain unassessed local activation; public registry summaries do not establish site availability.
+
+STEP’s repeat-imaging, complete-occlusion/perfusion and late-window core checks remain manual confirmations. A screening summary dated August 11 defines the non-/co-dominant M2 territory as ≤50% of the MCA territory; the current registry says <50%. The candidate retains the registry threshold and explicitly records the discrepancy. The exact 50% boundary requires current domain-protocol/study-team adjudication before release. The source ADC threshold also requires active-protocol/unit confirmation. Neither item becomes a modeled eligibility rule.
+
+CLARITY’s full criteria materially agree with the stored profile. Its pre-existing maintainer-reported recruiting status remains distinct from the registry’s NOT_YET_RECRUITING status. No new local activation or intracranial-stenting interpretation is asserted.
+
+DISCOVERY is a prospective observational cohort, RECRUITING in the registry, with AIS, ICH or aneurysmal SAH and baseline assessment within six weeks. It is reference-only, including tier-specific exclusions. Local participation and enrollment authorization are not established by the public profile. Other profile review dates and protected protocols are unchanged.

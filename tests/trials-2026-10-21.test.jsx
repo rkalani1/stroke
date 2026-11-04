@@ -50,22 +50,23 @@ const crit = (acronym, field, operator) => {
 describe('registry re-verification on 2026-10-21 (statuses and dates rechecked 2026-10-31)', () => {
   // Overall status of each full record read with get_trial_details on 2026-10-21; unchanged at the 2026-10-31 recheck.
   // SISTER and FASTEST-2 were removed from the catalog on 2026-11-01.
-  const status = { STEP: 'RECRUITING', PICASSO: 'RECRUITING', TESTED: 'RECRUITING', MINUTE: 'RECRUITING', CLARITY: 'NOT_YET_RECRUITING', INTERCEPT: 'RECRUITING', ASPIRE: 'RECRUITING', SATURN: 'RECRUITING', 'CAPPRICORN-1': 'ACTIVE_NOT_RECRUITING', 'SCOUTS-3': 'RECRUITING', VERIFY: 'RECRUITING', 'MR-PICS': 'RECRUITING', 'TELE-REHAB-2': 'RECRUITING', CAPTIVA: 'ACTIVE_NOT_RECRUITING' };
+  const status = { STEP: 'RECRUITING', PICASSO: 'RECRUITING', TESTED: 'RECRUITING', MINUTE: 'RECRUITING', CLARITY: 'NOT_YET_RECRUITING', INTERCEPT: 'RECRUITING', ASPIRE: 'RECRUITING', SATURN: 'RECRUITING', 'CAPPRICORN-1': 'ACTIVE_NOT_RECRUITING', 'SCOUTS-3': 'RECRUITING', VERIFY: 'RECRUITING', 'MR-PICS': 'RECRUITING', 'TELE-REHAB-2': 'RECRUITING', CAPTIVA: 'ACTIVE_NOT_RECRUITING', DISCOVERY: 'RECRUITING' };
   // Exact-day AREA[LastUpdatePostDate] queries rerun on 2026-10-31: a RANGE[2026-10-21,MAX] query over all 16 NCT IDs
   // returned only CLARITY, TELE-REHAB-2 and CAPTIVA (each last updated 2026-10-26); the other 13 dates matched exactly.
-  const lastUpdate = { STEP: '2025-12-04', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', CLARITY: '2026-10-26', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-26', CAPTIVA: '2026-10-26' };
+  const lastUpdate = { STEP: '2025-12-04', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', CLARITY: '2026-10-26', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-26', CAPTIVA: '2026-10-26', DISCOVERY: '2026-09-14' };
 
-  it('records the re-read date, status and last update of all 14 profiles consistently', () => {
+  it('records the re-read date, status and last update of all profiles consistently', () => {
     expect(screenerTrials.map(t => t.acronym).sort()).toEqual(Object.keys(status).sort());
     for (const t of screenerTrials) {
       const m = t.externalMetadata;
-      expect(m.verificationDate, t.acronym).toBe('2026-10-31');
+      const checked = ['STEP', 'MINUTE', 'CLARITY', 'DISCOVERY'].includes(t.acronym) ? '2026-11-04' : '2026-10-31';
+      expect(m.verificationDate, t.acronym).toBe(checked);
       expect(m.registryStatus, t.acronym).toBe(status[t.acronym]);
       expect(m.registryLastUpdatePosted, t.acronym).toBe(lastUpdate[t.acronym]);
-      expect(t.sourceGaps.filter(g => g.startsWith('Registry status rechecked 2026-10-31: ' + status[t.acronym] + '; last update posted ' + lastUpdate[t.acronym] + ' (recorded 2026-10-31).')), t.acronym).toHaveLength(1);
+      expect(t.sourceGaps.filter(g => g.startsWith('Registry status rechecked ' + checked + ': ' + status[t.acronym] + '; last update posted ' + lastUpdate[t.acronym] + ' (recorded ' + checked + ').')), t.acronym).toHaveLength(1);
       expect(JSON.stringify(t), t.acronym).not.toMatch(/2026-10-17/);
     }
-    expect(registryCheckLabel(screenerTrials.map(t => t.externalMetadata.verificationDate))).toBe('registry checked 2026-10-31');
+    expect(registryCheckLabel(screenerTrials.map(t => t.externalMetadata.verificationDate))).toBe('registry checked 2026-10-31 to 2026-11-04');
   });
 
   it('keeps the recruiting statuses as registry statuses, never local availability', () => {
@@ -73,8 +74,8 @@ describe('registry re-verification on 2026-10-21 (statuses and dates rechecked 2
     for (const t of screenerTrials.filter(screenable)) expect(enrollmentLabel(t), t.acronym).toMatch(t.acronym === 'CLARITY' ? /^Recruiting \(registry not yet updated\)$/ : /\(registry\)$/);
     expect(trial('CLARITY').externalMetadata.registryStatus).toBe('NOT_YET_RECRUITING');
     expect(enrollmentLabel(trial('CAPPRICORN-1'))).toBe('Not enrolling (active, not recruiting)');
-    const html = renderToStaticMarkup(<TrialSourceContext trial={trial('STEP')} now={new Date(2026, 9, 31, 9).getTime()} />);
-    expect(html).toMatch(/Recorded registry check: <time [^>]*>2026-10-31<\/time> \(today\)/);
+    const html = renderToStaticMarkup(<TrialSourceContext trial={trial('STEP')} now={new Date(2026, 10, 4, 9).getTime()} />);
+    expect(html).toMatch(/Recorded registry check: <time [^>]*>2026-11-04<\/time> \(today\)/);
     expect(html).toContain('Last update posted, as recorded at that check: 2025-12-04; the live record may be newer.');
     expect(html).toContain('Local activation: not confirmed here.');
   });

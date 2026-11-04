@@ -7,14 +7,15 @@
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
       "CT.gov requires presentation to the enrolling hospital within 24 hours and arterial puncture within 2 hours of qualifying imaging, with no stated randomization deadline; the 30-hour screening limit is the app's, not the registry's. Not every STEP domain exclusion is encoded.",
-      "Registry status rechecked 2026-10-31: RECRUITING; last update posted 2025-12-04 (recorded 2026-10-31). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status rechecked 2026-11-04: RECRUITING; last update posted 2025-12-04 (recorded 2026-11-04). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified.",
+      "The 2026-08-11 screening summary uses ≤50% for M2 territory, while the registry record uses <50%; confirm the current domain protocol for the 50% boundary."
     ],
     "timeCategory": "hyperacute",
     "enrollmentWindowText": "Presentation ≤ 24 hours (app screens ≤ 30 h)",
     "externalMetadata": {
       "nct": "NCT06289985",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06289985",
-      "verificationDate": "2026-10-31",
+      "verificationDate": "2026-11-04",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2025-12-04",
       "localActivationStatus": "not_assessed",
@@ -26,10 +27,11 @@
     "noContactInfo": true,
     "exactInclusionCriteria": [
       "Age 18 years or older and pre-stroke mRS 0-2",
-      "Presentation to enrolling hospital within 24 hours and arterial puncture within 2 hours of qualifying imaging",
-      "Branch 1: LVO patients with mild deficits/low NIHSS; NIHSS 0-5 and complete occlusion of the intracranial ICA or M1 MCA",
-      "Branch 2: MVO/DMVO patients with non-dominant/co-dominant M2 or M3 occlusions; NIHSS ≥ 8",
-      "MVO beyond 6 hours: infarct core <50% of the occluded vessel territory; confirm on protocol-specified imaging"
+      "Presentation to enrolling hospital within 24 hours and arterial puncture within 2 hours of qualifying CTA/MRA or CTP/MRP imaging",
+      "Repeat CT/MR and qualifying imaging if >120 minutes have elapsed since qualifying imaging and randomization has not yet occurred; in the NIHSS 0-5 cohort, repeat imaging is required only with significant NIHSS improvement",
+      "Branch 1: LVO patients with mild deficits/low NIHSS; NIHSS 0-5 and complete occlusion of the intracranial ICA or M1 MCA; NIHSS 0 requires an attributable focal deficit",
+      "Branch 2: visualized complete occlusion or perfusion deficit (Tmax >4 seconds) supportive of a cortical branch occlusion in non-dominant/co-dominant M2 (serving <50% of the entire MCA territory) or M3; NIHSS ≥ 8",
+      "MVO beyond 6 hours: infarct core <50% of the occluded vessel territory, assessed by NCCT hypodensity/loss of gray-white border, ADC <620 on diffusion MRI (registry-reported threshold; confirm protocol units) or rCBF <30% on CTP"
     ],
     "exactExclusionCriteria": [
       "CT ASPECTS <6 or MRI ASPECTS <7",
@@ -196,7 +198,9 @@
         }
       ],
       "manualPending": [
-        "Confirm non-dominant/co-dominant M2 or M3 anatomy and the MVO >6-hour infarct-core criterion; registry does not separately classify a dominant M3",
+        "Confirm visualized complete occlusion or perfusion deficit (Tmax >4 seconds) supportive of a cortical branch occlusion for either M2 or M3; non-dominant/co-dominant M2 must serve <50% of the entire MCA territory per the registry; resolve the screening summary’s ≤50% boundary with the current domain protocol",
+        "If onset is >6 hours, confirm infarct core <50% of the occluded territory by NCCT hypodensity/loss of gray-white border, ADC <620 on diffusion MRI (confirm the registry-reported threshold and protocol units) or rCBF <30% on CTP",
+        "If >120 minutes elapse since qualifying imaging and randomization has not yet occurred, confirm repeat CT/MR and qualifying imaging; for NIHSS 0-5, repeat only with significant NIHSS improvement",
         "Confirm arterial puncture can start ≤ 2 h from qualifying CTA/MRA or CTP/MRP imaging and the occlusion is not suspected to be chronic",
         "Confirm CT versus MRI ASPECTS threshold, focal deficit when NIHSS is 0, and the remaining domain exclusions (dissection, vasculitis, septic embolus, platelets, mass effect, tumor, hemorrhage)"
       ]
@@ -385,19 +389,19 @@
     "sourceGaps": [
       "CT.gov requires spontaneous non-traumatic basal ganglia ICH >=20 mL by ABC/2, pre-ICH mRS 0-2, randomization <=16 hours from LKW, and surgery initiated <120 min from randomization.",
       "CTA/MRA without underlying vascular lesion and goals of care to pursue life-saving therapies (no early withdrawal of care <7 days); detailed registry criteria, coagulation labs (INR <=1.4, aPTT <=40s, platelets >=100k), and consent requirements must be verified through the active protocol.",
-      "Registry status rechecked 2026-10-31: RECRUITING; last update posted 2026-09-15 (recorded 2026-10-31). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status rechecked 2026-11-04: RECRUITING; last update posted 2026-09-15 (recorded 2026-11-04). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "hyperacute",
     "enrollmentWindowText": "≤ 16 hours",
     "externalMetadata": {
       "nct": "NCT07260916",
       "registryUrl": "https://clinicaltrials.gov/study/NCT07260916",
-      "verificationDate": "2026-10-31",
+      "verificationDate": "2026-11-04",
       "registryStatus": "RECRUITING",
       "registryLastUpdatePosted": "2026-09-15",
-      "localActivationStatus": "not_assessed",
       "phase": "NA",
-      "studyType": "INTERVENTIONAL"
+      "studyType": "INTERVENTIONAL",
+      "localActivationStatus": "not_assessed"
     },
     "conciseBedsideSummary": "Ultra-early SCUBA endoscopic evacuation for basal-ganglia hemorrhage >=20 mL by ABC/2 randomized within 16h of LKW.",
     "pathway": "Consult Stroke Research Coordinator / On-Call Neurosurgery Service",
@@ -532,8 +536,8 @@
     "status": "enrolling",
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "CT.gov eligibility (re-read 2026-10-31; last update posted 2026-10-26; criteria still match the stored wording) requires high-risk TIA (ABCD2 score ≥ 6) and ≥ 2 listed vascular risk factors; ABCD2 is asked as a confirmation question and the risk factors are listed for confirmation, not modeled.",
-      "Registry status rechecked 2026-10-31: NOT_YET_RECRUITING; last update posted 2026-10-26 (recorded 2026-10-31). The app shows the study as recruiting from 2026-10-31 on the maintainer's report, ahead of the registry record (start date 2026-10); confirm current recruitment, local site activation and consent requirements with the study team.",
+      "CT.gov eligibility (re-read 2026-11-04; last update posted 2026-10-26; criteria still match the stored wording) requires high-risk TIA (ABCD2 score ≥ 6) and ≥ 2 listed vascular risk factors; ABCD2 is asked as a confirmation question and the risk factors are listed for confirmation, not modeled.",
+      "Registry status rechecked 2026-11-04: NOT_YET_RECRUITING; last update posted 2026-10-26 (recorded 2026-11-04). The app shows the study as recruiting from 2026-10-31 on the maintainer's report, ahead of the registry record (start date 2026-10); confirm current recruitment, local site activation and consent requirements with the study team.",
       "Before this update the profile recorded the registry version first posted 2025-09-16 (aspirin or clopidogrel, not both; no atrial fibrillation exclusion). Version history was not accessible, so when the eligibility text changed is unverified. Confirm current antithrombotic eligibility with the study team."
     ],
     "timeCategory": "subacute_chronic",
@@ -541,7 +545,7 @@
     "externalMetadata": {
       "nct": "NCT07174414",
       "registryUrl": "https://clinicaltrials.gov/study/NCT07174414",
-      "verificationDate": "2026-10-31",
+      "verificationDate": "2026-11-04",
       "registryStatus": "NOT_YET_RECRUITING",
       "registryLastUpdatePosted": "2026-10-26",
       "localActivationStatus": "not_assessed",
@@ -559,7 +563,7 @@
       "Two or more risk factors: age ≥ 65, hypertension, diabetes mellitus, ischemic stroke other than the qualifying event, current smoking, peripheral arterial disease, coronary artery disease including prior MI, aortic atherosclerotic plaque ≥ 4 mm, or ≥ 50% stenosis or occlusion of a major intracranial (ICA, M1, M2, A1, P1, vertebral, basilar) or extracranial (ICA, vertebral) artery",
       "In the site investigator's opinion, medically stable, capable of participating, and willing and able to attend follow-up",
       "Able to receive study drug by mail and to begin taking it promptly after receipt",
-      "Signed informed consent by the patient or legally authorized representative"
+      "Signed and dated informed consent by the patient or legally authorized representative"
     ],
     "exactExclusionCriteria": [
       "Atrial fibrillation, mechanical heart valve, or left ventricular assist device",
@@ -1764,6 +1768,71 @@
           "value": "ischemic",
           "error": "Requires Ischemic Stroke",
           "matchedLabel": "Ischemic Stroke classification selected"
+        }
+      ],
+      "exclusions": []
+    }
+  },
+  {
+    "acronym": "DISCOVERY",
+    "exactFullStudyName": "Determinants of Incident Stroke Cognitive Outcomes and Vascular Effects on RecoverY",
+    "sourceHypothesisText": "Prospective multicenter observational cohort studying post-stroke cognitive impairment and dementia after acute ischemic stroke, primary intracerebral hemorrhage or aneurysmal subarachnoid hemorrhage. Baseline assessments and blood collection are followed by cognitive and functional follow-up; Tier 2 adds MRI and additional assessments/blood collection, and Tier 3 adds amyloid- and tau-PET/CT.",
+    "status": "enrolling",
+    "referenceOnly": true,
+    "databaseClassifications": [
+      "ischemic",
+      "ich"
+    ],
+    "sourceCompletenessStatus": "first_pass",
+    "sourceGaps": [
+      "Criteria-table and Database reference only: this observational study is not modeled in the screener. Confirm all core criteria, the applicable tier-specific criteria, the co-enrollment policy and local study-team availability before referral.",
+      "Registry status rechecked 2026-11-04: RECRUITING; last update posted 2026-09-14 (recorded 2026-11-04). This is the overall study status; local site activation, recruitment availability and consent requirements have not been verified.",
+      "The registry also includes aneurysmal subarachnoid hemorrhage (aSAH). This app currently has ischemic-stroke and ICH study categories only; the reference does not add automatic aSAH screening."
+    ],
+    "timeCategory": "acute_subacute",
+    "enrollmentWindowText": "Baseline visit within 6 weeks of stroke onset",
+    "externalMetadata": {
+      "nct": "NCT04916210",
+      "registryUrl": "https://clinicaltrials.gov/study/NCT04916210",
+      "verificationDate": "2026-11-04",
+      "registryStatus": "RECRUITING",
+      "registryLastUpdatePosted": "2026-09-14",
+      "localActivationStatus": "not_assessed",
+      "phase": "NA",
+      "studyType": "OBSERVATIONAL",
+      "registryAcronym": "DISCOVERY"
+    },
+    "conciseBedsideSummary": "Observational study of cognitive recovery and dementia after AIS, primary ICH or aneurysmal SAH. Age ≥18, baseline within 6 weeks, no pre-stroke dementia; self or proxy consent and pre-stroke English/Spanish fluency. Additional MRI and PET/CT tiers have separate exclusions; not screened automatically.",
+    "pathway": "Consult Stroke Research Coordinator / Stroke Neurology",
+    "noContactInfo": true,
+    "exactInclusionCriteria": [
+      "Age ≥18 years",
+      "Admitted to the enrolling clinical performance site (CPS) hospital with a diagnosis of acute ischemic stroke (AIS), intracerebral hemorrhage (ICH), or aneurysmal subarachnoid hemorrhage (aSAH)",
+      "Radiographic confirmatory evidence of: (1) AIS (based on a focal area of restricted diffusion on MRI), (2) non-traumatic primary ICH (based on evidence of acute parenchymal hemorrhage on CT or brain MRI) or (3) non-traumatic acute aSAH (based on evidence of subarachnoid hemorrhage on CT or MRI and evidence of aneurysm on CT angiography, MR angiography, or conventional catheter-based angiography)",
+      "Able to complete baseline visit in person or by phone within 6 weeks of stroke onset",
+      "Able to provide informed consent by self or proxy",
+      "Fluent in English or Spanish prior to stroke onset"
+    ],
+    "exactExclusionCriteria": [
+      "Documented history of pre-stroke dementia or fails dementia pre-screen",
+      "Concurrently enrolled into a study that is not approved under the DISCOVERY Co-Enrollment Policy",
+      "Unable to complete study protocol (advanced directives such as comfort measures only, or inability to complete the study due to severe medical/behavioral co-morbidities), as determined by physician investigator during screening process",
+      "Additional exclusion for Tier 2 participants: Contraindication to MRI: presence of electrically, magnetically, or mechanically activated implants (such as cardiac pacemakers, cochlear implants, implanted pumps); or metallic clips in the brain",
+      "Additional exclusion for Tier 3 participants: Age <50 years",
+      "Additional exclusion for Tier 3 participants: Biologically female individuals who are pregnant or seeking to become pregnant",
+      "Additional exclusion for Tier 3 participants: Known to have one of the following genetic conditions which can increase the risk of developing cancer: Cowden disease, Lynch syndrome, hypogammaglobulinemia, Wiskott-Aldrich syndrome, Down's syndrome."
+    ],
+    "eligibility": {
+      "criteria": [
+        {
+          "field": "classification",
+          "operator": "in",
+          "value": [
+            "ischemic",
+            "ich"
+          ],
+          "error": "Reference includes acute ischemic stroke or ICH; aSAH is also included in the registry",
+          "matchedLabel": "Registry reference for ischemic stroke or ICH; not screened automatically"
         }
       ],
       "exclusions": []
