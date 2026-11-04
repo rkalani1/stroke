@@ -102,7 +102,7 @@ describe('Trials review 2026-10-17', () => {
     await open();
     await page.getByRole('tab', { name: 'Database', exact: true }).click();
     await page.getByRole('group', { name: 'Filter studies by classification', exact: true }).getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).click();
-    expect(await page.locator('#trials-database-panel article').evaluateAll(cards => cards.map(c => c.dataset.trial))).toEqual(['MINUTE', 'ASPIRE', 'SATURN', 'CAPPRICORN-1', 'SCOUTS-3', 'TELE-REHAB-2']);
+    expect(await page.locator('#trials-database-panel article').evaluateAll(cards => cards.map(c => c.dataset.trial))).toEqual(['MINUTE', 'ASPIRE', 'SATURN', 'CAPPRICORN-1', 'SCOUTS-3', 'TELE-REHAB-2', 'DISCOVERY']);
     await page.getByRole('group', { name: 'Filter studies by status', exact: true }).getByRole('button', { name: /^Not enrolling/ }).click();
     expect(await page.locator('#trials-database-panel article').innerText()).toContain('Not enrolling (active, not recruiting)');
   }, 30000);
