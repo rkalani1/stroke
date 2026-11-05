@@ -384,6 +384,41 @@ async function main() {
       assert(!/synthetic|public demo|educational demo|no PHI|not a real clinical note/i.test(visibleText));
       } finally { await reset(page); }
     });
+    await check('trial screener presentation scores and full manual confirmations', async () => {
+      try {
+        await page.getByRole('link', { name: 'Trials', exact: true }).click();
+        await page.getByRole('tab', { name: 'Screener', exact: true }).click();
+        const screen = page.getByRole('tabpanel', { name: 'Screener', exact: true });
+        await screen.getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).click();
+        await screen.getByText(/Study-specific facts/).click();
+        const nihss = screen.getByLabel('NIHSS at presentation', { exact: true });
+        const gcs = screen.getByLabel('GCS at presentation', { exact: true });
+        assert.equal(await nihss.inputValue(), '');
+        assert.equal(await gcs.inputValue(), '');
+        await nihss.fill('6'); await gcs.fill('7');
+        await page.evaluate(() => window.scrollTo(0, 0));
+        await page.screenshot({ path: path.join(outDir, 'trial-screener-presentation.png') });
+        await screen.getByText('Preview screening summary', { exact: true }).click();
+        const summary = screen.getByLabel('Screening summary preview', { exact: true });
+        let note = await summary.innerText();
+        assert(note.includes('NIHSS at presentation: 6') && note.includes('GCS at presentation: 7'));
+        for (const term of ['EITHER lateral ventricle', 'coagulation factor deficiency', 'DNR/DNI', 'severe dementia', 'another interventional drug or device trial']) assert(note.includes(term), term);
+        assert(note.includes('Confirm actual randomization can occur within 16 hours'));
+        await nihss.fill('5');
+        assert((await summary.innerText()).includes('NIHSS < 6 at presentation'));
+        await nihss.fill('6.5');
+        assert.equal(await nihss.getAttribute('aria-invalid'), 'true');
+        assert((await summary.innerText()).includes('Confirm NIHSS ≥ 6 at presentation'));
+        await screen.getByRole('button', { name: 'Ischemic stroke', exact: true }).click();
+        assert.equal(await nihss.count(), 0);
+        note = await summary.innerText();
+        assert(note.includes('CLARITY') && note.includes('Recruiting (registry not yet updated)'));
+        for (const term of ['receive study drug by mail', 'signed and dated informed consent', 'compulsory detention', 'surrogate (family member/friend) or health care practitioner']) assert(note.includes(term), term);
+        assert(!note.includes('DISCOVERY'));
+        await screen.getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).click();
+        assert.equal(await nihss.inputValue(), ''); assert.equal(await gcs.inputValue(), '');
+      } finally { await reset(page); }
+    });
     await check('header references and all clinical sections remain reachable without sharing Encounter values', async () => {
       await reset(page); await setupIschemic(page);
       const links = page.getByRole('navigation', { name: 'External references', exact: true }).getByRole('link');

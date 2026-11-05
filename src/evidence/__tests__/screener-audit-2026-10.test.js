@@ -217,10 +217,10 @@ describe('registry criteria added to stored profiles (M1, M2, M4, M5)', () => {
 // upper limit or before a window, a present exclusion and a numeric floor) are kept on MINUTE and VERIFY.
 describe('exact onset, answered exclusions and numeric floors on acute profiles', () => {
   it('screens MINUTE on time, GCS and a present exclusion', () => {
-    const base = { classification: 'ich', onsetVal: 1.5, onsetUnit: 'hours', age: 60, gcs: 13, preMrs: 0, ichVolume: 25, ichLocation: 'bg', nihss: 10 };
+    const base = { classification: 'ich', onsetVal: 1.5, onsetUnit: 'hours', age: 60, gcs: 13, minutePresentationGcs: 13, preMrs: 0, ichVolume: 25, ichLocation: 'bg', nihss: 10, minutePresentationNihss: 10 };
     expect(evaluate('MINUTE', base).status).toBe('pending');
     expect(evaluate('MINUTE', { ...base, onsetVal: 17 }).exclusionReasons).toEqual(['More than 16 hours from LKW at screening (registry: randomization ≤ 16 hours from LKW)']);
-    expect(evaluate('MINUTE', { ...base, gcs: 6 }).exclusionReasons).toEqual(['GCS < 7 at presentation']);
+    expect(evaluate('MINUTE', { ...base, minutePresentationGcs: 6 }).exclusionReasons).toEqual(['GCS < 7 at presentation']);
     expect(evaluate('MINUTE', { ...base, exclusions: { exSecondaryIch: true } }).exclusionReasons).toEqual(['Excludes suspected secondary cause']);
   });
   it('holds VERIFY before its 24–96 h window on an exact onset, and screens it once the window opens', () => {
@@ -243,7 +243,7 @@ describe('exclusion review items and not-met reporting', () => {
     for (const id of ['exEgfr35', 'exMriContraindication', 'exRecentSurgery30d', 'exBilateralCarotidRevasc', 'exCaaCognitiveImpairment', 'exEgfr30']) expect(EXCLUSION_ITEMS.some(i => i.id === id), id).toBe(false);
   });
   it('omits studies for another stroke type from not-met lists', () => {
-    const r = evaluateAll({ ...createInitialScreenerState(), classification: 'ich', onsetVal: 2, onsetUnit: 'hours', gcs: 6 });
+    const r = evaluateAll({ ...createInitialScreenerState(), classification: 'ich', onsetVal: 2, onsetUnit: 'hours', minutePresentationGcs: 6 });
     expect(r.excluded.some(i => i.trial.acronym === 'STEP')).toBe(true);
     expect(relevantNotMet(r.excluded).map(i => i.trial.acronym).sort()).toEqual(['MINUTE']);
   });

@@ -218,7 +218,7 @@ describe('Encounter conflicts never make a screen less cautious (e2e#6 verificat
   const apixaban = { lastDOACType: 'apixaban', lastDOACDose: localIso(now - 10 * HOUR) };
 
   it('a documented DOAC 10 h ago overrides an earlier "absent" and excludes MINUTE (H)', () => {
-    const manual = { ...withClassification(fresh(), 'ich'), onsetVal: 1.5, onsetUnit: 'hours', age: 65, nihss: 10, gcs: 14, preMrs: 0, ichVolume: 24, ichLocation: 'bg',
+    const manual = { ...withClassification(fresh(), 'ich'), onsetVal: 1.5, onsetUnit: 'hours', age: 65, nihss: 10, gcs: 14, minutePresentationNihss: 10, minutePresentationGcs: 14, preMrs: 0, ichVolume: 24, ichLocation: 'bg',
       exclusions: { exDoacLmwhAtOnset: false, exSecondaryIch: false, exMidbrain: false, exPregnancy: false } };
     expect(find(evaluateAll(manual, screenerTrials), 'MINUTE').completeness).toBe('potential-match');
     const e = encounter({ diagnosisCategory: 'ich', age: '65', ...lkwAt(now - 1.5 * HOUR), premorbidMRS: '0', ...apixaban });
@@ -467,11 +467,13 @@ describe('Encounter import and global-search pick in a browser', () => {
   it('flags changed NIHSS and pre-stroke mRS, and lists kept screener answers', async () => {
     await open();
     try {
-      // Pre-stroke mRS 1 and NIHSS 8 keep MINUTE (mRS ≤ 2, NIHSS ≥ 6) possible, so its DOAC/LMWH refiner item stays on screen.
+      // Pre-stroke mRS 1 and explicitly entered presentation NIHSS 8 keep MINUTE possible.
       // (Checked on SISTER's Xa/DTI item until SISTER left the catalog on 2026-11-01.)
       const label = 'DOAC or LMWH at ICH onset';
       await setEncounter({ diagnosisCategory: 'ich', age: '70', premorbidMRS: '1', lastDOACType: 'none' }, { nihssSource: 'reported', reportedNihss: '8' });
       await page.getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).click();
+      await page.locator('summary', { hasText: 'Study-specific facts' }).click();
+      await page.getByLabel('NIHSS at presentation', { exact: true }).fill('8');
       await page.locator('summary', { hasText: 'Optional exclusion review' }).click();
       await page.getByLabel(label, { exact: true }).selectOption('true');
       await banner().getByRole('button', { name: 'Use these facts', exact: true }).click();
@@ -485,9 +487,12 @@ describe('Encounter import and global-search pick in a browser', () => {
       await page.getByLabel(label, { exact: true }).selectOption('true');
       await setEncounter({ diagnosisCategory: 'ich', age: '70', premorbidMRS: '0', lastDOACType: 'none' }, { nihssSource: 'reported', reportedNihss: '12' });
       await banner().getByRole('button', { name: 'Reapply Encounter facts', exact: true }).waitFor();
-      expect(await copied()).toMatch(/NIHSS 8 · pre-mRS 1/);
+      expect(await copied()).toContain('pre-mRS 1');
+      expect(await copied()).toContain('NIHSS at presentation: 8');
       await banner().getByRole('button', { name: 'Reapply Encounter facts', exact: true }).click();
-      expect(await copied()).toMatch(/NIHSS 12 · pre-mRS 0/);
+      expect(await copied()).toContain('pre-mRS 0');
+      expect(await copied()).toContain('NIHSS at presentation: 8');
+      expect(await banner().innerText()).toContain('Current NIHSS 12');
     } finally { await page.close(); }
   }, 30000);
 

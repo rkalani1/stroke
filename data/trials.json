@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "trials",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.10.3",
-    "checksum": "sha256:c6bfa4b19a42a7d1f494c30bca8cb009",
+    "appVersion": "7.10.4",
+    "checksum": "sha256:d4920f603911fb67eb9b7facff45c5fb",
     "count": 15,
     "source": "Trial screener and table summaries with per-profile registry check dates",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -214,11 +214,13 @@
             }
           ],
           "manualPending": [
+            "For the low-NIHSS branch, confirm a complete intracranial ICA or M1 occlusion; the selected vessel group alone does not establish complete occlusion",
             "Confirm visualized complete occlusion or perfusion deficit (Tmax >4 seconds) supportive of a cortical branch occlusion for either M2 or M3; confirm vessel-dominance definitions with the current approved domain protocol",
             "If onset is >6 hours, confirm infarct core <50% of the occluded territory on protocol-specified imaging; confirm the diffusion-MRI threshold with the current approved domain protocol",
             "If >120 minutes elapse since qualifying imaging and randomization has not yet occurred, confirm repeat CT/MR and qualifying imaging; for NIHSS 0-5, repeat only with significant NIHSS improvement",
             "Confirm arterial puncture can start ≤ 2 h from qualifying CTA/MRA or CTP/MRP imaging and the occlusion is not suspected to be chronic",
-            "Confirm CT versus MRI ASPECTS threshold, focal deficit when NIHSS is 0, and the remaining domain exclusions (dissection, vasculitis, septic embolus, platelets, mass effect, tumor, hemorrhage)"
+            "Confirm CT versus MRI ASPECTS threshold, focal deficit when NIHSS is 0, and the remaining domain exclusions (dissection, vasculitis, septic embolus, platelets, mass effect, tumor, hemorrhage)",
+            "Confirm no contrast anaphylaxis precluding EVT, unfavorable vascular access, serious/advanced/terminal illness or life expectancy <6 months, or pre-existing medical, neurological or psychiatric disease that confounds assessments"
           ]
         }
       },
@@ -486,11 +488,12 @@
               "matchedLabel": "Within 16 h of LKW at screening (registry: randomization ≤ 16 h from LKW and ≤ 2 h of arrival)"
             },
             {
-              "field": "nihss",
+              "field": "minutePresentationNihss",
               "operator": ">=",
               "value": 6,
-              "error": "NIHSS < 6",
-              "matchedLabel": "NIHSS is {value} (meets ≥ 6)"
+              "error": "NIHSS < 6 at presentation",
+              "matchedLabel": "NIHSS at presentation is {value} (meets ≥ 6)",
+              "pendingLabel": "Confirm NIHSS ≥ 6 at presentation"
             },
             {
               "field": "age",
@@ -510,11 +513,12 @@
               "matchedLabel": "Pre-ICH mRS is {value} (meets ≤ 2)"
             },
             {
-              "field": "gcs",
+              "field": "minutePresentationGcs",
               "operator": ">=",
               "value": 7,
               "error": "GCS < 7 at presentation",
-              "matchedLabel": "GCS is {value} (meets ≥ 7)"
+              "matchedLabel": "GCS at presentation is {value} (meets ≥ 7)",
+              "pendingLabel": "Confirm GCS ≥ 7 at presentation"
             }
           ],
           "exclusions": [
@@ -550,9 +554,19 @@
             }
           ],
           "manualPending": [
-            "Confirm CTA/MRA excludes an underlying vascular lesion, randomization within 2 hours of arrival at the randomizing center, surgery can start <120 minutes after randomization, and goals of care meet the protocol",
-            "Confirm coagulation criteria (INR ≤1.4, aPTT ≤40 s), platelet-count magnitude and units, known platelet dysfunction and the no-reversal requirement through the approved protocol; confirm registry details, activation rules and consent requirements",
-            "Confirm no active infection (fever ≥100.7 °F or open draining wound) and no comorbidity expected to compromise survival or follow-up through 365 days"
+            "Confirm the treating physician measured hematoma volume using ABC/2; an entered volume alone does not confirm the measurement method",
+            "Confirm CTA or MRA was performed and shows no underlying vascular lesion",
+            "Confirm actual randomization can occur within 16 hours from LKW AND within 2 hours of arrival to the randomizing center; time at screening alone does not establish either deadline",
+            "Confirm the treating physician anticipates surgery can start <120 minutes from randomization",
+            "Confirm informed consent from the patient or LAR and stated wishes to pursue lifesaving therapies rather than early withdrawal of care (<7 days after ictus)",
+            "Confirm INR ≤1.4, aPTT ≤40 s, and no known hereditary or acquired hemorrhagic diathesis or coagulation factor deficiency",
+            "Confirm the platelet-count magnitude and units in the approved protocol (registry/training notation: <100 x 103 cells/mm3), no known platelet dysfunction, and the no-reversal requirement; the app does not interpret the ambiguous platelet-count notation",
+            "Confirm no active infection at enrollment (fever ≥100.7 °F and/or an open draining wound)",
+            "Confirm no comorbid disease or condition expected to compromise survival or completion of follow-up through 365 days",
+            "Confirm intraventricular hemorrhage is not visually estimated to involve >50% of EITHER lateral ventricle",
+            "Confirm the investigator judges the patient has the necessary mental capacity and is willing to comply with protocol follow-up",
+            "Confirm no current participation in another interventional drug or device trial",
+            "Confirm no pre-existing DNR/DNI status and no history of severe dementia"
           ]
         }
       },
@@ -703,8 +717,17 @@
           ],
           "manualPending": [
             "Confirm ≥ 2 listed risk factors: age ≥ 65, hypertension, diabetes, ischemic stroke other than the qualifying event, current smoking, peripheral arterial disease, coronary artery disease including prior MI, aortic plaque ≥ 4 mm, or ≥ 50% stenosis/occlusion of a major intracranial (ICA, M1, M2, A1, P1, vertebral, basilar) or extracranial (ICA, vertebral) artery",
-            "Confirm no mRS 5, prohibited medication, planned cardiac surgery/PCI/carotid endarterectomy or stenting (eligible post-procedure), platelets ≤ 100,000/µL, severe liver dysfunction (active hepatitis or Child-Pugh B/C), pregnancy, breastfeeding or childbearing potential without birth control, cilostazol hypersensitivity, concurrent investigational intervention study, life expectancy < 6 months, refusal of surrogate contact, or incarceration",
-            "Registry status was NOT_YET_RECRUITING at the recorded check; confirm the study is open at this site before referral"
+            "Confirm actual randomization can occur within 180 days after the qualifying ischemic stroke or high-risk TIA; time at screening alone does not establish this deadline",
+            "Confirm the site investigator judges the patient medically stable, capable of participating, and willing and able to attend follow-up",
+            "Confirm the patient can receive study drug by mail and begin taking it promptly after receipt",
+            "Confirm signed and dated informed consent from the patient or legally authorized representative",
+            "Confirm no mRS 5, prohibited medication per the MOP, or planned cardiac surgery, PCI, carotid endarterectomy or stenting (patients are eligible post-procedure)",
+            "Confirm no known thrombocytopenia (platelet count ≤100,000/µL) or severe liver dysfunction (active hepatitis or Child-Pugh B/C hepatic insufficiency)",
+            "Confirm not pregnant or breastfeeding, and birth control if of childbearing potential; confirm no hypersensitivity to cilostazol or any formulation component",
+            "Confirm no current enrollment in an investigational intervention study and life expectancy ≥6 months",
+            "Confirm permission to contact a surrogate (family member/friend) or health care practitioner for health information if the participant cannot or will not follow the study schedule",
+            "Confirm the participant is not incarcerated, including compulsory detention for treatment of psychiatric disease",
+            "Registry status was NOT_YET_RECRUITING at the recorded check; the maintainer reports active recruitment. Confirm local study availability before referral"
           ]
         }
       },

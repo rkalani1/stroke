@@ -101,14 +101,14 @@ describe('tri-state: potential match / insufficient information / does not meet 
   });
 
   it('only a study with every modeled MINUTE criterion and exclusion answered is a potential match', () => {
-    const state = S({ classification: 'ich', age: 70, onsetVal: 1, onsetUnit: 'hours', nihss: 10, gcs: 14, preMrs: 0, ichVolume: 20, ichLocation: 'bg', exclusions: { exDoacLmwhAtOnset: false, exSecondaryIch: false, exMidbrain: false, exPregnancy: false } });
+    const state = S({ classification: 'ich', age: 70, onsetVal: 1, onsetUnit: 'hours', nihss: 10, gcs: 14, minutePresentationNihss: 10, minutePresentationGcs: 14, preMrs: 0, ichVolume: 20, ichLocation: 'bg', exclusions: { exDoacLmwhAtOnset: false, exSecondaryIch: false, exMidbrain: false, exPregnancy: false } });
     const r = evaluateAll(state);
     expect(potentialMatches(r).map(i => i.trial.acronym)).toEqual(['MINUTE']);
     expect(insufficientInformation(r).map(i => i.trial.acronym)).not.toContain('MINUTE');
     expect(r.eligible).toEqual([]);
     expect(r.briefingNote).toContain('POTENTIAL MATCH (1) — every modeled criterion met; not a definitive match\n- MINUTE (NCT07260916)');
     // Unmodeled registry items still remain to confirm.
-    expect(toConfirm(find(r, 'MINUTE')[1]).join(' ')).toMatch(/randomization within 2 hours of arrival/);
+    expect(toConfirm(find(r, 'MINUTE')[1]).join(' ')).toContain('actual randomization can occur within 16 hours from LKW AND within 2 hours of arrival');
     // One modeled fact left unknown keeps it insufficient information.
     const partial = evaluateAll(S({ ...state, exclusions: { ...state.exclusions, exPregnancy: undefined } }));
     expect(potentialMatches(partial)).toEqual([]);
@@ -222,7 +222,7 @@ describe('registry wording restored in to-confirm prompts', () => {
   it('MINUTE prompts randomization within 2 h of arrival and the full secondary-cause list (TA-F10)', () => {
     // NCT07260916 inclusion 8 and exclusions 1, 10, 11.
     const c = toConfirm(evaluate('MINUTE', { classification: 'ich' })).join(' ');
-    expect(c).toMatch(/randomization within 2 hours of arrival/);
+    expect(c).toContain('actual randomization can occur within 16 hours from LKW AND within 2 hours of arrival');
     expect(c).toMatch(/hemorrhagic transformation/);
     expect(c).toMatch(/cavernous malformation/);
     expect(c).toMatch(/venous infarct/);
