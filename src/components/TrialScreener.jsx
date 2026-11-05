@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useDialogChrome } from './use-dialog-chrome.js';
 import { screenerTrials } from '../evidence/screenerTrials.js';
 import { eligibilityTables } from '../evidence/eligibilityTables.js';
-import { evaluateAll, CLASSIFICATION_NOTE_LABELS, createInitialScreenerState, anchoredOnsetHours, onsetToHours, numericFact, ONSET_PRESETS, STUDY_FACTS, YES_NO, withClassification, NOT_MET_TEXT, phaseLabel, enrollmentLabel, toConfirm, relevantNotMet, potentialMatches, insufficientInformation, registryCheckAgeText, refinerItems, conflictNote, STALE_IMPORT_NOTE, STALE_UNMODELED_NOTE } from '../evidence/screener-eval.js';
+import { evaluateAll, CLASSIFICATION_NOTE_LABELS, createInitialScreenerState, anchoredOnsetHours, onsetToHours, numericFact, ONSET_PRESETS, STUDY_FACTS, VISIBLE_FACTS, YES_NO, withClassification, NOT_MET_TEXT, phaseLabel, enrollmentLabel, toConfirm, relevantNotMet, potentialMatches, insufficientInformation, registryCheckAgeText, refinerItems, conflictNote, STALE_IMPORT_NOTE, STALE_UNMODELED_NOTE } from '../evidence/screener-eval.js';
 import { screenerPrefillFromEncounter, applyEncounterPrefill, applyAnticoagulant, answerFacts, importChanged } from '../evidence/screener-prefill.js';
 
 const CLASSIFICATIONS = Object.entries(CLASSIFICATION_NOTE_LABELS);
@@ -140,14 +140,14 @@ function KeyFacts({ state, change, replace }) {
   const setBoolean = key => v => change({ [key]: asBoolean(v) });
   return <section aria-labelledby="trial-key-facts"><h2 id="trial-key-facts" className="mb-1 text-lg font-bold">3. Key facts</h2><p className="mb-2 text-sm text-mute">Optional. Unknown stays unknown.</p><div className="grid grid-cols-2 gap-x-3 gap-y-2">
     <NumberFact label="Age" unit="y" field="age" rule="0–120" min={0} max={120} value={state.age} onChange={set('age')} />
-    {cls !== 'tia' && <NumberFact label="NIHSS" field="nihss" rule="a whole number 0–42" min={0} max={42} value={state.nihss} onChange={v => change({ nihss: v, nihssUntestable: 0, nihssBulkZero: 0 })} />}
+    {VISIBLE_FACTS[cls]?.includes('nihss') && <NumberFact label="NIHSS" field="nihss" rule="a whole number 0–42" min={0} max={42} value={state.nihss} onChange={v => change({ nihss: v, nihssUntestable: 0, nihssBulkZero: 0 })} />}
     {cls === 'ischemic' && <>
       <SelectFact label="Pre-stroke mRS" value={state.preMrs} onChange={setNumber('preMrs')} options={range(0, 5)} />
       <SelectFact label="ASPECTS" value={state.aspects} onChange={setNumber('aspects')} options={range(0, 10).reverse()} />
       <div className="col-span-2"><SelectFact label="Occlusion site" value={state.vessel} onChange={set('vessel')} options={[['ica_m1', 'Intracranial ICA or M1'], ['dominant_m2', 'Dominant M2'], ['m2_m3_nd', 'Non-dominant/co-dominant M2 or M3'], ['other', 'Other (basilar, ACA, PCA…)'], ['none', 'No occlusion']]} /></div>
     </>}
     {cls === 'ich' && <>
-      <SelectFact label="GCS" value={state.gcs} onChange={setNumber('gcs')} options={range(3, 15).reverse()} />
+      {VISIBLE_FACTS[cls]?.includes('gcs') && <SelectFact label="GCS" value={state.gcs} onChange={setNumber('gcs')} options={range(3, 15).reverse()} />}
       <SelectFact label="Pre-stroke mRS" value={state.preMrs} onChange={setNumber('preMrs')} options={range(0, 5)} />
       <SelectFact label="ICH location" value={state.ichLocation} onChange={set('ichLocation')} options={[['bg', 'Basal ganglia'], ['lobar', 'Lobar'], ['thalamic', 'Thalamic'], ['infratentorial', 'Infratentorial'], ['other', 'Other']]} />
       <NumberFact label="Volume" unit="mL" field="ichVolume" rule="0–300 mL" min={0} max={300} step={0.1} value={state.ichVolume} onChange={set('ichVolume')} />
@@ -165,8 +165,8 @@ function StudyFacts({ state, change }) {
   if (!facts.length) return null;
   // Answered means readable: an invalid number is flagged at its field and not counted.
   const answered = facts.filter(([key, , spec]) => !['unselected', '', null, undefined].includes(state[key]) && (typeof spec !== 'number' || numericFact(key, state[key]) !== null)).length;
-  return <details className="rounded-lg border border-line bg-card p-4"><summary className="min-h-[44px] cursor-pointer font-semibold"><span>Study-specific facts <span className="font-normal text-mute">({answered} of {facts.length} answered)</span></span></summary><p className="my-2 text-sm text-mute">Each is read only by the studies named under it. Unknown stays unknown.</p><div className="grid grid-cols-2 gap-x-3 gap-y-2">{facts.map(([key, label, spec, studies]) => typeof spec === 'number'
-    ? <NumberFact key={key} label={label} field={key} note={studies} rule={`a whole number 0–${spec}`} min={0} max={spec} value={state[key]} onChange={v => change({ [key]: v })} />
+  return <details className="rounded-lg border border-line bg-card p-4"><summary className="min-h-[44px] cursor-pointer font-semibold"><span>Study-specific facts <span className="font-normal text-mute">({answered} of {facts.length} answered)</span></span></summary><p className="my-2 text-sm text-mute">Each is read only by the studies named under it. Unknown stays unknown.{state.classification === 'ich' && ' MINUTE needs NIHSS and GCS at presentation; current Encounter scores do not supply these assessments.'}</p><div className="grid grid-cols-2 gap-x-3 gap-y-2">{facts.map(([key, label, spec, studies]) => typeof spec === 'number'
+    ? <NumberFact key={key} label={label} field={key} note={studies} rule={`a whole number ${key === 'minutePresentationGcs' ? 3 : 0}–${spec}`} min={key === 'minutePresentationGcs' ? 3 : 0} max={spec} value={state[key]} onChange={v => change({ [key]: v })} />
     : <SelectFact key={key} label={label} field={key} note={studies} options={spec} value={state[key]} onChange={v => change({ [key]: spec === YES_NO ? asBoolean(v) : v })} />)}</div></details>;
 }
 

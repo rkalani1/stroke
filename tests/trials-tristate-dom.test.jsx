@@ -81,8 +81,9 @@ describe('Trials review 2026-10-17', () => {
     // Answer every modeled MINUTE fact (FASTEST-2 carried this check until 2026-11-01).
     await page.getByLabel('Exact hours from LKW').fill('1');
     await page.getByLabel('Age (y)').fill('70');
-    await page.getByLabel('NIHSS', { exact: true }).fill('10');
-    await page.getByLabel('GCS', { exact: true }).selectOption('14');
+    await page.locator('summary', { hasText: 'Study-specific facts' }).click();
+    await page.getByLabel('NIHSS at presentation', { exact: true }).fill('10');
+    await page.getByLabel('GCS at presentation', { exact: true }).fill('14');
     await page.getByLabel('Pre-stroke mRS').selectOption('0');
     await page.getByLabel('Volume (mL)').fill('20');
     await page.getByLabel('ICH location').selectOption('bg');

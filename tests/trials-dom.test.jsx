@@ -245,12 +245,18 @@ describe('restored independent Trials workspace', () => {
     });
     const banner = page.getByRole('region', { name: 'Encounter facts' });
     await banner.waitFor();
-    expect(await banner.innerText()).toMatch(/From Encounter: ICH · LKW 1 h \d{2} min · 60 y · GCS 14 · 24\.0 mL · pre-mRS 0 · on DOAC/);
+    expect(await banner.innerText()).toMatch(/From Encounter: ICH · LKW 1 h \d{2} min · 60 y · Current GCS 14 · 24\.0 mL · pre-mRS 0 · on DOAC/);
     // Nothing is applied automatically.
     expect(await page.getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).getAttribute('aria-pressed')).toBe('false');
     await banner.getByRole('button', { name: 'Use these facts', exact: true }).click();
     expect(await page.getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).getAttribute('aria-pressed')).toBe('true');
-    expect(await page.getByLabel('GCS', { exact: true }).inputValue()).toBe('14');
+    expect(await page.getByLabel('GCS', { exact: true }).count()).toBe(0);
+    const studyFacts = page.locator('#trials-screener-panel details').filter({ has: page.locator('summary', { hasText: /^Study-specific facts/ }) });
+    await studyFacts.locator('summary').click();
+    expect(await page.getByLabel('GCS at presentation', { exact: true }).inputValue()).toBe('');
+    expect(await page.getByLabel('NIHSS at presentation', { exact: true }).inputValue()).toBe('');
+    await page.getByLabel('GCS at presentation', { exact: true }).fill('14');
+    await page.getByLabel('NIHSS at presentation', { exact: true }).fill('8');
     expect(await page.getByLabel('Volume (mL)').inputValue()).toBe('24');
     expect(await page.getByLabel('Anticoagulant at onset').inputValue()).toBe('doac');
     expect(Number(await page.getByLabel('Exact hours from LKW').inputValue())).toBeCloseTo(1.5, 1);

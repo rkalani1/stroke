@@ -86,12 +86,12 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   if (classification !== 'tia' && nihss !== null && nihss !== undefined) {
     const bulk = nihssBulkZeroItems(state).length;
     Object.assign(patch, { nihss, nihssUntestable: untestable || 0, nihssBulkZero: bulk });
-    summary.push(`NIHSS ${nihss}${untestableNote(untestable, bulk)}`);
+    summary.push(`${classification === 'ich' ? 'Current NIHSS' : 'NIHSS'} ${nihss}${untestableNote(untestable, bulk)}`);
   }
 
   if (classification === 'ich') {
     const gcs = reviewedGcs(state.gcs || {});
-    if (gcs !== null) { patch.gcs = gcs; summary.push(`GCS ${gcs}`); }
+    if (gcs !== null) { patch.gcs = gcs; summary.push(`Current GCS ${gcs}`); }
     const volume = state.volume ? encounterVolume(state.volume) : null;
     if (volume && !volume.unitWarning && Number.isFinite(volume.volume)) {
       patch.ichVolume = Math.round(volume.volume * 100) / 100;

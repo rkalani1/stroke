@@ -92,7 +92,9 @@ describe('trial screener', () => {
   it('gives every fact a modeled criterion uses a control', () => {
     const render = classification => renderToStaticMarkup(<TrialScreener initialState={{ ...createInitialScreenerState(), classification }} />);
     const ich = render('ich');
-    for (const label of ['NIHSS', 'Statin at onset', 'Atrial fibrillation documented', 'Anticoagulant at onset']) expect(ich).toContain(`aria-label="${label}"`);
+    for (const label of ['NIHSS at presentation', 'GCS at presentation', 'Statin at onset', 'Atrial fibrillation documented', 'Anticoagulant at onset']) expect(ich).toContain(`aria-label="${label}"`);
+    expect(ich).not.toContain('aria-label="NIHSS"');
+    expect(ich).not.toContain('aria-label="GCS"');
     expect(ich).not.toContain('aria-label="On oral anticoagulant at index stroke"');
     const ischemic = render('ischemic');
     for (const label of ['NIHSS', 'Atrial fibrillation documented', 'On oral anticoagulant at index stroke']) expect(ischemic).toContain(`aria-label="${label}"`);
