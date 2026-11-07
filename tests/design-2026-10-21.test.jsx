@@ -283,6 +283,9 @@ describe('shell behaviour in Chromium', { timeout: 60000 }, () => {
     await poll(() => page.locator('dialog.quick-search [role="status"].sr-only').textContent()).toMatch(/^\d+ results?$/);
     await page.keyboard.press('Escape');
     await poll(() => page.locator('dialog.quick-search[open]').count()).toBe(0);
+    // Native dialog close may restore a text field, where macOS reserves Control+K.
+    // Exercise the page shortcut from a non-editable control explicitly.
+    await page.locator('button.workspace-search').focus();
     await page.keyboard.press('Control+k');
     const input = page.locator('dialog.quick-search[open] input');
     await poll(searchFocused).toBe(true);

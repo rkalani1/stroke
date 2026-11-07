@@ -50,22 +50,23 @@ const crit = (acronym, field, operator) => {
 describe('registry re-verification on 2026-10-21 (statuses and dates rechecked 2026-10-31)', () => {
   // Overall status of each full record read with get_trial_details on 2026-10-21; unchanged at the 2026-10-31 recheck.
   // SISTER and FASTEST-2 were removed from the catalog on 2026-11-01.
-  const status = { STEP: 'RECRUITING', PICASSO: 'RECRUITING', TESTED: 'RECRUITING', MINUTE: 'RECRUITING', CLARITY: 'NOT_YET_RECRUITING', INTERCEPT: 'RECRUITING', ASPIRE: 'RECRUITING', SATURN: 'RECRUITING', 'CAPPRICORN-1': 'ACTIVE_NOT_RECRUITING', 'SCOUTS-3': 'RECRUITING', VERIFY: 'RECRUITING', 'MR-PICS': 'RECRUITING', 'TELE-REHAB-2': 'RECRUITING', CAPTIVA: 'ACTIVE_NOT_RECRUITING' };
+  const status = { STEP: 'RECRUITING', PICASSO: 'RECRUITING', TESTED: 'RECRUITING', MINUTE: 'RECRUITING', CLARITY: 'NOT_YET_RECRUITING', INTERCEPT: 'RECRUITING', ASPIRE: 'RECRUITING', SATURN: 'RECRUITING', 'CAPPRICORN-1': 'ACTIVE_NOT_RECRUITING', 'SCOUTS-3': 'RECRUITING', VERIFY: 'RECRUITING', 'MR-PICS': 'RECRUITING', 'TELE-REHAB-2': 'RECRUITING', CAPTIVA: 'ACTIVE_NOT_RECRUITING', DISCOVERY: 'RECRUITING' };
   // Exact-day AREA[LastUpdatePostDate] queries rerun on 2026-10-31: a RANGE[2026-10-21,MAX] query over all 16 NCT IDs
   // returned only CLARITY, TELE-REHAB-2 and CAPTIVA (each last updated 2026-10-26); the other 13 dates matched exactly.
-  const lastUpdate = { STEP: '2025-12-04', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', CLARITY: '2026-10-26', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-26', CAPTIVA: '2026-10-26' };
+  const lastUpdate = { STEP: '2025-12-04', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', CLARITY: '2026-10-26', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-26', CAPTIVA: '2026-10-26', DISCOVERY: '2026-09-14' };
 
-  it('records the re-read date, status and last update of all 14 profiles consistently', () => {
+  it('records the re-read date, status and last update of all profiles consistently', () => {
     expect(screenerTrials.map(t => t.acronym).sort()).toEqual(Object.keys(status).sort());
     for (const t of screenerTrials) {
       const m = t.externalMetadata;
-      expect(m.verificationDate, t.acronym).toBe('2026-10-31');
+      const checked = ['STEP', 'MINUTE', 'CLARITY', 'DISCOVERY'].includes(t.acronym) ? '2026-11-04' : '2026-10-31';
+      expect(m.verificationDate, t.acronym).toBe(checked);
       expect(m.registryStatus, t.acronym).toBe(status[t.acronym]);
       expect(m.registryLastUpdatePosted, t.acronym).toBe(lastUpdate[t.acronym]);
-      expect(t.sourceGaps.filter(g => g.startsWith('Registry status rechecked 2026-10-31: ' + status[t.acronym] + '; last update posted ' + lastUpdate[t.acronym] + ' (recorded 2026-10-31).')), t.acronym).toHaveLength(1);
+      expect(t.sourceGaps.filter(g => g.startsWith('Registry status rechecked ' + checked + ': ' + status[t.acronym] + '; last update posted ' + lastUpdate[t.acronym] + ' (recorded ' + checked + ').')), t.acronym).toHaveLength(1);
       expect(JSON.stringify(t), t.acronym).not.toMatch(/2026-10-17/);
     }
-    expect(registryCheckLabel(screenerTrials.map(t => t.externalMetadata.verificationDate))).toBe('registry checked 2026-10-31');
+    expect(registryCheckLabel(screenerTrials.map(t => t.externalMetadata.verificationDate))).toBe('registry checked 2026-10-31 to 2026-11-04');
   });
 
   it('keeps the recruiting statuses as registry statuses, never local availability', () => {
@@ -73,8 +74,8 @@ describe('registry re-verification on 2026-10-21 (statuses and dates rechecked 2
     for (const t of screenerTrials.filter(screenable)) expect(enrollmentLabel(t), t.acronym).toMatch(t.acronym === 'CLARITY' ? /^Recruiting \(registry not yet updated\)$/ : /\(registry\)$/);
     expect(trial('CLARITY').externalMetadata.registryStatus).toBe('NOT_YET_RECRUITING');
     expect(enrollmentLabel(trial('CAPPRICORN-1'))).toBe('Not enrolling (active, not recruiting)');
-    const html = renderToStaticMarkup(<TrialSourceContext trial={trial('STEP')} now={new Date(2026, 9, 31, 9).getTime()} />);
-    expect(html).toMatch(/Recorded registry check: <time [^>]*>2026-10-31<\/time> \(today\)/);
+    const html = renderToStaticMarkup(<TrialSourceContext trial={trial('STEP')} now={new Date(2026, 10, 4, 9).getTime()} />);
+    expect(html).toMatch(/Recorded registry check: <time [^>]*>2026-11-04<\/time> \(today\)/);
     expect(html).toContain('Last update posted, as recorded at that check: 2025-12-04; the live record may be newer.');
     expect(html).toContain('Local activation: not confirmed here.');
   });
@@ -145,7 +146,7 @@ describe('criterion boundaries follow the registry wording', () => {
     ['MINUTE', 'age', 'between', { age: 18 }, 'met', ''], ['MINUTE', 'age', 'between', { age: 17 }, 'not met', ''],
     ['MINUTE', 'ichVolume', '>=', { ichVolume: 20 }, 'met', '"BGH of volume ≥ 20 mL"'], ['MINUTE', 'ichVolume', '>=', { ichVolume: '19.9' }, 'not met', ''],
     ['MINUTE', 'ichVolume', '>=', { ichVolume: 19.9 }, 'not met', ''],
-    ['MINUTE', 'gcs', '>=', { gcs: 7 }, 'met', '"GCS score <7" excluded'], ['MINUTE', 'gcs', '>=', { gcs: 6 }, 'not met', ''],
+    ['MINUTE', 'minutePresentationGcs', '>=', { minutePresentationGcs: 7 }, 'met', '"GCS score <7" excluded'], ['MINUTE', 'minutePresentationGcs', '>=', { minutePresentationGcs: 6 }, 'not met', ''],
     ['MINUTE', 'onsetHours', '<=', { onsetVal: 16 }, 'met', '"within 16 hours from LKW"'], ['MINUTE', 'onsetHours', '<=', { onsetVal: 16.1 }, 'not met', ''],
     ['MINUTE', 'ichLocation', '==', { ichLocation: 'thalamic' }, 'not met', '"non-thalamic, BGH"'],
     ['CLARITY', 'age', '>=', { age: 40 }, 'met', '"≥40 years"'], ['CLARITY', 'age', '>=', { age: 39 }, 'not met', ''],
@@ -189,13 +190,13 @@ describe('criterion boundaries follow the registry wording', () => {
 });
 
 describe('missing, malformed and implausible entries stay unknown', () => {
-  const numeric = [['STEP', 'age', '>='], ['MINUTE', 'nihss', '>='], ['MINUTE', 'gcs', '>='], ['STEP', 'aspects', '>='], ['STEP', 'preMrs', '<='], ['MINUTE', 'ichVolume', '>='], ['MR-PICS', 'currentMrs', 'in']];
+  const numeric = [['STEP', 'age', '>='], ['MINUTE', 'minutePresentationNihss', '>='], ['MINUTE', 'minutePresentationGcs', '>='], ['STEP', 'aspects', '>='], ['STEP', 'preMrs', '<='], ['MINUTE', 'ichVolume', '>='], ['MR-PICS', 'currentMrs', 'in']];
   const blanks = ['', ' ', null, undefined, 'unselected', NaN, Infinity, 'abc', '12 years', '20 mL', true, [18], {}, -1];
   it.each(numeric)('%s %s', (acronym, field, operator) => {
     for (const value of blanks) expect(verdict(crit(acronym, field, operator), { classification: 'ich', [field]: value }), `${field}=${String(value)}`).toBe('unknown');
   });
   it('treats out-of-range or fractional scores as unknown, never as met or not met', () => {
-    for (const [field, values] of [['age', [121, 150, '-5']], ['nihss', [43, '3.5']], ['gcs', [2, 16, 14.5]], ['aspects', [11, 7.5]], ['preMrs', [7, 1.5]], ['ichVolume', [301, '1e3']]]) {
+    for (const [field, values] of [['age', [121, 150, '-5']], ['minutePresentationNihss', [43, '3.5']], ['minutePresentationGcs', [2, 16, 14.5]], ['aspects', [11, 7.5]], ['preMrs', [7, 1.5]], ['ichVolume', [301, '1e3']]]) {
       for (const value of values) {
         expect(numericFact(field, value), `${field}=${value}`).toBeNull();
         const c = crit(field === 'age' || field === 'aspects' || field === 'preMrs' ? 'STEP' : 'MINUTE', field, field === 'preMrs' ? '<=' : field === 'age' ? '>=' : undefined);
@@ -216,7 +217,7 @@ describe('missing, malformed and implausible entries stay unknown', () => {
 describe('copied screening summary is truthful about what was used', () => {
   const inputsLine = patch => evaluateAll(S(patch)).briefingNote.split('\n').find(line => line.startsWith('Inputs: '));
   it('marks entries the criteria reject instead of printing them as facts', () => {
-    expect(inputsLine({ classification: 'ich', age: '150', nihss: '3.5', ichVolume: '1e3' })).toBe('Inputs: Hemorrhage (ICH) · LKW unknown · age 150 (invalid entry; treated as unknown) · NIHSS 3.5 (invalid entry; treated as unknown) · volume 1e3 mL (invalid entry; treated as unknown)');
+    expect(inputsLine({ classification: 'ich', age: '150', minutePresentationNihss: '3.5', ichVolume: '1e3' })).toBe('Inputs: Hemorrhage (ICH) · LKW unknown · age 150 (invalid entry; treated as unknown) · volume 1e3 mL (invalid entry; treated as unknown) · NIHSS at presentation: 3.5 (invalid entry; treated as unknown)');
     expect(inputsLine({ classification: 'ischemic', age: '070', nihss: '4' })).toBe('Inputs: Ischemic stroke · LKW unknown · age 70 · NIHSS 4');
     expect(inputsLine({ classification: 'ischemic', onsetVal: '-1', onsetUnit: 'hours' })).toBe('Inputs: Ischemic stroke · LKW unknown');
   });
@@ -339,7 +340,7 @@ describe('every modeled exclusion can be answered for each stroke type a study s
 describe('on-call clarity of the key facts and timing controls', () => {
   const render = patch => renderToStaticMarkup(<TrialScreener initialState={S(patch)} />);
   it('flags an entry the criteria cannot read and links the explanation to the field', () => {
-    const html = render({ classification: 'ich', age: '150', nihss: '3.5', ichVolume: '1e3', onsetVal: '-1', onsetUnit: 'hours' });
+    const html = render({ classification: 'ich', age: '150', minutePresentationNihss: '3.5', ichVolume: '1e3', onsetVal: '-1', onsetUnit: 'hours' });
     expect(html).toContain('aria-invalid="true" aria-describedby="trial-age-invalid"');
     const hint = rule => `Treated as unknown: enter <span class="whitespace-nowrap">${rule}</span>.</small>`;
     expect(html).toContain('<small id="trial-age-invalid" class="block text-xs font-normal text-crit-700 dark:text-crit-300">' + hint('0–120'));
@@ -350,7 +351,7 @@ describe('on-call clarity of the key facts and timing controls', () => {
     expect(html).toContain('age 150 (invalid entry; treated as unknown)');
   });
   it('shows no warning for readable values', () => {
-    const html = render({ classification: 'ich', age: '70', nihss: '4', ichVolume: '24.5', onsetVal: '3', onsetUnit: 'hours' });
+    const html = render({ classification: 'ich', age: '70', minutePresentationNihss: '4', ichVolume: '24.5', onsetVal: '3', onsetUnit: 'hours' });
     expect(html).not.toContain('aria-invalid');
     expect(html).not.toContain('Treated as unknown');
     expect(html).toContain('Exact interval entered.');
@@ -381,6 +382,7 @@ const optionsOf = (html, label) => {
   return [...select[1].matchAll(/<option value="([^"]*)"( selected="")?/g)].map(m => [m[1], Boolean(m[2])]);
 };
 const LABELS = {
+  minutePresentationNihss: 'NIHSS at presentation', minutePresentationGcs: 'GCS at presentation',
   presentedWithin24h: 'Presented ≤ 24 h from LKW', afOrFlutterHistory: 'Non-valvular AF or atrial flutter', unilateralSymptomatic: 'Unilateral symptoms', ueWeakness: 'Upper-limb motor deficit',
   self_consent: 'Able to self-consent', language: 'Fluent language', currentMrs: 'Current mRS', availability_54w: 'Available for the 54-week study',
   rehab: 'Inpatient rehab, stay ≥ 5 nights expected', abcd2: 'ABCD2 score', antithromboticSoc: 'Guideline antithrombotic therapy (aspirin, clopidogrel and/or ticagrelor)'
@@ -392,7 +394,7 @@ describe('study-specific facts have screener controls (TR-11 follow-up)', () => 
     ischemic: [['presentedWithin24h', ['STEP', 'TESTED']], ['unilateralSymptomatic', ['VERIFY']], ['ueWeakness', ['VERIFY', 'MR-PICS', 'TELE-REHAB-2']], ['self_consent', ['VERIFY', 'TELE-REHAB-2']],
       ['language', ['VERIFY']], ['currentMrs', ['MR-PICS']], ['availability_54w', ['MR-PICS']], ['rehab', ['SCOUTS-3']], ['antithromboticSoc', ['CLARITY']]],
     tia: [['abcd2', ['CLARITY']], ['antithromboticSoc', ['CLARITY']]],
-    ich: [['afOrFlutterHistory', ['ASPIRE']], ['ueWeakness', ['TELE-REHAB-2']], ['self_consent', ['TELE-REHAB-2']], ['rehab', ['SCOUTS-3']]]
+    ich: [['minutePresentationNihss', ['MINUTE']], ['minutePresentationGcs', ['MINUTE']], ['afOrFlutterHistory', ['ASPIRE']], ['ueWeakness', ['TELE-REHAB-2']], ['self_consent', ['TELE-REHAB-2']], ['rehab', ['SCOUTS-3']]]
   };
 
   it('offers each fact only for the classifications whose screened profiles test it', () => {
@@ -486,7 +488,8 @@ describe('study-specific facts have screener controls (TR-11 follow-up)', () => 
   it('returns hidden study facts to unknown when the classification changes, like other hidden facts', () => {
     const ischemic = S({ classification: 'ischemic', presentedWithin24h: true, unilateralSymptomatic: true, ueWeakness: true, self_consent: true, language: 'english', currentMrs: '3', availability_54w: true, rehab: 'yes', antithromboticSoc: true, nihss: 7, nihssUntestable: 2 });
     const ich = withClassification(ischemic, 'ich');
-    expect([ich.ueWeakness, ich.self_consent, ich.rehab, ich.nihss, ich.nihssUntestable]).toEqual([true, true, 'yes', 7, 2]);
+    expect([ich.ueWeakness, ich.self_consent, ich.rehab, ich.nihss, ich.nihssUntestable]).toEqual([true, true, 'yes', 'unselected', 0]);
+    expect([ich.minutePresentationNihss, ich.minutePresentationGcs]).toEqual(['unselected', 'unselected']);
     for (const key of ['presentedWithin24h', 'unilateralSymptomatic', 'language', 'currentMrs', 'availability_54w', 'antithromboticSoc']) expect(ich[key], key).toBe('unselected');
     const tia = withClassification(ischemic, 'tia');
     expect(tia.antithromboticSoc).toBe(true);
@@ -576,7 +579,9 @@ describe('imported NIHSS totals that leave out untestable items (TR-13)', () => 
     expect(inputsOf(state)).toBe('Inputs: Ischemic stroke · LKW unknown · NIHSS 7 (excludes 2 untestable items)');
     expect(renderToStaticMarkup(<TrialScreener encounter={e} now={Date.now()} />)).toContain('<span class="whitespace-nowrap">NIHSS 7 (excludes 2 untestable items)</span>');
     const one = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(withExam({ motor_arm_right: 'UN', visual: 2 }, 'ich'), Date.now()), fresh());
-    expect(inputsOf(one)).toBe('Inputs: Hemorrhage (ICH) · LKW unknown · NIHSS 2 (excludes 1 untestable item)');
+    // This is a current Encounter total, not an assessment at MINUTE presentation.
+    expect([one.nihss, one.nihssUntestable, one.minutePresentationNihss]).toEqual([2, 1, 'unselected']);
+    expect(inputsOf(one)).toBe('Inputs: Hemorrhage (ICH) · LKW unknown');
   });
 
   it('adds no note when every item was scored, for a reported total, or once the NIHSS is no longer the imported one', () => {
@@ -597,7 +602,8 @@ describe('imported NIHSS totals that leave out untestable items (TR-13)', () => 
   });
 });
 
-describe('study-specific facts and the NIHSS note in a browser', () => {
+// Full-suite browser contention can exceed Vitest's 5 s default; assertions stay unchanged.
+describe('study-specific facts and the NIHSS note in a browser', { timeout: 15000 }, () => {
   let browser, page, script, css;
   beforeAll(async () => {
     css = await readFile(new URL('../tailwind.css', import.meta.url), 'utf8');
@@ -651,7 +657,7 @@ describe('study-specific facts and the NIHSS note in a browser', () => {
         expect(small, theme).toEqual([]);
       }
       await page.getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).click();
-      expect(await heading()).toBe('Study-specific facts (1 of 4 answered)');
+      expect(await heading()).toBe('Study-specific facts (1 of 6 answered)');
       expect(await page.getByLabel('Unilateral symptoms', { exact: true }).count()).toBe(0);
       expect(await preview()).not.toMatch(/unilateral symptoms|fluent language|current mRS/);
       await page.getByRole('button', { name: 'Ischemic stroke', exact: true }).click();

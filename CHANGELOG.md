@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v7.10.3 — 2026-11-04 — Trial criteria and registry-reference update
+
+- **MINUTE:** the stored full criteria now include all eight registry inclusions and 17 exclusions, checked against the official protocol-training materials. Consent, bleeding diathesis, active infection, follow-up-limiting conditions and concurrent interventional trials remain explicit manual confirmations; no automated eligibility rule changes.
+- **DISCOVERY:** adds NCT04916210 as an observational reference-only profile with core and tier-specific criteria. It appears in the Database and relevant criteria tables, and is never an automated screening candidate.
+- **CLARITY:** remains actively recruiting on the maintainer’s November 4 confirmation. The app retains the separate dated registry record, which still says NOT_YET_RECRUITING, rather than claiming the registry has changed. No participating-site details are published.
+- **STEP:** adds corroborated imaging-confirmation and repeat-imaging details. Unresolved M2 territory-boundary and numeric ADC thresholds are omitted pending the current approved domain protocol. No disputed numerical rule is introduced.
+- **Sources and privacy:** STEP, MINUTE, CLARITY and DISCOVERY registry records were read November 4; other review dates are preserved. Local participation, contacts, emails and patient information remain private. Protected protocols and their snapshots are unchanged.
+
 ## v7.10.2 — 2026-11-01 — SISTER and FASTEST Part 2 removed from the Trials screener
 
 - **Trials screener:** at the owner's request, SISTER (NCT05948566) and FASTEST Part 2 (NCT07227246) are removed from the screener, the criteria tables, the Database and global search. 14 profiles remain (12 screened, 2 reference-only); no other study's criteria changed, and an independent differential check of about 80,000 randomized screening states found identical results for the remaining studies before and after the change.

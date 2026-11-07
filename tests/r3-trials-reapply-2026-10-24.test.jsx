@@ -264,8 +264,10 @@ describe('the same reproductions on the real controls in a browser', () => {
   const ichFacts = async () => {
     await page.getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).click();
     await page.getByLabel('Age (y)', { exact: true }).fill('60');
-    await page.getByLabel('NIHSS', { exact: true }).fill('10');
-    await select('GCS', '12'); await select('Pre-stroke mRS', '0'); await select('ICH location', 'bg');
+    await open$('Study-specific facts');
+    await page.getByLabel('NIHSS at presentation', { exact: true }).fill('10');
+    await page.getByLabel('GCS at presentation', { exact: true }).fill('12');
+    await select('Pre-stroke mRS', '0'); await select('ICH location', 'bg');
     await page.getByLabel('Volume (mL)', { exact: true }).fill('25');
     await select('Anticoagulant at onset', 'none');
     await open$('Optional exclusion review');

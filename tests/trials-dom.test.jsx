@@ -90,7 +90,7 @@ describe('restored independent Trials workspace', () => {
     await page.getByRole('tab', { name: 'Database', exact: true }).click();
     // The registry date and activation caveat are stated once for the page,
     // and in full in each study's details, instead of on every card.
-    expect(body).toMatch(/First-pass registry screen \(registry checked 2026-10-31(, (today|1 day ago|\d+ days ago))?\) — confirm full criteria, local activation and consent\./);
+    expect(body).toMatch(/First-pass registry screen \(registry checked 2026-10-31 to 2026-11-04(, (today|1 day ago|\d+ days ago))?\) — confirm full criteria, local activation and consent\./);
     await page.getByRole('searchbox').fill('NCT06289985');
     expect(await page.locator('#trials-database-panel article').count()).toBe(1);
     const card = await page.locator('#trials-database-panel article').innerText();
@@ -99,7 +99,7 @@ describe('restored independent Trials workspace', () => {
     expect(card).not.toContain('Local activation');
     await page.getByRole('button', { name: 'Full criteria for STEP', exact: true }).click();
     const text = await page.getByRole('dialog').innerText();
-    expect(text).toContain('Recorded registry check: 2026-10-31');
+    expect(text).toContain('Recorded registry check: 2026-11-04');
     expect(text).toContain('Last update posted, as recorded at that check: 2025-12-04; the live record may be newer.');
     expect(text).toContain('Local activation: not confirmed');
     expect(text).toContain('Inclusion criteria'); expect(text).toContain('Exclusion criteria');
@@ -187,7 +187,7 @@ describe('restored independent Trials workspace', () => {
     await page.getByRole('group', { name: 'Filter studies by status', exact: true }).getByRole('button', { name: /^Not enrolling/ }).click();
     expect(await page.locator('#trials-database-panel article').count()).toBe(0);
     await page.getByRole('button', { name: 'Clear search and filters', exact: true }).click();
-    expect(await page.locator('#trials-database-panel article').count()).toBe(14);
+    expect(await page.locator('#trials-database-panel article').count()).toBe(15);
     expect(await page.getByRole('searchbox').evaluate(el => el === document.activeElement)).toBe(true);
     await page.getByRole('group', { name: 'Filter studies by status', exact: true }).getByRole('button', { name: /^Not enrolling/ }).click();
     const closed = await page.locator('#trials-database-panel article').allInnerTexts();
@@ -226,7 +226,7 @@ describe('restored independent Trials workspace', () => {
     // Removed from the catalog on 2026-11-01.
     for (const acronym of ['SISTER', 'FASTEST-2']) expect(text).not.toContain(acronym);
     expect(await overview.getByRole('button', { name: /^Full criteria for / }).count()).toBe(11);
-    expect(text).toContain('Criteria-table reference only (not screened): PICASSO');
+    expect(text).toContain('Criteria-table reference only (not screened): PICASSO, DISCOVERY');
     expect(text).toContain('Not enrolling: CAPPRICORN-1, CAPTIVA');
     await overview.getByRole('button', { name: 'Full criteria for MINUTE', exact: true }).click();
     expect(await page.getByRole('dialog').innerText()).toContain('Minimally Invasive Neuroendoscopic Ultra-Early Targeted ICH Evacuation');
@@ -245,12 +245,18 @@ describe('restored independent Trials workspace', () => {
     });
     const banner = page.getByRole('region', { name: 'Encounter facts' });
     await banner.waitFor();
-    expect(await banner.innerText()).toMatch(/From Encounter: ICH · LKW 1 h \d{2} min · 60 y · GCS 14 · 24\.0 mL · pre-mRS 0 · on DOAC/);
+    expect(await banner.innerText()).toMatch(/From Encounter: ICH · LKW 1 h \d{2} min · 60 y · Current GCS 14 · 24\.0 mL · pre-mRS 0 · on DOAC/);
     // Nothing is applied automatically.
     expect(await page.getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).getAttribute('aria-pressed')).toBe('false');
     await banner.getByRole('button', { name: 'Use these facts', exact: true }).click();
     expect(await page.getByRole('button', { name: 'Hemorrhage (ICH)', exact: true }).getAttribute('aria-pressed')).toBe('true');
-    expect(await page.getByLabel('GCS', { exact: true }).inputValue()).toBe('14');
+    expect(await page.getByLabel('GCS', { exact: true }).count()).toBe(0);
+    const studyFacts = page.locator('#trials-screener-panel details').filter({ has: page.locator('summary', { hasText: /^Study-specific facts/ }) });
+    await studyFacts.locator('summary').click();
+    expect(await page.getByLabel('GCS at presentation', { exact: true }).inputValue()).toBe('');
+    expect(await page.getByLabel('NIHSS at presentation', { exact: true }).inputValue()).toBe('');
+    await page.getByLabel('GCS at presentation', { exact: true }).fill('14');
+    await page.getByLabel('NIHSS at presentation', { exact: true }).fill('8');
     expect(await page.getByLabel('Volume (mL)').inputValue()).toBe('24');
     expect(await page.getByLabel('Anticoagulant at onset').inputValue()).toBe('doac');
     expect(Number(await page.getByLabel('Exact hours from LKW').inputValue())).toBeCloseTo(1.5, 1);

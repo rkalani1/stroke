@@ -101,14 +101,14 @@ describe('tri-state: potential match / insufficient information / does not meet 
   });
 
   it('only a study with every modeled MINUTE criterion and exclusion answered is a potential match', () => {
-    const state = S({ classification: 'ich', age: 70, onsetVal: 1, onsetUnit: 'hours', nihss: 10, gcs: 14, preMrs: 0, ichVolume: 20, ichLocation: 'bg', exclusions: { exDoacLmwhAtOnset: false, exSecondaryIch: false, exMidbrain: false, exPregnancy: false } });
+    const state = S({ classification: 'ich', age: 70, onsetVal: 1, onsetUnit: 'hours', nihss: 10, gcs: 14, minutePresentationNihss: 10, minutePresentationGcs: 14, preMrs: 0, ichVolume: 20, ichLocation: 'bg', exclusions: { exDoacLmwhAtOnset: false, exSecondaryIch: false, exMidbrain: false, exPregnancy: false } });
     const r = evaluateAll(state);
     expect(potentialMatches(r).map(i => i.trial.acronym)).toEqual(['MINUTE']);
     expect(insufficientInformation(r).map(i => i.trial.acronym)).not.toContain('MINUTE');
     expect(r.eligible).toEqual([]);
     expect(r.briefingNote).toContain('POTENTIAL MATCH (1) — every modeled criterion met; not a definitive match\n- MINUTE (NCT07260916)');
     // Unmodeled registry items still remain to confirm.
-    expect(toConfirm(find(r, 'MINUTE')[1]).join(' ')).toMatch(/randomization within 2 hours of arrival/);
+    expect(toConfirm(find(r, 'MINUTE')[1]).join(' ')).toContain('actual randomization can occur within 16 hours from LKW AND within 2 hours of arrival');
     // One modeled fact left unknown keeps it insufficient information.
     const partial = evaluateAll(S({ ...state, exclusions: { ...state.exclusions, exPregnancy: undefined } }));
     expect(potentialMatches(partial)).toEqual([]);
@@ -222,7 +222,7 @@ describe('registry wording restored in to-confirm prompts', () => {
   it('MINUTE prompts randomization within 2 h of arrival and the full secondary-cause list (TA-F10)', () => {
     // NCT07260916 inclusion 8 and exclusions 1, 10, 11.
     const c = toConfirm(evaluate('MINUTE', { classification: 'ich' })).join(' ');
-    expect(c).toMatch(/randomization within 2 hours of arrival/);
+    expect(c).toContain('actual randomization can occur within 16 hours from LKW AND within 2 hours of arrival');
     expect(c).toMatch(/hemorrhagic transformation/);
     expect(c).toMatch(/cavernous malformation/);
     expect(c).toMatch(/venous infarct/);
@@ -336,7 +336,7 @@ describe('CLARITY follows the 2026-10-15 registry version (TO-1)', () => {
     expect(evaluate('CLARITY', base).pendingCriteria).toContain('Confirm single or dual antithrombotic therapy with aspirin, clopidogrel and/or ticagrelor per guidelines');
     // Re-read 2026-10-31 (last update posted 2026-10-26): inclusion 4 and exclusion 1 still read as stored.
     expect(t.externalMetadata.registryLastUpdatePosted).toBe('2026-10-26');
-    expect(t.sourceGaps.find(g => g.startsWith('CT.gov eligibility'))).toMatch(/^CT\.gov eligibility \(re-read 2026-10-31; last update posted 2026-10-26; criteria still match the stored wording\)/);
+    expect(t.sourceGaps.find(g => g.startsWith('CT.gov eligibility'))).toMatch(/^CT\.gov eligibility \(re-read 2026-11-04; last update posted 2026-10-26; criteria still match the stored wording\)/);
   });
   it('labels the heart-failure and ICH exclusions as the registry does', () => {
     expect(EXCLUSION_ITEMS.find(i => i.id === 'exCongestiveHeartFailure').label).not.toMatch(/moderate|severe/i);
@@ -385,7 +385,7 @@ describe('registry check dates are truthful per profile (TO-2, TO-3, TO-4)', () 
     // updated in between; the other 13 dates were re-established unchanged. Repeated on 2026-10-31:
     // CLARITY, TELE-REHAB-2 and CAPTIVA were updated on 2026-10-26; the other 13 dates matched exactly.
     // SISTER and FASTEST-2 were removed from the catalog on 2026-11-01.
-    const expected = { STEP: '2025-12-04', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', CLARITY: '2026-10-26', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-26', CAPTIVA: '2026-10-26' };
+    const expected = { STEP: '2025-12-04', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', CLARITY: '2026-10-26', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-26', CAPTIVA: '2026-10-26', DISCOVERY: '2026-09-14' };
     expect(screenerTrials.map(t => t.acronym).sort()).toEqual(Object.keys(expected).sort());
     for (const t of screenerTrials) {
       const m = t.externalMetadata;
@@ -426,7 +426,7 @@ describe('profile metadata hygiene (TO-5, TO-6, TO-7)', () => {
     const { trialsEnvelopeCounts } = await import('../../../scripts/generate-agent-assets.mjs');
     const { eligibilityTables } = await import('../eligibilityTables.js');
     const counts = trialsEnvelopeCounts(screenerTrials, eligibilityTables);
-    expect(counts).toEqual({ count: 14, studyCount: 14, tableCount: eligibilityTables.length });
+    expect(counts).toEqual({ count: 15, studyCount: 15, tableCount: eligibilityTables.length });
     expect(counts.count).not.toBe(4); // studies, tables, scope, statusCurrency
   });
 });

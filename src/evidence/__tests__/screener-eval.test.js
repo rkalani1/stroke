@@ -26,16 +26,16 @@ describe('screenerTrials — data integrity & compliance', () => {
   // PICASSO (recruiting) and CAPTIVA (active, not recruiting) moved from
   // table-only rows into reference-only profiles so Database can find them.
   // 2026-11-01: SISTER and FASTEST Part 2 were removed at the owner's request.
-  it('stores 14 study profiles: 12 screenable plus 2 reference-only', () => {
-    expect(screenerTrials.length).toBe(14);
-    expect(screenerTrials.filter(t => t.referenceOnly).map(t => t.acronym).sort()).toEqual(['CAPTIVA', 'PICASSO']);
+  it('stores 15 study profiles with three reference-only profiles', () => {
+    expect(screenerTrials.length).toBe(15);
+    expect(screenerTrials.filter(t => t.referenceOnly).map(t => t.acronym).sort()).toEqual(['CAPTIVA', 'DISCOVERY', 'PICASSO']);
   });
 
   it('includes the expected acronyms and no unregistered placeholders', () => {
     const acronyms = screenerTrials.map((t) => t.acronym);
     [
       'STEP', 'TESTED', 'VERIFY', 'ASPIRE', 'SATURN', 'MINUTE', 'CLARITY', 'INTERCEPT',
-      'CAPPRICORN-1', 'SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2', 'PICASSO', 'CAPTIVA'
+      'CAPPRICORN-1', 'SCOUTS-3', 'MR-PICS', 'TELE-REHAB-2', 'PICASSO', 'CAPTIVA', 'DISCOVERY'
     ].forEach((acr) => expect(acronyms).toContain(acr));
     expect(acronyms).not.toContain('ESUS');
     expect(acronyms).not.toContain('MOCHA');
@@ -261,7 +261,7 @@ describe('screening summary generation', () => {
     const res = evaluateAll(state);
     const text = res.briefingNote;
     // CLARITY is listed and marked recruiting ahead of its registry record, so the status line names that exception.
-    expect(text).toMatch(/^TRIAL SCREEN — first pass \(registry checked 2026-10-31\)\nStatuses are overall registry statuses at that check, except where marked "registry not yet updated"; local site activation is not confirmed\./);
+    expect(text).toMatch(/^TRIAL SCREEN — first pass \(registry checked 2026-10-31 to 2026-11-04\)\nStatuses are overall registry statuses at that check, except where marked "registry not yet updated"; local site activation is not confirmed\./);
     expect(text).toContain('- CLARITY (NCT07174414) · Recruiting (registry not yet updated)');
     expect(text).toContain('Inputs: Ischemic stroke · LKW 12.0 h · age 65 · NIHSS 8 · pre-mRS 0 · ASPECTS 8');
     expect(res.pending.length).toBeGreaterThan(0);

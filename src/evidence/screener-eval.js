@@ -102,7 +102,7 @@ const OPERATORS = {
 };
 
 const missing = v => v === undefined || v === null || (typeof v === 'string' && (!v.trim() || v === 'unselected')) || (typeof v === 'number' && !Number.isFinite(v));
-const SCORE_RANGES = { nihss: [0, 42], aspects: [0, 10], gcs: [3, 15], preMrs: [0, 6], currentMrs: [0, 6], abcd2: [0, 7] };
+const SCORE_RANGES = { nihss: [0, 42], minutePresentationNihss: [0, 42], aspects: [0, 10], gcs: [3, 15], minutePresentationGcs: [3, 15], preMrs: [0, 6], currentMrs: [0, 6], abcd2: [0, 7] };
 // Physiologically implausible entries stay unknown instead of counting as met facts.
 const VALUE_RANGES = { age: [0, 120], ichVolume: [0, 300] };
 const CLASSIFICATIONS = ['ischemic', 'tia', 'ich'];
@@ -172,6 +172,7 @@ function evaluateCriterion(c, p) {
 
 const FIELD_TEXT = {
   age: 'age', nihss: 'NIHSS', aspects: 'ASPECTS', gcs: 'GCS', preMrs: 'pre-stroke mRS', currentMrs: 'current (post-stroke) mRS',
+  minutePresentationNihss: 'NIHSS at presentation', minutePresentationGcs: 'GCS at presentation',
   vessel: 'occlusion site', ichLocation: 'ICH location', ichVolume: 'ICH volume (mL)', classification: 'event type',
   onsetHours: 'hours from LKW', onsetDays: 'days from LKW', onsetMonths: 'months from LKW',
   afibHistory: 'documented clinical atrial fibrillation', afOrFlutterHistory: 'atrial fibrillation or flutter', statin: 'statin use at onset',
@@ -228,6 +229,10 @@ export function createInitialScreenerState() {
     nihssBulkZero: 0,
     aspects: 'unselected',
     gcs: 'unselected',
+    // These are source-specific presentation assessments, never inferred from
+    // current Encounter scores (or from the generic screener NIHSS/GCS).
+    minutePresentationNihss: 'unselected',
+    minutePresentationGcs: 'unselected',
     preMrs: 'unselected',
     currentMrs: 'unselected',
     vessel: 'unselected',
@@ -296,6 +301,8 @@ export function buildScreenerParams(state, nowMs = null) {
     nihss: state.nihss,
     aspects: state.aspects,
     gcs: state.gcs,
+    minutePresentationNihss: state.minutePresentationNihss,
+    minutePresentationGcs: state.minutePresentationGcs,
     preMrs: state.preMrs,
     currentMrs: state.currentMrs ?? 'unselected',
     vessel: state.vessel,
@@ -554,6 +561,8 @@ export const YES_NO = [['true', 'Yes'], ['false', 'No']];
 // Facts only some studies test, in display order: [state key, label, whole-number
 // maximum or options]. Booleans are unknown/yes/no; lists offer the values the criteria test.
 const STUDY_FACT_FIELDS = [
+  ['minutePresentationNihss', 'NIHSS at presentation', 42],
+  ['minutePresentationGcs', 'GCS at presentation', 15],
   ['presentedWithin24h', 'Presented ≤ 24 h from LKW'],
   // Documented AF also establishes it when this is left unanswered.
   ['afOrFlutterHistory', 'Non-valvular AF or atrial flutter'],
@@ -573,7 +582,7 @@ export const STUDY_FACTS = Object.fromEntries(CLASSIFICATIONS.map(cls => [cls, S
 const KEY_FACTS = {
   ischemic: ['age', 'nihss', 'preMrs', 'aspects', 'vessel', 'afibHistory', 'takingOac'],
   tia: ['age', 'afibHistory', 'takingOac'],
-  ich: ['age', 'nihss', 'gcs', 'preMrs', 'ichLocation', 'ichVolume', 'anticoagulant', 'statin', 'afibHistory']
+  ich: ['age', ...(studiesUsing('nihss', 'ich').length ? ['nihss'] : []), ...(studiesUsing('gcs', 'ich').length ? ['gcs'] : []), 'preMrs', 'ichLocation', 'ichVolume', 'anticoagulant', 'statin', 'afibHistory']
 };
 // Facts each classification shows a control for. Facts outside this set are
 // neither shown nor printed, so the copied summary matches the screen.
