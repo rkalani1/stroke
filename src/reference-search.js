@@ -26,23 +26,45 @@ export const normalizeSearch = value => ALIASES.reduce((text, [pattern, replacem
 // skips "initiation"; identifiers with digits ("tr2") and longer terms match anywhere.
 export const wordStart = term => /^[a-z]{1,3}$/.test(term);
 export const hasTerm = (text, term) => wordStart(term) ? ` ${text}`.includes(` ${term}`) : text.includes(term);
+// Records never change after the reference load, so each records array keeps its identifier patterns and
+// each record its normalized search and rank texts; a keystroke then costs a substring test per record.
+const prepared = new WeakMap();
+function prepare(records) {
+  let entry = prepared.get(records);
+  if (!entry) {
+    // Join digit boundaries only for known identifiers, not clinical phrases such as "DAPT 21 days".
+    const identifiers = records.filter(record => /\d/.test(record.id)).map(record => {
+      const parts = normalizeSearch(record.id).match(/[a-z]+|\d+/g);
+      return new RegExp(`\\b${parts.map(part => /^\d+$/.test(part) ? '\\d+' : part).join(' *')}\\b`, 'g');
+    });
+    const searchableText = value => identifiers.reduce((text, pattern) => text.replace(pattern, name => name.replace(/ /g, '')), normalizeSearch(value));
+    entry = { searchableText, texts: new WeakMap() };
+    prepared.set(records, entry);
+  }
+  return entry;
+}
 export function searchReference(records, query = '', setting = 'all') {
-  // Join digit boundaries only for known identifiers, not clinical phrases such as "DAPT 21 days".
-  const identifiers = records.filter(record => /\d/.test(record.id)).map(record => {
-    const parts = normalizeSearch(record.id).match(/[a-z]+|\d+/g);
-    return new RegExp(`\\b${parts.map(part => /^\d+$/.test(part) ? '\\d+' : part).join(' *')}\\b`, 'g');
-  });
-  const searchableText = value => identifiers.reduce((text, pattern) => text.replace(pattern, name => name.replace(/ /g, '')), normalizeSearch(value));
+  const { searchableText, texts } = prepare(records);
+  const textOf = record => {
+    let cached = texts.get(record);
+    if (!cached) {
+      cached = {
+        searchable: searchableText([record.id, record.title, record.category || '', record.question || '', record.summary || '', ...(record.consider || []), ...(record.recommendations || []).flatMap(rec => [rec.text, rec.id]), record.headline || '', record.population || '', record.comparison || '', record.result || '', ...record.keywords, ...record.sources.map(source => source.title)].join(' ')),
+        exact: [record.id, record.title, ...record.keywords, ...(record.recommendations || []).map(rec => rec.id)].map(searchableText),
+        title: ` ${searchableText(record.title)} `
+      };
+      texts.set(record, cached);
+    }
+    return cached;
+  };
   const phrase = searchableText(query), words = phrase.split(' ').filter(Boolean);
   // A whole question ('what is the bp target for ich') matches like its content words.
   const content = words.filter(term => !STOPWORDS.has(term)), terms = words.length > 1 && content.length ? content : words;
-  const rank = record => [record.id, record.title, ...record.keywords, ...(record.recommendations || []).map(rec => rec.id)].some(value => searchableText(value) === phrase) ? 2
-    : terms.every(term => ` ${searchableText(record.title)} `.includes(` ${term} `)) ? 1 : 0;
-  return records.filter(record => {
-    if (setting !== 'all' && !record.settings.includes(setting)) return false;
-    const searchable = searchableText([record.id, record.title, record.category || '', record.question || '', record.summary || '', ...(record.consider || []), ...(record.recommendations || []).flatMap(rec => [rec.text, rec.id]), record.headline || '', record.population || '', record.comparison || '', record.result || '', ...record.keywords, ...record.sources.map(source => source.title)].join(' '));
-    return terms.every(term => hasTerm(searchable, term));
-  }).sort((a, b) => terms.length ? rank(b) - rank(a) : 0);
+  const rank = record => { const { exact, title } = textOf(record); return exact.some(value => value === phrase) ? 2 : terms.every(term => title.includes(` ${term} `)) ? 1 : 0; };
+  const matched = records.filter(record => (setting === 'all' || record.settings.includes(setting)) && terms.every(term => hasTerm(textOf(record).searchable, term)));
+  if (!terms.length) return matched;
+  // Rank each match once; the stable sort keeps the data order within a rank, as before.
+  return matched.map(record => ({ record, rank: rank(record) })).sort((a, b) => b.rank - a.rank).map(item => item.record);
 }
 // A topic's bedside bottom line: the opening sentence of its summary, shown verbatim in the
 // collapsed Evidence row. A sentence ends at . ! or ? followed by a space and a capital, digit or

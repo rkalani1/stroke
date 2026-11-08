@@ -181,7 +181,8 @@ export default function CaseBar({ state, documentLabel, blocked, onCopy, copySta
       {(acuteIschemic || c.administered) && <Item label={c.dose?.label || 'Dose'} value={c.dose?.value} detail={c.dose?.detail} flag={c.dose?.flag} title={c.dose?.title || (c.dose ? 'Dose arithmetic only; not an eligibility decision' : c.doseNote)} />}
     </div>
     <div className="case-bar__actions">
-      <a className="case-bar__link" href={`#/protocols/${sub}/qr-dose`} onClick={revealIfCurrent(`#/protocols/${sub}/qr-dose`, 'qr-dose')}>Dose table</a>
+      {/* Thrombolytic dosing only where it can apply: acute ischemic stroke, a recorded administration, or no diagnosis yet. */}
+      {(acuteIschemic || c.administered || !state.note.diagnosisCategory) && <a className="case-bar__link" href={`#/protocols/${sub}/qr-dose`} onClick={revealIfCurrent(`#/protocols/${sub}/qr-dose`, 'qr-dose')}>Dose table</a>}
       {bpLink && <a className="case-bar__link" href={bpHref} onClick={revealIfCurrent(bpHref, 'qr-bp')}>BP targets</a>}
       {c.administered && <a className="case-bar__link" href="#/protocols/ischemic/qr-sich" onClick={revealIfCurrent('#/protocols/ischemic/qr-sich', 'qr-sich')}>Post-lytic bleed</a>}
       {c.administered && c.aceInhibitor && <a className="case-bar__link" href="#/protocols/ischemic/qr-angioedema" onClick={revealIfCurrent('#/protocols/ischemic/qr-angioedema', 'qr-angioedema')}>Angioedema</a>}

@@ -395,7 +395,7 @@ describe('Trials banner, timing note and database pick in a browser (rv-behavior
       // A truncated shared link is already in the address bar when the database opens (mount), then arrives again by hashchange.
       await page.evaluate(() => { location.hash = '#/trials/database?q=%'; });
       await page.evaluate(() => window.setSub('database'));
-      const search = page.getByLabel('Search the study database by acronym, name or NCT number');
+      const search = page.getByLabel('Search acronym, name or NCT number in the study database');
       await search.waitFor();
       expect(await search.inputValue()).toBe('');
       await page.evaluate(() => { location.hash = '#/trials/database?q=%E0%A4%A'; });

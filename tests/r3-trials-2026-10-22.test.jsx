@@ -500,11 +500,11 @@ describe('Encounter import and global-search pick in a browser', () => {
     await open();
     try {
       await page.evaluate(() => window.setSub('database'));
-      await page.getByLabel('Search the study database by acronym, name or NCT number').fill('STEP');
+      await page.getByLabel('Search acronym, name or NCT number in the study database').fill('STEP');
       expect(await page.locator('#trials-database-panel article[data-trial="INTERCEPT"]').count()).toBe(0);
       await page.evaluate(() => { location.hash = '#/trials/database?q=INTERCEPT'; });
       await page.locator('#trials-database-panel article[data-trial="INTERCEPT"]').waitFor();
-      expect(await page.getByLabel('Search the study database by acronym, name or NCT number').inputValue()).toBe('INTERCEPT');
+      expect(await page.getByLabel('Search acronym, name or NCT number in the study database').inputValue()).toBe('INTERCEPT');
       expect(await page.locator('#trials-database-panel article').evaluateAll(cards => cards.map(c => c.dataset.trial))).toEqual(['INTERCEPT']);
     } finally { await page.close(); }
   }, 30000);

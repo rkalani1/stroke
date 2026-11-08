@@ -368,7 +368,7 @@ async function main() {
       await tables.getByRole('button', { name: 'Ischemic stroke', exact: true }).waitFor({ state: 'visible' });
       await page.getByRole('tab', { name: 'Database', exact: true }).click();
       const database = page.getByRole('tabpanel', { name: 'Database', exact: true });
-      await database.getByRole('searchbox', { name: 'Search the study database by acronym, name or NCT number', exact: true }).fill('STEP');
+      await database.getByRole('searchbox', { name: 'Search acronym, name or NCT number in the study database', exact: true }).fill('STEP');
       assert((await database.innerText()).includes('STEP'));
       assert(!(await database.innerText()).includes('PICASSO'));
       await page.screenshot({ path: path.join(outDir, 'trials-desktop.png'), fullPage: true });
@@ -669,6 +669,8 @@ async function main() {
         // The sticky bar wraps instead of clipping, keeps the 4.5 h pill uncovered and publishes its height.
         for(const [width,height] of [[360,844],[390,844],[667,375],[600,900],[834,900],[1180,900],[1232,900],[1280,900],[1440,900]]) {
           await page.setViewportSize({width,height});await page.evaluate(()=>window.scrollTo(0,0));await page.waitForTimeout(150);
+          // The bar republishes its height from a ResizeObserver; read after a rendering opportunity (a stale value still fails after 2 s).
+          await page.waitForFunction(()=>{const bar=document.querySelector('.case-bar');return Math.abs(Math.ceil(bar.getBoundingClientRect().height)-parseInt(getComputedStyle(document.documentElement).getPropertyValue('--case-bar-h'),10))<=1;},null,{polling:'raf',timeout:2000}).catch(()=>{});
           const fit=await page.evaluate(()=>{const pill=document.querySelector('.case-bar__window'),r=pill.getBoundingClientRect(),hit=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2),items=document.querySelector('.case-bar__items');return {overflow:document.documentElement.scrollWidth>innerWidth+1,pill:Boolean(hit&&pill.contains(hit)),clipped:items.scrollWidth>items.clientWidth+1,bar:Math.ceil(document.querySelector('.case-bar').getBoundingClientRect().height),published:parseInt(getComputedStyle(document.documentElement).getPropertyValue('--case-bar-h'),10)};});
           assert.equal(fit.overflow,false,`case bar overflows at ${width}px`);assert(fit.pill,`4.5 h pill covered at ${width}px`);assert.equal(fit.clipped,false,`case bar items clipped at ${width}px`);assert(Math.abs(fit.bar-fit.published)<=1,`--case-bar-h ${fit.published} vs bar ${fit.bar} at ${width}px`);
         }
@@ -864,7 +866,7 @@ async function main() {
         assert.deepEqual(cache.reference, { appVersion: await p.locator('.app-shell').getAttribute('data-version'), schemaVersion: '2.0.0', topics: reference.data.topics.length, studies: reference.data.studies.length, calculators: reference.data.calculators.length });
         assert.equal(cache.reference.appVersion, reference._meta.appVersion);
         await offline.setOffline(true);await p.reload({waitUntil:'domcontentloaded'});await setupIschemic(p);await p.getByLabel('Manual rationale / recommendations',{exact:true}).fill('Synthetic offline encounter; specialist review pending.');const items=nihssRows(p);await openDetails(items.first());for(let i=0;i<15;i++) await scoreNihssZero(items.nth(i));assert((await p.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));assert((await(await generate(p)).inputValue()).includes('NIHSS score: 0/42'));
-        await p.getByRole('link',{name:'Trials',exact:true}).click();await p.getByRole('heading',{name:'Trials',exact:true}).waitFor();await p.getByRole('tab',{name:'Database',exact:true}).click();await p.getByRole('searchbox',{name:'Search the study database by acronym, name or NCT number',exact:true}).fill('STEP');assert((await p.getByRole('tabpanel',{name:'Database',exact:true}).innerText()).includes('STEP'));await p.screenshot({path:path.join(outDir,'trials-offline-mobile.png'),fullPage:true});
+        await p.getByRole('link',{name:'Trials',exact:true}).click();await p.getByRole('heading',{name:'Trials',exact:true}).waitFor();await p.getByRole('tab',{name:'Database',exact:true}).click();await p.getByRole('searchbox',{name:'Search acronym, name or NCT number in the study database',exact:true}).fill('STEP');assert((await p.getByRole('tabpanel',{name:'Database',exact:true}).innerText()).includes('STEP'));await p.screenshot({path:path.join(outDir,'trials-offline-mobile.png'),fullPage:true});
         assert.equal(await p.evaluate(() => navigator.onLine), false);
         await p.getByRole('link', { name: 'Calculators', exact: true }).click();
         await p.getByRole('heading', { name: 'Calculators', exact: true }).waitFor();
