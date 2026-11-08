@@ -690,6 +690,8 @@ a.case-bar__badge::before { content: ''; position: absolute; inset: -8px -3px; }
   html:not([data-surface="protocols"]) :is(.reading-index, .calc-index) { top: 12px; max-height: calc(100dvh - 24px); }
   html:not([data-surface="protocols"]) .trial-screening-filters { top: 1rem; max-height: calc(100dvh - 2rem); }
 }
+/* Trial-criteria dialog: title and Close stay visible while it scrolls, except on short screens. */
+@media (min-height: 441px) { .trial-details__head { position: sticky; top: 0; } }
 /* Global search: a visible focus indicator (2.4.7) and a 4.5:1 placeholder (1.4.3). */
 .quick-search__field:focus-within { outline: 2px solid rgb(var(--c-focus)); outline-offset: -2px; }
 .quick-search__field input::placeholder { color: var(--mute); }

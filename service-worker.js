@@ -108,7 +108,7 @@ const APP_CHUNKS = [
   "./chunks/QuickSearch-ZDBPYRCR.js",
   "./chunks/Reference-G5TQRGNK.js",
   "./chunks/Tools-GTTP3WWZ.js",
-  "./chunks/Trials-GUJ5ME65.js"
+  "./chunks/Trials-U2GWQ2GP.js"
 ];
 // END GENERATED APP CHUNKS
 

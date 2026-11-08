@@ -19,9 +19,9 @@
   "files": [
     {
       "path": "app.js",
-      "bytes": 110078,
-      "gzipBytes": 34371,
-      "sha256": "88c4f3727f50c7d882993801af78848210ff5395d6cd14ed9c6fa5da1792f83b"
+      "bytes": 110183,
+      "gzipBytes": 34397,
+      "sha256": "8b73f284ac4256f9899143b97c6d4cdcc47a8f62797a2e5d952829b5ad654c35"
     },
     {
       "path": "chunks/chunk-3C5ZDFRN.js",
@@ -150,10 +150,10 @@
       "sha256": "ca201018369e1b275112d5c207e1a3fe46330ce244ecc345f6d9a4ce3d8a8366"
     },
     {
-      "path": "chunks/Trials-GUJ5ME65.js",
-      "bytes": 47081,
-      "gzipBytes": 14174,
-      "sha256": "23afe009ed893441d7b06fdd91284ade4861226307a7653c9659a7d369565e33"
+      "path": "chunks/Trials-U2GWQ2GP.js",
+      "bytes": 47088,
+      "gzipBytes": 14184,
+      "sha256": "b24f295bc317e73e2999889a3b8496ea7493cd8cd06bbb2f3377d6fca5e37e26"
     }
   ]
 }
