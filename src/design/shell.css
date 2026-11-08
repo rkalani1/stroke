@@ -235,7 +235,7 @@ html[data-theme="dark"] .workspace-result[data-tone="value"] { color: var(--ink)
 .safety-group[data-tier="correctable"] > legend { color: var(--accent-ink); }
 .workspace-secondary-action[aria-disabled="true"] { opacity: .55; cursor: not-allowed; }
 /* Line up checklist selects across a row when some labels wrap. */
-@media (min-width: 769px) { .safety-group .workspace-field > span { display: flex; align-items: flex-end; min-height: 3.2em; } }
+@media (min-width: 481px) { .safety-group .workspace-field > span { display: flex; align-items: flex-end; min-height: 3.2em; } }
 .nihss-option input:focus-visible + span { outline: 2px solid rgb(var(--c-focus)); outline-offset: 2px; }
 .vessel-chips { margin: var(--space-6) 0 var(--space-2); padding: 0; border: 0; min-width: 0; }
 .vessel-chips legend { margin-bottom: var(--space-3); font-size: var(--text-md); font-weight: 600; color: var(--ink-2); }
@@ -661,7 +661,7 @@ a.case-bar__badge::before { content: ''; position: absolute; inset: -8px -3px; }
 
 /* Links that leave the app need internet: an arrow-out marker (decorative mask, never read aloud).
    Protocols keep their own link styling. */
-:is(.workspace-external, .reference-surface, .tools-surface, .trials-surface, .encounter-workflow) a[target="_blank"]::after { content: ''; display: inline-block; flex-shrink: 0; width: .8em; height: .8em; margin-left: var(--space-2); vertical-align: -.05em; background: currentColor; -webkit-mask: var(--icon-external) center / contain no-repeat; mask: var(--icon-external) center / contain no-repeat; }
+:is(.workspace-external, .reference-surface, .tools-surface, .trials-surface, .trial-details, .encounter-workflow) a[target="_blank"]::after { content: ''; display: inline-block; flex-shrink: 0; width: .8em; height: .8em; margin-left: var(--space-2); vertical-align: -.05em; background: currentColor; -webkit-mask: var(--icon-external) center / contain no-repeat; mask: var(--icon-external) center / contain no-repeat; }
 .workspace-offline { margin: 0; }
 .workspace-offline:not(:empty) { width: fit-content; margin: var(--space-4) 0 0; padding: var(--space-2) var(--space-6); border-radius: var(--radius-pill); background: var(--caution-soft); color: var(--caution); font-size: var(--text-sm); font-weight: 600; }
 
@@ -677,3 +677,37 @@ a.case-bar__badge::before { content: ''; position: absolute; inset: -8px -3px; }
   .nihss-row { padding-inline: var(--space-2); }
 }
 @media (max-width: 359px) { .nihss-options:has(> :nth-child(5)) { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* 7.11.0 review fixes (outside the Protocols tab). */
+/* Short viewports (phone landscape, 200-400% zoom): the header and case bar scroll with the page instead of
+   covering most of it, so content and keyboard focus stay visible (WCAG 1.4.10, 2.4.11). The Protocols
+   surface keeps its sticky chrome and offsets unchanged. */
+@media (max-height: 440px) {
+  html:not([data-surface="protocols"]) :is(.workspace-header, .case-bar) { position: static; }
+  html:not([data-surface="protocols"]) { scroll-padding-top: 8px; }
+  html[data-surface="encounter"] .encounter-workflow :is(h2, h3, input, select, textarea, fieldset, .tool-target, .encounter-details) { scroll-margin-top: 0; }
+  html[data-surface="encounter"] :is(#workspace-main, #calc-defuse3, #calc-alteplase) { scroll-margin-top: 0; }
+  html:not([data-surface="protocols"]) :is(.reading-index, .calc-index) { top: 12px; max-height: calc(100dvh - 24px); }
+  html:not([data-surface="protocols"]) .trial-screening-filters { top: 1rem; max-height: calc(100dvh - 2rem); }
+}
+/* Global search: a visible focus indicator (2.4.7) and a 4.5:1 placeholder (1.4.3). */
+.quick-search__field:focus-within { outline: 2px solid rgb(var(--c-focus)); outline-offset: -2px; }
+.quick-search__field input::placeholder { color: var(--mute); }
+/* Wide Evidence index: the topic count sits apart from its section heading. */
+.reading-index h2 { display: flex; justify-content: space-between; gap: var(--space-4); }
+.reading-index h2 > span { font: 400 var(--text-xs)/var(--leading-none) var(--mono-font); letter-spacing: 0; text-transform: none; color: var(--mute); }
+/* Reference tiles keep the same ink in both themes (a class-less dark link rule was turning them teal). */
+html[data-theme="dark"] .workspace-external a { color: var(--ink); }
+html[data-theme="dark"] .workspace-external a:hover { color: var(--accent-ink); }
+/* Forced colors (Windows High Contrast): selected, pressed and current states, arrow-out markers and the
+   filled Copy button keep a visible boundary. Scoped away from the Protocols tab. */
+@media (forced-colors: active) {
+  #tabpanel-encounter :is(.segmented, .unit-toggle, .consultation-switch, .nihss-option) input:checked + span,
+  .trials-surface [role="tab"][aria-selected="true"],
+  :is(.vessel-chips, .trials-surface) button[aria-pressed="true"],
+  .workspace-secondary > a[aria-current="page"],
+  :is(.reading-index, .calc-index) button[aria-current="true"] { forced-color-adjust: none; background: Highlight; color: HighlightText; border-color: Highlight; }
+  #tabpanel-encounter .nihss-option input:checked + span :is(b, small) { color: HighlightText; }
+  :is(.workspace-external, .reference-surface, .tools-surface, .trials-surface, .trial-details, .encounter-workflow) a[target="_blank"]::after { forced-color-adjust: none; background: LinkText; }
+  .case-bar button { border: 1px solid ButtonText; }
+}

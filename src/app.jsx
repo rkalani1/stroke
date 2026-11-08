@@ -23,7 +23,7 @@ const Reference = lazy(() => import('./Reference.jsx').then(module => ({ default
 const Tools = lazy(() => import('./Tools.jsx'));
 const QuickSearch = lazy(() => import('./components/QuickSearch.jsx'));
 const QuickReference = lazy(() => import('./components/QuickReference.jsx'));
-const APP_VERSION = '7.10.4';
+const APP_VERSION = '7.11.0';
 const getPublicDemoMode = () => {
   if (BUILD_PUBLIC_DEMO) return true;
   return /(^|\.)github\.io$/i.test(window.location.hostname || '');
@@ -53,6 +53,7 @@ class SurfaceBoundary extends React.Component {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
   render() {
+    if (this.state.failed && this.props.label) return <section role="alert" className="retirement-message"><h1>{this.props.label} unavailable</h1><p>The {this.props.label.toLowerCase()} download failed. Your Encounter entries remain in this session. Return to Encounter, or explicitly reload when connected to retry; reloading clears the session.</p><p className="workspace-inline-links"><a href="#/encounter">Return to Encounter</a></p><button type="button" className="workspace-secondary-action" onClick={() => { if (window.confirm('Reload to retry the download? Current encounter entries will be cleared.')) location.reload(); }}>Reload to retry</button></section>;
     return this.state.failed ? <section role="alert"><h1>{this.props.label || 'Protocols'} unavailable</h1><p>The {(this.props.label || 'Protocols').toLowerCase()} download failed. Your Encounter entries remain in this session. Return to Encounter, or explicitly reload when connected to retry; reloading clears the session.</p><a href="#/encounter">Return to Encounter</a><button type="button" onClick={() => { if (window.confirm('Reload to retry the download? Current encounter entries will be cleared.')) location.reload(); }}>Reload to retry</button></section> : this.props.children;
   }
 }
@@ -100,15 +101,25 @@ function App() {
     window.addEventListener('online', sync); window.addEventListener('offline', sync);
     return () => { window.removeEventListener('online', sync); window.removeEventListener('offline', sync); };
   }, []);
-  // The More panel closes on Escape or a click outside it.
+  // The More panel closes on Escape, a press outside it, or focus moving outside it, so it never covers
+  // the focused control (WCAG 2.4.11). A dialog it opened (the install sheet is portalled) is not outside.
   useEffect(() => {
     const close = event => {
       const panel = utilitiesRef.current;
       if (!panel?.open) return;
-      if (event.type === 'keydown' ? event.key === 'Escape' : !panel.contains(event.target)) { panel.open = false; if (event.type === 'keydown') panel.querySelector('summary')?.focus(); }
+      if (event.type === 'keydown') {
+        if (event.key !== 'Escape') return;
+        const inside = panel.contains(document.activeElement);
+        panel.open = false;
+        if (inside) panel.querySelector('summary')?.focus();
+        return;
+      }
+      const target = event.target;
+      if (!(target instanceof Node) || panel.contains(target) || (target instanceof Element && target.closest('[role="dialog"]'))) return;
+      panel.open = false;
     };
-    document.addEventListener('keydown', close); document.addEventListener('pointerdown', close);
-    return () => { document.removeEventListener('keydown', close); document.removeEventListener('pointerdown', close); };
+    document.addEventListener('keydown', close); document.addEventListener('pointerdown', close); document.addEventListener('focusin', close);
+    return () => { document.removeEventListener('keydown', close); document.removeEventListener('pointerdown', close); document.removeEventListener('focusin', close); };
   }, []);
   useLayoutEffect(() => {
     const header = document.querySelector('.workspace-header');

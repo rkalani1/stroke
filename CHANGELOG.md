@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v7.11.0 — 2026-11-07 — Accessibility, layout and search fixes (outside the Protocols tab)
+
+From a read-only audit of accessibility (axe-core across 136 page states plus keyboard, zoom, forced-colors and reflow checks), layout (690 captured states at six widths in both themes) and performance. The Protocols tab is unchanged.
+
+- **Trials:** on phones and tablets, "View N possible candidates" opened the Retired destination page (its `#trial-results` link was read as a route); it now scrolls to the results and focuses the result summary. The trial-criteria dialog keeps its title and Close button visible while its body scrolls. Registry links show one external-link marker instead of two. The database search's accessible name now starts with its visible label (WCAG 2.5.3).
+- **Case bar:** the thrombolytic "Dose table" link is shown only for acute ischemic stroke, a recorded administration, or before a diagnosis is chosen, no longer in ICH, SAH, TIA or other encounters.
+- **Short screens (phone landscape, 200–400% zoom):** at 440 px tall or less, the header and case bar scroll with the page instead of covering most of it, so content and keyboard focus stay visible (WCAG 1.4.10, 2.4.11). The Protocols surface keeps its sticky chrome.
+- **More panel:** closes when focus moves outside it, so it no longer covers the focused control; a press inside the install sheet no longer closes it; Escape returns focus to More only when focus was inside it.
+- **Global search:** the search field shows a focus indicator and its placeholder meets 4.5:1 contrast.
+- **Forced colors (Windows High Contrast):** selected, pressed and current states, external-link markers and the case bar's Copy button stay visible.
+- **Evidence:** search no longer re-normalizes every record on each keystroke (typing "thrombectomy" letter by letter: 229 → 2.5 ms of search work unthrottled; identical results and order for 2,061 queries in every care setting). The wide index separates each section's topic count from its heading, for sight and for screen readers.
+- **Polish:** Evidence and Calculators failure states are styled like the rest of the app (the Protocols failure fallback is unchanged); checklist selects line up from 481 px; reference tiles keep the same ink in dark mode.
+- **Tests:** the smoke check that compares `--case-bar-h` with the case bar's height now waits for a rendering opportunity instead of a fixed 150 ms.
+
 ## v7.10.3 — 2026-11-04 — Trial criteria and registry-reference update
 
 - **MINUTE:** the stored full criteria now include all eight registry inclusions and 17 exclusions, checked against the official protocol-training materials. Consent, bleeding diathesis, active infection, follow-up-limiting conditions and concurrent interventional trials remain explicit manual confirmations; no automated eligibility rule changes.

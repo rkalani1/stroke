@@ -467,7 +467,10 @@ describe('shell fixes in Chromium', { timeout: 90000 }, () => {
         if (row.top < row.bar - 0.5) hidden.push(row);
       }
       expect(rows).toBe(40);
-      if (viewport.height === 320) expect(tall).toBeGreaterThan(0);
+      // 7.11.0: at 440 px tall or less the header and case bar scroll with the page, so the visible band is no
+      // longer shorter than an Evidence row (on 7.10 the 320 px screen had such rows); focus still never lands under the bar.
+      expect(await page.evaluate(() => getComputedStyle(document.querySelector('.case-bar')).position)).toBe('static');
+      expect(tall).toBe(0);
       expect(hidden, `${viewport.width}x${viewport.height}`).toEqual([]);
       await context.close();
     }

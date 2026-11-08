@@ -19,7 +19,7 @@ export function buildTableHtml(table) {
 }
 
 function StudyIdentity({ trial }) {
-  return <><h3 className="font-bold">{trial.acronym}</h3>{trial.nct && <a href={trial.href} target="_blank" rel="noopener noreferrer" className="break-words text-xs text-link-600 underline">{trial.nct} ↗</a>}<p className="mt-2 text-xs leading-relaxed text-mute">{sourceRecord(trial)}</p></>;
+  return <><h3 className="font-bold">{trial.acronym}</h3>{trial.nct && <a href={trial.href} target="_blank" rel="noopener noreferrer" className="break-words text-xs text-link-600 underline">{trial.nct}</a>}<p className="mt-2 text-xs leading-relaxed text-mute">{sourceRecord(trial)}</p></>;
 }
 
 function StudySummary({ trial }) {
