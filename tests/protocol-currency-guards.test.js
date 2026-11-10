@@ -176,7 +176,7 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
   it('keeps the institutional MINUTE screen at >=20 mL and <=15 hours without an inferred near-threshold branch', () => {
     const source = texts['src/institutional-protocols.js'];
     const start = source.indexOf("title: 'MINUTE screen'");
-    const end = source.indexOf("title: 'MIRROR registry screen'", start);
+    const end = source.indexOf('  safetyPause: {', start);
     expect(start).toBeGreaterThanOrEqual(0);
     expect(end).toBeGreaterThan(start);
     const sourceMinute = source.slice(start, end);
@@ -214,11 +214,28 @@ describe('2026 protocol-currency safety guards (public educational site)', () =>
     expect(worker).toMatch(/sw-claimed-reload/);
   });
 
-  it('keeps MINUTE priority over MIRROR in the reusable ICH algorithm export', () => {
-    expect(texts['src/institutional-protocols.js']).toMatch(/MINUTE has operational priority over MIRROR/);
-    expect(texts['data/generic-protocols.json']).toMatch(/MINUTE has operational priority over MIRROR/);
-    expect(texts['src/institutional-protocols.js']).toMatch(/thresholds are version-sensitive and must be checked against the active registry protocol/);
-    expect(texts['data/generic-protocols.json']).toMatch(/thresholds are version-sensitive and must be checked against the active registry protocol/);
+  it('removes closed MIRROR screening and preserves case-by-case deep-IPH escalation in the public algorithm', () => {
+    const generic = readJson('data/generic-protocols.json');
+    const screens = generic.data.ichInitialEvaluation.researchScreens;
+    expect(screens.map((screen) => screen.title)).toEqual(['MINUTE screen']);
+    expect(JSON.stringify(screens)).not.toMatch(/MIRROR|active registry protocol/i);
+    // Protocol data can live in a shared or deferred chunk rather than app.js.
+    // Inspect the actual shipped graph, including every module in its manifest.
+    const manifest = readJson('app-assets.json');
+    const modulePaths = manifest.files.map((file) => file.path).filter((path) => path.endsWith('.js'));
+    expect(modulePaths).toContain(manifest.entry);
+    const builtGraph = modulePaths.map(read).join('\n');
+    expect(builtGraph).toContain(screens[0].action);
+    for (const [surface, content] of [
+      ['protocol source', texts['src/institutional-protocols.js']],
+      ['generated protocol data', texts['data/generic-protocols.json']],
+      ['built module graph', builtGraph]
+    ]) {
+      expect(content, surface).not.toMatch(/MIRROR registry screen|MINUTE has operational priority over MIRROR/);
+      expect(content, surface).toMatch(/endoscopic surgery outside MINUTE is considered case-by-case/);
+      expect(content, surface).toMatch(/outside the MINUTE pathway, or beyond 24 hours from last known well/);
+      expect(content, surface).toMatch(/both the on-call stroke attending and the inpatient neurology attending before proceeding/);
+    }
   });
 
   it('keeps the reviewed content files free of private sentinels / PHI-shaped tokens', () => {

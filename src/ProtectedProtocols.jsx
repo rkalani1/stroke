@@ -759,7 +759,7 @@ export default function ProtectedProtocols({
                                 </div>
                               </div>
                               <div className="bg-warn-50 border border-warn-200 rounded-lg p-3 dark:bg-warn-950 dark:border-warn-800">
-                                <h4 className="font-semibold text-warn-800 text-sm mb-2 dark:text-warn-300">Trial and Registry Screens</h4>
+                                <h4 className="font-semibold text-warn-800 text-sm mb-2 dark:text-warn-300">Trial Screen</h4>
                                 <div className="space-y-2">
                                   {ICH_INITIAL_EVALUATION_ALGORITHM.researchScreens.map((screen) => (
                                     <div key={screen.title}>

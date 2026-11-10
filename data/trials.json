@@ -2,7 +2,7 @@
   "_meta": {
     "endpoint": "trials",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.11.0",
+    "appVersion": "7.11.1",
     "checksum": "sha256:d4920f603911fb67eb9b7facff45c5fb",
     "count": 15,
     "source": "Trial screener and table summaries with per-profile registry check dates",

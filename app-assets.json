@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "appVersion": "7.11.0",
+  "appVersion": "7.11.1",
   "buildTarget": "public",
   "entry": "app.js",
   "initial": [
@@ -21,7 +21,7 @@
       "path": "app.js",
       "bytes": 110183,
       "gzipBytes": 34397,
-      "sha256": "8b73f284ac4256f9899143b97c6d4cdcc47a8f62797a2e5d952829b5ad654c35"
+      "sha256": "19c44ea14dfbb47a418a8ec581bcf4733510dc377e13e96be568e2f3872c2640"
     },
     {
       "path": "chunks/chunk-3C5ZDFRN.js",
@@ -78,6 +78,12 @@
       "sha256": "b8f85cbf689af15f604b5551260f8aa0394f78905423ba865190059c843adde2"
     },
     {
+      "path": "chunks/chunk-JCWM7WLY.js",
+      "bytes": 33063,
+      "gzipBytes": 11270,
+      "sha256": "7c44f79bafb29bc3c0ee326943e3190c1fd626a9d2322f0adc11c0a22da8b816"
+    },
+    {
       "path": "chunks/chunk-MXOIE5XZ.js",
       "bytes": 104944,
       "gzipBytes": 27946,
@@ -102,12 +108,6 @@
       "sha256": "09cf99797071183c6339e997c8dc177b78c8833bb709a519831b2cbed5b8ed9f"
     },
     {
-      "path": "chunks/chunk-SQ3QWPC3.js",
-      "bytes": 33539,
-      "gzipBytes": 11406,
-      "sha256": "5f807ed9b52e252527922888728cd6fbf9c99b13320fede73900fcc2e8225995"
-    },
-    {
       "path": "chunks/chunk-X3EP23JS.js",
       "bytes": 7263,
       "gzipBytes": 3328,
@@ -120,16 +120,16 @@
       "sha256": "7c754029f8723c1e9c509d7137dc975db2c0a9f178696e1657c45ce5ce703090"
     },
     {
-      "path": "chunks/ProtectedProtocols-6MFHWK7D.js",
-      "bytes": 233039,
-      "gzipBytes": 52996,
-      "sha256": "a77e1a36fb990ff7fd41193c3bb5de43f98c426e5ddf7737f1add0a2ad0cb8c9"
+      "path": "chunks/ProtectedProtocols-MX3L76YH.js",
+      "bytes": 233025,
+      "gzipBytes": 52990,
+      "sha256": "0225efb6afa87171e93234a57b94851dcf11f80b9d5baa738e922629cce3116d"
     },
     {
-      "path": "chunks/QuickReference-UKRUSEBK.js",
+      "path": "chunks/QuickReference-TLWEC62O.js",
       "bytes": 19622,
-      "gzipBytes": 6391,
-      "sha256": "ff145bc268974a401230ddeb90197be1f48fe4554994e58368c1423c7d576544"
+      "gzipBytes": 6392,
+      "sha256": "34516ec162e1a7dff8bf71420233c7f0a0e5c74de3e2ad6f8221d9c730d22d86"
     },
     {
       "path": "chunks/QuickSearch-ZDBPYRCR.js",
