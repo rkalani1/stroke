@@ -28,7 +28,7 @@ beforeAll(async () => {
   browser = await chromium.launch();
 });
 beforeEach(async () => {
-  page = await browser.newPage();
+  page = await browser.newPage({ timezoneId: 'UTC' }); // as on CI: the LKW below is built from the real clock
   page.setDefaultTimeout(10000);
   await page.setContent('<div id="root"></div>');
   await page.addStyleTag({ content: css });
