@@ -39,6 +39,9 @@ export default function Reference({ version, focusId, active = true }) {
     const frame = requestAnimationFrame(() => {
       const target = container.current?.querySelector(`[data-reference-id="${focusId}"]`);
       target?.scrollIntoView({ block: 'start' }); target?.querySelector('summary')?.focus({ preventScroll: true });
+      // The wide index also shows where the link landed, however far down its list that is (by now the index
+      // is stuck, so only the index scrolls).
+      container.current?.querySelector('.reading-index [aria-current="true"]')?.scrollIntoView({ block: 'nearest' });
     });
     return () => cancelAnimationFrame(frame);
   }, [focusId, active, data, focusRequest]);
@@ -82,6 +85,8 @@ export default function Reference({ version, focusId, active = true }) {
     const contents = study ? '' : [graded && `${graded} guideline recommendation${graded === 1 ? '' : 's'}`, ungraded && `${ungraded} ungraded statement${ungraded === 1 ? '' : 's'}`, relatedStudies.length && `${relatedStudies.length} study ${relatedStudies.length === 1 ? 'summary' : 'summaries'}`].filter(Boolean).join(' · ');
     const pinned = widePane && chosen?.id === record.id;
     const shown = Boolean(opened[record.id]) || pinned;
+    // The wide pane's record is its title, always open: its summary neither toggles nor shows a disclosure
+    // marker (shell.css), and is no tab stop; a deep link still focuses it.
     return <details className="reference-card" data-reference-id={record.id} key={record.id} open={shown || undefined} onToggle={event => {
       if (event.target !== event.currentTarget) return;
       // The open pane forces this card open. Recording that as a user choice would leave the nested studies mounted after the pane closes, so a section filter would count those studies as topics.
@@ -89,21 +94,23 @@ export default function Reference({ version, focusId, active = true }) {
       const open = event.currentTarget.open; if (!open) clearCopy();
       setOpened(previous => previous[record.id] === open ? previous : { ...previous, [record.id]: open });
     }}>
-      <summary onFocus={revealSummary}><span>{record.title}</span>{study && <span className="reference-year">{record.year}</span>}{study && record.headline && <span className="reference-headline">{record.headline}</span>}{!study && <span className="reference-bottom-line">{bottomLine(record.summary)}</span>}{contents && <span className="reference-contents">{contents}</span>}</summary>
+      <summary onFocus={revealSummary} tabIndex={pinned ? -1 : undefined} onClick={pinned ? event => event.preventDefault() : undefined}><span>{record.title}</span>{study && <span className="reference-year">{record.year}</span>}{study && record.headline && <span className="reference-headline">{record.headline}</span>}{!study && <span className="reference-bottom-line">{bottomLine(record.summary)}</span>}{contents && <span className="reference-contents">{contents}</span>}</summary>
       {shown && <div className="reference-body">{study ? <><p>{record.question}</p><dl>{[['Population', record.population], ['Comparison', record.comparison], ['Result', record.result]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></> : <><p className="reference-summary">{record.summary}</p>{record.recommendations?.length > 0 && renderRecommendations(record)}<ul>{record.consider.map(item => <li key={item}>{item}</li>)}</ul></>}
         <p className="reference-limits"><strong>Limits:</strong> {record.caution || record.limits}</p>
         {(record.related || []).length > 0 && <div className="reference-links">{record.related.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</div>}
         {relatedStudies.length > 0 && <section aria-label={`Study summaries for ${record.title}`}><h3>Study summaries</h3>{relatedStudies.map(renderCard)}</section>}
         {renderSources(record)}
         <button className="workspace-secondary-action" onClick={() => copyRecord(record)}>{`Copy ${record.title} evidence`}</button>
-        {copy?.id === record.id && <div role="status">{copy.failed ? <><p>Clipboard unavailable. Select and copy the text below.</p><textarea ref={fallback} aria-label="Evidence copy fallback" readOnly rows={8} value={copy.text} /></> : 'Copied with sources and limits.'}</div>}
+        {/* Always rendered while the card is open, so the copy outcome is announced (a live region inserted with its text often is not). */}
+        <div role="status">{copy?.id === record.id && (copy.failed ? <><p>Clipboard unavailable. Select and copy the text below.</p><textarea ref={fallback} aria-label="Evidence copy fallback" readOnly rows={8} value={copy.text} /></> : 'Copied with sources and limits.')}</div>
       </div>}
     </details>;
   };
   return <section ref={container} className="reference-surface" aria-label="Evidence">
     <h1>Evidence</h1>
-    <div className="reference-filters"><label className="workspace-field"><span>Find a clinical question</span><input ref={searchInput} type="search" value={query} onChange={event => { changeFilters(); setQuery(event.target.value); }} placeholder="e.g. anticoagulation timing, ELAN, PFO" /></label><label className="workspace-field"><span>Care setting</span><select aria-label="Care setting" value={setting} onChange={event => { changeFilters(); setSetting(event.target.value); }}>{CARE_SETTINGS.map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label><label className="workspace-field"><span>Clinical section</span><select aria-label="Clinical section" value={category} onChange={event => { changeFilters(); setCategory(event.target.value); }}>{[['all', 'All sections'], ...categories.map(name => [name, name])].map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label>{(query || setting !== 'all' || category !== 'all') && <button className="workspace-secondary-action" onClick={() => { changeFilters(); setQuery(''); setSetting('all'); setCategory('all'); searchInput.current?.focus(); }}>Clear filters</button>}</div>
-    <p role="status" className="workspace-help">{results.length === 0 && ungrouped.length === 0 ? 'No topics found. Try a drug, trial or condition, or clear the filters.' : <>{results.length} {results.length === 1 ? 'topic' : 'topics'} found.{ungrouped.length > 0 && ` ${ungrouped.length} additional study summaries.`}</>}</p>
+    <div className="reference-filters"><label className="workspace-field"><span>Find a clinical question</span><input ref={searchInput} type="search" value={query} onChange={event => { changeFilters(); setQuery(event.target.value); }} placeholder="e.g. anticoagulation timing, ELAN, PFO" /></label><label className="workspace-field"><span>Care setting</span><select aria-label="Care setting" value={setting} onChange={event => { changeFilters(); setSetting(event.target.value); }}>{CARE_SETTINGS.map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label><label className="workspace-field"><span>Clinical section</span><select aria-label="Clinical section" value={category} onChange={event => { changeFilters(); setCategory(event.target.value); }}>{[['all', 'All sections'], ...categories.map(name => [name, name])].map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label></div>
+    {/* The count and Clear filters share a row of fixed height, so the first keystroke never moves the results. */}
+    <div className="workspace-status-row"><p role="status" className="workspace-help">{results.length === 0 && ungrouped.length === 0 ? 'No topics found. Try a drug, trial or condition, or clear the filters.' : <>{results.length} {results.length === 1 ? 'topic' : 'topics'} found.{ungrouped.length > 0 && ` ${ungrouped.length} additional study summaries.`}</>}</p>{(query || setting !== 'all' || category !== 'all') && <button className="workspace-secondary-action" onClick={() => { changeFilters(); setQuery(''); setSetting('all'); setCategory('all'); searchInput.current?.focus(); }}>Clear filters</button>}</div>
     {studyResults.length > 0 && <nav className="reference-study-results" aria-label="Matching study summaries"><h2>Matching study summaries <span>({studyResults.length})</span></h2><ul>{studyResults.map(record => <li key={record.id}><a href={`#/evidence/${record.id}`} onClick={event => { if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) { resultTargets.current.add(record.id); if (focusId === record.id) requestFocus(value => value + 1); } }}>{record.title}<span className="reference-year">{record.year}</span>{record.headline && <span className="reference-headline">{record.headline}</span>}</a></li>)}</ul></nav>}
     {focusId && ![...data.topics, ...data.studies].some(record => record.id === focusId) && <p role="status">Reference not found. Browse below.</p>}
     {/* Buttons, not #fragment links: the hash is the app's route. Each moves focus to its section heading.
