@@ -609,6 +609,40 @@
     "relatedTopic": "basilar-occlusion"
   },
   {
+    "id": "insist-it",
+    "title": "INSIST-IT — intra-arterial tenecteplase after thrombectomy for basilar occlusion",
+    "headline": "IA tenecteplase after EVT in BAO: mRS 0–3 40 vs 50% (stopped early)",
+    "year": 2026,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "basilar",
+      "tenecteplase",
+      "intra-arterial",
+      "thrombectomy",
+      "adjunct",
+      "EVT"
+    ],
+    "question": "Does intra-arterial tenecteplase after successful thrombectomy improve outcomes in basilar artery occlusion?",
+    "population": "144 adults with basilar artery occlusion within 24 hours of estimated symptom onset who achieved successful reperfusion after endovascular treatment, across multiple Chinese centers (75 tenecteplase, 69 control; 143 of 144 completed follow-up).",
+    "comparison": "Intra-arterial tenecteplase versus standard medical therapy alone after successful reperfusion (1:1; adaptive-enrichment, open-label, blinded end point).",
+    "result": "The trial was stopped early for safety concerns and lack of efficacy on Data Safety and Monitoring Committee recommendation. Independent ambulation (modified Rankin Scale 0–3) at 90 days occurred in 40.0% of the tenecteplase group versus 50.0% of controls (OR 0.67; 95% CI 0.34–1.29; P = 0.23). Symptomatic intracranial hemorrhage 6.2% vs 4.8% (OR 1.31; 95% CI 0.28–6.89; P = 0.73). All-cause mortality at 90 days 41.3% vs 26.5% (OR 1.96; 95% CI 0.97–4.03; P = 0.063).",
+    "limits": "Open-label (blinded end point), single-country, prematurely terminated adaptive-enrichment trial of only 144 patients with wide confidence intervals; adjunctive intra-arterial tenecteplase did not improve functional outcomes and showed a nonsignificant trend toward higher mortality. Negative trial; PubMed abstract verified, full text not reviewed.",
+    "sources": [
+      {
+        "title": "INSIST-IT primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42995196/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-11-14",
+        "access": "machine-drafted 2026-11-14; auto-published, verification-gated. PubMed abstract and ClinicalTrials.gov NCT05657457 (Phase 3, terminated) verified 2026-11-14; full text not reviewed."
+      }
+    ],
+    "relatedTopic": "basilar-occlusion"
+  },
+  {
     "id": "distal",
     "title": "DISTAL — medium and distal vessel thrombectomy",
     "headline": "MeVO EVT: no benefit (cOR 0.90); sICH 5.9 vs 2.6%",
@@ -2104,6 +2138,40 @@
         "type": "Report",
         "checkedAt": "2026-10-31",
         "access": "PubMed abstract read 2026-10-31 (PMC12362272 not read)."
+      }
+    ],
+    "relatedTopic": "research-adjuncts"
+  },
+  {
+    "id": "bretis-tnk2",
+    "title": "BRETIS-TNK2 — intra-arterial tenecteplase during thrombectomy for acute ischemic stroke",
+    "headline": "IA tenecteplase during EVT for LVO: mRS 0–2 40 vs 46.8% (no benefit)",
+    "year": 2026,
+    "settings": [
+      "on-call",
+      "hospital"
+    ],
+    "keywords": [
+      "tenecteplase",
+      "intra-arterial",
+      "thrombectomy",
+      "large-vessel occlusion",
+      "adjunct",
+      "EVT"
+    ],
+    "question": "Does intra-arterial tenecteplase given during the first thrombectomy pass improve outcomes in large-vessel-occlusion stroke?",
+    "population": "380 adults with large-vessel occlusion eligible for endovascular treatment within 24 hours of onset at multiple Chinese centers (192 tenecteplase, 188 control; primary-outcome data for 190 and 186). Registry: age ≥18, ICA/M1/M2/basilar/intracranial vertebral occlusion, prestroke mRS ≤2, ASPECTS ≥6.",
+    "comparison": "Intra-arterial tenecteplase during endovascular treatment versus endovascular treatment alone (1:1; adaptive-enrichment, open-label, blinded end point).",
+    "result": "Favorable 90-day functional outcome (modified Rankin Scale 0–2) occurred in 40.0% of the tenecteplase group versus 46.8% of controls (unadjusted OR 0.76; 95% CI 0.50–1.14; P = 0.19).",
+    "limits": "Open-label (blinded end point), single-country adaptive-enrichment trial; adjunctive intra-arterial tenecteplase during thrombectomy did not improve 90-day functional outcomes. PubMed abstract and ClinicalTrials.gov registry verified; full text not reviewed.",
+    "sources": [
+      {
+        "title": "BRETIS-TNK2 primary report",
+        "url": "https://pubmed.ncbi.nlm.nih.gov/42995186/",
+        "year": 2026,
+        "type": "Randomized trial",
+        "checkedAt": "2026-11-14",
+        "access": "machine-drafted 2026-11-14; auto-published, verification-gated. PubMed abstract and ClinicalTrials.gov NCT05657444 (Phase 3, completed) verified 2026-11-14; full text not reviewed."
       }
     ],
     "relatedTopic": "research-adjuncts"
