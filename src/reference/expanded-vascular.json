@@ -1984,7 +1984,8 @@
       "Lp(a)",
       "apolipoprotein B",
       "triglycerides",
-      "hemorrhagic stroke"
+      "hemorrhagic stroke",
+      "cholesterol"
     ],
     "summary": "Atherosclerotic stroke or TIA: statin ± ezetimibe to LDL <70 mg/dL (AHA 2021, COR 1; Treat Stroke to Target events 8.5 vs 10.9%), but LDL-C <55 when very high risk (ischemic stroke plus another major ASCVD event or ≥2 high-risk conditions; ACC/AHA 2026, COR 1). No known coronary disease or major cardiac source and LDL >100: atorvastatin 80 mg (COR 1; SPARCL stroke 11.2 vs 13.1%, with more hemorrhagic strokes). ACC/AHA 2026, very high risk: high-intensity statin to LDL-C <55 and non-HDL-C <85 mg/dL, adding ezetimibe and/or a PCSK9 antibody as needed (COR 1); other atherosclerotic stroke: LDL-C <70 (COR 1), and adding a nonstatin toward <55 is reasonable (2a). Recheck lipids 4–12 weeks after starting or changing therapy.",
     "consider": [
