@@ -1573,5 +1573,18 @@
     "topicIds": [
       "rural-telestroke"
     ]
+  },
+  {
+    "id": "svin-icas-lvo-2026",
+    "title": "Endovascular Therapy in Intracranial Atherosclerotic Stenosis-Related Large Vessel Occlusion Stroke: A Brief Practice Update and Consensus Statement From the SVIN",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42974351/",
+    "year": 2026,
+    "type": "Practice update",
+    "checkedAt": "2026-11-14",
+    "access": "PMC full text (PMC13727248) read 2026-11-14 (Stroke Vasc Interv Neurol, 2026-11-03): SVIN class and level framework adapted from ACC/AHA; its abstract calls the observational evidence for adjunctive glycoprotein IIb/IIIa inhibitors, angioplasty and rescue stenting weak, and the text names ongoing trials (ICARUS, PISTAR). The recommendation table and supplementary tables were not in the extracted text and were not read, so no SVIN recommendation or grade is quoted on the cards.",
+    "topicIds": [
+      "neurointerventional-care",
+      "sicas"
+    ]
   }
 ]

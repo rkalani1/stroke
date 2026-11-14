@@ -2039,7 +2039,7 @@
     "population": "12,327 patients within 72 hours of noncardioembolic ischemic stroke or high-risk TIA with atherosclerosis or nonlacunar infarct.",
     "comparison": "Asundexian 50 mg daily versus placebo, on top of single or dual antiplatelet therapy.",
     "result": "Ischemic stroke 6.2% vs 8.4% (cause-specific HR 0.74; 95% CI 0.65–0.84). Major bleeding 1.9% vs 1.7% (HR 1.10; 95% CI 0.85–1.44); lower gastrointestinal bleeding 1.7% vs 1.0% (csHR 1.75).",
-    "limits": "Industry-funded; regulatory status and availability are separate questions. Asundexian was inferior to apixaban in AF (OCEANIC-AF). Milvexian, a different factor XIa inhibitor, was stopped for futility after acute coronary syndrome (LIBREXIA-ACS: cardiovascular death, MI or ischemic stroke 5.4 vs 5.1%; HR 1.05). Its stroke trial (LIBREXIA-STROKE) had not reported as of October 2026.",
+    "limits": "Industry-funded; regulatory status and availability are separate questions. Asundexian was inferior to apixaban in AF (OCEANIC-AF). Milvexian, a different factor XIa inhibitor, was stopped for futility after acute coronary syndrome (LIBREXIA-ACS: cardiovascular death, MI or ischemic stroke 5.4 vs 5.1%; HR 1.05). Its stroke trial (LIBREXIA-STROKE) had not reported as of November 2026 (registry: active, not recruiting, no results).",
     "sources": [
       {
         "title": "OCEANIC-STROKE primary report",
@@ -2062,8 +2062,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42670965/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-31",
-        "access": "Primary abstract read 2026-10-31; ACS population, not stroke. LIBREXIA-STROKE registry NCT05702034 checked 2026-10-31: active, not recruiting, no results."
+        "checkedAt": "2026-11-14",
+        "access": "Primary abstract re-read 2026-11-14; ACS population, not stroke. LIBREXIA-STROKE registry NCT05702034 re-checked 2026-11-14 (ClinicalTrials.gov connector): active, not recruiting; primary completion 2026-10-15; no results posted. No LIBREXIA-STROKE report found in PubMed on 2026-11-14."
       }
     ],
     "relatedTopic": "research-adjuncts"

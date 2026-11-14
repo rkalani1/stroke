@@ -422,7 +422,7 @@
       "DAPT transition",
       "cholesterol"
     ],
-    "summary": "Noncardioembolic stroke or TIA: antiplatelet rather than anticoagulant (COR 1); DAPT only short term (minor stroke [NIHSS ≤3] or high-risk TIA [ABCD2 ≥4] without IVT, started within 24 h: 21 days, AHA 2026 COR 1; severe intracranial stenosis: up to 90 days). BP <130/80 for most (AHA 2021, COR 1). Atherosclerotic stroke: statin ± ezetimibe to LDL <70 mg/dL (COR 1); no known coronary disease or major cardiac source and LDL >100: atorvastatin 80 mg (SPARCL). Diabetes: glucose-lowering drugs with proven cardiovascular benefit (AHA 2021, COR 1). Recheck lipids 4–12 weeks after a change, then every 3–12 months.",
+    "summary": "Noncardioembolic stroke or TIA: antiplatelet rather than anticoagulant (COR 1); DAPT only short term (minor stroke [NIHSS ≤3] or high-risk TIA [ABCD2 ≥4] without IVT, started within 24 h: 21 days, AHA 2026 COR 1; severe intracranial stenosis: up to 90 days). BP <130/80 for most (AHA 2021, COR 1); postdating it (not graded), OPTIMAL-STROKE (Brazil, open-label) found that targeting SBP <120 vs <140 mm Hg in patients with elevated BP after ischemic stroke or TIA lowered major cardiovascular events (10.9 vs 13.5%; HR 0.79, 95% CI 0.67–0.94), with renal composite events more common. Atherosclerotic stroke: statin ± ezetimibe to LDL <70 mg/dL (COR 1); no known coronary disease or major cardiac source and LDL >100: atorvastatin 80 mg (SPARCL). Diabetes: glucose-lowering drugs with proven cardiovascular benefit (AHA 2021, COR 1). Recheck lipids 4–12 weeks after a change, then every 3–12 months.",
     "recommendations": [
       {
         "text": "Antiplatelet therapy is recommended over oral anticoagulation for patients with noncardioembolic ischemic stroke or TIA to reduce recurrent ischemic stroke and other cardiovascular events while minimizing bleeding risk.",
@@ -479,6 +479,10 @@
       {
         "label": "Encounter",
         "href": "#/encounter"
+      },
+      {
+        "label": "Long-term BP targets",
+        "href": "#/evidence/bp-prevention"
       }
     ]
   },
