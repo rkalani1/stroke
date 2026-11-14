@@ -16,7 +16,7 @@ Activation removes obsolete app-owned version caches and retired teaching assets
 
 ## Offline limits
 
-After successful complete online installation, Encounter calculations, Pulsara/Epic documentation, Evidence, Trials and retained protocols work offline. External references require internet. An uncached first visit needs network. Documented post-treatment timing uses explicit administration timestamps and elapsed wall time; browser background scheduling, notifications and alarms are not guaranteed. Resume/visibility events recompute time.
+After successful complete online installation, Encounter calculations, Pulsara/Epic documentation, Evidence, Trials and retained protocols work offline. External references require internet. An uncached first visit needs network. iOS launch screens (`assets/splash/`) are not part of the installation, because only an iOS home-screen launch shows one: the worker stores each in the current release's cache on its first request, so an offline launch before then, including the first after an update, may show no launch image. Whether iOS requests that image through the worker is unverified on a device. Documented post-treatment timing uses explicit administration timestamps and elapsed wall time; browser background scheduling, notifications and alarms are not guaranteed. Resume/visibility events recompute time.
 
 Run `node scripts/qa-upgrade.mjs` for baseline upgrade, defer/accept, interrupted install, chunk failure, recovery and retired-cache cleanup. `npm test` runs the published-artifact synthetic workflow, offline reload and viewports/themes. These are simulated browser checks, not physical iPhone/Android validation. Use manual physical testing before claiming native device behavior.
 

@@ -382,24 +382,28 @@ describe('service worker update lifecycle', () => {
     // scripts/check-asset-budget.mjs for why splitting does not avoid this.
     // 2.2 MB after the 2026-10-03 integrated review (see check-asset-budget.mjs).
     // 7.8.0 raised 2.2 to 2.3 MiB for verified clinical-reference and trials content (matches check-asset-budget).
+    // 2026-11-14: the iOS launch screens left the precache (2.14 -> 1.79 MiB); the ceiling is unchanged.
     expect(total).toBeLessThan(2.3 * 1024 * 1024);
   });
 
-  it('includes iOS splash screens in precache list', () => {
-    const splashAssets = [
-      './assets/splash/splash-ipad-mini.png',
-      './assets/splash/splash-ipad-pro-11.png',
-      './assets/splash/splash-ipad-pro-129.png',
-      './assets/splash/splash-iphone-13-mini-12-mini-x-xs.png',
-      './assets/splash/splash-iphone-15-14-13-12.png',
-      './assets/splash/splash-iphone-15-plus.png',
-      './assets/splash/splash-iphone-16-pro-max.png',
-      './assets/splash/splash-iphone-16-pro.png',
-      './assets/splash/splash-iphone-16.png',
-      './assets/splash/splash-iphone-8-7-6.png',
-    ];
-    for (const splash of splashAssets) {
-      expect(workerSource).toContain(`'${splash}'`);
+  it('leaves the iOS launch screens out of the install, and every one index.html names exists', async () => {
+    // Only an iOS home-screen launch shows one (at most one per device), so the PNGs are cached
+    // on first request instead (tests/service-worker-freshness.test.js), not on every install.
+    // eslint-disable-next-line no-eval
+    const coreAssets = eval(workerSource.match(/const CORE_ASSETS = (\[[\s\S]*?\]);/)[1]);
+    expect(coreAssets.filter(asset => asset.includes('splash'))).toEqual([]);
+    const worker = loadServiceWorker([]);
+    await worker.dispatch('install');
+    expect(worker.precacheRequests.length).toBeGreaterThan(0);
+    expect(worker.precacheRequests.map(request => request.url).filter(url => url.includes('/assets/splash/'))).toEqual([]);
+    // The precache no longer proves these files exist (a missing one used to fail the install).
+    const index = readFileSync(join(repoRoot, 'index.html'), 'utf8');
+    const startup = [...index.matchAll(/<link rel="apple-touch-startup-image" href="([^"]+)"/g)].map(match => match[1]);
+    expect(startup.length).toBeGreaterThan(0);
+    expect(new Set(startup).size).toBe(startup.length);
+    for (const href of startup) {
+      expect(href).toMatch(/^assets\/splash\/[a-z0-9-]+\.png$/);
+      expect(existsSync(join(repoRoot, href)), `${href} should exist on disk`).toBe(true);
     }
   });
 

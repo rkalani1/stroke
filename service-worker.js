@@ -65,19 +65,10 @@ const CORE_ASSETS = [
   './assets/fonts/publicsans-normal-400.woff2',
   './assets/fonts/publicsans-normal-500.woff2',
   './assets/fonts/publicsans-normal-600.woff2',
-  './assets/fonts/publicsans-normal-700.woff2',
-  './assets/splash/splash-ipad-mini.png',
-  './assets/splash/splash-ipad-pro-11.png',
-  './assets/splash/splash-ipad-pro-129.png',
-  './assets/splash/splash-iphone-13-mini-12-mini-x-xs.png',
-  './assets/splash/splash-iphone-15-14-13-12.png',
-  './assets/splash/splash-iphone-15-plus.png',
-  './assets/splash/splash-iphone-16-pro-max.png',
-  './assets/splash/splash-iphone-16-pro.png',
-  './assets/splash/splash-iphone-16.png',
-  './assets/splash/splash-iphone-16-15-14-pro.png',
-  './assets/splash/splash-iphone-air.png',
-  './assets/splash/splash-iphone-8-7-6.png'
+  './assets/fonts/publicsans-normal-700.woff2'
+  // Not the 12 iOS launch screens in assets/splash/ (368 KB): only an iOS home-screen
+  // launch shows one, at most one per device. The same-origin cache-first fetch below
+  // keeps each in this release's cache from its first request.
 ];
 
 const CDN_ASSETS = [];
@@ -363,6 +354,8 @@ self.addEventListener('fetch', (event) => {
       event.respondWith(networkFirst(event.request, url));
       return;
     }
+    // Other same-origin files, such as the iOS launch screens (not precached): a successful
+    // first response is stored in this release's cache for later offline use.
     event.respondWith(cacheFirst(event.request, url));
     return;
   }
