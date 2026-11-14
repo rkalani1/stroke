@@ -151,7 +151,8 @@ html[data-theme="dark"] .quick-search__results a[data-more] .quick-search__title
 .quick-search__hint { padding: var(--space-5) var(--space-4); color: var(--mute); font-size: var(--text-md); }
 .quick-search__close-touch { display: none; font-family: var(--font-sans); }
 @media (pointer: coarse) { .quick-search__footer { display: none !important; } .quick-search__close { min-height: 44px !important; min-width: 44px; } .quick-search__close-key { display: none; } .quick-search__close-touch { display: inline; } }
-.quick-search__footer { display: flex; gap: var(--space-3); align-items: center; padding: var(--space-4) var(--space-7); border-top: 1px solid var(--line); font-size: var(--text-xs); color: var(--mute); }
+/* The key hints wrap rather than clip under wider text spacing (WCAG 1.4.12; the dialog hides overflow). */
+.quick-search__footer { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; padding: var(--space-4) var(--space-7); border-top: 1px solid var(--line); font-size: var(--text-xs); color: var(--mute); }
 
 /* ── Result tones: value, caution, critical, ok, neutral ── */
 .workspace-result[data-tone="neutral"] { background: transparent; border: 1px dashed var(--line-2); color: var(--ink-2); }
@@ -161,8 +162,10 @@ html[data-theme="dark"] .quick-search__results a[data-more] .quick-search__title
 .workspace-result[data-tone="ok"] { background: var(--confirm-soft); border-color: rgb(var(--c-confirm) / .4); color: var(--confirm); }
 html[data-theme="dark"] .workspace-result[data-tone="value"] { color: var(--ink); }
 .workspace-inline-action { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4) var(--space-8); }
-.workspace-inline-action > a, .workspace-inline-links > a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+.workspace-inline-action > a, .workspace-inline-links > :is(a, button) { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
 .workspace-inline-links { display: inline-flex; flex-wrap: wrap; gap: 0 var(--space-8); }
+/* A button among inline links (Search on the retired page) reads as one of them. */
+.workspace-inline-links > button { padding: 0; border: 0; background: none; color: rgb(var(--link-600)); text-decoration: underline; text-underline-offset: 3px; }
 .workspace-linked { display: inline-flex; align-items: center; gap: var(--space-4); margin: var(--space-8) 0 0; padding: var(--space-2) var(--space-5); border-radius: var(--radius-pill); background: var(--paper-2); color: var(--ink-2); font-size: var(--text-xs); font-weight: 600; }
 .workspace-linked::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: rgb(var(--c-confirm)); }
 /* ── Selected states: one pattern per control family ─────────────────────────
@@ -272,7 +275,6 @@ html[data-theme="dark"] .workspace-result[data-tone="value"] { color: var(--ink)
 .timestamp-shortcut { margin-block: var(--space-2) var(--space-6); }
 .calculator-search { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-6); }
 .calculator-search .workspace-field { flex: 1 1 240px; max-width: 480px; }
-.calculator-search > button { margin: var(--space-4) 0; }
 /* A link styled as a secondary action looks like every other one: no link underline or colour. */
 a.workspace-secondary-action { display: inline-flex; align-items: center; color: var(--ink-2); text-decoration: none; }
 .consultation-switch { display: inline-flex; gap: var(--space-2); padding: var(--space-2); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--paper-2); }
@@ -474,7 +476,6 @@ html[data-theme="dark"] .workspace-field :is(input, select, textarea), html[data
 /* Cap prose width only; nested study cards and sources use the full card. */
 .reference-body > :is(p, ul, ol, dl, blockquote, .reference-recs) { max-width: 78ch; }
 .reference-filters { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(120px, .6fr) minmax(0, 1fr); align-items: end; gap: var(--space-6); margin: var(--space-10) 0 var(--space-6); }
-.reference-filters > button { justify-self: start; }
 .reference-card { margin: var(--space-6) 0; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--surface); overflow-wrap: anywhere; }
 .reference-card > summary { min-height: 56px; padding: var(--space-7) var(--space-8); border-radius: calc(var(--radius-card) - 1px); font-weight: 700; cursor: pointer; }
 .reference-card > summary:focus-visible { outline-offset: -2px; }
@@ -715,3 +716,18 @@ html[data-theme="dark"] .workspace-external a:hover { color: var(--accent-ink); 
   :is(.workspace-external, .reference-surface, .tools-surface, .trials-surface, .trial-details, .encounter-workflow) a[target="_blank"]::after { forced-color-adjust: none; background: LinkText; }
   .case-bar button { border: 1px solid ButtonText; }
 }
+
+/* 7.12.0 review fixes (outside the Protocols tab). */
+/* Evidence and Calculators: the result count and its Clear button share one row, at least as tall as the
+   button, so the button appearing on the first keystroke never moves the results below. */
+.workspace-status-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-6); min-height: 44px; margin: var(--space-4) 0; }
+.workspace-status-row > p { min-width: 0; margin: 0; }
+.workspace-status-row > button { flex-shrink: 0; }
+.tools-surface > .workspace-status-row { max-width: 480px; }
+/* The wide panes' record is their title (Reference.jsx, SupplementaryCalculators.jsx): no disclosure marker. */
+:is(.reading-pane > .reference-card, .calc-split .calc-card) > summary { cursor: default; }
+:is(.reading-pane > .reference-card, .calc-split .calc-card) > summary::after { display: none; }
+/* With the nav docked (768 px and below), the shell ends where the dock begins: the body pads 68 px plus the
+   safe area for it, so a short page no longer scrolls by that much. Protocols keeps its 100vh. */
+@media (max-width: 768px) { html:not([data-surface="protocols"]) .workspace-shell { min-height: calc(100dvh - 68px - env(safe-area-inset-bottom)); } }
+html[data-theme="dark"] .workspace-inline-links > button { color: rgb(var(--link-400)); }

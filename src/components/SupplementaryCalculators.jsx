@@ -58,7 +58,7 @@ function EncounterUse({ state, definition, complete, edit, update }) {
   </div>;
 }
 
-function Card({ state, update, definition, selected, visible, copyContext }) {
+function Card({ state, update, definition, selected, pinned, visible, copyContext }) {
   const data = state.supplementary?.[definition.id] || {}, progress = calculatorProgress(state,definition), parts = calculatorResultParts(state,definition,progress.value);
   const epoch = useRef(0), fallback = useRef(null), [copyState, setCopyState] = useState(null);
   const context = JSON.stringify([supplementarySourceKey(state,definition.id), data, visible, copyContext]);
@@ -84,8 +84,10 @@ function Card({ state, update, definition, selected, visible, copyContext }) {
   };
   const encounterUse = SUPPLEMENTARY_APPLY_IDS.includes(definition.id) || NOTE_IDS.includes(definition.id);
   const rope = definition.id === 'pascal' ? supplementaryResult(state,'rope') : null;
+  // The two-pane layout's worksheet is the pane title, always open: its summary neither toggles nor shows
+  // a disclosure marker (shell.css), and is no tab stop; a deep link to a worksheet without fields still focuses it.
   return <details id={`calc-${definition.id}`} className="tool-target workflow-section calc-card" open={selected || undefined} hidden={!visible}>
-    <summary tabIndex={0}><span className="calc-summary-name">{definition.name}</span>{parts && <span className="calc-summary-score" aria-hidden="true">{parts.figure}</span>}</summary>
+    <summary tabIndex={pinned ? -1 : 0} onClick={pinned ? event => event.preventDefault() : undefined}><span className="calc-summary-name">{definition.name}</span>{parts && <span className="calc-summary-score" aria-hidden="true">{parts.figure}</span>}</summary>
     <SharedInputs state={state} definition={definition} />
     {definition.id === 'pascal' && <p className="workspace-help">RoPE: {rope ? `${rope.score}/10` : 'incomplete'} · <a href="#/tools/rope">RoPE worksheet</a></p>}
     {definition.id === 'mrs-descriptors' && <ol start={0} className="workspace-help calc-descriptors">{MRS_DESCRIPTORS.map((text,index) => <li key={index}>{text}</li>)}</ol>}
@@ -96,7 +98,9 @@ function Card({ state, update, definition, selected, visible, copyContext }) {
     {progress.value?.bang && <p className="workspace-help">BANG: BMI &gt;35 {progress.value.bang.bmi ? 'Yes' : 'No'} · age &gt;50 {progress.value.bang.age ? 'Yes' : 'No'} · neck &gt;40 cm {progress.value.bang.neck ? 'Yes' : 'No'} · male {progress.value.bang.male ? 'Yes' : 'No'} (unrounded values).</p>}
     {resultCautions(progress.value).map(text => <p key={text} className="workspace-result" data-tone="caution" role="status">{text}</p>)}
     <div className="calc-actions"><button type="button" className="workspace-secondary-action" disabled={!copyText} onClick={copy}>Copy result</button></div>
-    {currentCopy && <div role="status" className="workspace-result">{currentCopy.failed ? <><p>Clipboard unavailable. Select this result and copy it manually.</p><label className="workspace-field"><span>Result text</span><textarea ref={fallback} aria-label={`${definition.name} copy fallback`} readOnly rows={6} value={currentCopy.text} /></label></> : `${definition.name} copied.`}</div>}
+    {/* Always rendered, so the copy outcome is announced (a live region inserted with its text often is not).
+        A polite live region rather than a second status: the result line above is this card's status. */}
+    <div aria-live="polite" className={currentCopy ? 'workspace-result' : undefined}>{currentCopy && (currentCopy.failed ? <><p>Clipboard unavailable. Select this result and copy it manually.</p><label className="workspace-field"><span>Result text</span><textarea ref={fallback} aria-label={`${definition.name} copy fallback`} readOnly rows={6} value={currentCopy.text} /></label></> : `${definition.name} copied.`)}</div>
     {encounterUse && <EncounterUse state={state} definition={definition} complete={progress.complete} edit={edit} update={update} />}
     <details className="source-limits"><summary>Source / limits</summary><p>{definition.limits}</p><p>{definition.reviewScope}{definition.reviewedAt ? ` Scoring/descriptor check: ${definition.reviewedAt}.` : ''}</p><a href={definition.sourceUrl} target="_blank" rel="noopener noreferrer">{definition.sourceLabel}</a>{definition.verificationUrl && <p><a href={definition.verificationUrl} target="_blank" rel="noopener noreferrer">Verification source</a></p>}</details>
   </details>;
@@ -114,10 +118,14 @@ export default function SupplementaryCalculators({ state, update, tool, query = 
     if (!tool) return;
     const target = [...(root.current?.querySelectorAll('details[id]') || [])].find(node => node.id === `calc-${tool}`);
     if (target) { target.open = true; target.scrollIntoView?.({block:'start'}); (target.querySelector('select,input') || target.querySelector('summary'))?.focus({preventScroll:true}); }
+    // The two-pane index also shows where the link landed, however far down its list that is. A deep-linked
+    // worksheet lands below the point where the index sticks (its 72 px scroll margin), so the index's foot
+    // can sit up to 56 px below the screen and the page may move that much to show a late entry.
+    root.current?.querySelector('.calc-index [aria-current="true"]')?.scrollIntoView?.({block:'nearest'});
   }, [tool]);
   return <div ref={root} className="encounter-workflow supplementary-calculators" role="group" aria-label="Worksheets">
     {tool && !query.trim() && !calculatorDefinitions.some(item => item.id === tool) && <p role="status">Calculator unavailable.</p>}
     <h2 hidden={!calculatorDefinitions.some(visible) && !pane}>Scores and grading scales</h2>
-    {pane ? <div className="calc-split"><nav className="calc-index" aria-label="Calculators">{[...new Set(listed.map(item => item.category))].map(category => <div key={category}><h3>{category}</h3><ul>{listed.filter(item => item.category === category).map(definition => <li key={definition.id}><button type="button" aria-current={definition.id === activeId ? 'true' : undefined} onClick={() => setPicked(definition.id)}>{definition.name}</button></li>)}</ul></div>)}</nav><div>{listed.filter(definition => definition.id === activeId).map(definition => <Card key={definition.id} state={state} update={update} definition={definition} selected visible copyContext={`${tool || ''}\n${query}`} />)}</div></div> : [...new Set(calculatorDefinitions.map(item => item.category))].map(category => <section key={category} aria-label={category} hidden={!calculatorDefinitions.some(item => item.category === category && visible(item))}><h3>{category}</h3>{calculatorDefinitions.filter(item => item.category === category).map(definition => <Card key={definition.id} state={state} update={update} definition={definition} selected={tool === definition.id} visible={visible(definition)} copyContext={`${tool || ''}\n${query}`} />)}</section>)}
+    {pane ? <div className="calc-split"><nav className="calc-index" aria-label="Calculators">{[...new Set(listed.map(item => item.category))].map(category => <div key={category}><h3>{category}</h3><ul>{listed.filter(item => item.category === category).map(definition => <li key={definition.id}><button type="button" aria-current={definition.id === activeId ? 'true' : undefined} onClick={() => setPicked(definition.id)}>{definition.name}</button></li>)}</ul></div>)}</nav><div>{listed.filter(definition => definition.id === activeId).map(definition => <Card key={definition.id} state={state} update={update} definition={definition} selected pinned visible copyContext={`${tool || ''}\n${query}`} />)}</div></div> : [...new Set(calculatorDefinitions.map(item => item.category))].map(category => <section key={category} aria-label={category} hidden={!calculatorDefinitions.some(item => item.category === category && visible(item))}><h3>{category}</h3>{calculatorDefinitions.filter(item => item.category === category).map(definition => <Card key={definition.id} state={state} update={update} definition={definition} selected={tool === definition.id} visible={visible(definition)} copyContext={`${tool || ''}\n${query}`} />)}</section>)}
   </div>;
 }
