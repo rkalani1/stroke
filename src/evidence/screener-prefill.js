@@ -7,6 +7,7 @@
 import { encounterTiming, encounterNihss, encounterVolume, validTimestamp, nihssBulkZeroItems } from '../workspace-state.js';
 import { reviewedGcs, numericInput, documentedIvtContext } from '../encounter-clinical-review.js';
 import { untestableNote } from './screener-eval.js';
+import { formatElapsed } from '../clinical/encounter-time.js';
 
 const MODELED = { ischemic: 'ischemic', ich: 'ich', tia: 'tia' };
 const DIAGNOSIS_LABEL = { ischemic: 'Ischemic', ich: 'ICH', tia: 'TIA', sah: 'SAH', cvt: 'CVT', mimic: 'Stroke mimic', other: 'Other / uncertain' };
@@ -50,8 +51,6 @@ export function answerFacts(state, patch) {
 // The anticoagulant choice also answers the facts it implies.
 export const applyAnticoagulant = (state, kind) => answerFacts(state, { anticoagulant: kind || 'unselected', ...anticoagulantFacts(kind) });
 
-const fmtHours = h => { const minutes = Math.round(h * 60); return h < 48 ? `${Math.floor(minutes / 60)} h ${String(minutes % 60).padStart(2, '0')} min` : `${(h / 24).toFixed(1)} d`; };
-
 export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   const note = state?.note || {};
   const diagnosis = note.diagnosisCategory || '';
@@ -73,7 +72,8 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   if (timed) {
     // onsetVal is the snapshot at import; onsetAnchorMs keeps elapsed time live.
     Object.assign(patch, { onsetVal: Math.round(timing.hours * 100) / 100, onsetUnit: 'hours', onsetRangeHours: null, onsetAnchorMs: lkwAnchorMs });
-    summary.push(`LKW ${fmtHours(timing.hours)}`);
+    // Worded as the case bar words it, from the same whole minutes; the imported onset keeps its hours.
+    summary.push(`LKW ${formatElapsed(timing.clock.elapsedMinutes)}`);
   }
 
   const age = numericInput(note.age, { min: 0, max: 120 });

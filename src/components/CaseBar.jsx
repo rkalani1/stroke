@@ -6,6 +6,7 @@ import { calculateTNKDoseReviewed, calculateAlteplaseDoseReviewed } from '../cal
 import { computeNeurocheckSchedule } from '../calculators-extended.js';
 import { useCurrentTime } from '../use-current-time.js';
 import { revealProtocolTarget } from '../protocol-navigation.js';
+import { formatElapsed } from '../clinical/encounter-time.js';
 
 const SHORT_DX = { ischemic: 'Ischemic', ich: 'ICH', sah: 'SAH', tia: 'TIA', cvt: 'CVT', mimic: 'Mimic', other: 'Other' };
 export const ANTICOAGULANT_LABELS = { apixaban: 'Apixaban', rivaroxaban: 'Rivaroxaban', dabigatran: 'Dabigatran', edoxaban: 'Edoxaban', warfarin: 'Warfarin', heparin: 'Heparin', lmwh: 'LMWH', other: 'Anticoagulant' };
@@ -16,13 +17,6 @@ const shortClock = at => { const d = new Date(at); return `${d.getHours() % 12 |
 // Named ACE inhibitors only (a bare '-pril' suffix also matches 'April').
 const ACE_INHIBITOR = /\b(?:benaze|capto|enala|fosino|lisino|moexi|perindo|quina|rami|trandola|zofeno|cilaza|imida)pril(?:at)?\b/i;
 export const hoursMinutes = ms => { const minutes = Math.max(0, Math.floor(ms / 60000)); return `${Math.floor(minutes / 60)}:${pad(minutes % 60)}`; };
-// A duration, not a clock face: "0:00" reads as midnight.
-export const formatElapsed = minutes => {
-  const whole = Math.max(0, Math.floor(minutes));
-  if (whole < 60) return `${whole} min`;
-  const hours = Math.floor(whole / 60), rest = whole % 60;
-  return rest ? `${hours} h ${rest} m` : `${hours} h`;
-};
 
 // Read-only projection of the current Encounter for the sticky case bar.
 // It never decides eligibility: window references are elapsed-time arithmetic.

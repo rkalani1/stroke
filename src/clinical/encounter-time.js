@@ -16,6 +16,14 @@ export function formatEncounterClock(value) {
   return `${hour % 12 || 12}:${match[2]} ${hour >= 12 ? 'pm' : 'am'}`;
 }
 
+// One elapsed-time format for the case bar, the Encounter LKW result and the Trials banner (whole minutes,
+// rounded down): "35 min", then "1 h 05 min", then days from 48 h ("2.1 d"). A duration, not a clock face:
+// "0:00" reads as midnight. Generated notes and the Protocols clocks keep their own formats.
+export const formatElapsed = minutes => {
+  const whole = Math.max(0, Math.floor(minutes));
+  return whole < 60 ? `${whole} min` : whole < 2880 ? `${Math.floor(whole / 60)} h ${String(whole % 60).padStart(2, '0')} min` : `${(whole / 1440).toFixed(1)} d`;
+};
+
 // The displayed label and elapsed value must use the same selected reference.
 // Discovery measures recognition time; it does not establish onset or LKW.
 export function elapsedEncounterTime(reference, now = new Date()) {

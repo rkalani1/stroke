@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import { reviewedGcs } from '../encounter-clinical-review.js';
 import { supplementaryResult, supplementaryReviewed, supplementarySourceKey, updateSupplementaryField, applySupplementaryScore, canApplySupplementaryScore, SUPPLEMENTARY_APPLY_IDS, MRS_DESCRIPTORS } from '../supplementary-calculators.js';
-import { matchesCalculatorSearch, reviewedCalculatorText, calculatorProgress, calculatorResultParts, resultCautions } from '../calculator-utilities.js';
+import { matchesCalculatorSearch, reviewedCalculatorText, calculatorProgress, calculatorResultParts, resultCautions, calculatorEntryIssue } from '../calculator-utilities.js';
 
 function useWideReadingPane() {
   const query = '(min-width: 1100px)';
@@ -25,10 +25,12 @@ const APPLY_SCOPE = { abcd2:'Acute TIA Encounter only.', 'aspects-regions':'Acut
 function Field({ field, value, onChange }) {
   const options = field.type === 'truth' ? [['true','Yes'],['false','No']] : field.options;
   const answered = field.type === 'truth' ? typeof value === 'boolean' : value !== undefined && value !== null && String(value) !== '';
-  return <label className="workspace-field calc-item" data-answered={answered || undefined}><span>{field.label}</span>{options ?
+  // An entry the score cannot use is named in the label block, which keeps the input level with its grid neighbour.
+  const hint = useId(), issue = calculatorEntryIssue(field, value);
+  return <label className="workspace-field calc-item" data-answered={answered || undefined}><span>{field.label}{issue && <small id={hint} className="field-error">{issue}</small>}</span>{options ?
     <select aria-label={field.label} value={typeof value === 'boolean' ? String(value) : value ?? ''} onChange={event => onChange(field.type === 'truth' ? event.target.value === '' ? undefined : event.target.value === 'true' : event.target.value)}>
       <option value="">Select…</option>{options.map(([key,label]) => <option key={key} value={key}>{label}</option>)}
-    </select> : <input aria-label={field.label} type="number" inputMode="decimal" min={field.min} max={field.max} step={field.step || 'any'} value={value ?? ''} onChange={event => onChange(event.target.value)} />}</label>;
+    </select> : <input aria-label={field.label} type="number" inputMode="decimal" min={field.min} max={field.max} step={field.step || 'any'} value={value ?? ''} aria-invalid={issue ? true : undefined} aria-describedby={issue ? hint : undefined} onChange={event => onChange(event.target.value)} />}</label>;
 }
 
 function SharedInputs({ state, definition }) {

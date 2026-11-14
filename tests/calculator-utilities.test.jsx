@@ -46,7 +46,8 @@ describe('calculator search and export boundaries', () => {
     value = edit(value,'abcd2','diabetes',false);
     expect(calculatorProgress(value,definition('abcd2'))).toMatchObject({complete:true,value:{score:0,max:7},status:''});
     expect(calculatorProgress(edit(value,'abcd2','tiaConfirmed',false),definition('abcd2')).status).toBe('Not scored: Clinical TIA diagnosis confirmed — No.');
-    expect(calculatorProgress(edit(value,'abcd2','initialDiastolic','150'),definition('abcd2')).status).toBe('Not scored: check the entered values.');
+    // An in-range pair in the wrong order is named (review 2026-11-14, audit a11y-02), not 'check the entered values'.
+    expect(calculatorProgress(edit(value,'abcd2','initialDiastolic','150'),definition('abcd2')).status).toBe('Not scored: the first systolic BP must exceed the diastolic.');
     expect(calculatorProgress({...value,note:{...value.note,age:'17'}},definition('abcd2')).status).toBe('Not scored: Encounter age must be a whole number from 18 to 120.');
     expect(calculatorProgress(value,definition('pascal')).status).toBe('2 items unanswered · RoPE worksheet incomplete');
     expect(calculatorProgress(value,definition('aspects-regions'))).toMatchObject({unanswered:11,total:11});

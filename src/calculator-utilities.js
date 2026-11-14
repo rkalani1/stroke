@@ -1,6 +1,7 @@
 import { supplementaryResult } from './supplementary-calculators.js';
 import { numericInput, reviewedGcs } from './encounter-clinical-review.js';
 import { normalizeSearch } from './reference-search.js';
+import { entryIssue } from './encounter-inputs.js';
 
 export const ENCOUNTER_TOOLS = [
   { id:'nihss', name:'NIHSS', aliases:'National Institutes of Health stroke scale neurologic exam' },
@@ -61,6 +62,10 @@ function itemAnswered(field, value) {
   if (field.options) return field.options.some(([key]) => String(key) === value);
   return filled(value);
 }
+// Worksheet number ranges as the scoring functions read them (supplementary-calculators.js): the field's min and
+// max, except where a function is stricter (a diameter or aneurysm size must be above 0; PHASES reads up to 200 mm).
+const STRICTER = { sizeMm: [0, 200, 1], minimumDiameterMm: [0, , 1], distalDiameterMm: [0, , 1] };
+export const calculatorEntryIssue = (field, value) => field.type === 'number' ? entryIssue(value, STRICTER[field.key] || [field.min, field.max]) : undefined;
 // Applicability items whose answer, when contrary, leaves the source population.
 const APPLICABILITY = { tiaConfirmed:true, afConfirmed:true, cryptogenicStrokeWithPfo:true, unrupturedSaccular:true, sahConfirmed:true, patentExtracranialICA:true, nearOcclusion:false };
 const plural = (count, word) => `${count} ${word}${count === 1 ? '' : 's'}`;
@@ -75,6 +80,10 @@ function blockedReason(state, definition, data) {
   if (definition.id === 'pascal' && numericInput(n.age, { min:18, max:120, integer:true }) > 60) return 'Not scored: source population is aged 18–60.';
   if (definition.id === 'wfns' && reviewedGcs(state.gcs || {}) === 15 && data.motorDeficit === true) return 'GCS 15 with motor deficit has no WFNS category in the original table; grade clinically.';
   if (definition.id === 'nascet' && Number(data.minimumDiameterMm) > Number(data.distalDiameterMm)) return 'Not scored: residual lumen exceeds the distal diameter.';
+  // Name what the score could not use: in-range entries in the wrong order, or a shared Encounter value outside its range.
+  if (definition.id === 'abcd2' && Number(data.initialSystolic) <= Number(data.initialDiastolic)) return 'Not scored: the first systolic BP must exceed the diastolic.';
+  if (definition.id === 'stop-bang' && numericInput(n.weight, { min:Number.MIN_VALUE, max:350 }) === null) return 'Not scored: Encounter weight must be above 0 and at most 350 kg.';
+  if (definition.id === 'stop-bang' && numericInput(n.heightCm, { min:50, max:250 }) === null) return 'Not scored: Encounter height must be 50 to 250 cm.';
   return 'Not scored: check the entered values.';
 }
 
@@ -88,7 +97,9 @@ export function calculatorProgress(state, definition) {
   const unanswered = items.filter(answered => !answered).length;
   const missing = (definition.shared || []).filter(key => !sharedDocumented(state, key)).map(key => SHARED_LABELS[key] || key);
   const prerequisite = definition.id === 'pascal' && !supplementaryResult(state, 'rope') ? 'RoPE worksheet incomplete' : '';
+  // An out-of-range entry counts as answered, so it is named rather than left behind the unanswered count.
+  const outOfRange = (definition.fields || []).filter(field => calculatorEntryIssue(field, data[field.key])).map(field => field.label);
   if (value) return { complete:true, value, unanswered:0, total:items.length, status:'' };
-  const pending = [unanswered ? `${plural(unanswered, 'item')} unanswered` : '', missing.length ? `Encounter ${missing.join(', ')} missing` : '', prerequisite].filter(Boolean);
+  const pending = [outOfRange.length ? `${outOfRange.join('; ')} out of range` : '', unanswered ? `${plural(unanswered, 'item')} unanswered` : '', missing.length ? `Encounter ${missing.join(', ')} missing` : '', prerequisite].filter(Boolean);
   return { complete:false, value:null, unanswered, total:items.length, missing, status:pending.length ? pending.join(' · ') : blockedReason(state, definition, data), blocked:!pending.length };
 }
