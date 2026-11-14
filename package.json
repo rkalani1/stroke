@@ -2,6 +2,9 @@
   "name": "stroke",
   "version": "7.11.1",
   "description": "Encounter workspace with embedded calculations, protocols, Pulsara summaries and Epic note templates.",
+  "engines": {
+    "node": ">=22"
+  },
   "main": "service-worker.js",
   "scripts": {
     "validate:citations": "node ./scripts/validate-citations.mjs",

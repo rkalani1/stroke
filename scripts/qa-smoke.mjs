@@ -46,6 +46,16 @@ export async function waitForBrowserState(page, predicate, argument = null, time
 export async function waitForInstalled(page, timeout = 45000) {
   await waitForBrowserState(page, async () => { const reg = await navigator.serviceWorker.getRegistration(); return reg?.active?.state === 'activated'; }, null, timeout);
 }
+// Browser clock for every context that enters times relative to "now" (localStamp enters
+// 5-120 min before now). 20:00 UTC on the run's date is 12:00 PST / 13:00 PDT in
+// America/Los_Angeles: never inside the 01:00-02:59 DST transition hours and never near local
+// midnight, so a run that starts in the repeated autumn hour cannot enter an ambiguous time.
+// The fixed-date DST check below keeps its own clock. --clock <ISO> reproduces a given run.
+export function qaClockStart(nowMs = Date.now()) {
+  const requested = arg('--clock', null);
+  if (requested !== null) { const at = Date.parse(requested); if (!Number.isFinite(at)) throw new Error(`Invalid --clock ${requested}`); return new Date(at); }
+  const today = new Date(nowMs); return new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), 20));
+}
 export async function localStamp(page, minutesAgo = 30) {
   return page.evaluate(minutes => { const d = new Date(Date.now() - minutes * 60000), p = x => String(x).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }, minutesAgo);
 }
@@ -99,8 +109,10 @@ async function main() {
   const check = async (name, fn) => { const started = performance.now(); try { const details = await fn(); report.checks.push({ name, status: 'passed', durationMs: Math.round(performance.now()-started), ...(details || {}) }); } catch(error) { report.checks.push({ name, status: 'failed', error: error.stack || String(error) }); console.error(`FAIL ${name}: ${error.message}`); } };
   try {
     const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, timezoneId: 'America/Los_Angeles' });
+    const clockStart = qaClockStart(); report.clock = clockStart.toISOString(); await context.clock.install({ time: clockStart });
     await context.addInitScript(() => {
       window.__qaClipboard = []; window.__qaDenyClipboard = false; window.__qaStorageWrites = []; window.__qaIndexedDB = [];
+      window.__qaResources = []; const resourceObserver = new PerformanceObserver(list => window.__qaResources.push(...list.getEntries())); resourceObserver.observe({ type: 'resource', buffered: true }); window.__qaResourceEntries = () => { window.__qaResources.push(...resourceObserver.takeRecords()); return window.__qaResources; };
       Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async text => { if(window.__qaDenyClipboard) throw new DOMException('Denied', 'NotAllowedError'); window.__qaClipboard.push(text); } } });
       const write = Storage.prototype.setItem; Storage.prototype.setItem = function(key,value) { window.__qaStorageWrites.push([key,value]); return write.call(this,key,value); };
       const open = indexedDB.open.bind(indexedDB); indexedDB.open = function(...values) {window.__qaIndexedDB.push(values);return open(...values);};
@@ -109,7 +121,7 @@ async function main() {
     const errors=[], failedResources=[], requestUrls=[], consoleMessages=[];
     page.on('pageerror', error => errors.push(error.message)); page.on('requestfailed', req => failedResources.push({url:req.url(),error:req.failure()?.errorText})); page.on('request', req => requestUrls.push(req.url())); page.on('console',message=>consoleMessages.push({type:message.type(),text:message.text()}));
     await check('default Encounter, public build on localhost, retired primary portal absent', async () => {
-      const started=performance.now(); await page.goto(server.url); await page.getByRole('heading',{name:'Encounter',exact:true}).waitFor(); report.metrics.usableEncounterMs=Math.round(performance.now()-started);report.metrics.initialJsTransferBytes=await page.evaluate(()=>performance.getEntriesByType('resource').filter(x=>new URL(x.name).pathname.endsWith('.js')).reduce((sum,x)=>sum+x.transferSize,0));
+      const started=performance.now(); await page.goto(server.url); await page.getByRole('heading',{name:'Encounter',exact:true}).waitFor(); report.metrics.usableEncounterMs=Math.round(performance.now()-started);report.metrics.initialJsTransferBytes=await page.evaluate(()=>window.__qaResourceEntries().filter(x=>new URL(x.name).pathname.endsWith('.js')).reduce((sum,x)=>sum+x.transferSize,0));
       assert.equal(await page.locator('.app-shell').getAttribute('data-demo'),'synthetic'); assert.equal(new URL(page.url()).hash,'#/encounter');
       for(const name of ['Education','Trials','Guidelines & References','Bedside','Teaching']) assert.equal(await page.getByRole('tab',{name,exact:true}).count(),0);
       assert.equal(await page.getByRole('link',{name:'Protocols',exact:true}).count(),1);
@@ -840,10 +852,10 @@ async function main() {
       await reset(page);
     });
     await check('console and resource errors', async () => {assert.deepEqual(errors,[]);assert.deepEqual(failedResources,[]);assert.deepEqual(consoleMessages.filter(x=>x.type==='error'),[]);});
-    report.metrics.totalPageJsTransferBytes=await page.evaluate(()=>performance.getEntriesByType('resource').filter(x=>x.initiatorType==='script'||new URL(x.name).pathname.endsWith('.js')).reduce((sum,x)=>sum+x.transferSize,0));
+    report.metrics.totalPageJsTransferBytes=await page.evaluate(()=>window.__qaResourceEntries().filter(x=>x.initiatorType==='script'||new URL(x.name).pathname.endsWith('.js')).reduce((sum,x)=>sum+x.transferSize,0));
     await context.close();
     await check('fresh complete installation, offline Encounter, Evidence, completed studies and protected drug modal', async () => {
-      const offline=await browser.newContext({viewport:{width:390,height:844},timezoneId:'America/Los_Angeles'});const p=await offline.newPage();const offlineErrors=[];p.on('pageerror',e=>offlineErrors.push(e.message));try{
+      const offline=await browser.newContext({viewport:{width:390,height:844},timezoneId:'America/Los_Angeles'});await offline.clock.install({ time: clockStart });const p=await offline.newPage();const offlineErrors=[];p.on('pageerror',e=>offlineErrors.push(e.message));try{
         await p.goto(server.url);await p.getByRole('heading',{name:'Encounter',exact:true}).waitFor();await waitForInstalled(p);await p.reload();await p.waitForFunction(()=>Boolean(navigator.serviceWorker.controller));
         const cache = await p.evaluate(async () => {
           const active = (await caches.keys()).filter(name => name.startsWith('stroke-cache-v'));
