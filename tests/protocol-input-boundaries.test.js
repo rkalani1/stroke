@@ -80,14 +80,12 @@ describe('Retained protocol input boundaries', () => {
       }
     });
 
-    it('keeps MIRROR thresholds on an explicit verify-current owner hold', () => {
-      const mirror = ICH_INITIAL_EVALUATION_ALGORITHM.researchScreens.find(
-        (screen) => screen.title === 'MIRROR registry screen',
-      );
-
-      expect(mirror).toBeDefined();
-      expect(mirror.criteria.join(' ')).toMatch(/thresholds are version-sensitive/i);
-      expect(mirror.criteria.join(' ')).toMatch(/active registry protocol before use/i);
-      expect(mirror.criteria.join(' ')).not.toMatch(/premorbid mRS\s*[<>=]|GCS\s*\d/i);
+    it('does not route new deep-IPH surgery screening to the closed MIRROR registry', () => {
+      const screens = ICH_INITIAL_EVALUATION_ALGORITHM.researchScreens;
+      expect(screens.map((screen) => screen.title)).toEqual(['MINUTE screen']);
+      expect(JSON.stringify(screens)).not.toMatch(/MIRROR|active registry protocol/i);
+      expect(screens[0].action).toMatch(/outside MINUTE is considered case-by-case/);
+      expect(screens[0].action).toMatch(/outside the MINUTE pathway, or beyond 24 hours from last known well/);
+      expect(screens[0].action).toMatch(/both the on-call stroke attending and the inpatient neurology attending before proceeding/);
     });
 });

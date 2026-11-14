@@ -407,7 +407,7 @@ Use the source-defined Neurosurgery, hydrocephalus, mass-effect, MIE, and resear
 Initial Non-Traumatic IPH Evaluation
 Initial non-traumatic IPH evaluation
 Reviewed
-2026-07-03
+2026-11-09
 Institution-neutral educational translation. Use this as a workflow checklist only; verify against the current approved local protocol before clinical action.
 Non-traumatic IPH >=15 mL by ABC/2 prompts early Neurosurgery and stroke-service evaluation.
 ED clinicians or the stroke service may call Neurosurgery directly; prior approval is not required, but the plan must be closed-looped with the designated on-call stroke attending and other involved service.
@@ -452,15 +452,11 @@ Minimally invasive evacuation
 Lobar IPH 30-80 mL; Age 18-80; NIHSS >5; GCS 5-14; No underlying vascular lesion
 .
 Screen for the approved ENRICH-based standard-of-care pathway. ENRICH trial context (not the local screen): enrolled within 24 hours of last known well, premorbid mRS 0-1, lobar or anterior basal-ganglia ICH 30-80 mL, GCS 5-14.
-Trial and Registry Screens
+Trial Screen
 MINUTE screen
 Age 18-80; Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH; Basal-ganglia IPH volume >=20 mL by ABC/2; NIHSS >=6; CTA/MRA without vascular lesion; Arrival <=15 hours since last known well; No clear standard-of-care surgical indication
 .
-MINUTE has operational priority over MIRROR when both are possible. Notify the approved trial pathway using current study materials; do not publish or infer internal contact details.
-MIRROR registry screen
-Selected spontaneous supratentorial IPH being considered for minimally invasive evacuation; Volume, NIHSS, premorbid mRS, and GCS thresholds are version-sensitive and must be checked against the active registry protocol before use; The latest criteria would loosen the prior screen; do not apply a revised executable screen until protocol-owner sign-off; No underlying vascular lesion; Potential MIS timing within 24 hours of last known well or qualifying wake-up hemorrhage window
-.
-Do not let registry screening delay urgent surgical, trial, or stabilization decisions. Deep IPH considered for minimally invasive surgery outside the trial and registry pathways, or beyond 24 hours from last known well, requires discussion with both the on-call stroke attending and the inpatient neurology attending before proceeding.
+Notify the approved MINUTE trial pathway using current study materials; do not publish or infer internal contact details. Do not let research screening delay urgent surgical or stabilization decisions. Deep IPH endoscopic surgery outside MINUTE is considered case-by-case. Deep IPH considered for minimally invasive surgery outside the MINUTE pathway, or beyond 24 hours from last known well, requires discussion with both the on-call stroke attending and the inpatient neurology attending before proceeding.
 Before any surgical action
 •
 Stop at bedside for a time-out/safety pause.
@@ -865,7 +861,7 @@ h4: ED diagnosis or arrival
 h4: CTA/MRA branch
 h4: Monitoring adjuncts
 h4: Surgery Screens
-h4: Trial and Registry Screens
+h4: Trial Screen
 h3: Minimally Invasive Evacuation (MIE)
 h4: Surgical Selection
 h4: June 2026 Institutional MIE Screen

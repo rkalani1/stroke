@@ -722,19 +722,29 @@ describe('ICH initial evaluation algorithm', () => {
     expect(criteria).toMatch(/NIHSS >=6/);
     expect(criteria).toMatch(/<=15 hours since last known well/);
     expect(criteria).toMatch(/without vascular lesion/);
-    expect(minute.action).toMatch(/MINUTE has operational priority over MIRROR/i);
+    expect(minute.action).toMatch(/Notify the approved MINUTE trial pathway/i);
+    expect(minute.action).not.toMatch(/priority over MIRROR/i);
     expect(minute.action).toMatch(/do not publish or infer internal contact details/i);
   });
 
-  it('keeps MIRROR as a verify-current-protocol registry screen', () => {
-    const mirror = alg.researchScreens.find((screen) => screen.title === 'MIRROR registry screen');
-    expect(mirror).toBeTruthy();
-    const criteriaText = mirror.criteria.join(' ');
-    expect(criteriaText).toMatch(/thresholds are version-sensitive/i);
-    expect(criteriaText).toMatch(/premorbid mRS/i);
-    expect(criteriaText).toMatch(/GCS/i);
-    expect(criteriaText).toMatch(/active registry protocol/);
-    expect(mirror.action).toMatch(/Do not let registry screening delay/);
+  it('removes closed MIRROR screening while retaining MINUTE and case-by-case deep-IPH review', () => {
+    expect(alg.researchScreens.map((screen) => screen.title)).toEqual(['MINUTE screen']);
+    expect(JSON.stringify(alg.researchScreens)).not.toMatch(/MIRROR/i);
+    const minute = alg.researchScreens[0];
+    expect(minute.criteria).toEqual([
+      'Age 18-80',
+      'Spontaneous non-traumatic supratentorial non-thalamic basal-ganglia IPH',
+      'Basal-ganglia IPH volume >=20 mL by ABC/2',
+      'NIHSS >=6',
+      'CTA/MRA without vascular lesion',
+      'Arrival <=15 hours since last known well',
+      'No clear standard-of-care surgical indication'
+    ]);
+    expect(minute.action).toMatch(/endoscopic surgery outside MINUTE is considered case-by-case/);
+    expect(minute.action).toMatch(/outside the MINUTE pathway, or beyond 24 hours from last known well/);
+    expect(minute.action).toMatch(/requires discussion with both the on-call stroke attending and the inpatient neurology attending before proceeding/);
+    expect(alg.lastReviewed).toBe('2026-11-09');
+    expect(alg.sourceWindow).toMatch(/June 2026.*2026-11-09 update limited to MIRROR enrollment closure and deep-IPH surgery routing/);
   });
 
   it('keeps ENRICH-based MIE criteria aligned to the June 2026 pathway', () => {

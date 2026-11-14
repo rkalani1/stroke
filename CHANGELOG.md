@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v7.11.1 — 2026-11-09 — Remove closed MIRROR enrollment pathway
+
+- **IPH algorithm:** removes the MIRROR registry screening branch following closure of active screening and new enrollment. MINUTE criteria remain unchanged; deep IPH endoscopic surgery outside MINUTE remains a case-by-case discussion with the on-call stroke attending and inpatient neurology attending.
+- **Scope:** this is an enrollment-pathway update. Existing MIRROR participants continue protocol-guided follow-up; unrelated protocol criteria and review dates are preserved.
+- **Release:** refreshes the rendered protocol baselines, generated public data and service-worker cache version so returning users receive the update.
+
 ## v7.11.0 — 2026-11-07 — Accessibility, layout and search fixes (outside the Protocols tab)
 
 From a read-only audit of accessibility (axe-core across 136 page states plus keyboard, zoom, forced-colors and reflow checks), layout (690 captured states at six widths in both themes) and performance. The Protocols tab is unchanged.

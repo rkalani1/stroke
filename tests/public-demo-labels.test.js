@@ -147,7 +147,7 @@ describe('public demo labeling and agent disclaimers', () => {
     expect(manifest.mcpServer).toBeNull();
     expect(protocols._meta.source).toBe('Protected public protocol reference bundle');
     expect(protocols.data.ichInitialEvaluation.sourceWindow)
-      .toBe('Reviewed June 2026 public-safe algorithm translation');
+      .toBe('June 2026 public-safe algorithm translation; 2026-11-09 update limited to MIRROR enrollment closure and deep-IPH surgery routing');
   });
 });
 

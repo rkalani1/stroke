@@ -37,8 +37,8 @@ export function isSuccessfulEvtReperfusion(grade) {
 // =====================================================================
 export const ICH_INITIAL_EVALUATION_ALGORITHM = {
   title: 'Initial non-traumatic IPH evaluation',
-  lastReviewed: '2026-07-03',
-  sourceWindow: 'Reviewed June 2026 public-safe algorithm translation',
+  lastReviewed: '2026-11-09',
+  sourceWindow: 'June 2026 public-safe algorithm translation; 2026-11-09 update limited to MIRROR enrollment closure and deep-IPH surgery routing',
   scope: 'Institution-neutral educational translation. Use this as a workflow checklist only; verify against the current approved local protocol before clinical action.',
   consultTrigger: 'Non-traumatic IPH >=15 mL by ABC/2 prompts early Neurosurgery and stroke-service evaluation.',
   decisionNodes: [
@@ -107,18 +107,7 @@ export const ICH_INITIAL_EVALUATION_ALGORITHM = {
         'Arrival <=15 hours since last known well',
         'No clear standard-of-care surgical indication'
       ],
-      action: 'MINUTE has operational priority over MIRROR when both are possible. Notify the approved trial pathway using current study materials; do not publish or infer internal contact details.'
-    },
-    {
-      title: 'MIRROR registry screen',
-      criteria: [
-        'Selected spontaneous supratentorial IPH being considered for minimally invasive evacuation',
-        'Volume, NIHSS, premorbid mRS, and GCS thresholds are version-sensitive and must be checked against the active registry protocol before use',
-        'The latest criteria would loosen the prior screen; do not apply a revised executable screen until protocol-owner sign-off',
-        'No underlying vascular lesion',
-        'Potential MIS timing within 24 hours of last known well or qualifying wake-up hemorrhage window'
-      ],
-      action: 'Do not let registry screening delay urgent surgical, trial, or stabilization decisions. Deep IPH considered for minimally invasive surgery outside the trial and registry pathways, or beyond 24 hours from last known well, requires discussion with both the on-call stroke attending and the inpatient neurology attending before proceeding.'
+      action: 'Notify the approved MINUTE trial pathway using current study materials; do not publish or infer internal contact details. Do not let research screening delay urgent surgical or stabilization decisions. Deep IPH endoscopic surgery outside MINUTE is considered case-by-case. Deep IPH considered for minimally invasive surgery outside the MINUTE pathway, or beyond 24 hours from last known well, requires discussion with both the on-call stroke attending and the inpatient neurology attending before proceeding.'
     }
   ],
   safetyPause: {

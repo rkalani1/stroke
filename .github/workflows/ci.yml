@@ -12,7 +12,7 @@ on:
 jobs:
   unit-tests:
     name: Unit tests (vitest)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 12
 
     steps:
@@ -92,7 +92,7 @@ jobs:
 
   protocols-tab-lock:
     name: Protocols tab preservation lock
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 40
 
     steps:
@@ -172,7 +172,7 @@ jobs:
         run: npm run test:mcp
 
   build-and-smoke:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
 
     steps:
@@ -301,7 +301,7 @@ jobs:
 
   adaptive-latency-smoke:
     if: github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 35
 
     steps:

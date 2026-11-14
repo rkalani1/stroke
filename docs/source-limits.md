@@ -1,5 +1,9 @@
 # Retained source limitations
 
+## MIRROR enrollment closure (7.11.1)
+
+On November 9, 2026, the maintainer requested removal of MIRROR from the IPH algorithm based on the study enrollment-closure notice. Active screening and new enrollment cease; already enrolled participants continue their protocol-guided follow-up. The reusable algorithm and public JSON no longer list a MIRROR research screen or compare its priority with MINUTE. MINUTE criteria are unchanged, and the existing dual-attending discussion safeguard is retained for deep IPH surgery outside MINUTE or beyond 24 hours from last known well. The visible research heading and affected ICH text baselines are deliberately updated for this requested Protocols change. This scoped update does not revalidate unrelated protocol content.
+
 Clinical review dates are copied from existing records. Corpus pruning,
 metadata lookup, arithmetic tests and a successful build do not constitute
 clinical validation. `workspace-sources.json` explicitly leaves missing review
