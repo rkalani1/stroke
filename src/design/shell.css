@@ -216,6 +216,8 @@ html[data-theme="dark"] .workspace-result[data-tone="value"] { color: var(--ink)
 .nihss-option small { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; font-size: var(--text-2xs); line-height: var(--leading-tight); color: var(--mute); }
 .nihss-choice { margin: var(--space-2) var(--space-1) 0; font-size: var(--text-xs); color: var(--ink-2); }
 .workspace-help[data-tone="caution"] { color: var(--caution); font-weight: 600; }
+/* An out-of-range number entry, named under its input (Encounter) or label (worksheets); not on the Protocols surface. */
+.encounter-workflow .field-error { display: block; font-size: var(--text-sm); font-weight: 600; color: var(--caution); }
 /* One disclosure marker outside the protected protocol content. */
 :is(.encounter-workflow, .reference-surface, .trials-surface, .quick-reference, .tools-surface) summary { list-style: none; }
 :is(.encounter-workflow, .reference-surface, .trials-surface, .quick-reference, .tools-surface) summary::-webkit-details-marker { display: none; }

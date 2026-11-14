@@ -49,7 +49,8 @@ describe('case bar projection', () => {
     const c = caseSummary(base, now);
     expect(c.dx).toBe('Ischemic');
     expect(c.demographics).toBe('72 F');
-    expect(c.elapsed).toBe('3 h');
+    // The shared duration format keeps two-digit minutes on whole hours (review 2026-11-14, audit ux-09).
+    expect(c.elapsed).toBe('3 h 00 min');
     expect(c.window).toEqual({ text: '4.5 h in 1:30', tone: 'open' });
     expect(c.dose).toEqual({ label: 'TNK', value: '20 mg', detail: '4 mL' });
     expect(c.bpHigh).toBe(true);

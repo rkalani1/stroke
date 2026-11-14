@@ -26,7 +26,7 @@ describe('round 9 remaining fixes', () => {
   it('counts down the 4.5 h-from-discovery limit for unknown-onset ischemic stroke', () => {
     const wake = make({ note: { diagnosisCategory: 'ischemic', lkwUnknown: true, discoveryDate: '2026-10-01', discoveryTime: '11:00' } });
     expect(caseSummary(wake, now).window).toMatchObject({ text: '4.5 h from discovery in 3:30', short: 'Disc 3:30' });
-    expect(render(wake)).toContain('Discovery: 60 min elapsed. Remaining time is on the case bar.');
+    expect(render(wake)).toContain('Discovery: 1 h 00 min elapsed. Remaining time is on the case bar.');
     expect(render(wake)).not.toContain('WAKE-UP MRI limit');
     expect(caseSummary({ ...wake, note: { ...wake.note, diagnosisCategory: 'ich' } }, now).window.text).toBe('since discovery');
   });
