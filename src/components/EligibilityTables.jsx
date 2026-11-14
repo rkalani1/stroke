@@ -7,7 +7,9 @@ const HEADINGS = ['Study', 'Summary', 'Inclusion criteria', 'Exclusion criteria'
 const escHtml = value => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const escMd = value => String(value).replace(/\|/g, '\\|').replace(/\n/g, ' ');
 const studyPhase = trial => phaseLabel({ phase: trial.phase, studyType: trial.studyType });
-const sourceRecord = trial => `${statusText[trial.status] || 'Unverified'}${studyPhase(trial) ? ` · ${studyPhase(trial)}` : ''}${trial.referenceOnly ? ' · not modeled in the screener' : ''}. Recorded registry check: ${trial.sourceDate || 'not recorded in this table'}. Local activation is not confirmed.`;
+// A recruiting status confirmed ahead of the registry record names the registry status, as the card and dialog do.
+const statusLine = trial => trial.status === 'enrolling' && trial.registryStatus && trial.registryStatus !== 'RECRUITING' ? `Recruiting (registry not yet updated; ${trial.registryStatus.toLowerCase().replace(/_/g, ' ')} at recorded check)` : statusText[trial.status] || 'Unverified';
+const sourceRecord = trial => `${statusLine(trial)}${studyPhase(trial) ? ` · ${studyPhase(trial)}` : ''}${trial.referenceOnly ? ' · not modeled in the screener' : ''}. Recorded registry check: ${trial.sourceDate || 'not recorded in this table'}. Local activation is not confirmed.`;
 const sourceGaps = trial => trial.sourceGaps?.length ? `Source gaps / confirmation required: ${trial.sourceGaps.join('; ')}` : '';
 
 export function buildTableMarkdown(table) {

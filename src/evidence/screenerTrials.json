@@ -204,7 +204,8 @@
         "If >120 minutes elapse since qualifying imaging and randomization has not yet occurred, confirm repeat CT/MR and qualifying imaging; for NIHSS 0-5, repeat only with significant NIHSS improvement",
         "Confirm arterial puncture can start ≤ 2 h from qualifying CTA/MRA or CTP/MRP imaging and the occlusion is not suspected to be chronic",
         "Confirm CT versus MRI ASPECTS threshold, focal deficit when NIHSS is 0, and the remaining domain exclusions (dissection, vasculitis, septic embolus, platelets, mass effect, tumor, hemorrhage)",
-        "Confirm no contrast anaphylaxis precluding EVT, unfavorable vascular access, serious/advanced/terminal illness or life expectancy <6 months, or pre-existing medical, neurological or psychiatric disease that confounds assessments"
+        "Confirm no contrast anaphylaxis precluding EVT, unfavorable vascular access, serious/advanced/terminal illness or life expectancy <6 months, or pre-existing medical, neurological or psychiatric disease that confounds assessments",
+        "Confirm no proven contraindication to endovascular thrombectomy"
       ]
     }
   },
@@ -959,7 +960,8 @@
       ],
       "manualPending": [
         "Confirm no hemorrhagic transformation, hemorrhage into tumor, or unsecured AVM; a generic secondary-ICH flag is not equivalent to these registry exclusions",
-        "Confirm non-valvular AF/flutter, no previous/planned left atrial appendage closure, no active infective endocarditis, and the full renal/hepatic/hematologic/BP/consent exclusions"
+        "Confirm non-valvular AF/flutter, no previous/planned left atrial appendage closure, no active infective endocarditis, and the full renal/hepatic/hematologic/BP/consent exclusions",
+        "Confirm highly effective contraception if of reproductive potential and no clinically significant bleeding diathesis"
       ]
     }
   },
@@ -1085,7 +1087,8 @@
       ],
       "manualPending": [
         "Review diabetes with prior MI or coronary revascularization as a separate registry exclusion",
-        "Confirm not a woman of childbearing potential, no known severe dementia, no familial hypercholesterolemia or PCSK9-inhibitor use, and no planned withdrawal of care"
+        "Confirm not a woman of childbearing potential, no known severe dementia, no familial hypercholesterolemia or PCSK9-inhibitor use, and no planned withdrawal of care",
+        "Confirm no expected noncompliance with the protocol (e.g., alcohol or drug dependency)"
       ]
     }
   },
@@ -1097,7 +1100,7 @@
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
       "This screening summary cannot distinguish sporadic CAA age >=50 from Dutch-type CAA age >=30 with E693Q APP mutation, and it does not encode ALT/AST, recent investigational agent, or amyloid-antibody exclusions.",
-      "Registry status rechecked 2026-10-31: ACTIVE_NOT_RECRUITING; last update posted 2026-10-20 (recorded 2026-10-31). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+      "Registry status rechecked 2026-11-14: ACTIVE_NOT_RECRUITING; last update posted 2026-11-13 (recorded 2026-11-14). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
     ],
     "timeCategory": "subacute_chronic",
     "enrollmentWindowText": "Chronic",
@@ -1107,9 +1110,9 @@
     "externalMetadata": {
       "nct": "NCT06393712",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06393712",
-      "verificationDate": "2026-10-31",
+      "verificationDate": "2026-11-14",
       "registryStatus": "ACTIVE_NOT_RECRUITING",
-      "registryLastUpdatePosted": "2026-10-20",
+      "registryLastUpdatePosted": "2026-11-13",
       "localActivationStatus": "not_assessed",
       "phase": "PHASE2",
       "studyType": "INTERVENTIONAL",
@@ -1618,7 +1621,7 @@
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
       "CT.gov requires ARAT 14-44, Box & Block affected arm >=1 block/60 seconds, ability to perform 3 exercise examples, and self-signed consent/behavioral contract, and lists depression, cognition, communication, spasticity, vision, language, travel-distance, MRI and isolation exclusions; these are listed for confirmation, not modeled.",
-      "Registry status rechecked 2026-10-31: RECRUITING; last update posted 2026-10-26 (recorded 2026-10-31). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified.",
+      "Registry status rechecked 2026-11-14: RECRUITING; last update posted 2026-11-05 (recorded 2026-11-14). Eligibility re-read 2026-11-14, unchanged. This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified.",
       "The registry record read 2026-10-31 (last update posted 2026-10-26) lists wider eligibility than the version recorded at the 2026-10-21 check (last update posted 2026-10-09: age 18-80, onset 120±30 days prior to randomization, ARAT 18-44): age 18-85, onset 90-270 days prior to randomization and ARAT 14-44. The detailed description gives 6-8 weeks of therapy in one sentence and 6 weeks elsewhere. Version history was not accessible, so when each field changed is unverified; confirm the active protocol version with the study team."
     ],
     "timeCategory": "subacute_chronic",
@@ -1626,9 +1629,9 @@
     "externalMetadata": {
       "nct": "NCT06682429",
       "registryUrl": "https://clinicaltrials.gov/study/NCT06682429",
-      "verificationDate": "2026-10-31",
+      "verificationDate": "2026-11-14",
       "registryStatus": "RECRUITING",
-      "registryLastUpdatePosted": "2026-10-26",
+      "registryLastUpdatePosted": "2026-11-05",
       "localActivationStatus": "not_assessed",
       "phase": "NA",
       "studyType": "INTERVENTIONAL",
@@ -1749,7 +1752,8 @@
       "manualPending": [
         "Confirm at baseline: ARAT 14–44 and Box & Block ≥ 1 block in 60 s with the affected arm, all 3 rehabilitation exercise examples performed, and consent and behavioral contract signed by the patient (no surrogate consent)",
         "Confirm no severe depression (GDS > 10/15), MoCA < 22 (unless due to aphasia and allowed by the site PI), communication deficit interfering with participation, severe arm spasticity (contracture or modified Ashworth 4 in biceps or pectoralis), other diagnosis affecting paretic-arm function, or visual acuity worse than 20/50 in both eyes",
-        "Confirm sufficient English or Spanish, one home address within a 1.5-hour drive of the central site during therapy (site PI may waive), no MRI contraindication, no isolation precautions and no concurrent therapy-based investigational study"
+        "Confirm sufficient English or Spanish, one home address within a 1.5-hour drive of the central site during therapy (site PI may waive), no MRI contraindication, no isolation precautions and no concurrent therapy-based investigational study",
+        "Confirm no major, active, coexistent neurological, psychiatric or medical disease and no expected inability or unwillingness to perform the study procedures or therapy"
       ]
     }
   },
@@ -1761,7 +1765,7 @@
     "referenceOnly": true,
     "sourceCompletenessStatus": "first_pass",
     "sourceGaps": [
-      "Registry status rechecked 2026-10-31: ACTIVE_NOT_RECRUITING; last update posted 2026-10-26 (recorded 2026-10-31). No new enrollment. The registry intervention list still includes the rivaroxaban, ticagrelor and clopidogrel arms; arm-level changes are not verified here (secondary reports of a change to the rivaroxaban arm could not be checked against an NIH or registry source).",
+      "Registry status rechecked 2026-11-14: ACTIVE_NOT_RECRUITING; last update posted 2026-11-10 (recorded 2026-11-14). No new enrollment. The registry intervention list still includes the rivaroxaban, ticagrelor and clopidogrel arms; arm-level changes are not verified here (secondary reports of a change to the rivaroxaban arm could not be checked against an NIH or registry source).",
       "Registry primary outcomes at this check (each up to 12 months): parenchymal ICH or non-ICH major hemorrhage; and ischemic stroke, intracerebral hemorrhage or vascular death.",
       "Partial profile retained for reference; it is not modeled in the screener and is not a treatment recommendation or local activation record."
     ],
@@ -1770,9 +1774,9 @@
     "externalMetadata": {
       "nct": "NCT05047172",
       "registryUrl": "https://clinicaltrials.gov/study/NCT05047172",
-      "verificationDate": "2026-10-31",
+      "verificationDate": "2026-11-14",
       "registryStatus": "ACTIVE_NOT_RECRUITING",
-      "registryLastUpdatePosted": "2026-10-26",
+      "registryLastUpdatePosted": "2026-11-10",
       "localActivationStatus": "not_assessed",
       "phase": "PHASE3",
       "studyType": "INTERVENTIONAL"

@@ -90,7 +90,7 @@ describe('restored independent Trials workspace', () => {
     await page.getByRole('tab', { name: 'Database', exact: true }).click();
     // The registry date and activation caveat are stated once for the page,
     // and in full in each study's details, instead of on every card.
-    expect(body).toMatch(/First-pass registry screen \(registry checked 2026-10-31 to 2026-11-04(, (today|1 day ago|\d+ days ago))?\) — confirm full criteria, local activation and consent\./);
+    expect(body).toMatch(/First-pass registry screen \(registry checked 2026-10-31 to 2026-11-14(, (today|1 day ago|\d+ days ago))?\) — confirm full criteria, local activation and consent\./);
     await page.getByRole('searchbox').fill('NCT06289985');
     expect(await page.locator('#trials-database-panel article').count()).toBe(1);
     const card = await page.locator('#trials-database-panel article').innerText();
