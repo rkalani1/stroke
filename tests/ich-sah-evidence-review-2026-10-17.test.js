@@ -38,7 +38,7 @@ describe('ICH evidence cards (2026-10-17 review)', () => {
     expect(summary).toContain('Unfractionated heparin: protamine (2a)');
     expect(summary).toContain('LMWH: protamine may partially reverse (2b)');
     expect(summary).not.toMatch(/(?<!fractionated )Heparin: protamine \(2a\)/);
-    expect(summary).toMatch(/4F-PCC rather than andexanet.*withdrawn from the US market effective 22 December 2025/);
+    expect(summary).toMatch(/4F-PCC rather than andexanet.*withdrawn from the US market effective December 22, 2025/);
     // GRADE certainty was not re-verified on 2026-10-17 (abstract only); the access note must say so.
     expect(topic('antithrombotic-reversal').sources[0].access).toMatch(/2026-09-30.*not re-verified/);
     // The abstract summarizes four conditional recommendations and three no-recommendation areas, not all eight.

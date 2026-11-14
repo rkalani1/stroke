@@ -96,7 +96,7 @@ describe('ev-acute Evidence cards (2026-10-21)', () => {
     const card = topic('ich-management');
     // ESO/EANS 2025 ICH guideline PICO 2 consensus and the ESO 2025 BP update PICO 7 consensus (archive):
     // avoid SBP reductions >70 mmHg from baseline or active lowering below 110 mmHg.
-    expect(card.caution).toContain('avoid SBP drops >70 mm Hg or below 110 (ESO 2025 consensus)');
+    expect(card.caution).toContain('avoid SBP drops >70 mmHg or below 110 (ESO 2025 consensus)');
     expect(card.caution).not.toContain('ESO 2026');
   });
 

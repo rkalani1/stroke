@@ -193,7 +193,7 @@
       "TEMPO-2",
       "TAPIS"
     ],
-    "summary": "Noncardioembolic minor stroke (NIHSS ≤3) or high-risk TIA (ABCD2 ≥4) within 24 h without IVT: aspirin plus clopidogrel with a loading dose for 21 days, then one agent (AHA 2026, COR 1). CHANCE: stroke 8.2 vs 11.7%; POINT: major ischemic events 5.0 vs 6.5% with major hemorrhage 0.9 vs 0.4%. Lower-grade options: ticagrelor plus aspirin for 30 days (NIHSS ≤5, or TIA with ABCD2 ≥6 or symptomatic stenosis ≥50%; COR 2b; THALES 5.5 vs 6.6%, severe bleeding 0.5 vs 0.1%); presumed atherosclerotic cause at 24–72 h (or NIHSS 4–5 within 24 h): clopidogrel plus aspirin for 21 days (COR 2a; INSPIRES 7.3 vs 9.2%); known CYP2C19 loss-of-function carriers: ticagrelor plus aspirin for 21 days, then ticagrelor, rather than clopidogrel-aspirin (COR 2b; CHANCE-2 6.0 vs 7.6%).",
+    "summary": "Noncardioembolic minor stroke (NIHSS ≤3) or high-risk TIA (ABCD² ≥4) within 24 h without IVT: aspirin plus clopidogrel with a loading dose for 21 days, then one agent (AHA 2026, COR 1). CHANCE: stroke 8.2 vs 11.7%; POINT: major ischemic events 5.0 vs 6.5% with major hemorrhage 0.9 vs 0.4%. Lower-grade options: ticagrelor plus aspirin for 30 days (NIHSS ≤5, or TIA with ABCD² ≥6 or symptomatic stenosis ≥50%; COR 2b; THALES 5.5 vs 6.6%, severe bleeding 0.5 vs 0.1%); presumed atherosclerotic cause at 24–72 h (or NIHSS 4–5 within 24 h): clopidogrel plus aspirin for 21 days (COR 2a; INSPIRES 7.3 vs 9.2%); known CYP2C19 loss-of-function carriers: ticagrelor plus aspirin for 21 days, then ticagrelor, rather than clopidogrel-aspirin (COR 2b; CHANCE-2 6.0 vs 7.6%).",
     "recommendations": [
       {
         "text": "In patients with minor noncardioembolic AIS (NIHSS 3 or less) or high-risk TIA (ABCD2 4 or greater) who did not receive IVT, DAPT (aspirin plus clopidogrel with loading dose) is recommended to be initiated within 24 hours of symptom onset and continued for 21 days, followed by single antiplatelet therapy, to reduce the 90-day risk of recurrent ischemic stroke.",
@@ -243,7 +243,7 @@
     ],
     "related": [
       {
-        "label": "DAPT calculator",
+        "label": "Acute DAPT source screen",
         "href": "#/encounter/dapt"
       },
       {
@@ -508,7 +508,7 @@
       "Measure the core consistently (NCCT/MRI ASPECTS or CTP core) and confirm age, baseline mRS and mass effect.",
       "Set expectations: the benefit is mostly less disability, not independence (LASTE median mRS 4 vs 6).",
       "SVIN 2025: ASPECTS 0–5 within 6 h (age 18–80, mRS 0–1) is Class I (LASTE); ASPECTS 0–2 at 6–24 h — benefit uncertain (2b).",
-      "ATLAS (Lancet 2026; postdates AHA 2026 and SVIN 2025), IPD of 6 RCTs (n=1886): better mRS (aGenOR 1.63) and lower mortality (31.1 vs 37.3%) up to 24 h, consistent across ASPECTS and core strata; evidence is limited for core ≥150 mL beyond 6 h."
+      "ATLAS (Lancet 2026; postdates AHA 2026 and SVIN 2025), IPD of 6 RCTs (n=1,886): better mRS (aGenOR 1.63) and lower mortality (31.1 vs 37.3%) up to 24 h, consistent across ASPECTS and core strata; evidence is limited for core ≥150 mL beyond 6 h."
     ],
     "caution": "Trial age limits: ANGEL-ASPECT ≤80; SELECT2 and TESLA ≤85; none in RESCUE-Japan LIMIT or TENSION; LASTE had no upper limit but required ASPECTS 4–5 at age ≥80 (registry: 3–5), so it gives no evidence for ASPECTS 0–2 at that age. All but TENSION (mRS ≤2) required prestroke mRS 0–1.",
     "sources": [
@@ -557,7 +557,7 @@
       "pc-ASPECTS",
       "INSIST-IT"
     ],
-    "summary": "Basilar occlusion with NIHSS ≥10, PC-ASPECTS ≥6 and baseline mRS 0–1: EVT within 24 h (AHA 2026, COR 1). ATTENTION (≤12 h): mRS 0–3 46 vs 23%, mortality 37 vs 55%; BAOCHE (6–24 h): 46 vs 24%. NIHSS 6–9: benefit not established (2b; ESO suggests best medical treatment for NIHSS <10). Give IVT if eligible (ESO suggests IVT plus EVT over direct EVT); TRACE-5 tenecteplase within 24 h improved mRS 0–1 or return to baseline (38 vs 29%), but ATTENTION LATE found no gain from tenecteplase before EVT at 4.5–24 h (30 vs 30%).",
+    "summary": "Basilar occlusion with NIHSS ≥10, pc-ASPECTS ≥6 and baseline mRS 0–1: EVT within 24 h (AHA 2026, COR 1). ATTENTION (≤12 h): mRS 0–3 46 vs 23%, mortality 37 vs 55%; BAOCHE (6–24 h): 46 vs 24%. NIHSS 6–9: benefit not established (2b; ESO suggests best medical treatment for NIHSS <10). Give IVT if eligible (ESO suggests IVT plus EVT over direct EVT); TRACE-5 tenecteplase within 24 h improved mRS 0–1 or return to baseline (38 vs 29%), but ATTENTION LATE found no gain from tenecteplase before EVT at 4.5–24 h (30 vs 30%).",
     "recommendations": [
       {
         "text": "In AIS patients with basilar artery occlusion, baseline mRS 0-1, NIHSS 10 or greater, and PC-ASPECTS 6 or greater (mild ischemic damage), EVT within 24 hours of symptom onset is recommended to achieve better functional outcome and reduce mortality.",
@@ -576,7 +576,7 @@
     ],
     "consider": [
       "A low NIHSS can understate posterior-circulation disability; recheck for fluctuation.",
-      "Very extensive bilateral or brainstem infarction: ESO consensus suggests no reperfusion; with PC-ASPECTS 0–6, weigh age, frailty and prestroke disability.",
+      "Very extensive bilateral or brainstem infarction: ESO consensus suggests no reperfusion; with pc-ASPECTS 0–6, weigh age, frailty and prestroke disability.",
       "First pass: aspiration is suggested over a stent retriever (ESO, weak). With suspected intracranial atherosclerosis and severe basilar stenosis, ESO consensus (written before ANGEL-REBOOT) suggests rescue angioplasty or stenting after failed EVT; AHA 2026 rates rescue angioplasty or stenting after failed EVT as uncertain (2b).",
       "IA thrombolysis after successful basilar EVT is unproven: ATTENTION-IA (BMJ 2025; IA tenecteplase) and IAT-TOP (JAMA Neurol 2026, after AHA 2026, not graded; IA alteplase) were neutral, and INSIST-IT (China, open-label; 144 patients; Nat Commun, November 2026, after AHA 2026, not graded) was stopped early for safety concerns and lack of efficacy, with mRS 0–3 40.0 vs 50.0% (OR 0.67, 95% CI 0.34–1.29) and 90-day mortality 41.3 vs 26.5% (OR 1.96, 0.97–4.03; post hoc safety outcome)."
     ],
@@ -593,7 +593,7 @@
     ],
     "related": [
       {
-        "label": "PC-ASPECTS",
+        "label": "pc-ASPECTS",
         "href": "#/encounter/pc-aspects"
       },
       {
@@ -738,7 +738,7 @@
       "Confirm the ophthalmic diagnosis and onset; coordinate stroke and ophthalmology assessment.",
       "Both trials studied nonarteritic CRAO; suspected arteritis needs its own pathway.",
       "THEIA measured visual acuity and TenCRAOS a vision-recovery threshold; weigh safety alongside benefit.",
-      "ESO 2025 suggests IVT within 4.5 h for CRAO (weak wording; very low-quality nonrandomized evidence through 2023, before THEIA and TenCRAOS). The ESO Annual Stroke Evidence Update (February 2026; the authors' interpretation, not a guideline recommendation) states that THEIA and TenCRAOS do not support routine IVT for acute CRAO and encourages trial enrolment."
+      "ESO 2025 suggests IVT within 4.5 h for CRAO (weak wording; very low-quality nonrandomized evidence through 2023, before THEIA and TenCRAOS). The ESO Annual Stroke Evidence Update (February 2026; the authors' interpretation, not a guideline recommendation) states that THEIA and TenCRAOS do not support routine IVT for acute CRAO and encourages trial enrollment."
     ],
     "caution": "Small neutral trials do not prove equivalence, and the 2021 AHA statement predates them. A 2025 individual-participant meta-analysis of nonrandomized studies (searched to June 2023; nonarteritic CRAO with severe vision loss; published after the AHA 2026 literature cutoff) associated IVT within 4.5 h with more recovery from severe vision loss than conservative care (28.8 vs 11.1%); its authors call for powered RCTs, and THEIA and TenCRAOS did not show benefit.",
     "sources": [
@@ -1065,7 +1065,7 @@
       "warfarin",
       "dabigatran"
     ],
-    "summary": "Anticoagulant-associated ICH: stop the anticoagulant and reverse it as soon as ICH is diagnosed (AHA 2022, COR 1); antiplatelet-associated ICH: no platelet transfusion unless neurosurgery is planned (NCS/SCCM 2026, conditional; AHA 2022 COR 3: Harm for aspirin). Factor Xa inhibitor: 4F-PCC rather than andexanet (NCS/SCCM 2026, conditional); andexanet (Andexxa) was withdrawn from the US market effective 22 December 2025. Warfarin with INR ≥2.0: 4F-PCC over FFP, then IV vitamin K (COR 1). Dabigatran: idarucizumab (2a). Unfractionated heparin: protamine (2a); LMWH: protamine may partially reverse (2b). On aspirin and going to neurosurgery: platelet transfusion (conditional). No recommendation on desmopressin or on reversal in small ICH.",
+    "summary": "Anticoagulant-associated ICH: stop the anticoagulant and reverse it as soon as ICH is diagnosed (AHA 2022, COR 1); antiplatelet-associated ICH: no platelet transfusion unless neurosurgery is planned (NCS/SCCM 2026, conditional; AHA 2022 COR 3: Harm for aspirin). Factor Xa inhibitor: 4F-PCC rather than andexanet (NCS/SCCM 2026, conditional); andexanet (Andexxa) was withdrawn from the US market effective December 22, 2025. Warfarin with INR ≥2.0: 4F-PCC over FFP, then IV vitamin K (COR 1). Dabigatran: idarucizumab (2a). Unfractionated heparin: protamine (2a); LMWH: protamine may partially reverse (2b). On aspirin and going to neurosurgery: platelet transfusion (conditional). No recommendation on desmopressin or on reversal in small ICH.",
     "recommendations": [
       {
         "text": "Immediate discontinuation of anticoagulation and rapid reversal are recommended as soon as possible after diagnosis of anticoagulant-associated spontaneous ICH to improve survival.",
@@ -1172,7 +1172,7 @@
     "summary": "In patients aged 50 or older, suspect CAA with lobar ICH, convexity SAH or transient focal episodes; MRI with blood-sensitive sequences looks for lobar microbleeds and cortical superficial siderosis (ICAA/WSO 2025). Recurrence risk rises with lobar location, older age, more lobar microbleeds, disseminated superficial siderosis, poor BP control, Asian or Black race and APOE ε2/ε4 (AHA 2022, 2a). Restarting antiplatelets may be reasonable (2b; RESTART: recurrent ICH 4 vs 9%, not significant). In AF after ICH, PRESTIGE-AF found fewer ischemic strokes but more recurrent ICH with DOACs; a 2025 meta-analysis of six RCTs (798 patients, including PRESTIGE-AF; postdates AHA 2022) found the same trade-off (ischemic stroke RR 0.20; recurrent ICH RR 3.14; all-cause mortality not different) — individualize; if anticoagulation is restarted, starting 7–8 weeks after ICH may be considered after weighing individual factors (AHA 2022, 2b); left atrial appendage closure may be considered if anticoagulation is not possible (2b); in ASAP-TOO (JACC 2026; postdates AHA 2022, not graded; 481 patients unsuitable for anticoagulation, 34% with prior intracranial or subdural hemorrhage; stopped early and underpowered), Watchman closure vs single antiplatelet or no therapy did not significantly reduce ischemic stroke or systemic embolism at up to 5 years (7.8 vs 11.4%; HR 0.73, 95% CI 0.35–1.52), and major bleeding was numerically higher, mostly in the first 3 months (22.1 vs 15.7%; HR 1.64, 0.96–2.81).",
     "consider": [
       "Transient focal episodes may be CAA rather than TIA — avoid reflex antithrombotics.",
-      "Long-term BP <130/80 is reasonable after ICH (AHA 2022, 2a). RECAP-ICH (individual-participant meta-analysis of 4 trials; 2,944 ICH survivors, 75% Asian; postdates AHA 2022): BP-lowering treatment vs placebo or standard care (mean SBP difference 11.2 mm Hg) reduced recurrent stroke (6.5 vs 10.4%; HR 0.62), driven by fewer recurrent ICH (2.2 vs 5.6%; HR 0.39), without excess serious adverse events.",
+      "Long-term BP <130/80 is reasonable after ICH (AHA 2022, 2a). RECAP-ICH (individual-participant meta-analysis of 4 trials; 2,944 ICH survivors, 75% Asian; postdates AHA 2022): BP-lowering treatment vs placebo or standard care (mean SBP difference 11.2 mmHg) reduced recurrent stroke (6.5 vs 10.4%; HR 0.62), driven by fewer recurrent ICH (2.2 vs 5.6%; HR 0.39), without excess serious adverse events.",
       "Ask about antiamyloid therapy; CAA changes those decisions.",
       "ENRICH-AF (edoxaban vs no anticoagulation, antiplatelet monotherapy allowed, in AF after intracranial hemorrhage; 948 enrolled; completed July 2026; no peer-reviewed report as of October 2026): after a safety review of the first 699 patients, its DSMB advised halting enrollment of patients with lobar ICH (174) or isolated convexity SAH (34), subtypes typically caused by CAA and now excluded in the registry criteria, and stopping study drug in that subgroup (WSO 2025). A 2025 meta-analysis attributes this to excess recurrent intracranial bleeding; WSO 2025 notes that the data behind the recommendation were unpublished, and that an earlier individual-patient meta-analysis of four trials (412 patients) found no treatment interaction with lobar ICH or convexity SAH."
     ],
@@ -1394,7 +1394,7 @@
     ],
     "related": [
       {
-        "label": "ICH severity score",
+        "label": "ICH severity",
         "href": "#/encounter/ich-score"
       },
       {
@@ -2037,12 +2037,12 @@
       "secondary prevention",
       "OPTIMAL-STROKE"
     ],
-    "summary": "For long-term prevention after stroke or TIA (not the acute phase), target office BP <130/80 for most (AHA 2021, COR 1), and treat an average office BP ≥130/80 even without prior hypertension (2a). PROGRESS: perindopril plus indapamide lowered BP by 12/5 mm Hg and stroke by 43%, whereas perindopril alone (5/3 mm Hg) gave no clear reduction. After ICH, long-term SBP <130 and DBP <80 is reasonable (AHA 2022, 2a). Postdating it, the TRIDENT low-dose triple pill reduced recurrent stroke (4.6 vs 7.4%; HR 0.61). The RECAP-ICH individual-participant meta-analysis (4 trials, 2,944 patients, 75% Asian) compared fixed-dose or target-based BP lowering with placebo or standard care (mean SBP difference 11 mm Hg). It found fewer recurrent strokes (6.5 vs 10.4%; HR 0.62), mainly through fewer recurrent ICH (2.2 vs 5.6%; HR 0.39). Lacunar stroke: SPS3 (<130) reduced ICH.",
+    "summary": "For long-term prevention after stroke or TIA (not the acute phase), target office BP <130/80 for most (AHA 2021, COR 1), and treat an average office BP ≥130/80 even without prior hypertension (2a). PROGRESS: perindopril plus indapamide lowered BP by 12/5 mmHg and stroke by 43%, whereas perindopril alone (5/3 mmHg) gave no clear reduction. After ICH, long-term SBP <130 and DBP <80 is reasonable (AHA 2022, 2a). Postdating it, the TRIDENT low-dose triple pill reduced recurrent stroke (4.6 vs 7.4%; HR 0.61). The RECAP-ICH individual-participant meta-analysis (4 trials, 2,944 patients, 75% Asian) compared fixed-dose or target-based BP lowering with placebo or standard care (mean SBP difference 11 mmHg). It found fewer recurrent strokes (6.5 vs 10.4%; HR 0.62), mainly through fewer recurrent ICH (2.2 vs 5.6%; HR 0.39). Lacunar stroke: SPS3 (<130) reduced ICH.",
     "consider": [
       "Confirm measurement technique, home readings and possible orthostatic symptoms.",
       "Review adherence, reversible contributors and access to treatment.",
       "Individualize the follow-up and medication plan using current guidance and comorbidities.",
-      "Lower targets: in ESPRIT (China, open-label; 11,255 high-risk hypertensive adults, 3,022 with prior stroke), an SBP target <120 vs <140 mm Hg (achieved 119 vs 135) reduced major vascular events (9.7 vs 11.1%; HR 0.88), with more serious syncope. Stroke, a secondary outcome, was not significantly reduced (4.7 vs 5.4%; HR 0.86). Fewer hemorrhagic strokes (0.4 vs 0.8%) came from a post hoc analysis. After stroke specifically (postdating AHA 2021; not graded): in OPTIMAL-STROKE (NEJM 2026; Brazil, 30 sites, open-label; 4,368 adults with elevated BP and prior ischemic stroke or TIA), targeting SBP <120 vs <140 mm Hg (mean achieved 122 vs 135) lowered cardiovascular death, nonfatal MI, nonfatal stroke or hospitalization for unstable angina or heart failure over a median 3.9 years (10.9 vs 13.5%; HR 0.79, 95% CI 0.67–0.94). The renal composite (sustained ≥50% eGFR decline or end-stage renal disease) was more common with intensive treatment, and serious adverse events were similar. The abstract does not report stroke alone."
+      "Lower targets: in ESPRIT (China, open-label; 11,255 high-risk hypertensive adults, 3,022 with prior stroke), an SBP target <120 vs <140 mmHg (achieved 119 vs 135) reduced major vascular events (9.7 vs 11.1%; HR 0.88), with more serious syncope. Stroke, a secondary outcome, was not significantly reduced (4.7 vs 5.4%; HR 0.86). Fewer hemorrhagic strokes (0.4 vs 0.8%) came from a post hoc analysis. After stroke specifically (postdating AHA 2021; not graded): in OPTIMAL-STROKE (NEJM 2026; Brazil, 30 sites, open-label; 4,368 adults with elevated BP and prior ischemic stroke or TIA), targeting SBP <120 vs <140 mmHg (mean achieved 122 vs 135) lowered cardiovascular death, nonfatal MI, nonfatal stroke or hospitalization for unstable angina or heart failure over a median 3.9 years (10.9 vs 13.5%; HR 0.79, 95% CI 0.67–0.94). The renal composite (sustained ≥50% eGFR decline or end-stage renal disease) was more common with intensive treatment, and serious adverse events were similar. The abstract does not report stroke alone."
     ],
     "caution": "Long-term targets do not apply in the acute phase.",
     "sources": [

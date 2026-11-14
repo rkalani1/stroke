@@ -76,7 +76,7 @@
     ],
     "related": [
       {
-        "label": "Renal function worksheet",
+        "label": "Renal calculation",
         "href": "#/encounter/crcl"
       }
     ]
@@ -230,11 +230,11 @@
     ],
     "related": [
       {
-        "label": "RoPE worksheet",
+        "label": "RoPE",
         "href": "#/tools/rope"
       },
       {
-        "label": "PASCAL worksheet",
+        "label": "PASCAL",
         "href": "#/tools/pascal"
       }
     ]
@@ -297,7 +297,7 @@
     ],
     "related": [
       {
-        "label": "NASCET",
+        "label": "NASCET carotid stenosis",
         "href": "#/tools/nascet"
       },
       {
@@ -349,7 +349,7 @@
     ],
     "related": [
       {
-        "label": "DAPT source screen",
+        "label": "Acute DAPT source screen",
         "href": "#/encounter/dapt"
       }
     ]
@@ -422,7 +422,7 @@
       "DAPT transition",
       "cholesterol"
     ],
-    "summary": "Noncardioembolic stroke or TIA: antiplatelet rather than anticoagulant (COR 1); DAPT only short term (minor stroke [NIHSS ≤3] or high-risk TIA [ABCD2 ≥4] without IVT, started within 24 h: 21 days, AHA 2026 COR 1; severe intracranial stenosis: up to 90 days). BP <130/80 for most (AHA 2021, COR 1); postdating it (not graded), OPTIMAL-STROKE (Brazil, open-label) found that targeting SBP <120 vs <140 mm Hg in patients with elevated BP after ischemic stroke or TIA lowered major cardiovascular events (10.9 vs 13.5%; HR 0.79, 95% CI 0.67–0.94), with renal composite events more common. Atherosclerotic stroke: statin ± ezetimibe to LDL <70 mg/dL (COR 1); no known coronary disease or major cardiac source and LDL >100: atorvastatin 80 mg (SPARCL). Diabetes: glucose-lowering drugs with proven cardiovascular benefit (AHA 2021, COR 1). Recheck lipids 4–12 weeks after a change, then every 3–12 months.",
+    "summary": "Noncardioembolic stroke or TIA: antiplatelet rather than anticoagulant (COR 1); DAPT only short term (minor stroke [NIHSS ≤3] or high-risk TIA [ABCD² ≥4] without IVT, started within 24 h: 21 days, AHA 2026 COR 1; severe intracranial stenosis: up to 90 days). BP <130/80 for most (AHA 2021, COR 1); postdating it (not graded), OPTIMAL-STROKE (Brazil, open-label) found that targeting SBP <120 vs <140 mmHg in patients with elevated BP after ischemic stroke or TIA lowered major cardiovascular events (10.9 vs 13.5%; HR 0.79, 95% CI 0.67–0.94), with renal composite events more common. Atherosclerotic stroke: statin ± ezetimibe to LDL <70 mg/dL (COR 1); no known coronary disease or major cardiac source and LDL >100: atorvastatin 80 mg (SPARCL). Diabetes: glucose-lowering drugs with proven cardiovascular benefit (AHA 2021, COR 1). Recheck lipids 4–12 weeks after a change, then every 3–12 months.",
     "recommendations": [
       {
         "text": "Antiplatelet therapy is recommended over oral anticoagulation for patients with noncardioembolic ischemic stroke or TIA to reduce recurrent ischemic stroke and other cardiovascular events while minimizing bleeding risk.",
@@ -450,7 +450,7 @@
       "Is the mechanism settled, and does it change the drug (AF, PFO, dissection, intracranial stenosis)? Check adherence, cost, smoking, diet and activity at every visit.",
       "Very high risk (stroke plus another major ASCVD event, or ≥2 high-risk conditions): ACC/AHA 2026 goal LDL-C <55 mg/dL; add ezetimibe and/or a PCSK9 antibody as needed (COR 1).",
       "Noncardioembolic stroke while taking aspirin: over a median of about 19 months, switching to another antithrombotic was not clearly better than continuing aspirin (network meta-analysis of 9 RCTs, 5,459 patients; recurrent ischemic stroke RR 0.88, 95% CI 0.76–1.03). Trials with only ≤90-day outcomes were excluded, so this does not address short-term DAPT after minor stroke or high-risk TIA.",
-      "Type 2 diabetes with minor stroke (NIHSS ≤3) or high-risk TIA (ABCD2 ≥4): in LAMP (China, open-label with blinded end points; 636 patients randomized within 24 h), 90 days of liraglutide reduced 90-day stroke recurrence (7.9 vs 13.8%; HR 0.56); its authors call the trial underpowered. It postdates AHA 2021 and does not establish an acute indication. A 2026 meta-analysis of four randomized trials of early GLP-1 receptor agonists after ischemic stroke or high-risk TIA (LAMP, GALLOP-1, GALLOP-2, TEXAIS; 1,514 patients) found only a fragile gain in 90-day mRS 0–2 (RR 1.06, 1.01–1.11) that was not significant without LAMP (RR 1.07, 0.92–1.24)."
+      "Type 2 diabetes with minor stroke (NIHSS ≤3) or high-risk TIA (ABCD² ≥4): in LAMP (China, open-label with blinded end points; 636 patients randomized within 24 h), 90 days of liraglutide reduced 90-day stroke recurrence (7.9 vs 13.8%; HR 0.56); its authors call the trial underpowered. It postdates AHA 2021 and does not establish an acute indication. A 2026 meta-analysis of four randomized trials of early GLP-1 receptor agonists after ischemic stroke or high-risk TIA (LAMP, GALLOP-1, GALLOP-2, TEXAIS; 1,514 patients) found only a fragile gain in 90-day mRS 0–2 (RR 1.06, 1.01–1.11) that was not significant without LAMP (RR 1.07, 0.92–1.24)."
     ],
     "caution": "Avoid indefinite DAPT or antiplatelet-plus-anticoagulant combinations without a separate indication.",
     "sources": [
@@ -473,7 +473,7 @@
     ],
     "related": [
       {
-        "label": "DAPT source screen",
+        "label": "Acute DAPT source screen",
         "href": "#/encounter/dapt"
       },
       {
@@ -510,7 +510,7 @@
       "Have the patient and care partner received education, training and support?",
       "Is follow-up feasible (transport, access, telehealth), and who reassesses progress?"
     ],
-    "caution": "A screening score is not a diagnosis, and this card gives no driving, work or travel clearance. Grades are from AHA/ASA AIS 2026 (acute ischemic stroke) unless labelled CSBPR 2025; the August 2026 AHA/ASA rehabilitation guideline was not reviewed.",
+    "caution": "A screening score is not a diagnosis, and this card gives no driving, work or travel clearance. Grades are from AHA/ASA AIS 2026 (acute ischemic stroke) unless labeled CSBPR 2025; the August 2026 AHA/ASA rehabilitation guideline was not reviewed.",
     "sources": [
       {
         "title": "2026 AHA/ASA adult stroke rehabilitation and recovery guideline: overview",
@@ -547,11 +547,11 @@
     ],
     "related": [
       {
-        "label": "PHQ-2 worksheet",
+        "label": "PHQ-2",
         "href": "#/tools/phq2"
       },
       {
-        "label": "mRS descriptors",
+        "label": "Modified Rankin scale descriptors",
         "href": "#/tools/mrs-descriptors"
       },
       {
