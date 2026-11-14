@@ -61,9 +61,15 @@
       const mode = ['light','dark','auto'].includes(pref) ? pref : (isPublicPages ? 'dark' : 'auto');
       document.documentElement.setAttribute('data-theme', mode === 'dark' || mode === 'auto' && prefersDark ? 'dark' : 'light');
       // Remove only this application's retired clinical storage; no encounter values are read or migrated.
+      // Once per browser (until the v7 migration flag is set): other apps on this shared github.io origin
+      // may use generic key names such as "census" or "apiKey", which must not be cleared on every load.
+      let migrated = false;
+      try { migrated = localStorage.getItem('stroke.v7.migrated') === '1'; } catch (_) {}
       const legacy = ['patientData','nihssScore','aspectsScore','gcsItems','mrsScore','ichScoreItems','strokeCodeForm','lkwTime','telestrokeNote','census','activePatients','apiKey','stroke.appData.v2'];
-      try { for (const key of Object.keys(localStorage)) if (key.startsWith('strokeApp:') || legacy.includes(key)) localStorage.removeItem(key); } catch (_) {}
-      try { for (const key of Object.keys(sessionStorage)) if (key.startsWith('strokeApp:') || legacy.includes(key)) sessionStorage.removeItem(key); } catch (_) {}
+      if (!migrated) {
+        try { for (const key of Object.keys(localStorage)) if (key.startsWith('strokeApp:') || legacy.includes(key)) localStorage.removeItem(key); } catch (_) {}
+        try { for (const key of Object.keys(sessionStorage)) if (key.startsWith('strokeApp:') || legacy.includes(key)) sessionStorage.removeItem(key); } catch (_) {}
+      }
     })();
   </script>
   <script>
