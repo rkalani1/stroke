@@ -171,6 +171,9 @@ const precache = corePrecacheBytes();
 // 2026-10-30 v7.9.0 merge with main's 7.8.1-7.8.3 (header measurement, IVT-hold cue, case-bar hold labels,
 // elapsed-duration formatting): the initial graph measures 128.06 KB gzip / 376.9 KB raw, 62 B and 873 B over
 // the 7.8.0 ceilings. Reviewed ceilings: initial 128 -> 130 KB gzip, 376 -> 380 KB raw.
+// 2026-11-14: the 12 iOS launch screens (367,861 B) leave the precache; the worker caches each on its first
+// request, since only an iOS home-screen launch shows one. Precache 2.14 -> 1.79 MB (51 -> 39 entries). The
+// 2.3 MB ceiling is deliberately unchanged: the 2026-10-21 review proposed this change as precache headroom.
 const checks = [
   {
     id: 'app-js-gzip',
