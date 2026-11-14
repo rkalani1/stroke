@@ -8,6 +8,8 @@ import { STOPWORDS, normalizeSearch as normalize, hasTerm, wordStart } from './r
 // The Evidence normalizer and alias table (afib, rt-PA, DOAC, LVO, ABC/2…), so both searches agree.
 const compact = value => normalize(value).replace(/ /g, '');
 
+const TERM_SYNONYMS = { alteplase: ['thrombolysis'], tenecteplase: ['thrombolysis'] };
+
 export const SEARCH_GROUPS = ['Go to', 'Protocols', 'Calculators', 'Evidence', 'Studies', 'Trials', 'External'];
 const NAVIGATION_GROUPS = SEARCH_GROUPS.slice(0, 3);
 
@@ -34,10 +36,10 @@ const EXTERNAL = [
 
 const PROTOCOL_KEYWORDS = {
   'qr-dose': 'tenecteplase alteplase TNK tPA thrombolytic dose weight table bolus infusion mL',
-  'qr-bp': 'blood pressure SBP DBP targets 185/110 180/105 labetalol nicardipine clevidipine post-EVT ICH SAH hypertension hypertensive HTN',
+  'qr-bp': 'blood pressure SBP DBP targets goal post-IVT 185/110 180/105 labetalol nicardipine clevidipine post-EVT ICH SAH hypertension hypertensive HTN',
   'qr-reversal': 'anticoagulant reversal ICH DOAC NOAC INR 4F-PCC PCC Kcentra idarucizumab Praxbind protamine vitamin K warfarin Coumadin Jantoven apixaban Eliquis rivaroxaban Xarelto edoxaban Savaysa dabigatran Pradaxa heparin enoxaparin Lovenox dalteparin fondaparinux argatroban bivalirudin andexanet antiplatelet',
   'qr-sich': 'symptomatic hemorrhage after thrombolysis sICH tnk tenecteplase alteplase tpa lytic bleed bleeding cryoprecipitate tranexamic acid TXA aminocaproic Amicar fibrinogen headache vomiting nausea neurological neuro deterioration decline worsening acute hypertension',
-  'qr-angioedema': 'orolingual angioedema tongue lip swelling intubation icatibant epinephrine methylprednisolone diphenhydramine airway ACE inhibitor',
+  'qr-angioedema': 'orolingual angioedema tongue lip swelling intubation icatibant epinephrine methylprednisolone diphenhydramine airway ACE inhibitor thrombolysis',
   'qr-ich-surgery': 'ICH surgery neurosurgery evacuation craniotomy cerebellar hemorrhage EVD ventriculostomy IVH hydrocephalus minimally invasive MIS ENRICH deterioration decline worsening neurological',
   'qr-sah': 'subarachnoid hemorrhage SAH aneurysm thunderclap headache lumbar puncture xanthochromia nimodipine coil clip EVD',
   evt: 'thrombectomy EVT eligibility LVO ASPECTS anterior ICA M1 M2 DAWN DEFUSE',
@@ -47,14 +49,14 @@ const PROTOCOL_KEYWORDS = {
   swallow: 'dysphagia swallow screen aspiration NPO',
   'ivt-card': 'IVT eligibility thrombolysis wake-up extended window decision',
   contraindications: 'IVT contraindications exclusions thrombolysis absolute relative',
-  'safety-pause': 'safety pause time-out timeout pre-thrombolytic checklist',
+  'safety-pause': 'safety pause time-out timeout pre-thrombolytic checklist IVT',
   ivh: 'intraventricular hemorrhage IVH hydrocephalus EVD ventriculostomy',
   'qr-edema': 'malignant MCA edema hemicraniectomy decompression cerebellar infarct suboccipital EVD osmotherapy',
   'qr-supportive': 'supportive care oxygen glucose temperature fever dysphagia swallow VTE seizure prophylaxis',
   reversal: 'anticoagulant reversal 4F-PCC PCC Kcentra idarucizumab Praxbind protamine vitamin K warfarin apixaban rivaroxaban dabigatran heparin',
   'post-lytic': 'symptomatic hemorrhage sICH cryoprecipitate tranexamic acid TXA bleeding after thrombolysis headache vomiting nausea neurological deterioration decline worsening',
-  angioedema: 'orolingual angioedema airway icatibant',
-  bp: 'blood pressure SBP DBP targets labetalol nicardipine clevidipine 185/110 180/105 hypertension hypertensive HTN',
+  angioedema: 'orolingual angioedema airway icatibant thrombolysis',
+  bp: 'blood pressure SBP DBP targets goal post-IVT labetalol nicardipine clevidipine 185/110 180/105 hypertension hypertensive HTN',
   'post-evt': 'after thrombectomy blood pressure reperfusion TICI'
 };
 
@@ -90,17 +92,22 @@ export function searchIndex(index, query, limit = 40) {
   const phraseCompact = phrase.replace(/ /g, ''), wording = ` ${terms.join(' ')} `;
   const scored = [];
   for (const record of index) {
-    let score = 0, exact = true;
+    let score = 0, exact = true, viaSynonym = false;
     for (const term of terms) {
-      const anywhere = !wordStart(term);
-      const termScore = ` ${record._title} `.includes(` ${term} `) ? 6
-        : ` ${record._title}`.includes(` ${term}`) ? 5
-          : anywhere && (record._title.includes(term) || record._titleCompact.includes(term)) ? 3
-            : ` ${record._keys} `.includes(` ${term} `) || anywhere && record._keysCompact.includes(term) ? 3
-              : hasTerm(record._keys, term) ? 2
-                : hasTerm(record._body, term) ? 1 : 0;
+      const scoreOf = word => {
+        const anywhere = !wordStart(word);
+        return ` ${record._title} `.includes(` ${word} `) ? 6
+          : ` ${record._title}`.includes(` ${word}`) ? 5
+            : anywhere && (record._title.includes(word) || record._titleCompact.includes(word)) ? 3
+              : ` ${record._keys} `.includes(` ${word} `) || anywhere && record._keysCompact.includes(word) ? 3
+                : hasTerm(record._keys, word) ? 2
+                  : hasTerm(record._body, word) ? 1 : 0;
+      };
+      let termScore = scoreOf(term), literal = termScore > 0;
+      // A thrombolytic drug name also finds records written in IVT terms; such a record ranks below every literal match.
+      if (!termScore) for (const alternative of TERM_SYNONYMS[term] || []) { const alt = scoreOf(alternative); if (alt) { termScore = 1; viaSynonym = true; break; } }
       if (!termScore) { score = 0; break; }
-      exact &&= ` ${record._title} ${record._keys} `.includes(` ${term} `);
+      exact &&= literal && ` ${record._title} ${record._keys} `.includes(` ${term} `);
       score += termScore;
     }
     if (!score) continue;
@@ -109,7 +116,7 @@ export function searchIndex(index, query, limit = 40) {
     if (NAVIGATION_GROUPS.includes(record.group)) score += 1;
     // Named: the title is the query or begins with it as whole words ("DIRECT-MT", "CT perfusion").
     // Phrase: the title or keywords hold the query's words in order, filler words aside.
-    scored.push([score + (exact ? 100 : 0), { ...record, exact, named: record._titleCompact === phraseCompact || `${record._title} `.startsWith(`${phrase} `), phrase: [record._title, record._keys].some(text => ` ${text} `.includes(wording)) }]);
+    scored.push([score + (exact ? 100 : 0) - (viaSynonym ? 50 : 0), { ...record, exact, named: record._titleCompact === phraseCompact || `${record._title} `.startsWith(`${phrase} `), phrase: [record._title, record._keys].some(text => ` ${text} `.includes(wording)) }]);
   }
   return scored.sort((a, b) => b[0] - a[0] || a[1].title.localeCompare(b[1].title)).slice(0, limit).map(([, record]) => record);
 }
