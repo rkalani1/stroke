@@ -261,7 +261,7 @@ describe('screening summary generation', () => {
     const res = evaluateAll(state);
     const text = res.briefingNote;
     // CLARITY is listed and marked recruiting ahead of its registry record, so the status line names that exception.
-    expect(text).toMatch(/^TRIAL SCREEN — first pass \(registry checked 2026-10-31 to 2026-11-04\)\nStatuses are overall registry statuses at that check, except where marked "registry not yet updated"; local site activation is not confirmed\./);
+    expect(text).toMatch(/^TRIAL SCREEN — first pass \(registry checked 2026-10-31 to 2026-11-14\)\nStatuses are overall registry statuses at that check, except where marked "registry not yet updated"; local site activation is not confirmed\./);
     expect(text).toContain('- CLARITY (NCT07174414) · Recruiting (registry not yet updated)');
     expect(text).toContain('Inputs: Ischemic stroke · LKW 12.0 h · age 65 · NIHSS 8 · pre-mRS 0 · ASPECTS 8');
     expect(res.pending.length).toBeGreaterThan(0);
