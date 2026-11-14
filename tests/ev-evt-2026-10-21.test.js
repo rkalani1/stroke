@@ -98,7 +98,7 @@ describe('EVT and systems-of-care Evidence cards (2026-10-21 review)', () => {
   it('labels evidence that postdates the guidelines and keeps earlier trials unlabeled', () => {
     const largeCore = text(topic('large-core-evt'));
     // ATLAS, Lancet 2026 (PMID 42107392).
-    expect(largeCore).toContain('ATLAS (Lancet 2026; postdates AHA 2026 and SVIN 2025), IPD of 6 RCTs (n=1886): better mRS (aGenOR 1.63) and lower mortality (31.1 vs 37.3%)');
+    expect(largeCore).toContain('ATLAS (Lancet 2026; postdates AHA 2026 and SVIN 2025), IPD of 6 RCTs (n=1,886): better mRS (aGenOR 1.63) and lower mortality (31.1 vs 37.3%)');
     expect(largeCore).toContain('evidence is limited for core ≥150 mL beyond 6 h');
     // DIRECT ANGIO, Lancet Neurol 2026 (PMID 41864232): sICH 5/34 vs 0/42, stopped for safety.
     // Round 3 (2026-10-22): population and imprecision added; exact text pinned in r3-ev-evt-2026-10-22.test.js.

@@ -16,7 +16,7 @@
       "eclampsia",
       "breastfeeding"
     ],
-    "summary": "Pregnancy should not delay evidence-based treatment of acute stroke, and CT, CTA and noncontrast MRI are safe (AHA 2026 maternal statement), but IVT needs an individual risk–benefit review (ESO 2022 consensus). No reperfusion RCT included pregnant or postpartum patients; ESO 2022 expert consensus supports thrombectomy for LVO (preferred over IVT whenever possible) and IVT (in pregnancy by majority), not withheld if thrombectomy is unavailable; ESO found no IVT data within 10 days of delivery. Severe hypertension (systolic ≥160 or diastolic ≥110 mm Hg, confirmed within 15 minutes) is an emergency; magnesium and antihypertensives are the cornerstones for preeclampsia and eclampsia. Consider ICH, SAH, CVT, RCVS and PRES as well as ischemic stroke, especially postpartum.",
+    "summary": "Pregnancy should not delay evidence-based treatment of acute stroke, and CT, CTA and noncontrast MRI are safe (AHA 2026 maternal statement), but IVT needs an individual risk–benefit review (ESO 2022 consensus). No reperfusion RCT included pregnant or postpartum patients; ESO 2022 expert consensus supports thrombectomy for LVO (preferred over IVT whenever possible) and IVT (in pregnancy by majority), not withheld if thrombectomy is unavailable; ESO found no IVT data within 10 days of delivery. Severe hypertension (systolic ≥160 or diastolic ≥110 mmHg, confirmed within 15 minutes) is an emergency; magnesium and antihypertensives are the cornerstones for preeclampsia and eclampsia. Consider ICH, SAH, CVT, RCVS and PRES as well as ischemic stroke, especially postpartum.",
     "consider": [
       "Establish the pregnancy or postpartum stage, blood pressure and likely mechanism.",
       "Involve vascular neurology and maternal-fetal medicine early; a transradial approach is preferred for endovascular procedures when possible.",
@@ -120,7 +120,7 @@
     ],
     "related": [
       {
-        "label": "mRS descriptors",
+        "label": "Modified Rankin scale descriptors",
         "href": "#/tools/mrs-descriptors"
       },
       {
@@ -706,7 +706,7 @@
     ],
     "related": [
       {
-        "label": "PHQ-2 worksheet",
+        "label": "PHQ-2",
         "href": "#/tools/phq2"
       }
     ]
@@ -866,7 +866,7 @@
     ],
     "related": [
       {
-        "label": "STOP-Bang worksheet",
+        "label": "STOP-BANG",
         "href": "#/tools/stop-bang"
       }
     ]

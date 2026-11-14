@@ -69,14 +69,14 @@ describe('evidence currency 2026-11-14: new trial and review text', () => {
     // "Over a median follow-up of 3.9 years ... 236 participants (10.9%) ... 297 (13.5%) ... (hazard ratio, 0.79; 95% CI,
     // 0.67 to 0.94"; "The composite renal outcome ... was more common with intensive treatment."
     const line = topic('bp-prevention').consider[3];
-    expect(line).toMatch(/^Lower targets: in ESPRIT \(China, open-label; 11,255 high-risk hypertensive adults, 3,022 with prior stroke\), an SBP target <120 vs <140 mm Hg \(achieved 119 vs 135\) reduced major vascular events \(9\.7 vs 11\.1%; HR 0\.88\)/);
+    expect(line).toMatch(/^Lower targets: in ESPRIT \(China, open-label; 11,255 high-risk hypertensive adults, 3,022 with prior stroke\), an SBP target <120 vs <140 mmHg \(achieved 119 vs 135\) reduced major vascular events \(9\.7 vs 11\.1%; HR 0\.88\)/);
     expect(line).toContain('After stroke specifically (postdating AHA 2021; not graded): in OPTIMAL-STROKE (NEJM 2026; Brazil, 30 sites, open-label; 4,368 adults with elevated BP and prior ischemic stroke or TIA)');
-    expect(line).toContain('targeting SBP <120 vs <140 mm Hg (mean achieved 122 vs 135)');
+    expect(line).toContain('targeting SBP <120 vs <140 mmHg (mean achieved 122 vs 135)');
     expect(line).toContain('over a median 3.9 years (10.9 vs 13.5%; HR 0.79, 95% CI 0.67–0.94)');
     expect(line).toContain('The renal composite (sustained ≥50% eGFR decline or end-stage renal disease) was more common with intensive treatment, and serious adverse events were similar.');
     expect(line).toContain('The abstract does not report stroke alone.');
     const clinic = topic('secondary-prevention');
-    expect(clinic.summary).toContain('BP <130/80 for most (AHA 2021, COR 1); postdating it (not graded), OPTIMAL-STROKE (Brazil, open-label) found that targeting SBP <120 vs <140 mm Hg in patients with elevated BP after ischemic stroke or TIA lowered major cardiovascular events (10.9 vs 13.5%; HR 0.79, 95% CI 0.67–0.94), with renal composite events more common.');
+    expect(clinic.summary).toContain('BP <130/80 for most (AHA 2021, COR 1); postdating it (not graded), OPTIMAL-STROKE (Brazil, open-label) found that targeting SBP <120 vs <140 mmHg in patients with elevated BP after ischemic stroke or TIA lowered major cardiovascular events (10.9 vs 13.5%; HR 0.79, 95% CI 0.67–0.94), with renal composite events more common.');
     expect(clinic.related).toContainEqual({ label: 'Long-term BP targets', href: '#/evidence/bp-prevention' });
     expect(topic('bp-prevention').keywords).toContain('OPTIMAL-STROKE');
     expect(globalHits('OPTIMAL-STROKE')[0]).toBe('topic:bp-prevention');

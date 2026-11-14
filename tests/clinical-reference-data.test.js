@@ -199,7 +199,7 @@ describe('bounded clinical-reference data', () => {
     expect(recs.find(rec => rec.id === 'ncs-reversal-2026-1-1')).toMatchObject({ cor: 'Conditional', loe: 'Moderate', topic: 'antithrombotic-reversal' });
     // Archive annotations ("Current-evidence note") are never presented as guideline text.
     expect(recs.some(rec => /Current-evidence|ORIENTAL/.test(rec.text))).toBe(false);
-    expect(canonical.topics.find(topic => topic.id === 'antithrombotic-reversal').summary).toMatch(/4F-PCC rather than andexanet.*withdrawn from the US market effective 22 December 2025/);
+    expect(canonical.topics.find(topic => topic.id === 'antithrombotic-reversal').summary).toMatch(/4F-PCC rather than andexanet.*withdrawn from the US market effective December 22, 2025/);
   });
 
   it('files each study under its clinical topic with a key-result headline', () => {
