@@ -130,7 +130,7 @@ export const ENCOUNTER_DETAIL_GROUPS = [
     choice('antithromboticPlanType', 'Antithrombotic plan', ['Single antiplatelet', 'Dual antiplatelet', 'Anticoagulant', 'Combination under specialist review', 'Held / deferred', 'Not indicated', 'Undecided']),
     text('antithromboticPlan', 'Antithrombotic regimen / indication / rationale'),
     date('daptStartDate', 'Documented DAPT start date', { when: dualAntiplateletPlan }),
-    date('daptStopDate', 'Planned DAPT stop date', { when: dualAntiplateletPlan }),
+    date('daptStopDate', 'Planned DAPT stop date', { when: dualAntiplateletPlan, after: 'daptStartDate', afterLabel: 'DAPT start' }),
     text('daptTransition', 'Planned DAPT transition', { when: dualAntiplateletPlan }),
     number('daptMissedDoses', 'Reported missed DAPT doses in 7 days', 0, undefined, { when: dualAntiplateletPlan }),
     choice('medicationAdherence', 'Medication adherence review', ['No missed doses reported', 'Missed doses reported', 'Access / affordability barrier', 'Unable to assess']),
@@ -236,7 +236,7 @@ export const ENCOUNTER_DETAIL_GROUPS = [
     choice('dischargeMrs', 'Recorded discharge mRS', mrsOptions),
     text('dischargeScoreSource', 'Discharge score source / timing (e.g., hospital day) / limitations', { when: state => entered('dischargeNihss')(state) || entered('dischargeMrs')(state) }),
     date('admissionDate', 'Actual admission date', { actual: true, when: dischargeEntered }),
-    date('dischargeDate', 'Actual discharge date', { actual: true, after: 'admissionDate', when: dischargeEntered }),
+    date('dischargeDate', 'Actual discharge date', { actual: true, after: 'admissionDate', afterLabel: 'admission', when: dischargeEntered }),
     text('hospitalCourse', 'Hospital course / interval care summary', { when: dischargeEntered }),
     choice('medicationReconciliation', 'Medication reconciliation', ['Pending', 'Completed', 'Discrepancies require review'], { when: dischargeEntered }),
     text('dischargeMedicationChanges', 'Medication changes / unresolved discrepancies', { when: dischargeEntered }),
@@ -287,7 +287,7 @@ function formatField(field, value, values, now) {
     const todayDate = new Date(now), pad = v => String(v).padStart(2, '0');
     const today = `${todayDate.getFullYear()}-${pad(todayDate.getMonth() + 1)}-${pad(todayDate.getDate())}`;
     if (field.actual && source > today) return `${source} (future actual-event date; review)`;
-    if (field.after && validDate(values[field.after]) && source < values[field.after]) return `${source} (precedes admission; review)`;
+    if (field.after && validDate(values[field.after]) && source < values[field.after]) return `${source} (precedes ${field.afterLabel}; review)`;
   }
   return source;
 }
