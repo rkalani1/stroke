@@ -897,7 +897,7 @@
       "BPPV",
       "Dix-Hallpike"
     ],
-    "summary": "Sort dizziness by timing and triggers (GRACE-3). In acute vestibular syndrome (continuous vertigo with nystagmus, nausea, head-motion intolerance, unsteady gait) and vascular risk, a trained examiner's HINTS beats early MRI: any central sign — normal head impulse, direction-changing nystagmus or skew deviation — was 100% sensitive and 96% specific for stroke; adding new hearing loss (HINTS plus) reached 99.2% sensitivity for central causes. Early DWI missed 12–14% of infarcts within 48 h. Central or equivocal findings: MRI/MRA. ABCD2 is not a dizziness screen (sensitivity 61%).",
+    "summary": "Sort dizziness by timing and triggers (GRACE-3). In acute vestibular syndrome (continuous vertigo with nystagmus, nausea, head-motion intolerance, unsteady gait) and vascular risk, a trained examiner's HINTS beats early MRI: any central sign — normal head impulse, direction-changing nystagmus or skew deviation — was 100% sensitive and 96% specific for stroke in the 2009 cohort (101 patients); in a larger 2013 cohort (190 patients), HINTS was 96.5% sensitive and 84.4% specific for stroke, and HINTS plus (adding new hearing loss) was 99.2% sensitive for any central cause. Early DWI missed 12–14% of infarcts within 48 h. Central or equivocal findings: MRI/MRA. ABCD2 is not a dizziness screen (sensitivity 61%).",
     "consider": [
       "Head impulse: a corrective saccade suggests a peripheral lesion; a normal head impulse in continuous vertigo is a central sign.",
       "Nystagmus: direction-changing nystagmus on eccentric gaze is central.",
@@ -919,16 +919,16 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/19762709/",
         "year": 2009,
         "type": "Observational study",
-        "checkedAt": "2026-10-21",
-        "access": "Primary abstract verified via PubMed."
+        "checkedAt": "2026-11-14",
+        "access": "Primary abstract re-read via PubMed on 2026-11-14: 101 high-risk patients with acute vestibular syndrome; any central HINTS sign 100% sensitive and 96% specific for stroke."
       },
       {
         "title": "HINTS outperforms ABCD2 in acute continuous vertigo (HINTS plus)",
         "url": "https://pubmed.ncbi.nlm.nih.gov/24127701/",
         "year": 2013,
         "type": "Observational study",
-        "checkedAt": "2026-10-21",
-        "access": "Primary abstract verified via PubMed."
+        "checkedAt": "2026-11-14",
+        "access": "Primary abstract re-read via PubMed on 2026-11-14: 190 patients (1999–2012); HINTS 96.5% sensitive and 84.4% specific for stroke; HINTS plus 99.2% sensitive for any central lesion."
       }
     ],
     "related": [

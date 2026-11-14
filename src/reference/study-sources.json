@@ -4087,5 +4087,104 @@
     "type": "Observational study",
     "checkedAt": "2026-10-31",
     "access": "PubMed abstract read 2026-10-31; bibliographic record checked; full text not read. US registry; the abstract lists no stroke-severity adjustment for mortality."
+  },
+  {
+    "id": "study-source-optimal-stroke",
+    "topicIds": [
+      "bp-prevention",
+      "secondary-prevention"
+    ],
+    "title": "OPTIMAL-STROKE — Intensive Blood-Pressure Control in Patients with Previous Ischemic Stroke.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/43001741/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-11-14",
+    "access": "PubMed abstract read 2026-11-14 (N Engl J Med, published 2026-11-07; NEJM full text not in PMC, not read); bibliographic record checked. Open-label; 30 sites in Brazil; NCT04036409. Stroke-only outcomes and subgroups not reviewed."
+  },
+  {
+    "id": "study-source-insist-it",
+    "topicIds": [
+      "neurointerventional-care",
+      "basilar-occlusion"
+    ],
+    "title": "INSIST-IT — Intra-arterial tenecteplase for acute basilar artery occlusion with sufficient recanalization after thrombectomy: the INSIST-IT randomized clinical trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42995196/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-11-14",
+    "access": "PMC full text (PMC13743758) read 2026-11-14; bibliographic record checked. Open-label with blinded end points; 6 hospitals in China; stopped early on the data and safety monitoring committee's advice; 90-day mortality was a post hoc safety outcome."
+  },
+  {
+    "id": "study-source-bretis-tnk2",
+    "topicIds": [
+      "neurointerventional-care"
+    ],
+    "title": "BRETIS-TNK2 — Intra-arterial tenecteplase during thrombectomy for acute ischemic stroke: the BRETIS-TNK2 trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42995186/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-11-14",
+    "access": "PMC full text (PMC13743779) read 2026-11-14; bibliographic record checked. Phase 3, open-label with blinded end points; 6 sites in China; NCT05657444. In-hospital death was a secondary safety end point."
+  },
+  {
+    "id": "study-source-asap-too",
+    "topicIds": [
+      "af-prevention",
+      "caa-ich-recurrence"
+    ],
+    "title": "ASAP-TOO — Left Atrial Appendage Closure in Patients Considered Unsuitable for Oral Anticoagulation: Randomized Outcomes Through 5 Years in ASAP-TOO.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/43018511/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-11-14",
+    "access": "PubMed abstract read 2026-11-14 (J Am Coll Cardiol, published online 2026-10-31; full text not read); bibliographic record checked. Enrollment stopped early (481 of 888 planned); underpowered and exploratory by the authors' account; NCT02928497."
+  },
+  {
+    "id": "study-source-pregnancy-thrombolysis-review-2026",
+    "topicIds": [
+      "maternal-stroke"
+    ],
+    "title": "Thrombolysis in pregnancy systematic review (Neurology 2026) — Maternal and Fetal Safety Outcomes of Thrombolytics for Ischemic Stroke in Pregnancy: A Systematic Review and Aggregated Case Series.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42962168/",
+    "year": 2026,
+    "type": "Meta-analysis",
+    "checkedAt": "2026-11-14",
+    "access": "PubMed abstract read 2026-11-14 (Neurology 2026;107(10):e218590; no PMC full text); bibliographic record checked. Systematic review of 123 published studies with a Bayesian aggregated case series; search to October 2025; PROSPERO CRD42024605043."
+  },
+  {
+    "id": "study-source-stream-statins",
+    "topicIds": [
+      "primary-prevention"
+    ],
+    "title": "STREAM — Discontinuing Statins in Older Adults without Cardiovascular Disease.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/43001742/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-11-14",
+    "access": "PubMed abstract read 2026-11-14 (N Engl J Med, published 2026-11-07; full text not read); bibliographic record checked. International, open-label noninferiority trial; NCT05178420."
+  },
+  {
+    "id": "study-source-lpa-horizon",
+    "topicIds": [
+      "lipid-management"
+    ],
+    "title": "Lp(a)HORIZON — Pelacarsen and Cardiovascular Outcomes in Patients with High Lipoprotein(a).",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/43001734/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-11-14",
+    "access": "PubMed abstract read 2026-11-14 (N Engl J Med, published 2026-11-07; full text and the NEJM Evidence extended analyses not read); bibliographic record checked. Industry-funded (Novartis); NCT04023552."
+  },
+  {
+    "id": "study-source-simplaafy",
+    "topicIds": [
+      "af-prevention"
+    ],
+    "title": "SIMPLAAFY — Antithrombotic Therapy After Left Atrial Appendage Occlusion: The SIMPLAAFY Randomized Clinical Trial.",
+    "url": "https://pubmed.ncbi.nlm.nih.gov/42970643/",
+    "year": 2026,
+    "type": "Randomized trial",
+    "checkedAt": "2026-11-14",
+    "access": "PubMed abstract and PMC Key Points (PMC13728957; article body not available there) read 2026-11-14; bibliographic record checked. Open-label, 3 groups; 87 US sites; NCT06521463. Bleeding and device-related thrombus were exploratory end points."
   }
 ]
