@@ -32,7 +32,7 @@ const NEW_RECORDS = {
   'study-source-insist-it': { pmid: '42995196', type: 'Randomized trial', topicIds: ['neurointerventional-care', 'basilar-occlusion'] },
   'study-source-bretis-tnk2': { pmid: '42995186', type: 'Randomized trial', topicIds: ['neurointerventional-care'] },
   'study-source-asap-too': { pmid: '43018511', type: 'Randomized trial', topicIds: ['af-prevention', 'caa-ich-recurrence'] },
-  'study-source-pregnancy-thrombolysis-review-2026': { pmid: '42962168', type: 'Meta-analysis', topicIds: ['maternal-stroke'] },
+  'study-source-pregnancy-thrombolysis-review-2026': { pmid: '42962168', type: 'Report', topicIds: ['maternal-stroke'] },
   'study-source-stream-statins': { pmid: '43001742', type: 'Randomized trial', topicIds: ['primary-prevention'] },
   'study-source-lpa-horizon': { pmid: '43001734', type: 'Randomized trial', topicIds: ['lipid-management'] },
   'study-source-simplaafy': { pmid: '42970643', type: 'Randomized trial', topicIds: ['af-prevention'] }
@@ -76,7 +76,7 @@ describe('evidence currency 2026-11-14: new trial and review text', () => {
     expect(line).toContain('The renal composite (sustained ≥50% eGFR decline or end-stage renal disease) was more common with intensive treatment, and serious adverse events were similar.');
     expect(line).toContain('The abstract does not report stroke alone.');
     const clinic = topic('secondary-prevention');
-    expect(clinic.summary).toContain('BP <130/80 for most (AHA 2021, COR 1); postdating it (not graded), OPTIMAL-STROKE (Brazil, open-label) found that targeting SBP <120 vs <140 mm Hg after ischemic stroke or TIA lowered major cardiovascular events (10.9 vs 13.5%; HR 0.79, 95% CI 0.67–0.94), with renal composite events more common.');
+    expect(clinic.summary).toContain('BP <130/80 for most (AHA 2021, COR 1); postdating it (not graded), OPTIMAL-STROKE (Brazil, open-label) found that targeting SBP <120 vs <140 mm Hg in patients with elevated BP after ischemic stroke or TIA lowered major cardiovascular events (10.9 vs 13.5%; HR 0.79, 95% CI 0.67–0.94), with renal composite events more common.');
     expect(clinic.related).toContainEqual({ label: 'Long-term BP targets', href: '#/evidence/bp-prevention' });
     expect(topic('bp-prevention').keywords).toContain('OPTIMAL-STROKE');
     expect(globalHits('OPTIMAL-STROKE')[0]).toBe('topic:bp-prevention');
@@ -104,7 +104,7 @@ describe('evidence currency 2026-11-14: new trial and review text', () => {
     expect(line).toContain('sICH 5.7 vs 2.7% (not significant), in-hospital death 11.5 vs 5.3% (OR 2.30, 1.06–5.01) and 90-day mortality 18.4 vs 14.5% (not significant).');
     const basilar = topic('basilar-occlusion');
     expect(basilar.consider).toHaveLength(4);
-    expect(basilar.consider[3]).toBe('IA thrombolysis after successful basilar EVT is unproven: ATTENTION-IA and IAT-TOP were neutral, and INSIST-IT (China, open-label; 144 patients; Nat Commun, November 2026, after AHA 2026, not graded) was stopped early for safety concerns and lack of efficacy, with mRS 0–3 40.0 vs 50.0% (OR 0.67, 95% CI 0.34–1.29) and 90-day mortality 41.3 vs 26.5% (OR 1.96, 0.97–4.03; post hoc safety outcome).');
+    expect(basilar.consider[3]).toBe('IA thrombolysis after successful basilar EVT is unproven: ATTENTION-IA (BMJ 2025; IA tenecteplase) and IAT-TOP (JAMA Neurol 2026, after AHA 2026, not graded; IA alteplase) were neutral, and INSIST-IT (China, open-label; 144 patients; Nat Commun, November 2026, after AHA 2026, not graded) was stopped early for safety concerns and lack of efficacy, with mRS 0–3 40.0 vs 50.0% (OR 0.67, 95% CI 0.34–1.29) and 90-day mortality 41.3 vs 26.5% (OR 1.96, 0.97–4.03; post hoc safety outcome).');
     expect(sourceRecord('study-source-insist-it').access).toContain('PMC full text (PMC13743758) read 2026-11-14');
     expect(sourceRecord('study-source-bretis-tnk2').access).toContain('PMC full text (PMC13743779) read 2026-11-14');
     expect(topic('neurointerventional-care').keywords).toEqual(expect.arrayContaining(['INSIST-IT', 'BRETIS-TNK2']));
@@ -126,7 +126,7 @@ describe('evidence currency 2026-11-14: new trial and review text', () => {
     expect(af).toContain('In patients judged unsuitable for anticoagulation (ASAP-TOO, JACC 2026; multinational; postdates these guidelines, not graded), Watchman closure (then 3 months of DAPT and aspirin to 12 months) vs single antiplatelet or no therapy was tested in 481 patients (34% with prior intracranial or subdural hemorrhage), but enrollment stopped early and the trial was underpowered: at up to 5 years, ischemic stroke or systemic embolism was 7.8 vs 11.4% (HR 0.73, 95% CI 0.35–1.52) and major bleeding 22.1 vs 15.7% (HR 1.64, 0.96–2.81), concentrated in the first 3 months. Rheumatic AF: rivaroxaban was worse than a VKA (INVICTUS).');
     const caa = topic('caa-ich-recurrence').summary;
     expect(caa).toContain('left atrial appendage closure may be considered if anticoagulation is not possible (2b); in ASAP-TOO (JACC 2026; postdates AHA 2022, not graded; 481 patients unsuitable for anticoagulation, 34% with prior intracranial or subdural hemorrhage; stopped early and underpowered)');
-    expect(caa).toContain('Watchman closure did not significantly reduce ischemic stroke or systemic embolism (7.8 vs 11.4%; HR 0.73, 95% CI 0.35–1.52), and major bleeding was numerically higher, mostly in the first 3 months (22.1 vs 15.7%; HR 1.64, 0.96–2.81).');
+    expect(caa).toContain('Watchman closure vs single antiplatelet or no therapy did not significantly reduce ischemic stroke or systemic embolism at up to 5 years (7.8 vs 11.4%; HR 0.73, 95% CI 0.35–1.52), and major bleeding was numerically higher, mostly in the first 3 months (22.1 vs 15.7%; HR 1.64, 0.96–2.81).');
     expect(globalHits('ASAP-TOO')).toEqual(expect.arrayContaining(['topic:af-prevention', 'topic:caa-ich-recurrence']));
   });
 
@@ -140,10 +140,10 @@ describe('evidence currency 2026-11-14: new trial and review text', () => {
     expect(card.consider).toHaveLength(4);
     const line = card.consider[3];
     expect(line).toContain('a 2026 systematic review of published cases (searched to October 2025; postdates ESO 2022 and the AHA 2026 statement; not graded) included 216 pregnant patients given thrombolytics, 85 for ischemic stroke');
-    expect(line).toContain('Symptomatic ICH was similar to young nonpregnant patients (risk difference −0.4%, 95% CrI −0.8 to 2.7%)');
+    expect(line).toContain('Symptomatic ICH was similar to young nonpregnant patients receiving thrombolytics (risk difference −0.4%, 95% CrI −0.8 to 2.7%)');
     expect(line).toContain('miscarriage (grouped with elective termination) was 12.4% higher (95% CrI 2.6–23.2%) and stillbirth 5.9% higher (1.6–12.7%)');
     expect(line).toContain('6 of 32 fetal deaths were judged likely to be causally related to the thrombolytic (3 after stroke)');
-    expect(source(card, '42962168')).toMatchObject({ type: 'Meta-analysis', checkedAt: '2026-11-14' });
+    expect(source(card, '42962168')).toMatchObject({ type: 'Report', checkedAt: '2026-11-14' });
   });
 
   it('EV-CUR-06 adds STREAM beside STAREE and Lp(a)HORIZON beside the triglyceride item', () => {
@@ -182,7 +182,7 @@ describe('evidence currency 2026-11-14: new trial and review text', () => {
     expect(line).toMatch(/^Confirm how AF was documented/);
     expect(line).toContain('After uncomplicated closure (SIMPLAAFY, JAMA 2026; 87 US sites, open-label; 1,857 patients with nonvalvular AF eligible for all three regimens, not stroke-specific; postdates the guidelines cited here, not graded)');
     expect(line).toContain('were each noninferior to DAPT for 6 months then aspirin for 6-month death, stroke, systemic embolism or major bleeding (5.1 and 3.3 vs 6.9%)');
-    expect(line).toContain('stroke rates were similar, major bleeding was 2.7, 1.7 and 4.5%, and device-related thrombus 0.9, 2.7 and 3.4% (exploratory). It does not test patients who cannot take any anticoagulant.');
+    expect(line).toContain('stroke rates were similar; major bleeding (2.7, 1.7 and 4.5%) and 45-day device-related thrombus (0.9, 2.7 and 3.4%) were exploratory end points. It does not test patients who cannot take any anticoagulant.');
     expect(topic('af-prevention').summary).toContain('AHA 2021 stroke guideline 2b if at least 45 days of anticoagulation can be tolerated');
     expect(globalHits('SIMPLAAFY')).toEqual(['topic:af-prevention']);
   });

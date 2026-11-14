@@ -2092,7 +2092,8 @@
     "id": "study-source-iat-top",
     "topicIds": [
       "neurointerventional-care",
-      "research-adjuncts"
+      "research-adjuncts",
+      "basilar-occlusion"
     ],
     "title": "IAT-TOP — Intra-arterial Alteplase Thrombolysis After Successful Thrombectomy for AIS in the Posterior Circulation: The IAT-TOP Randomized Clinical Trial.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/42026933/",
@@ -3692,7 +3693,8 @@
     "id": "study-source-attention-ia",
     "topicIds": [
       "neurointerventional-care",
-      "research-adjuncts"
+      "research-adjuncts",
+      "basilar-occlusion"
     ],
     "title": "ATTENTION-IA — Intra-arterial tenecteplase after successful endovascular recanalisation in patients with acute posterior circulation arterial occlusion (ATTENTION-IA): multicentre randomised controlled trial.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/39809509/",
@@ -4147,7 +4149,7 @@
     "title": "Thrombolysis in pregnancy systematic review (Neurology 2026) — Maternal and Fetal Safety Outcomes of Thrombolytics for Ischemic Stroke in Pregnancy: A Systematic Review and Aggregated Case Series.",
     "url": "https://pubmed.ncbi.nlm.nih.gov/42962168/",
     "year": 2026,
-    "type": "Meta-analysis",
+    "type": "Report",
     "checkedAt": "2026-11-14",
     "access": "PubMed abstract read 2026-11-14 (Neurology 2026;107(10):e218590; no PMC full text); bibliographic record checked. Systematic review of 123 published studies with a Bayesian aggregated case series; search to October 2025; PROSPERO CRD42024605043."
   },
