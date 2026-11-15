@@ -14,7 +14,7 @@ export const NIHSS_ITEMS = [
             { id: 'motor_leg_right', name: '6b. Motor Leg-Right', options: ['No drift (0)', 'Drift (1)', 'Some effort against gravity (2)', 'No effort against gravity (3)', 'No movement (4)', 'Amputation/joint fusion (UN)'] },
             { id: 'limb_ataxia', name: '7. Limb Ataxia', options: ['Absent (0)', 'Present in one limb (1)', 'Present in two limbs (2)', 'Amputation/joint fusion (UN)'] },
             { id: 'sensory', name: '8. Sensory', options: ['Normal (0)', 'Partial loss (1)', 'Dense loss (2)'] },
-            { id: 'language', name: '9. Best Language†', options: ['No aphasia (0)', 'Mild-moderate aphasia (1)', 'Severe aphasia (2)', 'Mute, global aphasia (3)'] },
-            { id: 'dysarthria', name: '10. Dysarthria†', options: ['Normal articulation (0)', 'Mild-moderate slurring (1)', 'Severe dysarthria (2)', 'Intubated/other (UN)'] },
+            { id: 'language', name: '9. Best Language', options: ['No aphasia (0)', 'Mild-moderate aphasia (1)', 'Severe aphasia (2)', 'Mute, global aphasia (3)'] },
+            { id: 'dysarthria', name: '10. Dysarthria', options: ['Normal articulation (0)', 'Mild-moderate slurring (1)', 'Severe dysarthria (2)', 'Intubated/other (UN)'] },
             { id: 'extinction', name: '11. Extinction and Inattention', options: ['No neglect (0)', 'Visual, tactile, auditory, spatial, or personal inattention (1)', 'Profound hemi-inattention (2)'] }
           ];

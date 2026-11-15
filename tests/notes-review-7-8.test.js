@@ -232,7 +232,7 @@ describe('EN-10 event ordering flags', () => {
     const text = buildSummary(make({ note: { ...lkw, ticiScore: '0' }, drug: 'TNK', decisions: { ivt: 'Recommended', evt: 'Not recommended' }, actions: { administered: true, agentConfirmed: 'TNK', administrationTime: '2026-10-01T10:15', consent: 'Informed consent', consentTime: '2026-10-01T10:45', punctureTime: '2026-10-01T09:00', reperfusionTime: '2026-10-01T09:20', evtConsent: 'Informed consent', evtConsentTime: '2026-10-01T09:10' } }), NOW);
     expect(text).toContain("EVT puncture: 2026-10-01 09:00 [precedes LKW; review recorded dates/times] [EVT clinician decision is 'Not recommended'; reconcile]");
     expect(text).toContain('EVT reperfusion: 2026-10-01 09:20 [precedes LKW; review recorded dates/times] [mTICI 0 recorded with a reperfusion time; review]');
-    expect(text).toContain('IVT Consent time: 2026-10-01 10:45 [recorded after the administration time; confirm the consent timeline]');
+    expect(text).toContain('IVT consent time: 2026-10-01 10:45 [recorded after the administration time; confirm the consent timeline]');
     expect(text).toContain('EVT consent time: 2026-10-01 09:10 [recorded after the puncture time; confirm the consent timeline]');
   });
   it('adds no flag to a consistent sequence and avoids double punctuation', () => {

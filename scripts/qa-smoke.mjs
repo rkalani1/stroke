@@ -270,8 +270,8 @@ async function main() {
       assert(output.includes(`NCCT Head (${stamp.replace('T', ' ')})`));
       assert(output.includes('Perfusion findings recorded for review.'));
       assert(output.includes('Documented discussion details reviewed with the treating team.'));
-      assert(output.includes('Discussion: not documented'));
-      assert(output.includes('Consent status: not documented'));
+      assert(output.includes('IVT discussion: not documented'));
+      assert(output.includes('IVT consent status: not documented'));
       assert(output.includes('IVT administration: not documented'));
       await reset(page);
       assert.equal(await page.getByLabel('Discussion details', { exact: true }).inputValue(), '');
@@ -731,7 +731,7 @@ async function main() {
       assert((await page.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).fill('');assert(!(await page.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).fill('83');
     });
     await check('summary explicit generation/copy, clipboard denial fallback, stale-input invalidation and no recursion', async () => {
-      assert.equal(await page.evaluate(()=>window.__qaClipboard.length),0);let draft=await generate(page);const first=await draft.inputValue();assert(first.includes('Synthetic')||first.includes('SYNTHETIC'));assert(first.includes('marker zeta'));assert(first.includes('Consent status: not documented'));assert(first.includes('IVT administration: not documented'));
+      assert.equal(await page.evaluate(()=>window.__qaClipboard.length),0);let draft=await generate(page);const first=await draft.inputValue();assert(first.includes('Synthetic')||first.includes('SYNTHETIC'));assert(first.includes('marker zeta'));assert(first.includes('IVT consent status: not documented'));assert(first.includes('IVT administration: not documented'));
       await page.getByRole('button',{name:'Copy Pulsara summary',exact:true}).click();assert.equal(await page.evaluate(()=>window.__qaClipboard.length),1);assert.equal(await page.evaluate(()=>window.__qaClipboard[0]),first);
       await page.evaluate(()=>window.__qaDenyClipboard=true);await page.getByRole('button',{name:'Copy Pulsara summary',exact:true}).click();await page.getByText('Clipboard unavailable. Select the read-only summary and copy it manually.',{exact:true}).waitFor();assert(await draft.evaluate(el=>el.selectionStart===0&&el.selectionEnd===el.value.length));
       await page.getByLabel('Age (years)',{exact:true}).fill('66');await page.getByText('Inputs changed since the preview. Copy regenerates the note automatically.',{exact:true}).waitFor();assert.equal(await page.getByRole('button',{name:'Copy this preview',exact:true}).count(),0);draft=await generate(page);const second=await draft.inputValue();assert.equal(second.split('Clinician rationale / recommendations:').length-1,1);assert(!second.includes(first));

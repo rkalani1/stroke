@@ -78,7 +78,7 @@ describe('copy feedback is reported for every clipboard outcome', { timeout: 400
     await expect.poll(status).toBe('Pulsara summary copied.');
     expect(await page.locator('.case-bar__copy').innerText()).toBe('Copied ✓');
     const [copied] = await page.evaluate(() => window.copied);
-    expect(copied).toMatch(/^71 year old \[sex not documented\] \(Wt: 77kg\)/);
+    expect(copied).toMatch(/^71 year old \[sex not documented\] \(Wt: 77 kg\)/);
     expect(copied).toBe(await page.locator('[data-generated-note]').inputValue());
     // On another surface the case bar's own status region announces the outcome.
     await page.locator('nav[aria-label="Primary navigation"] a', { hasText: 'Protocols' }).click();

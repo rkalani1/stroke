@@ -65,7 +65,7 @@ describe('restored optional documentation formats', () => {
     const s = newEncounter(); s.note.diagnosisCategory = 'ischemic';
     Object.assign(s.actions, { consent: 'Declined', evtConsent: 'Informed consent', evtConsentTime: '2026-10-01T11:00' });
     const note = buildSummary(s, now);
-    expect(note).toContain('IVT Consent status: Declined');
+    expect(note).toContain('IVT consent status: Declined');
     expect(note).toContain('EVT consent status: Informed consent');
     expect(note).toContain('EVT consent time: 2026-10-01 11:00');
     // An EVT consent never implies the procedure: no puncture time is stated as not documented.

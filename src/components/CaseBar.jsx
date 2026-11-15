@@ -51,16 +51,38 @@ export function caseSummary(state, nowMs) {
   const hold = acuteIschemic && !administered && state.decisions?.ivt !== 'Not recommended' ? doseHold(state, nowMs, weight, age) : null;
   const dose = acuteIschemic && !hold && weight !== null && ['TNK', 'Alteplase'].includes(state.drug) && state.decisions?.ivt !== 'Not recommended' ? (state.drug === 'Alteplase' ? calculateAlteplaseDoseReviewed(n.weight) : calculateTNKDoseReviewed(n.weight, state.doseAuthority)) : null;
   const gcs = ['ich', 'sah', 'cvt'].includes(n.diagnosisCategory) ? reviewedGcs(state.gcs) : null;
-  // BP flags: AIS before IVT not <185/110 (AHA/ASA 2026 COR 1); after IVT not <180/105 (COR 1, ais-2026-74), kept in
-  // acute care when the working diagnosis changes after a recorded IVT; acute ICH SBP >=150, the 2022 range in which
-  // lowering toward 140 applies (it takes precedence for a post-lytic ICH).
+  // BP flags by phase, AHA/ASA 2026 AIS guideline table 16 (ais-2026-72/74/76 in src/reference/expanded-vascular.json
+  // acute-bp; -70, -71 and -73 in the full transcription at archive/pre-encounter-first-20261001-4f8e99d):
+  // - ais-2026-72 (COR 1): SBP "lowered below 185 mmHg and DBP below 110 mmHg before initiating IVT therapy".
+  // - ais-2026-74 (COR 1): "After IVT treatment, BP is recommended to be maintained below 180/105 mmHg for at least the
+  //   first 24 hours"; kept in acute care when the working diagnosis changes after a recorded IVT.
+  // - ais-2026-76 (COR 2a): "In patients who undergo EVT, it is reasonable to maintain BP at or below 180/105 mmHg during
+  //   and for 24 hours after the procedure": a recorded puncture, until 24 h after a valid puncture time (an unusable
+  //   time, flagged in Encounter, does not end it).
+  // - ais-2026-73 (COR 2a): "In patients for whom EVT is planned and who have not received IVT, it is reasonable to
+  //   maintain BP at or below 185/110 mmHg before the procedure": IVT Not recommended, EVT not Not recommended.
+  // - ais-2026-71 (COR 3: No Benefit) / -70 (COR 2b), patients "who did not receive IVT or EVT": "BP below 220/120 mmHg
+  //   ... initiating or reinitiating hypertension treatment within the first 48-72 hours is not effective"; "BP at or
+  //   above 220/120 mmHg ... the benefit of initiating or reinitiating hypertension treatment ... is uncertain".
+  //   The acute-bp summary states -73 and -70/-71 as "EVT without IVT: ≤185/110 before the procedure (AHA 2026, 2a)"
+  //   and "No reperfusion and <220/120: ... does not help; ≥220/120: benefit uncertain (AHA 2026, 2b)".
+  // Acute ICH SBP >=150 is the 2022 range in which lowering toward 140 applies (it takes precedence for a post-lytic
+  // ICH): ich-2022-23 (COR 2b) "SBP 150-220 mm Hg ... target of 140 mm Hg (maintaining 130-150 mm Hg range)";
+  // ich-2022-22 (COR 2a) "Initiating acute BP treatment within 2 hours of ICH onset and reaching the target within
+  // 1 hour"; ich-2022-25 (COR 3: Harm) "Acute lowering of SBP to <130 mm Hg is potentially harmful".
   const bpKnown = sbp !== null && dbp !== null;
   const ich = state.context === 'acute' && n.diagnosisCategory === 'ich';
   // After IVT the entered BP may still be the presenting value; a documented pre-IVT BP shows that.
   const preIvt = parsePreIvtBp(state.details?.preIvtBP);
+  const puncture = acuteIschemic && state.actions?.punctureTime ? validTimestamp(state.actions.punctureTime, nowMs) : null;
+  const evtRecorded = acuteIschemic && Boolean(state.actions?.punctureTime);
+  const ivtDeclined = state.decisions?.ivt === 'Not recommended';
   const bpFlag = !bpKnown ? null : ich && sbp >= 220 ? 'ICH: SBP ≥220 is outside the 2022 150–220 range; local protocol: reduce about 20% (never more than 25%) in the first hour, then gradually to 140–160'
-    : ich && sbp >= 150 ? 'ICH: SBP 150–220 → target 140 (130–150), start ≤2 h, reach ≤1 h; avoid <130'
+    : ich && sbp >= 150 ? 'ICH: SBP 150–220 → target 140 (keep 130–150); start within 2 h of onset and reach target within 1 h; avoid <130'
     : administered && state.context === 'acute' ? sbp >= 180 || dbp >= 105 ? `Not below the post-IVT limit of 180/105${preIvt ? `; documented pre-IVT BP ${preIvt.text}. Update the entered BP with the current reading` : ''}` : null
+    : evtRecorded ? (!puncture || nowMs - puncture.getTime() <= 24 * 3600000) && (sbp > 180 || dbp > 105) ? 'Above 180/105 (during and 24 h after EVT)' : null
+    : acuteIschemic && ivtDeclined && state.decisions?.evt === 'Not recommended' ? sbp >= 220 || dbp >= 120 ? 'At or above 220/120 without IVT or EVT: the benefit of starting treatment in the first 48–72 h is uncertain (AHA/ASA 2026, COR 2b)' : null
+    : acuteIschemic && ivtDeclined ? sbp > 185 || dbp > 110 ? 'Above 185/110 (before EVT without IVT)' : null
     : acuteIschemic && (sbp >= 185 || dbp >= 110) ? 'Not below 185/110 (pre-IVT)' : null;
   return {
     dx: SHORT_DX[n.diagnosisCategory] || '', dxKey: n.diagnosisCategory || '',
@@ -82,7 +104,7 @@ export function caseSummary(state, nowMs) {
     doseNote: state.decisions?.ivt === 'Not recommended' ? 'IVT clinician decision is Not recommended; no dose shown' : `${!['TNK', 'Alteplase'].includes(state.drug) ? `Select the IV thrombolytic${weight === null ? ' and enter a valid weight (kg)' : ''}` : 'Enter a valid weight (kg)'} in Encounter for dose arithmetic; not an eligibility decision`,
     // An agent pre-filled from the dose calculation is not named until it is confirmed (as in the note).
     doseAboveMax: overMax,
-    dose: administered ? { label: unconfirmed ? 'IVT given' : state.drug === 'Alteplase' ? 'tPA given' : 'TNK given', value: clockTime(state.actions.administrationTime), detail: state.actions.administeredDose ? `${state.actions.administeredDose} mg` : '', title: `Recorded administration time${unconfirmed ? '; confirm the agent given in Encounter' : ''}${overMax ? `; administered dose above the ${overMax} mg maximum` : ''}`, flag: unconfirmed || overMax ? 'caution' : undefined } : hold ? { label: 'IVT dose', value: hold.value, detail: hold.detail, title: hold.title, flag: hold.flag } : dose ? state.drug === 'Alteplase' ? { label: 'tPA', value: `${dose.totalDose} mg`, detail: `${dose.bolus} mg bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
+    dose: administered ? { label: unconfirmed ? 'IVT given' : state.drug === 'Alteplase' ? 'Alteplase given' : 'TNK given', value: clockTime(state.actions.administrationTime), detail: state.actions.administeredDose ? `${state.actions.administeredDose} mg` : '', title: `Recorded administration time${unconfirmed ? '; confirm the agent given in Encounter' : ''}${overMax ? `; administered dose above the ${overMax} mg maximum` : ''}`, flag: unconfirmed || overMax ? 'caution' : undefined } : hold ? { label: 'IVT dose', value: hold.value, detail: hold.detail, title: hold.title, flag: hold.flag } : dose ? state.drug === 'Alteplase' ? { label: 'Alteplase', value: `${dose.totalDose} mg`, detail: `${dose.bolus} mg bolus` } : { label: 'TNK', value: `${dose.calculatedDose} mg`, detail: dose.volume } : null,
     anticoagulant: n.lastDOACType && n.lastDOACType !== 'none' ? ANTICOAGULANT_LABELS[n.lastDOACType] || 'Anticoagulant' : '',
     aceInhibitor: ACE_INHIBITOR.test(n.medications || ''),
     hasData: Boolean(n.diagnosisCategory || age !== null || timing.timestamp || n.lkwUnknown || exam.complete || exam.count || sbp !== null || glucose !== null || weight !== null)

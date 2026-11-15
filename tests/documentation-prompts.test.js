@@ -52,8 +52,8 @@ describe('optional editable documentation prompts', () => {
     expect(inserted.actions.consent).toBe('');
     expect(inserted.actions.administered).toBe(false);
     const text = buildSummary(inserted, NOW);
-    expect(text).toContain('Discussion: not documented');
-    expect(text).toContain('Consent status: not documented');
+    expect(text).toContain('IVT discussion: not documented');
+    expect(text).toContain('IVT consent status: not documented');
     expect(text).toContain('IVT administration: not documented');
     expect(text).toContain('Discussion details: IVT discussion documentation prompts:');
     expect(text).not.toContain('Informed consent obtained');
