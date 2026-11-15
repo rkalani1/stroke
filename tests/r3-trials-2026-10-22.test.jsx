@@ -372,20 +372,30 @@ describe('further checks of the round-3 fixes', () => {
     const prefill = screenerPrefillFromEncounter(nihssWithBulkZero(encounter({ diagnosisCategory: 'ischemic' }, { nihss })), now);
     expect(prefill.summary).toContain('NIHSS 3 (excludes 1 untestable item; 2 items set to 0 by bulk entry, not individually scored)');
   });
-  it('with no LKW recorded, a DOAC dose more than 48 h before now leaves use at onset unknown', () => {
-    const p = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ich', lastDOACType: 'apixaban', lastDOACDose: localIso(now - 76 * HOUR) }), now);
-    expect(p.patch).toMatchObject({ takingOac: 'unselected', anticoagulant: 'unselected' });
-    expect(Object.entries(p.patch.exclusions).filter(([, value]) => value !== undefined)).toEqual([]);
-    expect(p.patch.exclusions.exDoacLmwhAtOnset).toBeUndefined();
-    expect(p.summary).toContain('DOAC, last dose 76 h before now (use at onset unknown)');
+  // Since 2026-11-14 a last dose with no LKW recorded is not bounded by the time to now: that bound moved
+  // with the clock, so an unchanged import read as changed once the dose passed 48 h. Use at onset stays unknown.
+  it('with no LKW recorded, a recorded DOAC dose leaves use at onset unknown', () => {
+    for (const hours of [3, 47, 76]) {
+      const p = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ich', lastDOACType: 'apixaban', lastDOACDose: localIso(now - hours * HOUR) }), now);
+      expect(p.patch).toMatchObject({ takingOac: 'unselected', anticoagulant: 'unselected' });
+      expect(Object.entries(p.patch.exclusions).filter(([, value]) => value !== undefined)).toEqual([]);
+      expect(p.patch.exclusions.exDoacLmwhAtOnset).toBeUndefined();
+      expect(p.summary).toContain('DOAC, last dose without an LKW (use at onset unknown)');
+    }
   });
-  it('treats a time-derived Encounter fact that has since changed as a changed import', () => {
-    // With no LKW recorded, use at onset is bounded by the time to now (≤ 48 h); a dose 47 h old at import
-    // is 49 h old two hours later. (Checked on SISTER's 48-h Xa/DTI item until 2026-11-01.)
-    const e = encounter({ diagnosisCategory: 'ich', lastDOACType: 'apixaban', lastDOACDose: localIso(now - 47 * HOUR) });
-    const state = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(e, now), fresh());
-    expect(state.exclusions.exDoacLmwhAtOnset).toBe(true);
-    expect(importChanged(state, screenerPrefillFromEncounter(e, now + 2 * HOUR))).toBe(true);
+  it('never reads an unchanged Encounter as a changed import as time passes (logic-trials-prefill-time-staleness)', () => {
+    // Formerly a dose 47 h old at import was 49 h old two hours later and the import read as stale.
+    const lkw = localIso(now - 30 * HOUR);
+    for (const note of [
+      { diagnosisCategory: 'ich', lastDOACType: 'apixaban', lastDOACDose: localIso(now - 47 * HOUR) },
+      { diagnosisCategory: 'ich', lastDOACType: 'apixaban', lastDOACDose: localIso(now - 47 * HOUR), lkwDate: lkw.slice(0, 10), lkwTime: lkw.slice(11, 16) },
+      { diagnosisCategory: 'ischemic', lastDOACType: 'warfarin', lastDOACDose: localIso(now - 160 * HOUR) },
+      { diagnosisCategory: 'ich', lastDOACType: 'apixaban' }
+    ]) {
+      const e = encounter(note);
+      const state = applyEncounterPrefill(fresh(), screenerPrefillFromEncounter(e, now), fresh());
+      for (const later of [1, 2, 10, 200]) expect(importChanged(state, screenerPrefillFromEncounter(e, now + later * HOUR))).toBe(false);
+    }
   });
   it('asks only SATURN\'s own secondary-cause question once MINUTE is out of its window', () => {
     const ids = refinerItems(S({ classification: 'ich', onsetVal: 3, onsetUnit: 'days' })).map(i => i.id);

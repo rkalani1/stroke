@@ -521,8 +521,9 @@ describe('answering every modeled fact with registry-consistent values (TR-11 fo
     ['SCOUTS-3', { classification: 'ischemic', onsetVal: 30, onsetUnit: 'days', age: 18, rehab: 'yes',
       exclusions: absent('exIncarcerated', 'exPregnancy', 'exTrach', 'exCpapUse14d', 'exSecondaryIchOrSah') },
     { rehab: ['none', 'Must have inpatient rehabilitation placement and expected length of stay ≥ 5 nights'] }, /consent-giver/],
+    // TESTED's error names LKW, as its registry inclusion does (copy-03, 2026-11-14; formerly "…within 24h of onset").
     ['TESTED', { classification: 'ischemic', onsetVal: 20, onsetUnit: 'hours', age: 18, vessel: 'dominant_m2', preMrs: 4, nihss: 6, aspects: 3, presentedWithin24h: true, exclusions: absent('exTerminalIllness') },
-    { presentedWithin24h: [false, 'Did not present within 24h of onset'] }, /stable for at least 3 months/],
+    { presentedWithin24h: [false, 'Did not present to the study hospital within 24 h of LKW'] }, /stable for at least 3 months/],
     ['CLARITY', { classification: 'tia', onsetVal: 180, onsetUnit: 'days', age: 40, abcd2: '6', antithromboticSoc: true, afibHistory: false, exclusions: absent('exBrainBleed2y', 'exCongestiveHeartFailure') },
     { abcd2: ['5', 'Requires ischemic stroke or high-risk TIA (ABCD2 score ≥ 6)'], antithromboticSoc: [false, 'Requires guideline-based single or dual antithrombotic therapy with aspirin, clopidogrel and/or ticagrelor'] }, /≥ 2 listed risk factors/]
   ];
