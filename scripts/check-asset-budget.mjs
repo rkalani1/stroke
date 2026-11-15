@@ -174,6 +174,7 @@ const precache = corePrecacheBytes();
 // 2026-11-14: the 12 iOS launch screens (367,861 B) leave the precache; the worker caches each on its first
 // request, since only an iOS home-screen launch shows one. Precache 2.14 -> 1.79 MB (51 -> 39 entries). The
 // 2.3 MB ceiling is deliberately unchanged: the 2026-10-21 review proposed this change as precache headroom.
+// At the 7.12.0 release build the precache measures 1.82 MB (41 entries).
 // 2026-11-14 v7.12.0 (reviewed raise): the release adds verified behaviour outside the Protocols tab: phase-aware
 // case-bar BP flags (post-EVT 180/105, pre-EVT 185/110, no-reperfusion 220/120), named out-of-range number entries,
 // one elapsed-time format, follow-up and undated anticoagulant facts kept unknown in the Trials import, drug-name and
