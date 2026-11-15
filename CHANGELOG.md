@@ -1,5 +1,77 @@
 # CHANGELOG
 
+## v7.12.0 — 2026-11-15 — Accuracy, evidence, search and offline-update fixes (outside the Protocols tab)
+
+From a second round of read-only audits (clinical logic, offline/PWA behaviour, evidence currency, the trial registries, engineering and copy). The Protocols tab is unchanged. Its source lock, Example Protocols snapshot and rendered locks (desktop and phone) are the guard. The record is [docs/review-2026-11-14.md](docs/review-2026-11-14.md).
+
+- **Case bar BP flag by phase:**
+  - After a recorded EVT without IVT (a puncture time, or a reperfusion time or mTICI entered without one), the flag is "Above 180/105" until 24 h after the puncture (or reperfusion). After IVT, the post-IVT limit still applies.
+  - Before EVT without IVT, it is "Above 185/110".
+  - With IVT and EVT both not recommended, it is only "At or above 220/120", with its AHA/ASA 2026 COR 2b caveat.
+  - The pre-IVT, post-IVT, ICH and SAH rules are unchanged. The Encounter BP cue uses the same text.
+  - The ICH tooltip now reads "start within 2 h of onset and reach target within 1 h". The administered chip says "Alteplase given".
+- **Encounter:**
+  - Number fields name an out-of-range entry under the field ("Out of range: enter …"), using the same ranges the note uses. The pound field is capped at 350 kg.
+  - The case-bar elapsed time, the Encounter LKW result, the Trials banner and the idle notice share one duration format: "35 min", "1 h 05 min", then "2.1 d" from 48 h. The case-bar window countdowns, notes and Protocols clocks keep their own formats.
+  - The ABC/2 unit warning matches its inputs (A and B in centimeters, slice thickness in millimeters). Its source is now the ICH-specific Webb et al., Stroke 2015 (PMID 26243227).
+  - The TIA stenosis caution appears only when the two answers truly conflict.
+  - IVT checklist notes say the hold applies to either agent and use COR 1 / COR 2b with spaced units.
+  - The orphan "†" on NIHSS items 9 and 10 is removed.
+- **Notes:**
+  - The one-paragraph Pulsara summary keeps the lines of a multi-line detail entry apart ("; ").
+  - A DAPT stop date before the DAPT start is flagged.
+  - The note reads "IVT discussion / consent status / consent time" and "(Wt: 83 kg)". The age wording and Epic headings are unchanged, since that is the owner's format.
+- **Trials:**
+  - A follow-up Encounter no longer imports anticoagulant use at the index stroke. A last dose recorded after LKW, or with no LKW, leaves it unknown, so INTERCEPT's timing group is never wrongly met. Time passing alone no longer marks an unchanged import as out of date.
+  - Registry recheck on 2026-11-14: TELE-REHAB-2, CAPTIVA and CAPPRICORN-1 records were updated; status and eligibility are unchanged.
+  - Ages are read as completed years (80.5 meets MINUTE's ≤ 80).
+  - The criteria tables and their exports name CLARITY's registry status.
+  - Registry items with no stored rule are listed for manual confirmation.
+  - TESTED's presentation criterion says LKW, as registered.
+  - Labels and summaries use consistent grammar, ranges and symbols. Verbatim registry criteria are untouched.
+- **Evidence:**
+  - New entries, each re-read against its abstract on 2026-11-14 and labeled as postdating its guideline:
+    - OPTIMAL-STROKE, INSIST-IT, BRETIS-TNK2, ASAP-TOO and SIMPLAAFY;
+    - a 2026 review of thrombolysis in pregnancy;
+    - STREAM and Lp(a)HORIZON;
+    - the SVIN 2026 ICAS-LVO practice update;
+    - both HINTS cohorts;
+    - the LIBREXIA-STROKE registry status. No asundexian approval is claimed; the label could not be read.
+  - No guideline grade changed.
+  - App-authored prose uses US style and one name per instrument, and the ICH topic links to the ICH surgery card. See [docs/evidence-ledger-2026-11-14.md](docs/evidence-ledger-2026-11-14.md).
+- **Search:**
+  - A thrombolytic drug name also finds targets written in IVT terms, ranked below literal matches ("tpa contraindications", "bp after tnk", "tnk checklist").
+  - Phrasings are normalized: mechanical thrombectomy, IV/intravenous thrombolysis, thrombolytics, reversal agents, DVT/VTE.
+  - "cholesterol" finds the lipid topics.
+  - Over 3,138 queries, 112 empty results now return results and none became empty.
+- **Shell and accessibility:**
+  - Evidence and Calculators filter rows no longer shift on the first keystroke.
+  - The pinned wide-pane titles no longer collapse.
+  - Short pages no longer scroll by the dock height.
+  - The retired page is reworded and has 44 px targets.
+  - Status regions exist before their text.
+  - The bare "/" shortcut is removed (WCAG 2.1.4); Ctrl/⌘K remains.
+  - The phone "Jump to" select waits for Enter or a pick (WCAG 3.2.2).
+  - The search dialog's key hints wrap.
+- **Offline and updates:**
+  - The build writes a SHA-256 table for every precached file. An update installs into a staging cache and replaces the previous version only if every file matches, so a partly propagated Pages deploy can no longer pin a stale app.js and leave Evidence and Calculators unavailable. The current version keeps running and a later check retries.
+  - Installs no longer download the 12 iOS launch-screen images (367,861 bytes). The one a device uses is cached on its first request, which takes the precache from 2.14 to 1.82 MB.
+  - Retired Stroke storage keys are cleared once, on the first v7 visit, rather than on every load, because other apps share the origin.
+  - Dead CDN, shell and withdrawn-asset branches are removed.
+- **Metadata:**
+  - The page has a canonical URL and link-preview tags.
+  - The installed app adds Trials and Calculators shortcuts.
+  - `data/sources.json` publishes real record counts.
+  - `llms.txt` says the MCP server is repository-local.
+  - The owner's description and launch colors are unchanged.
+- **Engineering:**
+  - CI runs on Node 24 with current action majors (`.nvmrc`; engines `node >= 22`).
+  - The browser smoke test pins its clock, so a run started in the repeated autumn daylight-saving hour no longer fails.
+  - The offline checks now cut the server as well as the page, and require the worker's 503 for an uncached probe.
+  - `validate:citations` accepts next year's citations.
+  - `npm audit fix` (non-breaking) reduced advisories from 18 to 6 in the root tree and from 9 to 1 in `mcp/`. The rest need major upgrades of development tooling (vitest, esbuild, zod) that does not ship to Pages.
+- **Budget:** the JavaScript ceilings rise by about 2% (initial 133 KB gzip / 390 KB raw; all JS 268 KB gzip / 884 KB raw) for the safety wording and accessibility state above. The reason is recorded in `scripts/check-asset-budget.mjs`.
+
 ## v7.11.1 — 2026-11-09 — Remove closed MIRROR enrollment pathway
 
 - **IPH algorithm:** removes the MIRROR registry screening branch following closure of active screening and new enrollment. MINUTE criteria remain unchanged; deep IPH endoscopic surgery outside MINUTE remains a case-by-case discussion with the on-call stroke attending and inpatient neurology attending.

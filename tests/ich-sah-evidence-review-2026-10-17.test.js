@@ -16,8 +16,8 @@ const ich2022 = read('src/guidelines/ich-2022.json').recommendations;
 
 describe('ICH evidence cards (2026-10-17 review)', () => {
   it('still validates against the reference contract at the review date', () => {
-    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
-    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-11-14: the evidence-currency passes re-read and re-dated sources on 2026-10-31 and 2026-11-14.
+    expect(validateClinicalReference(data, { now: new Date('2026-11-14T23:59:59Z') })).toEqual([]);
   });
 
   it('defers ICH neuroprognostication 48–72 h and keeps the AHA second-day DNAR statement (NCS 2023 GPS 1; ich-2022-95)', () => {
@@ -38,7 +38,7 @@ describe('ICH evidence cards (2026-10-17 review)', () => {
     expect(summary).toContain('Unfractionated heparin: protamine (2a)');
     expect(summary).toContain('LMWH: protamine may partially reverse (2b)');
     expect(summary).not.toMatch(/(?<!fractionated )Heparin: protamine \(2a\)/);
-    expect(summary).toMatch(/4F-PCC rather than andexanet.*withdrawn from the US market effective 22 December 2025/);
+    expect(summary).toMatch(/4F-PCC rather than andexanet.*withdrawn from the US market effective December 22, 2025/);
     // GRADE certainty was not re-verified on 2026-10-17 (abstract only); the access note must say so.
     expect(topic('antithrombotic-reversal').sources[0].access).toMatch(/2026-09-30.*not re-verified/);
     // The abstract summarizes four conditional recommendations and three no-recommendation areas, not all eight.

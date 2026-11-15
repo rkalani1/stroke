@@ -5,7 +5,7 @@ import process from 'node:process';
 // Validate the maintained citation records directly; the historical review table is archived.
 const citationsJsUrl = new URL('../src/evidence/citations.js', import.meta.url);
 const yearMin = 2001; // Retained original ICH Score report, not only recent trials.
-const yearMax = 2026;
+const yearMax = new Date().getUTCFullYear() + 1; // allows next-year issue dates of online-first articles
 const args = new Set(process.argv.slice(2));
 const checkLinks = args.has('--check-links');
 const checkIdentifiers = args.has('--check-identifiers');

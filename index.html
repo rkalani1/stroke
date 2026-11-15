@@ -5,11 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0A6571">
   <meta name="description" content="Encounter workspace with embedded calculations, protocols, Pulsara summaries and Epic note templates.">
+  <link rel="canonical" href="https://rkalani1.github.io/stroke/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://rkalani1.github.io/stroke/">
+  <meta property="og:title" content="Stroke workspace">
+  <meta property="og:description" content="Encounter workspace with embedded calculations, protocols, Pulsara summaries and Epic note templates.">
+  <meta property="og:image" content="https://rkalani1.github.io/stroke/icon-512.png">
+  <meta name="twitter:card" content="summary">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="manifest" href="manifest.json?v=7.11.1">
+  <link rel="manifest" href="manifest.json?v=7.12.0">
   <link rel="icon" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <!-- iOS launch screens for the installed app (exact device matches; precached by the service worker). -->
+  <!-- iOS launch screens for the installed app (exact device matches; the service worker caches each on first request, not at install). -->
   <link rel="apple-touch-startup-image" href="assets/splash/splash-iphone-16-pro-max.png"
         media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
   <link rel="apple-touch-startup-image" href="assets/splash/splash-iphone-16-pro.png"
@@ -35,25 +42,27 @@
   <link rel="apple-touch-startup-image" href="assets/splash/splash-ipad-mini.png"
         media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
   <title>Stroke · Encounter workspace</title>
-  <link rel="modulepreload" href="app.js?v=7.11.1">
+  <link rel="modulepreload" href="app.js?v=7.12.0">
   <!-- BEGIN GENERATED INITIAL MODULE PRELOADS -->
   <link rel="modulepreload" href="chunks/chunk-3C5ZDFRN.js">
   <link rel="modulepreload" href="chunks/chunk-3EH37YPU.js">
-  <link rel="modulepreload" href="chunks/chunk-BVAA575E.js">
+  <link rel="modulepreload" href="chunks/chunk-5NSCPMXF.js">
   <link rel="modulepreload" href="chunks/chunk-CCC5QWPU.js">
-  <link rel="modulepreload" href="chunks/chunk-FPW5WEWF.js">
+  <link rel="modulepreload" href="chunks/chunk-FVADEUQC.js">
   <link rel="modulepreload" href="chunks/chunk-HOFJI2PN.js">
-  <link rel="modulepreload" href="chunks/chunk-HXREWURP.js">
+  <link rel="modulepreload" href="chunks/chunk-IT4TLS54.js">
   <link rel="modulepreload" href="chunks/chunk-QPJ3MHXX.js">
   <link rel="modulepreload" href="chunks/chunk-RKNMGIFI.js">
-  <link rel="modulepreload" href="chunks/chunk-ROKRUQE4.js">
+  <link rel="modulepreload" href="chunks/chunk-SXBELJP7.js">
+  <link rel="modulepreload" href="chunks/chunk-YVXZAEH2.js">
+  <link rel="modulepreload" href="chunks/chunk-ZNN2ILDH.js">
   <!-- END GENERATED INITIAL MODULE PRELOADS -->
-  <link rel="stylesheet" href="tailwind.css?v=7.11.1">
+  <link rel="stylesheet" href="tailwind.css?v=7.12.0">
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/publicsans-normal-400.woff2">
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/bricolage-700.woff2">
   <script>
     (function () {
-      const APP_VERSION = '7.11.1';
+      const APP_VERSION = '7.12.0';
       let pref = null;
       try { pref = localStorage.getItem('stroke.v7.theme'); } catch (_) {}
       const isPublicPages = /(^|\.)github\.io$/i.test(location.hostname || '');
@@ -61,9 +70,15 @@
       const mode = ['light','dark','auto'].includes(pref) ? pref : (isPublicPages ? 'dark' : 'auto');
       document.documentElement.setAttribute('data-theme', mode === 'dark' || mode === 'auto' && prefersDark ? 'dark' : 'light');
       // Remove only this application's retired clinical storage; no encounter values are read or migrated.
+      // Once per browser (until the v7 migration flag is set): other apps on this shared github.io origin
+      // may use generic key names such as "census" or "apiKey", which must not be cleared on every load.
+      let migrated = false;
+      try { migrated = localStorage.getItem('stroke.v7.migrated') === '1'; } catch (_) {}
       const legacy = ['patientData','nihssScore','aspectsScore','gcsItems','mrsScore','ichScoreItems','strokeCodeForm','lkwTime','telestrokeNote','census','activePatients','apiKey','stroke.appData.v2'];
-      try { for (const key of Object.keys(localStorage)) if (key.startsWith('strokeApp:') || legacy.includes(key)) localStorage.removeItem(key); } catch (_) {}
-      try { for (const key of Object.keys(sessionStorage)) if (key.startsWith('strokeApp:') || legacy.includes(key)) sessionStorage.removeItem(key); } catch (_) {}
+      if (!migrated) {
+        try { for (const key of Object.keys(localStorage)) if (key.startsWith('strokeApp:') || legacy.includes(key)) localStorage.removeItem(key); } catch (_) {}
+        try { for (const key of Object.keys(sessionStorage)) if (key.startsWith('strokeApp:') || legacy.includes(key)) sessionStorage.removeItem(key); } catch (_) {}
+      }
     })();
   </script>
   <script>
@@ -98,6 +113,6 @@
         };
 
   </script>
-  <script type="module" src="app.js?v=7.11.1"></script>
+  <script type="module" src="app.js?v=7.12.0"></script>
 </body>
 </html>

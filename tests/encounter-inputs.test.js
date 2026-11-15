@@ -17,7 +17,7 @@ describe('restored input conveniences', () => {
     state.note.weight = weightInKg('220.462262', 'lb');
     expect(state.note.weight).toBe('100');
     expect(outputWarnings(state)).toEqual([]);
-    expect(buildSummary(state)).toContain('Wt: 100kg');
+    expect(buildSummary(state)).toContain('Wt: 100 kg');
     expect(weightInKg('83', 'lb')).toBe('37.648167');
   });
   it('only maps valid item scores and supported untestable options', () => {

@@ -14,8 +14,8 @@ const urls = record => record.sources.map(source => source.url);
 
 describe('thrombolysis Evidence cards', () => {
   it('stays inside the structural contract on the review date', () => {
-    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
-    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-11-14: the evidence-currency passes re-read and re-dated sources on 2026-10-31 and 2026-11-14.
+    expect(validateClinicalReference(data, { now: new Date('2026-11-14T23:59:59Z') })).toEqual([]);
   });
 
   it('separates the AHA 2026 imaging grade from the perfusion-selected IVT treatment grades', () => {
@@ -38,7 +38,7 @@ describe('thrombolysis Evidence cards', () => {
     expect(card.consider[0]).toContain('DAPT is COR 1 for noncardioembolic minor stroke (NIHSS ≤3) within 24 h, and NIHSS 4–5 options carry lower grades');
     expect(card.consider[0]).not.toMatch(/DAPT only/);
     // ais-2026-122: basilar EVT needs NIHSS ≥10, baseline mRS 0–1 and PC-ASPECTS ≥6.
-    expect(card.summary).toContain('basilar occlusion with NIHSS ≥10, prestroke mRS 0–1 and PC-ASPECTS ≥6 (COR 1)');
+    expect(card.summary).toContain('basilar occlusion with NIHSS ≥10, prestroke mRS 0–1 and pc-ASPECTS ≥6 (COR 1)');
     expect(card.caution).toMatch(/recent DOAC intake \(IVT after DOAC intake within 48 h: observational cohorts only\)/);
     expect(urls(card)).toContain('https://pubmed.ncbi.nlm.nih.gov/36807495/');
     expect(card.related.map(link => link.href)).toContain('#/evidence/minor-stroke-antiplatelets');
@@ -136,7 +136,7 @@ describe('antiplatelet, TIA and research-adjunct Evidence cards', () => {
   it('states the DAPT population and grade on the TIA card', () => {
     const card = topic('tia-evaluation');
     // ais-2026-147: noncardioembolic, NIHSS ≤3 or ABCD2 ≥4, no IVT, within 24 h (COR 1).
-    expect(card.summary).toContain('Noncardioembolic high-risk TIA (ABCD2 ≥4) or minor stroke (NIHSS ≤3) within 24 h, without IVT');
+    expect(card.summary).toContain('Noncardioembolic high-risk TIA (ABCD² ≥4) or minor stroke (NIHSS ≤3) within 24 h, without IVT');
     expect(card.summary).toContain('(AHA 2026, COR 1)');
   });
 
@@ -144,7 +144,7 @@ describe('antiplatelet, TIA and research-adjunct Evidence cards', () => {
     const card = topic('minor-stroke-antiplatelets');
     expect(card.summary).not.toContain('Alternatives:');
     // ais-2026-148 2b; -149 2a; -150 2b; CHANCE-2 compared ticagrelor-aspirin with clopidogrel-aspirin.
-    expect(card.summary).toContain('TIA with ABCD2 ≥6 or symptomatic stenosis ≥50%; COR 2b; THALES');
+    expect(card.summary).toContain('TIA with ABCD² ≥6 or symptomatic stenosis ≥50%; COR 2b; THALES');
     expect(card.summary).toContain('(COR 2a; INSPIRES 7.3 vs 9.2%)');
     expect(card.summary).toContain('rather than clopidogrel-aspirin (COR 2b; CHANCE-2 6.0 vs 7.6%)');
     expect(card.consider[0]).toContain('PRISMS (stopped early)');

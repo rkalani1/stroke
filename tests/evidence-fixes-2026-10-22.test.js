@@ -33,8 +33,8 @@ function innerSentenceEnds(text) {
 
 describe('evidence-fixes 2026-10-22: structure', () => {
   it('validates against the reference contract on the review date', () => {
-    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
-    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-11-14: the evidence-currency passes re-read and re-dated sources on 2026-10-31 and 2026-11-14.
+    expect(validateClinicalReference(data, { now: new Date('2026-11-14T23:59:59Z') })).toEqual([]);
   });
 
   it('keeps every Evidence bottom line a single sentence that ends cleanly', () => {
@@ -63,7 +63,7 @@ describe('evidence-fixes 2026-10-22: high-severity items', () => {
     // ich-2022-25 (3: Harm) stays in the next sentence with its population.
     expect(topic('ich-management').summary).toContain('Do not acutely lower SBP below 130 in mild-to-moderate ICH presenting with SBP >150 (AHA 2022, harm;');
     // ESO/EANS 2025 PICO 2 consensus (archive): caution with SBP >220, hematoma >30 mL or planned evacuation (R1-60/61).
-    expect(topic('ich-management').caution).toBe('Intensive targets are less certain with SBP >220 mm Hg, hematomas >30 mL or planned evacuation; avoid SBP drops >70 mm Hg or below 110 (ESO 2025 consensus).');
+    expect(topic('ich-management').caution).toBe('Intensive targets are less certain with SBP >220 mmHg, hematomas >30 mL or planned evacuation; avoid SBP drops >70 mmHg or below 110 (ESO 2025 consensus).');
     // Re-dated 2026-10-31: abstract and plain-language summary re-read for the ICH surgery card; BP consensus still from the archive.
     expect(coverage('eso-ich-2025')).toMatchObject({ checkedAt: '2026-10-31' });
     expect(coverage('eso-ich-2025').access).toContain('from the archived transcription');
@@ -189,7 +189,7 @@ describe('evidence-fixes 2026-10-22: medium-severity card content', () => {
   it('maternal-stroke (R1-11/12): ESO consensus limits and the source access scope are explicit', () => {
     const card = topic('maternal-stroke');
     expect(card.summary).toContain('thrombectomy for LVO (preferred over IVT whenever possible) and IVT (in pregnancy by majority), not withheld if thrombectomy is unavailable');
-    expect(card.summary).toContain('(systolic ≥160 or diastolic ≥110 mm Hg, confirmed within 15 minutes)');
+    expect(card.summary).toContain('(systolic ≥160 or diastolic ≥110 mmHg, confirmed within 15 minutes)');
     expect(card.caution).toContain('Acute stroke alone is not an indication for immediate delivery; stabilize the mother first');
     const statement = source(card, '41603019');
     expect(statement).toMatchObject({ checkedAt: '2026-10-22', title: 'Prevention and Treatment of Maternal Stroke in Pregnancy and Postpartum: A Scientific Statement From the American Heart Association' });
@@ -241,7 +241,8 @@ describe('evidence-fixes 2026-10-22: medium-severity card content', () => {
     // (evt-acute-bp) added the CSBPR EVT interim update 2025; (hemorrhagic) added the ERA KDIGO ADPKD commentary;
     // (cardioembolic) added the AHA 2026 endocarditis statement, the 2025 SCAI/HRS LAAO guideline and the WSO 2025 AF statement;
     // (recovery-populations) added CSBPR 2025 rehabilitation Parts One and Three, the WSO 2025 sex/gender statement, IPSO pediatric
-    // ICH Parts 1 and 2, the VasCog-2-WSO criteria and the AHA 2026 health literacy statement.
-    expect(read('src/reference/coverage.json')).toHaveLength(124);
+    // ICH Parts 1 and 2, the VasCog-2-WSO criteria and the AHA 2026 health literacy statement. Currency 2026-11-14 (EV-CUR-08)
+    // added the SVIN 2026 ICAS-LVO brief practice update.
+    expect(read('src/reference/coverage.json')).toHaveLength(125);
   });
 });

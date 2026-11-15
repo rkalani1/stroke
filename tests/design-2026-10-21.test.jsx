@@ -124,18 +124,18 @@ describe('search shortcuts', () => {
     expect(opensSearch(key('k', el('INPUT'), { metaKey: true }), { macLike: true })).toBe(true);
     expect(opensSearch(key('k', el('INPUT'), { ctrlKey: true }), { macLike: false })).toBe(true);
   });
-  it('never opens on "/" typed into a form control or editable text (BP "172/94", dates)', () => {
-    for (const target of [el('INPUT'), el('TEXTAREA'), el('SELECT'), el('DIV', { isContentEditable: true })]) {
-      expect(isTextEntry(target)).toBe(true);
-      expect(opensSearch(key('/', target))).toBe(false);
+  // 2026-11-14: the bare "/" shortcut is gone. A single-character shortcut must be possible to turn off or
+  // remap, or work only while its component has focus (WCAG 2.1.4); Ctrl/⌘K uses a modifier and is exempt.
+  it('has no single-character shortcut: "/" never opens search, in a field ("172/94", dates) or elsewhere', () => {
+    for (const target of [el('INPUT'), el('TEXTAREA'), el('SELECT'), el('DIV', { isContentEditable: true })]) expect(isTextEntry(target)).toBe(true);
+    for (const target of [el('BODY'), el('A'), el('BUTTON'), el('INPUT'), el('DIV', { isContentEditable: true })]) {
+      for (const k of ['/', 'k', 'K', 's', '?']) expect(opensSearch(key(k, target)), `${k} on ${target.tagName}`).toBe(false);
     }
-    expect(opensSearch(key('/', el('BODY')))).toBe(true);
-    expect(opensSearch(key('/', el('A')))).toBe(true);
     expect(opensSearch(key('/', el('BODY'), { ctrlKey: true }))).toBe(false);
   });
   it('ignores keys another handler consumed and IME composition', () => {
-    expect(opensSearch(key('/', el('BODY'), { defaultPrevented: true }))).toBe(false);
-    expect(opensSearch(key('/', el('BODY'), { isComposing: true }))).toBe(false);
+    expect(opensSearch(key('k', el('BODY'), { ctrlKey: true, defaultPrevented: true }))).toBe(false);
+    expect(opensSearch(key('k', el('BODY'), { ctrlKey: true, isComposing: true }))).toBe(false);
     expect(opensSearch(null)).toBe(false);
   });
   it('indexes navigation, protocol sections, calculators, Evidence topics and studies, trials and external links', () => {
@@ -271,13 +271,18 @@ describe('shell behaviour in Chromium', { timeout: 60000 }, () => {
     await page.locator('nav[aria-label="Primary navigation"] a', { hasText: 'Evidence' }).click();
     await poll(() => page.evaluate(() => document.documentElement.dataset.surface)).toBe('evidence');
   });
-  it('typing "/" in a field types it; "/" elsewhere and Ctrl+K open search', async () => {
+  it('typing "/" in a field types it; "/" elsewhere leaves search closed; Ctrl+K opens it', async () => {
     await open('#/encounter');
     await page.locator('#input-sbp').focus();
     await page.keyboard.type('172/');
     expect(await page.locator('dialog.quick-search[open]').count()).toBe(0);
     await page.locator('#input-sbp').evaluate(node => node.blur());
+    // The shell's handler claims a shortcut with preventDefault; it leaves a bare "/" alone (WCAG 2.1.4).
+    expect(await page.evaluate(() => { const event = new KeyboardEvent('keydown', { key: '/', bubbles: true, cancelable: true }); document.body.dispatchEvent(event); return event.defaultPrevented; })).toBe(false);
     await page.keyboard.press('/');
+    await page.waitForTimeout(300);
+    expect(await page.locator('dialog.quick-search[open]').count()).toBe(0);
+    await page.keyboard.press('Control+k');
     await poll(searchFocused).toBe(true);
     await page.keyboard.type('alteplase');
     await poll(() => page.locator('dialog.quick-search [role="status"].sr-only').textContent()).toMatch(/^\d+ results?$/);
@@ -306,7 +311,7 @@ describe('shell behaviour in Chromium', { timeout: 60000 }, () => {
   });
   it('reopens straight after Esc, empty: neither the old close event nor the old query carries over', async () => {
     await open('#/encounter');
-    await page.keyboard.press('/');
+    await page.keyboard.press('Control+k');
     await poll(searchFocused).toBe(true);
     await page.keyboard.type('alteplase');
     // Esc, then Ctrl+K, inside one task (no frame or timer in between): the first dialog's close

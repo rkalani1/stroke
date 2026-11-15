@@ -53,20 +53,22 @@ describe('registry re-verification on 2026-10-21 (statuses and dates rechecked 2
   const status = { STEP: 'RECRUITING', PICASSO: 'RECRUITING', TESTED: 'RECRUITING', MINUTE: 'RECRUITING', CLARITY: 'NOT_YET_RECRUITING', INTERCEPT: 'RECRUITING', ASPIRE: 'RECRUITING', SATURN: 'RECRUITING', 'CAPPRICORN-1': 'ACTIVE_NOT_RECRUITING', 'SCOUTS-3': 'RECRUITING', VERIFY: 'RECRUITING', 'MR-PICS': 'RECRUITING', 'TELE-REHAB-2': 'RECRUITING', CAPTIVA: 'ACTIVE_NOT_RECRUITING', DISCOVERY: 'RECRUITING' };
   // Exact-day AREA[LastUpdatePostDate] queries rerun on 2026-10-31: a RANGE[2026-10-21,MAX] query over all 16 NCT IDs
   // returned only CLARITY, TELE-REHAB-2 and CAPTIVA (each last updated 2026-10-26); the other 13 dates matched exactly.
-  const lastUpdate = { STEP: '2025-12-04', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', CLARITY: '2026-10-26', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-10-20', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-10-26', CAPTIVA: '2026-10-26', DISCOVERY: '2026-09-14' };
+  // Rerun on 2026-11-14: TELE-REHAB-2 (2026-11-05), CAPTIVA (2026-11-10) and CAPPRICORN-1 (2026-11-13) were updated
+  // with status and eligibility unchanged; the other 12 dates matched exactly.
+  const lastUpdate = { STEP: '2025-12-04', PICASSO: '2026-10-02', TESTED: '2026-09-02', MINUTE: '2026-09-15', CLARITY: '2026-10-26', INTERCEPT: '2026-08-19', ASPIRE: '2026-05-08', SATURN: '2026-04-21', 'CAPPRICORN-1': '2026-11-13', 'SCOUTS-3': '2026-08-13', VERIFY: '2026-08-20', 'MR-PICS': '2026-04-13', 'TELE-REHAB-2': '2026-11-05', CAPTIVA: '2026-11-10', DISCOVERY: '2026-09-14' };
 
   it('records the re-read date, status and last update of all profiles consistently', () => {
     expect(screenerTrials.map(t => t.acronym).sort()).toEqual(Object.keys(status).sort());
     for (const t of screenerTrials) {
       const m = t.externalMetadata;
-      const checked = ['STEP', 'MINUTE', 'CLARITY', 'DISCOVERY'].includes(t.acronym) ? '2026-11-04' : '2026-10-31';
+      const checked = ['STEP', 'MINUTE', 'CLARITY', 'DISCOVERY'].includes(t.acronym) ? '2026-11-04' : ['TELE-REHAB-2', 'CAPTIVA', 'CAPPRICORN-1'].includes(t.acronym) ? '2026-11-14' : '2026-10-31';
       expect(m.verificationDate, t.acronym).toBe(checked);
       expect(m.registryStatus, t.acronym).toBe(status[t.acronym]);
       expect(m.registryLastUpdatePosted, t.acronym).toBe(lastUpdate[t.acronym]);
       expect(t.sourceGaps.filter(g => g.startsWith('Registry status rechecked ' + checked + ': ' + status[t.acronym] + '; last update posted ' + lastUpdate[t.acronym] + ' (recorded ' + checked + ').')), t.acronym).toHaveLength(1);
       expect(JSON.stringify(t), t.acronym).not.toMatch(/2026-10-17/);
     }
-    expect(registryCheckLabel(screenerTrials.map(t => t.externalMetadata.verificationDate))).toBe('registry checked 2026-10-31 to 2026-11-04');
+    expect(registryCheckLabel(screenerTrials.map(t => t.externalMetadata.verificationDate))).toBe('registry checked 2026-10-31 to 2026-11-14');
   });
 
   it('keeps the recruiting statuses as registry statuses, never local availability', () => {
@@ -519,8 +521,9 @@ describe('answering every modeled fact with registry-consistent values (TR-11 fo
     ['SCOUTS-3', { classification: 'ischemic', onsetVal: 30, onsetUnit: 'days', age: 18, rehab: 'yes',
       exclusions: absent('exIncarcerated', 'exPregnancy', 'exTrach', 'exCpapUse14d', 'exSecondaryIchOrSah') },
     { rehab: ['none', 'Must have inpatient rehabilitation placement and expected length of stay ≥ 5 nights'] }, /consent-giver/],
+    // TESTED's error names LKW, as its registry inclusion does (copy-03, 2026-11-14; formerly "…within 24h of onset").
     ['TESTED', { classification: 'ischemic', onsetVal: 20, onsetUnit: 'hours', age: 18, vessel: 'dominant_m2', preMrs: 4, nihss: 6, aspects: 3, presentedWithin24h: true, exclusions: absent('exTerminalIllness') },
-    { presentedWithin24h: [false, 'Did not present within 24h of onset'] }, /stable for at least 3 months/],
+    { presentedWithin24h: [false, 'Did not present to the study hospital within 24 h of LKW'] }, /stable for at least 3 months/],
     ['CLARITY', { classification: 'tia', onsetVal: 180, onsetUnit: 'days', age: 40, abcd2: '6', antithromboticSoc: true, afibHistory: false, exclusions: absent('exBrainBleed2y', 'exCongestiveHeartFailure') },
     { abcd2: ['5', 'Requires ischemic stroke or high-risk TIA (ABCD2 score ≥ 6)'], antithromboticSoc: [false, 'Requires guideline-based single or dual antithrombotic therapy with aspirin, clopidogrel and/or ticagrelor'] }, /≥ 2 listed risk factors/]
   ];

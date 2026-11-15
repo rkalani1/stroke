@@ -4,9 +4,11 @@
 // Prefill is applied only on an explicit user action; every value it does not
 // recognise stays unknown, and every imported fact a modeled study uses has a screener control.
 
-import { encounterTiming, encounterNihss, encounterVolume, validTimestamp, nihssBulkZeroItems } from '../workspace-state.js';
+import { encounterTiming, encounterNihss, encounterVolume, nihssBulkZeroItems } from '../workspace-state.js';
+import { parseTimestamp } from '../clinical/timestamp.js';
 import { reviewedGcs, numericInput, documentedIvtContext } from '../encounter-clinical-review.js';
 import { untestableNote } from './screener-eval.js';
+import { formatElapsed } from '../clinical/encounter-time.js';
 
 const MODELED = { ischemic: 'ischemic', ich: 'ich', tia: 'tia' };
 const DIAGNOSIS_LABEL = { ischemic: 'Ischemic', ich: 'ICH', tia: 'TIA', sah: 'SAH', cvt: 'CVT', mimic: 'Stroke mimic', other: 'Other / uncertain' };
@@ -50,8 +52,6 @@ export function answerFacts(state, patch) {
 // The anticoagulant choice also answers the facts it implies.
 export const applyAnticoagulant = (state, kind) => answerFacts(state, { anticoagulant: kind || 'unselected', ...anticoagulantFacts(kind) });
 
-const fmtHours = h => { const minutes = Math.round(h * 60); return h < 48 ? `${Math.floor(minutes / 60)} h ${String(minutes % 60).padStart(2, '0')} min` : `${(h / 24).toFixed(1)} d`; };
-
 export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   const note = state?.note || {};
   const diagnosis = note.diagnosisCategory || '';
@@ -73,7 +73,8 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   if (timed) {
     // onsetVal is the snapshot at import; onsetAnchorMs keeps elapsed time live.
     Object.assign(patch, { onsetVal: Math.round(timing.hours * 100) / 100, onsetUnit: 'hours', onsetRangeHours: null, onsetAnchorMs: lkwAnchorMs });
-    summary.push(`LKW ${fmtHours(timing.hours)}`);
+    // Worded as the case bar words it, from the same whole minutes; the imported onset keeps its hours.
+    summary.push(`LKW ${formatElapsed(timing.clock.elapsedMinutes)}`);
   }
 
   const age = numericInput(note.age, { min: 0, max: 120 });
@@ -125,29 +126,36 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
   // 'None' that the Encounter medication list contradicts is not imported: an
   // unreconciled answer must not become a definitive 'absent' exclusion.
   const kind = ANTICOAGULANT_KIND[note.lastDOACType];
-  const noneConflict = kind === 'none' && documentedIvtContext(note).medicationReconciliation;
+  // Outside acute care the Encounter records current therapy, not use at onset or, in INTERCEPT's
+  // words (NCT05723926), whether the "Patient was on OAC at time of index stroke"; none of the
+  // three facts is imported.
+  const current = Boolean(kind) && state.context !== 'acute';
+  const noneConflict = !current && kind === 'none' && documentedIvtContext(note).medicationReconciliation;
+  if (current) summary.push(`${ANTICOAGULANT_TEXT[kind]} now (follow-up; use at onset not imported)`);
   if (noneConflict) summary.push('anticoagulant "none" conflicts with medication list (not imported)');
-  if (kind && !noneConflict) {
+  if (kind && !noneConflict && !current) {
     const facts = anticoagulantFacts(kind);
     patch.anticoagulant = kind;
     // Import only what is known; it never clears an assessment already entered.
     if (typeof facts.takingOac === 'boolean') patch.takingOac = facts.takingOac;
     for (const [id, value] of Object.entries(facts.exclusions)) if (typeof value === 'boolean') patch.exclusions[id] = value;
-    // A valid last-dose time bounds use at onset (below) and is described in the summary.
-    const dose = kind !== 'none' && kind !== 'lmwh' ? validTimestamp(note.lastDOACDose, nowMs) : null;
-    const hours = dose ? (nowMs - dose.getTime()) / 3600000 : null;
-    // Last dose to onset: from the LKW when recorded; otherwise the time to now bounds it.
-    const lkw = lkwAnchorMs ?? nowMs;
-    const beforeOnset = dose ? (lkw - dose.getTime()) / 3600000 : null;
+    // A recorded last-dose time is placed against the LKW only, never against the moving 'now',
+    // so the passage of time alone never changes what an import says.
+    const dose = kind !== 'none' && kind !== 'lmwh' ? parseTimestamp(note.lastDOACDose) : null;
+    const beforeOnset = dose && lkwAnchorMs !== null ? (lkwAnchorMs - dose.getTime()) / 3600000 : null;
     const drug = kind === 'doac' ? 'DOAC' : 'warfarin/VKA';
-    if (beforeOnset !== null && beforeOnset > 48) {
-      // A last dose more than 48 h (two daily dosing intervals) before onset does not establish
-      // use at onset or at the index stroke; leave both unknown. Clear explicitly (not omit) so
-      // a reapply also clears what an earlier import set.
+    // Use at onset is established only by a last dose at or before the LKW and no more than 48 h
+    // (two daily dosing intervals) before it. A dose after the LKW, or with no LKW to place it,
+    // does not establish use at onset or at the index stroke; leave both unknown. Clear
+    // explicitly (not omit) so a reapply also clears what an earlier import set.
+    if (dose && !(beforeOnset !== null && beforeOnset >= 0 && beforeOnset <= 48)) {
       patch.exclusions.exDoacLmwhAtOnset = undefined;
       patch.takingOac = 'unselected';
       patch.anticoagulant = 'unselected';
-      summary.push(hours > 168 ? `${drug}, last dose >7 d` : `${drug}, last dose ${Math.round(beforeOnset)} h before ${lkw === nowMs ? 'now' : 'LKW'} (use at onset unknown)`);
+      summary.push(beforeOnset === null ? `${drug}, last dose without an LKW (use at onset unknown)`
+        : beforeOnset < 0 ? `${drug}, last dose after LKW (use at onset unknown)`
+        : beforeOnset > 168 ? `${drug}, last dose >7 d before LKW (use at onset unknown)`
+        : `${drug}, last dose ${Math.round(beforeOnset)} h before LKW (use at onset unknown)`);
     } else summary.push(ANTICOAGULANT_TEXT[kind]);
   }
 

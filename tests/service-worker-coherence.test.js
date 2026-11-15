@@ -7,11 +7,9 @@ import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 
 const source = readFileSync(new URL('../service-worker.js', import.meta.url), 'utf8');
-const version = source.match(/const APP_VERSION\s*=\s*'([^']+)'/)[1];
 const chunks = JSON.parse(source.match(/const APP_CHUNKS = (\[[\s\S]*?\]);/)[1]);
-const referenceFixture = JSON.parse(readFileSync(new URL('../data/clinical-reference.json', import.meta.url), 'utf8'));
-referenceFixture._meta.appVersion = version;
-const entryName = chunks.find(chunk => /QuickSearch-/.test(chunk)).replace('./chunks/', '');
+// The release's own files (install also checks each against the worker's SHA-256 table).
+const releaseFile = relative => readFileSync(new URL(`../${relative === '' ? 'index.html' : relative}`, import.meta.url));
 
 // A server whose files the install fetches; `files` overrides the default coherent bodies.
 function harness(scope, files = {}) {
@@ -21,10 +19,7 @@ function harness(scope, files = {}) {
   const body = url => {
     const relative = url.slice(scope.length);
     if (relative in files) return files[relative];
-    if (relative === 'data/clinical-reference.json') return JSON.stringify(referenceFixture);
-    if (relative === 'index.html' || relative === '') return `<link rel="modulepreload" href="chunks/${chunks[0].replace('./chunks/', '')}"><script type="module" src="app.js?v=${version}"></script>`;
-    if (relative === 'app.js') return `import"./chunks/${chunks[0].replace('./chunks/', '')}";const s=()=>import("./chunks/${entryName}");`;
-    return 'export{};';
+    return releaseFile(relative);
   };
   const cache = {
     match: async key => entries.get(href(key))?.clone(),
@@ -36,7 +31,7 @@ function harness(scope, files = {}) {
   };
   let offline = false;
   vm.runInNewContext(source, {
-    URL, Request, Response, Promise, console: { warn() {} },
+    URL, Request, Response, Promise, crypto: globalThis.crypto, console: { warn() {} },
     fetch: async request => { if (offline) throw Error('offline'); return new Response('online 404 page', { status: 404, headers: { 'Content-Type': 'text/html' } }); },
     caches: { open: async () => cache, keys: async () => [], match: async () => undefined, delete: async () => true },
     self: { location: { origin: new URL(scope).origin }, registration: { scope }, addEventListener: (name, handler) => handlers.set(name, handler) },

@@ -33,8 +33,8 @@ const CARD_RECOMMENDATIONS = {
 
 describe('EVT and systems-of-care Evidence cards (2026-10-21 review)', () => {
   it('validates against the reference contract on the review date', () => {
-    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
-    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-11-14: the evidence-currency passes re-read and re-dated sources on 2026-10-31 and 2026-11-14.
+    expect(validateClinicalReference(data, { now: new Date('2026-11-14T23:59:59Z') })).toEqual([]);
   });
 
   it('keeps the exact AHA/ASA 2026 grades on each EVT card', () => {
@@ -98,7 +98,7 @@ describe('EVT and systems-of-care Evidence cards (2026-10-21 review)', () => {
   it('labels evidence that postdates the guidelines and keeps earlier trials unlabeled', () => {
     const largeCore = text(topic('large-core-evt'));
     // ATLAS, Lancet 2026 (PMID 42107392).
-    expect(largeCore).toContain('ATLAS (Lancet 2026; postdates AHA 2026 and SVIN 2025), IPD of 6 RCTs (n=1886): better mRS (aGenOR 1.63) and lower mortality (31.1 vs 37.3%)');
+    expect(largeCore).toContain('ATLAS (Lancet 2026; postdates AHA 2026 and SVIN 2025), IPD of 6 RCTs (n=1,886): better mRS (aGenOR 1.63) and lower mortality (31.1 vs 37.3%)');
     expect(largeCore).toContain('evidence is limited for core ≥150 mL beyond 6 h');
     // DIRECT ANGIO, Lancet Neurol 2026 (PMID 41864232): sICH 5/34 vs 0/42, stopped for safety.
     // Round 3 (2026-10-22): population and imprecision added; exact text pinned in r3-ev-evt-2026-10-22.test.js.

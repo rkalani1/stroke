@@ -78,7 +78,7 @@ describe('copy feedback is reported for every clipboard outcome', { timeout: 400
     await expect.poll(status).toBe('Pulsara summary copied.');
     expect(await page.locator('.case-bar__copy').innerText()).toBe('Copied ✓');
     const [copied] = await page.evaluate(() => window.copied);
-    expect(copied).toMatch(/^71 year old \[sex not documented\] \(Wt: 77kg\)/);
+    expect(copied).toMatch(/^71 year old \[sex not documented\] \(Wt: 77 kg\)/);
     expect(copied).toBe(await page.locator('[data-generated-note]').inputValue());
     // On another surface the case bar's own status region announces the outcome.
     await page.locator('nav[aria-label="Primary navigation"] a', { hasText: 'Protocols' }).click();
@@ -139,9 +139,9 @@ describe('elapsed time in the running app', { timeout: 40000 }, () => {
     await field('Baseline mRS').selectOption('0');
     // The next-entry cue names the field behind an IVT hold first (7.8.1); answer it so the time check leads.
     await page.selectOption('#input-anticoagulant', 'none');
-    expect(await lkwResult()).toMatch(/^LKW: 90 min elapsed\. Remaining time is on the case bar\./);
-    // The case bar shows a duration, not a clock face ("1 h 30 m", 7.8.1).
-    expect(await caseTime()).toContain('1 h 30 m');
+    // One duration format in the LKW result and the case bar (review 2026-11-14, audit ux-09): a duration, not a clock face.
+    expect(await lkwResult()).toMatch(/^LKW: 1 h 30 min elapsed\. Remaining time is on the case bar\./);
+    expect(await caseTime()).toMatch(/LKW ?1 h 30 min/);
     await field('LKW date (local)').fill('2026-10-21');
     expect(await lkwResult()).toBe('Invalid, future, skipped or ambiguous local time: correct the timestamp or choose its clock occurrence.');
     expect(await caseTime()).toContain('Check time');
@@ -155,9 +155,9 @@ describe('elapsed time in the running app', { timeout: 40000 }, () => {
     const chooser = page.getByLabel('LKW clock occurrence');
     expect(await chooser.locator('option').allInnerTexts()).toEqual(['Choose which occurrence was recorded', 'First occurrence (UTC−07:00)', 'Second occurrence (UTC−08:00)']);
     await chooser.selectOption({ index: 1 });
-    expect(await lkwResult()).toMatch(/^LKW: 150 min elapsed\./);
+    expect(await lkwResult()).toMatch(/^LKW: 2 h 30 min elapsed\./);
     await chooser.selectOption({ index: 2 });
-    expect(await lkwResult()).toMatch(/^LKW: 90 min elapsed\. Remaining time is on the case bar\./);
+    expect(await lkwResult()).toMatch(/^LKW: 1 h 30 min elapsed\. Remaining time is on the case bar\./);
   });
 
   it('runs no per-second clock for an encounter without a time, and one clock once a time is entered', async () => {
@@ -177,15 +177,15 @@ describe('elapsed time in the running app', { timeout: 40000 }, () => {
   it('jumps to wall time after a background suspension instead of counting ticks', async () => {
     await open();
     await ischemic({ lkwTime: '09:00' });
-    expect(await lkwResult()).toMatch(/^LKW: 60 min elapsed/);
+    expect(await lkwResult()).toMatch(/^LKW: 1 h 00 min elapsed/);
     await setHidden(true);
     await page.clock.fastForward(3 * 3600000);
     await setHidden(false);
-    expect(await lkwResult()).toMatch(/^LKW: 240 min elapsed\./);
+    expect(await lkwResult()).toMatch(/^LKW: 4 h 00 min elapsed\./);
     // Since 7.8.1 the remaining time to 4.5 h is shown once, on the case bar.
-    expect((await page.locator('.case-bar__time').innerText()).replace(/\s+/g, ' ')).toMatch(/LKW ?4 h ?4\.5 h in 0:30/);
+    expect((await page.locator('.case-bar__time').innerText()).replace(/\s+/g, ' ')).toMatch(/LKW ?4 h 00 min ?4\.5 h in 0:30/);
     await page.clock.runFor(60000);
-    expect(await lkwResult()).toMatch(/^LKW: 241 min elapsed/);
+    expect(await lkwResult()).toMatch(/^LKW: 4 h 01 min elapsed/);
   });
 
   it('says how long ago the last entry was after 2 h, and clears the notice on the next entry', async () => {

@@ -37,10 +37,31 @@ for (const line of extra) problems.push(`build output differs from the committed
 if (normalize(JSON.stringify(committedManifest.initial.map(normalize).sort())) !== normalize(JSON.stringify(builtManifest.initial.map(normalize).sort()))) problems.push('initial module graph differs');
 
 // HTML shell and worker: compare normalized lines as a sorted multiset (generated
-// preload and chunk lists are ordered by hashed name).
+// preload and chunk lists are ordered by hashed name). The worker's precache SHA-256 values
+// change with chunk names, so they are compared separately below, against the bytes they cover.
+const checksumLine = /^(\s*"[^"]+": )"[0-9a-f]{64}"(,?)$/;
 for (const file of ['index.html', 'service-worker.js']) {
-  const lines = text => normalize(text).replace(/\r\n/g, '\n').split('\n').sort().join('\n');
+  const lines = text => normalize(text).replace(/\r\n/g, '\n').split('\n').map(line => line.replace(checksumLine, '$1"#"$2')).sort().join('\n');
   if (lines(committed(file)) !== lines(built(file))) problems.push(`${file} differs from a build of the committed source`);
+}
+
+// The committed worker refuses to install unless every precached file it fetches from Pages
+// matches its table, so the table must describe the committed bytes exactly.
+const committedBytes = file => execFileSync('git', ['show', `${ref}:${file}`], { maxBuffer: 64 * 1024 * 1024 });
+const table = committed('service-worker.js').match(/const PRECACHE_SHA256 = (\{[\s\S]*?\});/);
+if (!table) problems.push('service-worker.js has no PRECACHE_SHA256 table');
+else {
+  const expected = JSON.parse(table[1]);
+  const worker = committed('service-worker.js');
+  // eslint-disable-next-line no-new-func
+  const core = new Function(`return ${worker.match(/const CORE_ASSETS = (\[[\s\S]*?\]);/)[1]}`)();
+  const precache = [...core, ...JSON.parse(worker.match(/const APP_CHUNKS = (\[[\s\S]*?\]);/)[1])];
+  if (JSON.stringify(Object.keys(expected).sort()) !== JSON.stringify([...new Set(precache)].sort())) problems.push('PRECACHE_SHA256 does not list exactly the precached files');
+  for (const asset of precache) {
+    let actual = null;
+    try { actual = sha(committedBytes(asset === './' ? 'index.html' : asset.slice(2))); } catch { /* reported below */ }
+    if (actual !== expected[asset]) problems.push(`PRECACHE_SHA256 entry for ${asset} does not match the committed file`);
+  }
 }
 
 if (problems.length) {
@@ -49,4 +70,4 @@ if (problems.length) {
   console.error('Run `npm run build:prod` and commit app.js, app-assets.json, chunks/, index.html and service-worker.js.');
   process.exit(1);
 }
-console.log(`Committed bundle check: PASS (${want.length} JavaScript files, index.html and service-worker.js match a build of ${ref})`);
+console.log(`Committed bundle check: PASS (${want.length} JavaScript files, index.html and service-worker.js match a build of ${ref}; precache checksums match the committed files)`);

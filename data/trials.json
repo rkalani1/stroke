@@ -2,8 +2,8 @@
   "_meta": {
     "endpoint": "trials",
     "schemaVersion": "2.0.0",
-    "appVersion": "7.11.1",
-    "checksum": "sha256:d4920f603911fb67eb9b7facff45c5fb",
+    "appVersion": "7.12.0",
+    "checksum": "sha256:67130e63b7fff2a23a9d23d4c82a2722",
     "count": 15,
     "source": "Trial screener and table summaries with per-profile registry check dates",
     "license": "Synthetic educational reference content for qualified review. No warranty.",
@@ -75,7 +75,7 @@
               "operator": "==",
               "value": "ischemic",
               "error": "Requires Ischemic Stroke",
-              "matchedLabel": "Ischemic Stroke classification selected"
+              "matchedLabel": "Ischemic stroke classification selected"
             },
             {
               "operator": "or",
@@ -220,7 +220,8 @@
             "If >120 minutes elapse since qualifying imaging and randomization has not yet occurred, confirm repeat CT/MR and qualifying imaging; for NIHSS 0-5, repeat only with significant NIHSS improvement",
             "Confirm arterial puncture can start ≤ 2 h from qualifying CTA/MRA or CTP/MRP imaging and the occlusion is not suspected to be chronic",
             "Confirm CT versus MRI ASPECTS threshold, focal deficit when NIHSS is 0, and the remaining domain exclusions (dissection, vasculitis, septic embolus, platelets, mass effect, tumor, hemorrhage)",
-            "Confirm no contrast anaphylaxis precluding EVT, unfavorable vascular access, serious/advanced/terminal illness or life expectancy <6 months, or pre-existing medical, neurological or psychiatric disease that confounds assessments"
+            "Confirm no contrast anaphylaxis precluding EVT, unfavorable vascular access, serious/advanced/terminal illness or life expectancy <6 months, or pre-existing medical, neurological or psychiatric disease that confounds assessments",
+            "Confirm no proven contraindication to endovascular thrombectomy"
           ]
         }
       },
@@ -272,7 +273,7 @@
               "operator": "==",
               "value": "ischemic",
               "error": "Requires Ischemic Stroke",
-              "matchedLabel": "Ischemic Stroke classification selected"
+              "matchedLabel": "Ischemic stroke classification selected"
             }
           ],
           "exclusions": []
@@ -302,7 +303,7 @@
           "phase": "NA",
           "studyType": "OBSERVATIONAL"
         },
-        "conciseBedsideSummary": "Cohort study comparing EVT to Medical Management in LVO-AIS with pre-stroke mRS 3-4.",
+        "conciseBedsideSummary": "Cohort study comparing EVT with medical management in LVO-AIS with pre-stroke mRS 3–4.",
         "pathway": "Consult Stroke Research Coordinator / Stroke Neurology",
         "noContactInfo": true,
         "exactInclusionCriteria": [
@@ -332,7 +333,7 @@
               "operator": "==",
               "value": "ischemic",
               "error": "Requires Ischemic Stroke",
-              "matchedLabel": "Ischemic Stroke classification selected"
+              "matchedLabel": "Ischemic stroke classification selected"
             },
             {
               "field": "vessel",
@@ -379,9 +380,9 @@
               "field": "presentedWithin24h",
               "operator": "==",
               "value": true,
-              "error": "Did not present within 24h of onset",
-              "matchedLabel": "Presented to study hospital within 24h of LKW",
-              "pendingLabel": "Confirm patient arrived at the facility within 24 hours of stroke onset (presented within 24h)"
+              "error": "Did not present to the study hospital within 24 h of LKW",
+              "matchedLabel": "Presented to the study hospital within 24 h of LKW",
+              "pendingLabel": "Confirm presentation to the study hospital ≤ 24 h from LKW"
             }
           ],
           "exclusions": [
@@ -424,7 +425,7 @@
           "studyType": "INTERVENTIONAL",
           "localActivationStatus": "not_assessed"
         },
-        "conciseBedsideSummary": "Ultra-early SCUBA endoscopic evacuation for basal-ganglia hemorrhage >=20 mL by ABC/2 randomized within 16h of LKW.",
+        "conciseBedsideSummary": "Ultra-early SCUBA endoscopic evacuation for basal-ganglia hemorrhage ≥20 mL by ABC/2, randomized within 16 h of LKW.",
         "pathway": "Consult Stroke Research Coordinator / On-Call Neurosurgery Service",
         "noContactInfo": true,
         "exactInclusionCriteria": [
@@ -469,8 +470,8 @@
               "field": "ichLocation",
               "operator": "==",
               "value": "bg",
-              "error": "Requires deep Basal Ganglia location",
-              "matchedLabel": "Basal Ganglia location confirmed"
+              "error": "Requires deep basal ganglia location",
+              "matchedLabel": "Basal ganglia location confirmed"
             },
             {
               "field": "ichVolume",
@@ -503,7 +504,7 @@
                 80
               ],
               "error": "Age must be 18-80 years",
-              "matchedLabel": "Age is {value} (meets 18-80)"
+              "matchedLabel": "Age is {value} (meets 18–80)"
             },
             {
               "field": "preMrs",
@@ -594,7 +595,7 @@
           "phase": "PHASE3",
           "studyType": "INTERVENTIONAL"
         },
-        "conciseBedsideSummary": "Phase 3 trial of cilostazol vs placebo added to single or dual antithrombotic therapy (aspirin, clopidogrel and/or ticagrelor) after ischemic stroke or high-risk TIA (ABCD2 ≥ 6) within 180 days, with ≥ 2 listed risk factors. Excludes atrial fibrillation, mechanical heart valve or LVAD.",
+        "conciseBedsideSummary": "Phase 3 trial of cilostazol vs placebo added to single or dual antithrombotic therapy (aspirin, clopidogrel and/or ticagrelor) after ischemic stroke or high-risk TIA (ABCD2 ≥6) within 180 days, with ≥2 listed risk factors. Excludes atrial fibrillation, mechanical heart valve or LVAD.",
         "pathway": "Consult Stroke Research Coordinator / Stroke Neurology",
         "noContactInfo": true,
         "exactInclusionCriteria": [
@@ -839,7 +840,7 @@
               "operator": "==",
               "value": true,
               "error": "Requires clinical atrial fibrillation history",
-              "matchedLabel": "AFib history confirmed"
+              "matchedLabel": "Atrial fibrillation history confirmed"
             }
           ],
           "exclusions": [
@@ -896,7 +897,7 @@
           "Registry status rechecked 2026-10-31: RECRUITING; last update posted 2026-05-08 (recorded 2026-10-31). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
         ],
         "timeCategory": "subacute_chronic",
-        "enrollmentWindowText": "14 – 180 days",
+        "enrollmentWindowText": "14–180 days",
         "externalMetadata": {
           "nct": "NCT03907046",
           "registryUrl": "https://clinicaltrials.gov/study/NCT03907046",
@@ -907,7 +908,7 @@
           "phase": "PHASE3",
           "studyType": "INTERVENTIONAL"
         },
-        "conciseBedsideSummary": "Apixaban vs Aspirin in patients with recent ICH (randomized 14-180 days post-onset) and non-valvular atrial fibrillation or flutter.",
+        "conciseBedsideSummary": "Apixaban vs aspirin in patients with recent ICH (randomized 14–180 days after onset) and non-valvular atrial fibrillation or flutter.",
         "pathway": "Consult Stroke Research Coordinator / Stroke Neurology Service",
         "noContactInfo": true,
         "exactInclusionCriteria": [
@@ -953,7 +954,7 @@
                 180
               ],
               "error": "LKW-to-randomization not 14-180 days",
-              "matchedLabel": "Onset within 14-180 days window"
+              "matchedLabel": "Onset within the 14–180-day window"
             }
           ],
           "exclusions": [
@@ -981,7 +982,8 @@
           ],
           "manualPending": [
             "Confirm no hemorrhagic transformation, hemorrhage into tumor, or unsecured AVM; a generic secondary-ICH flag is not equivalent to these registry exclusions",
-            "Confirm non-valvular AF/flutter, no previous/planned left atrial appendage closure, no active infective endocarditis, and the full renal/hepatic/hematologic/BP/consent exclusions"
+            "Confirm non-valvular AF/flutter, no previous/planned left atrial appendage closure, no active infective endocarditis, and the full renal/hepatic/hematologic/BP/consent exclusions",
+            "Confirm highly effective contraception if of reproductive potential and no clinically significant bleeding diathesis"
           ]
         }
       },
@@ -1052,14 +1054,14 @@
               "operator": "<=",
               "value": 7,
               "error": "LKW-to-randomization > 7 days",
-              "matchedLabel": "Onset within 7 days window"
+              "matchedLabel": "Onset within the 7-day window"
             },
             {
               "field": "age",
               "operator": ">=",
               "value": 50,
               "error": "Age < 50",
-              "matchedLabel": "Age meets ≥ 50"
+              "matchedLabel": "Age is {value} (meets ≥ 50)"
             },
             {
               "field": "statin",
@@ -1073,7 +1075,7 @@
               "operator": "<=",
               "value": 3,
               "error": "Pre-stroke mRS > 3",
-              "matchedLabel": "Pre-stroke mRS ≤ 3"
+              "matchedLabel": "Pre-stroke mRS is {value} (meets ≤ 3)"
             }
           ],
           "exclusions": [
@@ -1108,7 +1110,8 @@
           ],
           "manualPending": [
             "Review diabetes with prior MI or coronary revascularization as a separate registry exclusion",
-            "Confirm not a woman of childbearing potential, no known severe dementia, no familial hypercholesterolemia or PCSK9-inhibitor use, and no planned withdrawal of care"
+            "Confirm not a woman of childbearing potential, no known severe dementia, no familial hypercholesterolemia or PCSK9-inhibitor use, and no planned withdrawal of care",
+            "Confirm no expected noncompliance with the protocol (e.g., alcohol or drug dependency)"
           ]
         }
       },
@@ -1121,7 +1124,7 @@
         "sourceGaps": [
           "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
           "This screening summary cannot distinguish sporadic CAA age >=50 from Dutch-type CAA age >=30 with E693Q APP mutation, and it does not encode ALT/AST, recent investigational agent, or amyloid-antibody exclusions.",
-          "Registry status rechecked 2026-10-31: ACTIVE_NOT_RECRUITING; last update posted 2026-10-20 (recorded 2026-10-31). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
+          "Registry status rechecked 2026-11-14: ACTIVE_NOT_RECRUITING; last update posted 2026-11-13 (recorded 2026-11-14). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
         ],
         "timeCategory": "subacute_chronic",
         "enrollmentWindowText": "Chronic",
@@ -1131,9 +1134,9 @@
         "externalMetadata": {
           "nct": "NCT06393712",
           "registryUrl": "https://clinicaltrials.gov/study/NCT06393712",
-          "verificationDate": "2026-10-31",
+          "verificationDate": "2026-11-14",
           "registryStatus": "ACTIVE_NOT_RECRUITING",
-          "registryLastUpdatePosted": "2026-10-20",
+          "registryLastUpdatePosted": "2026-11-13",
           "localActivationStatus": "not_assessed",
           "phase": "PHASE2",
           "studyType": "INTERVENTIONAL",
@@ -1264,7 +1267,7 @@
                 "ich"
               ],
               "error": "Requires Ischemic Stroke or ICH",
-              "matchedLabel": "Ischemic Stroke or ICH classification selected"
+              "matchedLabel": "Ischemic stroke or ICH classification selected"
             },
             {
               "field": "age",
@@ -1278,7 +1281,7 @@
               "operator": "<=",
               "value": 30,
               "error": "Stroke occurred > 30 days ago",
-              "matchedLabel": "Onset within 30 days window"
+              "matchedLabel": "Onset within the 30-day window"
             },
             {
               "field": "rehab",
@@ -1344,7 +1347,7 @@
           "Registry status rechecked 2026-10-31: RECRUITING; last update posted 2026-08-20 (recorded 2026-10-31). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified."
         ],
         "timeCategory": "acute_subacute",
-        "enrollmentWindowText": "24 – 96 hours",
+        "enrollmentWindowText": "24–96 hours",
         "externalMetadata": {
           "nct": "NCT05338697",
           "registryUrl": "https://clinicaltrials.gov/study/NCT05338697",
@@ -1355,7 +1358,7 @@
           "phase": "NA",
           "studyType": "OBSERVATIONAL"
         },
-        "conciseBedsideSummary": "TMS and MRI predictors of upper extremity recovery. Requires consent within 24-96 h of stroke onset or last known well.",
+        "conciseBedsideSummary": "TMS and MRI predictors of upper extremity recovery. Requires consent within 24–96 h of stroke onset or last known well.",
         "pathway": "Consult Rehab Research Coordinator / Inpatient Rehab Team",
         "noContactInfo": true,
         "exactInclusionCriteria": [
@@ -1392,7 +1395,7 @@
               "operator": "==",
               "value": "ischemic",
               "error": "Requires Ischemic Stroke",
-              "matchedLabel": "Ischemic Stroke classification selected"
+              "matchedLabel": "Ischemic stroke classification selected"
             },
             {
               "field": "unilateralSymptomatic",
@@ -1425,7 +1428,7 @@
                 96
               ],
               "error": "LKW-to-consent window not 24-96h",
-              "matchedLabel": "LKW-to-consent is in 24-96h window"
+              "matchedLabel": "LKW-to-consent within the 24–96 h window"
             },
             {
               "field": "language",
@@ -1513,7 +1516,7 @@
           "studyType": "INTERVENTIONAL",
           "registryAcronym": "MRPICS"
         },
-        "conciseBedsideSummary": "Invasive cortical stimulation in chronic stroke patients (stroke ≥6 months prior, post-stroke mRS 3-4, available for 54 weeks).",
+        "conciseBedsideSummary": "Invasive cortical stimulation in chronic stroke patients (stroke ≥6 months prior, post-stroke mRS 3–4, available for 54 weeks).",
         "pathway": "Consult Rehab Research Coordinator",
         "noContactInfo": true,
         "exactInclusionCriteria": [
@@ -1538,7 +1541,7 @@
               "operator": "==",
               "value": "ischemic",
               "error": "Requires Ischemic Stroke",
-              "matchedLabel": "Ischemic Stroke classification selected"
+              "matchedLabel": "Ischemic stroke classification selected"
             },
             {
               "field": "onsetDays",
@@ -1556,7 +1559,7 @@
                 75
               ],
               "error": "Requires age 22-75",
-              "matchedLabel": "Age is {value} (meets 22-75)"
+              "matchedLabel": "Age is {value} (meets 22–75)"
             },
             {
               "field": "currentMrs",
@@ -1646,23 +1649,23 @@
         "sourceGaps": [
           "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
           "CT.gov requires ARAT 14-44, Box & Block affected arm >=1 block/60 seconds, ability to perform 3 exercise examples, and self-signed consent/behavioral contract, and lists depression, cognition, communication, spasticity, vision, language, travel-distance, MRI and isolation exclusions; these are listed for confirmation, not modeled.",
-          "Registry status rechecked 2026-10-31: RECRUITING; last update posted 2026-10-26 (recorded 2026-10-31). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified.",
+          "Registry status rechecked 2026-11-14: RECRUITING; last update posted 2026-11-05 (recorded 2026-11-14). Eligibility re-read 2026-11-14, unchanged. This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified.",
           "The registry record read 2026-10-31 (last update posted 2026-10-26) lists wider eligibility than the version recorded at the 2026-10-21 check (last update posted 2026-10-09: age 18-80, onset 120±30 days prior to randomization, ARAT 18-44): age 18-85, onset 90-270 days prior to randomization and ARAT 14-44. The detailed description gives 6-8 weeks of therapy in one sentence and 6 weeks elsewhere. Version history was not accessible, so when each field changed is unverified; confirm the active protocol version with the study team."
         ],
         "timeCategory": "subacute_chronic",
-        "enrollmentWindowText": "90 – 270 days",
+        "enrollmentWindowText": "90–270 days",
         "externalMetadata": {
           "nct": "NCT06682429",
           "registryUrl": "https://clinicaltrials.gov/study/NCT06682429",
-          "verificationDate": "2026-10-31",
+          "verificationDate": "2026-11-14",
           "registryStatus": "RECRUITING",
-          "registryLastUpdatePosted": "2026-10-26",
+          "registryLastUpdatePosted": "2026-11-05",
           "localActivationStatus": "not_assessed",
           "phase": "NA",
           "studyType": "INTERVENTIONAL",
           "registryAcronym": "TR-2"
         },
-        "conciseBedsideSummary": "6-week course of intensive home arm telerehabilitation in patients aged 18-85, 90-270 days after ischemic stroke or ICH.",
+        "conciseBedsideSummary": "6-week course of intensive home arm telerehabilitation in patients aged 18–85, 90–270 days after ischemic stroke or ICH.",
         "pathway": "Consult Rehab Coordinator",
         "noContactInfo": true,
         "exactInclusionCriteria": [
@@ -1691,7 +1694,7 @@
                 "ich"
               ],
               "error": "Requires Ischemic Stroke or ICH",
-              "matchedLabel": "Ischemic Stroke or ICH classification selected"
+              "matchedLabel": "Ischemic stroke or ICH classification selected"
             },
             {
               "field": "onsetDays",
@@ -1701,7 +1704,7 @@
                 270
               ],
               "error": "LKW-to-randomization not 90-270 days",
-              "matchedLabel": "Onset within 90-270 days window"
+              "matchedLabel": "Onset within the 90–270-day window"
             },
             {
               "field": "age",
@@ -1711,7 +1714,7 @@
                 85
               ],
               "error": "Requires age 18-85",
-              "matchedLabel": "Age is {value} (meets 18-85)"
+              "matchedLabel": "Age is {value} (meets 18–85)"
             },
             {
               "field": "exUeWeakness",
@@ -1777,7 +1780,8 @@
           "manualPending": [
             "Confirm at baseline: ARAT 14–44 and Box & Block ≥ 1 block in 60 s with the affected arm, all 3 rehabilitation exercise examples performed, and consent and behavioral contract signed by the patient (no surrogate consent)",
             "Confirm no severe depression (GDS > 10/15), MoCA < 22 (unless due to aphasia and allowed by the site PI), communication deficit interfering with participation, severe arm spasticity (contracture or modified Ashworth 4 in biceps or pectoralis), other diagnosis affecting paretic-arm function, or visual acuity worse than 20/50 in both eyes",
-            "Confirm sufficient English or Spanish, one home address within a 1.5-hour drive of the central site during therapy (site PI may waive), no MRI contraindication, no isolation precautions and no concurrent therapy-based investigational study"
+            "Confirm sufficient English or Spanish, one home address within a 1.5-hour drive of the central site during therapy (site PI may waive), no MRI contraindication, no isolation precautions and no concurrent therapy-based investigational study",
+            "Confirm no major, active, coexistent neurological, psychiatric or medical disease and no expected inability or unwillingness to perform the study procedures or therapy"
           ]
         }
       },
@@ -1790,7 +1794,7 @@
         "sourceCompletenessStatus": "first_pass",
         "sourceGaps": [
           "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
-          "Registry status rechecked 2026-10-31: ACTIVE_NOT_RECRUITING; last update posted 2026-10-26 (recorded 2026-10-31). No new enrollment. The registry intervention list still includes the rivaroxaban, ticagrelor and clopidogrel arms; arm-level changes are not verified here (secondary reports of a change to the rivaroxaban arm could not be checked against an NIH or registry source).",
+          "Registry status rechecked 2026-11-14: ACTIVE_NOT_RECRUITING; last update posted 2026-11-10 (recorded 2026-11-14). No new enrollment. The registry intervention list still includes the rivaroxaban, ticagrelor and clopidogrel arms; arm-level changes are not verified here (secondary reports of a change to the rivaroxaban arm could not be checked against an NIH or registry source).",
           "Registry primary outcomes at this check (each up to 12 months): parenchymal ICH or non-ICH major hemorrhage; and ischemic stroke, intracerebral hemorrhage or vascular death.",
           "Partial profile retained for reference; it is not modeled in the screener and is not a treatment recommendation or local activation record."
         ],
@@ -1799,9 +1803,9 @@
         "externalMetadata": {
           "nct": "NCT05047172",
           "registryUrl": "https://clinicaltrials.gov/study/NCT05047172",
-          "verificationDate": "2026-10-31",
+          "verificationDate": "2026-11-14",
           "registryStatus": "ACTIVE_NOT_RECRUITING",
-          "registryLastUpdatePosted": "2026-10-26",
+          "registryLastUpdatePosted": "2026-11-10",
           "localActivationStatus": "not_assessed",
           "phase": "PHASE3",
           "studyType": "INTERVENTIONAL"
@@ -1827,7 +1831,7 @@
               "operator": "==",
               "value": "ischemic",
               "error": "Requires Ischemic Stroke",
-              "matchedLabel": "Ischemic Stroke classification selected"
+              "matchedLabel": "Ischemic stroke classification selected"
             }
           ],
           "exclusions": []
@@ -1912,6 +1916,7 @@
             "nct": "NCT06289985",
             "href": "https://clinicaltrials.gov/study/NCT06289985",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
             "summary": "EVT vs medical management for NIHSS 0–5 with ICA/M1 occlusion, or NIHSS ≥8 with non-dominant/co-dominant M2 or M3 occlusion, ≤24 h. Excludes dominant M2.",
             "eligibility": [
@@ -1949,6 +1954,7 @@
             "nct": "NCT05611242",
             "href": "https://clinicaltrials.gov/study/NCT05611242",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": true,
             "summary": "Acute carotid stenting vs non-stenting approach during EVT for tandem/proximal ICA 70–100% lesions; age 18–79, NIHSS ≥4, ≤16 h, ASPECTS ≥7, IVT-ineligible or failed.",
             "eligibility": [
@@ -1987,8 +1993,9 @@
             "nct": "NCT05338697",
             "href": "https://clinicaltrials.gov/study/NCT05338697",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
-            "summary": "TMS and MRI predictors of upper extremity recovery. Requires consent within 24-96 h of stroke onset or last known well.",
+            "summary": "TMS and MRI predictors of upper extremity recovery. Requires consent within 24–96 h of stroke onset or last known well.",
             "eligibility": [
               "Age ≥ 18 years",
               "Unilaterally symptomatic acute ischemic stroke",
@@ -2023,8 +2030,9 @@
             "nct": "NCT05911568",
             "href": "https://clinicaltrials.gov/study/NCT05911568",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
-            "summary": "Cohort study comparing EVT to Medical Management in LVO-AIS with pre-stroke mRS 3-4.",
+            "summary": "Cohort study comparing EVT with medical management in LVO-AIS with pre-stroke mRS 3–4.",
             "eligibility": [
               "Age ≥ 18 years",
               "Acute ischemic stroke presenting to the study hospital within 24 hours of last known well",
@@ -2052,6 +2060,7 @@
             "nct": "NCT06722755",
             "href": "https://clinicaltrials.gov/study/NCT06722755",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
             "summary": "Ischemic stroke or ICH ≤30 days, at inpatient rehabilitation admission: tests for obstructive sleep apnea (OSA), then randomizes those with OSA to intensive vs standard CPAP support. Known OSA is not required; positive airway pressure use within 14 days before the stroke excludes.",
             "eligibility": [
@@ -2083,6 +2092,7 @@
             "nct": "NCT04916210",
             "href": "https://clinicaltrials.gov/study/NCT04916210",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": true,
             "summary": "Observational study of cognitive recovery and dementia after AIS, primary ICH or aneurysmal SAH. Age ≥18, baseline within 6 weeks, no pre-stroke dementia; self or proxy consent and pre-stroke English/Spanish fluency. Additional MRI and PET/CT tiers have separate exclusions; not screened automatically.",
             "eligibility": [
@@ -2117,8 +2127,9 @@
             "nct": "NCT07174414",
             "href": "https://clinicaltrials.gov/study/NCT07174414",
             "status": "enrolling",
+            "registryStatus": "NOT_YET_RECRUITING",
             "referenceOnly": false,
-            "summary": "Phase 3 trial of cilostazol vs placebo added to single or dual antithrombotic therapy (aspirin, clopidogrel and/or ticagrelor) after ischemic stroke or high-risk TIA (ABCD2 ≥ 6) within 180 days, with ≥ 2 listed risk factors. Excludes atrial fibrillation, mechanical heart valve or LVAD.",
+            "summary": "Phase 3 trial of cilostazol vs placebo added to single or dual antithrombotic therapy (aspirin, clopidogrel and/or ticagrelor) after ischemic stroke or high-risk TIA (ABCD2 ≥6) within 180 days, with ≥2 listed risk factors. Excludes atrial fibrillation, mechanical heart valve or LVAD.",
             "eligibility": [
               "Age ≥ 40 years",
               "Ischemic stroke or high-risk TIA (ABCD2 score ≥ 6)",
@@ -2160,6 +2171,7 @@
             "nct": "NCT05723926",
             "href": "https://clinicaltrials.gov/study/NCT05723926",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
             "summary": "Bilateral carotid filters added to OAC in clinical AF after an imaging-positive ischemic stroke <6 weeks ago, or 6–52 weeks ago if already on OAC at the index stroke.",
             "eligibility": [
@@ -2207,8 +2219,9 @@
             "nct": "NCT07174414",
             "href": "https://clinicaltrials.gov/study/NCT07174414",
             "status": "enrolling",
+            "registryStatus": "NOT_YET_RECRUITING",
             "referenceOnly": false,
-            "summary": "Phase 3 trial of cilostazol vs placebo added to single or dual antithrombotic therapy (aspirin, clopidogrel and/or ticagrelor) after ischemic stroke or high-risk TIA (ABCD2 ≥ 6) within 180 days, with ≥ 2 listed risk factors. Excludes atrial fibrillation, mechanical heart valve or LVAD.",
+            "summary": "Phase 3 trial of cilostazol vs placebo added to single or dual antithrombotic therapy (aspirin, clopidogrel and/or ticagrelor) after ischemic stroke or high-risk TIA (ABCD2 ≥6) within 180 days, with ≥2 listed risk factors. Excludes atrial fibrillation, mechanical heart valve or LVAD.",
             "eligibility": [
               "Age ≥ 40 years",
               "Ischemic stroke or high-risk TIA (ABCD2 score ≥ 6)",
@@ -2250,6 +2263,7 @@
             "nct": "NCT04916210",
             "href": "https://clinicaltrials.gov/study/NCT04916210",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": true,
             "summary": "Observational study of cognitive recovery and dementia after AIS, primary ICH or aneurysmal SAH. Age ≥18, baseline within 6 weeks, no pre-stroke dementia; self or proxy consent and pre-stroke English/Spanish fluency. Additional MRI and PET/CT tiers have separate exclusions; not screened automatically.",
             "eligibility": [
@@ -2284,8 +2298,9 @@
             "nct": "NCT06682429",
             "href": "https://clinicaltrials.gov/study/NCT06682429",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
-            "summary": "6-week course of intensive home arm telerehabilitation in patients aged 18-85, 90-270 days after ischemic stroke or ICH.",
+            "summary": "6-week course of intensive home arm telerehabilitation in patients aged 18–85, 90–270 days after ischemic stroke or ICH.",
             "eligibility": [
               "Radiologically verified ischemic stroke or ICH with onset 90-270 days prior to randomization",
               "Age 18-85 years at the time of randomization",
@@ -2302,13 +2317,13 @@
               "botulinum toxin to the paretic arm received in the prior 3 months or expected by the 8-month visit",
               "pregnant (negative pregnancy test required if of child-bearing potential)"
             ],
-            "sourceDate": "2026-10-31",
+            "sourceDate": "2026-11-14",
             "phase": "NA",
             "studyType": "INTERVENTIONAL",
             "sourceGaps": [
               "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
               "CT.gov requires ARAT 14-44, Box & Block affected arm >=1 block/60 seconds, ability to perform 3 exercise examples, and self-signed consent/behavioral contract, and lists depression, cognition, communication, spasticity, vision, language, travel-distance, MRI and isolation exclusions; these are listed for confirmation, not modeled.",
-              "Registry status rechecked 2026-10-31: RECRUITING; last update posted 2026-10-26 (recorded 2026-10-31). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified.",
+              "Registry status rechecked 2026-11-14: RECRUITING; last update posted 2026-11-05 (recorded 2026-11-14). Eligibility re-read 2026-11-14, unchanged. This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified.",
               "The registry record read 2026-10-31 (last update posted 2026-10-26) lists wider eligibility than the version recorded at the 2026-10-21 check (last update posted 2026-10-09: age 18-80, onset 120±30 days prior to randomization, ARAT 18-44): age 18-85, onset 90-270 days prior to randomization and ARAT 14-44. The detailed description gives 6-8 weeks of therapy in one sentence and 6 weeks elsewhere. Version history was not accessible, so when each field changed is unverified; confirm the active protocol version with the study team."
             ]
           },
@@ -2317,8 +2332,9 @@
             "nct": "NCT06506279",
             "href": "https://clinicaltrials.gov/study/NCT06506279",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
-            "summary": "Invasive cortical stimulation in chronic stroke patients (stroke ≥6 months prior, post-stroke mRS 3-4, available for 54 weeks).",
+            "summary": "Invasive cortical stimulation in chronic stroke patients (stroke ≥6 months prior, post-stroke mRS 3–4, available for 54 weeks).",
             "eligibility": [
               "History of ischemic cortical stroke at least 6 months prior",
               "ages 22-75",
@@ -2348,6 +2364,7 @@
             "nct": "NCT05723926",
             "href": "https://clinicaltrials.gov/study/NCT05723926",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
             "summary": "Bilateral carotid filters added to OAC in clinical AF after an imaging-positive ischemic stroke <6 weeks ago, or 6–52 weeks ago if already on OAC at the index stroke.",
             "eligibility": [
@@ -2395,8 +2412,9 @@
             "nct": "NCT07260916",
             "href": "https://clinicaltrials.gov/study/NCT07260916",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
-            "summary": "Ultra-early SCUBA endoscopic evacuation for basal-ganglia hemorrhage >=20 mL by ABC/2 randomized within 16h of LKW.",
+            "summary": "Ultra-early SCUBA endoscopic evacuation for basal-ganglia hemorrhage ≥20 mL by ABC/2, randomized within 16 h of LKW.",
             "eligibility": [
               "Age ≥ 18 and ≤ 80 years",
               "Non-traumatic, spontaneous, supratentorial, non-thalamic, BGH of volume ≥ 20 mL, as determined by the treating physician using ABC/2 method",
@@ -2441,6 +2459,7 @@
             "nct": "NCT03936361",
             "href": "https://clinicaltrials.gov/study/NCT03936361",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
             "summary": "Statin continuation vs discontinuation after spontaneous lobar ICH (within 7 days) in patients taking a statin at onset.",
             "eligibility": [
@@ -2485,6 +2504,7 @@
             "nct": "NCT03936361",
             "href": "https://clinicaltrials.gov/study/NCT03936361",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
             "summary": "Statin continuation vs discontinuation after spontaneous lobar ICH (within 7 days) in patients taking a statin at onset.",
             "eligibility": [
@@ -2521,6 +2541,7 @@
             "nct": "NCT06722755",
             "href": "https://clinicaltrials.gov/study/NCT06722755",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
             "summary": "Ischemic stroke or ICH ≤30 days, at inpatient rehabilitation admission: tests for obstructive sleep apnea (OSA), then randomizes those with OSA to intensive vs standard CPAP support. Known OSA is not required; positive airway pressure use within 14 days before the stroke excludes.",
             "eligibility": [
@@ -2552,6 +2573,7 @@
             "nct": "NCT04916210",
             "href": "https://clinicaltrials.gov/study/NCT04916210",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": true,
             "summary": "Observational study of cognitive recovery and dementia after AIS, primary ICH or aneurysmal SAH. Age ≥18, baseline within 6 weeks, no pre-stroke dementia; self or proxy consent and pre-stroke English/Spanish fluency. Additional MRI and PET/CT tiers have separate exclusions; not screened automatically.",
             "eligibility": [
@@ -2586,8 +2608,9 @@
             "nct": "NCT03907046",
             "href": "https://clinicaltrials.gov/study/NCT03907046",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
-            "summary": "Apixaban vs Aspirin in patients with recent ICH (randomized 14-180 days post-onset) and non-valvular atrial fibrillation or flutter.",
+            "summary": "Apixaban vs aspirin in patients with recent ICH (randomized 14–180 days after onset) and non-valvular atrial fibrillation or flutter.",
             "eligibility": [
               "Age ≥ 18 years",
               "Intracerebral hemorrhage (ICH), including primary intraventricular hemorrhage, confirmed by brain CT or MRI",
@@ -2621,8 +2644,9 @@
             "nct": "NCT03907046",
             "href": "https://clinicaltrials.gov/study/NCT03907046",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
-            "summary": "Apixaban vs Aspirin in patients with recent ICH (randomized 14-180 days post-onset) and non-valvular atrial fibrillation or flutter.",
+            "summary": "Apixaban vs aspirin in patients with recent ICH (randomized 14–180 days after onset) and non-valvular atrial fibrillation or flutter.",
             "eligibility": [
               "Age ≥ 18 years",
               "Intracerebral hemorrhage (ICH), including primary intraventricular hemorrhage, confirmed by brain CT or MRI",
@@ -2648,6 +2672,7 @@
             "nct": "NCT04916210",
             "href": "https://clinicaltrials.gov/study/NCT04916210",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": true,
             "summary": "Observational study of cognitive recovery and dementia after AIS, primary ICH or aneurysmal SAH. Age ≥18, baseline within 6 weeks, no pre-stroke dementia; self or proxy consent and pre-stroke English/Spanish fluency. Additional MRI and PET/CT tiers have separate exclusions; not screened automatically.",
             "eligibility": [
@@ -2682,8 +2707,9 @@
             "nct": "NCT06682429",
             "href": "https://clinicaltrials.gov/study/NCT06682429",
             "status": "enrolling",
+            "registryStatus": "RECRUITING",
             "referenceOnly": false,
-            "summary": "6-week course of intensive home arm telerehabilitation in patients aged 18-85, 90-270 days after ischemic stroke or ICH.",
+            "summary": "6-week course of intensive home arm telerehabilitation in patients aged 18–85, 90–270 days after ischemic stroke or ICH.",
             "eligibility": [
               "Radiologically verified ischemic stroke or ICH with onset 90-270 days prior to randomization",
               "Age 18-85 years at the time of randomization",
@@ -2700,13 +2726,13 @@
               "botulinum toxin to the paretic arm received in the prior 3 months or expected by the 8-month visit",
               "pregnant (negative pregnancy test required if of child-bearing potential)"
             ],
-            "sourceDate": "2026-10-31",
+            "sourceDate": "2026-11-14",
             "phase": "NA",
             "studyType": "INTERVENTIONAL",
             "sourceGaps": [
               "First-pass ClinicalTrials.gov summary: not all registry criteria, protocol details, local activation requirements, or consent rules are encoded in this screening summary.",
               "CT.gov requires ARAT 14-44, Box & Block affected arm >=1 block/60 seconds, ability to perform 3 exercise examples, and self-signed consent/behavioral contract, and lists depression, cognition, communication, spasticity, vision, language, travel-distance, MRI and isolation exclusions; these are listed for confirmation, not modeled.",
-              "Registry status rechecked 2026-10-31: RECRUITING; last update posted 2026-10-26 (recorded 2026-10-31). This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified.",
+              "Registry status rechecked 2026-11-14: RECRUITING; last update posted 2026-11-05 (recorded 2026-11-14). Eligibility re-read 2026-11-14, unchanged. This is the overall study status; local site activation, recruitment availability, and consent requirements have not been verified.",
               "The registry record read 2026-10-31 (last update posted 2026-10-26) lists wider eligibility than the version recorded at the 2026-10-21 check (last update posted 2026-10-09: age 18-80, onset 120±30 days prior to randomization, ARAT 18-44): age 18-85, onset 90-270 days prior to randomization and ARAT 14-44. The detailed description gives 6-8 weeks of therapy in one sentence and 6 weeks elsewhere. Version history was not accessible, so when each field changed is unverified; confirm the active protocol version with the study team."
             ]
           }

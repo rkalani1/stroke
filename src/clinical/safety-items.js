@@ -10,8 +10,8 @@ const absoluteContraindications = [
                                   { id: 'infectiveEndocarditis', label: 'Presentation consistent with infective endocarditis', note: null },
                                   { id: 'acuteSevereTBI', label: 'Moderate-severe TBI within 14 days', note: 'GCS <13 OR intracranial hemorrhage / contusion / skull fracture (AHA/ASA 2026)' },
                                   { id: 'severeUncontrolledHTN', label: 'SBP ≥185 or DBP ≥110 mmHg', note: 'unresponsive to treatment' },
-                                  { id: 'lowPlatelets', label: 'Platelet count <100,000', note: null },
-                                  { id: 'warfarinElevatedINR', label: 'Warfarin use with PT >15s, INR >1.7, or aPTT >40s', note: null },
+                                  { id: 'lowPlatelets', label: 'Platelet count <100,000/µL', note: null },
+                                  { id: 'warfarinElevatedINR', label: 'Warfarin use with PT >15 s, INR >1.7, or aPTT >40 s', note: null },
                                   { id: 'knownBleedingDiathesis', label: 'Severe coagulopathy or bleeding diathesis', note: null },
                                   { id: 'recentDOAC', label: 'DOAC exposure: factor Xa inhibitor or dabigatran within 48 h, or timing unknown', note: 'IVT is not recommended unless drug-specific assays are normal or the approved local pathway permits it (AHA/ASA 2019); estimated clearance does not certify eligibility. Evaluate EVT independently.' }
                                 ];
@@ -32,22 +32,22 @@ const relativeContraindications = [
                                   { id: 'abnormalCoagUnknown', label: 'Abnormal aPTT, TT, or anti-Xa with unknown anticoagulant use', note: null },
                                   { id: 'preexistingDisability', label: 'Pre-existing disability', note: 'individualize — weigh goals of care' },
                                   { id: 'acutePericarditis', label: 'Acute pericarditis', note: null },
-                                  { id: 'unrupturedAneurysm10mm', label: 'Unruptured unsecured intracranial aneurysm >10mm', note: null },
+                                  { id: 'unrupturedAneurysm10mm', label: 'Unruptured unsecured intracranial aneurysm >10 mm', note: null },
                                   { id: 'largeInfarct', label: 'Extensive hypoattenuation (>1/3 MCA territory)', note: 're-evaluate onset/benefit' },
                                   { id: 'extensiveHypoattenuation', label: 'Frank hypodensity suggesting established infarct', note: 'weigh against clinical deficit' },
-                                  { id: 'cerebralMicrobleeds', label: 'Cerebral microbleeds >10 on prior MRI', note: 'uncertain sICH risk (COR IIb)' },
+                                  { id: 'cerebralMicrobleeds', label: 'Cerebral microbleeds >10 on prior MRI', note: 'uncertain sICH risk (COR 2b)' },
                                   { id: 'lecanemab', label: 'Lecanemab or other anti-amyloid therapy', note: 'ARIA risk' },
-                                  { id: 'lowGlucose', label: 'Blood glucose <50 mg/dL', note: 'correct and reassess — auto-blocks TNK until corrected' },
-                                  { id: 'elevatedAPTT', label: 'aPTT >40 seconds', note: 'auto-blocks TNK until anticoagulant effect excluded (conservative hard block)' },
+                                  { id: 'lowGlucose', label: 'Blood glucose <50 mg/dL', note: 'correct and reassess — holds IVT (either agent) until corrected' },
+                                  { id: 'elevatedAPTT', label: 'aPTT >40 seconds', note: 'holds IVT (either agent) until anticoagulant effect is excluded (conservative hold)' },
                                   { id: 'severeRenalFailure', label: 'Severe renal impairment', note: 'Not a guideline IVT contraindication; individualize (bleeding risk, anticoagulant clearance). No validated creatinine or CrCl cutoff applies.' }
                                 ];
 const cautionaryConditions = [
                                   // BLUE: Benefits of IVT generally outweigh increased risk (AHA/ASA 2026 Table 8)
-                                  { id: 'intracranialAneurysm', label: 'Unruptured intracranial aneurysm (<10mm or secured)', note: 'IVT benefit outweighs risk' },
+                                  { id: 'intracranialAneurysm', label: 'Unruptured intracranial aneurysm (<10 mm or secured)', note: 'IVT benefit outweighs risk' },
                                   { id: 'recentMI', label: 'History of myocardial infarction', note: 'IVT benefit outweighs risk' },
                                   { id: 'seizureAtOnset', label: 'Seizure at onset / diagnostic uncertainty', note: 'if true stroke, IVT benefit outweighs risk' },
                                   { id: 'highGlucose', label: 'Blood glucose >400 mg/dL', note: 'correct to normoglycemia first; IVT is recommended if disabling deficits persist (AHA/ASA 2026 COR 1)' },
-                                  { id: 'dualAntiplatelet', label: 'Antiplatelet therapy (single or dual)', note: 'IVT recommended despite increased sICH (COR I, B-NR)' },
+                                  { id: 'dualAntiplatelet', label: 'Antiplatelet therapy (single or dual)', note: 'IVT recommended despite increased sICH (COR 1, LOE B-NR)' },
                                   { id: 'aceInhibitor', label: 'ACE inhibitor use', note: 'Increased angioedema risk in alteplase cohorts; prepare airway assessment without treating ACE-inhibitor use alone as an absolute exclusion.' }
                                 ];
 export const SAFETY_ITEMS = [...absoluteContraindications, ...relativeContraindications, ...cautionaryConditions];

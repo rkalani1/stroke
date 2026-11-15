@@ -120,7 +120,9 @@ export function numericFact(field, value) {
   const n = tryInt(value);
   if (n === null || n < 0 || (SCORE_RANGES[field] && !Number.isInteger(n))) return null;
   const range = SCORE_RANGES[field] || VALUE_RANGES[field];
-  return range && (n < range[0] || n > range[1]) ? null : n;
+  if (range && (n < range[0] || n > range[1])) return null;
+  // Registry ages are in completed years ("Age >= 18 and <= 80 years"): 80.5 is 80, 17.9 is 17.
+  return field === 'age' ? Math.floor(n) : n;
 }
 function criterionValue(c, p) {
   const value = p[c.field];

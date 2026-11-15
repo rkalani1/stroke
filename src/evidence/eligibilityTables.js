@@ -84,7 +84,7 @@ const referenceTrial = acronym => {
   if (!['enrolling', 'soon'].includes(profile.status)) throw new Error(`Criteria tables list enrolling profiles only: ${acronym}`);
   return {
     acronym, nct: profile.externalMetadata.nct || '', href: profile.externalMetadata.registryUrl || '',
-    status: profile.status, referenceOnly: Boolean(profile.referenceOnly), summary: profile.conciseBedsideSummary,
+    status: profile.status, registryStatus: profile.externalMetadata.registryStatus || null, referenceOnly: Boolean(profile.referenceOnly), summary: profile.conciseBedsideSummary,
     eligibility: profile.exactInclusionCriteria, exclusions: profile.exactExclusionCriteria,
     sourceDate: profile.externalMetadata.verificationDate || null,
     phase: profile.externalMetadata.phase || null, studyType: profile.externalMetadata.studyType || null,

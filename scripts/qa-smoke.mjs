@@ -46,6 +46,16 @@ export async function waitForBrowserState(page, predicate, argument = null, time
 export async function waitForInstalled(page, timeout = 45000) {
   await waitForBrowserState(page, async () => { const reg = await navigator.serviceWorker.getRegistration(); return reg?.active?.state === 'activated'; }, null, timeout);
 }
+// Browser clock for every context that enters times relative to "now" (localStamp enters
+// 5-120 min before now). 20:00 UTC on the run's date is 12:00 PST / 13:00 PDT in
+// America/Los_Angeles: never inside the 01:00-02:59 DST transition hours and never near local
+// midnight, so a run that starts in the repeated autumn hour cannot enter an ambiguous time.
+// The fixed-date DST check below keeps its own clock. --clock <ISO> reproduces a given run.
+export function qaClockStart(nowMs = Date.now()) {
+  const requested = arg('--clock', null);
+  if (requested !== null) { const at = Date.parse(requested); if (!Number.isFinite(at)) throw new Error(`Invalid --clock ${requested}`); return new Date(at); }
+  const today = new Date(nowMs); return new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), 20));
+}
 export async function localStamp(page, minutesAgo = 30) {
   return page.evaluate(minutes => { const d = new Date(Date.now() - minutes * 60000), p = x => String(x).padStart(2,'0'); return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }, minutesAgo);
 }
@@ -93,14 +103,19 @@ async function main() {
   const site = path.resolve(arg('--site-dir', 'output/site'));
   if (!fsSync.existsSync(path.join(site, 'index.html'))) throw new Error('Published QA artifact missing. Run npm run publish:stage or supply an explicit --site-dir.');
   const reference = JSON.parse(await fs.readFile(path.join(site, 'data/clinical-reference.json'), 'utf8'));
-  const server = await servePublished(() => site, Number(arg('--port', '4177')));
+  // context.setOffline() alone does not keep the service worker's own fetches off the network
+  // after a reload (Chromium), so the offline check also drops every connection at the server.
+  let networkDown = false;
+  const server = await servePublished(() => site, Number(arg('--port', '4177')), () => networkDown ? { disconnect: true } : null);
   const browser = await launchChromium();
   const report = { scope: 'Rendered production artifact; Chromium simulations, not physical devices', site, checks: [], screenshots: [], metrics: {}, runs: [], latency: {profile:latency.name,profilesFile:latency.file,enforced:latency.enforce}, live: { status: 'not run', reason: '--local-only or no --live; no implied deployed verification' } };
   const check = async (name, fn) => { const started = performance.now(); try { const details = await fn(); report.checks.push({ name, status: 'passed', durationMs: Math.round(performance.now()-started), ...(details || {}) }); } catch(error) { report.checks.push({ name, status: 'failed', error: error.stack || String(error) }); console.error(`FAIL ${name}: ${error.message}`); } };
   try {
     const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, timezoneId: 'America/Los_Angeles' });
+    const clockStart = qaClockStart(); report.clock = clockStart.toISOString(); await context.clock.install({ time: clockStart });
     await context.addInitScript(() => {
       window.__qaClipboard = []; window.__qaDenyClipboard = false; window.__qaStorageWrites = []; window.__qaIndexedDB = [];
+      window.__qaResources = []; const resourceObserver = new PerformanceObserver(list => window.__qaResources.push(...list.getEntries())); resourceObserver.observe({ type: 'resource', buffered: true }); window.__qaResourceEntries = () => { window.__qaResources.push(...resourceObserver.takeRecords()); return window.__qaResources; };
       Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async text => { if(window.__qaDenyClipboard) throw new DOMException('Denied', 'NotAllowedError'); window.__qaClipboard.push(text); } } });
       const write = Storage.prototype.setItem; Storage.prototype.setItem = function(key,value) { window.__qaStorageWrites.push([key,value]); return write.call(this,key,value); };
       const open = indexedDB.open.bind(indexedDB); indexedDB.open = function(...values) {window.__qaIndexedDB.push(values);return open(...values);};
@@ -109,7 +124,7 @@ async function main() {
     const errors=[], failedResources=[], requestUrls=[], consoleMessages=[];
     page.on('pageerror', error => errors.push(error.message)); page.on('requestfailed', req => failedResources.push({url:req.url(),error:req.failure()?.errorText})); page.on('request', req => requestUrls.push(req.url())); page.on('console',message=>consoleMessages.push({type:message.type(),text:message.text()}));
     await check('default Encounter, public build on localhost, retired primary portal absent', async () => {
-      const started=performance.now(); await page.goto(server.url); await page.getByRole('heading',{name:'Encounter',exact:true}).waitFor(); report.metrics.usableEncounterMs=Math.round(performance.now()-started);report.metrics.initialJsTransferBytes=await page.evaluate(()=>performance.getEntriesByType('resource').filter(x=>new URL(x.name).pathname.endsWith('.js')).reduce((sum,x)=>sum+x.transferSize,0));
+      const started=performance.now(); await page.goto(server.url); await page.getByRole('heading',{name:'Encounter',exact:true}).waitFor(); report.metrics.usableEncounterMs=Math.round(performance.now()-started);report.metrics.initialJsTransferBytes=await page.evaluate(()=>window.__qaResourceEntries().filter(x=>new URL(x.name).pathname.endsWith('.js')).reduce((sum,x)=>sum+x.transferSize,0));
       assert.equal(await page.locator('.app-shell').getAttribute('data-demo'),'synthetic'); assert.equal(new URL(page.url()).hash,'#/encounter');
       for(const name of ['Education','Trials','Guidelines & References','Bedside','Teaching']) assert.equal(await page.getByRole('tab',{name,exact:true}).count(),0);
       assert.equal(await page.getByRole('link',{name:'Protocols',exact:true}).count(),1);
@@ -255,8 +270,8 @@ async function main() {
       assert(output.includes(`NCCT Head (${stamp.replace('T', ' ')})`));
       assert(output.includes('Perfusion findings recorded for review.'));
       assert(output.includes('Documented discussion details reviewed with the treating team.'));
-      assert(output.includes('Discussion: not documented'));
-      assert(output.includes('Consent status: not documented'));
+      assert(output.includes('IVT discussion: not documented'));
+      assert(output.includes('IVT consent status: not documented'));
       assert(output.includes('IVT administration: not documented'));
       await reset(page);
       assert.equal(await page.getByLabel('Discussion details', { exact: true }).inputValue(), '');
@@ -652,7 +667,7 @@ async function main() {
           const primary=await page.locator('.workspace-primary').evaluateAll(els=>els.filter(e=>e.offsetParent!==null).map(e=>({width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height})));assert(primary.every(x=>x.width>=44&&x.height>=44));
           await page.getByRole('button',{name:'Generate Pulsara summary',exact:true}).click();assert((await page.getByLabel('Generated Pulsara summary',{exact:true}).inputValue()).includes('NIHSS score: incomplete'));const shot=path.join(outDir,`encounter-${width}-${theme}.png`);await page.screenshot({path:shot,fullPage:true});report.screenshots.push(shot);
         });
-        await timed('navigation-tools','library-workflow',async()=>{await page.getByRole('link',{name:'Calculators',exact:true}).click();await page.getByRole('heading',{name:'Calculators',exact:true}).waitFor();await page.evaluate(()=>location.hash='#/education');await page.getByRole('heading',{name:'Retired destination',exact:true}).waitFor();await page.getByRole('link',{name:'Stroke',exact:true}).click();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');});
+        await timed('navigation-tools','library-workflow',async()=>{await page.getByRole('link',{name:'Calculators',exact:true}).click();await page.getByRole('heading',{name:'Calculators',exact:true}).waitFor();await page.evaluate(()=>location.hash='#/education');await page.getByRole('heading',{name:'Page retired',exact:true}).waitFor();await page.getByRole('link',{name:'Stroke',exact:true}).click();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');});
         await timed('retained-protocols-pediatric','pediatric-workflow',async()=>{await page.getByRole('link',{name:'Protocols',exact:true}).click();await page.locator('#mgmt-tabpanel-ischemic').waitFor();const age=page.locator('#evt-age');await openDetails(age);await age.fill('17');assert((await page.locator('#mgmt-tabpanel-ischemic').innerText()).includes('Adult EVT algorithm does not apply'));await page.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();const trigger=page.getByRole('button',{name:'Vitamin K 10 mg IV',exact:true,includeHidden:true}).first();await openDetails(trigger);await trigger.click();await page.getByRole('dialog').waitFor();await page.keyboard.press('Escape');assert.equal(await page.getByRole('dialog').count(),0);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,`protocol overflow ${width}/${theme}`);});
         const durationMs=Math.round(performance.now()-started),thresholdMs=latency.run('local',viewport);report.runs.push({target:'local',viewport,width,theme,durationMs,thresholdMs,sections});if(latency.enforce)assert(durationMs<=thresholdMs,`${width}/${theme}: ${durationMs} exceeds ${thresholdMs}ms`);results.push({width,theme,overflow});
         // Let the route change land before the next run opens More: its hashchange handler closes the panel, so
@@ -705,7 +720,7 @@ async function main() {
       await restoredEvidence.getByRole('searchbox', { name: 'Find a clinical question', exact: true }).waitFor();
       const restoredTopicCount = await restoredEvidence.locator('.reading-split').count() ? await restoredEvidence.locator('.reading-index button').count() : await restoredEvidence.locator('[data-reference-id]').count();
       assert.equal(restoredTopicCount, reference.data.topics.length);
-      for(const route of ['#/education','#/calculators/rcvs2','#/encounter/unknown-calc']) {await page.evaluate(hash=>location.hash=hash,route);await page.getByRole('heading',{name:/Retired/}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).isVisible(),false);}
+      for(const route of ['#/education','#/calculators/rcvs2','#/encounter/unknown-calc']) {await page.evaluate(hash=>location.hash=hash,route);await page.getByRole('heading',{name:'Page retired',exact:true}).waitFor();await page.waitForFunction(()=>document.title==='Stroke · Page retired');assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).isVisible(),false);}
       await page.evaluate(()=>location.hash='#/encounter/ich-score');await page.getByText('This calculator needs an ICH encounter.',{exact:false}).waitFor();assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'83');await page.getByRole('link',{name:'Stroke',exact:true}).click();
     });
     await check('complete vs partial NIHSS, explicit zero, valid dose and clearing weight', async () => {
@@ -716,7 +731,7 @@ async function main() {
       assert((await page.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).fill('');assert(!(await page.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).fill('83');
     });
     await check('summary explicit generation/copy, clipboard denial fallback, stale-input invalidation and no recursion', async () => {
-      assert.equal(await page.evaluate(()=>window.__qaClipboard.length),0);let draft=await generate(page);const first=await draft.inputValue();assert(first.includes('Synthetic')||first.includes('SYNTHETIC'));assert(first.includes('marker zeta'));assert(first.includes('Consent status: not documented'));assert(first.includes('IVT administration: not documented'));
+      assert.equal(await page.evaluate(()=>window.__qaClipboard.length),0);let draft=await generate(page);const first=await draft.inputValue();assert(first.includes('Synthetic')||first.includes('SYNTHETIC'));assert(first.includes('marker zeta'));assert(first.includes('IVT consent status: not documented'));assert(first.includes('IVT administration: not documented'));
       await page.getByRole('button',{name:'Copy Pulsara summary',exact:true}).click();assert.equal(await page.evaluate(()=>window.__qaClipboard.length),1);assert.equal(await page.evaluate(()=>window.__qaClipboard[0]),first);
       await page.evaluate(()=>window.__qaDenyClipboard=true);await page.getByRole('button',{name:'Copy Pulsara summary',exact:true}).click();await page.getByText('Clipboard unavailable. Select the read-only summary and copy it manually.',{exact:true}).waitFor();assert(await draft.evaluate(el=>el.selectionStart===0&&el.selectionEnd===el.value.length));
       await page.getByLabel('Age (years)',{exact:true}).fill('66');await page.getByText('Inputs changed since the preview. Copy regenerates the note automatically.',{exact:true}).waitFor();assert.equal(await page.getByRole('button',{name:'Copy this preview',exact:true}).count(),0);draft=await generate(page);const second=await draft.inputValue();assert.equal(second.split('Clinician rationale / recommendations:').length-1,1);assert(!second.includes(first));
@@ -840,10 +855,10 @@ async function main() {
       await reset(page);
     });
     await check('console and resource errors', async () => {assert.deepEqual(errors,[]);assert.deepEqual(failedResources,[]);assert.deepEqual(consoleMessages.filter(x=>x.type==='error'),[]);});
-    report.metrics.totalPageJsTransferBytes=await page.evaluate(()=>performance.getEntriesByType('resource').filter(x=>x.initiatorType==='script'||new URL(x.name).pathname.endsWith('.js')).reduce((sum,x)=>sum+x.transferSize,0));
+    report.metrics.totalPageJsTransferBytes=await page.evaluate(()=>window.__qaResourceEntries().filter(x=>x.initiatorType==='script'||new URL(x.name).pathname.endsWith('.js')).reduce((sum,x)=>sum+x.transferSize,0));
     await context.close();
     await check('fresh complete installation, offline Encounter, Evidence, completed studies and protected drug modal', async () => {
-      const offline=await browser.newContext({viewport:{width:390,height:844},timezoneId:'America/Los_Angeles'});const p=await offline.newPage();const offlineErrors=[];p.on('pageerror',e=>offlineErrors.push(e.message));try{
+      const offline=await browser.newContext({viewport:{width:390,height:844},timezoneId:'America/Los_Angeles'});await offline.clock.install({ time: clockStart });const p=await offline.newPage();const offlineErrors=[];p.on('pageerror',e=>offlineErrors.push(e.message));try{
         await p.goto(server.url);await p.getByRole('heading',{name:'Encounter',exact:true}).waitFor();await waitForInstalled(p);await p.reload();await p.waitForFunction(()=>Boolean(navigator.serviceWorker.controller));
         const cache = await p.evaluate(async () => {
           const active = (await caches.keys()).filter(name => name.startsWith('stroke-cache-v'));
@@ -865,7 +880,11 @@ async function main() {
         assert(!cache.urls.some(url=>/education|teaching|TrialScreener|deferred-reference/.test(url)));report.metrics.offlineCacheBytes=cache.totalBytes;
         assert.deepEqual(cache.reference, { appVersion: await p.locator('.app-shell').getAttribute('data-version'), schemaVersion: '2.0.0', topics: reference.data.topics.length, studies: reference.data.studies.length, calculators: reference.data.calculators.length });
         assert.equal(cache.reference.appVersion, reference._meta.appVersion);
-        await offline.setOffline(true);await p.reload({waitUntil:'domcontentloaded'});await setupIschemic(p);await p.getByLabel('Manual rationale / recommendations',{exact:true}).fill('Synthetic offline encounter; specialist review pending.');const items=nihssRows(p);await openDetails(items.first());for(let i=0;i<15;i++) await scoreNihssZero(items.nth(i));assert((await p.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));assert((await(await generate(p)).inputValue()).includes('NIHSS score: 0/42'));
+        networkDown=true;await offline.setOffline(true);await p.reload({waitUntil:'domcontentloaded'});
+        // Proves the network is really gone: a file the worker does not precache gets its offline 503.
+        const probe=await p.evaluate(async()=>{const response=await fetch('llms.txt?offline-probe');return{status:response.status,text:await response.text()};});
+        assert.equal(probe.status,503,`offline probe reached the network (status ${probe.status})`);assert.match(probe.text,/not available offline/);
+        await setupIschemic(p);await p.getByLabel('Manual rationale / recommendations',{exact:true}).fill('Synthetic offline encounter; specialist review pending.');const items=nihssRows(p);await openDetails(items.first());for(let i=0;i<15;i++) await scoreNihssZero(items.nth(i));assert((await p.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));assert((await(await generate(p)).inputValue()).includes('NIHSS score: 0/42'));
         await p.getByRole('link',{name:'Trials',exact:true}).click();await p.getByRole('heading',{name:'Trials',exact:true}).waitFor();await p.getByRole('tab',{name:'Database',exact:true}).click();await p.getByRole('searchbox',{name:'Search acronym, name or NCT number in the study database',exact:true}).fill('STEP');assert((await p.getByRole('tabpanel',{name:'Database',exact:true}).innerText()).includes('STEP'));await p.screenshot({path:path.join(outDir,'trials-offline-mobile.png'),fullPage:true});
         assert.equal(await p.evaluate(() => navigator.onLine), false);
         await p.getByRole('link', { name: 'Calculators', exact: true }).click();
@@ -888,8 +907,8 @@ async function main() {
         await p.getByRole('link', { name: 'Encounter', exact: true }).click();
         assert.equal(await p.locator('#tabpanel-encounter').getByLabel('Weight (kg)', { exact: true }).inputValue(), '83');
         assert.equal(await p.getByLabel('Manual rationale / recommendations', { exact: true }).inputValue(), 'Synthetic offline encounter; specialist review pending.');
-        await p.getByRole('link',{name:'Protocols',exact:true}).click();await p.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();const trigger=p.getByRole('button',{name:'Vitamin K 10 mg IV',exact:true,includeHidden:true}).first();await openDetails(trigger);await trigger.click();await p.getByRole('dialog').waitFor();assert((await p.getByRole('dialog').innerText()).includes('Vitamin K'));await p.keyboard.press('Escape');assert.equal(await p.getByRole('dialog').count(),0);assert.deepEqual(offlineErrors,[]);await p.screenshot({path:path.join(outDir,'offline-protocol-mobile.png'),fullPage:true});return{cache,simulation:true};
-      }finally{await offline.close();}
+        await p.getByRole('link',{name:'Protocols',exact:true}).click();await p.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();const trigger=p.getByRole('button',{name:'Vitamin K 10 mg IV',exact:true,includeHidden:true}).first();await openDetails(trigger);await trigger.click();await p.getByRole('dialog').waitFor();assert((await p.getByRole('dialog').innerText()).includes('Vitamin K'));await p.keyboard.press('Escape');assert.equal(await p.getByRole('dialog').count(),0);assert.deepEqual(offlineErrors,[]);await p.screenshot({path:path.join(outDir,'offline-protocol-mobile.png'),fullPage:true});return{cache,offlineProbe:probe,simulation:true};
+      }finally{networkDown=false;await offline.close();}
     });
     await check('published retired raw URLs unavailable and old JSON endpoints return retirement metadata', async () => {
       for(const relative of ['src/app.jsx','documents/references/External Ventricular Drain.pdf','content/bundle.json','assets/select_score_chart.png']){const response=await fetch(new URL(relative,server.url));assert([404,410].includes(response.status),`${relative}: ${response.status}`);}

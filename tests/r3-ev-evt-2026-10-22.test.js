@@ -19,8 +19,8 @@ const studySources = () => Object.fromEntries(read('src/reference/study-sources.
 
 describe('r3 ev-evt: systems of care and reperfusion overview', () => {
   it('validates against the reference contract on the review date', () => {
-    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
-    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-11-14: the evidence-currency passes re-read and re-dated sources on 2026-10-31 and 2026-11-14.
+    expect(validateClinicalReference(data, { now: new Date('2026-11-14T23:59:59Z') })).toEqual([]);
   });
 
   it('rural-telestroke keeps each EMS destination grade inside its own setting (evt-a-systems#0)', () => {
@@ -39,7 +39,7 @@ describe('r3 ev-evt: systems of care and reperfusion overview', () => {
   it('acute-reperfusion states each EVT tier with its own grade (evt-a-systems#1)', () => {
     const summary = topic('acute-reperfusion').summary;
     // ais-2026-114/-115/-116 (COR 1) and ais-2026-122 (COR 1); ais-2026-117 is 2a, not COR 1.
-    expect(summary).toContain('EVT is recommended for ICA/M1 occlusion with NIHSS ≥6 and prestroke mRS 0–1 within 6 h if ASPECTS 3–10, and at 6–24 h if ASPECTS ≥6 or ASPECTS 3–5 with age <80 and no significant mass effect (COR 1), and within 24 h for basilar occlusion with NIHSS ≥10, prestroke mRS 0–1 and PC-ASPECTS ≥6 (COR 1); ASPECTS 0–2 within 6 h (age <80, no significant mass effect) is 2a.');
+    expect(summary).toContain('EVT is recommended for ICA/M1 occlusion with NIHSS ≥6 and prestroke mRS 0–1 within 6 h if ASPECTS 3–10, and at 6–24 h if ASPECTS ≥6 or ASPECTS 3–5 with age <80 and no significant mass effect (COR 1), and within 24 h for basilar occlusion with NIHSS ≥10, prestroke mRS 0–1 and pc-ASPECTS ≥6 (COR 1); ASPECTS 0–2 within 6 h (age <80, no significant mass effect) is 2a.');
     expect(summary).not.toContain('is graded for');
     expect(summary).not.toContain('including selected large cores');
     // design-shell#1 (already fixed in 8541ec1): the bottom line names the IVT-eligible adult (ais-2026-84/-98).
@@ -141,7 +141,7 @@ describe('r3 ev-evt: study cards and source design labels', () => {
   it('attention limits state the registry age-specific imaging and baseline limits (evt-d-studies#1)', () => {
     // NCT04751708: NIHSS ≥10; exclude mRS ≥3 if <80 and mRS ≥1 if ≥80; exclude PC-ASPECTS <6 if <80 (<8 if ≥80).
     // Currency 2026-10-31 (evt-acute-bp): 3-year outcomes (JAMA Neurol 2026, PMID 41460644 abstract) appended; registry limits unchanged.
-    expect(study('attention').limits).toBe('Single-country trial; it required NIHSS ≥10, PC-ASPECTS ≥6 and prestroke mRS 0–2, and for age ≥80 PC-ASPECTS ≥8 and prestroke mRS 0 (registry NCT04751708). At 3 years (JAMA Neurol 2026; 307 of 340 followed), mRS 0–3 was 38.4% vs 18.3% (adjusted RR 2.05; 95% CI 1.35–3.11) and cumulative mortality 55.7% vs 73.1%; in a prespecified subgroup, no treatment effect was demonstrated at age ≥70.');
+    expect(study('attention').limits).toBe('Single-country trial; it required NIHSS ≥10, pc-ASPECTS ≥6 and prestroke mRS 0–2, and for age ≥80 pc-ASPECTS ≥8 and prestroke mRS 0 (registry NCT04751708). At 3 years (JAMA Neurol 2026; 307 of 340 followed), mRS 0–3 was 38.4% vs 18.3% (adjusted RR 2.05; 95% CI 1.35–3.11) and cumulative mortality 55.7% vs 73.1%; in a prespecified subgroup, no treatment effect was demonstrated at age ≥70.');
   });
 
   it('labels the two meta-analyses and three observational studies by their stated design (evt-d-studies#2, #3)', () => {

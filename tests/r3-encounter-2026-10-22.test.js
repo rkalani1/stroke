@@ -109,16 +109,16 @@ describe('Note: consent reconciliation (encounter-notes#4)', () => {
   it('a Declined consent beside a recorded administration or puncture is flagged', () => {
     zone('America/New_York');
     const text = buildSummary(video({ note: { diagnosisCategory: 'ischemic', weight: '80' }, drug: 'TNK', decisions: { ivt: 'Recommended', evt: 'Recommended' }, actions: { administered: true, administrationTime: '2026-10-22T09:00', consent: 'Declined', punctureTime: '2026-10-22T10:00', evtConsent: 'Declined' } }), NOW);
-    expect(line(text, 'IVT Consent status')).toBe('IVT Consent status: Declined [administration recorded; reconcile]');
+    expect(line(text, 'IVT consent status')).toBe('IVT consent status: Declined [administration recorded; reconcile]');
     expect(line(text, 'EVT consent status')).toBe('EVT consent status: Declined [puncture recorded; reconcile]');
     const declinedOnly = buildSummary(video({ note: { diagnosisCategory: 'ischemic' }, actions: { consent: 'Declined', evtConsent: 'Declined' } }), NOW);
-    expect(line(declinedOnly, 'IVT Consent status')).toBe('IVT Consent status: Declined');
+    expect(line(declinedOnly, 'IVT consent status')).toBe('IVT consent status: Declined');
     expect(line(declinedOnly, 'EVT consent status')).toBe('EVT consent status: Declined');
   });
   it('an IVT time not documented as given is called the entered IVT time', () => {
     zone('America/New_York');
     const text = buildSummary(video({ note: { diagnosisCategory: 'ischemic' }, actions: { administrationTime: '2026-10-22T09:00', consentTime: '2026-10-22T09:30' } }), NOW);
-    expect(line(text, 'IVT Consent time')).toBe('IVT Consent time: 2026-10-22 09:30 [recorded after the entered IVT time; confirm the consent timeline] [consent status not documented]');
+    expect(line(text, 'IVT consent time')).toBe('IVT consent time: 2026-10-22 09:30 [recorded after the entered IVT time; confirm the consent timeline] [consent status not documented]');
   });
 });
 

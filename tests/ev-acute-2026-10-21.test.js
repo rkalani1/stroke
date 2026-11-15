@@ -19,8 +19,8 @@ const labelDose = kg => LABEL_BANDS.find(([low, high]) => kg >= low && kg < high
 
 describe('ev-acute Evidence cards (2026-10-21)', () => {
   it('still validates against the reference contract on the review date', () => {
-    // Review cutoff moved to 2026-10-31: the evidence-currency pass re-read and re-dated sources that day.
-    expect(validateClinicalReference(data, { now: new Date('2026-10-31T23:59:59Z') })).toEqual([]);
+    // Review cutoff moved to 2026-11-14: the evidence-currency passes re-read and re-dated sources on 2026-10-31 and 2026-11-14.
+    expect(validateClinicalReference(data, { now: new Date('2026-11-14T23:59:59Z') })).toEqual([]);
   });
 
   it('separates the US label scope and weight bands from the guideline dose on the thrombolytic-choice card', () => {
@@ -96,7 +96,7 @@ describe('ev-acute Evidence cards (2026-10-21)', () => {
     const card = topic('ich-management');
     // ESO/EANS 2025 ICH guideline PICO 2 consensus and the ESO 2025 BP update PICO 7 consensus (archive):
     // avoid SBP reductions >70 mmHg from baseline or active lowering below 110 mmHg.
-    expect(card.caution).toContain('avoid SBP drops >70 mm Hg or below 110 (ESO 2025 consensus)');
+    expect(card.caution).toContain('avoid SBP drops >70 mmHg or below 110 (ESO 2025 consensus)');
     expect(card.caution).not.toContain('ESO 2026');
   });
 

@@ -446,12 +446,12 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
     entry('Recorded mTICI grade', state.note.ticiScore);
     // A Declined consent beside a recorded administration or puncture is reconciled, as a contrary decision is.
     const consentStatus = (status, done, action) => `${status || 'not documented'}${status === 'Declined' && done ? ` [${action} recorded; reconcile]` : ''}`;
-    entry('IVT Discussion', a.discussion || 'not documented');
-    entry('IVT Consent status', consentStatus(a.consent, a.administered, 'administration'));
+    entry('IVT discussion', a.discussion || 'not documented');
+    entry('IVT consent status', consentStatus(a.consent, a.administered, 'administration'));
     const consentAfter = (value, actionTime) => validTimestamp(value, nowMs) && validTimestamp(actionTime, nowMs) && new Date(value).getTime() > new Date(actionTime).getTime();
     // An entered consent time is kept even without a consent status.
     const consentTime = (value, status, actionTime, action) => value ? `${recordedTime(value, nowMs)}${consentAfter(value, actionTime) ? ` [recorded after the ${action} time; confirm the consent timeline]` : ''}${status ? '' : ' [consent status not documented]'}` : '';
-    entry('IVT Consent time', consentTime(a.consentTime, a.consent, ivtTime, administration ? 'administration' : 'entered IVT'));
+    entry('IVT consent time', consentTime(a.consentTime, a.consent, ivtTime, administration ? 'administration' : 'entered IVT'));
     entry('EVT discussion', a.evtDiscussion || 'not documented');
     entry('EVT consent status', consentStatus(a.evtConsent, a.punctureTime, 'puncture'));
     entry('EVT consent time', consentTime(a.evtConsentTime, a.evtConsent, a.punctureTime, 'puncture'));
@@ -511,7 +511,7 @@ function buildConsultationSummary(state, nowMs = Date.now()) {
   }
 
   if (state.consultationType === 'phone') {
-    const weight = weightText ? ` (Wt: ${weightText.replace(' ', '')})` : hasValue(n.weight) ? ' (Wt: [invalid; correct before interpretation])' : '';
+    const weight = weightText ? ` (Wt: ${weightText})` : hasValue(n.weight) ? ' (Wt: [invalid; correct before interpretation])' : '';
     const lab = (label, value, required) => hasValue(value) ? `${label}: ${value}` : required ? `${label}: not documented` : '';
     const vitals = [lab('BP (mmHg)', bpText, acute), lab('Glucose (mg/dL)', glucoseText, acute),
       lab('HR (beats/min)', documentedMeasurement('heartRate', n.heartRate)), lab('SpO2 (%)', documentedMeasurement('spO2', n.spO2)), lab('Temp (°F)', documentedMeasurement('temperature', n.temperature)),

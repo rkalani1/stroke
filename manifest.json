@@ -36,6 +36,16 @@
       "name": "Protocols",
       "url": "./#/protocols/ischemic",
       "description": "Retained protected protocol cards"
+    },
+    {
+      "name": "Trials",
+      "url": "./#/trials",
+      "description": "Open the trial screener"
+    },
+    {
+      "name": "Calculators",
+      "url": "./#/tools",
+      "description": "Open the calculators"
     }
   ],
   "scope": "./",

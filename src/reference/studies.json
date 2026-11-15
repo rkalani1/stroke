@@ -522,7 +522,7 @@
     "population": "340 patients at 36 Chinese centers; about one third received IVT.",
     "comparison": "EVT versus best medical care (2:1 randomization).",
     "result": "mRS 0–3 at 90 days occurred in 46% vs 23% (adjusted rate ratio 2.06; 95% CI 1.46–2.91). Mortality 37% vs 55%; symptomatic ICH 5% vs 0%; procedural complications 14%.",
-    "limits": "Single-country trial; it required NIHSS ≥10, PC-ASPECTS ≥6 and prestroke mRS 0–2, and for age ≥80 PC-ASPECTS ≥8 and prestroke mRS 0 (registry NCT04751708). At 3 years (JAMA Neurol 2026; 307 of 340 followed), mRS 0–3 was 38.4% vs 18.3% (adjusted RR 2.05; 95% CI 1.35–3.11) and cumulative mortality 55.7% vs 73.1%; in a prespecified subgroup, no treatment effect was demonstrated at age ≥70.",
+    "limits": "Single-country trial; it required NIHSS ≥10, pc-ASPECTS ≥6 and prestroke mRS 0–2, and for age ≥80 pc-ASPECTS ≥8 and prestroke mRS 0 (registry NCT04751708). At 3 years (JAMA Neurol 2026; 307 of 340 followed), mRS 0–3 was 38.4% vs 18.3% (adjusted RR 2.05; 95% CI 1.35–3.11) and cumulative mortality 55.7% vs 73.1%; in a prespecified subgroup, no treatment effect was demonstrated at age ≥70.",
     "sources": [
       {
         "title": "ATTENTION primary report",
@@ -767,7 +767,7 @@
     "population": "530 patients with acute ICH (0.5–60 mL; GCS ≥7; NIHSS ≤35; baseline scan within 6 h of onset; no surgery planned within 12 h) after factor Xa inhibitor use within 15 hours; the interim efficacy analysis included 452.",
     "comparison": "Andexanet versus usual care; 85.5% of usual-care patients received PCC.",
     "result": "Composite hemostatic efficacy was 67.0% versus 53.1% (adjusted difference 13.4 percentage points; 95% CI 4.6–22.2). Thrombotic events occurred in 10.3% versus 5.6%, including ischemic stroke in 6.5% versus 1.5%. No appreciable difference in 30-day mRS or mortality was reported.",
-    "limits": "Hemostatic efficacy is not functional benefit. NCS/SCCM 2026 conditionally recommends 4F-PCC rather than andexanet, and andexanet was withdrawn from the US market effective 22 December 2025.",
+    "limits": "Hemostatic efficacy is not functional benefit. NCS/SCCM 2026 conditionally recommends 4F-PCC rather than andexanet, and andexanet was withdrawn from the US market effective December 22, 2025.",
     "sources": [
       {
         "title": "ANNEXA-I primary report",
@@ -2039,7 +2039,7 @@
     "population": "12,327 patients within 72 hours of noncardioembolic ischemic stroke or high-risk TIA with atherosclerosis or nonlacunar infarct.",
     "comparison": "Asundexian 50 mg daily versus placebo, on top of single or dual antiplatelet therapy.",
     "result": "Ischemic stroke 6.2% vs 8.4% (cause-specific HR 0.74; 95% CI 0.65–0.84). Major bleeding 1.9% vs 1.7% (HR 1.10; 95% CI 0.85–1.44); lower gastrointestinal bleeding 1.7% vs 1.0% (csHR 1.75).",
-    "limits": "Industry-funded; regulatory status and availability are separate questions. Asundexian was inferior to apixaban in AF (OCEANIC-AF). Milvexian, a different factor XIa inhibitor, was stopped for futility after acute coronary syndrome (LIBREXIA-ACS: cardiovascular death, MI or ischemic stroke 5.4 vs 5.1%; HR 1.05). Its stroke trial (LIBREXIA-STROKE) had not reported as of October 2026.",
+    "limits": "Industry-funded; regulatory status and availability are separate questions. Asundexian was inferior to apixaban in AF (OCEANIC-AF). Milvexian, a different factor XIa inhibitor, was stopped for futility after acute coronary syndrome (LIBREXIA-ACS: cardiovascular death, MI or ischemic stroke 5.4 vs 5.1%; HR 1.05). Its stroke trial (LIBREXIA-STROKE) had not reported as of November 2026 (registry: active, not recruiting, no results).",
     "sources": [
       {
         "title": "OCEANIC-STROKE primary report",
@@ -2062,8 +2062,8 @@
         "url": "https://pubmed.ncbi.nlm.nih.gov/42670965/",
         "year": 2026,
         "type": "Randomized trial",
-        "checkedAt": "2026-10-31",
-        "access": "Primary abstract read 2026-10-31; ACS population, not stroke. LIBREXIA-STROKE registry NCT05702034 checked 2026-10-31: active, not recruiting, no results."
+        "checkedAt": "2026-11-14",
+        "access": "Primary abstract re-read 2026-11-14; ACS population, not stroke. LIBREXIA-STROKE registry NCT05702034 re-checked 2026-11-14 (ClinicalTrials.gov connector): active, not recruiting; primary completion 2026-10-15; no results posted. No LIBREXIA-STROKE report found in PubMed on 2026-11-14."
       }
     ],
     "relatedTopic": "research-adjuncts"

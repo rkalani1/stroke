@@ -7,8 +7,8 @@ import { searchReference } from '../src/reference-search.js';
 import { readClinicalReference } from '../scripts/reference-data.mjs';
 const read = path => JSON.parse(fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8'));
 const canonical = readClinicalReference();
-// Review cutoff: source checkedAt dates may not postdate the latest evidence review (2026-10-31).
-const now = new Date('2026-10-31T23:59:59Z');
+// Review cutoff: source checkedAt dates may not postdate the latest evidence review (2026-11-14).
+const now = new Date('2026-11-14T23:59:59Z');
 const validate = data => validateClinicalReference(data, { now });
 const changed = change => { const data = structuredClone(canonical); change(data); return data; };
 
@@ -30,7 +30,8 @@ describe('bounded clinical-reference data', () => {
     // (cardioembolic): + AHA 2026 endocarditis statement (abstract only), 2025 SCAI/HRS LAAO guideline and WSO 2025 AF statement;
     // (recovery-populations): + CSBPR 2025 rehabilitation Parts One and Three, WSO 2025 sex/gender statement, IPSO pediatric ICH
     // Parts 1 and 2, VasCog-2-WSO criteria and the AHA 2026 health literacy statement.
-    expect(coverage).toHaveLength(124);expect(new Set(coverage.map(source=>source.id)).size).toBe(124);
+    // Currency 2026-11-14 (EV-CUR-08): + SVIN 2026 ICAS-LVO brief practice update (PMC text read; no SVIN grade quoted).
+    expect(coverage).toHaveLength(125);expect(new Set(coverage.map(source=>source.id)).size).toBe(125);
     for(const source of coverage){
       expect(source.topicIds.length).toBeGreaterThan(0);
       for(const id of source.topicIds){const topic=canonical.topics.find(topic=>topic.id===id);expect(topic).toBeTruthy();expect(topic.sources.some(record=>record.url===source.url)).toBe(true);}
@@ -50,9 +51,11 @@ describe('bounded clinical-reference data', () => {
     // (recovery-populations): + 6 (ESTREL, Walk 'n Watch, FAST, eslicarbazepine phase 2a, acute imbalance syndrome cohort, GOLDEN BRIDGE II);
     // (missed items): + 2 (early GLP-1RA meta-analysis, DOAC network meta-analysis in AF with prior stroke); the ICH BP-by-location
     // record (PMID 42848972) was replaced in place as study-source-ich-bp-location-ipd, not added twice.
-    expect(sources).toHaveLength(335);
-    expect(new Set(sources.map(source => source.url)).size).toBe(335);
-    expect(new Set(sources.map(source => source.id)).size).toBe(335);
+    // Currency 2026-11-14: + 8 (OPTIMAL-STROKE, INSIST-IT, BRETIS-TNK2, ASAP-TOO, the 2026 thrombolysis-in-pregnancy review,
+    // STREAM, Lp(a)HORIZON, SIMPLAAFY); see docs/evidence-ledger-2026-11-14.md.
+    expect(sources).toHaveLength(343);
+    expect(new Set(sources.map(source => source.url)).size).toBe(343);
+    expect(new Set(sources.map(source => source.id)).size).toBe(343);
     for (const source of sources) {
       expect(source.topicIds.length).toBeGreaterThan(0);
       expect(source.access).toContain('bibliographic');
@@ -196,7 +199,7 @@ describe('bounded clinical-reference data', () => {
     expect(recs.find(rec => rec.id === 'ncs-reversal-2026-1-1')).toMatchObject({ cor: 'Conditional', loe: 'Moderate', topic: 'antithrombotic-reversal' });
     // Archive annotations ("Current-evidence note") are never presented as guideline text.
     expect(recs.some(rec => /Current-evidence|ORIENTAL/.test(rec.text))).toBe(false);
-    expect(canonical.topics.find(topic => topic.id === 'antithrombotic-reversal').summary).toMatch(/4F-PCC rather than andexanet.*withdrawn from the US market effective 22 December 2025/);
+    expect(canonical.topics.find(topic => topic.id === 'antithrombotic-reversal').summary).toMatch(/4F-PCC rather than andexanet.*withdrawn from the US market effective December 22, 2025/);
   });
 
   it('files each study under its clinical topic with a key-result headline', () => {
