@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
+import vm from 'node:vm';
 import { gzipSync } from 'node:zlib';
 import { atomicWriteFile } from './atomic-write.mjs';
 import { runClinicalClaimCheck } from './check-clinical-claims.mjs';
@@ -137,7 +138,24 @@ if (entryFile === path.join(root, 'app.js')) {
     format: 'iife', globalName: 'ReferenceValidation',
     stdin: { resolveDir: root, contents: "export { validReferenceData } from './src/reference-search.js';" },
   });
+  // The worker checks every staged file against this table at install, so a partly
+  // propagated deploy (same-name app.js, index.html, tailwind.css or data from another
+  // release) cannot be installed. Hash the files as they now stand on disk: tailwind.css and
+  // data/ come from earlier build steps and index.html was written above. The worker does
+  // not precache itself, so its own bytes are never part of the table.
+  const hashMarker = /\/\/ BEGIN GENERATED PRECACHE SHA256[\s\S]*?\/\/ END GENERATED PRECACHE SHA256/;
+  if (!hashMarker.test(worker)) throw new Error('Generated precache-checksum marker is missing from service-worker.js');
+  const coreSource = worker.match(/const CORE_ASSETS = (\[[\s\S]*?\]);/);
+  if (!coreSource) throw new Error('CORE_ASSETS is missing from service-worker.js');
+  const precache = [...vm.runInNewContext(`(${coreSource[1]})`), ...chunks];
+  const precacheSha256 = {};
+  for (const asset of precache) {
+    if (!/^\.\/(?:[A-Za-z0-9_.-]+\/)*[A-Za-z0-9_.-]*$/.test(asset)) throw new Error(`Unexpected precache path ${asset}`);
+    const file = path.join(root, asset === './' ? 'index.html' : asset.slice(2));
+    precacheSha256[asset] = createHash('sha256').update(await fs.readFile(file)).digest('hex');
+  }
   const nextWorker = worker.replace(marker, '// BEGIN GENERATED APP CHUNKS\nconst APP_CHUNKS = ' + JSON.stringify(chunks, null, 2) + ';\n// END GENERATED APP CHUNKS')
+    .replace(hashMarker, '// BEGIN GENERATED PRECACHE SHA256\nconst PRECACHE_SHA256 = ' + JSON.stringify(precacheSha256, null, 2) + ';\n// END GENERATED PRECACHE SHA256')
     .replace(validationMarker, '// BEGIN GENERATED REFERENCE VALIDATION\n' + validation.outputFiles[0].text.trim() + '\n// END GENERATED REFERENCE VALIDATION');
   await atomicWriteFile(workerPath, nextWorker);
 }

@@ -14,7 +14,13 @@ const chunk=currentManifest.files.find(file=>file.path.startsWith('chunks/'))?.p
 const protocolChunk=currentManifest.files.find(file=>/ProtectedProtocols/.test(file.path))?.path;
 assert(chunk,'Current build has no chunk to exercise atomic install failure');assert(protocolChunk,'Protected protocol chunk not found');
 let serving=baseline, mode='normal', failPath=chunk;
+const staleEntry=(await fs.readFile(path.join(current,'app.js'),'utf8'))+'\n// previous deploy\n';
+// 'down' drops every connection: context.setOffline() alone does not keep the worker's own
+// fetches off the network after a reload, so an offline reload would not prove the cache.
 const server=await servePublished(()=>serving,Number(arg('--port','4179')),(url)=>{
+  if(mode==='down')return{disconnect:true};
+  // A partly propagated deploy: the new worker with a same-name app.js of other bytes.
+  if(mode==='stale-entry'&&url.pathname.endsWith('/app.js'))return{status:200,type:'text/javascript; charset=utf-8',body:staleEntry};
   if(mode==='asset-failure'&&url.pathname.endsWith('/'+failPath))return{status:503};
   if(mode==='interrupted'&&url.pathname.endsWith('/'+failPath))return{disconnect:true};
   return null;
@@ -45,11 +51,14 @@ try{
       assert.equal(cachesState.retained.length,1);assert.equal(cachesState.unrelated,'unrelated application');assert(!cachesState.urls.some(url=>/documents\/|education|teaching|TrialScreener|deferred-reference/.test(url)));assert.equal(await page.locator('#tabpanel-encounter').getByLabel('Weight (kg)',{exact:true}).inputValue(),'');return{caches:cachesState.names,cacheEntries:cachesState.urls.length,acceptedReloadClearsSession:true};
     }finally{await session.context.close();}
   });
-  for(const injected of ['interrupted','asset-failure'])await check(`${injected} update cannot replace working baseline; retry stages complete graph`,async()=>{
+  for(const injected of ['interrupted','asset-failure','stale-entry'])await check(`${injected} update cannot replace working baseline; retry stages complete graph`,async()=>{
     const session=await oldSession();try{const{page,original}=session;serving=current;mode=injected;
       await page.evaluate(async()=>{window.__qaSWStates=[];const reg=await navigator.serviceWorker.getRegistration();reg.addEventListener('updatefound',()=>{const worker=reg.installing;worker?.addEventListener('statechange',()=>window.__qaSWStates.push(worker.state));});await reg.update();});
       await page.waitForFunction(()=>window.__qaSWStates.includes('redundant'),null,{timeout:60000});assert.equal(await session.numeric.inputValue(),'83');const failed=await page.evaluate(async()=>{const reg=await navigator.serviceWorker.getRegistration();return{waiting:Boolean(reg.waiting),script:await(await fetch('app.js')).text()};});assert.equal(failed.waiting,false);assert.equal(failed.script,original.app);
-      await session.context.setOffline(true);await page.reload();await page.locator('#tabpanel-encounter').waitFor();assert.equal(await page.locator('.app-shell').getAttribute('data-version'),baselineVersion);await session.context.setOffline(false);mode='normal';await stage(page);await accept(page);return{failedAsset:failPath,failureStates:await page.evaluate(()=>window.__qaSWStates||[]),offlineBaselineReload:true,retryAccepted:true};
+      mode='down';await session.context.setOffline(true);await page.reload();await page.locator('#tabpanel-encounter').waitFor();assert.equal(await page.locator('.app-shell').getAttribute('data-version'),baselineVersion);
+      // The archived baseline worker controls this page; whatever it answers, the server must not.
+      const probe=await page.evaluate(async()=>{try{const response=await fetch('llms.txt?offline-probe');return{status:response.status};}catch(error){return{error:String(error)};}});assert.notEqual(probe.status,200,'offline probe reached the network');
+      await session.context.setOffline(false);mode='normal';await stage(page);await accept(page);return{failedAsset:failPath,failureStates:await page.evaluate(()=>window.__qaSWStates||[]),offlineBaselineReload:true,offlineProbe:probe,retryAccepted:true};
     }finally{await session.context.close();mode='normal';}
   });
   await check('additional open Stroke window blocks activation without reloading either encounter',async()=>{

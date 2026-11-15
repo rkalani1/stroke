@@ -11,65 +11,86 @@ const currentCache = 'stroke-cache-v' + version.replaceAll('.', '-') + '-utility
 const workerSource = readFileSync(join(repoRoot, 'service-worker.js'), 'utf8');
 const referenceFixture = JSON.parse(readFileSync(new URL('../data/clinical-reference.json', import.meta.url), 'utf8'));
 referenceFixture._meta.appVersion = version;
+const stagingCache = currentCache + '-staging';
+// eslint-disable-next-line no-eval
+const precacheList = [...eval(workerSource.match(/const CORE_ASSETS = (\[[\s\S]*?\]);/)[1]), ...JSON.parse(workerSource.match(/const APP_CHUNKS = (\[[\s\S]*?\]);/)[1])];
+// What a fully propagated deploy serves for a scope-relative path ('' is the scope root).
+const releaseFile = relative => readFileSync(join(repoRoot, relative === '' ? 'index.html' : relative));
 
 function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-cache-v6-22-0', currentCache], options = {}) {
   const handlers = new Map();
   const deletedCaches = [];
+  const deletedStaging = [];
   const deletedEntries = [];
   const openedCaches = [];
   const postedMessages = [];
   const matchAllOptions = [];
   const precacheRequests = [];
-  const referenceBodies = new Map();
-  const referenceUrl = new URL('data/clinical-reference.json', options.scope || 'https://example.test/').href;
+  const scope = options.scope || 'https://example.test/';
+  // Cache name -> URL -> stored body. Each named cache is separate, as in a browser.
+  const stores = new Map();
+  const store = name => { if (!stores.has(name)) stores.set(name, new Map()); return stores.get(name); };
   let claimCount = 0;
   let skipWaitingCount = 0;
   let active = false;
   let windows = [{ id: 'requester', url: 'https://example.test/', postMessage: message => postedMessages.push(message) }];
 
-  const cacheStore = {
+  // The body the server returns for a staged request: the release's own file unless a test
+  // injects another (a stale entry, a corrupt reference). null means the response is absent.
+  const served = url => {
+    const relative = url.slice(scope.length).split('?')[0];
+    if (options.bodies && relative in options.bodies) return options.bodies[relative];
+    if (relative === 'data/clinical-reference.json' && options.referenceBody !== undefined) return options.referenceBody;
+    return releaseFile(relative);
+  };
+
+  const openCache = name => ({
     addAll: async requests => {
       if (options.precacheFailure) throw Error('Precache failed');
       if (options.chunkFailure && requests.some(request => request.url.includes('/chunks/'))) throw Error('Chunk unavailable');
       if (options.delayPrecache) await options.delayPrecache;
       precacheRequests.push(...requests);
-      if (requests.some(request => request.url === referenceUrl)) {
-        referenceBodies.set(currentCache, options.referenceBody === undefined ? JSON.stringify(referenceFixture) : options.referenceBody);
+      for (const request of requests) {
+        const body = served(request.url);
+        if (body !== null) store(name).set(request.url, body);
       }
     },
     add: async () => {},
-    put: async () => {},
-  };
+    put: async (request, response) => {
+      store(name).set(typeof request === 'string' ? request : request.url, Buffer.from(await response.arrayBuffer()));
+    },
+    match: async key => {
+      const body = store(name).get(typeof key === 'string' ? key : key.url);
+      return body === undefined ? undefined : new Response(body);
+    },
+    keys: async () => [...new Set([...(options.entries?.[name] || []), ...store(name).keys()])].map(url => ({ url })),
+    delete: async request => { deletedEntries.push({ cache: name, url: request.url }); return true; }
+  });
 
   const context = {
     Promise,
     URL,
     Request,
     Response,
+    crypto: globalThis.crypto,
     console: { info: () => {}, error: () => {} },
     fetch: async () => ({ ok: true, clone: () => ({ ok: true }) }),
     caches: {
       open: async name => {
         openedCaches.push(name);
-        return { ...cacheStore,
-          match: async key => {
-            const body = referenceBodies.get(name);
-            return key === referenceUrl && typeof body === 'string' ? new Response(body, { headers: { 'Content-Type': 'application/json' } }) : undefined;
-          },
-          keys: async () => (options.entries?.[name] || []).map(url => ({ url })),
-          delete: async request => { deletedEntries.push({ cache: name, url: request.url }); return true; }
-        };
+        return openCache(name);
       },
       keys: async () => existingCacheKeys,
       delete: async (key) => {
-        deletedCaches.push(key);
+        (key === stagingCache ? deletedStaging : deletedCaches).push(key);
+        stores.delete(key);
         return true;
       },
       match: async () => null,
     },
     self: {
       location: { origin: 'https://example.test' },
-      registration: { scope: options.scope || 'https://example.test/' },
+      registration: { scope },
       addEventListener: (type, handler) => {
         handlers.set(type, handler);
       },
@@ -116,6 +137,8 @@ function loadServiceWorker(existingCacheKeys = ['stroke-cache-v6-21-0', 'stroke-
   return {
     dispatch,
     deletedCaches,
+    deletedStaging,
+    stores,
     deletedEntries,
     openedCaches,
     postedMessages,
@@ -194,7 +217,7 @@ describe('service worker update lifecycle', () => {
     const worker = loadServiceWorker([old, currentCache], options);
     await expect(worker.dispatch('install')).rejects.toThrow();
     expect(worker.deletedEntries).toEqual([]);
-    options.referenceBody = JSON.stringify(referenceFixture);
+    options.referenceBody = undefined; // the release's own reference file
     await worker.dispatch('install');
     expect(worker.precacheRequests.filter(request => request.url.endsWith('/data/clinical-reference.json'))).toHaveLength(2);
     expect(worker.deletedEntries).toEqual([{ cache: old, url: 'https://example.test/assets/afib_timing_protocol.png' }]);
@@ -203,7 +226,11 @@ describe('service worker update lifecycle', () => {
   });
 
   it.each(['/', '/stroke/'])('withdraws scoped teaching assets/documents after successful precache at %s', async scopePath => {
-    const suffixes = JSON.parse(workerSource.match(/const WITHDRAWN_ASSETS = (\[[\s\S]*?\]);/)[1].replaceAll("'", '"'));
+    // Formerly listed one by one; the prefix rule in isRetiredPath now covers each of them.
+    const suffixes = ['/assets/afib_timing_protocol.png', '/assets/select_score_chart.svg', '/assets/toast_classification_infographic.png',
+      '/assets/hematoma_expansion_render.svg', '/assets/aspects_10_regions_render.png', '/assets/fmd_stroke_mechanisms.png',
+      '/documents/references/External%20Ventricular%20Drain.pdf', '/documents/exam/coma%20exam.pdf',
+      '/documents/antiplatelet/DAPT%20After%20Ischemic%20Stroke-TIA.jpeg'];
     const base = `https://example.test${scopePath}`;
     const retired = [...suffixes, '/documents/references/AFib%20DOAC%20Start%20Timing.pdf', '/assets/brain_death_evaluation.png', '/src/education.jsx', '/content/bundle.json'].map(suffix => new URL(`.${suffix}`, base).href + '?old=1');
     const retained = [base + 'app.js', base + 'assets/fonts/inter-latin.woff2', base + 'assets/splash/startup.png',
@@ -237,6 +264,65 @@ describe('service worker update lifecycle', () => {
     expect(worker.deletedCaches).toEqual([]);
     expect(worker.skipWaitingCount).toBe(0);
     expect(worker.postedMessages).toEqual([]);
+  });
+
+  it.each(['/', '/stroke/'])('installs a converged deploy at %s only after every staged file matches its release checksum', async scopePath => {
+    const scope = `https://example.test${scopePath}`;
+    const old = 'stroke-cache-v6-29-2';
+    const worker = loadServiceWorker([old, currentCache], { scope });
+    await worker.dispatch('install');
+    const installed = worker.stores.get(currentCache);
+    expect([...installed.keys()].sort()).toEqual(precacheList.map(asset => new URL(asset, scope).href).sort());
+    for (const asset of precacheList) {
+      expect(Buffer.compare(installed.get(new URL(asset, scope).href), releaseFile(asset === './' ? '' : asset.slice(2))), asset).toBe(0);
+    }
+    // Staged in a separate cache that is removed again; no other cache is touched.
+    expect(worker.openedCaches.indexOf(stagingCache)).toBeLessThan(worker.openedCaches.indexOf(currentCache));
+    expect(worker.stores.has(stagingCache)).toBe(false);
+    expect(worker.deletedStaging.length).toBeGreaterThan(0);
+    expect(worker.deletedCaches).toEqual([]);
+    expect(worker.skipWaitingCount).toBe(0);
+  });
+
+  // A partly propagated Pages deploy: this worker, index.html and the reference are new, but
+  // the CDN still serves the previous release's app.js. Its chunk names are unchanged, so the
+  // module-graph check alone accepts it, and it would be served cache-first all release long.
+  const previousRelease = text => text.replaceAll(`'${version}'`, "'0.0.0-previous'").replaceAll(`"${version}"`, '"0.0.0-previous"');
+  const listedModules = new Set(precacheList.map(asset => asset.slice(asset.lastIndexOf('/') + 1)));
+
+  it.each([
+    ['app.js', /Staged \.\/app\.js does not match release/],
+    ['tailwind.css', /Staged \.\/tailwind\.css does not match release/],
+  ])('refuses a mixed deploy that serves a stale %s with unchanged module names', async (file, error) => {
+    const stale = file === 'app.js' ? previousRelease(releaseFile('app.js').toString('utf8')) : releaseFile('tailwind.css').toString('utf8') + '\n/* previous release */';
+    expect(stale).not.toBe(releaseFile(file).toString('utf8'));
+    expect([...stale.matchAll(/[/"]([A-Za-z][A-Za-z0-9_]*-[A-Z0-9]{8}\.js)\b/g)].every(([, name]) => listedModules.has(name))).toBe(true);
+    const old = 'stroke-cache-v6-29-2';
+    const worker = loadServiceWorker([old, currentCache], { bodies: { [file]: stale }, entries: {
+      [old]: ['https://example.test/assets/afib_timing_protocol.png', 'https://example.test/app.js']
+    }});
+    await expect(worker.dispatch('install')).rejects.toThrow(error);
+    expect(worker.stores.get(currentCache)).toBeUndefined();
+    expect(worker.stores.has(stagingCache)).toBe(false);
+    expect(worker.deletedEntries).toEqual([]);
+    expect(worker.deletedCaches).toEqual([]);
+    expect(worker.skipWaitingCount).toBe(0);
+  });
+
+  it('leaves a running cache of the same name untouched when a reinstall is refused, then installs once the deploy converges', async () => {
+    // A worker rebuilt without a version bump reuses CACHE_NAME; a refused install must not
+    // overwrite or delete the entries the running worker still serves.
+    const options = { bodies: { 'app.js': previousRelease(releaseFile('app.js').toString('utf8')) } };
+    const worker = loadServiceWorker([currentCache], options);
+    const running = new Map([['https://example.test/app.js', 'running release entry']]);
+    worker.stores.set(currentCache, running);
+    await expect(worker.dispatch('install')).rejects.toThrow(/app\.js does not match/);
+    expect(worker.stores.get(currentCache)).toBe(running);
+    expect([...running]).toEqual([['https://example.test/app.js', 'running release entry']]);
+    expect(worker.deletedCaches).toEqual([]);
+    delete options.bodies;
+    await worker.dispatch('install');
+    expect(Buffer.compare(worker.stores.get(currentCache).get('https://example.test/app.js'), releaseFile('app.js'))).toBe(0);
   });
 
   it('keeps installation pending until the complete shell and module cache resolves', async () => {
