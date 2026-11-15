@@ -8,9 +8,9 @@
    Old app caches are retired only on activation. Fetch policy is independent.
 */
 
-const APP_VERSION = '7.11.1';
+const APP_VERSION = '7.12.0';
 const CACHE_PREFIX = 'stroke-cache-v';
-const CACHE_NAME  = 'stroke-cache-v7-11-1-utility-review-20261001';
+const CACHE_NAME  = 'stroke-cache-v7-12-0-utility-review-20261001';
 
 // Retired teaching figures and documents must not be served from a stale browser cache or
 // a bookmarked URL after this worker takes control. Every retired file sits under one of
@@ -57,28 +57,28 @@ const CORE_ASSETS = [
 const APP_CHUNKS = [
   "./chunks/chunk-3C5ZDFRN.js",
   "./chunks/chunk-3EH37YPU.js",
+  "./chunks/chunk-5NSCPMXF.js",
+  "./chunks/chunk-7SXTYVYK.js",
   "./chunks/chunk-CCC5QWPU.js",
   "./chunks/chunk-DXV6LRZM.js",
-  "./chunks/chunk-DYS5BMRX.js",
-  "./chunks/chunk-FPW5WEWF.js",
   "./chunks/chunk-FVADEUQC.js",
   "./chunks/chunk-HOFJI2PN.js",
-  "./chunks/chunk-HT3KC2V6.js",
   "./chunks/chunk-IT4TLS54.js",
   "./chunks/chunk-JCWM7WLY.js",
+  "./chunks/chunk-M4PQKUHH.js",
   "./chunks/chunk-QPJ3MHXX.js",
   "./chunks/chunk-R2CHXKEA.js",
-  "./chunks/chunk-RDN423YN.js",
   "./chunks/chunk-RKNMGIFI.js",
   "./chunks/chunk-SXBELJP7.js",
-  "./chunks/chunk-VT64OQUZ.js",
+  "./chunks/chunk-YVXZAEH2.js",
+  "./chunks/chunk-ZNN2ILDH.js",
   "./chunks/InstallAppButton-NWUBLKJU.js",
   "./chunks/ProtectedProtocols-VIKFN25Q.js",
   "./chunks/QuickReference-TLWEC62O.js",
-  "./chunks/QuickSearch-QOLRKVZK.js",
+  "./chunks/QuickSearch-5TV4W4R7.js",
   "./chunks/Reference-7ZG34KAP.js",
-  "./chunks/Tools-2UCVN2GD.js",
-  "./chunks/Trials-H2VQ3G5R.js"
+  "./chunks/Tools-G2UQJ5L6.js",
+  "./chunks/Trials-4BEKGWSE.js"
 ];
 // END GENERATED APP CHUNKS
 
@@ -88,15 +88,15 @@ const APP_CHUNKS = [
 // pair this worker with a previous release's bytes; install refuses anything else.
 // BEGIN GENERATED PRECACHE SHA256
 const PRECACHE_SHA256 = {
-  "./": "927f45500b874c27ff470f214a3802a57413294ac6b608ed93ab52693fe4eb95",
-  "./index.html": "927f45500b874c27ff470f214a3802a57413294ac6b608ed93ab52693fe4eb95",
+  "./": "d240cbc271196222fa6be4c64080c6a6b8278b370663a5b10067303ff5ecfb8f",
+  "./index.html": "d240cbc271196222fa6be4c64080c6a6b8278b370663a5b10067303ff5ecfb8f",
   "./manifest.json": "de988e2e32ae65173d8ec0bf647c17ec3d74a01decdb69c50330bdbc56aa2268",
   "./icon-192.png": "9cd667cf2a5e3c84b0e656417a59b4aac9f0453fea57c8a893e72de2b536553a",
   "./icon-512.png": "4fb24ddf6e0f1fc890c58da553079281d381d725100cfe997f5b5526f5b3c9b6",
-  "./app.js": "cad35428df9156e0445b9c76e37f8212dca47c1b4221aab1b19326a0fc9548d6",
-  "./tailwind.css": "1874bfc06950bde673590c3d41dbb8713dad25e5a8d1bf79131fcab945b0637f",
+  "./app.js": "161cb4339fc016b49671cceff56f94b3b062e6054d4d3311c6b96edca78cc28a",
+  "./tailwind.css": "f1c61327a8daeaff357cf2f4925b901a4d71577d6dedf17b86c29199bd021b78",
   "./offline.html": "0f3f147994c4a8dba8e325285648be9a80e6d0e48ea9d29b13de14c4e69bb3c9",
-  "./data/clinical-reference.json": "65789b40ed4e6f9cfa9a7f3d4cba4a15839048c0758f39f3a0b434d61773609e",
+  "./data/clinical-reference.json": "a5e0e83da00a7c8e4c2c2727531470ebe3008f9ea9993e5a12cd807e88cfed8a",
   "./assets/fonts/bricolage-700.woff2": "5f91a977f90763e3899434454af4f6f3755cb364ae1fde4b708937da2979a621",
   "./assets/fonts/ibmplexmono-400.woff2": "f2a033ab563914090b225cfeb959c8e1efa3b8e7d8816af693dcd6cd6fcc33b0",
   "./assets/fonts/ibmplexmono-600.woff2": "f874cf3f1f67e1f9b6235e1d3636a7d39d4528a0fc0350b7b3f12ca0ff1e66b9",
@@ -107,28 +107,28 @@ const PRECACHE_SHA256 = {
   "./assets/fonts/publicsans-normal-700.woff2": "af0324417d2f7b5016905515d73dd4a5511465ac18a4edd6875905c611d2b780",
   "./chunks/chunk-3C5ZDFRN.js": "6dfd04038db54f5381f723ce8b829c4237fd9379a29ee4794550b8ac0a0e81d1",
   "./chunks/chunk-3EH37YPU.js": "66957d47a47b4de12113930062c1549314c59557bb78106035e401aaf80568ee",
+  "./chunks/chunk-5NSCPMXF.js": "48a8a0b077398a51e53c30c5cbc4a2e783013ef7622ba64ad27e9a6b53a2c3e5",
+  "./chunks/chunk-7SXTYVYK.js": "e34752a2d8e7e7a2c9dff4d602f13f1492d67d9ddae10d45fc69733adca95a55",
   "./chunks/chunk-CCC5QWPU.js": "6f78f53c8acbaf4dc62713d445c3b48ba61407d115596e6507a4252151ebde42",
   "./chunks/chunk-DXV6LRZM.js": "e53b76097ab7b6ad561bdc6a921075c340a55a623f41f405af1698cc971118aa",
-  "./chunks/chunk-DYS5BMRX.js": "9e501761dd25559fed23e47637a552e3768350437cea3da5df16654c3e6d3d4a",
-  "./chunks/chunk-FPW5WEWF.js": "3af550e50c98df4b65cbd19a275ead630964be6eb1d8f96ac4aa674254ae9186",
   "./chunks/chunk-FVADEUQC.js": "c393bea5801c370e5cbd8e00757cf0927fca5385b4aed2a926fb048af8578f09",
   "./chunks/chunk-HOFJI2PN.js": "9530002bc008361147c1335f1710d2ae9c74305ebb2508b243fd0e685f55b206",
-  "./chunks/chunk-HT3KC2V6.js": "194a6e331e1b8b91eabc419df160bf0a14d985d83ccb311270a79f871ef453f5",
   "./chunks/chunk-IT4TLS54.js": "88630fc941c2d504169f28756882f83f42d47be20bcccc68c82d42499df82ca4",
   "./chunks/chunk-JCWM7WLY.js": "7c44f79bafb29bc3c0ee326943e3190c1fd626a9d2322f0adc11c0a22da8b816",
+  "./chunks/chunk-M4PQKUHH.js": "69d49f673816dd213cb3be44cfad1dca2bded449c79acec84c08dfc1affbfb94",
   "./chunks/chunk-QPJ3MHXX.js": "2be9a4161de905d1f345d92b6f290e30c55f980326a49b293bf8906590d2fc52",
   "./chunks/chunk-R2CHXKEA.js": "ecd07c9412649b7c2bd6cc587847c7f0b41752164475d824f4db56e07cac1095",
-  "./chunks/chunk-RDN423YN.js": "cee77a086c373391a96289bab0117dd90cf549025511b0232569902ee3d2545e",
   "./chunks/chunk-RKNMGIFI.js": "f3a521614dd2de2232e60e22b48dfa0dc2027464fa2ac80d8a7717c352bf71b3",
   "./chunks/chunk-SXBELJP7.js": "e869bf8a197d76272a97117d85e8b1fd7b6332023db01450387588c05ba33618",
-  "./chunks/chunk-VT64OQUZ.js": "c9ec3b2c88d3ff54bacf397d17bc7827fba217f1fa59a459d62a5492b1b3b21c",
+  "./chunks/chunk-YVXZAEH2.js": "6fd2ddc8bcbcad4af3d291308164749be4f1d62f40658538891ff2acc7bc08cf",
+  "./chunks/chunk-ZNN2ILDH.js": "af57021d28e893898c1c3a8d4667926dcd990a8e50bd91970d3b7260c81e7057",
   "./chunks/InstallAppButton-NWUBLKJU.js": "7c754029f8723c1e9c509d7137dc975db2c0a9f178696e1657c45ce5ce703090",
   "./chunks/ProtectedProtocols-VIKFN25Q.js": "42047375641e635b0a320410d83e2cf846743ba03b14a4152c101162f7fdf6c9",
   "./chunks/QuickReference-TLWEC62O.js": "34516ec162e1a7dff8bf71420233c7f0a0e5c74de3e2ad6f8221d9c730d22d86",
-  "./chunks/QuickSearch-QOLRKVZK.js": "8f5d07c75cc05f1bc803036e32faa6dcb9d1d1e05b0f7eed25408e71025ebbd9",
+  "./chunks/QuickSearch-5TV4W4R7.js": "9d5b0ede71be9076e95fe40bd7aec0cd5eb4f44e7a45659f1faae33dd587b0c8",
   "./chunks/Reference-7ZG34KAP.js": "e485352ee30cba874b18927fb820c4b1d44fa1363127aad6be26e873276ab58a",
-  "./chunks/Tools-2UCVN2GD.js": "2e2b8228bdf09b99dc91bbb2b73123d9111242b315c0403f9d7f21fd997b22f1",
-  "./chunks/Trials-H2VQ3G5R.js": "d5336e5e1dca02884c2c4adb8f0a487e5d1998fe505717ed58a8010871e3d2bc"
+  "./chunks/Tools-G2UQJ5L6.js": "b6f29a8c779632525110bd6860caa3c5c288bd198486609021bda3825af70918",
+  "./chunks/Trials-4BEKGWSE.js": "fd6502f42696743171e992f2570740c181bfb129c9f15cddcf7945de31038b7b"
 };
 // END GENERATED PRECACHE SHA256
 

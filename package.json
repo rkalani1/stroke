@@ -1,6 +1,6 @@
 {
   "name": "stroke",
-  "version": "7.11.1",
+  "version": "7.12.0",
   "description": "Encounter workspace with embedded calculations, protocols, Pulsara summaries and Epic note templates.",
   "engines": {
     "node": ">=22"
