@@ -98,7 +98,9 @@ describe('screenerPrefillFromEncounter', () => {
     for (const [dose, extra, text] of [
       ['2026-10-02T20:00', {}, 'DOAC, last dose without an LKW (use at onset unknown)'],
       ['2026-09-30T08:00', {}, 'DOAC, last dose without an LKW (use at onset unknown)'],
-      ['2026-09-20T08:00', {}, 'DOAC, last dose >7 d'],
+      // Without an LKW the summary never measures the dose against the moving 'now'.
+      ['2026-09-20T08:00', {}, 'DOAC, last dose without an LKW (use at onset unknown)'],
+      ['2026-09-20T08:00', lkw, 'DOAC, last dose >7 d before LKW (use at onset unknown)'],
       ['2026-09-30T08:00', lkw, 'DOAC, last dose 70 h before LKW (use at onset unknown)'],
       ['2026-10-03T09:00', lkw, 'DOAC, last dose after LKW (use at onset unknown)'],
       // A dose entered later than now is still placed against the LKW, so it never changes with time.

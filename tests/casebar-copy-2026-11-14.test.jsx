@@ -66,6 +66,16 @@ describe('case bar BP flag by phase (logic-casebar-bp-phase)', () => {
   it('keeps the EVT flag when the entered puncture time is unusable (Encounter flags the time)', () => {
     expect(flag(evtOnly('2026-11-14T13:00'), '182/100')).toBe(EVT);
   });
+  it('treats a reperfusion time or mTICI recorded without a puncture time as a procedure (2026-11-15 review)', () => {
+    const decisions = { ivt: 'Not recommended', evt: 'Recommended' };
+    const reperfused = ischemic({ decisions, actions: { reperfusionTime: '2026-11-14T11:30' } });
+    expect(flag(reperfused, '183/100')).toBe(EVT);
+    expect(flag(reperfused, '180/105')).toBeNull();
+    // The 24 h window runs from the reperfusion time when no puncture is recorded.
+    expect(flag(ischemic({ decisions, actions: { reperfusionTime: '2026-11-13T11:00' } }), '183/100')).toBeNull();
+    const ticiOnly = ischemic({ decisions, note: { ticiScore: '2b' } });
+    expect(flag(ticiOnly, '183/100')).toBe(EVT);
+  });
   it('uses the pre-EVT limit (at or below 185/110) when IVT is not recommended and EVT is not ruled out', () => {
     for (const evt of ['Recommended', '', 'Specialist review']) {
       const state = ischemic({ decisions: { ivt: 'Not recommended', evt } });

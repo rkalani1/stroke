@@ -142,7 +142,6 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
     // A recorded last-dose time is placed against the LKW only, never against the moving 'now',
     // so the passage of time alone never changes what an import says.
     const dose = kind !== 'none' && kind !== 'lmwh' ? parseTimestamp(note.lastDOACDose) : null;
-    const hours = dose ? (nowMs - dose.getTime()) / 3600000 : null;
     const beforeOnset = dose && lkwAnchorMs !== null ? (lkwAnchorMs - dose.getTime()) / 3600000 : null;
     const drug = kind === 'doac' ? 'DOAC' : 'warfarin/VKA';
     // Use at onset is established only by a last dose at or before the LKW and no more than 48 h
@@ -153,9 +152,9 @@ export function screenerPrefillFromEncounter(state, nowMs = Date.now()) {
       patch.exclusions.exDoacLmwhAtOnset = undefined;
       patch.takingOac = 'unselected';
       patch.anticoagulant = 'unselected';
-      summary.push(beforeOnset !== null && beforeOnset < 0 ? `${drug}, last dose after LKW (use at onset unknown)`
-        : hours > 168 ? `${drug}, last dose >7 d`
-        : beforeOnset === null ? `${drug}, last dose without an LKW (use at onset unknown)`
+      summary.push(beforeOnset === null ? `${drug}, last dose without an LKW (use at onset unknown)`
+        : beforeOnset < 0 ? `${drug}, last dose after LKW (use at onset unknown)`
+        : beforeOnset > 168 ? `${drug}, last dose >7 d before LKW (use at onset unknown)`
         : `${drug}, last dose ${Math.round(beforeOnset)} h before LKW (use at onset unknown)`);
     } else summary.push(ANTICOAGULANT_TEXT[kind]);
   }

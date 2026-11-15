@@ -5,14 +5,14 @@
 From a second round of read-only audits (clinical logic, offline/PWA behaviour, evidence currency, the trial registries, engineering and copy). The Protocols tab is unchanged. Its source lock, Example Protocols snapshot and rendered locks (desktop and phone) are the guard. The record is [docs/review-2026-11-14.md](docs/review-2026-11-14.md).
 
 - **Case bar BP flag by phase:**
-  - After a recorded EVT puncture without IVT (until 24 h after it), the flag is "Above 180/105". After IVT, the post-IVT limit still applies.
+  - After a recorded EVT without IVT (a puncture time, or a reperfusion time or mTICI entered without one), the flag is "Above 180/105" until 24 h after the puncture (or reperfusion). After IVT, the post-IVT limit still applies.
   - Before EVT without IVT, it is "Above 185/110".
   - With IVT and EVT both not recommended, it is only "At or above 220/120", with its AHA/ASA 2026 COR 2b caveat.
   - The pre-IVT, post-IVT, ICH and SAH rules are unchanged. The Encounter BP cue uses the same text.
   - The ICH tooltip now reads "start within 2 h of onset and reach target within 1 h". The administered chip says "Alteplase given".
 - **Encounter:**
   - Number fields name an out-of-range entry under the field ("Out of range: enter …"), using the same ranges the note uses. The pound field is capped at 350 kg.
-  - Elapsed times use one format everywhere: "35 min", "1 h 05 min", then "2.1 d" from 48 h.
+  - The case-bar elapsed time, the Encounter LKW result, the Trials banner and the idle notice share one duration format: "35 min", "1 h 05 min", then "2.1 d" from 48 h. The case-bar window countdowns, notes and Protocols clocks keep their own formats.
   - The ABC/2 unit warning matches its inputs (A and B in centimeters, slice thickness in millimeters). Its source is now the ICH-specific Webb et al., Stroke 2015 (PMID 26243227).
   - The TIA stenosis caution appears only when the two answers truly conflict.
   - IVT checklist notes say the hold applies to either agent and use COR 1 / COR 2b with spaced units.
