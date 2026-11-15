@@ -61,12 +61,13 @@ describe('preset onset bands that only touch a study limit at an endpoint (H3)',
     expect(evaluate('ASPIRE', withPreset('ich', '7 – 30d')).pendingCriteria.join(' ')).toMatch(/days from LKW 14–180/);
     const tr2 = evaluate('TELE-REHAB-2', withPreset('ischemic', '> 6mo'));
     expect(tr2.pendingCriteria.join(' ')).toMatch(/days from LKW 90–270/);
-    expect(tr2.matchedCriteria).not.toContain('Onset within 90-270 days window');
+    expect(tr2.matchedCriteria).not.toContain('Onset within the 90–270-day window');
   });
 
   it('resolves bands fully inside a window as met', () => {
     expect(evaluate('STEP', withPreset('ischemic', '4.5 – 24h')).matchedCriteria).toContain('Within 24 h of LKW at screening (so presented ≤ 24 h)');
-    expect(evaluate('SATURN', withPreset('ich', '24h – 7d')).matchedCriteria).toContain('Onset within 7 days window');
+    // Label wording updated 2026-11-14 (copy-04): "Onset within 7 days window" → "Onset within the 7-day window".
+    expect(evaluate('SATURN', withPreset('ich', '24h – 7d')).matchedCriteria).toContain('Onset within the 7-day window');
   });
 
   it('applies the endpoint rule to every operator on a synthetic profile', () => {

@@ -141,12 +141,16 @@ describe('restored independent Trials workspace', () => {
     const fallback = page.getByRole('textbox', { name: 'Trial copy fallback', exact: true });
     await fallback.waitFor();
     expect(await fallback.evaluate(el => el.readOnly && el.selectionStart === 0 && el.selectionEnd === el.value.length)).toBe(true);
+    // copy-10: one plain instruction for every copy (formerly the lowercased label, e.g. "this ischemic stroke — acute … (markdown)").
+    const instruction = 'Clipboard unavailable. Select the text below and copy it manually.';
+    expect(await page.getByText(instruction, { exact: true }).count()).toBe(1);
     await page.getByRole('button', { name: 'TIA', exact: true }).click();
     expect(await fallback.count()).toBe(0);
     await page.getByRole('tab', { name: 'Tables', exact: true }).click();
     await page.getByRole('button', { name: 'Copy as Markdown', exact: true }).first().click();
     await fallback.waitFor();
     expect(await fallback.inputValue()).toContain('STEP');
+    expect(await page.getByText(instruction, { exact: true }).count()).toBe(1);
     await page.evaluate(() => window.setTrialsActive(false));
     await page.waitForFunction(() => !document.querySelector('[aria-label="Trial copy fallback"]'));
   });

@@ -83,18 +83,55 @@ describe('screenerPrefillFromEncounter', () => {
 
   // The dose-interval exclusions (OAC ≤ 7 days, Xa/DTI ≤ 48 h) left with FASTEST-2 and SISTER; a valid
   // last-dose time now only bounds use at onset, and never answers an exclusion as absent.
+  // Since 2026-11-14 the dose is placed against the LKW only: with no LKW it is no longer bounded by
+  // the time to now (which made an unchanged import stale as time passed), and a dose after the LKW
+  // does not establish use at onset.
   it('uses a valid last-dose time only to bound use at onset', () => {
-    const at = lastDOACDose => screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'apixaban', lastDOACDose }), NOW);
-    const recent = at('2026-10-02T20:00');
-    expect(recent.patch).toMatchObject({ anticoagulant: 'doac', takingOac: true });
-    expect(recent.patch.exclusions).toEqual({ exDoacLmwhAtOnset: true });
-    expect(recent.summary).toContain('on DOAC');
-    for (const [dose, text] of [['2026-09-30T08:00', 'DOAC, last dose 76 h before now (use at onset unknown)'], ['2026-09-20T08:00', 'DOAC, last dose >7 d']]) {
-      const { patch, summary } = at(dose);
+    const at = (lastDOACDose, lkw = {}) => screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'apixaban', lastDOACDose, ...lkw }), NOW);
+    const lkw = { lkwDate: '2026-10-03', lkwTime: '06:00' };
+    for (const dose of ['2026-10-02T20:00', '2026-10-01T06:00', '2026-10-03T06:00']) {
+      const recent = at(dose, lkw);
+      expect(recent.patch).toMatchObject({ anticoagulant: 'doac', takingOac: true });
+      expect(recent.patch.exclusions).toEqual({ exDoacLmwhAtOnset: true });
+      expect(recent.summary).toContain('on DOAC');
+    }
+    for (const [dose, extra, text] of [
+      ['2026-10-02T20:00', {}, 'DOAC, last dose without an LKW (use at onset unknown)'],
+      ['2026-09-30T08:00', {}, 'DOAC, last dose without an LKW (use at onset unknown)'],
+      ['2026-09-20T08:00', {}, 'DOAC, last dose >7 d'],
+      ['2026-09-30T08:00', lkw, 'DOAC, last dose 70 h before LKW (use at onset unknown)'],
+      ['2026-10-03T09:00', lkw, 'DOAC, last dose after LKW (use at onset unknown)'],
+      // A dose entered later than now is still placed against the LKW, so it never changes with time.
+      ['2026-10-03T14:00', lkw, 'DOAC, last dose after LKW (use at onset unknown)']
+    ]) {
+      const { patch, summary } = at(dose, extra);
       expect(patch).toMatchObject({ anticoagulant: 'unselected', takingOac: 'unselected' });
       expect(Object.entries(patch.exclusions).filter(([, value]) => value !== undefined)).toEqual([]);
       expect(summary).toContain(text);
     }
+  });
+
+  // INTERCEPT (NCT05723926) Group 3: "Patient was on OAC at time of index stroke, with index stroke
+  // occurring 6 to 52 weeks from enrollment". A follow-up Encounter records current therapy only.
+  it('does not import current anticoagulation in a follow-up Encounter as use at onset', () => {
+    const lkw = { lkwDate: '2026-07-25', lkwTime: '12:00' };
+    for (const [lastDOACType, text] of [['apixaban', 'on DOAC now (follow-up; use at onset not imported)'], ['warfarin', 'on warfarin/VKA now (follow-up; use at onset not imported)'], ['lmwh', 'on LMWH now (follow-up; use at onset not imported)'], ['none', 'no anticoagulant now (follow-up; use at onset not imported)']]) {
+      const s = encounter({ diagnosisCategory: 'ischemic', age: '70', lastDOACType, lastDOACDose: '2026-10-03T09:00', ...lkw }, { context: 'follow-up', details: { afDetected: 'yes' } });
+      const r = screenerPrefillFromEncounter(s, NOW);
+      expect(r.patch).not.toHaveProperty('anticoagulant');
+      expect(r.patch).not.toHaveProperty('takingOac');
+      expect(r.patch.exclusions).toEqual({});
+      expect(r.summary).toContain(text);
+      const state = applyEncounterPrefill(createInitialScreenerState(), r, createInitialScreenerState());
+      expect(state).toMatchObject({ anticoagulant: 'unselected', takingOac: 'unselected', afibHistory: true });
+      const intercept = ['eligible', 'pending', 'soon', 'excluded', 'closed', 'incomplete'].flatMap(k => evaluateAll(state, undefined, NOW)[k]).find(i => i.trial.acronym === 'INTERCEPT');
+      expect(intercept.matchedCriteria.join(' ')).not.toContain('while on OAC at the index stroke');
+      expect(intercept.exclusionReasons).toEqual([]);
+      expect(intercept.pendingCriteria).toContain('Confirm timing group: <6 weeks from index stroke (any OAC status) OR 6–52 weeks if on OAC at the index stroke');
+    }
+    // A conflicting "none" is reported once, as current therapy.
+    const conflict = screenerPrefillFromEncounter(encounter({ diagnosisCategory: 'ischemic', lastDOACType: 'none', medications: 'apixaban 5 mg BID' }, { context: 'follow-up' }), NOW);
+    expect(conflict.summary).toEqual(['Ischemic', 'no anticoagulant now (follow-up; use at onset not imported)']);
   });
 });
 

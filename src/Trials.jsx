@@ -55,6 +55,6 @@ export default function Trials({ sub = 'screener', onNavigate, active = true, en
     {/* The panel's h2 keeps the study cards (h3) one level below the page h1. */}
     <div id="trials-database-panel" role="tabpanel" aria-labelledby="trials-database-tab" hidden={view !== 'database'}><h2 className="sr-only">Study database</h2><StudyDatabase active={active && view === 'database'} now={now} /></div>
     {/* Always rendered (out of the flow while empty), so each copy outcome is announced; a live region inserted with its text often is not. */}
-    <div role="status" className={copyState ? 'workspace-result' : 'sr-only'}>{copyState && (copyState.failed ? <><p>Clipboard unavailable. Select this {copyState.label.toLowerCase()} and copy it manually.</p><textarea ref={fallback} aria-label="Trial copy fallback" readOnly rows={8} value={copyState.text} /></> : `${copyState.label} copied.`)}</div>
+    <div role="status" className={copyState ? 'workspace-result' : 'sr-only'}>{copyState && (copyState.failed ? <><p>Clipboard unavailable. Select the text below and copy it manually.</p><textarea ref={fallback} aria-label="Trial copy fallback" readOnly rows={8} value={copyState.text} /></> : `${copyState.label} copied.`)}</div>
   </section>;
 }
