@@ -6,6 +6,7 @@
 // place while the suite runs, and the index is what a commit (and so Pages) will hold.
 import { describe, expect, it } from 'vitest';
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -34,6 +35,21 @@ describe('committed browser bundle', () => {
       }
     }
     expect(problems).toEqual([]);
+  });
+
+  it('lists a SHA-256 in the worker for exactly the precached files, matching their committed bytes', () => {
+    // The worker refuses to install unless every file it stages from Pages has these bytes, so a
+    // table that drifted from the committed files would block every install and update.
+    const worker = read('service-worker.js');
+    const table = JSON.parse(worker.match(/const PRECACHE_SHA256 = (\{[\s\S]*?\});/)[1]);
+    // eslint-disable-next-line no-new-func
+    const core = new Function(`return ${worker.match(/const CORE_ASSETS = (\[[\s\S]*?\]);/)[1]}`)();
+    const precache = [...core, ...workerChunks.map(chunk => `./${chunk}`)];
+    expect(Object.keys(table).sort()).toEqual([...new Set(precache)].sort());
+    const bytes = rel => execFileSync('git', ['show', `:${rel}`], { cwd: root, maxBuffer: 64 * 1024 * 1024 });
+    const mismatched = precache.filter(asset => createHash('sha256').update(bytes(asset === './' ? 'index.html' : asset.slice(2))).digest('hex') !== table[asset]);
+    expect(mismatched).toEqual([]);
+    expect(table['./']).toBe(table['./index.html']);
   });
 
   it('preloads exactly the initial graph from index.html', () => {

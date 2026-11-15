@@ -204,7 +204,8 @@ describe('Empirical Adversarial Verification: Milestone 4 (Production Build & De
 
       // Strategies
       expect(swContent).toContain('isHtmlRequest');
-      expect(swContent).toContain('isShellAsset');
+      expect(swContent).toContain('isVersionedShell');
+      expect(swContent).toContain('PRECACHE_SHA256');
       expect(swContent).toContain('skipWaiting');
       expect(swContent).toContain('sw-update-ready');
     });

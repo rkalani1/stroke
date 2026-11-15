@@ -103,7 +103,10 @@ async function main() {
   const site = path.resolve(arg('--site-dir', 'output/site'));
   if (!fsSync.existsSync(path.join(site, 'index.html'))) throw new Error('Published QA artifact missing. Run npm run publish:stage or supply an explicit --site-dir.');
   const reference = JSON.parse(await fs.readFile(path.join(site, 'data/clinical-reference.json'), 'utf8'));
-  const server = await servePublished(() => site, Number(arg('--port', '4177')));
+  // context.setOffline() alone does not keep the service worker's own fetches off the network
+  // after a reload (Chromium), so the offline check also drops every connection at the server.
+  let networkDown = false;
+  const server = await servePublished(() => site, Number(arg('--port', '4177')), () => networkDown ? { disconnect: true } : null);
   const browser = await launchChromium();
   const report = { scope: 'Rendered production artifact; Chromium simulations, not physical devices', site, checks: [], screenshots: [], metrics: {}, runs: [], latency: {profile:latency.name,profilesFile:latency.file,enforced:latency.enforce}, live: { status: 'not run', reason: '--local-only or no --live; no implied deployed verification' } };
   const check = async (name, fn) => { const started = performance.now(); try { const details = await fn(); report.checks.push({ name, status: 'passed', durationMs: Math.round(performance.now()-started), ...(details || {}) }); } catch(error) { report.checks.push({ name, status: 'failed', error: error.stack || String(error) }); console.error(`FAIL ${name}: ${error.message}`); } };
@@ -877,7 +880,11 @@ async function main() {
         assert(!cache.urls.some(url=>/education|teaching|TrialScreener|deferred-reference/.test(url)));report.metrics.offlineCacheBytes=cache.totalBytes;
         assert.deepEqual(cache.reference, { appVersion: await p.locator('.app-shell').getAttribute('data-version'), schemaVersion: '2.0.0', topics: reference.data.topics.length, studies: reference.data.studies.length, calculators: reference.data.calculators.length });
         assert.equal(cache.reference.appVersion, reference._meta.appVersion);
-        await offline.setOffline(true);await p.reload({waitUntil:'domcontentloaded'});await setupIschemic(p);await p.getByLabel('Manual rationale / recommendations',{exact:true}).fill('Synthetic offline encounter; specialist review pending.');const items=nihssRows(p);await openDetails(items.first());for(let i=0;i<15;i++) await scoreNihssZero(items.nth(i));assert((await p.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));assert((await(await generate(p)).inputValue()).includes('NIHSS score: 0/42'));
+        networkDown=true;await offline.setOffline(true);await p.reload({waitUntil:'domcontentloaded'});
+        // Proves the network is really gone: a file the worker does not precache gets its offline 503.
+        const probe=await p.evaluate(async()=>{const response=await fetch('llms.txt?offline-probe');return{status:response.status,text:await response.text()};});
+        assert.equal(probe.status,503,`offline probe reached the network (status ${probe.status})`);assert.match(probe.text,/not available offline/);
+        await setupIschemic(p);await p.getByLabel('Manual rationale / recommendations',{exact:true}).fill('Synthetic offline encounter; specialist review pending.');const items=nihssRows(p);await openDetails(items.first());for(let i=0;i<15;i++) await scoreNihssZero(items.nth(i));assert((await p.locator('#calc-tnk').innerText()).includes('TNK 20.75 mg'));assert((await(await generate(p)).inputValue()).includes('NIHSS score: 0/42'));
         await p.getByRole('link',{name:'Trials',exact:true}).click();await p.getByRole('heading',{name:'Trials',exact:true}).waitFor();await p.getByRole('tab',{name:'Database',exact:true}).click();await p.getByRole('searchbox',{name:'Search acronym, name or NCT number in the study database',exact:true}).fill('STEP');assert((await p.getByRole('tabpanel',{name:'Database',exact:true}).innerText()).includes('STEP'));await p.screenshot({path:path.join(outDir,'trials-offline-mobile.png'),fullPage:true});
         assert.equal(await p.evaluate(() => navigator.onLine), false);
         await p.getByRole('link', { name: 'Calculators', exact: true }).click();
@@ -900,8 +907,8 @@ async function main() {
         await p.getByRole('link', { name: 'Encounter', exact: true }).click();
         assert.equal(await p.locator('#tabpanel-encounter').getByLabel('Weight (kg)', { exact: true }).inputValue(), '83');
         assert.equal(await p.getByLabel('Manual rationale / recommendations', { exact: true }).inputValue(), 'Synthetic offline encounter; specialist review pending.');
-        await p.getByRole('link',{name:'Protocols',exact:true}).click();await p.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();const trigger=p.getByRole('button',{name:'Vitamin K 10 mg IV',exact:true,includeHidden:true}).first();await openDetails(trigger);await trigger.click();await p.getByRole('dialog').waitFor();assert((await p.getByRole('dialog').innerText()).includes('Vitamin K'));await p.keyboard.press('Escape');assert.equal(await p.getByRole('dialog').count(),0);assert.deepEqual(offlineErrors,[]);await p.screenshot({path:path.join(outDir,'offline-protocol-mobile.png'),fullPage:true});return{cache,simulation:true};
-      }finally{await offline.close();}
+        await p.getByRole('link',{name:'Protocols',exact:true}).click();await p.getByRole('tab',{name:'ICH protocol tab',exact:true}).click();const trigger=p.getByRole('button',{name:'Vitamin K 10 mg IV',exact:true,includeHidden:true}).first();await openDetails(trigger);await trigger.click();await p.getByRole('dialog').waitFor();assert((await p.getByRole('dialog').innerText()).includes('Vitamin K'));await p.keyboard.press('Escape');assert.equal(await p.getByRole('dialog').count(),0);assert.deepEqual(offlineErrors,[]);await p.screenshot({path:path.join(outDir,'offline-protocol-mobile.png'),fullPage:true});return{cache,offlineProbe:probe,simulation:true};
+      }finally{networkDown=false;await offline.close();}
     });
     await check('published retired raw URLs unavailable and old JSON endpoints return retirement metadata', async () => {
       for(const relative of ['src/app.jsx','documents/references/External Ventricular Drain.pdf','content/bundle.json','assets/select_score_chart.png']){const response=await fetch(new URL(relative,server.url));assert([404,410].includes(response.status),`${relative}: ${response.status}`);}

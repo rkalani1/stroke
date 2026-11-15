@@ -20,7 +20,7 @@ describe('generated browser module pipeline', () => {
       fs.writeFileSync(gate, 'export const runClinicalClaimCheck = () => ({ok:true});');
       fs.writeFileSync(path.join(fixture, 'package.json'), '{"version":"0.0.0"}');
       fs.writeFileSync(path.join(fixture, 'index.html'), '<!-- BEGIN GENERATED INITIAL MODULE PRELOADS -->\n<!-- END GENERATED INITIAL MODULE PRELOADS -->');
-      fs.writeFileSync(path.join(fixture, 'service-worker.js'), '// BEGIN GENERATED APP CHUNKS\nconst APP_CHUNKS = [];\n// END GENERATED APP CHUNKS\n// BEGIN GENERATED REFERENCE VALIDATION\n// END GENERATED REFERENCE VALIDATION\n');
+      fs.writeFileSync(path.join(fixture, 'service-worker.js'), "const CORE_ASSETS = [\n  './', // the shell\n  './index.html',\n  './app.js'\n];\n// BEGIN GENERATED APP CHUNKS\nconst APP_CHUNKS = [];\n// END GENERATED APP CHUNKS\n// BEGIN GENERATED PRECACHE SHA256\nconst PRECACHE_SHA256 = {};\n// END GENERATED PRECACHE SHA256\n// BEGIN GENERATED REFERENCE VALIDATION\n// END GENERATED REFERENCE VALIDATION\n");
       fs.writeFileSync(path.join(fixture, 'src/app.jsx'), "import {shared} from './shared.js'; window.initial = shared; window.loadReference = () => import('./reference.js');");
       fs.writeFileSync(path.join(fixture, 'src/shared.js'), 'export const shared = {version: 1};');
       fs.writeFileSync(path.join(fixture, 'src/reference.js'), "import {shared} from './shared.js'; export const reference = {shared, title: 'first'};");
@@ -42,6 +42,16 @@ describe('generated browser module pipeline', () => {
       }
       const chunkList = JSON.parse(fs.readFileSync(path.join(fixture, 'service-worker.js'), 'utf8').match(/const APP_CHUNKS = (\[[\s\S]*?\]);/)[1]);
       expect(chunkList).toEqual(first.files.filter(file => file.path !== 'app.js').map(file => './' + file.path));
+      // Every precached file's SHA-256 as finally written ('./' is index.html, hashed after its preloads).
+      const checksums = () => {
+        const table = JSON.parse(fs.readFileSync(path.join(fixture, 'service-worker.js'), 'utf8').match(/const PRECACHE_SHA256 = (\{[\s\S]*?\});/)[1]);
+        const sha = rel => createHash('sha256').update(fs.readFileSync(path.join(fixture, rel))).digest('hex');
+        const current = JSON.parse(fs.readFileSync(path.join(fixture, 'service-worker.js'), 'utf8').match(/const APP_CHUNKS = (\[[\s\S]*?\]);/)[1]);
+        expect(Object.keys(table)).toEqual(['./', './index.html', './app.js', ...current]);
+        for (const [asset, hash] of Object.entries(table)) expect(hash, asset).toBe(sha(asset === './' ? 'index.html' : asset.slice(2)));
+        return table;
+      };
+      const firstChecksums = checksums();
       fs.writeFileSync(path.join(fixture, 'chunks/keep-not-generated.txt'), 'keep');
       fs.writeFileSync(path.join(fixture, 'src/reference.js'), "import {shared} from './shared.js'; export const reference = {shared, title: 'second'};");
       fs.writeFileSync(path.join(fixture, 'src/shared.js'), 'export const shared = {version: 2};');
@@ -49,6 +59,7 @@ describe('generated browser module pipeline', () => {
       const next = readManifest();
       expect(preloads()).toEqual(next.initial.filter(file => file !== next.entry));
       expect(preloads()).not.toEqual(first.initial.filter(file => file !== first.entry));
+      expect(checksums()['./']).not.toBe(firstChecksums['./']);
       const retired = first.files.filter(file => file.path.startsWith('chunks/') && !next.files.some(current => current.path === file.path));
       expect(retired.length).toBeGreaterThan(0);
       expect(retired.every(file => !fs.existsSync(path.join(fixture, file.path)))).toBe(true);

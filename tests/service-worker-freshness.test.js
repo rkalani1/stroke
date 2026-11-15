@@ -26,10 +26,10 @@ function harness(scope, { offline = true, body = 'fresh network', contentType = 
     },
     addAll: async requests => {
       installs.push(...requests);
+      // The release's own bytes: install checks each against the worker's SHA-256 table.
       for (const request of requests) {
-        if (request.url === href('data/clinical-reference.json')) {
-          entries.set(request.url, new Response(JSON.stringify(referenceFixture), { headers: { 'Content-Type': 'application/json' } }));
-        }
+        const relative = request.url.slice(scope.length);
+        entries.set(request.url, new Response(readFileSync(new URL(`../${relative === '' ? 'index.html' : relative}`, import.meta.url))));
       }
     },
     add: async () => {},
@@ -37,7 +37,7 @@ function harness(scope, { offline = true, body = 'fresh network', contentType = 
     delete: async key => entries.delete(href(key)),
   };
   vm.runInNewContext(source, {
-    URL, Request, Response, Promise, console: { warn() {} },
+    URL, Request, Response, Promise, crypto: globalThis.crypto, console: { warn() {} },
     fetch: async (request, options) => {
       network.push({ url: request.url, options });
       if (offline) throw Error('offline');
@@ -46,6 +46,7 @@ function harness(scope, { offline = true, body = 'fresh network', contentType = 
     caches: {
       open: async name => { opens.push(name); return cache; },
       keys: async () => [currentName],
+      delete: async () => true,
       match: async key => { globalMatches++; return oldEntries.get(href(key))?.clone(); },
     },
     self: { location: { origin: new URL(scope).origin }, registration: { scope },
@@ -236,6 +237,7 @@ for (const scope of ['https://example.test/', 'https://example.test/stroke/']) {
       const key = 'assets/splash/splash-iphone-16-pro.png';
       const h = harness(scope, { body: 'launch screen', contentType: 'image/png' });
       await h.install();
+      const opensAtInstall = h.opens.length;
       expect(h.installs.filter(request => request.url.includes('/assets/splash/'))).toEqual([]);
       // Offline before its first request (the cosmetic cost of not precaching): the worker's
       // plain 503 notice, and nothing is stored.
@@ -253,7 +255,7 @@ for (const scope of ['https://example.test/', 'https://example.test/stroke/']) {
       expect(cached.headers.get('content-type')).toBe('image/png');
       expect(await cached.text()).toBe('launch screen');
       expect(h.network).toHaveLength(requests);
-      expect(h.opens.every(name => name === currentName)).toBe(true);
+      expect(h.opens.slice(opensAtInstall).every(name => name === currentName)).toBe(true);
       expect(h.globalMatches).toBe(0);
     });
   });
