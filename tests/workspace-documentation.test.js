@@ -13,7 +13,7 @@ describe('restored telephone Pulsara and video Epic documentation', () => {
   it('generates a concise telephone paragraph from canonical history and documented findings', () => {
     const state = make('phone', { rationale: 'Discussed the entered findings with the treating team.', assessment: 'Working clinical assessment entered by the clinician.' });
     const text = buildSummary(state, NOW);
-    expect(text).toMatch(/^65 year old female \(Wt: 80kg\) with Hypertension who presents with left arm weakness/);
+    expect(text).toMatch(/^65 year old female \(Wt: 80 kg\) with Hypertension who presents with left arm weakness/);
     expect(text).toContain('Last known well (date/time): 2026-10-01 10:00');
     expect(text).toContain('Pre-mRS: 0. NIHSS score: 0/42 (all items documented)');
     expect(text).toContain('Head CT (10:30; date not documented): No hemorrhage described');
@@ -85,7 +85,7 @@ describe('restored telephone Pulsara and video Epic documentation', () => {
   it.each(['phone', 'video'])('records consent and treatment events only through their independent explicit fields in %s', format => {
     const state = make(format, { drug: 'Alteplase', decisions: { ivt: 'Recommended', evt: 'Recommended' } });
     expect(buildSummary(state, NOW)).toContain('IVT administration: not documented');
-    expect(buildSummary(state, NOW)).toContain('Consent status: not documented');
+    expect(buildSummary(state, NOW)).toContain('IVT consent status: not documented');
     expect(buildSummary(state, NOW)).not.toContain('safety pause completed');
     state.actions.administrationTime = '2026-10-01T11:00';
     expect(buildSummary(state, NOW)).not.toContain('Alteplase at');
@@ -93,13 +93,13 @@ describe('restored telephone Pulsara and video Epic documentation', () => {
     state.actions.consent = 'Informed consent';
     state.actions.consentTime = '2026-10-01T10:50';
     expect(buildSummary(state, NOW)).toContain('IVT administration: Alteplase at 2026-10-01 11:00');
-    expect(buildSummary(state, NOW)).toContain('Consent status: Informed consent');
-    expect(buildSummary(state, NOW)).toContain('IVT Consent time: 2026-10-01 10:50');
+    expect(buildSummary(state, NOW)).toContain('IVT consent status: Informed consent');
+    expect(buildSummary(state, NOW)).toContain('IVT consent time: 2026-10-01 10:50');
     state.actions.administrationTime = '2026-10-01T13:00';
     state.actions.consentTime = '2026-10-01T13:00';
     state.actions.punctureTime = '2026-02-30T11:00';
     expect(buildSummary(state, NOW)).not.toContain('Alteplase at');
-    expect(buildSummary(state, NOW)).toContain('IVT Consent time: 2026-10-01 13:00 (invalid or future');
+    expect(buildSummary(state, NOW)).toContain('IVT consent time: 2026-10-01 13:00 (invalid or future');
     expect(buildSummary(state, NOW)).toContain('EVT puncture: 2026-02-30 11:00 (invalid or future');
   });
 
@@ -192,18 +192,18 @@ describe('restored telephone Pulsara and video Epic documentation', () => {
     state.actions.discussionDetails = 'Questions remain about the available options.';
     const text = buildSummary(state, NOW);
     expect(text).toContain('Discussion details: Questions remain about the available options.');
-    expect(text).toContain('Discussion: not documented');
-    expect(text).toContain('Consent status: not documented');
+    expect(text).toContain('IVT discussion: not documented');
+    expect(text).toContain('IVT consent status: not documented');
     expect(text).toContain('IVT administration: not documented');
     expect(text).toContain(state.note.ctpResults);
     expect(state.actions.discussion).toBe('');
     expect(state.actions.consent).toBe('');
     expect(state.actions.administered).toBe(false);
     state.actions.discussion = 'Completed';
-    expect(buildSummary(state, NOW)).toContain('Discussion: Completed');
+    expect(buildSummary(state, NOW)).toContain('IVT discussion: Completed');
     state.actions.discussionDetails = '';
     expect(buildSummary(state, NOW)).not.toContain('Discussion details:');
-    expect(buildSummary(state, NOW)).toContain('Discussion: Completed');
+    expect(buildSummary(state, NOW)).toContain('IVT discussion: Completed');
   });
 
   it('invalidates drafts after restoring, editing or clearing the CT date, CTP narrative or discussion details', () => {

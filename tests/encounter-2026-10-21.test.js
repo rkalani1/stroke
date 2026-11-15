@@ -112,7 +112,7 @@ describe('impossible ordering is flagged, never repaired', () => {
     expect(text).toContain('Last known well (date/time): 2026-10-21 09:00; symptom discovery: 2026-10-21 08:00 [discovery precedes LKW; review recorded dates/times]');
     expect(line(text, 'IVT administration')).toContain('[IVT time precedes LKW; review recorded dates/times]');
     expect(line(text, 'EVT reperfusion')).toContain('EVT reperfusion precedes puncture');
-    expect(line(text, 'IVT Consent time')).toContain('[recorded after the administration time; confirm the consent timeline]');
+    expect(line(text, 'IVT consent time')).toContain('[recorded after the administration time; confirm the consent timeline]');
     // A discovery time after a known LKW is kept without a flag.
     const ordered = buildSummary({ ...state, note: { ...state.note, discoveryTime: '09:40' } }, now);
     expect(ordered).toContain('2026-10-21 09:00; symptom discovery: 2026-10-21 09:40\n');
@@ -137,7 +137,7 @@ describe('impossible ordering is flagged, never repaired', () => {
     expect(line(text, 'EVT puncture')).toBe('EVT puncture: 2026-02-30 11:00 (invalid or future; correct before interpretation)');
     expect(line(text, 'EVT reperfusion')).toBe('EVT reperfusion: 2026-11-01 01:30 (ambiguous local time; choose the recorded clock occurrence before interpretation)');
     // A consent time without a status is kept and named as incomplete, never dropped.
-    expect(line(text, 'IVT Consent time')).toBe('IVT Consent time: 2026-10-21 12:30 (invalid or future; correct before interpretation) [consent status not documented]');
+    expect(line(text, 'IVT consent time')).toBe('IVT consent time: 2026-10-21 12:30 (invalid or future; correct before interpretation) [consent status not documented]');
     expect(line(text, 'EVT consent time')).toBe('EVT consent time: 2026-10-21 13:00 (invalid or future; correct before interpretation)');
     // A stamped instant (with seconds) is shown as local wall time with its seconds.
     expect(line(text, 'Last anticoagulant dose')).toBe('Last anticoagulant dose: 2026-10-21 14:00:00 (invalid or future; correct before interpretation)');

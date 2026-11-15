@@ -81,7 +81,7 @@ describe('Encounter safety review', () => {
     const allNo = Object.fromEntries(SAFETY_ITEMS.map(item => [item.id, false]));
     expect(render(acute({ note: { plateletCount: '50', tnkContraindicationChecklist: allNo } }))).toContain('Safety review: 1 &quot;No&quot; answer contradicted by entered values');
     const html = render(acute({ note: { plateletCount: '80', tnkContraindicationChecklist: { lowPlatelets: false } } }));
-    expect(html).toContain('Entered values contradict a &quot;No&quot; answer: Platelet count &lt;100,000 (platelets 80 K/µL)');
+    expect(html).toContain('Entered values contradict a &quot;No&quot; answer: Platelet count &lt;100,000/µL (platelets 80 K/µL)');
     const open = render(acute({ note: { glucose: '40' } }));
     expect(open).toContain('id="safety-bulk-skipped"');
     expect(open).toContain('Entered glucose 40 mg/dL suggests Yes.');
@@ -131,7 +131,7 @@ describe('documentation of decision-relevant values', () => {
   it('writes the safety review state and entered-value conflicts into the note', () => {
     const text = buildSummary(make({ note: { diagnosisCategory: 'ischemic', ivtContraindicationsReviewed: true, plateletCount: '80', tnkContraindicationChecklist: { lowPlatelets: false } } }), now);
     expect(text).toContain(`IVT safety review: marked complete by clinician; ${SAFETY_ITEMS.length - 1} checklist items unanswered (checklist incomplete)`);
-    expect(text).toContain('Entered values conflicting with a "No" answer: Platelet count <100,000 (platelets 80 K/µL)');
+    expect(text).toContain('Entered values conflicting with a "No" answer: Platelet count <100,000/µL (platelets 80 K/µL)');
   });
 });
 
@@ -146,7 +146,7 @@ describe('DAPT screen', () => {
     const html = render(state);
     expect(html).not.toContain('Trial dosing: Clopidogrel');
     expect(html).toContain('Individualized review:');
-    expect(html).toContain('Bleeding concerns remain: Platelet count &lt;100,000 (entered platelets 40 K/µL).');
+    expect(html).toContain('Bleeding concerns remain: Platelet count &lt;100,000/µL (entered platelets 40 K/µL).');
   });
 });
 

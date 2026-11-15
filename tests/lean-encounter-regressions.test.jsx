@@ -20,7 +20,7 @@ describe('retained Encounter behavior replacing monolith output and duplicate-to
     expect(summary).not.toMatch(/telephone consultation|video consultation|Acute consultation/);
     expect(summary).toContain(consultationType === 'phone' ? 'NIHSS score:' : 'Assessment and Plan:');
     expect(summary).toContain('IVT clinician decision: not documented');
-    expect(summary).toContain('Consent status: not documented');
+    expect(summary).toContain('IVT consent status: not documented');
     expect(summary).not.toContain('Potential benefits, potential risks');
     expect(summary).not.toContain('TNK was administered');
   });

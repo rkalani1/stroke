@@ -30,7 +30,7 @@ describe('ICH volume, score and neurosurgery prompts', () => {
   it('withholds the ICH score, the volume trigger and the note value when units look wrong', () => {
     const state = ich({ volume: { a: '37', b: '2.7', thicknessMm: '5', numSlices: '12' }, ich: { ivh: false, infratentorial: false } });
     const html = render(state);
-    expect(html).toContain('Confirm the ABC/2 dimensions are in centimeters before scoring.');
+    expect(html).toContain('Confirm A and B are in centimeters and slice thickness in millimeters before scoring.');
     expect(html).not.toContain('≥15 mL: early neurosurgery');
     const note = buildSummary(state, now);
     expect(note).toContain('[ABC/2 volume 299.7 mL implausible; confirm centimeter units before interpretation]');
