@@ -78,7 +78,7 @@ const APP_CHUNKS = [
   "./chunks/QuickSearch-5TV4W4R7.js",
   "./chunks/Reference-7ZG34KAP.js",
   "./chunks/Tools-G2UQJ5L6.js",
-  "./chunks/Trials-4BEKGWSE.js"
+  "./chunks/Trials-Y6BLXOZ7.js"
 ];
 // END GENERATED APP CHUNKS
 
@@ -93,7 +93,7 @@ const PRECACHE_SHA256 = {
   "./manifest.json": "de988e2e32ae65173d8ec0bf647c17ec3d74a01decdb69c50330bdbc56aa2268",
   "./icon-192.png": "9cd667cf2a5e3c84b0e656417a59b4aac9f0453fea57c8a893e72de2b536553a",
   "./icon-512.png": "4fb24ddf6e0f1fc890c58da553079281d381d725100cfe997f5b5526f5b3c9b6",
-  "./app.js": "161cb4339fc016b49671cceff56f94b3b062e6054d4d3311c6b96edca78cc28a",
+  "./app.js": "a3a889d03d48d65fd5cd55bee02386078016f689bccb31508feee1d3229edfb0",
   "./tailwind.css": "f1c61327a8daeaff357cf2f4925b901a4d71577d6dedf17b86c29199bd021b78",
   "./offline.html": "0f3f147994c4a8dba8e325285648be9a80e6d0e48ea9d29b13de14c4e69bb3c9",
   "./data/clinical-reference.json": "a5e0e83da00a7c8e4c2c2727531470ebe3008f9ea9993e5a12cd807e88cfed8a",
@@ -128,7 +128,7 @@ const PRECACHE_SHA256 = {
   "./chunks/QuickSearch-5TV4W4R7.js": "9d5b0ede71be9076e95fe40bd7aec0cd5eb4f44e7a45659f1faae33dd587b0c8",
   "./chunks/Reference-7ZG34KAP.js": "e485352ee30cba874b18927fb820c4b1d44fa1363127aad6be26e873276ab58a",
   "./chunks/Tools-G2UQJ5L6.js": "b6f29a8c779632525110bd6860caa3c5c288bd198486609021bda3825af70918",
-  "./chunks/Trials-4BEKGWSE.js": "fd6502f42696743171e992f2570740c181bfb129c9f15cddcf7945de31038b7b"
+  "./chunks/Trials-Y6BLXOZ7.js": "f819b5cf3152bf2306d4ad1327e7643a1421e32dbca9aff235bbec9746e08f91"
 };
 // END GENERATED PRECACHE SHA256
 
